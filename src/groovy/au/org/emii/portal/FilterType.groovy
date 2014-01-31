@@ -20,8 +20,8 @@ public enum FilterType {
     String(),
     Date(false),
     DateRange(false),
-    Number(),
-    Double(),
+    Number(false),
+    Double(false),
     Boolean(false),
     BoundingBox(false)
 

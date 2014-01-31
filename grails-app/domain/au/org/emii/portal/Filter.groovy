@@ -54,15 +54,10 @@ class Filter implements Comparable {
         filterData["wmsEndDateName"] = wmsEndDateName
         filterData["layerId"] = layer.id
         filterData["enabled"] = enabled
-        filterData["possibleValues"] = _uiUsesPossibleValues() ? possibleValues.sort() : []
+        filterData["possibleValues"] = type.expectsPossibleValues ? possibleValues.sort() : []
         filterData["downloadOnly"] = downloadOnly
 
         return filterData
-    }
-
-    def _uiUsesPossibleValues() {
-
-        type == FilterType.String || type == FilterType.Date
     }
 
     boolean equals(other) {

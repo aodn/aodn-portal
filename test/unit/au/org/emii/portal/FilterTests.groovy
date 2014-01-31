@@ -11,24 +11,38 @@ import grails.test.GrailsUnitTestCase
 
 class FilterTests extends GrailsUnitTestCase {
 
-    def dateRangeFilter = [type: FilterType.DateRange]
-    def stringFilter = [type: FilterType.String]
-    def filterRequiringPossibleValues = [type: [expectsPossibleValues: true]]
-    def filterNotRequiringPossibleValues = [type: [expectsPossibleValues: false]]
+    def dateRangeFilter
+    def stringFilter
+    def filterRequiringPossibleValues
+    def filterNotRequiringPossibleValues
 
     protected void setUp() {
         super.setUp()
-    }
 
-    protected void tearDown() {
-        super.tearDown()
+        mockDomain(Filter)
+
+        dateRangeFilter = new Filter(type: FilterType.DateRange)
+        stringFilter = new Filter(type: FilterType.String)
+        filterRequiringPossibleValues = new Filter(type: FilterType.String)
+        filterNotRequiringPossibleValues = new Filter(type: FilterType.Boolean)
     }
 
     void testToJsonStringFilter(){
         def server1 = new Server(id: 1)
         def layer1 = new Layer(id: 3, server: server1)
 
-        def filter1 = new Filter(name: "vesselName",  wmsStartDateName: "start_date", wmsEndDateName: "end_date", type: FilterType.String, label: "Vessel Name", possibleValues: ["ship3", "ship2", "ship1"], layer: layer1, enabled: true, downloadOnly: true)
+        def filter1 =
+            new Filter(
+                name: "vesselName",
+                wmsStartDateName: "start_date",
+                wmsEndDateName: "end_date",
+                type: FilterType.String,
+                label: "Vessel Name",
+                possibleValues: ["ship3", "ship2", "ship1"],
+                layer: layer1,
+                enabled: true,
+                downloadOnly: true
+            )
 
         def expected = [:]
         expected["label"] = "Vessel Name"
