@@ -17,7 +17,6 @@ describe('Portal.cart.DownloadEstimator', function() {
             uuid: 9
         };
         mockResult = {
-            isTimeout: true,
             statusText: 'transaction aborted',
             status = -1
         };
@@ -31,13 +30,16 @@ describe('Portal.cart.DownloadEstimator', function() {
         });
 
         it('_generateFailureResponse generates correct response on timeout', function() {
+            mockResult = {
+        	    isTimeout: true	
+            };
+
             var mockResp = estimator._generateFailureResponse(mockResult);
             expect(mockResp).toEqual('transaction aborted');
         });
 
         it('_generateFailureResponse generates correct response on other failure', function() {
-            var mockResultFail = -1;
-            var mockResp = estimator._generateFailureResponse(mockResultFail);
+            var mockResp = estimator._generateFailureResponse(mockResult);
             expect(mockResp).toEqual(-1);
         });
     });
