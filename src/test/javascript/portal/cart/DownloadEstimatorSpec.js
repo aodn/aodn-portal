@@ -31,7 +31,9 @@ describe('Portal.cart.DownloadEstimator', function() {
 
         it('_generateFailureResponse generates correct response on timeout', function() {
             mockResult = {
-        	    isTimeout: true	
+                isTimeout: true,
+                statusText: 'transaction aborted',
+                status: -1
             };
 
             var mockResp = estimator._generateFailureResponse(mockResult);

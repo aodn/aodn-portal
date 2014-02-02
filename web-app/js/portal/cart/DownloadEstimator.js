@@ -64,7 +64,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
 
     _addDownloadEstimate: function(sizeEstimate, elementId) {
         var sizeDiv = Ext.get(elementId);
-        var htmlAddition = "";
+        var htmlAddition;
 
         if (sizeEstimate == OpenLayers.i18n('transAbortMsg')) {
             htmlAddition = this._generateTimeoutHtmlString();
