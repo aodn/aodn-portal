@@ -100,7 +100,6 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         it('returns the entry markup', function () {
             expect(html).toBe('link markup');
         });
-
     });
 
     describe('data specific markup', function() {
