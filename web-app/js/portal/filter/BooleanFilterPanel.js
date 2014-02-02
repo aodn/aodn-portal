@@ -54,7 +54,7 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     handleRemoveFilter: function() {
-        this.checkBox.setValue(false);
+        this.checkbox.setValue(false);
     },
 
     _setExistingFilters: function() {
