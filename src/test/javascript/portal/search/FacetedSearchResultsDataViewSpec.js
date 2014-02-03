@@ -26,7 +26,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             expect(facetedSearchDataView.superEncodeUuid(0,"1231-456-789")).toBe("-0-1231-456-789");
         });
         it('decodes correctly', function() {
-            expect(facetedSearchDataView.superDecodeUuid("-0-1231-456-789")).toBe("1231-456-789");
+            expect(facetedSearchDataView.decodeSuperUuid("-0-1231-456-789")).toBe("1231-456-789");
         });
     });
 
