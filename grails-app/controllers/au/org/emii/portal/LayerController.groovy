@@ -227,7 +227,7 @@ class LayerController {
         layerInstance.properties = params
         layerInstance.dataSource = "Manual"
 
-        return [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(productInfo)]
+        return [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)]
     }
 
     def save = {
@@ -237,7 +237,7 @@ class LayerController {
             redirect(action: "list")
         }
         else {
-            render(view: "create", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(productInfo)])
+            render(view: "create", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)])
         }
     }
 
@@ -255,7 +255,7 @@ class LayerController {
             redirect(action: "list")
         }
         else {
-            return [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(productInfo)]
+            return [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)]
         }
     }
 
@@ -267,7 +267,7 @@ class LayerController {
                 if (layerInstance.version > version) {
 
                     layerInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'layer.label', default: 'Layer')] as Object[], "Another user has updated this Layer while you were editing")
-                    render(view: "edit", model: [layerInstance: layerInstance, linkedAodaacProducts: productInfo])
+                    render(view: "edit", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)])
                     return
                 }
             }
