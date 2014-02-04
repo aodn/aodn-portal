@@ -13,17 +13,36 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         var infoLabel;
         var layerValues;
 
-        if (this._cql(values.wmsLayer)) {
-            html = '<b>{0}</b> <code>{1}</code>';
+        if (values.wmsLayer && values.wmsLayer.bodaacFilterParams) {
+
+            html = '<b>{0}</b> {1}';
             infoLabel = OpenLayers.i18n('filterLabel');
-            layerValues = this._cql(values.wmsLayer);
+            layerValues =  this.getBodaacDateInfo(values.wmsLayer.bodaacFilterParams);
         }
-        else {
-            html = '<i>{0}</i> <code>{1}</code>';
-            infoLabel = OpenLayers.i18n('noFilterLabel');
-            layerValues = '';
+        else  {
+            if (this._cql(values.wmsLayer)) {
+                html = '<b>{0}</b> <code>{1}</code>';
+                infoLabel = OpenLayers.i18n('filterLabel');
+                layerValues = this._cql(values.wmsLayer);
+            }
+            else {
+                html = '<i>{0}</i> <code>{1}</code>';
+                infoLabel = OpenLayers.i18n('noFilterLabel');
+                layerValues = '';
+            }
         }
         return String.format(html, infoLabel, layerValues);
+    },
+
+    getBodaacDateInfo: function(dates) {
+        if (dates.dateRangeStart) {
+            var startDate = moment.utc(dates.dateRangeStart).format('DD/MM/YYYY');
+            var endDate = moment.utc(dates.dateRangeEnd).format('DD/MM/YYYY');
+            return String.format('<code> {0} {1}(UTC) and {2}(UTC)</code>', OpenLayers.i18n('timeRangeLabel'),startDate, endDate);
+        }
+        else {
+            return OpenLayers.i18n('timeRangeCalculating');
+        }
     },
 
     createMenuItems: function(collection) {
