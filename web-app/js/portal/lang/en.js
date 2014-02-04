@@ -270,5 +270,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     estimatedDlMessage: "The estimated download size is ",
     estimatedDlFailedMsg: "The estimated download size is unknown.",
     estimatedDlLoadingMessage: "Estimating download size...",
-    estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />'
+    estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />',
+    estimatedDlTimeoutMsg: "The download size is too large to estimate.",
+    transAbortMsg: "transaction aborted"
 });
