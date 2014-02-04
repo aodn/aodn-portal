@@ -224,13 +224,10 @@ class LayerController {
     def create = {
         def layerInstance = new Layer()
 
-        def productIds = aodaacAggregatorService.productIdsForLayer(layerInstance)
-        def productInfo = aodaacAggregatorService.getProductInfo(productIds)
-
         layerInstance.properties = params
         layerInstance.dataSource = "Manual"
 
-        return [layerInstance: layerInstance, linkedAodaacProducts: productInfo]
+        return [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(productInfo)]
     }
 
     def save = {
@@ -240,23 +237,25 @@ class LayerController {
             redirect(action: "list")
         }
         else {
-            render(view: "create", model: [layerInstance: layerInstance])
+            render(view: "create", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(productInfo)])
         }
+    }
+
+    def _getAodaacProductInfo(layer) {
+        def productIds = aodaacAggregatorService.productIdsForLayer(layer)
+        return aodaacAggregatorService.getProductInfo(productIds)
     }
 
     def edit = {
 
         def layerInstance = Layer.get(params.id)
 
-        def productIds = aodaacAggregatorService.productIdsForLayer(layerInstance)
-        def productInfo = aodaacAggregatorService.getProductInfo(productIds)
-
         if (!layerInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'layer.label', default: 'Layer'), params.id])}"
             redirect(action: "list")
         }
         else {
-            return [layerInstance: layerInstance, linkedAodaacProducts: productInfo]
+            return [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(productInfo)]
         }
     }
 
@@ -268,7 +267,7 @@ class LayerController {
                 if (layerInstance.version > version) {
 
                     layerInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'layer.label', default: 'Layer')] as Object[], "Another user has updated this Layer while you were editing")
-                    render(view: "edit", model: [layerInstance: layerInstance])
+                    render(view: "edit", model: [layerInstance: layerInstance, linkedAodaacProducts: productInfo])
                     return
                 }
             }
@@ -285,7 +284,7 @@ class LayerController {
                 redirect(action: "list", id: layerInstance.id)
             }
             else {
-                render(view: "edit", model: [layerInstance: layerInstance])
+                render(view: "edit", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(productInfo)])
             }
         }
         else {
