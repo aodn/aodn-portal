@@ -54,7 +54,7 @@ class Filter implements Comparable {
         filterData["wmsEndDateName"] = wmsEndDateName
         filterData["layerId"] = layer.id
         filterData["enabled"] = enabled
-        filterData["possibleValues"] = type.expectsPossibleValues ? possibleValues.sort() : []
+        filterData["possibleValues"] = type?.expectsPossibleValues ? possibleValues.sort() : []
         filterData["downloadOnly"] = downloadOnly
 
         return filterData
@@ -90,7 +90,7 @@ class Filter implements Comparable {
 
     static def possibleValuesFieldValidator = { val, obj ->
 
-        if (obj.type.expectsPossibleValues) { // Todo: 'type' can be null at this point. Spotted on 123 Portal.
+        if (obj.type?.expectsPossibleValues) { // Todo: 'type' can be null at this point. Spotted on 123 Portal.
             if (val.size() == 0) {
                 return ['invalid.possibleValues']
             }
