@@ -284,7 +284,7 @@ class LayerController {
                 redirect(action: "list", id: layerInstance.id)
             }
             else {
-                render(view: "edit", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(productInfo)])
+                render(view: "edit", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)])
             }
         }
         else {

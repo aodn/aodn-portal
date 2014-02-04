@@ -21,6 +21,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
         controller.metaClass.message = { LinkedHashMap args -> messageArgs = args }
         controller.metaClass._recache = {}
+        controller.metaClass._getAodaacProductInfo = {a->}
     }
 
     void testIndex() {
