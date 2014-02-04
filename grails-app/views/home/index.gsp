@@ -18,12 +18,6 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
     ${buildInfo}
 
-    <!--[if lt IE 8]>
-        <script type="text/javascript">
-        alert("Sorry. The Portal requires IE8 or better! Although the site may appear to work, the functionality is not guaranteed or supported in your web browser. Please update!");
-        </script>
-        <![endif]-->
-
     <!--link rel="stylesheet" media="print" type="text/css"  href="${resource(dir: 'css', file: 'mapprint.css')}" /-->
     <link rel="stylesheet" type="text/css" href="${resource(dir: 'js', file: 'GeoExt1.1/resources/css/geoext-all.css')}"/>
     <!-- User extensions -->
@@ -32,6 +26,12 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
     <g:render template="/js_includes"></g:render>
     <g:render template="/public_theme_includes"></g:render>
+
+    <!--[if IE]>
+        <script type="text/javascript">
+            alert(OpenLayers.i18n('ieWarningMessage'));
+        </script>
+    <![endif]-->
 
     <script>
 
