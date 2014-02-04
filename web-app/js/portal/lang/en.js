@@ -269,5 +269,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     fileSizeMb: "MB",
     estimatedDlMessage: "The estimated download size is ",
     estimatedDlFailedMsg: "The estimated download size is unknown.",
-    loadingMessage: "Estimating download size..."
+    estimatedDlLoadingMessage: "Estimating download size...",
+    estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />'
 });

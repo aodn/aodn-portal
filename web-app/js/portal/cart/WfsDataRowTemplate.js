@@ -71,7 +71,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     getDataSpecificMarkup: function(values) {
         this.estimator = new Portal.cart.DownloadEstimator();
         this.estimator._getDownloadEstimate(values);
-        return '<div id="downloadEst' + values.uuid + '">' + OpenLayers.i18n("loadingMessage") + '</div>';
+        return '<div id="downloadEst' + values.uuid + '">' + OpenLayers.i18n("estimatedDlLoadingMessage") + OpenLayers.i18n("estimatedDlLoadingSpinner") + '</div>';
     },
 
     _cql: function(wmsLayer) {

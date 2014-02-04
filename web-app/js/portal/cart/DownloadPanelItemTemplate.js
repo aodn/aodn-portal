@@ -34,7 +34,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             '        </tpl>',
             '      </div>',
             '    </div>',
-            '    <div class="floatRight" id="resultsTextMsgs-{uuid}">',
+            '    <div class="floatRight" id="resultsTextMsgs-{uuid}" style="padding-top:4px">',
             '      {[this._dataSpecificMarkup(values)]}',
             '    </div>',
             '  </div>',
