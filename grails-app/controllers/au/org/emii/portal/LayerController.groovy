@@ -224,10 +224,13 @@ class LayerController {
     def create = {
         def layerInstance = new Layer()
 
+        def productIds = aodaacAggregatorService.productIdsForLayer(layerInstance)
+        def productInfo = aodaacAggregatorService.getProductInfo(productIds)
+
         layerInstance.properties = params
         layerInstance.dataSource = "Manual"
 
-        return [layerInstance: layerInstance]
+        return [layerInstance: layerInstance, linkedAodaacProducts: productInfo]
     }
 
     def save = {
