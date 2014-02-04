@@ -60,7 +60,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
             htmlAddition = this._generateEstHtmlString(sizeEstimate);  
         }
 
-        sizeDiv.insertHtml("afterBegin", htmlAddition);
+        sizeDiv.update(htmlAddition);
     },
 
     _generateEstHtmlString: function(estimateInBytes) {
