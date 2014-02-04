@@ -8,6 +8,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         this.tf.on('select', function(field, record, index) {
             this.onBlur(field);
         }, this);
+
         this.df.on('select', function(field, record, index) {
             this.onBlur(field);
         }, this);
@@ -102,19 +103,44 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
     },
 
     onBlur: function(field) {
-        this._setTimeFieldChangeFlag(field);
-        this._fireEventsForChange(this._matchTime());
+        if (this._isDirty()) {
+            this._setTimeFieldChangeFlag(field);
+            this._fireEventsForChange(this._matchTime());
+        }
     },
 
     onFocus: function() {
         this.startValue = this.dateValue;
     },
 
+    // Ripped straight from Saki's DateTime but added calls to local onBlur to ensure values are updated
+    onSpecialKey: function(field, event) {
+        var key = event.getKey();
+        if(key === event.TAB) {
+            if(field === this.df && !event.shiftKey) {
+                event.stopEvent();
+                this.tf.focus();
+                this.onBlur(this.df);
+            }
+            if(field === this.tf && event.shiftKey) {
+                event.stopEvent();
+                this.df.focus();
+                this.onBlur(this.tf);
+            }
+        }
+        // otherwise it misbehaves in editor grid
+        if(key === event.ENTER) {
+            if(field === this.df) {
+                this.onBlur(this.df);
+            }
+            if(field === this.tf) {
+                this.onBlur(this.tf);
+            }
+        }
+    },
+
     _fireEventsForChange: function(value) {
-        (function() {
-            this.fireEvent("change", this, value, this.startValue);
-            this.fireEvent('blur', this);
-        }).defer(100, this);
+        this.fireEvent("change", this, value, this.startValue);
     },
 
     _setTimeFieldChangeFlag: function(field) {
@@ -163,5 +189,9 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
     _preventStoreChangesBeingIgnored: function() {
         this.tf.generateStore = function() {};
+    },
+
+    _isDirty: function() {
+        return this.dateValue.getTime() != this._matchTime().getTime();
     }
 });

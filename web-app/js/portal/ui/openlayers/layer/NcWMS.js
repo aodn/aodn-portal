@@ -77,7 +77,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     _processTemporalExtentDone: function() {
         // Unset rawTemporalExtent, meaning that we're done
         this.rawTemporalExtent = null;
-        this.time = this.temporalExtent.max();
+        this._initSubsetExtent();
         this.events.triggerEvent('temporalextentloaded', this);
     },
 
@@ -102,9 +102,12 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     toTime: function(dateTime) {
-        this.time = dateTime;
-        if (this.time) {
-            this.mergeNewParams({ TIME: this._getTimeParameter(dateTime) });
+        // Don't send a request if we don't have to
+        if (dateTime && this.time.valueOf() != dateTime.valueOf()) {
+            this.time = dateTime;
+            if (this.time) {
+                this.mergeNewParams({ TIME: this._getTimeParameter(dateTime) });
+            }
         }
         return this.time;
     },
@@ -211,5 +214,26 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         );
         cqlFilter = "&CQL_FILTER=" + this.getCqlForTemporalExtent();
         return wfsRequest + cqlFilter;
+    },
+
+    _initSubsetExtent: function() {
+        if (!this.subsetExtent) {
+            this.setSubsetExtentView(this.temporalExtent.min(), this.temporalExtent.max());
+        }
+    },
+
+    setSubsetExtentView: function(min, max) {
+        this.subsetExtent = {
+            min: min,
+            max: max
+        };
+    },
+
+    getSubsetExtentMin: function() {
+        return this.subsetExtent.min;
+    },
+
+    getSubsetExtentMax: function() {
+        return this.subsetExtent.max;
     }
 });

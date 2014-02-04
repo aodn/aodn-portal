@@ -183,7 +183,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             flex: 2,
             listeners: {
                 scope: this,
-                select: this._onDateSelected,
                 change: this._onDateSelected
             },
             timeConfig: {
@@ -268,6 +267,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var selectedTimeMoment = moment.utc(datePicker.getValue());
         this._updateTimeRangeLabel(selectedTimeMoment);
         this._layerToTime(selectedTimeMoment);
+        this._setLayerSubsetExtent();
 
         this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
@@ -289,18 +289,22 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _attachTemporalEvents: function() {
-        this.selectedLayer.events.on({
-            'temporalextentloaded': this._layerTemporalExtentLoaded,
-            scope: this
-        });
+        if (!this.selectedLayer.attachedTemporalExtentLoaded) {
+            this.selectedLayer.events.on({
+                'temporalextentloaded': this._layerTemporalExtentLoaded,
+                scope: this
+            });
+
+            this.selectedLayer.attachedTemporalExtentLoaded = true;
+        }
     },
 
     _layerTemporalExtentLoaded: function() {
         var extent = this.selectedLayer.getTemporalExtent();
-        this._setDateTimePickerExtent(this.startDateTimePicker, extent, extent.min(), false);
-        this._setDateTimePickerExtent(this.endDateTimePicker, extent, extent.max(), true);
+        this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.selectedLayer.getSubsetExtentMin(), false);
+        this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.selectedLayer.getSubsetExtentMax(), true);
         this.buttonsPanel.show();
-        this._updateTimeRangeLabel(extent.max());
+        this._updateTimeRangeLabel(this.selectedLayer.time);
 
         this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
@@ -348,5 +352,14 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     _resetAndDisableDateTimePicker: function(picker) {
         picker.reset();
         picker.disable();
+    },
+
+    _setLayerSubsetExtent: function() {
+        if (this.selectedLayer) {
+            this.selectedLayer.setSubsetExtentView(
+                moment.utc(this.startDateTimePicker.getValue()),
+                moment.utc(this.endDateTimePicker.getValue())
+            );
+        }
     }
 });
