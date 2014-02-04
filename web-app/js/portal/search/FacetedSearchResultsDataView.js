@@ -64,7 +64,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var r = [],
             i = 0,
             len = records.length;
-        for(; i < len; i++){
+        for(; i < len; i++) {
             var newRecord = this.prepareData(records[i].data, startIndex + i, records[i]);
             newRecord = this._addStoreRowCount(newRecord);
             r[r.length] = newRecord;

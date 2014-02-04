@@ -38,7 +38,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
     },
 
     _renderAndPosition: function() {
-        this.render("fsSearchMap-" + this.storeRowIndex + "-" +this.uuid);
+        this.render("fsSearchMap-" + this.storeRowIndex + "-" + this.uuid);
 
         if (this.metadataExtent.getBounds()) {
             this.setCenter(
