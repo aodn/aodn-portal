@@ -113,6 +113,7 @@ class FilterController {
         }
     }
 
+    // This is the action that WFS scanner calls.
     def updateFilter = {
 
         def postData = JSON.parse(params.filterData)
@@ -238,7 +239,7 @@ class FilterController {
         }
 
         // Update possibleValues
-        filter.possibleValues = _trimFilterPossibleValues(newFilterData)
+        filter.possibleValues = filter.type.expectsPossibleValues ? _trimFilterPossibleValues(newFilterData) : []
 
         return filter
     }
