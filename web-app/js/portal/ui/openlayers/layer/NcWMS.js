@@ -103,11 +103,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     toTime: function(dateTime) {
         // Don't send a request if we don't have to
-        if (dateTime && this.time.valueOf() != dateTime.valueOf()) {
+        if (this._isValidTime(dateTime)) {
             this.time = dateTime;
-            if (this.time) {
-                this.mergeNewParams({ TIME: this._getTimeParameter(dateTime) });
-            }
+            this.mergeNewParams({ TIME: this._getTimeParameter(this.time) });
         }
         return this.time;
     },
@@ -175,22 +173,12 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return true;
     },
 
-    _appendParam: function(base, name, value) {
-        return base + '&' + name + '=' + value;
-    },
-
     previousTimeSlice: function() {
-        var previous = this.temporalExtent.previous(this.time);
-        if (previous) {
-            return this.toTime(previous);
-        }
+        return this.toTime(this.temporalExtent.previous(this.time));
     },
 
     nextTimeSlice: function() {
-        var next = this.temporalExtent.next(this.time);
-        if (next) {
-            return this.toTime(next);
-        }
+        return this.toTime(this.temporalExtent.next(this.time));
     },
 
     getCqlForTemporalExtent: function() {
@@ -235,5 +223,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     getSubsetExtentMax: function() {
         return this.subsetExtent.max;
+    },
+
+    _isValidTime: function(dateTime) {
+        return dateTime && this.time.valueOf() != dateTime.valueOf();
     }
 });

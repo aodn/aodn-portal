@@ -132,14 +132,15 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
 
         it('next item returned', function() {
-            cachedLayer.toTime(cachedLayer.temporalExtent.extent[0]);
+            cachedLayer.toTime(cachedLayer.temporalExtent.min());
             var res = cachedLayer.nextTimeSlice();
             expect(res).toBeSame(moment.utc('2001-01-02T00:00:00'));
         });
 
         it('no more items', function() {
+            cachedLayer.toTime(cachedLayer.temporalExtent.max());
             var res = cachedLayer.nextTimeSlice();
-            expect(res).toBeUndefined();
+            expect(res).toBeSame(moment.utc('2001-01-03T00:00:00'));
         });
     });
 
@@ -179,11 +180,11 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
             it ('around last date/time', function() {
                 cachedLayer.toTime(moment.utc('2000-01-01T01:00:00.000'));
-                expect(cachedLayer.nextTimeSlice()).toBeUndefined();
+                expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-01T01:00:00.000').valueOf());
                 cachedLayer.toTime(moment.utc('2000-01-01T00:59:59.000'));
-                expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-01T01:00:00.000'));
+                expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-01T01:00:00.000').valueOf());
                 cachedLayer.toTime(moment.utc('2000-01-01T01:00:01.000'));
-                expect(cachedLayer.nextTimeSlice()).toBeUndefined();
+                expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-01T01:00:01.000').valueOf());
             });
         });
 
@@ -223,13 +224,13 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
             it('around last date/time', function() {
                 cachedLayer.toTime(moment.utc('2000-01-02T23:59:59.000'));
-                expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-03T00:00:00.000'));
+                expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-03T00:00:00.000').valueOf());
                 cachedLayer.toTime(moment.utc('2000-01-03T00:00:00.000'));
-                expect(cachedLayer.nextTimeSlice()).toBeUndefined();
+                expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-03T00:00:00.000').valueOf());
                 cachedLayer.toTime(moment.utc('2000-01-03T00:00:01.000'));
-                expect(cachedLayer.nextTimeSlice()).toBeUndefined();
+                expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-03T00:00:01.000').valueOf());
                 cachedLayer.toTime(moment.utc('2010-01-03T00:00:00.000'));
-                expect(cachedLayer.nextTimeSlice()).toBeUndefined();
+                expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2010-01-03T00:00:00.000').valueOf());
             });
         });
     });

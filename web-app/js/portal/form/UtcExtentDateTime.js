@@ -123,24 +123,24 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
     // Ripped straight from Saki's DateTime but added calls to local onBlur to ensure values are updated
     onSpecialKey: function(field, event) {
         var key = event.getKey();
-        if(key === event.TAB) {
-            if(field === this.df && !event.shiftKey) {
+        if (key === event.TAB) {
+            if (field === this.df && !event.shiftKey) {
                 event.stopEvent();
                 this.tf.focus();
                 this.onBlur(this.df);
             }
-            if(field === this.tf && event.shiftKey) {
+            if (field === this.tf && event.shiftKey) {
                 event.stopEvent();
                 this.df.focus();
                 this.onBlur(this.tf);
             }
         }
         // otherwise it misbehaves in editor grid
-        if(key === event.ENTER) {
-            if(field === this.df) {
+        if (key === event.ENTER) {
+            if (field === this.df) {
                 this.onBlur(this.df);
             }
-            if(field === this.tf) {
+            if (field === this.tf) {
                 this.onBlur(this.tf);
             }
         }
