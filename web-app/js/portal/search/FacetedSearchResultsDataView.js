@@ -9,6 +9,11 @@ Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
+    /* These values cannot be exported to CSS as it will be processed "too
+     * late" after the openlayers minimap render */
+    MINIMAP_HEIGHT: 110,
+    MINIMAP_WIDTH: 230,
+
     initComponent:function () {
 
         this.rowId = 0;
@@ -24,6 +29,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '   </div>',
             '   <div class="x-panel-body x-box-layout-ct facetedSearchResultBody" style="height:120px;">',
             '       <div class="miniMap x-panel x-box-item"',
+            '            style="height:{[this.MINIMAP_HEIGHT]}px;width:{[this.MINIMAP_WIDTH]}px;border:1px solid #FFFFFF;"',
             '            id="fsSearchMap{[this.encode(values)]}">',
             '           {[this.getMiniMap(values)]}',
             '       </div>',
