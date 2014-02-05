@@ -86,6 +86,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         _setUpExampleObjects()
         mockParams.layerId = 1
         mockParams.url = 'http://www.example.com/'
+        mockParams.downloadFilename = 'somedata.txt'
 
         def archiveGenerated = false
         controller.hostVerifier = [allowedHost: { r, u -> true }]

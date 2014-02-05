@@ -313,6 +313,13 @@ hr {
     white-space: nowrap;
 }
 
+.miniMap {
+    height:110px;
+    width:230px;
+    border: 5px solid #FFFFFF;
+    border-width: 5px 0 5px 3px ;
+}
+
 .mapFooter {
     background: url("../images/shadowLight.png") repeat-x scroll left top white;
 }
@@ -1190,7 +1197,7 @@ div.allwhite {
 }
 
 .remove-layer-button {
-    background: url(../images/remove_layer2.png) center no-repeat transparent;
+    background: url(../images/document-close-3.png) center no-repeat transparent;
 }
 
 .zoom-to-layer-button {
@@ -1208,7 +1215,7 @@ div.allwhite {
 
 .layer-error-button {
     visibility: visible;
-    background: url('../images/error.png') center no-repeat transparent;
+    background: url('../images/software-update-urgent-2.png') center no-repeat transparent;
 }
 
 #activeLayerTreePanel img.x-tree-node-icon {

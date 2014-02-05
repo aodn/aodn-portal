@@ -7,6 +7,8 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
+    ieWarningMessage: "Your browser is not supported. Please switch to Firefox or Chrome.",
+
     navigationButtonNext: "Next <div class=doubleArrow>&gt;&gt;</div>",
     navigationButtonPrevious: "<div class=doubleArrow>&lt;&lt;</div> Previous",
     navigationButtonSelect: "Select <div class=doubleArrow>&gt;&gt;</div>",
@@ -264,9 +266,11 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     polygonTypeBoundingBox: "bounding box",
 
     // WfsDataRowTemplate
-    fileSizeIconMarkup: '<img src="images/clock_red.png">',
+    fileSizeIconMarkup: '<img src="images/error.png">',
     fileSizeGb: "GB",
     fileSizeMb: "MB",
     estimatedDlMessage: "The estimated download size is ",
-    estimatedDlFailedMsg: "The estimated download size is unknown."
+    estimatedDlFailedMsg: "The estimated download size is unknown.",
+    estimatedDlLoadingMessage: "Estimating download size...",
+    estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />'
 });

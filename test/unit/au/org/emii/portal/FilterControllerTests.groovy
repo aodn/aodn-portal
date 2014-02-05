@@ -151,7 +151,8 @@ class FilterControllerTests extends ControllerUnitTestCase {
         def testFilterName = "someCoolFilterName"
         def testFilter = [
             name: testFilterName,
-            possibleValues: []
+            possibleValues: [],
+            type: FilterType.String
         ]
         def testPossibleValues = ["abcd", "defg"]
         def testFilterData = [
@@ -186,14 +187,14 @@ class FilterControllerTests extends ControllerUnitTestCase {
         def testPossibleValues = ["1", "2"]
         def testFilterData = [
             name: "newFilterName",
-            type: "int",
+            type: "string",
             possibleValues: testPossibleValues
         ]
         FilterType.metaClass.static.typeFromString = {
             String s ->
 
             assertEquals testFilterData.type, s
-            return FilterType.Number
+            return FilterType.String
         }
         Filter.metaClass.static.findByLayerAndName = {
             layer, name ->
@@ -208,10 +209,54 @@ class FilterControllerTests extends ControllerUnitTestCase {
         assertEquals testFilterData.name, filter.name
         assertEquals testFilterData.name, filter.label
         assertEquals testLayer, filter.layer
-        assertEquals FilterType.Number, filter.type
+        assertEquals FilterType.String, filter.type
         assertEquals 2, filter.possibleValues.size()
         assertEquals testPossibleValues.first(), filter.possibleValues.first()
         assertEquals testPossibleValues.last(), filter.possibleValues.last()
+    }
+
+    void testUpdateFilterWithData_IgnorePossibleValues() {
+        def testLayer = [:] as Layer
+        def testName = "filterName"
+        def testPossibleValues = ["1", "2"]
+        def testFilterData = [
+            possibleValues: testPossibleValues
+        ]
+
+        FilterType.metaClass.static.typeFromString = {
+            return FilterType.String
+        }
+
+        Filter.metaClass.static.findByLayerAndName = {
+            layer, name ->
+
+            return null
+        }
+
+        def filter = controller._updateFilterWithData(testLayer, testName, testFilterData)
+        assertEquals(testPossibleValues.size(), filter.possibleValues.size())
+    }
+
+    void testUpdateFilterWithData_DoesntIgnorePossibleValues() {
+        def testLayer = [:] as Layer
+        def testName = "filterName"
+        def testPossibleValues = ["1", "2"]
+        def testFilterData = [
+            possibleValues: testPossibleValues
+        ]
+
+        FilterType.metaClass.static.typeFromString = {
+            return FilterType.Number
+        }
+
+        Filter.metaClass.static.findByLayerAndName = {
+            layer, name ->
+
+            return null
+        }
+
+        def filter = controller._updateFilterWithData(testLayer, testName, testFilterData)
+        assertEquals([], filter.possibleValues)
     }
 
     void testUpdateFilter_InvalidCredentials() {

@@ -8,14 +8,17 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
     var miniMap;
     var bbox;
     var uuid;
+    var storeRowIndex;
 
     beforeEach(function() {
         bbox = new Portal.search.MetadataExtent();
         uuid = 1234;
+        storeRowIndex = 0;
 
         miniMap = new Portal.search.FacetedSearchResultsMiniMap({
             bbox: bbox,
-            uuid: uuid
+            uuid: uuid,
+            storeRowIndex: storeRowIndex
         });
     });
 
@@ -26,6 +29,10 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
 
         it('configures uuid', function() {
             expect(miniMap.uuid).toBe(uuid);
+        });
+
+        it('configures storeRowIndex', function() {
+            expect(miniMap.storeRowIndex).toBe(storeRowIndex);
         });
     });
 
@@ -74,7 +81,7 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
 
         it('calls render', function() {
             miniMap._renderAndPosition();
-            expect(miniMap.render).toHaveBeenCalledWith('fsSearchMap' + uuid);
+            expect(miniMap.render).toHaveBeenCalledWith('fsSearchMap-' + storeRowIndex + "-" + uuid);
         });
 
         it('calls setCenter if bounds are set', function() {

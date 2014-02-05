@@ -68,6 +68,7 @@ databaseChangeLog = {
     include file: '20131112-DN-AddUrlDownloadReplacementFields.groovy'
     include file: '1387762248000-Update123GeoNetworkMetadataUrls.groovy'
     include file: '20140123-JB-IndexOnFilterPossibleValuesOwner.groovy'
+    include file: '20140203-JB-FilterPossibleValuesForStringOnly.groovy'
 
     // Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 

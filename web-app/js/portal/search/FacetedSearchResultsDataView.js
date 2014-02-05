@@ -10,19 +10,21 @@ Ext.namespace('Portal.search');
 Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     initComponent:function () {
+
+        this.rowId = 0;
+
         var tpl = new Ext.XTemplate(
             '<tpl for=".">',
             '<div>',
             '   <div class="x-panel-header resultsHeaderBackground">',
             '       <h3 class="resultsRowHeader">{title}</h3>',
-            '       <div class="facetedSearchBtn" id="fsSearchAddBtn{uuid}">',
+            '       <div class="facetedSearchBtn" id="fsSearchAddBtn{[this.encode(values)]}">',
             '           {[this.getButton(values)]}',
             '       </div>',
             '   </div>',
             '   <div class="x-panel-body x-box-layout-ct facetedSearchResultBody" style="height:120px;">',
-            '       <div class="x-panel x-box-item"',
-            '            style="height:118px;width:238px;border:1px solid #cccccc;"',
-            '            id="fsSearchMap{uuid}">',
+            '       <div class="miniMap x-panel x-box-item"',
+            '            id="fsSearchMap{[this.encode(values)]}">',
             '           {[this.getMiniMap(values)]}',
             '       </div>',
             '       <div class="x-panel x-box-item resultsTextBody" style="left:240px; ">',
@@ -40,8 +42,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             this,
             {
                 getButton: function(values) {
-                    this.createButton.defer(1, this, [values.uuid]);
+                    this.createButton.defer(1, this, [values.uuid, values.storeRowIndex]);
                     return "";
+                },
+                encode: function(values) {
+                    return this.superEncodeUuid(values.storeRowIndex, values.uuid);
                 }
             }
         );
@@ -53,6 +58,24 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         Ext.apply(this, config);
         Portal.search.FacetedSearchResultsDataView.superclass.initComponent.apply(this, arguments);
+    },
+
+    collectData : function(records, startIndex){
+        var r = [],
+            i = 0,
+            len = records.length;
+        for(; i < len; i++) {
+            var newRecord = this.prepareData(records[i].data, startIndex + i, records[i]);
+            newRecord = this._addStoreRowCount(newRecord);
+            r[r.length] = newRecord;
+        }
+        return r;
+    },
+
+    _addStoreRowCount: function(record) {
+        record['storeRowIndex'] = this.rowId;
+        this.rowId++;
+        return record;
     },
 
     getParametersAsHtml: function(values) {
@@ -130,7 +153,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return "";
     },
 
-    createButton: function(uuid) {
+    createButton: function(uuid, storeRowIndex) {
         var cls = "";
         if (this.isRecActive(uuid)) {
             cls = "x-btn-selected";
@@ -141,7 +164,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             cls: "navigationButton forwardsButton " + cls,
             width: 100,
             scope: this,
-            renderTo: "fsSearchAddBtn" + uuid,
+            renderTo: "fsSearchAddBtn" + this.superEncodeUuid(storeRowIndex,uuid),
             listeners: {
                 click: {
                     fn: this._viewButtonOnClick,
@@ -184,10 +207,22 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return text.split(' ').splice(0, wordCount).join(' ') + " ... ";
     },
 
+    // uuid alone is unique unless search results have duplicates
+    superEncodeUuid: function(storeRowIndex, uuid) {
+        return "-" + storeRowIndex + "-"  + uuid;
+    },
+
+    decodeSuperUuid: function(encodedUuid) {
+        var chunks = encodedUuid.split("-");
+        chunks.splice(0,2);
+        return chunks.join("-");
+    },
+
     _viewButtonOnClick: function(btn) {
 
         btn.addClass("x-btn-selected");
-        var uuid = btn.container.id.replace("fsSearchAddBtn",'');
+        var superUuid = btn.container.id.replace("fsSearchAddBtn",'');
+        var uuid = this.decodeSuperUuid(superUuid);
         var record = this._getRecordFromUuid(uuid);
 
         if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {

@@ -11,6 +11,8 @@ import au.com.bytecode.opencsv.CSVReader
 import au.org.emii.portal.proxying.ExternalRequest
 import au.org.emii.portal.proxying.RequestProxyingController
 
+import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilename
+
 class DownloadController extends RequestProxyingController {
 
     def grailsApplication
@@ -69,7 +71,8 @@ class DownloadController extends RequestProxyingController {
         _executeExternalRequest url, streamProcessor, resultStream
         def urls = new String(resultStream.toByteArray(), 'UTF-8').split()
 
-        response.setHeader "Content-disposition", "attachment; filename=${params.downloadFilename}"
+        response.setHeader("Content-disposition", buildAttachmentHeaderValueWithFilename(params.downloadFilename))
+
         bulkDownloadService.generateArchiveOfFiles(urls, response.outputStream, request.locale)
     }
 
