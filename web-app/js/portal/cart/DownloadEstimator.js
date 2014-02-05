@@ -36,10 +36,23 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     },
 
     _createFailMessage: function(result, uuid) {
-        var sizeEstimate = parseInt(result.status);
         var elementId = 'downloadEst' + uuid;
+        var sizeEstimate = this._generateFailureResponse(result);
 
         this._addDownloadEstimate.defer(1, this, [sizeEstimate, elementId]);
+    },
+
+    _generateFailureResponse: function(result) {
+        var estResponse;
+
+        if (result.isTimeout) {
+            estResponse = result.statusText;
+        }
+        else {
+            estResponse = parseInt(result.status);
+        }
+
+        return estResponse;
     },
 
     _createDownloadEstimate: function(result, uuid) {
@@ -53,11 +66,16 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         var sizeDiv = Ext.get(elementId);
         var htmlAddition;
 
-        if (sizeEstimate == this.EST_FAIL_CODE || isNaN(sizeEstimate)) {
-            htmlAddition = this._generateFailHtmlString();
+        if (sizeEstimate == OpenLayers.i18n('transAbortMsg')) {
+            htmlAddition = this._generateTimeoutHtmlString();
         }
         else {
-            htmlAddition = this._generateEstHtmlString(sizeEstimate);  
+            if (sizeEstimate == this.EST_FAIL_CODE || isNaN(sizeEstimate)) {
+                htmlAddition = this._generateFailHtmlString();
+            }
+            else {
+                htmlAddition = this._generateEstHtmlString(sizeEstimate);
+            }
         }
 
         sizeDiv.update(htmlAddition);
@@ -99,6 +117,14 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         var downloadFailMessage = OpenLayers.i18n("estimatedDlFailedMsg");
 
         return String.format(html, downloadFailMessage);
+    },
+
+    _generateTimeoutHtmlString: function() {
+        var html = '<div>{0} {1}</div>' + '<div class="clear"></div>';
+        var downloadTimeoutMessage = OpenLayers.i18n("estimatedDlTimeoutMsg");
+        var fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
+
+        return String.format(html, downloadTimeoutMessage, fileSizeImage);
     },
 
     _wmsDownloadUrl: function(layer, format) {
