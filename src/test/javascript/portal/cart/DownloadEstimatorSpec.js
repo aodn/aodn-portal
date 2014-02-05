@@ -19,6 +19,12 @@ describe('Portal.cart.DownloadEstimator', function() {
 
     describe('behavior on timeout', function() {
         it('_createFailMessage calls _generateFailureResponse', function() {
+            var mockResult = {
+                isTimeout: true,
+                statusText: 'transaction aborted',
+                status: -1
+            };
+
             spyOn(estimator, '_generateFailureResponse');
             estimator._createFailMessage(mockResult, geoNetworkRecord.uuid);
             expect(estimator._generateFailureResponse).toHaveBeenCalled();
