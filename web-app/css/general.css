@@ -5,6 +5,8 @@
  *
  */
 
+
+
 body, html, td, p {
     font-family: helvetica, arial, sans-serif;
     font-size: 12px;
@@ -214,7 +216,6 @@ hr {
 
 #landingLeft {
     float: left;
-    width: 350;
 }
 
 #landingHeaderContainer {
@@ -227,7 +228,7 @@ hr {
 
 #landingCentre {
     float: right;
-    width: 600;
+    width: 600px;
     padding: 30px 0;
     margin-bottom: 70px;
 }
