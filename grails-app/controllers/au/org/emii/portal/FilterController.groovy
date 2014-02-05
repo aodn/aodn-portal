@@ -239,7 +239,7 @@ class FilterController {
         }
 
         // Update possibleValues
-        filter.possibleValues = filter.type.expectsPossibleValues ? _trimFilterPossibleValues(newFilterData) : []
+        filter.possibleValues = filter.type?.expectsPossibleValues ? _trimFilterPossibleValues(newFilterData) : []
 
         return filter
     }
