@@ -7,7 +7,7 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
-    ieWarningMessage: "Your browser is not supported. Please switch to Firefox or Chrome.",
+    ieWarningMessage: "Your browser is unsupported and may not work with this site.  Please use Chrome or Firefox for the best experience.",
 
     navigationButtonNext: "Next <div class=doubleArrow>&gt;&gt;</div>",
     navigationButtonPrevious: "<div class=doubleArrow>&lt;&lt;</div> Previous",
@@ -241,7 +241,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     temporalExtentHeading: 'Temporal Extent',
     areaCoveredLabel: 'Area covered: ',
     currentDateTimeLabel: 'Displaying',
-    timeRangeLabel: 'Time range: ',
+    timeRangeLabel: 'Time range between: ',
+    timeRangeCalculating: '<i>Dates were not yet loaded. Please revisit step 2 and select a date range.</i>',
     dateStartLabel: 'Start',
     dateEndLabel: 'End',
 
@@ -272,5 +273,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     estimatedDlMessage: "The estimated download size is ",
     estimatedDlFailedMsg: "The estimated download size is unknown.",
     estimatedDlLoadingMessage: "Estimating download size...",
-    estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />'
+    estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />',
+    estimatedDlTimeoutMsg: "The download size is too large to estimate.",
+    transAbortMsg: "transaction aborted"
 });
