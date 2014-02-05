@@ -26,6 +26,14 @@ Portal.app = {
         }
     },
 
+    browserCheck: function() {
+        var isChrome = !!window.chrome;
+        var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0
+        if (!(isChrome || isFirefox)) {
+            alert(OpenLayers.i18n('ieWarningMessage'));
+        }
+    },
+
     init: function() {
         // Set open layers proxyhost
         OpenLayers.ProxyHost = proxyURL;

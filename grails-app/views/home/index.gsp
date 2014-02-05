@@ -28,12 +28,9 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
         <g:render template="/public_theme_includes"></g:render>
 
         <script type="text/javascript">
-            var isChrome = !!window.chrome;
-            var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0
-            if (!(isChrome || isFirefox)) {
-                alert(OpenLayers.i18n('ieWarningMessage'));
-            }
 
+            // Supporting only Firefox and Chrome users
+            Ext.onReady(Portal.app.browserCheck);
             // Init step One
             Ext.onReady(Portal.app.init, Portal.app);
 
