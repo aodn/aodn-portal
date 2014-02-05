@@ -9,16 +9,11 @@ describe('Portal.cart.DownloadEstimator', function() {
 
     var estimator;
     var geoNetworkRecord;
-    var mockResult;
 
     beforeEach(function() {
         estimator = new Portal.cart.DownloadEstimator();
         geoNetworkRecord = {
             uuid: 9
-        };
-        mockResult = {
-            statusText: 'transaction aborted',
-            status: -1
         };
     });
 
@@ -30,7 +25,7 @@ describe('Portal.cart.DownloadEstimator', function() {
         });
 
         it('_generateFailureResponse generates correct response on timeout', function() {
-            mockResult = {
+            var mockResult = {
                 isTimeout: true,
                 statusText: 'transaction aborted',
                 status: -1
@@ -41,6 +36,12 @@ describe('Portal.cart.DownloadEstimator', function() {
         });
 
         it('_generateFailureResponse generates correct response on other failure', function() {
+            var mockResult = {
+                isTimeout: false,
+                statusText: 'transaction aborted',
+                status: -1
+            };
+
             var mockResp = estimator._generateFailureResponse(mockResult);
             expect(mockResp).toEqual(-1);
         });
