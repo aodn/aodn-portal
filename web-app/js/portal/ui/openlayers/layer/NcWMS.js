@@ -43,7 +43,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // Initialize missingDays
         this.missingDays = [];
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, this._propogateDelete, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, this._propagateDelete, this);
 
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, [name, url, params, options]);
     },
@@ -52,7 +52,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this.time = moment.utc(dateTimeString);
     },
 
-    _propogateDelete: function(label, thelayer) {
+    _propagateDelete: function(label, thelayer) {
         if (thelayer == this) {
             delete this;
         }

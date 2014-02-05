@@ -130,6 +130,7 @@
     <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/FeatureInfoPopup.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/Viewport.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/SelectionPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/TimeRangeLabel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/SearchBodyPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/SearchPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js', file: 'portal/ui/search/FreeTextSearchPanel.js')}"></script>

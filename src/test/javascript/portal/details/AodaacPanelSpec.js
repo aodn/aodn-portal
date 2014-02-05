@@ -20,8 +20,10 @@ describe('Portal.details.AodaacPanel', function() {
         map = new OpenLayers.Map();
 
         spyOn(map.events, 'register');
+        spyOn(Portal.ui.TimeRangeLabel.prototype, 'update');
 
         aodaacPanel = new Portal.details.AodaacPanel({ map: map });
+
         aodaacPanel._setBounds =  function() {};
         aodaacPanel._removeLoadingInfo = function() {};
         layer.getMissingDays =  function() { return [] };
@@ -104,9 +106,9 @@ describe('Portal.details.AodaacPanel', function() {
         });
 
         it('updates the time range label', function() {
-            spyOn(aodaacPanel, '_updateTimeRangeLabel');
+            spyOn(aodaacPanel, '_updateTimeRangeLabelLoading');
             aodaacPanel._clearDateTimeFields();
-            expect(aodaacPanel._updateTimeRangeLabel).toHaveBeenCalledWith(null, true);
+            expect(aodaacPanel._updateTimeRangeLabelLoading).toHaveBeenCalledWith();
         });
     });
 
@@ -251,11 +253,19 @@ describe('Portal.details.AodaacPanel', function() {
             temporalExtent: extent,
             missingDays: [],
             productsInfo: [1,2,3],
+            time: extent.min(),
             getTemporalExtent: function() {
                 return this.temporalExtent;
             },
             getSubsetExtentMin: function() { return extent.min() },
             getSubsetExtentMax: function() { return extent.max() }
+        };
+    }
+
+    function _mockTimeRangeLabel() {
+        return {
+            loading: noOp,
+            updateTime: noOp
         };
     }
 });

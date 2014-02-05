@@ -266,4 +266,27 @@ describe("OpenLayers.Layer.NcWMS", function() {
             expect(cachedLayer.getTemporalExtentMax()).toBeSame(moment.utc('2001-02-05T00:00'));
         });
     });
+
+    describe('subset extent', function() {
+        beforeEach(function() {
+            cachedLayer.rawTemporalExtent = [
+                '2000-01-01T00:00:00.000',
+                '2000-01-02T00:00:00.000',
+                '2000-01-03T00:00:00.000'
+            ];
+            cachedLayer.temporalExtent = null;
+            cachedLayer.processTemporalExtent();
+            waitsFor(function() {
+                return cachedLayer.temporalExtent;
+            }, "Temporal extent not processed", 1000);
+        });
+
+        it('sets the subset extent minimum', function() {
+            expect(cachedLayer.getSubsetExtentMin()).toEqual(moment.utc('2000-01-01T00:00:00.000'));
+        });
+
+        it('sets the subset extent maximum', function() {
+            expect(cachedLayer.getSubsetExtentMax()).toEqual(moment.utc('2000-01-03T00:00:00.000'));
+        });
+    });
 });

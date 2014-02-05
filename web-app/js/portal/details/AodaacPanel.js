@@ -91,7 +91,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     _addTemporalControls: function() {
         var temporalExtentHeader = this._newHtmlElement(String.format("<b>{0}</b>", OpenLayers.i18n('temporalExtentHeading')));
 
-        this._updateTimeRangeLabel(null, true);
+        this._initTimeRangeLabel();
 
         var dateStartLabel = new Ext.form.Label({
             html: OpenLayers.i18n('dateStartLabel'),
@@ -200,10 +200,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         };
     },
 
-    _newDateTimeLabel: function(html) {
-        return String.format("<small><i><b>{0}</b>: {1}<br/></i></small>", OpenLayers.i18n('currentDateTimeLabel'), html);
-    },
-
     _newHtmlElement: function(html) {
         return new Ext.Container({
             autoEl: 'div',
@@ -213,14 +209,6 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     _newSectionSpacer: function() {
         return new Ext.Spacer({ height: 10 });
-    },
-
-    _addLabel: function(labelText) {
-        var label = new Ext.form.Label({
-            html: "<h4>" + labelText + "</h4>"
-        });
-
-        this.add(label);
     },
 
     _buildAodaacParameters: function(geometry) {
@@ -265,21 +253,21 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         var selectedDateMoment = moment(jsDate);
         datePicker.setValue(selectedDateMoment);
         var selectedTimeMoment = moment.utc(datePicker.getValue());
-        this._updateTimeRangeLabel(selectedTimeMoment);
         this._layerToTime(selectedTimeMoment);
         this._setLayerSubsetExtent();
+        this._updateTimeRangeLabel();
 
         this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
 
     _previousTimeSlice: function() {
-        var time = this.selectedLayer.previousTimeSlice();
-        this._updateTimeRangeLabel(time);
+        this.selectedLayer.previousTimeSlice();
+        this._updateTimeRangeLabel();
     },
 
     _nextTimeSlice: function() {
-        var time = this.selectedLayer.nextTimeSlice();
-        this._updateTimeRangeLabel(time);
+        this.selectedLayer.nextTimeSlice();
+        this._updateTimeRangeLabel();
     },
 
     _updateGeoNetworkAodaac: function(geometry) {
@@ -304,7 +292,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.selectedLayer.getSubsetExtentMin(), false);
         this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.selectedLayer.getSubsetExtentMax(), true);
         this.buttonsPanel.show();
-        this._updateTimeRangeLabel(this.selectedLayer.time);
+        this._updateTimeRangeLabel();
 
         this._updateGeoNetworkAodaac(this.map.getConstraint());
     },
@@ -315,19 +303,16 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         picker.setValue(value, toMaxValue);
     },
 
-    _updateTimeRangeLabel: function(momentDate, loading) {
-        if (!this.timeRangeLabel) {
-            this.timeRangeLabel = this._newHtmlElement(String.format("<i>{0}</i>", OpenLayers.i18n("loadingMessage")));
-        }
+    _updateTimeRangeLabel: function() {
+        this.timeRangeLabel.updateTime(this.selectedLayer.time.format('YYYY-MM-DD HH:mm:ss:SSS UTC'));
+    },
 
-        if (this.timeRangeLabel.isVisible()) {
-            if (momentDate) {
-                this.timeRangeLabel.update(this._newDateTimeLabel(momentDate.format('YYYY-MM-DD HH:mm:ss:SSS UTC')));
-            }
-            else if (loading) {
-                this.timeRangeLabel.update(String.format("<i>{0}</i>", OpenLayers.i18n("loadingMessage")));
-            }
-        }
+    _updateTimeRangeLabelLoading: function() {
+        this.timeRangeLabel.loading();
+    },
+
+    _initTimeRangeLabel: function() {
+        this.timeRangeLabel = new Portal.ui.TimeRangeLabel();
     },
 
     _layerToTime: function(momentDate) {
@@ -346,7 +331,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._resetAndDisableDateTimePicker(this.startDateTimePicker);
         this._resetAndDisableDateTimePicker(this.endDateTimePicker);
         this.buttonsPanel.hide();
-        this._updateTimeRangeLabel(null, true);
+        this._updateTimeRangeLabelLoading();
     },
 
     _resetAndDisableDateTimePicker: function(picker) {
