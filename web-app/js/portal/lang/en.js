@@ -241,7 +241,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     temporalExtentHeading: 'Temporal Extent',
     areaCoveredLabel: 'Area covered: ',
     currentDateTimeLabel: 'Displaying',
-    timeRangeLabel: 'Time range: ',
+    timeRangeLabel: 'Time range between: ',
+    timeRangeCalculating: '<i>Dates were not yet loaded. Please revisit step 2 and select a date range.</i>',
     dateStartLabel: 'Start',
     dateEndLabel: 'End',
 

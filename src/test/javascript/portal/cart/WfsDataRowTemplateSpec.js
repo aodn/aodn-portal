@@ -22,6 +22,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             }
         };
         geoNetworkRecord.getWfsLayerFeatureRequestUrl = function() {};
+        geoNetworkRecord.wmsLayer.getWmsDownloadFilter = function() {};
     });
 
     describe('getDataFilterEntry', function() {
@@ -32,7 +33,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             };
 
             var filterEntry = tpl.getDataFilterEntry({});
-            expect(filterEntry).not.toEqual('<i>No filters applied.</i> <code></code>');
+            expect(filterEntry).not.toEqual('<i>' + OpenLayers.i18n('noFilterLabel') + '</i> <code></code>');
             expect(filterEntry.indexOf(OpenLayers.i18n('filterLabel'))).toBeGreaterThan(-1);
             expect(filterEntry.indexOf(mockCql)).toBeGreaterThan(-1);
         });
@@ -41,7 +42,14 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             tpl._cql = function() {
                 return ''
             };
-            expect(tpl.getDataFilterEntry({})).toEqual('<i>No filters applied.</i> <code></code>');
+            expect(tpl.getDataFilterEntry({})).toEqual('<i>' + OpenLayers.i18n('noFilterLabel') + '</i> <code></code>');
+            expect(tpl.getDataFilterEntry(geoNetworkRecord)).toEqual('<i>' + OpenLayers.i18n('noFilterLabel') + '</i> <code></code>');
+        });
+
+        it('BODAAC hack', function() {
+            geoNetworkRecord.wmsLayer.bodaacFilterParams = {'dateRangeStart': undefined};
+            var res = String.format('<b>{0}</b> {1}', OpenLayers.i18n('filterLabel'), OpenLayers.i18n('timeRangeCalculating'));
+            expect(tpl.getDataFilterEntry(geoNetworkRecord)).toEqual(res);
         });
     });
 
@@ -53,7 +61,9 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                     getWfsLayerFeatureRequestUrl: noOp,
                     getWmsLayerFeatureRequestUrl: noOp,
                     wfsLayer: {},
-                    isNcwms: function() { return false; }
+                    isNcwms: function() {
+                        return false;
+                    }
                 }
             });
 
@@ -67,7 +77,9 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                     getWmsLayerFeatureRequestUrl: noOp,
                     urlDownloadFieldName: true,
                     wfsLayer: null,
-                    isNcwms: function() { return false; }
+                    isNcwms: function() {
+                        return false;
+                    }
                 }
             });
 
@@ -94,7 +106,9 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                     getWmsLayerFeatureRequestUrl: noOp,
                     urlDownloadFieldName: true,
                     wfsLayer: {},
-                    isNcwms: function() { return false; }
+                    isNcwms: function() {
+                        return false;
+                    }
                 }
             });
 
