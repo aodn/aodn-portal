@@ -107,12 +107,9 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             layerId: collection.wmsLayer.grailsLayerId
         };
 
-        if (downloadWfs) {
-            return this.downloadWithConfirmation(this._wfsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_URLs.txt", collection.title), additionalArgs);
-        }
-        else {
-            return this.downloadWithConfirmation(this._wmsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_URLs.txt", collection.title), additionalArgs);
-        }
+        var downloadUrl = downloadWfs ? this._wfsDownloadUrl(collection.wmsLayer, 'csv') : this._wmsDownloadUrl(collection.wmsLayer, 'csv');
+
+        return this.downloadWithConfirmation(downloadUrl, String.format("{0}_URLs.txt", collection.title), additionalArgs);
     },
 
     _netCdfDownloadHandler: function(collection, downloadWfs) {
@@ -121,12 +118,9 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             layerId: collection.wmsLayer.grailsLayerId
         };
 
-        if (downloadWfs) {
-            return this.downloadWithConfirmation(this._wfsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_source_files.zip", collection.title), additionalArgs);
-        }
-        else {
-            return this.downloadWithConfirmation(this._wmsDownloadUrl(collection.wmsLayer, 'csv'), String.format("{0}_source_files.zip", collection.title), additionalArgs);
-        }
+        var downloadUrl = downloadWfs ? this._wfsDownloadUrl(collection.wmsLayer, 'csv') : this._wmsDownloadUrl(collection.wmsLayer, 'csv');
+
+        return this.downloadWithConfirmation(downloadUrl, String.format("{0}_source_files.zip", collection.title), additionalArgs);
     },
 
     _wfsDownloadUrl: function(layer, format) {
