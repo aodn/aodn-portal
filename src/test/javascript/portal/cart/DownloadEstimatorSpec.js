@@ -37,19 +37,16 @@ describe('Portal.cart.DownloadEstimator', function() {
                 status: -1
             };
 
-            var mockResp = estimator._generateFailureResponse(mockResult);
-            expect(mockResp).toEqual('transaction aborted');
+            expect(estimator._generateFailureResponse(mockResult)).toEqual('transaction aborted');
         });
 
         it('_generateFailureResponse generates correct response on other failure', function() {
             var mockResult = {
-                isTimeout: false,
                 statusText: 'transaction aborted',
                 status: -1
             };
 
-            var mockResp = estimator._generateFailureResponse(mockResult);
-            expect(mockResp).toEqual(-1);
+            expect(estimator._generateFailureResponse(mockResult)).toEqual(-1);
         });
     });
 
