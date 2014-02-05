@@ -7,7 +7,7 @@
 
 OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
-    ieWarningMessage: "Your browser is not supported. Please switch to Firefox or Chrome.",
+    ieWarningMessage: "Your browser is unsupported and may not work with this site.  Please use Chrome or Firefox for the best experience.",
 
     navigationButtonNext: "Next <div class=doubleArrow>&gt;&gt;</div>",
     navigationButtonPrevious: "<div class=doubleArrow>&lt;&lt;</div> Previous",
