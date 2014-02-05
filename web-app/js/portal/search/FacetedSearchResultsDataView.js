@@ -14,7 +14,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     MINIMAP_HEIGHT: 110,
     MINIMAP_WIDTH: 230,
 
-    initComponent:function () {
+    initComponent: function() {
 
         this.rowId = 0;
 
@@ -66,7 +66,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         Portal.search.FacetedSearchResultsDataView.superclass.initComponent.apply(this, arguments);
     },
 
-    collectData : function(records, startIndex){
+    collectData: function(records, startIndex){
         var r = [],
             i = 0,
             len = records.length;
@@ -143,7 +143,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _formatTemporalExtentDateString: function(dateString) {
         return this._parseTemporalExtentDateString(dateString).format("YYYY-MM-DD Z");
     },
-    
+
     _parseTemporalExtentDateString: function(dateString) {
         return moment(dateString, "YYYY-MM-DDtHH:mm:ss:SSSz");
     },
