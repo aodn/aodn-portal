@@ -57,7 +57,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
             htmlAddition = this._generateFailHtmlString();
         }
         else {
-            htmlAddition = this._generateEstHtmlString(sizeEstimate);  
+            htmlAddition = this._generateEstHtmlString(sizeEstimate);
         }
 
         sizeDiv.update(htmlAddition);
@@ -69,7 +69,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         var fileSizeEstimate;
         var fileMagnitude;
         var fileSizeImage;
-        
+
         downloadMessage = OpenLayers.i18n("estimatedDlMessage");
 
         if (estimateInBytes >= this.ONE_GB_IN_BYTES) {
