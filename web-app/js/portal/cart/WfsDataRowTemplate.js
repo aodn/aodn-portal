@@ -49,7 +49,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         var menuItems = [];
 
         // BODAAC hack.
-        if (this.isBodaac(collection)) {
+        if (this._isBodaac(collection)) {
             menuItems.push({
                 text: OpenLayers.i18n('downloadAsUrlsLabel'),
                 handler: this._urlListDownloadHandler(collection),
@@ -87,7 +87,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         return menuItems;
     },
 
-    isBodaac: function(collection) {
+    _isBodaac: function(collection) {
 
         return collection.wmsLayer && collection.wmsLayer.isNcwms();
     },
@@ -134,7 +134,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     _bodaacCsvDownloadUrl: function(collection) {
-        return this.isBodaac(collection) ? this._wfsDownloadUrl(collection.wmsLayer, 'csv') : this._wmsDownloadUrl(collection.wmsLayer, 'csv');
+        return this._isBodaac(collection) ? this._wfsDownloadUrl(collection.wmsLayer, 'csv') : this._wmsDownloadUrl(collection.wmsLayer, 'csv');
     },
 
     _wfsDownloadUrl: function(layer, format) {
