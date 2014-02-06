@@ -128,7 +128,10 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             spyOn(tpl, 'downloadWithConfirmation');
             spyOn(tpl, '_wmsDownloadUrl').andReturn('download_url');
 
-            var testLayer = {grailsLayerId: 6};
+            var testLayer = {
+                grailsLayerId: 6,
+                isNcwms: function() { return false }
+            };
             var testCollection = {
                 wmsLayer: testLayer,
                 title: 'the_collection'
@@ -151,7 +154,10 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             spyOn(tpl, 'downloadWithConfirmation');
             spyOn(tpl, '_wmsDownloadUrl').andReturn('download_url');
 
-            var testLayer = {grailsLayerId: 6};
+            var testLayer = {
+                grailsLayerId: 6,
+                isNcwms: function() { return false }
+            };
             var testCollection = {
                 wmsLayer: testLayer,
                 title: 'the_collection'
@@ -175,10 +181,10 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
             tpl._urlListDownloadHandler(
                 {
                     wmsLayer: {
-                        grailsLayerId: 1
+                        grailsLayerId: 1,
+                        isNcwms: function() { return true }
                     }
-                },
-                true
+                }
             );
             expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
         });
@@ -186,8 +192,12 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
         it('BODAAC _netCdfDownloadHandler calls _wfsDownloadUrl', function() {
             spyOn(tpl, '_wfsDownloadUrl');
             tpl._netCdfDownloadHandler(
-                {wmsLayer: {grailsLayerId: 1}},
-                true
+                {
+                    wmsLayer: {
+                        grailsLayerId: 1,
+                        isNcwms: function() { return true }
+                    }
+                }
             );
             expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
         });
