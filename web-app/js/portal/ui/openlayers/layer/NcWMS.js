@@ -43,7 +43,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // Initialize missingDays
         this.missingDays = [];
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, this._propogateDelete, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, this._propagateDelete, this);
 
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, [name, url, params, options]);
     },
@@ -52,7 +52,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this.time = moment.utc(dateTimeString);
     },
 
-    _propogateDelete: function(label, thelayer) {
+    _propagateDelete: function(label, thelayer) {
         if (thelayer == this) {
             delete this;
         }
@@ -77,7 +77,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     _processTemporalExtentDone: function() {
         // Unset rawTemporalExtent, meaning that we're done
         this.rawTemporalExtent = null;
-        this.time = this.temporalExtent.max();
+        this._initSubsetExtent();
         this.events.triggerEvent('temporalextentloaded', this);
     },
 
@@ -102,9 +102,10 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     toTime: function(dateTime) {
-        this.time = dateTime;
-        if (this.time) {
-            this.mergeNewParams({ TIME: this._getTimeParameter(dateTime) });
+        // Don't send a request if we don't have to
+        if (this._isValidTime(dateTime)) {
+            this.time = dateTime;
+            this.mergeNewParams({ TIME: this._getTimeParameter(this.time) });
         }
         return this.time;
     },
@@ -172,22 +173,12 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return true;
     },
 
-    _appendParam: function(base, name, value) {
-        return base + '&' + name + '=' + value;
-    },
-
     previousTimeSlice: function() {
-        var previous = this.temporalExtent.previous(this.time);
-        if (previous) {
-            return this.toTime(previous);
-        }
+        return this.toTime(this.temporalExtent.previous(this.time));
     },
 
     nextTimeSlice: function() {
-        var next = this.temporalExtent.next(this.time);
-        if (next) {
-            return this.toTime(next);
-        }
+        return this.toTime(this.temporalExtent.next(this.time));
     },
 
     getCqlForTemporalExtent: function() {
@@ -211,5 +202,30 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         );
         cqlFilter = "&CQL_FILTER=" + this.getCqlForTemporalExtent();
         return wfsRequest + cqlFilter;
+    },
+
+    _initSubsetExtent: function() {
+        if (!this.subsetExtent) {
+            this.setSubsetExtentView(this.temporalExtent.min(), this.temporalExtent.max());
+        }
+    },
+
+    setSubsetExtentView: function(min, max) {
+        this.subsetExtent = {
+            min: min,
+            max: max
+        };
+    },
+
+    getSubsetExtentMin: function() {
+        return this.subsetExtent.min;
+    },
+
+    getSubsetExtentMax: function() {
+        return this.subsetExtent.max;
+    },
+
+    _isValidTime: function(dateTime) {
+        return dateTime && this.time.valueOf() != dateTime.valueOf();
     }
 });
