@@ -277,14 +277,8 @@ log4j = {
             'grails.app.controller'
 
     debug   'grails.app.job',
-            //'grails.app.service',
             'grails.app.tagLib',
+            'grails.app.controller.au.org.emii.portal.SystemController',
             'grails.app.domain',
             'grails.app.realms'
-            //'au.org.emii.portal'
-            //'au.org.emii.portal.display'
-            //'org.hibernate.SQL',
-            //'org.hibernate.type',
-            //'liquibase',
-            //'grails'
 }

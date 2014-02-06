@@ -13,6 +13,11 @@
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js', file: 'jquery/jquery-autocomplete1.1.js')}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js', file: 'jquery/jquery.rotate.1-1.js')}"></script>
 
+<script type="text/javascript" src="${resource(dir: 'js', file: 'log4javascript-1.4.6/log4javascript_uncompressed.js ')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'portal/utils/Logging.js ')}"></script>
+
+
+
 <script src="${resource(dir: 'js/portal/common', file: 'helpers.js')}" type="text/javascript"></script>
 
 

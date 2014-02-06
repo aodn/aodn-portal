@@ -394,6 +394,8 @@
                         <include>Geonetwork/lib/GeoNetwork/form/OpenSearchSuggestionTextField.js</include>
                         <include>Geonetwork/lib/GeoNetwork/map/ExtentMap.js</include>
                         <include>ext-ux/**/*.js</include>
+                        <include>log4javascript-1.4.6/log4javascript_uncompressed.js</include>
+                        <include>portal/utils/Logging.js</include>
                         <include>portal/search/field/CheckBox.js</include>
                         <include>portal/search/field/ValueCheckBox.js</include>
                         <include>portal/search/field/MapLayersCheckBox.js</include>

@@ -7,9 +7,12 @@
 
 package au.org.emii.portal
 
-//From Stackoverflow:
-//http://stackoverflow.com/questions/1766917/is-it-possible-to-catch-handle-exceptions-thrown-from-a-grails-controller-aop
+import org.apache.log4j.Level
+
 class SystemController {
+
+    // From Stackoverflow:
+    // http://stackoverflow.com/questions/1766917/is-it-possible-to-catch-handle-exceptions-thrown-from-a-grails-controller-aop
     def error = {
         // Grails has already set the response status to 500
 
@@ -21,5 +24,10 @@ class SystemController {
             // Otherwise exceptionHandler did not want to handle it
         }
         render(view: "/error")
+    }
+
+    def clientLog = {
+        log."${params.level.toLowerCase()}"("client log - ${params.message}");
+        render status: 200, text: "Log posted"
     }
 }
