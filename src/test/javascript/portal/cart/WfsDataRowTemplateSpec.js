@@ -184,8 +184,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                         grailsLayerId: 1,
                         isNcwms: function() { return true }
                     }
-                },
-                true
+                }
             );
             expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
         });
@@ -198,8 +197,7 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                         grailsLayerId: 1,
                         isNcwms: function() { return true }
                     }
-                },
-                true
+                }
             );
             expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
         });
