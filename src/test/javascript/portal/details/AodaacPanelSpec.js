@@ -20,8 +20,10 @@ describe('Portal.details.AodaacPanel', function() {
         map = new OpenLayers.Map();
 
         spyOn(map.events, 'register');
+        spyOn(Portal.ui.TimeRangeLabel.prototype, 'update');
 
         aodaacPanel = new Portal.details.AodaacPanel({ map: map });
+
         aodaacPanel._setBounds =  function() {};
         aodaacPanel._removeLoadingInfo = function() {};
         layer.getMissingDays =  function() { return [] };
@@ -54,26 +56,14 @@ describe('Portal.details.AodaacPanel', function() {
             delete aodaacPanel.geoNetworkRecord;
         });
 
-        it('updates the date when the start date changes via the picker', function() {
-            aodaacPanel._addTemporalControls(new Array());
-            aodaacPanel.startDateTimePicker.fireEvent('select');
-            expect(aodaacPanel._onDateSelected).toHaveBeenCalled();
-        });
-
         it('updates the date when the start date changes via edit', function() {
-            aodaacPanel._addTemporalControls(new Array());
+            aodaacPanel._addTemporalControls();
             aodaacPanel.startDateTimePicker.fireEvent('change');
             expect(aodaacPanel._onDateSelected).toHaveBeenCalled();
         });
 
-        it('updates the date when the end date changes via the picker', function() {
-            aodaacPanel._addTemporalControls(new Array());
-            aodaacPanel.endDateTimePicker.fireEvent('select');
-            expect(aodaacPanel._onDateSelected).toHaveBeenCalled();
-        });
-
         it('updates the date when the end date changes via edit', function() {
-            aodaacPanel._addTemporalControls(new Array());
+            aodaacPanel._addTemporalControls();
             aodaacPanel.endDateTimePicker.fireEvent('change');
             expect(aodaacPanel._onDateSelected).toHaveBeenCalled();
         });
@@ -116,9 +106,9 @@ describe('Portal.details.AodaacPanel', function() {
         });
 
         it('updates the time range label', function() {
-            spyOn(aodaacPanel, '_updateTimeRangeLabel');
+            spyOn(aodaacPanel, '_updateTimeRangeLabelLoading');
             aodaacPanel._clearDateTimeFields();
-            expect(aodaacPanel._updateTimeRangeLabel).toHaveBeenCalledWith(null, true);
+            expect(aodaacPanel._updateTimeRangeLabelLoading).toHaveBeenCalledWith();
         });
     });
 
@@ -263,9 +253,19 @@ describe('Portal.details.AodaacPanel', function() {
             temporalExtent: extent,
             missingDays: [],
             productsInfo: [1,2,3],
+            time: extent.min(),
             getTemporalExtent: function() {
                 return this.temporalExtent;
-            }
+            },
+            getSubsetExtentMin: function() { return extent.min() },
+            getSubsetExtentMax: function() { return extent.max() }
+        };
+    }
+
+    function _mockTimeRangeLabel() {
+        return {
+            loading: noOp,
+            updateTime: noOp
         };
     }
 });
