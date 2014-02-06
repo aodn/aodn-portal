@@ -31,6 +31,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
         this.selectionStore = this._buildSelectionStore(this.hierarchical, this.separator);
         this.termStore = this._buildTermStore(this.separator);
+        this.termStore.titleText = this.titleText;
 
         this.selectedView = this._buildSelectedView(this.selectionStore);
         this.filterView = this._buildFilterView(this.termStore);
@@ -238,9 +239,54 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
         this.termStore.loadTopTerms(response, fieldGroup, filter);
 
+        // this._applySortOrder();
+
         this.setDisabled(this.selectionStore.getCount() == 0 && this.termStore.getCount() == 0);
         this.filterView.setVisible(this.hierarchical || this.selectionStore.getCount() == 0);
         this.doLayout();
+    },
+
+    _applySortOrder: function() {
+        this.termStore.each(function(record) {
+            record.set('sortOrder', this._getSortOrderForRecord(record));
+        }, this);
+
+        this.termStore.multiSort([
+            { field: 'sortOrder', direction: 'ASC' },
+            { field: 'display', direction: 'ASC' }
+        ]);
+    },
+
+    MAX_SORT_ORDER: 1000,
+
+    SORT_ORDER: {
+        'Measured parameter': {
+            'Abundance of biota': 1,
+            'Concentration of chlorophyll per unit volume of the water body': 2,
+            'Concentration of oxygen {O2} per unit mass of the water body': 3,
+            'Current speed in the water body': 4,
+            'Practical salinity of the water body': 5,
+            'Pressure (measured variable) exerted by the atmosphere': 6,
+            'Significant height of waves on the water body': 7,
+            'Temperature of the water body': 8,
+            'Turbidity of the water body': 9,
+            'Wind speed in the atmosphere': 10
+        }
+    },
+
+    _isSortOrderDefinedForRecord: function(record) {
+       return (   this.SORT_ORDER
+               && this.SORT_ORDER[this.titleText]
+               && this.SORT_ORDER[this.titleText][record.get('value')]);
+    },
+
+    _getSortOrderForRecord: function(record) {
+        if (this._isSortOrderDefinedForRecord(record)) {
+            return this.SORT_ORDER[this.titleText][record.get('value')];
+        }
+        else {
+            return this.MAX_SORT_ORDER;
+        }
     },
 
     _searchFail: function (response) {
