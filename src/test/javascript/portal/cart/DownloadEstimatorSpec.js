@@ -12,14 +12,55 @@ describe('Portal.cart.DownloadEstimator', function() {
 
     beforeEach(function() {
         estimator = new Portal.cart.DownloadEstimator();
+        geoNetworkRecord = {
+            uuid: 9
+        };
     });
 
-    describe('download size estimate', function() {
+    describe('behavior on timeout', function() {
+        it('_createFailMessage calls _generateFailureResponse', function() {
+            var mockResult = {
+                isTimeout: true,
+                statusText: 'transaction aborted',
+                status: -1
+            };
+
+            spyOn(estimator, '_generateFailureResponse');
+            estimator._createFailMessage(mockResult, geoNetworkRecord.uuid);
+            expect(estimator._generateFailureResponse).toHaveBeenCalled();
+        });
+
+        it('_generateFailureResponse generates correct response on timeout', function() {
+            var mockResult = {
+                isTimeout: true,
+                statusText: 'transaction aborted',
+                status: -1
+            };
+
+            expect(estimator._generateFailureResponse(mockResult)).toEqual('transaction aborted');
+        });
+
+        it('_generateFailureResponse generates correct response on other failure', function() {
+            var mockResult = {
+                statusText: 'transaction aborted',
+                status: -1
+            };
+
+            expect(estimator._generateFailureResponse(mockResult)).toEqual(-1);
+        });
+    });
+
+    describe('download size estimate formatting', function() {
         var mockEstimate;
 
         it('_generateFailHtmlString formats correctly', function() {
-            var mockHtml = estimator._generateFailHtmlString(mockEstimate);
+            var mockHtml = estimator._generateFailHtmlString();
             expect(mockHtml).toEqual('<div>The estimated download size is unknown.</div><div class="clear"></div>');
+        });
+
+        it('_generateTimeoutHtmlString formats correctly', function() {
+            var mockHtml = estimator._generateTimeoutHtmlString();
+            expect(mockHtml).toEqual('<div>The download size is too large to estimate. <img src="images/error.png"></div><div class="clear"></div>')
         });
 
         it('_generateEstHtmlString formats correctly when size is greater than 1024MB', function() {
