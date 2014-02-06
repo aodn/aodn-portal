@@ -5,11 +5,16 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.ui.TermSelectionPanel", function()
-{
-    it('has default separator', function() {
-        var mockSearcher = new Portal.service.CatalogSearcher();
+describe("Portal.ui.TermSelectionPanel", function() {
+
+    var mockSearcher;
+
+    beforeEach(function() {
+        mockSearcher = new Portal.service.CatalogSearcher();
         mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
+    });
+
+    it('has default separator', function() {
         var selectPanel = new Portal.ui.TermSelectionPanel({
             searcher: mockSearcher
         });
@@ -18,8 +23,6 @@ describe("Portal.ui.TermSelectionPanel", function()
     });
 
     it('can override default separator', function() {
-        var mockSearcher = new Portal.service.CatalogSearcher();
-        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
         var selectPanel = new Portal.ui.TermSelectionPanel({
             searcher: mockSearcher,
             separator: "<"
@@ -29,8 +32,6 @@ describe("Portal.ui.TermSelectionPanel", function()
     });
 
     it('does layout after expand', function() {
-        var mockSearcher = new Portal.service.CatalogSearcher();
-        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
         var selectPanel = new Portal.ui.TermSelectionPanel({
             searcher: mockSearcher
         });
@@ -41,8 +42,6 @@ describe("Portal.ui.TermSelectionPanel", function()
     });
 
     it('disables empty panel', function() {
-        var mockSearcher = new Portal.service.CatalogSearcher();
-        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
         var selectPanel = new Portal.ui.TermSelectionPanel({
             searcher: mockSearcher
         });
@@ -53,8 +52,6 @@ describe("Portal.ui.TermSelectionPanel", function()
     });
 
     it('sets subtitle when filter removed but others remain', function() {
-        var mockSearcher = new Portal.service.CatalogSearcher();
-        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
         var selectPanel = new Portal.ui.TermSelectionPanel({
             searcher: mockSearcher
         });
@@ -66,8 +63,6 @@ describe("Portal.ui.TermSelectionPanel", function()
     });
 
     it('removes all filters when removeFilters called', function() {
-        var mockSearcher = new Portal.service.CatalogSearcher();
-        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
         var selectPanel = new Portal.ui.TermSelectionPanel({
             searcher: mockSearcher,
             hierarchical: true
@@ -78,7 +73,5 @@ describe("Portal.ui.TermSelectionPanel", function()
 
         selectPanel.removeAnyFilters();
         expect(selectPanel.selectionStore.getCount()).toEqual(0);
-	
     });
-
 });
