@@ -49,15 +49,15 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         var menuItems = [];
 
         // BODAAC hack.
-        if (collection.wmsLayer && collection.wmsLayer.isNcwms()) {
+        if (this.isBodaac(collection)) {
             menuItems.push({
                 text: OpenLayers.i18n('downloadAsUrlsLabel'),
-                handler: this._urlListDownloadHandler(collection, true),
+                handler: this._urlListDownloadHandler(collection),
                 scope: this
             });
             menuItems.push({
                 text: OpenLayers.i18n('downloadAsNetCdfLabel'),
-                handler: this._netCdfDownloadHandler(collection, true),
+                handler: this._netCdfDownloadHandler(collection),
                 scope: this
             });
         }
@@ -87,9 +87,15 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         return menuItems;
     },
 
+    isBodaac: function(collection) {
+
+        return collection.wmsLayer && collection.wmsLayer.isNcwms();
+    },
+
     getDataSpecificMarkup: function(values) {
-        this.estimator = new Portal.cart.DownloadEstimator();
-        this.estimator._getDownloadEstimate(values);
+        var estimator = new Portal.cart.DownloadEstimator();
+        estimator._getDownloadEstimate(values);
+
         return '<div id="downloadEst' + values.uuid + '">' + OpenLayers.i18n("estimatedDlLoadingMessage") + OpenLayers.i18n("estimatedDlLoadingSpinner") + '</div>';
     },
 
@@ -101,26 +107,34 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         return this.downloadWithConfirmation(this._wfsDownloadUrl(collection.wmsLayer, format), String.format("{0}.{1}", collection.title, format));
     },
 
-    _urlListDownloadHandler: function(collection, downloadWfs) {
+    _urlListDownloadHandler: function(collection) {
         var additionalArgs = {
             action: 'urlListForLayer',
             layerId: collection.wmsLayer.grailsLayerId
         };
 
-        var downloadUrl = downloadWfs ? this._wfsDownloadUrl(collection.wmsLayer, 'csv') : this._wmsDownloadUrl(collection.wmsLayer, 'csv');
-
-        return this.downloadWithConfirmation(downloadUrl, String.format("{0}_URLs.txt", collection.title), additionalArgs);
+        return this.downloadWithConfirmation(
+            this._bodaacCsvDownloadUrl(collection),
+            String.format("{0}_URLs.txt", collection.title),
+            additionalArgs
+        );
     },
 
-    _netCdfDownloadHandler: function(collection, downloadWfs) {
+    _netCdfDownloadHandler: function(collection) {
         var additionalArgs = {
             action: 'downloadNetCdfFilesForLayer',
             layerId: collection.wmsLayer.grailsLayerId
         };
 
-        var downloadUrl = downloadWfs ? this._wfsDownloadUrl(collection.wmsLayer, 'csv') : this._wmsDownloadUrl(collection.wmsLayer, 'csv');
+        return this.downloadWithConfirmation(
+            this._bodaacCsvDownloadUrl(collection),
+            String.format("{0}_source_files.zip", collection.title),
+            additionalArgs
+        );
+    },
 
-        return this.downloadWithConfirmation(downloadUrl, String.format("{0}_source_files.zip", collection.title), additionalArgs);
+    _bodaacCsvDownloadUrl: function(collection) {
+        return this.isBodaac(collection) ? this._wfsDownloadUrl(collection.wmsLayer, 'csv') : this._wmsDownloadUrl(collection.wmsLayer, 'csv');
     },
 
     _wfsDownloadUrl: function(layer, format) {
