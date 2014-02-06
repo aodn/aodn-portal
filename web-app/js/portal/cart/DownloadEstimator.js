@@ -17,14 +17,14 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         Portal.cart.DownloadEstimator.superclass.constructor.call(this);
     },
 
-    _getDownloadEstimate: function(collection) {
+    _getDownloadEstimate: function(collection, downloadUrl) {
         Ext.Ajax.request({
             url: 'download/estimateSizeForLayer',
             timeout: 30000,
             scope: this,
             params: {
                 layerId: collection.wmsLayer.grailsLayerId,
-                url: this._wmsDownloadUrl(collection.wmsLayer, 'csv')
+                url: downloadUrl
             },
             success: function(result, values) {
                 this._createDownloadEstimate(result, collection.uuid);
