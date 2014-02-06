@@ -304,7 +304,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
     },
 
     _updateTimeRangeLabel: function() {
-        this.timeRangeLabel.updateTime(this.selectedLayer.time.format('YYYY-MM-DD HH:mm:ss:SSS UTC'));
+        this.timeRangeLabel.updateTime(this.selectedLayer.time.toUtcDisplayFormat());
     },
 
     _updateTimeRangeLabelLoading: function() {

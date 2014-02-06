@@ -36,8 +36,8 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
     getBodaacDateInfo: function(dates) {
         if (dates.dateRangeStart) {
-            var startDate = moment.utc(dates.dateRangeStart).format('YYYY-MM-DD HH:mm:ss:SSS UTC');
-            var endDate = moment.utc(dates.dateRangeEnd).format('YYYY-MM-DD HH:mm:ss:SSS UTC');
+            var startDate = moment.utc(dates.dateRangeStart).toUtcDisplayFormat();
+            var endDate = moment.utc(dates.dateRangeEnd).toUtcDisplayFormat();
             return String.format('<code> {0} {1}(UTC) and {2}(UTC)</code>', OpenLayers.i18n('timeRangeLabel'), startDate, endDate);
         }
         else {
