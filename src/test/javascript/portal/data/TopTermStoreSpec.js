@@ -33,12 +33,12 @@ describe("Portal.data.TopTermStore", function() {
 
             expect(topTermStore.getCount()).toEqual(3);
             topTermStore.each(function(record) {
-                expect(record.get('sortOrder')).toEqual(Portal.data.TopTermStore.prototype.MAX_SORT_ORDER);
+                expect(record.get('sortOrder')).toEqual(Portal.data.TopTermStoreStoreOrder.MAX_SORT_ORDER);
             });
         });
 
         it('sorts based on sortOrder', function() {
-            topTermStore.SORT_ORDER = {
+            Portal.data.TopTermStoreStoreOrder.SORT_ORDER = {
                 'Some facet': {
                     'ccc': 1,
                     'aaa': 2
