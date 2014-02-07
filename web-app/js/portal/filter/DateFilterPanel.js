@@ -21,6 +21,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.TIME_UTIL = new Portal.utils.TimeUtil();
         // Divide time zone offset by 60 to get total hours
         this.timeZoneCorrect = (new Date().getTimezoneOffset()) / -60;
+
         Portal.filter.DateFilterPanel.superclass.constructor.call(this, config);
     },
 
@@ -51,21 +52,22 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             }
         });
 
-        this.fromField = new Ext.form.DateField({
-            name: 'from',
-            format: "d/m/Y",
-            maxValue: new Date(),
-            minValue: new Date(0),
-            width: 165,
-            listeners: {
-                scope: this,
-                select: this._onSelect,
-                change: this._onSelect
-            }
-        });
+        this.toField = this._createDateField('from');
+        this.toField = this._createDateField('to');
 
-        this.toField = new Ext.form.DateField({
-            name: 'to',
+        this.add(this.operators);
+        this.add(this.fromField);
+        this.add(this.toField);
+
+        if (this.filter.possibleValues != undefined) {
+            this._setMinMax(this.fromField, this.filter.possibleValues);
+            this._setMinMax(this.toField, this.filter.possibleValues);
+        }
+    },
+
+    _createDateField: function(name) {
+        return new Ext.form.DateField({
+            name: name,
             format: "d/m/Y",
             hidden: true,
             maxValue: new Date(),
@@ -77,15 +79,6 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
                 change: this._onSelect
             }
         });
-
-        this.add(this.operators);
-        this.add(this.fromField);
-        this.add(this.toField);
-
-        if (this.filter.possibleValues != undefined) {
-            this._setMinMax(this.fromField, this.filter.possibleValues);
-            this._setMinMax(this.toField, this.filter.possibleValues);
-        }
     },
 
     _setMinMax: function(dateField, vals) {
