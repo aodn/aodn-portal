@@ -107,7 +107,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         if (organisation) {
             return template.apply({
                 "label": OpenLayers.i18n('organisation'),
-                "value": organisation
+                "value": organisation.join(', ')
             });
         }
 
