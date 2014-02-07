@@ -124,9 +124,14 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _getDateString: function(combo) {
+
         var newDate = combo.getValue();
-        newDate.setHours(this.timeZoneCorrect);
-        return this.TIME_UTIL._toUtcIso8601DateString(newDate);
+        if (newDate) {
+            newDate.setHours(this.timeZoneCorrect);
+            return this.TIME_UTIL._toUtcIso8601DateString(newDate);
+        }
+
+        return '';
     },
 
     _onSelect: function(picker, date) {
