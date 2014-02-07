@@ -35,6 +35,22 @@ describe("Portal.ui.MapPanel", function() {
             expect(mapPanel.zoomToLayer).toHaveBeenCalled();
         });
 
+        it('clears the spatial constraint when there are no layers left', function() {
+            spyOn(mapPanel, '_updateSpatialConstraintStyle');
+            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
+            expect(mapPanel._updateSpatialConstraintStyle).toHaveBeenCalled();
+        });
+
+        it('does not clear the spatial constraint when there are layers', function() {
+            spyOn(Portal.details.DetailsPanel.prototype, 'updateDetailsPanel');
+
+            spyOn(mapPanel, '_updateSpatialConstraintStyle');
+            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, {
+                hasBoundingBox: noOp
+            });
+            expect(mapPanel._updateSpatialConstraintStyle).not.toHaveBeenCalled();
+        });
+
         it('on baseLayerChanged event', function() {
             spyOn(mapPanel, 'onBaseLayerChanged');
 
@@ -102,6 +118,12 @@ describe("Portal.ui.MapPanel", function() {
             Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
         });
+
+        it('should call _updateSpatialConstraintStyle', function() {
+            spyOn(mapPanel, '_updateSpatialConstraintStyle');
+            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
+            expect(mapPanel._updateSpatialConstraintStyle).toHaveBeenCalled();
+        });
     });
 
     describe('geonetwork record added event', function() {
@@ -126,6 +148,12 @@ describe("Portal.ui.MapPanel", function() {
             spyOn(mapPanel, '_closeFeatureInfoPopup');
             Ext.MsgBus.publish('removeAllLayers');
             expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
+        });
+
+        it('should call _updateSpatialConstraintStyle', function() {
+            spyOn(mapPanel, '_updateSpatialConstraintStyle');
+            Ext.MsgBus.publish('removeAllLayers');
+            expect(mapPanel._updateSpatialConstraintStyle).toHaveBeenCalled();
         });
     });
 
