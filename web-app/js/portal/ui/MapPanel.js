@@ -90,10 +90,10 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     onSelectedLayerChanged: function (openLayer) {
-
-        if (this.autoZoom === true) {
-            this.zoomToLayer(openLayer);
+        if (!openLayer) {
+            this._updateSpatialConstraintStyle(this.polygonStyle);
         }
+        this._autoZoomToLayer(openLayer);
     },
 
     onBaseLayerChanged: function(openLayer) {
@@ -112,6 +112,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     reset: function () {
         this._closeFeatureInfoPopup();
+        this._updateSpatialConstraintStyle(this.polygonStyle);
         this.zoomToInitialBbox();
     },
 
@@ -161,6 +162,12 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     getServer: function (item) {
         return item.server;
+    },
+
+    _autoZoomToLayer: function(openLayer) {
+        if (this.autoZoom === true) {
+            this.zoomToLayer(openLayer);
+        }
     },
 
     zoomToLayer: function (openLayer) {
@@ -228,12 +235,13 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     _setSpatialConstraintStyle: function(polygonStyle) {
-
         // Avoid uneccessary removal/addition of the control.
-        if (this.polygonStyle == polygonStyle) {
-            return;
+        if (this.polygonStyle != polygonStyle) {
+            this._updateSpatialConstraintStyle(polygonStyle);
         }
+    },
 
+    _updateSpatialConstraintStyle: function(polygonStyle) {
         this.polygonStyle = polygonStyle;
 
         this.map.navigationControl.deactivate();
