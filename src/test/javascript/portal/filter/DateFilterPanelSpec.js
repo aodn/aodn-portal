@@ -9,11 +9,9 @@ describe("Portal.filter.DateFilterPanel", function() {
     var dateFilter;
 
     beforeEach(function() {
-        Portal.filter.DateFilterPanel.prototype._createField = function() {
-        };
+        Portal.filter.DateFilterPanel.prototype._createField = function() {};
 
-        Portal.filter.DateFilterPanel.prototype._getDateString = function() {
-        };
+        Portal.filter.DateFilterPanel.prototype._getDateString = function() {};
 
         dateFilter = new Portal.filter.DateFilterPanel({
             filter: {
@@ -150,20 +148,20 @@ describe("Portal.filter.DateFilterPanel", function() {
             spyOn(dateFilter.fromField, 'getValue').andReturn(fromFieldValue);
             spyOn(dateFilter.toField, 'getValue').andReturn(toFieldValue);
             expect(dateFilter._requiredFieldsSet()).toBe(false);
-        };
+        }
 
         function requiredFieldsTrueExpectationForOperator(operator) {
             _mockFilterFields(dateFilter);
             spyOn(dateFilter.operators, 'getValue').andReturn(operator);
             spyOn(dateFilter.fromField, 'getValue').andReturn(new Date());
             expect(dateFilter._requiredFieldsSet()).toBe(true);
-        };
+        }
     });
 
     describe('apply date filter', function() {
         describe('require fields', function() {
 
-            beforeEach(function () {
+            beforeEach(function() {
                 _mockFilterFields(dateFilter);
                 spyOn(dateFilter, '_fireAddEvent');
             });
@@ -175,7 +173,7 @@ describe("Portal.filter.DateFilterPanel", function() {
             });
 
             describe('from field not set', function() {
-                beforeEach(function () {
+                beforeEach(function() {
                     spyOn(dateFilter.toField, 'getValue').andReturn(new Date());
                 });
 
@@ -254,7 +252,6 @@ describe("Portal.filter.DateFilterPanel", function() {
                 filterPanel.fromField = {
                     getValue: function() { return dateAsString; }
                 };
-
             });
 
             it('after', function() {
@@ -308,11 +305,10 @@ describe("Portal.filter.DateFilterPanel", function() {
     });
 
     function _mockFilterFields(dateFilter) {
-        Ext.each(['operators', 'fromField', 'toField'], function (property, index, all) {
+        Ext.each(['operators', 'fromField', 'toField'], function(property, index, all) {
             this[property] = {
                 getValue: noOp
             }
         }, dateFilter);
     }
-
 });
