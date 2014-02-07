@@ -5,23 +5,26 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.ui.TermSelectionPanel", function()
-{
+describe("Portal.ui.TermSelectionPanel", function() {
+
+    var catalogSearcher;
+
+    beforeEach(function() {
+        catalogSearcher = new Portal.service.CatalogSearcher();
+        catalogSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
+    });
+
     it('has default separator', function() {
-        var mockSearcher = new Portal.service.CatalogSearcher();
-        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
         var selectPanel = new Portal.ui.TermSelectionPanel({
-            searcher: mockSearcher
+            searcher: catalogSearcher
         });
 
         expect(selectPanel.separator).toEqual("|");
     });
 
     it('can override default separator', function() {
-        var mockSearcher = new Portal.service.CatalogSearcher();
-        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
         var selectPanel = new Portal.ui.TermSelectionPanel({
-            searcher: mockSearcher,
+            searcher: catalogSearcher,
             separator: "<"
         });
 
@@ -29,10 +32,8 @@ describe("Portal.ui.TermSelectionPanel", function()
     });
 
     it('does layout after expand', function() {
-        var mockSearcher = new Portal.service.CatalogSearcher();
-        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
         var selectPanel = new Portal.ui.TermSelectionPanel({
-            searcher: mockSearcher
+            searcher: catalogSearcher
         });
 
         spyOn(selectPanel, 'doLayout');
@@ -41,10 +42,8 @@ describe("Portal.ui.TermSelectionPanel", function()
     });
 
     it('disables empty panel', function() {
-        var mockSearcher = new Portal.service.CatalogSearcher();
-        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
         var selectPanel = new Portal.ui.TermSelectionPanel({
-            searcher: mockSearcher
+            searcher: catalogSearcher
         });
 
         spyOn(selectPanel, 'setDisabled');
@@ -53,10 +52,8 @@ describe("Portal.ui.TermSelectionPanel", function()
     });
 
     it('sets subtitle when filter removed but others remain', function() {
-        var mockSearcher = new Portal.service.CatalogSearcher();
-        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
         var selectPanel = new Portal.ui.TermSelectionPanel({
-            searcher: mockSearcher
+            searcher: catalogSearcher
         });
         selectPanel.selectionStore.setFilterValue('test sub title');
 
@@ -66,10 +63,8 @@ describe("Portal.ui.TermSelectionPanel", function()
     });
 
     it('removes all filters when removeFilters called', function() {
-        var mockSearcher = new Portal.service.CatalogSearcher();
-        mockSearcher.addEvents( 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved' );
         var selectPanel = new Portal.ui.TermSelectionPanel({
-            searcher: mockSearcher,
+            searcher: catalogSearcher,
             hierarchical: true
         });
         selectPanel.selectionStore.setFilterValue('filter1|filter2');
@@ -78,7 +73,5 @@ describe("Portal.ui.TermSelectionPanel", function()
 
         selectPanel.removeAnyFilters();
         expect(selectPanel.selectionStore.getCount()).toEqual(0);
-	
     });
-
 });

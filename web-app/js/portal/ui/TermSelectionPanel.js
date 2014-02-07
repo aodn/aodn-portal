@@ -30,8 +30,10 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         this.collapsedByDefault = this.collapsed;
 
         this.selectionStore = this._buildSelectionStore(this.hierarchical, this.separator);
-        this.termStore = this._buildTermStore(this.separator);
-
+        this.termStore = new Portal.data.TopTermStore({
+            separator: this.separator,
+            titleText: this.titleText
+        });
         this.selectedView = this._buildSelectedView(this.selectionStore);
         this.filterView = this._buildFilterView(this.termStore);
         this.toggleAllLink = this._buildToggleAll(this.termStore);
@@ -173,15 +175,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         selectedView.on('click', selectedView.onSelectionClick, selectedView);
         selectedView.on('afterrender', selectedView.onSelectionsRendered, selectedView);
 
-        //Ext.apply(this, Ext.apply(this.initialConfig, config));
-
         return selectedView;
-    },
-
-    _buildTermStore: function (separator) {
-        return new Portal.data.TopTermStore({
-            separator:separator
-        });
     },
 
     _buildToggleAll: function (termStore) {
@@ -200,7 +194,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
             },
             _onTermsLoaded: function () {
                 this.setShowAll(false);
-                this.setVisible(this.termStore.canLimit);
+                this.setVisible(termStore.canLimit);
             }
         });
 
@@ -245,7 +239,6 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
     _searchFail: function (response) {
         this.setVisible(false);
-        //this.filterView.setVisible(false);
     },
 
     _getFieldGroup: function () {

@@ -35,6 +35,9 @@ Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
                 name : 'display',
                 mapping : '@name',
                 convert : this._getDisplay.createDelegate(this)
+            }, {
+                name : 'sortOrder',
+                mapping : '@sortOrder'
             }]
         }, cfg, defaults);
 
@@ -73,26 +76,59 @@ Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
     _applyFilters: function() {
         this.clearFilter();
 
+        this._matchPreviousSelection();
+        this._limitRecords();
+        this._sortBySortOrderAndDisplay();
+    },
+
+    _matchPreviousSelection: function() {
         // Only want terms matching previous selections
         if (this.filterValue) {
             this.filter('value', this.filterValue);
         }
+    },
 
-        this.canLimit = this.getCount() > this.limitTo;
+    _limitRecords: function() {
+        this._applySortOrder();
 
-        if (!this.showAll && this.canLimit) {
-            this.sort('count', 'DESC');
-
-            // only want first limitTo records
-            var includeList = this.getRange(0, this.limitTo - 1);
-
+        if (this._onlyShowRecordsUpToLimit()) {
             this.filterBy(function(rec) {
-                return includeList.indexOf(rec) >= 0;
+                return this._getRecordsUpToLimit().indexOf(rec) >= 0;
             });
         }
+    },
 
-        // Want terms displayed in alphabetical order
-        this.sort('display', 'ASC');
+    _getRecordsUpToLimit: function() {
+        return this.getRange(0, this.limitTo - 1);
+    },
+
+    _onlyShowRecordsUpToLimit: function() {
+        return !this.showAll && this.canLimit();
+    },
+
+    canLimit: function() {
+        return this.getCount() > this.limitTo;
+    },
+
+    _sortBySortOrderAndDisplay: function() {
+        this.multiSort([
+            { field: 'sortOrder', direction: 'ASC' },
+            { field: 'display', direction: 'ASC' }
+        ]);
+    },
+
+    _applySortOrder: function() {
+        this.each(function(record) {
+            record.set(
+                'sortOrder',
+                Portal.data.TopTermStoreStoreOrder.getSortOrder(this.titleText, record)
+            );
+        }, this);
+
+        this.multiSort([
+            { field: 'sortOrder', direction: 'ASC' },
+            { field: 'count', direction: 'DESC' }
+        ]);
     },
 
     _getDisplay: function(v, rec) {
