@@ -200,17 +200,15 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         if (this.toField.isVisible()) {
             this.toField.setMinValue(new Date(0));
         }
-
-        this.CQL = "";
     },
 
     _setExistingFilters: function() {
         var beforePattern = this.filter.name + " before (.*?)( |$)";
         var afterPattern = this.filter.name + " after (.*?)( |$)";
 
-        betweenRe = new RegExp(afterPattern + "AND " + beforePattern);
-        beforeRe = new RegExp(beforePattern);
-        afterRe = new RegExp(afterPattern);
+        var betweenRe = new RegExp(afterPattern + "AND " + beforePattern);
+        var beforeRe = new RegExp(beforePattern);
+        var afterRe = new RegExp(afterPattern);
 
         var m = beforeRe.exec(this.layer.getDownloadFilter());
         var m2 = afterRe.exec(this.layer.getDownloadFilter());
