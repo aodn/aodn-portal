@@ -16,7 +16,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
                 padding: '5',
                 align: 'left'
             }
-        }, cfg );
+        }, cfg);
 
         this.TIME_UTIL = new Portal.utils.TimeUtil();
         // Divide time zone offset by 60 to get total hours
@@ -36,7 +36,12 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
                 fields: [
                     'op'
                 ],
-                data: [[OpenLayers.i18n("comboOptionNone")], [OpenLayers.i18n("comboOptionBefore")], [OpenLayers.i18n("comboOptionAfter")], [OpenLayers.i18n("comboOptionBetween")]]
+                data: [
+                    [OpenLayers.i18n("comboOptionNone")],
+                    [OpenLayers.i18n("comboOptionBefore")],
+                    [OpenLayers.i18n("comboOptionAfter")],
+                    [OpenLayers.i18n("comboOptionBetween")]
+                ]
             }),
             valueField: 'op',
             displayField: 'op',
@@ -125,11 +130,11 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _onSelect: function(picker, date) {
-    	if (this._isSelectedOpSetToBetween) {
-    	    if (this.toField.isVisible()) {
-    	        this.toField.setMinValue(this.fromField.getValue());
-    	    }
-    	}
+        if (this._isSelectedOpSetToBetween) {
+            if (this.toField.isVisible()) {
+                this.toField.setMinValue(this.fromField.getValue());
+            }
+        }
         this._applyDateFilterPanel();
     },
 
@@ -152,18 +157,19 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         var cql = '';
 
         if (this._isSelectedOpSetToBetween()) {
-            cql += String.format(
+            cql = String.format(
                 "{0} >= {1} AND {2} <= {3}",
                 endDateRangeColumnName,
                 this._getDateString(this.fromField),
                 startDateRangeColumnName,
-                this._getDateString(this.toField));
+                this._getDateString(this.toField)
+            );
         }
         else if (this._isSelectedOpSetToAfter()) {
-            cql += String.format("{0} >= {1}", endDateRangeColumnName, this._getDateString(this.fromField));
+            cql = String.format("{0} >= {1}", endDateRangeColumnName, this._getDateString(this.fromField));
         }
         else if (this._isSelectedOpSetToBefore()) {
-            cql += String.format("{0} <= {1}", startDateRangeColumnName, this._getDateString(this.fromField));
+            cql = String.format("{0} <= {1}", startDateRangeColumnName, this._getDateString(this.fromField));
         }
 
         return cql;
