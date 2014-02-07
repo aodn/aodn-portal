@@ -30,7 +30,10 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         this.collapsedByDefault = this.collapsed;
 
         this.selectionStore = this._buildSelectionStore(this.hierarchical, this.separator);
-        this.termStore = this._buildTermStore(this.separator, this.titleText);
+        this.termStore = new Portal.data.TopTermStore({
+            separator: this.separator,
+            titleText: this.titleText
+        });
         this.selectedView = this._buildSelectedView(this.selectionStore);
         this.filterView = this._buildFilterView(this.termStore);
         this.toggleAllLink = this._buildToggleAll(this.termStore);
@@ -173,13 +176,6 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         selectedView.on('afterrender', selectedView.onSelectionsRendered, selectedView);
 
         return selectedView;
-    },
-
-    _buildTermStore: function (separator, titleText) {
-        return new Portal.data.TopTermStore({
-            separator: separator,
-            titleText: titleText
-        });
     },
 
     _buildToggleAll: function (termStore) {
