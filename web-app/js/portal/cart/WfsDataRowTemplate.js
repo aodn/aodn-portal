@@ -38,7 +38,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         if (dates.dateRangeStart) {
             var startDate = moment.utc(dates.dateRangeStart).toUtcDisplayFormat();
             var endDate = moment.utc(dates.dateRangeEnd).toUtcDisplayFormat();
-            return String.format('<code> {0} {1}(UTC) and {2}(UTC)</code>', OpenLayers.i18n('timeRangeLabel'), startDate, endDate);
+            return String.format('<code> {0} {1} and {2}</code>', OpenLayers.i18n('timeRangeLabel'), startDate, endDate);
         }
         else {
             return OpenLayers.i18n('timeRangeCalculating');
