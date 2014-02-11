@@ -96,7 +96,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         this.addLoadingMessage();
 
         if (layer.filters) {
-                this._showHideFilters(layer, show, hide, target);
+            this._showHideFilters(layer, show, hide, target);
         }
         else if (layer.isKnownToThePortal()) {
 
@@ -123,7 +123,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     _showHideFilters: function(layer, show, hide, target) {
 
         var aFilterIsEnabled = false;
-        if (this._isLayerActive(layer) && (layer.filters.length > 0) ) {
+        if (this._isLayerActive(layer) && (layer.filters.length > 0)) {
 
             Ext.each(
                 layer.filters,
@@ -152,7 +152,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
         if (newFilterPanel) {
             this.relayEvents(newFilterPanel, ['addFilter']);
-            if(newFilterPanel.getFilterName()) {
+            if (newFilterPanel.getFilterName()) {
                 this._addLabel(filter);
             }
 
@@ -203,7 +203,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
         Ext.each(this._getActiveFilters(), function(filter) {
             var filterCQL = filter.getVisualisationCQL();
-            if(filterCQL) {
+            if (filterCQL) {
                 cql.push(filter.getVisualisationCQL());
             }
         });
