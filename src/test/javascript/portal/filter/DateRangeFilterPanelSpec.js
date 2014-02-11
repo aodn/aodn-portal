@@ -13,36 +13,30 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
         var toField;
 
         beforeEach(function() {
-            fromField = {
-                getValue: function() {
-                    return dateAsString;
-                }
-            };
-            toField = {};
-
             filterPanel = new Portal.filter.DateRangeFilterPanel({
                 filter: {
                     name: 'wfs_column',
                     wmsStartDateName: 'wms_start_column',
-                    wmsEndDateName: 'wms_end_column',
+                    wmsEndDateName: 'wms_end_column'
                 },
                 layer: {
-                    getDownloadFilter: function() {
-                    }
-                }
+                    getDownloadFilter: function() {}
+                },
+                setLayerAndFilter: noOp
             });
-            filterPanel.fromField = fromField;
-            filterPanel.toField = toField;
-
-            var dateAsString = '2013';
-
-            spyOn(filterPanel, '_getDateString').andCallFake(function(combo) {
-                if (combo == fromField) {
+            filterPanel.fromField = {
+                getValue: function() {
                     return '2000';
                 }
-                else {
+            };
+            filterPanel.toField = {
+                getValue: function() {
                     return '2013';
                 }
+            };
+
+            spyOn(filterPanel, '_getDateString').andCallFake(function(combo) {
+                return combo.getValue()
             });
 
             filterPanel.operators = {
@@ -59,7 +53,7 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
 
         it('before', function() {
             operator = 'before';
-            expectAllCQLFunctionsToEqual(filterPanel, 'wms_start_column <= 2000', 'wfs_column <= 2000');
+            expectAllCQLFunctionsToEqual(filterPanel, 'wms_start_column <= 2013', 'wfs_column <= 2013');
         });
 
         it('between', function() {

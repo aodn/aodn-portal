@@ -15,29 +15,40 @@ describe("Portal.filter.DateFilterPanel", function() {
 
         filterPanel = new Portal.filter.DateFilterPanel({
             filter: {
-                name: 'test'
+                name: 'some_column'
             },
             layer: {
                 getDownloadFilter: function() {
                     return '';
                 }
-            }
+            },
+            operators: {
+                getValue: noOp
+            },
+            fromField: {
+                setVisible: noOp,
+                getValue: noOp
+            },
+            toField: {
+                setVisible: noOp,
+                getValue: noOp
+            },
+            setLayerAndFilter: noOp
         });
     });
 
     describe('handleRemoveFilter', function() {
         beforeEach(function() {
-            filterPanel.operators = {};
             filterPanel.operators.clearValue = jasmine.createSpy('operators clearValue');
 
-            filterPanel.toField = {};
             filterPanel.toField.reset = jasmine.createSpy('toField reset');
             filterPanel.toField.setVisible = jasmine.createSpy('toField setVisible');
             filterPanel.toField.setMinValue = jasmine.createSpy('toField setMinValue');
 
-            filterPanel.fromField = {};
             filterPanel.fromField.reset = jasmine.createSpy('fromField reset');
             filterPanel.fromField.setVisible = jasmine.createSpy('fromField setVisible');
+
+            spyOn(filterPanel, '_updateDateFieldsVisibility');
         });
 
         it('clears operators', function() {
@@ -59,9 +70,15 @@ describe("Portal.filter.DateFilterPanel", function() {
             filterPanel.handleRemoveFilter();
             expect(filterPanel.toField.reset).toHaveBeenCalled();
         });
+
+        it('updates the visibilty of the date fields', function() {
+            filterPanel.handleRemoveFilter();
+            expect(filterPanel._updateDateFieldsVisibility).toHaveBeenCalled();
+        });
     });
 
-    describe('checking fields for values', function() {
+    describe('_all behaviour', function() {
+
         it('returns false if a value in an array is undefined', function() {
             expect(filterPanel._all(['a', undefined, 'c'])).toBe(false);
         });
@@ -77,188 +94,125 @@ describe("Portal.filter.DateFilterPanel", function() {
         it('returns true if all values in a string array are not empty', function() {
             expect(filterPanel._all(['a', 'b', 'c'])).toBe(true);
         });
+    });
 
-        it('returns false if to date is not set for operator between', function() {
-            requiredFieldsFalseExpectationForOperator('between', 'toField');
+    describe('checking fields for values', function() {
+
+        beforeEach(function() {
+            spyOn(filterPanel, '_all');
+            spyOn(filterPanel.operators, 'getValue').andReturn('op');
+            spyOn(filterPanel.fromField, 'getValue').andReturn('from');
+            spyOn(filterPanel.toField, 'getValue').andReturn('to');
         });
 
-        it('returns false if from date is not set for operator between', function() {
-            requiredFieldsFalseExpectationForOperator('between');
+        it('includes operator value', function() {
+
+            spyOn(filterPanel, '_isFromFieldUsed').andReturn(false);
+            spyOn(filterPanel, '_isToFieldUsed').andReturn(false);
+
+            filterPanel._requiredFieldsSet();
+
+            expect(filterPanel._all).toHaveBeenCalledWith(['op']);
         });
 
-        it('returns false if from date is not set for operator before', function() {
-            requiredFieldsFalseExpectationForOperator('before');
+        it('includes from value', function() {
+
+            spyOn(filterPanel, '_isFromFieldUsed').andReturn(true);
+            spyOn(filterPanel, '_isToFieldUsed').andReturn(false);
+
+            filterPanel._requiredFieldsSet();
+
+            expect(filterPanel._all).toHaveBeenCalledWith(['op', 'from']);
         });
 
-        it('returns false if from date is not set for operator after', function() {
-            requiredFieldsFalseExpectationForOperator('after');
+        it('includes to value', function() {
+
+            spyOn(filterPanel, '_isFromFieldUsed').andReturn(false);
+            spyOn(filterPanel, '_isToFieldUsed').andReturn(true);
+
+            filterPanel._requiredFieldsSet();
+
+            expect(filterPanel._all).toHaveBeenCalledWith(['op', 'to']);
         });
 
-        it('returns true if from date is set for operator after', function() {
-            requiredFieldsTrueExpectationForOperator('after');
+        it('includes all values', function() {
+
+            spyOn(filterPanel, '_isFromFieldUsed').andReturn(true);
+            spyOn(filterPanel, '_isToFieldUsed').andReturn(true);
+
+            filterPanel._requiredFieldsSet();
+
+            expect(filterPanel._all).toHaveBeenCalledWith(['op', 'from', 'to']);
         });
-
-        it('returns true if from date is set for operator before', function() {
-            requiredFieldsTrueExpectationForOperator('before');
-        });
-
-        it('returns true if from and to dates set for operator between', function() {
-            _mockFilterFields(filterPanel);
-            spyOn(filterPanel.operators, 'getValue').andReturn('between');
-            spyOn(filterPanel.fromField, 'getValue').andReturn(new Date());
-            spyOn(filterPanel.toField, 'getValue').andReturn(new Date());
-            expect(filterPanel._requiredFieldsSet()).toBe(true);
-        });
-
-        function requiredFieldsFalseExpectationForOperator(operator, emptyDateField) {
-            _mockFilterFields(filterPanel);
-
-            var fromFieldValue = '2012-10-09';
-            var toFieldValue = '2013-10-09';
-            var _emptyDateField = emptyDateField || 'fromField';
-
-            if ('fromField' == _emptyDateField) {
-                fromFieldValue = '';
-            }
-            else {
-                toFieldValue = '';
-            }
-
-            spyOn(filterPanel.operators, 'getValue').andReturn(operator);
-            spyOn(filterPanel.fromField, 'getValue').andReturn(fromFieldValue);
-            spyOn(filterPanel.toField, 'getValue').andReturn(toFieldValue);
-            expect(filterPanel._requiredFieldsSet()).toBe(false);
-        }
-
-        function requiredFieldsTrueExpectationForOperator(operator) {
-            _mockFilterFields(filterPanel);
-            spyOn(filterPanel.operators, 'getValue').andReturn(operator);
-            spyOn(filterPanel.fromField, 'getValue').andReturn(new Date());
-            expect(filterPanel._requiredFieldsSet()).toBe(true);
-        }
     });
 
     describe('apply date filter', function() {
-        describe('require fields', function() {
 
-            beforeEach(function() {
-                _mockFilterFields(filterPanel);
-                spyOn(filterPanel, '_fireAddEvent');
-            });
-
-            it('does not fire add event when all fields are not set', function() {
-                filterPanel._applyDateFilterPanel();
-                expect(filterPanel._fireAddEvent).not.toHaveBeenCalled();
-                expect(filterPanel.getCQL()).toBeFalsy();
-            });
-
-            describe('from field not set', function() {
-                beforeEach(function() {
-                    spyOn(filterPanel.toField, 'getValue').andReturn(new Date());
-                });
-
-                it('does not fire add event for operator after when from field is not set', function() {
-                    spyOn(filterPanel.operators, 'getValue').andReturn('after');
-
-                    filterPanel._applyDateFilterPanel();
-                    expect(filterPanel._fireAddEvent).not.toHaveBeenCalled();
-                    expect(filterPanel.getCQL()).toBeFalsy();
-                });
-
-                it('does not fire add event for operator before when from field is not set', function() {
-                    spyOn(filterPanel.operators, 'getValue').andReturn('before');
-
-                    filterPanel._applyDateFilterPanel();
-                    expect(filterPanel._fireAddEvent).not.toHaveBeenCalled();
-                    expect(filterPanel.getCQL()).toBeFalsy();
-                });
-
-                it('does not fire add event for operator between when from field is not set', function() {
-                    spyOn(filterPanel.operators, 'getValue').andReturn('between');
-
-                    filterPanel._applyDateFilterPanel();
-                    expect(filterPanel._fireAddEvent).not.toHaveBeenCalled();
-                    expect(filterPanel.getCQL()).toBeFalsy();
-                });
-
-                it('does fire add event for operator between when from and to fields are set', function() {
-                    spyOn(filterPanel.operators, 'getValue').andReturn('between');
-                    spyOn(filterPanel.fromField, 'getValue').andReturn(new Date());
-                    spyOn(filterPanel, '_getDateString').andReturn(new Date());
-                    filterPanel.filter = { name: 'mockedDateFilterPanel' };
-
-                    filterPanel._applyDateFilterPanel();
-                    expect(filterPanel._fireAddEvent).toHaveBeenCalled();
-                    expect(filterPanel.getCQL()).toBeTruthy();
-                    expect(filterPanel.getCQL().indexOf('>=')).toBeGreaterThan(0);
-                    expect(filterPanel.getCQL().indexOf('<=')).toBeGreaterThan(0);
-                });
-            });
-
-            describe('to field not set', function() {
-                it('does not fire add event for operator between when to field is not set', function() {
-                    spyOn(filterPanel.operators, 'getValue').andReturn('between');
-                    spyOn(filterPanel.fromField, 'getValue').andReturn('2012-10-09');
-
-                    filterPanel._applyDateFilterPanel();
-                    expect(filterPanel._fireAddEvent).not.toHaveBeenCalled();
-                });
-            });
+        beforeEach(function() {
+            _mockFilterFields(filterPanel);
+            spyOn(filterPanel, '_fireAddEvent');
         });
 
-        describe('CQL', function() {
-            var filterPanel;
-            var operator;
+        it('does not fire event when required fields are not set', function() {
+            spyOn(filterPanel, '_requiredFieldsSet').andReturn(false);
 
-            beforeEach(function() {
-                filterPanel = new Portal.filter.DateFilterPanel({
-                    filter: {
-                        name: 'some_column'
-                    },
-                    layer: {
-                        getDownloadFilter: function() {
-                        }
-                    }
-                });
+            filterPanel._applyDateFilterPanel();
 
-                var dateAsString = '2013';
+            expect(filterPanel._fireAddEvent).not.toHaveBeenCalled();
+        });
 
-                spyOn(filterPanel, '_getDateString').andReturn(dateAsString);
+        it('fires event when required fields are set', function() {
+            spyOn(filterPanel, '_requiredFieldsSet').andReturn(true);
 
-                filterPanel.operators = {
-                    getValue: function() { return operator; }
-                };
+            filterPanel._applyDateFilterPanel();
 
-                filterPanel.fromField = {
-                    getValue: function() { return dateAsString; }
-                };
-            });
+            expect(filterPanel._fireAddEvent).toHaveBeenCalled();
+        });
+    });
 
-            it('after', function() {
-                operator = 'after';
-                expectAllCQLFunctionsToEqual(filterPanel, 'some_column >= 2013');
-            });
+    describe('CQL', function() {
 
-            it('before', function() {
-                operator = 'before';
-                expectAllCQLFunctionsToEqual(filterPanel, 'some_column <= 2013');
-            });
+        beforeEach(function() {
+            spyOn(filterPanel, '_getDateString').andCallFake(function(combo) { return combo.getValue() });
 
-            it('between', function() {
-                operator = 'between';
-                expectAllCQLFunctionsToEqual(filterPanel, 'some_column >= 2013 AND some_column <= 2013');
-            });
-
-            var expectAllCQLFunctionsToEqual = function(filterPanel, expectedCQL) {
-                expect(filterPanel.getCQL()).toEqual(expectedCQL);
-                expect(filterPanel.getVisualisationCQL()).toEqual(expectedCQL);
-                expect(filterPanel.getDownloadCQL()).toEqual(expectedCQL);
+            filterPanel.fromField = {
+                getValue: function() { return '2012' }
             };
+
+            filterPanel.toField = {
+                getValue: function() { return '2014' }
+            }
         });
+
+        it('after', function() {
+            spyOn(filterPanel.operators, 'getValue').andReturn('after');
+
+            expectAllCQLFunctionsToEqual(filterPanel, 'some_column >= 2012');
+        });
+
+        it('before', function() {
+            spyOn(filterPanel.operators, 'getValue').andReturn('before');
+
+            expectAllCQLFunctionsToEqual(filterPanel, 'some_column <= 2014');
+        });
+
+        it('between', function() {
+            spyOn(filterPanel.operators, 'getValue').andReturn('between');
+
+            expectAllCQLFunctionsToEqual(filterPanel, 'some_column >= 2012 AND some_column <= 2014');
+        });
+
+        var expectAllCQLFunctionsToEqual = function(filterPanel, expectedCQL) {
+            expect(filterPanel.getCQL()).toEqual(expectedCQL);
+            expect(filterPanel.getVisualisationCQL()).toEqual(expectedCQL);
+            expect(filterPanel.getDownloadCQL()).toEqual(expectedCQL);
+        };
     });
 
     describe('_setExistingFilters', function() {
         it('sets from and to fields from cql parameter', function() {
+            spyOn(filterPanel, '_updateDateFieldsVisibility');
+
             filterPanel.filter = { name: 'test' };
 
             filterPanel.layer = {};
@@ -280,15 +234,15 @@ describe("Portal.filter.DateFilterPanel", function() {
             expect(filterPanel.operators.setValue).toHaveBeenCalledWith("between");
             expect(filterPanel.fromField.setValue).toHaveBeenCalledWith(new Date("Tue Oct 08 2013 00:00:00 GMT+1100 (EST)"));
             expect(filterPanel.toField.setValue).toHaveBeenCalledWith(new Date("Wed Oct 09 2013 00:00:00 GMT+1100 (EST)"));
-            expect(filterPanel.toField.setVisible).toHaveBeenCalledWith(true);
+            expect(filterPanel._updateDateFieldsVisibility).toHaveBeenCalled();
         });
     });
 
-    function _mockFilterFields(dateFilter) {
+    function _mockFilterFields(filterPanel) {
         Ext.each(['operators', 'fromField', 'toField'], function(property, index, all) {
             this[property] = {
                 getValue: noOp
             }
-        }, dateFilter);
+        }, filterPanel);
     }
 });
