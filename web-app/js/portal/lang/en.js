@@ -83,7 +83,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dragLayersOrServers: 'Drag layers or Servers to the menu tree',
 
     // MapOptions
-    panControl: 'Pan Control',
+    panControl: 'Pan/Zoom Control',
 
     // Animation Panel
     selectTimePeriod: 'Select ${direction} Time Period',
