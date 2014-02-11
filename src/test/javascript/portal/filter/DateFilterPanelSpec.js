@@ -34,14 +34,14 @@ describe("Portal.filter.DateFilterPanel", function() {
             dateFilter.toField = {};
             dateFilter.toField.reset = function() {};
             spyOn(dateFilter.toField, 'reset');
-            dateFilter.toField.isVisible = function() {};
-            spyOn(dateFilter.toField, 'isVisible');
+            dateFilter.toField.setVisible = jasmine.createSpy('toField setVisible');
             dateFilter.toField.setMinValue = function() {};
             spyOn(dateFilter.toField, 'setMinValue');
 
             dateFilter.fromField = {};
             dateFilter.fromField.reset = function() {};
             spyOn(dateFilter.fromField, 'reset');
+            dateFilter.fromField.setVisible = jasmine.createSpy('fromField setVisible');
         });
 
         it('clears operators', function() {
@@ -54,25 +54,9 @@ describe("Portal.filter.DateFilterPanel", function() {
             expect(dateFilter.toField.reset).toHaveBeenCalled();
         });
 
-        it('checks if toField is visible', function() {
-            dateFilter.handleRemoveFilter();
-            expect(dateFilter.toField.isVisible).toHaveBeenCalled();
-        });
-
         it('sets min value of toField', function() {
-            dateFilter.toField.isVisible = function() {
-                return true;
-            };
             dateFilter.handleRemoveFilter();
             expect(dateFilter.toField.setMinValue).toHaveBeenCalled();
-        });
-
-        it('does not set min value of toField', function() {
-            dateFilter.toField.isVisible = function() {
-                return false;
-            };
-            dateFilter.handleRemoveFilter();
-            expect(dateFilter.toField.setMinValue).not.toHaveBeenCalled();
         });
 
         it('resets fromField', function() {

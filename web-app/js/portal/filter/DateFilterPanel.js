@@ -52,8 +52,8 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             }
         });
 
-        this.fromField = this._createDateField('from', false);
-        this.toField = this._createDateField('to', true);
+        this.fromField = this._createDateField('from');
+        this.toField = this._createDateField('to');
 
         this.add(this.operators);
         this.add(this.fromField);
@@ -65,11 +65,11 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
     },
 
-    _createDateField: function(name, hidden) {
+    _createDateField: function(name) {
         return new Ext.form.DateField({
             name: name,
             format: "d/m/Y",
-            hidden: hidden,
+            hidden: true,
             maxValue: new Date(),
             minValue: new Date(0),
             width: 165,
@@ -90,12 +90,15 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _opSelect: function(combo, row, index) {
+
+        this.fromField.setVisible(!this._isSelectedOpSetToNone());
+        this.toField.setVisible(this._isSelectedOpSetToBetween());
+
         if (this._isSelectedOpSetToNone()) {
             this.handleRemoveFilter();
             this._fireAddEvent();
         }
         else {
-            this.toField.setVisible(this._isSelectedOpSetToBetween());
             this._applyDateFilterPanel();
         }
     },
@@ -197,9 +200,10 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.toField.reset();
         this.fromField.reset();
 
-        if (this.toField.isVisible()) {
-            this.toField.setMinValue(new Date(0));
-        }
+        this.fromField.setVisible(false);
+        this.toField.setVisible(false);
+
+        this.toField.setMinValue(new Date(0));
     },
 
     _setExistingFilters: function() {
