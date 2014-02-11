@@ -52,8 +52,8 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             }
         });
 
-        this.toField = this._createDateField('from');
-        this.toField = this._createDateField('to');
+        this.fromField = this._createDateField('from', false);
+        this.toField = this._createDateField('to', true);
 
         this.add(this.operators);
         this.add(this.fromField);
@@ -65,11 +65,11 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
     },
 
-    _createDateField: function(name) {
+    _createDateField: function(name, hidden) {
         return new Ext.form.DateField({
             name: name,
             format: "d/m/Y",
-            hidden: true,
+            hidden: hidden,
             maxValue: new Date(),
             minValue: new Date(0),
             width: 165,

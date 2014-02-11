@@ -270,7 +270,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     },
 
     _clearFilters: function() {
-        Ext.each(this._getActiveFilters(), function(filter) {
+        Ext.each(this.filters, function(filter) {
             filter.handleRemoveFilter();
         });
 
