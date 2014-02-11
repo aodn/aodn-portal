@@ -8,13 +8,13 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
 
-    initComponent: function(cfg) {
+    initComponent: function() {
 
-        var config = Ext.apply({
+        var config = {
             autoScroll: true,
             boxMinWidth: 800,
             width: 1024
-        }, cfg);
+        };
 
         this.store = Portal.data.ActiveGeoNetworkRecordStore.instance();
         this.confirmationWindow = new Portal.cart.DownloadConfirmationWindow();
