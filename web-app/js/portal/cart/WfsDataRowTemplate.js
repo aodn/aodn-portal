@@ -99,7 +99,12 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             this._bodaacCsvDownloadUrl(values)
         );
 
-        return '<div id="downloadEst' + values.uuid + '">' + OpenLayers.i18n("estimatedDlLoadingMessage") + OpenLayers.i18n("estimatedDlLoadingSpinner") + '</div>';
+        return String.format(
+            "<div id=\"{0}\">{1}{2}</div>",
+            estimator.getIdElementName(values.uuid),
+            OpenLayers.i18n("estimatedDlLoadingMessage"),
+            OpenLayers.i18n("estimatedDlLoadingSpinner")
+        );
     },
 
     _cql: function(wmsLayer) {
