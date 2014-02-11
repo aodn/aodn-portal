@@ -28,19 +28,15 @@ describe("Portal.filter.DateFilterPanel", function() {
     describe('handleRemoveFilter', function() {
         beforeEach(function() {
             filterPanel.operators = {};
-            filterPanel.operators.clearValue = function() {};
-            spyOn(filterPanel.operators, 'clearValue');
+            filterPanel.operators.clearValue = jasmine.createSpy('operators clearValue');
 
             filterPanel.toField = {};
-            filterPanel.toField.reset = function() {};
-            spyOn(filterPanel.toField, 'reset');
+            filterPanel.toField.reset = jasmine.createSpy('toField reset');
             filterPanel.toField.setVisible = jasmine.createSpy('toField setVisible');
-            filterPanel.toField.setMinValue = function() {};
-            spyOn(filterPanel.toField, 'setMinValue');
+            filterPanel.toField.setMinValue = jasmine.createSpy('toField setMinValue');
 
             filterPanel.fromField = {};
-            filterPanel.fromField.reset = function() {};
-            spyOn(filterPanel.fromField, 'reset');
+            filterPanel.fromField.reset = jasmine.createSpy('fromField reset');
             filterPanel.fromField.setVisible = jasmine.createSpy('fromField setVisible');
         });
 
