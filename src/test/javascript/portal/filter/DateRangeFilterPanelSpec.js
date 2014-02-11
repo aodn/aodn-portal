@@ -9,8 +9,6 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
     describe('CQL', function() {
         var filterPanel;
         var operator;
-        var fromField;
-        var toField;
 
         beforeEach(function() {
             filterPanel = new Portal.filter.DateRangeFilterPanel({
