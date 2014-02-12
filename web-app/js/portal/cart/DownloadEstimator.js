@@ -13,8 +13,18 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     HALF_GB_IN_BYTES: 536870912,
     EST_FAIL_CODE: -1,
 
-    constructor: function() {
+    constructor: function(cfg) {
+        Ext.apply(
+            this,
+            cfg,
+            { initTimestampString: new Date().getTime().toString() }
+        );
+
         Portal.cart.DownloadEstimator.superclass.constructor.call(this);
+    },
+
+    getIdElementName: function(uuid) {
+        return String.format("downloadEst-{0}-{1}", uuid, this.initTimestampString);
     },
 
     _getDownloadEstimate: function(collection, downloadUrl) {
@@ -36,10 +46,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     },
 
     _createFailMessage: function(result, uuid) {
-        var elementId = 'downloadEst' + uuid;
-        var sizeEstimate = this._generateFailureResponse(result);
-
-        this._addDownloadEstimate.defer(1, this, [sizeEstimate, elementId]);
+        this._addDownloadEstimate.defer(1, this, [this._generateFailureResponse(result), this.getIdElementName(uuid)]);
     },
 
     _generateFailureResponse: function(result) {
@@ -56,10 +63,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     },
 
     _createDownloadEstimate: function(result, uuid) {
-        var sizeEstimate = parseInt(result.responseText);
-        var elementId = 'downloadEst' + uuid;
-
-        this._addDownloadEstimate.defer(1, this, [sizeEstimate, elementId]);
+        this._addDownloadEstimate.defer(1, this, [parseInt(result.responseText), this.getIdElementName(uuid)]);
     },
 
     _addDownloadEstimate: function(sizeEstimate, elementId) {
@@ -78,11 +82,13 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
             }
         }
 
-        sizeDiv.update(htmlAddition);
+        if (sizeDiv) {
+            sizeDiv.update(htmlAddition);
+        }
     },
 
     _generateEstHtmlString: function(estimateInBytes) {
-        var html = '<div>{0} {1}{2} {3}</div>' + '<div class="clear"></div>';
+        var html = '<div>{0} {1}{2} {3}</div><div class="clear"></div>';
         var downloadMessage;
         var fileSizeEstimate;
         var fileMagnitude;
