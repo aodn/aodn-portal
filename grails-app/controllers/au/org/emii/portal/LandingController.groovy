@@ -7,14 +7,31 @@ class LandingController {
 
     def index = {
 
+        def config = Config.activeInstance()
+
         render(
             view: portalInstance.name() + "index",
             model:[
                 oceanCurrent: oceanCurrentService.getRandomDetails(),
-                cfg: Config.activeInstance(),
+                cfg: config,
+                motd: _motd(config),
                 portalBuildInfo: _portalBuildInfo()
             ]
         )
+    }
+
+    def _motd(config) {
+
+        if (config.showMotd()) {
+
+            def motd = config.motd
+            return [
+                title: motd.motdTitle,
+                motd: motd.motd.encodeAsJavaScript()
+            ]
+        }
+
+        return null
     }
 
     def _portalBuildInfo() {

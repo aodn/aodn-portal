@@ -54,20 +54,6 @@ Portal.app = {
     },
 
     afterConfigLoad: function() {
-        // Display MOTD if required on landing page
-        if (window.landingPage) {
-            if (this.portal.config.enableMOTD) {
-                Ext.Msg.show({
-                    title: "<h2>" + this.portal.config.motd.motdTitle + "</h2>",
-                    msg: this.portal.config.motd.motd,
-                    buttons: Ext.Msg.OK,
-                    cls: 'motd',
-                    width: 600
-                });
-            }
-            return;
-        }
-
         // Load saved map (snapshot) if required
         var startSnapshot = null;
         if (window.location.search.length > 0) {

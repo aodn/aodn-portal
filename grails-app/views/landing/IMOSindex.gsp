@@ -20,9 +20,20 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
         <script type="text/javascript">
             // Supporting only Firefox and Chrome users
             Ext.onReady(Portal.app.browserCheck);
+
+            <g:if test="${motd}">
+            // MOTD
+            Ext.onReady(function() {
+                Ext.Msg.show({
+                    title: "<h2>${motd.title}</h2>",
+                    msg: "${motd.motd}",
+                    buttons: Ext.Msg.OK,
+                    cls: 'motd',
+                    width: 600
+                });
+            });
+            </g:if>
         </script>
-
-
     </head>
 
     <body>
@@ -97,7 +108,6 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
                             <div class="buildInfo">${portalBuildInfo}</div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
