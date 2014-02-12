@@ -187,6 +187,12 @@ class SecurityFilters {
             }
         }
 
+        systemAccess(controller: "system", action: "clientLog") {
+            before = {
+                request.accessAllowed = true
+            }
+        }
+
         all(uri: "/**") {
             before = {
                 // Check if request has been allowed by another filter
