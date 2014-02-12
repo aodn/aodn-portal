@@ -66,7 +66,6 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
         this.mon(this.searcher, 'searchcomplete', this._loadStore, this);
         this.mon(this.searcher, 'summaryOnlySearchComplete', this._loadStore, this);
-        this.mon(this.searcher, 'searcherror', this._searchFail, this);
     },
 
     initComponent: function () {
@@ -235,10 +234,6 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         this.setDisabled(this.selectionStore.getCount() == 0 && this.termStore.getCount() == 0);
         this.filterView.setVisible(this.hierarchical || this.selectionStore.getCount() == 0);
         this.doLayout();
-    },
-
-    _searchFail: function (response) {
-        this.setVisible(false);
     },
 
     _getFieldGroup: function () {
