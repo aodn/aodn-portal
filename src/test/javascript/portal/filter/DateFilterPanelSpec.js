@@ -286,7 +286,7 @@ describe("Portal.filter.DateFilterPanel", function() {
 
             dateFilter.layer = {};
             dateFilter.layer.getDownloadFilter = function() {
-                return "test after 2013-10-07T13:00:00Z AND test before 2013-10-08T13:00:00Z";
+                return "test >= 2013-10-07T13:00:00Z AND test <= 2013-10-08T13:00:00Z";
             };
 
             var MockField = function() {
