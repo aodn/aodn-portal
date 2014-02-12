@@ -39,7 +39,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         this.status = new Ext.Container({
             html: OpenLayers.i18n('noActiveCollectionSelected'),
             cls: 'collectionTitle',
-            margins: {top:20, right:5, bottom:10, left:0},
+            margins: {top:20, right:10, bottom:10, left:0},
             autoHeight: true
         });
         
