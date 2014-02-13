@@ -104,7 +104,7 @@ class SecurityFilters {
             }
         }
 
-        proxyAccess(controller: "proxy", action: "index|cache|wmsOnly|downloadGif") {
+        proxyAccess(controller: "proxy", action: "index|cache|wmsOnly") {
             before = {
                 request.accessAllowed = true
             }
