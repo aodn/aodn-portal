@@ -60,7 +60,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         Portal.ui.search.SearchPanel.superclass.initComponent.apply(this);
 
         this.searcher.on('searchcomplete', function(response, page) {
-            this._loadResults(response,page);
+            this._loadResults(response, page);
         }, this);
 
         this.searcher.search();
