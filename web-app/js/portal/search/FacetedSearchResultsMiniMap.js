@@ -38,16 +38,21 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
     },
 
     _renderAndPosition: function() {
-        this.render("fsSearchMap-" + this.storeRowIndex + "-" + this.uuid);
 
-        if (this.metadataExtent.getBounds()) {
-            this.setCenter(
-                this._getCenterLonLat(),
-                this._calculateZoomLevel(this.metadataExtent.getBounds())
-            );
-        }
-        else {
-            this.zoomToExtent(new OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox));
+        var theUuid = "fsSearchMap-" + this.storeRowIndex + "-" + this.uuid;
+        // element may have been removed see issue #938
+        if (Ext.get(theUuid)) {
+
+            this.render(theUuid);
+            if (this.metadataExtent.getBounds()) {
+                this.setCenter(
+                    this._getCenterLonLat(),
+                    this._calculateZoomLevel(this.metadataExtent.getBounds())
+                );
+            }
+            else {
+                this.zoomToExtent(new OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox));
+            }
         }
     },
 
