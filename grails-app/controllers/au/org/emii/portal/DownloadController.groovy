@@ -57,10 +57,10 @@ class DownloadController extends RequestProxyingController {
         }
 
         def layer = Layer.get(layerId)
-        def urlFieldName = layer.urlDownloadFieldName
+        def fieldName = layer.urlDownloadFieldName
         def prefixToRemove = layer.server.urlListDownloadPrefixToRemove
         def newUrlBase = layer.server.urlListDownloadPrefixToSubstitue
-        def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$urlFieldName")
+        def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$fieldName")
 
         if (!hostVerifier.allowedHost(request, url)) {
             render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: 400
@@ -68,7 +68,7 @@ class DownloadController extends RequestProxyingController {
         }
 
         def resultStream = new ByteArrayOutputStream()
-        def streamProcessor = urlListStreamProcessor(urlFieldName, prefixToRemove, newUrlBase)
+        def streamProcessor = urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase)
 
         _executeExternalRequest url, streamProcessor, resultStream
         def urls = new String(resultStream.toByteArray(), 'UTF-8').split()
