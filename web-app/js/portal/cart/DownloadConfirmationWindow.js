@@ -143,6 +143,9 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
     },
 
     _openDownload: function(url) {
+
+        log.debug('Downloading from URL: ' + url);
+
         window.location = url;
     }
 });
