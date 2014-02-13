@@ -128,7 +128,7 @@ class Config {
         }
     }
 
-    def showMotd() {
+    def hasCurrentMotd() {
 
         def now = new Date()
 
@@ -136,5 +136,10 @@ class Config {
             enableMOTD &&
             now.after(motdStart) &&
             now.before(motdEnd)
+    }
+
+    def getCurrentMotd() {
+
+        hasCurrentMotd() ? motd : null
     }
 }

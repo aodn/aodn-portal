@@ -21,12 +21,12 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
             // Supporting only Firefox and Chrome users
             Ext.onReady(Portal.app.browserCheck);
 
-            <g:if test="${motd}">
+            <g:if test="${cfg.currentMotd}">
             // MOTD
             Ext.onReady(function() {
                 Ext.Msg.show({
-                    title: "<h2>${motd.title}</h2>",
-                    msg: "${motd.motd}",
+                    title: "<h2>${cfg.motd.motdTitle}</h2>",
+                    msg: "${cfg.motd.motd}",
                     buttons: Ext.Msg.OK,
                     cls: 'motd',
                     width: 600

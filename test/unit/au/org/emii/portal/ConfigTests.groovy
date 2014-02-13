@@ -22,21 +22,21 @@ class ConfigTests extends GrailsUnitTestCase {
 
     void testShowMotd() {
 
-        assertTrue config.showMotd()
+        assertTrue config.hasCurrentMotd()
     }
 
     void testShowMotdNoMotd() {
 
         config.motd = null
 
-        assertFalse config.showMotd()
+        assertFalse config.hasCurrentMotd()
     }
 
     void testShowMotdNotEnabled() {
 
         config.enableMOTD = false
 
-        assertFalse config.showMotd()
+        assertFalse config.hasCurrentMotd()
     }
 
     void testShowMotdTimeRangeInPast() {
@@ -44,7 +44,7 @@ class ConfigTests extends GrailsUnitTestCase {
         config.motdStart = dayBeforeYesterday
         config.motdEnd = yesterday
 
-        assertFalse config.showMotd()
+        assertFalse config.hasCurrentMotd()
     }
 
     void testShowMotdTimeRangeInFuture() {
@@ -52,6 +52,6 @@ class ConfigTests extends GrailsUnitTestCase {
         config.motdStart = tomorrow
         config.motdEnd = dayAfterTomorrow
 
-        assertFalse config.showMotd()
+        assertFalse config.hasCurrentMotd()
     }
 }
