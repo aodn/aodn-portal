@@ -16,11 +16,12 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
                 padding: '5',
                 align: 'left'
             }
-        }, cfg );
+        }, cfg);
 
         this.TIME_UTIL = new Portal.utils.TimeUtil();
         // Divide time zone offset by 60 to get total hours
         this.timeZoneCorrect = (new Date().getTimezoneOffset()) / -60;
+
         Portal.filter.DateFilterPanel.superclass.constructor.call(this, config);
     },
 
@@ -36,7 +37,12 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
                 fields: [
                     'op'
                 ],
-                data: [[OpenLayers.i18n("comboOptionNone")], [OpenLayers.i18n("comboOptionBefore")], [OpenLayers.i18n("comboOptionAfter")], [OpenLayers.i18n("comboOptionBetween")]]
+                data: [
+                    [OpenLayers.i18n("comboOptionNone")],
+                    [OpenLayers.i18n("comboOptionBefore")],
+                    [OpenLayers.i18n("comboOptionAfter")],
+                    [OpenLayers.i18n("comboOptionBetween")]
+                ]
             }),
             valueField: 'op',
             displayField: 'op',
@@ -46,32 +52,8 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             }
         });
 
-        this.fromField = new Ext.form.DateField({
-            name: 'from',
-            format: "d/m/Y",
-            maxValue: new Date(),
-            minValue: new Date(0),
-            width: 165,
-            listeners: {
-                scope: this,
-                select: this._onSelect,
-                change: this._onSelect
-            }
-        });
-
-        this.toField = new Ext.form.DateField({
-            name: 'to',
-            format: "d/m/Y",
-            hidden: true,
-            maxValue: new Date(),
-            minValue: new Date(0),
-            width: 165,
-            listeners: {
-                scope: this,
-                select: this._onSelect,
-                change: this._onSelect
-            }
-        });
+        this.fromField = this._createDateField('from');
+        this.toField = this._createDateField('to');
 
         this.add(this.operators);
         this.add(this.fromField);
@@ -83,6 +65,22 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
     },
 
+    _createDateField: function(name) {
+        return new Ext.form.DateField({
+            name: name,
+            format: "d/m/Y",
+            hidden: true,
+            maxValue: new Date(),
+            minValue: new Date(0),
+            width: 165,
+            listeners: {
+                scope: this,
+                select: this._onSelect,
+                change: this._onSelect
+            }
+        });
+    },
+
     _setMinMax: function(dateField, vals) {
         dateField.setMinValue(this.TIME_UTIL._parseIso8601Date(vals[0]));
 
@@ -92,12 +90,14 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _opSelect: function(combo, row, index) {
+
+        this._updateDateFieldsVisibility();
+
         if (this._isSelectedOpSetToNone()) {
             this.handleRemoveFilter();
             this._fireAddEvent();
         }
         else {
-            this.toField.setVisible(this._isSelectedOpSetToBetween());
             this._applyDateFilterPanel();
         }
     },
@@ -118,18 +118,36 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         return this.operators.getValue() == 'before';
     },
 
+    _isFromFieldUsed: function() {
+        return this._isSelectedOpSetToAfter() || this._isSelectedOpSetToBetween();
+    },
+
+    _isToFieldUsed: function() {
+        return this._isSelectedOpSetToBefore() || this._isSelectedOpSetToBetween();
+    },
+
+    _updateDateFieldsVisibility: function() {
+        this.fromField.setVisible(this._isFromFieldUsed());
+        this.toField.setVisible(this._isToFieldUsed());
+    },
+
     _getDateString: function(combo) {
+
         var newDate = combo.getValue();
-        newDate.setHours(this.timeZoneCorrect);
-        return this.TIME_UTIL._toUtcIso8601DateString(newDate);
+        if (newDate) {
+            newDate.setHours(this.timeZoneCorrect);
+            return this.TIME_UTIL._toUtcIso8601DateString(newDate);
+        }
+
+        return '';
     },
 
     _onSelect: function(picker, date) {
-    	if (this._isSelectedOpSetToBetween) {
-    	    if (this.toField.isVisible()) {
-    	        this.toField.setMinValue(this.fromField.getValue());
-    	    }
-    	}
+        if (this._isSelectedOpSetToBetween) {
+            if (this.toField.isVisible()) {
+                this.toField.setMinValue(this.fromField.getValue());
+            }
+        }
         this._applyDateFilterPanel();
     },
 
@@ -145,35 +163,36 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     _getCQLUsingColumnNames: function(startDateRangeColumnName, endDateRangeColumnName) {
 
-        if (!this.fromField.getValue()) {
-            return '';
-        }
-
         var cql = '';
 
-        if (this._isSelectedOpSetToBetween()) {
-            cql += String.format(
-                "{0} >= {1} AND {2} <= {3}",
-                endDateRangeColumnName,
-                this._getDateString(this.fromField),
-                startDateRangeColumnName,
-                this._getDateString(this.toField));
+        if (this._isFromFieldUsed()) {
+            cql = String.format("{0} >= {1}", endDateRangeColumnName, this._getDateString(this.fromField));
         }
-        else if (this._isSelectedOpSetToAfter()) {
-            cql += String.format("{0} >= {1}", endDateRangeColumnName, this._getDateString(this.fromField));
+
+        if (this._isFromFieldUsed() && this._isToFieldUsed()) {
+            cql += ' AND ';
         }
-        else if (this._isSelectedOpSetToBefore()) {
-            cql += String.format("{0} <= {1}", startDateRangeColumnName, this._getDateString(this.fromField));
+
+        if (this._isToFieldUsed()) {
+            cql += String.format("{0} <= {1}", startDateRangeColumnName, this._getDateString(this.toField));
         }
 
         return cql;
     },
 
     _requiredFieldsSet: function() {
-        var requiredFields = [this.operators.getValue(), this.fromField.getValue()];
-        if (this.operators.getValue() == 'between') {
+        var requiredFields = [];
+
+        requiredFields.push(this.operators.getValue());
+
+        if (this._isFromFieldUsed()) {
+            requiredFields.push(this.fromField.getValue());
+        }
+
+        if (this._isToFieldUsed()) {
             requiredFields.push(this.toField.getValue());
         }
+
         return this._all(requiredFields);
     },
 
@@ -193,20 +212,18 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.toField.reset();
         this.fromField.reset();
 
-        if (this.toField.isVisible()) {
-            this.toField.setMinValue(new Date(0));
-        }
+        this._updateDateFieldsVisibility();
 
-        this.CQL = "";
+        this.toField.setMinValue(new Date(0));
     },
 
     _setExistingFilters: function() {
         var beforePattern = this.filter.name + " <= (.*?)( |$)";
         var afterPattern = this.filter.name + " >= (.*?)( |$)";
 
-        betweenRe = new RegExp(afterPattern + "AND " + beforePattern);
-        beforeRe = new RegExp(beforePattern);
-        afterRe = new RegExp(afterPattern);
+        var betweenRe = new RegExp(afterPattern + "AND " + beforePattern);
+        var beforeRe = new RegExp(beforePattern);
+        var afterRe = new RegExp(afterPattern);
 
         var m = beforeRe.exec(this.layer.getDownloadFilter());
         var m2 = afterRe.exec(this.layer.getDownloadFilter());
@@ -215,7 +232,6 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         if (between != null && between.length == 5) {
             this.operators.setValue('between');
             this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(between[1]));
-            this.toField.setVisible(true);
             this.toField.setValue(this.TIME_UTIL._parseIso8601Date(between[3]));
         }
         else {
@@ -228,5 +244,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
                 this.fromField.setValue(this.TIME_UTIL._parseIso8601Date(m2[1]));
             }
         }
+
+        this._updateDateFieldsVisibility();
     }
 });

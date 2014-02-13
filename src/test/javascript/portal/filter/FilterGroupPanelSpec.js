@@ -176,11 +176,11 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         it('clears all filters', function() {
 
-            spyOn(filterGroupPanel, '_getActiveFilters').andReturn([
+            filterGroupPanel.filters = [
                 _mockFilter('oxygen_sensor'),
                 _mockFilter('data_centre'),
                 _mockFilter('pi')
-            ]);
+            ];
 
             spyOn(filterGroupPanel, '_updateLayerFilters');
 
