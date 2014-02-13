@@ -58,7 +58,8 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
 
         this.mon(this.goButton, 'click', this.onGo, this);
         this.mon(this.clearButton, 'click', this.clearDateRange, this);
-        this.mon(this.dateRange, 'select', this.onSelect, this);  
+        this.mon(this.dateRange, 'select', this.onSelect, this);
+        this.mon(this.dateRange, 'change', this.onSelect, this);
     },
 
     initComponent:function () {
