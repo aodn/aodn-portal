@@ -31,7 +31,7 @@ class DownloadController extends RequestProxyingController {
         }
 
         def layer = Layer.get(layerId)
-
+        def fieldName = layer.urlDownloadFieldName
         def prefixToRemove = layer.server.urlListDownloadPrefixToRemove
         def newUrlBase = layer.server.urlListDownloadPrefixToSubstitue
 
@@ -42,8 +42,8 @@ class DownloadController extends RequestProxyingController {
         }
 
         _performProxying(
-            requestSingleFieldParamProcessor(layer.urlDownloadFieldName),
-            urlListStreamProcessor(layer)
+            requestSingleFieldParamProcessor(fieldName),
+            urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase)
         )
     }
 
@@ -58,6 +58,8 @@ class DownloadController extends RequestProxyingController {
 
         def layer = Layer.get(layerId)
         def urlFieldName = layer.urlDownloadFieldName
+        def prefixToRemove = layer.server.urlListDownloadPrefixToRemove
+        def newUrlBase = layer.server.urlListDownloadPrefixToSubstitue
         def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$urlFieldName")
 
         if (!hostVerifier.allowedHost(request, url)) {
@@ -66,7 +68,7 @@ class DownloadController extends RequestProxyingController {
         }
 
         def resultStream = new ByteArrayOutputStream()
-        def streamProcessor = urlListStreamProcessor(layer)
+        def streamProcessor = urlListStreamProcessor(urlFieldName, prefixToRemove, newUrlBase)
 
         _executeExternalRequest url, streamProcessor, resultStream
         def urls = new String(resultStream.toByteArray(), 'UTF-8').split()
@@ -124,11 +126,7 @@ class DownloadController extends RequestProxyingController {
         }
     }
 
-    def urlListStreamProcessor(layer) {
-
-        def fieldName = layer.urlDownloadFieldName
-        def prefixToRemove = layer.server.urlListDownloadPrefixToRemove
-        def newUrlBase = layer.server.urlListDownloadPrefixToSubstitue
+    def urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase) {
 
         return { inputStream, outputStream ->
 
