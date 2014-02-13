@@ -30,7 +30,12 @@ class SystemController {
     }
 
     def clientLog = {
-        clientLogger."${params.level.toLowerCase()}"(params.message);
+        clientLogger."${params.level.toLowerCase()}"("session ID: ${clientLogId}, message: ${params.message}");
         render status: 200, text: "Log posted"
+    }
+
+    def getClientLogId() {
+        // First few chars should be enough (a la git SHAs).
+        session.id[0..8]
     }
 }
