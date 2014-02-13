@@ -16,30 +16,6 @@ class ProxyController extends RequestProxyingController {
 
     // Index action inherited from RequestProxyingController
 
-    def downloadGif = {
-
-        // Todo - DN: building this filename should be done in Javascript. Then we wouldn't need this separate action.
-
-        def injectGifFilename = { params ->
-
-            def layersField = "LAYERS="
-            def fieldIndex = params.url.indexOf(layersField)
-
-            if (fieldIndex > -1) {
-                def layerName = params.url.substring(fieldIndex + layersField.length())
-                def timeStr = params.TIME
-                    .replaceAll("[-:]", "")
-                    .replaceAll("/", "_")
-
-                params.downloadFilename = "${layerName}_${timeStr}.gif"
-            }
-
-            return params
-        }
-
-        _performProxying(injectGifFilename)
-    }
-
     // this action is intended to always be cached by squid
     // expects Open layers requests
     def cache = {
