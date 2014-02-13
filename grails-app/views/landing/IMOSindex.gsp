@@ -82,7 +82,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
                         </div>
 
                         <div class="landingSubRight">
-                            <p>IMOS data is made freely available under the <a title="Conditions of Use" href="http://imos.org.au/fileadmin/user_upload/shared/IMOS%20General/documents/internal/IMOS_Policy_documents/Policy-Acknowledgement_of_use_of_IMOS_data_11Jun09.pdf">Conditions of Use</a>. <br />Both IMOS data and this site are licensed under a <a target="_blank" href="http://creativecommons.org/licenses/by/2.5/au/" title="Creative Commons License" class="external"><span>Creative Commons Attribution 2.5 Australia License</span>
+                            <p>IMOS data is made freely available under the <a title="Conditions of Use" href="http://imos.org.au/fileadmin/user_upload/shared/IMOS%20General/documents/internal/IMOS_Policy_documents/Policy-Acknowledgement_of_use_of_IMOS_data_11Jun09.pdf" target="_blank">Conditions of Use</a>. <br />Both IMOS data and this site are licensed under a <a target="_blank" href="http://creativecommons.org/licenses/by/2.5/au/" title="Creative Commons License" class="external"><span>Creative Commons Attribution 2.5 Australia License</span>
                             </a> <a target="_blank" href="http://creativecommons.org/licenses/by/2.5/au/" title="Creative Commons License" class="external"><img src="${resource(dir: 'images', file: 'by.png')}" />
                             </a></p>
 

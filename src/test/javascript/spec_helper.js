@@ -84,6 +84,8 @@ var setupTestConfigAndStubs = function() {
 
     // Stop 404s.
     OpenLayers.Lang.en.loadingSpinner = '';
+
+    log.removeAllAppenders();
 };
 
 var mockLayoutForMainPanel = function(mainPanel) {

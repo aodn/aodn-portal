@@ -213,11 +213,9 @@ describe("Portal.filter.DateFilterPanel", function() {
         it('sets from and to fields from cql parameter', function() {
             spyOn(filterPanel, '_updateDateFieldsVisibility');
 
-            filterPanel.filter = { name: 'test' };
-
-            filterPanel.layer = {};
-            filterPanel.layer.getDownloadFilter = function() {
-                return "test after 2013-10-07T13:00:00Z AND test before 2013-10-08T13:00:00Z";
+            dateFilter.layer = {};
+            dateFilter.layer.getDownloadFilter = function() {
+                return "test >= 2013-10-07T13:00:00Z AND test <= 2013-10-08T13:00:00Z";
             };
 
             var MockField = function() {

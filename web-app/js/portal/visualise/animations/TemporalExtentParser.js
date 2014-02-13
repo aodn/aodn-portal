@@ -73,7 +73,7 @@ Portal.visualise.animations.TemporalExtentParser = Ext.extend(Object, {
             }
         }
         else {
-            console.log('Date not understood: ' + period);
+            log.error('Date not understood: ' + period);
         }
 
         // Don't try to sort it, it's an array of moment()s, it'll sort

@@ -218,8 +218,8 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _setExistingFilters: function() {
-        var beforePattern = this.filter.name + " before (.*?)( |$)";
-        var afterPattern = this.filter.name + " after (.*?)( |$)";
+        var beforePattern = this.filter.name + " <= (.*?)( |$)";
+        var afterPattern = this.filter.name + " >= (.*?)( |$)";
 
         var betweenRe = new RegExp(afterPattern + "AND " + beforePattern);
         var beforeRe = new RegExp(beforePattern);

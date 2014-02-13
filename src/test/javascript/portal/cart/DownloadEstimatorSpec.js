@@ -81,4 +81,19 @@ describe('Portal.cart.DownloadEstimator', function() {
             expect(mockHtml).toEqual('<div>' + OpenLayers.i18n('estimatedDlMessage') + ' 400.0MB </div><div class="clear"></div>');
         });
     });
+
+    describe('creates a unique html element per download view request', function() {
+        it('responds to getIdElementName', function() {
+            expect(estimator.getIdElementName).toBeDefined();
+        });
+
+        it('defines getIdElementName as a function', function() {
+            expect(typeof(estimator.getIdElementName)).toEqual('function');
+        });
+
+        it('creates a unique id element name for each estimator for a uuid', function() {
+            var otherEstimator = new Portal.cart.DownloadEstimator({ initTimestampString: '0' });
+            expect(estimator.getIdElementName('1')).not.toEqual(otherEstimator.getIdElementName('1'));
+        });
+    });
 });

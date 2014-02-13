@@ -56,13 +56,13 @@ Portal.config.PortalConfigLoader = Ext.extend(Object, {
             this.viewportConfigLoaded = true;
         }
         catch (e) {
-            console.log('Unable to load app config. Invalid response: ' + txt);
+            log.error('Unable to load app config. Invalid response: ' + txt);
             this.viewportConfigLoaded = false;
         }
     },
 
     viewportConfigLoadFailure: function(resp) {
-        console.log( "Unable to load viewport config: '" + resp.responseText + "' (status: " + resp.status + ")" );
+        log.error("Unable to load viewport config: '" + resp.responseText + "' (status: " + resp.status + ")" );
         this.viewportConfigLoaded = false;
     },
 

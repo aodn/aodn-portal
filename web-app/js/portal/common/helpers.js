@@ -92,10 +92,13 @@ function pad(numNumber, numLength) {
 
 //if its XML then ncWMS is assumed. XML can mean errors
 function formatGetFeatureInfo(response, options) {
-    if (options.extraParams.expectedFormat == 'text/html') {
+
+    var expectedFormat = options.extraParams.expectedFormat;
+
+    if (expectedFormat == 'text/html') {
 
         // strip out all unwanted HTML
-        if ( response.responseText.match(/<\/body>/m)) {
+        if (response.responseText.match(/<\/body>/m)) {
 
             var html_content  =  response.responseText.match(/(.|\s)*?<body[^>]*>((.|\s)*?)<\/body>(.|\s)*?/m);
             if (html_content) {
@@ -108,15 +111,16 @@ function formatGetFeatureInfo(response, options) {
             }
         }
     }
-    else if (options.extraParams.expectedFormat == 'text/xml') {
+    else if (expectedFormat == 'text/xml') {
         return setHTML_ncWMS(response, options);
     }
-    else if (options.extraParams.expectedFormat == 'text/plain') {
+    else if (expectedFormat == 'text/plain') {
         // cant be assed to handle different line endings. its crap anyhow
         return "<div class=\"featureinfocontent\"><pre>" + response.responseText + "</pre></div>";
     }
     else {
-        console.log("ERROR: as yet unhandled response type for getFeatureInfo");
+        log.error("Unhandled response type for getFeatureInfo: '" + expectedFormat + "'");
+        return '';
     }
 }
 
@@ -226,8 +230,8 @@ function setHTML_ncWMS(response, options) {
         }
     }
     else {
-        console.log("ERROR: getFeatureInfo xml response empty or should have longitude element. response following:");
-        console.log(response.responseXML);
+        log.error("getFeatureInfo xml response empty or should have longitude element. response following:");
+        log.error(response.responseXML);
     }
 
     return html;
