@@ -137,9 +137,4 @@ class Config {
             now.after(motdStart) &&
             now.before(motdEnd)
     }
-
-    def getCurrentMotd() {
-
-        hasCurrentMotd() ? motd : null
-    }
 }
