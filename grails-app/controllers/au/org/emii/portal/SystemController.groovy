@@ -7,9 +7,12 @@
 
 package au.org.emii.portal
 
-import org.apache.log4j.Level
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class SystemController {
+
+    static final Logger clientLogger = LoggerFactory.getLogger('client-log')
 
     // From Stackoverflow:
     // http://stackoverflow.com/questions/1766917/is-it-possible-to-catch-handle-exceptions-thrown-from-a-grails-controller-aop
@@ -27,7 +30,7 @@ class SystemController {
     }
 
     def clientLog = {
-        log."${params.level.toLowerCase()}"("[client log] - ${params.message}");
+        clientLogger."${params.level.toLowerCase()}"("[client log] - ${params.message}");
         render status: 200, text: "Log posted"
     }
 }
