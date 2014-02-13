@@ -127,4 +127,14 @@ class Config {
             MenuJsonCache.instance().recache(configInstance.defaultMenu)
         }
     }
+
+    def hasCurrentMotd() {
+
+        def now = new Date()
+
+        return motd &&
+            enableMOTD &&
+            now.after(motdStart) &&
+            now.before(motdEnd)
+    }
 }
