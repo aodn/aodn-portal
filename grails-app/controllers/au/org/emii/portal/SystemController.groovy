@@ -30,7 +30,7 @@ class SystemController {
     }
 
     def clientLog = {
-        clientLogger."${params.level.toLowerCase()}"("[client log] - ${params.message}");
+        clientLogger."${params.level.toLowerCase()}"(params.message);
         render status: 200, text: "Log posted"
     }
 }
