@@ -25,22 +25,31 @@ target(collatePortalJavaScriptFiles: "Collates all the custom portal JS code int
         println "[collateportaljavascriptfiles] Collated file deleted"
     }
 
-    getPortalJsFiles(stagingDir).each { filename ->
+    def portalJsFiles = getPortalJsFiles(stagingDir)
+
+    if (portalJsFiles.isEmpty()) {
+        throw new Exception("No Javascript files to collate.")
+    }
+
+    portalJsFiles.each { filename ->
         println "[collateportaljavascriptfiles] Appending $filename"
-        resultFile << new File(_buildPath([stagingDir, 'js', filename])).text
+        resultFile << new File(_buildPath([stagingDir, filename])).text
         resultFile << System.properties["line.separator"]
     }
 }
 
 def getPortalJsFiles(stagingDir) {
-
     def includes = []
+
     new File(_buildPath([stagingDir, 'WEB-INF', 'grails-app', 'views', "_js_includes.gsp"])).eachLine { line ->
         // We want to match lines like file:'portal/prototypes/OpenLayers.js?'
-        def matcher = line =~ /file:\s*'(portal\/.+)'/
+        def matcher = line =~ /dir:\s*'(js\\/portal.*)',\s*file:\s*'(.+)'/
         if (matcher.find()) {
-            println "[collateportaljavascriptfiles] Adding ${matcher.group(1)} to files to be collated"
-            includes << matcher.group(1)
+            def filePath = _buildPath([matcher.group(1), matcher.group(2)])
+
+            println "[collateportaljavascriptfiles] Adding $filePath to files to be collated"
+
+            includes << filePath
         }
     }
 
