@@ -23,7 +23,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
             ]
         }, cfg);
 
-        this.fgps = {};
+        this.filterGroupPanels = {};
 
         Portal.details.SubsetPanel.superclass.constructor.call(this, config);
     },
@@ -43,13 +43,13 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
 
     _extJsLayoutHack: function(layer) {
         if (!layer.isNcwms()) {
-            if (!this.fgps[layer.id]) {
+            if (!this.filterGroupPanels[layer.id]) {
                 var filterGroupPanel = new Portal.filter.FilterGroupPanel();
                 this.add(filterGroupPanel);
-                this.fgps[layer.id] = filterGroupPanel;
+                this.filterGroupPanels[layer.id] = filterGroupPanel;
             }
 
-            this.filterGroupPanel = this.fgps[layer.id];
+            this.filterGroupPanel = this.filterGroupPanels[layer.id];
         }
     }
 });
