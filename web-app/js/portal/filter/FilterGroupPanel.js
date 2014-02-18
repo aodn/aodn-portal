@@ -88,18 +88,18 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     },
 
     handleLayer: function(layer, show, hide, target) {
+        if (this._layerHasNotBeenHandled()) {
+            this._handleLayer(layer, show, hide, target);
+        }
+    },
 
+    _handleLayer: function(layer, show, hide, target) {
         this.layer = layer;
-
-        this.removeAll();
-        this.doLayout();
-        this.addLoadingMessage();
 
         if (layer.filters) {
             this._showHideFilters(layer, show, hide, target);
         }
         else if (layer.isKnownToThePortal()) {
-
             Ext.Ajax.request({
                 url: this.GET_FILTER,
                 params: {
@@ -204,7 +204,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         Ext.each(this._getActiveFilters(), function(filter) {
             var filterCQL = filter.getVisualisationCQL();
             if (filterCQL) {
-                cql.push(filter.getVisualisationCQL());
+                cql.push(filterCQL);
             }
         });
 
@@ -275,5 +275,13 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         });
 
         this._updateLayerFilters();
+    },
+
+    _layerHasBeenHandled: function() {
+        return this.filters.length > 0;
+    },
+
+    _layerHasNotBeenHandled: function() {
+        return !this._layerHasBeenHandled();
     }
 });
