@@ -44,6 +44,8 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             this.layer.addFeatures(new OpenLayers.Feature.Vector(options.initialConstraint));
             this.events.triggerEvent('spatialconstraintadded');
         }
+        
+        this._isModified = false;
     },
 
     _configureEventsAndHandlers: function() {
@@ -72,8 +74,13 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     clear: function() {
         this.layer.destroyFeatures();
         this.map.events.triggerEvent('spatialconstraintcleared');
+        this._isModified = true;
     },
 
+    isModified: function() {
+        return this._isModified;  
+    },
+    
     hasConstraint: function() {
         return this._getFeature() != undefined;
     },

@@ -119,10 +119,10 @@ describe("Portal.ui.MapPanel", function() {
             expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
         });
 
-        it('should call _updateSpatialConstraintStyle', function() {
-            spyOn(mapPanel.map, 'updateSpatialConstraintStyle');
+        it('should call resetSpatialConstraint', function() {
+            spyOn(mapPanel.map, 'resetSpatialConstraint');
             Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
-            expect(mapPanel.map.updateSpatialConstraintStyle).toHaveBeenCalled();
+            expect(mapPanel.map.resetSpatialConstraint).toHaveBeenCalled();
         });
     });
 
@@ -150,10 +150,10 @@ describe("Portal.ui.MapPanel", function() {
             expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
         });
 
-        it('should call _updateSpatialConstraintStyle', function() {
-            spyOn(mapPanel.map, 'updateSpatialConstraintStyle');
+        it('should call resetSpatialConstraint', function() {
+            spyOn(mapPanel.map, 'resetSpatialConstraint');
             Ext.MsgBus.publish('removeAllLayers');
-            expect(mapPanel.map.updateSpatialConstraintStyle).toHaveBeenCalled();
+            expect(mapPanel.map.resetSpatialConstraint).toHaveBeenCalled();
         });
     });
 

@@ -421,6 +421,14 @@ OpenLayers.Map.prototype.getConstraint = function() {
     return undefined;
 };
 
+OpenLayers.Map.prototype.isConstraintModified = function() {
+    if (this.spatialConstraintControl) {
+        return this.spatialConstraintControl.isModified();
+    } else {
+        return false;
+    }
+};
+
 OpenLayers.Map.prototype.setDefaultSpatialConstraintType = function(spatialConstraintType) {
     this.defaultSpatialConstraintType = spatialConstraintType;
     this.resetSpatialConstraint();
@@ -438,7 +446,9 @@ OpenLayers.Map.prototype.getSpatialConstraintType = function() {
 };
 
 OpenLayers.Map.prototype.resetSpatialConstraint = function() {
-    this.updateSpatialConstraintStyle(this.defaultSpatialConstraintType); 
+    if (this.polygonStyle != this.defaultSpatialConstraintType || this.isConstraintModified()) {
+        this.updateSpatialConstraintStyle(this.defaultSpatialConstraintType);
+    }
 };
 
 OpenLayers.Map.prototype.updateSpatialConstraintStyle = function(polygonStyle) {
