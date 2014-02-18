@@ -9,21 +9,14 @@ Ext.namespace('Portal.form');
 
 Portal.form.PolygonTypeComboBox = Ext.extend(Ext.form.ComboBox, {
 
-    NONE: { style: "none", label: OpenLayers.i18n('polygonTypeNone') },
-    POLYGON: { style: "polygon", label: OpenLayers.i18n('polygonTypePolygon') },
-    BOUNDING_BOX: { style: "bounding box", label: OpenLayers.i18n('polygonTypeBoundingBox') },
-
-    VALUE_CHANGED_EVENT: 'Portal.form.PolygonTypeComboBox.valuechanged',
-
     constructor: function(cfg) {
         var config = Ext.apply({
             store: new Ext.data.JsonStore({
-                fields: ['style', 'label'],
-                data: [this.BOUNDING_BOX, this.POLYGON, this.NONE]
+                fields: ['value', 'label'],
+                data: OpenLayers.i18n('comboBoxTypeLabels')
             }),
             width: 165,
-            value: this.BOUNDING_BOX.style,
-            valueField: 'style',
+            valueField: 'value',
             displayField: 'label',
             mode: 'local',
             triggerAction: "all",
@@ -32,21 +25,28 @@ Portal.form.PolygonTypeComboBox = Ext.extend(Ext.form.ComboBox, {
 
         Portal.form.PolygonTypeComboBox.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe(this.VALUE_CHANGED_EVENT, this._updateValue, this);
+        this._bindToMap();
     },
 
+    _bindToMap: function() {
+        this.setValue(this.map.getSpatialConstraintType());
+        
+        this.map.events.on({
+            scope: this,
+            'spatialconstrainttypechanged': this._updateValue
+        });
+    },
+    
     setValue: function(value) {
         Portal.form.PolygonTypeComboBox.superclass.setValue.call(this, value);
         if (!this.updating) {
-            Ext.MsgBus.publish(this.VALUE_CHANGED_EVENT, { sender: this, value: value });
+            this.map.setSpatialConstraintStyle(value);
         }
         delete this.updating;
     },
 
-    _updateValue: function(subject, message) {
-        if (this !== message.polygonTypeComboBox) {
-            this.updating = true;
-            this.setValue(message.value);
-        }
+    _updateValue: function(spatialConstraintType) {
+        this.updating = true;
+        this.setValue(spatialConstraintType);
     }
 });

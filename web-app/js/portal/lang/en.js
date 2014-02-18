@@ -262,10 +262,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     polygonTypePanelHeader: "Map Polygon Drawing Style",
 
     // PolygonTypeComboBox
-    polygonTypeNone: "none",
-    polygonTypePolygon: "polygon",
-    polygonTypeBoundingBox: "bounding box",
-
+    comboBoxTypeLabels: [
+        { value: Portal.ui.openlayers.SpatialConstraintType.NONE, label: "none" },
+        { value: Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX, label: "bounding box" },
+        { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "polygon" }
+    ],
+    
     // WfsDataRowTemplate
     fileSizeIconMarkup: '<img src="images/error.png">',
     fileSizeGb: "GB",

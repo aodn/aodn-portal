@@ -27,7 +27,9 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     _addPolygonTypeCombo: function() {
-        this.polygonTypeCombo = new Portal.form.PolygonTypeComboBox();
+        this.polygonTypeCombo = new Portal.form.PolygonTypeComboBox({
+            map: this.map
+        });
         this.add(this.polygonTypeCombo);
     },
 

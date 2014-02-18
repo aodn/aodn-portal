@@ -36,19 +36,19 @@ describe("Portal.ui.MapPanel", function() {
         });
 
         it('clears the spatial constraint when there are no layers left', function() {
-            spyOn(mapPanel, '_updateSpatialConstraintStyle');
+            spyOn(mapPanel.map, 'resetSpatialConstraint');
             Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
-            expect(mapPanel._updateSpatialConstraintStyle).toHaveBeenCalled();
+            expect(mapPanel.map.resetSpatialConstraint).toHaveBeenCalled();
         });
 
         it('does not clear the spatial constraint when there are layers', function() {
             spyOn(Portal.details.DetailsPanel.prototype, 'updateDetailsPanel');
 
-            spyOn(mapPanel, '_updateSpatialConstraintStyle');
+            spyOn(mapPanel.map, 'updateSpatialConstraintStyle');
             Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, {
                 hasBoundingBox: noOp
             });
-            expect(mapPanel._updateSpatialConstraintStyle).not.toHaveBeenCalled();
+            expect(mapPanel.map.updateSpatialConstraintStyle).not.toHaveBeenCalled();
         });
 
         it('on baseLayerChanged event', function() {
@@ -120,9 +120,9 @@ describe("Portal.ui.MapPanel", function() {
         });
 
         it('should call _updateSpatialConstraintStyle', function() {
-            spyOn(mapPanel, '_updateSpatialConstraintStyle');
+            spyOn(mapPanel.map, 'updateSpatialConstraintStyle');
             Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
-            expect(mapPanel._updateSpatialConstraintStyle).toHaveBeenCalled();
+            expect(mapPanel.map.updateSpatialConstraintStyle).toHaveBeenCalled();
         });
     });
 
@@ -151,9 +151,9 @@ describe("Portal.ui.MapPanel", function() {
         });
 
         it('should call _updateSpatialConstraintStyle', function() {
-            spyOn(mapPanel, '_updateSpatialConstraintStyle');
+            spyOn(mapPanel.map, 'updateSpatialConstraintStyle');
             Ext.MsgBus.publish('removeAllLayers');
-            expect(mapPanel._updateSpatialConstraintStyle).toHaveBeenCalled();
+            expect(mapPanel.map.updateSpatialConstraintStyle).toHaveBeenCalled();
         });
     });
 
@@ -176,90 +176,6 @@ describe("Portal.ui.MapPanel", function() {
             mapPanel.beforeParentHide();
 
             expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
-        });
-    });
-
-    describe('spatial constraint', function() {
-
-        describe('initialisation', function() {
-
-            it('has spatial constraint control', function() {
-                mapPanel._setSpatialConstraintStyle('bounding box');
-                expect(mapPanel.map.spatialConstraintControl).toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);
-            });
-
-            it('is in map controls', function() {
-                mapPanel._setSpatialConstraintStyle('bounding box');
-                expect(mapPanel.map.controls).toContain(mapPanel.map.spatialConstraintControl);
-            });
-
-            it('clears spatialConstraintControl on initialisation', function() {
-                var map = mapPanel.map;
-                var spatialConstraintClearedSpy = jasmine.createSpy();
-                map.events.on({
-                    'spatialconstraintcleared': spatialConstraintClearedSpy
-                });
-
-                mapPanel._setSpatialConstraintStyle('bounding box');
-                expect(spatialConstraintClearedSpy).toHaveBeenCalled();
-            });
-        });
-
-        it('is updated on polygon drawing style update', function() {
-            spyOn(mapPanel, '_setSpatialConstraintStyle');
-            Ext.MsgBus.publish(
-                Portal.form.PolygonTypeComboBox.prototype.VALUE_CHANGED_EVENT,
-                { sender: this, value: Portal.form.PolygonTypeComboBox.prototype.POLYGON }
-            );
-            expect(mapPanel._setSpatialConstraintStyle).toHaveBeenCalledWith(
-                Portal.form.PolygonTypeComboBox.prototype.POLYGON);
-        });
-
-        describe('_setSpatialConstraintStyle', function() {
-            var map;
-            beforeEach(function() {
-                map = mapPanel.map;
-
-                spyOn(map.navigationControl, 'activate');
-                spyOn(map.navigationControl, 'deactivate');
-            });
-
-            it('removes spatial constraint control when style is NONE', function() {
-                var spatialConstraintClearedSpy = jasmine.createSpy();
-                map.events.on({
-                    'spatialconstraintcleared': spatialConstraintClearedSpy
-                });
-
-                mapPanel._setSpatialConstraintStyle(Portal.form.PolygonTypeComboBox.prototype.NONE.style);
-
-                expect(map.spatialConstraintControl).toBeUndefined();
-                Ext.each(map.controls, function(control) {
-                    expect(control).not.toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);
-                });
-                expect(map.navigationControl.deactivate).toHaveBeenCalled();
-                expect(map.navigationControl.activate).toHaveBeenCalled();
-                expect(spatialConstraintClearedSpy).toHaveBeenCalled();
-            });
-
-            it('set polygon spatial constraint control when style is POLYGON', function() {
-                mapPanel._setSpatialConstraintStyle(Portal.form.PolygonTypeComboBox.prototype.POLYGON.style);
-
-                expect(map.spatialConstraintControl.handler).toBeInstanceOf(OpenLayers.Handler.Polygon);
-                expect(map.spatialConstraintControl.handler).not.toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
-                expect(map.spatialConstraintControl.displayClass).toBe('none');
-                expect(map.controls).toContain(map.spatialConstraintControl);
-                expect(map.navigationControl.deactivate).toHaveBeenCalled();
-            });
-
-            it('set polygon spatial constraint control when style is BOUNDING_BOX', function() {
-                mapPanel._setSpatialConstraintStyle(Portal.form.PolygonTypeComboBox.prototype.BOUNDING_BOX.style);
-
-                expect(map.spatialConstraintControl.handler).toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
-                expect(map.spatialConstraintControl.handler.sides).toBe(4);
-                expect(map.spatialConstraintControl.displayClass).toBe('none');
-                expect(map.controls).toContain(mapPanel.map.spatialConstraintControl);
-                expect(map.navigationControl.deactivate).toHaveBeenCalled();
-            });
         });
     });
 

@@ -273,4 +273,69 @@ describe('OpenLayers', function() {
             });
         });
     });
+    
+    describe('setSpatialConstraintStyle', function() {
+        var map;
+        beforeEach(function() {
+            map = new OpenLayers.Map();
+
+            map.navigationControl = {
+                activate: jasmine.createSpy(),
+                deactivate: jasmine.createSpy()
+            }
+        });
+
+        it('removes spatial constraint control when style is NONE', function() {
+            var spatialConstraintClearedSpy = jasmine.createSpy();
+            map.events.on({
+                'spatialconstraintcleared': spatialConstraintClearedSpy
+            });
+
+            map.setSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.NONE);
+
+            expect(map.spatialConstraintControl).toBeUndefined();
+            Ext.each(map.controls, function(control) {
+                expect(control).not.toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);
+            });
+            expect(map.navigationControl.deactivate).toHaveBeenCalled();
+            expect(map.navigationControl.activate).toHaveBeenCalled();
+            expect(spatialConstraintClearedSpy).toHaveBeenCalled();
+        });
+
+        it('set polygon spatial constraint control when style is POLYGON', function() {
+            map.setSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.POLYGON);
+
+            expect(map.spatialConstraintControl.handler).toBeInstanceOf(OpenLayers.Handler.Polygon);
+            expect(map.spatialConstraintControl.handler).not.toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
+            expect(map.spatialConstraintControl.displayClass).toBe('none');
+            expect(map.controls).toContain(map.spatialConstraintControl);
+            expect(map.navigationControl.deactivate).toHaveBeenCalled();
+        });
+
+        it('set polygon spatial constraint control when style is BOUNDING_BOX', function() {
+            map.setSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX);
+
+            expect(map.spatialConstraintControl.handler).toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
+            expect(map.spatialConstraintControl.handler.sides).toBe(4);
+            expect(map.spatialConstraintControl.displayClass).toBe('none');
+            expect(map.controls).toContain(map.spatialConstraintControl);
+            expect(map.navigationControl.deactivate).toHaveBeenCalled();
+        });
+        
+        it('has spatial constraint control', function() {
+            map.setSpatialConstraintStyle('bounding box');
+            expect(map.spatialConstraintControl).toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);
+        });
+
+        it('clears spatialConstraintControl on spatial constraint type change', function() {
+            var spatialConstraintClearedSpy = jasmine.createSpy();
+            map.events.on({
+                'spatialconstraintcleared': spatialConstraintClearedSpy
+            });
+
+            map.setSpatialConstraintStyle('none');
+            expect(spatialConstraintClearedSpy).toHaveBeenCalled();
+        });
+    });
+
 });

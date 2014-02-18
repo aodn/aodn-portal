@@ -411,6 +411,7 @@ OpenLayers.Geometry.prototype.toWkt = function() {
 
 OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintadded');
 OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintcleared');
+OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstrainttypechanged');
 
 OpenLayers.Map.prototype.getConstraint = function() {
     if (this.spatialConstraintControl) {
@@ -419,3 +420,51 @@ OpenLayers.Map.prototype.getConstraint = function() {
 
     return undefined;
 };
+
+OpenLayers.Map.prototype.setDefaultSpatialConstraintType = function(spatialConstraintType) {
+    this.defaultSpatialConstraintType = spatialConstraintType;
+    this.resetSpatialConstraint();
+};
+
+OpenLayers.Map.prototype.setSpatialConstraintStyle = function(polygonStyle) {
+    // Avoid unnecessary removal/addition of the control.
+    if (this.polygonStyle != polygonStyle) {
+        this.updateSpatialConstraintStyle(polygonStyle);
+    }
+};
+
+OpenLayers.Map.prototype.getSpatialConstraintType = function() {
+    return this.polygonStyle;
+};
+
+OpenLayers.Map.prototype.resetSpatialConstraint = function() {
+    this.updateSpatialConstraintStyle(this.defaultSpatialConstraintType); 
+};
+
+OpenLayers.Map.prototype.updateSpatialConstraintStyle = function(polygonStyle) {
+    this.polygonStyle = polygonStyle;
+
+    this.navigationControl.deactivate();
+
+    if (this.spatialConstraintControl) {
+        this.spatialConstraintControl.removeFromMap();
+    }
+
+    if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.NONE) {
+        this.spatialConstraintControl = undefined;
+        this.navigationControl.activate();
+    }
+    else if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.POLYGON) {
+        this.addSpatialConstraintControlToMap(OpenLayers.Handler.Polygon);
+    }
+    else if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX) {
+        this.addSpatialConstraintControlToMap();
+    }
+    this.events.triggerEvent('spatialconstraintchanged');
+    this.events.triggerEvent('spatialconstraintcleared');
+};
+
+OpenLayers.Map.prototype.addSpatialConstraintControlToMap = function(handler) {
+    Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(this, handler);
+};
+

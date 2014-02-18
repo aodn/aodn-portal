@@ -9,6 +9,8 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     loadSpinner: null,
+    
+    defaultSpatialConstraintType: Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX,
 
     constructor: function (cfg) {
 
@@ -69,14 +71,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         Ext.MsgBus.subscribe('removeAllLayers', function () {
             this._closeFeatureInfoPopup();
         }, this);
-
-        Ext.MsgBus.subscribe(
-            Portal.form.PolygonTypeComboBox.prototype.VALUE_CHANGED_EVENT,
-            function(type, event) {
-                this._setSpatialConstraintStyle(event.value)
-            },
-            this
-        );
     },
 
     _maximiseMapActionsControl: function() {
@@ -91,7 +85,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     onSelectedLayerChanged: function (openLayer) {
         if (!openLayer) {
-            this._updateSpatialConstraintStyle(this.polygonStyle);
+            this.map.resetSpatialConstraint();
         }
         this._autoZoomToLayer(openLayer);
     },
@@ -112,7 +106,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     reset: function () {
         this._closeFeatureInfoPopup();
-        this._updateSpatialConstraintStyle(this.polygonStyle);
+        this.map.resetSpatialConstraint();
         this.zoomToInitialBbox();
     },
 
@@ -158,6 +152,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.mapOptions = new Portal.ui.openlayers.MapOptions(this.appConfig, this);
         this.map = this.mapOptions.newMap();
+        this.map.setDefaultSpatialConstraintType(this.defaultSpatialConstraintType);
     },
 
     getServer: function (item) {
@@ -232,38 +227,5 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     beforeParentHide: function() {
 
         this._closeFeatureInfoPopup();
-    },
-
-    _setSpatialConstraintStyle: function(polygonStyle) {
-        // Avoid uneccessary removal/addition of the control.
-        if (this.polygonStyle != polygonStyle) {
-            this._updateSpatialConstraintStyle(polygonStyle);
-        }
-    },
-
-    _updateSpatialConstraintStyle: function(polygonStyle) {
-        this.polygonStyle = polygonStyle;
-
-        this.map.navigationControl.deactivate();
-
-        if (this.map.spatialConstraintControl) {
-            this.map.spatialConstraintControl.removeFromMap();
-        }
-
-        if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.NONE.style) {
-            this.map.spatialConstraintControl = undefined;
-            this.map.navigationControl.activate();
-        }
-        else if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.POLYGON.style) {
-            this._addSpatialConstraintControlToMap(OpenLayers.Handler.Polygon);
-        }
-        else if (polygonStyle == Portal.form.PolygonTypeComboBox.prototype.BOUNDING_BOX.style) {
-            this._addSpatialConstraintControlToMap();
-        }
-        this.map.events.triggerEvent('spatialconstraintcleared');
-    },
-
-    _addSpatialConstraintControlToMap: function(handler) {
-        Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(this.map, handler);
     }
 });

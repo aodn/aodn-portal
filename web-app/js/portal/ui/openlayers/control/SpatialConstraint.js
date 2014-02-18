@@ -6,6 +6,12 @@
  */
 Ext.namespace('Portal.ui.openlayers.control');
 
+Portal.ui.openlayers.SpatialConstraintType = {
+    NONE: 'none', 
+    POLYGON: 'polygon',
+    BOUNDING_BOX: 'bounding box'
+}
+
 Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.DrawFeature, {
 
     constructor: function(options) {
@@ -137,3 +143,5 @@ Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map,
         }
     });
 };
+
+
