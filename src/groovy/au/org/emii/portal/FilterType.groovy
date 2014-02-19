@@ -17,13 +17,13 @@ package au.org.emii.portal
  * 2) Create an appropriate type in the Javascript, i.e., in web-app/js/portal/filter
  */
 public enum FilterType {
-    String(),
-    Date(false),
-    DateRange(false),
-    Number(false),
-    Double(false),
-    Boolean(false),
-    BoundingBox(false)
+    String(true),
+    Date(),
+    DateRange(),
+    Number(),
+    Double(),
+    Boolean(),
+    BoundingBox()
 
     def expectsPossibleValues
 
@@ -40,7 +40,7 @@ public enum FilterType {
         "pointpropertytype": FilterType.BoundingBox
     ]
 
-    FilterType(expectsPossibleValues = true) {
+    FilterType(expectsPossibleValues = false) {
         this.expectsPossibleValues = expectsPossibleValues
     }
 
