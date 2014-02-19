@@ -23,6 +23,8 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
             ]
         }, cfg);
 
+        this.filterGroupPanels = {};
+
         Portal.details.SubsetPanel.superclass.constructor.call(this, config);
     },
 
@@ -41,11 +43,13 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
 
     _extJsLayoutHack: function(layer) {
         if (!layer.isNcwms()) {
-            // TODO: hopefully can remove this? Haven't got a test for it.
-            // Remove filter pane; and add afresh to avoid ExtJS layout bug
-            this.remove(this.filterGroupPanel, false);
-            this.filterGroupPanel = new Portal.filter.FilterGroupPanel();
-            this.add(this.filterGroupPanel);
+            if (!this.filterGroupPanels[layer.id]) {
+                var filterGroupPanel = new Portal.filter.FilterGroupPanel();
+                this.add(filterGroupPanel);
+                this.filterGroupPanels[layer.id] = filterGroupPanel;
+            }
+
+            this.filterGroupPanel = this.filterGroupPanels[layer.id];
         }
     }
 });
