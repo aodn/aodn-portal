@@ -49,7 +49,7 @@ public enum FilterType {
             case ["date", "datetime"]:
                 return Date
 
-            case ["double", "float", "integer", "int", "long"]:
+            case ["double", "float", "integer", "int", "long", "short", "decimal"]:
                 return Number
 
             case "pointpropertytype":
