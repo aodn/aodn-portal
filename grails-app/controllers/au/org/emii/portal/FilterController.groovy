@@ -213,13 +213,13 @@ class FilterController {
 
             def filter = _updateFilterWithData(layer, name, newFilterData)
 
-            if (filter?.save(flush: true)) {
+            if (filter?.save(flush: true, failOnError: false)) {
 
                 results << "Saved filter '$name'."
             }
             else {
                 def reason = filter?.errors ?: "filter wasn't created"
-                log.info "Unable to save filter '$name'. Reason: $reason"
+                log.info "Unable to save filter '$name' for layer ${layer.name}. Reason: $reason"
 
                 results << "Unable to save filter '$name'."
             }
