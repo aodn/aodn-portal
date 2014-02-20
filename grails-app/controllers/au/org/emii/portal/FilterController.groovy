@@ -233,13 +233,18 @@ class FilterController {
         def filter = Filter.findByLayerAndName(layer, name)
 
         if (!filter) {
+            def filterType = FilterType.typeFromString(newFilterData.type)
+
+            if (!filterType) {
+                return null // Don't create Filter if no valid type
+            }
 
             filter = new Filter(name: newFilterData.name, layer: layer, label: newFilterData.name)
-            filter.type = FilterType.typeFromString(newFilterData.type)
+            filter.type = filterType
         }
 
         // Update possibleValues
-        filter.possibleValues = filter.type?.expectsPossibleValues ? _trimFilterPossibleValues(newFilterData) : []
+        filter.possibleValues = filter.type.expectsPossibleValues ? _trimFilterPossibleValues(newFilterData) : []
 
         return filter
     }
