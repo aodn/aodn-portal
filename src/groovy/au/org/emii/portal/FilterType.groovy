@@ -59,7 +59,7 @@ public enum FilterType {
                 return BoundingBox
 
             default:
-                log.info "Unable to find FilterType for String: '$s'"
+                log.info "Unable to find FilterType for '$s'"
                 return null
         }
     }
