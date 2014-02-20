@@ -132,7 +132,7 @@ class FilterController {
             }
             else {
 
-                log.info "No layer found with params: $params"
+                log.info "No layer found with server: ${postData.serverHost} and name: ${postData.layerName}"
 
                 render "Unable to find Layer on Server ${postData.serverHost} with name ${postData.layerName}"
             }
