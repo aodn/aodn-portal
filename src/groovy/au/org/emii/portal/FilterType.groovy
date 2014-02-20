@@ -52,10 +52,7 @@ public enum FilterType {
             case ["double", "float", "integer", "int", "long", "short", "decimal"]:
                 return Number
 
-            case "pointpropertytype":
-            case ~/geometry.*/:
-            case ~/multiline.*/:
-            case ~/surface.*/:
+            case ["pointpropertytype", "geometrypropertytype", "multilinepropertytype", "surfacepropertytype"]:
                 return BoundingBox
 
             default:

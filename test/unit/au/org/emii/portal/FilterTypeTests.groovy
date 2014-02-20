@@ -39,9 +39,9 @@ class FilterTypeTests extends GrailsUnitTestCase {
             ["Decimal", FilterType.Number],
             ["BOOLEAN", FilterType.Boolean],
             ["PointPropertyType", BoundingBox],
-            ["geometryThing", BoundingBox],
-            ["multilineThing", BoundingBox],
-            ["surfaceThing", BoundingBox],
+            ["geometrypropertytype", BoundingBox],
+            ["multilinepropertytype", BoundingBox],
+            ["surfacepropertytype", BoundingBox],
             ["otherThing", null]
         ]
 
