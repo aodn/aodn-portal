@@ -42,6 +42,7 @@ class FilterTypeTests extends GrailsUnitTestCase {
             ["geometrypropertytype", BoundingBox],
             ["multilinepropertytype", BoundingBox],
             ["surfacepropertytype", BoundingBox],
+            ["curvepropertytype", BoundingBox],
             ["otherThing", null]
         ]
 
