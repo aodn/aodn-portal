@@ -42,7 +42,8 @@ describe('Portal.form.PolygonTypeCombo', function() {
         it('subscribes to a spatial constraint change event', function() {
             expect(mockMap.events.on).toHaveBeenCalledWith({
                 scope: polygonTypeCombo,
-                'spatialconstrainttypechanged': polygonTypeCombo._updateValue
+                'spatialconstrainttypechanged': polygonTypeCombo._updateValue,
+                'spatialconstraintadded': polygonTypeCombo._updateComboValue
             });
         });
     });

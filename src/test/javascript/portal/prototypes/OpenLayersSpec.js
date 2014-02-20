@@ -277,7 +277,7 @@ describe('OpenLayers', function() {
     describe('setSpatialConstraintStyle', function() {
         var map;
         beforeEach(function() {
-            map = new OpenLayers.Map();
+            map = new OpenLayers.SpatialConstraintMap();
 
             map.navigationControl = {
                 activate: jasmine.createSpy(),

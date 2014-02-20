@@ -263,9 +263,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // PolygonTypeComboBox
     comboBoxTypeLabels: [
-        { value: Portal.ui.openlayers.SpatialConstraintType.NONE, label: "none" },
         { value: Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX, label: "bounding box" },
-        { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "polygon" }
+        { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "polygon" },
+        { value: Portal.ui.openlayers.SpatialConstraintType.NONE, label: "none" }
     ],
     
     // WfsDataRowTemplate
@@ -277,5 +277,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     estimatedDlLoadingMessage: "Estimating NetCDF size...",
     estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />',
     estimatedDlTimeoutMsg: "The NetCDF size is too large to estimate.",
-    transAbortMsg: "transaction aborted"
+    transAbortMsg: "transaction aborted",
+
+    // MapPanel
+    defaultSpatialConstraintLabel: "bounding box"
 });

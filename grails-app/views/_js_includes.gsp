@@ -125,6 +125,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'MapActionsControl.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'MapOptions.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'TemporalMap.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'SpatialConstraintMap.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/layer', file: 'NcWMS.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MapPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MapOptionsPanel.js')}"></script>

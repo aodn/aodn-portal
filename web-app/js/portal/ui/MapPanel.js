@@ -10,7 +10,7 @@ Ext.namespace('Portal.ui');
 Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     loadSpinner: null,
     
-    defaultSpatialConstraintType: Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX,
+    defaultSpatialConstraintType: OpenLayers.i18n('defaultSpatialConstraintLabel'),
 
     constructor: function (cfg) {
 

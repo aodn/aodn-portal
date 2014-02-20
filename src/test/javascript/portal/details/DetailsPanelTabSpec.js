@@ -10,7 +10,7 @@ describe("Portal.details.DetailsPanelTab", function() {
 
     beforeEach(function() {
         detailsPanelTab = new Portal.details.DetailsPanelTab({
-            map: new OpenLayers.Map()
+            map: new OpenLayers.SpatialConstraintMap()
         });
 
         spyOn(detailsPanelTab.infoPanel, 'handleLayer');

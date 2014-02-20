@@ -17,7 +17,7 @@ describe('Portal.details.AodaacPanel', function() {
 
 
     beforeEach(function() {
-        map = new OpenLayers.Map();
+        map = new OpenLayers.SpatialConstraintMap();
 
         spyOn(map.events, 'register');
         spyOn(Portal.ui.TimeRangeLabel.prototype, 'update');

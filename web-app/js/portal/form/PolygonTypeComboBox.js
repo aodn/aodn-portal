@@ -33,7 +33,8 @@ Portal.form.PolygonTypeComboBox = Ext.extend(Ext.form.ComboBox, {
         
         this.map.events.on({
             scope: this,
-            'spatialconstrainttypechanged': this._updateValue
+            'spatialconstrainttypechanged': this._updateValue,
+            'spatialconstraintadded': this._updateComboValue
         });
     },
     
@@ -48,5 +49,9 @@ Portal.form.PolygonTypeComboBox = Ext.extend(Ext.form.ComboBox, {
     _updateValue: function(spatialConstraintType) {
         this.updating = true;
         this.setValue(spatialConstraintType);
+    },
+
+    _updateComboValue: function() {
+        Portal.form.PolygonTypeComboBox.superclass.setValue.call(this, this.map.getSpatialConstraintType());
     }
 });
