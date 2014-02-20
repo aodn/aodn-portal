@@ -7,7 +7,12 @@
 
 package au.org.emii.portal
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 class Filter implements Comparable {
+
+    static final Logger log = LoggerFactory.getLogger(this)
 
     String label //This is the human readable Filter title
     FilterType type  //String, time, etc, etc.
@@ -92,11 +97,13 @@ class Filter implements Comparable {
 
         if (obj.type.expectsPossibleValues) {
             if (val.size() == 0) {
+                log.debug "Filter with type ${obj.type} should have possible values, but doesn't"
                 return ['invalid.possibleValues']
             }
         }
         else {
             if (val && !val.isEmpty()) {
+                log.debug "Filter with type ${obj.type} shouldn't have possible values, but has: $val"
                 return ['invalid.possibleValues']
             }
         }
