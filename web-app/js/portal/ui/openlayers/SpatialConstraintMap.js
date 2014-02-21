@@ -23,7 +23,8 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
     isConstraintModified: function() {
         if (this.spatialConstraintControl) {
             return this.spatialConstraintControl.isModified();
-        } else {
+        }
+        else {
             return false;
         }
     },

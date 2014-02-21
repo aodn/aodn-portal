@@ -11,7 +11,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
         this.loadingMessage = this.createLoadingMessageContainer();
-        this.errorMessage = this.createErrorMessageContainer();
 
         var config = Ext.apply({
             layout: 'table',
@@ -68,10 +67,15 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     },
 
     addErrorMessage: function(msg) {
-        this.removeLoadingMessage();
-        this.errorMessage = this.createErrorMessageContainer(msg);
-        this.add(this.errorMessage);
-        this.doLayout();
+        if (this.errorMessage) {
+            this.errorMessage.html = "<i>" + msg + "</i>";
+        }
+        else {
+            this.removeLoadingMessage();
+            this.errorMessage = this.createErrorMessageContainer(msg);
+            this.add(this.errorMessage);
+            this.doLayout();
+        }
     },
 
     _isLayerActive: function(layer) {

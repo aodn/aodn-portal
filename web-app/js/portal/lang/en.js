@@ -277,8 +277,5 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     estimatedDlLoadingMessage: "Estimating NetCDF size...",
     estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />',
     estimatedDlTimeoutMsg: "The NetCDF size is too large to estimate.",
-    transAbortMsg: "transaction aborted",
-
-    // MapPanel
-    defaultSpatialConstraintLabel: "bounding box"
+    transAbortMsg: "transaction aborted"
 });
