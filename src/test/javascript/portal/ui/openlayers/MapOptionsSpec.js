@@ -27,7 +27,7 @@ describe("Portal.ui.openlayers.MapOptions", function() {
     describe('new map', function() {
 
         it('construct temporal map', function() {
-            expect(map.CLASS_NAME).toBe('OpenLayers.TemporalMap');
+            expect(map.CLASS_NAME).toBe('OpenLayers.SpatialConstraintMap');
         });
 
         it('Should return map with bounds set as 90 and -90 for latitude', function() {

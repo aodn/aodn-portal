@@ -11,7 +11,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
         this.loadingMessage = this.createLoadingMessageContainer();
-        this.errorMessage = this.createErrorMessageContainer();
 
         var config = Ext.apply({
             layout: 'table',
@@ -50,11 +49,15 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    createErrorMessageContainer: function(msg) {
+    createErrorMessageContainer: function() {
         return new Ext.Container({
             autoEl: 'div',
-            html: "<i>" + msg + "</i>"
+            html: ""
         })
+    },
+
+    setErrorMessageText: function(msg, errorMsgContainer) {
+        errorMsgContainer.html = "<i>" + msg + "</i>";
     },
 
     addLoadingMessage: function() {
@@ -68,10 +71,16 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     },
 
     addErrorMessage: function(msg) {
-        this.removeLoadingMessage();
-        this.errorMessage = this.createErrorMessageContainer(msg);
-        this.add(this.errorMessage);
-        this.doLayout();
+        if (this.errorMessage) {
+            this.setErrorMessageText(msg, this.errorMessage);
+        }
+        else {
+            this.removeLoadingMessage();
+            this.errorMessage = this.createErrorMessageContainer();
+            this.setErrorMessageText(msg, this.errorMessage);
+            this.add(this.errorMessage);
+            this.doLayout();
+        }
     },
 
     _isLayerActive: function(layer) {

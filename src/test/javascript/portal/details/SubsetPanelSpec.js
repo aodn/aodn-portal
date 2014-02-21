@@ -10,7 +10,7 @@ describe("Portal.details.SubsetPanel", function() {
     var subsetPanel;
 
     beforeEach(function() {
-        map = new OpenLayers.Map();
+        map = new OpenLayers.SpatialConstraintMap();
         subsetPanel = new Portal.details.SubsetPanel({
             map: map,
             _extJsLayoutHack: noOp
