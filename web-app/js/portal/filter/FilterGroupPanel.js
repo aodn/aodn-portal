@@ -49,11 +49,15 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    createErrorMessageContainer: function(msg) {
+    createErrorMessageContainer: function() {
         return new Ext.Container({
             autoEl: 'div',
-            html: "<i>" + msg + "</i>"
+            html: ""
         })
+    },
+
+    setErrorMessageText: function(msg, errorMsgContainer) {
+        errorMsgContainer.html = "<i>" + msg + "</i>";
     },
 
     addLoadingMessage: function() {
@@ -68,11 +72,12 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
     addErrorMessage: function(msg) {
         if (this.errorMessage) {
-            this.errorMessage.html = "<i>" + msg + "</i>";
+            this.setErrorMessageText(msg, this.errorMessage);
         }
         else {
             this.removeLoadingMessage();
-            this.errorMessage = this.createErrorMessageContainer(msg);
+            this.errorMessage = this.createErrorMessageContainer();
+            this.setErrorMessageText(msg, this.errorMessage);
             this.add(this.errorMessage);
             this.doLayout();
         }
