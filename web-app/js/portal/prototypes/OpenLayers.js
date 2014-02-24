@@ -411,11 +411,4 @@ OpenLayers.Geometry.prototype.toWkt = function() {
 
 OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintadded');
 OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintcleared');
-
-OpenLayers.Map.prototype.getConstraint = function() {
-    if (this.spatialConstraintControl) {
-        return this.spatialConstraintControl.getConstraint();
-    }
-
-    return undefined;
-};
+OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstrainttypechanged');

@@ -11,7 +11,6 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        this.filterGroupPanel = new Portal.filter.FilterGroupPanel();
         this.aodaacPanel = new Portal.details.AodaacPanel({
             map: cfg.map
         });
@@ -20,35 +19,37 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
             title: OpenLayers.i18n('subsetPanelTitle'),
             layout: new Ext.layout.CardLayout(),
             items: [
-                this.filterGroupPanel,
                 this.aodaacPanel
             ]
         }, cfg);
+
+        this.filterGroupPanels = {};
 
         Portal.details.SubsetPanel.superclass.constructor.call(this, config);
     },
 
     handleLayer: function(layer, show, hide, target) {
 
-        this._extJsLayoutHack();
+        this._extJsLayoutHack(layer);
         if (layer.isNcwms()) {
             this.layout.setActiveItem(this.aodaacPanel.id);
+            this.aodaacPanel.handleLayer(layer, show, hide, target);
         }
         else {
             this.layout.setActiveItem(this.filterGroupPanel.id);
+            this.filterGroupPanel.handleLayer(layer, show, hide, target);
         }
-
-        // Probably only need to call one or the other of these depending on which one is active (see above)
-        // - but for now, keeping same behaviour as before.
-        this.aodaacPanel.handleLayer(layer, show, hide, target);
-        this.filterGroupPanel.handleLayer(layer, show, hide, target);
     },
 
-    _extJsLayoutHack: function() {
-        // TODO: hopefully can remove this? Haven't got a test for it.
-        // Remove filter pane; and add afresh to avoid ExtJS layout bug
-        this.remove(this.filterGroupPanel);
-        this.filterGroupPanel = new Portal.filter.FilterGroupPanel();
-        this.insert(0, this.filterGroupPanel);
+    _extJsLayoutHack: function(layer) {
+        if (!layer.isNcwms()) {
+            if (!this.filterGroupPanels[layer.id]) {
+                var filterGroupPanel = new Portal.filter.FilterGroupPanel();
+                this.add(filterGroupPanel);
+                this.filterGroupPanels[layer.id] = filterGroupPanel;
+            }
+
+            this.filterGroupPanel = this.filterGroupPanels[layer.id];
+        }
     }
 });

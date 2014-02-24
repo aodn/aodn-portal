@@ -84,6 +84,6 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
      */
     newMap: function () {
         this.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
-        return new OpenLayers.TemporalMap(this);
+        return new OpenLayers.SpatialConstraintMap(this);
     }
 });

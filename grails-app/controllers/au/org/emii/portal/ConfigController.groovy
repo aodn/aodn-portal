@@ -34,25 +34,17 @@ class ConfigController {
 
         // get instance now with all 'deep' details as a JSON string
         def x = (configInstance as JSON).toString()
-        configInstance = _enableDisableMenuOfTheDay(configInstance);
+
         // convert back to an generic object so we can add what we want
         def instanceAsGenericObj = JSON.parse(x)
 
         instanceAsGenericObj['defaultMenu'] = JSON.parse("{\"id\":${configInstance.defaultMenu?.id}}");
 
-        //the MOTD is skipped somehow when converting the object to JSON.
-        def tmpMOTD = JSON.use('deep') {
-            configInstance.motd as JSON
-        }
-        instanceAsGenericObj['motd'] = JSON.parse(tmpMOTD.toString())
-        instanceAsGenericObj['enableMOTD'] = configInstance.enableMOTD
         instanceAsGenericObj['downloadCartMimeTypeToExtensionMapping'] = JSON.parse(configInstance.downloadCartMimeTypeToExtensionMapping)
 
         // add current user details
-        def userInstance = User.current();
-
+        def userInstance = User.current()
         if (userInstance) {
-
             instanceAsGenericObj['currentUser'] = JSON.parse((userInstance as JSON).toString())
         }
 
@@ -180,22 +172,6 @@ class ConfigController {
                 redirect(action: "list")
             }
         }
-    }
-
-    // Proccess the Motd
-    // Process the defaultMenu - TODO
-    def _enableDisableMenuOfTheDay(configInstance) {
-
-        def now = new Date()
-
-        // test motd dates if enabled
-        if (configInstance.enableMOTD) {
-            // it is so check the dates
-            if (configInstance.motdStart.after(now) || configInstance.motdEnd.before(now)) {
-                configInstance.enableMOTD = false // value not for persisting
-            }
-        }
-        return configInstance
     }
 
     def _getDisplayableMenu(menu) {

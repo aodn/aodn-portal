@@ -41,8 +41,11 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         }
 
         def testStreamProcessor = new Object()
-        controller.metaClass.urlListStreamProcessor = { layer ->
-            assertEquals testLayer, layer
+        controller.metaClass.urlListStreamProcessor = { fieldName, prefixToRemove, newUrlBase ->
+            assertEquals testLayer.urlDownloadFieldName, fieldName
+            assertEquals testServer.urlListDownloadPrefixToRemove, prefixToRemove
+            assertEquals testServer.urlListDownloadPrefixToSubstitue, newUrlBase
+
             return testStreamProcessor
         }
 
@@ -90,8 +93,11 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         def archiveGenerated = false
         controller.hostVerifier = [allowedHost: { r, u -> true }]
-        controller.metaClass.urlListStreamProcessor = { layer ->
-            assertEquals testLayer, layer
+        controller.metaClass.urlListStreamProcessor = { fieldName, prefixToRemove, newUrlBase ->
+            assertEquals testLayer.urlDownloadFieldName, fieldName
+            assertEquals testServer.urlListDownloadPrefixToRemove, prefixToRemove
+            assertEquals testServer.urlListDownloadPrefixToSubstitue, newUrlBase
+
             { inputStream, outputStream ->
                 outputStream << """\
                     url1
@@ -212,7 +218,7 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
         def inputStream = new ByteArrayInputStream(input.bytes)
         def outputStream = new ByteArrayOutputStream()
 
-        def sp = controller.urlListStreamProcessor(testLayer)
+        def sp = controller.urlListStreamProcessor('relativeFilePath', '/mnt/imos-t4/', 'http://data.imos.org.au/')
         sp(inputStream, outputStream)
 
         def output = outputStream.toString("UTF-8")

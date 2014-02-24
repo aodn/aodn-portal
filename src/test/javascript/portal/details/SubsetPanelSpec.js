@@ -10,7 +10,7 @@ describe("Portal.details.SubsetPanel", function() {
     var subsetPanel;
 
     beforeEach(function() {
-        map = new OpenLayers.Map();
+        map = new OpenLayers.SpatialConstraintMap();
         subsetPanel = new Portal.details.SubsetPanel({
             map: map,
             _extJsLayoutHack: noOp
@@ -27,16 +27,10 @@ describe("Portal.details.SubsetPanel", function() {
             expect(subsetPanel.layout).toBeInstanceOf(Ext.layout.CardLayout);
         });
 
-        it('initialises filterGroupPanel', function() {
-            expect(subsetPanel.filterGroupPanel).toBeInstanceOf(Portal.filter.FilterGroupPanel);
-            expect(subsetPanel.items.itemAt(0)).toBe(subsetPanel.filterGroupPanel);
-            expect(subsetPanel.filterGroupPanel.title).toBeUndefined();
-        });
-
         it('initialises aodaacPanel', function() {
             expect(subsetPanel.aodaacPanel).toBeInstanceOf(Portal.details.AodaacPanel);
             expect(subsetPanel.aodaacPanel.map).toBe(map);
-            expect(subsetPanel.items.itemAt(1)).toBe(subsetPanel.aodaacPanel);
+            expect(subsetPanel.items.itemAt(0)).toBe(subsetPanel.aodaacPanel);
             expect(subsetPanel.aodaacPanel.title).toBeUndefined();
        });
     });
@@ -46,10 +40,13 @@ describe("Portal.details.SubsetPanel", function() {
         beforeEach(function() {
             spyOn(subsetPanel.layout, 'setActiveItem');
             spyOn(subsetPanel.aodaacPanel, 'handleLayer');
-            spyOn(subsetPanel.filterGroupPanel, 'handleLayer');
         });
 
         it('activates filterGroupPanel for non-ncWMS layers', function() {
+            subsetPanel.filterGroupPanel = {
+                id: 'fgp1',
+                handleLayer: noOp
+            }
             subsetPanel.handleLayer({
                 isNcwms: function() { return false; }
             });
@@ -66,12 +63,18 @@ describe("Portal.details.SubsetPanel", function() {
         });
 
         it('calls handleLayer in children', function() {
+            subsetPanel.filterGroupPanel = {
+                id: 'fgp1',
+                handleLayer: noOp
+            }
+            spyOn(subsetPanel.filterGroupPanel, 'handleLayer');
+
             subsetPanel.handleLayer({
                 isNcwms: function() { return true; }
             });
 
             expect(subsetPanel.aodaacPanel.handleLayer).toHaveBeenCalled();
-            expect(subsetPanel.filterGroupPanel.handleLayer).toHaveBeenCalled();
+            expect(subsetPanel.filterGroupPanel.handleLayer).not.toHaveBeenCalled();
         });
     });
 });

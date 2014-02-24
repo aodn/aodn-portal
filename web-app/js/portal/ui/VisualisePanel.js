@@ -19,6 +19,7 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
             region: 'west',
             collapsible: true,
             collapsed: false,
+            collapseMode: 'mini',
             width: 355,
             map: this.mapPanel.map,
             mapPanel: this.mapPanel

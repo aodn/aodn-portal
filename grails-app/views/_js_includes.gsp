@@ -50,6 +50,7 @@
 <script src="${resource(dir: 'js/ext-ux/util', file: 'MessageBus.js')}" type="text/javascript"></script>
 
 <g:if env="development">
+    <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/control', file: 'SpatialConstraint.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils/geo', file: 'GeoUtil.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'portal.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'ObjectFactory.js')}"></script>
@@ -124,8 +125,8 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'MapActionsControl.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'MapOptions.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'TemporalMap.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'SpatialConstraintMap.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/layer', file: 'NcWMS.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/control', file: 'SpatialConstraint.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MapPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MapOptionsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'VisualisePanel.js')}"></script>

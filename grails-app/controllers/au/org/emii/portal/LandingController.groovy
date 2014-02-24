@@ -12,7 +12,8 @@ class LandingController {
             model:[
                 oceanCurrent: oceanCurrentService.getRandomDetails(),
                 cfg: Config.activeInstance(),
-                portalBuildInfo: _portalBuildInfo()
+                portalBuildInfo: _portalBuildInfo(),
+                jsVerNum: grailsApplication.metadata.'app.version'
             ]
         )
     }
