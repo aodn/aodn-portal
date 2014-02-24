@@ -6,14 +6,16 @@
  */
 Ext.namespace('Portal.cart');
 
-Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
+Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
+
+    GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE: "gogoduck-email-address",
 
     getDataFilterEntry: function(values) {
         var html;
         var infoLabel;
         var layerValues;
 
-        if (values.wmsLayer && values.wmsLayer.bodaacFilterParams) {
+        /*if (values.wmsLayer && values.wmsLayer.bodaacFilterParams) {
 
             html = '<b>{0}</b> {1}';
             infoLabel = OpenLayers.i18n('filterLabel');
@@ -31,7 +33,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
                 layerValues = '';
             }
         }
-        return String.format(html, infoLabel, layerValues);
+        return String.format(html, infoLabel, layerValues); */
     },
 
     getBodaacDateInfo: function(dates) {
@@ -48,8 +50,59 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     createMenuItems: function(collection) {
         var menuItems = [];
 
-        // BODAAC hack.
-        if (this._isBodaac(collection)) {
+        if (this._isGogoduck(collection)) {
+            menuItems = this._generateGogoduckMenuItems();
+        }
+        else {
+            if (this._isBodaac(collection)) {
+                menuItems = this._generateBodaacMenuItems();
+            }
+            else {
+                menuItems = this._generateWmsMenuItems(collection);
+            }
+        }
+
+        return menuItems;
+    },
+
+    _generateBodaacMenuItems: function() {
+        var menuItems = [];
+
+        menuItems.push({
+            text: OpenLayers.i18n('downloadAsUrlsLabel'),
+            handler: this._urlListDownloadHandler(collection),
+            scope: this
+        });
+        menuItems.push({
+            text: OpenLayers.i18n('downloadAsNetCdfLabel'),
+            handler: this._netCdfDownloadHandler(collection),
+            scope: this
+        });
+
+        return menuItems;
+    },
+
+    _generateGogoduckMenuItems: function() {
+        return [
+            this._createGogoduckMenuItem('downloadAsNetCdfLabel', collection, 'nc'),
+            this._createGogoduckMenuItem('downloadAsHdfLabel', collection, 'hdf'),
+            this._createGogoduckMenuItem('downloadAsAsciiLabel', collection, 'txt'),
+            this._createGogoduckMenuItem('downloadAsOpenDapUrlsLabel', collection, 'urls')
+        ];
+    },
+
+    _generateWmsMenuItems: function(collection) {
+        var menuItems = [];
+
+        if (collection.wmsLayer.wfsLayer) {
+            menuItems.push({
+                text: OpenLayers.i18n('downloadAsCsvLabel'),
+                handler: this._downloadWfsHandler(collection, 'csv'),
+                scope: this
+            });
+        }
+
+        if (collection.wmsLayer.urlDownloadFieldName) {
             menuItems.push({
                 text: OpenLayers.i18n('downloadAsUrlsLabel'),
                 handler: this._urlListDownloadHandler(collection),
@@ -61,35 +114,16 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
                 scope: this
             });
         }
-        else {
-            if (collection.wmsLayer.wfsLayer) {
-                menuItems.push({
-                    text: OpenLayers.i18n('downloadAsCsvLabel'),
-                    handler: this._downloadWfsHandler(collection, 'csv'),
-                    scope: this
-                });
-            }
-
-            if (collection.wmsLayer.urlDownloadFieldName) {
-                menuItems.push({
-                    text: OpenLayers.i18n('downloadAsUrlsLabel'),
-                    handler: this._urlListDownloadHandler(collection),
-                    scope: this
-                });
-                menuItems.push({
-                    text: OpenLayers.i18n('downloadAsNetCdfLabel'),
-                    handler: this._netCdfDownloadHandler(collection),
-                    scope: this
-                });
-            }
-        }
 
         return menuItems;
     },
 
     _isBodaac: function(collection) {
-
         return collection.wmsLayer && collection.wmsLayer.isNcwms();
+    },
+
+    _isGogoduck: function(collection) {
+        return collection.wmsLayer.wfsLayer && collection.wmsLayer.isNcwms();
     },
 
     getDataSpecificMarkup: function(values) {
@@ -139,6 +173,42 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             String.format("{0}_source_files.zip", collection.title),
             additionalArgs
         );
+    },
+
+    _createGogoduckMenuItem: function(translationKey, collection, format) {
+        return {
+            text: OpenLayers.i18n(translationKey),
+            handler: this._downloadGogoduckHandler(collection, format),
+            scope: this
+        }
+    },
+
+    _downloadGogoduckHandler: function(collection, format) {
+        return function() {
+            var emailAddress = this._emailTextFieldElement(collection.uuid).getValue();
+
+            // Todo - DN: We're not showing the DownloadConfirmationWindow currently
+            if (!this._validateEmailAddress(emailAddress)) {
+                Ext.Msg.alert(OpenLayers.i18n('gogoduckEmailProblemDialogTitle'), OpenLayers.i18n('gogoduckNoEmailAddressMsg'));
+                return;
+            }
+
+            var downloadUrl = this._aodaacUrl(collection.aodaac, format, emailAddress);
+            Ext.Ajax.request({
+                url: downloadUrl,
+                scope: this,
+                success: function() {
+                    Ext.Msg.alert(OpenLayers.i18n('gogoduckPanelTitle'), OpenLayers.i18n('gogoduckJobCreatedMsg', {email: emailAddress}));
+                },
+                failure: function() {
+                    Ext.Msg.alert(OpenLayers.i18n('gogoduckPanelTitle'), OpenLayers.i18n('gogoduckJobCreateErrorMsg'));
+                }
+            });
+        };
+    },
+
+    _parameterString: function (labelKey, value1, value2, delim) {
+        return String.format('<b>{0}:</b> &nbsp;<code>{1}</code> {3} <code>{2}</code><br>', OpenLayers.i18n(labelKey), value1, value2, (delim || ""));
     },
 
     _bodaacCsvDownloadUrl: function(collection) {
