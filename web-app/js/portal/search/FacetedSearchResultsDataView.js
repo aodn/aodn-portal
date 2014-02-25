@@ -181,8 +181,14 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     getGeoNetworkRecordPointOfTruthLinkAsHtml: function(values) {
-        return '<a href="' + values.pointOfTruthLink.href + '" target="_blank" class="nowrap" title="'
-            + values.pointOfTruthLink.title + '">more</a>';
+        var html = '';
+
+        if (values.pointOfTruthLink) {
+            html = '<a href="' + values.pointOfTruthLink.href + '" target="_blank" class="nowrap" title="'
+                + values.pointOfTruthLink.title + '">more</a>';
+        }
+
+        return html;
     },
 
     getMiniMap: function(values) {
