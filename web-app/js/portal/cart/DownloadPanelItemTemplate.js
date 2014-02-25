@@ -123,7 +123,6 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             return this._getAodaacDataRowTemplateInstance(config);
         }*/
         if (values.wmsLayer.wfsLayer || values.wmsLayer.urlDownloadFieldName) {
-            console.log("hitting the space bar");
             return this._getDataRowTemplateInstance(config);
         }
 

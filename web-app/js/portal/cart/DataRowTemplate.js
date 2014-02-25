@@ -11,29 +11,58 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE: "gogoduck-email-address",
 
     getDataFilterEntry: function(values) {
+        var dataFilterString;
+
+        if (this._isGogoduck(values)) {
+            console.log("gogoduck!");
+            dataFilterString = this.createGogoduckFilterEntry(values);
+        }
+        else {
+            if (this._isBodaac(values)) {
+                console.log("bodaac!");
+                dataFilterString = this.createBodaacFilterEntry(values);
+            }
+            else {
+                console.log("wms!");
+                dataFilterString = this.createWmsFilterEntry(values);
+            }
+        }
+        return dataFilterString;
+    },
+
+    createGogoduckFilterEntry: function(values) {
+        var params = values.gogoduck;
+        var areaString = "";
+
+        if (params.latitudeRangeStart) {
+            var areaStart = String.format('{0}<b>N</b>,&nbsp;{1}<b>E</b>,', params.latitudeRangeStart, params.longitudeRangeEnd);
+            var areaEnd = String.format('{0}<b>S</b>,&nbsp;{1}<b>W</b>', params.latitudeRangeEnd, params.longitudeRangeStart);
+            areaString = this._parameterString('parameterAreaLabel', areaStart, areaEnd);
+        }
+        return areaString +
+            this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd, " <b>-</b> ");
+    },
+
+    createBodaacFilterEntry: function(values) {
+        return String.format('<b>{0}</b> {1}', OpenLayers.i18n('filterLabel'), this.getBodaacDateInfo(values.wmsLayer.bodaacFilterParams));
+    },
+
+    createWmsFilterEntry: function(values) {
         var html;
         var infoLabel;
         var layerValues;
 
-        /*if (values.wmsLayer && values.wmsLayer.bodaacFilterParams) {
-
-            html = '<b>{0}</b> {1}';
+        if (this._cql(values.wmsLayer)) {
+            html = '<b>{0}</b> <code>{1}</code>';
             infoLabel = OpenLayers.i18n('filterLabel');
-            layerValues = this.getBodaacDateInfo(values.wmsLayer.bodaacFilterParams);
+            layerValues = this._cql(values.wmsLayer);
         }
         else {
-            if (this._cql(values.wmsLayer)) {
-                html = '<b>{0}</b> <code>{1}</code>';
-                infoLabel = OpenLayers.i18n('filterLabel');
-                layerValues = this._cql(values.wmsLayer);
-            }
-            else {
-                html = '<i>{0}</i> <code>{1}</code>';
-                infoLabel = OpenLayers.i18n('noFilterLabel');
-                layerValues = '';
-            }
+            html = '<i>{0}</i> <code>{1}</code>';
+            infoLabel = OpenLayers.i18n('noFilterLabel');
+            layerValues = '';
         }
-        return String.format(html, infoLabel, layerValues); */
+        return String.format(html, infoLabel, layerValues);
     },
 
     getBodaacDateInfo: function(dates) {
@@ -63,6 +92,20 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         }
 
         return menuItems;
+    },
+
+    attachMenuEvents: function(values) {
+        var emailElement = this._emailTextFieldElement(values.uuid);
+        if (emailElement) {
+            emailElement.on('click', function () {
+                if (this.getValue() == OpenLayers.i18n('emailAddressPlaceholder')) {
+                    this.set({ value: '' });
+                }
+            });
+            emailElement.on('change', function () {
+                this._saveEmailAddress(values.uuid);
+            }, this);
+        }
     },
 
     _generateBodaacMenuItems: function() {
@@ -126,7 +169,48 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         return collection.wmsLayer.wfsLayer && collection.wmsLayer.isNcwms();
     },
 
+    _saveEmailAddress: function (uuid) {
+        Portal.data.ActiveGeoNetworkRecordStore.instance().
+            addRecordAttribute(
+                uuid,
+                this.GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE,
+                this._emailTextFieldElement(uuid).getValue()
+            );
+    },
+
+    _getEmailAddress: function (uuid) {
+        var emailAddress = Portal.data.ActiveGeoNetworkRecordStore.instance().
+            getRecordAttribute(
+                uuid,
+                this.GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE
+            );
+
+        return emailAddress || OpenLayers.i18n('emailAddressPlaceholder');
+    },
+
     getDataSpecificMarkup: function(values) {
+        var htmlString;
+
+        if (this._isGogoduck(values)) {
+            htmlString = this.generateGogoduckSpecificMarkup(values);
+        }
+        else {
+            htmlString = this.generateWmsSpecificMarkup(values);
+        }
+
+        return htmlString;
+    },
+
+    generateGogoduckSpecificMarkup: function(values) {
+        var html  = '<div class="delayedDownloadForm">' +
+            '  <input type="text" id="{3}-{0}" value="{1}">' +
+            '  <div><small>{2}</small></div>' +
+            '  <div class="clear"></div>' +
+            '</div>';
+        return String.format(html, values.uuid, this._getEmailAddress(values.uuid), this._getNotificationBlurbEntry(), this.GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE);
+    },
+
+    generateWmsSpecificMarkup: function(values) {
         var estimator = new Portal.cart.DownloadEstimator();
         estimator._getDownloadEstimate(
             values,
@@ -193,7 +277,7 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
                 return;
             }
 
-            var downloadUrl = this._aodaacUrl(collection.aodaac, format, emailAddress);
+            var downloadUrl = this._gogoduckUrl(collection.aodaac, format, emailAddress);
             Ext.Ajax.request({
                 url: downloadUrl,
                 scope: this,
@@ -221,5 +305,40 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
     _wmsDownloadUrl: function(layer, format) {
         return layer.getWmsLayerFeatureRequestUrl(format);
+    },
+
+    // TODO - AS: customise output of the gogoduck url based on the web-app
+    _gogoduckUrl: function(params, format, emailAddress) {
+        var args = "outputFormat=" + format;
+        args += "&dateRangeStart=" + encodeURIComponent(params.dateRangeStart);
+        args += "&dateRangeEnd=" + encodeURIComponent(params.dateRangeEnd);
+        args += "&timeOfDayRangeStart=0000";
+        args += "&timeOfDayRangeEnd=2400";
+        args += "&latitudeRangeStart=" + (params.latitudeRangeStart || params.productLatitudeRangeStart);
+        args += "&latitudeRangeEnd=" + (params.latitudeRangeEnd || params.productLatitudeRangeEnd);
+        args += "&longitudeRangeStart=" + (params.longitudeRangeStart || params.productLongitudeRangeStart);
+        args += "&longitudeRangeEnd=" + (params.longitudeRangeEnd || params.productLongitudeRangeEnd);
+        args += "&productId=" + params.productId;
+        args += "&notificationEmailAddress=" + emailAddress;
+
+        return 'aodaac/createJob?' + args;
+    },
+
+    _validateEmailAddress: function (address) {
+        if (!address) {
+            return false;
+        }
+
+        // From http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(address);
+    },
+
+    _emailTextFieldElement: function (uuid) {
+        return Ext.get(Ext.query("#" + this.GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE + "-" + uuid)[0]);
+    },
+
+    _getNotificationBlurbEntry: function() {
+        return OpenLayers.i18n('notificationBlurbMessage');
     }
 });
