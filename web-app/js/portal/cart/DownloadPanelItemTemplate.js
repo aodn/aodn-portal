@@ -49,8 +49,13 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getPointOfTruthLinkEntry: function (record) {
-        var href = record.pointOfTruthLink.href;
-        return this._makeExternalLinkMarkup(href, OpenLayers.i18n('metadataLinkText'));
+        var markup;
+
+        if (record.pointOfTruthLink) {
+            markup = this._makeExternalLinkMarkup(record.pointOfTruthLink.href, OpenLayers.i18n('metadataLinkText'));
+        }
+
+        return markup;
     },
 
     _dataSpecificMarkup: function (values) {
