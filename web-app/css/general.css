@@ -824,6 +824,15 @@ p.important {
     font-size: 13px;
 }
 
+ul.x-tab-strip-top li:hover * {
+    background-color: #AAA;
+    color: white;
+}
+
+.x-tab-strip-over span.x-tab-strip-text {
+    font-weight: normal;
+}
+
 .addServerStatusPanel .x-panel-header {
     padding-top: 0;
 }
