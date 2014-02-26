@@ -121,8 +121,8 @@ environments {
         // URLs
         grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
         spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
-        wmsScanner.url = env['WMS_SCANNER_URL'] ? env['WMS_SCANNER_URL'] : "http://localhost:8100/WmsScannerGrails/"
-        wfsScanner.url = env['WFS_SCANNER_URL'] ? env['WFS_SCANNER_URL'] : "http://localhost:8200/wfsScanner"
+        wmsScanner.url = env['WMS_SCANNER_URL'] ?: "http://localhost:8100/WmsScannerGrails/"
+        wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
 
         grails {
             mail {
