@@ -77,6 +77,7 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
             spyOn(miniMap, 'render');
             spyOn(miniMap, 'setCenter');
             spyOn(miniMap, 'zoomToExtent');
+            spyOn(Ext, 'get').andReturn(true);
         });
 
         it('calls render', function() {
