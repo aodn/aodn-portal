@@ -829,9 +829,6 @@ ul.x-tab-strip-top li:hover * {
     color: white;
 }
 
-.x-tab-strip-over span.x-tab-strip-text {
-    font-weight: normal;
-}
 
 .addServerStatusPanel .x-panel-header {
     padding-top: 0;
