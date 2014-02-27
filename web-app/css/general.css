@@ -17,7 +17,7 @@ h1, h2, h3 {
 }
 
 h1 {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
 }
 
@@ -223,12 +223,13 @@ hr {
 }
 
 .bigtext {
-    font-size: 16px;
+    font-size: 18px;
+    margin: 10px 0;
 }
 
 #landingCentre {
     float: right;
-    width: 600px;
+    width: 620px;
     padding: 30px 0;
     margin-bottom: 70px;
 }

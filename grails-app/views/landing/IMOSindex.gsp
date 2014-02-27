@@ -36,7 +36,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
                 <div id="landingCentre">
                     <div class="landingSubLeft">
-                        <a href="${resource(dir: 'home')}" id="landingBigButton" title="Search for Ocean Data">Search for Ocean Data</a>
+                        <a href="${resource(dir: 'home')}" id="landingBigButton" title="Get Ocean Data">Get Ocean Data</a>
                     </div>
 
                     <div class="landingSubRight">
@@ -48,8 +48,8 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
                     <div class="clear"></div>
 
                     <div>
-                        <a href="${resource(dir: 'home')}" title="Search for Ocean Data">
-                            <img class="roundedImages" src="images/IMOS/landing/landingBling.png" width="600" />
+                        <a href="${resource(dir: 'home')}" title="Click here to search for and download Ocean Data">
+                            <img class="roundedImages" alt="Image link to search for and download Ocean Data" src="images/IMOS/landing/landingBling.png" width="600" />
                         </a>
                     </div>
 
@@ -70,8 +70,8 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
                     <div class="footer">
                         <div class="landingSubLeft">
-                            <img class="logoSpacer" src="http://static.emii.org.au/images/logo/NCRIS_Initiative_stacked200.png" width="160" alt="DIISTRE logo" />
                             <img class="logoSpacer" src="http://static.emii.org.au/images/logo/Utas_vert.png" alt="UTAS logo" />
+                            <img class="logoSpacer" src="http://static.emii.org.au/images/logo/NCRIS_Initiative_stacked200.png" width="110" alt="DIISTRE logo" />
                             <br />
                             <a class="noUnderline" href="http://twitter.com/AusOceanDataNet" target="_blank">
                                 <img class="logoSpacer" src="${resource(dir: 'images', file: 'Twitter_logo_black.png')}" title="Follow us on twitter" alt="Follow us on twitter" />
