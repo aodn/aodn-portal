@@ -108,8 +108,9 @@ class FilterControllerTests extends ControllerUnitTestCase {
             save: { true }
         ]
         def filterThatDoesntSave = [
-            hasErrors: { true }
+            save: { false }
         ]
+        def filterThatWasntCreated = null
 
         controller.metaClass._updateFilterWithData = {
             layer, name, newFilterData ->
@@ -129,20 +130,27 @@ class FilterControllerTests extends ControllerUnitTestCase {
                         assertEquals "name2", name
                         return filterThatSaves
 
+                    case 3:
+                        assertEquals "name3", name
+                        return filterThatWasntCreated
+
                     default:
-                        fail "_updateFilter() should only be called twice."
+                        fail "_updateFilter() should only be called three times."
                 }
         }
 
         def results = controller._updateFiltersForLayer(
             testLayer,
-            ['name1': testLayerData, 'name2': testLayerData]
+            ['name1': testLayerData, 'name2': testLayerData, 'name3': testLayerData]
         )
 
-        assertEquals 2, updateFilterCallCount
-        assertEquals 2, results.size()
-        assertEquals "Unable to save filter 'name1'.", results.first()
-        assertEquals "Saved filter 'name2'.", results.last()
+        assertEquals 3, updateFilterCallCount
+        assertEquals 3, results.size()
+
+        results = results.reverse() // So asserts can happen in the order we expect
+        assertEquals "Unable to save filter 'name1'.", results.pop()
+        assertEquals "Saved filter 'name2'.", results.pop()
+        assertEquals "Unable to save filter 'name3'.", results.pop()
     }
 
     void testUpdateFilterWithData_LayerExists() {

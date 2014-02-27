@@ -7,6 +7,9 @@
 
 package au.org.emii.portal
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 /**
  * Types of filters a layer can take.
  *
@@ -17,42 +20,45 @@ package au.org.emii.portal
  * 2) Create an appropriate type in the Javascript, i.e., in web-app/js/portal/filter
  */
 public enum FilterType {
-    String(),
-    Date(false),
-    DateRange(false),
-    Number(false),
-    Double(false),
-    Boolean(false),
-    BoundingBox(false)
+
+    String(true),
+    Date(),
+    DateRange(),
+    Number(),
+    Double(),
+    Boolean(),
+    BoundingBox()
+
+    static final Logger log = LoggerFactory.getLogger(this)
 
     def expectsPossibleValues
 
-    static def stringTypeMapping = [
-        "string":  FilterType.String,
-        "date":    FilterType.Date,
-        "datetime": FilterType.Date,
-        "double":  FilterType.Number,
-        "float":   FilterType.Number,
-        "integer": FilterType.Number,
-        "int":     FilterType.Number,
-        "long":    FilterType.Number,
-        "boolean": FilterType.Boolean,
-        "pointpropertytype": FilterType.BoundingBox
-    ]
-
-    FilterType(expectsPossibleValues = true) {
+    FilterType(expectsPossibleValues = false) {
         this.expectsPossibleValues = expectsPossibleValues
     }
 
     static FilterType typeFromString(String s) {
 
-        s = s.toLowerCase()
+        switch (s.toLowerCase()) {
+            case "string":
+                return String
 
-        if (s.startsWith("geometry") || s.startsWith("multiline") || s.startsWith("surface")) {
-            return BoundingBox
+            case "boolean":
+                return Boolean
+
+            case ["date", "datetime"]:
+                return Date
+
+            case ["double", "float", "integer", "int", "long", "short", "decimal"]:
+                return Number
+
+            case ["pointpropertytype", "geometrypropertytype", "multilinepropertytype", "surfacepropertytype", "curvepropertytype"]:
+                return BoundingBox
+
+            default:
+                log.info "Unable to find FilterType for '$s'"
+                return null
         }
-
-        return stringTypeMapping[s]
     }
 
     String getKey() {
