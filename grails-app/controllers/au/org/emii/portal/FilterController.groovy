@@ -245,7 +245,7 @@ class FilterController {
 
     def getFilterByLayerName(layer, name, newFilterData) {
 
-        return Filter.findByLayerAndName(layer, name) || getFilterByType(layer, newFilterData)
+        return Filter.findByLayerAndName(layer, name) ?: getFilterByType(layer, newFilterData)
     }
 
     def getFilterByType(layer, newFilterData) {
