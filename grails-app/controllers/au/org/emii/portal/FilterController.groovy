@@ -38,7 +38,7 @@ class FilterController {
             redirect(controller: "layer", action: "editFilters", id: filterInstance.layerId)
         }
         else {
-            render (view: 'create',  model: [filterInstance: filterInstance, layerInstance: layerInstance])
+            render(view: 'create', model: [filterInstance: filterInstance, layerInstance: layerInstance])
         }
     }
 
@@ -69,7 +69,11 @@ class FilterController {
                 def version = params.version.toLong()
                 if (filterInstance.version > version) {
 
-                    filterInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'filter.label', default: 'Filter')] as Object[], "Another user has updated this Filter while you were editing")
+                    filterInstance.errors.rejectValue(
+                        "version", "default.optimistic.locking.failure",
+                        [message(code: 'filter.label', default: 'Filter')] as Object[],
+                        "Another user has updated this Filter while you were editing"
+                    )
                     render(view: "edit", model: [filterInstance: filterInstance])
                 }
             }
