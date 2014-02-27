@@ -14,16 +14,13 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         var dataFilterString;
 
         if (this._isGogoduck(values)) {
-            console.log("gogoduck!");
             dataFilterString = this.createGogoduckFilterEntry(values);
         }
         else {
             if (this._isBodaac(values)) {
-                console.log("bodaac!");
                 dataFilterString = this.createBodaacFilterEntry(values);
             }
             else {
-                console.log("wms!");
                 dataFilterString = this.createWmsFilterEntry(values);
             }
         }
@@ -31,7 +28,7 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     createGogoduckFilterEntry: function(values) {
-        var params = values.gogoduck;
+        var params = values.gogoduckParams;
         var areaString = "";
 
         if (params.latitudeRangeStart) {
@@ -277,7 +274,7 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
                 return;
             }
 
-            var downloadUrl = this._gogoduckUrl(collection.aodaac, format, emailAddress);
+            var downloadUrl = this._gogoduckUrl(collection.gogoduckParams, format, emailAddress);
             Ext.Ajax.request({
                 url: downloadUrl,
                 scope: this,
@@ -309,19 +306,25 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
     // TODO - AS: customise output of the gogoduck url based on the web-app
     _gogoduckUrl: function(params, format, emailAddress) {
-        var args = "outputFormat=" + format;
-        args += "&dateRangeStart=" + encodeURIComponent(params.dateRangeStart);
-        args += "&dateRangeEnd=" + encodeURIComponent(params.dateRangeEnd);
-        args += "&timeOfDayRangeStart=0000";
-        args += "&timeOfDayRangeEnd=2400";
-        args += "&latitudeRangeStart=" + (params.latitudeRangeStart || params.productLatitudeRangeStart);
-        args += "&latitudeRangeEnd=" + (params.latitudeRangeEnd || params.productLatitudeRangeEnd);
-        args += "&longitudeRangeStart=" + (params.longitudeRangeStart || params.productLongitudeRangeStart);
-        args += "&longitudeRangeEnd=" + (params.longitudeRangeEnd || params.productLongitudeRangeEnd);
-        args += "&productId=" + params.productId;
-        args += "&notificationEmailAddress=" + emailAddress;
 
-        return 'aodaac/createJob?' + args;
+        var args = new Ext.util.JSON({
+            layerName: params.productId,
+            emailAddress: emailAddress,
+            subsetDescriptor: {
+                temporalExtent: {
+                    start: encodeURIComponent(params.dateRangeStart),
+                    end: encodeURIComponent(params.dateRangeEnd)
+                },
+                spatialExtent: {
+                    north: (params.latitudeRangeEnd || params.productLatitudeRangeEnd),
+                    south: (params.latitudeRangeStart || params.productLatitudeRangeStart),
+                    east: (params.longitudeRangeEnd || params.productLongitudeRangeEnd),
+                    west: (params.longitudeRangeStart || params.productLongitudeRangeStart)
+                }
+            }
+        });
+
+        return 'gogoduck/createJob?' + jQuery.param(args);
     },
 
     _validateEmailAddress: function (address) {

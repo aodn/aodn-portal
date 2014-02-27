@@ -118,24 +118,17 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             downloadConfirmationScope: this
         };
 
-        /*if (values.aodaac) {
-            console.log("Michael Caine");
-            return this._getAodaacDataRowTemplateInstance(config);
-        }*/
+        var templateInstance;
+
         if (values.wmsLayer.wfsLayer || values.wmsLayer.urlDownloadFieldName) {
-            return this._getDataRowTemplateInstance(config);
+            templateInstance =  this._getDataRowTemplateInstance(config);
+        }
+        else {
+            templateInstance = this._getNoDataRowTemplateInstance(config);
         }
 
-        return this._getNoDataRowTemplateInstance(config);
+        return templateInstance;
     },
-
-    /*_getAodaacDataRowTemplateInstance: function(config) {
-        if (!this.aodaacDataRowTemplate) {
-            this.aodaacDataRowTemplate = new Portal.cart.AodaacDataRowTemplate(config);
-        }
-
-        return this.aodaacDataRowTemplate;
-    },*/
 
     _getDataRowTemplateInstance: function(config) {
         if (!this.dataRowTemplate) {

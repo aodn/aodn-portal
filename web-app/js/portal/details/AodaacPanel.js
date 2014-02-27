@@ -41,7 +41,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.selectedLayer = layer;
         if (layer.isNcwms()) {
             this.geoNetworkRecord = layer.parentGeoNetworkRecord;
-            this._updateGeoNetworkAodaac(this.map.getConstraint());
+            this._updateGeoNetworkGogoduck(this.map.getConstraint());
             this._clearDateTimeFields();
             this._attachTemporalEvents(); // creates listener for completing processTemporalExtent
             this.selectedLayer.processTemporalExtent(); // triggers 'temporalextentloaded'
@@ -62,7 +62,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.remove(this.loadingInfo);
         delete this.loadingInfo;
 
-        this._updateGeoNetworkAodaac(this.map.getConstraint());
+        this._updateGeoNetworkGogoduck(this.map.getConstraint());
     },
 
     _addLoadingInfo: function() {
@@ -75,10 +75,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.map.events.on({
             scope: this,
             'spatialconstraintadded': function(geometry) {
-                this._updateGeoNetworkAodaac(geometry);
+                this._updateGeoNetworkGogoduck(geometry);
             },
             'spatialconstraintcleared': function() {
-                this._updateGeoNetworkAodaac();
+                this._updateGeoNetworkGogoduck();
             }
         });
 
@@ -211,7 +211,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         return new Ext.Spacer({ height: 10 });
     },
 
-    _buildAodaacParameters: function(geometry) {
+    _buildGogoduckParameters: function(geometry) {
         // BODAAC hack.
         if (this.selectedLayer) {
             this.selectedLayer.bodaacFilterParams = {
@@ -224,10 +224,10 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
             var productExtents = this.selectedProductInfo.extents;
 
-            var aodaacConfig = {
+            var gogoduckConfig = {
                 productId: this.selectedProductInfo.productId,
-                dateRangeStart: this._formatDatePickerValueForAodaac(this.startDateTimePicker),
-                dateRangeEnd: this._formatDatePickerValueForAodaac(this.endDateTimePicker),
+                dateRangeStart: this._formatDatePickerValueForGogoduck(this.startDateTimePicker),
+                dateRangeEnd: this._formatDatePickerValueForGogoduck(this.endDateTimePicker),
                 productLatitudeRangeStart: productExtents.lat.min,
                 productLongitudeRangeStart: productExtents.lon.min,
                 productLatitudeRangeEnd: productExtents.lat.max,
@@ -237,13 +237,13 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             if (geometry) {
                 var bounds = geometry.getBounds();
 
-                aodaacConfig.latitudeRangeStart = bounds.bottom;
-                aodaacConfig.longitudeRangeStart = bounds.left;
-                aodaacConfig.latitudeRangeEnd = bounds.top;
-                aodaacConfig.longitudeRangeEnd = bounds.right;
+                gogoduckConfig.latitudeRangeStart = bounds.bottom;
+                gogoduckConfig.longitudeRangeStart = bounds.left;
+                gogoduckConfig.latitudeRangeEnd = bounds.top;
+                gogoduckConfig.longitudeRangeEnd = bounds.right;
             }
 
-            return aodaacConfig;
+            return gogoduckConfig;
         }
 
         return null;
@@ -257,7 +257,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._setLayerSubsetExtent();
         this._updateTimeRangeLabel();
 
-        this._updateGeoNetworkAodaac(this.map.getConstraint());
+        this._updateGeoNetworkGogoduck(this.map.getConstraint());
     },
 
     _previousTimeSlice: function() {
@@ -270,9 +270,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this._updateTimeRangeLabel();
     },
 
-    _updateGeoNetworkAodaac: function(geometry) {
+    _updateGeoNetworkGogoduck: function(geometry) {
         if (this.geoNetworkRecord) {
-            this.geoNetworkRecord.updateAodaac(this._buildAodaacParameters(geometry));
+            this.geoNetworkRecord.updateGogoduckParams(this._buildGogoduckParameters(geometry));
         }
     },
 
@@ -294,7 +294,7 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.buttonsPanel.show();
         this._updateTimeRangeLabel();
 
-        this._updateGeoNetworkAodaac(this.map.getConstraint());
+        this._updateGeoNetworkGogoduck(this.map.getConstraint());
     },
 
     _setDateTimePickerExtent: function(picker, extent, value, toMaxValue) {
@@ -319,11 +319,11 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
         this.selectedLayer.toTime(momentDate);
     },
 
-    _formatDatePickerValueForAodaac: function(datePicker) {
-        return this._formatDateForAodaac(datePicker.getValue());
+    _formatDatePickerValueForGogoduck: function(datePicker) {
+        return this._formatDateForGogoduck(datePicker.getValue());
     },
 
-    _formatDateForAodaac: function(date) {
+    _formatDateForGogoduck: function(date) {
         return moment.utc(date).format('DD/MM/YYYY');
     },
 
