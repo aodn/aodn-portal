@@ -77,14 +77,9 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             expect(Portal.cart.NoDataRowTemplate.prototype.getDataFilterEntry).toHaveBeenCalled();
         });
 
-        it('delegates to the aodaac data row implementation', function() {
-            tpl._getDataFilterEntry(getAodaacRecord());
-            expect(Portal.cart.AodaacDataRowTemplate.prototype.getDataFilterEntry).toHaveBeenCalled();
-        });
-
-        it('delegates to the wfs data row implementation', function() {
+        it('delegates to the data row implementation', function() {
             tpl._getDataFilterEntry(getWfsRecord());
-            expect(Portal.cart.WfsDataRowTemplate.prototype.getDataFilterEntry).toHaveBeenCalled();
+            expect(Portal.cart.DataRowTemplate.prototype.getDataFilterEntry).toHaveBeenCalled();
         });
     });
 
@@ -113,14 +108,9 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             expect(Portal.cart.NoDataRowTemplate.prototype.getDataSpecificMarkup).toHaveBeenCalled();
         });
 
-        it('delegates to the aodaac data row implementation', function() {
-            tpl._dataSpecificMarkup(getAodaacRecord());
-            expect(Portal.cart.AodaacDataRowTemplate.prototype.getDataSpecificMarkup).toHaveBeenCalled();
-        });
-
         it('delegates to the wfs data row implementation', function() {
             tpl._dataSpecificMarkup(getWfsRecord());
-            expect(Portal.cart.WfsDataRowTemplate.prototype.getDataSpecificMarkup).toHaveBeenCalled();
+            expect(Portal.cart.DataRowTemplate.prototype.getDataSpecificMarkup).toHaveBeenCalled();
         });
     });
 
@@ -136,22 +126,16 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             expect(Portal.cart.NoDataRowTemplate.prototype.attachMenuEvents).not.toHaveBeenCalled();
         });
 
-        it('delegates to the aodaac data row implementation', function() {
-            tpl._createDownloadButton(null, getAodaacRecord());
-            expect(Portal.cart.AodaacDataRowTemplate.prototype.createMenuItems).toHaveBeenCalled();
-            expect(Portal.cart.AodaacDataRowTemplate.prototype.attachMenuEvents).toHaveBeenCalled();
-        });
-
         it('delegates to the wfs data row implementation', function() {
             tpl._createDownloadButton(null, getWfsRecord());
-            expect(Portal.cart.WfsDataRowTemplate.prototype.createMenuItems).toHaveBeenCalled();
-            expect(Portal.cart.WfsDataRowTemplate.prototype.attachMenuEvents).toHaveBeenCalled();
+            expect(Portal.cart.DataRowTemplate.prototype.createMenuItems).toHaveBeenCalled();
+            expect(Portal.cart.DataRowTemplate.prototype.attachMenuEvents).toHaveBeenCalled();
         });
 
         it('delegates to the wfs data row implementation for URL list download', function() {
             tpl._createDownloadButton(null, getUrlDownloadRecord());
-            expect(Portal.cart.WfsDataRowTemplate.prototype.createMenuItems).toHaveBeenCalled();
-            expect(Portal.cart.WfsDataRowTemplate.prototype.attachMenuEvents).toHaveBeenCalled();
+            expect(Portal.cart.DataRowTemplate.prototype.createMenuItems).toHaveBeenCalled();
+            expect(Portal.cart.DataRowTemplate.prototype.attachMenuEvents).toHaveBeenCalled();
         });
     });
 
@@ -204,19 +188,8 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
     describe('_getRowTemplate', function() {
 
         beforeEach(function() {
-            spyOn(tpl, '_getAodaacDataRowTemplateInstance');
             spyOn(tpl, '_getWfsDataRowTemplateInstance');
             spyOn(tpl, '_getNoDataRowTemplateInstance');
-        });
-
-        it('calls for AODAAC template', function() {
-            tpl._getRowTemplate({
-                aodaac: {} // AODAAC filter
-            });
-
-            expect(tpl._getAodaacDataRowTemplateInstance).toHaveBeenCalled();
-            expect(tpl._getWfsDataRowTemplateInstance).not.toHaveBeenCalled();
-            expect(tpl._getNoDataRowTemplateInstance).not.toHaveBeenCalled();
         });
 
         it('calls for WFS template', function() {
@@ -224,14 +197,13 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
                 wmsLayer: {wfsLayer: {}}
             });
 
-            expect(tpl._getAodaacDataRowTemplateInstance).not.toHaveBeenCalled();
-            expect(tpl._getWfsDataRowTemplateInstance).toHaveBeenCalled();
+            expect(tpl._getDataRowTemplateInstance).toHaveBeenCalled();
             expect(tpl._getNoDataRowTemplateInstance).not.toHaveBeenCalled();
 
             tpl._getRowTemplate({
                 wmsLayer: {urlDownloadFieldName: 'url'}
             });
-            expect(tpl._getWfsDataRowTemplateInstance.callCount).toBe(2);
+            expect(tpl._getDataRowTemplateInstance.callCount).toBe(2);
         });
 
         it('calls for no data template', function() {
@@ -239,22 +211,14 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
                 wmsLayer: {} // Just the WMS layer
             });
 
-            expect(tpl._getAodaacDataRowTemplateInstance).not.toHaveBeenCalled();
-            expect(tpl._getWfsDataRowTemplateInstance).not.toHaveBeenCalled();
+            expect(tpl._getDataRowTemplateInstance).not.toHaveBeenCalled();
             expect(tpl._getNoDataRowTemplateInstance).toHaveBeenCalled();
         });
     });
 
     function setupDataRowTemplatePrototypeSpies(method) {
-        spyOn(Portal.cart.AodaacDataRowTemplate.prototype, method);
-        spyOn(Portal.cart.WfsDataRowTemplate.prototype, method);
+        spyOn(Portal.cart.DataRowTemplate.prototype, method);
         spyOn(Portal.cart.NoDataRowTemplate.prototype, method);
-    }
-
-    function getAodaacRecord() {
-        geoNetworkRecord.aodaac = {};
-
-        return geoNetworkRecord;
     }
 
     function getWfsRecord() {

@@ -304,7 +304,6 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         return layer.getWmsLayerFeatureRequestUrl(format);
     },
 
-    // TODO - AS: customise output of the gogoduck url based on the web-app
     _gogoduckUrl: function(params, format, emailAddress) {
 
         var args = new Ext.util.JSON({
