@@ -188,7 +188,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
     describe('_getRowTemplate', function() {
 
         beforeEach(function() {
-            spyOn(tpl, '_getWfsDataRowTemplateInstance');
+            spyOn(tpl, '_getDataRowTemplateInstance');
             spyOn(tpl, '_getNoDataRowTemplateInstance');
         });
 

@@ -14,6 +14,11 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     ROW_HEIGHT: 32,
 
+    LONG_MIN: -180,
+    LONG_MAX: 180,
+    LAT_MIN: -90,
+    LAT_MAX: 90,
+
     constructor: function(cfg) {
         var config = Ext.apply({
             id: 'aodaacPanel',
@@ -220,33 +225,39 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             };
         }
 
-        if (this.productsInfo && this.selectedProductInfo) {
-
-            var productExtents = this.selectedProductInfo.extents;
-
-            var gogoduckConfig = {
-                productId: this.selectedProductInfo.productId,
-                dateRangeStart: this._formatDatePickerValueForGogoduck(this.startDateTimePicker),
-                dateRangeEnd: this._formatDatePickerValueForGogoduck(this.endDateTimePicker),
-                productLatitudeRangeStart: productExtents.lat.min,
-                productLongitudeRangeStart: productExtents.lon.min,
-                productLatitudeRangeEnd: productExtents.lat.max,
-                productLongitudeRangeEnd: productExtents.lon.max
-            };
-
-            if (geometry) {
-                var bounds = geometry.getBounds();
-
-                gogoduckConfig.latitudeRangeStart = bounds.bottom;
-                gogoduckConfig.longitudeRangeStart = bounds.left;
-                gogoduckConfig.latitudeRangeEnd = bounds.top;
-                gogoduckConfig.longitudeRangeEnd = bounds.right;
+        var productExtents = {
+            lat: {
+                min: this.LAT_MIN,
+                max: this.LAT_MAX
+            },
+            lon: {
+                min: this.LONG_MIN,
+                max: this.LAT_MAX
             }
-
-            return gogoduckConfig;
         }
 
-        return null;
+        console.log(this.selectedLayer);
+
+        var gogoduckConfig = {
+            layerName: this.selectedLayer.name,
+            dateRangeStart: this._formatDatePickerValueForGogoduck(this.startDateTimePicker),
+            dateRangeEnd: this._formatDatePickerValueForGogoduck(this.endDateTimePicker),
+            productLatitudeRangeStart: productExtents.lat.min,
+            productLongitudeRangeStart: productExtents.lon.min,
+            productLatitudeRangeEnd: productExtents.lat.max,
+            productLongitudeRangeEnd: productExtents.lon.max
+        };
+
+        if (geometry) {
+            var bounds = geometry.getBounds();
+
+            gogoduckConfig.latitudeRangeStart = bounds.bottom;
+            gogoduckConfig.longitudeRangeStart = bounds.left;
+            gogoduckConfig.latitudeRangeEnd = bounds.top;
+            gogoduckConfig.longitudeRangeEnd = bounds.right;
+        }
+
+        return gogoduckConfig;
     },
 
     _onDateSelected: function(datePicker, jsDate) {

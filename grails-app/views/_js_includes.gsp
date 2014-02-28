@@ -158,7 +158,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadConfirmationWindow.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NoDataRowTemplate.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'AodaacDataRowTemplate.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DataRowTemplate.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadEstimator.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/visualise/animations', file: 'TemporalExtent.js')}"></script>

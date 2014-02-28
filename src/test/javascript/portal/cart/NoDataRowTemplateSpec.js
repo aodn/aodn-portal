@@ -17,7 +17,7 @@ describe('Portal.cart.NoDataRowTemplate', function() {
     describe('constructor', function() {
         it('assigns values from passed in config', function() {
             var callback = noOp;
-            var _tpl = new Portal.cart.WfsDataRowTemplate({ downloadConfirmation: callback, downloadConfirmationScope: this });
+            var _tpl = new Portal.cart.DataRowTemplate({ downloadConfirmation: callback, downloadConfirmationScope: this });
             expect(_tpl.downloadConfirmation).toBe(callback);
             expect(_tpl.downloadConfirmationScope).toBe(this);
         });

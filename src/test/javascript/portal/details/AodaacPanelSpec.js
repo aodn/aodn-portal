@@ -11,7 +11,7 @@ describe('Portal.details.AodaacPanel', function() {
     var aodaacPanel;
     var geoNetworkRecord = {
         id: "45678",
-        updateAodaac: noOp
+        updateGogoduckParams: noOp
     };
     var layer = _mockLayer();
 
@@ -52,7 +52,7 @@ describe('Portal.details.AodaacPanel', function() {
 
         it('updates the aodaac object when the layer changes', function() {
             aodaacPanel.handleLayer(layer, noOp, noOp, {});
-            expect(aodaacPanel._buildAodaacParameters).toHaveBeenCalled();
+            expect(aodaacPanel._buildGogoduckParameters).toHaveBeenCalled();
             delete aodaacPanel.geoNetworkRecord;
         });
 
@@ -141,35 +141,26 @@ describe('Portal.details.AodaacPanel', function() {
         });
     });
 
-    describe('_buildAodaacParameters', function () {
+    describe('_buildGogoduckParameters', function () {
 
         var aodaacParameters;
 
         beforeEach(function () {
 
-            spyOn(aodaacPanel, '_formatDatePickerValueForAodaac').andReturn('[date]');
-
-            aodaacPanel.productsInfo = [];
-            aodaacPanel.selectedProductInfo = {
-                productId: 42,
-                extents: {
-                    lat: { min: 1, max: 2 },
-                    lon: { min: 3, max: 4 }
-                }
-            };
+            spyOn(aodaacPanel, '_formatDatePickerValueForGogoduck').andReturn('[date]');
         });
 
         it('includes some information regardless of geometry', function () {
 
-            aodaacParameters = aodaacPanel._buildAodaacParameters();
+            gogoduckParameters = aodaacPanel._buildGogoduckParameters();
 
-            expect(aodaacParameters.productId).toBe(42);
-            expect(aodaacParameters.dateRangeStart).toBe('[date]');
-            expect(aodaacParameters.dateRangeEnd).toBe('[date]');
-            expect(aodaacParameters.productLatitudeRangeStart).toBe(1);
-            expect(aodaacParameters.productLongitudeRangeStart).toBe(3);
-            expect(aodaacParameters.productLatitudeRangeEnd).toBe(2);
-            expect(aodaacParameters.productLongitudeRangeEnd).toBe(4);
+            expect(gogoduckParameters.layerName).toBe();
+            expect(gogoduckParameters.dateRangeStart).toBe('[date]');
+            expect(gogoduckParameters.dateRangeEnd).toBe('[date]');
+            expect(gogoduckParameters.productLatitudeRangeStart).toBe(-90);
+            expect(gogoduckParameters.productLongitudeRangeStart).toBe(-180);
+            expect(gogoduckParameters.productLatitudeRangeEnd).toBe(90);
+            expect(gogoduckParameters.productLongitudeRangeEnd).toBe(180);
         });
 
         it('includes spatialBounds if a geometry is present', function () {
@@ -185,12 +176,12 @@ describe('Portal.details.AodaacPanel', function() {
                 }
             };
 
-            aodaacParameters = aodaacPanel._buildAodaacParameters(geom);
+            gogoduckParameters = aodaacPanel._buildGogoduckParameters(geom);
 
-            expect(aodaacParameters.latitudeRangeStart).toBe(10);
-            expect(aodaacParameters.longitudeRangeStart).toBe(30);
-            expect(aodaacParameters.latitudeRangeEnd).toBe(20);
-            expect(aodaacParameters.longitudeRangeEnd).toBe(40);
+            expect(gogoduckParameters.latitudeRangeStart).toBe(10);
+            expect(gogoduckParameters.longitudeRangeStart).toBe(30);
+            expect(gogoduckParameters.latitudeRangeEnd).toBe(20);
+            expect(gogoduckParameters.longitudeRangeEnd).toBe(40);
         });
 
         describe('BODAAC hack', function() {
@@ -202,9 +193,12 @@ describe('Portal.details.AodaacPanel', function() {
                 spyOn(aodaacPanel.endDateTimePicker, 'getValue').andReturn(endTime.toDate());
 
                 var selectedLayer = {};
-                aodaacPanel.selectedLayer = selectedLayer;
+                var selectedLayerName = {};
 
-                aodaacPanel._buildAodaacParameters();
+                aodaacPanel.selectedLayer = selectedLayer;
+                aodaacPanel.selectedLayer.name = selectedLayerName;
+
+                aodaacPanel._buildGogoduckParameters();
 
                 expect(selectedLayer.bodaacFilterParams.dateRangeStart).toBeSame(startTime);
                 expect(selectedLayer.bodaacFilterParams.dateRangeEnd).toBeSame(endTime);
@@ -238,7 +232,7 @@ describe('Portal.details.AodaacPanel', function() {
     function _applyCommonSpies(panel) {
         var _panel = panel || aodaacPanel;
         spyOn(_panel, '_showAllControls');
-        spyOn(_panel, '_buildAodaacParameters');
+        spyOn(_panel, '_buildGogoduckParameters');
         spyOn(_panel, '_onDateSelected');
         spyOn(_panel, '_setBounds');
     }
@@ -252,7 +246,6 @@ describe('Portal.details.AodaacPanel', function() {
             parentGeoNetworkRecord: geoNetworkRecord,
             temporalExtent: extent,
             missingDays: [],
-            productsInfo: [1,2,3],
             time: extent.min(),
             getTemporalExtent: function() {
                 return this.temporalExtent;

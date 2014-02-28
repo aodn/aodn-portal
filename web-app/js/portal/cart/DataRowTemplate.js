@@ -307,7 +307,7 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     _gogoduckUrl: function(params, format, emailAddress) {
 
         var args = new Ext.util.JSON({
-            layerName: params.productId,
+            layerName: params.layerName,
             emailAddress: emailAddress,
             subsetDescriptor: {
                 temporalExtent: {

@@ -5,13 +5,13 @@
  *
  */
 
-describe('Portal.cart.WfsDataRowTemplate', function() {
+describe('Portal.cart.DataRowTemplate', function() {
 
     var tpl;
     var geoNetworkRecord;
 
     beforeEach(function() {
-        tpl = new Portal.cart.WfsDataRowTemplate();
+        tpl = new Portal.cart.DataRowTemplate();
         geoNetworkRecord = {
             uuid: 9,
             grailsLayerId: 42,
@@ -23,6 +23,8 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
         };
         geoNetworkRecord.getWfsLayerFeatureRequestUrl = function() {};
         geoNetworkRecord.wmsLayer.getWmsDownloadFilter = function() {};
+        geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
+        geoNetworkRecord.wmsLayer.wfsLayer = true;
     });
 
     describe('getDataFilterEntry', function() {
