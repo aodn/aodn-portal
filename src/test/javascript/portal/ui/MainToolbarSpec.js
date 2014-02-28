@@ -114,7 +114,7 @@ describe("Portal.ui.MainToolbar", function() {
     describe('MsgBus events', function() {
         it('should trigger render on layer removal', function() {
             spyOn(mainToolbar, '_renderNavigationButtons').andCallFake(function() {});
-            Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, null);
+            Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, { id: "1234567890" });
             expect(mainToolbar._renderNavigationButtons).toHaveBeenCalled();
         });
     });
