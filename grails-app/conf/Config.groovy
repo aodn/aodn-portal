@@ -93,6 +93,16 @@ aodaacAggregator {
 // Depth service
 depthService.url = "http://depthservice.aodn.org.au/depth"
 
+// Search results mini map configuration
+minimap {
+    baselayer {
+        name = "baselayer"
+        url = "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/"
+        params = [layers: 'HiRes_aus-group']
+    }
+}
+
+
 // OpenID
 openId {
     // openID provider details to support login popup etc
