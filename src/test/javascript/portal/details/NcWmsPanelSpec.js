@@ -5,7 +5,7 @@
  *
  */
 
-describe('Portal.details.AodaacPanel', function() {
+describe('Portal.details.NcWmsPanel', function() {
 
     var map;
     var aodaacPanel;
@@ -22,10 +22,10 @@ describe('Portal.details.AodaacPanel', function() {
         spyOn(map.events, 'register');
         spyOn(Portal.ui.TimeRangeLabel.prototype, 'update');
 
-        aodaacPanel = new Portal.details.AodaacPanel({ map: map });
+        ncwmsPanel = new Portal.details.NcWmsPanel({ map: map });
 
-        aodaacPanel._setBounds =  function() {};
-        aodaacPanel._removeLoadingInfo = function() {};
+        ncwmsPanel._setBounds =  function() {};
+        ncwmsPanel._removeLoadingInfo = function() {};
         layer.getMissingDays =  function() { return [] };
         layer.isNcwms = function() { return true };
         layer.events = { on: noOp };
@@ -36,11 +36,11 @@ describe('Portal.details.AodaacPanel', function() {
 
         it('assigns a GeoNetworkRecord instance from a layer', function() {
             _applyCommonSpies();
-            spyOn(aodaacPanel, '_removeLoadingInfo');
+            spyOn(ncwmsPanel, '_removeLoadingInfo');
 
-            aodaacPanel.handleLayer(layer, noOp, noOp, {});
-            expect(aodaacPanel.geoNetworkRecord).toBeTruthy();
-            expect(aodaacPanel.geoNetworkRecord.id).toEqual(geoNetworkRecord.id);
+            ncwmsPanel.handleLayer(layer, noOp, noOp, {});
+            expect(ncwmsPanel.geoNetworkRecord).toBeTruthy();
+            expect(ncwmsPanel.geoNetworkRecord.id).toEqual(geoNetworkRecord.id);
         });
     });
 
@@ -50,29 +50,29 @@ describe('Portal.details.AodaacPanel', function() {
             _applyCommonSpies();
         });
 
-        it('updates the aodaac object when the layer changes', function() {
-            aodaacPanel.handleLayer(layer, noOp, noOp, {});
-            expect(aodaacPanel._buildGogoduckParameters).toHaveBeenCalled();
-            delete aodaacPanel.geoNetworkRecord;
+        it('updates the NcWMS panel object when the layer changes', function() {
+            ncwmsPanel.handleLayer(layer, noOp, noOp, {});
+            expect(ncwmsPanel._buildGogoduckParameters).toHaveBeenCalled();
+            delete ncwmsPanel.geoNetworkRecord;
         });
 
         it('updates the date when the start date changes via edit', function() {
-            aodaacPanel._addTemporalControls();
-            aodaacPanel.startDateTimePicker.fireEvent('change');
-            expect(aodaacPanel._onDateSelected).toHaveBeenCalled();
+            ncwmsPanel._addTemporalControls();
+            ncwmsPanel.startDateTimePicker.fireEvent('change');
+            expect(ncwmsPanel._onDateSelected).toHaveBeenCalled();
         });
 
         it('updates the date when the end date changes via edit', function() {
-            aodaacPanel._addTemporalControls();
-            aodaacPanel.endDateTimePicker.fireEvent('change');
-            expect(aodaacPanel._onDateSelected).toHaveBeenCalled();
+            ncwmsPanel._addTemporalControls();
+            ncwmsPanel.endDateTimePicker.fireEvent('change');
+            expect(ncwmsPanel._onDateSelected).toHaveBeenCalled();
         });
 
         it('clears the date and time pickers when the layer is updating', function() {
-            spyOn(aodaacPanel, '_clearDateTimeFields');
-            aodaacPanel.handleLayer(layer, noOp, noOp, {});
-            expect(aodaacPanel._clearDateTimeFields).toHaveBeenCalled();
-            delete aodaacPanel.geoNetworkRecord;
+            spyOn(ncwmsPanel, '_clearDateTimeFields');
+            ncwmsPanel.handleLayer(layer, noOp, noOp, {});
+            expect(ncwmsPanel._clearDateTimeFields).toHaveBeenCalled();
+            delete ncwmsPanel.geoNetworkRecord;
         });
     });
 
@@ -80,7 +80,7 @@ describe('Portal.details.AodaacPanel', function() {
 
         it('return an element with the html set', function() {
 
-            var element = aodaacPanel._newHtmlElement('the html');
+            var element = ncwmsPanel._newHtmlElement('the html');
 
             expect(element.html).toBe('the html');
         });
@@ -88,71 +88,71 @@ describe('Portal.details.AodaacPanel', function() {
 
     describe('clearing the date and time pickers', function() {
         it('resets the start picker', function() {
-            spyOn(aodaacPanel.startDateTimePicker, 'reset');
-            aodaacPanel._clearDateTimeFields();
-            expect(aodaacPanel.startDateTimePicker.reset).toHaveBeenCalled();
+            spyOn(ncwmsPanel.startDateTimePicker, 'reset');
+            ncwmsPanel._clearDateTimeFields();
+            expect(ncwmsPanel.startDateTimePicker.reset).toHaveBeenCalled();
         });
 
         it('resets the end picker', function() {
-            spyOn(aodaacPanel.endDateTimePicker, 'reset');
-            aodaacPanel._clearDateTimeFields();
-            expect(aodaacPanel.endDateTimePicker.reset).toHaveBeenCalled();
+            spyOn(ncwmsPanel.endDateTimePicker, 'reset');
+            ncwmsPanel._clearDateTimeFields();
+            expect(ncwmsPanel.endDateTimePicker.reset).toHaveBeenCalled();
         });
 
         it('hides the next and previous buttons', function() {
-            spyOn(aodaacPanel.buttonsPanel, 'hide');
-            aodaacPanel._clearDateTimeFields();
-            expect(aodaacPanel.buttonsPanel.hide).toHaveBeenCalled();
+            spyOn(ncwmsPanel.buttonsPanel, 'hide');
+            ncwmsPanel._clearDateTimeFields();
+            expect(ncwmsPanel.buttonsPanel.hide).toHaveBeenCalled();
         });
 
         it('updates the time range label', function() {
-            spyOn(aodaacPanel, '_updateTimeRangeLabelLoading');
-            aodaacPanel._clearDateTimeFields();
-            expect(aodaacPanel._updateTimeRangeLabelLoading).toHaveBeenCalledWith();
+            spyOn(ncwmsPanel, '_updateTimeRangeLabelLoading');
+            ncwmsPanel._clearDateTimeFields();
+            expect(ncwmsPanel._updateTimeRangeLabelLoading).toHaveBeenCalledWith();
         });
     });
 
     describe('layer temporal extent loaded', function() {
 
         beforeEach(function() {
-            aodaacPanel.selectedLayer = layer;
+            ncwmsPanel.selectedLayer = layer;
         });
 
         it('enables the start date picker', function() {
-            aodaacPanel._layerTemporalExtentLoaded();
-            expect(aodaacPanel.startDateTimePicker.disabled).toBeFalsy();
+            ncwmsPanel._layerTemporalExtentLoaded();
+            expect(ncwmsPanel.startDateTimePicker.disabled).toBeFalsy();
         });
 
         it('enables the end date picker', function() {
-            aodaacPanel._layerTemporalExtentLoaded();
-            expect(aodaacPanel.endDateTimePicker.disabled).toBeFalsy();
+            ncwmsPanel._layerTemporalExtentLoaded();
+            expect(ncwmsPanel.endDateTimePicker.disabled).toBeFalsy();
         });
 
         it('shows the next and previous buttons', function() {
-            spyOn(aodaacPanel.buttonsPanel, 'show');
-            aodaacPanel._layerTemporalExtentLoaded();
-            expect(aodaacPanel.buttonsPanel.show).toHaveBeenCalled();
+            spyOn(ncwmsPanel.buttonsPanel, 'show');
+            ncwmsPanel._layerTemporalExtentLoaded();
+            expect(ncwmsPanel.buttonsPanel.show).toHaveBeenCalled();
         });
 
         it('updates the time range label', function() {
-            spyOn(aodaacPanel, '_updateTimeRangeLabel');
-            aodaacPanel._layerTemporalExtentLoaded();
-            expect(aodaacPanel._updateTimeRangeLabel).toHaveBeenCalled();
+            spyOn(ncwmsPanel, '_updateTimeRangeLabel');
+            ncwmsPanel._layerTemporalExtentLoaded();
+            expect(ncwmsPanel._updateTimeRangeLabel).toHaveBeenCalled();
         });
     });
 
     describe('_buildGogoduckParameters', function () {
 
-        var aodaacParameters;
+        var gogoduckParameters;
 
         beforeEach(function () {
 
-            spyOn(aodaacPanel, '_formatDatePickerValueForGogoduck').andReturn('[date]');
+            spyOn(ncwmsPanel, '_formatDatePickerValueForGogoduck').andReturn('[date]');
         });
 
         it('includes some information regardless of geometry', function () {
 
-            gogoduckParameters = aodaacPanel._buildGogoduckParameters();
+            gogoduckParameters = ncwmsPanel._buildGogoduckParameters();
 
             expect(gogoduckParameters.layerName).toBe();
             expect(gogoduckParameters.dateRangeStart).toBe('[date]');
@@ -176,7 +176,7 @@ describe('Portal.details.AodaacPanel', function() {
                 }
             };
 
-            gogoduckParameters = aodaacPanel._buildGogoduckParameters(geom);
+            gogoduckParameters = ncwmsPanel._buildGogoduckParameters(geom);
 
             expect(gogoduckParameters.latitudeRangeStart).toBe(10);
             expect(gogoduckParameters.longitudeRangeStart).toBe(30);
@@ -189,16 +189,16 @@ describe('Portal.details.AodaacPanel', function() {
                 var startTime = moment('2000-01-01T01:01:01');
                 var endTime = moment('2001-01-01T01:01:01');
 
-                spyOn(aodaacPanel.startDateTimePicker, 'getValue').andReturn(startTime.toDate());
-                spyOn(aodaacPanel.endDateTimePicker, 'getValue').andReturn(endTime.toDate());
+                spyOn(ncwmsPanel.startDateTimePicker, 'getValue').andReturn(startTime.toDate());
+                spyOn(ncwmsPanel.endDateTimePicker, 'getValue').andReturn(endTime.toDate());
 
                 var selectedLayer = {};
                 var selectedLayerName = {};
 
-                aodaacPanel.selectedLayer = selectedLayer;
-                aodaacPanel.selectedLayer.name = selectedLayerName;
+                ncwmsPanel.selectedLayer = selectedLayer;
+                ncwmsPanel.selectedLayer.name = selectedLayerName;
 
-                aodaacPanel._buildGogoduckParameters();
+                ncwmsPanel._buildGogoduckParameters();
 
                 expect(selectedLayer.bodaacFilterParams.dateRangeStart).toBeSame(startTime);
                 expect(selectedLayer.bodaacFilterParams.dateRangeEnd).toBeSame(endTime);
@@ -207,7 +207,7 @@ describe('Portal.details.AodaacPanel', function() {
     });
 
     function _decorateMap(panel) {
-        var _panel = panel || aodaacPanel;
+        var _panel = panel || ncwmsPanel;
         _panel.map.getExtent = function() {
             return new OpenLayers.Bounds(0, -90, 180, 90);
         }
@@ -230,7 +230,7 @@ describe('Portal.details.AodaacPanel', function() {
     }
 
     function _applyCommonSpies(panel) {
-        var _panel = panel || aodaacPanel;
+        var _panel = panel || ncwmsPanel;
         spyOn(_panel, '_showAllControls');
         spyOn(_panel, '_buildGogoduckParameters');
         spyOn(_panel, '_onDateSelected');

@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
+Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     DATE_FORMAT: 'Y-m-d',
     TIME_FORMAT: 'H:i \\U\\TC',
@@ -21,16 +21,16 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
         var config = Ext.apply({
-            id: 'aodaacPanel',
+            id: 'NcWmsPanel',
             bodyCls: 'aodaacTab',
             autoScroll: true
         }, cfg);
 
-        Portal.details.AodaacPanel.superclass.constructor.call(this, config);
+        Portal.details.NcWmsPanel.superclass.constructor.call(this, config);
     },
 
     initComponent: function() {
-        Portal.details.AodaacPanel.superclass.initComponent.call(this);
+        Portal.details.NcWmsPanel.superclass.initComponent.call(this);
 
         this._addLoadingInfo();
         this.add(this._newSectionSpacer());
@@ -232,11 +232,9 @@ Portal.details.AodaacPanel = Ext.extend(Ext.Panel, {
             },
             lon: {
                 min: this.LONG_MIN,
-                max: this.LAT_MAX
+                max: this.LONG_MAX
             }
         }
-
-        console.log(this.selectedLayer);
 
         var gogoduckConfig = {
             layerName: this.selectedLayer.name,

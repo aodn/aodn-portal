@@ -115,7 +115,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NCWMSColourScalePanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'StylePanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DetailsPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'AodaacPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NcWmsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DetailsPanelTab.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'InfoPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanel.js')}"></script>

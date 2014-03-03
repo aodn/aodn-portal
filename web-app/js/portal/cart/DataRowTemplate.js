@@ -30,14 +30,23 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     createGogoduckFilterEntry: function(values) {
         var params = values.gogoduckParams;
         var areaString = "";
+        var dateString = "";
 
         if (params.latitudeRangeStart) {
             var areaStart = String.format('{0}<b>N</b>,&nbsp;{1}<b>E</b>,', params.latitudeRangeStart, params.longitudeRangeEnd);
             var areaEnd = String.format('{0}<b>S</b>,&nbsp;{1}<b>W</b>', params.latitudeRangeEnd, params.longitudeRangeStart);
             areaString = this._parameterString('parameterAreaLabel', areaStart, areaEnd);
         }
-        return areaString +
-            this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd, " <b>-</b> ");
+
+        if (params.dateRangeStart != "Invalid date") {
+            dateString = this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd, " <b>-</b> ");
+        }
+
+        if (areaString == "" && dateString == "") {
+            areaString = String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel"));
+        }
+
+        return areaString + dateString;
     },
 
     createBodaacFilterEntry: function(values) {
@@ -122,7 +131,7 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         return menuItems;
     },
 
-    _generateGogoduckMenuItems: function() {
+    _generateGogoduckMenuItems: function(collection) {
         return [
             this._createGogoduckMenuItem('downloadAsNetCdfLabel', collection, 'nc'),
             this._createGogoduckMenuItem('downloadAsHdfLabel', collection, 'hdf'),
@@ -323,7 +332,7 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
             }
         });
 
-        return 'gogoduck/createJob?' + jQuery.param(args);
+        return 'gogoduck/createJob?' + decodeURIComponent(jQuery.param(args));
     },
 
     _validateEmailAddress: function (address) {
