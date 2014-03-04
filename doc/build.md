@@ -7,7 +7,7 @@ Authors: @tojofo @jkburges @danfruehauf @dnahodil @anguss00
 * the `version number` will follow the [SemVer](http://semver.org/) scheme, but in short: `<major>.<minor>.<patch>`
 * a `build number` will be assigned (ordinarily, there will only be one build for each version), for each build of a particular version 
 * the `build number` will simply be the timestamp when the build was done, with format `yyyyMMddHHmmss`
-* any deployment will be uniquely identifiable by the combination of the `version number` and `build number` and these parameters will be visible from the app for ease of bug reporting
+* any app binary will be uniquely identifiable by the combination of the `version number` and `build number` and these parameters will be visible from the app for ease of bug reporting
 
 ## Git branching and tagging
 * normal process around (short-lived) features branches and github pull requests into `master` remains unchanged
@@ -16,7 +16,6 @@ Authors: @tojofo @jkburges @danfruehauf @dnahodil @anguss00
 * at the time of promoting a build from `edge` to `RC`, the source code will be git tagged
 
 ## Implementation in Jenkins
-
 There will be three high-level [[3]](#footnote_3) jenkins jobs - edge, RC and prod.
 
 ### edge
@@ -25,8 +24,7 @@ There will be three high-level [[3]](#footnote_3) jenkins jobs - edge, RC and pr
 
 ### RC
 * triggered manually (single click, no parameters)
-* deletes previous RC branch
-* create new RC branch from the sha used in the most recent `edge` job
+* create new RC tag from the sha used in the most recent `edge` job
 * copies the `war` and `md5sum` from the most recent `edge` job, making it available for chef to deploy in to the RC environment.
 
 ### prod
