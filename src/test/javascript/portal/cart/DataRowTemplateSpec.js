@@ -15,20 +15,62 @@ describe('Portal.cart.DataRowTemplate', function() {
         geoNetworkRecord = {
             uuid: 9,
             grailsLayerId: 42,
+            getWfsLayerFeatureRequestUrl: function() {},
             wmsLayer: {
                 getDownloadFilter: function() {
                     return "cql_filter"
-                }
+                },
+                getWmsLayerFeatureRequestUrl: function() {},
+                isNcwms: function() {
+                    return true
+                },
+                wfsLayer: true
             }
         };
-        geoNetworkRecord.getWfsLayerFeatureRequestUrl = function() {};
-        geoNetworkRecord.wmsLayer.getWmsDownloadFilter = function() {};
-        geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
-        geoNetworkRecord.wmsLayer.wfsLayer = true;
     });
 
     describe('getDataFilterEntry', function() {
-        it('returns text if there is a cql filter applied', function() {
+        beforeEach(function() {
+           tpl = new Portal.cart.DataRowTemplate();
+            geoNetworkRecord = {
+                uuid: 9,
+                grailsLayerId: 42,
+                getWfsLayerFeatureRequestUrl: function() {},
+                wmsLayer: {
+                    getDownloadFilter: function() {
+                        return "cql_filter"
+                    },
+                    getWmsLayerFeatureRequestUrl: function() {},
+                    wfsLayer: true
+                }
+            }
+        });
+
+        it('creates gogoduck specific filter entry if layer is gogoduckable', function() {
+            geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
+
+            spyOn(tpl, 'createGogoduckFilterEntry');
+            var filterEntry = tpl.getDataFilterEntry(geoNetworkRecord);
+            expect(tpl.createGogoduckFilterEntry).toHaveBeenCalled();
+        });
+
+        it('creates bodaac specific filter entry if layer is bodaacable', function() {
+            geoNetworkRecord.wmsLayer.wfsLayer = false;
+            geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
+
+            spyOn(tpl, 'createBodaacFilterEntry');
+            var filterEntry = tpl.getDataFilterEntry(geoNetworkRecord);
+            expect(tpl.createBodaacFilterEntry).toHaveBeenCalled();
+        });
+
+        it('creates wms specific filter entry if wms layer', function() {
+            geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
+
+            spyOn(tpl, 'createWmsFilterEntry');
+            var filterEntry = tpl.getDataFilterEntry(geoNetworkRecord);
+            expect(tpl.createWmsFilterEntry).toHaveBeenCalled();
+        });
+        /*it('returns text if there is a cql filter applied', function() {
             var mockCql = 'CQL(intersects(0,0,0,0))';
             tpl._cql = function() {
                 return mockCql;
@@ -48,11 +90,11 @@ describe('Portal.cart.DataRowTemplate', function() {
             expect(tpl.getDataFilterEntry(geoNetworkRecord)).toEqual('<i>' + OpenLayers.i18n('noFilterLabel') + '</i> <code></code>');
         });
 
-        it('BODAAC hack', function() {
+        it('returns correct BODAAC filter entry when filter parameters are present', function() {
             geoNetworkRecord.wmsLayer.bodaacFilterParams = {'dateRangeStart': undefined};
             var res = String.format('<b>{0}</b> {1}', OpenLayers.i18n('filterLabel'), OpenLayers.i18n('timeRangeCalculating'));
             expect(tpl.getDataFilterEntry(geoNetworkRecord)).toEqual(res);
-        });
+        });*/
     });
 
     describe('createMenuItems', function() {

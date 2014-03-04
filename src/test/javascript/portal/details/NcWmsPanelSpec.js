@@ -152,7 +152,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('includes some information regardless of geometry', function () {
 
-            gogoduckParameters = ncwmsPanel._buildGogoduckParameters();
+            gogoduckParameters = ncwmsPanel._buildGogoduckParameters({});
 
             expect(gogoduckParameters.layerName).toBe();
             expect(gogoduckParameters.dateRangeStart).toBe('[date]');
