@@ -11,12 +11,12 @@ Authors: @tojofo @jkburges @danfruehauf @dnahodil @anguss00
 
 ## Git branching and tagging
 * normal process around (short-lived) features branches and github pull requests into `master` remains unchanged
-* when it is decided that `master` is ready to become a release candidate, a `RC branch` named `<major>.<minor>` will be created; the previous `RC branch` should also be deleted at this point
-* any subsequent patches will be done on the same `RC branch`, but with an incremented patch number (e.g. `<major>.<minor>.<patch + 1>`)
-* any subsequent features will result in a new `RC branch` (e.g. `<major>.<minor + 1>`) [[2]](#footnote_2)
-* every RC version will be tagged
+* aside from short term pull request branches, ordinarily RC releases will be built form `master` [[2]](#footnote_2)
+* the exception for this is when an already released-into-production build must be "hot-fixed"
+* at the time of promoting a build from `edge` to `RC`, the source code will be git tagged
 
 ## Implementation in Jenkins
+
 There will be three high-level [[3]](#footnote_3) jenkins jobs - edge, RC and prod.
 
 ### edge
@@ -35,5 +35,5 @@ There will be three high-level [[3]](#footnote_3) jenkins jobs - edge, RC and pr
 
 #### Footnotes
 <a name="footnote_1">[1]</a> Hopefully it can become the standard across all of our apps.<br/>
-<a name="footnote_2">[2]</a> This scenario can often happen in portal when an RC version is released in time for the review on the last day of sprint.  Following that, another release (which includes new features) must be done for the work completed on the final day.<br/>
+<a name="footnote_2">[2]</a> The implication of this is that `master` must *always* be in a working state which could be potentially released.<br/>
 <a name="footnote_3">[3]</a> A "high-level" job may in fact be implemented by combining several utility jobs, such a job to do particular git operations etc
