@@ -11,7 +11,7 @@ Authors: @tojofo @jkburges @danfruehauf @dnahodil @anguss00
 
 ## Git branching and tagging
 * normal process around (short-lived) features branches and github pull requests into `master` remains unchanged
-* aside from short term pull request branches, ordinarily RC releases will be built form `master` [[2]](#footnote_2)
+* aside from short term pull request branches, ordinarily RC releases will be built from `master` [[2]](#footnote_2)
 * the exception for this is when an already released-into-production build must be "hot-fixed"
 * at the time of promoting a build from `edge` to `RC`, the source code will be git tagged
 
