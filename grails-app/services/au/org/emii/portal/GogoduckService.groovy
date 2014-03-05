@@ -11,12 +11,17 @@ class GogoduckService {
 
     void registerJob(jobParameters) throws HttpResponseException {
 
-        def registerJobUrl = grailsApplication.config.gogoduck.url + '/job/'
-
-        new HTTPBuilder(registerJobUrl).post(
+        _gogoduckConnection().post(
             [body: jobParameters],
             successHandler
         )
+    }
+
+    def _gogoduckConnection() {
+
+        def registerJobUrl = grailsApplication.config.gogoduck.url + '/job/'
+
+        return new HTTPBuilder(registerJobUrl)
     }
 
     def successHandler = { response, reader ->
