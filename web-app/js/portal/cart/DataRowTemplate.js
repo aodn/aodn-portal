@@ -86,11 +86,11 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         var menuItems = [];
 
         if (this._isGogoduck(collection)) {
-            menuItems = this._generateGogoduckMenuItems();
+            menuItems = this._generateGogoduckMenuItems(collection);
         }
         else {
             if (this._isBodaac(collection)) {
-                menuItems = this._generateBodaacMenuItems();
+                menuItems = this._generateBodaacMenuItems(collection);
             }
             else {
                 menuItems = this._generateWmsMenuItems(collection);
@@ -114,7 +114,7 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         }
     },
 
-    _generateBodaacMenuItems: function() {
+    _generateBodaacMenuItems: function(collection) {
         var menuItems = [];
 
         menuItems.push({
@@ -283,7 +283,7 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
                 return;
             }
 
-            var downloadUrl = this._gogoduckUrl(collection.gogoduckParams, format, emailAddress);
+            var downloadUrl = this._gogoduckUrl(collection.gogoduckParams, emailAddress);
             Ext.Ajax.request({
                 url: downloadUrl,
                 scope: this,
@@ -313,15 +313,16 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
         return layer.getWmsLayerFeatureRequestUrl(format);
     },
 
-    _gogoduckUrl: function(params, format, emailAddress) {
+    _gogoduckUrl: function(params, emailAddress) {
 
-        var args = new Ext.util.JSON({
+        var paramsAsJson;
+        var args = {
             layerName: params.layerName,
             emailAddress: emailAddress,
             subsetDescriptor: {
                 temporalExtent: {
-                    start: encodeURIComponent(params.dateRangeStart),
-                    end: encodeURIComponent(params.dateRangeEnd)
+                    start: params.dateRangeStart,
+                    end: params.dateRangeEnd
                 },
                 spatialExtent: {
                     north: (params.latitudeRangeEnd || params.productLatitudeRangeEnd),
@@ -330,9 +331,14 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
                     west: (params.longitudeRangeStart || params.productLongitudeRangeStart)
                 }
             }
-        });
+        };
 
-        return 'gogoduck/createJob?' + decodeURIComponent(jQuery.param(args));
+        paramsAsJson = Ext.util.JSON.encode(args);
+
+        console.log(encodeURIComponent(params.dateRangeStart));
+        console.log(String.format('gogoduck/createJob?{0}', encodeURIComponent(paramsAsJson)));
+
+        return String.format('gogoduck/createJob?{0}', encodeURIComponent(paramsAsJson));
     },
 
     _validateEmailAddress: function (address) {

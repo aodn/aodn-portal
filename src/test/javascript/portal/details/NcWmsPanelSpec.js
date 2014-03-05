@@ -8,9 +8,9 @@
 describe('Portal.details.NcWmsPanel', function() {
 
     var map;
-    var aodaacPanel;
+    var ncwmsPanel;
     var geoNetworkRecord = {
-        id: "45678",
+        id: '45678',
         updateGogoduckParams: noOp
     };
     var layer = _mockLayer();
@@ -146,15 +146,15 @@ describe('Portal.details.NcWmsPanel', function() {
         var gogoduckParameters;
 
         beforeEach(function () {
-
+            ncwmsPanel.selectedLayer = layer;
             spyOn(ncwmsPanel, '_formatDatePickerValueForGogoduck').andReturn('[date]');
         });
 
         it('includes some information regardless of geometry', function () {
 
-            gogoduckParameters = ncwmsPanel._buildGogoduckParameters({});
+            gogoduckParameters = ncwmsPanel._buildGogoduckParameters(null);
 
-            expect(gogoduckParameters.layerName).toBe();
+            expect(gogoduckParameters.layerName).toBe('gogoDingo');
             expect(gogoduckParameters.dateRangeStart).toBe('[date]');
             expect(gogoduckParameters.dateRangeEnd).toBe('[date]');
             expect(gogoduckParameters.productLatitudeRangeStart).toBe(-90);
@@ -247,6 +247,7 @@ describe('Portal.details.NcWmsPanel', function() {
             temporalExtent: extent,
             missingDays: [],
             time: extent.min(),
+            name: 'gogoDingo',
             getTemporalExtent: function() {
                 return this.temporalExtent;
             },
