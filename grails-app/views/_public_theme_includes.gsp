@@ -7,12 +7,13 @@
 --%>
 
 <g:render template="/core_theme_includes"></g:render>
- 
-<link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'general.css')}"/>
+
+<r:external uri="/css/general.css"/>
+
 
 <g:if test="${grailsApplication.config.portal.instance?.css}">
-    <link rel="stylesheet" type="text/css" href="${grailsApplication.config.portal.instance.css}"/>
+    <r:external uri="${grailsApplication.config.portal.instance.css}"/>
 </g:if>
 <g:elseif test="${grailsApplication.config.portal.instance?.name}">
-    <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: grailsApplication.config.portal.instance.name + '.css')}"/>
+    <r:external uri="/css/${grailsApplication.config.portal.instance.name + '.css'}"/>
 </g:elseif>
