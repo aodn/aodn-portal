@@ -94,7 +94,7 @@ class AodaacAggregatorService {
         def fromJavascriptFormatter = new SimpleDateFormat(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT) // 01/02/2012  -> Date Object
         def toJavascriptFormatter = new SimpleDateFormat(AGGREGATOR_DATE_INPUT_FORMAT) // Date Object -> 20120201
         def dateRangeStart = fromJavascriptFormatter.parse(params.dateRangeStart)
-        def dateRangeEnd = fromJavascriptFotmatter.parse(params.dateRangeEnd)
+        def dateRangeEnd = fromJavascriptFormatter.parse(params.dateRangeEnd)
 
         apiCallArgs.with {
             add params.outputFormat
