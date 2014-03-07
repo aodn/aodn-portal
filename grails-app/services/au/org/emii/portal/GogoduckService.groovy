@@ -26,11 +26,6 @@ class GogoduckService {
 
     def successHandler = { response, reader ->
 
-        if (log.isDebugEnabled()) {
-            log.debug "GoGoDuck response: ${response.statusLine}"
-            log.debug 'Response data: -----'
-            reader.eachLine { log.debug it }
-            log.debug '\n--------------------'
-        }
+        log.debug "GoGoDuck response: ${response.statusLine}"
     }
 }
