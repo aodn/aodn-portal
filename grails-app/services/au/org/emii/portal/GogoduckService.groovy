@@ -19,7 +19,7 @@ class GogoduckService {
 
     def _gogoduckConnection() {
 
-        def registerJobUrl = grailsApplication.config.gogoduck.url + '/job/'
+        def registerJobUrl = "${grailsApplication.config.gogoduck.url}/job/"
 
         return new HTTPBuilder(registerJobUrl)
     }
