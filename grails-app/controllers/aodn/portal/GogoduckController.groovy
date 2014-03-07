@@ -9,7 +9,7 @@ class GogoduckController {
         log.debug "Registering GoGoDuck job. Params: $params"
 
         if (!params.jobParameters) {
-            render text: 'GoGoDuck job could not be registered. Job parameters were missing.', status: 500
+            render text: 'GoGoDuck job could not be registered. Job parameters were missing.', status: 400
             return
         }
 

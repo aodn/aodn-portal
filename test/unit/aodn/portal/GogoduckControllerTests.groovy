@@ -15,10 +15,13 @@ class GogoduckControllerTests extends ControllerUnitTestCase {
         controller.registerJob()
 
         assertTrue mockResponse.contentAsString.length() > 0
-        assertEquals 500, controller.renderArgs.status
+        assertEquals 400, controller.renderArgs.status
     }
 
     void testRegisterJobWithException() {
+
+        def testParams = new Object()
+        mockParams.put 'jobParameters', testParams
 
         controller.gogoduckService = [
             registerJob: { throw new Exception("Something went wrong") }
