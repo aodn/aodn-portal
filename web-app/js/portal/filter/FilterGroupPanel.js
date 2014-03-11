@@ -146,6 +146,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
         if (aFilterIsEnabled) {
             this._updateAndShow(show, target);
+            Ext.MsgBus.publish(PORTAL_EVENTS.FILTER_LOADED, layer);
         }
         else {
             this.addErrorMessage(OpenLayers.i18n('subsetEmptyFiltersText'));

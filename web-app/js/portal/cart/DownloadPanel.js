@@ -27,6 +27,16 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         Ext.apply(this, config);
         Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);
         this.on('beforeshow', function() { this.onBeforeShow(); }, this);
+
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.FILTER_LOADED, function(subject, openLayer) {
+            this.checkRedraw(openLayer);
+        }, this);
+    },
+
+    checkRedraw: function(layer) {
+        if (layer.options && !layer.options.isBaseLayer && !(layer instanceof OpenLayers.Layer.Vector)) {
+            this.downloadPanelBody.generateContent();
+        }
     },
 
     onBeforeShow: function() {

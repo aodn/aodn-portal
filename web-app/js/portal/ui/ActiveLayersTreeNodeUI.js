@@ -18,7 +18,6 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
 
     constructor: function(config) {
 
-        this.buttonsRendered = false;
         Portal.ui.ActiveLayersTreeNodeUI.superclass.constructor.call(this, config);
         this.buttons = {};
     },
