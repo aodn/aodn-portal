@@ -102,22 +102,17 @@ minimap {
     }
 }
 
-
 // OpenID
 openId {
     // openID provider details to support login popup etc
     providers = [
-        [ name: "eMII", iconHref: "images/AODNfavicon.ico", supportsProviderLogout: true, providerHref: "https://openid.emii.org.au"],
-        [ name: "Google", iconHref : "images/openid_icons/Google.png", supportsProviderLogout : false, providerHref : "https://www.google.com/accounts/o8/id"  ] ,
-        [ name: "Yahoo",  iconHref : "images/openid_icons/Yahoo.png", supportsProviderLogout : false, providerHref : "https://me.yahoo.com/"  ]
+        [name: "Google", iconHref: "images/openid_icons/Google.png", providerHref: "https://www.google.com/accounts/o8/id"],
+        [name: "Yahoo",  iconHref: "images/openid_icons/Yahoo.png",  providerHref: "https://me.yahoo.com/"]
         // Add your own providers here ...
     ]
 
     // Enable user to supply their their own OpenId url via textfield in popup list
     enableUserSuppliedProvider = true
-
-    // Specify provider to work with register button/link (not an OpenId standard)
-    // registerProvider = providers.first();     // disabled by default
 }
 
 // set per-environment serverURL stem for creating absolute links
