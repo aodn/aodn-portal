@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2013 IMOS
  *
@@ -10,6 +9,7 @@ package au.org.emii.portal
 
 import grails.test.GrailsUnitTestCase
 
+import static au.org.emii.portal.FilterType.BoundingBox
 import static au.org.emii.portal.FilterType.typeFromString
 
 class FilterTypeTests extends GrailsUnitTestCase {
@@ -26,12 +26,32 @@ class FilterTypeTests extends GrailsUnitTestCase {
 
     void testTypeFromString() {
 
-        FilterType.stringTypeMapping = ["monkey": FilterType.Number]
+        def testCases = [
+            ["String", FilterType.String],
+            ["DATE", FilterType.Date],
+            ["datetime", FilterType.Date],
+            ["douBLe", FilterType.Number],
+            ["float", FilterType.Number],
+            ["integer", FilterType.Number],
+            ["INT", FilterType.Number],
+            ["long", FilterType.Number],
+            ["SHORT", FilterType.Number],
+            ["Decimal", FilterType.Number],
+            ["BOOLEAN", FilterType.Boolean],
+            ["PointPropertyType", BoundingBox],
+            ["geometrypropertytype", BoundingBox],
+            ["multilinepropertytype", BoundingBox],
+            ["surfacepropertytype", BoundingBox],
+            ["curvepropertytype", BoundingBox],
+            ["otherThing", null]
+        ]
 
-        assertEquals FilterType.BoundingBox, typeFromString("geoMEtryMonkey")
-        assertEquals FilterType.BoundingBox, typeFromString("multilineMonkey")
-        assertEquals FilterType.BoundingBox, typeFromString("surfaceMonkey")
-        assertEquals FilterType.Number, typeFromString("MONKEY")
-        assertEquals null, typeFromString("orangutan")
+        testCases.each{ testCase ->
+
+            def input = testCase[0]
+            def expected = testCase[1]
+
+            assertEquals "$input -> $expected", expected, typeFromString(input)
+        }
     }
 }

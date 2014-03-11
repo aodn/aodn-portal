@@ -24,7 +24,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
         this._initGeoFacetMapToolbar();
         this._initMap();
 
-        this.map.events.register("mouseover", this, function () {
+        this.map.events.register("mousemove", this, function () {
             //need to do this because things go wack if the parent panel is moved, for instance due to scrolling
             this.map.updateSize();
         });

@@ -38,7 +38,7 @@ class FilterController {
             redirect(controller: "layer", action: "editFilters", id: filterInstance.layerId)
         }
         else {
-            render (view: 'create',  model: [filterInstance: filterInstance, layerInstance: layerInstance])
+            render(view: 'create', model: [filterInstance: filterInstance, layerInstance: layerInstance])
         }
     }
 
@@ -69,7 +69,11 @@ class FilterController {
                 def version = params.version.toLong()
                 if (filterInstance.version > version) {
 
-                    filterInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'filter.label', default: 'Filter')] as Object[], "Another user has updated this Filter while you were editing")
+                    filterInstance.errors.rejectValue(
+                        "version", "default.optimistic.locking.failure",
+                        [message(code: 'filter.label', default: 'Filter')] as Object[],
+                        "Another user has updated this Filter while you were editing"
+                    )
                     render(view: "edit", model: [filterInstance: filterInstance])
                 }
             }
@@ -132,7 +136,7 @@ class FilterController {
             }
             else {
 
-                log.info "No layer found with params: $params"
+                log.info "No layer found with server: ${postData.serverHost} and name: ${postData.layerName}"
 
                 render "Unable to find Layer on Server ${postData.serverHost} with name ${postData.layerName}"
             }
@@ -213,13 +217,14 @@ class FilterController {
 
             def filter = _updateFilterWithData(layer, name, newFilterData)
 
-            if (!filter.hasErrors() && filter.save(flush: true)) {
+            if (filter?.save(flush: true, failOnError: false)) {
 
                 results << "Saved filter '$name'."
             }
             else {
+                def reason = filter?.errors ?: "filter wasn't created"
+                log.info "Unable to save filter '$name' for layer ${layer.name}. Reason: $reason"
 
-                log.debug "Unable to save filter '$name' because of errors: ${filter.errors}"
                 results << "Unable to save filter '$name'."
             }
         }
@@ -229,18 +234,33 @@ class FilterController {
 
     def _updateFilterWithData(layer, name, newFilterData) {
 
-        // Try to find existing Filter
-        def filter = Filter.findByLayerAndName(layer, name)
-
-        if (!filter) {
-
-            filter = new Filter(name: newFilterData.name, layer: layer, label: newFilterData.name)
-            filter.type = FilterType.typeFromString(newFilterData.type)
+        def filter = getFilterByLayerName(layer, name, newFilterData)
+        if (filter) {
+            // Update possibleValues
+            filter.possibleValues = filter.type.expectsPossibleValues ? _trimFilterPossibleValues(newFilterData) : []
         }
 
-        // Update possibleValues
-        filter.possibleValues = filter.type?.expectsPossibleValues ? _trimFilterPossibleValues(newFilterData) : []
-
         return filter
+    }
+
+    def getFilterByLayerName(layer, name, newFilterData) {
+
+        return Filter.findByLayerAndName(layer, name) ?: getFilterByType(layer, newFilterData)
+    }
+
+    def getFilterByType(layer, newFilterData) {
+
+        def filterType = FilterType.typeFromString(newFilterData.type)
+
+        if (filterType) {
+            return new Filter(
+                name: newFilterData.name,
+                layer: layer,
+                label: newFilterData.name,
+                type: filterType
+            )
+        }
+
+        return null
     }
 }

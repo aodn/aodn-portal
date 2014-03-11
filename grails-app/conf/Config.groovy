@@ -93,6 +93,16 @@ aodaacAggregator {
 // Depth service
 depthService.url = "http://depthservice.aodn.org.au/depth"
 
+// Search results mini map configuration
+minimap {
+    baselayer {
+        name = "baselayer"
+        url = "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/"
+        params = [layers: 'HiRes_aus-group']
+    }
+}
+
+
 // OpenID
 openId {
     // openID provider details to support login popup etc
@@ -121,8 +131,9 @@ environments {
         // URLs
         grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
         spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
-        wmsScanner.url = env['WMS_SCANNER_URL'] ? env['WMS_SCANNER_URL'] : "http://localhost:8100/WmsScannerGrails/"
-        wfsScanner.url = env['WFS_SCANNER_URL'] ? env['WFS_SCANNER_URL'] : "http://localhost:8200/wfsScanner"
+        wmsScanner.url = env['WMS_SCANNER_URL'] ?: "http://localhost:8100/WmsScannerGrails/"
+        wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
+        gogoduck.url = env['GOGODUCK_URL'] ?: "http://localhost:8300/go-go-duck"
 
         grails {
             mail {

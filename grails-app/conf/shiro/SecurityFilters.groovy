@@ -122,6 +122,12 @@ class SecurityFilters {
             }
         }
 
+        gogoduckAccess(controller: "gogoduck", action: "registerJob") {
+            before = {
+                request.accessAllowed = true
+            }
+        }
+
         authAccess(controller: "auth", action: "*") { // The plugin makes all actions on this controller public anyway, this is just for completeness
             before = {
                 request.accessAllowed = true
