@@ -217,13 +217,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _buildParameters: function(geometry) {
-        // BODAAC hack.
-        if (this.selectedLayer) {
+        // TODO:  add bodaac functionality - AS
+        /*if (this.selectedLayer) {
             this.selectedLayer.bodaacFilterParams = {
                 dateRangeStart: moment(this.startDateTimePicker.getValue()),
                 dateRangeEnd: moment(this.endDateTimePicker.getValue())
             };
-        }
+        }*/
 
         var productExtents = {
             lat: {

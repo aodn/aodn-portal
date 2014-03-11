@@ -153,27 +153,27 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getGogoduckDataRowHtml: function(config) {
-        if (!this.dataRowHtml) {
-            this.dataRowHtml = new Portal.cart.GogoduckDataRowHtml(config);
+        if (!this.gogoduckDataRowHtml) {
+            this.gogoduckDataRowHtml = new Portal.cart.GogoduckDataRowHtml(config);
         }
 
-        return this.dataRowHtml;
+        return this.gogoduckDataRowHtml;
     },
 
     _getBodaacDataRowHtml: function(config) {
-        if (!this.dataRowHtml) {
-            this.dataRowHtml = new Portal.cart.BodaacDataRowHtml(config);
+        if (!this.bodaacDataRowHtml) {
+            this.bodaacDataRowHtml = new Portal.cart.BodaacDataRowHtml(config);
         }
 
-        return this.dataRowHtml;
+        return this.bodaacDataRowHtml;
     },
 
     _getWmsDataRowHtml: function(config) {
-        if (!this.dataRowHtml) {
-            this.dataRowHtml = new Portal.cart.WmsDataRowHtml(config);
+        if (!this.wmsDataRowHtml) {
+            this.wmsDataRowHtml = new Portal.cart.WmsDataRowHtml(config);
         }
 
-        return this.dataRowHtml;
+        return this.wmsDataRowHtml;
     },
 
     _getNoDataRowHtml: function(config) {

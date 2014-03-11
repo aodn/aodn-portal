@@ -22,7 +22,8 @@ describe('Portal.cart.BodaacDataRowHtml', function() {
                 isNcwms: function() {return true},
                 getWmsLayerFeatureRequestUrl: function() {},
                 getWfsLayerFeatureRequestUrl: function() {},
-                wfsLayer: false
+                wfsLayer: false,
+                bodaacFilterParams: {}
             }
         }
     });
