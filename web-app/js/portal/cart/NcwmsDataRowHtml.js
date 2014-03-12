@@ -211,7 +211,7 @@ Portal.cart.NcwmsDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
 
         var paramsAsJson = Ext.util.JSON.encode(args);
 
-        return String.format('gogoduck/createJob?{0}', encodeURIComponent(paramsAsJson));
+        return String.format('gogoduck/registerJob?jobParameters={0}', encodeURIComponent(paramsAsJson));
     },
 
     _validateEmailAddress: function(address) {
