@@ -412,7 +412,7 @@
                         <include>portal/ui/SearchPanel.js</include>
                         <include>portal/ui/VisualisePanel.js</include>
                         <include>portal/ui/MainPanel.js</include>
-                        <include>portal/cart/NoDataRowTemplate.js</include>
+                        <include>portal/cart/NoDataRowHtml.js</include>
                         <include>portal/utils/moment.min.js</include>
                         <include>portal/**/*.js</include>
                     </sourceIncludes>

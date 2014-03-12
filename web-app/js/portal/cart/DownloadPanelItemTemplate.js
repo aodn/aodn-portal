@@ -70,7 +70,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createDownloadButton: function (id, collection) {
-        if (collection.wmsLayer.wfsLayer || collection.wmsLayer.urlDownloadFieldName) {
+        if (this._hasData(collection)) {
             new Ext.Button({
                 text: OpenLayers.i18n('downloadButtonLabel'),
                 icon: 'images/down.png',
@@ -123,31 +123,69 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             downloadConfirmationScope: this
         };
 
-        var templateInstance;
+        var htmlGenerator;
 
-        if (values.wmsLayer.wfsLayer || values.wmsLayer.urlDownloadFieldName) {
-            templateInstance =  this._getDataRowTemplateInstance(config);
+        if (this._hasData(values)) {
+            if (this._isGogoduck(values)) {
+                htmlGenerator =  this._getGogoduckDataRowHtml(config);
+            }
+            else {
+                if (this._isBodaac(values)) {
+                    htmlGenerator =  this._getBodaacDataRowHtml(config);
+                }
+                else {
+                    htmlGenerator =  this._getWmsDataRowHtml(config);
+                }
+            }
         }
         else {
-            templateInstance = this._getNoDataRowTemplateInstance(config);
+            htmlGenerator = this._getNoDataRowHtml(config);
         }
 
-        return templateInstance;
+        return htmlGenerator;
     },
 
-    _getDataRowTemplateInstance: function(config) {
-        if (!this.dataRowTemplate) {
-            this.dataRowTemplate = new Portal.cart.DataRowTemplate(config);
-        }
-
-        return this.dataRowTemplate;
+    _isBodaac: function(collection) {
+        return collection.wmsLayer.bodaacFilterParams && collection.wmsLayer.isNcwms();
     },
 
-    _getNoDataRowTemplateInstance: function(config) {
-        if (!this.noDataRowTemplate) {
-            this.noDataRowTemplate = new Portal.cart.NoDataRowTemplate(config);
+    _isGogoduck: function(collection) {
+        return collection.wmsLayer.wfsLayer && collection.wmsLayer.isNcwms();
+    },
+
+    _hasData: function(collection) {
+        return collection.wmsLayer.wfsLayer;
+    },
+
+    _getGogoduckDataRowHtml: function(config) {
+        if (!this.gogoduckDataRowHtml) {
+            this.gogoduckDataRowHtml = new Portal.cart.GogoduckDataRowHtml(config);
         }
 
-        return this.noDataRowTemplate;
+        return this.gogoduckDataRowHtml;
+    },
+
+    _getBodaacDataRowHtml: function(config) {
+        if (!this.bodaacDataRowHtml) {
+            this.bodaacDataRowHtml = new Portal.cart.BodaacDataRowHtml(config);
+        }
+
+        return this.bodaacDataRowHtml;
+    },
+
+    _getWmsDataRowHtml: function(config) {
+        if (!this.wmsDataRowHtml) {
+            this.wmsDataRowHtml = new Portal.cart.WmsDataRowHtml(config);
+        }
+
+        return this.wmsDataRowHtml;
+    },
+
+    _getNoDataRowHtml: function(config) {
+        if (!this.noDataRowHtml) {
+            this.noDataRowHtml = new Portal.cart.NoDataRowHtml(config);
+        }
+
+        return this.noDataRowHtml;
     }
 });

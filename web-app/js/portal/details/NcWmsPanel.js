@@ -216,14 +216,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         return new Ext.Spacer({ height: 10 });
     },
 
-    _buildGogoduckParameters: function(geometry) {
-        // BODAAC hack.
-        if (this.selectedLayer) {
+    _buildParameters: function(geometry) {
+        // TODO:  add bodaac functionality - AS
+        /*if (this.selectedLayer) {
             this.selectedLayer.bodaacFilterParams = {
                 dateRangeStart: moment(this.startDateTimePicker.getValue()),
                 dateRangeEnd: moment(this.endDateTimePicker.getValue())
             };
-        }
+        }*/
 
         var productExtents = {
             lat: {
@@ -281,7 +281,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     _updateGeoNetworkGogoduck: function(geometry) {
         if (this.geoNetworkRecord) {
-            this.geoNetworkRecord.updateGogoduckParams(this._buildGogoduckParameters(geometry));
+            this.geoNetworkRecord.updateGogoduckParams(this._buildParameters(geometry));
         }
     },
 
@@ -329,10 +329,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _formatDatePickerValueForGogoduck: function(datePicker) {
-        return this._formatDateForGogoduck(datePicker.getValue());
+        return this._formatDateForDownloadPanel(datePicker.getValue());
     },
 
-    _formatDateForGogoduck: function(date) {
+    _formatDateForDownloadPanel: function(date) {
         return moment.utc(date).format('DD/MM/YYYY');
     },
 
