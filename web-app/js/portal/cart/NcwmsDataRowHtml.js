@@ -193,17 +193,27 @@ Portal.cart.NcwmsDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
         };
     },
 
+    _validateEmailAddress: function(address) {
+        if (!address) {
+            return false;
+        }
+
+        // From http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(address);
+    },
+
     _gogoduckUrl: function(params, emailAddress) {
 
-        var dateFormat = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]';
+
 
         var args = {
             layerName: params.layerName,
             emailAddress: emailAddress,
             subsetDescriptor: {
                 temporalExtent: {
-                    start: params.dateRangeStart.format(dateFormat),
-                    end: params.dateRangeEnd.format(dateFormat)
+                    start: this._formatDateForGogoduckParams(params.dateRangeStart),
+                    end: this._formatDateForGogoduckParams(params.dateRangeEnd)
                 },
                 spatialExtent: {
                     north: (params.latitudeRangeEnd || params.productLatitudeRangeEnd),
@@ -219,14 +229,10 @@ Portal.cart.NcwmsDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
         return String.format('gogoduck/registerJob?jobParameters={0}', encodeURIComponent(paramsAsJson));
     },
 
-    _validateEmailAddress: function(address) {
-        if (!address) {
-            return false;
-        }
+    _formatDateForGogoduckParams: function(date) {
 
-        // From http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
-        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(address);
+        var dateFormat = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]';
+        return date.format(dateFormat);
     },
 
     _emailTextFieldElement: function (uuid) {
