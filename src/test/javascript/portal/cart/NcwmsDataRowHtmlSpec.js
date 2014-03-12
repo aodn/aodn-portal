@@ -20,10 +20,108 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
                 getDownloadFilter: function() {
                     return "cql_filter"
                 },
+                getWfsLayerFeatureRequestUrl: function() {},
                 isNcwms: function() {return true},
-                wfsLayer: true
+                wfsLayer: true,
+                bodaacFilterParams: {}
             }
         }
+    });
+
+    describe('createMenuItems', function() {
+
+        it('create menu items for ncwms layers', function() {
+            var menuItems = tpl.createMenuItems(geoNetworkRecord);
+            var urlListIncluded = false;
+            var netCdfDownloadIncluded = false;
+            var netCdfSubsetIncluded = false;
+
+            for (var i = 0; i < menuItems.length; i++) {
+                if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
+                    urlListIncluded = true;
+                }
+                else if (menuItems[i].text == OpenLayers.i18n('downloadAsAllSourceNetCdfLabel')) {
+                    netCdfDownloadIncluded = true;
+                }
+                else if (menuItems[i].text == OpenLayers.i18n('downloadAsSubsettedNetCdfLabel')) {
+                    netCdfSubsetIncluded = true;
+                }
+            }
+
+            expect(menuItems.length).toEqual(3);
+            expect(urlListIncluded).toBe(true);
+            expect(netCdfDownloadIncluded).toBe(true);
+        });
+    });
+
+    describe('getDataSpecificMarkup', function() {
+
+        var markup;
+
+        beforeEach(function() {
+
+            markup = tpl.getDataSpecificMarkup(geoNetworkRecord);
+        });
+
+        it('generates correct markup for ncwms layers', function() {
+
+            expect(markup).not.toEqual('');
+            expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingMessage"))).toBeGreaterThan(-1);
+            expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingSpinner"))).toBeGreaterThan(-1);
+            expect(markup.indexOf(OpenLayers.i18n('notificationBlurbMessage'))).toBeGreaterThan(-1);
+            expect(markup.indexOf(tpl.GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE)).toBeGreaterThan(-1);
+            expect(markup.indexOf(OpenLayers.i18n('emailAddressPlaceholder'))).toBeGreaterThan(-1);
+        });
+
+        it('contains the user specified email address', function() {
+            spyOn(tpl, '_getEmailAddress').andReturn('gogo@duck.com');
+            markup = tpl.getDataSpecificMarkup(geoNetworkRecord);
+
+            expect(tpl._getEmailAddress).toHaveBeenCalled();
+            expect(markup.indexOf('gogo@duck.com')).toBeGreaterThan(-1);
+        });
+    });
+
+    describe('download handlers', function() {
+
+        it('BODAAC _urlListDownloadHandler calls _wfsDownloadUrl', function() {
+            spyOn(tpl, '_wfsDownloadUrl');
+            tpl._urlListDownloadHandler(
+                {
+                    wmsLayer: {
+                        grailsLayerId: 1,
+                        isNcwms: function() { return true }
+                    }
+                }
+            );
+            expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
+        });
+
+        it('BODAAC _netCdfDownloadHandler calls _wfsDownloadUrl', function() {
+            spyOn(tpl, '_wfsDownloadUrl');
+            tpl._netCdfDownloadHandler(
+                {
+                    wmsLayer: {
+                        grailsLayerId: 1,
+                        isNcwms: function() { return true }
+                    }
+                }
+            );
+            expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
+        });
+    });
+
+    describe('_wfsDownloadUrl', function() {
+
+        it('calls correct function on layer', function() {
+
+            var spy = jasmine.createSpy();
+            var testLayer = {getWfsLayerFeatureRequestUrl: spy};
+
+            tpl._wfsDownloadUrl(testLayer, 'csv');
+
+            expect(testLayer.getWfsLayerFeatureRequestUrl).toHaveBeenCalledWith('csv');
+        });
     });
 
     describe('getDataFilterEntry', function() {
@@ -76,75 +174,6 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
         });
     });
 
-    describe('create menu items for gogoduck layers', function() {
-        var items;
-
-        beforeEach(function() {
-            items = tpl.createMenuItems(geoNetworkRecord);
-        });
-
-        it('creates menu items', function() {
-            expect(items.length).toBeGreaterThan(0);
-        });
-
-        it('allows nc download', function() {
-            expect(itemsContains('downloadAsNetCdfLabel')).toBe(true);
-        });
-
-        it('allows hdf download', function() {
-            expect(itemsContains('downloadAsHdfLabel')).toBe(true);
-        });
-
-        it('allows ascii download', function() {
-            expect(itemsContains('downloadAsAsciiLabel')).toBe(true);
-        });
-
-        it('allows urls download', function() {
-            expect(itemsContains('downloadAsOpenDapUrlsLabel')).toBe(true);
-        });
-
-        function itemsContains(type) {
-            for (var i = 0; i < items.length; i++) {
-                if (items[i].text == OpenLayers.i18n(type)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    });
-
-    describe('getDataSpecificMarkup generates gogoduck specific markup', function() {
-        var markup;
-
-        beforeEach(function() {
-            markup = tpl.getDataSpecificMarkup(geoNetworkRecord);
-        });
-
-        it('provides markup', function() {
-            expect(markup).not.toEqual('');
-        });
-
-        it('contains the blurb', function() {
-            expect(markup.indexOf(OpenLayers.i18n('notificationBlurbMessage'))).toBeGreaterThan(-1);
-        });
-
-        it('contains an input for an email address', function() {
-            expect(markup.indexOf(tpl.GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE)).toBeGreaterThan(-1);
-        });
-
-        it('contains the email address place holder when there is no email address', function() {
-            expect(markup.indexOf(OpenLayers.i18n('emailAddressPlaceholder'))).toBeGreaterThan(-1);
-        });
-
-        it('contains the user specified email address', function() {
-            spyOn(tpl, '_getEmailAddress').andReturn('gogo@duck.com');
-            var _markup = tpl.getDataSpecificMarkup(geoNetworkRecord);
-
-            expect(tpl._getEmailAddress).toHaveBeenCalled();
-            expect(_markup.indexOf('gogo@duck.com')).toBeGreaterThan(-1);
-        });
-    });
-
     describe('_downloadGogoduckHandler', function() {
         it('provides a function', function() {
             expect(typeof(tpl._downloadGogoduckHandler(geoNetworkRecord, 'nc'))).toEqual('function');
@@ -172,7 +201,7 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
         });
 
         it('includes the gogoduck endpoint', function() {
-            expect(url.indexOf('gogoduck/createJob?')).toBeGreaterThan(-1);
+            expect(url.indexOf('gogoduck/registerJob?jobParameters=')).toBeGreaterThan(-1);
         });
 
         it('includes the date range start', function() {
