@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -32,4 +31,16 @@ describe("Portal.cart.DownloadPanel", function() {
             expect(downloadPanel.downloadPanelBody.generateContent).toHaveBeenCalled();
         });
     });
+
+    describe('checkRedraw()', function() {
+        it('calls checkRedraw on FILTER_LOADED event', function() {
+            spyOn(downloadPanel, 'checkRedraw');
+            Ext.MsgBus.publish(PORTAL_EVENTS.FILTER_LOADED, {});
+
+            expect(downloadPanel.checkRedraw).toHaveBeenCalled();
+        });
+    });
+
+
+
 });

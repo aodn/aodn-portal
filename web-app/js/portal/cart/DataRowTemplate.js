@@ -335,9 +335,6 @@ Portal.cart.DataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
 
         paramsAsJson = Ext.util.JSON.encode(args);
 
-        console.log(encodeURIComponent(params.dateRangeStart));
-        console.log(String.format('gogoduck/createJob?{0}', encodeURIComponent(paramsAsJson)));
-
         return String.format('gogoduck/createJob?{0}', encodeURIComponent(paramsAsJson));
     },
 
