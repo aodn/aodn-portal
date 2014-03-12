@@ -9,6 +9,7 @@ Ext.namespace('Portal.cart');
 Portal.cart.NcwmsDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
 
     GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE: "gogoduck-email-address",
+    GOGODUCK_PARAMS_DATE_FORMAT: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]',
 
     getDataFilterEntry: function(values) {
         var params = values.gogoduckParams;
@@ -231,8 +232,7 @@ Portal.cart.NcwmsDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
 
     _formatDateForGogoduckParams: function(date) {
 
-        var dateFormat = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]';
-        return date.format(dateFormat);
+        return date.format(this.GOGODUCK_PARAMS_DATE_FORMAT);
     },
 
     _emailTextFieldElement: function (uuid) {
