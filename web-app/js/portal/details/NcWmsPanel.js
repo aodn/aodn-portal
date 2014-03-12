@@ -71,7 +71,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _addLoadingInfo: function() {
-        // TODO - DN: Add product picker in case of multiple products per Layer
         this.loadingInfo = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
         this.add(this.loadingInfo);
     },
@@ -217,13 +216,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _buildParameters: function(geometry) {
-        // TODO:  add bodaac functionality - AS
-        /*if (this.selectedLayer) {
-            this.selectedLayer.bodaacFilterParams = {
-                dateRangeStart: moment(this.startDateTimePicker.getValue()),
-                dateRangeEnd: moment(this.endDateTimePicker.getValue())
-            };
-        }*/
 
         var productExtents = {
             lat: {
@@ -234,7 +226,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
                 min: this.LONG_MIN,
                 max: this.LONG_MAX
             }
-        }
+        };
 
         var gogoduckConfig = {
             layerName: this.selectedLayer.name,
