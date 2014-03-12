@@ -170,7 +170,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         beforeEach(function () {
             ncwmsPanel.selectedLayer = layer;
-            spyOn(ncwmsPanel, '_formatDatePickerValueForGogoduck').andReturn('[date]');
+            spyOn(ncwmsPanel, '_getDateFromPicker').andReturn('[date]');
         });
 
         it('includes some information regardless of geometry', function () {

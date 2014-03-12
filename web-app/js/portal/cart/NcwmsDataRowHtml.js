@@ -21,8 +21,11 @@ Portal.cart.NcwmsDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
             areaString = this._parameterString('parameterAreaLabel', areaStart, areaEnd);
         }
 
-        if (params.dateRangeStart != "Invalid date") {
-            dateString = this._parameterString('parameterDateLabel', params.dateRangeStart, params.dateRangeEnd, " <b>-</b> ");
+        if (params.dateRangeStart) {
+            var format = 'DD MMM YYYY, HH:mm UTC';
+            var startDateString = params.dateRangeStart.format(format);
+            var endDateString = params.dateRangeEnd.format(format);
+            dateString = this._parameterString('parameterDateLabel', startDateString, endDateString, " <b>-</b> ");
         }
 
         if (areaString == "" && dateString == "") {
@@ -192,13 +195,15 @@ Portal.cart.NcwmsDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
 
     _gogoduckUrl: function(params, emailAddress) {
 
+        var dateFormat = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]';
+
         var args = {
             layerName: params.layerName,
             emailAddress: emailAddress,
             subsetDescriptor: {
                 temporalExtent: {
-                    start: params.dateRangeStart,
-                    end: params.dateRangeEnd
+                    start: params.dateRangeStart.format(dateFormat),
+                    end: params.dateRangeEnd.format(dateFormat)
                 },
                 spatialExtent: {
                     north: (params.latitudeRangeEnd || params.productLatitudeRangeEnd),

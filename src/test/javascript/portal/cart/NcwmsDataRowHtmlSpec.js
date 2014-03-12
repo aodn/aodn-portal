@@ -129,12 +129,13 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
         it('still returns date range stuff with no bbox', function() {
             geoNetworkRecord.gogoduckParams.latitudeRangeStart = undefined;
             geoNetworkRecord.gogoduckParams.dateRangeStart = new Date(0);
+            geoNetworkRecord.gogoduckParams.dateRangeEnd = new Date(1);
             expect(tpl.getDataFilterEntry(geoNetworkRecord)).not.toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
         });
 
         it('returns a no filter label if no bbox and no defined date', function() {
             geoNetworkRecord.gogoduckParams.latitudeRangeStart = undefined;
-            geoNetworkRecord.gogoduckParams.dateRangeStart = 'Invalid date';
+            geoNetworkRecord.gogoduckParams.dateRangeStart = null;
             expect(tpl.getDataFilterEntry(geoNetworkRecord)).toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
         });
 
@@ -172,6 +173,20 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
             expect(entry.indexOf('150')).toBeGreaterThan(-1);
             expect(entry.indexOf('W')).toBeGreaterThan(entry.indexOf('150'));
         });
+
+        it('indicates temporal range', function() {
+            geoNetworkRecord.gogoduckParams.dateRangeStart = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0));
+            geoNetworkRecord.gogoduckParams.dateRangeEnd = moment.utc(Date.UTC(2014, 11, 21, 10, 30, 30, 500));
+
+            var entry = tpl.getDataFilterEntry(geoNetworkRecord);
+
+            var startDateString = '20 Nov 2013, 00:30 UTC';
+            var endDateString = '21 Dec 2014, 10:30 UTC';
+
+            expect(entry.indexOf(startDateString)).toBeGreaterThan(-1);
+            expect(entry.indexOf(endDateString)).toBeGreaterThan(-1);
+            expect(entry.indexOf(startDateString)).toBeLessThan(entry.indexOf(endDateString));
+        });
     });
 
     describe('_downloadGogoduckHandler', function() {
@@ -183,8 +198,8 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
     describe('_gogoduckUrl', function() {
 
         var url;
-        var startDate = new Date(0);
-        var endDate = new Date();
+        var startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
+        var endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
 
         var params = {
             dateRangeStart: startDate,
@@ -197,14 +212,14 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
         };
 
         beforeEach(function() {
-            url = tpl._gogoduckUrl(params, 'gogo@duck.com');
+            url = decodeURIComponent(tpl._gogoduckUrl(params, 'gogo@duck.com'));
         });
 
         it('includes the gogoduck endpoint', function() {
             expect(url.indexOf('gogoduck/registerJob?jobParameters=')).toBeGreaterThan(-1);
         });
 
-        it('includes the date range start', function() {
+        it('includes the layer name', function() {
             expect(url.indexOf('gogoDingo')).not.toEqual(-1);
         });
 
@@ -222,6 +237,14 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
 
         it('includes the latitude range end', function() {
             expect(url.indexOf('-20')).not.toEqual(-1);
+        });
+
+        it('includes the time range start', function() {
+            expect(url.indexOf('2013-11-20T00:30:00.000Z')).not.toEqual(-1);
+        });
+
+        it('includes the time range end', function() {
+            expect(url.indexOf('2014-12-21T22:30:30.500Z')).not.toEqual(-1);
         });
     });
 

@@ -232,8 +232,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
         var gogoduckConfig = {
             layerName: this.selectedLayer.name,
-            dateRangeStart: this._formatDatePickerValueForGogoduck(this.startDateTimePicker),
-            dateRangeEnd: this._formatDatePickerValueForGogoduck(this.endDateTimePicker),
+            dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
+            dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
             productLatitudeRangeStart: productExtents.lat.min,
             productLongitudeRangeStart: productExtents.lon.min,
             productLatitudeRangeEnd: productExtents.lat.max,
@@ -340,12 +340,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.selectedLayer.toTime(momentDate);
     },
 
-    _formatDatePickerValueForGogoduck: function(datePicker) {
-        return this._formatDateForDownloadPanel(datePicker.getValue());
-    },
+    _getDateFromPicker: function(datePicker) {
 
-    _formatDateForDownloadPanel: function(date) {
-        return moment.utc(date).format('DD/MM/YYYY');
+        return moment.utc(datePicker.getValue());
     },
 
     _clearDateTimeFields: function() {
