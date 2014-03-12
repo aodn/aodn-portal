@@ -80,6 +80,7 @@ The full list of overridable configuration items is:
 * DATA_SOURCE_PASSWORD
 * WMS_SCANNER_URL
 * WFS_SCANNER_URL
+* GOGODUCK_URL
 
 
 ### Collaborating Applications
