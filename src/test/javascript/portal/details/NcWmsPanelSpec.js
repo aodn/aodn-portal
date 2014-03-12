@@ -141,6 +141,29 @@ describe('Portal.details.NcWmsPanel', function() {
         });
     });
 
+    describe('_addDateTimeFilterToLayer', function() {
+
+        it('updates bodaacFilterParams in selected layer', function() {
+
+            var startTime = moment('2000-01-01T01:01:01');
+            var endTime = moment('2001-01-01T01:01:01');
+
+            spyOn(ncwmsPanel.startDateTimePicker, 'getValue').andReturn(startTime.toDate());
+            spyOn(ncwmsPanel.endDateTimePicker, 'getValue').andReturn(endTime.toDate());
+
+            var selectedLayer = {};
+            var selectedLayerName = {};
+
+            ncwmsPanel.selectedLayer = selectedLayer;
+            ncwmsPanel.selectedLayer.name = selectedLayerName;
+
+            ncwmsPanel._addDateTimeFilterToLayer();
+
+            expect(selectedLayer.bodaacFilterParams.dateRangeStart).toBeSame(startTime);
+            expect(selectedLayer.bodaacFilterParams.dateRangeEnd).toBeSame(endTime);
+        });
+    });
+
     describe('_buildGogoduckParameters', function () {
 
         var gogoduckParameters;
@@ -183,28 +206,6 @@ describe('Portal.details.NcWmsPanel', function() {
             expect(gogoduckParameters.latitudeRangeEnd).toBe(20);
             expect(gogoduckParameters.longitudeRangeEnd).toBe(40);
         });
-
-        // TODO: add bodaac tests after integration - AS
-        /*describe('BODAAC hack', function() {
-            it('updates bodaacFilterParams in selected layer', function() {
-                var startTime = moment('2000-01-01T01:01:01');
-                var endTime = moment('2001-01-01T01:01:01');
-
-                spyOn(ncwmsPanel.startDateTimePicker, 'getValue').andReturn(startTime.toDate());
-                spyOn(ncwmsPanel.endDateTimePicker, 'getValue').andReturn(endTime.toDate());
-
-                var selectedLayer = {};
-                var selectedLayerName = {};
-
-                ncwmsPanel.selectedLayer = selectedLayer;
-                ncwmsPanel.selectedLayer.name = selectedLayerName;
-
-                ncwmsPanel._buildParameters();
-
-                expect(selectedLayer.bodaacFilterParams.dateRangeStart).toBeSame(startTime);
-                expect(selectedLayer.bodaacFilterParams.dateRangeEnd).toBeSame(endTime);
-            });
-        });*/
     });
 
     function _decorateMap(panel) {
