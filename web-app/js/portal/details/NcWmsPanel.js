@@ -46,12 +46,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.selectedLayer = layer;
         if (layer.isNcwms()) {
             this.geoNetworkRecord = layer.parentGeoNetworkRecord;
-            this._updateGeoNetworkGogoduck(this.map.getConstraint());
+
+            this._applyFilterValuesFromMap();
             this._clearDateTimeFields();
             this._attachTemporalEvents(); // creates listener for completing processTemporalExtent
             this.selectedLayer.processTemporalExtent(); // triggers 'temporalextentloaded'
             this._removeLoadingInfo();
             this._showAllControls();
+
             show.call(target, this);
         }
         else {
@@ -67,7 +69,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.remove(this.loadingInfo);
         delete this.loadingInfo;
 
-        this._updateGeoNetworkGogoduck(this.map.getConstraint());
+        this._applyFilterValuesFromMap();
     },
 
     _addLoadingInfo: function() {
@@ -79,10 +81,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.map.events.on({
             scope: this,
             'spatialconstraintadded': function(geometry) {
-                this._updateGeoNetworkGogoduck(geometry);
+                this._applyFilterValuesToCollection(geometry);
             },
             'spatialconstraintcleared': function() {
-                this._updateGeoNetworkGogoduck();
+                this._applyFilterValuesToCollection();
             }
         });
 
@@ -258,7 +260,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this._setLayerSubsetExtent();
         this._updateTimeRangeLabel();
 
-        this._updateGeoNetworkGogoduck(this.map.getConstraint());
+        this._applyFilterValuesFromMap();
     },
 
     _previousTimeSlice: function() {
@@ -271,7 +273,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this._updateTimeRangeLabel();
     },
 
-    _updateGeoNetworkGogoduck: function(geometry) {
+    _applyFilterValuesFromMap: function() {
+
+        this._applyFilterValuesToCollection(this.map.getConstraint());
+    },
+
+    _applyFilterValuesToCollection: function(geometry) {
         if (this.geoNetworkRecord) {
 
             this._addDateTimeFilterToLayer(geometry);
@@ -308,7 +315,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.buttonsPanel.show();
         this._updateTimeRangeLabel();
 
-        this._updateGeoNetworkGogoduck(this.map.getConstraint());
+        this._applyFilterValuesFromMap();
     },
 
     _setDateTimePickerExtent: function(picker, extent, value, toMaxValue) {

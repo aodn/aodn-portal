@@ -48,7 +48,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     noDataMessage: 'No direct access to data available currently.',
     downloadButtonLabel: 'Download as\u2026',
     downloadAsCsvLabel: 'CSV',
-    downloadAsSubsettedNetCdfLabel: 'Subsetted NetCDF files',
+    downloadAsSubsettedNetCdfLabel: 'Subsetted NetCDF files (requires email address)',
     downloadAsAllSourceNetCdfLabel: 'All source NetCDF files',
     downloadAsHdfLabel: 'HDF',
     downloadAsAsciiLabel: 'ASCII text',
