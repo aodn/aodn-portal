@@ -32,12 +32,17 @@ Portal.cart.GogoduckDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
         return areaString + dateString;
     },
 
+    _parameterString: function (labelKey, value1, value2, delim) {
+        return String.format('<b>{0}:</b> &nbsp;<code>{1}</code> {3} <code>{2}</code><br>', OpenLayers.i18n(labelKey), value1, value2, (delim || ""));
+    },
+
     createMenuItems: function(collection) {
         return [
-            this._createGogoduckMenuItem('downloadAsNetCdfLabel', collection, 'nc'),
-            this._createGogoduckMenuItem('downloadAsHdfLabel', collection, 'hdf'),
-            this._createGogoduckMenuItem('downloadAsAsciiLabel', collection, 'txt'),
-            this._createGogoduckMenuItem('downloadAsOpenDapUrlsLabel', collection, 'urls')
+            {
+                text: OpenLayers.i18n('downloadAsNetCdfLabel'),
+                handler: this._downloadGogoduckHandler(collection, 'nc'),
+                scope: this
+            }
         ];
     },
 
@@ -83,12 +88,8 @@ Portal.cart.GogoduckDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
         return String.format(html, values.uuid, this._getEmailAddress(values.uuid), this._getNotificationBlurbEntry(), this.GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE);
     },
 
-    _createGogoduckMenuItem: function(translationKey, collection, format) {
-        return {
-            text: OpenLayers.i18n(translationKey),
-            handler: this._downloadGogoduckHandler(collection, format),
-            scope: this
-        }
+    _getNotificationBlurbEntry: function() {
+        return OpenLayers.i18n('notificationBlurbMessage');
     },
 
     _downloadGogoduckHandler: function(collection, format) {
@@ -115,13 +116,8 @@ Portal.cart.GogoduckDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
         };
     },
 
-    _parameterString: function (labelKey, value1, value2, delim) {
-        return String.format('<b>{0}:</b> &nbsp;<code>{1}</code> {3} <code>{2}</code><br>', OpenLayers.i18n(labelKey), value1, value2, (delim || ""));
-    },
-
     _gogoduckUrl: function(params, emailAddress) {
 
-        var paramsAsJson;
         var args = {
             layerName: params.layerName,
             emailAddress: emailAddress,
@@ -139,12 +135,12 @@ Portal.cart.GogoduckDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
             }
         };
 
-        paramsAsJson = Ext.util.JSON.encode(args);
+        var paramsAsJson = Ext.util.JSON.encode(args);
 
         return String.format('gogoduck/createJob?{0}', encodeURIComponent(paramsAsJson));
     },
 
-    _validateEmailAddress: function (address) {
+    _validateEmailAddress: function(address) {
         if (!address) {
             return false;
         }
@@ -156,9 +152,5 @@ Portal.cart.GogoduckDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
 
     _emailTextFieldElement: function (uuid) {
         return Ext.get(Ext.query("#" + this.GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE + "-" + uuid)[0]);
-    },
-
-    _getNotificationBlurbEntry: function() {
-        return OpenLayers.i18n('notificationBlurbMessage');
     }
 });
