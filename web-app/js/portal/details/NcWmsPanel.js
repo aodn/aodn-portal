@@ -273,7 +273,20 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     _updateGeoNetworkGogoduck: function(geometry) {
         if (this.geoNetworkRecord) {
+
+            this._addDateTimeFilterToLayer(geometry);
+
             this.geoNetworkRecord.updateGogoduckParams(this._buildParameters(geometry));
+        }
+    },
+
+    _addDateTimeFilterToLayer: function(geometry) {
+
+        if (this.selectedLayer) {
+            this.selectedLayer.bodaacFilterParams = {
+                dateRangeStart: moment(this.startDateTimePicker.getValue()),
+                dateRangeEnd: moment(this.endDateTimePicker.getValue())
+            };
         }
     },
 

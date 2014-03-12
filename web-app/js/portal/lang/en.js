@@ -48,7 +48,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     noDataMessage: 'No direct access to data available currently.',
     downloadButtonLabel: 'Download as\u2026',
     downloadAsCsvLabel: 'CSV',
-    downloadAsNetCdfLabel: 'NetCDF',
+    downloadAsSubsettedNetCdfLabel: 'Subsetted NetCDF files',
+    downloadAsAllSourceNetCdfLabel: 'All source NetCDF files',
     downloadAsHdfLabel: 'HDF',
     downloadAsAsciiLabel: 'ASCII text',
     downloadAsUrlsLabel: 'List of URLs',
@@ -267,7 +268,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "polygon" },
         { value: Portal.ui.openlayers.SpatialConstraintType.NONE, label: "none" }
     ],
-    
+
     // WfsDataRowTemplate
     fileSizeIconMarkup: '<img src="images/error.png">',
     fileSizeGb: "GB",

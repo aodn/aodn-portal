@@ -159,8 +159,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadConfirmationWindow.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NoDataRowHtml.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'WmsDataRowHtml.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'GogoduckDataRowHtml.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'BodaacDataRowHtml.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NcwmsDataRowHtml.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadEstimator.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/visualise/animations', file: 'TemporalExtent.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/visualise/animations', file: 'TemporalExtentParser.js')}"></script>

@@ -127,8 +127,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
         if (this._hasData(values)) {
             if (this._isNcwms(values)) {
-                htmlGenerator =  this._getGogoduckDataRowHtml(config);
-                htmlGenerator =  this._getBodaacDataRowHtml(config);
+                htmlGenerator =  this._getNcwmsDataRowHtml(config);
             }
             else {
                 htmlGenerator =  this._getWmsDataRowHtml(config);
@@ -149,20 +148,12 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         return collection.wmsLayer.wfsLayer;
     },
 
-    _getGogoduckDataRowHtml: function(config) {
-        if (!this.gogoduckDataRowHtml) {
-            this.gogoduckDataRowHtml = new Portal.cart.GogoduckDataRowHtml(config);
+    _getNcwmsDataRowHtml: function(config) {
+        if (!this.ncwmsDataRowHtml) {
+            this.ncwmsDataRowHtml = new Portal.cart.NcwmsDataRowHtml(config);
         }
 
-        return this.gogoduckDataRowHtml;
-    },
-
-    _getBodaacDataRowHtml: function(config) {
-        if (!this.bodaacDataRowHtml) {
-            this.bodaacDataRowHtml = new Portal.cart.BodaacDataRowHtml(config);
-        }
-
-        return this.bodaacDataRowHtml;
+        return this.ncwmsDataRowHtml;
     },
 
     _getWmsDataRowHtml: function(config) {

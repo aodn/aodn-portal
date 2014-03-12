@@ -5,13 +5,13 @@
  *
  */
 
-describe('Portal.cart.GogoduckDataRowHtml', function() {
+describe('Portal.cart.NcwmsDataRowHtml', function() {
 
     var tpl;
     var geoNetworkRecord;
 
     beforeEach(function() {
-        tpl = new Portal.cart.GogoduckDataRowHtml();
+        tpl = new Portal.cart.NcwmsDataRowHtml();
         geoNetworkRecord = {
             uuid: 9,
             grailsLayerId: 42,

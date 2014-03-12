@@ -84,13 +84,13 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         it('delegates to the gogoduck data row implementation', function() {
             tpl._getDataFilterEntry(getGogoduckRecord());
-            expect(Portal.cart.GogoduckDataRowHtml.prototype.getDataFilterEntry).toHaveBeenCalled();
+            expect(Portal.cart.NcwmsDataRowHtml.prototype.getDataFilterEntry).toHaveBeenCalled();
         });
 
         // TODO: add bodaac tests after integration
         /*it('delegates to the bodaac data row implementation', function() {
             tpl._getDataFilterEntry(getBodaacRecord());
-            expect(Portal.cart.GogoduckDataRowHtml.prototype.getDataFilterEntry).toHaveBeenCalled();
+            expect(Portal.cart.NcwmsDataRowHtml.prototype.getDataFilterEntry).toHaveBeenCalled();
         });*/
     });
 
@@ -126,7 +126,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         it('delegates to the gogoduck data row implementation', function() {
             tpl._dataSpecificMarkup(getGogoduckRecord());
-            expect(Portal.cart.GogoduckDataRowHtml.prototype.getDataSpecificMarkup).toHaveBeenCalled();
+            expect(Portal.cart.NcwmsDataRowHtml.prototype.getDataSpecificMarkup).toHaveBeenCalled();
         });
 
         // TODO: add bodaac tests after integration
@@ -156,8 +156,8 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         it('delegates to the gogoduck data row implementation', function() {
             tpl._createDownloadButton(null, getGogoduckRecord());
-            expect(Portal.cart.GogoduckDataRowHtml.prototype.createMenuItems).toHaveBeenCalled();
-            expect(Portal.cart.GogoduckDataRowHtml.prototype.attachMenuEvents).toHaveBeenCalled();
+            expect(Portal.cart.NcwmsDataRowHtml.prototype.createMenuItems).toHaveBeenCalled();
+            expect(Portal.cart.NcwmsDataRowHtml.prototype.attachMenuEvents).toHaveBeenCalled();
         });
 
         // TODO: add bodaac tests after integration
@@ -225,7 +225,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         beforeEach(function() {
             spyOn(tpl, '_getWmsDataRowHtml');
             spyOn(tpl, '_getBodaacDataRowHtml');
-            spyOn(tpl, '_getGogoduckDataRowHtml');
+            spyOn(tpl, '_getNcwmsDataRowHtml');
             spyOn(tpl, '_getNoDataRowHtml');
         });
 
@@ -234,7 +234,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
             expect(tpl._getWmsDataRowHtml).toHaveBeenCalled();
             expect(tpl._getBodaacDataRowHtml).not.toHaveBeenCalled();
-            expect(tpl._getGogoduckDataRowHtml).not.toHaveBeenCalled();
+            expect(tpl._getNcwmsDataRowHtml).not.toHaveBeenCalled();
             expect(tpl._getNoDataRowHtml).not.toHaveBeenCalled();
 
             tpl._getRowTemplate(getUrlDownloadRecord());
@@ -247,7 +247,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
             expect(tpl._getWmsDataRowHtml).not.toHaveBeenCalled();
             expect(tpl._getBodaacDataRowHtml).toHaveBeenCalled();
-            expect(tpl._getGogoduckDataRowHtml).not.toHaveBeenCalled();
+            expect(tpl._getNcwmsDataRowHtml).not.toHaveBeenCalled();
             expect(tpl._getNoDataRowHtml).not.toHaveBeenCalled();
         });*/
 
@@ -256,7 +256,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
             expect(tpl._getWmsDataRowHtml).not.toHaveBeenCalled();
             expect(tpl._getBodaacDataRowHtml).not.toHaveBeenCalled();
-            expect(tpl._getGogoduckDataRowHtml).toHaveBeenCalled();
+            expect(tpl._getNcwmsDataRowHtml).toHaveBeenCalled();
             expect(tpl._getNoDataRowHtml).not.toHaveBeenCalled();
         });
 
@@ -267,7 +267,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
             expect(tpl._getWmsDataRowHtml).not.toHaveBeenCalled();
             expect(tpl._getBodaacDataRowHtml).not.toHaveBeenCalled();
-            expect(tpl._getGogoduckDataRowHtml).not.toHaveBeenCalled();
+            expect(tpl._getNcwmsDataRowHtml).not.toHaveBeenCalled();
             expect(tpl._getNoDataRowHtml).toHaveBeenCalled();
         });
     });
@@ -275,7 +275,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
     function setupDataRowTemplatePrototypeSpies(method) {
         spyOn(Portal.cart.WmsDataRowHtml.prototype, method);
         spyOn(Portal.cart.BodaacDataRowHtml.prototype, method);
-        spyOn(Portal.cart.GogoduckDataRowHtml.prototype, method);
+        spyOn(Portal.cart.NcwmsDataRowHtml.prototype, method);
         spyOn(Portal.cart.NoDataRowHtml.prototype, method);
 
     }

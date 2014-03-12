@@ -6,7 +6,7 @@
  */
 Ext.namespace('Portal.cart');
 
-Portal.cart.GogoduckDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
+Portal.cart.NcwmsDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
 
     GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE: "gogoduck-email-address",
 
@@ -37,13 +37,51 @@ Portal.cart.GogoduckDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
     },
 
     createMenuItems: function(collection) {
-        return [
-            {
-                text: OpenLayers.i18n('downloadAsNetCdfLabel'),
-                handler: this._downloadGogoduckHandler(collection, 'nc'),
-                scope: this
-            }
-        ];
+        var menuItems = [];
+
+        menuItems.push({
+            text: OpenLayers.i18n('downloadAsUrlsLabel'),
+            handler: this._urlListDownloadHandler(collection),
+            scope: this
+        });
+        menuItems.push({
+            text: OpenLayers.i18n('downloadAsAllSourceNetCdfLabel'),
+            handler: this._netCdfDownloadHandler(collection),
+            scope: this
+        });
+        menuItems.push({
+            text: OpenLayers.i18n('downloadAsSubsettedNetCdfLabel'),
+            handler: this._downloadGogoduckHandler(collection, 'nc'),
+            scope: this
+        });
+
+        return menuItems;
+    },
+
+    _urlListDownloadHandler: function(collection) {
+        var additionalArgs = {
+            action: 'urlListForLayer',
+            layerId: collection.wmsLayer.grailsLayerId
+        };
+
+        return this.downloadWithConfirmation(
+            this._bodaacCsvDownloadUrl(collection),
+            String.format("{0}_URLs.txt", collection.title),
+            additionalArgs
+        );
+    },
+
+    _netCdfDownloadHandler: function(collection) {
+        var additionalArgs = {
+            action: 'downloadNetCdfFilesForLayer',
+            layerId: collection.wmsLayer.grailsLayerId
+        };
+
+        return this.downloadWithConfirmation(
+            this._bodaacCsvDownloadUrl(collection),
+            String.format("{0}_source_files.zip", collection.title),
+            additionalArgs
+        );
     },
 
     attachMenuEvents: function(values) {
@@ -80,12 +118,48 @@ Portal.cart.GogoduckDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
     },
 
     getDataSpecificMarkup: function(values) {
-        var html  = '<div class="delayedDownloadForm">' +
+
+        return this._downloadSizeEstimator(values) +
+            this._emailAddressForm(values);
+    },
+
+    _emailAddressForm: function(values) {
+        var html = '<div class="delayedDownloadForm">' +
             '  <input type="text" id="{3}-{0}" value="{1}">' +
             '  <div><small>{2}</small></div>' +
             '  <div class="clear"></div>' +
             '</div>';
-        return String.format(html, values.uuid, this._getEmailAddress(values.uuid), this._getNotificationBlurbEntry(), this.GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE);
+
+        return String.format(
+            html,
+            values.uuid,
+            this._getEmailAddress(values.uuid),
+            this._getNotificationBlurbEntry(),
+            this.GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE
+        );
+    },
+
+    _downloadSizeEstimator: function(values) {
+        var estimator = new Portal.cart.DownloadEstimator();
+        estimator._getDownloadEstimate(
+            values,
+            this._bodaacCsvDownloadUrl(values)
+        );
+
+        return String.format(
+            "<div id=\"{0}\">{1}{2}</div>",
+            estimator.getIdElementName(values.uuid),
+            OpenLayers.i18n("estimatedDlLoadingMessage"),
+            OpenLayers.i18n("estimatedDlLoadingSpinner")
+        );
+    },
+
+    _bodaacCsvDownloadUrl: function(collection) {
+        return this._wfsDownloadUrl(collection.wmsLayer, 'csv');
+    },
+
+    _wfsDownloadUrl: function(layer, format) {
+        return layer.getWfsLayerFeatureRequestUrl(format);
     },
 
     _getNotificationBlurbEntry: function() {
