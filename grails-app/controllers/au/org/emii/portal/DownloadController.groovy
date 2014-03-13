@@ -19,6 +19,8 @@ class DownloadController extends RequestProxyingController {
     def hostVerifier
     def bulkDownloadService
 
+    static def SIZE_ESTIMATE_ERROR = "-1"
+
     // Index action inherited from RequestProxyingController
 
     def urlListForLayer = {
@@ -100,11 +102,22 @@ class DownloadController extends RequestProxyingController {
 
         if (layer.urlDownloadFieldName) {
 
-            def streamProcessor = calculateSumStreamProcessor(layer.urlDownloadFieldName, sizeFieldName)
-            _executeExternalRequest url, streamProcessor, resultStream
+            try {
+                def streamProcessor = calculateSumStreamProcessor(layer.urlDownloadFieldName, sizeFieldName)
+                _executeExternalRequest url, streamProcessor, resultStream
+            }
+            catch (Exception e) {
+
+                log.error "Problem estimating size with $url", e
+
+                resultStream << SIZE_ESTIMATE_ERROR
+            }
         }
         else {
-            resultStream << "-1"
+
+            log.error "No urlDownloadFieldName configured"
+
+            resultStream << SIZE_ESTIMATE_ERROR
         }
 
         render new String(resultStream.toByteArray(), 'UTF-8')
@@ -194,28 +207,21 @@ class DownloadController extends RequestProxyingController {
             def higherFieldIndex = Math.max(filenameFieldIndex, sizeFieldIndex)
             def filenamesProcessed = [] as Set
 
-            try {
-                _eachRemainingRow(csvReader) { currentRow ->
-                    if (higherFieldIndex < currentRow.length) {
+            _eachRemainingRow(csvReader) { currentRow ->
+                if (higherFieldIndex < currentRow.length) {
 
-                        def rowFilename = currentRow[filenameFieldIndex].trim()
-                        def rowSize = currentRow[sizeFieldIndex].trim()
+                    def rowFilename = currentRow[filenameFieldIndex].trim()
+                    def rowSize = currentRow[sizeFieldIndex].trim()
 
-                        if (rowFilename && rowSize) {
+                    if (rowFilename && rowSize) {
 
-                            if (!filenamesProcessed.contains(rowFilename)) {
+                        if (!filenamesProcessed.contains(rowFilename)) {
 
-                                sum += rowSize.toBigInteger()
-                                filenamesProcessed.add rowFilename
-                            }
+                            sum += rowSize.toBigInteger()
+                            filenamesProcessed.add rowFilename
                         }
                     }
                 }
-            }
-            catch (Exception e) {
-                log.warn "Error occurred while calculating sum of values", e
-
-                sum = -1
             }
 
             outputStream << sum.toString()
