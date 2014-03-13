@@ -159,7 +159,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         assertEquals "-1", mockResponse.contentAsString
     }
 
-    void testEstimateSizeForLayer() {
+    void testEstimateSizeForLayerNoProblems() {
 
         _setUpExampleObjects()
 
@@ -181,6 +181,26 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         controller.estimateSizeForLayer()
 
         assertEquals "the output", mockResponse.contentAsString
+    }
+
+
+    void testEstimateSizeForLayerWitExternalRequestException() {
+
+        _setUpExampleObjects()
+
+        mockParams.layerId = 1
+
+        def testStreamProcessor = new Object()
+        controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->  testStreamProcessor }
+        controller.hostVerifier = [allowedHost: { r, u -> true }]
+        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
+        controller.metaClass._executeExternalRequest = { url, streamProcessor, resultStream ->
+            throw new Exception("Test Exception")
+        }
+
+        controller.estimateSizeForLayer()
+
+        assertEquals "-1", mockResponse.contentAsString
     }
 
     void testRequestSingleFieldParamProcessor() {
@@ -239,24 +259,6 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
         """
 
         def expectedOutput = "1300"
-
-        assertCorrectProcessing(
-            controller.calculateSumStreamProcessor("relativeFilePath", "size"),
-            input,
-            expectedOutput
-        )
-    }
-
-    void testCalculateSumStreamProcessorWithProblems() {
-
-        def input = """\
-            FID,relativeFilePath,size
-            aatams_sattag_nrt_wfs.331443,file_a,100
-            aatams_sattag_nrt_wfs.331445,file_b,not a number
-
-        """
-
-        def expectedOutput = "-1"
 
         assertCorrectProcessing(
             controller.calculateSumStreamProcessor("relativeFilePath", "size"),
