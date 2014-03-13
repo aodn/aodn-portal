@@ -79,7 +79,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     organisation: 'Organisation',
     dateRange: 'Date Range',
     parameters: 'Parameters',
-    temporalExtentDateFormat: 'YYYY-MM-DD Z',
+    temporalExtentDateFormat: 'YYYY',
 
     // LayerGridPanel.js
     dragLayersOrServers: 'Drag layers or Servers to the menu tree',
