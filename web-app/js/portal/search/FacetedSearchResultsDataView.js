@@ -13,6 +13,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
      * late" after the openlayers minimap render */
     MINIMAP_HEIGHT: 110,
     MINIMAP_WIDTH: 230,
+    DATE_FACET_INPUT_FORMAT: 'YYYY-MM-DDtHH:mm:ss:SSSz',
 
     initComponent: function() {
 
@@ -141,11 +142,13 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     _formatTemporalExtentDateString: function(dateString) {
-        return this._parseTemporalExtentDateString(dateString).format("YYYY-MM-DD Z");
+
+        var dateFormat = OpenLayers.i18n('temporalExtentDateFormat');
+        return this._parseTemporalExtentDateString(dateString).format(dateFormat);
     },
 
     _parseTemporalExtentDateString: function(dateString) {
-        return moment(dateString, "YYYY-MM-DDtHH:mm:ss:SSSz");
+        return moment(dateString, this.DATE_FACET_INPUT_FORMAT);
     },
 
     _getParametersAsHtml: function(template, parameters) {

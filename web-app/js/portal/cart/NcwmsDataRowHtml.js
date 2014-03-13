@@ -23,9 +23,9 @@ Portal.cart.NcwmsDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
         }
 
         if (params.dateRangeStart) {
-            var format = 'DD MMM YYYY, HH:mm UTC';
-            var startDateString = params.dateRangeStart.format(format);
-            var endDateString = params.dateRangeEnd.format(format);
+            var displayDateFormat = OpenLayers.i18n('dateFilterDisplayFormat');
+            var startDateString = params.dateRangeStart.format(displayDateFormat);
+            var endDateString = params.dateRangeEnd.format(displayDateFormat);
             dateString = this._parameterString('parameterDateLabel', startDateString, endDateString, " <b>-</b> ");
         }
 
@@ -205,8 +205,6 @@ Portal.cart.NcwmsDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
     },
 
     _gogoduckUrl: function(params, emailAddress) {
-
-
 
         var args = {
             layerName: params.layerName,

@@ -79,6 +79,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     organisation: 'Organisation',
     dateRange: 'Date Range',
     parameters: 'Parameters',
+    temporalExtentDateFormat: 'YYYY-MM-DD Z',
 
     // LayerGridPanel.js
     dragLayersOrServers: 'Drag layers or Servers to the menu tree',
@@ -104,7 +105,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         organizationNames: 'Organisations',
         dataParameters: 'Data Parameters'
     },
-
 
     // Refine search panel revised
     refineSearch: 'Current Search',
@@ -278,5 +278,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     estimatedDlLoadingMessage: "Estimating NetCDF size...",
     estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />',
     estimatedDlTimeoutMsg: "The NetCDF size is too large to estimate.",
-    transAbortMsg: "transaction aborted"
+    transAbortMsg: "transaction aborted",
+
+    //NcwmsDataRowHtml
+    dateFilterDisplayFormat: 'DD MMM YYYY, HH:mm UTC'
 });
