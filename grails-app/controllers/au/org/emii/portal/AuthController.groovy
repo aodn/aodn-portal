@@ -19,20 +19,14 @@ class AuthController {
 
     static def consumerManager = new ConsumerManager()
 
-
     def index = {
 
         forward action: "login"
     }
 
-    def register = {
-
-        _authenticateWithOpenId(params, true)
-    }
-
     def login = {
 
-        _authenticateWithOpenId(params, false)
+        _authenticateWithOpenId(params)
     }
 
     def verifyResponse = {
@@ -90,21 +84,6 @@ class AuthController {
     }
 
     def logOut = {
-
-        // get openId provider
-        String openIdProvider = session["currentOpenIdProvider"]
-
-        // lookup the OpenId provider in our Config
-        def configuredOpenIdProvider = grailsApplication.config.openId.providers.find { it.providerHref == openIdProvider }
-
-        // Sometimes not available if custom selected provider
-        if (configuredOpenIdProvider && configuredOpenIdProvider.supportsProviderLogout) {
-
-            // If we support logout protocol...
-            log.debug "Logout protocol supported - using custom logout for $openIdProvider"
-
-            redirect(url: "${openIdProvider}/logout")
-        }
 
         // Log the user out of the application.
         SecurityUtils.subject?.logout()
@@ -196,7 +175,6 @@ class AuthController {
 
     def _setOpenIDSchemaRequestAttributes(fetch) {
 
-        // eMII
         fetch.addAttribute "ext0", "http://schema.openid.net/contact/email", true // required
         fetch.addAttribute "ext1", "http://schema.openid.net/namePerson", true // required
     }
@@ -217,9 +195,9 @@ class AuthController {
 
         // ext1 is the hardwired key for username.
         if (ext.getAttributeValue('ext1')) {
-            // devid.emii
             userInstance.fullName = ext.getAttributeValue('ext1')
         }
+
         // Extract email
         if (ext.getAttributeValue('ext0')) {
             userInstance.emailAddress = ext.getAttributeValue('ext0')
@@ -244,19 +222,13 @@ class AuthController {
         }
     }
 
-    def _authenticateWithOpenId(params, register) {
-
-        def openIdProviderUrl = params.openIdProvider
-
-        // record openId provider so that we can handle graceful logout later
-        session["currentOpenIdProvider"] = openIdProviderUrl
-
+    def _authenticateWithOpenId(params) {
 
         def portalUrl = grailsApplication.config.grails.serverURL
 
         try {
             // Perform discovery on our OpenID provider
-            def discoveries = consumerManager.discover(openIdProviderUrl) // User-supplied String
+            def discoveries = consumerManager.discover(params.openIdProvider) // User-supplied String
 
             // Attempt to associate with the OpenID provider
             // and retrieve one service endpoint for authentication
@@ -278,12 +250,7 @@ class AuthController {
 
             authReq.addExtension fetch
 
-            def url = authReq.getDestinationUrl(true)
-            if (register) {
-                url += "&r=true"
-            }
-
-            redirect url: url
+            redirect url: authReq.getDestinationUrl(true)
         }
         catch (e) {
             // common scenario is if the user supplied an invalid url

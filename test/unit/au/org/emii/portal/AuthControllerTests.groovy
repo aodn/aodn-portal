@@ -32,33 +32,14 @@ class AuthControllerTests extends ControllerUnitTestCase {
         int count = 0
 
         controller.metaClass._authenticateWithOpenId = {
-            params, register ->
+            params ->
 
                 ++count
 
                 assertEquals mockParams, params
-                assertEquals false, register
         }
 
         controller.login()
-
-        assertEquals 1, count
-    }
-
-    void testRegister() {
-
-        int count = 0
-
-        controller.metaClass._authenticateWithOpenId = {
-            params, register ->
-
-                ++count
-
-                assertEquals mockParams, params
-                assertEquals true, register
-        }
-
-        controller.register()
 
         assertEquals 1, count
     }
