@@ -111,12 +111,6 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
                 map.spatialConstraintControl.clear();
                 expect(map.spatialConstraintControl.layer.destroyFeatures).toHaveBeenCalled();
             });
-
-            it('fires spatialconstraintcleared event', function() {
-                spyOn(map.events, 'triggerEvent');
-                map.spatialConstraintControl.clear();
-                expect(map.events.triggerEvent).toHaveBeenCalledWith('spatialconstraintcleared');
-            });
         });
     });
 
