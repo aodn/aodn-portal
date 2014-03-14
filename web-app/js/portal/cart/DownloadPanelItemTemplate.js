@@ -19,7 +19,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             '    <div class="floatRight downloadButtonWrapper" id="download-button-{uuid}">{[this._downloadButton(values)]}</div>',
             '  </div>',
             '  <div style="overflow:hidden;">',
-            '    <div class="floatLeft dataFilterEntry" style="width:750px">',
+            '    <div class="floatLeft dataFilterEntry" style="width:650px">',
             '      <div class="resultsTextBody">',
             '        {[this._getDataFilterEntry(values)]}',
             '      </div>',
@@ -70,7 +70,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createDownloadButton: function (id, collection) {
-        if (collection.aodaac || collection.wmsLayer.wfsLayer || collection.wmsLayer.urlDownloadFieldName) {
+        if (this._hasData(collection)) {
             new Ext.Button({
                 text: OpenLayers.i18n('downloadButtonLabel'),
                 icon: 'images/down.png',
@@ -123,37 +123,52 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             downloadConfirmationScope: this
         };
 
-        if (values.aodaac) {
-            return this._getAodaacDataRowTemplateInstance(config);
+        var htmlGenerator;
+
+        if (this._hasData(values)) {
+            if (this._isNcwms(values)) {
+                htmlGenerator =  this._getNcwmsDataRowHtml(config);
+            }
+            else {
+                htmlGenerator =  this._getWmsDataRowHtml(config);
+            }
         }
-        else if (values.wmsLayer.wfsLayer || values.wmsLayer.urlDownloadFieldName) {
-            return this._getWfsDataRowTemplateInstance(config);
+        else {
+            htmlGenerator = this._getNoDataRowHtml(config);
         }
 
-        return this._getNoDataRowTemplateInstance(config);
+        return htmlGenerator;
     },
 
-    _getAodaacDataRowTemplateInstance: function(config) {
-        if (!this.aodaacDataRowTemplate) {
-            this.aodaacDataRowTemplate = new Portal.cart.AodaacDataRowTemplate(config);
-        }
-
-        return this.aodaacDataRowTemplate;
+    _isNcwms: function(collection) {
+        return collection.wmsLayer.isNcwms();
     },
 
-    _getWfsDataRowTemplateInstance: function(config) {
-        if (!this.wfsDataRowTemplate) {
-            this.wfsDataRowTemplate = new Portal.cart.WfsDataRowTemplate(config);
-        }
-
-        return this.wfsDataRowTemplate;
+    _hasData: function(collection) {
+        return collection.wmsLayer.wfsLayer;
     },
 
-    _getNoDataRowTemplateInstance: function(config) {
-        if (!this.noDataRowTemplate) {
-            this.noDataRowTemplate = new Portal.cart.NoDataRowTemplate(config);
+    _getNcwmsDataRowHtml: function(config) {
+        if (!this.ncwmsDataRowHtml) {
+            this.ncwmsDataRowHtml = new Portal.cart.NcwmsDataRowHtml(config);
         }
 
-        return this.noDataRowTemplate;
+        return this.ncwmsDataRowHtml;
+    },
+
+    _getWmsDataRowHtml: function(config) {
+        if (!this.wmsDataRowHtml) {
+            this.wmsDataRowHtml = new Portal.cart.WmsDataRowHtml(config);
+        }
+
+        return this.wmsDataRowHtml;
+    },
+
+    _getNoDataRowHtml: function(config) {
+        if (!this.noDataRowHtml) {
+            this.noDataRowHtml = new Portal.cart.NoDataRowHtml(config);
+        }
+
+        return this.noDataRowHtml;
     }
 });

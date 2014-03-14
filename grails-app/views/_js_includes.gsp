@@ -115,7 +115,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NCWMSColourScalePanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'StylePanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DetailsPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'AodaacPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NcWmsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DetailsPanelTab.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'InfoPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanel.js')}"></script>
@@ -157,9 +157,9 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadPanelBody.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadConfirmationWindow.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NoDataRowTemplate.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'AodaacDataRowTemplate.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'WfsDataRowTemplate.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NoDataRowHtml.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'WmsDataRowHtml.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NcwmsDataRowHtml.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadEstimator.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/visualise/animations', file: 'TemporalExtent.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/visualise/animations', file: 'TemporalExtentParser.js')}"></script>

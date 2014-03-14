@@ -28,10 +28,10 @@ describe("Portal.details.SubsetPanel", function() {
         });
 
         it('initialises aodaacPanel', function() {
-            expect(subsetPanel.aodaacPanel).toBeInstanceOf(Portal.details.AodaacPanel);
-            expect(subsetPanel.aodaacPanel.map).toBe(map);
-            expect(subsetPanel.items.itemAt(0)).toBe(subsetPanel.aodaacPanel);
-            expect(subsetPanel.aodaacPanel.title).toBeUndefined();
+            expect(subsetPanel.ncwmsPanel).toBeInstanceOf(Portal.details.NcWmsPanel);
+            expect(subsetPanel.ncwmsPanel.map).toBe(map);
+            expect(subsetPanel.items.itemAt(0)).toBe(subsetPanel.ncwmsPanel);
+            expect(subsetPanel.ncwmsPanel.title).toBeUndefined();
        });
     });
 
@@ -39,7 +39,7 @@ describe("Portal.details.SubsetPanel", function() {
 
         beforeEach(function() {
             spyOn(subsetPanel.layout, 'setActiveItem');
-            spyOn(subsetPanel.aodaacPanel, 'handleLayer');
+            spyOn(subsetPanel.ncwmsPanel, 'handleLayer');
         });
 
         it('activates filterGroupPanel for non-ncWMS layers', function() {
@@ -59,7 +59,7 @@ describe("Portal.details.SubsetPanel", function() {
                 isNcwms: function() { return true; }
             });
 
-            expect(subsetPanel.layout.setActiveItem).toHaveBeenCalledWith(subsetPanel.aodaacPanel.id);
+            expect(subsetPanel.layout.setActiveItem).toHaveBeenCalledWith(subsetPanel.ncwmsPanel.id);
         });
 
         it('calls handleLayer in children', function() {
@@ -73,7 +73,7 @@ describe("Portal.details.SubsetPanel", function() {
                 isNcwms: function() { return true; }
             });
 
-            expect(subsetPanel.aodaacPanel.handleLayer).toHaveBeenCalled();
+            expect(subsetPanel.ncwmsPanel.handleLayer).toHaveBeenCalled();
             expect(subsetPanel.filterGroupPanel.handleLayer).not.toHaveBeenCalled();
         });
     });

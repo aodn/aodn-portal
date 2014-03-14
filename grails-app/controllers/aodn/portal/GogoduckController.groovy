@@ -22,7 +22,7 @@ class GogoduckController {
         }
         catch (Exception e) {
 
-            log.error 'Problem registering new GoGoDuck job', e
+            log.error "Problem registering new GoGoDuck job with parameters: ${params.jobParameters}", e
 
             render text: 'GoGoDuck job could not be registered', status: 500
         }

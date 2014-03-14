@@ -11,7 +11,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        this.aodaacPanel = new Portal.details.AodaacPanel({
+        this.ncwmsPanel = new Portal.details.NcWmsPanel({
             map: cfg.map
         });
 
@@ -19,7 +19,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
             title: OpenLayers.i18n('subsetPanelTitle'),
             layout: new Ext.layout.CardLayout(),
             items: [
-                this.aodaacPanel
+                this.ncwmsPanel
             ]
         }, cfg);
 
@@ -38,8 +38,8 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
 
         this._extJsLayoutHack(layer);
         if (layer.isNcwms()) {
-            this.layout.setActiveItem(this.aodaacPanel.id);
-            this.aodaacPanel.handleLayer(layer, show, hide, target);
+            this.layout.setActiveItem(this.ncwmsPanel.id);
+            this.ncwmsPanel.handleLayer(layer, show, hide, target);
         }
         else {
             this.layout.setActiveItem(this.filterGroupPanel.id);

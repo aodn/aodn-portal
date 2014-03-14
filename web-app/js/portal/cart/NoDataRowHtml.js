@@ -8,10 +8,10 @@
 
 Ext.namespace('Portal.cart');
 
-Portal.cart.NoDataRowTemplate = Ext.extend(Object, {
+Portal.cart.NoDataRowHtml = Ext.extend(Object, {
 
     constructor: function(config) {
-        Portal.cart.NoDataRowTemplate.superclass.constructor.call(this, Ext.apply(this, config));
+        Portal.cart.NoDataRowHtml.superclass.constructor.call(this, Ext.apply(this, config));
     },
 
     getDataFilterEntry: function(values) {

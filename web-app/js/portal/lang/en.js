@@ -48,7 +48,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     noDataMessage: 'No direct access to data available currently.',
     downloadButtonLabel: 'Download as\u2026',
     downloadAsCsvLabel: 'CSV',
-    downloadAsNetCdfLabel: 'NetCDF',
+    downloadAsSubsettedNetCdfLabel: 'Subsetted NetCDF files (requires email address)',
+    downloadAsAllSourceNetCdfLabel: 'All source NetCDF files',
     downloadAsHdfLabel: 'HDF',
     downloadAsAsciiLabel: 'ASCII text',
     downloadAsUrlsLabel: 'List of URLs',
@@ -78,6 +79,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     organisation: 'Organisation',
     dateRange: 'Date Range',
     parameters: 'Parameters',
+    temporalExtentDateFormat: 'YYYY-MM-DD Z',
 
     // LayerGridPanel.js
     dragLayersOrServers: 'Drag layers or Servers to the menu tree',
@@ -103,7 +105,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         organizationNames: 'Organisations',
         dataParameters: 'Data Parameters'
     },
-
 
     // Refine search panel revised
     refineSearch: 'Current Search',
@@ -230,12 +231,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dataCollectionsTitle: "Data Collections",
     noCollectionSelectedHelp: "Please return and search for data collections.",
 
-    // AODAAC aggregator
-    aodaacPanelTitle: 'Subset',
-    aodaacJobCreatedMsg: 'Your subsetting job has been created. Processing commenced.<br /><br />When the job is complete we will send an email to <i>${email}</i> with download instructions.<br /><br />NB. Subsetting jobs can vary considerably in how long they take, from minutes to hours. Both the number of source files and the selected area can affect how long a job takes to run.',
-    aodaacJobCreateErrorMsg: 'Unable to create subsetting job. Please re-check the parameters you provided and try again.',
-    aodaacEmailProblemDialogTitle: 'Invalid email address',
-    aodaacNoEmailAddressMsg: 'Please enter a valid email address so we can notify you when the job is complete.',
+    // Gogoduck aggregator
+    gogoduckPanelTitle: 'Subset',
+    gogoduckJobCreatedMsg: 'Your subsetting job has been created. Processing commenced.<br /><br />When the job is complete we will send an email to <i>${email}</i> with download instructions.<br /><br />NB. Subsetting jobs can vary considerably in how long they take, from minutes to hours. Both the number of source files and the selected area can affect how long a job takes to run.',
+    gogoduckJobCreateErrorMsg: 'Unable to create subsetting job. Please re-check the parameters you provided and try again.',
+    gogoduckEmailProblemDialogTitle: 'Invalid email address',
+    gogoduckNoEmailAddressMsg: 'Please enter a valid email address so we can notify you when the job is complete.',
     productInfoHeading: 'Product Info',
     spatialExtentHeading: 'Spatial Extent',
     temporalExtentHeading: 'Temporal Extent',
@@ -267,7 +268,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "polygon" },
         { value: Portal.ui.openlayers.SpatialConstraintType.NONE, label: "none" }
     ],
-    
+
     // WfsDataRowTemplate
     fileSizeIconMarkup: '<img src="images/error.png">',
     fileSizeGb: "GB",
@@ -277,5 +278,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     estimatedDlLoadingMessage: "Estimating NetCDF size...",
     estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />',
     estimatedDlTimeoutMsg: "The NetCDF size is too large to estimate.",
-    transAbortMsg: "transaction aborted"
+    transAbortMsg: "transaction aborted",
+
+    //NcwmsDataRowHtml
+    dateFilterDisplayFormat: 'DD MMM YYYY, HH:mm UTC'
 });

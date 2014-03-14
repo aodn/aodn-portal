@@ -5,51 +5,47 @@
  *
  */
 
-describe('Portal.cart.WfsDataRowTemplate', function() {
+describe('Portal.cart.WmsDataRowHtml', function() {
 
     var tpl;
     var geoNetworkRecord;
 
     beforeEach(function() {
-        tpl = new Portal.cart.WfsDataRowTemplate();
+        tpl = new Portal.cart.WmsDataRowHtml();
         geoNetworkRecord = {
             uuid: 9,
             grailsLayerId: 42,
+            getWfsLayerFeatureRequestUrl: function() {},
             wmsLayer: {
                 getDownloadFilter: function() {
                     return "cql_filter"
-                }
+                },
+                isNcwms: function() {return false},
+                getWmsLayerFeatureRequestUrl: function() {},
+                wfsLayer: true
             }
-        };
-        geoNetworkRecord.getWfsLayerFeatureRequestUrl = function() {};
-        geoNetworkRecord.wmsLayer.getWmsDownloadFilter = function() {};
+        }
     });
 
-    describe('getDataFilterEntry', function() {
+    describe('getDataFilterEntry returns wms specific filter information', function() {
+
         it('returns text if there is a cql filter applied', function() {
             var mockCql = 'CQL(intersects(0,0,0,0))';
             tpl._cql = function() {
                 return mockCql;
             };
 
-            var filterEntry = tpl.getDataFilterEntry({});
-            expect(filterEntry).not.toEqual('<i>' + OpenLayers.i18n('noFilterLabel') + '</i> <code></code>');
-            expect(filterEntry.indexOf(OpenLayers.i18n('filterLabel'))).toBeGreaterThan(-1);
-            expect(filterEntry.indexOf(mockCql)).toBeGreaterThan(-1);
+            var filterString = tpl.getDataFilterEntry(geoNetworkRecord);
+            expect(filterString).not.toEqual('<i>' + OpenLayers.i18n('noFilterLabel') + '</i> <code></code>');
+            expect(filterString.indexOf(OpenLayers.i18n('filterLabel'))).toBeGreaterThan(-1);
+            expect(filterString.indexOf(mockCql)).toBeGreaterThan(-1);
         });
 
         it('returns an a no filter message if there is no cql filter applied', function() {
             tpl._cql = function() {
                 return ''
             };
-            expect(tpl.getDataFilterEntry({})).toEqual('<i>' + OpenLayers.i18n('noFilterLabel') + '</i> <code></code>');
             expect(tpl.getDataFilterEntry(geoNetworkRecord)).toEqual('<i>' + OpenLayers.i18n('noFilterLabel') + '</i> <code></code>');
-        });
-
-        it('BODAAC hack', function() {
-            geoNetworkRecord.wmsLayer.bodaacFilterParams = {'dateRangeStart': undefined};
-            var res = String.format('<b>{0}</b> {1}', OpenLayers.i18n('filterLabel'), OpenLayers.i18n('timeRangeCalculating'));
-            expect(tpl.getDataFilterEntry(geoNetworkRecord)).toEqual(res);
         });
     });
 
@@ -116,6 +112,23 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
         });
     });
 
+    describe('getDataSpecificMarkup', function() {
+        var markup;
+
+        beforeEach(function() {
+            markup = tpl.getDataSpecificMarkup(geoNetworkRecord);
+        });
+
+        it('provides markup', function() {
+            expect(markup).not.toEqual('');
+        });
+
+        it('contains the download estimator spinner and loading message', function() {
+            expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingMessage"))).toBeGreaterThan(-1);
+            expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingSpinner"))).toBeGreaterThan(-1);
+        });
+    });
+
     describe('download handlers', function() {
         it('_downloadWfsHandler calls downloadWithConfirmation', function() {
             spyOn(tpl, 'downloadWithConfirmation');
@@ -174,32 +187,6 @@ describe('Portal.cart.WfsDataRowTemplate', function() {
                     layerId: 6
                 }
             );
-        });
-
-        it('BODAAC _urlListDownloadHandler calls _wfsDownloadUrl', function() {
-            spyOn(tpl, '_wfsDownloadUrl');
-            tpl._urlListDownloadHandler(
-                {
-                    wmsLayer: {
-                        grailsLayerId: 1,
-                        isNcwms: function() { return true }
-                    }
-                }
-            );
-            expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
-        });
-
-        it('BODAAC _netCdfDownloadHandler calls _wfsDownloadUrl', function() {
-            spyOn(tpl, '_wfsDownloadUrl');
-            tpl._netCdfDownloadHandler(
-                {
-                    wmsLayer: {
-                        grailsLayerId: 1,
-                        isNcwms: function() { return true }
-                    }
-                }
-            );
-            expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
         });
     });
 

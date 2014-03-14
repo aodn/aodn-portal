@@ -200,7 +200,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                 null
             ]
         );
-        cqlFilter = "&CQL_FILTER=" + this.getCqlForTemporalExtent();
+        var cqlFilter = "&CQL_FILTER=" + this.getCqlForTemporalExtent();
         return wfsRequest + cqlFilter;
     },
 

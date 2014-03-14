@@ -2,6 +2,7 @@ package au.org.emii.portal
 
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.HttpResponseException
+import static groovyx.net.http.ContentType.JSON
 
 class GogoduckService {
 
@@ -12,7 +13,10 @@ class GogoduckService {
     void registerJob(jobParameters) throws HttpResponseException {
 
         _gogoduckConnection().post(
-            [body: jobParameters],
+            [
+                body: jobParameters,
+                requestContentType: JSON
+            ],
             successHandler
         )
     }
