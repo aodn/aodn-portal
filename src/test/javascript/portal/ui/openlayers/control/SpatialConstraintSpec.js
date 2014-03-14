@@ -75,8 +75,8 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         beforeEach(function() {
             map = new OpenLayers.SpatialConstraintMap();
             map.navigationControl = {
-                activate: function() {},
-                deactivate: function() {}
+                activate: noOp,
+                deactivate: noOp
             };
             Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
         });
