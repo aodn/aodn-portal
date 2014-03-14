@@ -249,12 +249,14 @@ describe('Portal.details.NcWmsPanel', function() {
             temporalExtent: extent,
             missingDays: [],
             time: extent.min(),
-            name: 'gogoDingo',
             getTemporalExtent: function() {
                 return this.temporalExtent;
             },
             getSubsetExtentMin: function() { return extent.min() },
-            getSubsetExtentMax: function() { return extent.max() }
+            getSubsetExtentMax: function() { return extent.max() },
+            wfsLayer: {
+                name: 'gogoDingo'
+            }
         };
     }
 

@@ -231,7 +231,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         };
 
         var gogoduckConfig = {
-            layerName: this.selectedLayer.name,
+            layerName: this.selectedLayer.wfsLayer.name,
             dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
             dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
             productLatitudeRangeStart: productExtents.lat.min,
