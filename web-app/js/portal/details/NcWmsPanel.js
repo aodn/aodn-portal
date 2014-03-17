@@ -231,6 +231,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         };
 
         var gogoduckConfig = {
+            layerName: this._selectedLayerWfsLayerName(),
             dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
             dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
             productLatitudeRangeStart: productExtents.lat.min,
@@ -238,10 +239,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             productLatitudeRangeEnd: productExtents.lat.max,
             productLongitudeRangeEnd: productExtents.lon.max
         };
-
-        if (this.selectedLayer.wfsLayer) {
-            gogoduckConfig.layerName = this.selectedLayer.wfsLayer.name;
-        }
 
         if (geometry) {
             var bounds = geometry.getBounds();
@@ -253,6 +250,16 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         }
 
         return gogoduckConfig;
+    },
+
+    _selectedLayerWfsLayerName: function() {
+        var name;
+
+        if (this.selectedLayer.wfsLayer) {
+            name = this.selectedLayer.wfsLayer.name;
+        }
+
+        return name;
     },
 
     _onDateSelected: function(datePicker, jsDate) {
