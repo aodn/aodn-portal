@@ -231,7 +231,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         };
 
         var gogoduckConfig = {
-            layerName: this.selectedLayer.wfsLayer.name,
             dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
             dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
             productLatitudeRangeStart: productExtents.lat.min,
@@ -239,6 +238,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             productLatitudeRangeEnd: productExtents.lat.max,
             productLongitudeRangeEnd: productExtents.lon.max
         };
+
+        if (this.selectedLayer.wfsLayer) {
+            gogoduckConfig.layerName = this.selectedLayer.wfsLayer.name;
+        }
 
         if (geometry) {
             var bounds = geometry.getBounds();
