@@ -21,7 +21,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
         this._registerMessageListeners();
         this._initBaseLayers();
-        this._initDefaultLayers();
     },
 
     addUsingDescriptor: function(layerDescriptor, layerRecordCallback) {
@@ -176,10 +175,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         }, function () {
             Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER)
         });
-    },
-
-    _initDefaultLayers: function() {
-        this._initWithLayersFromServer('layer/defaultlayers');
     },
 
     _initWithLayersFromServer: function(url, configOverrides, successCallback) {

@@ -52,7 +52,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('updates the NcWMS panel object when the layer changes', function() {
             ncwmsPanel.handleLayer(layer, noOp, noOp, {});
-            expect(ncwmsPanel._buildGogoduckParameters).toHaveBeenCalled();
+            expect(ncwmsPanel._buildParameters).toHaveBeenCalled();
             delete ncwmsPanel.geoNetworkRecord;
         });
 
@@ -141,18 +141,41 @@ describe('Portal.details.NcWmsPanel', function() {
         });
     });
 
+    describe('_addDateTimeFilterToLayer', function() {
+
+        it('updates bodaacFilterParams in selected layer', function() {
+
+            var startTime = moment('2000-01-01T01:01:01');
+            var endTime = moment('2001-01-01T01:01:01');
+
+            spyOn(ncwmsPanel.startDateTimePicker, 'getValue').andReturn(startTime.toDate());
+            spyOn(ncwmsPanel.endDateTimePicker, 'getValue').andReturn(endTime.toDate());
+
+            var selectedLayer = {};
+            var selectedLayerName = {};
+
+            ncwmsPanel.selectedLayer = selectedLayer;
+            ncwmsPanel.selectedLayer.name = selectedLayerName;
+
+            ncwmsPanel._addDateTimeFilterToLayer();
+
+            expect(selectedLayer.bodaacFilterParams.dateRangeStart).toBeSame(startTime);
+            expect(selectedLayer.bodaacFilterParams.dateRangeEnd).toBeSame(endTime);
+        });
+    });
+
     describe('_buildGogoduckParameters', function () {
 
         var gogoduckParameters;
 
         beforeEach(function () {
             ncwmsPanel.selectedLayer = layer;
-            spyOn(ncwmsPanel, '_formatDatePickerValueForGogoduck').andReturn('[date]');
+            spyOn(ncwmsPanel, '_getDateFromPicker').andReturn('[date]');
         });
 
         it('includes some information regardless of geometry', function () {
 
-            gogoduckParameters = ncwmsPanel._buildGogoduckParameters(null);
+            gogoduckParameters = ncwmsPanel._buildParameters(null);
 
             expect(gogoduckParameters.layerName).toBe('gogoDingo');
             expect(gogoduckParameters.dateRangeStart).toBe('[date]');
@@ -176,33 +199,12 @@ describe('Portal.details.NcWmsPanel', function() {
                 }
             };
 
-            gogoduckParameters = ncwmsPanel._buildGogoduckParameters(geom);
+            gogoduckParameters = ncwmsPanel._buildParameters(geom);
 
             expect(gogoduckParameters.latitudeRangeStart).toBe(10);
             expect(gogoduckParameters.longitudeRangeStart).toBe(30);
             expect(gogoduckParameters.latitudeRangeEnd).toBe(20);
             expect(gogoduckParameters.longitudeRangeEnd).toBe(40);
-        });
-
-        describe('BODAAC hack', function() {
-            it('updates bodaacFilterParams in selected layer', function() {
-                var startTime = moment('2000-01-01T01:01:01');
-                var endTime = moment('2001-01-01T01:01:01');
-
-                spyOn(ncwmsPanel.startDateTimePicker, 'getValue').andReturn(startTime.toDate());
-                spyOn(ncwmsPanel.endDateTimePicker, 'getValue').andReturn(endTime.toDate());
-
-                var selectedLayer = {};
-                var selectedLayerName = {};
-
-                ncwmsPanel.selectedLayer = selectedLayer;
-                ncwmsPanel.selectedLayer.name = selectedLayerName;
-
-                ncwmsPanel._buildGogoduckParameters();
-
-                expect(selectedLayer.bodaacFilterParams.dateRangeStart).toBeSame(startTime);
-                expect(selectedLayer.bodaacFilterParams.dateRangeEnd).toBeSame(endTime);
-            });
         });
     });
 
@@ -232,7 +234,7 @@ describe('Portal.details.NcWmsPanel', function() {
     function _applyCommonSpies(panel) {
         var _panel = panel || ncwmsPanel;
         spyOn(_panel, '_showAllControls');
-        spyOn(_panel, '_buildGogoduckParameters');
+        spyOn(_panel, '_buildParameters');
         spyOn(_panel, '_onDateSelected');
         spyOn(_panel, '_setBounds');
     }
@@ -247,12 +249,14 @@ describe('Portal.details.NcWmsPanel', function() {
             temporalExtent: extent,
             missingDays: [],
             time: extent.min(),
-            name: 'gogoDingo',
             getTemporalExtent: function() {
                 return this.temporalExtent;
             },
             getSubsetExtentMin: function() { return extent.min() },
-            getSubsetExtentMax: function() { return extent.max() }
+            getSubsetExtentMax: function() { return extent.max() },
+            wfsLayer: {
+                name: 'gogoDingo'
+            }
         };
     }
 

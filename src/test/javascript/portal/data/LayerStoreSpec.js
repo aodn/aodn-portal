@@ -163,13 +163,6 @@ describe("Portal.data.LayerStore", function() {
             var ajaxParams = Ext.Ajax.request.mostRecentCall.args[0];
             expect(ajaxParams.url).toBe('layer/configuredbaselayers');
         });
-
-        it('default layers', function() {
-            layerStore._initDefaultLayers();
-
-            var ajaxParams = Ext.Ajax.request.mostRecentCall.args[0];
-            expect(ajaxParams.url).toBe('layer/defaultlayers');
-        });
     });
 
     describe('removing layers', function() {

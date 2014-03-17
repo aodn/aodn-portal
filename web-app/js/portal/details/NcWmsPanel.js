@@ -46,12 +46,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.selectedLayer = layer;
         if (layer.isNcwms()) {
             this.geoNetworkRecord = layer.parentGeoNetworkRecord;
-            this._updateGeoNetworkGogoduck(this.map.getConstraint());
+
+            this._applyFilterValuesFromMap();
             this._clearDateTimeFields();
             this._attachTemporalEvents(); // creates listener for completing processTemporalExtent
             this.selectedLayer.processTemporalExtent(); // triggers 'temporalextentloaded'
             this._removeLoadingInfo();
             this._showAllControls();
+
             show.call(target, this);
         }
         else {
@@ -67,11 +69,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.remove(this.loadingInfo);
         delete this.loadingInfo;
 
-        this._updateGeoNetworkGogoduck(this.map.getConstraint());
+        this._applyFilterValuesFromMap();
     },
 
     _addLoadingInfo: function() {
-        // TODO - DN: Add product picker in case of multiple products per Layer
         this.loadingInfo = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
         this.add(this.loadingInfo);
     },
@@ -80,10 +81,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.map.events.on({
             scope: this,
             'spatialconstraintadded': function(geometry) {
-                this._updateGeoNetworkGogoduck(geometry);
+                this._applyFilterValuesToCollection(geometry);
             },
             'spatialconstraintcleared': function() {
-                this._updateGeoNetworkGogoduck();
+                this._applyFilterValuesToCollection();
             }
         });
 
@@ -216,14 +217,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         return new Ext.Spacer({ height: 10 });
     },
 
-    _buildGogoduckParameters: function(geometry) {
-        // BODAAC hack.
-        if (this.selectedLayer) {
-            this.selectedLayer.bodaacFilterParams = {
-                dateRangeStart: moment(this.startDateTimePicker.getValue()),
-                dateRangeEnd: moment(this.endDateTimePicker.getValue())
-            };
-        }
+    _buildParameters: function(geometry) {
 
         var productExtents = {
             lat: {
@@ -234,12 +228,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
                 min: this.LONG_MIN,
                 max: this.LONG_MAX
             }
-        }
+        };
 
         var gogoduckConfig = {
-            layerName: this.selectedLayer.name,
-            dateRangeStart: this._formatDatePickerValueForGogoduck(this.startDateTimePicker),
-            dateRangeEnd: this._formatDatePickerValueForGogoduck(this.endDateTimePicker),
+            layerName: this.selectedLayer.wfsLayer.name,
+            dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
+            dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
             productLatitudeRangeStart: productExtents.lat.min,
             productLongitudeRangeStart: productExtents.lon.min,
             productLatitudeRangeEnd: productExtents.lat.max,
@@ -266,7 +260,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this._setLayerSubsetExtent();
         this._updateTimeRangeLabel();
 
-        this._updateGeoNetworkGogoduck(this.map.getConstraint());
+        this._applyFilterValuesFromMap();
     },
 
     _previousTimeSlice: function() {
@@ -279,9 +273,27 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this._updateTimeRangeLabel();
     },
 
-    _updateGeoNetworkGogoduck: function(geometry) {
+    _applyFilterValuesFromMap: function() {
+
+        this._applyFilterValuesToCollection(this.map.getConstraint());
+    },
+
+    _applyFilterValuesToCollection: function(geometry) {
         if (this.geoNetworkRecord) {
-            this.geoNetworkRecord.updateGogoduckParams(this._buildGogoduckParameters(geometry));
+
+            this._addDateTimeFilterToLayer(geometry);
+
+            this.geoNetworkRecord.updateGogoduckParams(this._buildParameters(geometry));
+        }
+    },
+
+    _addDateTimeFilterToLayer: function(geometry) {
+
+        if (this.selectedLayer) {
+            this.selectedLayer.bodaacFilterParams = {
+                dateRangeStart: moment(this.startDateTimePicker.getValue()),
+                dateRangeEnd: moment(this.endDateTimePicker.getValue())
+            };
         }
     },
 
@@ -303,7 +315,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.buttonsPanel.show();
         this._updateTimeRangeLabel();
 
-        this._updateGeoNetworkGogoduck(this.map.getConstraint());
+        this._applyFilterValuesFromMap();
     },
 
     _setDateTimePickerExtent: function(picker, extent, value, toMaxValue) {
@@ -328,12 +340,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.selectedLayer.toTime(momentDate);
     },
 
-    _formatDatePickerValueForGogoduck: function(datePicker) {
-        return this._formatDateForGogoduck(datePicker.getValue());
-    },
+    _getDateFromPicker: function(datePicker) {
 
-    _formatDateForGogoduck: function(date) {
-        return moment.utc(date).format('DD/MM/YYYY');
+        return moment.utc(datePicker.getValue());
     },
 
     _clearDateTimeFields: function() {

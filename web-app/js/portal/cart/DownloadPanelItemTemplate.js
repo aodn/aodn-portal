@@ -49,8 +49,13 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getPointOfTruthLinkEntry: function (record) {
-        var href = record.pointOfTruthLink.href;
-        return this._makeExternalLinkMarkup(href, OpenLayers.i18n('metadataLinkText'));
+        var markup;
+
+        if (record.pointOfTruthLink) {
+            markup = this._makeExternalLinkMarkup(record.pointOfTruthLink.href, OpenLayers.i18n('metadataLinkText'));
+        }
+
+        return markup;
     },
 
     _dataSpecificMarkup: function (values) {
@@ -75,6 +80,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         this._clearContainer(id);
 
         if (collection.wmsLayer.wfsLayer || collection.wmsLayer.urlDownloadFieldName) {
+        if (this._hasData(collection)) {
             new Ext.Button({
                 text: OpenLayers.i18n('downloadButtonLabel'),
                 icon: 'images/down.png',
@@ -93,11 +99,13 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     _getFileListEntries: function (values) {
         var links = values.downloadableLinks;
         var html = "";
+        var htmlBreak = '<br>';
 
         Ext.each(
             links,
             function (link) {
                 html += this._getSingleFileEntry(link);
+                html += htmlBreak;
             },
             this
         );
@@ -127,31 +135,52 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             downloadConfirmationScope: this
         };
 
-        var templateInstance;
+        var htmlGenerator;
 
-        if (values.wmsLayer.wfsLayer || values.wmsLayer.urlDownloadFieldName) {
-            templateInstance =  this._getDataRowTemplateInstance(config);
+        if (this._hasData(values)) {
+            if (this._isNcwms(values)) {
+                htmlGenerator =  this._getNcwmsDataRowHtml(config);
+            }
+            else {
+                htmlGenerator =  this._getWmsDataRowHtml(config);
+            }
         }
         else {
-            templateInstance = this._getNoDataRowTemplateInstance(config);
+            htmlGenerator = this._getNoDataRowHtml(config);
         }
 
-        return templateInstance;
+        return htmlGenerator;
     },
 
-    _getDataRowTemplateInstance: function(config) {
-        if (!this.dataRowTemplate) {
-            this.dataRowTemplate = new Portal.cart.DataRowTemplate(config);
-        }
-
-        return this.dataRowTemplate;
+    _isNcwms: function(collection) {
+        return collection.wmsLayer.isNcwms();
     },
 
-    _getNoDataRowTemplateInstance: function(config) {
-        if (!this.noDataRowTemplate) {
-            this.noDataRowTemplate = new Portal.cart.NoDataRowTemplate(config);
+    _hasData: function(collection) {
+        return collection.wmsLayer.wfsLayer;
+    },
+
+    _getNcwmsDataRowHtml: function(config) {
+        if (!this.ncwmsDataRowHtml) {
+            this.ncwmsDataRowHtml = new Portal.cart.NcwmsDataRowHtml(config);
         }
 
-        return this.noDataRowTemplate;
+        return this.ncwmsDataRowHtml;
+    },
+
+    _getWmsDataRowHtml: function(config) {
+        if (!this.wmsDataRowHtml) {
+            this.wmsDataRowHtml = new Portal.cart.WmsDataRowHtml(config);
+        }
+
+        return this.wmsDataRowHtml;
+    },
+
+    _getNoDataRowHtml: function(config) {
+        if (!this.noDataRowHtml) {
+            this.noDataRowHtml = new Portal.cart.NoDataRowHtml(config);
+        }
+
+        return this.noDataRowHtml;
     }
 });

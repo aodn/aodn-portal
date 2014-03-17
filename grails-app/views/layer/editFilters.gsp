@@ -110,7 +110,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'type', 'errors')}">
 
-                                 <g:select name="type" from="${FilterType?.values()}" optionKey="key" onselect="getCombo(this)" />
+                                 <g:select name="type" from="${FilterType.values()}" optionKey="key" onselect="getCombo(this)" />
                                 </td>
                             </tr>
 

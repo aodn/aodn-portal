@@ -43,12 +43,7 @@ class ExternalRequest {
             processStream conn.inputStream, outputStream
             outputStream.flush()
         }
-        catch (Exception e) {
-
-            log.warn "Unable to process response from $targetUrl", e
-        }
         finally {
-
             IOUtils.closeQuietly(outputStream)
         }
     }

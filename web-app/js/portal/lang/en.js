@@ -48,7 +48,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     noDataMessage: 'No direct access to data available currently.',
     downloadButtonLabel: 'Download as\u2026',
     downloadAsCsvLabel: 'CSV',
-    downloadAsNetCdfLabel: 'NetCDF',
+    downloadAsSubsettedNetCdfLabel: 'Subsetted NetCDF files (requires email address)',
+    downloadAsAllSourceNetCdfLabel: 'All source NetCDF files',
     downloadAsHdfLabel: 'HDF',
     downloadAsAsciiLabel: 'ASCII text',
     downloadAsUrlsLabel: 'List of URLs',
@@ -78,6 +79,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     organisation: 'Organisation',
     dateRange: 'Date Range',
     parameters: 'Parameters',
+    temporalExtentDateFormat: 'YYYY',
 
     // LayerGridPanel.js
     dragLayersOrServers: 'Drag layers or Servers to the menu tree',
@@ -103,7 +105,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         organizationNames: 'Organisations',
         dataParameters: 'Data Parameters'
     },
-
 
     // Refine search panel revised
     refineSearch: 'Current Search',
@@ -267,7 +268,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "polygon" },
         { value: Portal.ui.openlayers.SpatialConstraintType.NONE, label: "none" }
     ],
-    
+
     // WfsDataRowTemplate
     fileSizeIconMarkup: '<img src="images/error.png">',
     fileSizeGb: "GB",
@@ -277,5 +278,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     estimatedDlLoadingMessage: "Estimating NetCDF size...",
     estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />',
     estimatedDlTimeoutMsg: "The NetCDF size is too large to estimate.",
-    transAbortMsg: "transaction aborted"
+    transAbortMsg: "transaction aborted",
+
+    //NcwmsDataRowHtml
+    dateFilterDisplayFormat: 'DD MMM YYYY, HH:mm UTC'
 });

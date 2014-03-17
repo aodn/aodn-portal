@@ -6,18 +6,18 @@
  *
  */
 
-describe('Portal.cart.NoDataRowTemplate', function() {
+describe('Portal.cart.NoDataRowHtml', function() {
 
     var tpl;
 
     beforeEach(function() {
-        tpl = new Portal.cart.NoDataRowTemplate();
+        tpl = new Portal.cart.NoDataRowHtml();
     });
 
     describe('constructor', function() {
         it('assigns values from passed in config', function() {
             var callback = noOp;
-            var _tpl = new Portal.cart.DataRowTemplate({ downloadConfirmation: callback, downloadConfirmationScope: this });
+            var _tpl = new Portal.cart.WmsDataRowHtml({ downloadConfirmation: callback, downloadConfirmationScope: this });
             expect(_tpl.downloadConfirmation).toBe(callback);
             expect(_tpl.downloadConfirmationScope).toBe(this);
         });

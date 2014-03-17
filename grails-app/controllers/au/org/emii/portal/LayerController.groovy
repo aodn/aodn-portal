@@ -537,12 +537,6 @@ class LayerController {
         render data as JSON
     }
 
-    def defaultlayers = {
-        def layerIds = Config.activeInstance().defaultLayers?.collect { it.id }
-        def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
-        render data as JSON
-    }
-
     def _getServer(params) {
         if (params.server) {
             return Server.get(params.server)

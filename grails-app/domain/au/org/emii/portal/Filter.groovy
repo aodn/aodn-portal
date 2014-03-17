@@ -7,7 +7,12 @@
 
 package au.org.emii.portal
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 class Filter implements Comparable {
+
+    static final Logger log = LoggerFactory.getLogger(this)
 
     String label //This is the human readable Filter title
     FilterType type  //String, time, etc, etc.
@@ -33,7 +38,7 @@ class Filter implements Comparable {
         name(blank: false)
         wmsStartDateName(nullable: true, validator: dateRangeFieldValidator)
         wmsEndDateName(nullable: true, validator: dateRangeFieldValidator)
-        type()
+        type(nullable: false, blank: false)
         layer(nullable: false)
         label(blank: false)
         downloadOnly(nullable: false)
@@ -54,7 +59,7 @@ class Filter implements Comparable {
         filterData["wmsEndDateName"] = wmsEndDateName
         filterData["layerId"] = layer.id
         filterData["enabled"] = enabled
-        filterData["possibleValues"] = type?.expectsPossibleValues ? possibleValues.sort() : []
+        filterData["possibleValues"] = type.expectsPossibleValues ? possibleValues.sort() : []
         filterData["downloadOnly"] = downloadOnly
 
         return filterData
@@ -90,13 +95,15 @@ class Filter implements Comparable {
 
     static def possibleValuesFieldValidator = { val, obj ->
 
-        if (obj.type?.expectsPossibleValues) { // Todo: 'type' can be null at this point. Spotted on 123 Portal.
+        if (obj.type.expectsPossibleValues) {
             if (val.size() == 0) {
+                log.debug "Filter with type ${obj.type} should have possible values, but doesn't"
                 return ['invalid.possibleValues']
             }
         }
         else {
             if (val && !val.isEmpty()) {
+                log.debug "Filter with type ${obj.type} shouldn't have possible values, but has: $val"
                 return ['invalid.possibleValues']
             }
         }

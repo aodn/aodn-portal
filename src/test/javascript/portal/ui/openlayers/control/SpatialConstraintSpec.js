@@ -73,7 +73,11 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         var map;
 
         beforeEach(function() {
-            map = new OpenLayers.Map();
+            map = new OpenLayers.SpatialConstraintMap();
+            map.navigationControl = {
+                activate: noOp,
+                deactivate: noOp
+            };
             Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
         });
 
@@ -111,12 +115,16 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
                 map.spatialConstraintControl.clear();
                 expect(map.spatialConstraintControl.layer.destroyFeatures).toHaveBeenCalled();
             });
+        });
 
-            it('fires spatialconstraintcleared event', function() {
-                spyOn(map.events, 'triggerEvent');
-                map.spatialConstraintControl.clear();
-                expect(map.events.triggerEvent).toHaveBeenCalledWith('spatialconstraintcleared');
+        it('clears spatial constraint when constraint type none is selected', function() {
+            var eventSpy = jasmine.createSpy('spatial constraint cleared');
+            map.events.on({
+                'spatialconstraintcleared': eventSpy
             });
+
+            map.updateSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.NONE);
+            expect(eventSpy).toHaveBeenCalled();
         });
     });
 

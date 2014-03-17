@@ -92,7 +92,7 @@ class SecurityFilters {
             }
         }
 
-        layerAccess(controller: "layer", action: "listBaseLayersAsJson|showLayerByItsId|findLayerAsJson|getFormattedMetadata|saveOrUpdate|server|configuredbaselayers|defaultlayers|getFiltersAsJSON") {
+        layerAccess(controller: "layer", action: "listBaseLayersAsJson|showLayerByItsId|findLayerAsJson|getFormattedMetadata|saveOrUpdate|server|configuredbaselayers|getFiltersAsJSON") {
             before = {
                 request.accessAllowed = true
             }
@@ -117,6 +117,12 @@ class SecurityFilters {
         }
 
         marvlAccess(controller: "marvl", action: "urlListForFeatureRequest") {
+            before = {
+                request.accessAllowed = true
+            }
+        }
+
+        gogoduckAccess(controller: "gogoduck", action: "registerJob") {
             before = {
                 request.accessAllowed = true
             }
