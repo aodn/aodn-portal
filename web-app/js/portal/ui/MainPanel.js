@@ -36,7 +36,8 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             mapPanel: this.mapPanel
         });
         this.downloadPanel = new Portal.cart.DownloadPanel({
-            navigationText: OpenLayers.i18n('navigationButtonDownload')
+            navigationText: OpenLayers.i18n('navigationButtonDownload'),
+            mainPanel: this
         });
 
         this.addEvents('tabchange');
@@ -81,6 +82,10 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
     getActiveTab: function() {
         return this.layout.getActiveTab();
+    },
+
+    isDownloadActiveTab: function() {
+        return (this.items.indexOf(this.getActiveTab()) == this.TAB_INDEX_DOWNLOAD)
     },
 
     setActiveTab: function(tabIndex) {

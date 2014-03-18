@@ -8,7 +8,7 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
-    initComponent: function(cfg) {
+    constructor: function(cfg) {
 
         this.downloadPanelBody = new Portal.cart.DownloadPanelBody({
             navigationText: OpenLayers.i18n('navigationButtonDownload')
@@ -25,7 +25,10 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
 
         Ext.apply(this, config);
-        Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);
+        Portal.cart.DownloadPanel.superclass.constructor.call(this, arguments);
+
+        this.mainPanel = config.mainPanel;
+
         this.on('beforeshow', function() { this.onBeforeShow(); }, this);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.FILTER_LOADED, function(subject, openLayer) {
@@ -34,8 +37,11 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     },
 
     checkRedraw: function(layer) {
-        if (layer.options && !layer.options.isBaseLayer && !(layer instanceof OpenLayers.Layer.Vector)) {
-            this.downloadPanelBody.generateContent();
+        // only bother if download is visible
+        if (this.mainPanel.isDownloadActiveTab()) {
+            if (layer.options && !layer.options.isBaseLayer && !(layer instanceof OpenLayers.Layer.Vector)) {
+                this.downloadPanelBody.generateContent();
+            }
         }
     },
 
