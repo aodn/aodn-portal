@@ -84,7 +84,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         return this.layout.getActiveTab();
     },
 
-    isDownloadActiveTab: function() {
+    isDownloadTabActive: function() {
         return (this.items.indexOf(this.getActiveTab()) == this.TAB_INDEX_DOWNLOAD)
     },
 

@@ -38,7 +38,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
     checkRedraw: function(layer) {
         // only bother if download is visible
-        if (this.mainPanel.isDownloadActiveTab()) {
+        if (this.mainPanel.isDownloadTabActive()) {
             if (layer.options && !layer.options.isBaseLayer && !(layer instanceof OpenLayers.Layer.Vector)) {
                 this.downloadPanelBody.generateContent();
             }
