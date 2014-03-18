@@ -44,7 +44,7 @@ Portal.cart.WmsDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
                 scope: this
             });
             menuItems.push({
-                text: OpenLayers.i18n('downloadAsNetCdfLabel'),
+                text: OpenLayers.i18n('downloadAsAllSourceNetCdfLabel'),
                 handler: this._netCdfDownloadHandler(collection),
                 scope: this
             });

@@ -85,7 +85,7 @@ describe('Portal.cart.WmsDataRowHtml', function() {
                 if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
                     urlListIncluded = true;
                 }
-                else if (menuItems[i].text == OpenLayers.i18n('downloadAsNetCdfLabel')) {
+                else if (menuItems[i].text == OpenLayers.i18n('downloadAsAllSourceNetCdfLabel')) {
                     netCdfDownloadIncluded = true;
                 }
             }
