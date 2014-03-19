@@ -67,7 +67,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, this._onViewGeoNetworkRecord, this);
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_END, this._allowAccessToAll, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.FILTER_LOADED, this._allowAccessToAllTabs, this);
         Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, this._refreshView, this);
     },
 
@@ -99,7 +99,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         // Ensure tab selectors reflect actual tab selected
         var tabIndex = this.items.indexOf(this.getActiveTab());
 
-        // clean slate
+        // clean up
         jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive').removeClass('viewPortTabActiveLast');
 
         // all tabs up until the selected tab highlighted
@@ -110,7 +110,8 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
     },
 
-    _allowAccessToAll: function() {
+    // // onclick now will be active (jquery.js)
+    _allowAccessToAllTabs: function() {
         jQuery('[id^=viewPortTab]').removeClass('viewPortTabDisabled');
     },
 
