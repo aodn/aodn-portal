@@ -67,6 +67,8 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, this._onViewGeoNetworkRecord, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_END, this._allowAccessToAll, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, this._refreshView, this);
     },
 
     _onViewGeoNetworkRecord: function() {
@@ -99,15 +101,23 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         // clean slate
         jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive').removeClass('viewPortTabActiveLast');
-        // a collection was added
-        if (tabIndex > 0) {
-            jQuery('[id^=viewPortTab]').removeClass('viewPortTabDisabled');
-        }
+
         // all tabs up until the selected tab highlighted
         for (var i=0;i<=tabIndex;i++) {
             var newClasses = (i == tabIndex) ? 'viewPortTabActive viewPortTabActiveLast' : 'viewPortTabActive';
             jQuery('#viewPortTab' + i).removeClass('viewPortTabDisabled').addClass(newClasses);
         }
 
+    },
+
+    _allowAccessToAll: function() {
+        jQuery('[id^=viewPortTab]').removeClass('viewPortTabDisabled');
+    },
+
+    _refreshView: function() {
+        jQuery('[id^=viewPortTab]').addClass('viewPortTabDisabled');
+        this.layout.setActiveTab(0);
+        this._highlightActiveTab();
     }
+
 });
