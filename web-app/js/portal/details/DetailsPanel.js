@@ -29,6 +29,10 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (eventName, openlayer) {
             this.updateDetailsPanel(openlayer);
         }, this);
+
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_END, function (eventName, openlayer) {
+            this.updateDetailsPanel(openlayer);
+        }, this);
     },
 
     initComponent: function () {

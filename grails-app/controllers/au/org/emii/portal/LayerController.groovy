@@ -170,6 +170,7 @@ class LayerController {
     // entered layer details e.g. layers sourced from metadata records)
 
     def findLayerAsJson = {
+        Thread.sleep(5000)
         def criteria = Layer.createCriteria()
 
         // split name into namespace and local name components if applicable

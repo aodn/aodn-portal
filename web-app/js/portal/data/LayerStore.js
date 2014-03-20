@@ -124,9 +124,9 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                 layerRecordCallback(layerRecord);
             }
 
-            // Only want to be notified of changes in no base layer
+            // Only want to be notified of changes if not a base layer
             if (!openLayer.options.isBaseLayer) {
-                Ext.MsgBus.publish('selectedLayerChanged', openLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
             }
 
             return layerRecord;
