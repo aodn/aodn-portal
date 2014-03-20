@@ -21,6 +21,8 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         mockLogging DownloadController
 
         controller = new DownloadController()
+        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
+        _setHostShouldBeValid(true)
     }
 
     void testUrlListForLayerNoLayerId() {
@@ -57,8 +59,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             assertEquals testStreamProcessor, streamProcessor
         }
 
-        mockParams.layerId = 1
-
         controller.urlListForLayer()
 
         assertEquals 1, performProxyingCalledCount
@@ -74,9 +74,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     void testDownloadNetCdfFilesForLayerInvalidHost() {
 
         _setUpExampleObjects()
-
-        controller.hostVerifier = [allowedHost: { r, u -> false }]
-        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
+        _setHostShouldBeValid(false)
 
         controller.estimateSizeForLayer()
 
@@ -90,7 +88,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         mockParams.downloadFilename = 'somedata.txt'
 
         def archiveGenerated = false
-        controller.hostVerifier = [allowedHost: { r, u -> true }]
         controller.metaClass.urlListStreamProcessor = { fieldName, prefixToRemove, newUrlBase ->
             assertEquals testLayer.urlDownloadFieldName, fieldName
             assertEquals testServer.urlListDownloadPrefixToRemove, prefixToRemove
@@ -126,9 +123,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     void testEstimateSizeForLayerInvalidHost() {
 
         _setUpExampleObjects()
-
-        controller.hostVerifier = [allowedHost: { r, u -> false }]
-        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
+        _setHostShouldBeValid(false)
 
         controller.estimateSizeForLayer()
 
@@ -147,8 +142,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             assertEquals "size", sizeFieldName
             return testStreamProcessor
         }
-        controller.hostVerifier = [allowedHost: { r, u -> true }]
-        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
 
         controller.estimateSizeForLayer()
 
@@ -165,8 +158,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             assertEquals "size", sizeFieldName
             return testStreamProcessor
         }
-        controller.hostVerifier = [allowedHost: { r, u -> true }]
-        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
         controller.metaClass._executeExternalRequest = { url, streamProcessor, resultStream ->
             assertEquals testStreamProcessor, streamProcessor
             resultStream << "the output"
@@ -183,8 +174,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         def testStreamProcessor = new Object()
         controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->  testStreamProcessor }
-        controller.hostVerifier = [allowedHost: { r, u -> true }]
-        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
         controller.metaClass._executeExternalRequest = { url, streamProcessor, resultStream ->
             throw new Exception("Test Exception")
         }
@@ -268,6 +257,11 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
 
         mockParams.layerId = 1
         mockParams.url = 'http://www.example.com/'
+    }
+
+    void _setHostShouldBeValid(valid) {
+
+        controller.hostVerifier = [allowedHost: { r, u -> valid }]
     }
 
     static void assertCorrectProcessing(streamProcessor, input, expectedOutput) {
