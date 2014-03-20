@@ -74,8 +74,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     void testDownloadNetCdfFilesForLayerInvalidHost() {
 
         _setUpExampleObjects()
-        mockParams.layerId = 1
-        mockParams.url = 'the_url'
 
         controller.hostVerifier = [allowedHost: { r, u -> false }]
 
@@ -87,8 +85,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     void testDownloadNetCdfFilesForLayer() {
 
         _setUpExampleObjects()
-        mockParams.layerId = 1
-        mockParams.url = 'http://www.example.com/'
+
         mockParams.downloadFilename = 'somedata.txt'
 
         def archiveGenerated = false
@@ -128,8 +125,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     void testEstimateSizeForLayerInvalidHost() {
 
         _setUpExampleObjects()
-        mockParams.layerId = 1
-        mockParams.url = "the_url"
 
         controller.hostVerifier = [allowedHost: { r, u -> false }]
 
@@ -142,7 +137,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         _setUpExampleObjects()
 
-        mockParams.layerId = 1
         testLayer.urlDownloadFieldName = null
 
         def testStreamProcessor = new Object()
@@ -163,8 +157,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         _setUpExampleObjects()
 
-        mockParams.layerId = 1
-
         def testStreamProcessor = new Object()
         controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->
             assertEquals "relativeFilePath", filenameFieldName
@@ -183,12 +175,9 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         assertEquals "the output", mockResponse.contentAsString
     }
 
-
     void testEstimateSizeForLayerWitExternalRequestException() {
 
         _setUpExampleObjects()
-
-        mockParams.layerId = 1
 
         def testStreamProcessor = new Object()
         controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->  testStreamProcessor }
@@ -274,6 +263,9 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
 
         mockDomain Server, [testServer]
         mockDomain Layer, [testLayer]
+
+        mockParams.layerId = 1
+        mockParams.url = 'http://www.example.com/'
     }
 
     static void assertCorrectProcessing(streamProcessor, input, expectedOutput) {
