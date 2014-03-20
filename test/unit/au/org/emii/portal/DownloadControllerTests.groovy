@@ -76,10 +76,11 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         _setUpExampleObjects()
 
         controller.hostVerifier = [allowedHost: { r, u -> false }]
+        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
 
         controller.estimateSizeForLayer()
 
-        assertEquals "Host for address 'the_url' not allowed", mockResponse.contentAsString
+        assertEquals "Host for address 'http://www.example.com/?PROPERTYNAME=relativeFilePath,size' not allowed", mockResponse.contentAsString
     }
 
     void testDownloadNetCdfFilesForLayer() {
@@ -127,10 +128,11 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         _setUpExampleObjects()
 
         controller.hostVerifier = [allowedHost: { r, u -> false }]
+        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
 
         controller.estimateSizeForLayer()
 
-        assertEquals "Host for address 'the_url' not allowed", mockResponse.contentAsString
+        assertEquals "Host for address 'http://www.example.com/?PROPERTYNAME=relativeFilePath,size' not allowed", mockResponse.contentAsString
     }
 
     void testEstimateSizeForLayerNoUrlColumnSpecified() {
