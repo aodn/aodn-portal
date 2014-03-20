@@ -22,10 +22,14 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller = new DownloadController()
         controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
+
+        _setUpExampleObjects()
         _setHostShouldBeValid(true)
     }
 
     void testUrlListForLayerNoLayerId() {
+
+        mockParams.layerId = null
 
         controller.urlListForLayer()
 
@@ -33,8 +37,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     }
 
     void testUrlListForLayer() {
-
-        _setUpExampleObjects()
 
         def testParamProcessor = new Object()
         controller.metaClass.requestSingleFieldParamProcessor = { fieldName ->
@@ -66,6 +68,8 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testDownloadNetCdfFilesForLayerNoLayerId() {
 
+        mockParams.layerId = null
+
         controller.downloadNetCdfFilesForLayer()
 
         assertEquals "No layerId provided", mockResponse.contentAsString
@@ -73,7 +77,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testDownloadNetCdfFilesForLayerInvalidHost() {
 
-        _setUpExampleObjects()
         _setHostShouldBeValid(false)
 
         controller.estimateSizeForLayer()
@@ -82,8 +85,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     }
 
     void testDownloadNetCdfFilesForLayer() {
-
-        _setUpExampleObjects()
 
         mockParams.downloadFilename = 'somedata.txt'
 
@@ -115,6 +116,8 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testEstimateSizeForLayerNoLayerId() {
 
+        mockParams.layerId = null
+
         controller.estimateSizeForLayer()
 
         assertEquals "No layerId provided", mockResponse.contentAsString
@@ -122,7 +125,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testEstimateSizeForLayerInvalidHost() {
 
-        _setUpExampleObjects()
         _setHostShouldBeValid(false)
 
         controller.estimateSizeForLayer()
@@ -131,8 +133,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     }
 
     void testEstimateSizeForLayerNoUrlColumnSpecified() {
-
-        _setUpExampleObjects()
 
         testLayer.urlDownloadFieldName = null
 
@@ -149,8 +149,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     }
 
     void testEstimateSizeForLayerNoProblems() {
-
-        _setUpExampleObjects()
 
         def testStreamProcessor = new Object()
         controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->
@@ -169,8 +167,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     }
 
     void testEstimateSizeForLayerWitExternalRequestException() {
-
-        _setUpExampleObjects()
 
         def testStreamProcessor = new Object()
         controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->  testStreamProcessor }
@@ -194,8 +190,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     }
 
     void testUrlListStreamProcessor() {
-
-        _setUpExampleObjects()
 
         def input = """\
             FID,relativeFilePath
