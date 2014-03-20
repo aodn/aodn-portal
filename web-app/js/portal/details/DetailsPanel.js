@@ -30,9 +30,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             this.updateDetailsPanel(openlayer);
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_END, function (eventName, openlayer) {
-            this.updateDetailsPanel(openlayer);
-        }, this);
     },
 
     initComponent: function () {
@@ -41,7 +38,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         });
 
         this.status = new Ext.Container({
-            html: OpenLayers.i18n('noActiveCollectionSelected'),
+            html: OpenLayers.i18n('loadingMessage'),
             cls: 'collectionTitle',
             margins: {top:20, right:10, bottom:10, left:0},
             autoHeight: true
@@ -61,11 +58,13 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     updateDetailsPanel: function (layer, forceOpen) {
 
         if (layer) {
-            this.setStatus(layer.name);
 
-            // show new layer unless user requested 'hideLayerOptions'
-            this.detailsPanelTabs.handleLayer(layer);
-            this.doLayout();
+            if (layer.isOverlay()) {
+                this.setStatus(layer.name);
+                // show new layer unless user requested 'hideLayerOptions'
+                this.detailsPanelTabs.handleLayer(layer);
+                this.doLayout();
+            }
         }
         else {
             this.setStatus(OpenLayers.i18n('noActiveCollectionSelected'));

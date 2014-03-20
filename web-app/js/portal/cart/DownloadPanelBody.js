@@ -22,6 +22,10 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         Ext.apply(this, config);
         Portal.cart.DownloadPanelBody.superclass.initComponent.call(this, arguments);
 
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (eventName, openlayer) {
+            this.generateContent();
+        }, this);
+
     },
 
     generateContent: function() {

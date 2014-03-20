@@ -36,12 +36,12 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
 
     handleLayer: function(layer, show, hide, target) {
 
-        this._extJsLayoutHack(layer);
         if (layer.isNcwms()) {
             this.layout.setActiveItem(this.ncwmsPanel.id);
             this.ncwmsPanel.handleLayer(layer, show, hide, target);
         }
         else {
+            this._extJsLayoutHack(layer);
             this.layout.setActiveItem(this.filterGroupPanel.id);
             this.filterGroupPanel.handleLayer(layer, show, hide, target);
         }
