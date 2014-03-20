@@ -10,6 +10,22 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     constructor: function (downloadPanel) {
 
+        this.htmlArgs = {
+            dataFilters: OpenLayers.i18n('noDataMessage'),
+            dataMarkup: '',
+            menuItems: {
+                item1: {
+
+                },
+                item2: {
+
+                },
+                item3: {
+
+                }
+            }
+        }
+
         this.downloadPanel = downloadPanel;
 
         var templateLines = [
@@ -45,7 +61,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getDataFilterEntry: function (values) {
-        return this._getRowTemplate(values).getDataFilterEntry(values);
+        return String.format('<i>{0}</i>', this.htmlArgs.dataFilters);
     },
 
     _getPointOfTruthLinkEntry: function (record) {
@@ -59,7 +75,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _dataSpecificMarkup: function (values) {
-        return this._getRowTemplate(values).getDataSpecificMarkup(values);
+        return this.htmlArgs.dataMarkup;
     },
 
     _downloadButton: function (collection) {
@@ -70,7 +86,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createDownloadButton: function (id, collection) {
-        if (this._hasData(collection)) {
+        if (this.htmlArgs.menuItems) {
             new Ext.Button({
                 text: OpenLayers.i18n('downloadButtonLabel'),
                 icon: 'images/down.png',
@@ -78,11 +94,11 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
                 scope: this,
                 renderTo: id,
                 menu: new Ext.menu.Menu({
-                    items: this._getRowTemplate(collection).createMenuItems(collection)
+                    items: this.htmlArgs.menuItems
                 })
             });
 
-            this._getRowTemplate(collection).attachMenuEvents(collection);
+            //this._getRowTemplate(collection).attachMenuEvents(collection);
         }
     },
 
@@ -117,60 +133,5 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     downloadWithConfirmation: function (downloadUrl, downloadFilename, downloadControllerArgs) {
         this.downloadPanel.confirmDownload(downloadUrl, downloadFilename, downloadControllerArgs);
-    },
-
-    _getRowTemplate: function (values) {
-        var config = {
-            downloadConfirmation: this.downloadWithConfirmation,
-            downloadConfirmationScope: this
-        };
-
-        var htmlGenerator;
-
-        if (this._hasData(values)) {
-            if (this._isNcwms(values)) {
-                htmlGenerator =  this._getNcwmsDataRowHtml(config);
-            }
-            else {
-                htmlGenerator =  this._getWmsDataRowHtml(config);
-            }
-        }
-        else {
-            htmlGenerator = this._getNoDataRowHtml(config);
-        }
-
-        return htmlGenerator;
-    },
-
-    _isNcwms: function(collection) {
-        return collection.wmsLayer.isNcwms();
-    },
-
-    _hasData: function(collection) {
-        return collection.wmsLayer.wfsLayer;
-    },
-
-    _getNcwmsDataRowHtml: function(config) {
-        if (!this.ncwmsDataRowHtml) {
-            this.ncwmsDataRowHtml = new Portal.cart.NcwmsDataRowHtml(config);
-        }
-
-        return this.ncwmsDataRowHtml;
-    },
-
-    _getWmsDataRowHtml: function(config) {
-        if (!this.wmsDataRowHtml) {
-            this.wmsDataRowHtml = new Portal.cart.WmsDataRowHtml(config);
-        }
-
-        return this.wmsDataRowHtml;
-    },
-
-    _getNoDataRowHtml: function(config) {
-        if (!this.noDataRowHtml) {
-            this.noDataRowHtml = new Portal.cart.NoDataRowHtml(config);
-        }
-
-        return this.noDataRowHtml;
     }
 });

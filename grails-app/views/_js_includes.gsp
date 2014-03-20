@@ -160,7 +160,10 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NoDataRowHtml.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'WmsDataRowHtml.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NcwmsDataRowHtml.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadEstimator.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'InsertionService.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NoDataInjector.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'WmsInjector.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NcwmsInjector.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/visualise/animations', file: 'TemporalExtent.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/visualise/animations', file: 'TemporalExtentParser.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/openId', file: 'Popup.js')}"></script>
