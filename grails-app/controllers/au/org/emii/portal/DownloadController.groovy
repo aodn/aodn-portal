@@ -90,7 +90,9 @@ class DownloadController extends RequestProxyingController {
         }
 
         def layer = Layer.get(layerId)
-        def url = params.url
+        def urlDownloadFieldName = layer.urlDownloadFieldName
+        def sizeFieldName = grailsApplication.config.indexedFile.fileSizeColumnName
+        def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$urlDownloadFieldName,$sizeFieldName")
 
         if (!hostVerifier.allowedHost(request, url)) {
             render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: 400
@@ -98,12 +100,11 @@ class DownloadController extends RequestProxyingController {
         }
 
         def resultStream = new ByteArrayOutputStream()
-        def sizeFieldName = grailsApplication.config.indexedFile.fileSizeColumnName
 
         if (layer.urlDownloadFieldName) {
 
             try {
-                def streamProcessor = calculateSumStreamProcessor(layer.urlDownloadFieldName, sizeFieldName)
+                def streamProcessor = calculateSumStreamProcessor(urlDownloadFieldName, sizeFieldName)
                 _executeExternalRequest url, streamProcessor, resultStream
             }
             catch (Exception e) {
