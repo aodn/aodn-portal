@@ -15,7 +15,7 @@ describe('Portal.cart.InsertionService', function() {
         geoNetworkRecord = {wmsLayer: {}};
     });
 
-    describe('returnStringInjectionForLayer', function() {
+    describe('insertionValues', function() {
 
         beforeEach(function() {
             spyOn(mockInsertionService, '_getNcwmsInjector');
@@ -28,7 +28,7 @@ describe('Portal.cart.InsertionService', function() {
             geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
             geoNetworkRecord.wmsLayer.wfsLayer = true;
 
-            mockInsertionService.returnStringInjectionForLayer();
+            mockInsertionService.insertionValues();
 
             expect(mockInsertionService._getNcwmsInjector).toHaveBeenCalled();
         });
@@ -38,7 +38,7 @@ describe('Portal.cart.InsertionService', function() {
             geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
             geoNetworkRecord.wmsLayer.wfsLayer = true;
 
-            mockInsertionService.returnStringInjectionForLayer();
+            mockInsertionService.insertionValues();
 
             expect(mockInsertionService._getWmsInjector).toHaveBeenCalled();
         });
@@ -46,7 +46,7 @@ describe('Portal.cart.InsertionService', function() {
         it('creates a no data injector for layers containing no data', function() {
 
             geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
-            mockInsertionService.returnStringInjectionForLayer();
+            mockInsertionService.insertionValues();
 
             expect(mockInsertionService._getNoDataInjector).toHaveBeenCalled();
         });

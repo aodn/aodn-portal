@@ -9,20 +9,31 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.InsertionService = Ext.extend(Object, {
 
-    returnStringInjectionForLayer: function(collection) {
+    constructor: function(downloadPanel) {
+
+        this.downloadPanel = downloadPanel;
+    },
+
+    insertionValues: function(collection) {
+
+        var config = {
+            downloadConfirmation: this.downloadWithConfirmation,
+            downloadConfirmationScope: this
+        };
 
         var injector;
 
         if (this._hasData(collection)) {
             if (this._isNcwms(collection)) {
-                injector = this._getNcwmsInjector();
+                injector = this._getNcwmsInjector(config);
+                injector.attachMenuEvents(collection);
             }
             else {
-                injector = this._getWmsInjector();
+                injector = this._getWmsInjector(config);
             }
         }
         else {
-            injector = this._getNoDataInjector();
+            injector = this._getNoDataInjector(config);
         }
 
         return injector.getInjectionJson(collection);
@@ -39,30 +50,35 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         return collection.wmsLayer.wfsLayer;
     },
 
-    _getNcwmsInjector: function(collection) {
+    _getNcwmsInjector: function(config) {
 
         if (!this.ncwmsInjector) {
-            this.ncwmsInjector = new Portal.cart.NcwmsInjector();
+            this.ncwmsInjector = new Portal.cart.NcwmsInjector(config);
         }
 
         return this.ncwmsInjector;
     },
 
-    _getWmsInjector: function(collection) {
+    _getWmsInjector: function(config) {
 
         if (!this.wmsInjector) {
-            this.wmsInjector = new Portal.cart.WmsInjector();
+            this.wmsInjector = new Portal.cart.WmsInjector(config);
         }
 
         return this.wmsInjector;
     },
 
-    _getNoDataInjector: function(collection) {
+    _getNoDataInjector: function(config) {
 
         if (!this.noDataInjector) {
-            this.noDataInjector = new Portal.cart.NoDataInjector();
+            this.noDataInjector = new Portal.cart.NoDataInjector(config);
         }
 
         return this.noDataInjector;
+    },
+
+    downloadWithConfirmation: function (downloadUrl, downloadFilename, downloadControllerArgs) {
+
+        this.downloadPanel.confirmDownload(downloadUrl, downloadFilename, downloadControllerArgs);
     }
 });

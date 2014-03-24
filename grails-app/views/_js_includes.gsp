@@ -157,6 +157,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadPanelBody.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadConfirmationWindow.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadEstimator.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NoDataRowHtml.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'WmsDataRowHtml.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NcwmsDataRowHtml.js')}"></script>
