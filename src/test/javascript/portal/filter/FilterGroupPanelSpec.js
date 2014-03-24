@@ -33,6 +33,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_createFilterPanel');
             spyOn(filterGroupPanel, '_updateAndShow');
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
+            spyOn(Ext.MsgBus, 'publish').andReturn(true);
 
             filterGroupPanel._showHideFilters(layer, showFunction, noOp, {});
         });
@@ -40,6 +41,11 @@ describe("Portal.filter.FilterGroupPanel", function() {
         it('creates a filter panel', function() {
 
             expect(filterGroupPanel._createFilterPanel).toHaveBeenCalled();
+        });
+
+        it('Fires FILTER_LOADED event', function() {
+            
+            expect(Ext.MsgBus.publish).toHaveBeenCalled();
         });
 
         it('calls _updateAndShow', function() {

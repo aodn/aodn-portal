@@ -36,7 +36,8 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             mapPanel: this.mapPanel
         });
         this.downloadPanel = new Portal.cart.DownloadPanel({
-            navigationText: OpenLayers.i18n('navigationButtonDownload')
+            navigationText: OpenLayers.i18n('navigationButtonDownload'),
+            mainPanel: this
         });
 
         this.addEvents('tabchange');
@@ -66,6 +67,8 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, this._onViewGeoNetworkRecord, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.FILTER_LOADED, this._allowAccessToAllTabs, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, this._refreshView, this);
     },
 
     _onViewGeoNetworkRecord: function() {
@@ -83,6 +86,10 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         return this.layout.getActiveTab();
     },
 
+    isDownloadTabActive: function() {
+        return (this.items.indexOf(this.getActiveTab()) == this.TAB_INDEX_DOWNLOAD)
+    },
+
     setActiveTab: function(tabIndex) {
         this.layout.setActiveTab(tabIndex);
     },
@@ -92,17 +99,26 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         // Ensure tab selectors reflect actual tab selected
         var tabIndex = this.items.indexOf(this.getActiveTab());
 
-        // clean slate
+        // clean up
         jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive').removeClass('viewPortTabActiveLast');
-        // a collection was added
-        if (tabIndex > 0) {
-            jQuery('[id^=viewPortTab]').removeClass('viewPortTabDisabled');
-        }
+
         // all tabs up until the selected tab highlighted
         for (var i=0;i<=tabIndex;i++) {
             var newClasses = (i == tabIndex) ? 'viewPortTabActive viewPortTabActiveLast' : 'viewPortTabActive';
             jQuery('#viewPortTab' + i).removeClass('viewPortTabDisabled').addClass(newClasses);
         }
 
+    },
+
+    // // onclick now will be active (jquery.js)
+    _allowAccessToAllTabs: function() {
+        jQuery('[id^=viewPortTab]').removeClass('viewPortTabDisabled');
+    },
+
+    _refreshView: function() {
+        jQuery('[id^=viewPortTab]').addClass('viewPortTabDisabled');
+        this.layout.setActiveTab(0);
+        this._highlightActiveTab();
     }
+
 });

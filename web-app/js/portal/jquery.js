@@ -46,14 +46,19 @@ jQuery( window ).load(function() {
         });
 
     // activate onclick - exclude disabled main viewport tabs
-    jQuery('.viewPortTab:not(.viewPortTabDisabled)')
+    jQuery('.viewPortTab')
         .live("mouseenter", function(){
             // activate the onclick action
-            var tabId = $(this).attr('id');
+            var tabId = jQuery(this).attr('id');
             jQuery(this).children('a').one('click', function(obj) {
-                    setViewPortTab(parseInt(tabId.substr(tabId.length - 1)));
+                    if (!jQuery(this).parent().hasClass('viewPortTabDisabled')) {
+                        setViewPortTab(parseInt(tabId.substr(tabId.length - 1)));
+                    }
+
                 }
             );
         });
+
+
 });
 
