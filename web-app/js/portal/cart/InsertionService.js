@@ -21,22 +21,21 @@ Portal.cart.InsertionService = Ext.extend(Object, {
             downloadConfirmationScope: this
         };
 
-        var injector;
+        var htmlInjection;
 
         if (this._hasData(collection)) {
             if (this._isNcwms(collection)) {
-                injector = this._getNcwmsInjector(config);
-                injector.attachMenuEvents(collection);
+                htmlInjection = this._getNcwmsInjector(config, collection);
             }
             else {
-                injector = this._getWmsInjector(config);
+                htmlInjection = this._getWmsInjector(config, collection);
             }
         }
         else {
-            injector = this._getNoDataInjector(config);
+            htmlInjection = this._getNoDataInjector(config, collection);
         }
 
-        return injector.getInjectionJson(collection);
+        return htmlInjection;
 
     },
 
@@ -50,31 +49,32 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         return collection.wmsLayer.wfsLayer;
     },
 
-    _getNcwmsInjector: function(config) {
+    _getNcwmsInjector: function(config, collection) {
 
         if (!this.ncwmsInjector) {
             this.ncwmsInjector = new Portal.cart.NcwmsInjector(config);
+            this.ncwmsInjector.attachMenuEvents(collection);
         }
 
-        return this.ncwmsInjector;
+        return this.ncwmsInjector.getInjectionJson(collection);
     },
 
-    _getWmsInjector: function(config) {
+    _getWmsInjector: function(config, collection) {
 
         if (!this.wmsInjector) {
             this.wmsInjector = new Portal.cart.WmsInjector(config);
         }
 
-        return this.wmsInjector;
+        return this.wmsInjector.getInjectionJson(collection);
     },
 
-    _getNoDataInjector: function(config) {
+    _getNoDataInjector: function(config, collection) {
 
         if (!this.noDataInjector) {
             this.noDataInjector = new Portal.cart.NoDataInjector(config);
         }
 
-        return this.noDataInjector;
+        return this.noDataInjector.getInjectionJson(collection);
     },
 
     downloadWithConfirmation: function (downloadUrl, downloadFilename, downloadControllerArgs) {

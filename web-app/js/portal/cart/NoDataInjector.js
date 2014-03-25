@@ -15,8 +15,6 @@ Portal.cart.NoDataInjector = Ext.extend(Object, {
 
     getInjectionJson: function(collection) {
 
-        console.log(collection);
-
         var injectionJson = {
             uuid: collection.uuid,
             title: collection.title,
