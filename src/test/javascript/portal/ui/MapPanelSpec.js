@@ -146,13 +146,13 @@ describe("Portal.ui.MapPanel", function() {
         it('should call _closeFeatureInfoPopup()', function() {
 
             spyOn(mapPanel, '_closeFeatureInfoPopup');
-            Ext.MsgBus.publish('removeAllLayers');
+            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
         });
 
         it('should call resetSpatialConstraint', function() {
             spyOn(mapPanel.map, 'resetSpatialConstraint');
-            Ext.MsgBus.publish('removeAllLayers');
+            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel.map.resetSpatialConstraint).toHaveBeenCalled();
         });
     });

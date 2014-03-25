@@ -172,7 +172,21 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
             });
 
             describe('on clear', function() {
+
+                //var originalExtPublish = Ext.MsgBus.publish;
+
+                beforeEach(function() {
+                    //Ext.MsgBus.publish = jasmine.createSpy("dont publish");
+
+                });
+
+/*                afterEach(function() {
+                    Ext.MsgBus.publish = originalExtPublish;
+                });*/
+
                 it('all layers removed from LayerStore', function() {
+                    spyOn(Ext.MsgBus, 'publish');
+
                     var layerRecord = new GeoExt.data.LayerRecord({
                         layer: layer,
                         title: layer.name
@@ -187,10 +201,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                         'http://some/wms/url',
                         {},
                         { isBaseLayer: false });
-                    var layerRecord2 = new GeoExt.data.LayerRecord({
-                        layer: layer2,
-                        title: layer2.name
-                    });
+
                     var myRecord2 = new Portal.data.GeoNetworkRecord({
                         title: 'my record'
                     });
@@ -314,11 +325,18 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
             var record;
             var uuid = "29841123988481203";
 
+            var originalExtPublish = Ext.MsgBus.publish;
+
             beforeEach(function() {
+                Ext.MsgBus.publish = jasmine.createSpy("dont publish");
                 record = new Portal.data.GeoNetworkRecord({
                     uuid: uuid
                 });
                 activeRecordStore.add(record);
+            });
+
+            afterEach(function() {
+                Ext.MsgBus.publish = originalExtPublish;
             });
 
             it('get record by uuid', function() {
@@ -356,6 +374,8 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
 
         beforeEach(function() {
             layerStore = Portal.data.ActiveGeoNetworkRecordStore.instance().layerStore
+
+            spyOn(Ext.MsgBus, 'publish');
             spyOn(layerStore, 'addUsingDescriptor').andCallThrough();
         });
 

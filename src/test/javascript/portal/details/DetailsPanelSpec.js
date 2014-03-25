@@ -18,7 +18,7 @@ describe("Portal.details.DetailsPanel", function() {
     describe('initialisation', function() {
 
         it('has correct status', function() {
-            expect(detailsPanel.status.html).toBe(OpenLayers.i18n('noActiveCollectionSelected'));
+            expect(detailsPanel.status.html).toBe(OpenLayers.i18n('loadingMessage'));
         });
 
         it('hides contents', function() {

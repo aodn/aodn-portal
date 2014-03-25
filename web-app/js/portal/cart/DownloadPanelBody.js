@@ -41,8 +41,10 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         if (!html) {
             html = this._contentForEmptyView();
         }
-
-        this.update(html);
+        // fix for tests
+        if (this.rendered) {
+            this.update(html);
+        }
     },
 
     confirmDownload: function(downloadUrl, downloadFilename, downloadControllerArgs) {

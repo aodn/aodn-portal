@@ -23,6 +23,7 @@ describe("Portal.cart.DownloadPanelBody", function() {
     describe('generateContent', function() {
 
         var mockTemplate;
+        var downloadPanelBody;
         var testCollection1 = {value: '[Content 1]'};
         var testCollection2 = {value: '[Content 2]'};
         var testCollection3 = {value: '[Content 3]'};
@@ -44,6 +45,8 @@ describe("Portal.cart.DownloadPanelBody", function() {
                 {data: testCollection4}
             ];
 
+            downloadPanelBody.rendered = true;
+            downloadPanelBody.update =  function(){};
             spyOn(downloadPanelBody, 'update');
 
             downloadPanelBody.generateContent();

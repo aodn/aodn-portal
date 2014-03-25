@@ -195,7 +195,7 @@ describe('Portal.cart.WmsDataRowHtml', function() {
         it('calls correct function on layer', function() {
 
             var spy = jasmine.createSpy();
-            var testLayer = {getWfsLayerFeatureRequestUrl: spy};
+            var testLayer = {getWfsLayerFeatureRequestUrl: spy, params: "blagh"};
 
             tpl._wfsDownloadUrl(testLayer, 'csv');
 
@@ -208,7 +208,7 @@ describe('Portal.cart.WmsDataRowHtml', function() {
         it('calls correct function on layer', function() {
 
             var spy = jasmine.createSpy();
-            var testLayer = {getWmsLayerFeatureRequestUrl: spy};
+            var testLayer = {getWmsLayerFeatureRequestUrl: spy, params: "blagh"};
 
             tpl._wmsDownloadUrl(testLayer, 'xml');
 
