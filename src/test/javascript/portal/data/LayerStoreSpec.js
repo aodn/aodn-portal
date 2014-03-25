@@ -32,7 +32,6 @@ describe("Portal.data.LayerStore", function() {
     beforeEach(function() {
         layerStore = new Portal.data.LayerStore();
         expect(layerStore.getCount()).toBe(0);
-
     });
 
     var createOpenLayer = function(title, url) {
@@ -174,8 +173,6 @@ describe("Portal.data.LayerStore", function() {
     });
 
     describe('removing layers', function() {
-
-
 
         describe('remove open layer', function() {
 

@@ -173,16 +173,6 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
 
             describe('on clear', function() {
 
-                //var originalExtPublish = Ext.MsgBus.publish;
-
-                beforeEach(function() {
-                    //Ext.MsgBus.publish = jasmine.createSpy("dont publish");
-
-                });
-
-/*                afterEach(function() {
-                    Ext.MsgBus.publish = originalExtPublish;
-                });*/
 
                 it('all layers removed from LayerStore', function() {
                     spyOn(Ext.MsgBus, 'publish');
@@ -325,18 +315,13 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
             var record;
             var uuid = "29841123988481203";
 
-            var originalExtPublish = Ext.MsgBus.publish;
 
             beforeEach(function() {
-                Ext.MsgBus.publish = jasmine.createSpy("dont publish");
+                spyOn(Ext.MsgBus, 'publish');
                 record = new Portal.data.GeoNetworkRecord({
                     uuid: uuid
                 });
                 activeRecordStore.add(record);
-            });
-
-            afterEach(function() {
-                Ext.MsgBus.publish = originalExtPublish;
             });
 
             it('get record by uuid', function() {
