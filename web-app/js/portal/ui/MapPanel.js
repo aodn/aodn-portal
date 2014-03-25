@@ -66,9 +66,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function () {
             this.reset();
-        }, this);
-
-        Ext.MsgBus.subscribe('removeAllLayers', function () {
             this._closeFeatureInfoPopup();
         }, this);
     },

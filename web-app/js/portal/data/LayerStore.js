@@ -52,9 +52,9 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         return this._addLayer(openLayer, layerRecordCallback);
     },
 
-    reset: function() {
+/*    reset: function() {
         this.removeAll();
-    },
+    },*/
 
     removeAll: function() {
         this.remove(this.getOverlayLayers().getRange());
@@ -100,6 +100,22 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     _addLayer: function(openLayer, layerRecordCallback) {
         if (!this.containsOpenLayer(openLayer)) {
+
+            var layerRecord = new GeoExt.data.LayerRecord({
+                layer: openLayer,
+                title: openLayer.name
+            });
+
+            if (layerRecordCallback) {
+                layerRecordCallback(layerRecord);
+            }
+            // has the parentGeoNetworkRecord overlay layer been deleted
+            if (layerRecord.parentGeoNetworkRecord) {
+                if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(layerRecord.parentGeoNetworkRecord)) {
+                    return;
+                }
+            }
+
             openLayer.loading = true;
 
             openLayer.events.register('loadstart', this, function() {
@@ -111,18 +127,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                 Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_END, openLayer);
             });
 
-            var layerRecord = new GeoExt.data.LayerRecord({
-                layer: openLayer,
-                title: openLayer.name
-            });
-
-            Ext.MsgBus.publish(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, openLayer);
-
             this.add(layerRecord);
-
-            if (layerRecordCallback) {
-                layerRecordCallback(layerRecord);
-            }
 
             // Only want to be notified of changes if not a base layer
             if (!openLayer.options.isBaseLayer) {
@@ -158,12 +163,9 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _registerMessageListeners: function() {
-        Ext.MsgBus.subscribe('removeAllLayers', function(subject, openLayer) {
-            this.removeAll();
-        }, this);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function(subject, openLayer) {
-            this.reset();
+            this.removeAll();
         }, this);
     },
 

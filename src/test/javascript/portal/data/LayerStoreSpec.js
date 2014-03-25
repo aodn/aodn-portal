@@ -200,7 +200,7 @@ describe("Portal.data.LayerStore", function() {
             expect(layerStore.getCount()).toBe(2);
 
             spyOn(layerStore, 'removeAll').andCallThrough();
-            Ext.MsgBus.publish('removeAllLayers');
+            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
 
             expect(layerStore.removeAll).toHaveBeenCalled();
             expect(layerStore.getCount()).toBe(1);
@@ -210,7 +210,6 @@ describe("Portal.data.LayerStore", function() {
             layerStore.addUsingOpenLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
 
-            spyOn(layerStore, 'reset').andCallThrough();
             spyOn(layerStore, 'removeAll').andCallThrough();
             spyOn(layerStore, 'selectDefaultBaseLayer');
 

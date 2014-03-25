@@ -111,6 +111,12 @@ Portal.cart.WmsDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
     },
 
     _wmsDownloadUrl: function(layer, format) {
-        return layer.getWmsLayerFeatureRequestUrl(format);
+        if (!layer.params) {
+            return null;
+        }
+        else {
+            return layer.getWmsLayerFeatureRequestUrl(format);
+        }
+
     }
 });

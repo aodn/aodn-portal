@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -29,6 +28,9 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (eventName, openlayer) {
             this.updateDetailsPanel(openlayer);
         }, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, function (eventName, openlayer) {
+            this.setStatus(OpenLayers.i18n('loadingMessage'));
+        }, this);
 
     },
 
@@ -56,7 +58,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
     // must be called when the panel is fully expanded for the slider
     updateDetailsPanel: function (layer, forceOpen) {
-
         if (layer) {
 
             if (layer.isOverlay()) {
@@ -84,5 +85,10 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
         //DO NOT HIDE THE opacitySlider directly, or you WILL break things.-Alex
         this.detailsPanelTabs.setVisible(false);
+    },
+
+    showDetailsPanelContents: function() {
+        this.doLayout();
     }
+
 });
