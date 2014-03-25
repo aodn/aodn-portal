@@ -52,7 +52,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         return this._addLayer(openLayer, layerRecordCallback);
     },
 
-
     removeAll: function() {
         this.remove(this.getOverlayLayers().getRange());
         Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
