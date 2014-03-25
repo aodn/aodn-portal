@@ -5,13 +5,13 @@
  *
  */
 
-describe('Portal.cart.NcwmsDataRowHtml', function() {
+describe('Portal.cart.NcwmsInjector', function() {
 
-    var tpl;
+    var injector;
     var geoNetworkRecord;
 
     beforeEach(function() {
-        tpl = new Portal.cart.NcwmsDataRowHtml();
+        injector = new Portal.cart.NcwmsInjector();
         geoNetworkRecord = {
             uuid: 9,
             grailsLayerId: 42,
@@ -24,14 +24,16 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
                 isNcwms: function() {return true},
                 wfsLayer: true,
                 bodaacFilterParams: {}
-            }
+            },
+            pointOfTruthLink: 'Link!',
+            downloadableLinks: 'Downloadable link!'
         }
     });
 
     describe('createMenuItems', function() {
 
         it('create menu items for ncwms layers', function() {
-            var menuItems = tpl.createMenuItems(geoNetworkRecord);
+            var menuItems = injector._createMenuItems(geoNetworkRecord);
             var urlListIncluded = false;
             var netCdfDownloadIncluded = false;
             var netCdfSubsetIncluded = false;
@@ -54,13 +56,13 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
         });
     });
 
-    describe('getDataSpecificMarkup', function() {
+    describe('getDataMarkup', function() {
 
         var markup;
 
         beforeEach(function() {
 
-            markup = tpl.getDataSpecificMarkup(geoNetworkRecord);
+            markup = injector._getDataMarkup(geoNetworkRecord);
         });
 
         it('generates correct markup for ncwms layers', function() {
@@ -69,15 +71,15 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingMessage"))).toBeGreaterThan(-1);
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingSpinner"))).toBeGreaterThan(-1);
             expect(markup.indexOf(OpenLayers.i18n('notificationBlurbMessage'))).toBeGreaterThan(-1);
-            expect(markup.indexOf(tpl.GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE)).toBeGreaterThan(-1);
+            expect(markup.indexOf(injector.GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE)).toBeGreaterThan(-1);
             expect(markup.indexOf(OpenLayers.i18n('emailAddressPlaceholder'))).toBeGreaterThan(-1);
         });
 
         it('contains the user specified email address', function() {
-            spyOn(tpl, '_getEmailAddress').andReturn('gogo@duck.com');
-            markup = tpl.getDataSpecificMarkup(geoNetworkRecord);
+            spyOn(injector, '_getEmailAddress').andReturn('gogo@duck.com');
+            markup = injector._getDataMarkup(geoNetworkRecord);
 
-            expect(tpl._getEmailAddress).toHaveBeenCalled();
+            expect(injector._getEmailAddress).toHaveBeenCalled();
             expect(markup.indexOf('gogo@duck.com')).toBeGreaterThan(-1);
         });
     });
@@ -85,8 +87,8 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
     describe('download handlers', function() {
 
         it('BODAAC _urlListDownloadHandler calls _wfsDownloadUrl', function() {
-            spyOn(tpl, '_wfsDownloadUrl');
-            tpl._urlListDownloadHandler(
+            spyOn(injector, '_wfsDownloadUrl');
+            injector._urlListDownloadHandler(
                 {
                     wmsLayer: {
                         grailsLayerId: 1,
@@ -94,12 +96,12 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
                     }
                 }
             );
-            expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
+            expect(injector._wfsDownloadUrl).toHaveBeenCalled();
         });
 
         it('BODAAC _netCdfDownloadHandler calls _wfsDownloadUrl', function() {
-            spyOn(tpl, '_wfsDownloadUrl');
-            tpl._netCdfDownloadHandler(
+            spyOn(injector, '_wfsDownloadUrl');
+            injector._netCdfDownloadHandler(
                 {
                     wmsLayer: {
                         grailsLayerId: 1,
@@ -107,7 +109,7 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
                     }
                 }
             );
-            expect(tpl._wfsDownloadUrl).toHaveBeenCalled();
+            expect(injector._wfsDownloadUrl).toHaveBeenCalled();
         });
     });
 
@@ -118,7 +120,7 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
             var spy = jasmine.createSpy();
             var testLayer = {getWfsLayerFeatureRequestUrl: spy};
 
-            tpl._wfsDownloadUrl(testLayer, 'csv');
+            injector._wfsDownloadUrl(testLayer, 'csv');
 
             expect(testLayer.getWfsLayerFeatureRequestUrl).toHaveBeenCalledWith('csv');
         });
@@ -130,18 +132,18 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
             geoNetworkRecord.gogoduckParams.latitudeRangeStart = undefined;
             geoNetworkRecord.gogoduckParams.dateRangeStart = new Date(0);
             geoNetworkRecord.gogoduckParams.dateRangeEnd = new Date(1);
-            expect(tpl.getDataFilterEntry(geoNetworkRecord)).not.toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
+            expect(injector._getDataFilterEntry(geoNetworkRecord)).not.toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
         });
 
         it('returns a no filter label if no bbox and no defined date', function() {
             geoNetworkRecord.gogoduckParams.latitudeRangeStart = undefined;
             geoNetworkRecord.gogoduckParams.dateRangeStart = null;
-            expect(tpl.getDataFilterEntry(geoNetworkRecord)).toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
+            expect(injector._getDataFilterEntry(geoNetworkRecord)).toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
         });
 
         it('indicates a northerly bound', function() {
             geoNetworkRecord.gogoduckParams.latitudeRangeStart = '-10';
-            var entry = tpl.getDataFilterEntry(geoNetworkRecord);
+            var entry = injector._getDataFilterEntry(geoNetworkRecord);
             expect(entry.indexOf('N')).toBeGreaterThan(-1);
             expect(entry.indexOf('-10')).toBeGreaterThan(-1);
             expect(entry.indexOf('N')).toBeGreaterThan(entry.indexOf('-10'));
@@ -150,7 +152,7 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
         it('indicates an easterly bound', function() {
             geoNetworkRecord.gogoduckParams.latitudeRangeStart = '-10';
             geoNetworkRecord.gogoduckParams.longitudeRangeEnd = '170';
-            var entry = tpl.getDataFilterEntry(geoNetworkRecord);
+            var entry = injector._getDataFilterEntry(geoNetworkRecord);
             expect(entry.indexOf('E')).toBeGreaterThan(-1);
             expect(entry.indexOf('170')).toBeGreaterThan(-1);
             expect(entry.indexOf('E')).toBeGreaterThan(entry.indexOf('170'));
@@ -159,7 +161,7 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
         it('indicates a southerly bound', function() {
             geoNetworkRecord.gogoduckParams.latitudeRangeStart = '-10';
             geoNetworkRecord.gogoduckParams.latitudeRangeEnd = '-40';
-            var entry = tpl.getDataFilterEntry(geoNetworkRecord);
+            var entry = injector._getDataFilterEntry(geoNetworkRecord);
             expect(entry.indexOf('S')).toBeGreaterThan(-1);
             expect(entry.indexOf('-40')).toBeGreaterThan(-1);
             expect(entry.indexOf('S')).toBeGreaterThan(entry.indexOf('-40'));
@@ -168,7 +170,7 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
         it('indicates an westerly bound', function() {
             geoNetworkRecord.gogoduckParams.latitudeRangeStart = '-10';
             geoNetworkRecord.gogoduckParams.longitudeRangeStart = '150';
-            var entry = tpl.getDataFilterEntry(geoNetworkRecord);
+            var entry = injector._getDataFilterEntry(geoNetworkRecord);
             expect(entry.indexOf('W')).toBeGreaterThan(-1);
             expect(entry.indexOf('150')).toBeGreaterThan(-1);
             expect(entry.indexOf('W')).toBeGreaterThan(entry.indexOf('150'));
@@ -178,7 +180,7 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
             geoNetworkRecord.gogoduckParams.dateRangeStart = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0));
             geoNetworkRecord.gogoduckParams.dateRangeEnd = moment.utc(Date.UTC(2014, 11, 21, 10, 30, 30, 500));
 
-            var entry = tpl.getDataFilterEntry(geoNetworkRecord);
+            var entry = injector._getDataFilterEntry(geoNetworkRecord);
 
             var startDateString = '20 Nov 2013, 00:30 UTC';
             var endDateString = '21 Dec 2014, 10:30 UTC';
@@ -191,7 +193,7 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
 
     describe('_downloadGogoduckHandler', function() {
         it('provides a function', function() {
-            expect(typeof(tpl._downloadGogoduckHandler(geoNetworkRecord, 'nc'))).toEqual('function');
+            expect(typeof(injector._downloadGogoduckHandler(geoNetworkRecord, 'nc'))).toEqual('function');
         });
     });
 
@@ -212,7 +214,7 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
         };
 
         beforeEach(function() {
-            url = decodeURIComponent(tpl._gogoduckUrl(params, 'gogo@duck.com'));
+            url = decodeURIComponent(injector._gogoduckUrl(params, 'gogo@duck.com'));
         });
 
         it('includes the gogoduck endpoint', function() {
@@ -252,28 +254,28 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
 
         it('saves an email address', function() {
             var emailInput = new Ext.form.TextField();
-            spyOn(tpl, '_emailTextFieldElement').andReturn(emailInput);
-            spyOn(tpl, '_saveEmailAddress').andReturn(emailInput);
+            spyOn(injector, '_emailTextFieldElement').andReturn(emailInput);
+            spyOn(injector, '_saveEmailAddress').andReturn(emailInput);
 
-            tpl.attachMenuEvents(geoNetworkRecord);
+            injector.attachMenuEvents(geoNetworkRecord);
             emailInput.fireEvent('change');
-            expect(tpl._saveEmailAddress).toHaveBeenCalledWith(geoNetworkRecord.uuid);
+            expect(injector._saveEmailAddress).toHaveBeenCalledWith(geoNetworkRecord.uuid);
         });
 
         describe('_validateEmailAddress', function () {
 
             it('returns false for an empty address', function () {
-                var returnVal = tpl._validateEmailAddress('');
+                var returnVal = injector._validateEmailAddress('');
                 expect(returnVal).toBe(false);
             });
 
             it('returns false for an invalid address', function () {
-                var returnVal = tpl._validateEmailAddress('notAnEmailAddress');
+                var returnVal = injector._validateEmailAddress('notAnEmailAddress');
                 expect(returnVal).toBe(false);
             });
 
             it('returns true for a valid address', function () {
-                var returnVal = tpl._validateEmailAddress('user@domain.com');
+                var returnVal = injector._validateEmailAddress('user@domain.com');
                 expect(returnVal).toBe(true);
             });
         });
@@ -284,7 +286,7 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
         beforeEach(function () {
             spyOn(OpenLayers, 'i18n').andReturn('i18n value');
             spyOn(String, 'format');
-            tpl._parameterString('the_key', 'val1', 'val2', "delimiter");
+            injector._parameterString('the_key', 'val1', 'val2', "delimiter");
         });
 
         it('calls OpenLayers.i18n()', function () {
@@ -293,6 +295,20 @@ describe('Portal.cart.NcwmsDataRowHtml', function() {
 
         it('calls String.format()', function () {
             expect(String.format).toHaveBeenCalledWith('<b>{0}:</b> &nbsp;<code>{1}</code> {3} <code>{2}</code><br>', 'i18n value', 'val1', 'val2', "delimiter")
+        });
+    });
+
+    describe('getPointOfTruthLinks', function() {
+
+        it('returns point of truth links as appropriate', function() {
+            expect(injector._getPointOfTruthLink(geoNetworkRecord)).toEqual('Link!');
+        });
+    });
+
+    describe('getMetadataLinks', function() {
+
+        it('returns metadata links as appropriate', function() {
+            expect(injector._getMetadataLinks(geoNetworkRecord)).toEqual('Downloadable link!');
         });
     });
 });
