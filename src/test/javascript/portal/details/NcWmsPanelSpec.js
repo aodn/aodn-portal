@@ -11,7 +11,7 @@ describe('Portal.details.NcWmsPanel', function() {
     var ncwmsPanel;
     var geoNetworkRecord = {
         id: '45678',
-        updateGogoduckParams: noOp
+        updateNcwmsParams: noOp
     };
     var layer = _mockLayer();
 

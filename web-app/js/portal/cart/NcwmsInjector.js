@@ -34,7 +34,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Object, {
 
     _getDataFilterEntry: function(collection) {
 
-        var params = collection.gogoduckParams;
+        var params = collection.ncwmsParams;
         var areaString = "";
         var dateString = "";
 
@@ -120,7 +120,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Object, {
                 return;
             }
 
-            var downloadUrl = this._gogoduckUrl(collection.gogoduckParams, emailAddress);
+            var downloadUrl = this._gogoduckUrl(collection.ncwmsParams, emailAddress);
             Ext.Ajax.request({
                 url: downloadUrl,
                 scope: this,

@@ -15,7 +15,7 @@ describe('Portal.cart.NcwmsInjector', function() {
         geoNetworkRecord = {
             uuid: 9,
             grailsLayerId: 42,
-            gogoduckParams: {},
+            ncwmsParams: {},
             wmsLayer: {
                 getDownloadFilter: function() {
                     return "cql_filter"
@@ -129,20 +129,20 @@ describe('Portal.cart.NcwmsInjector', function() {
     describe('getDataFilterEntry', function() {
 
         it('still returns date range stuff with no bbox', function() {
-            geoNetworkRecord.gogoduckParams.latitudeRangeStart = undefined;
-            geoNetworkRecord.gogoduckParams.dateRangeStart = new Date(0);
-            geoNetworkRecord.gogoduckParams.dateRangeEnd = new Date(1);
+            geoNetworkRecord.ncwmsParams.latitudeRangeStart = undefined;
+            geoNetworkRecord.ncwmsParams.dateRangeStart = new Date(0);
+            geoNetworkRecord.ncwmsParams.dateRangeEnd = new Date(1);
             expect(injector._getDataFilterEntry(geoNetworkRecord)).not.toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
         });
 
         it('returns a no filter label if no bbox and no defined date', function() {
-            geoNetworkRecord.gogoduckParams.latitudeRangeStart = undefined;
-            geoNetworkRecord.gogoduckParams.dateRangeStart = null;
+            geoNetworkRecord.ncwmsParams.latitudeRangeStart = undefined;
+            geoNetworkRecord.ncwmsParams.dateRangeStart = null;
             expect(injector._getDataFilterEntry(geoNetworkRecord)).toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
         });
 
         it('indicates a northerly bound', function() {
-            geoNetworkRecord.gogoduckParams.latitudeRangeStart = '-10';
+            geoNetworkRecord.ncwmsParams.latitudeRangeStart = '-10';
             var entry = injector._getDataFilterEntry(geoNetworkRecord);
             expect(entry.indexOf('N')).toBeGreaterThan(-1);
             expect(entry.indexOf('-10')).toBeGreaterThan(-1);
@@ -150,8 +150,8 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
 
         it('indicates an easterly bound', function() {
-            geoNetworkRecord.gogoduckParams.latitudeRangeStart = '-10';
-            geoNetworkRecord.gogoduckParams.longitudeRangeEnd = '170';
+            geoNetworkRecord.ncwmsParams.latitudeRangeStart = '-10';
+            geoNetworkRecord.ncwmsParams.longitudeRangeEnd = '170';
             var entry = injector._getDataFilterEntry(geoNetworkRecord);
             expect(entry.indexOf('E')).toBeGreaterThan(-1);
             expect(entry.indexOf('170')).toBeGreaterThan(-1);
@@ -159,8 +159,8 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
 
         it('indicates a southerly bound', function() {
-            geoNetworkRecord.gogoduckParams.latitudeRangeStart = '-10';
-            geoNetworkRecord.gogoduckParams.latitudeRangeEnd = '-40';
+            geoNetworkRecord.ncwmsParams.latitudeRangeStart = '-10';
+            geoNetworkRecord.ncwmsParams.latitudeRangeEnd = '-40';
             var entry = injector._getDataFilterEntry(geoNetworkRecord);
             expect(entry.indexOf('S')).toBeGreaterThan(-1);
             expect(entry.indexOf('-40')).toBeGreaterThan(-1);
@@ -168,8 +168,8 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
 
         it('indicates an westerly bound', function() {
-            geoNetworkRecord.gogoduckParams.latitudeRangeStart = '-10';
-            geoNetworkRecord.gogoduckParams.longitudeRangeStart = '150';
+            geoNetworkRecord.ncwmsParams.latitudeRangeStart = '-10';
+            geoNetworkRecord.ncwmsParams.longitudeRangeStart = '150';
             var entry = injector._getDataFilterEntry(geoNetworkRecord);
             expect(entry.indexOf('W')).toBeGreaterThan(-1);
             expect(entry.indexOf('150')).toBeGreaterThan(-1);
@@ -177,8 +177,8 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
 
         it('indicates temporal range', function() {
-            geoNetworkRecord.gogoduckParams.dateRangeStart = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0));
-            geoNetworkRecord.gogoduckParams.dateRangeEnd = moment.utc(Date.UTC(2014, 11, 21, 10, 30, 30, 500));
+            geoNetworkRecord.ncwmsParams.dateRangeStart = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0));
+            geoNetworkRecord.ncwmsParams.dateRangeEnd = moment.utc(Date.UTC(2014, 11, 21, 10, 30, 30, 500));
 
             var entry = injector._getDataFilterEntry(geoNetworkRecord);
 

@@ -230,7 +230,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             }
         };
 
-        var gogoduckConfig = {
+        var ncwmsConfig = {
             layerName: this._selectedLayerWfsLayerName(),
             dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
             dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
@@ -243,13 +243,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         if (geometry) {
             var bounds = geometry.getBounds();
 
-            gogoduckConfig.latitudeRangeStart = bounds.bottom;
-            gogoduckConfig.longitudeRangeStart = bounds.left;
-            gogoduckConfig.latitudeRangeEnd = bounds.top;
-            gogoduckConfig.longitudeRangeEnd = bounds.right;
+            ncwmsConfig.latitudeRangeStart = bounds.bottom;
+            ncwmsConfig.longitudeRangeStart = bounds.left;
+            ncwmsConfig.latitudeRangeEnd = bounds.top;
+            ncwmsConfig.longitudeRangeEnd = bounds.right;
         }
 
-        return gogoduckConfig;
+        return ncwmsConfig;
     },
 
     _selectedLayerWfsLayerName: function() {
@@ -293,7 +293,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
             this._addDateTimeFilterToLayer(geometry);
 
-            this.geoNetworkRecord.updateGogoduckParams(this._buildParameters(geometry));
+            this.geoNetworkRecord.updateNcwmsParams(this._buildParameters(geometry));
         }
     },
 
