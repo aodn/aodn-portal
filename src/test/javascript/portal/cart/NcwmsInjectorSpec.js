@@ -71,7 +71,7 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingMessage"))).toBeGreaterThan(-1);
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingSpinner"))).toBeGreaterThan(-1);
             expect(markup.indexOf(OpenLayers.i18n('notificationBlurbMessage'))).toBeGreaterThan(-1);
-            expect(markup.indexOf(injector.GOGODUCK_EMAIL_ADDRESS_ATTRIBUTE)).toBeGreaterThan(-1);
+            expect(markup.indexOf(injector.EMAIL_ADDRESS_ATTRIBUTE)).toBeGreaterThan(-1);
             expect(markup.indexOf(OpenLayers.i18n('emailAddressPlaceholder'))).toBeGreaterThan(-1);
         });
 
@@ -197,7 +197,53 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
     });
 
-    describe('_gogoduckUrl', function() {
+    describe('_generateNcwmsUrl', function() {
+
+        var url;
+        var startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
+        var endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
+        var format;
+        var emailAddress;
+        var params;
+
+        beforeEach(function() {
+
+            format  = 'csv';
+            emailAddress = 'gogo@duck.com';
+
+            params = {
+                dateRangeStart: startDate,
+                dateRangeEnd: endDate,
+                latitudeRangeStart: -42,
+                latitudeRangeEnd: -20,
+                longitudeRangeStart: 160,
+                longitudeRangeEnd: 170
+            };
+
+            spyOn(injector, '_generateAodaacJobUrl');
+            spyOn(injector, '_generateGogoduckJobUrl');
+        });
+
+        it('calls _generateAodaacJobUrl when an aodaac record is passed', function() {
+
+            params.productId = 'gogoAodaac';
+
+            url = injector._generateNcwmsUrl(params, format, emailAddress);
+            expect(injector._generateAodaacJobUrl).toHaveBeenCalled();
+        });
+
+        it('calls _generateGogoduckJobUrl when a gogoduck record is passed', function() {
+
+            params.layerName = 'gogoDingo';
+
+            url = injector._generateNcwmsUrl(params, format, emailAddress);
+            expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
+        });
+    });
+
+
+
+    describe('_generateGogoduckJobUrl', function() {
 
         var url;
         var startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
@@ -214,38 +260,38 @@ describe('Portal.cart.NcwmsInjector', function() {
         };
 
         beforeEach(function() {
-            url = decodeURIComponent(injector._gogoduckUrl(params, 'gogo@duck.com'));
+            url = decodeURIComponent(injector._generateGogoduckJobUrl(params, 'gogo@duck.com'));
         });
 
-        it('includes the gogoduck endpoint', function() {
+        it('generates the gogoduck endpoint', function() {
             expect(url.indexOf('gogoduck/registerJob?jobParameters=')).toBeGreaterThan(-1);
         });
 
-        it('includes the layer name', function() {
+        it('generates the layer name', function() {
             expect(url.indexOf('gogoDingo')).not.toEqual(-1);
         });
 
-        it('includes the longitude range start', function() {
+        it('generates the longitude range start', function() {
             expect(url.indexOf('160')).not.toEqual(-1);
         });
 
-        it('includes the longitude range end', function() {
+        it('generates the longitude range end', function() {
             expect(url.indexOf('170')).not.toEqual(-1);
         });
 
-        it('includes the latitude range start', function() {
+        it('generates the latitude range start', function() {
             expect(url.indexOf('-42')).not.toEqual(-1);
         });
 
-        it('includes the latitude range end', function() {
+        it('generates the latitude range end', function() {
             expect(url.indexOf('-20')).not.toEqual(-1);
         });
 
-        it('includes the time range start', function() {
+        it('generates the time range start', function() {
             expect(url.indexOf('2013-11-20T00:30:00.000Z')).not.toEqual(-1);
         });
 
-        it('includes the time range end', function() {
+        it('generates the time range end', function() {
             expect(url.indexOf('2014-12-21T22:30:30.500Z')).not.toEqual(-1);
         });
     });

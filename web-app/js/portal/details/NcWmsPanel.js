@@ -219,6 +219,46 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     _buildParameters: function(geometry) {
 
+        var config;
+
+        if (this.productsInfo && this.selectedProductInfo) {
+            config = this._buildAodaacParams(geometry, this.selectedProductInfo);
+        }
+        else {
+            config = this._buildGogoduckParams(geometry);
+        }
+
+        return config;
+    },
+
+    _buildAodaacParams: function(geometry, info) {
+
+        var productExtents = info.extents;
+
+        var aodaacConfig = {
+            productId: info.productId,
+            dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
+            dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
+            productLatitudeRangeStart: productExtents.lat.min,
+            productLongitudeRangeStart: productExtents.lon.min,
+            productLatitudeRangeEnd: productExtents.lat.max,
+            productLongitudeRangeEnd: productExtents.lon.max
+        };
+
+        if (geometry) {
+            var bounds = geometry.getBounds();
+
+            aodaacConfig.latitudeRangeStart = bounds.bottom;
+            aodaacConfig.longitudeRangeStart = bounds.left;
+            aodaacConfig.latitudeRangeEnd = bounds.top;
+            aodaacConfig.longitudeRangeEnd = bounds.right;
+        }
+
+        return aodaacConfig;
+    },
+
+    _buildGogoduckParams: function(geometry) {
+
         var productExtents = {
             lat: {
                 min: this.LAT_MIN,
