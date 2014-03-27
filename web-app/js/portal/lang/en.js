@@ -79,6 +79,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateRange: 'Date Range',
     parameters: 'Parameters',
     temporalExtentDateFormat: 'YYYY',
+    metadataLink: 'continue reading',
 
     // LayerGridPanel.js
     dragLayersOrServers: 'Drag layers or Servers to the menu tree',

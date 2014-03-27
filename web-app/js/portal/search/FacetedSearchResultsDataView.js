@@ -187,7 +187,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var html;
 
         if (values.pointOfTruthLink) {
-            html = String.format('<a href="{0}" target="_blank" class="nowrap" title="{1}">more</a>', values.pointOfTruthLink.href, values.pointOfTruthLink.title);
+            html = String.format('<a href="{0}" target="_blank" class="nowrap" title="{1}">{2}</a>', values.pointOfTruthLink.href, values.pointOfTruthLink.title, OpenLayers.i18n('metadataLink'));
         }
 
         return html;
