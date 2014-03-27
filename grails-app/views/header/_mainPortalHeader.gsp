@@ -33,8 +33,8 @@
         <g:if test="${flash.openidErrorMessage}">
             <strong>${flash.openidErrorMessage}</strong>
         </g:if>
-        <shiro:notUser>
 
+        <shiro:notUser>
         <%-- Drop down dialog, enable selection of openid providers --%>
             <g:if test="${grailsApplication.config.openId.enableUserSuppliedProvider || grailsApplication.config.openId.providers.size > 1}">
 
@@ -65,7 +65,6 @@
                                 </div>
                             </li>
                         </g:if>
-
                     </ol>
                 </div>
             </g:if>
@@ -74,13 +73,8 @@
             <g:else>
                 <g:link controller="auth" action="login" params='[openIdProvider: "${grailsApplication.config.openId.providers.first().providerHref }"]'>Login</g:link>
             </g:else>
-
-        <%-- Support registered provider --%>
-            <g:if test="${grailsApplication.config.openId.registerProvider}">
-                <g:link controller="auth" action="register" params='[openIdProvider: "${grailsApplication.config.openId.registerProvider.providerHref}"]'>Register</g:link>
-            </g:if>
-
         </shiro:notUser>
+
         <shiro:user>
             Welcome <user:loggedInUser property="fullName"/>
             <g:link controller="auth" action="logOut">Log out</g:link>
@@ -92,8 +86,8 @@
                     - <g:link controller="wmsScanner" action="controls">Administration</g:link>
                 </shiro:lacksPermission>
             </shiro:hasPermission>
-
         </shiro:user>
+
         <g:each in="${grailsApplication.config.portal.header.externalLinks}" var="link">
             <a class="external mainlinks" target="_blank" href="${link.href}" title="${link.tooltipText}">${link.linkText}</a></g:each>
     </div>

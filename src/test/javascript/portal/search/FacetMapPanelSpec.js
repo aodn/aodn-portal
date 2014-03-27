@@ -14,6 +14,14 @@ describe("Portal.search.FacetMapPanel", function() {
         });
     });
 
+    describe('synching map mouse position', function() {
+        it('calls map.updateSize on map mouse move event', function() {
+            spyOn(facetMapPanel.map, 'updateSize');
+            facetMapPanel.map.events.triggerEvent('mousemove');
+            expect(facetMapPanel.map.updateSize).toHaveBeenCalled();
+        });
+    });
+
     describe('map controls', function() {
         it('zoom panel', function() {
             expect(facetMapPanel.map.controls[0]).toBeInstanceOf(OpenLayers.Control.ZoomPanel);

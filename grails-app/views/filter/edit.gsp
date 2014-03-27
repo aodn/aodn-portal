@@ -97,7 +97,7 @@
                                 </td>
 
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'type', 'errors')}">
-                                     <g:select id="possibleValuesType" name="type" from="${FilterType?.values()}" value="${filterInstance?.type.getKey()}" optionKey="key" />
+                                     <g:select id="possibleValuesType" name="type" from="${FilterType.values()}" value="${filterInstance?.type.getKey()}" optionKey="key" />
                                 </td>
                             </tr>
 

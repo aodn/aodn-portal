@@ -93,21 +93,26 @@ aodaacAggregator {
 // Depth service
 depthService.url = "http://depthservice.aodn.org.au/depth"
 
+// Search results mini map configuration
+minimap {
+    baselayer {
+        name = "baselayer"
+        url = "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/"
+        params = [layers: 'HiRes_aus-group']
+    }
+}
+
 // OpenID
 openId {
     // openID provider details to support login popup etc
     providers = [
-        [ name: "eMII", iconHref: "images/AODNfavicon.ico", supportsProviderLogout: true, providerHref: "https://openid.emii.org.au"],
-        [ name: "Google", iconHref : "images/openid_icons/Google.png", supportsProviderLogout : false, providerHref : "https://www.google.com/accounts/o8/id"  ] ,
-        [ name: "Yahoo",  iconHref : "images/openid_icons/Yahoo.png", supportsProviderLogout : false, providerHref : "https://me.yahoo.com/"  ]
+        [name: "Google", iconHref: "images/openid_icons/Google.png", providerHref: "https://www.google.com/accounts/o8/id"],
+        [name: "Yahoo",  iconHref: "images/openid_icons/Yahoo.png",  providerHref: "https://me.yahoo.com/"]
         // Add your own providers here ...
     ]
 
     // Enable user to supply their their own OpenId url via textfield in popup list
     enableUserSuppliedProvider = true
-
-    // Specify provider to work with register button/link (not an OpenId standard)
-    // registerProvider = providers.first();     // disabled by default
 }
 
 // set per-environment serverURL stem for creating absolute links
@@ -121,8 +126,9 @@ environments {
         // URLs
         grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
         spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
-        wmsScanner.url = env['WMS_SCANNER_URL'] ? env['WMS_SCANNER_URL'] : "http://localhost:8100/WmsScannerGrails/"
-        wfsScanner.url = env['WFS_SCANNER_URL'] ? env['WFS_SCANNER_URL'] : "http://localhost:8200/wfsScanner"
+        wmsScanner.url = env['WMS_SCANNER_URL'] ?: "http://localhost:8100/WmsScannerGrails/"
+        wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
+        gogoduck.url = env['GOGODUCK_URL'] ?: "http://localhost:8300/go-go-duck"
 
         grails {
             mail {

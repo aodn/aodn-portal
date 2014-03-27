@@ -120,9 +120,9 @@ describe('Portal.data.GeoNetworkRecord', function() {
         });
     });
 
-    describe('collaborates with an AODAAC like object', function() {
-        it('responds to updateAodaac', function() {
-            expect(record.updateAodaac).toBeTruthy();
+    describe('collaborates with an Gogoduck object', function() {
+        it('responds to updateGogoduckParams', function() {
+            expect(record.updateGogoduckParams).toBeTruthy();
         });
     });
 });

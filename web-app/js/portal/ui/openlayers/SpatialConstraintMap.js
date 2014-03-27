@@ -63,6 +63,7 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.NONE) {
             this.spatialConstraintControl = undefined;
             this.navigationControl.activate();
+            this.events.triggerEvent('spatialconstraintcleared');
         }
         else if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.POLYGON) {
             this.addSpatialConstraintControlToMap(OpenLayers.Handler.Polygon);
@@ -71,7 +72,6 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
             this.addSpatialConstraintControlToMap();
         }
         this.events.triggerEvent('spatialconstraintchanged');
-        this.events.triggerEvent('spatialconstraintcleared');
     },
 
     addSpatialConstraintControlToMap: function(handler) {

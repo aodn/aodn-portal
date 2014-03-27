@@ -46,7 +46,10 @@ class HomeController {
              */
 
             grailsConfig = [
-                [name: 'spatialsearch.url', value: grailsApplication.config.spatialsearch.url]
+                [name: 'spatialsearch.url', value: grailsApplication.config.spatialsearch.url],
+                [name: 'minimap.baselayer.name', value: grailsApplication.config.minimap.baselayer.name],
+                [name: 'minimap.baselayer.url', value: grailsApplication.config.minimap.baselayer.url],
+                [name: 'minimap.baselayer.params', value: grailsApplication.config.minimap.baselayer.params]
                 // To add another config add a column after the entry above and follow the same map format
             ]
         }

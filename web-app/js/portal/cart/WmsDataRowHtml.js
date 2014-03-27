@@ -6,90 +6,51 @@
  */
 Ext.namespace('Portal.cart');
 
-Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
+Portal.cart.WmsDataRowHtml = Ext.extend(Portal.cart.NoDataRowHtml, {
 
     getDataFilterEntry: function(values) {
         var html;
         var infoLabel;
         var layerValues;
 
-        if (values.wmsLayer && values.wmsLayer.bodaacFilterParams) {
-
-            html = '<b>{0}</b> {1}';
+        if (this._cql(values.wmsLayer)) {
+            html = '<b>{0}</b> <code>{1}</code>';
             infoLabel = OpenLayers.i18n('filterLabel');
-            layerValues = this.getBodaacDateInfo(values.wmsLayer.bodaacFilterParams);
+            layerValues = this._cql(values.wmsLayer);
         }
         else {
-            if (this._cql(values.wmsLayer)) {
-                html = '<b>{0}</b> <code>{1}</code>';
-                infoLabel = OpenLayers.i18n('filterLabel');
-                layerValues = this._cql(values.wmsLayer);
-            }
-            else {
-                html = '<i>{0}</i> <code>{1}</code>';
-                infoLabel = OpenLayers.i18n('noFilterLabel');
-                layerValues = '';
-            }
+            html = '<i>{0}</i> <code>{1}</code>';
+            infoLabel = OpenLayers.i18n('noFilterLabel');
+            layerValues = '';
         }
         return String.format(html, infoLabel, layerValues);
-    },
-
-    getBodaacDateInfo: function(dates) {
-        if (dates.dateRangeStart) {
-            var startDate = moment.utc(dates.dateRangeStart).toUtcDisplayFormat();
-            var endDate = moment.utc(dates.dateRangeEnd).toUtcDisplayFormat();
-            return String.format('<code> {0} {1} and {2}</code>', OpenLayers.i18n('timeRangeLabel'), startDate, endDate);
-        }
-        else {
-            return OpenLayers.i18n('timeRangeCalculating');
-        }
     },
 
     createMenuItems: function(collection) {
         var menuItems = [];
 
-        // BODAAC hack.
-        if (this._isBodaac(collection)) {
+        if (collection.wmsLayer.wfsLayer) {
+            menuItems.push({
+                text: OpenLayers.i18n('downloadAsCsvLabel'),
+                handler: this._downloadWfsHandler(collection, 'csv'),
+                scope: this
+            });
+        }
+
+        if (collection.wmsLayer.urlDownloadFieldName) {
             menuItems.push({
                 text: OpenLayers.i18n('downloadAsUrlsLabel'),
                 handler: this._urlListDownloadHandler(collection),
                 scope: this
             });
             menuItems.push({
-                text: OpenLayers.i18n('downloadAsNetCdfLabel'),
+                text: OpenLayers.i18n('downloadAsAllSourceNetCdfLabel'),
                 handler: this._netCdfDownloadHandler(collection),
                 scope: this
             });
         }
-        else {
-            if (collection.wmsLayer.wfsLayer) {
-                menuItems.push({
-                    text: OpenLayers.i18n('downloadAsCsvLabel'),
-                    handler: this._downloadWfsHandler(collection, 'csv'),
-                    scope: this
-                });
-            }
-
-            if (collection.wmsLayer.urlDownloadFieldName) {
-                menuItems.push({
-                    text: OpenLayers.i18n('downloadAsUrlsLabel'),
-                    handler: this._urlListDownloadHandler(collection),
-                    scope: this
-                });
-                menuItems.push({
-                    text: OpenLayers.i18n('downloadAsNetCdfLabel'),
-                    handler: this._netCdfDownloadHandler(collection),
-                    scope: this
-                });
-            }
-        }
 
         return menuItems;
-    },
-
-    _isBodaac: function(collection) {
-
-        return collection.wmsLayer && collection.wmsLayer.isNcwms();
     },
 
     getDataSpecificMarkup: function(values) {
@@ -142,7 +103,7 @@ Portal.cart.WfsDataRowTemplate = Ext.extend(Portal.cart.NoDataRowTemplate, {
     },
 
     _bodaacCsvDownloadUrl: function(collection) {
-        return this._isBodaac(collection) ? this._wfsDownloadUrl(collection.wmsLayer, 'csv') : this._wmsDownloadUrl(collection.wmsLayer, 'csv');
+        return this._wmsDownloadUrl(collection.wmsLayer, 'csv');
     },
 
     _wfsDownloadUrl: function(layer, format) {
