@@ -131,8 +131,8 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             });
         });
 
-        it('returns a no files message when there are no links', function() {
-            expect(tpl._getFileListEntries({}).indexOf(OpenLayers.i18n('noFilesMessage'))).toBeGreaterThan(-1);
+        it('returns nothing when there are no links', function() {
+            expect(tpl._getFileListEntries({}).indexOf("")).toBeGreaterThan(-1);
         });
 
         it('creates links', function() {

@@ -57,7 +57,7 @@ Portal.cart.WmsInjector = Ext.extend(Object, {
         var estimator = new Portal.cart.DownloadEstimator();
         estimator._getDownloadEstimate(
             collection,
-            this._bodaacCsvDownloadUrl(collection)
+            this._csvDownloadUrl(collection)
         );
 
         return String.format(
@@ -104,7 +104,7 @@ Portal.cart.WmsInjector = Ext.extend(Object, {
         };
 
         return this.downloadWithConfirmation(
-            this._bodaacCsvDownloadUrl(collection),
+            this._csvDownloadUrl(collection),
             String.format("{0}_URLs.txt", collection.title),
             additionalArgs
         );
@@ -118,13 +118,13 @@ Portal.cart.WmsInjector = Ext.extend(Object, {
         };
 
         return this.downloadWithConfirmation(
-            this._bodaacCsvDownloadUrl(collection),
+            this._csvDownloadUrl(collection),
             String.format("{0}_source_files.zip", collection.title),
             additionalArgs
         );
     },
 
-    _bodaacCsvDownloadUrl: function(collection) {
+    _csvDownloadUrl: function(collection) {
 
         return this._wmsDownloadUrl(collection.wmsLayer, 'csv');
     },

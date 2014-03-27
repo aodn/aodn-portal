@@ -104,7 +104,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             this
         );
 
-        return html || this._makeSecondaryTextMarkup(OpenLayers.i18n('noFilesMessage'));
+        return html;
     },
 
     _getSingleFileEntry: function (link) {
