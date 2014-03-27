@@ -241,7 +241,59 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
     });
 
+    describe('_generateAodaacJobUrl', function() {
 
+        var url;
+        var params = {
+            dateRangeStart: new Date(0),
+            dateRangeEnd: new Date(),
+            latitudeRangeStart: -42,
+            latitudeRangeEnd: -20,
+            longitudeRangeStart: 160,
+            longitudeRangeEnd: 170,
+            productId: 1
+        };
+
+        beforeEach(function() {
+            url = injector._generateAodaacJobUrl(params, 'nc', 'aodaac@imos.org.au');
+        });
+
+        it('includes the aodaac endpoint', function() {
+            expect(url.indexOf('aodaac/createJob?')).toBeGreaterThan(-1);
+        });
+
+        it('includes the output format', function() {
+            expect(url).toHaveParameterWithValue('outputFormat', 'nc');
+        });
+
+        it('includes the product id', function() {
+            expect(url).toHaveParameterWithValue('productId', '1');
+        });
+
+        it('includes the date range start', function() {
+            expect(url).toHaveParameterWithValue('dateRangeStart', params.dateRangeStart);
+        });
+
+        it('includes the date range end', function() {
+            expect(url).toHaveParameterWithValue('dateRangeEnd', params.dateRangeEnd);
+        });
+
+        it('includes the latitude range start', function() {
+            expect(url).toHaveParameterWithValue('latitudeRangeStart','-42');
+        });
+
+        it('includes the latitude range end', function() {
+            expect(url).toHaveParameterWithValue('latitudeRangeEnd', '-20');
+        });
+
+        it('includes the longitude range start', function() {
+            expect(url).toHaveParameterWithValue('longitudeRangeStart', '160');
+        });
+
+        it('includes the longitude range end', function() {
+            expect(url).toHaveParameterWithValue('longitudeRangeEnd', '170');
+        });
+    });
 
     describe('_generateGogoduckJobUrl', function() {
 

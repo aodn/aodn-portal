@@ -164,7 +164,113 @@ describe('Portal.details.NcWmsPanel', function() {
         });
     });
 
-    describe('_buildGogoduckParameters', function () {
+    describe('_buildParameters', function () {
+
+        var geom = {
+            getBounds: function() {
+                return {
+                    bottom: 10,
+                    top: 20,
+                    left: 30,
+                    right: 40
+                }
+            }
+        };
+
+        beforeEach(function() {
+
+            spyOn(ncwmsPanel, '_buildAodaacParams');
+            spyOn(ncwmsPanel, '_buildGogoduckParams');
+        });
+
+        it('builds aodaac parameters if an aodaac layer is passed', function() {
+
+            var config;
+
+            ncwmsPanel.productsInfo = 'productsInfo';
+            ncwmsPanel.selectedProductInfo = 'selectedProductsInfo';
+            ncwmsPanel.selectedProductInfo.extents = {
+                lat: {
+                    min: -42,
+                    max: -20
+                },
+                lon: {
+                    min: 160,
+                    max: 170
+                }
+            }
+
+            config = ncwmsPanel._buildParameters(geom);
+            expect(ncwmsPanel._buildAodaacParams).toHaveBeenCalled();
+        });
+
+        it('builds gogoduck parameters if a gogoduck layer is passed', function() {
+
+            var config;
+            ncwmsPanel.selectedLayer = layer;
+
+            config = ncwmsPanel._buildParameters(geom);
+            expect(ncwmsPanel._buildGogoduckParams).toHaveBeenCalled();
+        });
+    });
+
+    describe('_buildAodaacParams', function() {
+
+        var aodaacParameters;
+
+        beforeEach(function () {
+
+            spyOn(ncwmsPanel, '_getDateFromPicker').andReturn('[date]');
+
+            ncwmsPanel.productsInfo = [];
+            ncwmsPanel.selectedProductInfo = {
+                productId: 42,
+                extents: {
+                    lat: { min: 1, max: 2 },
+                    lon: { min: 3, max: 4 }
+                }
+            };
+
+        });
+
+        it('includes some information regardless of geometry', function () {
+
+            var geom = undefined;
+
+            aodaacParameters = ncwmsPanel._buildAodaacParams(geom, ncwmsPanel.selectedProductInfo);
+
+            expect(aodaacParameters.productId).toBe(42);
+            expect(aodaacParameters.dateRangeStart).toBe('[date]');
+            expect(aodaacParameters.dateRangeEnd).toBe('[date]');
+            expect(aodaacParameters.productLatitudeRangeStart).toBe(1);
+            expect(aodaacParameters.productLongitudeRangeStart).toBe(3);
+            expect(aodaacParameters.productLatitudeRangeEnd).toBe(2);
+            expect(aodaacParameters.productLongitudeRangeEnd).toBe(4);
+        });
+
+        it('includes spatialBounds if a geometry is present', function () {
+
+            var geom = {
+                getBounds: function() {
+                    return {
+                        bottom: 10,
+                        top: 20,
+                        left: 30,
+                        right: 40
+                    }
+                }
+            };
+
+            aodaacParameters = ncwmsPanel._buildAodaacParams(geom, ncwmsPanel.selectedProductInfo);
+
+            expect(aodaacParameters.latitudeRangeStart).toBe(10);
+            expect(aodaacParameters.longitudeRangeStart).toBe(30);
+            expect(aodaacParameters.latitudeRangeEnd).toBe(20);
+            expect(aodaacParameters.longitudeRangeEnd).toBe(40);
+        });
+    });
+
+    describe('_buildGogoduckParams', function() {
 
         var gogoduckParameters;
 
