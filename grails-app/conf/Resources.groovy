@@ -12,15 +12,68 @@ def instanceNameCss = "${grailsApplication.config.portal.instance.name}.css"
 
 modules = {
 
+    helpers {
+        resource url:"js/jquery/jquery-1.4.1.min.js", disposition:'head'
+        resource url:"js/portal/jquery.js", disposition:'head'
+        resource url:"js/jquery/jquery-autocomplete1.1.js", disposition:'head'
+        resource url:"js/jquery/jquery.rotate.1-1.js", disposition:'head'
+        resource url:"js/log4javascript-1.4.6/log4javascript_uncompressed.js", disposition:'head'
+        resource url:"js/portal/utils/Logging.js", disposition:'head'
+        resource url:"js/portal/common/helpers.js", disposition:'head'
+    }
+
+    geonetwork {
+
+        dependsOn 'extJsbundle'
+
+        // GeoNetwork - required classes only
+        resource url:"js/Geonetwork/lib/OpenLayers/addins/Format/GeoNetworkRecords.js", disposition:'head'
+        resource url:"js/Geonetwork/lib/GeoNetwork/Util.js", disposition:'head'
+        resource url:"js/Geonetwork/lib/GeoNetwork/lang/en.js", disposition:'head'
+        resource url:"js/Geonetwork/lib/GeoNetwork/Catalogue.js", disposition:'head'
+        resource url:"js/Geonetwork/lib/GeoNetwork/util/SearchTools.js", disposition:'head'
+        resource url:"js/Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionReader.js", disposition:'head'
+        resource url:"js/Geonetwork/lib/GeoNetwork/data/OpenSearchSuggestionStore.js", disposition:'head'
+        resource url:"js/Geonetwork/lib/GeoNetwork/map/ExtentMap.js", disposition:'head'
+        resource url:"js/Geonetwork/lib/GeoNetwork/map/Ext.ux/form/DateTime.js", disposition:'head'
+
+        resource url:"js/ext-ux/SuperBoxSelect/SuperBoxSelect.js", disposition:'head'
+        resource url:"js/ext-ux/Hyperlink/Hyperlink.js", disposition:'head'
+        resource url:"js/ext-ux/util/MessageBus.js", disposition:'head'
+    }
+
+    openLayers {
+        resource url:"js/OpenLayers-2.10/OpenLayers.js", disposition:'head'
+    }
 
 
+    extJsbundle {
+
+        dependsOn 'openLayers'
+
+        if (env == "development") {
+            resource url:"js/ext-3.3.1/adapter/ext/ext-base-debug.js", disposition:'head'
+            resource url:"js/ext-3.3.1/ext-all-debug.js", disposition:'head'
+            //GeoExt (Has to be after Openlayers and ExJS)
+            resource url:"js/GeoExt1.1/lib/GeoExt.js", disposition:'head'
+        }
+        else {
+            resource url:"js/ext-3.3.1/adapter/ext/ext-base.js", disposition:'head'
+            resource url:"js/ext-3.3.1/ext-all.js", disposition:'head'
+            //GeoExt (Has to be after Openlayers and ExJS)
+            resource url:"js/GeoExt1.1/script/GeoExt.js", disposition:'head'
+        }
+
+
+
+    }
 
     common {
 
-        defaultBundle 'portal'
+        defaultBundle 'portalJs'
+
 
         //resource url: [dir: "js", file: "myResourceThatShouldRemainUntouched.js"],  exclude:'yuijsminify'
-        resource url:"js/Geonetwork/lib/GeoNetwork/lang/en.js", disposition:'head', exclude:'yuijsminify'
         resource url:"js/portal/ui/openlayers/control/SpatialConstraint.js", disposition:'head'
         resource url:"js/portal/utils/geo/GeoUtil.js", disposition:'head'
         resource url:"js/portal/portal.js", disposition:'head'
@@ -30,7 +83,6 @@ modules = {
         resource url:"js/portal/prototypes/Object.js", disposition:'head'
         resource url:"js/portal/prototypes/String.js", disposition:'head'
         resource url:"js/portal/prototypes/OpenLayers.js", disposition:'head'
-        resource url:"js/portal/lang/en.js", disposition:'head', exclude:'yuijsminify'
         resource url:"js/portal/common/LayerDescriptor.js", disposition:'head'
         resource url:"js/portal/common/BrowserWindow.js", disposition:'head'
         resource url:"js/portal/common/ActionColumn.js", disposition:'head'
@@ -86,7 +138,7 @@ modules = {
         resource url:"js/portal/details/NCWMSColourScalePanel.js", disposition:'head'
         resource url:"js/portal/details/StylePanel.js", disposition:'head'
         resource url:"js/portal/details/DetailsPanel.js", disposition:'head'
-        resource url:"js/portal/details/AodaacPanel.js", disposition:'head'
+        resource url:"js/portal/details/NcWmsPanel.js", disposition:'head'
         resource url:"js/portal/details/DetailsPanelTab.js", disposition:'head'
         resource url:"js/portal/details/InfoPanel.js", disposition:'head'
         resource url:"js/portal/details/SubsetPanel.js", disposition:'head'
@@ -128,15 +180,26 @@ modules = {
         resource url:"js/portal/cart/DownloadPanelBody.js", disposition:'head'
         resource url:"js/portal/cart/DownloadPanel.js", disposition:'head'
         resource url:"js/portal/cart/DownloadConfirmationWindow.js", disposition:'head'
-        resource url:"js/portal/cart/NoDataRowTemplate.js", disposition:'head'
-        resource url:"js/portal/cart/AodaacDataRowTemplate.js", disposition:'head'
-        resource url:"js/portal/cart/WfsDataRowTemplate.js", disposition:'head'
+        resource url:"js/portal/cart/NoDataRowHtml.js", disposition:'head'
+        resource url:"js/portal/cart/WmsDataRowHtml.js", disposition:'head'
+        resource url:"js/portal/cart/NcwmsDataRowHtml.js", disposition:'head'
         resource url:"js/portal/cart/DownloadEstimator.js", disposition:'head'
         resource url:"js/portal/visualise/animations/TemporalExtent.js", disposition:'head'
         resource url:"js/portal/visualise/animations/TemporalExtentParser.js", disposition:'head'
         resource url:"js/portal/openId/Popup.js", disposition:'head'
-
     }
+
+
+
+
+
+    extDevel {
+        resource url:"js/ext-3.3.1/adapter/ext/ext-base-debug.js", disposition:'head'
+        resource url:"js/ext-3.3.1/ext-all-debug.js", disposition:'head'
+        resource url:"js/GeoExt1.1/lib/GeoExt.js", disposition:'head'
+    }
+
+
 
 
 
