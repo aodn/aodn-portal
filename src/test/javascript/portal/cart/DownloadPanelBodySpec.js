@@ -24,15 +24,15 @@ describe("Portal.cart.DownloadPanelBody", function() {
 
         var mockTemplate;
 
-        var testCollection1 = {wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
-        var testCollection2 = {wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
-        var testCollection3 = {wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
-        var testCollection4 = {wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
+        var testCollection1 = {uuid: '[Content 1]', wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
+        var testCollection2 = {uuid: '[Content 2]', wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
+        var testCollection3 = {uuid: '[Content 3]', wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
+        var testCollection4 = {uuid: '[Content 4]', wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
 
         beforeEach(function() {
 
             mockTemplate = {
-                apply: jasmine.createSpy('template apply')
+                apply: jasmine.createSpy('template apply').andCallFake(function(collection) { return collection.value })
             };
 
             spyOn(Portal.cart, 'DownloadPanelItemTemplate').andReturn(mockTemplate);
@@ -53,6 +53,16 @@ describe("Portal.cart.DownloadPanelBody", function() {
         it('creates a DownloadPanelItemTemplate', function() {
 
             expect(Portal.cart.DownloadPanelItemTemplate).toHaveBeenCalled();
+        });
+
+        it('reverse view order enforced', function() {
+
+            // Order of items is reversed!!
+            expect(mockTemplate.apply.callCount).toBe(4);
+            expect(mockTemplate.apply.argsForCall[3][0].uuid).toBe(testCollection1.uuid);
+            expect(mockTemplate.apply.argsForCall[2][0].uuid).toBe(testCollection2.uuid);
+            expect(mockTemplate.apply.argsForCall[1][0].uuid).toBe(testCollection3.uuid);
+            expect(mockTemplate.apply.argsForCall[0][0].uuid).toBe(testCollection4.uuid);
         });
 
         it('calls update', function() {
