@@ -121,8 +121,8 @@ describe('Portal.data.GeoNetworkRecord', function() {
     });
 
     describe('collaborates with an Gogoduck object', function() {
-        it('responds to updateGogoduckParams', function() {
-            expect(record.updateGogoduckParams).toBeTruthy();
+        it('responds to updateNcwmsParams', function() {
+            expect(record.updateNcwmsParams).toBeTruthy();
         });
     });
 });

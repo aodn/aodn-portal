@@ -5,13 +5,15 @@
  *
  */
 
-describe('Portal.cart.WmsDataRowHtml', function() {
+describe('Portal.cart.WmsInjector', function() {
 
-    var tpl;
+    var injector;
     var geoNetworkRecord;
 
     beforeEach(function() {
-        tpl = new Portal.cart.WmsDataRowHtml();
+
+        injector = new Portal.cart.WmsInjector();
+
         geoNetworkRecord = {
             uuid: 9,
             grailsLayerId: 42,
@@ -23,36 +25,48 @@ describe('Portal.cart.WmsDataRowHtml', function() {
                 isNcwms: function() {return false},
                 getWmsLayerFeatureRequestUrl: function() {},
                 wfsLayer: true
-            }
+            },
+            pointOfTruthLink: 'Link!',
+            downloadableLinks: 'Downloadable link!'
         }
+    });
+
+    describe('constructor', function() {
+
+        it('assigns values from passed in config', function() {
+            var callback = noOp;
+            var _tpl = new Portal.cart.WmsInjector({ downloadConfirmation: callback, downloadConfirmationScope: this });
+            expect(_tpl.downloadConfirmation).toBe(callback);
+            expect(_tpl.downloadConfirmationScope).toBe(this);
+        });
     });
 
     describe('getDataFilterEntry returns wms specific filter information', function() {
 
         it('returns text if there is a cql filter applied', function() {
             var mockCql = 'CQL(intersects(0,0,0,0))';
-            tpl._cql = function() {
+            injector._cql = function() {
                 return mockCql;
             };
 
-            var filterString = tpl.getDataFilterEntry(geoNetworkRecord);
+            var filterString = injector._getDataFilterEntry(geoNetworkRecord);
             expect(filterString).not.toEqual('<i>' + OpenLayers.i18n('noFilterLabel') + '</i> <code></code>');
             expect(filterString.indexOf(OpenLayers.i18n('filterLabel'))).toBeGreaterThan(-1);
             expect(filterString.indexOf(mockCql)).toBeGreaterThan(-1);
         });
 
         it('returns an a no filter message if there is no cql filter applied', function() {
-            tpl._cql = function() {
+            injector._cql = function() {
                 return ''
             };
-            expect(tpl.getDataFilterEntry(geoNetworkRecord)).toEqual('<i>' + OpenLayers.i18n('noFilterLabel') + '</i> <code></code>');
+            expect(injector._getDataFilterEntry(geoNetworkRecord)).toEqual('<i>' + OpenLayers.i18n('noFilterLabel') + '</i> <code></code>');
         });
     });
 
     describe('createMenuItems', function() {
 
         it('creates menu items if WFS layer is linked', function() {
-            var menuItems = tpl.createMenuItems({
+            var menuItems = injector._createMenuItems({
                 wmsLayer: {
                     getWfsLayerFeatureRequestUrl: noOp,
                     getWmsLayerFeatureRequestUrl: noOp,
@@ -67,7 +81,7 @@ describe('Portal.cart.WmsDataRowHtml', function() {
         });
 
         it('includes items for download url list and NetCDF download if urlDownloadFieldName exists', function() {
-            var menuItems = tpl.createMenuItems({
+            var menuItems = injector._createMenuItems({
                 wmsLayer: {
                     getWfsLayerFeatureRequestUrl: noOp,
                     getWmsLayerFeatureRequestUrl: noOp,
@@ -96,7 +110,7 @@ describe('Portal.cart.WmsDataRowHtml', function() {
         });
 
         it('includes all menu items when wfsLayer and urlDownloadFieldName exist', function() {
-            var menuItems = tpl.createMenuItems({
+            var menuItems = injector._createMenuItems({
                 wmsLayer: {
                     getWfsLayerFeatureRequestUrl: noOp,
                     getWmsLayerFeatureRequestUrl: noOp,
@@ -112,11 +126,12 @@ describe('Portal.cart.WmsDataRowHtml', function() {
         });
     });
 
-    describe('getDataSpecificMarkup', function() {
+    describe('getDataMarkup', function() {
+
         var markup;
 
         beforeEach(function() {
-            markup = tpl.getDataSpecificMarkup(geoNetworkRecord);
+            markup = injector._getDataMarkup(geoNetworkRecord);
         });
 
         it('provides markup', function() {
@@ -130,16 +145,17 @@ describe('Portal.cart.WmsDataRowHtml', function() {
     });
 
     describe('download handlers', function() {
+
         it('_downloadWfsHandler calls downloadWithConfirmation', function() {
-            spyOn(tpl, 'downloadWithConfirmation');
-            spyOn(tpl, '_wfsDownloadUrl');
-            tpl._downloadWfsHandler({}, 'csv');
-            expect(tpl.downloadWithConfirmation).toHaveBeenCalled();
+            spyOn(injector, 'downloadWithConfirmation');
+            spyOn(injector, '_wfsDownloadUrl');
+            injector._downloadWfsHandler({}, 'csv');
+            expect(injector.downloadWithConfirmation).toHaveBeenCalled();
         });
 
         it('_urlListDownloadHandler calls downloadWithConfirmation', function() {
-            spyOn(tpl, 'downloadWithConfirmation');
-            spyOn(tpl, '_wmsDownloadUrl').andReturn('download_url');
+            spyOn(injector, 'downloadWithConfirmation');
+            spyOn(injector, '_wmsDownloadUrl').andReturn('download_url');
 
             var testLayer = {
                 grailsLayerId: 6,
@@ -150,10 +166,10 @@ describe('Portal.cart.WmsDataRowHtml', function() {
                 title: 'the_collection'
             };
 
-            tpl._urlListDownloadHandler(testCollection);
+            injector._urlListDownloadHandler(testCollection);
 
-            expect(tpl._wmsDownloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
-            expect(tpl.downloadWithConfirmation).toHaveBeenCalledWith(
+            expect(injector._wmsDownloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
+            expect(injector.downloadWithConfirmation).toHaveBeenCalledWith(
                 'download_url',
                 'the_collection_URLs.txt',
                 {
@@ -164,8 +180,9 @@ describe('Portal.cart.WmsDataRowHtml', function() {
         });
 
         it('_netCdfDownloadHandler calls downloadWithConfirmation', function() {
-            spyOn(tpl, 'downloadWithConfirmation');
-            spyOn(tpl, '_wmsDownloadUrl').andReturn('download_url');
+
+            spyOn(injector, 'downloadWithConfirmation');
+            spyOn(injector, '_wmsDownloadUrl').andReturn('download_url');
 
             var testLayer = {
                 grailsLayerId: 6,
@@ -176,10 +193,10 @@ describe('Portal.cart.WmsDataRowHtml', function() {
                 title: 'the_collection'
             };
 
-            tpl._netCdfDownloadHandler(testCollection);
+            injector._netCdfDownloadHandler(testCollection);
 
-            expect(tpl._wmsDownloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
-            expect(tpl.downloadWithConfirmation).toHaveBeenCalledWith(
+            expect(injector._wmsDownloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
+            expect(injector.downloadWithConfirmation).toHaveBeenCalledWith(
                 'download_url',
                 'the_collection_source_files.zip',
                 {
@@ -197,7 +214,7 @@ describe('Portal.cart.WmsDataRowHtml', function() {
             var spy = jasmine.createSpy();
             var testLayer = {getWfsLayerFeatureRequestUrl: spy};
 
-            tpl._wfsDownloadUrl(testLayer, 'csv');
+            injector._wfsDownloadUrl(testLayer, 'csv');
 
             expect(testLayer.getWfsLayerFeatureRequestUrl).toHaveBeenCalledWith('csv');
         });
@@ -210,9 +227,23 @@ describe('Portal.cart.WmsDataRowHtml', function() {
             var spy = jasmine.createSpy();
             var testLayer = {getWmsLayerFeatureRequestUrl: spy};
 
-            tpl._wmsDownloadUrl(testLayer, 'xml');
+            injector._wmsDownloadUrl(testLayer, 'xml');
 
             expect(testLayer.getWmsLayerFeatureRequestUrl).toHaveBeenCalledWith('xml');
+        });
+    });
+
+    describe('getPointOfTruthLinks', function() {
+
+        it('returns point of truth links as appropriate', function() {
+            expect(injector._getPointOfTruthLink(geoNetworkRecord)).toEqual('Link!');
+        });
+    });
+
+    describe('getMetadataLinks', function() {
+
+        it('returns metadata links as appropriate', function() {
+            expect(injector._getMetadataLinks(geoNetworkRecord)).toEqual('Downloadable link!');
         });
     });
 });

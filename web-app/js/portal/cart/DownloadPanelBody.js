@@ -25,13 +25,15 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
     },
 
     generateContent: function() {
-        var tpl = new Portal.cart.DownloadPanelItemTemplate(this);
+        var tpl = new Portal.cart.DownloadPanelItemTemplate();
         var html = '';
 
         // Reverse the order of items, last item added will be displayed first
         for (var i = this.store.data.items.length - 1; i >= 0; i--) {
             var item = this.store.data.items[i];
-            html += tpl.apply(item.data);
+            var service = new Portal.cart.InsertionService(this);
+            var processedValues = service.insertionValues(item.data);
+            html += tpl.apply(processedValues);
         }
 
         if (!html) {
