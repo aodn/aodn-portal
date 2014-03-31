@@ -46,7 +46,6 @@ grails.project.dependency.resolution = {
     plugins {
         runtime ":database-migration:1.0"
         test ":build-test-data:1.1.2"
-        runtime ':resources:1.0.2'
     }
 }
 
