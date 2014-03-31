@@ -15,46 +15,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     def aodaacAggregatorService
 
-    def productInfoJS = """\
-
-        var datasets = [
-          { id: "1", name: "GHRSST subskin 2011 (VPAC)",
-            products: [ "1" ]
-          },
-          { id: "2", name: "L3P GHRSST subskin (from CSIRO server)",
-            products: [ "2" ]
-          }
-         ];
-        var productData = [
-          { id: "1", name: "GHRSST subskin 2011 (VPAC THREDDS server)", description: "" },
-          { id: "2", name: "ABOM Legacy 14-day SST Mosaic", description: "" }
-         ];
-        productExtents=[
-         {
-           id : "1" ,
-           extents : {
-            lat : [ -30.681 , -24.452 ] ,
-            lon : [ 148.383 , 159.281 ] ,
-            dateTime : [ "01/01/2010 00:00:00" , "06/08/2012 23:59:59" ]
-                     }
-         } ,
-         {
-           id : "2" ,
-           extents : {
-            lat : [ -90 , 90 ] ,
-            lon : [ -180 , 180 ] ,
-            dateTime : [ "01/01/2011 00:00:00" , "14/01/2011 23:59:59" ]
-                     }
-         }
-        ];
-    """
-
-    def _prod1 = [extents: [lat: [min: -30.681 as Double, max: -24.452 as Double], lon: [min: 148.383 as Double, max: 159.281 as Double], dateTime: [min: "01/01/2010", max: "06/08/2012"]], name: "GHRSST subskin 2011 (VPAC THREDDS server)", productId: "1"]
-    def _prod2 = [extents: [lat: [min: -90 as Integer, max: 90 as Integer], lon: [min: -180 as Integer, max: 180 as Integer], dateTime: [min: "01/01/2011", max: "14/01/2011"]], name: "ABOM Legacy 14-day SST Mosaic", productId: "2"]
-    def productInfoAll = [_prod1, _prod2]
-    def productInfoId1 = [_prod1]
-    def productInfoId2 = [_prod2]
-
     def testCreateParams = [
         productId: "66",
         dateRangeStart: "01/01/2011",
@@ -123,7 +83,9 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
                     systemEmail: [fromAddress: "systemEmailAddress"]
                 ],
                 aodaacAggregator: [
-                    idleJobTimeout: 14 // In hours
+                    idleJobTimeout: 14, // In hours
+                    url: "url/",
+                    environment: "env"
                 ]
             ]
         ]
@@ -144,49 +106,22 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     void testGetProductInfo_OneId() {
 
-        def result
-
-        result = aodaacAggregatorService.getProductInfo([1])
-
-        assertEquals productInfoId1, result
+        fail "Write me"
     }
 
     void testGetProductInfo_ManyIds() {
 
-        def result
-
-        result = aodaacAggregatorService.getProductInfo([1, 2])
-
-        assertEquals productInfoAll, result
+        fail "Write me"
     }
 
     void testGetProductInfo_ManyIdsOneInvalid() {
 
-        def result
-
-        result = aodaacAggregatorService.getProductInfo([2, 4])
-
-        assertEquals productInfoId2, result
+        fail "Write me"
     }
 
     void testProductIdsForLayer() {
 
-        def testLayer = [
-            name: "layerName",
-            server: "theServer"
-        ]
-
-        AodaacProductLink.metaClass.static.findAllByLayerNameIlikeAndServer = { name, server ->
-
-            assertEquals "layerName", name
-            assertEquals "theServer", server
-
-            return [[productId: 5], [productId: 5], [productId: 6]]
-        }
-
-        def productIds = aodaacAggregatorService.productIdsForLayer(testLayer)
-
-        assertEquals([5, 6], productIds)
+        fail "Write me"
     }
 
     void testCreateJob() {
@@ -204,9 +139,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
             return [toURL: { [text: createJobJsonResponse] }]
         }
 
-        aodaacAggregatorService.metaClass._aggregatorEnvironment = { "env" }
-        aodaacAggregatorService.metaClass._aggregatorBaseAddress = { "url/" }
-
         aodaacAggregatorService.createJob testEmailAddress, testParams
 
         assertEquals 2, AodaacJob.count()
@@ -221,9 +153,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
             return [toURL: { throw new Exception("Some Test Exception") }]
         }
-
-        aodaacAggregatorService.metaClass._aggregatorEnvironment = { "env" }
-        aodaacAggregatorService.metaClass._aggregatorBaseAddress = { "url/" }
 
         try {
             aodaacAggregatorService.createJob testEmailAddress, testParams
@@ -408,94 +337,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         assertEquals 1, timesCalled._jobHasTakenTooLong
         assertEquals 1, timesCalled._sendNotificationEmail
         assertEquals 1, timesCalled._markJobAsExpired
-    }
-
-    void testCancelJob() {
-
-        def timesUpdateCalled = 0
-
-        // Mock request/response from server
-        aodaacAggregatorService.metaClass._aggregatorCommandAddress = { cmd, args ->
-
-            assertEquals(["JOB_42"], args)
-
-            return [toURL: { [text: "Not actually used"] }]
-        }
-
-        aodaacAggregatorService.metaClass.updateJob = { job ->
-
-            timesUpdateCalled++
-            assertEquals testJob, job
-        }
-
-        aodaacAggregatorService.cancelJob testJob
-
-        assertEquals 1, timesUpdateCalled
-    }
-
-    void testCancelJob_ExceptionThrown() {
-
-        aodaacAggregatorService.metaClass._aggregatorCommandAddress = { cmd, args ->
-
-            return [toURL: { throw new Exception("Test Exception") }]
-        }
-
-        try {
-            aodaacAggregatorService.cancelJob([jobId: 5])
-
-            fail "Expected Exception"
-        }
-        catch (AodaacException e) {
-
-            assertEquals "Unable to cancel job '[jobId:5]'", e.message
-        }
-        catch (Exception e) {
-
-            fail "Expected AodaacException, got ${ e.getClass() }"
-        }
-    }
-
-    void testDeleteJob() {
-
-        def timesCancelCalled = 0
-
-        // Mock request/response from server
-        aodaacAggregatorService.metaClass._aggregatorCommandAddress = { cmd, args ->
-
-            assertEquals(["JOB_42"], args)
-        }
-
-        aodaacAggregatorService.metaClass.cancelJob = { job ->
-
-            timesCancelCalled++
-            assertEquals testJob, job
-        }
-
-        aodaacAggregatorService.deleteJob testJob
-
-        assertEquals 1, timesCancelCalled
-    }
-
-    void testDeleteJob_ExceptionThrown() {
-
-        aodaacAggregatorService.metaClass._aggregatorCommandAddress = { cmd, args ->
-
-            return [toURL: { throw new Exception("Test Exception") }]
-        }
-
-        try {
-            aodaacAggregatorService.deleteJob([jobId: 3])
-
-            fail "Expected Exception"
-        }
-        catch (AodaacException e) {
-
-            assertEquals "Unable to delete job '[jobId:3]'", e.message
-        }
-        catch (Exception e) {
-
-            fail "Expected AodaacException, got ${ e.getClass() }"
-        }
     }
 
     void testRetrieveResults() {
