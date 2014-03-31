@@ -532,9 +532,7 @@ class LayerController {
     }
 
     def configuredbaselayers = {
-        def layerIds = Config.activeInstance().baselayerMenu?.menuItems?.collect { it.layerId }
-        def data = _convertLayersToListOfMaps(_findLayersAndServers(layerIds))
-        render data as JSON
+        render grailsApplication.config.baselayers as JSON
     }
 
     def _getServer(params) {

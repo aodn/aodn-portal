@@ -342,4 +342,21 @@ class LayerControllerTests extends ControllerUnitTestCase {
         }
         return layers
     }
+
+    void testConfiguredbaselayers() {
+        def baselayerConfig = [
+            [name: 'layer one'],
+            [name: 'layer two']
+        ]
+
+        controller.metaClass.grailsApplication = [
+            config: [
+                baselayers: baselayerConfig
+            ]
+        ]
+
+        controller.configuredbaselayers()
+
+        assertEquals(String.valueOf(baselayerConfig as JSON), mockResponse.contentAsString)
+    }
 }
