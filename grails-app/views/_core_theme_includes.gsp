@@ -6,11 +6,16 @@
 
 --%>
 
+<r:external uri="/js/GeoExt1.1/resources/css/geoext-all.css" />
+<!-- User extensions -->
+<r:external uri="/js/ext-ux/SuperBoxSelect/superboxselect.css" />
+<r:external uri="/js/ext-ux/Hyperlink/hyperlink.css" />
+
 %{--<r:require modules="coreTheme"/>--}%
 <r:external uri="/js/ext-3.3.1/resources/css/ext-all-notheme.css" />
 <r:external uri="/js/ext-3.3.1/resources/css/xBaseTheme.css" />
 
 
 <g:if test="${grailsApplication.config.portal.instance?.name}">
-<link rel="shortcut icon" href="${resource(dir: 'images', file: grailsApplication.config.portal.instance.name + 'favicon.ico')}" type="image/x-icon"/>
+<r:external file="${grailsApplication.config.portal.instance.name + 'favicon.ico'}" dir="images"  type="ico"/>
 </g:if>
