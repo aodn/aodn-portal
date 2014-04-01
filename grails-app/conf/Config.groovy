@@ -107,19 +107,18 @@ geoserver_static = [
     type: "WMS-1.1.1"
 ]
 
-baselayers =
+baselayers = [
     [
-        [
-            name: "default_bathy",
-            title: "Bathymetry Baselayer",
-            server: geoserver_static
-        ],
-        [
-            name: "default_basemap_simple",
-            title: "Simple Baselayer",
-            server: geoserver_static
-        ]
+        name: "default_bathy",
+        title: "Bathymetry Baselayer",
+        server: geoserver_static
+    ],
+    [
+        name: "default_basemap_simple",
+        title: "Simple Baselayer",
+        server: geoserver_static
     ]
+]
 
 // OpenID
 openId {
