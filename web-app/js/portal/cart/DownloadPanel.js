@@ -8,11 +8,13 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
-    initComponent: function(cfg) {
+    constructor: function(cfg) {
 
-        this.downloadPanelBody = new Portal.cart.DownloadPanelBody({
-            navigationText: OpenLayers.i18n('navigationButtonDownload')
-        });
+        Ext.apply(this, cfg);
+        Portal.cart.DownloadPanel.superclass.constructor.call(this, arguments);
+    },
+
+    initComponent: function(cfg) {
 
         var config = Ext.apply({
             autoScroll: true,
@@ -22,7 +24,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             },
             items: this.downloadPanelBody
         }, cfg);
-
 
         Ext.apply(this, config);
         Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);

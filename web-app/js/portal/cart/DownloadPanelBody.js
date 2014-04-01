@@ -6,6 +6,8 @@
  */
 Ext.namespace('Portal.cart');
 
+generateContentCount = 0;
+
 Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
 
     initComponent: function() {
@@ -29,6 +31,10 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
     },
 
     generateContent: function() {
+        var start = new Date().getTime();
+
+        generateContentCount++;
+
         var tpl = new Portal.cart.DownloadPanelItemTemplate(this);
         var html = '';
 
@@ -45,6 +51,10 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         if (this.rendered) {
             this.update(html);
         }
+
+        var end = new Date().getTime();
+        var time = end - start;
+//        console.log('generateContent (' + generateContentCount + ') took ' + time + 'ms');
     },
 
     confirmDownload: function(downloadUrl, downloadFilename, downloadControllerArgs) {

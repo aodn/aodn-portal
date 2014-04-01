@@ -14,6 +14,27 @@ describe("Portal.cart.DownloadPanelBody", function() {
         downloadPanelBody = new Portal.cart.DownloadPanelBody();
     });
 
+    // TODO - DN:
+    /*describe('initComponent()', function() {
+
+        it('listens for beforeshow event', function() {
+            spyOn(downloadPanel.downloadPanelBody, 'generateContent');
+            downloadPanel.fireEvent('beforeshow');
+
+            expect(downloadPanel.downloadPanelBody.generateContent).toHaveBeenCalled();
+        });
+    });
+
+    describe('onBeforeShow()', function() {
+        it('calls refresh() on its view', function() {
+            spyOn(downloadPanel.downloadPanelBody, 'generateContent');
+            downloadPanel.onBeforeShow();
+
+            expect(downloadPanel.downloadPanelBody.generateContent).toHaveBeenCalled();
+        });
+    });*/
+    // TODO - DN:
+
     describe('initComponent()', function() {
         it('store is the ActiveGeoNetworkRecordStore singleton instance', function() {
             expect(downloadPanelBody.store).toBe(Portal.data.ActiveGeoNetworkRecordStore.instance());

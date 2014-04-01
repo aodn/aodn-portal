@@ -13,8 +13,23 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
         // approximate height of viewport main tabs. css will impact on this buffer
         this.viewportTabsHeight = 40;
 
+        var layerStore = new Portal.data.LayerStore();
+        var mapPanel = new Portal.ui.MapPanel({layers: layerStore});
+
         this.mainPanel = new Portal.ui.MainPanel({
-            region: 'center'
+            region: 'center',
+            mapPanel: mapPanel,
+            visualiseLayerStore: layerStore,
+            searchPanel: new Portal.ui.search.SearchPanel({
+                mapPanel: mapPanel
+            }),
+            visualisePanel: new Portal.ui.VisualisePanel({
+                mapPanel: mapPanel
+            }),
+            downloadPanel: new Portal.cart.DownloadPanel({
+                navigationText: 'AAAAAAA',
+                downloadPanelBody: new Portal.cart.DownloadPanelBody()
+            })
         });
 
         var config = Ext.apply(

@@ -17,27 +17,12 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         Ext.apply(this, cfg);
 
-        var visualiseLayerStore = new Portal.data.LayerStore();
-
         // TODO: probably we can remove this 'singleton' type access to the 'ActiveGeoNetworkRecordStore'
         // and only pass it down to the components that actually need access to it.
         Portal.data.ActiveGeoNetworkRecordStore.THE_ACTIVE_RECORDS_INSTANCE =
             new Portal.data.ActiveGeoNetworkRecordStore({
-                layerStore: visualiseLayerStore
+                layerStore: this.visualiseLayerStore
             });
-
-        this.mapPanel = new Portal.ui.MapPanel({
-            layers: visualiseLayerStore
-        });
-        this.searchPanel = new Portal.ui.search.SearchPanel({
-            mapPanel: this.mapPanel
-        });
-        this.visualisePanel = new Portal.ui.VisualisePanel({
-            mapPanel: this.mapPanel
-        });
-        this.downloadPanel = new Portal.cart.DownloadPanel({
-            navigationText: OpenLayers.i18n('navigationButtonDownload')
-        });
 
         this.addEvents('tabchange');
 
