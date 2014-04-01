@@ -48,7 +48,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadButtonLabel: 'Download as\u2026',
     downloadAsCsvLabel: 'CSV',
     downloadAsSubsettedNetCdfLabel: 'NetCDF',
-    downloadAsAllSourceNetCdfLabel: 'Unsubsetted NetCDF',
+    downloadAsAllSourceNetCdfLabel: 'Un-subsetted NetCDFs',
     downloadAsHdfLabel: 'HDF',
     downloadAsAsciiLabel: 'ASCII text',
     downloadAsUrlsLabel: 'List of URLs',
