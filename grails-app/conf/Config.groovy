@@ -97,8 +97,8 @@ depthService.url = "http://depthservice.aodn.org.au/depth"
 minimap {
     baselayer {
         name = "baselayer"
-        url = "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/"
-        params = [layers: 'HiRes_aus-group']
+        url = "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms"
+        params = [layers: 'default_bathy']
     }
 }
 
