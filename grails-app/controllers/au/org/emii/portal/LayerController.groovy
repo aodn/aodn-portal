@@ -531,7 +531,7 @@ class LayerController {
         }
     }
 
-    def configuredbaselayers = {
+    def configuredBaselayers = {
         render grailsApplication.config.baselayers as JSON
     }
 

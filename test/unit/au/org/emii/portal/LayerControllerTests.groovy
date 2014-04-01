@@ -343,7 +343,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
         return layers
     }
 
-    void testConfiguredbaselayers() {
+    void testConfiguredBaselayers() {
         def baselayerConfig = [
             [name: 'layer one'],
             [name: 'layer two']
@@ -355,7 +355,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
             ]
         ]
 
-        controller.configuredbaselayers()
+        controller.configuredBaselayers()
 
         assertEquals(String.valueOf(baselayerConfig as JSON), mockResponse.contentAsString)
     }

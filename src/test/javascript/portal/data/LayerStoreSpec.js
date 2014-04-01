@@ -161,7 +161,7 @@ describe("Portal.data.LayerStore", function() {
             layerStore._initBaseLayers();
 
             var ajaxParams = Ext.Ajax.request.mostRecentCall.args[0];
-            expect(ajaxParams.url).toBe('layer/configuredbaselayers');
+            expect(ajaxParams.url).toBe('layer/configuredBaselayers');
         });
     });
 
