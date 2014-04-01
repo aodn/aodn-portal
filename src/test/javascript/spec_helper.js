@@ -5,6 +5,9 @@
  *
  */
 
+// Track slow-running specs
+jasmine.slow.enable(500);
+
 Ext.MessageBox.alert = function () {
 };
 
