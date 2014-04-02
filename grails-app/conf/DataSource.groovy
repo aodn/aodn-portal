@@ -5,14 +5,16 @@
  *
  */
 
+import static au.org.emii.portal.DateTimeUtils.*
+
 dataSource {
     pooled = true
 
     //configure DBCP to test connections before using them and evict old connections (as per http://sacharya.com/grails-dbcp-stale-connections/)
     properties {
-        minEvictableIdleTimeMillis=1800000
-        timeBetweenEvictionRunsMillis=1800000
-        numTestsPerEvictionRun=3
+        minEvictableIdleTimeMillis = 30 * MINUTES
+        timeBetweenEvictionRunsMillis = 30 * MINUTES
+        numTestsPerEvictionRun = 3
     }
 }
 hibernate {

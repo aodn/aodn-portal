@@ -9,6 +9,7 @@
 package au.org.emii.portal
 
 import org.apache.commons.io.IOUtils
+import static au.org.emii.portal.DateTimeUtils.*
 
 class OceanCurrentService {
 
@@ -41,8 +42,8 @@ class OceanCurrentService {
 
         try {
             def con = fileAddress.toURL().openConnection()
-            con.connectTimeout = 1000 // 1 second
-            con.readTimeout = 2000 // 2 seconds
+            con.connectTimeout = 1 * SECOND
+            con.readTimeout = 2 * SECONDS
             con.connect()
 
             def data = IOUtils.toString( con.inputStream, "UTF-8" )

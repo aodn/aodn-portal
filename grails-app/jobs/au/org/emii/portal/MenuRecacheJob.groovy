@@ -8,9 +8,11 @@
 
 package au.org.emii.portal
 
+import static au.org.emii.portal.DateTimeUtils.*
+
 class MenuRecacheJob {
 
-    def timeout = 30 * 60 * 1000 // milliseconds
+    def timeout = 30 * MINUTES
 
     def execute() {
 

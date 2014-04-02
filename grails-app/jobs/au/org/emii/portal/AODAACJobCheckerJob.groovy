@@ -8,8 +8,12 @@
 
 package au.org.emii.portal
 
+import static au.org.emii.portal.DateTimeUtils.*
+
 class AODAACJobCheckerJob {
-    def timeout = 120000 // 2 minutes to allow quicker testing, can bump back when in prod - DN
+
+    def timeout = 2 * MINUTES
+
     AodaacAggregatorService aodaacAggregatorService
 
     def execute() {
