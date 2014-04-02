@@ -12,6 +12,8 @@ import org.codehaus.groovy.grails.web.mapping.UrlMapping;
 import org.cyberneko.html.parsers.SAXParser
 import org.apache.shiro.SecurityUtils
 
+import static au.org.emii.portal.DateTimeUtils.*
+
 class CheckServerForBrokenLinksJob {
     // Perform getFeatureInfo for each layer at the server, scan for hyperlinks and check each one.
     // Only supports WMS 1.1.1 thus far.
@@ -20,8 +22,8 @@ class CheckServerForBrokenLinksJob {
     def brokenLinkCount = 0
     def ln = System.getProperty('line.separator')
     File file = new File("Broken Links Report ${new Date()}.txt")
-    static CONNECT_TIMEOUT = 5000
-    static READ_TIMEOUT = 5000
+    static CONNECT_TIMEOUT = 5 * SECONDS
+    static READ_TIMEOUT = 5 * SECONDS
     static FEATURE_COUNT = 10000
     static MINIMUM_RESPONSE_CODE = 399
     def summaryMap = new HashMap()
@@ -163,8 +165,8 @@ class CheckServerForBrokenLinksJob {
         try {
             URL url = new URL(urlString)
             urlConnection = (HttpURLConnection) url.openConnection()
-            urlConnection.connectTimeout = CONNECT_TIMEOUT  /* timeout after 5s if can't connect */
-            urlConnection.readTimeout = READ_TIMEOUT /* timeout after 5s if the page is too slow */
+            urlConnection.connectTimeout = CONNECT_TIMEOUT  /* timeout if can't connect */
+            urlConnection.readTimeout = READ_TIMEOUT /* timeout if the page is too slow */
             urlConnection.setInstanceFollowRedirects(false)
             urlConnection.connect()
             String result = "${urlConnection?.responseCode}"
