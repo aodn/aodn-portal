@@ -45,11 +45,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
         Portal.ui.Viewport.superclass.constructor.call(this, config);
     },
 
-    afterRender: function() {
-
-        Portal.ui.Viewport.superclass.afterRender.call(this);
-    },
-
     /**
      * TODO: this is not currently called, but leaving it here for now as it can be useful for detecting uneccessary
      * nesting of containers.
@@ -79,17 +74,17 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
     _getItems: function(cfg) {
         return [
-                {
-                    unstyled: true,
-                    region: 'north',
-                    height: cfg.appConfig.headerHeight + this.viewportTabsHeight
-                },
-                this.mainPanel,
-                {
-                    region: 'south',
-                    height: 5,
-                    unstyled: true
-                }
+            {
+                unstyled: true,
+                region: 'north',
+                height: cfg.appConfig.headerHeight + this.viewportTabsHeight
+            },
+            this.mainPanel,
+            {
+                region: 'south',
+                height: 5,
+                unstyled: true
+            }
         ];
     },
 
