@@ -13,7 +13,6 @@ modules = {
 
     helpers {
 
-        defaultBundle 'helpersJs'
         resource url:"js/jquery/jquery-1.4.1.min.js", disposition:'head'
         resource url:"js/portal/jquery.js", disposition:'head'
         resource url:"js/jquery/jquery-autocomplete1.1.js", disposition:'head'
@@ -25,7 +24,6 @@ modules = {
 
     geonetwork {
 
-        defaultBundle 'geonetworkJs'
         dependsOn 'extJsbundle'
 
         resource url:"js/Geonetwork/lib/OpenLayers/addins/Format/GeoNetworkRecords.js", disposition:'head'
@@ -48,7 +46,6 @@ modules = {
 
     extJsbundle {
 
-        defaultBundle 'ExtJs'
         dependsOn 'openLayers'
 
         if (env == "development") {
@@ -67,7 +64,6 @@ modules = {
 
     common {
 
-        defaultBundle 'commonJs'
 
         resource url:"js/portal/ui/openlayers/control/SpatialConstraint.js", disposition:'head'
         resource url:"js/portal/utils/geo/GeoUtil.js", disposition:'head'
