@@ -20,9 +20,21 @@ describe("Portal.cart.DownloadPanelBody", function() {
         });
     });
 
+    describe('_contentForEmptyView', function() {
+        it('returns marked-up text', function() {
+            var content = downloadPanelBody._contentForEmptyView();
+
+            expect(content).toContain( OpenLayers.i18n('noCollectionsMessage'));
+        });
+    });
+
     describe('generateContent', function() {
 
         var mockTemplate;
+        var testCollection1 = {value: '[Content 1]'};
+        var testCollection2 = {value: '[Content 2]'};
+        var testCollection3 = {value: '[Content 3]'};
+        var testCollection4 = {value: '[Content 4]'};
 
         var testCollection1 = {uuid: '[Content 1]', wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
         var testCollection2 = {uuid: '[Content 2]', wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
@@ -45,6 +57,8 @@ describe("Portal.cart.DownloadPanelBody", function() {
                 {data: testCollection4}
             ];
 
+            downloadPanelBody.rendered = true;
+            downloadPanelBody.update =  function(){};
             spyOn(downloadPanelBody, 'update');
 
             downloadPanelBody.generateContent();
@@ -78,14 +92,6 @@ describe("Portal.cart.DownloadPanelBody", function() {
 
             expect(downloadPanelBody._contentForEmptyView).toHaveBeenCalled();
             expect(downloadPanelBody.update).toHaveBeenCalledWith('empty cart content');
-        });
-    });
-
-    describe('generateContent', function() {
-        it('returns marked-up text', function() {
-            var content = downloadPanelBody._contentForEmptyView();
-
-            expect(content).toBe('<i>' + OpenLayers.i18n('noCollectionsMessage') + '</i>');
         });
     });
 });

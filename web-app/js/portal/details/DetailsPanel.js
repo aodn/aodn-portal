@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -29,6 +28,10 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (eventName, openlayer) {
             this.updateDetailsPanel(openlayer);
         }, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, function (eventName, openlayer) {
+            this.setStatus(OpenLayers.i18n('loadingMessage'));
+        }, this);
+
     },
 
     initComponent: function () {
@@ -37,7 +40,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         });
 
         this.status = new Ext.Container({
-            html: OpenLayers.i18n('noActiveCollectionSelected'),
+            html: OpenLayers.i18n('loadingMessage'),
             cls: 'collectionTitle',
             margins: {top:20, right:10, bottom:10, left:0},
             autoHeight: true
@@ -55,13 +58,14 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
     // must be called when the panel is fully expanded for the slider
     updateDetailsPanel: function (layer, forceOpen) {
-
         if (layer) {
-            this.setStatus(layer.name);
 
-            // show new layer unless user requested 'hideLayerOptions'
-            this.detailsPanelTabs.handleLayer(layer);
-            this.doLayout();
+            if (layer.isOverlay()) {
+                this.setStatus(layer.name);
+                // show new layer unless user requested 'hideLayerOptions'
+                this.detailsPanelTabs.handleLayer(layer);
+                this.doLayout();
+            }
         }
         else {
             this.setStatus(OpenLayers.i18n('noActiveCollectionSelected'));
@@ -81,5 +85,10 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
         //DO NOT HIDE THE opacitySlider directly, or you WILL break things.-Alex
         this.detailsPanelTabs.setVisible(false);
+    },
+
+    showDetailsPanelContents: function() {
+        this.doLayout();
     }
+
 });

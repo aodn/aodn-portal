@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -8,16 +7,18 @@
 
 describe("Portal.cart.DownloadPanel", function() {
 
+    var downloadPanel;
+
     beforeEach(function() {
-        downloadPanel = new Portal.cart.DownloadPanel();
-        downloadPanel.downloadPanelBody = new Portal.cart.DownloadPanelBody();
-        downloadPanel.downloadPanelBody.generateContent = function() {};
+        downloadPanel = new Portal.cart.DownloadPanel({
+            downloadPanelBody: new Portal.cart.DownloadPanelBody()
+        });
+
+        spyOn(downloadPanel.downloadPanelBody, 'generateContent');
     });
 
     describe('initComponent()', function() {
-
         it('listens for beforeshow event', function() {
-            spyOn(downloadPanel.downloadPanelBody, 'generateContent');
             downloadPanel.fireEvent('beforeshow');
 
             expect(downloadPanel.downloadPanelBody.generateContent).toHaveBeenCalled();
@@ -26,10 +27,16 @@ describe("Portal.cart.DownloadPanel", function() {
 
     describe('onBeforeShow()', function() {
         it('calls refresh() on its view', function() {
-            spyOn(downloadPanel.downloadPanelBody, 'generateContent');
             downloadPanel.onBeforeShow();
 
             expect(downloadPanel.downloadPanelBody.generateContent).toHaveBeenCalled();
+        });
+    });
+
+    describe('step title', function() {
+        it('is correct', function() {
+            var expectedTitle = OpenLayers.i18n('stepHeader', { stepNumber: 3, stepDescription: OpenLayers.i18n('step3Description') });
+            expect(downloadPanel.title).toEqual(expectedTitle);
         });
     });
 });

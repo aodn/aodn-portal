@@ -82,9 +82,6 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 
     autoZoomEnabled: function () {
         return this.autoZoomCheckbox.getValue();
-    },
-
-    fireRemoveAllLayers: function () {
-        this.fireEvent('removealllayers');
     }
+
 });

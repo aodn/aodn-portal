@@ -212,7 +212,7 @@ describe('Portal.cart.WmsInjector', function() {
         it('calls correct function on layer', function() {
 
             var spy = jasmine.createSpy();
-            var testLayer = {getWfsLayerFeatureRequestUrl: spy};
+            var testLayer = {getWfsLayerFeatureRequestUrl: spy, params: "blagh"};
 
             injector._wfsDownloadUrl(testLayer, 'csv');
 
@@ -225,7 +225,7 @@ describe('Portal.cart.WmsInjector', function() {
         it('calls correct function on layer', function() {
 
             var spy = jasmine.createSpy();
-            var testLayer = {getWmsLayerFeatureRequestUrl: spy};
+            var testLayer = {getWmsLayerFeatureRequestUrl: spy, params: "blagh"};
 
             injector._wmsDownloadUrl(testLayer, 'xml');
 

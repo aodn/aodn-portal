@@ -22,10 +22,13 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         Ext.apply(this, config);
         Portal.cart.DownloadPanelBody.superclass.initComponent.call(this, arguments);
 
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (eventName, openlayer) {
+            this.generateContent();
+        }, this);
     },
 
     generateContent: function() {
-        var tpl = new Portal.cart.DownloadPanelItemTemplate();
+        var tpl = new Portal.cart.DownloadPanelItemTemplate(this);
         var html = '';
 
         // Reverse the order of items, last item added will be displayed first
@@ -40,7 +43,10 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
             html = this._contentForEmptyView();
         }
 
-        this.update(html);
+        // fix for tests
+        if (this.rendered) {
+            this.update(html);
+        }
     },
 
     confirmDownload: function(downloadUrl, downloadFilename, downloadControllerArgs) {

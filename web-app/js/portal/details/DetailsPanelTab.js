@@ -48,7 +48,6 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
     _ensurePanelsRendered: function() {
         var items = this.items.items;
         for (var i = items.length - 1; i >= 0; i--) {
-
             items[i].show();
         }
     },

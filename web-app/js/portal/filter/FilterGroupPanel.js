@@ -84,7 +84,12 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     },
 
     _isLayerActive: function(layer) {
-        return (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(layer.parentGeoNetworkRecord));
+        var active = false;
+
+        if (layer.parentGeoNetworkRecord != undefined) {
+            active = (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(layer.parentGeoNetworkRecord));
+        }
+        return active;
     },
 
     _addLabel: function(filter) {

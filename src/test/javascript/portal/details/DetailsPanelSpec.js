@@ -18,7 +18,7 @@ describe("Portal.details.DetailsPanel", function() {
     describe('initialisation', function() {
 
         it('has correct status', function() {
-            expect(detailsPanel.status.html).toBe(OpenLayers.i18n('noActiveCollectionSelected'));
+            expect(detailsPanel.status.html).toBe(OpenLayers.i18n('loadingMessage'));
         });
 
         it('hides contents', function() {
@@ -76,6 +76,15 @@ describe("Portal.details.DetailsPanel", function() {
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
                 expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
             });
+        });
+    });
+
+    describe('step title', function() {
+
+        it('is correct', function() {
+
+            var expectedTitle = OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description') });
+            expect(detailsPanel.title).toEqual(expectedTitle);
         });
     });
 });

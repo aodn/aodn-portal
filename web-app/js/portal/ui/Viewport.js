@@ -13,8 +13,24 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
         // approximate height of viewport main tabs. css will impact on this buffer
         this.viewportTabsHeight = 40;
 
+        var layerStore = new Portal.data.LayerStore();
+        var mapPanel = new Portal.ui.MapPanel({layers: layerStore});
+
         this.mainPanel = new Portal.ui.MainPanel({
-            region: 'center'
+            region: 'center',
+            mapPanel: mapPanel,
+            visualiseLayerStore: layerStore,
+            panels: [
+                new Portal.ui.search.SearchPanel({
+                    mapPanel: mapPanel
+                }),
+                new Portal.ui.VisualisePanel({
+                    mapPanel: mapPanel
+                }),
+                new Portal.cart.DownloadPanel({
+                    downloadPanelBody: new Portal.cart.DownloadPanelBody()
+                })
+            ]
         });
 
         var config = Ext.apply(
@@ -27,11 +43,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
         );
 
         Portal.ui.Viewport.superclass.constructor.call(this, config);
-    },
-
-    afterRender: function() {
-
-        Portal.ui.Viewport.superclass.afterRender.call(this);
     },
 
     /**
@@ -63,20 +74,19 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
     _getItems: function(cfg) {
         return [
-                {
-                    unstyled: true,
-                    region: 'north',
-                    height: cfg.appConfig.headerHeight + this.viewportTabsHeight
-                },
-                this.mainPanel,
-                {
-                    region: 'south',
-                    height: 5,
-                    unstyled: true
-                }
+            {
+                unstyled: true,
+                region: 'north',
+                height: cfg.appConfig.headerHeight + this.viewportTabsHeight
+            },
+            this.mainPanel,
+            {
+                region: 'south',
+                height: 5,
+                unstyled: true
+            }
         ];
     },
-
 
     setActiveTab: function(tabIndex) {
         this.mainPanel.setActiveTab(tabIndex);

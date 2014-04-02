@@ -55,12 +55,17 @@ describe("Portal.data.LayerStore", function() {
     };
 
     it('add layer descriptor', function() {
+        spyOn(Ext.MsgBus, 'publish');
         layerStore.addUsingDescriptor(layerDescriptor);
         expect(layerStore.getCount()).toBe(1);
     });
 
     // The search results deal with "layer links"...
     describe('add layer link', function() {
+
+        beforeEach(function() {
+            spyOn(Ext.MsgBus, 'publish');
+        });
 
         it('success', function() {
 
@@ -111,14 +116,14 @@ describe("Portal.data.LayerStore", function() {
 
     describe('adding layers', function() {
         it('add open layer', function() {
-
+            spyOn(Ext.MsgBus, 'publish');
             layerStore.addUsingOpenLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
         });
 
         it('add duplicate layer', function() {
             spyOn(Ext.Msg, "alert");
-
+            spyOn(Ext.MsgBus, 'publish');
             layerStore.addUsingOpenLayer(createOpenLayer());
             layerStore.addUsingOpenLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
@@ -126,12 +131,14 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('addLayerUsingDescriptor', function() {
+            spyOn(Ext.MsgBus, 'publish');
             expect(layerStore.getCount()).toBe(0);
             layerStore.addUsingDescriptor(layerDescriptor);
             expect(layerStore.getCount()).toBe(1);
         });
 
         it('addLayerUsingOpenLayer', function() {
+            spyOn(Ext.MsgBus, 'publish');
             expect(layerStore.getCount()).toBe(0);
             layerStore.addUsingOpenLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
@@ -172,6 +179,8 @@ describe("Portal.data.LayerStore", function() {
             var openLayer;
 
             beforeEach(function() {
+
+                spyOn(Ext.MsgBus, 'publish');
                 openLayer = createOpenLayer();
                 layerStore.addUsingOpenLayer(openLayer);
                 openLayer.loading = false;
@@ -184,45 +193,40 @@ describe("Portal.data.LayerStore", function() {
             });
 
             it('layerRemoved event published', function() {
-                spyOn(Ext.MsgBus, 'publish');
                 layerStore.removeUsingOpenLayer(openLayer);
                 expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
             });
         });
 
         it('removeAll', function() {
-            var openLayer = createOpenLayer();
-            layerStore.addUsingOpenLayer(openLayer);
-            var baseLayer = createOpenLayer("2");
-            baseLayer.options.isBaseLayer = true;
-            layerStore.addUsingOpenLayer(baseLayer);
 
-            expect(layerStore.getCount()).toBe(2);
+            spyOn(Ext.MsgBus, 'publish');
+            spyOn(layerStore, 'remove');
+            layerStore.removeAll();
 
-            spyOn(layerStore, 'removeAll').andCallThrough();
-            Ext.MsgBus.publish('removeAllLayers');
-
-            expect(layerStore.removeAll).toHaveBeenCalled();
-            expect(layerStore.getCount()).toBe(1);
+            expect(layerStore.remove).toHaveBeenCalled();
         });
 
         it('reset', function() {
+
+            spyOn(Ext.MsgBus, 'publish');
             layerStore.addUsingOpenLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
 
-            spyOn(layerStore, 'reset').andCallThrough();
-            spyOn(layerStore, 'removeAll').andCallThrough();
+
             spyOn(layerStore, 'selectDefaultBaseLayer');
+            layerStore.removeAll();
 
-            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
-
-            expect(layerStore.reset).toHaveBeenCalled();
-            expect(layerStore.removeAll).toHaveBeenCalled();
             expect(layerStore.selectDefaultBaseLayer).toHaveBeenCalled();
         });
     });
 
     describe('containsOpenLayer', function() {
+
+        beforeEach(function() {
+            spyOn(Ext.MsgBus, 'publish');
+        });
+
         it('returns false with duplicate names if layerHierarchy are different', function() {
             var layer1 = createOpenLayer();
             var layer2 = createOpenLayer();
@@ -259,6 +263,7 @@ describe("Portal.data.LayerStore", function() {
 
         beforeEach(function() {
 
+            spyOn(Ext.MsgBus, 'publish');
             // Non-base layers
             var l1 = createOpenLayer("1");
             layerStore.addUsingOpenLayer(l1);
@@ -314,11 +319,10 @@ describe("Portal.data.LayerStore", function() {
         var layer;
 
         beforeEach(function() {
+            spyOn(Ext.MsgBus, 'publish');
             layer = createOpenLayer("somelayer");
             layer.options.isBaseLayer = false;
             baseLayerRecord = layerStore.addUsingOpenLayer(layer);
-
-            spyOn(Ext.MsgBus, 'publish');
         });
 
         it('sets loading=true on loadstart', function() {

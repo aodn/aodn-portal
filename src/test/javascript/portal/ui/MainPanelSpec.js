@@ -9,10 +9,15 @@
 describe("Portal.ui.MainPanel", function() {
 
     var mainPanel;
+    var mockSearchPanel = new Ext.Panel();
+    var mockVisualisePanel = new Ext.Panel();
+    var mockDownloadPanel = new Ext.Panel();
 
     beforeEach(function() {
         spyOn(Portal.ui.MainToolbar.prototype, "_registerEvents").andCallFake(function() {});
-        mainPanel = new Portal.ui.MainPanel();
+        mainPanel = new Portal.ui.MainPanel({
+            panels: [mockSearchPanel, mockVisualisePanel, mockDownloadPanel]
+        });
     });
 
     afterEach(function() {
@@ -20,24 +25,6 @@ describe("Portal.ui.MainPanel", function() {
     });
 
     describe('initialisation', function() {
-        it('should init map panel', function() {
-            expect(mainPanel.mapPanel).toBeInstanceOf(Portal.ui.MapPanel);
-        });
-
-        it('should init portal panel', function() {
-            expect(mainPanel.visualisePanel).toBeInstanceOf(Portal.ui.VisualisePanel);
-        });
-
-        it('should init search panel', function() {
-            expect(mainPanel.searchPanel).toBeInstanceOf(Portal.ui.search.SearchPanel);
-            expect(mainPanel.searchPanel.mapPanel).toBe(mainPanel.mapPanel);
-        });
-
-        it('should init download panel', function() {
-            expect(mainPanel.downloadPanel).toBeInstanceOf(Portal.cart.DownloadPanel);
-            expect(mainPanel.downloadPanel.navigationText).toBe(OpenLayers.i18n('navigationButtonDownload'));
-        });
-
         it('should init toolbar', function() {
             expect(mainPanel.getBottomToolbar()).toBeTruthy();
             expect(mainPanel.getBottomToolbar()).toBeInstanceOf(Portal.ui.MainToolbar);
@@ -94,24 +81,6 @@ describe("Portal.ui.MainPanel", function() {
         it('when switching tabs', function() {
             mainPanel.setActiveTab(0);
             expect(mainPanel._highlightActiveTab).toHaveBeenCalled();
-        });
-    });
-
-    describe('step title', function() {
-
-        it('on search', function() {
-            expect(mainPanel.items.items[TAB_INDEX_SEARCH].items.items[0].title)
-                .toEqual(OpenLayers.i18n('stepHeader', { stepNumber: 1, stepDescription: OpenLayers.i18n('step1Description') }));
-        });
-
-        it('on visualize', function() {
-            expect(mainPanel.items.items[TAB_INDEX_VISUALISE].items.items[1].title)
-                .toEqual(OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description') }));
-        });
-
-        it('on download', function() {
-            expect(mainPanel.items.items[TAB_INDEX_DOWNLOAD].title)
-                .toEqual(OpenLayers.i18n('stepHeader', { stepNumber: 3, stepDescription: OpenLayers.i18n('step3Description') }));
         });
     });
 });
