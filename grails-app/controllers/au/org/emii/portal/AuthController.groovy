@@ -225,10 +225,11 @@ class AuthController {
     def _authenticateWithOpenId(params) {
 
         def portalUrl = grailsApplication.config.grails.serverURL
+        def openIdProviderUrl = params.openIdProvider
 
         try {
             // Perform discovery on our OpenID provider
-            def discoveries = consumerManager.discover(params.openIdProvider) // User-supplied String
+            def discoveries = consumerManager.discover(openIdProviderUrl) // User-supplied String
 
             // Attempt to associate with the OpenID provider
             // and retrieve one service endpoint for authentication

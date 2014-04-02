@@ -167,7 +167,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     _initBaseLayers: function() {
         // TODO: shouldn't these be set properly in the server in the first place?
-        this._initWithLayersFromServer('layer/configuredbaselayers', {
+        this._initWithLayersFromServer('layer/configuredBaselayers', {
             isBaseLayer: true,
             queryable: false
         }, function () {

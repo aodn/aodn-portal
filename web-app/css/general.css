@@ -843,7 +843,7 @@ ul.x-tab-strip-top li:hover * {
 .olControlPanel .olControlZoomBoxItemInactive,
 .olControlPanel .olControlEditingToolbar,
 .olControlPanel .olControlEditingToolbarItemInactive {
-    background-image: url("../images/raa_y.gif");
+    background-image: url("../images/raa_y.png");
     display: block;
     height: 25px;
     width: 45px;
@@ -870,7 +870,11 @@ ul.x-tab-strip-top li:hover * {
 }
 
 .olControlNavigationItemInactive:hover {
-    background-position: -800px 0;
+    background-position: -650px 0;
+}
+
+.olControlNavigationItemActive:hover {
+    background-position: -750px 0;
 }
 
 .olControlPanel {

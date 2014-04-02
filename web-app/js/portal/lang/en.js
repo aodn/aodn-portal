@@ -42,18 +42,16 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // Download Step
     noCollectionsMessage: 'No data collections to show',
-    noFilesMessage: 'No attached files.',
     filterLabel: 'Filter applied:',
     noFilterLabel: 'No filters applied.',
     noDataMessage: 'No direct access to data available currently.',
     downloadButtonLabel: 'Download as\u2026',
     downloadAsCsvLabel: 'CSV',
-    downloadAsSubsettedNetCdfLabel: 'Subsetted NetCDF files (requires email address)',
-    downloadAsAllSourceNetCdfLabel: 'All source NetCDF files',
+    downloadAsSubsettedNetCdfLabel: 'NetCDF',
+    downloadAsAllSourceNetCdfLabel: 'Un-subsetted NetCDFs',
     downloadAsHdfLabel: 'HDF',
     downloadAsAsciiLabel: 'ASCII text',
     downloadAsUrlsLabel: 'List of URLs',
-    downloadAsOpenDapUrlsLabel: 'List of OpenDAP URLs',
     parametersLabel: 'Parameters:',
     parameterAreaLabel: 'Area',
     parameterDateLabel: 'Date range',
@@ -80,6 +78,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateRange: 'Date Range',
     parameters: 'Parameters',
     temporalExtentDateFormat: 'YYYY',
+    metadataLink: 'continue reading',
 
     // LayerGridPanel.js
     dragLayersOrServers: 'Drag layers or Servers to the menu tree',

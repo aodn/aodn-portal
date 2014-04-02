@@ -21,9 +21,15 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         mockLogging DownloadController
 
         controller = new DownloadController()
+        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
+
+        _setUpExampleObjects()
+        _setHostShouldBeValid(true)
     }
 
     void testUrlListForLayerNoLayerId() {
+
+        mockParams.layerId = null
 
         controller.urlListForLayer()
 
@@ -31,8 +37,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     }
 
     void testUrlListForLayer() {
-
-        _setUpExampleObjects()
 
         def testParamProcessor = new Object()
         controller.metaClass.requestSingleFieldParamProcessor = { fieldName ->
@@ -57,14 +61,14 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             assertEquals testStreamProcessor, streamProcessor
         }
 
-        mockParams.layerId = 1
-
         controller.urlListForLayer()
 
         assertEquals 1, performProxyingCalledCount
     }
 
     void testDownloadNetCdfFilesForLayerNoLayerId() {
+
+        mockParams.layerId = null
 
         controller.downloadNetCdfFilesForLayer()
 
@@ -73,26 +77,18 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testDownloadNetCdfFilesForLayerInvalidHost() {
 
-        _setUpExampleObjects()
-        mockParams.layerId = 1
-        mockParams.url = 'the_url'
-
-        controller.hostVerifier = [allowedHost: { r, u -> false }]
+        _setHostShouldBeValid(false)
 
         controller.estimateSizeForLayer()
 
-        assertEquals "Host for address 'the_url' not allowed", mockResponse.contentAsString
+        assertEquals "Host for address 'http://www.example.com/?PROPERTYNAME=relativeFilePath,size' not allowed", mockResponse.contentAsString
     }
 
     void testDownloadNetCdfFilesForLayer() {
 
-        _setUpExampleObjects()
-        mockParams.layerId = 1
-        mockParams.url = 'http://www.example.com/'
         mockParams.downloadFilename = 'somedata.txt'
 
         def archiveGenerated = false
-        controller.hostVerifier = [allowedHost: { r, u -> true }]
         controller.metaClass.urlListStreamProcessor = { fieldName, prefixToRemove, newUrlBase ->
             assertEquals testLayer.urlDownloadFieldName, fieldName
             assertEquals testServer.urlListDownloadPrefixToRemove, prefixToRemove
@@ -120,6 +116,8 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testEstimateSizeForLayerNoLayerId() {
 
+        mockParams.layerId = null
+
         controller.estimateSizeForLayer()
 
         assertEquals "No layerId provided", mockResponse.contentAsString
@@ -127,22 +125,15 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testEstimateSizeForLayerInvalidHost() {
 
-        _setUpExampleObjects()
-        mockParams.layerId = 1
-        mockParams.url = "the_url"
-
-        controller.hostVerifier = [allowedHost: { r, u -> false }]
+        _setHostShouldBeValid(false)
 
         controller.estimateSizeForLayer()
 
-        assertEquals "Host for address 'the_url' not allowed", mockResponse.contentAsString
+        assertEquals "Host for address 'http://www.example.com/?PROPERTYNAME=relativeFilePath,size' not allowed", mockResponse.contentAsString
     }
 
     void testEstimateSizeForLayerNoUrlColumnSpecified() {
 
-        _setUpExampleObjects()
-
-        mockParams.layerId = 1
         testLayer.urlDownloadFieldName = null
 
         def testStreamProcessor = new Object()
@@ -151,8 +142,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             assertEquals "size", sizeFieldName
             return testStreamProcessor
         }
-        controller.hostVerifier = [allowedHost: { r, u -> true }]
-        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
 
         controller.estimateSizeForLayer()
 
@@ -161,18 +150,12 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testEstimateSizeForLayerNoProblems() {
 
-        _setUpExampleObjects()
-
-        mockParams.layerId = 1
-
         def testStreamProcessor = new Object()
         controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->
             assertEquals "relativeFilePath", filenameFieldName
             assertEquals "size", sizeFieldName
             return testStreamProcessor
         }
-        controller.hostVerifier = [allowedHost: { r, u -> true }]
-        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
         controller.metaClass._executeExternalRequest = { url, streamProcessor, resultStream ->
             assertEquals testStreamProcessor, streamProcessor
             resultStream << "the output"
@@ -183,17 +166,10 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         assertEquals "the output", mockResponse.contentAsString
     }
 
-
     void testEstimateSizeForLayerWitExternalRequestException() {
-
-        _setUpExampleObjects()
-
-        mockParams.layerId = 1
 
         def testStreamProcessor = new Object()
         controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->  testStreamProcessor }
-        controller.hostVerifier = [allowedHost: { r, u -> true }]
-        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
         controller.metaClass._executeExternalRequest = { url, streamProcessor, resultStream ->
             throw new Exception("Test Exception")
         }
@@ -214,8 +190,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
     }
 
     void testUrlListStreamProcessor() {
-
-        _setUpExampleObjects()
 
         def input = """\
             FID,relativeFilePath
@@ -274,6 +248,14 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
 
         mockDomain Server, [testServer]
         mockDomain Layer, [testLayer]
+
+        mockParams.layerId = 1
+        mockParams.url = 'http://www.example.com/'
+    }
+
+    void _setHostShouldBeValid(valid) {
+
+        controller.hostVerifier = [allowedHost: { r, u -> valid }]
     }
 
     static void assertCorrectProcessing(streamProcessor, input, expectedOutput) {

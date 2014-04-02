@@ -97,10 +97,28 @@ depthService.url = "http://depthservice.aodn.org.au/depth"
 minimap {
     baselayer {
         name = "baselayer"
-        url = "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi/1.0.0/"
-        params = [layers: 'HiRes_aus-group']
+        url = "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms"
+        params = [layers: 'default_bathy']
     }
 }
+
+geoserver_static = [
+    uri: "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms",
+    type: "WMS-1.1.1"
+]
+
+baselayers = [
+    [
+        name: "default_bathy",
+        title: "Bathymetry Baselayer",
+        server: geoserver_static
+    ],
+    [
+        name: "default_basemap_simple",
+        title: "Simple Baselayer",
+        server: geoserver_static
+    ]
+]
 
 // OpenID
 openId {
