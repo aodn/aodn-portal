@@ -29,7 +29,8 @@ Portal.app = {
     browserCheck: function() {
         var isChrome = !!window.chrome;
         var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0
-        if (!(isChrome || isFirefox)) {
+        var iOS = /(iPad|iPhone|iPod)/g.test( navigator.userAgent );
+        if (!(isChrome || isFirefox || !iOS)) {
             alert(OpenLayers.i18n('ieWarningMessage'));
         }
     },
