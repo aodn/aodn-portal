@@ -23,7 +23,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
 
         var htmlInjection;
 
-        if (this._hasData(collection)) {
+        if (this._isDownloadable(collection)) {
             if (this._isNcwms(collection)) {
                 htmlInjection = this._getNcwmsInjector(config, collection);
             }
@@ -44,9 +44,8 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         return collection.wmsLayer.isNcwms();
     },
 
-    _hasData: function(collection) {
-
-        return collection.wmsLayer.wfsLayer;
+    _isDownloadable: function(collection) {
+        return (collection.wmsLayer.wfsLayer || collection.wmsLayer.urlDownloadFieldName);
     },
 
     _getNcwmsInjector: function(config, collection) {

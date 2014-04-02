@@ -70,6 +70,23 @@ describe('Portal.cart.InsertionService', function() {
         });
     });
 
+    describe('is downloadble', function() {
+        it('returns true when collection has associated wfs layer', function() {
+            geoNetworkRecord.wmsLayer.wfsLayer = {};
+
+            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
+        });
+
+        it('returns true when collection has download URL field', function() {
+            geoNetworkRecord.wmsLayer.urlDownloadFieldName = 'url';
+            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
+        });
+
+        it("returns false when collection doesn't have associated wfs layer or download URL field", function() {
+            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeFalsy();
+        });
+    });
+
     function getWmsRecord() {
         geoNetworkRecord.wmsLayer.wfsLayer = {};
         geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
