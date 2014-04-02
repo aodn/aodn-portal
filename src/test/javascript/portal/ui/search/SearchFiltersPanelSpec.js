@@ -55,6 +55,15 @@ describe("Portal.ui.search.SearchFiltersPanel", function() {
         });
     });
 
+    describe('step title', function() {
+
+        it('is correct', function() {
+
+            var expectedTitle = OpenLayers.i18n('stepHeader', { stepNumber: 1, stepDescription: OpenLayers.i18n('step1Description') });
+            expect(searchFiltersPanel.title).toEqual(expectedTitle);
+        });
+    });
+
     function spyOnFilter(filter) {
         spyOn(filter, 'removeAnyFilters');
     }
@@ -72,10 +81,8 @@ describe("Portal.ui.search.SearchFiltersPanel", function() {
 
     function _mockSearcher() {
         return {
-            on: nil,
-            search: nil
+            on: noOp,
+            search: noOp
         }
     }
-
-    function nil() {}
 });

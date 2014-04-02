@@ -78,4 +78,13 @@ describe("Portal.details.DetailsPanel", function() {
             });
         });
     });
+
+    describe('step title', function() {
+
+        it('is correct', function() {
+
+            var expectedTitle = OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description') });
+            expect(detailsPanel.title).toEqual(expectedTitle);
+        });
+    });
 });
