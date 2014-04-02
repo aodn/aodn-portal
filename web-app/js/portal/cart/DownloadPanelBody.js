@@ -6,8 +6,6 @@
  */
 Ext.namespace('Portal.cart');
 
-generateContentCount = 0;
-
 Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
 
     initComponent: function() {
@@ -27,13 +25,9 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (eventName, openlayer) {
             this.generateContent();
         }, this);
-
     },
 
     generateContent: function() {
-        var start = new Date().getTime();
-
-        generateContentCount++;
 
         var tpl = new Portal.cart.DownloadPanelItemTemplate(this);
         var html = '';
@@ -47,14 +41,11 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         if (!html) {
             html = this._contentForEmptyView();
         }
+
         // fix for tests
         if (this.rendered) {
             this.update(html);
         }
-
-        var end = new Date().getTime();
-        var time = end - start;
-//        console.log('generateContent (' + generateContentCount + ') took ' + time + 'ms');
     },
 
     confirmDownload: function(downloadUrl, downloadFilename, downloadControllerArgs) {

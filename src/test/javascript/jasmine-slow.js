@@ -15,7 +15,6 @@ jasmine.slow = (function() {
             runTime = 0;
 
         before = function() {
-            generateContentCount = 0;
             runTime = now();
         };
 
@@ -27,7 +26,7 @@ jasmine.slow = (function() {
                 specDesc,
                 reportStr;
 
-            if (timeDiff >= threshold || (generateContentCount > 0)) {
+            if (timeDiff >= threshold) {
                 currentSpec = jasmine.getEnv().currentSpec;
                 specDesc = currentSpec.description;
                 suiteDesc = currentSpec.suite.description;
@@ -36,7 +35,6 @@ jasmine.slow = (function() {
                     parentDesc = currentSpec.suite.parentSuite.description + " ";
                 }
                 reportStr = "spec #" + currentSpec.id + " took " + timeDiff + "ms: " + parentDesc + suiteDesc + " it " + specDesc;
-                reportStr += ' (' + generateContentCount + ' calls to generateContent)';
 
                 console.log(reportStr);
             }

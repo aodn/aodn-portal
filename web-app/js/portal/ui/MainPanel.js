@@ -84,10 +84,9 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             jQuery('[id^=viewPortTab]').removeClass('viewPortTabDisabled');
         }
         // all tabs up until the selected tab highlighted
-        for (var i=0;i<=tabIndex;i++) {
+        for (var i = 0; i <= tabIndex; i++) {
             var newClasses = (i == tabIndex) ? 'viewPortTabActive viewPortTabActiveLast' : 'viewPortTabActive';
             jQuery('#viewPortTab' + i).removeClass('viewPortTabDisabled').addClass(newClasses);
         }
-
     }
 });
