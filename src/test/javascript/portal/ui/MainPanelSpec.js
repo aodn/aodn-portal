@@ -16,9 +16,7 @@ describe("Portal.ui.MainPanel", function() {
     beforeEach(function() {
         spyOn(Portal.ui.MainToolbar.prototype, "_registerEvents").andCallFake(function() {});
         mainPanel = new Portal.ui.MainPanel({
-            searchPanel: mockSearchPanel,
-            visualisePanel: mockVisualisePanel,
-            downloadPanel: mockDownloadPanel
+            panels: [mockSearchPanel, mockVisualisePanel, mockDownloadPanel]
         });
     });
 
@@ -83,16 +81,6 @@ describe("Portal.ui.MainPanel", function() {
         it('when switching tabs', function() {
             mainPanel.setActiveTab(0);
             expect(mainPanel._highlightActiveTab).toHaveBeenCalled();
-        });
-    });
-
-    describe('panel ordering', function() {
-
-        it('is correct', function() {
-
-            expect(mainPanel.items.items[TAB_INDEX_SEARCH]).toEqual(mockSearchPanel);
-            expect(mainPanel.items.items[TAB_INDEX_VISUALISE]).toEqual(mockVisualisePanel);
-            expect(mainPanel.items.items[TAB_INDEX_DOWNLOAD]).toEqual(mockDownloadPanel);
         });
     });
 });

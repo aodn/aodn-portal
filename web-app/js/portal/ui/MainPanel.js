@@ -35,11 +35,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             },
             unstyled: true,
             layout: new Portal.ui.NavigableCardLayout(),
-            items: [
-                this.searchPanel,
-                this.visualisePanel,
-                this.downloadPanel
-            ],
+            items: this.panels,
             bbar: new Portal.ui.MainToolbar({
                 mainPanel: this
             }),

@@ -20,16 +20,17 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
             region: 'center',
             mapPanel: mapPanel,
             visualiseLayerStore: layerStore,
-            searchPanel: new Portal.ui.search.SearchPanel({
-                mapPanel: mapPanel
-            }),
-            visualisePanel: new Portal.ui.VisualisePanel({
-                mapPanel: mapPanel
-            }),
-            downloadPanel: new Portal.cart.DownloadPanel({
-                navigationText: 'AAAAAAA',
-                downloadPanelBody: new Portal.cart.DownloadPanelBody()
-            })
+            panels: [
+                new Portal.ui.search.SearchPanel({
+                    mapPanel: mapPanel
+                }),
+                new Portal.ui.VisualisePanel({
+                    mapPanel: mapPanel
+                }),
+                new Portal.cart.DownloadPanel({
+                    downloadPanelBody: new Portal.cart.DownloadPanelBody()
+                })
+            ]
         });
 
         var config = Ext.apply(

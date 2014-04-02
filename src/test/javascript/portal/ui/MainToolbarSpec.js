@@ -11,9 +11,7 @@ describe("Portal.ui.MainToolbar", function() {
 
     beforeEach(function() {
         mainPanel = new Portal.ui.MainPanel({
-            searchPanel: {},
-            visualisePanel: {},
-            downloadPanel: {}
+            panels: []
         });
         mainToolbar = new Portal.ui.MainToolbar({
             mainPanel: mainPanel

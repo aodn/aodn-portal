@@ -10,9 +10,7 @@ describe('Portal.ui.NavigableCardLayout', function() {
 
     beforeEach(function() {
         var mainPanel = new Portal.ui.MainPanel({
-            searchPanel: {},
-            visualisePanel: {},
-            downloadPanel: {}
+            panels: [{}, {}, {}]
         });
 
         mockLayoutForMainPanel(mainPanel);
