@@ -22,10 +22,9 @@
 
 &gt; ${AodaacJob.count()} &lt; total<br>
 
+        <g:link action="updateJob">Update</g:link><br><br>
         <g:each in="${AodaacJob.list()}">
-            ${it.jobId} <g:link action="updateJob" id="${it.jobId}">Update</g:link><br>
-            ${it}<br>
-            <a href="${it.result?.dataUrl}">${it.result?.dataUrl}</a>
+            ${it} :: <a href="${it}">${it}</a>
             <hr>
         </g:each>
 </body>

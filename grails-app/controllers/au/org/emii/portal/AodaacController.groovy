@@ -24,6 +24,8 @@ class AodaacController {
             'dnahodil@utas.edu.au',
             [:]
         )
+
+        redirect action: 'index'
     }
 
     def updateJob = {
@@ -31,6 +33,8 @@ class AodaacController {
         AodaacJob.list().each {
             aodaacAggregatorService.updateJob(it)
         }
+
+        redirect action: 'index'
     }
 
     def test = {

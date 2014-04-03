@@ -7,23 +7,38 @@
 
 package au.org.emii.portal
 
+import static au.org.emii.portal.AodaacJob.Status.*
+
 class AodaacJob {
 
-    Date dateCreated
+    enum Status {
+        NEW,
+        SENT,
+        WAITING,
+        RUNNING,
+        FAILED,
+        SUCCESS
 
+        static def getEndedStatuses() {
+            [FAILED, SUCCESS]
+        }
+    }
+
+    Date dateCreated
     String jobId
     String notificationEmailAddress
-    Boolean expired = false // For jobs that run too long
-
-    Date mostRecentDataFileExistCheck
-    Boolean dataFileExists
-
+    Date statusUpdatedDate
+    Status status
+    String files
 
     static constraints = {
         jobId blank: false
-        notificationEmailAddress nullable: true
-        mostRecentDataFileExistCheck nullable: true
-        dataFileExists nullable: true
+        statusUpdatedDate nullable: true
+        files nullable: true
+    }
+
+    static mapping = {
+        files type: "text"
     }
 
     AodaacJob() { /* For Hibernate */ }
@@ -34,11 +49,20 @@ class AodaacJob {
 
         this.jobId = jobId
         this.notificationEmailAddress = notificationEmailAddress
+        status = NEW
+    }
+
+    def wasSuccessful() {
+        status == SUCCESS
+    }
+
+    def hasEnded() {
+        Status.endedStatuses.contains(status)
     }
 
     @Override
     public String toString() {
 
-        return "AodaacJob $jobId"
+        return "AodaacJob $jobId (status: $status; updated: $statusUpdatedDate)"
     }
 }

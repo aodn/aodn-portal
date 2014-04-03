@@ -12,6 +12,7 @@ import grails.converters.JSON
 
 import java.text.SimpleDateFormat
 
+import static au.org.emii.portal.AodaacJob.Status.SENT
 import static au.org.emii.portal.UrlUtils.ensureTrailingSlash
 
 class AodaacAggregatorService {
@@ -21,8 +22,6 @@ class AodaacAggregatorService {
     def grailsApplication
     def messageSource
     def portalInstance
-
-    static final def HTTP_SUCCESS_CODES = 200..299
 
     // Date formats
     static final def JAVASCRIPT_UI_DATE_OUTPUT_FORMAT = "yyyy-mm-dd'T'hh:mm:ss.SSS'Z'"
@@ -50,7 +49,7 @@ class AodaacAggregatorService {
     }
 
     def getJobUpdateUrl(job) {
-        "${baseUrl}status/$environment/${job.jobId}"
+        "${baseUrl}status/$environment/${job.jobId}.json"
     }
 
     def getProductInfo(productIds) {
@@ -86,8 +85,9 @@ class AodaacAggregatorService {
     }
 }""")
 
-        def temporalExtent = p.subsetDescriptor.temporalExtent
-        def spatialExtent = p.subsetDescriptor.spatialExtent
+        def subset = p.subsetDescriptor
+        def temporalExtent = subset.temporalExtent
+        def spatialExtent = subset.spatialExtent
 
         def apiCallArgs = [:]
 
@@ -103,11 +103,6 @@ class AodaacAggregatorService {
 
         // Generate url
         def apiCall = UrlUtils.urlWithQueryString(jobCreationUrl, apiCallArgs)
-
-        // Include server/environment
-        apiCallArgs.environment = environment
-        apiCallArgs.server = baseUrl
-
         def responseText
 
         try {
@@ -120,9 +115,9 @@ class AodaacAggregatorService {
             log.debug "responseJson: $responseJson"
 
             def jobId = _jobIdFromMonitorUrl(responseJson.url)
-
             def job = new AodaacJob(jobId, notificationEmailAddress)
 
+            job.status = SENT
             job.save failOnError: true
 
             return job
@@ -138,13 +133,9 @@ class AodaacAggregatorService {
 
         log.debug "Updating job $job"
 
-        if (job.latestStatus?.jobEnded) {
+        if (job.hasEnded()) {
 
-            log.debug "Don't update job as we know if has already ended, but verify presence of result data file"
-
-            // Check if result file exists
-            _verifyResultFileExists job
-
+            log.info "Don't update job as we know if has already ended"
             return
         }
 
@@ -156,30 +147,17 @@ class AodaacAggregatorService {
 
             // Make the call
             def response = apiCall.toURL().text
-
             log.debug "response: $response"
 
-            def updatedStatus = JSON.parse(response)
+            def currentDetails = JSON.parse(response)
+            log.debug "currentDetails: $currentDetails"
 
-            updatedStatus.with {
-                theErrors = errors // Rename field to match ours
-                remove "errors"    // Remove old field (avoids name collisions)
-            }
-
-            log.debug "updatedStatus: $updatedStatus"
-
-            job.latestStatus = new AodaacJobStatus(updatedStatus)
+            job.status = currentDetails.status as AodaacJob.Status
+            job.statusUpdatedDate = new Date()
             job.save failOnError: true
 
-            if (job.latestStatus.jobEnded) {
+            if (job.hasEnded()) {
 
-                _retrieveResults job
-                _verifyResultFileExists job
-                _sendNotificationEmail job
-            }
-            else if (_jobIsTakingTooLong(job)) {
-
-                _markJobAsExpired job
                 _sendNotificationEmail job
             }
         }
@@ -191,12 +169,13 @@ class AodaacAggregatorService {
     }
 
     def checkIncompleteJobs() {
-        def jobList = AodaacJob.findAll("from AodaacJob as job where job.expired = false and (job.latestStatus.jobEnded is null or job.latestStatus.jobEnded = false)")
+
+        def endedList = AodaacJob.Status.endedStatuses.collect{"'$it'"}.join(",")
+        def jobList = AodaacJob.findAll("from AodaacJob as job where job.status not in ($endedList)")
 
         log.debug "number of jobs: " + jobList.size()
 
         jobList.each {
-            log.debug it
             updateJob it
         }
     }
@@ -212,80 +191,27 @@ class AodaacAggregatorService {
         url.split("/").last()
     }
 
-    void _retrieveResults(job) {
-
-        log.debug "Retrieving results for $job"
-
-        // Generate url
-        def apiCall = _aggregatorCommandAddress(COMMAND_GET_DATA, [job.jobId])
-
-        log.debug "apiCall: $apiCall"
-
-        // Make the call
-        def response = apiCall.toURL().text
-
-        log.debug "response: $response"
-
-        job.result = new AodaacJobResult(dataUrl: response?.trim())
-        job.save failOnError: true
-    }
-
-    void _verifyResultFileExists(job) {
-
-        log.debug "Verifying results file exists for $job"
-
-        // Reset data file exists
-        job.dataFileExists = false
-
-        try {
-            def url = job.result.dataUrl.toURL()
-
-            log.debug "url: $url"
-
-            def conn = url.openConnection()
-            conn.requestMethod = "HEAD"
-            conn.connect()
-
-            log.debug "conn.responseCode: ${conn.responseCode}"
-
-            if (conn.responseCode in HTTP_SUCCESS_CODES) {
-
-                job.dataFileExists = true
-            }
-
-            // Record date this check occurred
-            job.mostRecentDataFileExistCheck = new Date()
-            job.save failOnError: true
-        }
-        catch (Exception e) {
-
-            log.info "Could not check existence of result file for job '$job'", e
-        }
-    }
-
     void _sendNotificationEmail(job) {
 
-        if (!(job.latestStatus.jobEnded || job.expired)) {
+        if (!job.hasEnded()) {
 
-            log.debug "Will not send notification email for $job which has not ended or expired."
+            log.debug "Will not send notification email for $job which has not ended."
             return
         }
 
         if (!job.notificationEmailAddress) {
 
-            log.warn "No notification email address, not sending email for $job"
+            log.error "No notification email address, not sending email for $job"
             return
         }
 
         try {
             log.info "Sending notification email for $job to '${job.notificationEmailAddress}'"
 
-            // Message replacement args
-            def args = _getEmailBodyReplacements(job)
-
-            def emailBodyCode = _getEmailBodyMessageCode(job)
-            def emailBody = _getMessage(emailBodyCode, args)
-
+            def emailBody = _getMessage(
+                _getEmailBodyMessageCode(job),
+                _getEmailBodyReplacements(job)
+            )
 
             def emailSubject = _getMessage(
                 "${portalInstance.code()}.aodaacJob.notification.email.subject",
@@ -305,97 +231,39 @@ class AodaacAggregatorService {
         }
     }
 
-    def _aggregatorCommandAddress(command, args) {
-
-        "${baseUrl}cgi-bin/IMOS.cgi?$environment,$command,${args.join(',')}"
-    }
-
-    def _jobIsTakingTooLong(job) {
-
-        def jobHasMadeProgress = job.latestStatus.urlsComplete > 0
-
-        def duration
-
-        use(groovy.time.TimeCategory) {
-            duration = new Date() - job.dateCreated
-        }
-
-        def agejobAge = duration.hours + (duration.days * 24)
-        def idleJobThreshold = grailsApplication.config.aodaacAggregator.idleJobTimeout
-        def jobTooOld = agejobAge >= idleJobThreshold
-
-        def isTakingTooLong = jobTooOld && !jobHasMadeProgress
-
-        log.debug "duration: $duration"
-        log.debug "isTakingTooLong == (jobTooOld && !isMakingProgress) == ($jobTooOld && !$jobHasMadeProgress) == $isTakingTooLong"
-
-        return isTakingTooLong
-    }
-
-    def _markJobAsExpired(job) {
-
-        job.expired = true
-        job.save flush: true
-    }
-
     def _getEmailBodyReplacements(job) {
 
         def replacements = []
 
         // If successful
-        if (job.dataFileExists) {
+        if (job.wasSuccessful()) {
 
             // Success message
-            replacements << job.result.dataUrl
+            replacements << job.files
         }
         else {
+            // Job failed
+            def errorMessage = job.errors
 
-            // Record params
-            def p = job.jobParams
-            def paramsString = """\
-                ProductId: ${ p.productId }
-                Output format: ${ p.outputFormat }
-                Date range start: ${ p.dateRangeStart }
-                Date range end: ${ p.dateRangeEnd }
-                Time of day start: ${ p.timeOfDayRangeStart }
-                Time of day end: ${ p.timeOfDayRangeEnd }
-                Lat range start: ${ p.latitudeRangeStart }
-                Lat range end: ${ p.latitudeRangeEnd }
-                Long range start: ${ p.longitudeRangeStart }
-                Long range end: ${ p.longitudeRangeEnd }""".stripIndent()
-
-            // If expired
-            if (job.expired) {
-
-                replacements << job.dateCreated.dateTimeString
-                replacements << paramsString
+            if (errorMessage) {
+                errorMessage = _prettifyErrorMessage(errorMessage)
             }
             else {
-
-                // Job failed
-                def errorMessage = job.latestStatus.theErrors
-
-                if (errorMessage) {
-                    errorMessage = _prettifyErrorMessage(errorMessage)
-                }
-                else {
-                    errorMessage = job.latestStatus.urlCount ? "Unknown error (URLs found: ${job.latestStatus.urlCount})" : "No URLs found to aggregate. Try broadening the search parameters."
-                }
-
-                replacements << errorMessage
-                replacements << paramsString
+                errorMessage = job.urlCount ? "Unknown error" : "No URLs found to aggregate. Try broadening the search parameters."
             }
+
+            replacements << errorMessage
         }
 
         // Add footer
-        replacements << _getMessage('${portalInstance.code()}.emailFooter')
+        replacements << _getMessage("${portalInstance.code()}.emailFooter")
 
         return replacements
     }
 
     def _prettifyErrorMessage(errorMessage) {
 
-        def prettificationEntry = grailsApplication?.config?.aodaacAggregator?.errorLookup?.find {
+        def prettificationEntry = grailsApplication.config.aodaacAggregator.errorLookup?.find {
             errorMessage ==~ it.key
         }
 
@@ -408,21 +276,7 @@ class AodaacAggregatorService {
 
     def _getEmailBodyMessageCode(job) {
 
-        def codePart
-
-        if (job.dataFileExists) {
-
-            codePart = 'success'
-        }
-        else if (job.expired) {
-
-            codePart = 'expired'
-        }
-        else {
-
-            codePart = 'failed'
-        }
-
+        def codePart = job.status.toString().toLowerCase()
         return "${portalInstance.code()}.aodaacJob.notification.email.${codePart}Body"
     }
 
