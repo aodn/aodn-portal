@@ -77,8 +77,12 @@ Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
         this.clearFilter();
 
         this._matchPreviousSelection();
-        this._limitRecords();
-        this._sortBySortOrderAndDisplay();
+        
+        if (this.canLimit() && !this.showAll) {
+            this._limitNumberOfDisplayedRecords();
+        }
+        
+        this.sort("display", "ASC");
     },
 
     _matchPreviousSelection: function() {
@@ -88,36 +92,26 @@ Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
         }
     },
 
-    _limitRecords: function() {
-        this._applySortOrder();
-
-        if (this._onlyShowRecordsUpToLimit()) {
-            this.filterBy(function(rec) {
-                return this._getRecordsUpToLimit().indexOf(rec) >= 0;
-            });
-        }
+    _limitNumberOfDisplayedRecords: function() {
+        this._applyLimitDisplaySortOrder();
+        this._filterRecordsPastLimit();
+    },
+    
+    _filterRecordsPastLimit: function() {
+        this.filterBy(function(rec) {
+            return this._getRecordsUpToLimit().indexOf(rec) >= 0;
+        });
     },
 
     _getRecordsUpToLimit: function() {
         return this.getRange(0, this.limitTo - 1);
     },
 
-    _onlyShowRecordsUpToLimit: function() {
-        return !this.showAll && this.canLimit();
-    },
-
     canLimit: function() {
         return this.getCount() > this.limitTo;
     },
 
-    _sortBySortOrderAndDisplay: function() {
-        this.multiSort([
-            { field: 'sortOrder', direction: 'ASC' },
-            { field: 'display', direction: 'ASC' }
-        ]);
-    },
-
-    _applySortOrder: function() {
+    _applyLimitDisplaySortOrder: function() {
         this.each(function(record) {
             record.set(
                 'sortOrder',
