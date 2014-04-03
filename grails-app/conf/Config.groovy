@@ -70,7 +70,7 @@ help.url = "http://help.aodn.org.au/"
 
 // AODAAC Aggregator
 aodaacAggregator {
-    url = "http://aodaac.emii.org.au/"
+    url = "http://aodaac.aodn.org.au"
     environment = "prod"
     idleJobTimeout = 1 // In hours
     errorLookup = [
