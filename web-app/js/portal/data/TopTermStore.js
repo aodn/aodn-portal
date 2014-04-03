@@ -93,7 +93,7 @@ Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
     },
 
     _limitNumberOfDisplayedRecords: function() {
-        this._applyLimitedDisplaySortOrder();
+        this._applyLimitDisplaySortOrder();
         this._filterRecordsPastLimit();
     },
     
@@ -111,7 +111,7 @@ Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
         return this.getCount() > this.limitTo;
     },
 
-    _applyLimitedDisplaySortOrder: function() {
+    _applyLimitDisplaySortOrder: function() {
         this.each(function(record) {
             record.set(
                 'sortOrder',

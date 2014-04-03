@@ -39,7 +39,7 @@ describe("Portal.data.TopTermStore", function() {
         describe('when limiting display to top terms', function() {
     
             it('sets default sortOrder', function() {
-                topTermStore._applyLimitedDisplaySortOrder();
+                topTermStore._applyLimitDisplaySortOrder();
     
                 expect(topTermStore.getCount()).toEqual(3);
                 expect(topTermStore.getAt(0).get('sortOrder')).toEqual(1);
