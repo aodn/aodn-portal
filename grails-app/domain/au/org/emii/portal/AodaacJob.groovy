@@ -12,7 +12,7 @@ import static au.org.emii.portal.AodaacJob.Status.*
 class AodaacJob {
 
     enum Status {
-        NEW,
+        UNKNOWN,
         INITIATED,
         WAITING,
         RUNNING,
@@ -28,7 +28,7 @@ class AodaacJob {
     String jobId
     String notificationEmailAddress
     Date statusUpdatedDate
-    Status status
+    Status status = UNKNOWN
 
     static constraints = {
         jobId blank: false
@@ -40,14 +40,19 @@ class AodaacJob {
     AodaacJob(jobId, notificationEmailAddress) {
 
         dateCreated = new Date()
+        status = INITIATED
 
         this.jobId = jobId
         this.notificationEmailAddress = notificationEmailAddress
-        status = NEW
     }
 
-    def wasSuccessful() {
-        status == SUCCESS
+    def setStatus(status) {
+        this.status = status as Status
+        statusUpdatedDate = new Date()
+    }
+
+    def failed() {
+        status == FAILED
     }
 
     def hasEnded() {

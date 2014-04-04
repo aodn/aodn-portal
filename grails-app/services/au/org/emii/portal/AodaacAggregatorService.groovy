@@ -12,7 +12,6 @@ import grails.converters.JSON
 
 import java.text.SimpleDateFormat
 
-import static au.org.emii.portal.AodaacJob.Status.INITIATED
 import static au.org.emii.portal.UrlUtils.ensureTrailingSlash
 
 class AodaacAggregatorService {
@@ -115,9 +114,8 @@ class AodaacAggregatorService {
             log.debug "responseJson: $responseJson"
 
             def jobId = _jobIdFromMonitorUrl(responseJson.url)
-            def job = new AodaacJob(jobId, notificationEmailAddress)
 
-            job.status = INITIATED
+            def job = new AodaacJob(jobId, notificationEmailAddress)
             job.save failOnError: true
 
             return job
@@ -152,8 +150,7 @@ class AodaacAggregatorService {
             def currentDetails = JSON.parse(response)
             log.debug "currentDetails: $currentDetails"
 
-            job.status = currentDetails.status as AodaacJob.Status
-            job.statusUpdatedDate = new Date()
+            job.setStatus currentDetails.status
             job.save failOnError: true
 
             if (job.hasEnded()) {
@@ -240,7 +237,7 @@ class AodaacAggregatorService {
         def replacements = []
 
         // If successful
-        if (!job.wasSuccessful()) {
+        if (job.failed()) {
 
             // Job failed
             def errorMessage = job.errors
