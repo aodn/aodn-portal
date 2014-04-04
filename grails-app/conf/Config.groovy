@@ -129,7 +129,7 @@ environments {
         //grails.resources.mappers.hashandcache.enabled = false
 
         // URLs
-        grails.serverURL = "http://131.217.38.41:8090/aodn-portal"
+        grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
         spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
         wmsScanner.url = env['WMS_SCANNER_URL'] ?: "http://localhost:8100/WmsScannerGrails/"
         wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
@@ -293,4 +293,3 @@ log4j = {
             'grails.app.domain',
             'grails.app.realms'
 }
-
