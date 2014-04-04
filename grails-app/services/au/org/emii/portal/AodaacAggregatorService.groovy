@@ -12,7 +12,7 @@ import grails.converters.JSON
 
 import java.text.SimpleDateFormat
 
-import static au.org.emii.portal.AodaacJob.Status.SENT
+import static au.org.emii.portal.AodaacJob.Status.INITIATED
 import static au.org.emii.portal.UrlUtils.ensureTrailingSlash
 
 class AodaacAggregatorService {
@@ -117,7 +117,7 @@ class AodaacAggregatorService {
             def jobId = _jobIdFromMonitorUrl(responseJson.url)
             def job = new AodaacJob(jobId, notificationEmailAddress)
 
-            job.status = SENT
+            job.status = INITIATED
             job.save failOnError: true
 
             return job
@@ -158,7 +158,9 @@ class AodaacAggregatorService {
 
             if (job.hasEnded()) {
 
-                _sendNotificationEmail job
+                def filesReplacement = _linksForFiles(currentDetails.files)
+
+                _sendNotificationEmail(job, [filesReplacement])
             }
         }
         catch (Exception e) {
@@ -191,7 +193,7 @@ class AodaacAggregatorService {
         url.split("/").last()
     }
 
-    void _sendNotificationEmail(job) {
+    void _sendNotificationEmail(job, replacements = []) {
 
         if (!job.hasEnded()) {
 
@@ -208,9 +210,11 @@ class AodaacAggregatorService {
         try {
             log.info "Sending notification email for $job to '${job.notificationEmailAddress}'"
 
+            replacements.addAll _getEmailBodyReplacements(job)
+
             def emailBody = _getMessage(
                 _getEmailBodyMessageCode(job),
-                _getEmailBodyReplacements(job)
+                replacements
             )
 
             def emailSubject = _getMessage(
@@ -236,12 +240,8 @@ class AodaacAggregatorService {
         def replacements = []
 
         // If successful
-        if (job.wasSuccessful()) {
+        if (!job.wasSuccessful()) {
 
-            // Success message
-            replacements << job.files
-        }
-        else {
             // Job failed
             def errorMessage = job.errors
 
@@ -259,6 +259,11 @@ class AodaacAggregatorService {
         replacements << _getMessage("${portalInstance.code()}.emailFooter")
 
         return replacements
+    }
+
+    def _linksForFiles(files) {
+
+        files.collect{ """<a href="$it">$it</a>""" }.join(" ")
     }
 
     def _prettifyErrorMessage(errorMessage) {

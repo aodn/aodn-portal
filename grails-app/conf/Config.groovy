@@ -148,15 +148,7 @@ environments {
         wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
         gogoduck.url = env['GOGODUCK_URL'] ?: "http://localhost:8300/go-go-duck"
 
-        grails {
-            mail {
-                host = "localhost"
-                port = 25
-
-                username = "username"
-                props = ["mail.smtp.auth":"false"]
-            }
-        }
+        grails.mail.disabled = true
     }
 
     test {
@@ -181,7 +173,7 @@ environments {
             mail {
                 host = "localhost"
                 port = 25
-                props = ["mail.smtp.auth":"false"]
+                props = ["mail.smtp.auth": "false"]
             }
         }
     }

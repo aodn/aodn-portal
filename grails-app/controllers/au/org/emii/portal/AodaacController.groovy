@@ -46,6 +46,6 @@ class AodaacController {
 
         def job = aodaacAggregatorService.createJob(params.notificationEmailAddress, params)
 
-        render text: "Job created (ID: ${ job?.jobId })"
+        render text: "Job created (ID: ${job.jobId})"
     }
 }

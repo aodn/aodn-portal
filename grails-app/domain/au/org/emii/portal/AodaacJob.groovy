@@ -13,7 +13,7 @@ class AodaacJob {
 
     enum Status {
         NEW,
-        SENT,
+        INITIATED,
         WAITING,
         RUNNING,
         FAILED,
@@ -29,16 +29,10 @@ class AodaacJob {
     String notificationEmailAddress
     Date statusUpdatedDate
     Status status
-    String files
 
     static constraints = {
         jobId blank: false
         statusUpdatedDate nullable: true
-        files nullable: true
-    }
-
-    static mapping = {
-        files type: "text"
     }
 
     AodaacJob() { /* For Hibernate */ }
@@ -57,7 +51,7 @@ class AodaacJob {
     }
 
     def hasEnded() {
-        Status.endedStatuses.contains(status)
+        endedStatuses.contains(status)
     }
 
     @Override
