@@ -17,13 +17,6 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         Ext.apply(this, cfg);
 
-        // TODO: probably we can remove this 'singleton' type access to the 'ActiveGeoNetworkRecordStore'
-        // and only pass it down to the components that actually need access to it.
-        Portal.data.ActiveGeoNetworkRecordStore.THE_ACTIVE_RECORDS_INSTANCE =
-            new Portal.data.ActiveGeoNetworkRecordStore({
-                layerStore: this.visualiseLayerStore
-            });
-
         this.addEvents('tabchange');
 
         var config = Ext.apply({
