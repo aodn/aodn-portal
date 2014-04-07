@@ -43,11 +43,15 @@ class AodaacAggregatorService {
         "${baseUrl}aodaac/${environment}/products.json"
     }
 
-    def getJobCreationUrl() {
-        "${baseUrl}cgi-bin/aodaac.py?site=$environment&task=init"
+    def jobCreationUrl(apiCallArgs) {
+
+        UrlUtils.urlWithQueryString(
+            "${baseUrl}cgi-bin/aodaac.py?site=$environment&task=init",
+            apiCallArgs
+        )
     }
 
-    def getJobUpdateUrl(job) {
+    def jobUpdateUrl(job) {
         "${baseUrl}status/$environment/${job.jobId}.json"
     }
 
@@ -100,32 +104,17 @@ class AodaacAggregatorService {
             put 'products', 32
         }
 
-        // Generate url
-        def apiCall = UrlUtils.urlWithQueryString(jobCreationUrl, apiCallArgs)
-        def responseText
+        def response = _makeApiCall(
+            jobCreationUrl(apiCallArgs)
+        )
 
-        try {
-            log.debug "apiCall: $apiCall"
+        def jobId = _jobIdFromMonitorUrl(response.url)
 
-            // Make the call
-            responseText = apiCall.toURL().text
-            def responseJson = JSON.parse(responseText)
+        def job = new AodaacJob(jobId, notificationEmailAddress)
+        job.save failOnError: true
 
-            log.debug "responseJson: $responseJson"
-
-            def jobId = _jobIdFromMonitorUrl(responseJson.url)
-
-            def job = new AodaacJob(jobId, notificationEmailAddress)
-            job.save failOnError: true
-
-            return job
-        }
-        catch (Exception e) {
-
-            log.info "Call to '$apiCall' failed", e
-            throw new AodaacException("Unable to create new job (response: '$responseText')", e)
-        }
-    }
+        return job
+     }
 
     void updateJob(job) {
 
@@ -133,37 +122,22 @@ class AodaacAggregatorService {
 
         if (job.hasEnded()) {
 
-            log.info "Don't update job as we know if has already ended"
+            log.info "Don't update job as we know it has already ended"
             return
         }
 
-        // Generate url
-        def apiCall = getJobUpdateUrl(job)
+        def currentDetails = _makeApiCall(
+            jobUpdateUrl(job)
+        )
 
-        try {
-            log.debug "apiCall: $apiCall"
+        job.setStatus currentDetails.status
+        job.save failOnError: true
 
-            // Make the call
-            def response = apiCall.toURL().text
-            log.debug "response: $response"
+        if (_shouldSendEmail(job)) {
 
-            def currentDetails = JSON.parse(response)
-            log.debug "currentDetails: $currentDetails"
+            def filesReplacement = _linksForFiles(currentDetails.files)
 
-            job.setStatus currentDetails.status
-            job.save failOnError: true
-
-            if (job.hasEnded()) {
-
-                def filesReplacement = _linksForFiles(currentDetails.files)
-
-                _sendNotificationEmail(job, [filesReplacement])
-            }
-        }
-        catch (Exception e) {
-
-            log.info "Call to '$apiCall' failed", e
-            throw new AodaacException("Unable to update job '$job'", e)
+            _sendNotificationEmail(job, [filesReplacement])
         }
     }
 
@@ -181,6 +155,24 @@ class AodaacAggregatorService {
 
     // Supporting logic
 
+    def _makeApiCall(apiCallUrl) {
+
+        try {
+            log.debug "API call URL: $apiCallUrl"
+
+            // Make the call
+            def response = apiCallUrl.toURL().text
+            log.debug "response: $response"
+
+            return JSON.parse(response)
+        }
+        catch (Exception e) {
+
+            log.info "Call to AODAAC API failed. URL: '$apiCall'", e
+            throw new AodaacException("Call to AODAAC API failed. URL: '$apiCall'", e)
+        }
+    }
+
     def _dateFromParams(dateStringIn) {
         def date = FROM_JAVASCRIPT_DATE_FORMATTER.parse(dateStringIn)
         return TO_AGGREGATOR_DATE_FORMATTER.format(date)
@@ -190,19 +182,12 @@ class AodaacAggregatorService {
         url.split("/").last()
     }
 
+    void _shouldSendEmail(job) {
+
+        job.hasEnded() && job.notificationEmailAddress
+    }
+
     void _sendNotificationEmail(job, replacements = []) {
-
-        if (!job.hasEnded()) {
-
-            log.debug "Will not send notification email for $job which has not ended."
-            return
-        }
-
-        if (!job.notificationEmailAddress) {
-
-            log.error "No notification email address, not sending email for $job"
-            return
-        }
 
         try {
             log.info "Sending notification email for $job to '${job.notificationEmailAddress}'"
