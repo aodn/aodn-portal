@@ -169,8 +169,8 @@ class AodaacAggregatorService {
         }
         catch (Exception e) {
 
-            log.info "Call to AODAAC API failed. URL: '$apiCall'", e
-            throw new AodaacException("Call to AODAAC API failed. URL: '$apiCall'", e)
+            log.info "Call to AODAAC API failed. URL: '$apiCallUrl'", e
+            throw new AodaacException("Call to AODAAC API failed. URL: '$apiCallUrl'", e)
         }
     }
 
