@@ -58,7 +58,8 @@ class AodaacAggregatorService {
     "subsetDescriptor":{
         "temporalExtent":{"start":"2013-11-01T07:59:59.999Z","end":"2013-11-20T10:30:00.000Z"},
         "spatialExtent":{"north":-31.5537109375,"south":-32.0810546875,"east":116.89453125,"west":113.466796875}
-    }
+    },
+    aodaacProductIds: [32]
 }""")
 
         def subset = params.subsetDescriptor
@@ -72,7 +73,7 @@ class AodaacAggregatorService {
             'slat': spatialExtent.south,
             'elon': spatialExtent.east,
             'wlon': spatialExtent.west,
-            'products': 32
+            'products': params.aodaacProductIds.join(",")
         ]
 
         def response = _makeApiCall(
