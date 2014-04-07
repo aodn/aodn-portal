@@ -92,17 +92,15 @@ class AodaacAggregatorService {
         def temporalExtent = subset.temporalExtent
         def spatialExtent = subset.spatialExtent
 
-        def apiCallArgs = [:]
-
-        apiCallArgs.with {
-            put 'startdate', _dateFromParams(temporalExtent.start)
-            put 'stopdate',  _dateFromParams(temporalExtent.end)
-            put 'nlat', spatialExtent.north
-            put 'slat', spatialExtent.south
-            put 'elon', spatialExtent.east
-            put 'wlon', spatialExtent.west
-            put 'products', 32
-        }
+        def apiCallArgs = [
+            'startdate': _dateFromParams(temporalExtent.start),
+            'stopdate':  _dateFromParams(temporalExtent.end),
+            'nlat': spatialExtent.north,
+            'slat': spatialExtent.south,
+            'elon': spatialExtent.east,
+            'wlon': spatialExtent.west,
+            'products': 32
+        ]
 
         def response = _makeApiCall(
             jobCreationUrl(apiCallArgs)
