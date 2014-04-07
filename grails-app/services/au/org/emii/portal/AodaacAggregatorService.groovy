@@ -21,7 +21,7 @@ class AodaacAggregatorService {
     def portalInstance
 
     // Date formats
-    static final def JAVASCRIPT_UI_DATE_OUTPUT_FORMAT = "yyyy-mm-dd'T'hh:mm:ss.SSS'Z'"
+    static final def JAVASCRIPT_UI_DATE_OUTPUT_FORMAT = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'"
     static final def AGGREGATOR_DATE_INPUT_FORMAT = "yyyy-MM-dd'T'hh:mm:ss"
     static final def FROM_JAVASCRIPT_DATE_FORMATTER = new SimpleDateFormat(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT) // 01/02/2012  -> Date Object
     static final def TO_AGGREGATOR_DATE_FORMATTER = new SimpleDateFormat(AGGREGATOR_DATE_INPUT_FORMAT) // Date Object -> 20120201
@@ -87,13 +87,13 @@ class AodaacAggregatorService {
 
     void updateJob(job) {
 
-        log.debug "Updating job $job"
-
         if (job.hasEnded()) {
 
-            log.info "Don't update job as we know it has already ended"
+            log.info "Don't update $job as we know it has already ended"
             return
         }
+
+        log.debug "Updating job $job"
 
         def currentDetails = _makeApiCall(
             jobUpdateUrl(job)
@@ -102,7 +102,7 @@ class AodaacAggregatorService {
         job.setStatus currentDetails.status
         job.save failOnError: true
 
-        if (_shouldSendEmail(job)) {
+        if (job.hasEnded()) {
 
             def filesReplacement = _linksForFiles(currentDetails.files)
 
@@ -177,12 +177,8 @@ class AodaacAggregatorService {
     }
 
     def _jobIdFromMonitorUrl(url) {
+
         url.split("/").last()
-    }
-
-    void _shouldSendEmail(job) {
-
-        job.hasEnded() && job.notificationEmailAddress
     }
 
     void _sendNotificationEmail(job, replacements = []) {
