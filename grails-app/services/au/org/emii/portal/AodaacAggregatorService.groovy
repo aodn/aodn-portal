@@ -28,33 +28,6 @@ class AodaacAggregatorService {
     static final def FROM_JAVASCRIPT_DATE_FORMATTER = new SimpleDateFormat(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT) // 01/02/2012  -> Date Object
     static final def TO_AGGREGATOR_DATE_FORMATTER = new SimpleDateFormat(AGGREGATOR_DATE_INPUT_FORMAT) // Date Object -> 20120201
 
-    def getBaseUrl() {
-
-        ensureTrailingSlash(grailsApplication.config.aodaacAggregator.url)
-    }
-
-    def getEnvironment() {
-
-        grailsApplication.config.aodaacAggregator.environment
-    }
-
-    def getProductDataJavascriptAddress() {
-
-        "${baseUrl}aodaac/${environment}/products.json"
-    }
-
-    def jobCreationUrl(apiCallArgs) {
-
-        UrlUtils.urlWithQueryString(
-            "${baseUrl}cgi-bin/aodaac.py?site=$environment&task=init",
-            apiCallArgs
-        )
-    }
-
-    def jobUpdateUrl(job) {
-        "${baseUrl}status/$environment/${job.jobId}.json"
-    }
-
     def getProductInfo(productIds) {
 
         log.debug "Getting Product Info for ids: '$productIds'. Converting from Javascript to JSON objects."
@@ -79,7 +52,7 @@ class AodaacAggregatorService {
         log.debug "Creating AODAAC Job. Notication email address: '$notificationEmailAddress'"
         log.debug "params: ${params}"
 
-        def p = JSON.parse("""{
+        params = params?: JSON.parse("""{
     "layerName":"acorn_hourly_avg_rot_qc_timeseries_url",
     "emailAddress":"dnahodil@gmail.com",
     "subsetDescriptor":{
@@ -88,7 +61,7 @@ class AodaacAggregatorService {
     }
 }""")
 
-        def subset = p.subsetDescriptor
+        def subset = params.subsetDescriptor
         def temporalExtent = subset.temporalExtent
         def spatialExtent = subset.spatialExtent
 
@@ -149,6 +122,35 @@ class AodaacAggregatorService {
         jobList.each {
             updateJob it
         }
+    }
+
+    // URLs
+
+    def getBaseUrl() {
+
+        ensureTrailingSlash(grailsApplication.config.aodaacAggregator.url)
+    }
+
+    def getEnvironment() {
+
+        grailsApplication.config.aodaacAggregator.environment
+    }
+
+    def getProductDataJavascriptAddress() {
+
+        "${baseUrl}aodaac/${environment}/products.json"
+    }
+
+    def jobCreationUrl(apiCallArgs) {
+
+        UrlUtils.urlWithQueryString(
+            "${baseUrl}cgi-bin/aodaac.py?site=$environment&task=init",
+            apiCallArgs
+        )
+    }
+
+    def jobUpdateUrl(job) {
+        "${baseUrl}status/$environment/${job.jobId}.json"
     }
 
     // Supporting logic
