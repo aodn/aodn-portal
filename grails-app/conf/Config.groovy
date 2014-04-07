@@ -136,10 +136,15 @@ openId {
 // set per-environment serverURL stem for creating absolute links
 def env = System.getenv()
 
+// Resource plugin JS files are separate and not bundled
+grails.resources.debug = true
+
 environments {
 
     development {
-        grails.resources.debug = true
+
+        //grails.resources.mappers.bundle.enabled = false
+        //grails.resources.mappers.hashandcache.enabled = false
 
         // URLs
         grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"

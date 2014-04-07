@@ -11,9 +11,6 @@ eventCreateWarStart = { warname, stagingDir ->
     if (grailsEnv == 'production') {
         ant.delete(file: "${stagingDir}/WEB-INF/grails-app/views/robots.gsp")
     }
-
-    includeTargets << new File("${basedir}/scripts/CollatePortalJavaScriptSource.groovy")
-    collatePortalJavaScriptFiles()
 }
 
 eventCompileStart = { kind ->
