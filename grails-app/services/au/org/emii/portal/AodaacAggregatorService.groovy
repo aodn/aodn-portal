@@ -7,9 +7,7 @@
 
 package au.org.emii.portal
 
-import au.org.emii.portal.exceptions.AodaacException
 import grails.converters.JSON
-
 import java.text.SimpleDateFormat
 
 import static au.org.emii.portal.UrlUtils.ensureTrailingSlash
@@ -30,12 +28,11 @@ class AodaacAggregatorService {
 
     def getProductInfo(productIds) {
 
-        log.debug "Getting Product Info for ids: '$productIds'. Converting from Javascript to JSON objects."
+        log.debug "Getting Product Info for ids: '$productIds'."
 
-        // Get the javascript
-        def aodaacDataJson = productDataJavascriptAddress.toURL().text
-        def aodaacData = JSON.parse(aodaacDataJson).first() // Only first database is used in system currently
-        def products = aodaacData.'products'
+        def aodaacData = _makeApiCall(productDataJavascriptAddress)
+        def relevantAoddacDatabase = aodaacData.first()
+        def products = relevantAoddacDatabase.'products'
 
         return products.findAll { productIds.contains(it.id) }
     }
@@ -170,7 +167,7 @@ class AodaacAggregatorService {
         catch (Exception e) {
 
             log.info "Call to AODAAC API failed. URL: '$apiCallUrl'", e
-            throw new AodaacException("Call to AODAAC API failed. URL: '$apiCallUrl'", e)
+            throw e
         }
     }
 
