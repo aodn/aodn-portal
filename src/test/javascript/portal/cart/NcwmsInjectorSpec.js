@@ -9,13 +9,22 @@ describe('Portal.cart.NcwmsInjector', function() {
 
     var injector;
     var geoNetworkRecord;
+    var startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
+    var endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
 
     beforeEach(function() {
         injector = new Portal.cart.NcwmsInjector();
         geoNetworkRecord = {
             uuid: 9,
             grailsLayerId: 42,
-            ncwmsParams: {},
+            ncwmsParams: {
+                dateRangeStart: startDate,
+                dateRangeEnd: endDate,
+                latitudeRangeStart: -42,
+                latitudeRangeEnd: -20,
+                longitudeRangeStart: 160,
+                longitudeRangeEnd: 170
+            },
             wmsLayer: {
                 getDownloadFilter: function() {
                     return "cql_filter"
@@ -23,7 +32,8 @@ describe('Portal.cart.NcwmsInjector', function() {
                 getWfsLayerFeatureRequestUrl: function() {},
                 isNcwms: function() {return true},
                 wfsLayer: true,
-                bodaacFilterParams: {}
+                bodaacFilterParams: {},
+                aodaacProductIds: []
             },
             pointOfTruthLink: 'Link!',
             downloadableLinks: 'Downloadable link!'
@@ -200,25 +210,13 @@ describe('Portal.cart.NcwmsInjector', function() {
     describe('_generateNcwmsUrl', function() {
 
         var url;
-        var startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
-        var endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
         var format;
         var emailAddress;
-        var params;
 
         beforeEach(function() {
 
             format  = 'csv';
             emailAddress = 'gogo@duck.com';
-
-            params = {
-                dateRangeStart: startDate,
-                dateRangeEnd: endDate,
-                latitudeRangeStart: -42,
-                latitudeRangeEnd: -20,
-                longitudeRangeStart: 160,
-                longitudeRangeEnd: 170
-            };
 
             spyOn(injector, '_generateAodaacJobUrl');
             spyOn(injector, '_generateGogoduckJobUrl');
@@ -226,17 +224,17 @@ describe('Portal.cart.NcwmsInjector', function() {
 
         it('calls _generateAodaacJobUrl when an aodaac record is passed', function() {
 
-            params.productId = 'gogoAodaac';
+            geoNetworkRecord.wmsLayer.aodaacProductIds = [1,2];
 
-            url = injector._generateNcwmsUrl(params, format, emailAddress);
+            url = injector._generateNcwmsUrl(geoNetworkRecord, format, emailAddress);
             expect(injector._generateAodaacJobUrl).toHaveBeenCalled();
         });
 
         it('calls _generateGogoduckJobUrl when a gogoduck record is passed', function() {
 
-            params.layerName = 'gogoDingo';
+            geoNetworkRecord.ncwmsParams.layerName = 'gogoDingo';
 
-            url = injector._generateNcwmsUrl(params, format, emailAddress);
+            url = injector._generateNcwmsUrl(geoNetworkRecord, format, emailAddress);
             expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
         });
     });

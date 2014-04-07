@@ -31,15 +31,11 @@ describe("Portal.cart.DownloadPanelBody", function() {
     describe('generateContent', function() {
 
         var mockTemplate;
-        var testCollection1 = {value: '[Content 1]'};
-        var testCollection2 = {value: '[Content 2]'};
-        var testCollection3 = {value: '[Content 3]'};
-        var testCollection4 = {value: '[Content 4]'};
 
-        var testCollection1 = {uuid: '[Content 1]', wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
-        var testCollection2 = {uuid: '[Content 2]', wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
-        var testCollection3 = {uuid: '[Content 3]', wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
-        var testCollection4 = {uuid: '[Content 4]', wmsLayer: {wfsLayer: null, isNcwms: noOp()}};
+        var testCollection1 = {uuid: '[Content 1]', wmsLayer: {wfsLayer: null, isNcwms: noOp(), aodaacProductIds: []}};
+        var testCollection2 = {uuid: '[Content 2]', wmsLayer: {wfsLayer: null, isNcwms: noOp(), aodaacProductIds: []}};
+        var testCollection3 = {uuid: '[Content 3]', wmsLayer: {wfsLayer: null, isNcwms: noOp(), aodaacProductIds: []}};
+        var testCollection4 = {uuid: '[Content 4]', wmsLayer: {wfsLayer: null, isNcwms: noOp(), aodaacProductIds: []}};
 
         beforeEach(function() {
 
