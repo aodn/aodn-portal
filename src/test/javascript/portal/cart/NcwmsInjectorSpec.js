@@ -9,11 +9,13 @@ describe('Portal.cart.NcwmsInjector', function() {
 
     var injector;
     var geoNetworkRecord;
-    var startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
-    var endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
+    var startDate;
+    var endDate;
 
     beforeEach(function() {
         injector = new Portal.cart.NcwmsInjector();
+        startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
+        endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
         geoNetworkRecord = {
             uuid: 9,
             grailsLayerId: 42,
