@@ -120,7 +120,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Object, {
                 return;
             }
 
-            var downloadUrl = this._generateNcwmsUrl(collection.ncwmsParams, format, emailAddress);
+            var downloadUrl = this._generateNcwmsUrl(collection, format, emailAddress);
             Ext.Ajax.request({
                 url: downloadUrl,
                 scope: this,
@@ -205,20 +205,26 @@ Portal.cart.NcwmsInjector = Ext.extend(Object, {
         return emailAddress || OpenLayers.i18n('emailAddressPlaceholder');
     },
 
-    _generateNcwmsUrl: function(params, format, emailAddress) {
+    _generateNcwmsUrl: function(collection, format, emailAddress) {
 
         var url = '';
+        var params = collection.ncwmsParams;
 
-        if (params.productId) {
-            url = this._generateAodaacJobUrl(params, format, emailAddress);
+        if (this._isAodaacLayer(collection)) {
+            url = this._generateAodaacJobUrl(collection, format, emailAddress);
         }
         else {
             if (params.layerName) {
-                url = this._generateGogoduckJobUrl(params, emailAddress);
+                url = this._generateGogoduckJobUrl(collection, emailAddress);
             }
         }
 
         return url;
+    },
+
+    _isAodaacLayer: function(collection) {
+
+        return collection.wmsLayer.aodaacProductIds.length > 0;
     },
 
     _generateAodaacJobUrl: function(params, format, email) {

@@ -232,6 +232,10 @@ class Layer {
         child.parent = null
     }
 
+    def getAodaacProductIds() {
+
+        AodaacProductLink.findAllByServerAndLayerName(server, name).collect { it.productId }
+    }
 
     def getAllStyles() {
 

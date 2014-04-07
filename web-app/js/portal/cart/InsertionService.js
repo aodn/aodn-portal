@@ -45,7 +45,19 @@ Portal.cart.InsertionService = Ext.extend(Object, {
     },
 
     _isDownloadable: function(collection) {
-        return (collection.wmsLayer.wfsLayer || collection.wmsLayer.urlDownloadFieldName);
+        return (this._hasWfsLayer(collection) || this._hasUrlDownloadField(collection) || this._isAodaac(collection));
+    },
+
+    _hasWfsLayer: function(collection) {
+        return collection.wmsLayer.wfsLayer;
+    },
+
+    _hasUrlDownloadField: function(collection) {
+        return collection.wmsLayer.urlDownloadFieldName;
+    },
+
+    _isAodaac: function(collection) {
+        return collection.wmsLayer.aodaacProductIds.length > 0;
     },
 
     _getNcwmsInjector: function(config, collection) {
