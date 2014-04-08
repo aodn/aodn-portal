@@ -32,7 +32,6 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
         Portal.details.SpatialConstraintDisplayPanel.superclass.constructor.call(this, config);
 
         if (this.map) {
-            this.map.events.addEventType('spatialconstraintadded');
 
             this.map.events.on({
                 scope: this,
@@ -44,9 +43,15 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
                 'spatialconstraintcleared': this._showCardForNone
             });
 
+            this.map.events.on({
+                scope: this,
+                'spatialconstrainttypechanged': this._showCardForNone
+            });
+
             this.on('beforedestroy', function(self) {
                 self.map.events.unregister('spatialconstraintadded', self, self._showCardForGeometry);
                 self.map.events.unregister('spatialconstraintcleared', self, self._showCardForNone);
+                self.map.events.unregister('spatialconstrainttypechanged', self, self._showCardForNone);
             });
 
             this._showCardForGeometry(this.map.getConstraint());

@@ -35,6 +35,24 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
 
             expect(displayPanel.polygonDisplayPanel.setGeometry).toHaveBeenCalled();
         });
+
+        it("subscribes to 'spatialconstraintcleared' event", function() {
+            var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
+            spyOn(displayPanel, '_showCard');
+
+            map.events.triggerEvent('spatialconstraintcleared');
+
+            expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.noneDisplayPanel);
+        });
+
+        it("subscribes to 'spatialconstrainttypechanged' event", function() {
+            var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
+            spyOn(displayPanel, '_showCard');
+
+            map.events.triggerEvent('spatialconstrainttypechanged');
+
+            expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.noneDisplayPanel);
+        });
     });
 
     describe('box, polygon or none', function() {
