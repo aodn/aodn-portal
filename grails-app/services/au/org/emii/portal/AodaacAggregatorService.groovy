@@ -30,6 +30,10 @@ class AodaacAggregatorService {
 
         log.debug "Getting Product Info for ids: '$productIds'."
 
+        if (!productIds) {
+            return []
+        }
+
         def aodaacData = _makeApiCall(productDataJavascriptAddress)
         def relevantAoddacDatabase = aodaacData.first()
         def products = relevantAoddacDatabase.'products'

@@ -41,6 +41,13 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         service.metaClass._getMessage = { key, replacements -> "$key $replacements" }
     }
 
+    void testGetProductInfoNoIds() {
+
+        service.metaClass._makeApiCall = { fail "Should not be called" }
+
+        assertEquals([], service.getProductInfo([]))
+    }
+
     void testGetProductInfo() {
 
         def p1 = [id: 1];
