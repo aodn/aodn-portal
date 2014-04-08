@@ -198,6 +198,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
         mockDomain(Server, [server1])
         mockDomain(Layer, [layer1, layer2])
+        AodaacProductLink.metaClass.static.findAllByServerAndLayerName = { server, name -> [] }
 
         this.controller.params.layerId = 5
         this.controller.showLayerByItsId()
