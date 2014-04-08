@@ -7,40 +7,9 @@
 
 package au.org.emii.portal
 
-import grails.converters.JSON
-
 class AodaacController {
 
     def aodaacAggregatorService
-
-    def index = {
-
-        [:]
-    }
-
-    def testCreateJob = {
-
-        aodaacAggregatorService.createJob(
-            'dnahodil@utas.edu.au',
-            [:]
-        )
-
-        redirect action: 'index'
-    }
-
-    def updateJob = {
-
-        AodaacJob.list().each {
-            aodaacAggregatorService.updateJob(it)
-        }
-
-        redirect action: 'index'
-    }
-
-    def test = {
-
-        render aodaacAggregatorService.getProductInfo([34]) as JSON
-    }
 
     def createJob = {
 
