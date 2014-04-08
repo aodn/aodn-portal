@@ -11,6 +11,8 @@ import org.apache.commons.lang.builder.EqualsBuilder
 
 class Layer {
 
+    def aodaacAggregatorService
+
     String name
     String namespace
     String title
@@ -232,9 +234,11 @@ class Layer {
         child.parent = null
     }
 
-    def getAodaacProductIds() {
+    def getAodaacProducts() {
 
-        AodaacProductLink.findAllByServerAndLayerName(server, name).collect { it.productId }
+        aodaacAggregatorService.getProductInfo(
+            aodaacAggregatorService.productIdsForLayer(this)
+        )
     }
 
     def getAllStyles() {

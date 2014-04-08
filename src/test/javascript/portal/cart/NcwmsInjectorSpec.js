@@ -35,7 +35,7 @@ describe('Portal.cart.NcwmsInjector', function() {
                 isNcwms: function() {return true},
                 wfsLayer: true,
                 bodaacFilterParams: {},
-                aodaacProductIds: [],
+                aodaacProducts: [],
                 isAodaac: noOp
             },
             pointOfTruthLink: 'Link!',
