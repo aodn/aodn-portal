@@ -185,8 +185,6 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('builds aodaac parameters if an aodaac layer is passed', function() {
 
-            var config;
-
             ncwmsPanel.productsInfo = 'productsInfo';
             ncwmsPanel.selectedProductInfo = {
                 extents: {
@@ -201,16 +199,15 @@ describe('Portal.details.NcWmsPanel', function() {
                 }
             };
 
-            config = ncwmsPanel._buildParameters(geom);
+            ncwmsPanel._buildParameters(geom);
             expect(ncwmsPanel._buildAodaacParams).toHaveBeenCalled();
         });
 
         it('builds gogoduck parameters if a gogoduck layer is passed', function() {
 
-            var config;
             ncwmsPanel.selectedLayer = layer;
 
-            config = ncwmsPanel._buildParameters(geom);
+            ncwmsPanel._buildParameters(geom);
             expect(ncwmsPanel._buildGogoduckParams).toHaveBeenCalled();
         });
     });
