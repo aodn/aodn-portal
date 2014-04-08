@@ -58,13 +58,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
 
     _isAodaac: function(collection) {
 
-        var productIdsPresent = false;
-
-        if (collection.wmsLayer.aodaacProductIds) {
-            productIdsPresent = collection.wmsLayer.aodaacProductIds.length > 0;
-        }
-
-        return productIdsPresent;
+        return collection.wmsLayer.isAodaac();
     },
 
     _getNcwmsInjector: function(config, collection) {

@@ -177,6 +177,11 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
+OpenLayers.Layer.WMS.prototype.isAodaac = function() {
+
+    return this.aodaacProductIds.length > 0;
+};
+
 OpenLayers.Layer.WMS.prototype.isKnownToThePortal = function() {
     return (this.grailsLayerId) ? true: false;
 };

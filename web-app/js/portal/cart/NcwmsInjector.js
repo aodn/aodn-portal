@@ -224,7 +224,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Object, {
 
     _isAodaacLayer: function(collection) {
 
-        return collection.wmsLayer.aodaacProductIds.length > 0;
+        return collection.wmsLayer.isAodaac();
     },
 
     _generateAodaacJobUrl: function(params, format, email) {
