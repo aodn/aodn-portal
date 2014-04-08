@@ -24,8 +24,8 @@ describe('Portal.details.NcWmsPanel', function() {
 
         ncwmsPanel = new Portal.details.NcWmsPanel({ map: map });
 
-        ncwmsPanel._setBounds =  function() {};
-        ncwmsPanel._removeLoadingInfo = function() {};
+        ncwmsPanel._setBounds =  noOp;
+        ncwmsPanel._removeLoadingInfo = noOp;
         layer.getMissingDays =  function() { return [] };
         layer.isNcwms = function() { return true };
         layer.events = { on: noOp };
@@ -188,17 +188,18 @@ describe('Portal.details.NcWmsPanel', function() {
             var config;
 
             ncwmsPanel.productsInfo = 'productsInfo';
-            ncwmsPanel.selectedProductInfo = 'selectedProductsInfo';
-            ncwmsPanel.selectedProductInfo.extents = {
-                lat: {
-                    min: -42,
-                    max: -20
-                },
-                lon: {
-                    min: 160,
-                    max: 170
+            ncwmsPanel.selectedProductInfo = {
+                extents: {
+                    lat: {
+                        min: -42,
+                        max: -20
+                    },
+                    lon: {
+                        min: 160,
+                        max: 170
+                    }
                 }
-            }
+            };
 
             config = ncwmsPanel._buildParameters(geom);
             expect(ncwmsPanel._buildAodaacParams).toHaveBeenCalled();
@@ -230,7 +231,6 @@ describe('Portal.details.NcWmsPanel', function() {
                     lon: { min: 3, max: 4 }
                 }
             };
-
         });
 
         it('includes some information regardless of geometry', function () {
@@ -314,29 +314,6 @@ describe('Portal.details.NcWmsPanel', function() {
         });
     });
 
-    function _decorateMap(panel) {
-        var _panel = panel || ncwmsPanel;
-        _panel.map.getExtent = function() {
-            return new OpenLayers.Bounds(0, -90, 180, 90);
-        }
-    }
-
-    function _createMap() {
-        var map = new OpenLayers.Map('map');
-        map.addLayers([new OpenLayers.Layer.WMS(
-            "OpenLayers WMS",
-            "http://vmap0.tiles.osgeo.org/wms/vmap0?",
-            {
-                layers: 'basic'
-            },
-            {
-                'attribution': 'Provided by OSGeo'
-            })]
-        );
-
-        return map;
-    }
-
     function _applyCommonSpies(panel) {
         var _panel = panel || ncwmsPanel;
         spyOn(_panel, '_showAllControls');
@@ -363,13 +340,6 @@ describe('Portal.details.NcWmsPanel', function() {
             wfsLayer: {
                 name: 'gogoDingo'
             }
-        };
-    }
-
-    function _mockTimeRangeLabel() {
-        return {
-            loading: noOp,
-            updateTime: noOp
         };
     }
 });
