@@ -259,25 +259,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     _buildGogoduckParams: function(geometry) {
 
-        var productExtents = {
-            lat: {
-                min: this.LAT_MIN,
-                max: this.LAT_MAX
-            },
-            lon: {
-                min: this.LONG_MIN,
-                max: this.LONG_MAX
-            }
-        };
-
         var ncwmsConfig = {
             layerName: this._selectedLayerWfsLayerName(),
             dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
             dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
-            productLatitudeRangeStart: productExtents.lat.min,
-            productLongitudeRangeStart: productExtents.lon.min,
-            productLatitudeRangeEnd: productExtents.lat.max,
-            productLongitudeRangeEnd: productExtents.lon.max
+            productLatitudeRangeStart: this.LAT_MIN,
+            productLongitudeRangeStart: this.LONG_MIN,
+            productLatitudeRangeEnd: this.LAT_MAX,
+            productLongitudeRangeEnd: this.LONG_MAX
         };
 
         if (geometry) {
