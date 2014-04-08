@@ -49,33 +49,10 @@ class AodaacAggregatorService {
         log.debug "Creating AODAAC Job. Notication email address: '$notificationEmailAddress'"
         log.debug "params: ${params}"
 
-        params = params?: JSON.parse("""{
-    "layerName":"acorn_hourly_avg_rot_qc_timeseries_url",
-    "emailAddress":"dnahodil@gmail.com",
-    "subsetDescriptor":{
-        "temporalExtent":{"start":"2013-11-01T07:59:59.999Z","end":"2013-11-20T10:30:00.000Z"},
-        "spatialExtent":{"north":-31.5537109375,"south":-32.0810546875,"east":116.89453125,"west":113.466796875}
-    },
-    aodaacProductIds: [32]
-}""")
-
-        def subset = params.subsetDescriptor
-        def temporalExtent = subset.temporalExtent
-        def spatialExtent = subset.spatialExtent
-
-        def apiCallArgs = [
-            'startdate': _dateFromParams(temporalExtent.start),
-            'stopdate':  _dateFromParams(temporalExtent.end),
-            'nlat': spatialExtent.north,
-            'slat': spatialExtent.south,
-            'elon': spatialExtent.east,
-            'wlon': spatialExtent.west,
-            'products': params.aodaacProductIds.join(",")
-        ]
-
-        def response = _makeApiCall(
-            jobCreationUrl(apiCallArgs)
+        def apiCallUrl = jobCreationUrl(
+            _creationApiCallArgs(params)
         )
+        def response = _makeApiCall(apiCallUrl)
 
         def jobId = _jobIdFromMonitorUrl(response.url)
 
@@ -153,6 +130,23 @@ class AodaacAggregatorService {
 
     // Supporting logic
 
+    def _creationApiCallArgs(params) {
+
+        def subset = params.subsetDescriptor
+        def temporalExtent = subset.temporalExtent
+        def spatialExtent = subset.spatialExtent
+
+        [
+            'startdate': _dateFromParams(temporalExtent.start),
+            'stopdate':  _dateFromParams(temporalExtent.end),
+            'nlat': spatialExtent.north,
+            'slat': spatialExtent.south,
+            'elon': spatialExtent.east,
+            'wlon': spatialExtent.west,
+            'products': params.aodaacProductIds.join(",")
+        ]
+    }
+
     def _makeApiCall(apiCallUrl) {
 
         try {
@@ -218,17 +212,7 @@ class AodaacAggregatorService {
         // If successful
         if (job.failed()) {
 
-            // Job failed
-            def errorMessage = job.errors
-
-            if (errorMessage) {
-                errorMessage = _prettifyErrorMessage(errorMessage)
-            }
-            else {
-                errorMessage = job.urlCount ? "Unknown error" : "No URLs found to aggregate. Try broadening the search parameters."
-            }
-
-            replacements << errorMessage
+            replacements << _prettifyErrorMessage(job.errors)
         }
 
         // Add footer
@@ -244,15 +228,13 @@ class AodaacAggregatorService {
 
     def _prettifyErrorMessage(errorMessage) {
 
-        def prettificationEntry = grailsApplication.config.aodaacAggregator.errorLookup?.find {
+        def errorPrettifiers = grailsApplication.config.aodaacAggregator.errorLookup
+
+        def prettifier = errorPrettifiers?.find {
             errorMessage ==~ it.key
         }
 
-        if (!prettificationEntry) {
-            return errorMessage
-        }
-
-        return prettificationEntry.value(errorMessage)
+        return prettifier?.value(errorMessage) ?: "Unknown error"
     }
 
     def _getEmailBodyMessageCode(job) {

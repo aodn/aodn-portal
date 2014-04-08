@@ -19,9 +19,7 @@ class AodaacJob {
         FAILED,
         SUCCESS
 
-        static def getEndedStatuses() {
-            [FAILED, SUCCESS]
-        }
+        static def endedStatuses = [FAILED, SUCCESS]
     }
 
     Date dateCreated
