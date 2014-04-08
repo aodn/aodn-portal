@@ -31,11 +31,12 @@ describe('Portal.cart.NcwmsInjector', function() {
                 getDownloadFilter: function() {
                     return "cql_filter"
                 },
-                getWfsLayerFeatureRequestUrl: function() {},
+                getWfsLayerFeatureRequestUrl: noOp,
                 isNcwms: function() {return true},
                 wfsLayer: true,
                 bodaacFilterParams: {},
-                aodaacProductIds: []
+                aodaacProductIds: [],
+                isAodaac: noOp
             },
             pointOfTruthLink: 'Link!',
             downloadableLinks: 'Downloadable link!'
@@ -226,7 +227,7 @@ describe('Portal.cart.NcwmsInjector', function() {
 
         it('calls _generateAodaacJobUrl when an aodaac record is passed', function() {
 
-            geoNetworkRecord.wmsLayer.aodaacProductIds = [1,2];
+            geoNetworkRecord.wmsLayer.isAodaac = function() {return true};
 
             url = injector._generateNcwmsUrl(geoNetworkRecord, format, emailAddress);
             expect(injector._generateAodaacJobUrl).toHaveBeenCalled();
