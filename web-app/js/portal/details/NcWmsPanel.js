@@ -221,8 +221,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
         var config;
 
-        if (this.productsInfo && this.selectedProductInfo) {
-            config = this._buildAodaacParams(geometry, this.selectedProductInfo);
+        if (this.selectedLayer.isAodaac()) {
+            config = this._buildAodaacParams(geometry);
         }
         else {
             config = this._buildGogoduckParams(geometry);
@@ -231,12 +231,17 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         return config;
     },
 
-    _buildAodaacParams: function(geometry, info) {
+    _buildAodaacParams: function(geometry) {
 
-        var productExtents = info.extents;
+        console.log('Building AODAAC params');
+        console.log(this.selectedLayer);
+
+        var product = this.productsInfo[0];
+        console.log(product);
+        var productExtents = product.extents;
 
         var aodaacConfig = {
-            productId: info.productId,
+            productId: product.productId,
             dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
             dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
             productLatitudeRangeStart: productExtents.lat.min,
@@ -258,6 +263,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _buildGogoduckParams: function(geometry) {
+
+        console.log('Building GoGoDuck params');
 
         var ncwmsConfig = {
             layerName: this._selectedLayerWfsLayerName(),
@@ -326,7 +333,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _addDateTimeFilterToLayer: function(geometry) {
+    _addDateTimeFilterToLayer: function() {
 
         if (this.selectedLayer) {
             this.selectedLayer.bodaacFilterParams = {

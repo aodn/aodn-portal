@@ -13,8 +13,7 @@ describe('Portal.details.NcWmsPanel', function() {
         id: '45678',
         updateNcwmsParams: noOp
     };
-    var layer = _mockLayer();
-
+    var layer;
 
     beforeEach(function() {
         map = new OpenLayers.SpatialConstraintMap();
@@ -22,14 +21,16 @@ describe('Portal.details.NcWmsPanel', function() {
         spyOn(map.events, 'register');
         spyOn(Portal.ui.TimeRangeLabel.prototype, 'update');
 
-        ncwmsPanel = new Portal.details.NcWmsPanel({ map: map });
-
-        ncwmsPanel._setBounds =  noOp;
-        ncwmsPanel._removeLoadingInfo = noOp;
+        layer = _mockLayer();
         layer.getMissingDays =  function() { return [] };
         layer.isNcwms = function() { return true };
         layer.events = { on: noOp };
         layer.processTemporalExtent = noOp;
+
+        ncwmsPanel = new Portal.details.NcWmsPanel({ map: map });
+        ncwmsPanel._setBounds =  noOp;
+        ncwmsPanel._removeLoadingInfo = noOp;
+        ncwmsPanel.selectedLayer = layer;
     });
 
     describe('GeoNetworkRecord', function() {
@@ -114,10 +115,6 @@ describe('Portal.details.NcWmsPanel', function() {
 
     describe('layer temporal extent loaded', function() {
 
-        beforeEach(function() {
-            ncwmsPanel.selectedLayer = layer;
-        });
-
         it('enables the start date picker', function() {
             ncwmsPanel._layerTemporalExtentLoaded();
             expect(ncwmsPanel.startDateTimePicker.disabled).toBeFalsy();
@@ -151,16 +148,10 @@ describe('Portal.details.NcWmsPanel', function() {
             spyOn(ncwmsPanel.startDateTimePicker, 'getValue').andReturn(startTime.toDate());
             spyOn(ncwmsPanel.endDateTimePicker, 'getValue').andReturn(endTime.toDate());
 
-            var selectedLayer = {};
-            var selectedLayerName = {};
-
-            ncwmsPanel.selectedLayer = selectedLayer;
-            ncwmsPanel.selectedLayer.name = selectedLayerName;
-
             ncwmsPanel._addDateTimeFilterToLayer();
 
-            expect(selectedLayer.bodaacFilterParams.dateRangeStart).toBeSame(startTime);
-            expect(selectedLayer.bodaacFilterParams.dateRangeEnd).toBeSame(endTime);
+            expect(layer.bodaacFilterParams.dateRangeStart).toBeSame(startTime);
+            expect(layer.bodaacFilterParams.dateRangeEnd).toBeSame(endTime);
         });
     });
 
@@ -185,56 +176,37 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('builds aodaac parameters if an aodaac layer is passed', function() {
 
-            ncwmsPanel.productsInfo = 'productsInfo';
-            ncwmsPanel.selectedProductInfo = {
-                extents: {
-                    lat: {
-                        min: -42,
-                        max: -20
-                    },
-                    lon: {
-                        min: 160,
-                        max: 170
-                    }
-                }
-            };
+            ncwmsPanel.selectedLayer.isAodaac = function() { return true };
 
             ncwmsPanel._buildParameters(geom);
-            expect(ncwmsPanel._buildAodaacParams).toHaveBeenCalled();
+            expect(ncwmsPanel._buildAodaacParams).toHaveBeenCalledWith(geom);
         });
 
         it('builds gogoduck parameters if a gogoduck layer is passed', function() {
 
-            ncwmsPanel.selectedLayer = layer;
-
             ncwmsPanel._buildParameters(geom);
-            expect(ncwmsPanel._buildGogoduckParams).toHaveBeenCalled();
+            expect(ncwmsPanel._buildGogoduckParams).toHaveBeenCalledWith(geom);
         });
     });
 
     describe('_buildAodaacParams', function() {
 
-        var aodaacParameters;
-
         beforeEach(function () {
 
             spyOn(ncwmsPanel, '_getDateFromPicker').andReturn('[date]');
 
-            ncwmsPanel.productsInfo = [];
-            ncwmsPanel.selectedProductInfo = {
+            ncwmsPanel.productsInfo = [{
                 productId: 42,
                 extents: {
                     lat: { min: 1, max: 2 },
                     lon: { min: 3, max: 4 }
                 }
-            };
+            }];
         });
 
         it('includes some information regardless of geometry', function () {
 
-            var geom = undefined;
-
-            aodaacParameters = ncwmsPanel._buildAodaacParams(geom, ncwmsPanel.selectedProductInfo);
+            var aodaacParameters = ncwmsPanel._buildAodaacParams(null);
 
             expect(aodaacParameters.productId).toBe(42);
             expect(aodaacParameters.dateRangeStart).toBe('[date]');
@@ -258,7 +230,7 @@ describe('Portal.details.NcWmsPanel', function() {
                 }
             };
 
-            aodaacParameters = ncwmsPanel._buildAodaacParams(geom, ncwmsPanel.selectedProductInfo);
+            var aodaacParameters = ncwmsPanel._buildAodaacParams(geom, ncwmsPanel.selectedProductInfo);
 
             expect(aodaacParameters.latitudeRangeStart).toBe(10);
             expect(aodaacParameters.longitudeRangeStart).toBe(30);
@@ -269,8 +241,6 @@ describe('Portal.details.NcWmsPanel', function() {
 
     describe('_buildGogoduckParams', function() {
 
-        var gogoduckParameters;
-
         beforeEach(function () {
             ncwmsPanel.selectedLayer = layer;
             spyOn(ncwmsPanel, '_getDateFromPicker').andReturn('[date]');
@@ -278,7 +248,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('includes some information regardless of geometry', function () {
 
-            gogoduckParameters = ncwmsPanel._buildParameters(null);
+            var gogoduckParameters = ncwmsPanel._buildParameters(null);
 
             expect(gogoduckParameters.layerName).toBe('gogoDingo');
             expect(gogoduckParameters.dateRangeStart).toBe('[date]');
@@ -302,7 +272,7 @@ describe('Portal.details.NcWmsPanel', function() {
                 }
             };
 
-            gogoduckParameters = ncwmsPanel._buildParameters(geom);
+            var gogoduckParameters = ncwmsPanel._buildParameters(geom);
 
             expect(gogoduckParameters.latitudeRangeStart).toBe(10);
             expect(gogoduckParameters.longitudeRangeStart).toBe(30);
@@ -336,7 +306,8 @@ describe('Portal.details.NcWmsPanel', function() {
             getSubsetExtentMax: function() { return extent.max() },
             wfsLayer: {
                 name: 'gogoDingo'
-            }
+            },
+            isAodaac: function() { return false }
         };
     }
 });
