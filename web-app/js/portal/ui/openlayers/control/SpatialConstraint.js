@@ -51,6 +51,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     _configureEventsAndHandlers: function() {
         this.events.addEventType('spatialconstraintadded');
         this.events.addEventType('spatialconstraintcleared');
+        this.events.addEventType('spatialconstrainttypechanged');
 
         this.layer.events.on({
             scope: this,

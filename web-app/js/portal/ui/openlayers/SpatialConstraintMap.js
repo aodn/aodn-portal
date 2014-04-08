@@ -71,7 +71,7 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         else if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX) {
             this.addSpatialConstraintControlToMap();
         }
-        this.events.triggerEvent('spatialconstraintchanged');
+        this.events.triggerEvent('spatialconstrainttypechanged', polygonStyle);
     },
 
     addSpatialConstraintControlToMap: function(handler) {
