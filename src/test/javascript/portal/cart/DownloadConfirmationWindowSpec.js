@@ -16,7 +16,9 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
 
         spyOn(confirmationWindow, 'show');
         spyOn(confirmationWindow, 'hide');
-        spyOn(confirmationWindow, '_openDownload');
+    });
+
+    describe('shouldDownload', function() {
     });
 
     describe('showIfNeeded', function() {
@@ -40,18 +42,56 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
             expect(confirmationWindow.show).toHaveBeenCalled();
         });
 
-        it('does not show if it has been accepted', function() {
+        it('does not show if it has been accepted and no email required', function() {
 
             confirmationWindow.show.reset();
-
             confirmationWindow.onAccept();
 
             spyOn(confirmationWindow, 'onAccept');
 
-            confirmationWindow.showIfNeeded(downloadUrl, downloadFilename);
+            confirmationWindow.showIfNeeded({ collectEmailAddress: false });
 
             expect(confirmationWindow.onAccept).toHaveBeenCalled();
             expect(confirmationWindow.show).not.toHaveBeenCalled();
+        });
+
+        it('does show if it has been accepted and email required', function() {
+
+            confirmationWindow.show.reset();
+            confirmationWindow.onAccept();
+
+            spyOn(confirmationWindow, 'onAccept');
+
+            confirmationWindow.showIfNeeded({ collectEmailAddress: true });
+
+            expect(confirmationWindow.onAccept).not.toHaveBeenCalled();
+            expect(confirmationWindow.show).toHaveBeenCalled();
+        });
+
+        describe('email address panel', function() {
+
+            beforeEach(function() {
+                spyOn(confirmationWindow.downloadEmailPanel, 'show');
+                spyOn(confirmationWindow.downloadEmailPanel, 'hide');
+                spyOn(confirmationWindow.downloadEmailPanel, 'clearEmailValue');
+            });
+
+            it('shows when required', function() {
+                confirmationWindow.showIfNeeded({ collectEmailAddress: true });
+                expect(confirmationWindow.downloadEmailPanel.show).toHaveBeenCalled();
+                expect(confirmationWindow.downloadEmailPanel.hide).not.toHaveBeenCalled();
+            });
+
+            it('hides when required', function() {
+                confirmationWindow.showIfNeeded({ collectEmailAddress: false });
+                expect(confirmationWindow.downloadEmailPanel.show).not.toHaveBeenCalled();
+                expect(confirmationWindow.downloadEmailPanel.hide).toHaveBeenCalled();
+            });
+
+            it('clears value', function() {
+                confirmationWindow.showIfNeeded({});
+                expect(confirmationWindow.downloadEmailPanel.clearEmailValue).toHaveBeenCalled();
+            });
         });
 
         afterEach(function() {
@@ -69,22 +109,16 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
             expect(confirmationWindow.hide).toHaveBeenCalled();
         });
 
-        it('does nothing when no url', function() {
-
-            spyOn(confirmationWindow, '_portalDownloadUrl').andReturn(null);
-
-            confirmationWindow.onAccept();
-
-            expect(confirmationWindow._openDownload).not.toHaveBeenCalled();
-        });
-
-        it('starts download', function() {
-
-            spyOn(confirmationWindow, '_portalDownloadUrl').andReturn(downloadUrl);
+        it('calls back onAccept when accepted', function() {
+            var onAcceptSpy = jasmine.createSpy('onAccept');
+            confirmationWindow.onAcceptCallback = onAcceptSpy;
+            var emailAddress = 'asdf@asdf.com';
+            confirmationWindow.downloadEmailPanel.emailField.setValue(emailAddress);
+            confirmationWindow.params = {};
 
             confirmationWindow.onAccept();
 
-            expect(confirmationWindow._openDownload).toHaveBeenCalledWith(downloadUrl);
+            expect(onAcceptSpy).toHaveBeenCalledWith({ emailAddress: emailAddress });
         });
     });
 
@@ -98,63 +132,6 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
         it('hides window', function() {
 
             expect(confirmationWindow.hide).toHaveBeenCalled();
-        });
-    });
-
-    describe('_portalDownloadUrl', function() {
-
-        it('returns null when it does not have everything it needs', function() {
-
-            expect(confirmationWindow._portalDownloadUrl()).toBeNull();
-        });
-
-        it('returns URL-endcoded proxy URL', function() {
-
-            spyOn(window, 'sanitiseForFilename').andReturn("file name");
-
-            var expectedProxyUrl = "download?url=the%20download%20url&downloadFilename=file%20name";
-            confirmationWindow.downloadUrl = downloadUrl;
-            confirmationWindow.downloadFilename = "file name";
-
-            expect(confirmationWindow._portalDownloadUrl()).toBe(expectedProxyUrl);
-            expect(sanitiseForFilename).toHaveBeenCalledWith("file name");
-        });
-
-        it('returns URL-endcoded proxy URL with extra query string arguments', function() {
-
-            spyOn(window, 'sanitiseForFilename').andReturn("file name");
-
-            var expectedProxyUrl = "download?url=the%20download%20url&downloadFilename=file%20name&fieldName=the%20field";
-            confirmationWindow.downloadUrl = downloadUrl;
-            confirmationWindow.downloadFilename = "file name";
-            confirmationWindow.downloadControllerArgs = { fieldName: 'the field' };
-
-            expect(confirmationWindow._portalDownloadUrl()).toBe(expectedProxyUrl);
-            expect(sanitiseForFilename).toHaveBeenCalledWith("file name");
-        });
-    });
-
-    describe('_additionalQueryStringFrom', function() {
-
-        it('returns empty string if args is null', function() {
-
-            var returnValue = confirmationWindow._additionalQueryStringFrom(null);
-
-            expect(returnValue).toBe('');
-        });
-
-        it('returns empty string if no items in args', function() {
-
-            var returnValue = confirmationWindow._additionalQueryStringFrom({});
-
-            expect(returnValue).toBe('');
-        });
-
-        it("returns additional query string (no '?' required) or elements in args (URL encoded)", function() {
-
-            var returnValue = confirmationWindow._additionalQueryStringFrom({ fieldName: 'bob', otherThing: 'this too' });
-
-            expect(returnValue).toBe('&fieldName=bob&otherThing=this%20too');
         });
     });
 });

@@ -49,8 +49,14 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         }
     },
 
-    confirmDownload: function(downloadUrl, downloadFilename, downloadControllerArgs) {
-        this.confirmationWindow.showIfNeeded(downloadUrl, downloadFilename, downloadControllerArgs);
+    confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
+
+        params.onAccept = function(callbackParams) {
+            var downloader = new Portal.cart.Downloader();
+            downloader.download(collection, generateUrlCallbackScope, generateUrlCallback, callbackParams);
+        };
+
+        this.confirmationWindow.showIfNeeded(params);
     },
 
     _contentForEmptyView: function() {

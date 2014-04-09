@@ -146,63 +146,48 @@ describe('Portal.cart.WmsInjector', function() {
 
     describe('download handlers', function() {
 
-        it('_downloadWfsHandler calls downloadWithConfirmation', function() {
+        var downloadParams;
+        var collection;
+
+        beforeEach(function() {
+            downloadParams = {};
             spyOn(injector, 'downloadWithConfirmation');
+            spyOn(injector, '_getUrlListDownloadParams').andReturn(downloadParams);
+            spyOn(injector, '_getNetCdfDownloadParams').andReturn(downloadParams);
             spyOn(injector, '_wfsDownloadUrl');
-            injector._downloadWfsHandler({}, 'csv');
+
+            collection = {
+                wmsLayer: {
+                    grailsLayerId: 1,
+                    isNcwms: function() { return true }
+                }
+            };
+        });
+
+        it('_wfsDownloadHandler calls downloadWithConfirmation', function() {
+            injector._wfsDownloadHandler({
+                wmsLayer: {}
+            });
             expect(injector.downloadWithConfirmation).toHaveBeenCalled();
         });
 
         it('_urlListDownloadHandler calls downloadWithConfirmation', function() {
-            spyOn(injector, 'downloadWithConfirmation');
-            spyOn(injector, '_wmsDownloadUrl').andReturn('download_url');
+            injector._urlListDownloadHandler(collection);
 
-            var testLayer = {
-                grailsLayerId: 6,
-                isNcwms: function() { return false }
-            };
-            var testCollection = {
-                wmsLayer: testLayer,
-                title: 'the_collection'
-            };
-
-            injector._urlListDownloadHandler(testCollection);
-
-            expect(injector._wmsDownloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
             expect(injector.downloadWithConfirmation).toHaveBeenCalledWith(
-                'download_url',
-                'the_collection_URLs.txt',
-                {
-                    action: 'urlListForLayer',
-                    layerId: 6
-                }
+                collection,
+                injector._downloadUrl,
+                downloadParams
             );
         });
 
         it('_netCdfDownloadHandler calls downloadWithConfirmation', function() {
+            injector._netCdfDownloadHandler(collection);
 
-            spyOn(injector, 'downloadWithConfirmation');
-            spyOn(injector, '_wmsDownloadUrl').andReturn('download_url');
-
-            var testLayer = {
-                grailsLayerId: 6,
-                isNcwms: function() { return false }
-            };
-            var testCollection = {
-                wmsLayer: testLayer,
-                title: 'the_collection'
-            };
-
-            injector._netCdfDownloadHandler(testCollection);
-
-            expect(injector._wmsDownloadUrl).toHaveBeenCalledWith(testLayer, 'csv');
             expect(injector.downloadWithConfirmation).toHaveBeenCalledWith(
-                'download_url',
-                'the_collection_source_files.zip',
-                {
-                    action: 'downloadNetCdfFilesForLayer',
-                    layerId: 6
-                }
+                collection,
+                injector._downloadUrl,
+                downloadParams
             );
         });
     });
@@ -214,7 +199,7 @@ describe('Portal.cart.WmsInjector', function() {
             var spy = jasmine.createSpy();
             var testLayer = {getWfsLayerFeatureRequestUrl: spy, params: "blagh"};
 
-            injector._wfsDownloadUrl(testLayer, 'csv');
+            injector._wfsDownloadUrl({ wmsLayer: testLayer }, { format: 'csv' });
 
             expect(testLayer.getWfsLayerFeatureRequestUrl).toHaveBeenCalledWith('csv');
         });
@@ -227,7 +212,7 @@ describe('Portal.cart.WmsInjector', function() {
             var spy = jasmine.createSpy();
             var testLayer = {getWmsLayerFeatureRequestUrl: spy, params: "blagh"};
 
-            injector._wmsDownloadUrl(testLayer, 'xml');
+            injector._wmsDownloadUrl({ wmsLayer: testLayer }, { format: 'xml' });
 
             expect(testLayer.getWmsLayerFeatureRequestUrl).toHaveBeenCalledWith('xml');
         });

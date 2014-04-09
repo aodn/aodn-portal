@@ -26,6 +26,7 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
                 click: this.onAccept
             }
         };
+
         var cancelButton = {
             text:OpenLayers.i18n('downloadConfirmationCancelText'),
             listeners: {
@@ -33,6 +34,8 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
                 click: this.onCancel
             }
         };
+
+        this.downloadEmailPanel = new Portal.cart.DownloadEmailPanel();
 
         Ext.apply(this, {
             title:OpenLayers.i18n('downloadConfirmationWindowTitle'),
@@ -44,7 +47,7 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
                 autoWidth: true,
                 padding: 5,
                 xtype: 'form',
-                items: [contentPanel],
+                items: [this.downloadEmailPanel, contentPanel],
                 buttons: [downloadButton, cancelButton],
                 keys: [
                     {
@@ -79,13 +82,21 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         }
     },
 
-    showIfNeeded: function(downloadUrl, downloadFilename, downloadControllerArgs) {
 
-        this.downloadUrl = downloadUrl;
-        this.downloadFilename = downloadFilename;
-        this.downloadControllerArgs = downloadControllerArgs;
+    showIfNeeded: function(params) {
 
-        if (!this.hasBeenShown) {
+        this.downloadEmailPanel.clearEmailValue();
+        if (params.collectEmailAddress) {
+            this.downloadEmailPanel.show();
+        }
+        else {
+            this.downloadEmailPanel.hide();
+        }
+
+        this.params = params;
+        this.onAcceptCallback = params.onAccept;
+
+        if (!this.hasBeenShown || params.collectEmailAddress) {
             this.show();
         }
         else {
@@ -96,56 +107,15 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
     onAccept: function() {
         this.hide();
 
-        var portalDownloadUrl = this._portalDownloadUrl();
-
-        if (portalDownloadUrl) {
-
-            this.hasBeenShown = true;
-            this._openDownload(portalDownloadUrl);
+        if (this.onAcceptCallback) {
+            this.params.emailAddress = this.downloadEmailPanel.getEmailValue();
+            this.onAcceptCallback(this.params);
         }
+
+        this.hasBeenShown = true;
     },
 
     onCancel: function() {
         this.hide();
-    },
-
-    _portalDownloadUrl: function() {
-
-        if (this.downloadUrl && this.downloadFilename) {
-
-            var filename = encodeURIComponent(sanitiseForFilename(this.downloadFilename));
-            var url = encodeURIComponent(this.downloadUrl);
-            var additionalQueryString = this._additionalQueryStringFrom(this.downloadControllerArgs);
-
-            return String.format('download?url={0}&downloadFilename={1}{2}', url, filename, additionalQueryString);
-        }
-
-        return null;
-    },
-
-    _additionalQueryStringFrom: function(args) {
-
-        var queryString = '';
-
-        if (args) {
-
-            Ext.each(
-                Object.keys(args),
-                function(key) {
-                    var value = encodeURIComponent(args[key]);
-
-                    queryString += String.format('&{0}={1}', key, value);
-                }
-            );
-        }
-
-        return queryString;
-    },
-
-    _openDownload: function(url) {
-
-        log.debug('Downloading from URL: ' + url);
-
-        window.location = url;
     }
 });
