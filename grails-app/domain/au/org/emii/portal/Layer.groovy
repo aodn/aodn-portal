@@ -234,13 +234,6 @@ class Layer {
         child.parent = null
     }
 
-    def getAodaacProducts() {
-
-        aodaacAggregatorService.getProductInfo(
-            aodaacAggregatorService.productIdsForLayer(this)
-        )
-    }
-
     def getAllStyles() {
 
         def currentLayer = this
