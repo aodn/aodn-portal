@@ -14,7 +14,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Object, {
 
     constructor: function(config) {
 
-        Portal.cart.WmsInjector.superclass.constructor.call(this, Ext.apply(this, config));
+        Portal.cart.NcwmsInjector.superclass.constructor.call(this, Ext.apply(this, config));
     },
 
     getInjectionJson: function(collection) {
