@@ -211,7 +211,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Object, {
         var params = collection.ncwmsParams;
 
         if (this._isAodaacLayer(collection)) {
-            url = this._generateAodaacJobUrl(collection, format, emailAddress);
+            url = this._generateAodaacJobUrl(collection.ncwmsParams, format, emailAddress);
         }
         else {
             if (params.layerName) {
