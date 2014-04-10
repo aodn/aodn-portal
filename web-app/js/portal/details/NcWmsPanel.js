@@ -233,38 +233,32 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     _buildAodaacParams: function(geometry) {
 
-        console.log('Building AODAAC params');
-        console.log(this.selectedLayer);
-
-        var product = this.productsInfo[0];
-        console.log(product);
+        var product = this.selectedLayer.aodaacProducts[0];
         var productExtents = product.extents;
 
         var aodaacConfig = {
-            productId: product.productId,
+            productId: product.id,
             dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
-            dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
-            productLatitudeRangeStart: productExtents.lat.min,
-            productLongitudeRangeStart: productExtents.lon.min,
-            productLatitudeRangeEnd: productExtents.lat.max,
-            productLongitudeRangeEnd: productExtents.lon.max
+            dateRangeEnd:   this._getDateFromPicker(this.endDateTimePicker),
+            productLatitudeRangeStart:  this._getMin(productExtents.lat),
+            productLatitudeRangeEnd:    this._getMax(productExtents.lat),
+            productLongitudeRangeStart: this._getMin(productExtents.lon),
+            productLongitudeRangeEnd:   this._getMax(productExtents.lon)
         };
 
         if (geometry) {
             var bounds = geometry.getBounds();
 
-            aodaacConfig.latitudeRangeStart = bounds.bottom;
+            aodaacConfig.latitudeRangeStart  = bounds.bottom;
             aodaacConfig.longitudeRangeStart = bounds.left;
-            aodaacConfig.latitudeRangeEnd = bounds.top;
-            aodaacConfig.longitudeRangeEnd = bounds.right;
+            aodaacConfig.latitudeRangeEnd    = bounds.top;
+            aodaacConfig.longitudeRangeEnd   = bounds.right;
         }
 
         return aodaacConfig;
     },
 
     _buildGogoduckParams: function(geometry) {
-
-        console.log('Building GoGoDuck params');
 
         var ncwmsConfig = {
             layerName: this._selectedLayerWfsLayerName(),
@@ -389,6 +383,16 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     _getDateFromPicker: function(datePicker) {
 
         return moment.utc(datePicker.getValue());
+    },
+
+    _getMin: function(values) {
+
+        return values[0];
+    },
+
+    _getMax: function(values) {
+
+        return values[1];
     },
 
     _clearDateTimeFields: function() {

@@ -76,7 +76,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     getOverlayLayers: function() {
         return this._getLayers(function(record) {
-            var layer = record.getLayer()
+            var layer = record.getLayer();
             return layer.options && !layer.options.isBaseLayer && !(layer instanceof OpenLayers.Layer.Vector);
         })
     },
