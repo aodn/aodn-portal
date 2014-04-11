@@ -25,7 +25,8 @@ describe('Portal.cart.NcwmsInjector', function() {
                 latitudeRangeStart: -42,
                 latitudeRangeEnd: -20,
                 longitudeRangeStart: 160,
-                longitudeRangeEnd: 170
+                longitudeRangeEnd: 170,
+                layerName: "gogoDingo"
             },
             wmsLayer: {
                 getDownloadFilter: function() {
@@ -336,21 +337,9 @@ describe('Portal.cart.NcwmsInjector', function() {
     describe('_generateGogoduckJobUrl', function() {
 
         var url;
-        var startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
-        var endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
-
-        var params = {
-            dateRangeStart: startDate,
-            dateRangeEnd: endDate,
-            latitudeRangeStart: -42,
-            latitudeRangeEnd: -20,
-            longitudeRangeStart: 160,
-            longitudeRangeEnd: 170,
-            layerName: "gogoDingo"
-        };
 
         beforeEach(function() {
-            url = decodeURIComponent(injector._generateGogoduckJobUrl(params, 'gogo@duck.com'));
+            url = decodeURIComponent(injector._generateGogoduckJobUrl(geoNetworkRecord.ncwmsParams, 'gogo@duck.com'));
         });
 
         it('generates the gogoduck endpoint', function() {
