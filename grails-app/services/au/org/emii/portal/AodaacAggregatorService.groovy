@@ -146,7 +146,7 @@ class AodaacAggregatorService {
             'slat': params.latitudeRangeStart,
             'elon': params.longitudeRangeEnd,
             'wlon': params.longitudeRangeStart,
-            'products': params.productIds
+            'products': params.productId
         ]
     }
 
