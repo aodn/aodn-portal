@@ -58,6 +58,11 @@ class AodaacAggregatorService {
         )
         def response = _makeApiCall(apiCallUrl)
 
+        if (response.error) {
+            log.error "Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response"
+            throw new RuntimeException("Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response")
+        }
+
         def jobId = _jobIdFromMonitorUrl(response.url)
 
         def job = new AodaacJob(jobId, notificationEmailAddress)
