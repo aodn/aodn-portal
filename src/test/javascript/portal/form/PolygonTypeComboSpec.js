@@ -38,12 +38,11 @@ describe('Portal.form.PolygonTypeCombo', function() {
         });
     });
 
-    describe('subscribing to spatial constraint change events', function() {
-        it('subscribes to a spatial constraint change event', function() {
+    describe('polygon combo box', function() {
+        it('subscribes to a spatial constraint type change event', function() {
             expect(mockMap.events.on).toHaveBeenCalledWith({
                 scope: polygonTypeCombo,
-                'spatialconstrainttypechanged': polygonTypeCombo._updateValue,
-                'spatialconstraintadded': polygonTypeCombo._updateComboValue
+                'spatialconstrainttypechanged': polygonTypeCombo._updateValue
             });
         });
     });

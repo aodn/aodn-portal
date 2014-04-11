@@ -51,6 +51,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     _configureEventsAndHandlers: function() {
         this.events.addEventType('spatialconstraintadded');
         this.events.addEventType('spatialconstraintcleared');
+        this.events.addEventType('spatialconstrainttypechanged');
 
         this.layer.events.on({
             scope: this,
@@ -98,18 +99,26 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     _removeMapEvents: function() {
         this.map.events.un({
-            "addlayer": this._setLayerToTop
+            "addlayer": this._setLayersToTop
         })
     },
 
-    _setLayerToTop: function(thisSpatialConstraint) {
-        var map = thisSpatialConstraint.layer.map;
-
-        if (map.spatialConstraintControl) {
-            var vectorLayers = map.getLayersByName(map.spatialConstraintControl.layerName);
-            for (var i = 0; i < vectorLayers.length; i++){
-                map.setLayerIndex(vectorLayers[i], map.layers.length-1);
-            }
+    _setLayersToTop: function(addLayerEvent) {
+        this._setDrawingLayerToTop();
+        this._setResultLayerToTop();
+    },
+    
+    _setDrawingLayerToTop: function() {
+        this._setLayerToTop(this.handler.layer);
+    },
+    
+    _setResultLayerToTop: function() {
+        this._setLayerToTop(this.layer);
+    },
+    
+    _setLayerToTop: function(layer) {
+        if (layer && layer.map)  {
+            layer.map.setLayerIndex(layer, layer.map.layers.length - 1);
         }
     },
 
@@ -135,8 +144,8 @@ Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map,
     map.addControl(map.spatialConstraintControl);
 
     map.events.on({
-        scope: this,
-        "addlayer": map.spatialConstraintControl._setLayerToTop
+        scope: map.spatialConstraintControl,
+        "addlayer": map.spatialConstraintControl._setLayersToTop
     });
 
     map.spatialConstraintControl.events.on({
