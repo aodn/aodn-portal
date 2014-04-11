@@ -12,17 +12,29 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
 
         this.emailField = new Ext.form.TextField({
             name: "emailField",
+            emptyText: OpenLayers.i18n('emailAddressPlaceholder'),
+            invalidText: OpenLayers.i18n('emailAddressValidationError'),
             validator: this._validateEmailAddress,
             bubbleEvents: [ 'valid', 'invalid' ]
         });
 
         var config = {
+            padding: 10,
             items: [
+                {
+                    html: OpenLayers.i18n('emailAddressPlaceholder')
+                },
                 this.emailField,
                 {
                     html: OpenLayers.i18n('notificationBlurbMessage')
                 }
-            ]
+            ],
+            listeners: {
+                scope: this,
+                'show': function() {
+                    this.emailField.focus(false, 100);
+                }
+            }
         };
 
         Ext.apply(this, config);
