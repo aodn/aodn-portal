@@ -101,7 +101,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
             assertEquals testArgs, args
             return 'creation_url'
         }
-        def apiCallResponse = [url: '/1234']
+        def apiCallResponse = [id: '1234']
         service.metaClass._makeApiCall = { url ->
 
             assertEquals 'creation_url', url
@@ -243,13 +243,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def dateOut = service._dateFromParams(dateIn)
 
         assertEquals expectedDateOut, dateOut
-    }
-
-    void testJobIdFromMonitorUrl() {
-
-        def testUrl = "http://www.aodaac.com/status/12345"
-
-        assertEquals "12345", service._jobIdFromMonitorUrl(testUrl)
     }
 
     void testSendNotificationEmail() {

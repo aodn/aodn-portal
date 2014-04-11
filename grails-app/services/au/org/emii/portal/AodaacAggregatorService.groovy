@@ -63,9 +63,7 @@ class AodaacAggregatorService {
             throw new RuntimeException("Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response")
         }
 
-        def jobId = _jobIdFromMonitorUrl(response.url)
-
-        def job = new AodaacJob(jobId, notificationEmailAddress)
+        def job = new AodaacJob(response.id, notificationEmailAddress)
         job.save failOnError: true
 
         return job
@@ -173,11 +171,6 @@ class AodaacAggregatorService {
     def _dateFromParams(dateStringIn) {
         def date = FROM_JAVASCRIPT_DATE_FORMATTER.parse(dateStringIn)
         return TO_AGGREGATOR_DATE_FORMATTER.format(date)
-    }
-
-    def _jobIdFromMonitorUrl(url) {
-
-        url.split("/").last()
     }
 
     void _sendNotificationEmail(job, replacements = []) {
