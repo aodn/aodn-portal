@@ -9,7 +9,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
-    EMAIL_ADDRESS_ATTRIBUTE: "gogoduck-email-address",
     PARAMS_DATE_FORMAT: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]',
 
     constructor: function(config) {
@@ -77,16 +76,6 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return this.downloadWithConfirmation(collection, this._generateNcwmsUrl, params);
     },
 
-    _validateEmailAddress: function(address) {
-        if (!address) {
-            return false;
-        }
-
-        // From http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
-        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(address);
-    },
-
     _formatDate: function(date) {
 
         return date.format(this.PARAMS_DATE_FORMAT);
@@ -106,41 +95,6 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _getDataMarkup: function(collection) {
         return this._downloadSizeEstimator(collection)
-    },
-
-    _emailAddressForm: function(collection) {
-        var html = '<div class="delayedDownloadForm">' +
-            '  <input type="text" id="{3}-{0}" value="{1}">' +
-            '  <div><small>{2}</small></div>' +
-            '  <div class="clear"></div>' +
-            '</div>';
-
-        return String.format(
-            html,
-            collection.uuid,
-            this._getEmailAddress(collection.uuid),
-            this._getNotificationBlurbEntry(),
-            this.EMAIL_ADDRESS_ATTRIBUTE
-        );
-    },
-
-    _saveEmailAddress: function (uuid) {
-        Portal.data.ActiveGeoNetworkRecordStore.instance().
-            addRecordAttribute(
-                uuid,
-                this.EMAIL_ADDRESS_ATTRIBUTE,
-                this._emailTextFieldElement(uuid).getValue()
-            );
-    },
-
-    _getEmailAddress: function (uuid) {
-        var emailAddress = Portal.data.ActiveGeoNetworkRecordStore.instance().
-            getRecordAttribute(
-                uuid,
-                this.EMAIL_ADDRESS_ATTRIBUTE
-            );
-
-        return emailAddress || OpenLayers.i18n('emailAddressPlaceholder');
     },
 
     _generateNcwmsUrl: function(collection, params) {

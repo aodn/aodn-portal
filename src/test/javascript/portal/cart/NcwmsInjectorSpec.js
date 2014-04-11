@@ -70,11 +70,6 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingMessage"))).toBeGreaterThan(-1);
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingSpinner"))).toBeGreaterThan(-1);
         });
-
-        it('contains the user specified email address', function() {
-            spyOn(injector, '_getEmailAddress').andReturn('gogo@duck.com');
-            markup = injector._getDataMarkup(geoNetworkRecord);
-        });
     });
 
     describe('download handlers', function() {
@@ -377,27 +372,6 @@ describe('Portal.cart.NcwmsInjector', function() {
 
         it('generates the time range end', function() {
             expect(url.indexOf('2014-12-21T22:30:30.500Z')).not.toEqual(-1);
-        });
-    });
-
-    describe('email address', function() {
-
-        describe('_validateEmailAddress', function () {
-
-            it('returns false for an empty address', function () {
-                var returnVal = injector._validateEmailAddress('');
-                expect(returnVal).toBe(false);
-            });
-
-            it('returns false for an invalid address', function () {
-                var returnVal = injector._validateEmailAddress('notAnEmailAddress');
-                expect(returnVal).toBe(false);
-            });
-
-            it('returns true for a valid address', function () {
-                var returnVal = injector._validateEmailAddress('user@domain.com');
-                expect(returnVal).toBe(true);
-            });
         });
     });
 

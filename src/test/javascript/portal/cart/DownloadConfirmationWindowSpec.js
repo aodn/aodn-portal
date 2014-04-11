@@ -92,6 +92,38 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
                 confirmationWindow.showIfNeeded({});
                 expect(confirmationWindow.downloadEmailPanel.clearEmailValue).toHaveBeenCalled();
             });
+
+            describe('download button', function() {
+                var downloadButton;
+
+                beforeEach(function() {
+                    downloadButton = confirmationWindow.downloadButton;
+                    spyOn(downloadButton, 'disable');
+                    spyOn(downloadButton, 'enable');
+                });
+
+                it('disables download button when email address is invalid', function() {
+                    confirmationWindow.downloadEmailPanel.isVisible = function() { return true };
+                    confirmationWindow.downloadEmailPanel.fireEvent('invalid');
+                    expect(downloadButton.disable).toHaveBeenCalled();
+                });
+
+                it('enables download button when email address is valid', function() {
+                    confirmationWindow.downloadEmailPanel.isVisible = function() { return true };
+                    confirmationWindow.downloadEmailPanel.fireEvent('valid');
+                    expect(downloadButton.enable).toHaveBeenCalled();
+                });
+
+                it('does nothing if email address panel is hidden', function() {
+                    confirmationWindow.downloadEmailPanel.isVisible = function() { return false };
+
+                    Ext.each(['valid', 'invalid'], function(event) {
+                        confirmationWindow.downloadEmailPanel.fireEvent(event);
+                        expect(downloadButton.enable).not.toHaveBeenCalled();
+                        expect(downloadButton.disable).not.toHaveBeenCalled();
+                    });
+                });
+            });
         });
 
         afterEach(function() {

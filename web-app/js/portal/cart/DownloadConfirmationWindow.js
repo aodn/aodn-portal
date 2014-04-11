@@ -19,23 +19,37 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         });
 
         // Controls
-        var downloadButton = {
-            text:OpenLayers.i18n('downloadConfirmationDownloadText'),
+        this.downloadButton = new Ext.Button({
+            text: OpenLayers.i18n('downloadConfirmationDownloadText'),
             listeners: {
                 scope: this,
                 click: this.onAccept
             }
-        };
+        });
 
-        var cancelButton = {
-            text:OpenLayers.i18n('downloadConfirmationCancelText'),
+        var cancelButton = new Ext.Button({
+            text: OpenLayers.i18n('downloadConfirmationCancelText'),
             listeners: {
                 scope: this,
                 click: this.onCancel
             }
-        };
+        });
 
-        this.downloadEmailPanel = new Portal.cart.DownloadEmailPanel();
+        this.downloadEmailPanel = new Portal.cart.DownloadEmailPanel({
+            listeners: {
+                scope: this,
+                'valid': function() {
+                    if (this.downloadEmailPanel.isVisible()) {
+                        this.downloadButton.enable()
+                    }
+                },
+                'invalid': function() {
+                    if (this.downloadEmailPanel.isVisible()) {
+                        this.downloadButton.disable()
+                    }
+                }
+            }
+        });
 
         Ext.apply(this, {
             title:OpenLayers.i18n('downloadConfirmationWindowTitle'),
@@ -48,7 +62,7 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
                 padding: 5,
                 xtype: 'form',
                 items: [this.downloadEmailPanel, contentPanel],
-                buttons: [downloadButton, cancelButton],
+                buttons: [this.downloadButton, cancelButton],
                 keys: [
                     {
                         key: [Ext.EventObject.ESCAPE],
@@ -82,16 +96,8 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         }
     },
 
-
     showIfNeeded: function(params) {
-
-        this.downloadEmailPanel.clearEmailValue();
-        if (params.collectEmailAddress) {
-            this.downloadEmailPanel.show();
-        }
-        else {
-            this.downloadEmailPanel.hide();
-        }
+        this._showEmailPanelIfNeeded(params);
 
         this.params = params;
         this.onAcceptCallback = params.onAccept;
@@ -102,6 +108,19 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         else {
             this.onAccept();
         }
+    },
+
+    _showEmailPanelIfNeeded: function(params) {
+        this.downloadEmailPanel.clearEmailValue();
+        if (params.collectEmailAddress) {
+            this.downloadEmailPanel.show();
+            this.downloadButton.disable();
+        }
+        else {
+            this.downloadEmailPanel.hide();
+            this.downloadButton.enable();
+        }
+        this.downloadEmailPanel.isValid();
     },
 
     onAccept: function() {
