@@ -136,18 +136,14 @@ class AodaacAggregatorService {
 
     def _creationApiCallArgs(params) {
 
-        def subset = params.subsetDescriptor
-        def temporalExtent = subset.temporalExtent
-        def spatialExtent = subset.spatialExtent
-
         [
-            'startdate': _dateFromParams(temporalExtent.start),
-            'stopdate':  _dateFromParams(temporalExtent.end),
-            'nlat': spatialExtent.north,
-            'slat': spatialExtent.south,
-            'elon': spatialExtent.east,
-            'wlon': spatialExtent.west,
-            'products': params.aodaacProductIds.join(",")
+            'startdate': _dateFromParams(params.dateRangeStart),
+            'stopdate':  _dateFromParams(params.dateRangeEnd),
+            'nlat': params.productLatitudeRangeEnd,
+            'slat': params.productLatitudeRangeStart,
+            'elon': params.productLongitudeRangeEnd,
+            'wlon': params.productLongitudeRangeStart,
+            'products': params.aodaacProductIds
         ]
     }
 
