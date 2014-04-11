@@ -173,13 +173,13 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         new AodaacJob('1', 'john@example.com').save()
         def endedJob = new AodaacJob('2', 'john@example.com')
-        endedJob.setStatus AodaacJob.Status.FAILED
+        endedJob.setStatus AodaacJob.Status.FAIL
         endedJob.save()
 
         AodaacJob.metaClass.static.findAll = { query ->
 
             println query
-            assertEquals "from AodaacJob as job where job.status not in ('FAILED','SUCCESS')", query
+            assertEquals "from AodaacJob as job where job.status not in ('FAIL','SUCCESS')", query
             return [endedJob]
         }
 

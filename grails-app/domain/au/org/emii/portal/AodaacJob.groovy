@@ -16,10 +16,10 @@ class AodaacJob {
         INITIATED,
         WAITING,
         RUNNING,
-        FAILED,
+        FAIL,
         SUCCESS
 
-        static def endedStatuses = [FAILED, SUCCESS]
+        static def endedStatuses = [FAIL, SUCCESS]
     }
 
     Date dateCreated
@@ -50,7 +50,7 @@ class AodaacJob {
     }
 
     def failed() {
-        status == FAILED
+        status == FAIL
     }
 
     def hasEnded() {

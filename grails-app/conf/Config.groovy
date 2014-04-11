@@ -148,7 +148,13 @@ environments {
         wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
         gogoduck.url = env['GOGODUCK_URL'] ?: "http://localhost:8300/go-go-duck"
 
-        grails.mail.disabled = true
+        grails {
+            mail {
+                host = "localhost"
+                port = 25
+                props = ["mail.smtp.auth": "false"]
+            }
+        }
     }
 
     test {
@@ -287,13 +293,14 @@ log4j = {
             'grails.app.controller.au.org.emii.portal.LayerController',
             'grails.app.controller.au.org.emii.portal.AuthController',
             'grails.app.service.au.org.emii.portal.LayerService',
-            'grails.app.service.au.org.emii.portal.AodaacAggregatorService',
+
             'au.org.emii.portal.display.MenuJsonCache',
             'org.apache.shiro',
             'grails.app.controller'
 
     debug   'grails.app.job',
             'grails.app.tagLib',
+        'grails.app.service.au.org.emii.portal.AodaacAggregatorService',
             'grails.app.controller.au.org.emii.portal.SystemController',
             'grails.app.domain',
             'grails.app.realms'
