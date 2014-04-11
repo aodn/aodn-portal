@@ -59,7 +59,7 @@ describe("Portal.cart.Downloader", function() {
 
             expect(Ext.Ajax.request).toHaveBeenCalledWith({
                 url: wfsDownloadUrl,
-                scope: downloader,
+                scope: { params: params },
                 success: downloader._onAsyncDownloadRequestSuccess,
                 failure: downloader._onAsyncDownloadRequestFailure
             });

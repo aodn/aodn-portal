@@ -70,7 +70,9 @@ Portal.cart.Downloader = Ext.extend(Object, {
 
         Ext.Ajax.request({
             url: wfsDownloadUrl,
-            scope: this,
+            scope: {
+                params: params
+            },
             success: this._onAsyncDownloadRequestSuccess,
             failure: this._onAsyncDownloadRequestFailure
         });
@@ -79,7 +81,7 @@ Portal.cart.Downloader = Ext.extend(Object, {
     _onAsyncDownloadRequestSuccess: function() {
         Ext.Msg.alert(
             OpenLayers.i18n('gogoduckPanelTitle'),
-            OpenLayers.i18n('gogoduckJobCreatedMsg', { email: params.emailAddress })
+            OpenLayers.i18n('gogoduckJobCreatedMsg', { email: this.params.emailAddress })
         );
     },
 
