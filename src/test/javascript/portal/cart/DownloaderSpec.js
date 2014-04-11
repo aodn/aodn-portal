@@ -134,4 +134,19 @@ describe("Portal.cart.Downloader", function() {
             expect(returnValue).toBe('&fieldName=bob&otherThing=this%20too');
         });
     });
+
+    describe('sanistiseFileName', function() {
+
+        it('swaps out invalid filname characters (and spaces)', function() {
+
+            var source = 'imos:argo harvest\\/';
+            var sourceSanitised = 'imos#argo_harvest__';
+
+            // Duplicate the source before sanitising to ensure global replace (as opposed to first occurrance)
+            var sanitiserInput = source + source;
+            var expectedOutput = sourceSanitised + sourceSanitised;
+
+            expect(downloader._sanitiseFileName(sanitiserInput)).toBe(expectedOutput);
+        });
+    });
 });
