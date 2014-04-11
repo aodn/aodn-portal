@@ -7,25 +7,11 @@
 
 Ext.namespace('Portal.cart');
 
-Portal.cart.WmsInjector = Ext.extend(Object, {
+Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     constructor: function(config) {
         Portal.cart.WmsInjector.superclass.constructor.call(this, Ext.apply(this, config));
-    },
-
-    getInjectionJson: function(collection) {
-
-        var injectionJson = {
-            uuid: collection.uuid,
-            title: collection.title,
-            dataFilters: this._getDataFilterEntry(collection),
-            dataMarkup: this._getDataMarkup(collection),
-            downloadableLinks: this._getMetadataLinks(collection),
-            pointOfTruthLink: this._getPointOfTruthLink(collection),
-            menuItems: this._createMenuItems(collection)
-        };
-
-        return injectionJson;
+        this._downloadUrl = this._csvDownloadUrl;
     },
 
     _getDataFilterEntry: function(collection) {
@@ -75,7 +61,7 @@ Portal.cart.WmsInjector = Ext.extend(Object, {
         if (collection.wmsLayer.wfsLayer) {
             menuItems.push({
                 text: OpenLayers.i18n('downloadAsCsvLabel'),
-                handler: this._downloadWfsHandler(collection, 'csv'),
+                handler: this._wfsDownloadHandler(collection),
                 scope: this
             });
         }
@@ -96,68 +82,17 @@ Portal.cart.WmsInjector = Ext.extend(Object, {
         return menuItems;
     },
 
-    _urlListDownloadHandler: function(collection) {
-
-        var additionalArgs = {
-            action: 'urlListForLayer',
-            layerId: collection.wmsLayer.grailsLayerId
-        };
-
-        return this.downloadWithConfirmation(
-            this._csvDownloadUrl(collection),
-            String.format("{0}_URLs.txt", collection.title),
-            additionalArgs
-        );
-    },
-
-    _netCdfDownloadHandler: function(collection) {
-
-        var additionalArgs = {
-            action: 'downloadNetCdfFilesForLayer',
-            layerId: collection.wmsLayer.grailsLayerId
-        };
-
-        return this.downloadWithConfirmation(
-            this._csvDownloadUrl(collection),
-            String.format("{0}_source_files.zip", collection.title),
-            additionalArgs
-        );
-    },
-
     _csvDownloadUrl: function(collection) {
 
-        return this._wmsDownloadUrl(collection.wmsLayer, 'csv');
+        return this._wmsDownloadUrl(collection, { format: 'csv' });
     },
 
-    _wmsDownloadUrl: function(layer, format) {
+    _wfsDownloadHandler: function(collection) {
 
-        return layer.getWmsLayerFeatureRequestUrl(format);
-    },
-
-    _wfsDownloadUrl: function(layer, format) {
-
-        return layer.getWfsLayerFeatureRequestUrl(format);
-    },
-
-    _getMetadataLinks: function(collection) {
-
-        return collection.downloadableLinks;
-    },
-
-    _getPointOfTruthLink: function(collection) {
-
-        return collection.pointOfTruthLink;
-    },
-
-    _downloadWfsHandler: function(collection, format) {
-
-        return this.downloadWithConfirmation(this._wfsDownloadUrl(collection.wmsLayer, format), String.format("{0}.{1}", collection.title, format));
-    },
-
-    downloadWithConfirmation: function(downloadUrl, downloadFilename, downloadControllerArgs) {
-
-        return function () {
-            this.downloadConfirmation.call(this.downloadConfirmationScope, downloadUrl, downloadFilename, downloadControllerArgs);
-        };
+        return this.downloadWithConfirmation(
+            collection,
+            this._wfsDownloadUrl,
+            this._getDownloadParams(collection, '', "{0}.csv", 'csv')
+        );
     }
 });

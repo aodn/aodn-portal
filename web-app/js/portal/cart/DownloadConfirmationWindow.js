@@ -19,20 +19,37 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         });
 
         // Controls
-        var downloadButton = {
-            text:OpenLayers.i18n('downloadConfirmationDownloadText'),
+        this.downloadButton = new Ext.Button({
+            text: OpenLayers.i18n('downloadConfirmationDownloadText'),
             listeners: {
                 scope: this,
                 click: this.onAccept
             }
-        };
-        var cancelButton = {
-            text:OpenLayers.i18n('downloadConfirmationCancelText'),
+        });
+
+        var cancelButton = new Ext.Button({
+            text: OpenLayers.i18n('downloadConfirmationCancelText'),
             listeners: {
                 scope: this,
                 click: this.onCancel
             }
-        };
+        });
+
+        this.downloadEmailPanel = new Portal.cart.DownloadEmailPanel({
+            listeners: {
+                scope: this,
+                'valid': function() {
+                    if (this.downloadEmailPanel.isVisible()) {
+                        this.downloadButton.enable()
+                    }
+                },
+                'invalid': function() {
+                    if (this.downloadEmailPanel.isVisible()) {
+                        this.downloadButton.disable()
+                    }
+                }
+            }
+        });
 
         Ext.apply(this, {
             title:OpenLayers.i18n('downloadConfirmationWindowTitle'),
@@ -44,8 +61,8 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
                 autoWidth: true,
                 padding: 5,
                 xtype: 'form',
-                items: [contentPanel],
-                buttons: [downloadButton, cancelButton],
+                items: [this.downloadEmailPanel, contentPanel],
+                buttons: [this.downloadButton, cancelButton],
                 keys: [
                     {
                         key: [Ext.EventObject.ESCAPE],
@@ -79,13 +96,13 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         }
     },
 
-    showIfNeeded: function(downloadUrl, downloadFilename, downloadControllerArgs) {
+    showIfNeeded: function(params) {
+        this._showEmailPanelIfNeeded(params);
 
-        this.downloadUrl = downloadUrl;
-        this.downloadFilename = downloadFilename;
-        this.downloadControllerArgs = downloadControllerArgs;
+        this.params = params;
+        this.onAcceptCallback = params.onAccept;
 
-        if (!this.hasBeenShown) {
+        if (!this.hasBeenShown || params.collectEmailAddress) {
             this.show();
         }
         else {
@@ -93,59 +110,31 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         }
     },
 
+    _showEmailPanelIfNeeded: function(params) {
+        this.downloadEmailPanel.clearEmailValue();
+        if (params.collectEmailAddress) {
+            this.downloadEmailPanel.show();
+            this.downloadButton.disable();
+        }
+        else {
+            this.downloadEmailPanel.hide();
+            this.downloadButton.enable();
+        }
+        this.downloadEmailPanel.isValid();
+    },
+
     onAccept: function() {
         this.hide();
 
-        var portalDownloadUrl = this._portalDownloadUrl();
-
-        if (portalDownloadUrl) {
-
-            this.hasBeenShown = true;
-            this._openDownload(portalDownloadUrl);
+        if (this.onAcceptCallback) {
+            this.params.emailAddress = this.downloadEmailPanel.getEmailValue();
+            this.onAcceptCallback(this.params);
         }
+
+        this.hasBeenShown = true;
     },
 
     onCancel: function() {
         this.hide();
-    },
-
-    _portalDownloadUrl: function() {
-
-        if (this.downloadUrl && this.downloadFilename) {
-
-            var filename = encodeURIComponent(sanitiseForFilename(this.downloadFilename));
-            var url = encodeURIComponent(this.downloadUrl);
-            var additionalQueryString = this._additionalQueryStringFrom(this.downloadControllerArgs);
-
-            return String.format('download?url={0}&downloadFilename={1}{2}', url, filename, additionalQueryString);
-        }
-
-        return null;
-    },
-
-    _additionalQueryStringFrom: function(args) {
-
-        var queryString = '';
-
-        if (args) {
-
-            Ext.each(
-                Object.keys(args),
-                function(key) {
-                    var value = encodeURIComponent(args[key]);
-
-                    queryString += String.format('&{0}={1}', key, value);
-                }
-            );
-        }
-
-        return queryString;
-    },
-
-    _openDownload: function(url) {
-
-        log.debug('Downloading from URL: ' + url);
-
-        window.location = url;
     }
 });

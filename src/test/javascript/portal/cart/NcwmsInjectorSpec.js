@@ -66,50 +66,49 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
 
         it('generates correct markup for ncwms layers', function() {
-
             expect(markup).not.toEqual('');
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingMessage"))).toBeGreaterThan(-1);
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingSpinner"))).toBeGreaterThan(-1);
-            expect(markup.indexOf(OpenLayers.i18n('notificationBlurbMessage'))).toBeGreaterThan(-1);
-            expect(markup.indexOf(injector.EMAIL_ADDRESS_ATTRIBUTE)).toBeGreaterThan(-1);
-            expect(markup.indexOf(OpenLayers.i18n('emailAddressPlaceholder'))).toBeGreaterThan(-1);
-        });
-
-        it('contains the user specified email address', function() {
-            spyOn(injector, '_getEmailAddress').andReturn('gogo@duck.com');
-            markup = injector._getDataMarkup(geoNetworkRecord);
-
-            expect(injector._getEmailAddress).toHaveBeenCalled();
-            expect(markup.indexOf('gogo@duck.com')).toBeGreaterThan(-1);
         });
     });
 
     describe('download handlers', function() {
 
-        it('BODAAC _urlListDownloadHandler calls _wfsDownloadUrl', function() {
-            spyOn(injector, '_wfsDownloadUrl');
-            injector._urlListDownloadHandler(
-                {
-                    wmsLayer: {
-                        grailsLayerId: 1,
-                        isNcwms: function() { return true }
-                    }
+        var downloadParams;
+        var collection;
+
+        beforeEach(function() {
+            downloadParams = {};
+            spyOn(injector, 'downloadWithConfirmation');
+            spyOn(injector, '_getUrlListDownloadParams').andReturn(downloadParams);
+            spyOn(injector, '_getNetCdfDownloadParams').andReturn(downloadParams);
+
+            collection = {
+                wmsLayer: {
+                    grailsLayerId: 1,
+                    isNcwms: function() { return true }
                 }
-            );
-            expect(injector._wfsDownloadUrl).toHaveBeenCalled();
+            };
         });
 
-        it('BODAAC _netCdfDownloadHandler calls _wfsDownloadUrl', function() {
-            spyOn(injector, '_wfsDownloadUrl');
-            injector._netCdfDownloadHandler(
-                {
-                    wmsLayer: {
-                        grailsLayerId: 1,
-                        isNcwms: function() { return true }
-                    }
-                }
+        it('BODAAC _urlListDownloadHandler calls downloadWithConfirmation', function() {
+            injector._urlListDownloadHandler(collection);
+
+            expect(injector.downloadWithConfirmation).toHaveBeenCalledWith(
+                collection,
+                injector._downloadUrl,
+                downloadParams
             );
-            expect(injector._wfsDownloadUrl).toHaveBeenCalled();
+        });
+
+        it('BODAAC _netCdfDownloadHandler calls downloadWithConfirmation', function() {
+            injector._netCdfDownloadHandler(collection);
+
+            expect(injector.downloadWithConfirmation).toHaveBeenCalledWith(
+                collection,
+                injector._downloadUrl,
+                downloadParams
+            );
         });
     });
 
@@ -120,7 +119,11 @@ describe('Portal.cart.NcwmsInjector', function() {
             var spy = jasmine.createSpy();
             var testLayer = {getWfsLayerFeatureRequestUrl: spy};
 
-            injector._wfsDownloadUrl(testLayer, 'csv');
+            injector._wfsDownloadUrl({
+                wmsLayer: testLayer
+            }, {
+                format: 'csv'
+            });
 
             expect(testLayer.getWfsLayerFeatureRequestUrl).toHaveBeenCalledWith('csv');
         });
@@ -195,6 +198,25 @@ describe('Portal.cart.NcwmsInjector', function() {
         it('provides a function', function() {
             expect(typeof(injector._downloadGogoduckHandler(geoNetworkRecord, 'nc'))).toEqual('function');
         });
+
+        it('calls downloadWithConfirmation', function() {
+            spyOn(injector, 'downloadWithConfirmation');
+            var collection = {};
+            var params = {};
+
+            injector._downloadGogoduckHandler(collection, params);
+
+            var expectedParams = {
+                collectEmailAddress: true,
+                asyncDownload: true
+            };
+
+            expect(injector.downloadWithConfirmation).toHaveBeenCalledWith(
+                collection,
+                injector._generateNcwmsUrl,
+                expectedParams
+            );
+        });
     });
 
     describe('_generateNcwmsUrl', function() {
@@ -204,14 +226,17 @@ describe('Portal.cart.NcwmsInjector', function() {
         var endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
         var format;
         var emailAddress;
+        var collection;
+        var ncwmsParams;
         var params;
 
         beforeEach(function() {
 
             format  = 'csv';
             emailAddress = 'gogo@duck.com';
+            params = { format: format, emailAddress: emailAddress };
 
-            params = {
+            ncwmsParams = {
                 dateRangeStart: startDate,
                 dateRangeEnd: endDate,
                 latitudeRangeStart: -42,
@@ -220,23 +245,25 @@ describe('Portal.cart.NcwmsInjector', function() {
                 longitudeRangeEnd: 170
             };
 
+            collection = { ncwmsParams: ncwmsParams };
+
             spyOn(injector, '_generateAodaacJobUrl');
             spyOn(injector, '_generateGogoduckJobUrl');
         });
 
         it('calls _generateAodaacJobUrl when an aodaac record is passed', function() {
 
-            params.productId = 'gogoAodaac';
+            ncwmsParams.productId = 'gogoAodaac';
 
-            url = injector._generateNcwmsUrl(params, format, emailAddress);
+            url = injector._generateNcwmsUrl(collection, params);
             expect(injector._generateAodaacJobUrl).toHaveBeenCalled();
         });
 
         it('calls _generateGogoduckJobUrl when a gogoduck record is passed', function() {
 
-            params.layerName = 'gogoDingo';
+            ncwmsParams.layerName = 'gogoDingo';
 
-            url = injector._generateNcwmsUrl(params, format, emailAddress);
+            url = injector._generateNcwmsUrl(collection, params);
             expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
         });
     });
@@ -345,37 +372,6 @@ describe('Portal.cart.NcwmsInjector', function() {
 
         it('generates the time range end', function() {
             expect(url.indexOf('2014-12-21T22:30:30.500Z')).not.toEqual(-1);
-        });
-    });
-
-    describe('email address', function() {
-
-        it('saves an email address', function() {
-            var emailInput = new Ext.form.TextField();
-            spyOn(injector, '_emailTextFieldElement').andReturn(emailInput);
-            spyOn(injector, '_saveEmailAddress').andReturn(emailInput);
-
-            injector.attachMenuEvents(geoNetworkRecord);
-            emailInput.fireEvent('change');
-            expect(injector._saveEmailAddress).toHaveBeenCalledWith(geoNetworkRecord.uuid);
-        });
-
-        describe('_validateEmailAddress', function () {
-
-            it('returns false for an empty address', function () {
-                var returnVal = injector._validateEmailAddress('');
-                expect(returnVal).toBe(false);
-            });
-
-            it('returns false for an invalid address', function () {
-                var returnVal = injector._validateEmailAddress('notAnEmailAddress');
-                expect(returnVal).toBe(false);
-            });
-
-            it('returns true for a valid address', function () {
-                var returnVal = injector._validateEmailAddress('user@domain.com');
-                expect(returnVal).toBe(true);
-            });
         });
     });
 
