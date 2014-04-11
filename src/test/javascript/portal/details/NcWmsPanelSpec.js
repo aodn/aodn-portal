@@ -195,11 +195,11 @@ describe('Portal.details.NcWmsPanel', function() {
 
             spyOn(ncwmsPanel, '_getDateFromPicker').andReturn('[date]');
 
-            ncwmsPanel.productsInfo = [{
-                productId: 42,
+            ncwmsPanel.selectedLayer.aodaacProducts = [{
+                id: 42,
                 extents: {
-                    lat: { min: 1, max: 2 },
-                    lon: { min: 3, max: 4 }
+                    lat: [1, 2],
+                    lon: [3, 4]
                 }
             }];
         });
