@@ -67,9 +67,15 @@ describe('Portal.cart.InsertionService', function() {
             };
             spyOn(mockInsertionService.downloadPanel, 'confirmDownload');
 
-            mockInsertionService.downloadWithConfirmation('', '', {});
+            var collection = {};
+            var callback = noOp;
+            var params = {};
 
-            expect(mockInsertionService.downloadPanel.confirmDownload).toHaveBeenCalledWith('', '', {});
+            mockInsertionService.downloadWithConfirmation(collection, this, callback, params);
+
+            expect(mockInsertionService.downloadPanel.confirmDownload).toHaveBeenCalledWith(
+                collection, this, callback, params
+            );
         });
     });
 

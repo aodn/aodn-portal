@@ -65,7 +65,6 @@ Portal.cart.InsertionService = Ext.extend(Object, {
 
         if (!this.ncwmsInjector) {
             this.ncwmsInjector = new Portal.cart.NcwmsInjector(config);
-            this.ncwmsInjector.attachMenuEvents(collection);
         }
 
         return this.ncwmsInjector.getInjectionJson(collection);
@@ -89,8 +88,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         return this.noDataInjector.getInjectionJson(collection);
     },
 
-    downloadWithConfirmation: function (downloadUrl, downloadFilename, downloadControllerArgs) {
-
-        this.downloadPanel.confirmDownload(downloadUrl, downloadFilename, downloadControllerArgs);
+    downloadWithConfirmation: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
+        this.downloadPanel.confirmDownload(collection, generateUrlCallbackScope, generateUrlCallback, params);
     }
 });

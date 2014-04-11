@@ -155,11 +155,14 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'GeoExt.ux.BaseLayerCombobox.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'LayerOpacitySliderFixed.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadPanelItemTemplate.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'Downloader.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadPanelBody.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadEmailPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadConfirmationWindow.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadEstimator.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'InsertionService.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'BaseInjector.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NoDataInjector.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'WmsInjector.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NcwmsInjector.js')}"></script>
