@@ -201,11 +201,11 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def testParams = [
             dateRangeStart: "2013-11-01T07:59:59.999Z",
             dateRangeEnd:   "2013-11-20T10:30:00.000Z",
-            productLatitudeRangeStart:  '-32',
-            productLatitudeRangeEnd:    '-31',
-            productLongitudeRangeStart: '113',
-            productLongitudeRangeEnd:   '116',
-            aodaacProductIds: "1,2"
+            latitudeRangeStart:  '-32',
+            latitudeRangeEnd:    '-31',
+            longitudeRangeStart: '113',
+            longitudeRangeEnd:   '116',
+            productIds: "1,2"
         ]
         def expectedResult = [
             'startdate': "2013-11-01T07:59:59",

@@ -144,11 +144,11 @@ class AodaacAggregatorService {
         [
             'startdate': _dateFromParams(params.dateRangeStart),
             'stopdate':  _dateFromParams(params.dateRangeEnd),
-            'nlat': params.productLatitudeRangeEnd,
-            'slat': params.productLatitudeRangeStart,
-            'elon': params.productLongitudeRangeEnd,
-            'wlon': params.productLongitudeRangeStart,
-            'products': params.aodaacProductIds
+            'nlat': params.latitudeRangeEnd,
+            'slat': params.latitudeRangeStart,
+            'elon': params.longitudeRangeEnd,
+            'wlon': params.longitudeRangeStart,
+            'products': params.productIds
         ]
     }
 
