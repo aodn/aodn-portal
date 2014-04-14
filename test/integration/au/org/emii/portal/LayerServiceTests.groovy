@@ -127,11 +127,6 @@ class LayerServiceTests extends GroovyTestCase {
         server.save(failOnError: true)
     }
 
-    protected void tearDown() {
-
-        super.tearDown()
-    }
-
     void testUpdateWithNewData_NoExistingLayers() {
 
         assertEquals "Should be 0 layers to start with", 0, Layer.count()

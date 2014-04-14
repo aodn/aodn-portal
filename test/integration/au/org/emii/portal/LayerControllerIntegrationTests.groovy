@@ -9,8 +9,6 @@ package au.org.emii.portal
 
 import grails.test.ControllerUnitTestCase
 
-import java.text.SimpleDateFormat
-
 class LayerControllerIntegrationTests extends ControllerUnitTestCase {
 
     def layerController
@@ -41,7 +39,6 @@ class LayerControllerIntegrationTests extends ControllerUnitTestCase {
         inactiveLayer.save()
 
         try {
-
             layerController.params.serverUri = "http://someserver.com/path"
             layerController.params.name = "imos:layername"
             layerController.findLayerAsJson()
@@ -69,7 +66,6 @@ class LayerControllerIntegrationTests extends ControllerUnitTestCase {
         activeLayer.save()
 
         try {
-
             layerController.params.serverUri = "http://someserver.com/path/imos/wms"
             layerController.params.name = "imos:layername"
             layerController.findLayerAsJson()
@@ -106,49 +102,5 @@ class LayerControllerIntegrationTests extends ControllerUnitTestCase {
         catch (e) {
             fail("Unexpected failure: " + e.message)
         }
-    }
-
-    def _layerAndServerString = {
-        layer ->
-
-            def server = layer.server
-
-            // Ensure timezone is set
-            def formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-            formatter.timeZone = TimeZone.getTimeZone("GMT")
-            def lastUpdatedString = formatter.format(layer.lastUpdated)
-
-            // Just substitue the values tht aren't set by default
-            return """{\
-"abstractTrimmed":"",\
-"activeInLastScan":true,\
-"allStyles":[],\
-"available":true,\
-"bboxMaxX":null,\
-"bboxMaxY":null,\
-"bboxMinX":null,\
-"bboxMinY":null,\
-"blacklisted":false,\
-"cache":false,\
-"cql":null,\
-"dataSource":"dataSource",\
-"filters":[],\
-"id":${layer.id},\
-"isBaseLayer":false,\
-"lastUpdated":"${lastUpdatedString}",\
-"layerHierarchyPath":null,\
-"layers":[],\
-"name":"${layer.name}",\
-"namespace":"imos",\
-"overrideMetadataUrl":null,\
-"projection":null,\
-"queryable":false,\
-"server":{"class":"au.org.emii.portal.Server","id":${server.id},"allowDiscoveries":false,"comments":null,"disable":false,"imageFormat":"image/png","infoFormat":"text/html","lastScanDate":null,"name":"${server.name}","opacity":0,"operations":[],"owners":[],"password":null,"scanFrequency":120,"shortAcron":"${server.shortAcron}","type":"WMS-1.1.1","uri":"${server.uri}","urlListDownloadPrefixToRemove":null,"urlListDownloadPrefixToSubstitue":null,"username":null},\
-"styles":[],\
-"title":null,\
-"urlDownloadFieldName":null,\
-"version":0,\
-"viewParams":null,\
-"wfsLayer":null}"""
     }
 }
