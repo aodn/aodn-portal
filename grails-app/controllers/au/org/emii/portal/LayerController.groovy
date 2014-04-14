@@ -637,6 +637,9 @@ class LayerController {
             }
         }
 
+        // Add AODAAC data
+        layerData.aodaacProducts = _getAodaacProductInfo(layer)
+
         return layerData
     }
 

@@ -8,8 +8,8 @@
 
 package au.org.emii.portal
 
-class AODAACJobCheckerJob {
-    def timeout = 120000 // 2 minutes to allow quicker testing, can bump back when in prod - DN
+class AodaacJobCheckerJob {
+    def timeout = 2 * 60 * 1000
     AodaacAggregatorService aodaacAggregatorService
 
     def execute() {

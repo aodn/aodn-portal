@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -124,13 +123,8 @@ class LayerServiceTests extends GroovyTestCase {
 
         super.setUp()
 
-        server = new Server( uri: "http://www.testserver.com/asdf/", name: "TestServer", shortAcron: "TS", type: "AUTO", allowDiscoveries: true, imageFormat: "image/png", infoFormat: "text/plain", disable: false, opacity: 100 )
-        server.save( failOnError: true )
-    }
-
-    protected void tearDown() {
-
-        super.tearDown()
+        server = new Server(uri: "http://www.testserver.com/asdf/", name: "TestServer", shortAcron: "TS", type: "AUTO", allowDiscoveries: true, imageFormat: "image/png", infoFormat: "text/plain", disable: false, opacity: 100)
+        server.save(failOnError: true)
     }
 
     void testUpdateWithNewData_NoExistingLayers() {
@@ -138,84 +132,49 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "Should be 0 layers to start with", 0, Layer.count()
 
         layerService.updateWithNewData(
-                JSON.parse( newData ),
-                server as Server,
-                layerDataSource as String )
+            JSON.parse(newData),
+            server as Server,
+            layerDataSource as String
+        )
 
         _verifyHierarchy false /* Test didn't have existing Layers */
     }
 
     void testUpdateWithNewData_ExistingHierarchy() {
 
-        def layerA = new Layer( title: "Layer A", name: "layer_a", dataSource: "testCode", server: server, layerHierarchyPath: layerAHierarchyPath )
-        def layerB = new Layer( title: "Layer B", name: "layer_b", dataSource: "testCode", server: server, layerHierarchyPath: layerBHierarchyPath )
-        def layerC = new Layer( title: "Leyar C (oops, typos)", name: "layer_c", dataSource: "testCode", server: server, layerHierarchyPath: layerCHierarchyPath )
+        def layerA = new Layer(title: "Layer A", name: "layer_a", dataSource: "testCode", server: server, layerHierarchyPath: layerAHierarchyPath)
+        def layerB = new Layer(title: "Layer B", name: "layer_b", dataSource: "testCode", server: server, layerHierarchyPath: layerBHierarchyPath)
+        def layerC = new Layer(title: "Leyar C (oops, typos)", name: "layer_c", dataSource: "testCode", server: server, layerHierarchyPath: layerCHierarchyPath)
 
         def layerCMetadataUrl = new MetadataUrl()
         layerCMetadataUrl.format = "fmt"
         layerCMetadataUrl.type = "type"
-        layerCMetadataUrl.onlineResource = new OnlineResource( type: "type", href: "href" )
+        layerCMetadataUrl.onlineResource = new OnlineResource(type: "type", href: "href")
 
-        layerB.save( failOnError: true )
-        layerC.save( failOnError: true )
-        layerCMetadataUrl.save( failOnError: true )
+        layerB.save(failOnError: true)
+        layerC.save(failOnError: true)
+        layerCMetadataUrl.save(failOnError: true)
         layerA.addToLayers layerB
         layerA.addToLayers layerC
-        layerA.save( failOnError: true )
+        layerA.save(failOnError: true)
 
         assertEquals "Should be 3 layers to start with", 3, Layer.count()
         assertEquals "Should be 1 metadataUrl to start with", 1, MetadataUrl.count()
 
-        layerService.updateWithNewData JSON.parse( newData ), server, layerDataSource
+        layerService.updateWithNewData JSON.parse(newData), server, layerDataSource
 
         _verifyHierarchy true /* Test had existing Layers */
-    }
-
-    void testFindLayerAsJson() {
-        Server serverInstance = new Server(
-            uri: "http://geoserver.emii.org.au/geoserver/wms",
-            allowDiscoveries: true,
-            disable: false,
-            imageFormat: "image/png",
-            infoFormat: "text/plain",
-            name: "",
-            opacity: 1,
-            shortAcron: "",
-            type: "WMS-1.1.1"
-         )
-
-        serverInstance.save(failOnError: true)
-
-        Layer layerInstance = new Layer(namespace: "imos", name: "argo_float_mv", server: serverInstance, dataSource: "Manual")
-        // Faking the wMS scanner bug
-        Layer layerInstance2 = new Layer(namespace: "imos", name: "argo_float_mv", server: serverInstance, dataSource: "Manual")
-
-        layerInstance.save(failOnError: true)
-        layerInstance2.save(failOnError: true)
-
-        def controller = new LayerController()
-
-        controller.params.serverUri = serverInstance.uri
-        controller.params.name = "imos:argo_float_mv"
-
-        controller.findLayerAsJson()
-
-        def layerAsJson = JSON.parse(controller.response.contentAsString)
-
-        assertEquals(layerInstance.id, layerAsJson.id)
-        assertEquals("imos", layerAsJson.namespace)
-        assertEquals("argo_float_mv", layerAsJson.name)
     }
 
     void testUpdateWithNewData_NoExistingThenUpdateProcessedTwice() {
 
         assertEquals "Should be 0 layers to start with", 0, Layer.count()
 
-        layerService.updateWithNewData JSON.parse( newData ), server, layerDataSource
+        layerService.updateWithNewData JSON.parse(newData), server, layerDataSource
 
         _verifyHierarchy false /* Test didn't have existing Layers */
 
-        layerService.updateWithNewData JSON.parse( newData ), server, layerDataSource
+        layerService.updateWithNewData JSON.parse(newData), server, layerDataSource
 
         _verifyHierarchy false /* Test didn't have existing Layers */
     }
@@ -229,7 +188,7 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "Should be ${numLayersExpected} layers in the end.", numLayersExpected, Layer.count()
 
         // Root layer (layer_a)
-        def layerA = Layer.findWhere( server: server, name: "layer_a" )
+        def layerA = Layer.findWhere(server: server, name: "layer_a")
 
         assertNotNull "layer_a should exist.", layerA
         assertEquals "layer_a property title.", "Layer A", layerA.title
@@ -247,14 +206,14 @@ class LayerServiceTests extends GroovyTestCase {
         assertNull   "layer_a shouldn't have a parent.", layerA.parent
         assertEquals "layer_a should have $layerAExpectedChildren child layers.", layerAExpectedChildren, layerA.layers.size()
         assertEquals "layer_a -- Layer A", layerA.layerHierarchyPath
-		assertEquals 1, layerA.allStyles.size()
-		assertEquals( ['Grey title'], layerA.allStyles.collect{ it.title }.sort() )
-		assertEquals( ['boxfill/greyscale'], layerA.allStyles.collect{ it.name }.sort() )
-		assertEquals( ['boxfill style, using the grey palette'], layerA.allStyles.collect{ it.abstractText }.sort() )
+        assertEquals 1, layerA.allStyles.size()
+        assertEquals(['Grey title'], layerA.allStyles.collect { it.title }.sort())
+        assertEquals(['boxfill/greyscale'], layerA.allStyles.collect { it.name }.sort())
+        assertEquals(['boxfill style, using the grey palette'], layerA.allStyles.collect { it.abstractText }.sort())
 
         // Existing child (layer_b) if applicable
-        if ( hadExistingBAndC ) {
-            def layerB = Layer.findWhere( server: server, name: "layer_b" )
+        if (hadExistingBAndC) {
+            def layerB = Layer.findWhere(server: server, name: "layer_b")
 
             assertNotNull "layer_b should exist.", layerB
             assertEquals "layer_b property title.", "Layer B", layerB.title
@@ -273,7 +232,7 @@ class LayerServiceTests extends GroovyTestCase {
             assertEquals "layer_b should have no child layers.", 0, layerB.layers.size()
             assertEquals layerBHierarchyPath, layerB.layerHierarchyPath
 
-            def existingC = Layer.findWhere( server: server, title: "Leyar C (oops, typos)" )
+            def existingC = Layer.findWhere(server: server, title: "Leyar C (oops, typos)")
             assertNotNull "Leyar C should exist.", existingC
             assertEquals "Leyar C property name.", "layer_c", existingC.name
             assertEquals "Leyar C property namespace.", null, existingC.namespace
@@ -294,7 +253,7 @@ class LayerServiceTests extends GroovyTestCase {
         }
 
         // New children (layer_c, layer_c_1, layer_d, layer_d_1)
-        def layerC = Layer.findWhere( server: server, title: "Layer C" )
+        def layerC = Layer.findWhere(server: server, title: "Layer C")
         assertNotNull "layer_c should exist.", layerC
         assertEquals "layer_c property name.", "layer_c", layerC.name
         assertEquals "layer_c property namespace.", "awesomeSauce", layerC.namespace
@@ -319,23 +278,24 @@ class LayerServiceTests extends GroovyTestCase {
         assertNull "groupingUnderC property name.", groupingUnderC.name
         assertEquals "groupingUnderC parent should be Layer C.", layerC, groupingUnderC.parent
         assertEquals "groupingUnderC should have two child layers.", 2, groupingUnderC.layers.size()
-        assertEquals "layer_a -- Layer A // awesomeSauce:layer_c -- Layer C // <no name> -- Grouping", groupingUnderC.layerHierarchyPath
+        assertEquals "layer_a -- Layer A // awesomeSauce:layer_c -- Layer C // <no name> -- Grouping",
+            groupingUnderC.layerHierarchyPath
 
-        def layerC1 = Layer.findWhere( server: server, name: "layer_c_1" )
+        def layerC1 = Layer.findWhere(server: server, name: "layer_c_1")
         assertNotNull "layer_c_1 should exist.", layerC1
         assertNull "layer_c_1 property title.", layerC1.title
         assertEquals "layer_c_1 parent should be Grouing (under Layer C).", groupingUnderC, layerC1.parent
         assertEquals "layer_c_1 should have no child layers.", 0, layerC1.layers.size()
         assertEquals "layer_a -- Layer A // awesomeSauce:layer_c -- Layer C // <no name> -- Grouping // layer_c_1 -- <no title>", layerC1.layerHierarchyPath
 
-        def layerC2 = Layer.findWhere( server: server, name: "layer_c_2" )
+        def layerC2 = Layer.findWhere(server: server, name: "layer_c_2")
         assertNotNull "layer_c_2 should exist.", layerC2
         assertNull "layer_c_2 property title.", layerC2.title
         assertEquals "layer_c_2 parent should be Grouing (under Layer C).", groupingUnderC, layerC2.parent
         assertEquals "layer_c_2 should have no child layers.", 0, layerC2.layers.size()
         assertEquals "layer_a -- Layer A // awesomeSauce:layer_c -- Layer C // <no name> -- Grouping // layer_c_2 -- <no title>", layerC2.layerHierarchyPath
 
-        def layerD = Layer.findWhere( server: server, title: "Layer D", name: null )
+        def layerD = Layer.findWhere(server: server, title: "Layer D", name: null)
         assertNotNull "layer_d should exist", layerD
         assertEquals "layer_d property abstractTrimmed", "Just some layer, yo.", layerD.abstractTrimmed
         assertEquals "layer_d property queryable", false, layerD.queryable
@@ -345,15 +305,18 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "layer_a property bboxMaxY.", null, layerD.bboxMaxY
         assertEquals "layer_d property projection", null, layerD.projection
         assertNotNull "layer_d property styles", layerD.styles
-		assertEquals 2, layerD.styles.size()
-		assertEquals( ['Alg title', 'Red Blue title'], layerD.styles.collect{ it.title }.sort() ) // We sort just so we know what order to expect them in
-		assertEquals( ['boxfill/alg', 'boxfill/redblue'], layerD.styles.collect{ it.name }.sort() ) // We sort just so we know what order to expect them in
-		assertEquals( ['boxfill style, using the alg palette', 'boxfill style, using the redblue palette'], layerD.styles.collect{ it.abstractText }.sort() ) // We sort just so we know what order to expect them in
-		assertNotNull "layer_d property styles (inc. inherited)", layerD.allStyles
-		assertEquals 3, layerD.allStyles.size()
-		assertEquals( ['Alg title', 'Grey title', 'Red Blue title'], layerD.allStyles.collect{ it.title }.sort() ) // We sort just so we know what order to expect them in
-		assertEquals( ['boxfill/alg', 'boxfill/greyscale', 'boxfill/redblue'], layerD.allStyles.collect{ it.name }.sort() ) // We sort just so we know what order to expect them in
-		assertEquals( ['boxfill style, using the alg palette', 'boxfill style, using the grey palette', 'boxfill style, using the redblue palette'], layerD.allStyles.collect{ it.abstractText }.sort() ) // We sort just so we know what order to expect them in
+        assertEquals 2, layerD.styles.size()
+        assertEquals(['Alg title', 'Red Blue title'], layerD.styles.collect { it.title }.sort())
+        // We sort just so we know what order to expect them in
+        assertEquals(['boxfill/alg', 'boxfill/redblue'], layerD.styles.collect { it.name }.sort())
+        // We sort just so we know what order to expect them in
+        assertEquals(['boxfill style, using the alg palette', 'boxfill style, using the redblue palette'], layerD.styles.collect { it.abstractText }.sort()) // We sort just so we know what order to expect them in
+        assertNotNull "layer_d property styles (inc. inherited)", layerD.allStyles
+        assertEquals 3, layerD.allStyles.size()
+        assertEquals(['Alg title', 'Grey title', 'Red Blue title'], layerD.allStyles.collect { it.title }.sort())
+        // We sort just so we know what order to expect them in
+        assertEquals(['boxfill/alg', 'boxfill/greyscale', 'boxfill/redblue'], layerD.allStyles.collect { it.name }.sort()) // We sort just so we know what order to expect them in
+        assertEquals(['boxfill style, using the alg palette', 'boxfill style, using the grey palette', 'boxfill style, using the redblue palette'], layerD.allStyles.collect { it.abstractText }.sort()) // We sort just so we know what order to expect them in
         assertEquals "layer_d property dataSource", "testCode", layerD.dataSource
         assertEquals "layer_d property activeInLastScan", true, layerD.activeInLastScan
         assertNotNull "layer_d property lastUpdated should exist", layerD.lastUpdated
@@ -368,7 +331,7 @@ class LayerServiceTests extends GroovyTestCase {
 
         layerD.metadataUrls.each {
 
-            switch ( it.onlineResource.href ) {
+            switch (it.onlineResource.href) {
 
                 case "http://www.goofle.com/":
 
@@ -396,7 +359,7 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "groupingUnderD should have one child layer.", 1, groupingUnderD.layers.size()
         assertEquals "layer_a -- Layer A // <no name> -- Layer D // <no name> -- Grouping", groupingUnderD.layerHierarchyPath
 
-        def layerD1 = Layer.findWhere( server: server, name: "layer_d_1" )
+        def layerD1 = Layer.findWhere(server: server, name: "layer_d_1")
         assertNotNull "layer_d_1 should exist.", layerD1
         assertNull "layer_d_1 property title.", layerD1.title
         assertEquals "layer_d_1 parent should be Grouing (under Layer D).", groupingUnderD, layerD1.parent

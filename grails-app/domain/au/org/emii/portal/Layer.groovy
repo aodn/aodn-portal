@@ -37,27 +37,8 @@ class Layer {
     String layerHierarchyPath
     String overrideMetadataUrl
 
-    /**
-     * This was previously a belongsTo relationship - but in fact, root layers do not have a parent.
-     * The result was that it was not possible to create a valid layer hierarchy in code, since it's
-     * not possible to have a null parent with GORM.
-     */
     Layer parent
     Layer wfsLayer
-
-    /* <tns:name>Argo Oxygen Floats</tns:name>
-       <tns:disabled>false</tns:disabled>
-       <tns:description>Oxygen enabled Argo Floats in the Australian region</tns:description>
-       <tns:uriIdRef>web-maps-0</tns:uriIdRef>
-       <tns:type>WMS-LAYER-1.1.1</tns:type>
-       <tns:cache>false</tns:cache>
-       <tns:cql>oxygen_sensor eq true</tns:cql>
-       <tns:style>argo_oxygen</tns:style>
-       <tns:opacity>1.0</tns:opacity>
-       <tns:layers>argo_float</tns:layers>
-       <tns:imageFormat>image/png</tns:imageFormat>
-       <tns:queryable>true</tns:queryable>
-    */
 
     static mapping = {
         // Sorting
@@ -231,7 +212,6 @@ class Layer {
     void removeFromLayers(Layer child) {
         child.parent = null
     }
-
 
     def getAllStyles() {
 

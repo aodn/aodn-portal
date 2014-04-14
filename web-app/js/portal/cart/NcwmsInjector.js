@@ -94,7 +94,12 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     },
 
     _getDataMarkup: function(collection) {
-        return this._downloadSizeEstimator(collection)
+
+        if (collection.wmsLayer.wfsLayer) {
+            return this._downloadSizeEstimator(collection);
+        }
+
+        return '';
     },
 
     _generateNcwmsUrl: function(collection, params) {
@@ -113,13 +118,16 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return url;
     },
 
+    _isAodaacLayer: function(collection) {
+
+        return collection.wmsLayer.isAodaac();
+    },
+
     _generateAodaacJobUrl: function(params, format, email) {
 
         var args = "outputFormat=" + format;
-        args += "&dateRangeStart=" + encodeURIComponent(params.dateRangeStart);
-        args += "&dateRangeEnd=" + encodeURIComponent(params.dateRangeEnd);
-        args += "&timeOfDayRangeStart=0000";
-        args += "&timeOfDayRangeEnd=2400";
+        args += "&dateRangeStart=" + encodeURIComponent(this._formatDate(params.dateRangeStart));
+        args += "&dateRangeEnd=" + encodeURIComponent(this._formatDate(params.dateRangeEnd));
         args += "&latitudeRangeStart=" + (params.latitudeRangeStart || params.productLatitudeRangeStart);
         args += "&latitudeRangeEnd=" + (params.latitudeRangeEnd || params.productLatitudeRangeEnd);
         args += "&longitudeRangeStart=" + (params.longitudeRangeStart || params.productLongitudeRangeStart);

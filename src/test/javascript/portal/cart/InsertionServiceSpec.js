@@ -17,7 +17,10 @@ describe('Portal.cart.InsertionService', function() {
         geoNetworkRecord = {
             title: 'the title',
             uuid: '42',
-            wmsLayer: {isNcwms: function() {return false}}
+            wmsLayer: {
+                isNcwms: function() {return false},
+                isAodaac: noOp
+            }
         };
     });
 

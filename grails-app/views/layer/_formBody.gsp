@@ -293,7 +293,6 @@
                                     <g:else>
                                         <i>No linked AODAAC products</i>
                                     </g:else>
-
                                 </td>
                             </tr>
 

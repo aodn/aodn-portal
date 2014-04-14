@@ -21,7 +21,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
         controller.metaClass.message = { LinkedHashMap args -> messageArgs = args }
         controller.metaClass._recache = {}
-        controller.metaClass._getAodaacProductInfo = {a->}
+        controller.metaClass._getAodaacProductInfo = { null }
     }
 
     void testIndex() {
@@ -195,6 +195,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
         layer1.name = "maplayer"
         layer1.server = server1
         layer1.wfsLayer = layer2
+        this.controller.metaClass._getAodaacProductInfo = { [[productId: 123]] }
 
         mockDomain(Server, [server1])
         mockDomain(Layer, [layer1, layer2])
@@ -208,6 +209,8 @@ class LayerControllerTests extends ControllerUnitTestCase {
         assertEquals "maplayer", layerAsJson.name
         assertEquals 4, layerAsJson.wfsLayer.id
         assertEquals "downloadfeaturetype", layerAsJson.wfsLayer.name
+        assertEquals 1, layerAsJson.aodaacProducts.size()
+        assertEquals 123, layerAsJson.aodaacProducts.first().productId
     }
 
     void testShowLayerByItsIdWhenLayerReferencesItself() {

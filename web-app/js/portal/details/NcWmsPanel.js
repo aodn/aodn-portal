@@ -221,8 +221,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
         var config;
 
-        if (this.productsInfo && this.selectedProductInfo) {
-            config = this._buildAodaacParams(geometry, this.selectedProductInfo);
+        if (this.selectedLayer.isAodaac()) {
+            config = this._buildAodaacParams(geometry);
         }
         else {
             config = this._buildGogoduckParams(geometry);
@@ -231,27 +231,28 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         return config;
     },
 
-    _buildAodaacParams: function(geometry, info) {
+    _buildAodaacParams: function(geometry) {
 
-        var productExtents = info.extents;
+        var product = this.selectedLayer.aodaacProducts[0];
+        var productExtents = product.extents;
 
         var aodaacConfig = {
-            productId: info.productId,
+            productId: product.id,
             dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
-            dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
-            productLatitudeRangeStart: productExtents.lat.min,
-            productLongitudeRangeStart: productExtents.lon.min,
-            productLatitudeRangeEnd: productExtents.lat.max,
-            productLongitudeRangeEnd: productExtents.lon.max
+            dateRangeEnd:   this._getDateFromPicker(this.endDateTimePicker),
+            productLatitudeRangeStart:  this._getMin(productExtents.lat),
+            productLatitudeRangeEnd:    this._getMax(productExtents.lat),
+            productLongitudeRangeStart: this._getMin(productExtents.lon),
+            productLongitudeRangeEnd:   this._getMax(productExtents.lon)
         };
 
         if (geometry) {
             var bounds = geometry.getBounds();
 
-            aodaacConfig.latitudeRangeStart = bounds.bottom;
+            aodaacConfig.latitudeRangeStart  = bounds.bottom;
             aodaacConfig.longitudeRangeStart = bounds.left;
-            aodaacConfig.latitudeRangeEnd = bounds.top;
-            aodaacConfig.longitudeRangeEnd = bounds.right;
+            aodaacConfig.latitudeRangeEnd    = bounds.top;
+            aodaacConfig.longitudeRangeEnd   = bounds.right;
         }
 
         return aodaacConfig;
@@ -259,25 +260,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     _buildGogoduckParams: function(geometry) {
 
-        var productExtents = {
-            lat: {
-                min: this.LAT_MIN,
-                max: this.LAT_MAX
-            },
-            lon: {
-                min: this.LONG_MIN,
-                max: this.LONG_MAX
-            }
-        };
-
         var ncwmsConfig = {
             layerName: this._selectedLayerWfsLayerName(),
             dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
             dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
-            productLatitudeRangeStart: productExtents.lat.min,
-            productLongitudeRangeStart: productExtents.lon.min,
-            productLatitudeRangeEnd: productExtents.lat.max,
-            productLongitudeRangeEnd: productExtents.lon.max
+            productLatitudeRangeStart: this.LAT_MIN,
+            productLongitudeRangeStart: this.LONG_MIN,
+            productLatitudeRangeEnd: this.LAT_MAX,
+            productLongitudeRangeEnd: this.LONG_MAX
         };
 
         if (geometry) {
@@ -337,7 +327,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _addDateTimeFilterToLayer: function(geometry) {
+    _addDateTimeFilterToLayer: function() {
 
         if (this.selectedLayer) {
             this.selectedLayer.bodaacFilterParams = {
@@ -393,6 +383,16 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     _getDateFromPicker: function(datePicker) {
 
         return moment.utc(datePicker.getValue());
+    },
+
+    _getMin: function(values) {
+
+        return values[0];
+    },
+
+    _getMax: function(values) {
+
+        return values[1];
     },
 
     _clearDateTimeFields: function() {

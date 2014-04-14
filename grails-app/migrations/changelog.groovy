@@ -71,6 +71,8 @@ databaseChangeLog = {
     include file: '20140203-JB-FilterPossibleValuesForStringOnly.groovy'
     include file: '20140213-AS-DlConfirmationChanges.groovy'
     include file: '20140220-DN-RemoveFiltersWithNoType.groovy'
+    include file: '20140403-DN-AodaacV2Integration.groovy'
+    include file: '20140403-DN-MoreAodaacV2Integration.groovy'
 
     // Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 

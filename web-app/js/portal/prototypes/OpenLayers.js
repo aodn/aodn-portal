@@ -177,6 +177,11 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
+OpenLayers.Layer.WMS.prototype.isAodaac = function() {
+
+    return this.aodaacProducts.length > 0;
+};
+
 OpenLayers.Layer.WMS.prototype.isKnownToThePortal = function() {
     return (this.grailsLayerId) ? true: false;
 };
@@ -397,9 +402,9 @@ OpenLayers.Tile.Image.prototype.initImgDiv = function() {
 };
 
 /**
-  * Issue 925 - Overrride openlayers positionImage to workaround issue with Firefox 27 
+  * Issue 925 - Overrride openlayers positionImage to workaround issue with Firefox 27
   * and 28 where images aren't reloaded if the src property is set to the same value
-  * 
+  *
   * Method: positionImage
   * Using the properties currenty set on the layer, position the tile correctly.
   * This method is used both by the async and non-async versions of the Tile.Image
@@ -422,7 +427,7 @@ OpenLayers.Tile.Image.prototype.positionImage = function() {
     } else {
         OpenLayers.Util.modifyDOMElement(this.imgDiv,
                 null, null, imageSize) ;
-        // Make sure image load events are generated as required by OpenLayers 
+        // Make sure image load events are generated as required by OpenLayers
         this.setImgSrc(this.url);
     }
 };
@@ -430,12 +435,12 @@ OpenLayers.Tile.Image.prototype.positionImage = function() {
 OpenLayers.Tile.Image.prototype.setImgSrc = function(url) {
     if (!Portal.utils.Browser.imgSrcReload && url == this.imgDiv.src) {
         // force reload to generate events expected by openlayers
-        this.imgDiv.src = "about:blank"; 
+        this.imgDiv.src = "about:blank";
     }
 
     this.imgDiv.src = url;
 };
-    
+
 OpenLayers.Geometry.prototype.isBox = function() {
     var boundsAsGeom = this.getBounds().toGeometry();
 

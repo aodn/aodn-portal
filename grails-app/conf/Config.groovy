@@ -70,7 +70,7 @@ help.url = "http://help.aodn.org.au/"
 
 // AODAAC Aggregator
 aodaacAggregator {
-    url = "http://aodaac.emii.org.au/"
+    url = "http://aodaac.aodn.org.au"
     environment = "prod"
     idleJobTimeout = 1 // In hours
     errorLookup = [
@@ -148,15 +148,7 @@ environments {
         wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
         gogoduck.url = env['GOGODUCK_URL'] ?: "http://localhost:8300/go-go-duck"
 
-        grails {
-            mail {
-                host = "localhost"
-                port = 25
-
-                username = "username"
-                props = ["mail.smtp.auth":"false"]
-            }
-        }
+        grails.mail.disabled = true
     }
 
     test {
@@ -181,7 +173,7 @@ environments {
             mail {
                 host = "localhost"
                 port = 25
-                props = ["mail.smtp.auth":"false"]
+                props = ["mail.smtp.auth": "false"]
             }
         }
     }
@@ -276,33 +268,33 @@ log4j = {
     }
 
     error   'org.codehaus.groovy.grails.web.servlet',  //  controllers
-            'org.codehaus.groovy.grails.web.pages', //  GSP
-            'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-            'org.codehaus.groovy.grails.web.mapping', // URL mapping
-            'org.codehaus.groovy.grails.commons', // core / classloading
-            'org.codehaus.groovy.grails.plugins', // plugins
-            'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-            'org.springframework',
-            'org.hibernate',
-            'net.sf.ehcache.hibernate',
-            'org.grails.plugin.resource.ResourceMeta'
+        'org.codehaus.groovy.grails.web.pages', //  GSP
+        'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+        'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+        'org.codehaus.groovy.grails.web.mapping', // URL mapping
+        'org.codehaus.groovy.grails.commons', // core / classloading
+        'org.codehaus.groovy.grails.plugins', // plugins
+        'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+        'org.springframework',
+        'org.hibernate',
+        'net.sf.ehcache.hibernate',
+        'org.grails.plugin.resource.ResourceMeta'
 
     warn    'org.mortbay.log'
 
     info    'grails.app.tagLib.au.org.emii.portal.UserTagLib',
-            'grails.app.filters.shiro.SecurityFilters',
-            'grails.app.controller.au.org.emii.portal.LayerController',
-            'grails.app.controller.au.org.emii.portal.AuthController',
-            'grails.app.service.au.org.emii.portal.LayerService',
-            'grails.app.service.au.org.emii.portal.AodaacAggregatorService',
-            'au.org.emii.portal.display.MenuJsonCache',
-            'org.apache.shiro',
-            'grails.app.controller'
+        'grails.app.filters.shiro.SecurityFilters',
+        'grails.app.controller.au.org.emii.portal.LayerController',
+        'grails.app.controller.au.org.emii.portal.AuthController',
+        'grails.app.service.au.org.emii.portal.LayerService',
+        'grails.app.service.au.org.emii.portal.AodaacAggregatorService',
+        'au.org.emii.portal.display.MenuJsonCache',
+        'org.apache.shiro',
+        'grails.app.controller'
 
     debug   'grails.app.job',
-            'grails.app.tagLib',
-            'grails.app.controller.au.org.emii.portal.SystemController',
-            'grails.app.domain',
-            'grails.app.realms'
+        'grails.app.tagLib',
+        'grails.app.controller.au.org.emii.portal.SystemController',
+        'grails.app.domain',
+        'grails.app.realms'
 }

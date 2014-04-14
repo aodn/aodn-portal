@@ -44,7 +44,7 @@ class SecurityFilters {
             }
         }
 
-        aodaacAccess(controller: "aodaac", action: "productInfo|createJob|updateJob|cancelJob|deleteJob|userJobInfo") {
+        aodaacAccess(controller: "aodaac", action: "createJob") {
             before = {
                 request.accessAllowed = true
             }

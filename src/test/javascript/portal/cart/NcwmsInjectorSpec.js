@@ -9,21 +9,35 @@ describe('Portal.cart.NcwmsInjector', function() {
 
     var injector;
     var geoNetworkRecord;
+    var startDate;
+    var endDate;
 
     beforeEach(function() {
         injector = new Portal.cart.NcwmsInjector();
+        startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
+        endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
         geoNetworkRecord = {
             uuid: 9,
             grailsLayerId: 42,
-            ncwmsParams: {},
+            ncwmsParams: {
+                dateRangeStart: startDate,
+                dateRangeEnd: endDate,
+                latitudeRangeStart: -42,
+                latitudeRangeEnd: -20,
+                longitudeRangeStart: 160,
+                longitudeRangeEnd: 170,
+                layerName: "gogoDingo"
+            },
             wmsLayer: {
                 getDownloadFilter: function() {
                     return "cql_filter"
                 },
-                getWfsLayerFeatureRequestUrl: function() {},
+                getWfsLayerFeatureRequestUrl: noOp,
                 isNcwms: function() {return true},
                 wfsLayer: true,
-                bodaacFilterParams: {}
+                bodaacFilterParams: {},
+                aodaacProducts: [],
+                isAodaac: noOp
             },
             pointOfTruthLink: 'Link!',
             downloadableLinks: 'Downloadable link!'
@@ -222,8 +236,6 @@ describe('Portal.cart.NcwmsInjector', function() {
     describe('_generateNcwmsUrl', function() {
 
         var url;
-        var startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
-        var endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
         var format;
         var emailAddress;
         var collection;
@@ -271,17 +283,19 @@ describe('Portal.cart.NcwmsInjector', function() {
     describe('_generateAodaacJobUrl', function() {
 
         var url;
-        var params = {
-            dateRangeStart: new Date(0),
-            dateRangeEnd: new Date(),
-            latitudeRangeStart: -42,
-            latitudeRangeEnd: -20,
-            longitudeRangeStart: 160,
-            longitudeRangeEnd: 170,
-            productId: 1
-        };
 
         beforeEach(function() {
+
+            var params = {
+                dateRangeStart: startDate,
+                dateRangeEnd: endDate,
+                latitudeRangeStart: -42,
+                latitudeRangeEnd: -20,
+                longitudeRangeStart: 160,
+                longitudeRangeEnd: 170,
+                productId: 1
+            };
+
             url = injector._generateAodaacJobUrl(params, 'nc', 'aodaac@imos.org.au');
         });
 
@@ -298,11 +312,11 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
 
         it('includes the date range start', function() {
-            expect(url).toHaveParameterWithValue('dateRangeStart', params.dateRangeStart);
+            expect(url).toHaveParameterWithValue('dateRangeStart', '2013-11-20T00:30:00.000Z');
         });
 
         it('includes the date range end', function() {
-            expect(url).toHaveParameterWithValue('dateRangeEnd', params.dateRangeEnd);
+            expect(url).toHaveParameterWithValue('dateRangeEnd', '2014-12-21T22:30:30.500Z');
         });
 
         it('includes the latitude range start', function() {
@@ -325,21 +339,9 @@ describe('Portal.cart.NcwmsInjector', function() {
     describe('_generateGogoduckJobUrl', function() {
 
         var url;
-        var startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
-        var endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
-
-        var params = {
-            dateRangeStart: startDate,
-            dateRangeEnd: endDate,
-            latitudeRangeStart: -42,
-            latitudeRangeEnd: -20,
-            longitudeRangeStart: 160,
-            longitudeRangeEnd: 170,
-            layerName: "gogoDingo"
-        };
 
         beforeEach(function() {
-            url = decodeURIComponent(injector._generateGogoduckJobUrl(params, 'gogo@duck.com'));
+            url = decodeURIComponent(injector._generateGogoduckJobUrl(geoNetworkRecord.ncwmsParams, 'gogo@duck.com'));
         });
 
         it('generates the gogoduck endpoint', function() {
