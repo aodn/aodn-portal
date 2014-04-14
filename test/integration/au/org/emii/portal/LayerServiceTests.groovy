@@ -327,16 +327,14 @@ class LayerServiceTests extends GroovyTestCase {
         assertNull "layer_c_1 property title.", layerC1.title
         assertEquals "layer_c_1 parent should be Grouing (under Layer C).", groupingUnderC, layerC1.parent
         assertEquals "layer_c_1 should have no child layers.", 0, layerC1.layers.size()
-        assertEquals "layer_a -- Layer A // awesomeSauce:layer_c -- Layer C // <no name> -- Grouping // layer_c_1 -- <no title>",
-            layerC1.layerHierarchyPath
+        assertEquals "layer_a -- Layer A // awesomeSauce:layer_c -- Layer C // <no name> -- Grouping // layer_c_1 -- <no title>", layerC1.layerHierarchyPath
 
         def layerC2 = Layer.findWhere(server: server, name: "layer_c_2")
         assertNotNull "layer_c_2 should exist.", layerC2
         assertNull "layer_c_2 property title.", layerC2.title
         assertEquals "layer_c_2 parent should be Grouing (under Layer C).", groupingUnderC, layerC2.parent
         assertEquals "layer_c_2 should have no child layers.", 0, layerC2.layers.size()
-        assertEquals "layer_a -- Layer A // awesomeSauce:layer_c -- Layer C // <no name> -- Grouping // layer_c_2 -- <no title>",
-            layerC2.layerHierarchyPath
+        assertEquals "layer_a -- Layer A // awesomeSauce:layer_c -- Layer C // <no name> -- Grouping // layer_c_2 -- <no title>", layerC2.layerHierarchyPath
 
         def layerD = Layer.findWhere(server: server, title: "Layer D", name: null)
         assertNotNull "layer_d should exist", layerD
