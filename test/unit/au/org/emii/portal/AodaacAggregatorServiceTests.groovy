@@ -222,6 +222,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     void testMakeApiCall() {
 
+        service.metaClass._apiCallsDisabled = { -> false }
         def testApiCallUrl = [
             toURL: { ->
                 [text: "{id: 1}"]
