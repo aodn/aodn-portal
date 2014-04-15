@@ -45,15 +45,12 @@ Portal.cart.InsertionService = Ext.extend(Object, {
     },
 
     _isDownloadable: function(collection) {
-        return (this._hasWfsLayer(collection) || this._hasUrlDownloadField(collection) || this._isAodaac(collection));
+        return (this._isBodaac(collection) || this._isAodaac(collection));
     },
 
-    _hasWfsLayer: function(collection) {
-        return collection.wmsLayer.wfsLayer;
-    },
+    _isBodaac: function(collection) {
 
-    _hasUrlDownloadField: function(collection) {
-        return collection.wmsLayer.urlDownloadFieldName;
+        return collection.wmsLayer.isBodaac();
     },
 
     _isAodaac: function(collection) {
