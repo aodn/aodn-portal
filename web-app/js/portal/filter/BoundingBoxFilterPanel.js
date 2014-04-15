@@ -40,7 +40,11 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
     },
 
     handleRemoveFilter: function() {
-        this.map.spatialConstraintControl.clear();
+
+        if (this.map.spatialConstraintControl) {
+            this.map.spatialConstraintControl.clear();
+        }
+        this.map.events.triggerEvent('spatialconstraintcleared');
     },
 
     getFilterName: function() {

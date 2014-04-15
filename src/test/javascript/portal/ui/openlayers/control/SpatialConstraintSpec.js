@@ -94,19 +94,14 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
         it('fires events from map', function() {
             var addedSpy = jasmine.createSpy('added');
-            var clearedSpy = jasmine.createSpy('cleared');
 
             map.events.on({
                 scope: this,
-                'spatialconstraintadded': addedSpy,
-                'spatialconstraintcleared': clearedSpy
+                'spatialconstraintadded': addedSpy
             });
 
             map.spatialConstraintControl.events.triggerEvent('spatialconstraintadded');
-            map.spatialConstraintControl.events.triggerEvent('spatialconstraintcleared');
-
             expect(addedSpy).toHaveBeenCalled();
-            expect(clearedSpy).toHaveBeenCalled();
         });
 
         describe('clear', function() {
