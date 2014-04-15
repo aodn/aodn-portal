@@ -116,12 +116,10 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     },
 
     _isAodaacLayer: function(collection) {
-
         return collection.wmsLayer.isAodaac();
     },
 
     _isBodaacLayer: function(collection) {
-
         return collection.wmsLayer.isBodaac();
     },
 
