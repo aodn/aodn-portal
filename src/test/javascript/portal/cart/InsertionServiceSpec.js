@@ -18,7 +18,7 @@ describe('Portal.cart.InsertionService', function() {
             title: 'the title',
             uuid: '42',
             wmsLayer: {
-                isNcwms: function() {return false},
+                isNcwms: noOp,
                 isAodaac: noOp,
                 isBodaac: noOp
             }
