@@ -88,7 +88,7 @@ class AodaacAggregatorService {
 
         if (job.hasEnded()) {
 
-            def filesReplacement = _linksForFiles(currentDetails.files)
+            def filesReplacement = currentDetails.files.join("\n")
 
             _sendNotificationEmail(job, [filesReplacement])
         }
@@ -217,11 +217,6 @@ class AodaacAggregatorService {
         replacements << _getMessage("${portalInstance.code()}.emailFooter")
 
         return replacements
-    }
-
-    def _linksForFiles(files) {
-
-        files.collect{ """<a href="$it">$it</a>""" }.join(" ")
     }
 
     def _prettifyErrorMessage(errorMessage) {
