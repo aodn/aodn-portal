@@ -27,6 +27,7 @@ class Layer {
     Boolean isBaseLayer
     Boolean available   //used by CheckLayerAvailabilityService
     String urlDownloadFieldName
+    String gogoduckLayerName
 
     // Extra info
     String dataSource
@@ -74,6 +75,7 @@ class Layer {
         queryable()
         viewParams(nullable: true)
         urlDownloadFieldName(nullable: true)
+        gogoduckLayerName(nullable: true)
 
         isBaseLayer()
 
