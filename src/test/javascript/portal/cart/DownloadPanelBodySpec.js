@@ -32,10 +32,10 @@ describe("Portal.cart.DownloadPanelBody", function() {
 
         var mockTemplate;
 
-        var testCollection1 = {uuid: '[Content 1]', wmsLayer: {wfsLayer: null, isNcwms: noOp, isAodaac: noOp, aodaacProducts: []}};
-        var testCollection2 = {uuid: '[Content 2]', wmsLayer: {wfsLayer: null, isNcwms: noOp, isAodaac: noOp, aodaacProducts: []}};
-        var testCollection3 = {uuid: '[Content 3]', wmsLayer: {wfsLayer: null, isNcwms: noOp, isAodaac: noOp, aodaacProducts: []}};
-        var testCollection4 = {uuid: '[Content 4]', wmsLayer: {wfsLayer: null, isNcwms: noOp, isAodaac: noOp, aodaacProducts: []}};
+        var testCollection1 = {uuid: '[Content 1]', wmsLayer: {wfsLayer: null, isNcwms: noOp, isAodaac: noOp, isBodaac: noOp, aodaacProducts: []}};
+        var testCollection2 = {uuid: '[Content 2]', wmsLayer: {wfsLayer: null, isNcwms: noOp, isAodaac: noOp, isBodaac: noOp, aodaacProducts: []}};
+        var testCollection3 = {uuid: '[Content 3]', wmsLayer: {wfsLayer: null, isNcwms: noOp, isAodaac: noOp, isBodaac: noOp, aodaacProducts: []}};
+        var testCollection4 = {uuid: '[Content 4]', wmsLayer: {wfsLayer: null, isNcwms: noOp, isAodaac: noOp, isBodaac: noOp, aodaacProducts: []}};
 
         beforeEach(function() {
 
