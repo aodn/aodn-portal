@@ -315,9 +315,17 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(injector._generateAodaacJobUrl).toHaveBeenCalled();
         });
 
-        it('calls _generateGogoduckJobUrl when a gogoduck record is passed', function() {
+        it('calls _generateGogoduckJobUrl when a gogoduck record is passed with a layerName', function() {
 
             ncwmsParams.layerName = 'gogoDingo';
+
+            url = injector._generateNcwmsUrl(collection, params);
+            expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
+        });
+
+        it('calls _generateGogoduckJobUrl when a gogoduck record is passed with gogoduck override name', function() {
+
+            ncwmsParams.gogoduckLayerName = 'CARS';
 
             url = injector._generateNcwmsUrl(collection, params);
             expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
@@ -327,20 +335,36 @@ describe('Portal.cart.NcwmsInjector', function() {
     describe('_generateAodaacJobUrl', function() {
 
         var url;
+        var ncwmsParams;
+        var collection;
 
         beforeEach(function() {
 
-            var params = {
+            ncwmsParams = {
                 dateRangeStart: startDate,
                 dateRangeEnd: endDate,
                 latitudeRangeStart: -42,
                 latitudeRangeEnd: -20,
                 longitudeRangeStart: 160,
                 longitudeRangeEnd: 170,
-                productId: 1
+                productId: '1'
             };
 
-            url = injector._generateAodaacJobUrl(params, 'nc', 'aodaac@imos.org.au');
+            collection = {
+                wmsLayer: {
+                    getDownloadFilter: function() {
+                        return "cql_filter"
+                    },
+                    getWfsLayerFeatureRequestUrl: noOp,
+                    isNcwms: function() {return true},
+                    wfsLayer: true,
+                    bodaacFilterParams: {},
+                    aodaacProducts: [],
+                    isAodaac: noOp
+                },
+                ncwmsParams: ncwmsParams };
+
+            url = injector._generateAodaacJobUrl(collection, 'nc', 'aodaac@imos.org.au');
         });
 
         it('includes the aodaac endpoint', function() {
@@ -385,7 +409,7 @@ describe('Portal.cart.NcwmsInjector', function() {
         var url;
 
         beforeEach(function() {
-            url = decodeURIComponent(injector._generateGogoduckJobUrl(geoNetworkRecord.ncwmsParams, 'gogo@duck.com'));
+            url = decodeURIComponent(injector._generateGogoduckJobUrl(geoNetworkRecord, 'gogo@duck.com'));
         });
 
         it('generates the gogoduck endpoint', function() {

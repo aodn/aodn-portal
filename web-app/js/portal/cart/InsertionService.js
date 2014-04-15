@@ -45,7 +45,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
     },
 
     _isDownloadable: function(collection) {
-        return (this._isBodaac(collection) || this._isAodaac(collection));
+        return (this._isBodaac(collection) || this._isAodaac(collection) || this._isGogoduck(collection));
     },
 
     _isBodaac: function(collection) {
@@ -56,6 +56,11 @@ Portal.cart.InsertionService = Ext.extend(Object, {
     _isAodaac: function(collection) {
 
         return collection.wmsLayer.isAodaac();
+    },
+
+    _isGogoduck: function(collection) {
+
+        return collection.wmsLayer.gogoduckLayerName || (collection.wmsLayer.isNcwms() && collection.wmsLayer.wfsLayer);
     },
 
     _getNcwmsInjector: function(config, collection) {
