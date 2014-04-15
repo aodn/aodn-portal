@@ -152,6 +152,10 @@ class AodaacAggregatorService {
 
     def _makeApiCall(apiCallUrl) {
 
+        if (_apiCallsDisabled()) {
+            throw new IllegalStateException("AODAAC API calls disabled. If testing please mock the service or specific behaviour required.")
+        }
+
         try {
             log.debug "API call URL: $apiCallUrl"
 
@@ -166,6 +170,11 @@ class AodaacAggregatorService {
             log.info "Call to AODAAC API failed. URL: '$apiCallUrl'", e
             throw e
         }
+    }
+
+    def _apiCallsDisabled() {
+
+        !grailsApplication.config.aodaacAggregator.allowApiCalls
     }
 
     def _dateFromParams(dateStringIn) {
