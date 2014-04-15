@@ -34,7 +34,7 @@ class AodaacAggregatorService {
             return []
         }
 
-        def aodaacData = _makeApiCall(productDataJavascriptAddress)
+        def aodaacData = _makeApiCall(productDataJavascriptAddress, false)
         def relevantAoddacDatabase = aodaacData.first()
         def products = relevantAoddacDatabase.'products'
 
@@ -150,14 +150,16 @@ class AodaacAggregatorService {
         ]
     }
 
-    def _makeApiCall(apiCallUrl) {
+    def _makeApiCall(apiCallUrl, logResponse = true) {
 
         try {
             log.debug "API call URL: $apiCallUrl"
 
             // Make the call
             def response = apiCallUrl.toURL().text
-            log.debug "response: $response"
+            if (logResponse) {
+                log.debug "response: $response"
+            }
 
             return JSON.parse(response)
         }
