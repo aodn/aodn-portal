@@ -178,8 +178,11 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
 };
 
 OpenLayers.Layer.WMS.prototype.isAodaac = function() {
-
     return this.aodaacProducts.length > 0;
+};
+
+OpenLayers.Layer.WMS.prototype.isBodaac = function() {
+    return this.wfsLayer || this.urlDownloadFieldName;
 };
 
 OpenLayers.Layer.WMS.prototype.isKnownToThePortal = function() {

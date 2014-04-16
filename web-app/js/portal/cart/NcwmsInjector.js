@@ -49,16 +49,20 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     _createMenuItems: function(collection) {
         var menuItems = [];
 
-        menuItems.push({
-            text: OpenLayers.i18n('downloadAsUrlsLabel'),
-            handler: this._urlListDownloadHandler(collection),
-            scope: this
-        });
-        menuItems.push({
-            text: OpenLayers.i18n('downloadAsAllSourceNetCdfLabel'),
-            handler: this._netCdfDownloadHandler(collection),
-            scope: this
-        });
+        if (this._isBodaacLayer(collection)) {
+
+            menuItems.push({
+                text: OpenLayers.i18n('downloadAsUrlsLabel'),
+                handler: this._urlListDownloadHandler(collection),
+                scope: this
+            });
+            menuItems.push({
+                text: OpenLayers.i18n('downloadAsAllSourceNetCdfLabel'),
+                handler: this._netCdfDownloadHandler(collection),
+                scope: this
+            });
+        }
+
         menuItems.push({
             text: OpenLayers.i18n('downloadAsSubsettedNetCdfLabel'),
             handler: this._downloadGogoduckHandler(collection, { format: 'nc' }),
@@ -81,16 +85,8 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return date.format(this.PARAMS_DATE_FORMAT);
     },
 
-    _emailTextFieldElement: function (uuid) {
-        return Ext.get(Ext.query("#" + this.EMAIL_ADDRESS_ATTRIBUTE + "-" + uuid)[0]);
-    },
-
     _bodaacCsvDownloadUrl: function(collection) {
         return this._wfsDownloadUrl(collection, { format: 'csv' });
-    },
-
-    _getNotificationBlurbEntry: function() {
-        return OpenLayers.i18n('notificationBlurbMessage');
     },
 
     _getDataMarkup: function(collection) {
@@ -106,7 +102,8 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
         var url = '';
         var ncwmsParams = collection.ncwmsParams;
-        if (ncwmsParams.productId) {
+
+        if (this._isAodaacLayer(collection)) {
             url = this._generateAodaacJobUrl(ncwmsParams, params.format, params.emailAddress);
         }
         else {
@@ -119,8 +116,11 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     },
 
     _isAodaacLayer: function(collection) {
-
         return collection.wmsLayer.isAodaac();
+    },
+
+    _isBodaacLayer: function(collection) {
+        return collection.wmsLayer.isBodaac();
     },
 
     _generateAodaacJobUrl: function(params, format, email) {

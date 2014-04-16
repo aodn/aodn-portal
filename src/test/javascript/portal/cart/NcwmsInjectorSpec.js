@@ -46,7 +46,11 @@ describe('Portal.cart.NcwmsInjector', function() {
 
     describe('createMenuItems', function() {
 
-        it('create menu items for ncwms layers', function() {
+        it('creates all menu items for bodaacable NcWms layers', function() {
+
+            geoNetworkRecord.wmsLayer.isAodaac = function() {return true};
+            geoNetworkRecord.wmsLayer.isBodaac = function() {return true};
+
             var menuItems = injector._createMenuItems(geoNetworkRecord);
             var urlListIncluded = false;
             var netCdfDownloadIncluded = false;
@@ -67,6 +71,33 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(menuItems.length).toEqual(3);
             expect(urlListIncluded).toBe(true);
             expect(netCdfDownloadIncluded).toBe(true);
+        });
+
+        it('creates only subsetted NetCDF menu option for non-bodaacable layers', function() {
+
+            geoNetworkRecord.wmsLayer.isAodaac = function() {return true};
+            geoNetworkRecord.wmsLayer.isBodaac = function() {return false};
+
+            var menuItems = injector._createMenuItems(geoNetworkRecord);
+            var urlListIncluded = false;
+            var netCdfDownloadIncluded = false;
+            var netCdfSubsetIncluded = false;
+
+            for (var i = 0; i < menuItems.length; i++) {
+                if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
+                    urlListIncluded = true;
+                }
+                else if (menuItems[i].text == OpenLayers.i18n('downloadAsAllSourceNetCdfLabel')) {
+                    netCdfDownloadIncluded = true;
+                }
+                else if (menuItems[i].text == OpenLayers.i18n('downloadAsSubsettedNetCdfLabel')) {
+                    netCdfSubsetIncluded = true;
+                }
+            }
+
+            expect(menuItems.length).toEqual(1);
+            expect(urlListIncluded).toBe(false);
+            expect(netCdfDownloadIncluded).toBe(false);
         });
     });
 
@@ -257,7 +288,19 @@ describe('Portal.cart.NcwmsInjector', function() {
                 longitudeRangeEnd: 170
             };
 
-            collection = { ncwmsParams: ncwmsParams };
+            collection = {
+                wmsLayer: {
+                    getDownloadFilter: function() {
+                        return "cql_filter"
+                    },
+                    getWfsLayerFeatureRequestUrl: noOp,
+                    isNcwms: function() {return true},
+                    wfsLayer: true,
+                    bodaacFilterParams: {},
+                    aodaacProducts: [],
+                    isAodaac: noOp
+                },
+                ncwmsParams: ncwmsParams };
 
             spyOn(injector, '_generateAodaacJobUrl');
             spyOn(injector, '_generateGogoduckJobUrl');
@@ -266,6 +309,7 @@ describe('Portal.cart.NcwmsInjector', function() {
         it('calls _generateAodaacJobUrl when an aodaac record is passed', function() {
 
             ncwmsParams.productId = 'gogoAodaac';
+            collection.wmsLayer.isAodaac = function() {return true};
 
             url = injector._generateNcwmsUrl(collection, params);
             expect(injector._generateAodaacJobUrl).toHaveBeenCalled();
