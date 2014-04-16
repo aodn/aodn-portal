@@ -23,7 +23,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def grailsApplication = [
             config: [
                 aodaacAggregator: [
-                    url: 'the_url',
+                    url: 'http://www.aodn.org.au/',
                     environment: 'env'
                 ],
                 portal: [
