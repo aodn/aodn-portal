@@ -103,7 +103,7 @@ describe('Portal.cart.InsertionService', function() {
         it('returns true when collection has an attached wfsLayer and isNcwms', function() {
 
             geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
-            geoNetworkRecord.wmsLayer.wfsLayer = noOp;
+            geoNetworkRecord.wmsLayer.wfsLayer = {};
 
             expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
         });

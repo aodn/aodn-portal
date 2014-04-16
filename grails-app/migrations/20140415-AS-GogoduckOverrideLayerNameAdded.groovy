@@ -12,12 +12,4 @@ databaseChangeLog = {
             column(name: "gogoduck_layer_name", type: "varchar(255)")
         }
     }
-
-    changeSet(author: "anguss00 (generated)", id: "1397538850000-2") {
-        update(tableName: "layer") {
-            column(name: "gogoduck_layer_name", value: "CARS") {
-                where("layer.name LIKE 'CARS%'")
-            }
-        }
-    }
 }
