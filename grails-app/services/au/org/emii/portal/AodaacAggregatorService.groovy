@@ -162,7 +162,6 @@ class AodaacAggregatorService {
 
         log.debug "API call URL: $apiCallUrl"
 
-
         def response = '<not set>'
         try {
             // Make the call
