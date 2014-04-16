@@ -73,6 +73,7 @@ databaseChangeLog = {
     include file: '20140220-DN-RemoveFiltersWithNoType.groovy'
     include file: '20140403-DN-AodaacV2Integration.groovy'
     include file: '20140403-DN-MoreAodaacV2Integration.groovy'
+    include file: '20140415-AS-GogoduckOverrideLayerNameAdded.groovy'
 
     // Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 
