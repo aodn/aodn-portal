@@ -43,7 +43,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     void testGetProductInfoNoIds() {
 
-        service.metaClass._makeApiCall = { fail "Should not be called" }
+        service.metaClass._makeApiCall = { url, logResponse -> fail "Should not be called" }
 
         assertEquals([], service.getProductInfo([]))
     }
@@ -55,9 +55,10 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def p3 = [id: 3];
         def p4 = [id: 4];
 
-        service.metaClass._makeApiCall = { apiCallUrl ->
+        service.metaClass._makeApiCall = { apiCallUrl, logResponse ->
 
             assertEquals service.productDataJavascriptAddress, apiCallUrl
+            assertFalse logResponse
 
             return [
                 [products: [p1, p2]],
@@ -102,7 +103,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
             return 'creation_url'
         }
         def apiCallResponse = [id: '1234']
-        service.metaClass._makeApiCall = { url ->
+        service.metaClass._makeApiCall = { url, logResponse ->
 
             assertEquals 'creation_url', url
             return apiCallResponse
@@ -124,7 +125,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def testJob = [
             hasEnded: { -> true }
         ]
-        service.metaClass._makeApiCall = { fail "Should not be called" }
+        service.metaClass._makeApiCall = { url, logResponse -> fail "Should not be called" }
 
         service.updateJob(testJob)
     }
@@ -133,7 +134,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         def testJob = new AodaacJob('1234', 'fred@example.com')
         service.metaClass.jobUpdateUrl = { job -> 'the_url' }
-        service.metaClass._makeApiCall = { url ->
+        service.metaClass._makeApiCall = { url, logResponse ->
 
             assertEquals 'the_url', url
             return [status: "RUNNING"]
@@ -149,7 +150,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         def testJob = new AodaacJob('1234', 'fred@example.com')
         service.metaClass.jobUpdateUrl = { job -> 'the_url' }
-        service.metaClass._makeApiCall = { url ->
+        service.metaClass._makeApiCall = { url, logResponse ->
 
             assertEquals 'the_url', url
             return [status: "SUCCESS"]
