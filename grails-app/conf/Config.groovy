@@ -70,6 +70,7 @@ help.url = "http://help.aodn.org.au/"
 
 // AODAAC Aggregator
 aodaacAggregator {
+    allowApiCalls = true
     url = "http://aodaac.aodn.org.au"
     environment = "prod"
     idleJobTimeout = 1 // In hours
@@ -157,8 +158,8 @@ environments {
         grails.serverURL = "http://localhost:8080/$appName"
 
         grails.mail.disabled = true
-
         grails.plugin.databasemigration.updateOnStart = false
+        aodaacAggregator.allowApiCalls = false
     }
 
     production {
