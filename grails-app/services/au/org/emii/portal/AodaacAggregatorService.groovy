@@ -58,6 +58,8 @@ class AodaacAggregatorService {
         )
         def response = _makeApiCall(apiCallUrl)
 
+        log.debug "response: $response"
+
         if (response.error) {
             log.error "Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response"
             throw new RuntimeException("Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response")
@@ -82,6 +84,8 @@ class AodaacAggregatorService {
         def currentDetails = _makeApiCall(
             jobUpdateUrl(job)
         )
+
+        log.debug "response: $currentDetails"
 
         job.setStatus currentDetails.status
         job.save failOnError: true
@@ -156,18 +160,18 @@ class AodaacAggregatorService {
             throw new IllegalStateException("AODAAC API calls disabled. If testing please mock the service or specific behaviour required.")
         }
 
-        try {
-            log.debug "API call URL: $apiCallUrl"
+        log.debug "API call URL: $apiCallUrl"
 
+        def response = '<not set>'
+        try {
             // Make the call
-            def response = apiCallUrl.toURL().text
-            log.debug "response: $response"
+            response = apiCallUrl.toURL().text
 
             return JSON.parse(response)
         }
         catch (Exception e) {
 
-            log.info "Call to AODAAC API failed. URL: '$apiCallUrl'", e
+            log.warn "Call to AODAAC API failed. URL: '$apiCallUrl'. Response: $response", e
             throw e
         }
     }
