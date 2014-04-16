@@ -18,8 +18,9 @@ describe('Portal.cart.InsertionService', function() {
             title: 'the title',
             uuid: '42',
             wmsLayer: {
-                isNcwms: function() {return false},
-                isAodaac: noOp
+                isNcwms: noOp,
+                isAodaac: noOp,
+                isBodaac: noOp
             }
         };
     });
@@ -79,15 +80,10 @@ describe('Portal.cart.InsertionService', function() {
         });
     });
 
-    describe('is downloadble', function() {
-        it('returns true when collection has associated wfs layer', function() {
-            geoNetworkRecord.wmsLayer.wfsLayer = {};
+    describe('is downloadable', function() {
+        it('returns true when collection has associated wfs layer or download URL field', function() {
+            geoNetworkRecord.wmsLayer.isBodaac = function() {return true};
 
-            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
-        });
-
-        it('returns true when collection has download URL field', function() {
-            geoNetworkRecord.wmsLayer.urlDownloadFieldName = 'url';
             expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
         });
 
@@ -97,15 +93,16 @@ describe('Portal.cart.InsertionService', function() {
     });
 
     function getWmsRecord() {
-        geoNetworkRecord.wmsLayer.wfsLayer = {};
+        geoNetworkRecord.wmsLayer.isBodaac = function() {return true};
         geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
 
         return geoNetworkRecord;
     }
 
     function getNcwmsRecord() {
-        geoNetworkRecord.wmsLayer.wfsLayer = {};
+        geoNetworkRecord.wmsLayer.wfsLayer = function() {return true};
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
+        geoNetworkRecord.wmsLayer.isAodaac = function() {return true};
 
         return geoNetworkRecord;
     }
