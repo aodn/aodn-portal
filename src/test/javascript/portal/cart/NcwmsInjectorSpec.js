@@ -295,20 +295,20 @@ describe('Portal.cart.NcwmsInjector', function() {
                     },
                     getWfsLayerFeatureRequestUrl: noOp,
                     bodaacFilterParams: {},
-                    aodaacProducts: [],
-                    isAodaac: noOp
+                    aodaacProducts: []
                 },
                 ncwmsParams: ncwmsParams };
 
             spyOn(injector, '_generateAodaacJobUrl');
             spyOn(injector, '_generateGogoduckJobUrl');
+
+            injector._isAodaacLayer = function() {return false};
+            injector._isGogoduckLayer = function() {return false};
         });
 
         it('calls _generateAodaacJobUrl when an aodaac record is passed', function() {
 
-            collection.wmsLayer.isAodaac = function() {return true};
-            collection.wmsLayer.isNcwms = function() {return true};
-            collection.wmsLayer.wfsLayer = {};
+            injector._isAodaacLayer = function() {return true};
 
             url = injector._generateNcwmsUrl(collection, params);
             expect(injector._generateAodaacJobUrl).toHaveBeenCalled();
@@ -316,25 +316,13 @@ describe('Portal.cart.NcwmsInjector', function() {
 
         it('calls _generateGogoduckJobUrl when a gogoduck record is passed with attached wfsLayer', function() {
 
-            collection.wmsLayer.wfsLayer = {};
-            collection.wmsLayer.isNcwms = function() {return true};
-
-            url = injector._generateNcwmsUrl(collection, params);
-            expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
-        });
-
-        it('calls _generateGogoduckJobUrl when a gogoduck record is passed with an override layer name', function() {
-
-            collection.wmsLayer.gogoduckLayerName = function() {return true};
+            injector._isGogoduckLayer = function() {return true};
 
             url = injector._generateNcwmsUrl(collection, params);
             expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
         });
 
         it('returns an empty string if record is neither aodaac or gogoduck', function() {
-
-            collection.wmsLayer.isAodaac = function() {return false};
-            collection.wmsLayer.isNcwms = function() {return false};
 
             url = injector._generateNcwmsUrl(collection, params);
             expect(url).toEqual('');
