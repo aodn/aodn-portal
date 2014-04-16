@@ -49,7 +49,8 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
                     layout:'hbox',
                     items:[
                         {xtype:'spacer', flex:1},
-                        this.toggleAllLink
+                        this.toggleAllLink,
+                        {xtype:'spacer', width:5}
                     ]
                 }
             ]
@@ -193,7 +194,13 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
             },
             _onTermsLoaded: function () {
                 this.setShowAll(false);
-                this.setVisible(termStore.canLimit);
+                if (termStore.getCount() == 1) {
+                    this.setVisible(false);
+                }
+                else {
+                    this.setVisible(termStore.canLimit, true);
+                }
+                this.doLayout();
             }
         });
 
