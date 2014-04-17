@@ -19,8 +19,10 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         this.addEvents('tabchange');
 
+        var fetcher = new Portal.data.GeoNetworkRecordFetcher();
+
         var config = Ext.apply({
-            activeItem: TAB_INDEX_SEARCH,
+            activeItem: fetcher.hasUuidsInUrl() ? TAB_INDEX_VISUALISE : TAB_INDEX_SEARCH,
             margins: {
                 left: 10,
                 right: 10,
@@ -39,20 +41,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
 
-        this._loadCollectionsFromUrl();
-
         Ext.MsgBus.subscribe(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, this._onViewGeoNetworkRecord, this);
-    },
-
-    _loadCollectionsFromUrl: function() {
-        var getParams = document.URL.split("?");
-        var params = Ext.urlDecode(getParams[1]);
-
-        var fetcher = new Portal.data.GeoNetworkRecordFetcher();
-
-        Ext.each(params.uuid, function(aUuid) {
-            fetcher.load(aUuid);
-        });
     },
 
     _onViewGeoNetworkRecord: function() {
