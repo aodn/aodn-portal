@@ -9,7 +9,7 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     loadSpinner: null,
-    
+
     defaultSpatialConstraintType: OpenLayers.i18n('comboBoxTypeLabels')[0].label,
 
     constructor: function (cfg) {
@@ -140,6 +140,19 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             maximisedPosition: { x: this.getPanelX(), y: this.getPanelY() }
         });
         this.featureInfoPopup.findFeatures(event);
+    },
+
+    renderMap: function() {
+        if (this.layers.getBaseLayers().getCount() > 0) {
+            Portal.common.MapPanel.superclass.renderMap.call(this);
+        }
+        else {
+            var mapPanel = this;
+            Ext.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER, function() {
+                Ext.MsgBus.unsubscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
+                Portal.common.MapPanel.superclass.renderMap.call(mapPanel);
+            });
+        }
     },
 
     initMap: function () {
