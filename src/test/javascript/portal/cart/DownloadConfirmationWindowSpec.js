@@ -73,7 +73,6 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
             beforeEach(function() {
                 spyOn(confirmationWindow.downloadEmailPanel, 'show');
                 spyOn(confirmationWindow.downloadEmailPanel, 'hide');
-                spyOn(confirmationWindow.downloadEmailPanel, 'clearEmailValue');
             });
 
             it('shows when required', function() {
@@ -88,10 +87,6 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
                 expect(confirmationWindow.downloadEmailPanel.hide).toHaveBeenCalled();
             });
 
-            it('clears value', function() {
-                confirmationWindow.showIfNeeded({});
-                expect(confirmationWindow.downloadEmailPanel.clearEmailValue).toHaveBeenCalled();
-            });
 
             describe('download button', function() {
                 var downloadButton;
