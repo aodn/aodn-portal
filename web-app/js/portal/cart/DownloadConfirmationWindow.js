@@ -11,27 +11,9 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
     initComponent: function() {
 
-        var tmp = '<table border=\"0\" width=\"100%\" style=\"font-size: 11px;\">\
-        <tr>\
-                <td><b>Licence and use limitations</b><br/>Data downloaded in a cart may include licence information or use limitations. If an agreement is included with data in the cart then by using those data you are accepting the terms of that agreement.</td>\
-            </tr>\
-            <tr>\
-                <td >&nbsp;</td>\
-            </tr>\
-                <tr>\
-                        <td><b>Have any questions?</b><br/>Please visit the <a href=\"http://emii1.its.utas.edu.au/Portal2_help/?q=node/68\">Download a Dataset</a> page of the <a href=\"http://emii1.its.utas.edu.au/Portal2_help/\">Portal Help</a> forum where you can find more information.</td>\
-                    </tr>\
-                    <tr>\
-                        <td >&nbsp;</td>\
-                    </tr>\
-                    <tr>\
-                        <td style=\"font-size: 0.9em; font-style: italic; color: #555\">You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it.</td>\
-                    </tr>\
-                </table>'
-
         // Content
         var contentPanel = new Ext.Panel({
-            html: tmp,
+            html: Portal.app.config.downloadCartConfirmationWindowContent,
             width: 450,
             resizable: false
         });
