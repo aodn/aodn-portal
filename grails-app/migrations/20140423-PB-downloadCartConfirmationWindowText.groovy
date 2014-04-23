@@ -7,7 +7,7 @@
 
 databaseChangeLog = {
 
-    changeSet(author: "pmbohm (generated)", id: "1398211160526433267-1") {
+    changeSet(author: "pmbohm (generated)", id: "1398215693687938228-1") {
         update(tableName: "config") {
             column(name: "download_cart_confirmation_window_content", value: """\
                 <h3>Licence and use limitations</h3/>
