@@ -32,6 +32,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
             spyOn(filterGroupPanel, '_createFilterPanel');
             spyOn(filterGroupPanel, '_updateAndShow');
+            spyOn(filterGroupPanel, '_filtersSort').andReturn(layer);
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
 
             filterGroupPanel._showHideFilters(layer, showFunction, noOp, {});
@@ -45,6 +46,31 @@ describe("Portal.filter.FilterGroupPanel", function() {
         it('calls _updateAndShow', function() {
 
             expect(filterGroupPanel._updateAndShow).toHaveBeenCalledWith(showFunction, fnTarget);
+        });
+    });
+
+    describe('filter sorting', function() {
+        var layer;
+        var expectedReturn;
+
+        beforeEach(function() {
+            layer = {};
+            layer.filters = [
+                {type: 'Boolean'},
+                {type: 'Date'},
+                {type: 'BoundingBox'},
+                {type: 'String'}
+            ];
+            expectedReturn = [
+                { type : 'BoundingBox', sortOrder : 2 },
+                { type : 'Date', sortOrder : 1 },
+                { type : 'Boolean', sortOrder : -1 },
+                { type : 'String', sortOrder : -1 }
+            ]
+        });
+
+        it('sorts by prescribed order', function() {
+            expect(filterGroupPanel._filtersSort(layer.filters)).toEqual(expectedReturn);
         });
     });
 

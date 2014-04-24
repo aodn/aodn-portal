@@ -26,7 +26,7 @@ class Filter implements Comparable {
     boolean downloadOnly
 
     static mapping = {
-        sort "name"
+        sort "label"
     }
 
     public Filter() {

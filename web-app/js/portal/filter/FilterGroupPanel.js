@@ -134,6 +134,8 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         var aFilterIsEnabled = false;
         if (this._isLayerActive(layer) && (layer.filters.length > 0)) {
 
+            layer.filters = this._filtersSort(layer.filters);
+
             Ext.each(
                 layer.filters,
                 function(filterConfig, index, all) {
@@ -150,6 +152,26 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         else {
             this.addErrorMessage(OpenLayers.i18n('subsetEmptyFiltersText'));
         }
+    },
+
+    _filtersSort: function(filters) {
+
+        // override server order by adding the type in topFilters
+        var topFilters = ['DateRange','Date','BoundingBox']; // add in reverse order
+
+        Ext.each(
+            filters,
+            function(filterConfig, index, all) {
+                filterConfig.sortOrder = topFilters.indexOf(filterConfig.type, 0);
+            },
+            this
+        );
+
+        filters.sort( function( a, b) {
+            return b['sortOrder'] - a['sortOrder']
+        });
+
+        return filters;
     },
 
     _createFilterPanel: function(layer, filter) {
