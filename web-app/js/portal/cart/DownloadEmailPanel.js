@@ -12,7 +12,7 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
 
         this.emailField = new Ext.form.TextField({
             name: "emailField",
-            emptyText: OpenLayers.i18n('emailAddressPlaceholder'),
+            value: Ext.util.Cookies.get('emailField'),
             invalidText: OpenLayers.i18n('emailAddressValidationError'),
             validator: this._validateEmailAddress,
             bubbleEvents: [ 'valid', 'invalid' ]
@@ -20,11 +20,14 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
 
         var config = {
             padding: 10,
+            cls: 'downloadEmailPanel',
             items: [
                 {
                     html: OpenLayers.i18n('emailAddressPlaceholder')
                 },
+                {xtype: 'spacer', height: 5},
                 this.emailField,
+                {xtype: 'spacer', height: 5},
                 {
                     html: OpenLayers.i18n('notificationBlurbMessage')
                 }
@@ -32,7 +35,9 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
             listeners: {
                 scope: this,
                 'show': function() {
-                    this.emailField.focus(false, 100);
+                    this.emailField.focus();
+                    var the = this;
+                    setTimeout(function() { the.emailField.validate(); }, 200 );
                 }
             }
         };
@@ -42,17 +47,12 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
         Portal.cart.DownloadEmailPanel.superclass.initComponent.call(this, arguments);
     },
 
-    isValid: function() {
-        return this.emailField.isValid(true);
-    },
-
     getEmailValue: function() {
-        return this.emailField.getValue();
+        var emailValue = this.emailField.getValue();
+        Ext.util.Cookies.set('emailField', emailValue, new Date().add(Date.DAY, 90));
+        return emailValue;
     },
 
-    clearEmailValue: function() {
-        this.emailField.setValue('');
-    },
 
     _validateEmailAddress: function(address) {
         if (!address) {

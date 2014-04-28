@@ -60,11 +60,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         errorMsgContainer.html = "<i>" + msg + "</i>";
     },
 
-    addLoadingMessage: function() {
-        this.loadingMessage = new this.createLoadingMessageContainer();
-        this.add(this.loadingMessage);
-    },
-
     removeLoadingMessage: function() {
         this.remove(this.loadingMessage);
         delete this.loadingMessage;

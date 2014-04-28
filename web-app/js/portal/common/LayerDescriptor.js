@@ -116,6 +116,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         openLayer.layerHierarchyPath = this.layerHierarchyPath;
         openLayer.urlDownloadFieldName = this.urlDownloadFieldName;
         openLayer.aodaacProducts = this.aodaacProducts;
+        openLayer.gogoduckLayerName = this.gogoduckLayerName;
 
         if (this.viewParams) {
             openLayer.zoomOverride = {

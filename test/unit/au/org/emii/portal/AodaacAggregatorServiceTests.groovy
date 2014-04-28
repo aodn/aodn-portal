@@ -138,7 +138,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
             assertEquals 'the_url', url
             return [status: "RUNNING"]
         }
-        service.metaClass._linksForFiles = { fail "Should not get called" }
 
         service.updateJob(testJob)
 
@@ -152,14 +151,13 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         service.metaClass._makeApiCall = { url ->
 
             assertEquals 'the_url', url
-            return [status: "SUCCESS"]
+            return [status: "SUCCESS", files: ['f1', 'f2']]
         }
-        service.metaClass._linksForFiles = { 'links' }
         def sendEmailCalled = false
         service.metaClass._sendNotificationEmail = { job, replacements ->
 
             assertEquals testJob, job
-            assertEquals(['links'], replacements)
+            assertEquals(['f1\nf2'], replacements)
             sendEmailCalled = true
         }
 
@@ -224,6 +222,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     void testMakeApiCall() {
 
+        service.metaClass._apiCallsDisabled = { -> false }
         def testApiCallUrl = [
             toURL: { ->
                 [text: "{id: 1}"]
@@ -297,14 +296,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def replacements = service._getEmailBodyReplacements(testJob)
 
         assertEquals(['test.emailFooter'], replacements)
-    }
-
-    void testLinksForFiles() {
-
-        def testFiles = ['url1', 'url2']
-        def expectedResult = """<a href="url1">url1</a> <a href="url2">url2</a>"""
-
-        assertEquals expectedResult, service._linksForFiles(testFiles)
     }
 
     void testPrettyifyErrorMessage() {

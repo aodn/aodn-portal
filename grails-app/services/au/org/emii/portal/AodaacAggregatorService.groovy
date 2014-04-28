@@ -58,6 +58,8 @@ class AodaacAggregatorService {
         )
         def response = _makeApiCall(apiCallUrl)
 
+        log.debug "response: $response"
+
         if (response.error) {
             log.error "Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response"
             throw new RuntimeException("Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response")
@@ -83,12 +85,14 @@ class AodaacAggregatorService {
             jobUpdateUrl(job)
         )
 
+        log.debug "response: $currentDetails"
+
         job.setStatus currentDetails.status
         job.save failOnError: true
 
         if (job.hasEnded()) {
 
-            def filesReplacement = _linksForFiles(currentDetails.files)
+            def filesReplacement = currentDetails.files.join("\n")
 
             _sendNotificationEmail(job, [filesReplacement])
         }
@@ -152,20 +156,29 @@ class AodaacAggregatorService {
 
     def _makeApiCall(apiCallUrl) {
 
-        try {
-            log.debug "API call URL: $apiCallUrl"
+        if (_apiCallsDisabled()) {
+            throw new IllegalStateException("AODAAC API calls disabled. If testing please mock the service or specific behaviour required.")
+        }
 
+        log.debug "API call URL: $apiCallUrl"
+
+        def response = '<not set>'
+        try {
             // Make the call
-            def response = apiCallUrl.toURL().text
-            log.debug "response: $response"
+            response = apiCallUrl.toURL().text
 
             return JSON.parse(response)
         }
         catch (Exception e) {
 
-            log.info "Call to AODAAC API failed. URL: '$apiCallUrl'", e
+            log.warn "Call to AODAAC API failed. URL: '$apiCallUrl'. Response: $response", e
             throw e
         }
+    }
+
+    def _apiCallsDisabled() {
+
+        !grailsApplication.config.aodaacAggregator.allowApiCalls
     }
 
     def _dateFromParams(dateStringIn) {
@@ -217,11 +230,6 @@ class AodaacAggregatorService {
         replacements << _getMessage("${portalInstance.code()}.emailFooter")
 
         return replacements
-    }
-
-    def _linksForFiles(files) {
-
-        files.collect{ """<a href="$it">$it</a>""" }.join(" ")
     }
 
     def _prettifyErrorMessage(errorMessage) {

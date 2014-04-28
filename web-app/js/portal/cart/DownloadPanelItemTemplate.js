@@ -75,7 +75,8 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createDownloadButton: function (id, values) {
-        if (values.menuItems) {
+        
+        if (values.menuItems && Ext.get(id)) {
 
             // clear old button
             Ext.fly(id).update("");

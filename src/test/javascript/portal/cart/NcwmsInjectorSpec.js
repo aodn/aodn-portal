@@ -291,6 +291,65 @@ describe('Portal.cart.NcwmsInjector', function() {
                         return "cql_filter"
                     },
                     getWfsLayerFeatureRequestUrl: noOp,
+                    bodaacFilterParams: {},
+                    aodaacProducts: []
+                },
+                ncwmsParams: ncwmsParams };
+
+            spyOn(injector, '_generateAodaacJobUrl');
+            spyOn(injector, '_generateGogoduckJobUrl');
+
+            injector._isAodaacLayer = function() {return false};
+            injector._isGogoduckLayer = function() {return false};
+        });
+
+        it('calls _generateAodaacJobUrl when an aodaac record is passed', function() {
+
+            injector._isAodaacLayer = function() {return true};
+
+            url = injector._generateNcwmsUrl(collection, params);
+            expect(injector._generateAodaacJobUrl).toHaveBeenCalled();
+        });
+
+        it('calls _generateGogoduckJobUrl when a gogoduck record is passed with attached wfsLayer', function() {
+
+            injector._isGogoduckLayer = function() {return true};
+
+            url = injector._generateNcwmsUrl(collection, params);
+            expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
+        });
+
+        it('returns an empty string if record is neither aodaac or gogoduck', function() {
+
+            url = injector._generateNcwmsUrl(collection, params);
+            expect(url).toEqual('');
+        });
+    });
+
+    describe('_generateAodaacJobUrl', function() {
+
+        var url;
+        var ncwmsParams;
+        var collection;
+
+        beforeEach(function() {
+
+            ncwmsParams = {
+                dateRangeStart: startDate,
+                dateRangeEnd: endDate,
+                latitudeRangeStart: -42,
+                latitudeRangeEnd: -20,
+                longitudeRangeStart: 160,
+                longitudeRangeEnd: 170,
+                productId: '1'
+            };
+
+            collection = {
+                wmsLayer: {
+                    getDownloadFilter: function() {
+                        return "cql_filter"
+                    },
+                    getWfsLayerFeatureRequestUrl: noOp,
                     isNcwms: function() {return true},
                     wfsLayer: true,
                     bodaacFilterParams: {},
@@ -299,45 +358,7 @@ describe('Portal.cart.NcwmsInjector', function() {
                 },
                 ncwmsParams: ncwmsParams };
 
-            spyOn(injector, '_generateAodaacJobUrl');
-            spyOn(injector, '_generateGogoduckJobUrl');
-        });
-
-        it('calls _generateAodaacJobUrl when an aodaac record is passed', function() {
-
-            ncwmsParams.productId = 'gogoAodaac';
-            collection.wmsLayer.isAodaac = function() {return true};
-
-            url = injector._generateNcwmsUrl(collection, params);
-            expect(injector._generateAodaacJobUrl).toHaveBeenCalled();
-        });
-
-        it('calls _generateGogoduckJobUrl when a gogoduck record is passed', function() {
-
-            ncwmsParams.layerName = 'gogoDingo';
-
-            url = injector._generateNcwmsUrl(collection, params);
-            expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
-        });
-    });
-
-    describe('_generateAodaacJobUrl', function() {
-
-        var url;
-
-        beforeEach(function() {
-
-            var params = {
-                dateRangeStart: startDate,
-                dateRangeEnd: endDate,
-                latitudeRangeStart: -42,
-                latitudeRangeEnd: -20,
-                longitudeRangeStart: 160,
-                longitudeRangeEnd: 170,
-                productId: 1
-            };
-
-            url = injector._generateAodaacJobUrl(params, 'nc', 'aodaac@imos.org.au');
+            url = injector._generateAodaacJobUrl(collection, 'nc', 'aodaac@imos.org.au');
         });
 
         it('includes the aodaac endpoint', function() {
@@ -382,7 +403,7 @@ describe('Portal.cart.NcwmsInjector', function() {
         var url;
 
         beforeEach(function() {
-            url = decodeURIComponent(injector._generateGogoduckJobUrl(geoNetworkRecord.ncwmsParams, 'gogo@duck.com'));
+            url = decodeURIComponent(injector._generateGogoduckJobUrl(geoNetworkRecord, 'gogo@duck.com'));
         });
 
         it('generates the gogoduck endpoint', function() {

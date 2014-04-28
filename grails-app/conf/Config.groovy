@@ -70,6 +70,7 @@ help.url = "http://help.aodn.org.au/"
 
 // AODAAC Aggregator
 aodaacAggregator {
+    allowApiCalls = true
     url = "http://aodaac.aodn.org.au"
     environment = "prod"
     idleJobTimeout = 1 // In hours
@@ -157,8 +158,8 @@ environments {
         grails.serverURL = "http://localhost:8080/$appName"
 
         grails.mail.disabled = true
-
         grails.plugin.databasemigration.updateOnStart = false
+        aodaacAggregator.allowApiCalls = false
     }
 
     production {
@@ -287,13 +288,13 @@ log4j = {
         'grails.app.controller.au.org.emii.portal.LayerController',
         'grails.app.controller.au.org.emii.portal.AuthController',
         'grails.app.service.au.org.emii.portal.LayerService',
-        'grails.app.service.au.org.emii.portal.AodaacAggregatorService',
         'au.org.emii.portal.display.MenuJsonCache',
         'org.apache.shiro',
         'grails.app.controller'
 
     debug   'grails.app.job',
         'grails.app.tagLib',
+        'grails.app.service.au.org.emii.portal.AodaacAggregatorService',
         'grails.app.controller.au.org.emii.portal.SystemController',
         'grails.app.domain',
         'grails.app.realms'

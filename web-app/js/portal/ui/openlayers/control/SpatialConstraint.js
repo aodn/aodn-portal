@@ -152,9 +152,6 @@ Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map,
         scope: map,
         "spatialconstraintadded": function(geometry) {
             this.events.triggerEvent('spatialconstraintadded', geometry);
-        },
-        "spatialconstraintcleared": function() {
-            this.events.triggerEvent('spatialconstraintcleared');
         }
     });
 };

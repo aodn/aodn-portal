@@ -87,6 +87,27 @@ describe('Portal.cart.InsertionService', function() {
             expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
         });
 
+        it('returns true when collection is aodaacable', function() {
+            geoNetworkRecord.wmsLayer.isAodaac = function() {return true};
+
+            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
+        });
+
+        it('returns true when collection has a gogoduck override layer name', function() {
+
+            geoNetworkRecord.wmsLayer.gogoduckLayerName = function() {return "CARS"};
+
+            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
+        });
+
+        it('returns true when collection has an attached wfsLayer and isNcwms', function() {
+
+            geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
+            geoNetworkRecord.wmsLayer.wfsLayer = {};
+
+            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
+        });
+
         it("returns false when collection doesn't have associated wfs layer or download URL field", function() {
             expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeFalsy();
         });

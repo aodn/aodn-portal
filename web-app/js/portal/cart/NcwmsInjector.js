@@ -104,14 +104,13 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     _generateNcwmsUrl: function(collection, params) {
 
         var url = '';
-        var ncwmsParams = collection.ncwmsParams;
 
         if (this._isAodaacLayer(collection)) {
-            url = this._generateAodaacJobUrl(ncwmsParams, params.format, params.emailAddress);
+            url = this._generateAodaacJobUrl(collection, params.format, params.emailAddress);
         }
         else {
-            if (ncwmsParams.layerName) {
-                url = this._generateGogoduckJobUrl(ncwmsParams, params.emailAddress);
+            if (this._isGogoduckLayer(collection)) {
+                url = this._generateGogoduckJobUrl(collection, params.emailAddress);
             }
         }
 
@@ -126,7 +125,13 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return collection.wmsLayer.isBodaac();
     },
 
-    _generateAodaacJobUrl: function(params, format, email) {
+    _isGogoduckLayer: function(collection) {
+        return collection.wmsLayer.gogoduckLayerName || (collection.wmsLayer.isNcwms() && collection.wmsLayer.wfsLayer);
+    },
+
+    _generateAodaacJobUrl: function(collection, format, email) {
+
+        var params = collection.ncwmsParams;
 
         var args = "outputFormat=" + format;
         args += "&dateRangeStart=" + encodeURIComponent(this._formatDate(params.dateRangeStart));
@@ -141,7 +146,9 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return 'aodaac/createJob?' + args;
     },
 
-    _generateGogoduckJobUrl: function(params, email) {
+    _generateGogoduckJobUrl: function(collection, email) {
+
+        var params = collection.ncwmsParams;
 
          var args = {
              layerName: params.layerName,
@@ -159,6 +166,11 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
                  }
              }
          };
+
+        if (collection.wmsLayer.gogoduckLayerName) {
+
+            args.layerName = collection.wmsLayer.gogoduckLayerName;
+        }
 
          var paramsAsJson = Ext.util.JSON.encode(args);
 

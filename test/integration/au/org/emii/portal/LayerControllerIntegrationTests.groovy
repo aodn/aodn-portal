@@ -79,12 +79,10 @@ class LayerControllerIntegrationTests extends ControllerUnitTestCase {
         layerInstance.save(failOnError: true)
         layerInstance2.save(failOnError: true)
 
-        def controller = new LayerController()
+        layerController.params.serverUri = serverInstance.uri
+        layerController.params.name = "imos:argo_float_mv"
 
-        controller.params.serverUri = serverInstance.uri
-        controller.params.name = "imos:argo_float_mv"
-
-        controller.findLayerAsJson()
+        layerController.findLayerAsJson()
 
         def layerAsJson = JSON.parse(controller.response.contentAsString)
 

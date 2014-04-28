@@ -164,23 +164,28 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     createButton: function(uuid, storeRowIndex) {
         var cls = "";
+
         if (this.isRecActive(uuid)) {
             cls = "x-btn-selected";
         }
 
-        new Ext.Button({
-            text: OpenLayers.i18n('navigationButtonSelect'),
-            cls: "navigationButton forwardsButton " + cls,
-            width: 100,
-            scope: this,
-            renderTo: "fsSearchAddBtn" + this.superEncodeUuid(storeRowIndex,uuid),
-            listeners: {
-                click: {
-                    fn: this._viewButtonOnClick,
-                    scope: this
+        var buttonElementId = "fsSearchAddBtn" + this.superEncodeUuid(storeRowIndex, uuid);
+
+        if (Ext.get(buttonElementId)) {
+            new Ext.Button({
+                text: OpenLayers.i18n('navigationButtonSelect'),
+                cls: "navigationButton forwardsButton " + cls,
+                width: 100,
+                scope: this,
+                renderTo: buttonElementId,
+                listeners: {
+                    click: {
+                        fn: this._viewButtonOnClick,
+                        scope: this
+                    }
                 }
-            }
-        });
+            });
+        }
     },
 
     getGeoNetworkRecordPointOfTruthLinkAsHtml: function(values) {

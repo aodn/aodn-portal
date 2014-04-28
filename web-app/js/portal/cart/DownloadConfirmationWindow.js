@@ -61,7 +61,11 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
                 autoWidth: true,
                 padding: 5,
                 xtype: 'form',
-                items: [this.downloadEmailPanel, contentPanel],
+                items: [
+                    this.downloadEmailPanel,
+                    {xtype: 'spacer', height: 20},
+                    contentPanel
+                ],
                 buttons: [this.downloadButton, cancelButton],
                 keys: [
                     {
@@ -111,7 +115,7 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
     },
 
     _showEmailPanelIfNeeded: function(params) {
-        this.downloadEmailPanel.clearEmailValue();
+
         if (params.collectEmailAddress) {
             this.downloadEmailPanel.show();
             this.downloadButton.disable();
@@ -120,7 +124,6 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
             this.downloadEmailPanel.hide();
             this.downloadButton.enable();
         }
-        this.downloadEmailPanel.isValid();
     },
 
     onAccept: function() {
