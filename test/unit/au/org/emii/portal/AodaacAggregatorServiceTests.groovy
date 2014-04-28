@@ -8,6 +8,7 @@
 package au.org.emii.portal
 
 import grails.test.GrailsUnitTestCase
+import org.apache.commons.io.IOUtils
 
 class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
@@ -24,7 +25,9 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
             config: [
                 aodaacAggregator: [
                     url: 'the_url',
-                    environment: 'env'
+                    environment: 'env',
+                    apiCallConnectTimeout: 1,
+                    apiCallReadTimeout: 1
                 ],
                 portal: [
                     systemEmail: [
@@ -68,6 +71,15 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def products = service.getProductInfo([1, 3])
 
         assertEquals([p1], products)
+    }
+
+    void testGetProductInfoThrowsException() {
+
+        service.metaClass._makeApiCall = { throw new Exception("For testing") }
+
+        def products = service.getProductInfo([1])
+
+        assertEquals([], products)
     }
 
     void testProductIdsForLayer() {
@@ -176,7 +188,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         AodaacJob.metaClass.static.findAll = { query ->
 
-            println query
             assertEquals "from AodaacJob as job where job.status not in ('FAIL','SUCCESS')", query
             return [endedJob]
         }
@@ -223,9 +234,13 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
     void testMakeApiCall() {
 
         service.metaClass._apiCallsDisabled = { -> false }
+        def testConnection = [
+            connect: { -> },
+            inputStream: IOUtils.toInputStream("{id: 1}")
+        ]
         def testApiCallUrl = [
             toURL: { ->
-                [text: "{id: 1}"]
+                [openConnection: { -> testConnection }]
             }
         ]
 

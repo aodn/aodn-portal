@@ -70,9 +70,11 @@ help.url = "http://help.aodn.org.au/"
 
 // AODAAC Aggregator
 aodaacAggregator {
-    allowApiCalls = true
     url = "http://aodaac.aodn.org.au"
     environment = "prod"
+    allowApiCalls = true
+    apiCallsConnectTimeout = 1000
+    apiCallsReadTimeout = 2000
     idleJobTimeout = 1 // In hours
     errorLookup = [
         /.*java\.lang\.Exception: requested ~ [0-9]+ bytes; limit = [0-9]+/: {

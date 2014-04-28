@@ -8,6 +8,8 @@
 package au.org.emii.portal
 
 import grails.converters.JSON
+import org.apache.commons.io.IOUtils
+
 import java.text.SimpleDateFormat
 
 import static au.org.emii.portal.UrlUtils.ensureTrailingSlash
@@ -34,11 +36,18 @@ class AodaacAggregatorService {
             return []
         }
 
-        def aodaacData = _makeApiCall(productDataJavascriptAddress)
-        def relevantAoddacDatabase = aodaacData.first()
-        def products = relevantAoddacDatabase.'products'
+        try {
+            def aodaacData = _makeApiCall(productDataJavascriptAddress)
+            def relevantAoddacDatabase = aodaacData.first()
+            def products = relevantAoddacDatabase.'products'
 
-        return products.findAll { productIds.contains(it.id) }
+            return products.findAll { productIds.contains(it.id) }
+        }
+        catch (Exception e) {
+            log.warn "Exception occurred while getting AODAAC product info.", e
+
+            return []
+        }
     }
 
     def productIdsForLayer(layer) {
@@ -164,8 +173,12 @@ class AodaacAggregatorService {
 
         def response = '<not set>'
         try {
-            // Make the call
-            response = apiCallUrl.toURL().text
+            def conn = apiCallUrl.toURL().openConnection()
+            conn.connectTimeout = grailsApplication.config.aodaacAggregator.apiCallsConnectTimeout
+            conn.readTimeout = grailsApplication.config.aodaacAggregator.apiCallsReadTimeout
+            conn.connect()
+
+            response = IOUtils.toString(conn.inputStream, "UTF-8")
 
             return JSON.parse(response)
         }
