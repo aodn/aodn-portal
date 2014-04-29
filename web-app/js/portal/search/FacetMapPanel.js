@@ -24,10 +24,8 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
         this._initGeoFacetMapToolbar();
         this._initMap();
 
-        this.map.events.register("mousemove", this, function () {
-            //need to do this because things go wack if the parent panel is moved, for instance due to scrolling
-            this.map.updateSize();
-        });
+        this.map.events.register("mousemove", this, this._updateMapSize);
+        this.map.events.register("mouseover", this, this._updateMapSize);
 
         // Otherwise we end up off the west coast of Africa
         this.zoomToInitialBbox();
@@ -57,6 +55,11 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
             resolutions: this.RESOLUTIONS,
             restrictedExtent: new OpenLayers.Bounds.fromArray([null, -90, null, 90])
         });
+    },
+    
+    _updateMapSize: function() {
+        //need to do this because things go wack if the parent panel is moved, for instance due to scrolling
+        this.map.updateSize();
     },
 
     hasCurrentFeature: function() {
