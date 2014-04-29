@@ -245,7 +245,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateStartLabel: 'Start',
     dateEndLabel: 'End',
 
-    emptyDownloadDateRangePlaceholder: "The full Data collection will be downloaded. Consider filtering this collection.",
+    emptyDownloadDateRangePlaceholder: "The full data collection will be downloaded. Consider filtering this collection.",
 
     // FeatureInfoPopup.js
     noDataCollectionTitle: 'No data collection selected',
