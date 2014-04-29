@@ -178,7 +178,7 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
 };
 
 OpenLayers.Layer.WMS.prototype.isAodaac = function() {
-    return this.aodaacProducts.length > 0;
+    return (this.aodaacProducts) ? this.aodaacProducts.length > 0 : false;
 };
 
 OpenLayers.Layer.WMS.prototype.isBodaac = function() {
