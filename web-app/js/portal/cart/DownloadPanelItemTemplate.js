@@ -75,8 +75,12 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createDownloadButton: function (id, values) {
-
+        
         if (values.menuItems && Ext.get(id)) {
+
+            // clear old button
+            Ext.fly(id).update("");
+
             new Ext.Button({
                 text: OpenLayers.i18n('downloadButtonLabel'),
                 icon: 'images/down.png',

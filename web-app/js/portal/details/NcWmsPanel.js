@@ -381,8 +381,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _getDateFromPicker: function(datePicker) {
-
-        return moment.utc(datePicker.getValue());
+        if (moment(datePicker.getValue()).isValid()) {
+            return moment.utc(datePicker.getValue());
+        }
     },
 
     _getMin: function(values) {
