@@ -229,14 +229,13 @@ class AodaacAggregatorService {
 
         def replacements = []
 
-        // If successful
         if (job.failed()) {
 
             replacements << _prettifyErrorMessage(currentDetails.errors)
         }
         else {
 
-            replacements << currentDetails.files.join("\n")
+            replacements << currentDetails.files.collect{ it.toString() }.join("\n")
         }
 
         // Add footer
