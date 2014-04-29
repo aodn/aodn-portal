@@ -167,11 +167,10 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
             return testDetails
         }
         def sendEmailCalled = false
-        service.metaClass._sendNotificationEmail = { job, currentDetails, replacements ->
+        service.metaClass._sendNotificationEmail = { job, currentDetails ->
 
             assertEquals testJob, job
             assertEquals testDetails, currentDetails
-            assertEquals(['f1\nf2'], replacements)
             sendEmailCalled = true
         }
 
@@ -264,9 +263,10 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
     void testSendNotificationEmail() {
 
         def testJob = new AodaacJob('1234', 'john@example.com')
-        def testDetails = [:]
+        def testDetails = [files: ['file_link']]
 
-        service.metaClass._getEmailBodyMessageCode = { 'body_code'  }
+        service.metaClass._getEmailBodyMessageCode = { 'body_code' }
+        service.metaClass._getEmailBodyReplacements = { job, details -> 'replacements' }
 
         service.metaClass.to = { recipients ->
             assertEquals(['john@example.com'], recipients)
@@ -275,7 +275,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
             assertEquals 'test.aodaacJob.notification.email.subject [1234]', text
         }
         service.metaClass.body = { text ->
-            assertEquals 'body_code [file_link, test.emailFooter]', text
+            assertEquals 'body_code replacements', text
         }
         service.metaClass.from = { sender ->
             assertEquals 'example@example.com', sender
@@ -286,7 +286,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
             it.call()
         }
 
-        service._sendNotificationEmail(testJob, testDetails, ['file_link'])
+        service._sendNotificationEmail(testJob, testDetails)
 
         assertEquals 1, sendMailCallCount
     }
@@ -312,11 +312,11 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
     void testGetEmailBodyReplacementsForSuccessfulJob() {
 
         def testJob = [failed: { -> false }]
-        def testDetails = [:]
+        def testDetails = [files: ['f1', 'f2']]
 
         def replacements = service._getEmailBodyReplacements(testJob, testDetails)
 
-        assertEquals(['test.emailFooter'], replacements)
+        assertEquals(['f1\nf2', 'test.emailFooter'], replacements)
     }
 
     void testPrettyifyErrorMessage() {

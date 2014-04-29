@@ -101,9 +101,7 @@ class AodaacAggregatorService {
 
         if (job.hasEnded()) {
 
-            def filesReplacement = currentDetails.files.join("\n")
-
-            _sendNotificationEmail(job, currentDetails, [filesReplacement])
+            _sendNotificationEmail(job, currentDetails)
         }
     }
 
@@ -199,16 +197,14 @@ class AodaacAggregatorService {
         return TO_AGGREGATOR_DATE_FORMATTER.format(date)
     }
 
-    void _sendNotificationEmail(job, currentDetails, replacements = []) {
+    void _sendNotificationEmail(job, currentDetails) {
 
         try {
             log.info "Sending notification email for $job to '${job.notificationEmailAddress}'"
 
-            replacements.addAll _getEmailBodyReplacements(job, currentDetails)
-
             def emailBody = _getMessage(
                 _getEmailBodyMessageCode(job),
-                replacements
+                _getEmailBodyReplacements(job, currentDetails)
             )
 
             def emailSubject = _getMessage(
@@ -237,6 +233,10 @@ class AodaacAggregatorService {
         if (job.failed()) {
 
             replacements << _prettifyErrorMessage(currentDetails.errors)
+        }
+        else {
+
+            replacements << currentDetails.files.join("\n")
         }
 
         // Add footer
