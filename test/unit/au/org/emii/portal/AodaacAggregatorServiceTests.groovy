@@ -159,16 +159,18 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
     void testUpdateJobEndedAfterUpdate() {
 
         def testJob = new AodaacJob('1234', 'fred@example.com')
+        def testDetails = [status: "SUCCESS", files: ['f1', 'f2']]
         service.metaClass.jobUpdateUrl = { job -> 'the_url' }
         service.metaClass._makeApiCall = { url ->
 
             assertEquals 'the_url', url
-            return [status: "SUCCESS", files: ['f1', 'f2']]
+            return testDetails
         }
         def sendEmailCalled = false
-        service.metaClass._sendNotificationEmail = { job, replacements ->
+        service.metaClass._sendNotificationEmail = { job, currentDetails, replacements ->
 
             assertEquals testJob, job
+            assertEquals testDetails, currentDetails
             assertEquals(['f1\nf2'], replacements)
             sendEmailCalled = true
         }
@@ -262,6 +264,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
     void testSendNotificationEmail() {
 
         def testJob = new AodaacJob('1234', 'john@example.com')
+        def testDetails = [:]
 
         service.metaClass._getEmailBodyMessageCode = { 'body_code'  }
 
@@ -283,7 +286,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
             it.call()
         }
 
-        service._sendNotificationEmail(testJob, ['file_link'])
+        service._sendNotificationEmail(testJob, testDetails, ['file_link'])
 
         assertEquals 1, sendMailCallCount
     }
@@ -291,7 +294,9 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
     void testGetEmailBodyReplacementsForFailedJobWithErrorMessage() {
 
         def testJob = [
-            failed: { -> true },
+            failed: { -> true }
+        ]
+        def testDetails = [
             errors: 'error'
         ]
         service.metaClass._prettifyErrorMessage = { message ->
@@ -299,7 +304,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
             return 'pretty'
         }
 
-        def replacements = service._getEmailBodyReplacements(testJob)
+        def replacements = service._getEmailBodyReplacements(testJob, testDetails)
 
         assertEquals(['pretty', 'test.emailFooter'], replacements)
     }
@@ -307,8 +312,9 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
     void testGetEmailBodyReplacementsForSuccessfulJob() {
 
         def testJob = [failed: { -> false }]
+        def testDetails = [:]
 
-        def replacements = service._getEmailBodyReplacements(testJob)
+        def replacements = service._getEmailBodyReplacements(testJob, testDetails)
 
         assertEquals(['test.emailFooter'], replacements)
     }
