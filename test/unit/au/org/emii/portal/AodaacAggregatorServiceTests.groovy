@@ -10,6 +10,8 @@ package au.org.emii.portal
 import grails.test.GrailsUnitTestCase
 import org.apache.commons.io.IOUtils
 
+import static au.org.emii.portal.AodaacJob.Status.*
+
 class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     AodaacAggregatorService service
@@ -265,7 +267,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def testJob = new AodaacJob('1234', 'john@example.com')
         def testDetails = [files: ['file_link']]
 
-        service.metaClass._getEmailBodyMessageCode = { 'body_code' }
+        service.metaClass._getEmailBodyMessageCode = { job, details -> 'body_code' }
         service.metaClass._getEmailBodyReplacements = { job, details -> 'replacements' }
 
         service.metaClass.to = { recipients ->
@@ -350,11 +352,40 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
     void testgetEmailBodyMessageCode() {
 
         def testJob = [
-            status: 'WOBBLY'
+            status: FAIL
+        ]
+        def testDetails = [:]
+
+        def result = service._getEmailBodyMessageCode(testJob, testDetails)
+
+        assertEquals "test.aodaacJob.notification.email.failBody", result
+    }
+
+    void testgetEmailBodyMessageCodeWhenSuccessWithFiles() {
+
+        def testJob = [
+            status: SUCCESS
+        ]
+        def testDetails = [
+            files: ['out.nc']
         ]
 
-        def result = service._getEmailBodyMessageCode(testJob)
+        def result = service._getEmailBodyMessageCode(testJob, testDetails)
 
-        assertEquals "test.aodaacJob.notification.email.wobblyBody", result
+        assertEquals "test.aodaacJob.notification.email.successBody", result
+    }
+
+    void testgetEmailBodyMessageCodeWhenNoFiles() {
+
+        def testJob = [
+            status: SUCCESS
+        ]
+        def testDetails = [
+            files: []
+        ]
+
+        def result = service._getEmailBodyMessageCode(testJob, testDetails)
+
+        assertEquals "test.aodaacJob.notification.email.noDataBody", result
     }
 }

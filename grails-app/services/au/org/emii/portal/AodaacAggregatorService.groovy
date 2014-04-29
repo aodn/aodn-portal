@@ -203,7 +203,7 @@ class AodaacAggregatorService {
             log.info "Sending notification email for $job to '${job.notificationEmailAddress}'"
 
             def emailBody = _getMessage(
-                _getEmailBodyMessageCode(job),
+                _getEmailBodyMessageCode(job, currentDetails),
                 _getEmailBodyReplacements(job, currentDetails)
             )
 
@@ -256,9 +256,16 @@ class AodaacAggregatorService {
         return prettifier?.value(errorMessage) ?: "Unknown error"
     }
 
-    def _getEmailBodyMessageCode(job) {
+    def _getEmailBodyMessageCode(job, currentDetails) {
 
         def codePart = job.status.toString().toLowerCase()
+
+        if (job.status == AodaacJob.Status.SUCCESS) {
+            if (!currentDetails.files) {
+                codePart = 'noData'
+            }
+        }
+
         return "${portalInstance.code()}.aodaacJob.notification.email.${codePart}Body"
     }
 
