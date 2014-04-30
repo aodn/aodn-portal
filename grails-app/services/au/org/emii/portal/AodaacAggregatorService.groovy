@@ -235,7 +235,7 @@ class AodaacAggregatorService {
         }
         else {
 
-            replacements << currentDetails.files.collect{ it.toString() }.join("\n")
+            replacements << _fileList(currentDetails)
         }
 
         // Add footer
@@ -253,6 +253,11 @@ class AodaacAggregatorService {
         }
 
         return prettifier?.value(errorMessage) ?: "Unknown error"
+    }
+
+    def _fileList(details) {
+
+        details.files.collect{ it.toString() }.join("\n")
     }
 
     def _getEmailBodyMessageCode(job, currentDetails) {
