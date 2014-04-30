@@ -56,20 +56,22 @@ describe("Portal.filter.FilterGroupPanel", function() {
         beforeEach(function() {
             layer = {};
             layer.filters = [
-                {type: 'Boolean'},
-                {type: 'Date'},
-                {type: 'BoundingBox'},
-                {type: 'String'}
+                {type: 'Boolean', label: 'A'},
+                {type: 'Boolean', label: 'E'},
+                {type: 'Date', label: 'B'},
+                {type: 'BoundingBox', label: 'C'},
+                {type: 'String', label: 'D'}
             ];
             expectedReturn = [
-                { type : 'BoundingBox', sortOrder : 2 },
-                { type : 'Date', sortOrder : 1 },
-                { type : 'Boolean', sortOrder : -1 },
-                { type : 'String', sortOrder : -1 }
+                {type : 'BoundingBox', sortOrder : 4, label: 'C'},
+                {type : 'Date', sortOrder : 3, label: 'B'},
+                {type : 'String', sortOrder : 1, label: 'D'},
+                {type : 'Boolean', sortOrder : 0, label: 'A'},
+                {type : 'Boolean', sortOrder : 0, label: 'E'}
             ]
         });
 
-        it('sorts by prescribed order', function() {
+        it('sorts with spatial and temporal filters at the top, alphabetic afterwards', function() {
             expect(filterGroupPanel._filtersSort(layer.filters)).toEqual(expectedReturn);
         });
     });

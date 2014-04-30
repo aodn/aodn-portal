@@ -157,7 +157,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     _filtersSort: function(filters) {
 
         // override server order by adding the type in topFilters
-        var topFilters = ['DateRange','Date','BoundingBox']; // add in reverse order
+        var topFilters = ['Boolean', 'String', 'DateRange','Date','BoundingBox']; // add in reverse order
 
         Ext.each(
             filters,
@@ -167,11 +167,37 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
             this
         );
 
-        filters.sort( function( a, b) {
-            return b['sortOrder'] - a['sortOrder']
+        var _this = this;
+
+        filters.sort( function(firstFilter, secondFilter) {
+            var comparisonResult = _this._compareElements(firstFilter.sortOrder, secondFilter.sortOrder);
+
+            if (comparisonResult == 0) {
+                comparisonResult = _this._compareElements(secondFilter.label, firstFilter.label)
+            }
+
+            return comparisonResult;
         });
 
         return filters;
+    },
+
+    _compareElements: function(first, second) {
+        var result;
+
+        if (first > second) {
+            result = -1;
+        }
+        else {
+            if (first < second) {
+                result = 1;
+            }
+            else {
+                result = 0;
+            }
+        }
+
+        return result;
     },
 
     _createFilterPanel: function(layer, filter) {
