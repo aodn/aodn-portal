@@ -337,9 +337,9 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def testDetails = [files: []]
         service.metaClass.getProductInfo = {[
             extents: [
-                lat: [-90, 90],
-                lon: [-180, 180],
-                time: ["2001-01-02 09:44:00.0", "2013-04-25 12:53:00.0"]
+                lat: [[-90, 90]],
+                lon: [[-180, 180]],
+                time: [["2001-01-02 09:44:00.0", "2013-04-25 12:53:00.0"]]
             ]
         ]}
 
