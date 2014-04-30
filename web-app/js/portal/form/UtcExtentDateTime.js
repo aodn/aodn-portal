@@ -111,7 +111,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
     onBlur: function(field) {
         this._setTimeFieldChangeFlag(field);
-        if (this._isDirty()) {
+        if (this.isValid() && this._isDirty()) {
             this._fireEventsForChange(this._matchTime());
         }
     },
@@ -196,6 +196,10 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
     _preventStoreChangesBeingIgnored: function() {
         this.tf.generateStore = function() {};
+    },
+
+    isValid: function() {
+        return this.df.isValid();
     },
 
     _isDirty: function() {
