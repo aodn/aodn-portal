@@ -25,8 +25,8 @@ class AodaacAggregatorService {
     // Date formats
     static final def JAVASCRIPT_UI_DATE_OUTPUT_FORMAT = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'"
     static final def AGGREGATOR_DATE_INPUT_FORMAT = "yyyy-MM-dd'T'hh:mm:ss"
-    static final def FROM_JAVASCRIPT_DATE_FORMATTER = new SimpleDateFormat(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT) // 01/02/2012  -> Date Object
-    static final def TO_AGGREGATOR_DATE_FORMATTER = new SimpleDateFormat(AGGREGATOR_DATE_INPUT_FORMAT) // Date Object -> 20120201
+    static final def FROM_JAVASCRIPT_DATE_FORMATTER = new SimpleDateFormat(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT) // String from UI -> Date Object
+    static final def TO_AGGREGATOR_DATE_FORMATTER = new SimpleDateFormat(AGGREGATOR_DATE_INPUT_FORMAT) // Date Object -> String for AODAAC
 
     def getProductInfo(productIds) {
 
@@ -57,9 +57,9 @@ class AodaacAggregatorService {
         return productLinks.collect{ it.productId }.unique()
     }
 
-    def createJob(notificationEmailAddress, params) {
+    def createJob(params) {
 
-        log.debug "Creating AODAAC Job. Notication email address: '$notificationEmailAddress'"
+        log.debug "Creating AODAAC Job. Notication email address: '${params.notificationEmailAddress}'"
         log.debug "params: ${params}"
 
         def apiCallUrl = jobCreationUrl(
@@ -74,7 +74,7 @@ class AodaacAggregatorService {
             throw new RuntimeException("Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response")
         }
 
-        def job = new AodaacJob(response.id, notificationEmailAddress)
+        def job = new AodaacJob(response.id, params)
         job.save failOnError: true
 
         return job
@@ -233,6 +233,10 @@ class AodaacAggregatorService {
 
             replacements << _prettifyErrorMessage(currentDetails.errors)
         }
+        else if (_successButNoData(job, currentDetails)) {
+
+            replacements.addAll _extentsReplacements(job)
+        }
         else {
 
             replacements << _fileList(currentDetails)
@@ -253,6 +257,36 @@ class AodaacAggregatorService {
         }
 
         return prettifier?.value(errorMessage) ?: "Unknown error"
+    }
+
+    def _extentsReplacements(job) {
+
+        def params = JSON.parse(job.parameters)
+        def productId = params.productId.toInteger()
+        def productExtents = getProductInfo([productId]).extents
+
+        def formatExtents = "Latitude from %s to %s\nLongitude from %s to %s\nDate range from %s to %s"
+
+        return [
+            String.format(
+                formatExtents,
+                params.latitudeRangeStart,
+                params.latitudeRangeEnd,
+                params.longitudeRangeEnd,
+                params.longitudeRangeStart,
+                params.dateRangeStart,
+                params.dateRangeEnd
+            ),
+            String.format(
+                formatExtents,
+                _startOf(productExtents.lat),
+                _endOf(productExtents.lat),
+                _startOf(productExtents.lon),
+                _endOf(productExtents.lon),
+                _startOf(productExtents.time),
+                _endOf(productExtents.time)
+            )
+        ]
     }
 
     def _fileList(details) {
@@ -283,5 +317,13 @@ class AodaacAggregatorService {
             replacements.toArray(),
             Locale.default
         )
+    }
+
+    def _startOf(extents) {
+        extents[0].first()
+    }
+
+    def _endOf(extents) {
+        extents[0].last()
     }
 }

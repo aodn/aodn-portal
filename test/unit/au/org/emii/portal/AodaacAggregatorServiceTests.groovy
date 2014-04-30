@@ -15,6 +15,7 @@ import static au.org.emii.portal.AodaacJob.Status.*
 class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     AodaacAggregatorService service
+    AodaacJob testJob
 
     protected void setUp() {
 
@@ -44,6 +45,8 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         service.portalInstance = [code: { -> 'test' }]
         service.metaClass._getMessage = { key -> key }
         service.metaClass._getMessage = { key, replacements -> "$key $replacements" }
+
+        testJob = new AodaacJob('1234', [notificationEmailAddress: 'fred@example.com'])
     }
 
     void testGetProductInfoNoIds() {
@@ -124,7 +127,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         assertEquals 0, AodaacJob.count()
 
-        service.createJob('john@example.com', [:])
+        service.createJob([notificationEmailAddress: 'john@example.com'])
 
         assertEquals 1, AodaacJob.count()
 
@@ -145,7 +148,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     void testUpdateJobStillRunning() {
 
-        def testJob = new AodaacJob('1234', 'fred@example.com')
         service.metaClass.jobUpdateUrl = { job -> 'the_url' }
         service.metaClass._makeApiCall = { url ->
 
@@ -160,7 +162,6 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     void testUpdateJobEndedAfterUpdate() {
 
-        def testJob = new AodaacJob('1234', 'fred@example.com')
         def testDetails = [status: "SUCCESS", files: ['f1', 'f2']]
         service.metaClass.jobUpdateUrl = { job -> 'the_url' }
         service.metaClass._makeApiCall = { url ->
@@ -184,15 +185,13 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     void testCheckIncompleteJobs() {
 
-        new AodaacJob('1', 'john@example.com').save()
-        def endedJob = new AodaacJob('2', 'john@example.com')
-        endedJob.setStatus AodaacJob.Status.FAIL
-        endedJob.save()
+        testJob.setStatus AodaacJob.Status.FAIL
+        testJob.save()
 
         AodaacJob.metaClass.static.findAll = { query ->
 
             assertEquals "from AodaacJob as job where job.status not in ('FAIL','SUCCESS')", query
-            return [endedJob]
+            return [testJob]
         }
 
         def callCount = 0
@@ -205,7 +204,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         service.checkIncompleteJobs()
 
         assertEquals 1, callCount
-        assertEquals(['2'], jobIds)
+        assertEquals(['1234'], jobIds)
     }
 
     void testCreationApiCallArgs() {
@@ -264,14 +263,13 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     void testSendNotificationEmail() {
 
-        def testJob = new AodaacJob('1234', 'john@example.com')
         def testDetails = [files: ['file_link']]
 
         service.metaClass._getEmailBodyMessageCode = { job, details -> 'body_code' }
         service.metaClass._getEmailBodyReplacements = { job, details -> 'replacements' }
 
         service.metaClass.to = { recipients ->
-            assertEquals(['john@example.com'], recipients)
+            assertEquals(['fred@example.com'], recipients)
         }
         service.metaClass.subject = { text ->
             assertEquals 'test.aodaacJob.notification.email.subject [1234]', text
@@ -319,6 +317,41 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def replacements = service._getEmailBodyReplacements(testJob, testDetails)
 
         assertEquals(['f1\nf2', 'test.emailFooter'], replacements)
+    }
+
+    void testGetEmailBodyReplacementsForJobWithNoFiles() {
+
+        def testJob = [
+            status: SUCCESS,
+            failed: { -> false },
+            parameters: """{
+                "productId": "32",
+                "latitudeRangeStart": "-12.7",
+                "latitudeRangeEnd": "-11.1",
+                "longitudeRangeStart": "91.7",
+                "longitudeRangeEnd": "92.8",
+                "dateRangeStart": "2001-01-01T22:44:00.000Z",
+                "dateRangeEnd": "2001-03-02T21:46:59.000Z"
+            }"""
+        ]
+        def testDetails = [files: []]
+        service.metaClass.getProductInfo = {[
+            extents: [
+                lat: [-90, 90],
+                lon: [-180, 180],
+                time: ["2001-01-02 09:44:00.0", "2013-04-25 12:53:00.0"]
+            ]
+        ]}
+
+        def replacements = service._getEmailBodyReplacements(testJob, testDetails)
+
+        assertEquals([
+                "Latitude from -12.7 to -11.1\nLongitude from 92.8 to 91.7\nDate range from 2001-01-01T22:44:00.000Z to 2001-03-02T21:46:59.000Z",
+                "Latitude from -90 to 90\nLongitude from -180 to 180\nDate range from 2001-01-02 09:44:00.0 to 2013-04-25 12:53:00.0",
+                'test.emailFooter'
+            ],
+            replacements
+        )
     }
 
     void testPrettyifyErrorMessage() {
