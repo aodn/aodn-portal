@@ -113,4 +113,25 @@ describe("Portal.form.UtcExtentDateTime", function() {
         });
     });
 
+    describe('isValid', function() {
+        it('returns true when date field is valid', function() {
+            expect(utcDateTime.isValid()).toEqual(true);
+        });
+
+        it('returns false when date field is invalid', function() {
+            spyOn(utcDateTime.df, 'isValid').andReturn(false);
+            expect(utcDateTime.isValid()).toEqual(false);
+        });
+    });
+
+    describe('onBlur', function() {
+        it('no change events when invalid ', function() {
+            spyOn(utcDateTime.df, 'isValid').andReturn(false);
+            spyOn(utcDateTime, '_fireEventsForChange');
+            utcDateTime.onBlur(utcDateTime.df);
+            expect(utcDateTime._fireEventsForChange).not.toHaveBeenCalled();
+        });
+
+    });
+
 });
