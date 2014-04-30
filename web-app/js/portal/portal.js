@@ -45,7 +45,7 @@ Portal.app = {
 
     init: function() {
         // Set open layers proxyhost
-        OpenLayers.ProxyHost = proxyURL;
+        OpenLayers.ProxyHost = Ext.ux.Ajax.proxyUrl;
 
         // Global Ajax events can be handled on every request!
         Ext.Ajax.on('beforerequest', function() {

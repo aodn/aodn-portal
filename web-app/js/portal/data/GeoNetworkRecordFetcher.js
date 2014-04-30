@@ -23,11 +23,8 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
             fast: 'index'
         };
 
-        var url = proxyURL +
-            encodeURIComponent(Portal.app.config.catalogUrl + '/srv/eng/xml.search.summary?' + Ext.urlEncode(params));
-
-        Ext.Ajax.request({
-            url: url,
+        Ext.ux.Ajax.proxyRequest({
+            url: Portal.app.config.catalogUrl + '/srv/eng/xml.search.summary?' + Ext.urlEncode(params),
             success: successCallback
         });
     },
