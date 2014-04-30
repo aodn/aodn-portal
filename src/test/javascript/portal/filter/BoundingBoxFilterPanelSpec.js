@@ -22,10 +22,6 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
         });
     });
 
-    it('colspan should be 2', function() {
-        expect(boundingBoxFilter.colspan).toBe(2);
-    });
-
     it('filter name should be undefined', function() {
         boundingBoxFilter.filter = {
             name: 'this name should be ignored'
