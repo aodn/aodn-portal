@@ -157,7 +157,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     _filtersSort: function(filters) {
 
         // override server order by adding the type in topFilters
-        var topFilters = ['Boolean', 'String', 'DateRange','Date','BoundingBox']; // add in reverse order
+        var topFilters = ['DateRange','Date','BoundingBox']; // add in reverse order
 
         Ext.each(
             filters,
