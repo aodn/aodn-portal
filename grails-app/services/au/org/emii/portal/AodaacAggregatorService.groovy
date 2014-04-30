@@ -259,13 +259,16 @@ class AodaacAggregatorService {
 
         def codePart = job.status.toString().toLowerCase()
 
-        if (job.status == AodaacJob.Status.SUCCESS) {
-            if (!currentDetails.files) {
-                codePart = 'noData'
-            }
+        if (_successButNoData(job, currentDetails)) {
+            codePart = 'noData'
         }
 
         return "${portalInstance.code()}.aodaacJob.notification.email.${codePart}Body"
+    }
+
+    def _successButNoData(job, details) {
+
+        return (job.status == AodaacJob.Status.SUCCESS) && !details.files
     }
 
     def _getMessage(messageCode, replacements = []) {
