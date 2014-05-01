@@ -23,10 +23,8 @@ class AodaacAggregatorService {
     def portalInstance
 
     // Date formats
-    static final def JAVASCRIPT_UI_DATE_OUTPUT_FORMAT = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'"
-    static final def AGGREGATOR_DATE_INPUT_FORMAT = "yyyy-MM-dd'T'hh:mm:ss"
-    static final def FROM_JAVASCRIPT_DATE_FORMATTER = new SimpleDateFormat(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT) // String from UI -> Date Object
-    static final def TO_AGGREGATOR_DATE_FORMATTER = new SimpleDateFormat(AGGREGATOR_DATE_INPUT_FORMAT) // Date Object -> String for AODAAC
+    static final def FROM_JAVASCRIPT_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'") // String from UI -> Date Object
+    static final def TO_AGGREGATOR_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss") // Date Object -> String for AODAAC
 
     def getProductInfo(productIds) {
 
