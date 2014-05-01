@@ -316,7 +316,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         def replacements = service._getEmailBodyReplacements(testJob, testDetails)
 
-        assertEquals(['pretty', 'test.emailFooter'], replacements)
+        assertEquals(['test.aodaacJob.emailOpening', 'pretty', 'test.emailFooter'], replacements)
     }
 
     void testGetEmailBodyReplacementsForSuccessfulJob() {
@@ -326,7 +326,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         def replacements = service._getEmailBodyReplacements(testJob, testDetails)
 
-        assertEquals(['f1\nf2', 'test.emailFooter'], replacements)
+        assertEquals(['test.aodaacJob.emailOpening', 'f1\nf2', 'test.emailFooter'], replacements)
     }
 
     void testGetEmailBodyReplacementsForJobWithNoFiles() {
@@ -354,6 +354,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def replacements = service._getEmailBodyReplacements(testJob, testDetails)
 
         assertEquals([
+                'test.aodaacJob.emailOpening',
                 "Latitude from -12.7 to -11.1\nLongitude from 91.7 to 92.8\nDate range from 2001-01-01T22:44:00.000Z to 2001-03-02T21:46:59.000Z",
                 "Latitude from -90 to 90\nLongitude from -180 to 180\nDate range from 2001-01-02 09:44:00.0 to 2013-04-25 12:53:00.0",
                 'test.emailFooter'

@@ -227,6 +227,8 @@ class AodaacAggregatorService {
 
         def replacements = []
 
+        replacements << _getMessage("${portalInstance.code()}.aodaacJob.emailOpening")
+
         if (job.failed()) {
 
             replacements << _prettifyErrorMessage(currentDetails.errors)
@@ -240,7 +242,6 @@ class AodaacAggregatorService {
             replacements << _fileList(currentDetails)
         }
 
-        // Add footer
         replacements << _getMessage("${portalInstance.code()}.emailFooter")
 
         return replacements
