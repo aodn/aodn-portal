@@ -157,7 +157,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         service.updateJob(testJob)
 
-        assertEquals testJob.status, AodaacJob.Status.RUNNING
+        assertEquals testJob.status, RUNNING
     }
 
     void testUpdateJobEndedAfterUpdate() {
@@ -179,13 +179,13 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         service.updateJob(testJob)
 
-        assertEquals testJob.status, AodaacJob.Status.SUCCESS
+        assertEquals testJob.status, SUCCESS
         assertTrue sendEmailCalled
     }
 
     void testCheckIncompleteJobs() {
 
-        testJob.setStatus AodaacJob.Status.FAIL
+        testJob.setStatus FAIL
         testJob.save()
 
         AodaacJob.metaClass.static.findAll = { query ->
