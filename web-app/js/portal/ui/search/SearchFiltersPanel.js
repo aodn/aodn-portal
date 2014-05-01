@@ -16,7 +16,10 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             fieldGroup: 'longParamNames',
             fieldName: 'longParamName',
             searcher: config.searcher,
-            collapsed: false
+            collapsed: false,
+            listeners: {
+                expand: this._onExpand
+            }
         });
 
         this._buildTermFilter('organisationFilter', {
@@ -24,7 +27,10 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             hierarchical: false,
             fieldGroup: 'organisationNames',
             fieldName: 'orgName',
-            searcher: config.searcher
+            searcher: config.searcher,
+            listeners: {
+                expand: this._onExpand
+            }
         });
 
         this._buildTermFilter('platformFilter', {
@@ -33,20 +39,29 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             fieldGroup: 'platformNames',
             fieldName: 'platform',
             searcher: config.searcher,
-            collapsed: false
+            collapsed: false,
+            listeners: {
+                expand: this._onExpand
+            }
         });
 
         this._buildFilter(Portal.search.DateSelectionPanel, 'dateFilter', {
             title: OpenLayers.i18n('dateFilter'),
             hierarchical: false,
-            searcher: config.searcher
+            searcher: config.searcher,
+            listeners: {
+                expand: this._onExpand
+            }
         });
 
         this._buildFilter(Portal.search.GeoSelectionPanel, 'geoFilter', {
             title: OpenLayers.i18n('geoFilter'),
             hierarchical: false,
             searcher: config.searcher,
-            mapPanel: config.mapPanel
+            mapPanel: config.mapPanel,
+            listeners: {
+                expand: this._onExpand
+            }
         });
 
         config = Ext.apply({
@@ -175,6 +190,14 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         Ext.each(events, function(event, index, all) {
             this.mon(object, event.event, event.callback, scope);
         }, this);
-    }
+    },
 
+    _onExpand: function(evt) {
+        //var divPosition = $(evt.body.id).offset();
+        console.log(evt);
+        //var element = Ext.get(evt);
+
+        //$('html, body, div').animate({scrollTop: divPosition.top}, "slow");
+        $(evt.el.dom.parentElement).scrollTo(evt.el.dom, 300);
+    }
 });

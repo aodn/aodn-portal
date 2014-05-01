@@ -43,7 +43,7 @@ describe("Portal.ui.search.SearchFiltersPanel", function() {
         });
     });
 
-    describe('parameter and platform filters expanded by default', function() {
+    describe('default configuration', function() {
         it('expands the parameter filter', function() {
             // Parameter filter is the first element in the filter array
             expect(searchFiltersPanel.filters[0].collapsed).toEqual(false);
@@ -52,6 +52,15 @@ describe("Portal.ui.search.SearchFiltersPanel", function() {
         it('expands the platform filter', function() {
             // Platform filter is the third element in the filter array
             expect(searchFiltersPanel.filters[2].collapsed).toEqual(false);
+        });
+    });
+
+    describe('filters', function() {
+        it('call the appropriate function when expanded', function() {
+            spyOn(searchFiltersPanel, '_onExpand');
+
+            searchFiltersPanel.filters[1].fireEvent('expand');
+            expect(searchFiltersPanel._onExpand).toHaveBeenCalled();
         });
     });
 
