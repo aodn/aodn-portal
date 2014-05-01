@@ -155,7 +155,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         if (parameters.length > 0) {
             return template.apply({
                 "label": OpenLayers.i18n('parameters'),
-                "value": parameters.join(" - ")
+                "value": parameters.join(" | ")
             });
         }
 
