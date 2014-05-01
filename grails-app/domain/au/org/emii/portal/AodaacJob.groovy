@@ -7,8 +7,7 @@
 
 package au.org.emii.portal
 
-import grails.converters.JSON
-
+import static au.org.emii.portal.AodaacAggregatorService.FROM_JAVASCRIPT_DATE_FORMATTER as dateFormatter
 import static au.org.emii.portal.AodaacJob.Status.*
 
 class AodaacJob {
@@ -24,23 +23,24 @@ class AodaacJob {
         static def endedStatuses = [FAIL, SUCCESS]
     }
 
-    static final def paramsToStore = ['productId', 'latitudeRangeStart', 'latitudeRangeEnd', 'longitudeRangeStart', 'longitudeRangeEnd', 'dateRangeStart', 'dateRangeEnd']
+    String productId
+    Double latitudeRangeStart
+    Double latitudeRangeEnd
+    Double longitudeRangeStart
+    Double longitudeRangeEnd
+    Date dateRangeStart
+    Date dateRangeEnd
+    String notificationEmailAddress
 
     Date dateCreated
     String jobId
-    String parameters
-    String notificationEmailAddress
     Date statusUpdatedDate
     Status status = UNKNOWN
 
     static constraints = {
+        productId blank: false
         jobId blank: false
-        parameters nullable: true
         statusUpdatedDate nullable: true
-    }
-
-    static mapping = {
-        parameters type: 'text'
     }
 
     AodaacJob() { /* For Hibernate */ }
@@ -51,8 +51,15 @@ class AodaacJob {
         status = INITIATED
 
         this.jobId = jobId
-        this.parameters = params.subMap(paramsToStore) as JSON
-        this.notificationEmailAddress = params.notificationEmailAddress
+
+        productId = params.productId
+        latitudeRangeStart = params.latitudeRangeStart.toDouble()
+        latitudeRangeEnd = params.latitudeRangeEnd.toDouble()
+        longitudeRangeStart = params.longitudeRangeStart.toDouble()
+        longitudeRangeEnd = params.longitudeRangeEnd.toDouble()
+        dateRangeStart = dateFormatter.parse(params.dateRangeStart)
+        dateRangeEnd = dateFormatter.parse(params.dateRangeEnd)
+        notificationEmailAddress = params.notificationEmailAddress
     }
 
     def setStatus(status) {

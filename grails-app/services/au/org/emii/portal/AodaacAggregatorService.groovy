@@ -259,8 +259,7 @@ class AodaacAggregatorService {
 
     def _extentsReplacements(job) {
 
-        def params = JSON.parse(job.parameters)
-        def productId = params.productId.toInteger()
+        def productId = job.productId.toInteger()
         def productExtents = getProductInfo([productId]).extents
 
         def formatExtents = "Latitude from %s to %s\nLongitude from %s to %s\nDate range from %s to %s"
@@ -268,12 +267,12 @@ class AodaacAggregatorService {
         return [
             String.format(
                 formatExtents,
-                params.latitudeRangeStart,
-                params.latitudeRangeEnd,
-                params.longitudeRangeEnd,
-                params.longitudeRangeStart,
-                params.dateRangeStart,
-                params.dateRangeEnd
+                job.latitudeRangeStart,
+                job.latitudeRangeEnd,
+                job.longitudeRangeStart,
+                job.longitudeRangeEnd,
+                job.dateRangeStart,
+                job.dateRangeEnd
             ),
             String.format(
                 formatExtents,

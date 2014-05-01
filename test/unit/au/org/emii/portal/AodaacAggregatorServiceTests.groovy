@@ -16,6 +16,16 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     AodaacAggregatorService service
     AodaacJob testJob
+    def testParams = [
+        productId: '1',
+        latitudeRangeStart: '-90.0',
+        latitudeRangeEnd: '90.0',
+        longitudeRangeStart: '-180.0',
+        longitudeRangeEnd: '180.0',
+        dateRangeStart: "2001-04-21T00:34:11.222Z",
+        dateRangeEnd: "2012-05-22T12:45:55.000Z",
+        notificationEmailAddress: 'john@example.com'
+    ]
 
     protected void setUp() {
 
@@ -46,7 +56,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         service.metaClass._getMessage = { key -> key }
         service.metaClass._getMessage = { key, replacements -> "$key $replacements" }
 
-        testJob = new AodaacJob('1234', [notificationEmailAddress: 'fred@example.com'])
+        testJob = new AodaacJob('1234', testParams)
     }
 
     void testGetProductInfoNoIds() {
@@ -127,7 +137,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         assertEquals 0, AodaacJob.count()
 
-        service.createJob([notificationEmailAddress: 'john@example.com'])
+        service.createJob(testParams)
 
         assertEquals 1, AodaacJob.count()
 
@@ -269,7 +279,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         service.metaClass._getEmailBodyReplacements = { job, details -> 'replacements' }
 
         service.metaClass.to = { recipients ->
-            assertEquals(['fred@example.com'], recipients)
+            assertEquals(['john@example.com'], recipients)
         }
         service.metaClass.subject = { text ->
             assertEquals 'test.aodaacJob.notification.email.subject [1234]', text
@@ -324,15 +334,13 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def testJob = [
             status: SUCCESS,
             failed: { -> false },
-            parameters: """{
-                "productId": "32",
-                "latitudeRangeStart": "-12.7",
-                "latitudeRangeEnd": "-11.1",
-                "longitudeRangeStart": "91.7",
-                "longitudeRangeEnd": "92.8",
-                "dateRangeStart": "2001-01-01T22:44:00.000Z",
-                "dateRangeEnd": "2001-03-02T21:46:59.000Z"
-            }"""
+            productId: "32",
+            latitudeRangeStart: "-12.7",
+            latitudeRangeEnd: "-11.1",
+            longitudeRangeStart: "91.7",
+            longitudeRangeEnd: "92.8",
+            dateRangeStart: "2001-01-01T22:44:00.000Z",
+            dateRangeEnd: "2001-03-02T21:46:59.000Z"
         ]
         def testDetails = [files: []]
         service.metaClass.getProductInfo = {[
@@ -346,7 +354,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def replacements = service._getEmailBodyReplacements(testJob, testDetails)
 
         assertEquals([
-                "Latitude from -12.7 to -11.1\nLongitude from 92.8 to 91.7\nDate range from 2001-01-01T22:44:00.000Z to 2001-03-02T21:46:59.000Z",
+                "Latitude from -12.7 to -11.1\nLongitude from 91.7 to 92.8\nDate range from 2001-01-01T22:44:00.000Z to 2001-03-02T21:46:59.000Z",
                 "Latitude from -90 to 90\nLongitude from -180 to 180\nDate range from 2001-01-02 09:44:00.0 to 2013-04-25 12:53:00.0",
                 'test.emailFooter'
             ],
