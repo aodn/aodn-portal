@@ -321,7 +321,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     void testGetEmailBodyReplacementsForSuccessfulJob() {
 
-        def testJob = [failed: { -> false }]
+        def testJob = [failed: { -> false }] as AodaacJob
         def testDetails = [files: ['f1', 'f2']]
 
         def replacements = service._getEmailBodyReplacements(testJob, testDetails)
@@ -331,17 +331,17 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
     void testGetEmailBodyReplacementsForJobWithNoFiles() {
 
-        def testJob = [
-            status: SUCCESS,
-            failed: { -> false },
-            productId: "32",
-            latitudeRangeStart: "-12.7",
-            latitudeRangeEnd: "-11.1",
-            longitudeRangeStart: "91.7",
-            longitudeRangeEnd: "92.8",
-            dateRangeStart: "2001-01-01T22:44:00.000Z",
-            dateRangeEnd: "2001-03-02T21:46:59.000Z"
-        ]
+        def testJob = new AodaacJob('1234', [
+                productId: "42",
+                latitudeRangeStart: "-12.7",
+                latitudeRangeEnd: "-11.1",
+                longitudeRangeStart: "91.7",
+                longitudeRangeEnd: "92.8",
+                dateRangeStart: "2001-01-01T22:44:00.000Z",
+                dateRangeEnd: "2001-03-02T21:46:59.000Z"
+            ]
+        )
+        testJob.setStatus SUCCESS
         def testDetails = [files: []]
         service.metaClass.getProductInfo = {[
             extents: [
@@ -353,14 +353,11 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         def replacements = service._getEmailBodyReplacements(testJob, testDetails)
 
-        assertEquals([
-                'test.aodaacJob.emailOpening',
-                "Latitude from -12.7 to -11.1\nLongitude from 91.7 to 92.8\nDate range from 2001-01-01T22:44:00.000Z to 2001-03-02T21:46:59.000Z",
-                "Latitude from -90 to 90\nLongitude from -180 to 180\nDate range from 2001-01-02 09:44:00.0 to 2013-04-25 12:53:00.0",
-                'test.emailFooter'
-            ],
-            replacements
-        )
+        assertEquals 4, replacements.size()
+        assertEquals 'test.aodaacJob.emailOpening', replacements[0]
+        assertEquals 'Latitude from -12.7 to -11.1\nLongitude from 91.7 to 92.8\nDate range from 2001-01-01T22:44:00 to 2001-03-02T21:46:59', replacements[1]
+        assertEquals 'Latitude from -90 to 90\nLongitude from -180 to 180\nDate range from 2001-01-02 09:44:00.0 to 2013-04-25 12:53:00.0', replacements[2]
+        assertEquals 'test.emailFooter', replacements[3]
     }
 
     void testPrettyifyErrorMessage() {
@@ -391,23 +388,23 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         assertEquals "Unknown error", result
     }
 
-    void testgetEmailBodyMessageCode() {
+    void testGetEmailBodyMessageCode() {
 
         def testJob = [
             status: FAIL
-        ]
-        def testDetails = [:]
+        ] as AodaacJob
+        def testDetails = [files: []]
 
         def result = service._getEmailBodyMessageCode(testJob, testDetails)
 
         assertEquals "test.aodaacJob.notification.email.failBody", result
     }
 
-    void testgetEmailBodyMessageCodeWhenSuccessWithFiles() {
+    void testGetEmailBodyMessageCodeWhenSuccessWithFiles() {
 
         def testJob = [
             status: SUCCESS
-        ]
+        ] as AodaacJob
         def testDetails = [
             files: ['out.nc']
         ]
@@ -417,11 +414,11 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         assertEquals "test.aodaacJob.notification.email.successBody", result
     }
 
-    void testgetEmailBodyMessageCodeWhenNoFiles() {
+    void testGetEmailBodyMessageCodeWhenNoFiles() {
 
         def testJob = [
             status: SUCCESS
-        ]
+        ] as AodaacJob
         def testDetails = [
             files: []
         ]

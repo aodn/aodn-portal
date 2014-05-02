@@ -77,7 +77,7 @@ class AodaacJob {
 
     def succeededWithNoData(result) {
 
-        status == SUCCESS && !result.files
+        status == SUCCESS && result.files.isEmpty()
     }
 
     @Override

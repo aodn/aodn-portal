@@ -23,8 +23,8 @@ class AodaacAggregatorService {
     def portalInstance
 
     // Date formats
-    static final def FROM_JAVASCRIPT_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'") // String from UI -> Date Object
-    static final def TO_AGGREGATOR_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss") // Date Object -> String for AODAAC
+    static final def FROM_JAVASCRIPT_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") // String from UI -> Date Object
+    static final def TO_AGGREGATOR_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss") // Date Object -> String for AODAAC
 
     def getProductInfo(productIds) {
 
@@ -272,8 +272,8 @@ class AodaacAggregatorService {
                 job.latitudeRangeEnd,
                 job.longitudeRangeStart,
                 job.longitudeRangeEnd,
-                job.dateRangeStart,
-                job.dateRangeEnd
+                TO_AGGREGATOR_DATE_FORMATTER.format(job.dateRangeStart),
+                TO_AGGREGATOR_DATE_FORMATTER.format(job.dateRangeEnd)
             ),
             String.format(
                 formatExtents,
