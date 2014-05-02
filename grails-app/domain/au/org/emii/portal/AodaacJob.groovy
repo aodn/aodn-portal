@@ -75,6 +75,11 @@ class AodaacJob {
         endedStatuses.contains(status)
     }
 
+    def succeededWithNoData(result) {
+
+        status == SUCCESS && !result.files
+    }
+
     @Override
     public String toString() {
 

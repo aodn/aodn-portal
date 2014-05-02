@@ -233,7 +233,7 @@ class AodaacAggregatorService {
 
             replacements << _prettifyErrorMessage(currentDetails.errors)
         }
-        else if (_successButNoData(job, currentDetails)) {
+        else if (job.succeededWithNoData(currentDetails)) {
 
             replacements.addAll _extentsReplacements(job)
         }
@@ -296,16 +296,11 @@ class AodaacAggregatorService {
 
         def codePart = job.status.toString().toLowerCase()
 
-        if (_successButNoData(job, currentDetails)) {
+        if (job.succeededWithNoData(currentDetails)) {
             codePart = 'noData'
         }
 
         return "${portalInstance.code()}.aodaacJob.notification.email.${codePart}Body"
-    }
-
-    def _successButNoData(job, details) {
-
-        return (job.status == AodaacJob.Status.SUCCESS) && !details.files
     }
 
     def _getMessage(messageCode, replacements = []) {
