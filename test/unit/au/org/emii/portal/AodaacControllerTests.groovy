@@ -37,10 +37,9 @@ class AodaacControllerTests extends ControllerUnitTestCase {
         mockParams.notificationEmailAddress = "email"
 
         controller.aodaacAggregatorService = [
-            createJob: { email, params ->
+            createJob: { params ->
 
                 createJobCalledTimes++
-                assertEquals "email", email
                 assertEquals mockParams, params
 
                 return jobCreated
