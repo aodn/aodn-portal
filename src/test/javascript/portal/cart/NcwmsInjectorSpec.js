@@ -177,16 +177,13 @@ describe('Portal.cart.NcwmsInjector', function() {
     describe('getDataFilterEntry', function() {
 
         it('still returns date range stuff with no bbox', function() {
-            geoNetworkRecord.ncwmsParams.latitudeRangeStart = undefined;
-            geoNetworkRecord.ncwmsParams.dateRangeStart = new Date(0);
-            geoNetworkRecord.ncwmsParams.dateRangeEnd = new Date(1);
             expect(injector._getDataFilterEntry(geoNetworkRecord)).not.toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
         });
 
-        it('returns a no filter label if no bbox and no defined date', function() {
+        it('returns a default message when no defined date', function() {
             geoNetworkRecord.ncwmsParams.latitudeRangeStart = undefined;
             geoNetworkRecord.ncwmsParams.dateRangeStart = null;
-            expect(injector._getDataFilterEntry(geoNetworkRecord)).toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
+            expect(injector._getDataFilterEntry(geoNetworkRecord)).toEqual(OpenLayers.i18n("emptyDownloadDateRangePlaceholder"));
         });
 
         it('indicates a northerly bound', function() {

@@ -97,7 +97,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
 
         //injecting credentials for authenticated WMSes.  Openlayer doesn;t
         //provide a way to add header information to a WMS request
-        openLayer.proxy(proxyURL);
+        openLayer.proxy(Ext.ux.Ajax.proxyUrl);
         openLayer.cql = this.cql;
         openLayer.bboxMinX = this.bboxMinX;
         openLayer.bboxMinY = this.bboxMinY;

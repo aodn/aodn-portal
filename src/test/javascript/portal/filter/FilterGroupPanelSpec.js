@@ -32,6 +32,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
             spyOn(filterGroupPanel, '_createFilterPanel');
             spyOn(filterGroupPanel, '_updateAndShow');
+            spyOn(filterGroupPanel, '_filtersSort').andReturn(layer);
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
 
             filterGroupPanel._showHideFilters(layer, showFunction, noOp, {});
@@ -45,6 +46,35 @@ describe("Portal.filter.FilterGroupPanel", function() {
         it('calls _updateAndShow', function() {
 
             expect(filterGroupPanel._updateAndShow).toHaveBeenCalledWith(showFunction, fnTarget);
+        });
+    });
+
+    describe('filter sorting', function() {
+        var layer;
+        var expectedReturn;
+
+        beforeEach(function() {
+            layer = {};
+            layer.filters = [
+                {type: 'Boolean', label: 'A'},
+                {type: 'Boolean', label: 'E'},
+                {type: 'Date', label: 'B'},
+                {type: 'DateRange', label: 'Z'},
+                {type: 'BoundingBox', label: 'C'},
+                {type: 'String', label: 'D'}
+            ];
+            expectedReturn = [
+                {type : 'BoundingBox', sortOrder : 2, label: 'C'},
+                {type : 'Date', sortOrder : 1, label: 'B'},
+                {type : 'DateRange', sortOrder : 0, label: 'Z'},
+                {type : 'Boolean', sortOrder : -1, label: 'A'},
+                {type : 'String', sortOrder : -1, label: 'D'},
+                {type : 'Boolean', sortOrder : -1, label: 'E'}
+            ]
+        });
+
+        it('sorts with spatial and temporal filters at the top, alphabetic afterwards', function() {
+            expect(filterGroupPanel._filtersSort(layer.filters)).toEqual(expectedReturn);
         });
     });
 

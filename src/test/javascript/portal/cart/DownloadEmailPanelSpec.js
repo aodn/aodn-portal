@@ -27,11 +27,6 @@ describe("Portal.cart.DownloadEmailPanel", function() {
         expect(panel.emailField.getValue).toHaveBeenCalled();
     });
 
-    it('clears field', function() {
-        spyOn(panel.emailField, 'setValue');
-        panel.clearEmailValue();
-        expect(panel.emailField.setValue).toHaveBeenCalledWith('');
-    });
 
     describe('validation', function() {
         it('has email address validator configured in text field', function() {

@@ -20,6 +20,12 @@ describe("Portal.search.FacetMapPanel", function() {
             facetMapPanel.map.events.triggerEvent('mousemove');
             expect(facetMapPanel.map.updateSize).toHaveBeenCalled();
         });
+
+        it('calls map.updateSize on map mouse over event', function() {
+            spyOn(facetMapPanel.map, 'updateSize');
+            facetMapPanel.map.events.triggerEvent('mouseover');
+            expect(facetMapPanel.map.updateSize).toHaveBeenCalled();
+        });
     });
 
     describe('map controls', function() {

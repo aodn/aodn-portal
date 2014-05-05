@@ -10,13 +10,10 @@ Ext.namespace('Portal.filter');
 Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     constructor: function(cfg) {
-        var config = Ext.apply({
-            colspan: 2
-        }, cfg);
 
-        Portal.filter.BoundingBoxFilterPanel.superclass.constructor.call(this, config);
+        Portal.filter.BoundingBoxFilterPanel.superclass.constructor.call(this, cfg);
 
-        this.map = config.layer.map;
+        this.map = cfg.layer.map;
         this.map.events.on({
             scope: this,
             'spatialconstraintadded': function(geometry) {

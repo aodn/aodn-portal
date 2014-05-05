@@ -30,11 +30,14 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             areaString = this._parameterString('parameterAreaLabel', areaStart, areaEnd);
         }
 
-        if (params.dateRangeStart) {
+        if (params.dateRangeStart != undefined) {
             var displayDateFormat = OpenLayers.i18n('dateFilterDisplayFormat');
             var startDateString = params.dateRangeStart.format(displayDateFormat);
             var endDateString = params.dateRangeEnd.format(displayDateFormat);
             dateString = this._parameterString('parameterDateLabel', startDateString, endDateString, " <b>-</b> ");
+        }
+        else {
+            dateString = OpenLayers.i18n('emptyDownloadDateRangePlaceholder');
         }
 
         if (areaString == "" && dateString == "") {

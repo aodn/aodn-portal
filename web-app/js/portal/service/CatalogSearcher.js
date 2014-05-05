@@ -50,7 +50,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this.fireEvent('searchstart');
         var requestUrl = this._getRequestUrl(page, summaryOnly);
 
-        Ext.Ajax.request({
+        Ext.ux.Ajax.proxyRequest({
             url: requestUrl,
             success: summaryOnly ? this._onSuccessfulSummarySearch : this._onSuccessfulSearch,
             failure: this._logAndReturnErrors,
@@ -111,12 +111,14 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this.fireEvent('searcherror', response);
     },
 
-    // Build request url to use from proxyUrl, catalogUrl and filters
+    // Build request url to use from catalogUrl and filters
     _getRequestUrl: function(page, summaryOnly) {
         var params = this._getParams(page, summaryOnly);
 
-        var searchProvider = (params['geometry']) ? this.spatialSearchUrl : this.catalogUrl + '/srv/eng/' + this.serviceUrl;
-        return this.proxyUrl + encodeURIComponent(searchProvider  + '?' + Ext.urlEncode(params));
+        var searchProvider =
+            (params['geometry']) ? this.spatialSearchUrl : this.catalogUrl + '/srv/eng/' + this.serviceUrl;
+
+        return searchProvider  + '?' + Ext.urlEncode(params);
     },
 
     _getParams: function(page, summaryOnly) {

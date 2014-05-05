@@ -14,7 +14,6 @@ Portal.ui.SelectionPanel = Ext.extend(Ext.Panel, {
 
         this.searchPanel = new Portal.ui.search.SearchPanel({
             itemId: 'searchPanel',
-            proxyUrl: proxyURL,
             catalogUrl: Portal.app.config.catalogUrl,
             protocols: config.searchRestriction.protocols,
             dragAndDrop: config.dragAndDrop,

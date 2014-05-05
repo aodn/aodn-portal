@@ -57,7 +57,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     parameterDateLabel: 'Date range',
     parameterTimeLabel: 'Time-of-day range',
     metadataLinkText: 'View metadata record',
-    emailAddressPlaceholder: 'Email address',
+    emailAddressPlaceholder: '<b>Email address</b>',
     emailAddressValidationError: 'Enter a valid email address',
     notificationBlurbMessage: 'Subsetting gridded data can take a long time.<br>You will be notified via email when your data is ready for download.',
 
@@ -111,7 +111,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // Search form
     addCriteria: 'Limit search to',
-    dateRange: 'Date range',
     boundingBox: 'Bounding Box',
     northBL: 'N',
     eastBL: 'E',
@@ -243,9 +242,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     areaCoveredLabel: 'Area covered: ',
     currentDateTimeLabel: 'Displaying',
     timeRangeLabel: 'Time range between: ',
-    timeRangeCalculating: '<i>Dates were not yet loaded. Please revisit step 2 and select a date range.</i>',
     dateStartLabel: 'Start',
     dateEndLabel: 'End',
+
+    emptyDownloadDateRangePlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",
 
     // FeatureInfoPopup.js
     noDataCollectionTitle: 'No data collection selected',

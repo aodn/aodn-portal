@@ -26,7 +26,6 @@
  *  along with aodn_ocean_portal  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var proxyURL = "proxy?url=";
 var proxyCachedURL = "proxy/cache?URL=";
 
 OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
@@ -136,5 +135,3 @@ function dressUpMyLine(line) {
     }
     return newString;
 }
-
-

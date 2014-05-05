@@ -8,6 +8,8 @@
 package au.org.emii.portal
 
 import grails.converters.JSON
+import org.apache.commons.io.IOUtils
+
 import java.text.SimpleDateFormat
 
 import static au.org.emii.portal.UrlUtils.ensureTrailingSlash
@@ -21,10 +23,8 @@ class AodaacAggregatorService {
     def portalInstance
 
     // Date formats
-    static final def JAVASCRIPT_UI_DATE_OUTPUT_FORMAT = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'"
-    static final def AGGREGATOR_DATE_INPUT_FORMAT = "yyyy-MM-dd'T'hh:mm:ss"
-    static final def FROM_JAVASCRIPT_DATE_FORMATTER = new SimpleDateFormat(JAVASCRIPT_UI_DATE_OUTPUT_FORMAT) // 01/02/2012  -> Date Object
-    static final def TO_AGGREGATOR_DATE_FORMATTER = new SimpleDateFormat(AGGREGATOR_DATE_INPUT_FORMAT) // Date Object -> 20120201
+    static final def FROM_JAVASCRIPT_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") // String from UI -> Date Object
+    static final def TO_AGGREGATOR_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss") // Date Object -> String for AODAAC
 
     def getProductInfo(productIds) {
 
@@ -34,11 +34,18 @@ class AodaacAggregatorService {
             return []
         }
 
-        def aodaacData = _makeApiCall(productDataJavascriptAddress)
-        def relevantAoddacDatabase = aodaacData.first()
-        def products = relevantAoddacDatabase.'products'
+        try {
+            def aodaacData = _makeApiCall(productDataJavascriptAddress)
+            def relevantAoddacDatabase = aodaacData.first()
+            def products = relevantAoddacDatabase.'products'
 
-        return products.findAll { productIds.contains(it.id) }
+            return products.findAll { productIds.contains(it.id) }
+        }
+        catch (Exception e) {
+            log.warn "Exception occurred while getting AODAAC product info.", e
+
+            return []
+        }
     }
 
     def productIdsForLayer(layer) {
@@ -48,9 +55,9 @@ class AodaacAggregatorService {
         return productLinks.collect{ it.productId }.unique()
     }
 
-    def createJob(notificationEmailAddress, params) {
+    def createJob(params) {
 
-        log.debug "Creating AODAAC Job. Notication email address: '$notificationEmailAddress'"
+        log.debug "Creating AODAAC Job. Notication email address: '${params.notificationEmailAddress}'"
         log.debug "params: ${params}"
 
         def apiCallUrl = jobCreationUrl(
@@ -65,7 +72,7 @@ class AodaacAggregatorService {
             throw new RuntimeException("Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response")
         }
 
-        def job = new AodaacJob(response.id, notificationEmailAddress)
+        def job = new AodaacJob(response.id, params)
         job.save failOnError: true
 
         return job
@@ -92,9 +99,7 @@ class AodaacAggregatorService {
 
         if (job.hasEnded()) {
 
-            def filesReplacement = currentDetails.files.join("\n")
-
-            _sendNotificationEmail(job, [filesReplacement])
+            _sendNotificationEmail(job, currentDetails)
         }
     }
 
@@ -164,8 +169,12 @@ class AodaacAggregatorService {
 
         def response = '<not set>'
         try {
-            // Make the call
-            response = apiCallUrl.toURL().text
+            def conn = apiCallUrl.toURL().openConnection()
+            conn.connectTimeout = grailsApplication.config.aodaacAggregator.apiCallsConnectTimeout
+            conn.readTimeout = grailsApplication.config.aodaacAggregator.apiCallsReadTimeout
+            conn.connect()
+
+            response = IOUtils.toString(conn.inputStream, "UTF-8")
 
             return JSON.parse(response)
         }
@@ -186,16 +195,14 @@ class AodaacAggregatorService {
         return TO_AGGREGATOR_DATE_FORMATTER.format(date)
     }
 
-    void _sendNotificationEmail(job, replacements = []) {
+    void _sendNotificationEmail(job, currentDetails) {
 
         try {
             log.info "Sending notification email for $job to '${job.notificationEmailAddress}'"
 
-            replacements.addAll _getEmailBodyReplacements(job)
-
             def emailBody = _getMessage(
-                _getEmailBodyMessageCode(job),
-                replacements
+                _getEmailBodyMessageCode(job, currentDetails),
+                _getEmailBodyReplacements(job, currentDetails)
             )
 
             def emailSubject = _getMessage(
@@ -216,17 +223,25 @@ class AodaacAggregatorService {
         }
     }
 
-    def _getEmailBodyReplacements(job) {
+    def _getEmailBodyReplacements(job, currentDetails) {
 
         def replacements = []
 
-        // If successful
+        replacements << _getMessage("${portalInstance.code()}.aodaacJob.emailOpening")
+
         if (job.failed()) {
 
-            replacements << _prettifyErrorMessage(job.errors)
+            replacements << _prettifyErrorMessage(currentDetails.errors)
+        }
+        else if (job.succeededWithNoData(currentDetails)) {
+
+            replacements.addAll _extentsReplacements(job)
+        }
+        else {
+
+            replacements << _fileList(currentDetails)
         }
 
-        // Add footer
         replacements << _getMessage("${portalInstance.code()}.emailFooter")
 
         return replacements
@@ -243,9 +258,48 @@ class AodaacAggregatorService {
         return prettifier?.value(errorMessage) ?: "Unknown error"
     }
 
-    def _getEmailBodyMessageCode(job) {
+    def _extentsReplacements(job) {
+
+        def productId = job.productId.toInteger()
+        def productExtents = getProductInfo([productId]).extents
+
+        def formatExtents = "Latitude from %s to %s\nLongitude from %s to %s\nDate range from %s to %s"
+
+        return [
+            String.format(
+                formatExtents,
+                job.latitudeRangeStart,
+                job.latitudeRangeEnd,
+                job.longitudeRangeStart,
+                job.longitudeRangeEnd,
+                TO_AGGREGATOR_DATE_FORMATTER.format(job.dateRangeStart),
+                TO_AGGREGATOR_DATE_FORMATTER.format(job.dateRangeEnd)
+            ),
+            String.format(
+                formatExtents,
+                _startOf(productExtents.lat),
+                _endOf(productExtents.lat),
+                _startOf(productExtents.lon),
+                _endOf(productExtents.lon),
+                _startOf(productExtents.time),
+                _endOf(productExtents.time)
+            )
+        ]
+    }
+
+    def _fileList(details) {
+
+        details.files.collect{ it.toString() }.join("\n")
+    }
+
+    def _getEmailBodyMessageCode(job, currentDetails) {
 
         def codePart = job.status.toString().toLowerCase()
+
+        if (job.succeededWithNoData(currentDetails)) {
+            codePart = 'noData'
+        }
+
         return "${portalInstance.code()}.aodaacJob.notification.email.${codePart}Body"
     }
 
@@ -256,5 +310,13 @@ class AodaacAggregatorService {
             replacements.toArray(),
             Locale.default
         )
+    }
+
+    def _startOf(extents) {
+        extents[0].first()
+    }
+
+    def _endOf(extents) {
+        extents[0].last()
     }
 }
