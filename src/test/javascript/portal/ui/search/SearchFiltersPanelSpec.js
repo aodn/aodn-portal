@@ -55,12 +55,22 @@ describe("Portal.ui.search.SearchFiltersPanel", function() {
         });
     });
 
-    describe('filters', function() {
-        it('call the appropriate function when expanded', function() {
-            spyOn(searchFiltersPanel, '_onExpand');
+    describe('searchFiltersPanel', function() {
+        it('scrolls to the correct location on expand', function() {
 
-            searchFiltersPanel.filters[1].fireEvent('expand');
-            expect(searchFiltersPanel._onExpand).toHaveBeenCalled();
+            var scrollSpy = jasmine.createSpy("scrollTo");
+
+            searchFiltersPanel.filters[0].el = {
+                dom: {
+                    parentElement: {}
+                }
+            };
+
+            searchFiltersPanel._getJQueryElement = function() {return { scrollTo: scrollSpy }};
+            searchFiltersPanel._onExpand(searchFiltersPanel.filters[0]);
+
+            expect(scrollSpy).toHaveBeenCalled();
+            expect(scrollSpy.mostRecentCall.args[0]).toBe(searchFiltersPanel.filters[0].el.dom);
         });
     });
 

@@ -18,7 +18,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             searcher: config.searcher,
             collapsed: false,
             listeners: {
-                expand: this._onExpand
+                expand: this._onExpand,
+                scope: this
             }
         });
 
@@ -29,7 +30,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             fieldName: 'orgName',
             searcher: config.searcher,
             listeners: {
-                expand: this._onExpand
+                expand: this._onExpand,
+                scope: this
             }
         });
 
@@ -41,7 +43,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             searcher: config.searcher,
             collapsed: false,
             listeners: {
-                expand: this._onExpand
+                expand: this._onExpand,
+                scope: this
             }
         });
 
@@ -50,7 +53,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             hierarchical: false,
             searcher: config.searcher,
             listeners: {
-                expand: this._onExpand
+                expand: this._onExpand,
+                scope: this
             }
         });
 
@@ -60,7 +64,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             searcher: config.searcher,
             mapPanel: config.mapPanel,
             listeners: {
-                expand: this._onExpand
+                expand: this._onExpand,
+                scope: this
             }
         });
 
@@ -192,12 +197,12 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         }, this);
     },
 
-    _onExpand: function(evt) {
-        //var divPosition = $(evt.body.id).offset();
-        console.log(evt);
-        //var element = Ext.get(evt);
+    _getJQueryElement: function(domElement) {
+        return $(domElement);
+    },
 
-        //$('html, body, div').animate({scrollTop: divPosition.top}, "slow");
-        $(evt.el.dom.parentElement).scrollTo(evt.el.dom, 300);
+    _onExpand: function(evt) {
+        var el = this._getJQueryElement(evt.el.dom.parentElement);
+        el.scrollTo(evt.el.dom, 300);
     }
 });
