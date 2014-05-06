@@ -22,8 +22,9 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         };
 
         var htmlInjection;
+        var aggregators = this._returnAggregatorTypes(collection);
 
-        if (this._isDownloadable(collection)) {
+        if (this._isDownloadable(collection, aggregators)) {
             if (this._isNcwms(collection)) {
                 htmlInjection = this._getNcwmsInjector(config, collection);
             }
@@ -44,23 +45,22 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         return collection.wmsLayer.isNcwms();
     },
 
-    _isDownloadable: function(collection) {
-        return (this._isBodaac(collection) || this._isAodaac(collection) || this._isGogoduck(collection));
+    _isDownloadable: function(collection, aggregators) {
+
+        return (collection.wmsLayer.wfsLayer || aggregators.length > 0);
     },
 
-    _isBodaac: function(collection) {
+    _returnAggregatorTypes: function(collection) {
 
-        return collection.wmsLayer.isBodaac();
-    },
+        var aggregators = [];
 
-    _isAodaac: function(collection) {
+        Ext.each(collection.links, function(link, index) {
+            if (link.name == "AODAAC" || link.name == "GoGoDuck" || link.name == "BODAAC") {
+                aggregators.push(link.name)
+            }
+        });
 
-        return collection.wmsLayer.isAodaac();
-    },
-
-    _isGogoduck: function(collection) {
-
-        return collection.wmsLayer.gogoduckLayerName || (collection.wmsLayer.isNcwms() && collection.wmsLayer.wfsLayer);
+        return aggregators;
     },
 
     _getNcwmsInjector: function(config, collection) {

@@ -436,6 +436,7 @@ class LayerController {
                     onlineResourcesList.each {
                         if (!it.CI_OnlineResource.protocol.text().startsWith("OGC:WMS")) {
                             def linkText = HtmlUtils.htmlEscape(it.CI_OnlineResource.description.CharacterString.text())
+                            def linkProtocol = HtmlUtils.htmlEscape(it.CI_OnlineResource.protocol.CharacterString.text())
                             def linkUrl = it.CI_OnlineResource.linkage.URL.text()
                             def linkExternal = ""
                             if (linkUrl && linkUrl[0] != "/") {
@@ -445,7 +446,10 @@ class LayerController {
                             if (!linkText) {
                                 linkText = "<i>Unnamed Resource</i>"
                             }
-                            html += """<li><a ${linkExternal} href="${linkUrl}" target="_blank">${linkText}</a></li>\n"""
+
+                            if (linkProtocol != "IMOS:AGGREGATION--gogoduck" && linkProtocol != "IMOS:AGGREGATION--aodaac" && linkProtocol != "IMOS:AGGREGATION--bodaac") {
+                                html += """<li><a ${linkExternal} href="${linkUrl}" target="_blank">${linkText}</a></li>\n"""
+                            }
                         }
                     }
                     html += "</ul>"

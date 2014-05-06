@@ -34,10 +34,7 @@ describe('Portal.cart.NcwmsInjector', function() {
                 },
                 getWfsLayerFeatureRequestUrl: noOp,
                 isNcwms: function() {return true},
-                wfsLayer: true,
-                bodaacFilterParams: {},
-                aodaacProducts: [],
-                isAodaac: noOp
+                wfsLayer: true
             },
             pointOfTruthLink: 'Link!',
             downloadableLinks: 'Downloadable link!'
@@ -46,10 +43,18 @@ describe('Portal.cart.NcwmsInjector', function() {
 
     describe('createMenuItems', function() {
 
-        it('creates all menu items for bodaacable NcWms layers', function() {
+        it('creates download options for URL list and subsetted NetCDF when bodaac is available', function() {
 
-            geoNetworkRecord.wmsLayer.isAodaac = function() {return true};
-            geoNetworkRecord.wmsLayer.isBodaac = function() {return true};
+            geoNetworkRecord.links = [
+                {
+                    protocol: "IMOS:AGGREGATION--bodaac",
+                    name: "BODAAC"
+                },
+                {
+                    protocol: "IMOS:AGGREGATION--gogoduck",
+                    name: "GoGoDuck"
+                }
+            ];
 
             var menuItems = injector._createMenuItems(geoNetworkRecord);
             var urlListIncluded = false;
@@ -73,10 +78,14 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(netCdfDownloadIncluded).toBe(true);
         });
 
-        it('creates only subsetted NetCDF menu option for non-bodaacable layers', function() {
+        it('creates only subsetted NetCDF menu option where the bodaac aggregator is not available', function() {
 
-            geoNetworkRecord.wmsLayer.isAodaac = function() {return true};
-            geoNetworkRecord.wmsLayer.isBodaac = function() {return false};
+            geoNetworkRecord.links = [
+                {
+                    protocol: "IMOS:AGGREGATION--gogoduck",
+                    name: "GoGoDuck"
+                }
+            ];
 
             var menuItems = injector._createMenuItems(geoNetworkRecord);
             var urlListIncluded = false;
@@ -290,9 +299,7 @@ describe('Portal.cart.NcwmsInjector', function() {
                     getDownloadFilter: function() {
                         return "cql_filter"
                     },
-                    getWfsLayerFeatureRequestUrl: noOp,
-                    bodaacFilterParams: {},
-                    aodaacProducts: []
+                    getWfsLayerFeatureRequestUrl: noOp
                 },
                 ncwmsParams: ncwmsParams };
 
@@ -311,9 +318,18 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(injector._generateAodaacJobUrl).toHaveBeenCalled();
         });
 
-        it('calls _generateGogoduckJobUrl when a gogoduck record is passed with attached wfsLayer', function() {
+        it('calls _generateGogoduckJobUrl when a gogoduck record is passed', function() {
 
             injector._isGogoduckLayer = function() {return true};
+
+            url = injector._generateNcwmsUrl(collection, params);
+            expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
+        });
+
+        it('calls _generateGogoduckJobUrl when a record is passed that is configured for gogoduck and aodaac', function() {
+
+            injector._isGogoduckLayer = function() {return true};
+            injector._isAodaacLayer = function() {return true};
 
             url = injector._generateNcwmsUrl(collection, params);
             expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
@@ -351,10 +367,7 @@ describe('Portal.cart.NcwmsInjector', function() {
                     },
                     getWfsLayerFeatureRequestUrl: noOp,
                     isNcwms: function() {return true},
-                    wfsLayer: true,
-                    bodaacFilterParams: {},
-                    aodaacProducts: [],
-                    isAodaac: noOp
+                    wfsLayer: true
                 },
                 ncwmsParams: ncwmsParams };
 
@@ -467,6 +480,33 @@ describe('Portal.cart.NcwmsInjector', function() {
 
         it('returns metadata links as appropriate', function() {
             expect(injector._getMetadataLinks(geoNetworkRecord)).toEqual('Downloadable link!');
+        });
+    });
+
+    describe('returnAggregatorTypes', function() {
+        it('returns an array of aggregators for the supplied collection', function() {
+
+            var mockAggr;
+
+            geoNetworkRecord.links = [
+                {
+                    protocol: "IMOS:AGGREGATION--aodaac",
+                    name: "AODAAC"
+                },
+                {
+                    protocol: "IMOS:AGGREGATION--bodaac",
+                    name: "BODAAC"
+                },
+                {
+                    protocol: "IMOS:AGGREGATION--gogoduck",
+                    name: "GoGoDuck"
+                }
+            ];
+
+            mockAggr = injector._returnAggregatorTypes(geoNetworkRecord);
+            expect(mockAggr[0]).toEqual("AODAAC");
+            expect(mockAggr[1]).toEqual("BODAAC");
+            expect(mockAggr[2]).toEqual("GoGoDuck");
         });
     });
 });
