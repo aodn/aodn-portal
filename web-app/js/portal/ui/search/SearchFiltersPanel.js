@@ -203,6 +203,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _onExpand: function(evt) {
         var el = this._getJQueryElement(evt.el.dom.parentElement);
-        el.scrollTo(evt.el.dom, 300);
+        el.scrollTo(evt.el.dom);
     }
 });
