@@ -43,7 +43,7 @@ describe("Portal.ui.search.SearchFiltersPanel", function() {
         });
     });
 
-    describe('parameter and platform filters expanded by default', function() {
+    describe('default configuration', function() {
         it('expands the parameter filter', function() {
             // Parameter filter is the first element in the filter array
             expect(searchFiltersPanel.filters[0].collapsed).toEqual(false);
@@ -52,6 +52,25 @@ describe("Portal.ui.search.SearchFiltersPanel", function() {
         it('expands the platform filter', function() {
             // Platform filter is the third element in the filter array
             expect(searchFiltersPanel.filters[2].collapsed).toEqual(false);
+        });
+    });
+
+    describe('searchFiltersPanel', function() {
+        it('scrolls to the correct location on expand', function() {
+
+            var scrollSpy = jasmine.createSpy("scrollTo");
+
+            searchFiltersPanel.filters[0].el = {
+                dom: {
+                    parentElement: {}
+                }
+            };
+
+            searchFiltersPanel._getJQueryElement = function() {return { scrollTo: scrollSpy }};
+            searchFiltersPanel._onExpand(searchFiltersPanel.filters[0]);
+
+            expect(scrollSpy).toHaveBeenCalled();
+            expect(scrollSpy.mostRecentCall.args[0]).toBe(searchFiltersPanel.filters[0].el.dom);
         });
     });
 
