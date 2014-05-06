@@ -76,11 +76,13 @@ Portal.data.GeoNetworkRecord = function() {
         name: 'aggregator',
         convert: function(v, record) {
             var allLinks = convertXmlToLinks(v, record);
+            var aggregatorFactory = new Portal.data.AggregatorFactory();
             var aggregatorTypes = [];
 
             Ext.each(allLinks, function(linkToCheck) {
                 if (linkToCheck.name == GOGODUCK_PROTOCOL_NAME || linkToCheck.name == BODAAC_PROTOCOL_NAME || linkToCheck.name == AODAAC_PROTOCOL_NAME) {
-                    aggregatorTypes.push(linkToCheck.name);
+                    var aggr = aggregatorFactory.newAggregator(linkToCheck.name);
+                    aggregatorTypes.push(aggr);
                 }
             });
 

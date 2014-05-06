@@ -16,50 +16,21 @@ describe('Portal.cart.NcwmsInjector', function() {
         injector = new Portal.cart.NcwmsInjector();
         startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
         endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
-        geoNetworkRecord = {
-            uuid: 9,
-            grailsLayerId: 42,
-            ncwmsParams: {
-                dateRangeStart: startDate,
-                dateRangeEnd: endDate,
-                latitudeRangeStart: -42,
-                latitudeRangeEnd: -20,
-                longitudeRangeStart: 160,
-                longitudeRangeEnd: 170,
-                layerName: "gogoDingo"
-            },
-            wmsLayer: {
-                getDownloadFilter: function() {
-                    return "cql_filter"
-                },
-                getWfsLayerFeatureRequestUrl: noOp,
-                isNcwms: function() {return true},
-                wfsLayer: true
-            },
-            pointOfTruthLink: 'Link!',
-            downloadableLinks: 'Downloadable link!'
-        }
+        geoNetworkRecord = getMockGeonetworkRecord();
     });
 
     describe('createMenuItems', function() {
 
         it('creates download options for URL list and subsetted NetCDF when bodaac is available', function() {
-
-            geoNetworkRecord.links = [
-                {
-                    protocol: "IMOS:AGGREGATION--bodaac",
-                    name: "BODAAC"
-                },
-                {
-                    protocol: "IMOS:AGGREGATION--gogoduck",
-                    name: "GoGoDuck"
-                }
-            ];
-
-            var menuItems = injector._createMenuItems(geoNetworkRecord);
+            var menuItems;
             var urlListIncluded = false;
             var netCdfDownloadIncluded = false;
             var netCdfSubsetIncluded = false;
+            var mockGogoduckAggr = new Portal.data.GogoduckAggregator();
+            var mockBodaacAggr = new Portal.data.BodaacAggregator();
+
+            geoNetworkRecord.aggregator = [mockGogoduckAggr, mockBodaacAggr];
+            menuItems = injector._createMenuItems(geoNetworkRecord);
 
             for (var i = 0; i < menuItems.length; i++) {
                 if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
@@ -79,18 +50,14 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
 
         it('creates only subsetted NetCDF menu option where the bodaac aggregator is not available', function() {
-
-            geoNetworkRecord.links = [
-                {
-                    protocol: "IMOS:AGGREGATION--gogoduck",
-                    name: "GoGoDuck"
-                }
-            ];
-
-            var menuItems = injector._createMenuItems(geoNetworkRecord);
+            var menuItems;
             var urlListIncluded = false;
             var netCdfDownloadIncluded = false;
             var netCdfSubsetIncluded = false;
+            var mockGogoduckAggr = new Portal.data.GogoduckAggregator();
+
+            geoNetworkRecord.aggregator = [mockGogoduckAggr];
+            menuItems = injector._createMenuItems(geoNetworkRecord);
 
             for (var i = 0; i < menuItems.length; i++) {
                 if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
@@ -483,30 +450,31 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
     });
 
-    describe('returnAggregatorTypes', function() {
-        it('returns an array of aggregators for the supplied collection', function() {
-
-            var mockAggr;
-
-            geoNetworkRecord.links = [
-                {
-                    protocol: "IMOS:AGGREGATION--aodaac",
-                    name: "AODAAC"
+    function getMockGeonetworkRecord() {
+        geoNetworkRecord = {
+            uuid: 9,
+            grailsLayerId: 42,
+            ncwmsParams: {
+                dateRangeStart: startDate,
+                dateRangeEnd: endDate,
+                latitudeRangeStart: -42,
+                latitudeRangeEnd: -20,
+                longitudeRangeStart: 160,
+                longitudeRangeEnd: 170,
+                layerName: "gogoDingo"
+            },
+            wmsLayer: {
+                getDownloadFilter: function() {
+                    return "cql_filter"
                 },
-                {
-                    protocol: "IMOS:AGGREGATION--bodaac",
-                    name: "BODAAC"
-                },
-                {
-                    protocol: "IMOS:AGGREGATION--gogoduck",
-                    name: "GoGoDuck"
-                }
-            ];
+                getWfsLayerFeatureRequestUrl: noOp,
+                isNcwms: function() {return true},
+                wfsLayer: true
+            },
+            pointOfTruthLink: 'Link!',
+            downloadableLinks: 'Downloadable link!'
+        }
 
-            mockAggr = injector._returnAggregatorTypes(geoNetworkRecord);
-            expect(mockAggr[0]).toEqual("AODAAC");
-            expect(mockAggr[1]).toEqual("BODAAC");
-            expect(mockAggr[2]).toEqual("GoGoDuck");
-        });
-    });
+        return geoNetworkRecord;
+    }
 });

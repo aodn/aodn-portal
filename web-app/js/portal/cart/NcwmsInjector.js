@@ -17,7 +17,6 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     },
 
     _getDataFilterEntry: function(collection) {
-
         var params = collection.ncwmsParams;
         var areaString = "";
         var dateString = "";
@@ -51,9 +50,8 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _createMenuItems: function(collection) {
         var menuItems = [];
-        var aggregators = this._returnAggregatorTypes(collection);
 
-        if (this._isBodaacLayer(aggregators)) {
+        if (this._isBodaacLayer(collection)) {
 
             menuItems.push({
                 text: OpenLayers.i18n('downloadAsUrlsLabel'),
@@ -67,7 +65,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             });
         }
 
-        if (this._isAodaacLayer(aggregators) || this._isGogoduckLayer(aggregators)) {
+        if (this._isAodaacLayer(collection) || this._isGogoduckLayer(collection)) {
 
             menuItems.push({
                 text: OpenLayers.i18n('downloadAsSubsettedNetCdfLabel'),
@@ -108,13 +106,12 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     _generateNcwmsUrl: function(collection, params) {
 
         var url = '';
-        var aggregators = this._returnAggregatorTypes(collection);
 
-        if (this._isGogoduckLayer(aggregators)) {
+        if (this._isGogoduckLayer(collection)) {
             url = this._generateGogoduckJobUrl(collection, params.format, params.emailAddress);
         }
         else {
-            if (this._isAodaacLayer(aggregators)) {
+            if (this._isAodaacLayer(collection)) {
                 url = this._generateAodaacJobUrl(collection, params.emailAddress);
             }
         }
@@ -122,11 +119,11 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return url;
     },
 
-    _isAodaacLayer: function(aggregators) {
+    _isAodaacLayer: function(collection) {
         var aodaac = false;
 
-        Ext.each(aggregators, function(aggregator, index) {
-            if (aggregator == "AODAAC") {
+        Ext.each(collection.aggregator, function(aggregator, index) {
+            if (aggregator.isAodaacLayer()) {
                 aodaac = true;
             }
         });
@@ -134,11 +131,11 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return aodaac;
     },
 
-    _isBodaacLayer: function(aggregators) {
+    _isBodaacLayer: function(collection) {
         var bodaac = false;
 
-        Ext.each(aggregators, function(aggregator, index) {
-            if (aggregator == "BODAAC") {
+        Ext.each(collection.aggregator, function(aggregator, index) {
+            if (aggregator.isBodaacLayer()) {
                 bodaac = true;
             }
         });
@@ -146,29 +143,16 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return bodaac;
     },
 
-    _isGogoduckLayer: function(aggregators) {
+    _isGogoduckLayer: function(collection) {
         var gogoduck = false;
 
-        Ext.each(aggregators, function(aggregator, index) {
-            if (aggregator == "GoGoDuck") {
+        Ext.each(collection.aggregator, function(aggregator, index) {
+            if (aggregator.isGogoduckLayer()) {
                 gogoduck = true;
             }
         });
 
         return gogoduck;
-    },
-
-    _returnAggregatorTypes: function(collection) {
-
-        var aggregators = [];
-
-        Ext.each(collection.links, function(link, index) {
-            if (link.name == "AODAAC" || link.name == "GoGoDuck" || link.name == "BODAAC") {
-                aggregators.push(link.name)
-            }
-        });
-
-        return aggregators;
     },
 
     _generateAodaacJobUrl: function(collection, format, email) {

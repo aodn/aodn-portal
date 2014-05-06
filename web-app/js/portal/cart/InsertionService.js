@@ -22,9 +22,8 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         };
 
         var htmlInjection;
-        var aggregators = this._returnAggregatorTypes(collection);
 
-        if (this._isDownloadable(collection, aggregators)) {
+        if (this._isDownloadable(collection)) {
             if (this._isNcwms(collection)) {
                 htmlInjection = this._getNcwmsInjector(config, collection);
             }
@@ -45,22 +44,9 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         return collection.wmsLayer.isNcwms();
     },
 
-    _isDownloadable: function(collection, aggregators) {
+    _isDownloadable: function(collection) {
 
-        return (collection.wmsLayer.wfsLayer || aggregators.length > 0);
-    },
-
-    _returnAggregatorTypes: function(collection) {
-
-        var aggregators = [];
-
-        Ext.each(collection.links, function(link, index) {
-            if (link.name == "AODAAC" || link.name == "GoGoDuck" || link.name == "BODAAC") {
-                aggregators.push(link.name)
-            }
-        });
-
-        return aggregators;
+        return (collection.wmsLayer.wfsLayer || collection.aggregator.length > 0);
     },
 
     _getNcwmsInjector: function(config, collection) {

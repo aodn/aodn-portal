@@ -32,10 +32,10 @@ describe("Portal.cart.DownloadPanelBody", function() {
 
         var mockTemplate;
 
-        var testCollection1 = {uuid: '[Content 1]', wmsLayer: {wfsLayer: null, isNcwms: noOp}};
-        var testCollection2 = {uuid: '[Content 2]', wmsLayer: {wfsLayer: null, isNcwms: noOp}};
-        var testCollection3 = {uuid: '[Content 3]', wmsLayer: {wfsLayer: null, isNcwms: noOp}};
-        var testCollection4 = {uuid: '[Content 4]', wmsLayer: {wfsLayer: null, isNcwms: noOp}};
+        var testCollection1 = {uuid: '[Content 1]', aggregator: [], wmsLayer: {wfsLayer: null, isNcwms: noOp}};
+        var testCollection2 = {uuid: '[Content 2]', aggregator: [], wmsLayer: {wfsLayer: null, isNcwms: noOp}};
+        var testCollection3 = {uuid: '[Content 3]', aggregator: [], wmsLayer: {wfsLayer: null, isNcwms: noOp}};
+        var testCollection4 = {uuid: '[Content 4]', aggregator: [], wmsLayer: {wfsLayer: null, isNcwms: noOp}};
 
         beforeEach(function() {
 
