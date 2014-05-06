@@ -244,6 +244,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     timeRangeLabel: 'Time range between: ',
     dateStartLabel: 'Start',
     dateEndLabel: 'End',
+    layerComboHeading: 'Data Collection',
 
     emptyDownloadDateRangePlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",
 

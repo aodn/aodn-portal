@@ -65,6 +65,13 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         this.getSelectionModel().on("beforeselect", this.activeLayersTreePanelBeforeSelectHandler, this);
         this.on('beforeremove', this.beforeActiveLayerRemoved, this);
 
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(subject, openLayer) {
+        	var selectedNode = this.findNodeByLayer(openLayer);
+            if (selectedNode) {
+            	selectedNode.select();
+            }
+        }, this);
+        
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_START, function(subject, openLayer) {
             this._onLayerLoadingStart(openLayer);
         }, this);
