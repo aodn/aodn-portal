@@ -28,15 +28,11 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
         this.mapPanel = cfg.mapPanel;
 
-        Portal.details.DetailsPanel.superclass.constructor
-                .call(this, config);
+        Portal.details.DetailsPanel.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe(
-                PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(
-                        eventName, openlayer) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(eventName, openlayer) {
                     this.updateDetailsPanel(openlayer);
                 }, this);
-
     },
 
     initComponent : function() {
@@ -46,9 +42,9 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
                     map : this.map
                 });
 
-        this.dataCollectionSelector = new Portal.details.DataCollectionSelector();
+        this.dataCollectionSelectorPanel = new Portal.details.DataCollectionSelectorPanel();
 
-        this.items = [ this.dataCollectionSelector,
+        this.items = [ this.dataCollectionSelectorPanel,
                 this.detailsPanelTabs ];
 
         Portal.details.DetailsPanel.superclass.initComponent

@@ -98,7 +98,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'TimeUtil.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'moment.min.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'Moment.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DataCollectionSelector.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'BoxDisplayPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'PolygonDisplayPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SpatialConstraintDisplayPanel.js')}"></script>
@@ -120,6 +119,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DetailsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NcWmsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DetailsPanelTab.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DataCollectionSelectorPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'InfoPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'ClickControl.js')}"></script>
