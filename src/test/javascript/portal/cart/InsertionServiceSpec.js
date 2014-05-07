@@ -18,9 +18,7 @@ describe('Portal.cart.InsertionService', function() {
             title: 'the title',
             uuid: '42',
             wmsLayer: {
-                isNcwms: noOp,
-                isAodaac: noOp,
-                isBodaac: noOp
+                isNcwms: noOp
             }
         };
     });
@@ -35,7 +33,7 @@ describe('Portal.cart.InsertionService', function() {
 
         it('creates an ncwms injector for ncwms layers', function() {
 
-            html = mockInsertionService.insertionValues(getNcwmsRecord());
+            html = mockInsertionService.insertionValues(getGogoduckRecord());
 
             expect(mockInsertionService._getNcwmsInjector).toHaveBeenCalled();
             expect(mockInsertionService._getWmsInjector).not.toHaveBeenCalled();
@@ -81,54 +79,66 @@ describe('Portal.cart.InsertionService', function() {
     });
 
     describe('is downloadable', function() {
-        it('returns true when collection has associated wfs layer or download URL field', function() {
-            geoNetworkRecord.wmsLayer.isBodaac = function() {return true};
-
-            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
-        });
-
-        it('returns true when collection is aodaacable', function() {
-            geoNetworkRecord.wmsLayer.isAodaac = function() {return true};
-
-            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
-        });
-
-        it('returns true when collection has a gogoduck override layer name', function() {
-
-            geoNetworkRecord.wmsLayer.gogoduckLayerName = function() {return "CARS"};
-
-            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
-        });
-
-        it('returns true when collection has an attached wfsLayer and isNcwms', function() {
-
-            geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
+        it('returns true when collection has associated wfs layer', function() {
             geoNetworkRecord.wmsLayer.wfsLayer = {};
+            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
+        });
 
+        it('returns true when collection is aggregatable using aodaac', function() {
+            geoNetworkRecord = getAodaacRecord();
+            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
+        });
+
+        it('returns true when collection is aggregatable using bodaac', function() {
+            geoNetworkRecord = getBodaacRecord();
+            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
+        });
+
+        it('returns true when collection is aggregatable using gogoduck', function() {
+            geoNetworkRecord = getGogoduckRecord();
             expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
         });
 
         it("returns false when collection doesn't have associated wfs layer or download URL field", function() {
+            geoNetworkRecord = getNoDataRecord();
             expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeFalsy();
         });
     });
 
     function getWmsRecord() {
-        geoNetworkRecord.wmsLayer.isBodaac = function() {return true};
+        geoNetworkRecord.aggregator = [];
+        geoNetworkRecord.wmsLayer.wfsLayer = {};
         geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
 
         return geoNetworkRecord;
     }
 
-    function getNcwmsRecord() {
-        geoNetworkRecord.wmsLayer.wfsLayer = function() {return true};
+    function getGogoduckRecord() {
+        var mockNcwmsAggr = new Portal.data.GogoduckAggregator();
+        geoNetworkRecord.aggregator = [mockNcwmsAggr];
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
-        geoNetworkRecord.wmsLayer.isAodaac = function() {return true};
+
+        return geoNetworkRecord;
+    }
+
+    function getAodaacRecord() {
+        var mockNcwmsAggr = new Portal.data.AodaacAggregator();
+        geoNetworkRecord.aggregator = [mockNcwmsAggr];
+        geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
+
+        return geoNetworkRecord;
+    }
+
+    function getBodaacRecord() {
+        var mockNcwmsAggr = new Portal.data.BodaacAggregator();
+        geoNetworkRecord.aggregator = [mockNcwmsAggr];
+        geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
 
         return geoNetworkRecord;
     }
 
     function getNoDataRecord() {
+        geoNetworkRecord.aggregator = [];
         geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
 
         return geoNetworkRecord;

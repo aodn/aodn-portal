@@ -17,7 +17,6 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     },
 
     _getDataFilterEntry: function(collection) {
-
         var params = collection.ncwmsParams;
         var areaString = "";
         var dateString = "";
@@ -66,11 +65,14 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             });
         }
 
-        menuItems.push({
-            text: OpenLayers.i18n('downloadAsSubsettedNetCdfLabel'),
-            handler: this._downloadGogoduckHandler(collection, { format: 'nc' }),
-            scope: this
-        });
+        if (this._isAodaacLayer(collection) || this._isGogoduckLayer(collection)) {
+
+            menuItems.push({
+                text: OpenLayers.i18n('downloadAsSubsettedNetCdfLabel'),
+                handler: this._downloadGogoduckHandler(collection, { format: 'nc' }),
+                scope: this
+            });
+        }
 
         return menuItems;
     },
@@ -105,12 +107,12 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
         var url = '';
 
-        if (this._isAodaacLayer(collection)) {
-            url = this._generateAodaacJobUrl(collection, params.format, params.emailAddress);
+        if (this._isGogoduckLayer(collection)) {
+            url = this._generateGogoduckJobUrl(collection, params.format, params.emailAddress);
         }
         else {
-            if (this._isGogoduckLayer(collection)) {
-                url = this._generateGogoduckJobUrl(collection, params.emailAddress);
+            if (this._isAodaacLayer(collection)) {
+                url = this._generateAodaacJobUrl(collection, params.emailAddress);
             }
         }
 
@@ -118,15 +120,39 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     },
 
     _isAodaacLayer: function(collection) {
-        return collection.wmsLayer.isAodaac();
+        var aodaac = false;
+
+        Ext.each(collection.aggregator, function(aggregator, index) {
+            if (aggregator.isAodaacLayer()) {
+                aodaac = true;
+            }
+        });
+
+        return aodaac;
     },
 
     _isBodaacLayer: function(collection) {
-        return collection.wmsLayer.isBodaac();
+        var bodaac = false;
+
+        Ext.each(collection.aggregator, function(aggregator, index) {
+            if (aggregator.isBodaacLayer()) {
+                bodaac = true;
+            }
+        });
+
+        return bodaac;
     },
 
     _isGogoduckLayer: function(collection) {
-        return collection.wmsLayer.gogoduckLayerName || (collection.wmsLayer.isNcwms() && collection.wmsLayer.wfsLayer);
+        var gogoduck = false;
+
+        Ext.each(collection.aggregator, function(aggregator, index) {
+            if (aggregator.isGogoduckLayer()) {
+                gogoduck = true;
+            }
+        });
+
+        return gogoduck;
     },
 
     _generateAodaacJobUrl: function(collection, format, email) {

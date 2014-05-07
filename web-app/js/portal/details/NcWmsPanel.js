@@ -221,7 +221,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
         var config;
 
-        if (this.selectedLayer.isAodaac()) {
+        if (this._isAodaacLayer(this.selectedLayer)) {
             config = this._buildAodaacParams(geometry);
         }
         else {
@@ -280,6 +280,24 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         }
 
         return ncwmsConfig;
+    },
+
+    _isAodaacLayer: function(collection) {
+        var aodaac = false;
+
+        Ext.each(collection.links, function(link, index) {
+            if (link.name == "AODAAC") {
+                aodaac = true;
+            }
+        });
+
+        Ext.each(collection.links, function(link, index) {
+            if (link.name == "GoGoDuck") {
+                aodaac = false;
+            }
+        });
+
+        return aodaac;
     },
 
     _selectedLayerWfsLayerName: function() {

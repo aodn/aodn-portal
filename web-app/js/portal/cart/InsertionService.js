@@ -45,22 +45,8 @@ Portal.cart.InsertionService = Ext.extend(Object, {
     },
 
     _isDownloadable: function(collection) {
-        return (this._isBodaac(collection) || this._isAodaac(collection) || this._isGogoduck(collection));
-    },
 
-    _isBodaac: function(collection) {
-
-        return collection.wmsLayer.isBodaac();
-    },
-
-    _isAodaac: function(collection) {
-
-        return collection.wmsLayer.isAodaac();
-    },
-
-    _isGogoduck: function(collection) {
-
-        return collection.wmsLayer.gogoduckLayerName || (collection.wmsLayer.isNcwms() && collection.wmsLayer.wfsLayer);
+        return (collection.wmsLayer.wfsLayer || collection.aggregator.length > 0);
     },
 
     _getNcwmsInjector: function(config, collection) {

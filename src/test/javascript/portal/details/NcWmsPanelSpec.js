@@ -176,7 +176,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('builds aodaac parameters if an aodaac layer is passed', function() {
 
-            ncwmsPanel.selectedLayer.isAodaac = function() { return true };
+            ncwmsPanel._isAodaacLayer = function() { return true };
 
             ncwmsPanel._buildParameters(geom);
             expect(ncwmsPanel._buildAodaacParams).toHaveBeenCalledWith(geom);
@@ -184,8 +184,56 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('builds gogoduck parameters if a gogoduck layer is passed', function() {
 
+            ncwmsPanel._isAodaacLayer = function() { return false };
+
             ncwmsPanel._buildParameters(geom);
             expect(ncwmsPanel._buildGogoduckParams).toHaveBeenCalledWith(geom);
+        });
+    });
+
+    describe('_isAodaacLayer', function() {
+        it('returns true if layer is configured only for aodaac in metadata', function() {
+
+            var aodaac;
+
+            geoNetworkRecord.links = [
+                {
+                    protocol: "IMOS:AGGREGATION--aodaac",
+                    name: "AODAAC"
+                }
+            ];
+
+            aodaac = ncwmsPanel._isAodaacLayer(geoNetworkRecord);
+            expect(aodaac).toEqual(true);
+        });
+
+        it('returns false if layer is configured for gogoduck and aodaac in metadata', function() {
+
+            var aodaac;
+
+            geoNetworkRecord.links = [
+                {
+                    protocol: "IMOS:AGGREGATION--aodaac",
+                    name: "AODAAC"
+                },
+                {
+                    protocol: "IMOS:AGGREGATION--gogoduck",
+                    name: "GoGoDuck"
+                }
+            ];
+
+            aodaac = ncwmsPanel._isAodaacLayer(geoNetworkRecord);
+            expect(aodaac).toEqual(false);
+        });
+
+        it('returns false if layer is not configured for aggregators in metadata', function() {
+
+            var aodaac;
+
+            geoNetworkRecord.links = [];
+
+            aodaac = ncwmsPanel._isAodaacLayer(geoNetworkRecord);
+            expect(aodaac).toEqual(false);
         });
     });
 
@@ -306,8 +354,7 @@ describe('Portal.details.NcWmsPanel', function() {
             getSubsetExtentMax: function() { return extent.max() },
             wfsLayer: {
                 name: 'gogoDingo'
-            },
-            isAodaac: function() { return false }
+            }
         };
     }
 });

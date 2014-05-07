@@ -16,45 +16,21 @@ describe('Portal.cart.NcwmsInjector', function() {
         injector = new Portal.cart.NcwmsInjector();
         startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
         endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
-        geoNetworkRecord = {
-            uuid: 9,
-            grailsLayerId: 42,
-            ncwmsParams: {
-                dateRangeStart: startDate,
-                dateRangeEnd: endDate,
-                latitudeRangeStart: -42,
-                latitudeRangeEnd: -20,
-                longitudeRangeStart: 160,
-                longitudeRangeEnd: 170,
-                layerName: "gogoDingo"
-            },
-            wmsLayer: {
-                getDownloadFilter: function() {
-                    return "cql_filter"
-                },
-                getWfsLayerFeatureRequestUrl: noOp,
-                isNcwms: function() {return true},
-                wfsLayer: true,
-                bodaacFilterParams: {},
-                aodaacProducts: [],
-                isAodaac: noOp
-            },
-            pointOfTruthLink: 'Link!',
-            downloadableLinks: 'Downloadable link!'
-        }
+        geoNetworkRecord = getMockGeonetworkRecord();
     });
 
     describe('createMenuItems', function() {
 
-        it('creates all menu items for bodaacable NcWms layers', function() {
-
-            geoNetworkRecord.wmsLayer.isAodaac = function() {return true};
-            geoNetworkRecord.wmsLayer.isBodaac = function() {return true};
-
-            var menuItems = injector._createMenuItems(geoNetworkRecord);
+        it('creates download options for URL list and subsetted NetCDF when bodaac is available', function() {
+            var menuItems;
             var urlListIncluded = false;
             var netCdfDownloadIncluded = false;
             var netCdfSubsetIncluded = false;
+            var mockGogoduckAggr = new Portal.data.GogoduckAggregator();
+            var mockBodaacAggr = new Portal.data.BodaacAggregator();
+
+            geoNetworkRecord.aggregator = [mockGogoduckAggr, mockBodaacAggr];
+            menuItems = injector._createMenuItems(geoNetworkRecord);
 
             for (var i = 0; i < menuItems.length; i++) {
                 if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
@@ -73,15 +49,15 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(netCdfDownloadIncluded).toBe(true);
         });
 
-        it('creates only subsetted NetCDF menu option for non-bodaacable layers', function() {
-
-            geoNetworkRecord.wmsLayer.isAodaac = function() {return true};
-            geoNetworkRecord.wmsLayer.isBodaac = function() {return false};
-
-            var menuItems = injector._createMenuItems(geoNetworkRecord);
+        it('creates only subsetted NetCDF menu option where the bodaac aggregator is not available', function() {
+            var menuItems;
             var urlListIncluded = false;
             var netCdfDownloadIncluded = false;
             var netCdfSubsetIncluded = false;
+            var mockGogoduckAggr = new Portal.data.GogoduckAggregator();
+
+            geoNetworkRecord.aggregator = [mockGogoduckAggr];
+            menuItems = injector._createMenuItems(geoNetworkRecord);
 
             for (var i = 0; i < menuItems.length; i++) {
                 if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
@@ -290,9 +266,7 @@ describe('Portal.cart.NcwmsInjector', function() {
                     getDownloadFilter: function() {
                         return "cql_filter"
                     },
-                    getWfsLayerFeatureRequestUrl: noOp,
-                    bodaacFilterParams: {},
-                    aodaacProducts: []
+                    getWfsLayerFeatureRequestUrl: noOp
                 },
                 ncwmsParams: ncwmsParams };
 
@@ -311,9 +285,18 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(injector._generateAodaacJobUrl).toHaveBeenCalled();
         });
 
-        it('calls _generateGogoduckJobUrl when a gogoduck record is passed with attached wfsLayer', function() {
+        it('calls _generateGogoduckJobUrl when a gogoduck record is passed', function() {
 
             injector._isGogoduckLayer = function() {return true};
+
+            url = injector._generateNcwmsUrl(collection, params);
+            expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
+        });
+
+        it('calls _generateGogoduckJobUrl when a record is passed that is configured for gogoduck and aodaac', function() {
+
+            injector._isGogoduckLayer = function() {return true};
+            injector._isAodaacLayer = function() {return true};
 
             url = injector._generateNcwmsUrl(collection, params);
             expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
@@ -351,10 +334,7 @@ describe('Portal.cart.NcwmsInjector', function() {
                     },
                     getWfsLayerFeatureRequestUrl: noOp,
                     isNcwms: function() {return true},
-                    wfsLayer: true,
-                    bodaacFilterParams: {},
-                    aodaacProducts: [],
-                    isAodaac: noOp
+                    wfsLayer: true
                 },
                 ncwmsParams: ncwmsParams };
 
@@ -469,4 +449,32 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(injector._getMetadataLinks(geoNetworkRecord)).toEqual('Downloadable link!');
         });
     });
+
+    function getMockGeonetworkRecord() {
+        geoNetworkRecord = {
+            uuid: 9,
+            grailsLayerId: 42,
+            ncwmsParams: {
+                dateRangeStart: startDate,
+                dateRangeEnd: endDate,
+                latitudeRangeStart: -42,
+                latitudeRangeEnd: -20,
+                longitudeRangeStart: 160,
+                longitudeRangeEnd: 170,
+                layerName: "gogoDingo"
+            },
+            wmsLayer: {
+                getDownloadFilter: function() {
+                    return "cql_filter"
+                },
+                getWfsLayerFeatureRequestUrl: noOp,
+                isNcwms: function() {return true},
+                wfsLayer: true
+            },
+            pointOfTruthLink: 'Link!',
+            downloadableLinks: 'Downloadable link!'
+        }
+
+        return geoNetworkRecord;
+    }
 });
