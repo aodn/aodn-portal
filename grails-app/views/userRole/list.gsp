@@ -31,21 +31,21 @@
                 <table>
                     <thead>
                         <tr>
-                        
+
                             <g:sortableColumn property="id" title="${message(code: 'userRole.id.label', default: 'Id')}" />
-                        
+
                             <g:sortableColumn property="name" title="${message(code: 'userRole.name.label', default: 'Name')}" />
-                        
+
                         </tr>
                     </thead>
                     <tbody>
                     <g:each in="${userRoleInstanceList}" status="i" var="userRoleInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
+
                             <td><g:link action="show" id="${userRoleInstance.id}">${fieldValue(bean: userRoleInstance, field: "id")}</g:link></td>
-                        
+
                             <td>${fieldValue(bean: userRoleInstance, field: "name")}</td>
-                        
+
                         </tr>
                     </g:each>
                     </tbody>

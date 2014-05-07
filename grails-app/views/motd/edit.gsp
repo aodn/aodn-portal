@@ -41,7 +41,7 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="motdTitle"><g:message code="motd.motdTitle.label" default="Motd Title" /></label>
@@ -50,7 +50,7 @@
                                     <g:textField name="motdTitle" value="${motdInstance?.motdTitle}" />
                                 </td>
                             </tr>
-                            
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="motd"><g:message code="motd.motd.label" default="Motd" /></label>
@@ -59,7 +59,7 @@
                                     <g:textArea  rows="5" cols="40" name="motd" value="${motdInstance?.motd}" />
                                 </td>
                             </tr>
-                        
+
                         </tbody>
                     </table>
                 </div>

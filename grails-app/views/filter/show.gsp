@@ -31,12 +31,12 @@
             <div class="dialog">
                 <table>
                     <tbody>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="filter.id.label" default="Id" /></td>
-                            
+
                             <td valign="top" class="value">${fieldValue(bean: filterInstance, field: "id")}</td>
-                            
+
                         </tr>
 
                         <tr class="prop">
@@ -45,30 +45,30 @@
                             <td valign="top" class="value">${fieldValue(bean: filterInstance, field: "label")}</td>
 
                         </tr>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="filter.name.label" default="Name" /></td>
-                            
+
                             <td valign="top" class="value">${fieldValue(bean: filterInstance, field: "name")}</td>
-                            
+
                         </tr>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="filter.type.label" default="Type" /></td>
-                            
+
                             <td valign="top" class="value">${fieldValue(bean: filterInstance, field: "type")}</td>
-                            
+
                         </tr>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="filter.values.label" default="Values" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: filterInstance, field: "values")}</td>
-                            
-                        </tr>
-                    
 
-                    
+                            <td valign="top" class="value">${fieldValue(bean: filterInstance, field: "values")}</td>
+
+                        </tr>
+
+
+
                     </tbody>
                 </table>
             </div>

@@ -92,7 +92,7 @@ class FiltersUnitTestCase extends MvcUnitTestCase {
 
     /**
      * Find the named filter.
-	 * @param name  the filter name
+     * @param name  the filter name
      * @return the filter
      */
     protected FilterConfig getFilter(String name) {
@@ -124,8 +124,8 @@ class FiltersUnitTestCase extends MvcUnitTestCase {
 
     /**
      * Assertion for the scope of a filter (e.g. "[controller: '*', action: '*']").
-	 * @param expectedScope  the expected scope
-	 * @param name  the filter name
+     * @param expectedScope  the expected scope
+     * @param name  the filter name
      */
     protected void assertScope(expectedScope, String name) {
         assertEquals expectedScope, getFilter(name).scope
@@ -133,7 +133,7 @@ class FiltersUnitTestCase extends MvcUnitTestCase {
 
     /**
      * Assertion that there is a 'before' closure for the named filter.
-	 * @param name  the filter name
+     * @param name  the filter name
      */
     protected void assertExistsBefore(String name) {
         assertNotNull getFilter(name).before
@@ -141,7 +141,7 @@ class FiltersUnitTestCase extends MvcUnitTestCase {
 
     /**
      * Assertion that there is no 'before' closure for the named filter.
-	 * @param name  the filter name
+     * @param name  the filter name
      */
     protected void assertNotExistsBefore(String name) {
         assertNull getFilter(name).before
@@ -149,7 +149,7 @@ class FiltersUnitTestCase extends MvcUnitTestCase {
 
     /**
      * Assertion that there is an 'after' closure for the named filter.
-	 * @param name  the filter name
+     * @param name  the filter name
      */
     protected void assertExistsAfter(String name) {
         assertNotNull getFilter(name).after
@@ -157,7 +157,7 @@ class FiltersUnitTestCase extends MvcUnitTestCase {
 
     /**
      * Assertion that there is no 'after' closure for the named filter.
-	 * @param name  the filter name
+     * @param name  the filter name
      */
     protected void assertNotExistsAfter(String name) {
         assertNull getFilter(name).after
@@ -165,7 +165,7 @@ class FiltersUnitTestCase extends MvcUnitTestCase {
 
     /**
      * Assertion that there is an 'afterView' closure for the named filter.
-	 * @param name  the filter name
+     * @param name  the filter name
      */
     protected void assertExistsAfterView(String name) {
         assertNotNull getFilter(name).afterView
@@ -173,7 +173,7 @@ class FiltersUnitTestCase extends MvcUnitTestCase {
 
     /**
      * Assertion that there is no 'afterView' closure for the named filter.
-	 * @param name  the filter name
+     * @param name  the filter name
      */
     protected void assertNotExistsAfterView(String name) {
         assertNull getFilter(name).afterView
@@ -181,7 +181,7 @@ class FiltersUnitTestCase extends MvcUnitTestCase {
 
     /**
      * Assertion for the number of filters.
-	 * @param expected  the expected number
+     * @param expected  the expected number
      */
     protected void assertFilterCount(int expected) {
         assertEquals expected, configs.size()
@@ -189,7 +189,7 @@ class FiltersUnitTestCase extends MvcUnitTestCase {
 
     /**
      * Set the 'controllerName' property.
-	 * @param name  the controller name
+     * @param name  the controller name
      */
     protected void setControllerName(String name) {
         FilterConfig.metaClass.getControllerName = { -> name }
@@ -197,7 +197,7 @@ class FiltersUnitTestCase extends MvcUnitTestCase {
 
     /**
      * Set the 'actionName' property.
-	 * @param name  the action name
+     * @param name  the action name
      */
     protected void setActionName(String name) {
         FilterConfig.metaClass.getActionName = { -> name }

@@ -40,7 +40,7 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="emailAddress"><g:message code="user.emailAddress.label" default="Email Address" /></label>
@@ -73,10 +73,10 @@
                                   <label><g:message code="user.permissions.label" default="Permissions" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'permissions', 'errors')}">
-                                    
+
                                 </td>
                             </tr>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="roles"><g:message code="user.roles.label" default="Roles" /></label>
@@ -85,7 +85,7 @@
                                     <g:select name="roles" from="${au.org.emii.portal.UserRole.list()}" multiple="yes" optionKey="id" size="5" value="${userInstance?.roles*.id}" />
                                 </td>
                             </tr>
-                        
+
                         </tbody>
                     </table>
                 </div>

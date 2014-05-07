@@ -31,31 +31,31 @@
             <div class="dialog">
                 <table>
                     <tbody>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="userRole.id.label" default="Id" /></td>
-                            
+
                             <td valign="top" class="value">${fieldValue(bean: userRoleInstance, field: "id")}</td>
-                            
+
                         </tr>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="userRole.name.label" default="Name" /></td>
-                            
+
                             <td valign="top" class="value">${fieldValue(bean: userRoleInstance, field: "name")}</td>
-                            
+
                         </tr>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="userRole.permissions.label" default="Permissions" /></td>
-                            
+
                             <td valign="top" class="value">${fieldValue(bean: userRoleInstance, field: "permissions")}</td>
-                            
+
                         </tr>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="userRole.users.label" default="Users" /></td>
-                            
+
                             <td valign="top" style="text-align: left;" class="value">
                                 <ul>
                                 <g:each in="${userRoleInstance.users}" var="u">
@@ -63,9 +63,9 @@
                                 </g:each>
                                 </ul>
                             </td>
-                            
+
                         </tr>
-                    
+
                     </tbody>
                 </table>
             </div>

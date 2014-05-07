@@ -37,7 +37,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
                     'display', 'value'
                 ],
                 data: [
-                    ['none', '0'],   
+                    ['none', '0'],
                     ['greater than', '>'],
                     ['greater than or equal to', '>='],
                     ['equal to', '='],

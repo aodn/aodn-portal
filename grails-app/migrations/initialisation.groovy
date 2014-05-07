@@ -207,11 +207,11 @@ databaseChangeLog = {
             column(name: "styles", type: "TEXT")
 
             column(name: "bbox_maxx", type: "varchar(255)")
-            
+
             column(name: "bbox_maxy", type: "varchar(255)")
-            
+
             column(name: "bbox_minx", type: "varchar(255)")
-            
+
             column(name: "bbox_miny", type: "varchar(255)")
         }
     }
@@ -337,7 +337,7 @@ databaseChangeLog = {
             }
 
             column(name: "organisation", type: "VARCHAR(255)")
-            
+
             column(name: "password_salt", type: "char(44)") {
                 constraints(nullable: "false")
             }
@@ -686,7 +686,7 @@ OGC:WMS-1.3.0-http-get-map""")
             column(name: "description", value: "Other")
         }
     }
-    
+
     changeSet(author: "tfotak (generated)", id: "1331787865301-20", failOnError: true) {
         insert(tableName: "user_role") {
             column(name: "id", valueComputed: "nextval('hibernate_sequence')")
@@ -822,7 +822,7 @@ OGC:WMS-1.3.0-http-get-map""")
     changeSet(author: "tfotak (generated)", id: "1331787865301-43", failOnError: true) {
         addForeignKeyConstraint(baseColumnNames: "user_role_id", baseTableName: "user_role_permissions", baseTableSchemaName: "public", constraintName: "fk56adf82fe5cb2671", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "user_role", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
     }
-    
+
     changeSet(author: "tfotak (generated)", id: "1331787865301-44", failOnError: true) {
         insert(tableName: "layer") {
             column(name: "id", valueComputed: "nextval('hibernate_sequence')")
@@ -920,7 +920,7 @@ OGC:WMS-1.3.0-http-get-map""")
             column(name: "data_source", value: "Unknown")
         }
     }
-    
+
     changeSet(author: "tfotak (generated)", id: "1331787865301-45", failOnError: true) {
         insert(tableName: "menu") {
             column(name: "id", valueComputed: "nextval('hibernate_sequence')")
@@ -934,13 +934,13 @@ OGC:WMS-1.3.0-http-get-map""")
             column(name: "edit_date", valueComputed: "now()")
         }
     }
-    
+
     changeSet(author: "tfotak (generated)", id: "1331787865301-46", failOnError: true) {
         insert(tableName: "menu_item") {
             column(name: "id", valueComputed: "nextval('hibernate_sequence')")
 
             column(name: "version", valueNumeric: "0")
-            
+
             column(name: "text", value: "Default Baselayer")
 
             column(name: "menu_id", valueComputed: "(select id from menu where title = 'Default Base Layers')")
@@ -948,15 +948,15 @@ OGC:WMS-1.3.0-http-get-map""")
             column(name: "layer_id", valueComputed: "(select id from layer where name = 'HiRes_aus-group')")
 
             column(name: "leaf", valueBoolean: "true")
-            
+
             column(name: "menu_position", valueNumeric: "1")
         }
-        
+
         insert(tableName: "menu_item") {
             column(name: "id", valueComputed: "nextval('hibernate_sequence')")
 
             column(name: "version", valueNumeric: "0")
-            
+
             column(name: "text", value: "Simple Baselayer")
 
             column(name: "menu_id", valueComputed: "(select id from menu where title = 'Default Base Layers')")
@@ -964,15 +964,15 @@ OGC:WMS-1.3.0-http-get-map""")
             column(name: "layer_id", valueComputed: "(select id from layer where name = 'default_basemap_simple')")
 
             column(name: "leaf", valueBoolean: "true")
-            
+
             column(name: "menu_position", valueNumeric: "2")
         }
-        
+
         insert(tableName: "menu_item") {
             column(name: "id", valueComputed: "nextval('hibernate_sequence')")
 
             column(name: "version", valueNumeric: "0")
-            
+
             column(name: "text", value: "Marine GEO")
 
             column(name: "menu_id", valueComputed: "(select id from menu where title = 'Default Base Layers')")
@@ -980,15 +980,15 @@ OGC:WMS-1.3.0-http-get-map""")
             column(name: "layer_id", valueComputed: "(select id from layer where name = 'marine_geo')")
 
             column(name: "leaf", valueBoolean: "true")
-            
+
             column(name: "menu_position", valueNumeric: "3")
         }
-        
+
         insert(tableName: "menu_item") {
             column(name: "id", valueComputed: "nextval('hibernate_sequence')")
 
             column(name: "version", valueNumeric: "0")
-            
+
             column(name: "text", value: "Satellite")
 
             column(name: "menu_id", valueComputed: "(select id from menu where title = 'Default Base Layers')")
@@ -996,11 +996,11 @@ OGC:WMS-1.3.0-http-get-map""")
             column(name: "layer_id", valueComputed: "(select id from layer where name = 'satellite')")
 
             column(name: "leaf", valueBoolean: "true")
-            
+
             column(name: "menu_position", valueNumeric: "4")
         }
     }
-    
+
     changeSet(author: "tfotak (generated)", id: "1331787865301-47", failOnError: true) {
         update(tableName: "config") {
             column(name: "baselayer_menu_id", valueComputed: "(select id from menu where title = 'Default Base Layers')")

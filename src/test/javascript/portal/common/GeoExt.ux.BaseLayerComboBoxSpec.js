@@ -13,9 +13,9 @@ describe("GeoExt.ux.BaseLayerComboBox", function() {
 
         map.addLayer(new OpenLayers.Layer.Vector('baseLayer', {isBaseLayer: true}));
         map.addLayer(new OpenLayers.Layer.Vector('overlay', {}));
-        
+
         var baseLayerCombo = new GeoExt.ux.BaseLayerComboBox({map: map});
-        
+
         expect(baseLayerCombo.getStore().getCount()).toEqual(1);
         expect(baseLayerCombo.getStore().getAt(0).get('title')).toEqual('baseLayer');
     });

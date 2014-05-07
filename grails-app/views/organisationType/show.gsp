@@ -31,21 +31,21 @@
             <div class="dialog">
                 <table>
                     <tbody>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="organisationType.id.label" default="Id" /></td>
-                            
+
                             <td valign="top" class="value">${fieldValue(bean: organisationTypeInstance, field: "id")}</td>
-                            
+
                         </tr>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="organisationType.description.label" default="Description" /></td>
-                            
+
                             <td valign="top" class="value">${fieldValue(bean: organisationTypeInstance, field: "description")}</td>
-                            
+
                         </tr>
-                    
+
                     </tbody>
                 </table>
             </div>

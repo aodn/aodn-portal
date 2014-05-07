@@ -8,17 +8,17 @@
 
 function getParameterByNameFromUrlString(urlString, name) {
 
-	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-	var regexS = "[\\?&]" + name + "=([^&#]*)";
-	var regex = new RegExp(regexS);
-	var results = regex.exec(urlString);
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(urlString);
 
-	if(results == null) {
-		return null;
-	}
-	else {
-		return decodeURIComponent(results[1].replace(/\+/g, " "));
-	}
+    if(results == null) {
+        return null;
+    }
+    else {
+        return decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
 }
 
 var stylePanel;

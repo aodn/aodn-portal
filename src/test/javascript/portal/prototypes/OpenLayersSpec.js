@@ -273,7 +273,7 @@ describe('OpenLayers', function() {
             });
         });
     });
-    
+
     describe('setSpatialConstraintStyle', function() {
         var map;
         beforeEach(function() {
@@ -321,7 +321,7 @@ describe('OpenLayers', function() {
             expect(map.controls).toContain(map.spatialConstraintControl);
             expect(map.navigationControl.deactivate).toHaveBeenCalled();
         });
-        
+
         it('has spatial constraint control', function() {
             map.setSpatialConstraintStyle('bounding box');
             expect(map.spatialConstraintControl).toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);

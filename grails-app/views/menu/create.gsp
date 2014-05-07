@@ -10,10 +10,10 @@
 <%@ page import="au.org.emii.portal.Menu" %>
 <html>
   <head>
-    <meta name="layout" content="main" />      
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
-    
-    <script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}"  type="text/javascript"></script>          
+    <meta name="layout" content="main" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script src="${resource(dir:'js',file:'ext-3.3.1/adapter/ext/ext-base.js')}"  type="text/javascript"></script>
     <script src="${resource(dir:'js',file:'ext-3.3.1/ext-all-debug.js')}"   type="text/javascript"></script>
     <script src="${resource(dir:'js',file:'portal/data/LayerDataPanelStore.js')}"  type="text/javascript"></script>
     <script src="${resource(dir:'js',file:'portal/ui/LayerGridPanel.js')}"  type="text/javascript"></script>
@@ -40,14 +40,14 @@
     <div id="logo"></div>
     <span class="menuButton"><a class="siteconfig_button" href="${createLink(uri: '/admin')}"><g:message code="default.siteconfig.label"/></a></span>
     <span class="menuButton"><a class="portal_button" href="${createLink(uri: '/')}"><g:message code="default.portal.label"/></a></span>
-    <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>            
+    <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
     <g:form action="save" AUTOCOMPLETE="off">
         <input id="jsonString" name="json" autocomplete="off" type="hidden" />
         <span class="menuButton"><g:submitButton id="submitMenu" name="submitMenu" class="save" value="Submit new menu" style="visibility: hidden" /></span>
     </g:form>
   </div>
 
-<div class="content"> 
+<div class="content">
   <g:hasErrors bean="${menuInstance}">
     <div class="errors">
       <g:renderErrors bean="${menuInstance}" as="list" />

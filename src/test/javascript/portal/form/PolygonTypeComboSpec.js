@@ -18,7 +18,7 @@ describe('Portal.form.PolygonTypeCombo', function() {
                 on: jasmine.createSpy()
             }
         }
-        
+
         polygonTypeCombo = new Portal.form.PolygonTypeComboBox({
             map: mockMap
         });

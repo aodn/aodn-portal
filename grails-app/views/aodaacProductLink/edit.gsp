@@ -40,7 +40,7 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="layerName"><g:message code="aodaacProductLink.layerName.label" default="Layer Name" /></label>
@@ -49,7 +49,7 @@
                                     <g:textField name="layerName" value="${aodaacProductLinkInstance?.layerName}" />
                                 </td>
                             </tr>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="productId"><g:message code="aodaacProductLink.productId.label" default="Product Id" /></label>
@@ -58,7 +58,7 @@
                                     <g:textField name="productId" value="${fieldValue(bean: aodaacProductLinkInstance, field: 'productId')}" />
                                 </td>
                             </tr>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="server"><g:message code="aodaacProductLink.server.label" default="Server" /></label>
@@ -67,7 +67,7 @@
                                     <g:select name="server.id" from="${au.org.emii.portal.Server.list()}" optionKey="id" value="${aodaacProductLinkInstance?.server?.id}"  />
                                 </td>
                             </tr>
-                        
+
                         </tbody>
                     </table>
                 </div>

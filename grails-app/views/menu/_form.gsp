@@ -14,7 +14,7 @@
 <div class="fieldcontain ${hasErrors(bean: menuInstance, field: 'title', 'error')} ">
     <label for="title">
         <g:message code="menu.title.label" default="Title" />
-        
+
     </label>
     <g:textField name="title" value="${menuInstance?.title}"/>
 </div>
@@ -22,7 +22,7 @@
 <div class="fieldcontain ${hasErrors(bean: menuInstance, field: 'active', 'error')} ">
     <label for="active">
         <g:message code="menu.active.label" default="Active" />
-        
+
     </label>
     <g:checkBox name="active" value="${menuInstance?.active}" />
 </div>
@@ -38,7 +38,7 @@
 <div class="fieldcontain ${hasErrors(bean: menuInstance, field: 'json', 'error')} ">
     <label for="json">
         <g:message code="menu.json.label" default="Json" />
-        
+
     </label>
     <g:textField name="json" value="${menuInstance?.json}"/>
 </div>

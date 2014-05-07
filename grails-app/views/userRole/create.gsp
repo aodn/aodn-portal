@@ -37,7 +37,7 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="name"><g:message code="userRole.name.label" default="Name" /></label>
@@ -46,7 +46,7 @@
                                     <g:textField name="name" value="${userRoleInstance?.name}" />
                                 </td>
                             </tr>
-                        
+
                         </tbody>
                     </table>
                 </div>

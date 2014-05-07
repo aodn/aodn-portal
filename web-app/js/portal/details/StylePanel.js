@@ -26,7 +26,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             imgCls: 'legendImage',
             flex: 1
         });
-        
+
         //create an opacity slider
         //usability bug #624 where the opacity slider thumb sits at the minimum slider value instead of the maximum one
         this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
@@ -45,7 +45,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
                 template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
             })
         });
-        
+
         //create a container for the opacity slider, and add the opacity slider object to the container
         this.opacitySliderContainer = new Ext.Panel({
             layout: 'form',
@@ -81,7 +81,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         ];
 
         Portal.details.StylePanel.superclass.initComponent.call(this);
-        
+
         this.on('show', this._showHandler);
     },
 
@@ -137,7 +137,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         this.selectedLayer = layer;
 
         show.call(target, this);
-        
+
         this.opacitySliderContainer.hide();
         this.opacitySliderContainer.doLayout();
         this.opacitySliderContainer.show();
@@ -293,7 +293,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         return undefined;
     },
-    
+
     _showHandler: function() {
         // need to synch the slider with its value when we know its
         // width given that the render is being forced prior to display

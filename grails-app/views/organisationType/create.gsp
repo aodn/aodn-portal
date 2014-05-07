@@ -37,7 +37,7 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="description"><g:message code="organisationType.description.label" default="Description" /></label>
@@ -46,7 +46,7 @@
                                     <g:textField name="description" value="${organisationTypeInstance?.description}" />
                                 </td>
                             </tr>
-                        
+
                         </tbody>
                     </table>
                 </div>

@@ -40,7 +40,7 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="name"><g:message code="userRole.name.label" default="Name" /></label>
@@ -49,25 +49,25 @@
                                     <g:textField name="name" value="${userRoleInstance?.name}" />
                                 </td>
                             </tr>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="permissions"><g:message code="userRole.permissions.label" default="Permissions" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userRoleInstance, field: 'permissions', 'errors')}">
-                                    
+
                                 </td>
                             </tr>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="users"><g:message code="userRole.users.label" default="Users" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userRoleInstance, field: 'users', 'errors')}">
-                                    
+
                                 </td>
                             </tr>
-                        
+
                         </tbody>
                     </table>
                 </div>

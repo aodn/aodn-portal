@@ -31,17 +31,17 @@
             <div class="dialog">
                 <table>
                     <tbody>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="user.id.label" default="Id" /></td>
-                            
+
                             <td valign="top" class="value">${fieldValue(bean: userInstance, field: "id")}</td>
-                            
+
                         </tr>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="user.emailAddress.label" default="Email Address" /></td>
-                            
+
                             <td valign="top" class="value">${fieldValue(bean: userInstance, field: "emailAddress")}</td>
                         </tr>
 
@@ -50,24 +50,24 @@
 
                             <td valign="top" class="value">${fieldValue(bean: userInstance, field: "openIdUrl")}</td>
                         </tr>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="user.fullName.label" default="Name" /></td>
-                            
+
                             <td valign="top" class="value">${fieldValue(bean: userInstance, field: "fullName")}</td>
-                            
+
                         </tr>
 
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="user.permissions.label" default="Permissions" /></td>
-                            
+
                             <td valign="top" class="value">${fieldValue(bean: userInstance, field: "permissions")}</td>
-                            
+
                         </tr>
-                    
+
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="user.roles.label" default="Roles" /></td>
-                            
+
                             <td valign="top" style="text-align: left;" class="value">
                                 <ul>
                                 <g:each in="${userInstance.roles}" var="r">
@@ -75,9 +75,9 @@
                                 </g:each>
                                 </ul>
                             </td>
-                            
+
                         </tr>
-                    
+
                     </tbody>
                 </table>
             </div>
