@@ -71,7 +71,7 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
         layerArray['id'] = layer.id;
         layerArray['layerName'] = layer.name;
         layerArray['layer'] = layer;
-        this.layerComboBox.store.add(new Ext.data.Record(layerArray));
+        this.layerComboBox.store.insert(0, new Ext.data.Record(layerArray));
     },
 
     removeFromlayerComboBox: function(layer) {
