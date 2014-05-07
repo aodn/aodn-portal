@@ -23,6 +23,7 @@ class Server {
     Integer opacity // layer opacity
     String imageFormat
     String infoFormat
+    Boolean supportsCsvMetadataHeaderOutputFormat
     String comments
     String username
     String password
@@ -73,6 +74,7 @@ class Server {
         opacity()
         imageFormat(inList: ['image/png', 'image/gif'])
         infoFormat(inList: ['text/html', 'text/plain', 'image/png'])
+        supportsCsvMetadataHeaderOutputFormat(nullable: true)
         comments(nullable: true)
         username(nullable: true)
         password(nullable: true)

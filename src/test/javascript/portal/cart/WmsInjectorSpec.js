@@ -24,7 +24,8 @@ describe('Portal.cart.WmsInjector', function() {
                 },
                 isNcwms: function() {return false},
                 getWmsLayerFeatureRequestUrl: function() {},
-                wfsLayer: true
+                wfsLayer: true,
+                server: {}
             },
             pointOfTruthLink: 'Link!',
             downloadableLinks: 'Downloadable link!'
@@ -73,7 +74,8 @@ describe('Portal.cart.WmsInjector', function() {
                     wfsLayer: {},
                     isNcwms: function() {
                         return false;
-                    }
+                    },
+                    server: {}
                 }
             });
 
@@ -89,7 +91,8 @@ describe('Portal.cart.WmsInjector', function() {
                     wfsLayer: null,
                     isNcwms: function() {
                         return false;
-                    }
+                    },
+                    server: {}
                 }
             });
 
@@ -118,7 +121,8 @@ describe('Portal.cart.WmsInjector', function() {
                     wfsLayer: {},
                     isNcwms: function() {
                         return false;
-                    }
+                    },
+                    server: {}
                 }
             });
 
@@ -155,20 +159,27 @@ describe('Portal.cart.WmsInjector', function() {
             spyOn(injector, '_getUrlListDownloadParams').andReturn(downloadParams);
             spyOn(injector, '_getNetCdfDownloadParams').andReturn(downloadParams);
             spyOn(injector, '_wfsDownloadUrl');
+            spyOn(injector, '_getCsvFormat');
 
             collection = {
                 wmsLayer: {
                     grailsLayerId: 1,
-                    isNcwms: function() { return true }
+                    isNcwms: function() { return true },
+                    server: {}
                 }
             };
         });
 
-        it('_wfsDownloadHandler calls downloadWithConfirmation', function() {
-            injector._wfsDownloadHandler({
-                wmsLayer: {}
+        describe('_wfsDownloadHandler', function() {
+            it('calls downloadWithConfirmation', function() {
+                injector._wfsDownloadHandler(collection);
+                expect(injector.downloadWithConfirmation).toHaveBeenCalled();
             });
-            expect(injector.downloadWithConfirmation).toHaveBeenCalled();
+
+            it('calls _getCsvFormat', function() {
+                injector._wfsDownloadHandler(collection);
+                expect(injector._getCsvFormat).toHaveBeenCalledWith(collection);
+            });
         });
 
         it('_urlListDownloadHandler calls downloadWithConfirmation', function() {
@@ -229,6 +240,18 @@ describe('Portal.cart.WmsInjector', function() {
 
         it('returns metadata links as appropriate', function() {
             expect(injector._getMetadataLinks(geoNetworkRecord)).toEqual('Downloadable link!');
+        });
+    });
+
+    describe('_getCsvFormat', function() {
+        it("returns 'csv-with-metadata-header' if server does support CSV metadata header", function() {
+            geoNetworkRecord.wmsLayer.server.supportsCsvMetadataHeaderOutputFormat = true;
+            expect(injector._getCsvFormat(geoNetworkRecord)).toBe('csv-with-metadata-header');
+        });
+
+        it("returns 'csv' if server does not support CSV metadata header", function() {
+            geoNetworkRecord.wmsLayer.server.supportsCsvMetadataHeaderOutputFormat = false;
+            expect(injector._getCsvFormat(geoNetworkRecord)).toBe('csv');
         });
     });
 });
