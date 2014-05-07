@@ -12,17 +12,13 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     constructor : function(cfg) {
         
         var config = Ext.apply({
-            title : OpenLayers.i18n('stepHeader', {
-                stepNumber : 2,
-                stepDescription : OpenLayers
-                        .i18n('step2Description')
-            }),
-            headerCfg : {
+            title: OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description')}),
+            headerCfg: {
                 cls : 'steps'
             },
-            layout : 'vbox',
-            layoutConfig : {
-                align : 'stretch'
+            layout: 'vbox',
+            layoutConfig: {
+                align: 'stretch'
             }
         }, cfg);
 
@@ -39,7 +35,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         
         this.detailsPanelTabs = new Portal.details.DetailsPanelTab(
                 {
-                    map : this.map
+                    map: this.map
                 });
 
         this.dataCollectionSelectorPanel = new Portal.details.DataCollectionSelectorPanel();
@@ -54,7 +50,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     },
 
     // must be called when the panel is fully expanded for the slider
-    updateDetailsPanel : function(layer, forceOpen) {
+    updateDetailsPanel: function(layer, forceOpen) {
         if (layer) {
 
             if (layer.isOverlay()) {
@@ -67,14 +63,14 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    hideDetailsPanelContents : function() {
+    hideDetailsPanelContents: function() {
         // clear the details Panel. ie. Don't show any layer options
 
         //DO NOT HIDE THE opacitySlider directly, or you WILL break things.-Alex
         this.detailsPanelTabs.setVisible(false);
     },
 
-    showDetailsPanelContents : function() {
+    showDetailsPanelContents: function() {
         this.doLayout();
     }
 });
