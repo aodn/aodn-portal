@@ -19,17 +19,41 @@ Portal.data.AggregatorFactory = Ext.extend(Object, {
         var aggregator;
 
         if (name == this.AODAAC_PROTOCOL_NAME) {
-            aggregator = new Portal.data.AodaacAggregator();
+            aggregator = this._getAodaacAggregator();
         }
 
         if (name == this.BODAAC_PROTOCOL_NAME) {
-            aggregator = new Portal.data.BodaacAggregator();
+            aggregator = this._getBodaacAggregator();
         }
 
         if (name == this.GOGODUCK_PROTOCOL_NAME) {
-            aggregator = new Portal.data.GogoduckAggregator();
+            aggregator = this._getGogoduckAggregator();
         }
 
         return aggregator;
+    },
+
+    _getAodaacAggregator: function() {
+        if (!this.aodaacAggregator) {
+            this.aodaacAggregator = new Portal.data.AodaacAggregator();
+        }
+
+        return this.aodaacAggregator;
+    },
+
+    _getBodaacAggregator: function() {
+        if (!this.bodaacAggregator) {
+            this.bodaacAggregator = new Portal.data.BodaacAggregator();
+        }
+
+        return this.bodaacAggregator;
+    },
+
+    _getGogoduckAggregator: function() {
+        if (!this.gogoduckAggregator) {
+            this.gogoduckAggregator = new Portal.data.GogoduckAggregator();
+        }
+
+        return this.gogoduckAggregator;
     }
 });
