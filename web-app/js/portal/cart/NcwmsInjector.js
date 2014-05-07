@@ -17,6 +17,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     },
 
     _getDataFilterEntry: function(collection) {
+
         var params = collection.ncwmsParams;
         var areaString = "";
         var dateString = "";
@@ -108,11 +109,11 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         var url = '';
 
         if (this._isGogoduckLayer(collection)) {
-            url = this._generateGogoduckJobUrl(collection, params.format, params.emailAddress);
+            url = this._generateGogoduckJobUrl(collection, params.emailAddress);
         }
         else {
             if (this._isAodaacLayer(collection)) {
-                url = this._generateAodaacJobUrl(collection, params.emailAddress);
+                url = this._generateAodaacJobUrl(collection, params.format, params.emailAddress);
             }
         }
 
