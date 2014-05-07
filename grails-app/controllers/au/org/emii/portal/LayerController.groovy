@@ -447,7 +447,7 @@ class LayerController {
                                 linkText = "<i>Unnamed Resource</i>"
                             }
 
-                            if (linkProtocol != "IMOS:AGGREGATION--gogoduck" && linkProtocol != "IMOS:AGGREGATION--aodaac" && linkProtocol != "IMOS:AGGREGATION--bodaac") {
+                            if (!linkProtocol.startsWith("IMOS:AGGREGATION")) {
                                 html += """<li><a ${linkExternal} href="${linkUrl}" target="_blank">${linkText}</a></li>\n"""
                             }
                         }
