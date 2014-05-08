@@ -64,7 +64,7 @@ class MenuItem implements Comparable<MenuItem> {
             return false
         }
 
-        MenuItem rhs = (MenuItem)o
+        MenuItem rhs = (MenuItem) o
         return new EqualsBuilder()
             .append(id, rhs.id)
             .isEquals()

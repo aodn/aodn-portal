@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2013 IMOS
  *
@@ -35,7 +34,7 @@ class WfsScannerService extends ScannerService {
             return "No job specified"
         }
 
-        def address = "${scanJobUrl() }delete?id=${scanJobId}"
+        def address = "${scanJobUrl()}delete?id=${scanJobId}"
 
         callService(address)
 
@@ -69,7 +68,9 @@ class WfsScannerService extends ScannerService {
         }
         else {
 
-            throw new IllegalStateException("WFS Scanner currently only supports Geoserver. Please change the server type and try again.")
+            throw new IllegalStateException(
+                "WFS Scanner currently only supports Geoserver. Please change the server type and try again."
+            )
         }
 
         return "Registered new scan job for server."

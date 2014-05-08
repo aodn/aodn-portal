@@ -49,7 +49,7 @@ class ProxyController extends RequestProxyingController {
                 def resp = params.url.toURL()
                 def xml = new XmlSlurper().parseText(resp.text)
                 // get all valid namespaces eg  xmlns:a="http://a.example.com" xmlns:b="http://b.example.com"
-                def namespaceList = xml.'**'.collect{ it.namespaceURI() }.unique()
+                def namespaceList = xml.'**'.collect { it.namespaceURI() }.unique()
 
                 def isWMS = false
                 def validNSpaceURL = ['http://www.opengis.net/wms', 'http://www.opengis.net/ogc']

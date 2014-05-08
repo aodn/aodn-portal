@@ -10,9 +10,9 @@ dataSource {
 
     //configure DBCP to test connections before using them and evict old connections (as per http://sacharya.com/grails-dbcp-stale-connections/)
     properties {
-        minEvictableIdleTimeMillis=1800000
-        timeBetweenEvictionRunsMillis=1800000
-        numTestsPerEvictionRun=3
+        minEvictableIdleTimeMillis = 1800000
+        timeBetweenEvictionRunsMillis = 1800000
+        numTestsPerEvictionRun = 3
     }
 }
 hibernate {

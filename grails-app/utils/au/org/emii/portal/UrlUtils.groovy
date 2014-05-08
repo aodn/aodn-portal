@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2013 IMOS
  *
@@ -24,10 +23,10 @@ final class UrlUtils {
 
     static String urlWithQueryString(url, Map queryStringValues) {
 
-        def queryString = queryStringValues.collect{
+        def queryString = queryStringValues.collect {
             k, v ->
 
-            k + "=" + URLEncoder.encode(v.toString(), "UTF-8")
+                k + "=" + URLEncoder.encode(v.toString(), "UTF-8")
         }.join("&")
 
         return urlWithQueryString(url, queryString)

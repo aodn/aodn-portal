@@ -92,7 +92,10 @@ class SecurityFilters {
             }
         }
 
-        layerAccess(controller: "layer", action: "listBaseLayersAsJson|showLayerByItsId|findLayerAsJson|getFormattedMetadata|saveOrUpdate|server|configuredBaselayers|getFiltersAsJSON") {
+        layerAccess(
+            controller: "layer",
+            action: "listBaseLayersAsJson|showLayerByItsId|findLayerAsJson|getFormattedMetadata|saveOrUpdate|server|configuredBaselayers|getFiltersAsJSON"
+        ) {
             before = {
                 request.accessAllowed = true
             }
@@ -110,7 +113,9 @@ class SecurityFilters {
             }
         }
 
-        downloadAccess(controller: "download", action: "index|urlListForLayer|downloadNetCdfFilesForLayer|estimateSizeForLayer") {
+        downloadAccess(
+            controller: "download", action: "index|urlListForLayer|downloadNetCdfFilesForLayer|estimateSizeForLayer"
+        ) {
             before = {
                 request.accessAllowed = true
             }
@@ -128,7 +133,8 @@ class SecurityFilters {
             }
         }
 
-        authAccess(controller: "auth", action: "*") { // The plugin makes all actions on this controller public anyway, this is just for completeness
+        authAccess(controller: "auth", action: "*") {
+            // The plugin makes all actions on this controller public anyway, this is just for completeness
             before = {
                 request.accessAllowed = true
             }
@@ -202,13 +208,18 @@ class SecurityFilters {
         all(uri: "/**") {
             before = {
                 // Check if request has been allowed by another filter
-                if (request.accessAllowed) return true
+                if (request.accessAllowed) {
+                    return true
+                }
 
                 // Ignore direct views (e.g. the default main index page).
-                if (!controllerName) return true
+                if (!controllerName) {
+                    return true
+                }
 
                 // Access control by convention.
-                if (!accessControl(auth: false)) { // "auth: false" means it will accept remembered users as well as those who logged-in in this session
+                if (!accessControl(auth: false)) {
+                    // "auth: false" means it will accept remembered users as well as those who logged-in in this session
                     return false
                 }
 

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -14,35 +13,38 @@ databaseChangeLog = {
         changeSet(author: "tfotak (generated)", id: "1332134693000-1", failOnError: true) {
 
             update(tableName: "config")
-            {
-                column(name:"name", value: "Integrated Marine Observing System")
-                where "id = (select id from config limit 1)"
-            }
+                {
+                    column(name: "name", value: "Integrated Marine Observing System")
+                    where "id = (select id from config limit 1)"
+                }
         }
 
         changeSet(author: "tfotak (generated)", id: "1332201909000-1", failOnError: true) {
 
             update(tableName: "config")
-            {
-                column(name: "footer_content", value: '''<p>You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it. If you have any concerns about the veracity of the data, please make inquiries via <a href="mailto:info@imos.org.au">info@imos.org.au</a> to be directed to the data custodian.</p>''')
-                where "id = (select id from config limit 1)"
-            }
+                {
+                    column(
+                        name: "footer_content", value: '''<p>You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it. If you have any concerns about the veracity of the data, please make inquiries via <a href="mailto:info@imos.org.au">info@imos.org.au</a> to be directed to the data custodian.</p>'''
+                    )
+                    where "id = (select id from config limit 1)"
+                }
         }
 
         changeSet(author: "dnahodil", id: "1334124134000-2", failOnError: true) {
 
             update(tableName: "config")
-            {
-                column(name: "download_cart_filename", value: '"IMOS Portal download(%s %s).zip"')
-                where "download_cart_filename LIKE '\"AODN Portal download(%s %s).zip\"'"
-            }
+                {
+                    column(name: "download_cart_filename", value: '"IMOS Portal download(%s %s).zip"')
+                    where "download_cart_filename LIKE '\"AODN Portal download(%s %s).zip\"'"
+                }
         }
 
         changeSet(author: "dnahodil (generated)", id: "1334815305155-2", failOnError: true) {
 
             update(tableName: "config")
-            {
-                column(name: "download_cart_confirmation_window_content", value: """\
+                {
+                    column(
+                        name: "download_cart_confirmation_window_content", value: """\
 <table border="0" width="100%" style="font-size: 11px;">
     <tr>
         <td width="37px" valign="top"><img src="images/agreement.png" style="margin-right: 5px; margin-top: 1em;"></td>
@@ -62,15 +64,17 @@ databaseChangeLog = {
         <td colspan="2" style="font-size: 0.9em; font-style: italic; color: #555">You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it.</td>
     </tr>
 </table>\
-""")
-            }
+"""
+                    )
+                }
         }
 
         changeSet(author: "dnahodil (generated)", id: "1337127215000-1", failOnError: true) {
 
             update(tableName: "config") {
 
-                column(name: "download_cart_confirmation_window_content", value: """\
+                column(
+                    name: "download_cart_confirmation_window_content", value: """\
 <table border="0" width="100%" style="font-size: 11px;">
     <tr>
         <td width="37px" valign="top"><img src="images/agreement.png" style="margin-right: 5px; margin-top: 1em;"></td>
@@ -97,7 +101,8 @@ databaseChangeLog = {
         <td colspan="2" style="font-size: 0.9em; font-style: italic; color: #555">You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it.</td>
     </tr>
 </table>\
-""")
+"""
+                )
             }
         }
 
@@ -105,7 +110,8 @@ databaseChangeLog = {
 
             update(tableName: "config") {
 
-                column(name: "download_cart_confirmation_window_content", value: """\
+                column(
+                    name: "download_cart_confirmation_window_content", value: """\
 <table border="0" width="100%" style="font-size: 11px;">
     <tr>
         <td width="37px" valign="top"><img src="images/agreement.png" style="margin-right: 5px; margin-top: 1em;"></td>
@@ -132,7 +138,8 @@ databaseChangeLog = {
         <td colspan="2" style="font-size: 0.9em; font-style: italic; color: #555">You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it.</td>
     </tr>
 </table>\
-""")
+"""
+                )
             }
         }
 
@@ -140,7 +147,8 @@ databaseChangeLog = {
 
             update(tableName: "config") {
 
-                column(name: "download_cart_confirmation_window_content", value: """\
+                column(
+                    name: "download_cart_confirmation_window_content", value: """\
 <table border="0" width="100%" style="font-size: 11px;">
     <tr>
         <td width="37px" valign="top"><img src="images/agreement.png" style="margin-right: 5px; margin-top: 1em;"></td>
@@ -167,7 +175,8 @@ databaseChangeLog = {
         <td colspan="2" style="font-size: 0.9em; font-style: italic; color: #555">You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it.</td>
     </tr>
 </table>\
-""")
+"""
+                )
             }
         }
 
@@ -175,10 +184,12 @@ databaseChangeLog = {
 
             update(tableName: "config") {
 
-                column(name: "footer_content", value: """\
+                column(
+                    name: "footer_content", value: """\
 <p style="margin-left: 210px;">You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it. If you have any concerns about the veracity of the data, please make enquiries via <a href="mailto:info@imos.org.au">info@imos.org.au</a> to be directed to the data custodian.</p>
 <p>This site is licensed under a <a title="Creative Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><span style="white-space: nowrap">Creative Commons Attribution 3.0 Australia License</span></a> <a class="external" title="Creative Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><img width="80" src="images/by.png"/></a></p>
-<p>IMOS data is licensed under a <a title="Creative Commons License"  href="http://creativecommons.org/licenses/by/2.5/au/" target="_blank"><span style="white-space: nowrap">Creative Commons Attribution 2.5 Australia License</span></a> <a class="external" title="Creative Commons License"  href="http://creativecommons.org/licenses/by/2.5/au/" target="_blank"><img width="80" src="images/by.png"/></a></p>""")
+<p>IMOS data is licensed under a <a title="Creative Commons License"  href="http://creativecommons.org/licenses/by/2.5/au/" target="_blank"><span style="white-space: nowrap">Creative Commons Attribution 2.5 Australia License</span></a> <a class="external" title="Creative Commons License"  href="http://creativecommons.org/licenses/by/2.5/au/" target="_blank"><img width="80" src="images/by.png"/></a></p>"""
+                )
             }
         }
 
@@ -186,10 +197,12 @@ databaseChangeLog = {
 
             update(tableName: "config") {
 
-                column(name: "footer_content", value: """\
+                column(
+                    name: "footer_content", value: """\
 <p>You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it. If you have any concerns about the veracity of the data, please make enquiries via <a href="mailto:info@imos.org.au">info@imos.org.au</a> to be directed to the data custodian.</p>
 <p>This site is licensed under a <a title="Creative Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><span style="white-space: nowrap">Creative Commons Attribution 3.0 Australia License</span></a> <a class="external" title="Creative Commons License"  href="http://creativecommons.org/licenses/by/3.0/au/" target="_blank"><img width="80" src="images/by.png"/></a></p>
-<p>IMOS data is licensed under a <a title="Creative Commons License"  href="http://creativecommons.org/licenses/by/2.5/au/" target="_blank"><span style="white-space: nowrap">Creative Commons Attribution 2.5 Australia License</span></a> <a class="external" title="Creative Commons License"  href="http://creativecommons.org/licenses/by/2.5/au/" target="_blank"><img width="80" src="images/by.png"/></a></p>""")
+<p>IMOS data is licensed under a <a title="Creative Commons License"  href="http://creativecommons.org/licenses/by/2.5/au/" target="_blank"><span style="white-space: nowrap">Creative Commons Attribution 2.5 Australia License</span></a> <a class="external" title="Creative Commons License"  href="http://creativecommons.org/licenses/by/2.5/au/" target="_blank"><img width="80" src="images/by.png"/></a></p>"""
+                )
             }
         }
 

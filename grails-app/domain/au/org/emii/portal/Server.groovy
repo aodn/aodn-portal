@@ -50,21 +50,23 @@ class Server {
         // dont change only add.
         // getFeatureInfo request code will need to be written to use new versions
         // Openlayers should handle getMap
-        type(inList: [//"WMS-1.0.0",  // to old
-            //"WMS-1.0.7", // to weird
-            //"WMS-1.1.0", // mmm
-            "WMS-1.1.1",
-            "WMS-1.3.0",
-            "NCWMS-1.1.1",
-            "GEO-1.1.1",
-            "GEO-1.3.0",
-            //"NCWMS-1.3.0", // dont support until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187
-            "THREDDS",
-            "GEORSS",
-            "KML",
-            "RAMADDA",
-            "AUTO"
-        ])
+        type(
+            inList: [//"WMS-1.0.0",  // to old
+                     //"WMS-1.0.7", // to weird
+                     //"WMS-1.1.0", // mmm
+                     "WMS-1.1.1",
+                     "WMS-1.3.0",
+                     "NCWMS-1.1.1",
+                     "GEO-1.1.1",
+                     "GEO-1.3.0",
+                     //"NCWMS-1.3.0", // dont support until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187
+                     "THREDDS",
+                     "GEORSS",
+                     "KML",
+                     "RAMADDA",
+                     "AUTO"
+            ]
+        )
         lastScanDate(nullable: true)
         scanFrequency()
         name(unique: true)
@@ -78,7 +80,8 @@ class Server {
         password(nullable: true)
         urlListDownloadPrefixToRemove(nullable: true)
         urlListDownloadPrefixToSubstitue(nullable: true)
-        owners(nullable: true, validator: {
+        owners(
+            nullable: true, validator: {
             //This is totally not a great way to do things
             def ownerRole = UserRole.findByName(UserRole.SERVEROWNER)
 
@@ -99,7 +102,8 @@ class Server {
                 return ['invalid.serverowner']
             }
             return valid
-        })
+        }
+        )
     }
 
     String toIdString() {

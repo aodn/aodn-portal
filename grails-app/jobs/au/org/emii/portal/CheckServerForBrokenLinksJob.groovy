@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -31,7 +30,6 @@ class CheckServerForBrokenLinksJob {
 
         // Get user details so the report can be emailed
 
-
         if (!context.mergedJobDataMap.get('serverId')) {
             return
         }
@@ -53,10 +51,6 @@ class CheckServerForBrokenLinksJob {
         sendReportByEmail(userEmailAddress, file)
     }
 
-
-
-
-
     def _getCapabilities(url) {
         //Request getCapabilities for the server and extract the layers
         def getCapabilitiesUrl
@@ -71,7 +65,8 @@ class CheckServerForBrokenLinksJob {
         def xml
         try {
             xml = getCapabilitiesUrl.toURL().text
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             file.append "Could not connect to server. Report cannot be generated.${ln}"
             return
         }
@@ -124,11 +119,12 @@ class CheckServerForBrokenLinksJob {
         try {
             def xmlParser = new XmlParser(saxParser)
             page = xmlParser.parse(getFeatureInfoUrlString)
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             file.append "Error: IO Exception for layer${ln}"
             return
         }
-        def data = page.depthFirst().A.'@href'.grep{ it != null }
+        def data = page.depthFirst().A.'@href'.grep { it != null }
         data.each {
             if (!urlSet.contains(it) && !_blackListed(it)) {   //check each link unless already checked
                 urlSet.add(it)
@@ -173,22 +169,25 @@ class CheckServerForBrokenLinksJob {
                 file.append "${urlString} : ${urlConnection?.responseCode} : ${urlConnection?.responseMessage}${ln}"
             }
             return result
-        } catch (MalformedURLException e) {
+        }
+        catch (MalformedURLException e) {
             file.append urlString + " : URL is malformed${ln}"
             return "MalformedURLException"
-        } catch (IOException e) {
-        //    file.append urlString + " : Could not Connect${ln}"
+        }
+        catch (IOException e) {
+            //    file.append urlString + " : Could not Connect${ln}"
             return "IOException"
-        } catch (Exception exc) {
+        }
+        catch (Exception exc) {
             file.append urlString + " : " + exc.message + "${ln}"
             return "Exception"
-        } finally {
+        }
+        finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
         }
     }
-
 
     def String _constructFeatureInfoRequest(url, layerNode) {
         // Construct the getFeatureInfo request.  Set the map to 1x1 pixles so that all features for the layer
@@ -207,21 +206,19 @@ class CheckServerForBrokenLinksJob {
         getFeatureInfoUrlString += ',' + layerNode.BoundingBox.'@miny'.text()
         getFeatureInfoUrlString += ',' + layerNode.BoundingBox.'@maxx'.text()
         getFeatureInfoUrlString += ',' + layerNode.BoundingBox.'@maxy'.text()
-        getFeatureInfoUrlString += '&query_layers=' +  layerNode.Name.text()
+        getFeatureInfoUrlString += '&query_layers=' + layerNode.Name.text()
         getFeatureInfoUrlString += '&x=0&y=0&width=1&height=1&info_format=text/html&feature_count=' + FEATURE_COUNT
     }
-
 
     // Email notifications
     def sendReportByEmail(userEmailAddress, file) {
 
-        mailService.sendMail   {
+        mailService.sendMail {
             multipart true
             to userEmailAddress
             subject "Broken Links Report"
             body 'Broken Links Report atatched'
-            attachBytes file.toString(),'text/xml', file.readBytes()
+            attachBytes file.toString(), 'text/xml', file.readBytes()
         }
     }
-
 }

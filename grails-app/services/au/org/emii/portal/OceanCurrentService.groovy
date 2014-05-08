@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -45,7 +44,7 @@ class OceanCurrentService {
             con.readTimeout = 2000 // 2 seconds
             con.connect()
 
-            def data = IOUtils.toString( con.inputStream, "UTF-8" )
+            def data = IOUtils.toString(con.inputStream, "UTF-8")
             data = data.split("\n").toList()
 
             // Special case for West Australian portal

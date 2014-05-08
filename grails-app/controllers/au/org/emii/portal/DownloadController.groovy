@@ -39,7 +39,8 @@ class DownloadController extends RequestProxyingController {
 
         if (!prefixToRemove || !newUrlBase) {
             log.error('Cannot proceed with URL download, prefixToRemove or newUrlBase are not configured')
-            render text: "Server is not configured for URL downloading, please contact server administrator", status: 404
+            render text: "Server is not configured for URL downloading, please contact server administrator",
+                status: 404
             return
         }
 
@@ -158,7 +159,7 @@ class DownloadController extends RequestProxyingController {
 
             if (fieldIndex == -1) {
                 log.error "Could not find index of '$fieldName' in $firstRow"
-                _eachRemainingRow(csvReader) { currentRow -> currentRow.each{ log.error it } }
+                _eachRemainingRow(csvReader) { currentRow -> currentRow.each { log.error it } }
 
                 outputWriter.print "Results contained no column with header '$fieldName'. Column headers were: $firstRow"
                 outputWriter.flush()

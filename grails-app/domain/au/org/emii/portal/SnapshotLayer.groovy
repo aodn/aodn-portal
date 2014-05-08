@@ -35,15 +35,21 @@ class SnapshotLayer {
 
     static constraints = {
         layer(nullable: true)
-        serviceUrl(url: true, nullable: true, validator: { val, obj ->
+        serviceUrl(
+            url: true, nullable: true, validator: { val, obj ->
             obj.layer == null && val == null ? 'nullable' : true
-        })
-        name(blank: false, nullable: true, validator: { val, obj ->
+        }
+        )
+        name(
+            blank: false, nullable: true, validator: { val, obj ->
             obj.layer == null && val == null ? 'nullable' : true
-        })
-        title(blank: false, nullable: true, validator: { val, obj ->
+        }
+        )
+        title(
+            blank: false, nullable: true, validator: { val, obj ->
             obj.layer == null && val == null ? 'nullable' : true
-        })
+        }
+        )
         isBaseLayer()
         hidden()
         animated()
@@ -57,12 +63,12 @@ class SnapshotLayer {
             validator: {
                 val, obj ->
 
-                if (val < obj.ncwmsParamMin) {
-                    return false
-                }
+                    if (val < obj.ncwmsParamMin) {
+                        return false
+                    }
 
-                // Both null or neither null.
-                (obj.ncwmsParamMin == null && val == null) || (obj.ncwmsParamMin != null && val != null)
+                    // Both null or neither null.
+                    (obj.ncwmsParamMin == null && val == null) || (obj.ncwmsParamMin != null && val != null)
             }
         )
     }

@@ -24,8 +24,8 @@ class HomeController {
 
         [
             configInstance: Config.activeInstance(),
-            buildInfo: _appBuildInfo(),
-            jsVerNum: grailsApplication.metadata.'app.version'
+            buildInfo     : _appBuildInfo(),
+            jsVerNum      : grailsApplication.metadata.'app.version'
         ]
     }
 
@@ -62,17 +62,17 @@ class HomeController {
 
         if (Environment.current == Environment.PRODUCTION) {
 
-            return "<!-- ${ portalInstance.name() } Portal v${ md.'app.version' }, build date: ${ md.'app.build.date' ?: "not recorded" } -->"
+            return "<!-- ${portalInstance.name()} Portal v${md.'app.version'}, build date: ${md.'app.build.date' ?: "not recorded"} -->"
         }
 
         return """\
 <!--
     [Portal Build Info]
-    Base URL:      ${ cfg.grails.serverURL }
-    Build date:    ${ md.'app.build.date' ?: "Unk." }
-    Version:       ${ md.'app.version' }
-    Instance name: ${ portalInstance.name() }
-    Environment:   ${ Environment.current.name }
+    Base URL:      ${cfg.grails.serverURL}
+    Build date:    ${md.'app.build.date' ?: "Unk."}
+    Version:       ${md.'app.version'}
+    Instance name: ${portalInstance.name()}
+    Environment:   ${Environment.current.name}
 -->"""
     }
 }

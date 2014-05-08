@@ -20,17 +20,14 @@ class MenuController {
         redirect(action: "list", params: params)
     }
 
-
     def list = {
         [menuInstanceList: Menu.list(params), menuInstanceTotal: Menu.count()]
-
     }
 
     def create = {
         def menuInstance = new Menu()
         menuInstance.properties = params
         return [menuInstance: menuInstance]
-
     }
 
     def save = {
@@ -71,7 +68,11 @@ class MenuController {
                 def version = params.version.toLong()
                 if (menuInstance.version > version) {
 
-                    menuInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'menu.label', default: 'Menu')] as Object[], "Another user has updated this Menu while you were editing")
+                    menuInstance.errors.rejectValue(
+                        "version", "default.optimistic.locking.failure",
+                        [message(code: 'menu.label', default: 'Menu')] as Object[],
+                        "Another user has updated this Menu while you were editing"
+                    )
                     render(view: "edit", model: [menuInstance: menuInstance])
                     return
                 }
@@ -86,7 +87,6 @@ class MenuController {
             else {
                 render(view: "edit", model: [menuInstance: menuInstance])
             }
-
         }
         else {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'menu.label', default: 'Menu'), params.id])}"

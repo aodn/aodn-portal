@@ -28,7 +28,7 @@ class SearchFilter {
         json.value.each {
             k, v ->
 
-            filter.value.put(k, String.valueOf(v))
+                filter.value.put(k, String.valueOf(v))
         }
 
         return filter

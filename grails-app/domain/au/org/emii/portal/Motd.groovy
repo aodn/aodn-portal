@@ -17,7 +17,6 @@ class Motd {
         motd type: 'text'
     }
 
-
     static constraints = {
     }
 

@@ -44,7 +44,6 @@ class WfsScannerController {
         redirect controller: "server", action: "list"
     }
 
-
     def callDelete = {
 
         try {

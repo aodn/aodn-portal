@@ -50,6 +50,6 @@ class LoggingFilters {
 
     String userInfoForFile(principal) {
 
-        return "(User: ${ principal ?: "anon." }) "
+        return "(User: ${principal ?: "anon."}) "
     }
 }

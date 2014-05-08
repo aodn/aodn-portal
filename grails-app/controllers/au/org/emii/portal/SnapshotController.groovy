@@ -84,7 +84,8 @@ class SnapshotController {
                     render(view: "create", model: [snapshotInstance: snapshotInstance])
                 }
                 json {
-                    render text: snapshotInstance.errors as JSON, status: 400, contentType: "application/json", encoding: "UTF-8"
+                    render text: snapshotInstance.errors as JSON, status: 400, contentType: "application/json",
+                        encoding: "UTF-8"
                 }
             }
         }
@@ -137,7 +138,11 @@ class SnapshotController {
                 def version = params.version.toLong()
                 if (snapshotInstance.version > version) {
 
-                    snapshotInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'snapshot.label', default: 'Snapshot')] as Object[], "Another user has updated this Snapshot while you were editing")
+                    snapshotInstance.errors.rejectValue(
+                        "version", "default.optimistic.locking.failure",
+                        [message(code: 'snapshot.label', default: 'Snapshot')] as Object[],
+                        "Another user has updated this Snapshot while you were editing"
+                    )
                     render(view: "edit", model: [snapshotInstance: snapshotInstance])
                     return
                 }

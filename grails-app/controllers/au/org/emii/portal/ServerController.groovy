@@ -32,11 +32,11 @@ class ServerController {
         params.max = Math.min(params.max ? params.int('max') : 20, 100)
 
         [
-            serverInstanceList: Server.list(params),
+            serverInstanceList : Server.list(params),
             serverInstanceTotal: Server.count(),
-            jobProperties: scannerStatus,
-            wmsScannerUrl: wmsScannerService.scannerBaseUrl,
-            wfsScannerUrl: wfsScannerService.scannerBaseUrl
+            jobProperties      : scannerStatus,
+            wmsScannerUrl      : wmsScannerService.scannerBaseUrl,
+            wfsScannerUrl      : wfsScannerService.scannerBaseUrl
         ]
     }
 
@@ -91,9 +91,11 @@ class ServerController {
                 def version = params.version.toLong()
                 if (serverInstance.version > version) {
 
-                    serverInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [
+                    serverInstance.errors.rejectValue(
+                        "version", "default.optimistic.locking.failure", [
                         message(code: 'server.label', default: 'Server')]
-                    as Object[], "Another user has updated this Server while you were editing")
+                        as Object[], "Another user has updated this Server while you were editing"
+                    )
                     render(view: "edit", model: [serverInstance: serverInstance])
                     return
                 }
@@ -190,49 +192,50 @@ class ServerController {
         [wmsScannerService, wfsScannerService].eachWithIndex {
             scannerService, index ->
 
-            try {
-                def jobList = scannerService.status
-                discoverables.each() { discoverable ->
+                try {
+                    def jobList = scannerService.status
+                    discoverables.each() { discoverable ->
 
-                    if (serverMap[discoverable] == null) {
-                        serverMap.put(discoverable, [null, null])
+                        if (serverMap[discoverable] == null) {
+                            serverMap.put(discoverable, [null, null])
+                        }
+
+                        jobList.each() { job ->
+
+                            def checkURL
+
+                            //TODO: Change WFS scanner to use the same variable name for uri...
+                            if (index == 0) {
+                                checkURL = job.uri
+                            }
+                            else {
+                                checkURL = job.serverUrl
+                            }
+
+                            if (discoverable.uri == checkURL) {
+                                serverMap[discoverable][index] = job
+                            }
+                        }
                     }
 
-                    jobList.each() { job ->
+                    scannersContactable[index] = true
+                }
+                catch (Exception e) {
+                    log.debug(e.message)
 
-                        def checkURL
-
-                        //TODO: Change WFS scanner to use the same variable name for uri...
-                        if (index == 0) {
-                            checkURL = job.uri
-                        }
-                        else {
-                            checkURL = job.serverUrl
-                        }
-
-                        if (discoverable.uri == checkURL) {
-                            serverMap[discoverable][index] = job
-                        }
+                    if (flash.message) {
+                        flash.message += "<hr>"
                     }
-                }
+                    else {
+                        flash.message = ""
+                    }
 
-                scannersContactable[index] = true
-            }
-            catch (Exception e) {
-                log.debug(e.message)
-
-                if (flash.message) {
-                    flash.message += "<hr>"
+                    flash.message += "Cannot contact scanner ${scannerService.scannerBaseUrl} for a list of current jobs.  Please make sure server is contactable."
+                    scannersContactable[index] = false
                 }
-                else {
-                    flash.message = ""
-                }
-
-                flash.message += "Cannot contact scanner ${scannerService.scannerBaseUrl} for a list of current jobs.  Please make sure server is contactable."
-                scannersContactable[index] = false
-            }
         }
 
-        return [serverMap: serverMap, wmsScannerContactable: scannersContactable[0], wfsScannerContactable: scannersContactable[1]]
+        return [serverMap             : serverMap, wmsScannerContactable: scannersContactable
+            [0], wfsScannerContactable: scannersContactable[1]]
     }
 }
