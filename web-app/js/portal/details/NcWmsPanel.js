@@ -221,11 +221,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
         var config;
 
-        if (this._isAodaacLayer(this.selectedLayer)) {
-            config = this._buildAodaacParams(geometry);
-        }
-        else {
+        if (this._isGogoduckLayer(this.selectedLayer.parentGeoNetworkRecord.data)) {
             config = this._buildGogoduckParams(geometry);
+        }
+        else if (this._isAodaacLayer(this.selectedLayer.parentGeoNetworkRecord.data)) {
+            config = this._buildAodaacParams(geometry);
         }
 
         return config;
@@ -285,19 +285,25 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     _isAodaacLayer: function(collection) {
         var aodaac = false;
 
-        Ext.each(collection.links, function(link, index) {
-            if (link.name == "AODAAC") {
+        Ext.each(collection.aggregator, function(aggregator, index) {
+            if (aggregator.isAodaacLayer()) {
                 aodaac = true;
             }
         });
 
-        Ext.each(collection.links, function(link, index) {
-            if (link.name == "GoGoDuck") {
-                aodaac = false;
+        return aodaac;
+    },
+
+    _isGogoduckLayer: function(collection) {
+        var gogoduck = false;
+
+        Ext.each(collection.aggregator, function(aggregator, index) {
+            if (aggregator.isGogoduckLayer()) {
+                gogoduck = true;
             }
         });
 
-        return aodaac;
+        return gogoduck;
     },
 
     _selectedLayerWfsLayerName: function() {

@@ -11,7 +11,8 @@ describe('Portal.details.NcWmsPanel', function() {
     var ncwmsPanel;
     var geoNetworkRecord = {
         id: '45678',
-        updateNcwmsParams: noOp
+        updateNcwmsParams: noOp,
+        aggregator: []
     };
     var layer;
 
@@ -26,6 +27,7 @@ describe('Portal.details.NcWmsPanel', function() {
         layer.isNcwms = function() { return true };
         layer.events = { on: noOp };
         layer.processTemporalExtent = noOp;
+        layer.aodaacProducts = ['1'];
 
         ncwmsPanel = new Portal.details.NcWmsPanel({ map: map });
         ncwmsPanel._setBounds =  noOp;
@@ -177,6 +179,7 @@ describe('Portal.details.NcWmsPanel', function() {
         it('builds aodaac parameters if an aodaac layer is passed', function() {
 
             ncwmsPanel._isAodaacLayer = function() { return true };
+            ncwmsPanel._isGogoduckLayer = function() { return false };
 
             ncwmsPanel._buildParameters(geom);
             expect(ncwmsPanel._buildAodaacParams).toHaveBeenCalledWith(geom);
@@ -185,6 +188,16 @@ describe('Portal.details.NcWmsPanel', function() {
         it('builds gogoduck parameters if a gogoduck layer is passed', function() {
 
             ncwmsPanel._isAodaacLayer = function() { return false };
+            ncwmsPanel._isGogoduckLayer = function() { return true };
+
+            ncwmsPanel._buildParameters(geom);
+            expect(ncwmsPanel._buildGogoduckParams).toHaveBeenCalledWith(geom);
+        });
+
+        it('builds gogoduck parameters if a layer is passed with gogoduck and aodaac configured in the metadata', function() {
+
+            ncwmsPanel._isAodaacLayer = function() { return true };
+            ncwmsPanel._isGogoduckLayer = function() { return true };
 
             ncwmsPanel._buildParameters(geom);
             expect(ncwmsPanel._buildGogoduckParams).toHaveBeenCalledWith(geom);
@@ -192,48 +205,46 @@ describe('Portal.details.NcWmsPanel', function() {
     });
 
     describe('_isAodaacLayer', function() {
-        it('returns true if layer is configured only for aodaac in metadata', function() {
+        it('returns true if layer is configured for aodaac in metadata', function() {
 
             var aodaac;
-
-            geoNetworkRecord.links = [
-                {
-                    protocol: "IMOS:AGGREGATION--aodaac",
-                    name: "AODAAC"
-                }
-            ];
+            var mockAodaacAggr = new Portal.data.AodaacAggregator();
+            geoNetworkRecord.aggregator = [mockAodaacAggr];
 
             aodaac = ncwmsPanel._isAodaacLayer(geoNetworkRecord);
             expect(aodaac).toEqual(true);
         });
 
-        it('returns false if layer is configured for gogoduck and aodaac in metadata', function() {
+        it('returns false if layer is not configured for aodaac in the metadata', function() {
 
             var aodaac;
-
-            geoNetworkRecord.links = [
-                {
-                    protocol: "IMOS:AGGREGATION--aodaac",
-                    name: "AODAAC"
-                },
-                {
-                    protocol: "IMOS:AGGREGATION--gogoduck",
-                    name: "GoGoDuck"
-                }
-            ];
+            geoNetworkRecord.aggregator = [];
 
             aodaac = ncwmsPanel._isAodaacLayer(geoNetworkRecord);
             expect(aodaac).toEqual(false);
         });
+    });
 
-        it('returns false if layer is not configured for aggregators in metadata', function() {
+    describe('_isGogoduckLayer', function() {
+        it('returns true if layer is configured for gogoduck in metadata', function() {
 
-            var aodaac;
+            var gogoduck;
+            var mockGogoduckAggr = new Portal.data.GogoduckAggregator();
 
-            geoNetworkRecord.links = [];
+            geoNetworkRecord.aggregator = [mockGogoduckAggr];
 
-            aodaac = ncwmsPanel._isAodaacLayer(geoNetworkRecord);
-            expect(aodaac).toEqual(false);
+            gogoduck = ncwmsPanel._isGogoduckLayer(geoNetworkRecord);
+            expect(gogoduck).toEqual(true);
+        });
+
+        it('returns false if layer is not configured for gogoduck in the metadata', function() {
+
+            var gogoduck;
+
+            geoNetworkRecord.aggregator = [];
+
+            gogoduck = ncwmsPanel._isGogoduckLayer(geoNetworkRecord);
+            expect(gogoduck).toEqual(false);
         });
     });
 
@@ -296,6 +307,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('includes some information regardless of geometry', function () {
 
+            ncwmsPanel._isGogoduckLayer = function() { return true };
             var gogoduckParameters = ncwmsPanel._buildParameters(null);
 
             expect(gogoduckParameters.layerName).toBe('gogoDingo');
@@ -309,6 +321,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('includes spatialBounds if a geometry is present', function () {
 
+            ncwmsPanel._isGogoduckLayer = function() { return true };
             var geom = {
                 getBounds: function() {
                     return {
