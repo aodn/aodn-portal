@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -35,7 +34,7 @@ Portal.data.ServerNodeLayerDescriptorStore = Ext.extend(Ext.data.JsonStore, {
 
         Portal.data.ServerNodeLayerDescriptorStore.superclass.constructor.call(this, config);
 
-        this.on('load',  function(store, recs, opt) {
+        this.on('load', function(store, recs, opt) {
             this.loaded = true;
             this.beginNodeUpdate();
             this.updateNode(store);
@@ -74,7 +73,7 @@ Portal.data.ServerNodeLayerDescriptorStore = Ext.extend(Ext.data.JsonStore, {
         }
     },
 
-    addChildren: function (parent, layers) {
+    addChildren: function(parent, layers) {
         Ext.each(layers, function(item, index, all) {
             this.createChild(parent, item.id, item.title, item.layers, item.server.id);
         }, this);

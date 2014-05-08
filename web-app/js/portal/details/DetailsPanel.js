@@ -9,12 +9,12 @@ Ext.namespace('Portal.details');
 
 Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
-    constructor : function(cfg) {
+    constructor: function(cfg) {
 
         var config = Ext.apply({
             title: OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description')}),
             headerCfg: {
-                cls : 'steps'
+                cls: 'steps'
             },
             layout: 'vbox',
             layoutConfig: {
@@ -31,11 +31,11 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         }, this);
     },
 
-    initComponent : function() {
+    initComponent: function() {
 
         this.detailsPanelTabs = new Portal.details.DetailsPanelTab({
-                map: this.map
-            });
+            map: this.map
+        });
 
         this.dataCollectionSelectorPanel = new Portal.details.DataCollectionSelectorPanel();
 
@@ -54,7 +54,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
                 this.detailsPanelTabs.handleLayer(layer);
                 this.doLayout();
             }
-        } else {
+        }
+        else {
             this.hideDetailsPanelContents();
         }
     },

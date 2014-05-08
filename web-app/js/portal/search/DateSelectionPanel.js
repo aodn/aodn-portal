@@ -9,15 +9,18 @@ Ext.namespace('Portal.search');
 Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     padding: 5,
 
-    constructor: function (cfg) {
+    constructor: function(cfg) {
         cfg = cfg || {};
 
         this.titleText = cfg.title;
 
-        if (cfg.title) cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
+        if (cfg.title) {
+            cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
+        }
 
-        if (!cfg.separator)
+        if (!cfg.separator) {
             cfg.separator = "|";
+        }
 
         var defaults = {
             collapsible: true,
@@ -45,7 +48,7 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
                         text: OpenLayers.i18n("goButton"),
                         width: 65,
                         disabled: true
-                        }),
+                    }),
                         this.clearButton = new Ext.Button({
                             text: OpenLayers.i18n("clearButton"),
                             width: 65
@@ -62,7 +65,7 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
         this.mon(this.dateRange, 'change', this.onSelect, this);
     },
 
-    initComponent:function () {
+    initComponent: function() {
         Portal.search.DateSelectionPanel.superclass.initComponent.apply(this, arguments);
     },
 
@@ -80,22 +83,19 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
         this.searcher.removeFilters("extTo");
 
         var titleFrom = OpenLayers.i18n('min');
-        var titleTo   = OpenLayers.i18n('max');
+        var titleTo = OpenLayers.i18n('max');
 
-        if (range.fromDate !== "")
-        {
+        if (range.fromDate !== "") {
             this.searcher.addFilter("extFrom", range.fromDate.format("Y-m-d"));
             titleFrom = range.fromDate.format("d/m/Y");
         }
 
-        if (range.toDate !== "")
-        {
+        if (range.toDate !== "") {
             this.searcher.addFilter("extTo", range.toDate.format("Y-m-d"));
             titleTo = range.toDate.format("d/m/Y");
         }
 
-        if (range.fromDate !== "" || range.toDate !== "")
-        {
+        if (range.fromDate !== "" || range.toDate !== "") {
             var newSub = titleFrom + " - " + titleTo;
             this.setSelectedSubTitle(newSub);
 

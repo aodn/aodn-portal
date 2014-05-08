@@ -28,7 +28,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.operators = new Ext.form.ComboBox({
             triggerAction: 'all',
             mode: 'local',
-            emptyText : OpenLayers.i18n("pleasePickCondensed"),
+            emptyText: OpenLayers.i18n("pleasePickCondensed"),
             width: 165,
             editable: false,
             fieldLabel: "Value",
@@ -49,7 +49,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             }),
             valueField: 'value',
             displayField: 'display',
-            listeners:{
+            listeners: {
                 scope: this,
                 select: this._onOperationSelected
             }

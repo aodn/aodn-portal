@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -10,7 +9,7 @@ Ext.namespace('Portal.details');
 
 Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
 
-    constructor: function (cfg) {
+    constructor: function(cfg) {
         this.subsetPanel = new Portal.details.SubsetPanel({ map: cfg.map });
         this.infoPanel = new Portal.details.InfoPanel();
         this.stylePanel = new Portal.details.StylePanel();
@@ -58,8 +57,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
             var item = this.items.get(i);
             if (item) {
                 if (Ext.get(this.getTabEl(item)) // tests fail without this test (but they shouldn't).
-                    && Ext.get(this.getTabEl(item)).isVisible())
-                {
+                    && Ext.get(this.getTabEl(item)).isVisible()) {
                     this.setActiveTab(item);
                     i = this.items.length;
                 }

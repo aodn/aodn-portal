@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -56,7 +55,7 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
             function(item) {
                 var button = Ext.DomHelper.insertBefore(
                     cb,
-                    "<input type='button' class='" + item.cls + "' title='" + item.tooltip + "'/>"
+                        "<input type='button' class='" + item.cls + "' title='" + item.tooltip + "'/>"
                 );
                 that.buttons[item.name] = button;
 
@@ -94,7 +93,7 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
         this.statusIndicator().
             removeClass("layer-error-button").
             removeClass("layer-loaded-button").
-            addClass   ("layer-loading-button");
+            addClass("layer-loading-button");
     },
 
     layerLoadingEnd: function(loadedWithErrors) {
@@ -121,11 +120,11 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
         var activeLayersTreePanel = Ext.getCmp('activeLayerTreePanel');
 
         Ext.TaskMgr.start({
-            run : function() {
+            run: function() {
                 activeLayersTreePanel[delegateFnName]();
             },
-            interval : 0,
-            repeat : 1
+            interval: 0,
+            repeat: 1
         });
     }
 });

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -28,7 +27,7 @@
 
 var proxyCachedURL = "proxy/cache?URL=";
 
-OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
+OpenLayers.Control.Click2 = OpenLayers.Class(OpenLayers.Control, {
     defaultHandlerOptions: {
         single: true,
         'double': false, // this isnt working
@@ -38,7 +37,7 @@ OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
 
     initialize: function(options) {
         this.handlerOptions = OpenLayers.Util.extend(
-            options && options.handlerOptions || {},
+                options && options.handlerOptions || {},
             this.defaultHandlerOptions
         );
         OpenLayers.Control.prototype.initialize.apply(
@@ -56,10 +55,9 @@ OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
     CLASS_NAME: "OpenLayers.Control.Click"
 });
 
-
 function imgSizer() {
     //Configuration Options
-    var max_width = Portal.app.config.popupWidth -70 ;     //Sets the max width, in pixels, for every image
+    var max_width = Portal.app.config.popupWidth - 70;     //Sets the max width, in pixels, for every image
     var selector = 'div > .featureinfocontent .feature img';
 
     //destroy_imagePopup(); // make sure there is no other
@@ -99,7 +97,6 @@ function imgSizer() {
     });
 }
 
-
 /*jQuery showhide (toggle visibility of element)
  *  param: the dom element
  *  ie: #theId or .theClass
@@ -127,11 +124,11 @@ function dressUpMyLine(line) {
     var x = line.split(",");
     var newString = "";
 
-    for(i = 0; i < x.length; i++) {
+    for (i = 0; i < x.length; i++) {
         var latlon = x[i].split(" ");
         var lon = latlon[0].substring(0, latlon[0].lastIndexOf(".") + 4);
         var lat = latlon[1].substring(0, latlon[1].lastIndexOf(".") + 4);
-        newString = newString + "Lon:" + lon + " Lat:" +lat + ",<BR>";
+        newString = newString + "Lon:" + lon + " Lat:" + lat + ",<BR>";
     }
     return newString;
 }

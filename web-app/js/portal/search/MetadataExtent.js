@@ -9,7 +9,7 @@ Ext.namespace('Portal.search');
 
 Portal.search.MetadataExtent = Ext.extend(Object, {
 
-    constructor:function (cfg) {
+    constructor: function(cfg) {
         this.polygons = [];
     },
 

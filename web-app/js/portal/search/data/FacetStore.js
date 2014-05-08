@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -62,10 +61,14 @@ Portal.search.data.FacetStore = Ext.extend(Ext.util.Observable, {
         this.facets = [];
         for (var fieldName in this.data) {
             var field = this.data[fieldName];
-            if (!(field instanceof Array)) continue;
+            if (!(field instanceof Array)) {
+                continue;
+            }
             for (var childName in field) {
                 var children = field[childName];
-                if (!(children instanceof Array)) continue;
+                if (!(children instanceof Array)) {
+                    continue;
+                }
                 var topValues = [];
                 for (var childIdx = 0; childIdx < children.length; childIdx++) {
                     var values = children[childIdx];
@@ -84,11 +87,13 @@ Portal.search.data.FacetStore = Ext.extend(Ext.util.Observable, {
         var facets = [];
         for (var fidx = 0; fidx < this.facets.length; fidx++) {
             var field = this.facets[fidx];
-            if (this.include.indexOf(field.name)>-1) {
+            if (this.include.indexOf(field.name) > -1) {
                 var topValues = [];
                 for (var vidx = 0; vidx < field.topValues.length; vidx++) {
                     var topValue = field.topValues[vidx];
-                    if (this.filters.contains(field.name, topValue.value)) continue;
+                    if (this.filters.contains(field.name, topValue.value)) {
+                        continue;
+                    }
                     topValues.push({value: topValue.value, count: topValue.count});
                 }
                 if (topValues.length > 0) {

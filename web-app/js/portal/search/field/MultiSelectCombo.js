@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -34,9 +33,9 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
 
     initComponent: function(config) {
         this.store = new Portal.data.SuggestionStore({
-                url : this.url,
-                autoLoad: true
-            });
+            url: this.url,
+            autoLoad: true
+        });
 
         if (this.baseParams) {
             this.store.baseParams = this.baseParams;
@@ -62,8 +61,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
         this.enableBubble('contentchange');
     },
 
-    onProtocolChange: function(protocol)
-    {
+    onProtocolChange: function(protocol) {
         this.setBaseParams({ 'protocol': protocol });
         this.store.load();
     },
@@ -72,7 +70,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
         this.store.baseParams = baseParams;
     },
 
-    getFilterValue: function () {
+    getFilterValue: function() {
         return { value: this.getValue() };
     },
 
@@ -84,7 +82,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
                 if (success) {
                     this.setValue(v.value);
                 }
-        },
+            },
             scope: this
         });
     },
@@ -93,14 +91,12 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
         this.fireEvent('contentchange');
     },
 
-
     proxyBeforeLoad: function(proxy, params) {
         var protocolString = "";
-        if (params.protocol != null)
-        {
+        if (params.protocol != null) {
             protocolString = "protocol=" + params.protocol;
         }
-        proxy.setUrl(this.proxyUrl + encodeURIComponent(proxy.url + '?' +protocolString) + '&format=text/xml');
+        proxy.setUrl(this.proxyUrl + encodeURIComponent(proxy.url + '?' + protocolString) + '&format=text/xml');
     }
 });
 

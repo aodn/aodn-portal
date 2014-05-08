@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -17,7 +16,7 @@ Portal.ui.openlayers.ClickControl = Ext.extend(OpenLayers.Control, {
         'stopDouble': false
     },
 
-    constructor: function (options) {
+    constructor: function(options) {
         this.handlerOptions = Ext.apply({}, this.defaultHandlerOptions);
         OpenLayers.Control.prototype.initialize.apply(this, arguments);
 

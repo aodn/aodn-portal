@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -22,12 +21,14 @@ Portal.common.SaveDialog = Ext.extend(Ext.Window, {
                 autoWidth: true,
                 padding: 5,
                 xtype: 'form',
-                items: [{
-                    ref: '../nameField',
-                    name: 'name',
-                    fieldLabel: this.nameFieldLabel,
-                    xtype: 'textfield'
-                }],
+                items: [
+                    {
+                        ref: '../nameField',
+                        name: 'name',
+                        fieldLabel: this.nameFieldLabel,
+                        xtype: 'textfield'
+                    }
+                ],
                 buttons: [
                     {
                         text: OpenLayers.i18n('btnSave'),
@@ -86,12 +87,12 @@ Portal.common.SaveDialog = Ext.extend(Ext.Window, {
         Ext.Msg.alert(this.failedSaveErrMsg, messages);
     },
 
-  _formatErrors: function(errors) {
+    _formatErrors: function(errors) {
         var errorMessages = '';
 
-        for (var i=0; i < errors.length; i++) {
+        for (var i = 0; i < errors.length; i++) {
             errorMessages += errors[i].message;
-            if (i < errors.length-1) {
+            if (i < errors.length - 1) {
                 errorMessages += '</br>';
             }
         }

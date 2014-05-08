@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -73,7 +72,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         this.searchFilters.remove(filters.items);
 
-        this.fireEvent( 'filterremoved' );
+        this.fireEvent('filterremoved');
     },
 
     addFilter: function(name, value) {
@@ -84,15 +83,15 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         this.searchFilters.add(rec);
 
-        this.fireEvent( 'filteradded' );
+        this.fireEvent('filteradded');
     },
 
     hasFilters: function() {
 
-        var idx = this.searchFilters.findBy( function( record ) {
+        var idx = this.searchFilters.findBy(function(record) {
 
             return record.data.value != '';
-        } );
+        });
 
         return idx >= 0;
     },
@@ -118,7 +117,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         var searchProvider =
             (params['geometry']) ? this.spatialSearchUrl : this.catalogUrl + '/srv/eng/' + this.serviceUrl;
 
-        return searchProvider  + '?' + Ext.urlEncode(params);
+        return searchProvider + '?' + Ext.urlEncode(params);
     },
 
     _getParams: function(page, summaryOnly) {

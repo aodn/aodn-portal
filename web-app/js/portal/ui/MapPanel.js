@@ -12,7 +12,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     defaultSpatialConstraintType: OpenLayers.i18n('comboBoxTypeLabels')[0].label,
 
-    constructor: function (cfg) {
+    constructor: function(cfg) {
 
         this.appConfig = Portal.app.config;
 
@@ -35,16 +35,16 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.addEvents('tabchange', 'mouseover');
 
-        this.on('afterlayout', function () {
-            jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseover(function () {
+        this.on('afterlayout', function() {
+            jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseover(function() {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").addClass('allwhite');
             });
-            jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseout(function () {
+            jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseout(function() {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").removeClass('allwhite');
             });
         }, this);
 
-        this.on('tabchange', function () {
+        this.on('tabchange', function() {
             this._closeFeatureInfoPopup();
         }, this);
 
@@ -52,7 +52,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this._onBeforeSelectedLayerChanged(openlayer);
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (subject, message) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
 
@@ -64,7 +64,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this._maximiseMapActionsControl();
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function () {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
             this.reset();
             this._closeFeatureInfoPopup();
         }, this);
@@ -80,7 +80,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     },
 
-    onSelectedLayerChanged: function (openLayer) {
+    onSelectedLayerChanged: function(openLayer) {
         if (!openLayer) {
             this.map.resetSpatialConstraint();
         }
@@ -91,28 +91,28 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.map.setBaseLayer(openLayer);
     },
 
-    afterRender: function () {
+    afterRender: function() {
         Portal.ui.MapPanel.superclass.afterRender.call(this);
         this.mapOptions.afterRender(this);
     },
 
-    autoZoomCheckboxHandler: function (box, checked) {
+    autoZoomCheckboxHandler: function(box, checked) {
         Portal.app.config.autoZoom = checked;
         this.autoZoom = checked;
     },
 
-    reset: function () {
+    reset: function() {
         this._closeFeatureInfoPopup();
         this.map.resetSpatialConstraint();
         this.zoomToInitialBbox();
     },
 
-    handleFeatureInfoClick: function (event) {
+    handleFeatureInfoClick: function(event) {
         this._closeFeatureInfoPopup();
         this._findFeatureInfo(event);
     },
 
-    _closeFeatureInfoPopup: function () {
+    _closeFeatureInfoPopup: function() {
         try {
             if (this.featureInfoPopup) {
                 this.featureInfoPopup.close();
@@ -133,7 +133,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    _findFeatureInfo: function (event) {
+    _findFeatureInfo: function(event) {
         this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({
             map: this.map,
             appConfig: this.appConfig,
@@ -155,7 +155,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    initMap: function () {
+    initMap: function() {
 
         // The MapActionsControl (in the OpenLayers map tools) needs this.
         this.appConfig.mapPanel = this;
@@ -165,7 +165,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.map.setDefaultSpatialConstraintType(this.defaultSpatialConstraintType);
     },
 
-    getServer: function (item) {
+    getServer: function(item) {
         return item.server;
     },
 
@@ -175,7 +175,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    zoomToLayer: function (openLayer) {
+    zoomToLayer: function(openLayer) {
         if (openLayer) {
 
             if (openLayer.zoomOverride) {
@@ -217,7 +217,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    zoomTo: function (bounds, closest) {
+    zoomTo: function(bounds, closest) {
         if ((Math.abs(bounds.left - bounds.right) < 1) && (Math.abs(bounds.top == bounds.bottom) < 1)) {
             this.map.setCenter(bounds.getCenterLonLat(), 3);
         }
@@ -226,11 +226,11 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    getPanelX: function () {
+    getPanelX: function() {
         return this.getPosition()[0];
     },
 
-    getPanelY: function () {
+    getPanelY: function() {
         return this.getPosition()[1];
     },
 

@@ -44,7 +44,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return areaString + dateString;
     },
 
-    _parameterString: function (labelKey, value1, value2, delim) {
+    _parameterString: function(labelKey, value1, value2, delim) {
         return String.format('<b>{0}:</b> &nbsp;<code>{1}</code> {3} <code>{2}</code><br>', OpenLayers.i18n(labelKey), value1, value2, (delim || ""));
     },
 
@@ -176,31 +176,31 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
         var params = collection.ncwmsParams;
 
-         var args = {
-             layerName: params.layerName,
-             emailAddress: email,
-             subsetDescriptor: {
-                 temporalExtent: {
-                     start: this._formatDate(params.dateRangeStart),
-                     end: this._formatDate(params.dateRangeEnd)
-                 },
-                 spatialExtent: {
-                     north: (params.latitudeRangeEnd || params.productLatitudeRangeEnd),
-                     south: (params.latitudeRangeStart || params.productLatitudeRangeStart),
-                     east: (params.longitudeRangeEnd || params.productLongitudeRangeEnd),
-                     west: (params.longitudeRangeStart || params.productLongitudeRangeStart)
-                 }
-             }
-         };
+        var args = {
+            layerName: params.layerName,
+            emailAddress: email,
+            subsetDescriptor: {
+                temporalExtent: {
+                    start: this._formatDate(params.dateRangeStart),
+                    end: this._formatDate(params.dateRangeEnd)
+                },
+                spatialExtent: {
+                    north: (params.latitudeRangeEnd || params.productLatitudeRangeEnd),
+                    south: (params.latitudeRangeStart || params.productLatitudeRangeStart),
+                    east: (params.longitudeRangeEnd || params.productLongitudeRangeEnd),
+                    west: (params.longitudeRangeStart || params.productLongitudeRangeStart)
+                }
+            }
+        };
 
         if (collection.wmsLayer.gogoduckLayerName) {
 
             args.layerName = collection.wmsLayer.gogoduckLayerName;
         }
 
-         var paramsAsJson = Ext.util.JSON.encode(args);
+        var paramsAsJson = Ext.util.JSON.encode(args);
 
-         return String.format('gogoduck/registerJob?jobParameters={0}', encodeURIComponent(paramsAsJson));
+        return String.format('gogoduck/registerJob?jobParameters={0}', encodeURIComponent(paramsAsJson));
     },
 
     _downloadSizeEstimator: function(values) {

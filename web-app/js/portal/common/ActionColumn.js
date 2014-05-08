@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -26,16 +25,16 @@ Portal.common.ActionColumn = Ext.extend(Ext.grid.ActionColumn, {
 //      class name x-action-col-{n}
         me.renderer = function(v, meta) {
 //          Allow a configured renderer to create initial value (And set the other values in the "metadata" argument!)
-            v = Ext.isFunction(cfg.renderer) ? cfg.renderer.apply(this, arguments)||'' : '';
+            v = Ext.isFunction(cfg.renderer) ? cfg.renderer.apply(this, arguments) || '' : '';
 
             meta.css += ' x-action-col-cell';
             for (i = 0; i < l; i++) {
                 item = items[i];
                 v += '<img alt="' + (item.altText || me.altText) + '" src="' + (item.icon || Ext.BLANK_IMAGE_URL) +
                     '" class="x-action-col-icon x-action-col-' + String(i) + ' ' + (item.iconCls || '') +
-                    ' ' + (Ext.isFunction(item.getClass) ? item.getClass.apply(item.scope||this.scope||this, arguments) : '') + '"' +
+                    ' ' + (Ext.isFunction(item.getClass) ? item.getClass.apply(item.scope || this.scope || this, arguments) : '') + '"' +
                     ((item.tooltip) ? ' ext:qtip="' + item.tooltip + '"' : '') +
-                    (Ext.isFunction(item.getTooltip) ? ' ext:qtip="' + item.getTooltip.apply(item.scope||this.scope||this, arguments) + '"' : '') + ' />';
+                    (Ext.isFunction(item.getTooltip) ? ' ext:qtip="' + item.getTooltip.apply(item.scope || this.scope || this, arguments) + '"' : '') + ' />';
             }
             return v;
         };

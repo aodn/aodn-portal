@@ -91,7 +91,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
 
     downloadWithConfirmation: function(collection, generateUrlCallback, params) {
 
-        return function () {
+        return function() {
             this.downloadConfirmation.call(
                 this.downloadConfirmationScope,
                 collection,

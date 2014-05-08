@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -49,7 +48,7 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
         return Portal.utils.geo.bboxAsStringToBounds(initialBbox);
     },
 
-  /* Override GeoExt setInitialExtent - want to reflect any pre-render extent changes  */
+    /* Override GeoExt setInitialExtent - want to reflect any pre-render extent changes  */
 
     setInitialExtent: function() {
         var map = this.map;

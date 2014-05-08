@@ -27,7 +27,7 @@ Portal.visualise.animations.TemporalExtentParser = Ext.extend(Object, {
         return (typeof endIndex !== 'undefined' ? endIndex : max);
     },
 
-    _getExpandedDateString: function(dateString)  {
+    _getExpandedDateString: function(dateString) {
         if (this._isValidUnit(dateString)) {
             return this._expandValidDateString(dateString);
         }

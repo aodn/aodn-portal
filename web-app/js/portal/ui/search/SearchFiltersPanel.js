@@ -94,7 +94,10 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         ];
         this._monitor(this.searcher, searcherEvents, this);
 
-        this.on('afterrender', function() { this.searcher.search( true ); return true; }, this );
+        this.on('afterrender', function() {
+            this.searcher.search(true);
+            return true;
+        }, this);
     },
 
     initComponent: function() {
@@ -102,7 +105,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _showError: function() {
-        this._setSpinnerText( OpenLayers.i18n('facetedSearchUnavailable') );
+        this._setSpinnerText(OpenLayers.i18n('facetedSearchUnavailable'));
     },
 
     _buildToolBar: function() {
@@ -117,7 +120,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _buildSpinner: function() {
         this.spinner = new Ext.Panel({
-            html: OpenLayers.i18n('loadingSpinner', {'resource':'search terms'}),
+            html: OpenLayers.i18n('loadingSpinner', {'resource': 'search terms'}),
             hidden: false
         });
 
@@ -130,17 +133,17 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             hidden: true
         });
 
-        this.newSearchButton.on( 'click', this._onNewSearchClicked, this );
+        this.newSearchButton.on('click', this._onNewSearchClicked, this);
 
         return this.newSearchButton;
     },
 
-    _setSpinnerText: function( newText ) {
-        this.spinner.update( newText);
+    _setSpinnerText: function(newText) {
+        this.spinner.update(newText);
         this.spinner.show();
     },
 
-    _hideSpinnerText: function( ) {
+    _hideSpinnerText: function() {
         this.spinner.hide();
     },
 
@@ -161,8 +164,8 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _setNewSearchButtonVisibility: function() {
-        this._setSpinnerText(OpenLayers.i18n('loadingSpinner',{'resource':'Collections'}));
-        this.newSearchButton.setVisible( this.searcher.hasFilters() );
+        this._setSpinnerText(OpenLayers.i18n('loadingSpinner', {'resource': 'Collections'}));
+        this.newSearchButton.setVisible(this.searcher.hasFilters());
     },
 
     _showNewSearchForGeoFacet: function() {

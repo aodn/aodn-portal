@@ -9,7 +9,7 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
 
-    constructor: function (cfg, mapPanel) {
+    constructor: function(cfg, mapPanel) {
         var config = Ext.apply({}, cfg);
         Portal.ui.openlayers.MapOptions.superclass.constructor.call(this, config);
 
@@ -28,7 +28,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         // Control to get feature info or pop up
         this.clickControl = new Portal.ui.openlayers.ClickControl({
             fallThrough: true,
-            onClick: function (event) {
+            onClick: function(event) {
                 mapPanel.handleFeatureInfoClick(event);
             }
         });
@@ -59,21 +59,21 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         this.mapPanel = mapPanel;
     },
 
-    afterRender: function (mapPanel) {
+    afterRender: function(mapPanel) {
         this._initMapActionsControl(mapPanel);
 
         this.navigationControl.events.on({
-            "activate": function () {
+            "activate": function() {
                 this.clickControl.activate();
             },
-            "deactivate": function () {
+            "deactivate": function() {
                 this.clickControl.deactivate();
             },
             scope: this
         });
     },
 
-    _initMapActionsControl: function (mapPanel) {
+    _initMapActionsControl: function(mapPanel) {
         this.mapActionsControl = new Portal.ui.openlayers.MapActionsControl(mapPanel.appConfig);
         mapPanel.map.addControl(this.mapActionsControl);
         this.mapActionsControl.maximizeControl();
@@ -82,7 +82,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
     /**
      * Create a new map, from using the options specified by 'this'.
      */
-    newMap: function () {
+    newMap: function() {
         this.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
         return new OpenLayers.SpatialConstraintMap(this);
     }

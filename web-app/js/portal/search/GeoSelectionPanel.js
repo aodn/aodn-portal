@@ -7,25 +7,28 @@
 Ext.namespace('Portal.search');
 
 Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
-    padding:5,
+    padding: 5,
 
     GEOMETRY_FIELD: 'geometry',
 
-    constructor:function (cfg) {
+    constructor: function(cfg) {
 
         cfg = cfg || {};
 
         this.titleText = cfg.title;
 
-        if (cfg.title) cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
+        if (cfg.title) {
+            cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
+        }
 
-        if (!cfg.separator)
+        if (!cfg.separator) {
             cfg.separator = "|";
+        }
 
         var defaults = {
-            collapsible:true,
-            collapsed:true,
-            titleCollapse:true
+            collapsible: true,
+            collapsed: true,
+            titleCollapse: true
         };
 
         Ext.apply(this, cfg, defaults);
@@ -38,9 +41,9 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
         });
 
         var config = Ext.apply({
-            layout:'form',
-            cls:'search-filter-panel term-selection-panel',
-            items:[
+            layout: 'form',
+            cls: 'search-filter-panel term-selection-panel',
+            items: [
                 this.facetMap,
                 new Ext.Container({
                     layout: 'hbox',
@@ -50,17 +53,16 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
                         }
                     },
                     items: [  this.goButton = new Ext.Button({
-                        text:OpenLayers.i18n("goButton"),
-                        width:65
+                        text: OpenLayers.i18n("goButton"),
+                        width: 65
                     }),
                         this.clearButton = new Ext.Button({
-                            text:OpenLayers.i18n("clearButton"),
-                            width:65
+                            text: OpenLayers.i18n("clearButton"),
+                            width: 65
                         })]
                 })
             ]
         }, cfg, defaults);
-
 
         Portal.search.GeoSelectionPanel.superclass.constructor.call(this, config);
 
@@ -69,11 +71,11 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
         this.mon(this.facetMap, 'polygonadded', this._onPolygonAdded, this);
     },
 
-    initComponent:function () {
+    initComponent: function() {
         Portal.search.GeoSelectionPanel.superclass.initComponent.apply(this, arguments);
     },
 
-    onGo:function () {
+    onGo: function() {
         this._removeFacetFilters();
         if (this.facetMap.hasCurrentFeature()) {
             this.searcher.addFilter(this.GEOMETRY_FIELD, this.facetMap.getBoundingPolygonAsWKT());

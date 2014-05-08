@@ -9,15 +9,18 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
-    constructor: function (cfg) {
+    constructor: function(cfg) {
 
         cfg = cfg || {};
 
         this.titleText = cfg.title;
-        if (cfg.title) cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
+        if (cfg.title) {
+            cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
+        }
 
-        if (!cfg.separator)
+        if (!cfg.separator) {
             cfg.separator = "|";
+        }
 
         var defaults = {
             collapsible: true,
@@ -39,18 +42,18 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         this.toggleAllLink = this._buildToggleAll(this.termStore);
 
         var config = Ext.apply({
-            layout:'form',
-            cls:'search-filter-panel term-selection-panel',
-            items:[
+            layout: 'form',
+            cls: 'search-filter-panel term-selection-panel',
+            items: [
                 this.selectedView,
                 this.filterView,
                 {
-                    xtype:'container',
-                    layout:'hbox',
-                    items:[
-                        {xtype:'spacer', flex:1},
+                    xtype: 'container',
+                    layout: 'hbox',
+                    items: [
+                        {xtype: 'spacer', flex: 1},
                         this.toggleAllLink,
-                        {xtype:'spacer', width:5}
+                        {xtype: 'spacer', width: 5}
                     ]
                 }
             ]
@@ -69,9 +72,9 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         this.mon(this.searcher, 'summaryOnlySearchComplete', this._loadStore, this);
     },
 
-    initComponent: function () {
+    initComponent: function() {
         Portal.ui.TermSelectionPanel.superclass.initComponent.apply(this, arguments);
-        this.on('afterrender', function () {
+        this.on('afterrender', function() {
             this.on('collapse', this._onCollapsedChange, this);
             this.on('expand', this._onCollapsedChange, this);
         }, this);
@@ -80,15 +83,15 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
     // Builders
 
-    _buildSelectionStore: function (hierarchical, separator) {
+    _buildSelectionStore: function(hierarchical, separator) {
         return new Ext.data.ArrayStore({
-            hierarchical:hierarchical,
-            fields:['selection'],
-            separator:separator,
-            getFilterValue: function () {
+            hierarchical: hierarchical,
+            fields: ['selection'],
+            separator: separator,
+            getFilterValue: function() {
                 if (this.hierarchical) {
                     var result = new Array();
-                    this.each(function (rec) {
+                    this.each(function(rec) {
                         result.push(rec.get('selection'));
                     });
                     return result.join(this.separator);
@@ -97,11 +100,11 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
                     return this.getCount() == 0 ? "" : this.getAt(0).get('selection');
                 }
             },
-            setFilterValue: function (filter) {
+            setFilterValue: function(filter) {
                 if (this.hierarchical) {
                     var values = filter.split(this.separator);
                     var data = new Array();
-                    Ext.each(values, function (value) {
+                    Ext.each(values, function(value) {
                         data.push([value]);
                     });
                     this.loadData(data);
@@ -120,7 +123,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    _buildSelectedView: function (selectionStore) {
+    _buildSelectedView: function(selectionStore) {
         var viewTpl = new Ext.XTemplate(
             '<tpl if="xcount &gt; 0">',
             '<div class="p-selected-view">',
@@ -134,30 +137,30 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         );
 
         var selectedView = new Ext.DataView({
-            store:selectionStore,
-            tpl:viewTpl,
-            autoHeight:true,
-            itemSelector:'.p-selection-wrap',
-            onSelectionsRendered: function () {
+            store: selectionStore,
+            tpl: viewTpl,
+            autoHeight: true,
+            itemSelector: '.p-selection-wrap',
+            onSelectionsRendered: function() {
                 var options = {
-                    delegate:'.p-selection-clear'
+                    delegate: '.p-selection-clear'
                 };
 
                 this.getEl().on('click', this.onRemoveLast, this, options);
             },
-            onSelectionClick: function (view, index) {
+            onSelectionClick: function(view, index) {
                 this.deleteFrom(index, true);
             },
 
-            onRemoveLast: function () {
+            onRemoveLast: function() {
                 this.deleteFrom(this.getStore().getCount() - 1, true);
             },
 
-            clear: function () {
+            clear: function() {
                 this.deleteFrom(0, false);
             },
 
-            deleteFrom: function (index, searchAfterwards) {
+            deleteFrom: function(index, searchAfterwards) {
                 var store = this.getStore();
                 var clearRecs = store.getRange(index, store.getCount() - 1);
                 store.remove(clearRecs);
@@ -178,21 +181,21 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         return selectedView;
     },
 
-    _buildToggleAll: function (termStore) {
+    _buildToggleAll: function(termStore) {
         var toggleAll = new Ext.ux.Hyperlink({
             text: OpenLayers.i18n('showAll')['false'],
             showAll: false,
             termStore: termStore,
             hidden: true,
-            setShowAll: function (showAll) {
+            setShowAll: function(showAll) {
                 this.showAll = showAll;
                 this.setText(OpenLayers.i18n('showAll')[showAll]);
                 this.termStore.setShowAll(showAll);
             },
-            toggleShowAll: function () {
+            toggleShowAll: function() {
                 this.setShowAll(!this.showAll);
             },
-            _onTermsLoaded: function () {
+            _onTermsLoaded: function() {
                 this.setShowAll(false);
                 if (termStore.getCount() == 1) {
                     this.setVisible(false);
@@ -211,20 +214,20 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         return toggleAll;
     },
 
-    _buildFilterView: function (termStore) {
+    _buildFilterView: function(termStore) {
         return new Ext.list.ListView({
-            hideHeaders:true,
-            store:termStore,
-            columns:[
+            hideHeaders: true,
+            store: termStore,
+            columns: [
                 {
-                    width:.8,
-                    cls:'p-wrapped-col',
-                    dataIndex:'display'
+                    width: .8,
+                    cls: 'p-wrapped-col',
+                    dataIndex: 'display'
                 },
                 {
-                    dataIndex:'count',
-                    align:'right',
-                    tpl:'({count})'
+                    dataIndex: 'count',
+                    align: 'right',
+                    tpl: '({count})'
                 }
             ]
         });
@@ -232,7 +235,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
 
     // private methods
 
-    _loadStore: function (response) {
+    _loadStore: function(response) {
         var fieldGroup = this._getFieldGroup();
         var filter = this.selectionStore.getFilterValue();
 
@@ -243,7 +246,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         this.doLayout();
     },
 
-    _getFieldGroup: function () {
+    _getFieldGroup: function() {
         if (this.hierarchical) {
             var hierarchyLevel = this.selectionStore.getCount() + 1;
             return this.fieldName + this._getLevelSuffix(hierarchyLevel);
@@ -253,7 +256,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _getCurrentFilterName: function () {
+    _getCurrentFilterName: function() {
         if (this.hierarchical) {
             var filterLevel = this.selectionStore.getCount();
             return this.fieldName + this._getLevelSuffix(filterLevel);
@@ -263,7 +266,7 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _getClickedFilterName: function () {
+    _getClickedFilterName: function() {
         if (this.hierarchical) {
             var filterLevel = this.selectionStore.getCount() + 1;
             return this.fieldName + this._getLevelSuffix(filterLevel);
@@ -273,11 +276,11 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _getLevelSuffix: function (level) {
+    _getLevelSuffix: function(level) {
         return 'Lvl' + level;
     },
 
-    _onFilterClick: function (view, index) {
+    _onFilterClick: function(view, index) {
         var rec = view.store.getAt(index);
         var filterValue = rec.get('value');
 
@@ -289,19 +292,19 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         this._onFilterValueChanged();
     },
 
-    _onFilterRemoved: function () {
+    _onFilterRemoved: function() {
         var filter = this.selectionStore.getFilterValue();
         this._onFilterValueChanged();
         this.searcher.removeFilters(this.fieldName);
         this.searcher.addFilter(this._getCurrentFilterName(), filter);
     },
 
-    _onSearchInvalidated: function () {
+    _onSearchInvalidated: function() {
 
         this.searcher.search();
     },
 
-    _onCollapsedChange: function () {
+    _onCollapsedChange: function() {
         this.fireEvent('contentchange');
         //doLayout() doesn't work when collapsed,
         // so after uncollapsing we call it to make up for anything missed
@@ -319,14 +322,14 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
             var trimmedFilterValue = currentFilterValue;
 
             if (trimmedFilterValue.length > 30) {
-               trimmedFilterValue = trimmedFilterValue.substr(0, 30) + '...'
+                trimmedFilterValue = trimmedFilterValue.substr(0, 30) + '...'
             }
 
             this.setSelectedSubTitle(trimmedFilterValue);
         }
     },
 
-    removeAnyFilters: function () {
+    removeAnyFilters: function() {
         this.selectedView.clear();
 
         if (this.collapsedByDefault) {
@@ -337,13 +340,13 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    setSelectedSubTitle: function (subtitle) {
+    setSelectedSubTitle: function(subtitle) {
         var newTitle = '<span class="term-selection-panel-header-selected">' + this.titleText + '</span>';
         newTitle += " - " + subtitle;
         this.setTitle(newTitle);
     },
 
-    removeSelectedSubTitle: function () {
+    removeSelectedSubTitle: function() {
         var newTitle = '<span class="term-selection-panel-header">' + this.titleText + '</span>';
         this.setTitle(newTitle);
     }

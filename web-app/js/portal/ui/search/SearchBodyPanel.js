@@ -11,7 +11,7 @@ Ext.namespace('Portal.ui.search');
 // to be merged before getting rid of this (else there will be conflicts).
 Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
 
-    constructor: function (cfg) {
+    constructor: function(cfg) {
 
         this.resultGridSize = 10;
 
@@ -48,7 +48,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
         Ext.Msg.alert('Info', 'The search returned no results.');
     },
 
-    _onResultsGridBbarBeforeChange: function (bbar, params) {
+    _onResultsGridBbarBeforeChange: function(bbar, params) {
         this.searcher.goToPage(params.start + 1, params.limit);
         //Stop paging control from doing anything itself for the moment
         // TODO: replace with store driven paging

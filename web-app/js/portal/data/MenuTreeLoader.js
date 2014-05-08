@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -18,7 +17,7 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
         }, cfg);
         Portal.data.MenuTreeLoader.superclass.constructor.call(this, config);
 
-        this.on('beforeload',  function(loader, node, callback) {
+        this.on('beforeload', function(loader, node, callback) {
             if (node.attributes.grailsServerId) {
                 // This will now delegate handling to ServerNodeLayerDescriptorStore
                 return false;
@@ -54,7 +53,7 @@ Portal.data.MenuTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
         }
     },
 
-    parseItems: function (parent, items) {
+    parseItems: function(parent, items) {
         Ext.each(items, function(item, index, all) {
             var child = this.createNode(item);
             if (this.isNotEmpty(item.childItems)) {

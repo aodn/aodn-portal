@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -111,35 +110,35 @@ function setupgrid2treedrag(menu) {
             expandable: true
         },
         // enable DD
-        enableDD:true,
+        enableDD: true,
         // set ddGroup - same as for grid
-        ddGroup:'layerGridPanel',
-        id:'tree',
+        ddGroup: 'layerGridPanel',
+        id: 'tree',
         width: 250,
-        border:false,
-        collapsible:false,
+        border: false,
+        collapsible: false,
         padding: 20,
-        autoScroll:true,
-        loader: new Ext.tree.TreeLoader({preloadChildren:true}),
-        listeners:{
+        autoScroll: true,
+        loader: new Ext.tree.TreeLoader({preloadChildren: true}),
+        listeners: {
 
             'contextmenu': function(node) {
                 this.getSelectionModel().select(node);
                 treeMenu = rightClickMenu(node);
-                if (treeMenu!=null) {
+                if (treeMenu != null) {
                     treeMenu.show(node.ui.getAnchor());
                 }
             },
 
             movenode: {
-                fn:function(e) {
+                fn: function(e) {
                     showHideButtons();
                 }
             },
 
             // create nodes based on data from grid
-            beforenodedrop:{
-                fn:function(e) {
+            beforenodedrop: {
+                fn: function(e) {
 
                     // e.data.selections is the array of selected records
                     if (Ext.isArray(e.data.selections)) {
@@ -149,7 +148,7 @@ function setupgrid2treedrag(menu) {
                         // setup dropNode (it can be array of nodes)
                         e.dropNode = [];
                         var r;
-                        for(var i = 0; i < e.data.selections.length; i++) {
+                        for (var i = 0; i < e.data.selections.length; i++) {
 
                             // get record from selectons
                             r = e.data.selections[i];
@@ -157,21 +156,21 @@ function setupgrid2treedrag(menu) {
                             // reservered word here but it works!!!
                             if (r.json['class'] == "au.org.emii.portal.Server") {
                                 e.dropNode.push(this.loader.createNode({
-                                    text:r.get('name'),
-                                    leaf:false,
+                                    text: r.get('name'),
+                                    leaf: false,
                                     children: [],
-                                    grailsServerId:r.get('id'), // identify grails Server by this variable
-                                    qtip:r.get('json.uri')
+                                    grailsServerId: r.get('id'), // identify grails Server by this variable
+                                    qtip: r.get('json.uri')
                                 }));
                             }
                             else {
-                            // create layer node
-                            e.dropNode.push(this.loader.createNode({
-                                text:r.get('title'),
-                                leaf:true,
-                                grailsLayerId:r.get('id'), // identify grails layers by this variable
-                                qtip:r.get('layers') + " - " + r.get('server.shortAcron')
-                            }));
+                                // create layer node
+                                e.dropNode.push(this.loader.createNode({
+                                    text: r.get('title'),
+                                    leaf: true,
+                                    grailsLayerId: r.get('id'), // identify grails layers by this variable
+                                    qtip: r.get('layers') + " - " + r.get('server.shortAcron')
+                                }));
 
                             }
                         }
@@ -210,15 +209,15 @@ function setupgrid2treedrag(menu) {
 function rightClickMenu(node) {
     var treeMenu = new Ext.menu.Menu({
         plain: false,
-        shadow:'drop',
+        shadow: 'drop',
         showSeparator: false
     });
 
     if (!node.isLeaf()) {
         treeMenu.add({
-            text:'Add Menu Branch',
-            node:node,
-            listeners:{
+            text: 'Add Menu Branch',
+            node: node,
+            listeners: {
                 click: function(item) {
                     Ext.MessageBox.prompt('Node Name', 'Please enter the label for this new branch:', function(status, text) {
                         if (text != "") {
@@ -233,7 +232,7 @@ function rightClickMenu(node) {
                             showHideButtons();
                         }
                         else {
-                            Ext.MessageBox.alert('Node not created','You must supply a name for a new branch');
+                            Ext.MessageBox.alert('Node not created', 'You must supply a name for a new branch');
                         }
                     });
                 }
@@ -241,13 +240,13 @@ function rightClickMenu(node) {
         });
 
         treeMenu.add({
-            text:'Rename',
-            node:node,
-            listeners:{
+            text: 'Rename',
+            node: node,
+            listeners: {
                 click: function(item) {
                     Ext.MessageBox.prompt('Node Name', 'Please enter the label for this node:',
                         function(status, text) {
-                        // dont allow the label to be empty
+                            // dont allow the label to be empty
                             if (text != "") {
                                 node.setText(text);
                             }
@@ -266,9 +265,9 @@ function rightClickMenu(node) {
     }
     if (node.id != "root") {
         treeMenu.add({
-            text:'Remove',
-            node:node,
-            listeners:{
+            text: 'Remove',
+            node: node,
+            listeners: {
                 click: function() {
                     node.destroy();
                     showHideButtons();

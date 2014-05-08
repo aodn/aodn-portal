@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -54,10 +53,12 @@ Portal.ui.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
 
         new Ext.KeyMap(
             this.el,
-            [{
-                key: [10, 13],
-                fn: this.onSearchButtonClick,
-                scope: this
-            }]);
+            [
+                {
+                    key: [10, 13],
+                    fn: this.onSearchButtonClick,
+                    scope: this
+                }
+            ]);
     }
 });

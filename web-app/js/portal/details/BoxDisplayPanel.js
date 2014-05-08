@@ -47,7 +47,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                 xtype: 'container',
                 layout: {
                     type: 'hbox',
-                    pack:'center',
+                    pack: 'center',
                     align: 'middle'
                 },
                 width: this.tableWidth,
@@ -109,7 +109,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
             decimalPrecision: 2,
             width: 55,
             disabled: true,
-            margins: {top:-2, right:0, bottom:0, left:0}
+            margins: {top: -2, right: 0, bottom: 0, left: 0}
         });
     }
 });

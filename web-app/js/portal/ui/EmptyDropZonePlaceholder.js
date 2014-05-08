@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -36,13 +35,13 @@ Portal.ui.EmptyDropZonePlaceholder = Ext.extend(Ext.Panel, {
                             html: '<h1 id="' + placeholderTextId + '">' + config.placeholderText + '</h1>',
                             listeners: {
 
-                                 // Dirty hack to centre align (vert and horizontally) the placeholder text.
+                                // Dirty hack to centre align (vert and horizontally) the placeholder text.
                                 'afterrender': function() {
 
-                                    $('#'+ placeholderTextId).parent().addClass('drop-zone-placeholder');
+                                    $('#' + placeholderTextId).parent().addClass('drop-zone-placeholder');
                                     var parentHeight = $('#' + emptyDropZonePlaceholderId).height();
                                     $('#' + emptyDropZonePlaceholderId).find('.x-panel-body').css('height', '');
-                                    $('#'+ placeholderTextId).parent().css('height', parentHeight - (2 * thePadding) + 'px');
+                                    $('#' + placeholderTextId).parent().css('height', parentHeight - (2 * thePadding) + 'px');
                                 }
                             }
                         }
