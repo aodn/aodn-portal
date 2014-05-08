@@ -7,7 +7,7 @@
 --%>
 
 <g:render template="/core_theme_includes"></g:render>
- 
+
 <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'general.css')}"/>
 
 <g:if test="${grailsApplication.config.portal.instance?.css}">

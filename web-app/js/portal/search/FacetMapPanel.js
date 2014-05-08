@@ -56,7 +56,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
             restrictedExtent: new OpenLayers.Bounds.fromArray([null, -90, null, 90])
         });
     },
-    
+
     _updateMapSize: function() {
         //need to do this because things go wack if the parent panel is moved, for instance due to scrolling
         this.map.updateSize();

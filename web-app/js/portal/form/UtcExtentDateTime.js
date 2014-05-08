@@ -41,7 +41,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         // on firefox
         return this.dateValue ? this.dateValue.clone() : '';
     },
-    
+
     reset: function() {
         this.df.reset();
         this.tf.reset();

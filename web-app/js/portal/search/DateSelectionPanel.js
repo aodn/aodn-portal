@@ -67,12 +67,12 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     },
 
     onSelect: function() {
-    	var range = this.dateRange.getFilterValue();
+        var range = this.dateRange.getFilterValue();
         if (range.fromDate !== "" && range.toDate !== "") {
             this.goButton.enable();
         }
     },
-    
+
     onGo: function() {
         var range = this.dateRange.getFilterValue();
 
@@ -130,7 +130,7 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
         var newTitle = '<span class="term-selection-panel-header">' + this.titleText + '</span>';
         this.setTitle(newTitle);
     },
-    
+
     clearComponents: function() {
         this.searcher.removeFilters("extFrom");
         this.searcher.removeFilters("extTo");

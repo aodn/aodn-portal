@@ -71,7 +71,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
                 selectedNode.select();
             }
         }, this);
-        
+
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_START, function(subject, openLayer) {
             this._onLayerLoadingStart(openLayer);
         }, this);

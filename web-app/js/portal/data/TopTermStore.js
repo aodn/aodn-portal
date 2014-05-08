@@ -77,11 +77,11 @@ Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
         this.clearFilter();
 
         this._matchPreviousSelection();
-        
+
         if (this.canLimit() && !this.showAll) {
             this._limitNumberOfDisplayedRecords();
         }
-        
+
         this.sort("display", "ASC");
     },
 
@@ -96,7 +96,7 @@ Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
         this._applyLimitDisplaySortOrder();
         this._filterRecordsPastLimit();
     },
-    
+
     _filterRecordsPastLimit: function() {
         this.filterBy(function(rec) {
             return this._getRecordsUpToLimit().indexOf(rec) >= 0;

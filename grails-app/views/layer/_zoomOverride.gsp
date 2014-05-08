@@ -9,7 +9,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
   <span class="hint">Workaround for layers whose bounding box spans the dateline.</span>
   <table>
     <tbody>
-      
+
       <!-- Centre Lat -->
       <tr class="prop">
         <td valign="top" class="name">
@@ -19,7 +19,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
           <g:textField name="viewParams.centreLat" maxlength="455" value="${layerInstance?.viewParams?.centreLat}" />
         </td>
       </tr>
-      
+
       <!-- Centre Lon -->
       <tr class="prop">
         <td valign="top" class="name">

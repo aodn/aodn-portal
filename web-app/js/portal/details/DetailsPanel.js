@@ -10,7 +10,7 @@ Ext.namespace('Portal.details');
 Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
     constructor : function(cfg) {
-        
+
         var config = Ext.apply({
             title: OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description')}),
             headerCfg: {
@@ -32,7 +32,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     },
 
     initComponent : function() {
-        
+
         this.detailsPanelTabs = new Portal.details.DetailsPanelTab({
                 map: this.map
             });

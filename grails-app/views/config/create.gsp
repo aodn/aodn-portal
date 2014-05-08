@@ -16,13 +16,13 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'config.label', default: 'Config')}" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
-        
+
         <script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery-ui-1.8.10.custom.min.js')}"></script>
         <script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery.layout.min.js')}"></script>
         <script type="text/javascript" src="${resource(dir:'js/jquery',file:'jquery.selectlist.js')}"></script>
         <g:render template="jqueryjs"></g:render>
-        
-        
+
+
     </head>
     <body>
         <div class="nav">
@@ -44,10 +44,10 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                        
+
                          <g:render template="form"></g:render>
 
-                        
+
                         </tbody>
                     </table>
                 </div>

@@ -13,7 +13,7 @@
     <head>
         <meta name="layout" content="main">
         <g:set var="entityName" value="${message(code: 'menu.label', default: 'Menu')}" />
-                
+
         <script src="${resource(dir:'js',file:'portal/data/LayerDataPanelStore.js')}"  type="text/javascript"></script>
         <script src="${resource(dir:'js',file:'portal/ui/LayerGridPanel.js')}"  type="text/javascript"></script>
         <script src="${resource(dir:'js',file:'portal/config/grid2treedrag.js')}" type="text/javascript"></script>
@@ -40,14 +40,14 @@
                       <g:form action="update" AUTOCOMPLETE="off">
                           <input id="jsonString" name="json" autocomplete="off" type="hidden" />
                            <input name="id" value="${menuInstance.id}" type="hidden" />
-                          <span class="menuButton"><g:submitButton id="submitMenu" name="submitMenu" class="save" value="Save Edited Menu ${menuInstance.id}" style="visibility:hidden" /></span>            
+                          <span class="menuButton"><g:submitButton id="submitMenu" name="submitMenu" class="save" value="Save Edited Menu ${menuInstance.id}" style="visibility:hidden" /></span>
                       </g:form>
                   </ul>
-          
-            
+
+
         </div>
-        
-        <div class="content"> 
+
+        <div class="content">
           <g:hasErrors bean="${menuInstance}">
             <div class="errors">
                 <g:renderErrors bean="${menuInstance}" as="list" />
@@ -57,10 +57,10 @@
             <g:if test="${flash.message}">
               <div id="message" id="message" class="message">${flash.message}</div>
             </g:if>
-            
-            
+
+
             <div id="menuConfigurator" style="height:100%"></div>
-            
+
         </div>
     </body>
 </html>

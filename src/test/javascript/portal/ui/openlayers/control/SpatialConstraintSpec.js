@@ -121,7 +121,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             map.updateSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.NONE);
             expect(eventSpy).toHaveBeenCalled();
         });
-        
+
         it('moves drawing/result layers to top when layer added', function() {
              var newLayer = new OpenLayers.Layer.Vector('new layer');
              map.addLayer(newLayer);

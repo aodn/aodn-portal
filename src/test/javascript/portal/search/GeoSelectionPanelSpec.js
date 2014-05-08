@@ -18,19 +18,19 @@ describe("Portal.search.GeoSelectionPanel", function() {
             searcher: searcher
         });
     });
-    
+
     describe("onGo", function() {
 
         it("expects the geometry field to be called geometry", function() {
             expect(geoFilter.GEOMETRY_FIELD).toEqual('geometry');
         });
 
-        
+
         it("does do a catalog search if no feature is specified", function() {
 
             spyOn(geoFilter.facetMap, 'hasCurrentFeature').andReturn(false);
             spyOn(searcher, 'search');
-            
+
             geoFilter.onGo();
 
             expect(searcher.search).toHaveBeenCalled();

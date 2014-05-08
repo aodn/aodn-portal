@@ -32,15 +32,15 @@
             <div class="dialog">
                 <table>
                     <tbody>
-                    
-                                           
-                    
+
+
+
                         <tr class="prop">
-                            
+
                             <td valign="top" class="value pretendPopup" style="padding: 20px;"><h2>${fieldValue(bean: motdInstance, field: "motdTitle")}</h2>${motdInstance?.motd}</td>
-                            
+
                         </tr>
-                    
+
                     </tbody>
                 </table>
             </div>

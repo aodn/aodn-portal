@@ -37,7 +37,7 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                        
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="emailAddress"><g:message code="user.emailAddress.label" default="Email Address" /></label>
