@@ -91,6 +91,15 @@
 
 <tr class="prop">
     <td valign="top" class="name">
+        <label for="supportsCsvMetadataHeaderOutputFormat"><g:message code="server.supportsCsvMetadataHeaderOutputFormat.label" default="Supports CSV metadata header output format" /></label>
+    </td>
+    <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'allowDiscoveries', 'errors')}">
+        <g:checkBox name="supportsCsvMetadataHeaderOutputFormat" value="${serverInstance?.supportsCsvMetadataHeaderOutputFormat}" />
+    </td>
+</tr>
+
+<tr class="prop">
+    <td valign="top" class="name">
         <label for="comments"><g:message code="server.comments.label" default="Comments" /></label>
     </td>
     <td valign="top" class="value ${hasErrors(bean: serverInstance, field: 'comments', 'errors')}">

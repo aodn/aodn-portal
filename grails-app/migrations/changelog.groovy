@@ -76,6 +76,7 @@ databaseChangeLog = {
     include file: '20140415-AS-GogoduckOverrideLayerNameAdded.groovy'
     include file: '20140423-PB-downloadCartConfirmationWindowText.groovy'
     include file: '20140501-DN-AodaacJobParameters.groovy'
+    include file: '20140507-JB-CsvMetadataHeaderOutputFormat.groovy'
 
     // Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 
