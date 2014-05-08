@@ -14,6 +14,7 @@ describe('OpenLayers', function() {
 
         beforeEach(function() {
             openLayer = new OpenLayers.Layer.WMS();
+            openLayer.server = {};
         });
 
         it("no bounding box", function() {
@@ -229,6 +230,28 @@ describe('OpenLayers', function() {
 
                 expect(getFeatureUrl).toBe(expectedUrl);
             });
+
+            it('calls _getServerSupportedOutputFormat', function() {
+                spyOn(openLayer, '_getServerSupportedOutputFormat');
+                openLayer._buildGetFeatureRequestUrl('wfs_url', 'type_name', 'csv');
+                expect(openLayer._getServerSupportedOutputFormat).toHaveBeenCalledWith('csv');
+            });
+
+            describe('_getServerSupportedOutputFormat', function() {
+                it("returns 'csv-with-metadata-header' if server does support CSV metadata header", function() {
+                    openLayer.server.supportsCsvMetadataHeaderOutputFormat = true;
+                    expect(openLayer._getServerSupportedOutputFormat('csv')).toBe('csv-with-metadata-header');
+                });
+
+                it("returns 'csv' if server does not support CSV metadata header", function() {
+                    openLayer.server.supportsCsvMetadataHeaderOutputFormat = false;
+                    expect(openLayer._getServerSupportedOutputFormat('csv')).toBe('csv');
+                });
+
+                it("returns given outputFormat for formats other than 'csv'", function() {
+                    expect(openLayer._getServerSupportedOutputFormat('xyz')).toBe('xyz');
+                });
+            });
         });
 
         describe('getFeatureInfoRequestString', function() {
@@ -273,7 +296,7 @@ describe('OpenLayers', function() {
             });
         });
     });
-    
+
     describe('setSpatialConstraintStyle', function() {
         var map;
         beforeEach(function() {
@@ -321,7 +344,7 @@ describe('OpenLayers', function() {
             expect(map.controls).toContain(map.spatialConstraintControl);
             expect(map.navigationControl.deactivate).toHaveBeenCalled();
         });
-        
+
         it('has spatial constraint control', function() {
             map.setSpatialConstraintStyle('bounding box');
             expect(map.spatialConstraintControl).toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);

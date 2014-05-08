@@ -106,7 +106,7 @@ OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl = function(baseUrl, la
     wfsUrl += (wfsUrl.indexOf('?') !== -1) ? "&" : "?";
     wfsUrl += 'typeName=' + layerName;
     wfsUrl += '&SERVICE=WFS';
-    wfsUrl += '&outputFormat=' + outputFormat;
+    wfsUrl += '&outputFormat=' + this._getServerSupportedOutputFormat(outputFormat);
     wfsUrl += '&REQUEST=GetFeature';
     wfsUrl += '&VERSION=1.0.0';
 
@@ -115,6 +115,21 @@ OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl = function(baseUrl, la
     }
 
     return wfsUrl;
+};
+
+OpenLayers.Layer.WMS.prototype._getServerSupportedOutputFormat = function(outputFormat) {
+
+    // No special handling for formats other than 'csv'.
+    if (outputFormat != 'csv') {
+        return outputFormat;
+    }
+    // Request to have metadata inserted, if it's available.
+    else if (this.server.supportsCsvMetadataHeaderOutputFormat) {
+        return 'csv-with-metadata-header';
+    }
+    else {
+        return 'csv';
+    }
 };
 
 OpenLayers.Layer.WMS.prototype._getWfsServerUrl = function() {

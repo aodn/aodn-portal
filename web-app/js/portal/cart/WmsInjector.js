@@ -84,7 +84,7 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _csvDownloadUrl: function(collection) {
 
-        return this._wmsDownloadUrl(collection, { format: this._getCsvFormat(collection) });
+        return this._wmsDownloadUrl(collection, { format: 'csv' });
     },
 
     _wfsDownloadHandler: function(collection) {
@@ -92,12 +92,7 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return this.downloadWithConfirmation(
             collection,
             this._wfsDownloadUrl,
-            this._getDownloadParams(collection, '', "{0}.csv", this._getCsvFormat(collection))
+            this._getDownloadParams(collection, '', "{0}.csv", 'csv')
         );
-    },
-
-    _getCsvFormat: function(collection) {
-        return collection.wmsLayer.server.supportsCsvMetadataHeaderOutputFormat ?
-            'csv-with-metadata-header' : 'csv';
     }
 });
