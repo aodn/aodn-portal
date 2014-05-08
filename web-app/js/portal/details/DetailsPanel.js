@@ -27,24 +27,21 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         Portal.details.DetailsPanel.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(eventName, openlayer) {
-                    this.updateDetailsPanel(openlayer);
-                }, this);
+            this.updateDetailsPanel(openlayer);
+        }, this);
     },
 
     initComponent : function() {
         
-        this.detailsPanelTabs = new Portal.details.DetailsPanelTab(
-                {
-                    map: this.map
-                });
+        this.detailsPanelTabs = new Portal.details.DetailsPanelTab({
+                map: this.map
+            });
 
         this.dataCollectionSelectorPanel = new Portal.details.DataCollectionSelectorPanel();
 
-        this.items = [ this.dataCollectionSelectorPanel,
-                this.detailsPanelTabs ];
+        this.items = [ this.dataCollectionSelectorPanel, this.detailsPanelTabs ];
 
-        Portal.details.DetailsPanel.superclass.initComponent
-                .call(this);
+        Portal.details.DetailsPanel.superclass.initComponent.call(this);
 
         this.hideDetailsPanelContents();
     },
@@ -52,7 +49,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     // must be called when the panel is fully expanded for the slider
     updateDetailsPanel: function(layer, forceOpen) {
         if (layer) {
-
             if (layer.isOverlay()) {
                 // show new layer unless user requested 'hideLayerOptions'
                 this.detailsPanelTabs.handleLayer(layer);
