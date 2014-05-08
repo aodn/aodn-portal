@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2013 IMOS
  *
@@ -8,7 +7,7 @@
 
 // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
 if (!Object.keys) {
-    Object.keys = (function () {
+    Object.keys = (function() {
         'use strict';
         var hasOwnProperty = Object.prototype.hasOwnProperty,
             hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
@@ -23,7 +22,7 @@ if (!Object.keys) {
             ],
             dontEnumsLength = dontEnums.length;
 
-        return function (obj) {
+        return function(obj) {
             if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
                 throw new TypeError('Object.keys called on non-object');
             }

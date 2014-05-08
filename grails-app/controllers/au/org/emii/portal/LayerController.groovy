@@ -237,7 +237,10 @@ class LayerController {
             redirect(action: "list")
         }
         else {
-            render(view: "create", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)])
+            render(
+                view: "create",
+                model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)]
+            )
         }
     }
 
@@ -266,8 +269,16 @@ class LayerController {
                 def version = params.version.toLong()
                 if (layerInstance.version > version) {
 
-                    layerInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'layer.label', default: 'Layer')] as Object[], "Another user has updated this Layer while you were editing")
-                    render(view: "edit", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)])
+                    layerInstance.errors.rejectValue(
+                        "version", "default.optimistic.locking.failure",
+                        [message(code: 'layer.label', default: 'Layer')] as Object[],
+                        "Another user has updated this Layer while you were editing"
+                    )
+                    render(
+                        view: "edit", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(
+                        layerInstance
+                    )]
+                    )
                     return
                 }
             }
@@ -284,7 +295,10 @@ class LayerController {
                 redirect(action: "list", id: layerInstance.id)
             }
             else {
-                render(view: "edit", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)])
+                render(
+                    view: "edit",
+                    model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)]
+                )
             }
         }
         else {
@@ -357,7 +371,7 @@ class LayerController {
 
             log.info "Problem validating credentials", e
 
-            log.debug "Possible problem with '${ params.password }'"
+            log.debug "Possible problem with '${params.password}'"
 
             render status: 401, text: "Credentials missing or incorrect"
             return
@@ -426,7 +440,9 @@ class LayerController {
                     //TODO: Validate schema before proceeding
 
                     //Extract Abstract and resource links
-                    def abstractText = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text())
+                    def abstractText = HtmlUtils.htmlEscape(
+                        xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text()
+                    )
                     def onlineResourcesList = xml.distributionInfo.MD_Distribution.transferOptions.MD_DigitalTransferOptions.onLine.list()
 
                     def html = "<!DOCTYPE html>\n"
@@ -436,7 +452,9 @@ class LayerController {
                     onlineResourcesList.each {
                         if (!it.CI_OnlineResource.protocol.text().startsWith("OGC:WMS")) {
                             def linkText = HtmlUtils.htmlEscape(it.CI_OnlineResource.description.CharacterString.text())
-                            def linkProtocol = HtmlUtils.htmlEscape(it.CI_OnlineResource.protocol.CharacterString.text())
+                            def linkProtocol = HtmlUtils.htmlEscape(
+                                it.CI_OnlineResource.protocol.CharacterString.text()
+                            )
                             def linkUrl = it.CI_OnlineResource.linkage.URL.text()
                             def linkExternal = ""
                             if (linkUrl && linkUrl[0] != "/") {
@@ -448,7 +466,9 @@ class LayerController {
                             }
 
                             if (!linkProtocol.startsWith("IMOS:AGGREGATION")) {
-                                html += """<li><a ${linkExternal} href="${linkUrl}" target="_blank">${linkText}</a></li>\n"""
+                                html += """<li><a ${linkExternal} href="${linkUrl}" target="_blank">${
+                                    linkText
+                                }</a></li>\n"""
                             }
                         }
                     }

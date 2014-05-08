@@ -14,7 +14,7 @@ class GogoduckService {
 
         _gogoduckConnection().post(
             [
-                body: jobParameters,
+                body              : jobParameters,
                 requestContentType: JSON
             ],
             successHandler

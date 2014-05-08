@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -14,7 +13,7 @@ Portal.search.field.FreeText = Ext.extend(Ext.form.TextField, {
     fieldClass: "searchInput",
     name: 'any',
 
-    getFilterValue: function () {
+    getFilterValue: function() {
         return { value: this.getValue() };
     },
 

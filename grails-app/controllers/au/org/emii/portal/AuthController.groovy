@@ -78,7 +78,8 @@ class AuthController {
 
             log.info "OpenID authentication failed. verification.statusMsg: ${verification.statusMsg}; params: $params"
 
-            flash.openIdMessage = (params["openid.mode"] == "cancel") ? "Log in cancelled." : "Could not log in (${verification.statusMsg})"
+            flash.openIdMessage = (params
+                ["openid.mode"] == "cancel") ? "Log in cancelled." : "Could not log in (${verification.statusMsg})"
         }
         redirect controller: "home"
     }
@@ -96,7 +97,8 @@ class AuthController {
 
     def _logUserIn(userInstance) {
 
-        def authToken = new OpenIdAuthenticationToken(userInstance.id, userInstance.openIdUrl) // Todo - DN: Remember me option
+        def authToken = new OpenIdAuthenticationToken(userInstance.id, userInstance.openIdUrl)
+        // Todo - DN: Remember me option
 
         SecurityUtils.subject.login authToken
     }
@@ -126,7 +128,7 @@ class AuthController {
         // Get values from attribute exchange
         def authResponse = verification.authResponse
 
-        log.debug "authResponse: ${ authResponse }"
+        log.debug "authResponse: ${authResponse}"
 
         if (authResponse.hasExtension(AxMessage.OPENID_NS_AX)) {
             // Validate response
@@ -142,7 +144,7 @@ class AuthController {
             }
             else {
 
-                log.warn "Unknown response type from OpenID (ie. not a FetchResponse). ext: '$ext' (${ ext?.class?.name })"
+                log.warn "Unknown response type from OpenID (ie. not a FetchResponse). ext: '$ext' (${ext?.class?.name})"
             }
         }
         else {

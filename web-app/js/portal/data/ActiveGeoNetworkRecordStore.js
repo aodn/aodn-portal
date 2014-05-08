@@ -98,7 +98,9 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     addRecordAttribute: function(uuid, key, value) {
         if (this._recordExists(uuid)) {
-            if (!this.recordAttributes.uuid) this.recordAttributes.uuid = {};
+            if (!this.recordAttributes.uuid) {
+                this.recordAttributes.uuid = {};
+            }
             this.recordAttributes.uuid.key = value;
         }
     },
@@ -147,17 +149,17 @@ function setExtWmsLayer(url, label, type, layer, sld, options, style) {
     }
 
     Portal.data.ActiveGeoNetworkRecordStore.instance().layerStore.addUsingDescriptor(new Portal.common.LayerDescriptor({
-        server:{
-            uri:url,
-            type:type,
-            opacity:100,
-            infoFormat:"text/html"
+        server: {
+            uri: url,
+            type: type,
+            opacity: 100,
+            infoFormat: "text/html"
         },
-        queryable:true,
+        queryable: true,
         // style in .ftl's but should be styles
-        defaultStyle:style,
-        name:layer,
-        title:_label,
-        cql:cql
+        defaultStyle: style,
+        name: layer,
+        title: _label,
+        cql: cql
     }));
 }

@@ -52,7 +52,7 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         });
 
         Ext.apply(this, {
-            title:OpenLayers.i18n('downloadConfirmationWindowTitle'),
+            title: OpenLayers.i18n('downloadConfirmationWindowTitle'),
             modal: true,
             padding: 15,
             layout: 'fit',

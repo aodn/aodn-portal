@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -15,7 +14,7 @@ databaseChangeLog = {
 
             update(tableName: "config") {
 
-                column name:"search_using_bbox_by_default", valueBoolean: "true"
+                column name: "search_using_bbox_by_default", valueBoolean: "true"
                 where "id = (select id from config limit 1)"
             }
         }

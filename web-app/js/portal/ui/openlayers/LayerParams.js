@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -17,8 +16,7 @@ Portal.ui.openlayers.LayerParams = Ext.extend(Object, {
         }
 
         var defaultStyle = "";
-        if (layerDescriptor.defaultStyle != null)
-        {
+        if (layerDescriptor.defaultStyle != null) {
             defaultStyle = this.defaultStyle;
         }
 
@@ -30,7 +28,7 @@ Portal.ui.openlayers.LayerParams = Ext.extend(Object, {
             CQL_FILTER: layerDescriptor.cql,
             cql: layerDescriptor.cql,
             queryable: layerDescriptor.queryable,
-            styles:layerDescriptor.defaultStyle,
+            styles: layerDescriptor.defaultStyle,
             exceptions: 'application/vnd.ogc.se_xml'   // Don't display stack traces on the map!
         };
 
@@ -38,7 +36,7 @@ Portal.ui.openlayers.LayerParams = Ext.extend(Object, {
         Ext.apply(this, overrides);
     },
 
-    _getServerImageFormat: function (server) {
+    _getServerImageFormat: function(server) {
 
         if (server) {
             if (server.imageFormat) {
@@ -53,8 +51,8 @@ Portal.ui.openlayers.LayerParams = Ext.extend(Object, {
 
     _getWmsVersionString: function(server) {
         // list needs to match Server.groovy
-        var versionList = ["1.0.0","1.0.7","1.1.0","1.1.1","1.3.0"];
-        for(var i = 0; i < versionList.length; i++) {
+        var versionList = ["1.0.0", "1.0.7", "1.1.0", "1.1.1", "1.3.0"];
+        for (var i = 0; i < versionList.length; i++) {
             if (server.type.indexOf(versionList[i]) != -1) {
                 return versionList[i];
             }

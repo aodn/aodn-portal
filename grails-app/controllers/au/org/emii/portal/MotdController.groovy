@@ -56,7 +56,11 @@ class MotdController {
                 def version = params.version.toLong()
                 if (motdInstance.version > version) {
 
-                    motdInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'motd.label', default: 'Motd')] as Object[], "Another user has updated this Motd while you were editing")
+                    motdInstance.errors.rejectValue(
+                        "version", "default.optimistic.locking.failure",
+                        [message(code: 'motd.label', default: 'Motd')] as Object[],
+                        "Another user has updated this Motd while you were editing"
+                    )
                     render(view: "edit", model: [motdInstance: motdInstance])
                     return
                 }

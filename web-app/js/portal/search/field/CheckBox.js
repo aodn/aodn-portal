@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -10,7 +9,7 @@ Ext.namespace('Portal.search.field');
 
 Portal.search.field.CheckBox = Ext.extend(Ext.form.Checkbox, {
 
-    getFilterValue: function () {
+    getFilterValue: function() {
         return { value: this.getValue()};
     },
 

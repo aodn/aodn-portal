@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -37,7 +36,7 @@ class LayerService {
                 dataSource: dataSource
             )
 
-            def rootLayer = matchingLayers?.getAt( 0 ) // Get first element or null
+            def rootLayer = matchingLayers?.getAt(0) // Get first element or null
 
             log.info "== Find Root Layer =="
             log.info "With server: $server"
@@ -47,26 +46,26 @@ class LayerService {
             log.info "Using: $rootLayer"
             log.debug "====================="
 
-            if ( rootLayer ) {
+            if (rootLayer) {
 
-                def allLayersInServer = Layer.findAllByServerAndDataSource( server, dataSource )
+                def allLayersInServer = Layer.findAllByServerAndDataSource(server, dataSource)
 
-                log.debug "allLayersInServer: ${ allLayersInServer.size() }"
+                log.debug "allLayersInServer: ${allLayersInServer.size()}"
 
                 allLayersInServer.each {
 
-                    def uid = _uniquePathIdentifier( it, it.parent )
+                    def uid = _uniquePathIdentifier(it, it.parent)
 
                     log.debug "Disabling existing layer and storing for later ($uid)"
 
                     // Check for duplicates
-                    if ( existingLayers[ uid ] ) {
+                    if (existingLayers[uid]) {
 
                         log.info "[PROBLEM] Duplicate name + title id: $uid"
                     }
 
                     // Record for stats
-                    if ( it.activeInLastScan ) {
+                    if (it.activeInLastScan) {
 
                         existingActiveLayerPaths << uid
                     }
@@ -77,88 +76,94 @@ class LayerService {
 
                     // Mark inactive and store
                     it.activeInLastScan = false
-                    existingLayers[ uid ] = it
+                    existingLayers[uid] = it
                 }
             }
 
             // Traverse incoming JSON and create or update layers (update if they are in existingLayers[])
-            _traverseJsonLayerTree( layerAsJson, null, {
+            _traverseJsonLayerTree(
+                layerAsJson, null, {
                 newData, parent ->
 
-                def uniquePath = _uniquePathIdentifier( newData, parent )
-                def layerToUpdate = existingLayers[ uniquePath ]
+                    def uniquePath = _uniquePathIdentifier(newData, parent)
+                    def layerToUpdate = existingLayers[uniquePath]
 
-                if ( layerToUpdate ) {
+                    if (layerToUpdate) {
 
-                    log.debug "Found existing layer with details: '$uniquePath'"
+                        log.debug "Found existing layer with details: '$uniquePath'"
 
-                    updatedLayerPaths << uniquePath // Record for stats
+                        updatedLayerPaths << uniquePath // Record for stats
 
-                    def currentParent = layerToUpdate.parent
+                        def currentParent = layerToUpdate.parent
 
-                    if ( currentParent && ( currentParent != parent ) ) {
+                        if (currentParent && (currentParent != parent)) {
 
-                        layerToUpdate.parent = null
+                            layerToUpdate.parent = null
+                        }
+
+                        layerToUpdate.dimensions*.delete()
+                    }
+                    else {
+
+                        log.debug "Could not find existing layer with details: '$uniquePath'. Creating new..."
+
+                        addedLayerPaths << uniquePath // Record for stats
+
+                        // Doesn't exist, create
+                        layerToUpdate = new Layer()
+                        layerToUpdate.server = server
                     }
 
-                    layerToUpdate.dimensions*.delete()
-                }
-                else {
+                    log.debug "Applying new values to layer: $newData"
 
-                    log.debug "Could not find existing layer with details: '$uniquePath'. Creating new..."
+                    // Add as child of parent
+                    if (parent) {
+                        layerToUpdate.parent = parent
+                    } //parent.addToLayers layerToUpdate
 
-                    addedLayerPaths << uniquePath // Record for stats
+                    // Move data over
+                    layerToUpdate.title = newData.title
+                    layerToUpdate.queryable = newData.queryable
+                    layerToUpdate.bboxMinX = newData.bboxMinX
+                    layerToUpdate.bboxMinY = newData.bboxMinY
+                    layerToUpdate.bboxMaxX = newData.bboxMaxX
+                    layerToUpdate.bboxMaxY = newData.bboxMaxY
+                    layerToUpdate.projection = newData.bboxProjection
 
-                    // Doesn't exist, create
-                    layerToUpdate = new Layer()
-                    layerToUpdate.server = server
-                }
+                    _attachNameInfo layerToUpdate, newData
+                    _attachAbstractText layerToUpdate, newData
+                    _attachStyleInfo layerToUpdate, newData
+                    _attachMetadataUrls layerToUpdate, newData
+                    _attachWmsDimensions layerToUpdate, newData
 
-                log.debug "Applying new values to layer: $newData"
+                    // Scan info
+                    layerToUpdate.dataSource = dataSource
+                    layerToUpdate.activeInLastScan = true
+                    layerToUpdate.lastUpdated = new Date()
 
-                // Add as child of parent
-                if ( parent ) layerToUpdate.parent = parent //parent.addToLayers layerToUpdate
+                    layerToUpdate.layerHierarchyPath = uniquePath
 
-                // Move data over
-                layerToUpdate.title      = newData.title
-                layerToUpdate.queryable  = newData.queryable
-                layerToUpdate.bboxMinX   = newData.bboxMinX
-                layerToUpdate.bboxMinY   = newData.bboxMinY
-                layerToUpdate.bboxMaxX   = newData.bboxMaxX
-                layerToUpdate.bboxMaxY   = newData.bboxMaxY
-                layerToUpdate.projection = newData.bboxProjection
+                    // Need to explicitly save, since saves no longer cascade to children (since fix for #1761).
+                    layerToUpdate.save(failOnError: true)
 
-                _attachNameInfo      layerToUpdate, newData
-                _attachAbstractText  layerToUpdate, newData
-                _attachStyleInfo     layerToUpdate, newData
-                _attachMetadataUrls  layerToUpdate, newData
-                _attachWmsDimensions layerToUpdate, newData
-
-                // Scan info
-                layerToUpdate.dataSource = dataSource
-                layerToUpdate.activeInLastScan = true
-                layerToUpdate.lastUpdated = new Date()
-
-                layerToUpdate.layerHierarchyPath = uniquePath
-
-                // Need to explicitly save, since saves no longer cascade to children (since fix for #1761).
-                layerToUpdate.save(failOnError: true)
-
-                return layerToUpdate
-            })
+                    return layerToUpdate
+            }
+            )
 
             // Summary of changes
-            _logSummary( server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths )
+            _logSummary(
+                server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths
+            )
         }
-        catch ( Throwable t ) { // Want to catch both Errors and Exceptions
+        catch (Throwable t) { // Want to catch both Errors and Exceptions
 
-            throw new RuntimeException( "Failure in updateWithNewData() on Server: '$server'", t )
+            throw new RuntimeException("Failure in updateWithNewData() on Server: '$server'", t)
         }
     }
 
     void _traverseLayerTree(Layer layer, Closure layerProcess) {
 
-        layerProcess.call( layer )
+        layerProcess.call(layer)
 
         layer.layers.each {
 
@@ -168,25 +173,25 @@ class LayerService {
 
     def _traverseJsonLayerTree(JSONElement layerAsJson, Layer parent, Closure layerProcess) {
 
-        def newLayer = layerProcess.call( layerAsJson, parent )
+        def newLayer = layerProcess.call(layerAsJson, parent)
 
         layerAsJson.children.each {
 
             _traverseJsonLayerTree(
-                    it as JSONElement,
-                    newLayer as Layer,
-                    layerProcess
+                it as JSONElement,
+                newLayer as Layer,
+                layerProcess
             )
         }
 
         return newLayer
     }
 
-    def _uniquePathIdentifier( layer, parent ) {
+    def _uniquePathIdentifier(layer, parent) {
 
         def namePart
 
-        if ( layer.name ) {
+        if (layer.name) {
 
             namePart = layer.namespace ? "${layer.namespace}:${layer.name}" : layer.name
         }
@@ -196,47 +201,50 @@ class LayerService {
         }
 
         def titlePart = layer.title ?: "<no title>"
-        def parentPart = parent ? _uniquePathIdentifier( parent, parent.parent ) + " // " : ""
+        def parentPart = parent ? _uniquePathIdentifier(parent, parent.parent) + " // " : ""
 
-        return "$parentPart$namePart -- $titlePart".toString() // Needs to be a String (ie. not a GString) to be used as a key in a map reliably
+        return "$parentPart$namePart -- $titlePart".toString()
+        // Needs to be a String (ie. not a GString) to be used as a key in a map reliably
     }
 
     // More helpers
 
-    def _attachNameInfo( layer, newData ) {
+    def _attachNameInfo(layer, newData) {
 
         def newName = newData.name
 
-        if ( !newName ) return
+        if (!newName) {
+            return
+        }
 
-        def hasNamespace = newName.contains( ":" )
+        def hasNamespace = newName.contains(":")
 
-        if ( !hasNamespace ) {
+        if (!hasNamespace) {
 
             layer.name = newName
         }
         else {
 
-            def separatorIdx = newName.lastIndexOf( ":" )
+            def separatorIdx = newName.lastIndexOf(":")
 
-            layer.name = newName[ separatorIdx + 1 .. -1 ]
-            layer.namespace = newName[ 0 .. separatorIdx - 1 ]
+            layer.name = newName[separatorIdx + 1..-1]
+            layer.namespace = newName[0..separatorIdx - 1]
         }
     }
 
-    def _attachAbstractText( layer, newData ) {
+    def _attachAbstractText(layer, newData) {
 
         // Process abstractText value
         def abstractVal = newData.abstractText ?: ""
 
-        if ( abstractVal.length() > 455 ) { // 455 is current max length of this field
+        if (abstractVal.length() > 455) { // 455 is current max length of this field
             abstractVal = abstractVal[0..451] + "..."
         }
 
         layer.abstractTrimmed = abstractVal
     }
 
-    def _attachStyleInfo( layer, newData ) {
+    def _attachStyleInfo(layer, newData) {
 
         layer.styles*.delete()
         layer.styles.clear()
@@ -251,10 +259,9 @@ class LayerService {
 
             layer.styles << styles
         }
-
     }
 
-    def _attachMetadataUrls( layer, newData ) {
+    def _attachMetadataUrls(layer, newData) {
 
         layer.metadataUrls*.delete()
         layer.metadataUrls.clear()
@@ -272,7 +279,7 @@ class LayerService {
         }
     }
 
-    def _attachWmsDimensions( layer, newData ) {
+    def _attachWmsDimensions(layer, newData) {
 
         def dimensions = []
 
@@ -296,27 +303,27 @@ class LayerService {
         layer.dimensions = dimensions
     }
 
-    def _logSummary( server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths ) {
+    def _logSummary(server, existingActiveLayerPaths, existingInactiveLayerPaths, addedLayerPaths, updatedLayerPaths) {
 
         // Calculate remaining changes
         def layersMadeInactive = existingActiveLayerPaths - updatedLayerPaths
         def layersRemainingInactive = existingInactiveLayerPaths - updatedLayerPaths
 
         def layersReactivated = existingInactiveLayerPaths.clone()
-        layersReactivated.retainAll( updatedLayerPaths )
+        layersReactivated.retainAll(updatedLayerPaths)
 
         def labelsAndLayers = [
-            [ "Layers created", addedLayerPaths ],
-            [ "Layers deactivated", layersMadeInactive ],
-            [ "Layers reactivated", layersReactivated ],
-            [ "Layers remaining active", updatedLayerPaths ],
-            [ "Layers remaining inactive", layersRemainingInactive ]
+            ["Layers created", addedLayerPaths],
+            ["Layers deactivated", layersMadeInactive],
+            ["Layers reactivated", layersReactivated],
+            ["Layers remaining active", updatedLayerPaths],
+            ["Layers remaining inactive", layersRemainingInactive]
         ]
 
         _printUpdateInfo server, labelsAndLayers
     }
 
-    def _printUpdateInfo( server, labelsAndLayers ) {
+    def _printUpdateInfo(server, labelsAndLayers) {
 
         // Write summary to log
         log.info "== Updating Layers finished for server: $server (${server.uri}) =="
@@ -324,16 +331,18 @@ class LayerService {
         labelsAndLayers.each {
             label, layers ->
 
-            log.info "# $label: ${ layers.size() }"
+                log.info "# $label: ${layers.size()}"
 
-            if ( log.debugEnabled ) {
+                if (log.debugEnabled) {
 
-                layers.each{
-                    log.debug it
+                    layers.each {
+                        log.debug it
+                    }
+
+                    if (layers.size()) {
+                        log.debug ""
+                    } // Blank line if any Layers were printed
                 }
-
-                if ( layers.size() ) log.debug "" // Blank line if any Layers were printed
-            }
         }
     }
 }

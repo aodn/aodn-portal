@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2013 IMOS
  *
@@ -9,7 +8,6 @@
 package au.org.emii.portal.scanner
 
 import grails.converters.JSON
-
 
 import static au.org.emii.portal.UrlUtils.ensureTrailingSlash
 
@@ -26,13 +24,13 @@ abstract class ScannerService {
 
     def getStatus() {
 
-        def callbackUrl = URLEncoder.encode( saveOrUpdateCallbackUrl() )
+        def callbackUrl = URLEncoder.encode(saveOrUpdateCallbackUrl())
 
         def url = "${scanJobUrl()}list?callbackUrl=$callbackUrl"
 
         def content = callService(url)
 
-        return JSON.parse( content )
+        return JSON.parse(content)
     }
 
     abstract def getScannerBaseUrl()
@@ -47,13 +45,13 @@ abstract class ScannerService {
         return "${scannerURL()}scanJob/"
     }
 
-    def executeCommand( conn ) {
+    def executeCommand(conn) {
 
         def response = conn.content.text // Executes command
 
-        if ( response.toLowerCase().contains( "<html" ) ) {
+        if (response.toLowerCase().contains("<html")) {
 
-            response = "HTML response (Code: ${ conn.responseCode })"
+            response = "HTML response (Code: ${conn.responseCode})"
         }
 
         return response
@@ -65,6 +63,6 @@ abstract class ScannerService {
         def conn = url.openConnection()
         conn.connect()
 
-        return executeCommand( conn )
+        return executeCommand(conn)
     }
 }

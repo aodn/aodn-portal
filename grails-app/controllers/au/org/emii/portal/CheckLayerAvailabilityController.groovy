@@ -25,7 +25,8 @@ class CheckLayerAvailabilityController {
         }
         else {
 
-            render text: "id not supplied or not an integer. id: '${params.id}'", contentType: "text/html", encoding: "UTF-8", status: 500
+            render text: "id not supplied or not an integer. id: '${params.id}'", contentType: "text/html",
+                encoding: "UTF-8", status: 500
         }
     }
 }

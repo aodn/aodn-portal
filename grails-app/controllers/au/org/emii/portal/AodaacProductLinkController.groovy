@@ -19,7 +19,9 @@ class AodaacProductLinkController {
 
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 40, 100)
-        [aodaacProductLinkInstanceList: AodaacProductLink.list(params), aodaacProductLinkInstanceTotal: AodaacProductLink.count(), aodaacProductDataJavascriptAddress: aodaacAggregatorService.productDataJavascriptAddress]
+        [aodaacProductLinkInstanceList: AodaacProductLink.list(
+            params
+        ), aodaacProductLinkInstanceTotal: AodaacProductLink.count(), aodaacProductDataJavascriptAddress: aodaacAggregatorService.productDataJavascriptAddress]
     }
 
     def create = {
@@ -60,7 +62,8 @@ class AodaacProductLinkController {
                 layerName: aodaacProductLinkInstance.layerName
             )
 
-            render view: 'create', model: [aodaacProductLinkInstanceList: AodaacProductLink.list(), aodaacProductLinkInstance: clonedInstance]
+            render view: 'create',
+                model: [aodaacProductLinkInstanceList: AodaacProductLink.list(), aodaacProductLinkInstance: clonedInstance]
         }
     }
 
@@ -82,8 +85,15 @@ class AodaacProductLinkController {
                 def version = params.version.toLong()
                 if (aodaacProductLinkInstance.version > version) {
 
-                    aodaacProductLinkInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'aodaacProductLink.label', default: 'AodaacProductLink')] as Object[], "Another user has updated this AodaacProductLink while you were editing")
-                    render(view: "edit", model: [aodaacProductLinkInstanceList: AodaacProductLink.list(), aodaacProductLinkInstance: aodaacProductLinkInstance])
+                    aodaacProductLinkInstance.errors.rejectValue(
+                        "version", "default.optimistic.locking.failure",
+                        [message(code: 'aodaacProductLink.label', default: 'AodaacProductLink')] as Object[],
+                        "Another user has updated this AodaacProductLink while you were editing"
+                    )
+                    render(
+                        view: "edit",
+                        model: [aodaacProductLinkInstanceList: AodaacProductLink.list(), aodaacProductLinkInstance: aodaacProductLinkInstance]
+                    )
                     return
                 }
             }
@@ -97,7 +107,10 @@ class AodaacProductLinkController {
                 redirect(action: "list", id: aodaacProductLinkInstance.id)
             }
             else {
-                render(view: "edit", model: [aodaacProductLinkInstanceList: AodaacProductLink.list(), aodaacProductLinkInstance: aodaacProductLinkInstance])
+                render(
+                    view: "edit",
+                    model: [aodaacProductLinkInstanceList: AodaacProductLink.list(), aodaacProductLinkInstance: aodaacProductLinkInstance]
+                )
             }
         }
         else {

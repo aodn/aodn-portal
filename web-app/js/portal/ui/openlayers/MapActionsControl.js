@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -10,39 +9,39 @@ Ext.namespace('Portal.ui.openlayers');
 
 Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
 
-    actionsPanel : null,
+    actionsPanel: null,
     window: null,
 
     /**
      * APIProperty: roundedCorner {Boolean} If true the Rico library is used for
      * rounding the corners of the layer switcher div, defaults to true.
      */
-    roundedCorner : true,
+    roundedCorner: true,
 
     /**
      * APIProperty: roundedCornerColor {String} The color of the rounded
      * corners, only applies if roundedCorner is true,
      */
-    roundedCornerColor : "#34546E",
+    roundedCornerColor: "#34546E",
 
-    layersDiv : null,
+    layersDiv: null,
 
     /**
      * Property: minimizeDiv {DOMElement}
      */
-    minimizeDiv : null,
+    minimizeDiv: null,
 
     /**
      * Property: maximizeDiv {DOMElement}
      */
-    maximizeDiv : null,
+    maximizeDiv: null,
 
     /**
      * Constructor: OpenLayers.Control.LayerSwitcher
      *
      * Parameters: options - {Object}
      */
-    initialize : function(options) {
+    initialize: function(options) {
 
         OpenLayers.Control.prototype.initialize.apply(this, arguments);
 
@@ -52,7 +51,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
     /**
      * APIMethod: destroy
      */
-    destroy : function() {
+    destroy: function() {
 
         OpenLayers.Event.stopObservingElement(this.div);
 
@@ -67,7 +66,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
      *
      * Properties: map - {<OpenLayers.Map>}
      */
-    setMap : function(map) {
+    setMap: function(map) {
         OpenLayers.Control.prototype.setMap.apply(this, arguments);
     },
 
@@ -77,7 +76,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
      * Returns: {DOMElement} A reference to the DIV DOMElement containing the
      * switcher tabs.
      */
-    draw : function() {
+    draw: function() {
         OpenLayers.Control.prototype.draw.apply(this);
 
         // create layout divs
@@ -91,7 +90,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
         return this.div;
     },
 
-    loadContents : function() {
+    loadContents: function() {
 
         // configure main div
 
@@ -99,7 +98,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
         // OpenLayers.Function.bindAsEventListener(this.mouseUp, this));
         OpenLayers.Event.observe(this.div, "click", this.ignoreEvent);
         OpenLayers.Event.observe(this.div, "mousedown", OpenLayers.Function
-                .bindAsEventListener(this.mouseDown, this));
+            .bindAsEventListener(this.mouseDown, this));
         OpenLayers.Event.observe(this.div, "dblclick", this.ignoreEvent);
 
         // layers list div
@@ -111,10 +110,10 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
 
         if (this.roundedCorner) {
             OpenLayers.Rico.Corner.round(this.div, {
-                corners : "tl bl",
-                bgColor : "transparent",
-                color : this.roundedCornerColor,
-                blend : false
+                corners: "tl bl",
+                bgColor: "transparent",
+                color: this.roundedCornerColor,
+                blend: false
             });
             OpenLayers.Rico.Corner.changeOpacity(this.layersDiv, 0.85);
         }
@@ -125,46 +124,46 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
         // maximize button div
         var img = imgLocation + 'layer-switcher-maximize.png';
         this.maximizeDiv = OpenLayers.Util.createAlphaImageDiv(
-                "OpenLayers_Control_MaximizeDiv", null, sz, img, "absolute");
+            "OpenLayers_Control_MaximizeDiv", null, sz, img, "absolute");
         OpenLayers.Element.addClass(this.maximizeDiv, "maximizeDiv");
         this.maximizeDiv.style.display = "none";
         OpenLayers.Event.observe(this.maximizeDiv, "click", OpenLayers.Function
-                .bindAsEventListener(this.maximizeControl, this));
+            .bindAsEventListener(this.maximizeControl, this));
 
         this.div.appendChild(this.maximizeDiv);
 
         // minimize button div
         img = imgLocation + 'layer-switcher-minimize.png';
         this.minimizeDiv = OpenLayers.Util.createAlphaImageDiv(
-                "OpenLayers_Control_MinimizeDiv", null, sz, img, "absolute");
+            "OpenLayers_Control_MinimizeDiv", null, sz, img, "absolute");
         OpenLayers.Element.addClass(this.minimizeDiv, "minimizeDiv");
         this.minimizeDiv.style.display = "none";
         OpenLayers.Event.observe(this.minimizeDiv, "click", OpenLayers.Function
-                .bindAsEventListener(this.minimizeControl, this));
+            .bindAsEventListener(this.minimizeControl, this));
 
         this.div.appendChild(this.minimizeDiv);
 
         this.actionsPanel = new Portal.ui.ActionsPanel({
-            map : this.appConfig.mapPanel.map,
-            layerStore : this.appConfig.mapPanel.layers,
-            mapScope : this.appConfig.mapPanel
+            map: this.appConfig.mapPanel.map,
+            layerStore: this.appConfig.mapPanel.layers,
+            mapScope: this.appConfig.mapPanel
         });
 
         this.window = new Ext.Window({
-            id : 'mapActionsWindow',
-            draggable : false,
-            hidden : false,
-            closable : false,
-            border : false,
-            bodyBorder : false,
-            resizable : false,
+            id: 'mapActionsWindow',
+            draggable: false,
+            hidden: false,
+            closable: false,
+            border: false,
+            bodyBorder: false,
+            resizable: false,
             autoHeight: true,
-            layout:  'fit',
+            layout: 'fit',
             // This magic number exists because without it, the contents of this window don't show.
             // There is no doubt a better way to do this (based on the sizes of content, for exmaple),
             // be my guest if you can get it to work.
             width: 300,
-            afterRender : function() {
+            afterRender: function() {
 
                 Ext.Window.superclass.afterRender.apply(this);
                 this.el.dom.style.position = "";
@@ -191,7 +190,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
      *
      * Parameters: e - {Event}
      */
-    maximizeControl : function(e) {
+    maximizeControl: function(e) {
 
         // set the div's width and height to empty values, so
         // the div dimensions can be controlled by CSS
@@ -211,7 +210,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
      *
      * Parameters: e - {Event}
      */
-    minimizeControl : function(e) {
+    minimizeControl: function(e) {
 
         // to minimize the control we set its div's width
         // and height to 0px, we cannot just set "display"
@@ -232,7 +231,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
      *
      * Parameters: evt - {Event}
      */
-    ignoreEvent : function(evt) {
+    ignoreEvent: function(evt) {
         OpenLayers.Event.stop(evt, true);
     },
 
@@ -244,7 +243,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
      * Parameters:
      * evt - {Event}
      */
-    mouseDown : function(evt) {
+    mouseDown: function(evt) {
         this.isMouseDown = true;
         this.ignoreEvent(evt);
     },
@@ -258,7 +257,7 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
      * Parameters:
      * evt - {Event}
      */
-    mouseUp : function(evt) {
+    mouseUp: function(evt) {
         if (this.isMouseDown) {
             this.isMouseDown = false;
             this.ignoreEvent(evt);
@@ -273,12 +272,12 @@ Portal.ui.openlayers.MapActionsControl = OpenLayers.Class(OpenLayers.Control, {
      * Parameters:
      * minimize - {Boolean}
      */
-    showControls : function(minimize) {
+    showControls: function(minimize) {
 
         this.maximizeDiv.style.display = minimize ? "" : "none";
         this.minimizeDiv.style.display = minimize ? "none" : "";
     },
 
     //      CLASS_NAME: "Portal.ui.openlayers.MapActionsControl"
-    CLASS_NAME : "OpenLayers.Control.LayerSwitcher"
+    CLASS_NAME: "OpenLayers.Control.LayerSwitcher"
 });

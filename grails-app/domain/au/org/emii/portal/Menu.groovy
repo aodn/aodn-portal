@@ -53,7 +53,7 @@ class Menu {
             return false
         }
 
-        Menu rhs = (Menu)o
+        Menu rhs = (Menu) o
         return new EqualsBuilder()
             .append(id, rhs.id)
             .isEquals()
@@ -159,9 +159,11 @@ class Menu {
     def _cache(theCache, displayableMenu) {
 
         StringCharArrayFixer.run {
-            theCache.add(displayableMenu, JSON.use(JsonMarshallingRegistrar.MENU_PRESENTER_MARSHALLING_CONFIG) {
+            theCache.add(
+                displayableMenu, JSON.use(JsonMarshallingRegistrar.MENU_PRESENTER_MARSHALLING_CONFIG) {
                 displayableMenu as JSON
-            }.toString())
+            }.toString()
+            )
         }
     }
 }

@@ -11,7 +11,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
 
     RESOLUTIONS: [0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625],
 
-    constructor: function (cfg) {
+    constructor: function(cfg) {
 
         var layerStore = new Portal.data.LayerStore();
 

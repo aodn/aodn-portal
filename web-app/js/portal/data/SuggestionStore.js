@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -9,25 +8,29 @@
 Ext.namespace('Portal.data.SuggestionStore');
 
 Portal.data.SuggestionStore = Ext.extend(Ext.data.XmlStore, {
-    constructor : function(cfg) {
+    constructor: function(cfg) {
         var config = Ext.apply({
-            autoDestroy : true,
-            record : 'value',
-            fields : [ {
-                name : 'value',
-                mapping : '',
-                sortType : Ext.data.SortTypes.asUCString
-            }, {
-                name : 'count',
-                mapping : '@count'
-            }, {
-                name : 'display',
-                mapping : '',
-                convert : this.displayName
-            } ],
-            sortInfo : {
-                field : "value",
-                direction : 'ASC'
+            autoDestroy: true,
+            record: 'value',
+            fields: [
+                {
+                    name: 'value',
+                    mapping: '',
+                    sortType: Ext.data.SortTypes.asUCString
+                },
+                {
+                    name: 'count',
+                    mapping: '@count'
+                },
+                {
+                    name: 'display',
+                    mapping: '',
+                    convert: this.displayName
+                }
+            ],
+            sortInfo: {
+                field: "value",
+                direction: 'ASC'
             }
         }, cfg);
 
@@ -36,7 +39,7 @@ Portal.data.SuggestionStore = Ext.extend(Ext.data.XmlStore, {
         this.proxy.conn.disableCaching = false;
     },
 
-    displayName : function(v) {
+    displayName: function(v) {
         return v.replace(/_/g, ' ');
     }
 

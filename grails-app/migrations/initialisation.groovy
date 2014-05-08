@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -535,7 +534,10 @@ databaseChangeLog = {
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-16", failOnError: true) {
-        addPrimaryKey(columnNames: "user_id, user_role_id", constraintName: "portal_user_roles_pkey", tableName: "portal_user_roles")
+        addPrimaryKey(
+            columnNames: "user_id, user_role_id", constraintName: "portal_user_roles_pkey",
+            tableName: "portal_user_roles"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-17", failOnError: true) {
@@ -582,7 +584,8 @@ databaseChangeLog = {
 
             column(name: "active_layers_height", valueNumeric: "260")
 
-            column(name: "download_cart_mime_type_to_extension_mapping", value: '''{
+            column(
+                name: "download_cart_mime_type_to_extension_mapping", value: '''{
 "text/html":"html",
 "text/xhtml":"html",
 "text/plain":"txt",
@@ -598,15 +601,20 @@ databaseChangeLog = {
 "application/vnd.google-earth.kml+xml":"kml",
 "application/vnd.google-earth.kmz":"kmz",
 "application/pdf":"pdf"
-}''')
+}'''
+            )
 
-            column(name: "download_cart_downloadable_protocols", value: """WWW:DOWNLOAD-1.0-http--download
+            column(
+                name: "download_cart_downloadable_protocols", value: """WWW:DOWNLOAD-1.0-http--download
 WWW:DOWNLOAD-1.0-http--downloaddata
 WWW:DOWNLOAD-1.0-http--downloadother
-WWW:LINK-1.0-http--downloaddata""")
+WWW:LINK-1.0-http--downloaddata"""
+            )
 
-            column(name: "metadata_layer_protocols", value: """OGC:WMS-1.1.1-http-get-map
-OGC:WMS-1.3.0-http-get-map""")
+            column(
+                name: "metadata_layer_protocols", value: """OGC:WMS-1.1.1-http-get-map
+OGC:WMS-1.3.0-http-get-map"""
+            )
 
             column(name: "metadata_link_protocols", value: "WWW:LINK-1.0-http--link")
 
@@ -622,10 +630,11 @@ OGC:WMS-1.3.0-http-get-map""")
 
             column(name: "use_depth_service", valueBoolean: "true")
 
-            column(name: "footer_content", value: '''<p>You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it. If you have any concerns about the veracity of the data, please make inquiries via <a href="mailto:info@aodn.org.au">info@aodn.org.au</a> to be directed to the data custodian.</p>''')
+            column(
+                name: "footer_content", value: '''<p>You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it. If you have any concerns about the veracity of the data, please make inquiries via <a href="mailto:info@aodn.org.au">info@aodn.org.au</a> to be directed to the data custodian.</p>'''
+            )
 
             column(name: "footer_content_width", valueNumeric: "550")
-
         }
     }
 
@@ -744,83 +753,184 @@ OGC:WMS-1.3.0-http-get-map""")
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-24", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "baselayer_menu_id", baseTableName: "config", baseTableSchemaName: "public", constraintName: "fkaf3f83426893a7bb", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "menu", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "baselayer_menu_id", baseTableName: "config", baseTableSchemaName: "public",
+            constraintName: "fkaf3f83426893a7bb", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "menu",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-25", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "contributor_menu_id", baseTableName: "config", baseTableSchemaName: "public", constraintName: "fkaf3f8342cb47b476", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "menu", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "contributor_menu_id", baseTableName: "config", baseTableSchemaName: "public",
+            constraintName: "fkaf3f8342cb47b476", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "menu",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-26", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "default_menu_id", baseTableName: "config", baseTableSchemaName: "public", constraintName: "fkaf3f8342b75263dc", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "menu", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "default_menu_id", baseTableName: "config", baseTableSchemaName: "public",
+            constraintName: "fkaf3f8342b75263dc", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "menu",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-27", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "motd_id", baseTableName: "config", baseTableSchemaName: "public", constraintName: "fkaf3f8342c8e226fa", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "motd", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "motd_id", baseTableName: "config", baseTableSchemaName: "public",
+            constraintName: "fkaf3f8342c8e226fa", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "motd",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-28", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "region_menu_id", baseTableName: "config", baseTableSchemaName: "public", constraintName: "fkaf3f8342be10518f", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "menu", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "region_menu_id", baseTableName: "config", baseTableSchemaName: "public",
+            constraintName: "fkaf3f8342be10518f", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "menu",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-29", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "layer_id", baseTableName: "config_layer", baseTableSchemaName: "public", constraintName: "fk1fe8c214f74bd9a", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "layer", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "layer_id", baseTableName: "config_layer", baseTableSchemaName: "public",
+            constraintName: "fk1fe8c214f74bd9a", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION",
+            onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "layer",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-30", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "parent_id", baseTableName: "layer", baseTableSchemaName: "public", constraintName: "fk61fd551d8611fa1", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "layer", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "parent_id", baseTableName: "layer", baseTableSchemaName: "public",
+            constraintName: "fk61fd551d8611fa1", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION",
+            onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "layer",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-31", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "server_id", baseTableName: "layer", baseTableSchemaName: "public", constraintName: "fk61fd55142b61d5a", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "server", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "server_id", baseTableName: "layer", baseTableSchemaName: "public",
+            constraintName: "fk61fd55142b61d5a", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION",
+            onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "server",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-32", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "layer_id", baseTableName: "menu_item", baseTableSchemaName: "public", constraintName: "fka4faa1f3f74bd9a", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "layer", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "layer_id", baseTableName: "menu_item", baseTableSchemaName: "public",
+            constraintName: "fka4faa1f3f74bd9a", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION",
+            onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "layer",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-33", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "menu_id", baseTableName: "menu_item", baseTableSchemaName: "public", constraintName: "fka4faa1f3b784b7da", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "menu", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "menu_id", baseTableName: "menu_item", baseTableSchemaName: "public",
+            constraintName: "fka4faa1f3b784b7da", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "menu",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-34", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "parent_id", baseTableName: "menu_item", baseTableSchemaName: "public", constraintName: "fka4faa1f3a011e462", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "menu_item", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "parent_id", baseTableName: "menu_item", baseTableSchemaName: "public",
+            constraintName: "fka4faa1f3a011e462", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "menu_item",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-35", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "server_id", baseTableName: "menu_item", baseTableSchemaName: "public", constraintName: "fka4faa1f342b61d5a", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "server", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "server_id", baseTableName: "menu_item", baseTableSchemaName: "public",
+            constraintName: "fka4faa1f342b61d5a", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "server",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-36", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "org_type_id", baseTableName: "portal_user", baseTableSchemaName: "public", constraintName: "fkf1617fbeffa68f99", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "organisation_type", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "org_type_id", baseTableName: "portal_user", baseTableSchemaName: "public",
+            constraintName: "fkf1617fbeffa68f99", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id",
+            referencedTableName: "organisation_type", referencedTableSchemaName: "public",
+            referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-37", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "user_id", baseTableName: "portal_user_permissions", baseTableSchemaName: "public", constraintName: "fkbd92583761e105a", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "portal_user", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "user_id", baseTableName: "portal_user_permissions", baseTableSchemaName: "public",
+            constraintName: "fkbd92583761e105a", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION",
+            onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "portal_user",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-38", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "user_id", baseTableName: "portal_user_roles", baseTableSchemaName: "public", constraintName: "fkc77d2afc761e105a", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "portal_user", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "user_id", baseTableName: "portal_user_roles", baseTableSchemaName: "public",
+            constraintName: "fkc77d2afc761e105a", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id",
+            referencedTableName: "portal_user", referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-39", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "user_role_id", baseTableName: "portal_user_roles", baseTableSchemaName: "public", constraintName: "fkc77d2afce5cb2671", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "user_role", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "user_role_id", baseTableName: "portal_user_roles", baseTableSchemaName: "public",
+            constraintName: "fkc77d2afce5cb2671", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "user_role",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-40", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "owner_id", baseTableName: "snapshot", baseTableSchemaName: "public", constraintName: "fk10fad5c4e204c072", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "portal_user", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "owner_id", baseTableName: "snapshot", baseTableSchemaName: "public",
+            constraintName: "fk10fad5c4e204c072", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id",
+            referencedTableName: "portal_user", referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-41", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "layer_id", baseTableName: "snapshot_layer", baseTableSchemaName: "public", constraintName: "fka548ab16f74bd9a", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "layer", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "layer_id", baseTableName: "snapshot_layer", baseTableSchemaName: "public",
+            constraintName: "fka548ab16f74bd9a", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION",
+            onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "layer",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-42", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "snapshot_id", baseTableName: "snapshot_layer", baseTableSchemaName: "public", constraintName: "fka548ab164f9b61ba", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "snapshot", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "snapshot_id", baseTableName: "snapshot_layer", baseTableSchemaName: "public",
+            constraintName: "fka548ab164f9b61ba", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "snapshot",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-43", failOnError: true) {
-        addForeignKeyConstraint(baseColumnNames: "user_role_id", baseTableName: "user_role_permissions", baseTableSchemaName: "public", constraintName: "fk56adf82fe5cb2671", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "user_role", referencedTableSchemaName: "public", referencesUniqueColumn: "false")
+        addForeignKeyConstraint(
+            baseColumnNames: "user_role_id", baseTableName: "user_role_permissions", baseTableSchemaName: "public",
+            constraintName: "fk56adf82fe5cb2671", deferrable: "false", initiallyDeferred: "false",
+            onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "user_role",
+            referencedTableSchemaName: "public", referencesUniqueColumn: "false"
+        )
     }
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-44", failOnError: true) {
@@ -837,7 +947,10 @@ OGC:WMS-1.3.0-http-get-map""")
 
             column(name: "queryable", valueBoolean: "true")
 
-            column(name: "server_id", valueComputed: "(select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi')")
+            column(
+                name: "server_id",
+                valueComputed: "(select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi')"
+            )
 
             column(name: "title", value: "Default Baselayer")
 
@@ -861,7 +974,10 @@ OGC:WMS-1.3.0-http-get-map""")
 
             column(name: "queryable", valueBoolean: "true")
 
-            column(name: "server_id", valueComputed: "(select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi')")
+            column(
+                name: "server_id",
+                valueComputed: "(select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi')"
+            )
 
             column(name: "title", value: "Simple Baselayer")
 
@@ -885,7 +1001,10 @@ OGC:WMS-1.3.0-http-get-map""")
 
             column(name: "queryable", valueBoolean: "true")
 
-            column(name: "server_id", valueComputed: "(select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi')")
+            column(
+                name: "server_id",
+                valueComputed: "(select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi')"
+            )
 
             column(name: "title", value: "Marine GEO")
 
@@ -909,7 +1028,10 @@ OGC:WMS-1.3.0-http-get-map""")
 
             column(name: "queryable", valueBoolean: "true")
 
-            column(name: "server_id", valueComputed: "(select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi')")
+            column(
+                name: "server_id",
+                valueComputed: "(select id from server where uri = 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi')"
+            )
 
             column(name: "title", value: "satellite")
 
@@ -1003,7 +1125,9 @@ OGC:WMS-1.3.0-http-get-map""")
 
     changeSet(author: "tfotak (generated)", id: "1331787865301-47", failOnError: true) {
         update(tableName: "config") {
-            column(name: "baselayer_menu_id", valueComputed: "(select id from menu where title = 'Default Base Layers')")
+            column(
+                name: "baselayer_menu_id", valueComputed: "(select id from menu where title = 'Default Base Layers')"
+            )
         }
     }
 

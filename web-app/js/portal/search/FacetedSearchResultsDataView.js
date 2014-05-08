@@ -67,11 +67,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         Portal.search.FacetedSearchResultsDataView.superclass.initComponent.apply(this, arguments);
     },
 
-    collectData: function(records, startIndex){
+    collectData: function(records, startIndex) {
         var r = [],
             i = 0,
             len = records.length;
-        for(; i < len; i++) {
+        for (; i < len; i++) {
             var newRecord = this.prepareData(records[i].data, startIndex + i, records[i]);
             newRecord = this._addStoreRowCount(newRecord);
             r[r.length] = newRecord;
@@ -91,7 +91,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '   <span>- {value}</span>',
             '</div>'
         );
-        var html= "";
+        var html = "";
 
         html += this._getOrganisationAsHtml(paramTpl, values.organisation);
         html += this._getPlatformAsHtml(paramTpl, values.platform);
@@ -222,25 +222,25 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return record;
     },
 
-    trimAbstract: function(text,wordCount) {
+    trimAbstract: function(text, wordCount) {
         return text.split(' ').splice(0, wordCount).join(' ') + " ... ";
     },
 
     // uuid alone is unique unless search results have duplicates
     superEncodeUuid: function(storeRowIndex, uuid) {
-        return "-" + storeRowIndex + "-"  + uuid;
+        return "-" + storeRowIndex + "-" + uuid;
     },
 
     decodeSuperUuid: function(encodedUuid) {
         var chunks = encodedUuid.split("-");
-        chunks.splice(0,2);
+        chunks.splice(0, 2);
         return chunks.join("-");
     },
 
     _viewButtonOnClick: function(btn) {
 
         btn.addClass("x-btn-selected");
-        var superUuid = btn.container.id.replace("fsSearchAddBtn",'');
+        var superUuid = btn.container.id.replace("fsSearchAddBtn", '');
         var uuid = this.decodeSuperUuid(superUuid);
         var record = this._getRecordFromUuid(uuid);
 

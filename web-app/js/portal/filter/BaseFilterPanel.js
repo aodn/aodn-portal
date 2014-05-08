@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -9,12 +8,12 @@
 Ext.namespace('Portal.filter');
 
 /**
-   This is the base type of all filters for geoserver layers.
-**/
+ This is the base type of all filters for geoserver layers.
+ **/
 Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
         var config = Ext.apply({
-            emptyText : OpenLayers.i18n("pleasePickCondensed"),
+            emptyText: OpenLayers.i18n("pleasePickCondensed"),
             listeners: {
                 beforeremove: function(panel, component) {
                     this.removeAll(true);
@@ -32,12 +31,12 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     /**
-       You must implement this method in subclass.
+     You must implement this method in subclass.
 
-       This method generates all the component fields required for this filter to work, e.g. textfields, buttons, etc.
-       Note that the "x" button is created in the filterGroupPanel. See also handleRemoveFilter.
-    **/
-    _createField:function() {
+     This method generates all the component fields required for this filter to work, e.g. textfields, buttons, etc.
+     Note that the "x" button is created in the filterGroupPanel. See also handleRemoveFilter.
+     **/
+    _createField: function() {
     },
 
     setLayerAndFilter: function(layer, filter) {
@@ -76,11 +75,11 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     /**
-       You must implement this method in subclass.
+     You must implement this method in subclass.
 
-       This is called whenever the "x" button next to a field has been clicked, i.e. clearing/removing a filter.
-       In this method, implement actions like clearing a textfield, reset values.
-    **/
+     This is called whenever the "x" button next to a field has been clicked, i.e. clearing/removing a filter.
+     In this method, implement actions like clearing a textfield, reset values.
+     **/
     handleRemoveFilter: function() {
     },
 

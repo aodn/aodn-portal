@@ -91,15 +91,15 @@ class SystemTestController {
         allAppenders.each {
             appender ->
 
-            s += "<h4>${appender.name}</h4>"
+                s += "<h4>${appender.name}</h4>"
 
-            s += "<ul>"
+                s += "<ul>"
 
-            appender.properties.each {
-                s += "<li>$it</li>"
-            }
+                appender.properties.each {
+                    s += "<li>$it</li>"
+                }
 
-            s += "</ul><br />"
+                s += "</ul><br />"
         }
 
         return s

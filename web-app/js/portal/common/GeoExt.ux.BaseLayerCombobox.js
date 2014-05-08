@@ -34,7 +34,7 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
     /** private: property[map]
      *  ``OpenLayers.Map``  The map object.
      */
-    map : null,
+    map: null,
 
     /** api: config[store]
      *  ``GeoExt.data.LayerStore`` A configured LayerStore
@@ -42,7 +42,7 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
     /** private: property[store]
      *  ``GeoExt.data.LayerStore``  The layer store of the map.
      */
-    store : null,
+    store: null,
 
     /** api: config[width]
      *  See http://www.dev.sencha.com/deploy/dev/docs/source/BoxComponent.html#cfg-Ext.BoxComponent-width,
@@ -58,7 +58,7 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
      *  See http://www.dev.sencha.com/deploy/dev/docs/source/TextField.html#cfg-Ext.form.TextField-emptyText,
      *  default value is "Search location in Geonames".
      */
-    emptyText : 'Choose a Base Layer',
+    emptyText: 'Choose a Base Layer',
 
     /** api: config[zoom]
      *  ``Number`` Zoom level for recentering the map after search, if set to
@@ -67,7 +67,7 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
     /** private: property[zoom]
      *  ``Number``
      */
-    zoom : 8,
+    zoom: 8,
 
     /** api: config[lang]
      *  ``String`` Place name and country name will be returned in the specified
@@ -76,7 +76,7 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
     /** private: property[lang]
      *  ``String``
      */
-    lang : 'en',
+    lang: 'en',
 
     /** api: config[charset]
      *  `String` Defines the encoding used for the document returned by
@@ -86,49 +86,49 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
     /** private: property[charset]
      *  ``String``
      */
-    charset : 'UTF8',
+    charset: 'UTF8',
 
     /** private: property[hideTrigger]
      *  Hide trigger of the combo.
      */
-    hideTrigger : false,
+    hideTrigger: false,
 
     /** private: property[displayField]
      *  Display field name
      */
-    displayField : 'name',
+    displayField: 'name',
 
     /** private: property[forceSelection]
      *  Force selection.
      */
-    forceSelection : true,
+    forceSelection: true,
 
     /** private: property[triggerAction]
      *  trigger Action
      */
-    triggerAction : 'all',
+    triggerAction: 'all',
 
     /** private: property[mode]
      *  mode
      */
-    mode : 'local',
+    mode: 'local',
 
     /** private: constructor
      */
-    initComponent : function() {
+    initComponent: function() {
         GeoExt.ux.BaseLayerComboBox.superclass.initComponent.apply(this, arguments);
 
         if (this.initialConfig.map !== null
-                && this.initialConfig.map instanceof OpenLayers.Map
-                && this.initialConfig.map.allOverlays === false) {
+            && this.initialConfig.map instanceof OpenLayers.Map
+            && this.initialConfig.map.allOverlays === false) {
 
             this.map = this.initialConfig.map;
 
             // create layer store with only baselayers
             this.store = new GeoExt.data.LayerStore({
-                data : this.map.getLayersBy('isBaseLayer', true),
+                data: this.map.getLayersBy('isBaseLayer', true),
                 initDir: 0,
-                map : this.map,
+                map: this.map,
                 onAddLayer: function(evt) {
 
                     // Only interested in adding base layers.
@@ -159,11 +159,11 @@ GeoExt.ux.BaseLayerComboBox = Ext.extend(Ext.form.ComboBox, {
         }
     }, // eo function initComponent
 
-    reload : function() {
+    reload: function() {
 
         // reload layer store with 'new' baselayers
         this.store = new GeoExt.data.LayerStore({
-            layers : this.map.getLayersBy('isBaseLayer', true)
+            layers: this.map.getLayersBy('isBaseLayer', true)
         });
     },
 

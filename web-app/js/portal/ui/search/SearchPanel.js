@@ -9,7 +9,7 @@ Ext.namespace('Portal.ui.search');
 
 Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
 
-    constructor: function (cfg) {
+    constructor: function(cfg) {
 
         var defaults = {};
 
@@ -35,7 +35,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
 
         this.bodyPanel = new Portal.ui.search.SearchBodyPanel({
             id: 'searchBodypanel',
-            margins: {left : 10, top : 0, right : 0, bottom : 0},
+            margins: {left: 10, top: 0, right: 0, bottom: 0},
             region: 'center',
             unstyled: true,
             resultsStore: this.resultsStore,
@@ -55,7 +55,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         Portal.ui.search.SearchPanel.superclass.constructor.call(this, config);
     },
 
-    initComponent: function () {
+    initComponent: function() {
         Portal.ui.search.SearchPanel.superclass.initComponent.apply(this);
 
         this.searcher.on('searchcomplete', function(response, page) {

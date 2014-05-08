@@ -37,7 +37,7 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
                 'show': function() {
                     this.emailField.focus();
                     var the = this;
-                    setTimeout(function() { the.emailField.validate(); }, 200 );
+                    setTimeout(function() { the.emailField.validate(); }, 200);
                 }
             }
         };
@@ -52,7 +52,6 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
         Ext.util.Cookies.set('emailField', emailValue, new Date().add(Date.DAY, 90));
         return emailValue;
     },
-
 
     _validateEmailAddress: function(address) {
         if (!address) {

@@ -24,7 +24,7 @@ class WmsScannerController {
     ]
 
     def statusText = [
-         (0): "Enabled",
+        (0) : "Enabled",
         (-1): "Enabled<br />(errors&nbsp;occurred)",
         (-2): "Stopped<br />(too&nbsp;many&nbsp;errors)"
     ]
@@ -48,7 +48,7 @@ class WmsScannerController {
         def conn
 
         try {
-            url = "${ wmsScannerService.scanJobUrl() }list?callbackUrl=$callbackUrl".toURL()
+            url = "${wmsScannerService.scanJobUrl()}list?callbackUrl=$callbackUrl".toURL()
             conn = url.openConnection()
             conn.connect()
 
@@ -94,11 +94,11 @@ class WmsScannerController {
         }
 
         return [
-            configInstance: conf,
+            configInstance   : conf,
             wmsScannerBaseUrl: grailsApplication.config.wmsScanner.url,
-            scanJobList: scanJobList,
-            statusText: statusText,
-            serversToList: serversToList
+            scanJobList      : scanJobList,
+            statusText       : statusText,
+            serversToList    : serversToList
         ]
     }
 
@@ -121,7 +121,9 @@ class WmsScannerController {
         def conf = Config.activeInstance()
 
         try {
-            def response = wmsScannerService.callUpdate(params.scanJobId, params.scanJobUri, conf.wmsScannerCallbackPassword)
+            def response = wmsScannerService.callUpdate(
+                params.scanJobId, params.scanJobUri, conf.wmsScannerCallbackPassword
+            )
             setFlashMessage response
         }
         catch (Exception e) {
@@ -143,13 +145,11 @@ class WmsScannerController {
         }
 
         redirect controller: "server", action: "list"
-
     }
 
     private void setFlashMessage(String response) {
 
         flash.message = "Response: $response"
-
     }
 
     private void setFlashMessage(e, connection) {
@@ -191,7 +191,7 @@ class WmsScannerController {
 
         if (response.toLowerCase().contains("<html")) {
 
-            response = "HTML response (Code: ${ conn.responseCode })"
+            response = "HTML response (Code: ${conn.responseCode})"
         }
 
         return response

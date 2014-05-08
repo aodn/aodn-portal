@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -16,7 +15,7 @@ Portal.search.field.ValueCheckBox = Ext.extend(Ext.form.Checkbox, {
         return checked ? this.checkedValue : this.uncheckedValue;
     },
 
-    getFilterValue: function () {
+    getFilterValue: function() {
         return { value: this.getValue()};
     },
 

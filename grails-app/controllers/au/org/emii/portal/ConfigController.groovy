@@ -40,7 +40,9 @@ class ConfigController {
 
         instanceAsGenericObj['defaultMenu'] = JSON.parse("{\"id\":${configInstance.defaultMenu?.id}}");
 
-        instanceAsGenericObj['downloadCartMimeTypeToExtensionMapping'] = JSON.parse(configInstance.downloadCartMimeTypeToExtensionMapping)
+        instanceAsGenericObj['downloadCartMimeTypeToExtensionMapping'] = JSON.parse(
+            configInstance.downloadCartMimeTypeToExtensionMapping
+        )
 
         // add current user details
         def userInstance = User.current()
@@ -81,7 +83,10 @@ class ConfigController {
 
         if (flash.message == "") {
             if (configInstance.save(flush: true)) {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'config.label', default: 'Config'), configInstance.id])
+                flash.message = message(
+                    code: 'default.created.message',
+                    args: [message(code: 'config.label', default: 'Config'), configInstance.id]
+                )
                 redirect(action: "show", id: configInstance.id)
             }
             else {
@@ -96,7 +101,9 @@ class ConfigController {
     def show = {
         def configInstance = Config.get(params.id)
         if (!configInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), params.id])
+            flash.message = message(
+                code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), params.id]
+            )
             redirect(action: "list")
         }
         else {
@@ -109,7 +116,10 @@ class ConfigController {
         def configInstance = Config.activeInstance()
 
         if (!configInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), 'existing config'])
+            flash.message = message(
+                code: 'default.not.found.message',
+                args: [message(code: 'config.label', default: 'Config'), 'existing config']
+            )
             redirect(action: "list")
         }
         else {
@@ -124,7 +134,11 @@ class ConfigController {
                 def version = params.version.toLong()
                 if (configInstance.version > version) {
 
-                    configInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'config.label', default: 'Config')] as Object[], "Another user has updated this Config while you were editing")
+                    configInstance.errors.rejectValue(
+                        "version", "default.optimistic.locking.failure",
+                        [message(code: 'config.label', default: 'Config')] as Object[],
+                        "Another user has updated this Config while you were editing"
+                    )
                     render(view: "edit", model: [configInstance: configInstance])
                     return
                 }
@@ -146,7 +160,9 @@ class ConfigController {
             render(view: "edit", model: [configInstance: configInstance])
         }
         else {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), params.id])
+            flash.message = message(
+                code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), params.id]
+            )
             redirect(action: "list")
         }
     }
@@ -159,16 +175,25 @@ class ConfigController {
             if (configInstance) {
                 try {
                     configInstance.delete(flush: true)
-                    flash.message = message(code: 'default.deleted.message', args: [message(code: 'config.label', default: 'Config'), params.id])
+                    flash.message = message(
+                        code: 'default.deleted.message',
+                        args: [message(code: 'config.label', default: 'Config'), params.id]
+                    )
                     redirect(action: "list")
                 }
                 catch (org.springframework.dao.DataIntegrityViolationException e) {
-                    flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'config.label', default: 'Config'), params.id])
+                    flash.message = message(
+                        code: 'default.not.deleted.message',
+                        args: [message(code: 'config.label', default: 'Config'), params.id]
+                    )
                     redirect(action: "show", id: params.id)
                 }
             }
             else {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'config.label', default: 'Config'), params.id])
+                flash.message = message(
+                    code: 'default.not.found.message',
+                    args: [message(code: 'config.label', default: 'Config'), params.id]
+                )
                 redirect(action: "list")
             }
         }

@@ -24,10 +24,10 @@ OpenLayers.Layer.WMS.prototype.adjustBounds = function(bounds) {
 
         var mapGutter = this.gutter * this.map.getResolution();
         bounds = new OpenLayers.Bounds(
-            bounds.left - mapGutter,
-            bounds.bottom - mapGutter,
-            bounds.right + mapGutter,
-            bounds.top + mapGutter);
+                bounds.left - mapGutter,
+                bounds.bottom - mapGutter,
+                bounds.right + mapGutter,
+                bounds.top + mapGutter);
     }
 
     return bounds;
@@ -193,7 +193,7 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
 };
 
 OpenLayers.Layer.WMS.prototype.isKnownToThePortal = function() {
-    return (this.grailsLayerId) ? true: false;
+    return (this.grailsLayerId) ? true : false;
 };
 
 OpenLayers.Layer.WMS.prototype.getCqlFilter = function() {
@@ -309,44 +309,45 @@ OpenLayers.Tile.Image.prototype.initImgDiv = function() {
 
     if (this.layerAlphaHack) {
         this.imgDiv = OpenLayers.Util.createAlphaImageDiv(null,
-                                                       offset,
-                                                       size,
-                                                       null,
-                                                       "relative",
-                                                       null,
-                                                       null,
-                                                       null,
-                                                       true);
-    } else {
+            offset,
+            size,
+            null,
+            "relative",
+            null,
+            null,
+            null,
+            true);
+    }
+    else {
         this.imgDiv = OpenLayers.Util.createImage(null,
-                                                  offset,
-                                                  size,
-                                                  null,
-                                                  "relative",
-                                                  null,
-                                                  null,
-                                                  true);
+            offset,
+            size,
+            null,
+            "relative",
+            null,
+            null,
+            true);
     }
 
     this.imgDiv.className = 'olTileImage';
 
     /* checkImgURL used to be used to called as a work around, but it
-       ended up hiding problems instead of solving them and broke things
-       like relative URLs. See discussion on the dev list:
-       http://openlayers.org/pipermail/dev/2007-January/000205.html
+     ended up hiding problems instead of solving them and broke things
+     like relative URLs. See discussion on the dev list:
+     http://openlayers.org/pipermail/dev/2007-January/000205.html
 
-    OpenLayers.Event.observe( this.imgDiv, "load",
-        OpenLayers.Function.bind(this.checkImgURL, this) );
-    */
+     OpenLayers.Event.observe( this.imgDiv, "load",
+     OpenLayers.Function.bind(this.checkImgURL, this) );
+     */
     this.frame.style.zIndex = this.isBackBuffer ? 0 : 1;
     this.frame.appendChild(this.imgDiv);
     this.layer.div.appendChild(this.frame);
 
-    if(this.layer.opacity != null) {
+    if (this.layer.opacity != null) {
 
         OpenLayers.Util.modifyDOMElement(this.imgDiv, null, null, null,
-                                         null, null, null,
-                                         this.layer.opacity);
+            null, null, null,
+            this.layer.opacity);
     }
 
     // we need this reference to check back the viewRequestID
@@ -369,12 +370,12 @@ OpenLayers.Tile.Image.prototype.initImgDiv = function() {
 
     if (this.layerAlphaHack) {
         OpenLayers.Event.observe(this.imgDiv.childNodes[0], 'load',
-                                 OpenLayers.Function.bind(onload, this));
-    } else {
-        OpenLayers.Event.observe(this.imgDiv, 'load',
-                             OpenLayers.Function.bind(onload, this));
+            OpenLayers.Function.bind(onload, this));
     }
-
+    else {
+        OpenLayers.Event.observe(this.imgDiv, 'load',
+            OpenLayers.Function.bind(onload, this));
+    }
 
     // Bind a listener to the onerror of the image div so that we
     // can registere when a tile has finished loading with errors.
@@ -407,19 +408,19 @@ OpenLayers.Tile.Image.prototype.initImgDiv = function() {
     }
     else {
         OpenLayers.Event.observe(this.imgDiv, "error",
-                                     OpenLayers.Function.bind(onerror, this));
+            OpenLayers.Function.bind(onerror, this));
     }
 };
 
 /**
-  * Issue 925 - Overrride openlayers positionImage to workaround issue with Firefox 27
-  * and 28 where images aren't reloaded if the src property is set to the same value
-  *
-  * Method: positionImage
-  * Using the properties currenty set on the layer, position the tile correctly.
-  * This method is used both by the async and non-async versions of the Tile.Image
-  * code.
-  */
+ * Issue 925 - Overrride openlayers positionImage to workaround issue with Firefox 27
+ * and 28 where images aren't reloaded if the src property is set to the same value
+ *
+ * Method: positionImage
+ * Using the properties currenty set on the layer, position the tile correctly.
+ * This method is used both by the async and non-async versions of the Tile.Image
+ * code.
+ */
 OpenLayers.Tile.Image.prototype.positionImage = function() {
     // if the this layer doesn't exist at the point the image is
     // returned, do not attempt to use it for size computation
@@ -428,15 +429,16 @@ OpenLayers.Tile.Image.prototype.positionImage = function() {
     }
     // position the frame
     OpenLayers.Util.modifyDOMElement(this.frame,
-                                      null, this.position, this.size);
+        null, this.position, this.size);
 
     var imageSize = this.layer.getImageSize(this.bounds);
     if (this.layerAlphaHack) {
         OpenLayers.Util.modifyAlphaImageDiv(this.imgDiv,
-               null, null, imageSize, this.url);
-    } else {
+            null, null, imageSize, this.url);
+    }
+    else {
         OpenLayers.Util.modifyDOMElement(this.imgDiv,
-                null, null, imageSize) ;
+            null, null, imageSize);
         // Make sure image load events are generated as required by OpenLayers
         this.setImgSrc(this.url);
     }

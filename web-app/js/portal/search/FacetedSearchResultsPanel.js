@@ -9,7 +9,7 @@ Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
-    initComponent:function () {
+    initComponent: function() {
 
         this.pagingBar = new Ext.PagingToolbar({
             pageSize: this.searcher.pageSize,
@@ -33,7 +33,6 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
             ]
         };
 
-
         Ext.apply(this, config);
 
         Portal.search.FacetedSearchResultsPanel.superclass.initComponent.apply(this, arguments);
@@ -45,11 +44,10 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
         this._subscribeToActiveGeoNetworkRecordStoreEvents();
     },
 
-
     _viewButtonOnClick: function(btn) {
 
         btn.addClass("x-btn-selected");
-        var uuid = btn.container.id.replace("fsSearchAddBtn",'');
+        var uuid = btn.container.id.replace("fsSearchAddBtn", '');
         var record = this._getRecordFromUuid(uuid);
 
         if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
@@ -57,7 +55,6 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
         }
         Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
     },
-
 
     _subscribeToActiveGeoNetworkRecordStoreEvents: function() {
         Ext.each([PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED], function(eventName) {

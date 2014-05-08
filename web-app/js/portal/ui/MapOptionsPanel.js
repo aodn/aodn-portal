@@ -9,7 +9,7 @@ Ext.namespace('Portal.ui');
 
 Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 
-    constructor: function (cfg) {
+    constructor: function(cfg) {
 
         this.baseLayerCombo = new GeoExt.ux.BaseLayerComboBox({
             map: cfg.map,
@@ -25,7 +25,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
             checked: cfg.autoZoom
         });
         this.autoZoomCheckbox.addEvents('autozoomchecked', 'autozoomunchecked');
-        this.autoZoomCheckbox.on('check', function (box, checked) {
+        this.autoZoomCheckbox.on('check', function(box, checked) {
             var event = checked ? 'autozoomchecked' : 'autozoomunchecked';
             box.fireEvent(event, box, checked);
         }, this);
@@ -60,7 +60,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
         this.relayEvents(this.autoZoomCheckbox, ['autozoomchecked', 'autozoomunchecked']);
     },
 
-    initButtonPanel: function () {
+    initButtonPanel: function() {
         this.buttonPanel = new Ext.Panel({
             border: true,
             flex: 1,
@@ -76,11 +76,11 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    _clearAll: function () {
+    _clearAll: function() {
         Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
     },
 
-    autoZoomEnabled: function () {
+    autoZoomEnabled: function() {
         return this.autoZoomCheckbox.getValue();
     }
 

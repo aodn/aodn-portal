@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -15,8 +14,8 @@ Portal.common.BrowserWindow = {
     open: function(url) {
         var height = screen.availHeight * this.percentAvailHeight / 100;
         var width = height * this.widthHeightRatio;
-        var left = parseInt((screen.availWidth/2) - (width/2));
-        var top = parseInt((screen.availHeight/2) - (height/2));
+        var left = parseInt((screen.availWidth / 2) - (width / 2));
+        var top = parseInt((screen.availHeight / 2) - (height / 2));
 
         var windowFeatures = "width=" + width + ",height=" + height + ",toolbar,resizable,scrollbars,left=" + left + ",top=" + top + "screenX=" + left + ",screenY=" + top;
 

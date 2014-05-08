@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2013 IMOS
  *
@@ -35,7 +34,7 @@ class WmsScannerService extends ScannerService {
             return "No job specified"
         }
 
-        def address = "${ scanJobUrl() }delete?id=${scanJobId}&callbackUrl=${saveOrUpdateCallbackUrl()}"
+        def address = "${scanJobUrl()}delete?id=${scanJobId}&callbackUrl=${saveOrUpdateCallbackUrl()}"
         callService(address)
 
         return "Deleted"
@@ -46,7 +45,7 @@ class WmsScannerService extends ScannerService {
         def server = Server.findWhere(uri: scanJobUri)
 
         if (!server) {
-            throw new IllegalArgumentException("Unable to find server with uri: '${ scanJobUri }'")
+            throw new IllegalArgumentException("Unable to find server with uri: '${scanJobUri}'")
         }
 
         def versionVal = server.type.replace("NCWMS-", "").replace("WMS-", "").replace("GEO-", "")
@@ -61,7 +60,7 @@ class WmsScannerService extends ScannerService {
         def usernamePart = server.username ? "&username=" + URLEncoder.encode(server.username) : ""
         def passwordPart = server.password ? "&password=" + URLEncoder.encode(server.password) : ""
 
-        def address = "${ scanJobUrl() }update?id=${scanJobId}&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&scanFrequency=$scanFrequency$usernamePart$passwordPart"
+        def address = "${scanJobUrl()}update?id=${scanJobId}&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&scanFrequency=$scanFrequency$usernamePart$passwordPart"
 
         callService(address)
 
@@ -87,7 +86,7 @@ class WmsScannerService extends ScannerService {
         def passwordPart = server.password ? "&password=" + URLEncoder.encode(server.password) : ""
 
         // Perform action
-        def address = "${scanJobUrl() }register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&scanFrequency=$scanFrequency$usernamePart$passwordPart"
+        def address = "${scanJobUrl()}register?jobName=$jobName&jobDescription=$jobDesc&jobType=$jobType&wmsVersion=$wmsVersion&uri=$uri&callbackUrl=$callbackUrl&callbackPassword=$callbackPassword&scanFrequency=$scanFrequency$usernamePart$passwordPart"
 
         callService(address)
 

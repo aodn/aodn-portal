@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -17,7 +16,7 @@ class CheckLinksService {
 
     String check(String id, String email) {
         // wrapper for quartz job
-        CheckServerForBrokenLinksJob.triggerNow([serverId:id, userEmail:email])
+        CheckServerForBrokenLinksJob.triggerNow([serverId: id, userEmail: email])
         return "Job submitted for server id=${id} with report to be emailed to ${email}"
     }
 }

@@ -8,14 +8,14 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
-    constructor: function () {
+    constructor: function() {
 
         var templateLines = this._getHtmlContent();
 
         Portal.cart.DownloadPanelItemTemplate.superclass.constructor.call(this, templateLines);
     },
 
-    _getHtmlContent: function () {
+    _getHtmlContent: function() {
 
         return [
             '<div class="downloadPanelResultsWrapper">',
@@ -49,11 +49,11 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         return values.title;
     },
 
-    _getDataFilterEntry: function (values) {
+    _getDataFilterEntry: function(values) {
         return String.format('<i>{0}</i>', values.dataFilters);
     },
 
-    _getPointOfTruthLinkEntry: function (record) {
+    _getPointOfTruthLinkEntry: function(record) {
         var markup = "";
 
         if (record.pointOfTruthLink) {
@@ -63,18 +63,18 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         return markup;
     },
 
-    _dataSpecificMarkup: function (values) {
+    _dataSpecificMarkup: function(values) {
         return values.dataMarkup;
     },
 
-    _downloadButton: function (collection) {
+    _downloadButton: function(collection) {
         var elementId = 'download-button-' + collection.uuid;
         this._createDownloadButton.defer(1, this, [elementId, collection]);
 
         return '';
     },
 
-    _createDownloadButton: function (id, values) {
+    _createDownloadButton: function(id, values) {
         if (values.menuItems && Ext.get(id)) {
 
             // clear old button
@@ -93,14 +93,14 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         }
     },
 
-    _getFileListEntries: function (values) {
+    _getFileListEntries: function(values) {
         var links = values.downloadableLinks;
         var html = "";
         var htmlBreak = '<br>';
 
         Ext.each(
             links,
-            function (link) {
+            function(link) {
                 html += this._getSingleFileEntry(link);
                 html += htmlBreak;
             },
@@ -110,15 +110,15 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         return html;
     },
 
-    _getSingleFileEntry: function (link) {
+    _getSingleFileEntry: function(link) {
         return this._makeExternalLinkMarkup(link.href, link.title);
     },
 
-    _makeSecondaryTextMarkup: function (text) {
+    _makeSecondaryTextMarkup: function(text) {
         return String.format('<span class="secondary-text">{0}</span>', text);
     },
 
-    _makeExternalLinkMarkup: function (href, text) {
+    _makeExternalLinkMarkup: function(href, text) {
         return String.format('<a href="{0}" target="_blank" class="external">{1}</a>', href, (text || href));
     }
 });

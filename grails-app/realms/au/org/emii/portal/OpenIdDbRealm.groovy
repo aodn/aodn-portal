@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -19,25 +18,29 @@ class OpenIdDbRealm {
     def credentialMatcher
     def shiroPermissionResolver
 
-    def authenticate( authToken ) {
+    def authenticate(authToken) {
 
         log.info "Attempting to authenticate ${authToken.userId}..."
         def userId = authToken.userId
 
         // Null username is invalid
-        if ( !userId ) throw new AccountException( "Cannot authenticate User will null userId." )
+        if (!userId) {
+            throw new AccountException("Cannot authenticate User will null userId.")
+        }
 
         // Get the user with the given username. If the user is not
         // found, then they don't have an account and we throw an
         // exception.
-        def user = User.findById( userId )
-        if ( !user ) throw new UnknownAccountException( "No account found for user with id ${ userId }" )
+        def user = User.findById(userId)
+        if (!user) {
+            throw new UnknownAccountException("No account found for user with id ${userId}")
+        }
 
         log.info "Found user '${user.openIdUrl}' in DB"
 
         // Now check the user's password against the hashed value stored
         // in the database.
-        def account = new SimpleAccount( userId, user.openIdUrl, "OpenIdDbRealm" )
+        def account = new SimpleAccount(userId, user.openIdUrl, "OpenIdDbRealm")
 //        if ( !credentialMatcher.doCredentialsMatch( authToken, account ) ) {
 //            log.info "Invalid openIdUrl"
 //            throw new IncorrectCredentialsException("Invalid openIdUrl for user '${userId}'")
@@ -52,9 +55,9 @@ class OpenIdDbRealm {
 
         def roles = User.withCriteria {
             roles {
-                eq( "name", roleName )
+                eq("name", roleName)
             }
-            eq( "id", principal )
+            eq("id", principal)
         }
 
         return roles.size() > 0
@@ -66,9 +69,9 @@ class OpenIdDbRealm {
 
         def r = User.withCriteria {
             roles {
-                'in'( "name", roles )
+                'in'("name", roles)
             }
-            eq( "id", principal )
+            eq("id", principal)
         }
 
         return r.size() == roles.size()
@@ -81,11 +84,11 @@ class OpenIdDbRealm {
         //
         // First find all the permissions that the user has that match
         // the required permission's type and project code.
-        def user = User.get( principal )
+        def user = User.get(principal)
 
         log.debug "Calling isPermitted($principal, $requiredPermission); Found user: $user"
 
-        if ( !user ) {
+        if (!user) {
 
             log.error "Called isPermitted() but could not find User for principal: '$principal'; requiredPermission: '$requiredPermission'"
             return false
@@ -102,10 +105,10 @@ class OpenIdDbRealm {
 
             // Now check whether this permission implies the required
             // one.
-            return perm.implies( requiredPermission )
+            return perm.implies(requiredPermission)
         }
 
-        if ( retval ) {
+        if (retval) {
             // Found a matching permission!
             return true
         }
@@ -113,7 +116,9 @@ class OpenIdDbRealm {
         // If not, do they gain it through a role?
         //
         // Get the permissions from the roles that the user does have.
-        def results = User.executeQuery("select distinct p from User as user join user.roles as role join role.permissions as p where user.id = '$principal'")
+        def results = User.executeQuery(
+            "select distinct p from User as user join user.roles as role join role.permissions as p where user.id = '$principal'"
+        )
 
         // There may be some duplicate entries in the results, but
         // at this stage it is not worth trying to remove them. Now,
@@ -126,7 +131,7 @@ class OpenIdDbRealm {
 
             // Now check whether this permission implies the required
             // one.
-            return perm.implies( requiredPermission )
+            return perm.implies(requiredPermission)
         }
 
         return retval != null

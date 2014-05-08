@@ -27,9 +27,9 @@ Portal.data.TopTermStoreStoreOrder = {
     },
 
     _isSortOrderDefined: function(facetTitle, record) {
-       return (   this.SORT_ORDER
-               && this.SORT_ORDER[facetTitle]
-               && this.SORT_ORDER[facetTitle][record.get('value')]);
+        return (   this.SORT_ORDER
+            && this.SORT_ORDER[facetTitle]
+            && this.SORT_ORDER[facetTitle][record.get('value')]);
     },
 
     getSortOrder: function(facetTitle, record) {

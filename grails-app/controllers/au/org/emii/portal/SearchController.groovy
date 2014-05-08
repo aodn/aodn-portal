@@ -46,7 +46,8 @@ class SearchController {
 
         def searchInstance = Search.get(params.id)
         if (!searchInstance) {
-            render text: "${message(code: 'default.not.found.message', args: [message(code: 'search.label', default: 'Search'), params.id])}" as JSON, status: 400
+            render text: "${message(code: 'default.not.found.message', args: [message(code: 'search.label', default: 'Search'), params.id])}" as JSON,
+                status: 400
             redirect(action: "list")
         }
         else {

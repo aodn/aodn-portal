@@ -141,7 +141,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             margins: { top: 0, right: 5, bottom: 0, left: 0 },
             listeners: {
                 scope: this,
-                'click': function () {
+                'click': function() {
                     this._previousTimeSlice();
                 }
             },
@@ -154,7 +154,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             margins: { top: 0, right: 5, bottom: 0, left: 0 },
             listeners: {
                 scope: this,
-                'click': function () {
+                'click': function() {
                     this._nextTimeSlice();
                 }
             },
@@ -239,20 +239,20 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         var aodaacConfig = {
             productId: product.id,
             dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
-            dateRangeEnd:   this._getDateFromPicker(this.endDateTimePicker),
-            productLatitudeRangeStart:  this._getMin(productExtents.lat),
-            productLatitudeRangeEnd:    this._getMax(productExtents.lat),
+            dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
+            productLatitudeRangeStart: this._getMin(productExtents.lat),
+            productLatitudeRangeEnd: this._getMax(productExtents.lat),
             productLongitudeRangeStart: this._getMin(productExtents.lon),
-            productLongitudeRangeEnd:   this._getMax(productExtents.lon)
+            productLongitudeRangeEnd: this._getMax(productExtents.lon)
         };
 
         if (geometry) {
             var bounds = geometry.getBounds();
 
-            aodaacConfig.latitudeRangeStart  = bounds.bottom;
+            aodaacConfig.latitudeRangeStart = bounds.bottom;
             aodaacConfig.longitudeRangeStart = bounds.left;
-            aodaacConfig.latitudeRangeEnd    = bounds.top;
-            aodaacConfig.longitudeRangeEnd   = bounds.right;
+            aodaacConfig.latitudeRangeEnd = bounds.top;
+            aodaacConfig.longitudeRangeEnd = bounds.right;
         }
 
         return aodaacConfig;

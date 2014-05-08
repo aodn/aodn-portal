@@ -15,25 +15,25 @@ class CheckWmsScannerService {
         def wmsScannerBaseUrl = ensureTrailingSlash(grailsApplication.config.wmsScanner.url)
 
         // Check if WMS Scanner settings are valid
-        if ( !wmsScannerBaseUrl || !conf.wmsScannerCallbackPassword ) {
+        if (!wmsScannerBaseUrl || !conf.wmsScannerCallbackPassword) {
 
             flash.message = "Both settings: 'WmsScannerBaseUrl' and 'WmsScannerCallbackPassword' must have values to use a WMS Scanner."
 
-            return [ configInstance: conf, wmsScannerBaseUrl: wmsScannerBaseUrl, scanJobList: [], statusText: statusText, serversToList: [] ]
+            return [configInstance: conf, wmsScannerBaseUrl: wmsScannerBaseUrl, scanJobList: [], statusText: statusText, serversToList: []]
         }
 
-        def callbackUrl = URLEncoder.encode( _saveOrUpdateCallbackUrl() )
+        def callbackUrl = URLEncoder.encode(_saveOrUpdateCallbackUrl())
         def scanJobList
 
         def url
         def conn
 
         try {
-            url = "${ _scanJobUrl() }list?callbackUrl=$callbackUrl".toURL()
+            url = "${_scanJobUrl()}list?callbackUrl=$callbackUrl".toURL()
             conn = url.openConnection()
             conn.connect()
 
-            scanJobList = JSON.parse( conn.content.text ) // Makes the call
+            scanJobList = JSON.parse(conn.content.text) // Makes the call
         }
         catch (Exception e) {
 
@@ -41,15 +41,14 @@ class CheckWmsScannerService {
             scanJobList = [] // Empty list
         }
         def requestedJob = null
-        for(job in scanJobList)
-        {
+        for (job in scanJobList) {
             if (jobId.toInteger() == job.id.toInteger()) {
                 requestedJob = job
                 break
             }
         }
 
-        def server = Server.findWhere( uri: requestedJob.uri )
+        def server = Server.findWhere(uri: requestedJob.uri)
         return server
     }
 

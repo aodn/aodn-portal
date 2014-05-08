@@ -9,11 +9,11 @@ class LandingController {
 
         render(
             view: portalInstance.name() + "index",
-            model:[
-                oceanCurrent: oceanCurrentService.getRandomDetails(),
-                cfg: Config.activeInstance(),
+            model: [
+                oceanCurrent   : oceanCurrentService.getRandomDetails(),
+                cfg            : Config.activeInstance(),
                 portalBuildInfo: _portalBuildInfo(),
-                jsVerNum: grailsApplication.metadata.'app.version'
+                jsVerNum       : grailsApplication.metadata.'app.version'
             ]
         )
     }
@@ -21,6 +21,6 @@ class LandingController {
     def _portalBuildInfo() {
 
         def md = grailsApplication.metadata
-        return "${ portalInstance.name() } Portal v${ md.'app.version' }, build date: ${md.'app.build.date' ?: '<i>not recorded</i>'}"
+        return "${portalInstance.name()} Portal v${md.'app.version'}, build date: ${md.'app.build.date' ?: '<i>not recorded</i>'}"
     }
 }

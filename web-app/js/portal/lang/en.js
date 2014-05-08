@@ -28,7 +28,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // DetailsPanel.js
     opacity: "Opacity",
     wmsLayerProblem: "There is a problem with the availability of this collection",
-    pickAStyle : ' ** Pick a style ** ',
+    pickAStyle: ' ** Pick a style ** ',
     noActiveCollectionSelected: "No data collections selected",
 
     // Geographic Bounds
@@ -158,7 +158,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerAddedTitle: 'Add data collection',
     layerAddedMsg: "'${layerDesc}' has been added",
     layerActions: 'Actions',
-
 
     // InfoPanel.js
     loadingMessage: 'Loading ...',

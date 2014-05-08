@@ -48,9 +48,9 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     _createFailMessage: function(result, uuid) {
 
         log.error(
-            "Size estimation failed. Server response detailed below.\n" +
-            "Status: " + result.status + " - " + result.statusText + "\n" +
-            "Response text: '" + result.responseText + "'"
+                "Size estimation failed. Server response detailed below.\n" +
+                "Status: " + result.status + " - " + result.statusText + "\n" +
+                "Response text: '" + result.responseText + "'"
         );
 
         this._addDownloadEstimate.defer(1, this, [this._generateFailureResponse(result), this.getIdElementName(uuid)]);

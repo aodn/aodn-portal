@@ -151,7 +151,6 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         this.setActiveNode(node);
     },
 
-
     beforeActiveLayerRemoved: function(tree, parent, node) {
         var selected = this.getSelectedNode();
 

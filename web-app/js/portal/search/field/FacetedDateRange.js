@@ -8,16 +8,16 @@
 Ext.namespace('Portal.search.field');
 
 Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
-    layout:'auto',
+    layout: 'auto',
 
-    initComponent:function () {
+    initComponent: function() {
         this.items = [
             {
                 xtype: 'container',
                 layout: 'form',
                 width: 130,
                 labelWidth: 25,
-                margins: {top:5, right:15, bottom:0, left:20},
+                margins: {top: 5, right: 15, bottom: 0, left: 20},
                 items: [
                     {
                         fieldLabel: 'From',
@@ -69,25 +69,25 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
         Portal.search.field.FacetedDateRange.superclass.initComponent.apply(this, arguments);
     },
 
-    getFilterValue:function () {
+    getFilterValue: function() {
         return {
-            fromDate:this.fromDate.getValue(),
-            toDate:this.toDate.getValue()
+            fromDate: this.fromDate.getValue(),
+            toDate: this.toDate.getValue()
         };
     },
 
-    setFilterValue:function (v) {
+    setFilterValue: function(v) {
         this.fromDate.setValue(new Date(v.fromDate));
         this.toDate.setValue(new Date(v.toDate));
     },
 
-    clearValues:function () {
+    clearValues: function() {
         this.fromDate.reset();
         this.toDate.reset();
         this.toDate.setMinValue(new Date(0));
     },
 
-    onSelect:function () {
+    onSelect: function() {
         this.toDate.setMinValue(this.fromDate.getValue());
     }
 });

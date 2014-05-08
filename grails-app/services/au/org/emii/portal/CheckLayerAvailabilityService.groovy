@@ -76,7 +76,6 @@ class CheckLayerAvailabilityService {
         return false
     }
 
-
     def _checkConnection(url, test) {
         try {
             def conn = url.openConnection()
@@ -135,26 +134,27 @@ class CheckLayerAvailabilityService {
         // are returned at location 0,0.
 
         def queryStringArgs = [
-            'VERSION': '1.1.1',
-            'REQUEST': 'GetFeatureInfo',
-            'LAYERS': layer.name,
-            'STYLES': '',
-            'SRS': layer.projection,
-            'CRS': layer.projection,
-            'BBOX': bboxFromLayer(layer),
-            'QUERY_LAYERS': layer.name,
-            'X': '0',
-            'Y': '0',
-            'I': '0',
-            'J': '0',
-            'WIDTH': '1',
-            'HEIGHT': '1',
+            'VERSION'      : '1.1.1',
+            'REQUEST'      : 'GetFeatureInfo',
+            'LAYERS'       : layer.name,
+            'STYLES'       : '',
+            'SRS'          : layer.projection,
+            'CRS'          : layer.projection,
+            'BBOX'         : bboxFromLayer(layer),
+            'QUERY_LAYERS' : layer.name,
+            'X'            : '0',
+            'Y'            : '0',
+            'I'            : '0',
+            'J'            : '0',
+            'WIDTH'        : '1',
+            'HEIGHT'       : '1',
             'FEATURE_COUNT': '1'
         ]
 
         // Include INFO_FORMAT if we have a value for it
-        if (params.format)
+        if (params.format) {
             queryStringArgs.INFO_FORMAT = params.format
+        }
 
         return urlWithQueryString(layer.server.uri, queryStringArgs)
     }
@@ -164,17 +164,17 @@ class CheckLayerAvailabilityService {
         // Construct the getMap request
 
         def queryStringArgs = [
-            'VERSION': '1.1.1',
-            'REQUEST': 'GetMap',
-            'LAYERS': layer.name,
-            'STYLES': '',
-            'SRS': layer.projection,
-            'CRS': layer.projection,
-            'BBOX': bboxFromLayer(layer),
-            'FORMAT': layer.server.imageFormat,
+            'VERSION'   : '1.1.1',
+            'REQUEST'   : 'GetMap',
+            'LAYERS'    : layer.name,
+            'STYLES'    : '',
+            'SRS'       : layer.projection,
+            'CRS'       : layer.projection,
+            'BBOX'      : bboxFromLayer(layer),
+            'FORMAT'    : layer.server.imageFormat,
             'EXCEPTIONS': 'application/vnd.ogc.se_xml',
-            'width': '50',
-            'height': '50'
+            'width'     : '50',
+            'height'    : '50'
         ]
 
         return urlWithQueryString(layer.server.uri, queryStringArgs)

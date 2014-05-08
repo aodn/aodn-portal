@@ -24,52 +24,51 @@ function getAussieUnits(val, src_units) {
         // arrays hold all possible names for a 'type'
         //
         // ALL ARRAY ENTRIES IN LOWER CASE
-        var celNameArray = ["c","celcius","cel","deg_c","degrees c"];
-        var farNameArray = ["f","fahrenheit"];
-        var kelNameArray = ["k","kelvin","kel"];
-        var metresNameArray = ["m","metres","meters","metre"];
+        var celNameArray = ["c", "celcius", "cel", "deg_c", "degrees c"];
+        var farNameArray = ["f", "fahrenheit"];
+        var kelNameArray = ["k", "kelvin", "kel"];
+        var metresNameArray = ["m", "metres", "meters", "metre"];
 
         // fahrenheit
-        if (inArray(farNameArray,src_units)) {
+        if (inArray(farNameArray, src_units)) {
             cel = (val - 32) / 1.8;
-            old = " (<b>"+toNSigFigs(val,4) +"</b> fahrenheit)";
-            ret = [toNSigFigs(cel,4),c,old];
+            old = " (<b>" + toNSigFigs(val, 4) + "</b> fahrenheit)";
+            ret = [toNSigFigs(cel, 4), c, old];
             //console.log("farren");
         }
-        else if (inArray(kelNameArray,src_units)) {
+        else if (inArray(kelNameArray, src_units)) {
             // kelvin
             cel = val - 272.15;
-            old = " (<b>" + toNSigFigs(val,4) + "</b> kelvin)";
-            ret = [toNSigFigs(cel,4),c,old];
+            old = " (<b>" + toNSigFigs(val, 4) + "</b> kelvin)";
+            ret = [toNSigFigs(cel, 4), c, old];
 
-        // console.log("kel");
+            // console.log("kel");
         }
-        else if (inArray(celNameArray,src_units)) {
+        else if (inArray(celNameArray, src_units)) {
             // celcius
-            ret = [toNSigFigs(val,4),c,""];
+            ret = [toNSigFigs(val, 4), c, ""];
             cel = "success";
 
             //console.log("cel");
         }
-        else if (inArray(metresNameArray,src_units)) {
+        else if (inArray(metresNameArray, src_units)) {
             // metres
-            ret = [toNSigFigs(val,2),"m",""];
+            ret = [toNSigFigs(val, 2), "m", ""];
             cel = "success";
         }
-
 
         // if cel empty then the unit wasnt suitable
         // or we cant even anticipate..
         if (cel == "") {
             cel = val;
-            toReturn = [toNSigFigs(cel,4),src_units,""];
+            toReturn = [toNSigFigs(cel, 4), src_units, ""];
         }
         else {
             toReturn = ret;
         }
     }
     else {
-         toReturn = [val," (unknown units)",""]; // return what was supplied as an array as expected
+        toReturn = [val, " (unknown units)", ""]; // return what was supplied as an array as expected
     }
 
     return toReturn;
@@ -77,7 +76,7 @@ function getAussieUnits(val, src_units) {
 
 function pad(numNumber, numLength) {
     var strString = '' + numNumber;
-    while(strString.length<numLength) {
+    while (strString.length < numLength) {
         strString = '0' + strString;
     }
     return strString;
@@ -93,12 +92,12 @@ function formatGetFeatureInfo(response, options) {
         // strip out all unwanted HTML
         if (response.responseText.match(/<\/body>/m)) {
 
-            var html_content  =  response.responseText.match(/(.|\s)*?<body[^>]*>((.|\s)*?)<\/body>(.|\s)*?/m);
+            var html_content = response.responseText.match(/(.|\s)*?<body[^>]*>((.|\s)*?)<\/body>(.|\s)*?/m);
             if (html_content) {
 
-                html_content  = html_content[2].replace(/^\s+|\s+$/g, '');  // trim
+                html_content = html_content[2].replace(/^\s+|\s+$/g, '');  // trim
 
-                if ( html_content.length != 0 ) {
+                if (html_content.length != 0) {
                     return html_content;
                 }
             }
@@ -122,7 +121,7 @@ function setHTML_ncWMS(response, options) {
 
     if (xmldoc.getElementsByTagName('longitude')[0] != undefined) {
 
-        var lon  = parseFloat((xmldoc.getElementsByTagName('longitude'))[0].firstChild.nodeValue);
+        var lon = parseFloat((xmldoc.getElementsByTagName('longitude'))[0].firstChild.nodeValue);
 
         if (lon) {  // We have a successful result
 
@@ -140,20 +139,21 @@ function setHTML_ncWMS(response, options) {
             }
 
             if (x.length > 1) {
-                var endval = parseFloat(xmldoc.getElementsByTagName('value')[x.length -1].childNodes[0].nodeValue);
-                if (time != null)
-                    var endtime = xmldoc.getElementsByTagName('time')[x.length -1].firstChild.nodeValue;
+                var endval = parseFloat(xmldoc.getElementsByTagName('value')[x.length - 1].childNodes[0].nodeValue);
+                if (time != null) {
+                    var endtime = xmldoc.getElementsByTagName('time')[x.length - 1].firstChild.nodeValue;
+                }
             }
             var origEndVal = endval;
 
             var html = "";
-            var  extras = "";
+            var extras = "";
 
             var isSD = options.extraParams.name.toLowerCase().indexOf("standard deviation") >= 0;
 
-            if (!isNaN(startval) ) {  // may have no data at this point
+            if (!isNaN(startval)) {  // may have no data at this point
 
-                if (time != null)   {
+                if (time != null) {
 
                     var human_time = new Date();
                     human_time.setISO8601(time);
@@ -166,44 +166,43 @@ function setHTML_ncWMS(response, options) {
 
                 var startval = getAussieUnits(startval, options.extraParams.units);
 
-                if (human_time != null)  {
+                if (human_time != null) {
 
                     if (endval == null) {
-                        if (isSD)  {
+                        if (isSD) {
                             vals = "<br /><b>Value at: </b>" + human_time.toUTCString() + " " + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.extraParams.units;
                         }
                         else {
-                            vals = "<br /><b>Value at </b>"+human_time.toUTCString()+"<b> " + startval[0] +"</b> "+ startval[1] + startval[2];
+                            vals = "<br /><b>Value at </b>" + human_time.toUTCString() + "<b> " + startval[0] + "</b> " + startval[1] + startval[2];
                         }
                     }
                     else {
-                        if (isSD)
-                        {
-                            vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+ " " + "(standard deviation) " +" <b>" + origStartVal + "</b> " + options.extraParams.units;
-                            vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+ " " + "(standard deviation) " + " <b>" + origEndVal + "</b> " + options.extraParams.units;
+                        if (isSD) {
+                            vals = "<br /><b>Start date:</b>" + human_time.toUTCString() + " " + "(standard deviation) " + " <b>" + origStartVal + "</b> " + options.extraParams.units;
+                            vals += "<br /><b>End date:</b>" + human_endtime.toUTCString() + " " + "(standard deviation) " + " <b>" + origEndVal + "</b> " + options.extraParams.units;
                             vals += "<BR />";
                         }
                         else {
-                            vals = "<br /><b>Start date:</b>"+human_time.toUTCString()+": <b> " + startval[0] +"</b> "+ startval[1] + startval[2];
-                            vals += "<br /><b>End date:</b>"+human_endtime.toUTCString()+":<b> " + endval[0] +"</b> "+ endval[1]  + endval[2];
+                            vals = "<br /><b>Start date:</b>" + human_time.toUTCString() + ": <b> " + startval[0] + "</b> " + startval[1] + startval[2];
+                            vals += "<br /><b>End date:</b>" + human_endtime.toUTCString() + ":<b> " + endval[0] + "</b> " + endval[1] + endval[2];
                             vals += "<BR />";
                         }
                     }
                 }
                 else {
-                    if (isSD)  {
+                    if (isSD) {
                         vals = "<br /><b>" + "(standard deviation) " + "<b>" + origStartVal + "</b> " + options.extraParams.units;
                     }
                     else {
-                        vals = "<br /><b> " + startval[0] +"</b> "+ startval[1] + startval[2];
+                        vals = "<br /><b> " + startval[0] + "</b> " + startval[1] + startval[2];
                     }
                 }
 
                 lon = toNSigFigs(lon, 5);
                 lat = toNSigFigs(lat, 5);
 
-                html =  "<div class=\"feature\">";
-                html += "<b>Lon:</b> " + lon + "<br /><b>Lat:</b> " + lat + "<br /> " +  vals + "\n<br />" + extras;
+                html = "<div class=\"feature\">";
+                html += "<b>Lon:</b> " + lon + "<br /><b>Lat:</b> " + lat + "<br /> " + vals + "\n<br />" + extras;
 
                 if (xmldoc.getElementsByTagName('copyright')[0] != undefined) {
                     // If copyright was returned in GetFeatureInfo, we can simply implant it with no decoding
@@ -215,7 +214,7 @@ function setHTML_ncWMS(response, options) {
                     html += "<p>" + decodedCopyright + "</p>";
                 }
 
-                html = html +"</div>";
+                html = html + "</div>";
             }
         }
         else {
@@ -251,8 +250,7 @@ function binSearch(sortedArray, value, isGreaterFunction, scope) {
     while (max >= min) {
         var mid = Math.floor((max + min) / 2);
         // If it's not greater and not smaller - it's equal!
-        if (!isGreaterFunction.call(_scope, value, sortedArray[mid]) &&
-            !isGreaterFunction.call(_scope, sortedArray[mid], value)) {
+        if (!isGreaterFunction.call(_scope, value, sortedArray[mid]) && !isGreaterFunction.call(_scope, sortedArray[mid], value)) {
             return mid;
         }
         else if (isGreaterFunction.call(_scope, sortedArray[mid], value)) {
@@ -265,10 +263,10 @@ function binSearch(sortedArray, value, isGreaterFunction, scope) {
     return -1;
 }
 
-Date.prototype.setISO8601 = function (string) {
+Date.prototype.setISO8601 = function(string) {
     var regexp = "([0-9]{4})(-([0-9]{2})(-([0-9]{2})" +
-    "(T([0-9]{2}):([0-9]{2})(:([0-9]{2})(\.([0-9]+))?)?" +
-    "(Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?";
+        "(T([0-9]{2}):([0-9]{2})(:([0-9]{2})(\.([0-9]+))?)?" +
+        "(Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?";
     var d = string.match(new RegExp(regexp));
 
     var offset = 0;

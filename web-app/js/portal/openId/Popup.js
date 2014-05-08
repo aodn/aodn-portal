@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2013 IMOS
  *
@@ -6,7 +5,7 @@
  *
  */
 
-$(document).ready( function() {
+$(document).ready(function() {
     // hide the popup if user mouses out of area
     $("#loginPopup").mouseleave(function() {
         $("#loginPopup").hide();

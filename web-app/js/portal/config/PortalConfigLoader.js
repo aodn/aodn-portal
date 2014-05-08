@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2013 IMOS
  *
@@ -62,7 +61,7 @@ Portal.config.PortalConfigLoader = Ext.extend(Object, {
     },
 
     viewportConfigLoadFailure: function(resp) {
-        log.error("Unable to load viewport config: '" + resp.responseText + "' (status: " + resp.status + ")" );
+        log.error("Unable to load viewport config: '" + resp.responseText + "' (status: " + resp.status + ")");
         this.viewportConfigLoaded = false;
     },
 
@@ -76,7 +75,7 @@ Portal.config.PortalConfigLoader = Ext.extend(Object, {
         else {
             // Keep waiting
             var loader = this; // Need to keep another reference to 'this' because 'this' changes scope in the anonymous function
-            setTimeout(function() { loader.waitForConfigsAndComplete(); }, 200 );
+            setTimeout(function() { loader.waitForConfigsAndComplete(); }, 200);
         }
     },
 

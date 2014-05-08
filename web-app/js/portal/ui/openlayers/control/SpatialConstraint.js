@@ -30,9 +30,9 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         var handler = options.handler || OpenLayers.Handler.RegularPolygon;
         options.handlerOptions =
             options.handlerOptions || {
-                sides: 4,
-                irregular: true
-            };
+            sides: 4,
+            irregular: true
+        };
 
         options.autoActivate = options.autoActivate || true;
 
@@ -117,7 +117,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _setLayerToTop: function(layer) {
-        if (layer && layer.map)  {
+        if (layer && layer.map) {
             layer.map.setLayerIndex(layer, layer.map.layers.length - 1);
         }
     },

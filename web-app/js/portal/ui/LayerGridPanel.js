@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -92,13 +91,15 @@ Portal.ui.LayerSearchPanel = Ext.extend(Ext.FormPanel, {
                     ref: 'filterButton'
                 }
             ],
-            keys: [{
-                key: [Ext.EventObject.ENTER],
-                scope: this,
-                handler: function() {
-                    this.filterButton.fireEvent('click');
+            keys: [
+                {
+                    key: [Ext.EventObject.ENTER],
+                    scope: this,
+                    handler: function() {
+                        this.filterButton.fireEvent('click');
+                    }
                 }
-            }]
+            ]
         });
 
         Portal.ui.LayerSearchPanel.superclass.constructor.call(this, config);

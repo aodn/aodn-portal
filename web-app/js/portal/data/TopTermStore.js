@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -14,7 +13,7 @@ Ext.namespace('Portal.data');
 
 Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
 
-    constructor : function(cfg) {
+    constructor: function(cfg) {
         cfg = cfg || {};
 
         var defaults = {
@@ -23,22 +22,27 @@ Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
         };
 
         var config = Ext.apply({
-            record : '*',
-            fields : [{
-                name : 'value',
-                mapping : '@name'
-            }, {
-                name : 'count',
-                mapping : '@count',
-                type : 'integer'
-            }, {
-                name : 'display',
-                mapping : '@name',
-                convert : this._getDisplay.createDelegate(this)
-            }, {
-                name : 'sortOrder',
-                mapping : '@sortOrder'
-            }]
+            record: '*',
+            fields: [
+                {
+                    name: 'value',
+                    mapping: '@name'
+                },
+                {
+                    name: 'count',
+                    mapping: '@count',
+                    type: 'integer'
+                },
+                {
+                    name: 'display',
+                    mapping: '@name',
+                    convert: this._getDisplay.createDelegate(this)
+                },
+                {
+                    name: 'sortOrder',
+                    mapping: '@sortOrder'
+                }
+            ]
         }, cfg, defaults);
 
         Portal.data.TopTermStore.superclass.constructor.call(this, config);
@@ -50,7 +54,7 @@ Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
     // document, filtering loaded values to those starting with filter if supplied
 
     loadTopTerms: function(summary, fieldGroup, filter) {
-        var topTerms = Ext.DomQuery.selectNode('response/summary/'+fieldGroup, summary);
+        var topTerms = Ext.DomQuery.selectNode('response/summary/' + fieldGroup, summary);
 
         if (topTerms) {
             this.loadData(topTerms);
@@ -66,8 +70,9 @@ Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
     },
 
     setShowAll: function(showAll) {
-        if (this.showAll == showAll)
+        if (this.showAll == showAll) {
             return;
+        }
 
         this.showAll = showAll;
         this._applyFilters();
@@ -126,6 +131,6 @@ Portal.data.TopTermStore = Ext.extend(Ext.data.XmlStore, {
     },
 
     _getDisplay: function(v, rec) {
-        return v.substring(v.lastIndexOf(this.separator)+1).trim();
+        return v.substring(v.lastIndexOf(this.separator) + 1).trim();
     }
 });

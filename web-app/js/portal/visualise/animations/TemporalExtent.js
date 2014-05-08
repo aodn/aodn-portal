@@ -136,11 +136,12 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
 
         var that = this;
         var extentParser = new Portal.visualise.animations.TemporalExtentParser();
-        (function () {
+        (function() {
             var missingDaysStart = 0;
+
             function _parseChunk() {
                 var chunkStart = 0;
-                (function () {
+                (function() {
                     var chunkEnd = chunkStart + chunkSize;
                     if (chunkEnd >= _extent.length) {
                         chunkEnd = _extent.length;
@@ -162,6 +163,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
                     }
                 })();
             }
+
             _parseChunk();
         })();
     },
@@ -298,15 +300,14 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
             // temporalExtent[i-1]
             if (i > 0) {
                 var previousExistingDay = this.extent[i - 1].clone().startOf('day');
-                var currentExistingDay  = this.extent[i].clone().startOf('day');
+                var currentExistingDay = this.extent[i].clone().startOf('day');
 
                 // Fill in all the days in this gap (if there's any), a day after
                 // the previous existing date, until a day before the current
                 // existing date
                 for (var nonExistingDay = previousExistingDay.clone().add('days', 1);
-                    nonExistingDay.isBefore(currentExistingDay);
-                    nonExistingDay = nonExistingDay.add('days', 1))
-                {
+                     nonExistingDay.isBefore(currentExistingDay);
+                     nonExistingDay = nonExistingDay.add('days', 1)) {
                     this.missingDays.push(nonExistingDay.toDate().clone());
                 }
             }

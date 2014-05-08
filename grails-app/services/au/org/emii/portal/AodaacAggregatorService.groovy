@@ -23,8 +23,10 @@ class AodaacAggregatorService {
     def portalInstance
 
     // Date formats
-    static final def FROM_JAVASCRIPT_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") // String from UI -> Date Object
-    static final def TO_AGGREGATOR_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss") // Date Object -> String for AODAAC
+    static final def FROM_JAVASCRIPT_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    // String from UI -> Date Object
+    static final def TO_AGGREGATOR_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+    // Date Object -> String for AODAAC
 
     def getProductInfo(productIds) {
 
@@ -52,7 +54,7 @@ class AodaacAggregatorService {
 
         def productLinks = AodaacProductLink.findAllByLayerNameIlikeAndServer(layer.name, layer.server)
 
-        return productLinks.collect{ it.productId }.unique()
+        return productLinks.collect { it.productId }.unique()
     }
 
     def createJob(params) {
@@ -69,14 +71,16 @@ class AodaacAggregatorService {
 
         if (response.error) {
             log.error "Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response"
-            throw new RuntimeException("Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response")
+            throw new RuntimeException(
+                "Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response"
+            )
         }
 
         def job = new AodaacJob(response.id, params)
         job.save failOnError: true
 
         return job
-     }
+    }
 
     void updateJob(job) {
 
@@ -105,7 +109,7 @@ class AodaacAggregatorService {
 
     def checkIncompleteJobs() {
 
-        def endedList = AodaacJob.Status.endedStatuses.collect{"'$it'"}.join(",")
+        def endedList = AodaacJob.Status.endedStatuses.collect { "'$it'" }.join(",")
         def jobList = AodaacJob.findAll("from AodaacJob as job where job.status not in ($endedList)")
 
         log.debug "number of jobs: " + jobList.size()
@@ -150,19 +154,21 @@ class AodaacAggregatorService {
 
         [
             'startdate': _dateFromParams(params.dateRangeStart),
-            'stopdate':  _dateFromParams(params.dateRangeEnd),
-            'nlat': params.latitudeRangeEnd,
-            'slat': params.latitudeRangeStart,
-            'elon': params.longitudeRangeEnd,
-            'wlon': params.longitudeRangeStart,
-            'products': params.productId
+            'stopdate' : _dateFromParams(params.dateRangeEnd),
+            'nlat'     : params.latitudeRangeEnd,
+            'slat'     : params.latitudeRangeStart,
+            'elon'     : params.longitudeRangeEnd,
+            'wlon'     : params.longitudeRangeStart,
+            'products' : params.productId
         ]
     }
 
     def _makeApiCall(apiCallUrl) {
 
         if (_apiCallsDisabled()) {
-            throw new IllegalStateException("AODAAC API calls disabled. If testing please mock the service or specific behaviour required.")
+            throw new IllegalStateException(
+                "AODAAC API calls disabled. If testing please mock the service or specific behaviour required."
+            )
         }
 
         log.debug "API call URL: $apiCallUrl"
@@ -219,7 +225,8 @@ class AodaacAggregatorService {
         }
         catch (Exception e) {
 
-            log.error "Unable to notify user (email address: '${job.notificationEmailAddress}') about completion of AODAAC job: $job", e
+            log.error "Unable to notify user (email address: '${job.notificationEmailAddress}') about completion of AODAAC job: $job",
+                e
         }
     }
 
@@ -289,7 +296,7 @@ class AodaacAggregatorService {
 
     def _fileList(details) {
 
-        details.files.collect{ it.toString() }.join("\n")
+        details.files.collect { it.toString() }.join("\n")
     }
 
     def _getEmailBodyMessageCode(job, currentDetails) {

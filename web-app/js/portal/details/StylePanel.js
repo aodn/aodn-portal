@@ -9,18 +9,18 @@ Ext.namespace('Portal.details');
 
 Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
-    constructor: function (cfg) {
+    constructor: function(cfg) {
         var config = Ext.apply({
             id: 'stylePanel',
             title: 'Styles',
             autoScroll: true,
-            style: { margin:5 }
+            style: { margin: 5 }
         }, cfg);
 
         Portal.details.StylePanel.superclass.constructor.call(this, config);
     },
 
-    initComponent:function (cfg) {
+    initComponent: function(cfg) {
         this.legendImage = new GeoExt.LegendImage({
             id: 'legendImage',
             imgCls: 'legendImage',
@@ -85,7 +85,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         this.on('show', this._showHandler);
     },
 
-    makeCombo:function () {
+    makeCombo: function() {
         var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p><img src="{displayImage}" /></div></tpl>';
         var fields;
 
@@ -117,14 +117,14 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             tpl: tpl,
             listeners: {
                 scope: this,
-                select: function (cbbox, record, index) {
+                select: function(cbbox, record, index) {
                     this.setChosenStyle(record);
                 }
             }
         });
     },
 
-    setChosenStyle:function (record) {
+    setChosenStyle: function(record) {
         this.selectedLayer.mergeNewParams({
             styles: record.get('myId')
         });
@@ -133,7 +133,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         this.refreshLegend(this.selectedLayer);
     },
 
-    handleLayer:function (layer, show, hide, target) {
+    handleLayer: function(layer, show, hide, target) {
         this.selectedLayer = layer;
 
         show.call(target, this);
@@ -170,7 +170,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         this.refreshLegend(layer);
     },
 
-    _styleData: function (layer) {
+    _styleData: function(layer) {
         var data = [];
         var allStyles = layer.allStyles;
 
@@ -193,7 +193,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     // full legend shown in layer option. The current legend
-    refreshLegend: function (layer) {
+    refreshLegend: function(layer) {
         // get openlayers style as string
         var styleName = layer.params.STYLES;
         var palette = this._getPalette(layer, styleName);
@@ -206,7 +206,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     // builds a getLegend image request for the combobox form and the selected palette
-    buildGetLegend: function (layer, style, palette, colorBarOnly) {
+    buildGetLegend: function(layer, style, palette, colorBarOnly) {
 
         var url = "";
         var useProxy = false;
@@ -261,8 +261,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         }
 
         opts += "&REQUEST=GetLegendGraphic"
-             +  "&LAYER=" + layer.params.LAYERS
-             +  "&FORMAT=" + layer.params.FORMAT;
+            + "&LAYER=" + layer.params.LAYERS
+            + "&FORMAT=" + layer.params.FORMAT;
 
         if (layer && layer.server && layer.server.type) {
             var version = layer.server.type.split('-')[1];
