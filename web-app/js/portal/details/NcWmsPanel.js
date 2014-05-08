@@ -224,10 +224,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         if (this._isGogoduckLayer(this.selectedLayer.parentGeoNetworkRecord.data)) {
             config = this._buildGogoduckParams(geometry);
         }
-        else {
-            if (this._isAodaacLayer(this.selectedLayer.parentGeoNetworkRecord.data)) {
-                config = this._buildAodaacParams(geometry);
-            }
+        else if (this._isAodaacLayer(this.selectedLayer.parentGeoNetworkRecord.data)) {
+            config = this._buildAodaacParams(geometry);
         }
 
         return config;
