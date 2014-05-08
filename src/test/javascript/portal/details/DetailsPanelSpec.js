@@ -16,27 +16,16 @@ describe("Portal.details.DetailsPanel", function() {
     });
 
     describe('initialisation', function() {
-
-        it('has correct status', function() {
-            expect(detailsPanel.status.html).toBe(OpenLayers.i18n('loadingMessage'));
-        });
-
         it('hides contents', function() {
             expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
         });
     });
 
     describe('selected collection changed', function() {
-
-        beforeEach(function() {
-            spyOn(detailsPanel, 'setStatus').andCallFake(function(status) { });
-        });
-
         describe('selected collection', function() {
             var openLayer;
 
             beforeEach(function() {
-
                 openLayer = new OpenLayers.Layer.WMS(
                     "the title",
                     "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
@@ -49,14 +38,9 @@ describe("Portal.details.DetailsPanel", function() {
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
             });
-
-            it('set status to collection name', function() {
-                expect(detailsPanel.setStatus).toHaveBeenCalledWith(openLayer.name);
-            });
         });
 
         describe('no selected layer', function() {
-
             beforeEach(function() {
                 Ext.MsgBus.publish('selectedLayerChanged');
             });
@@ -68,10 +52,6 @@ describe("Portal.details.DetailsPanel", function() {
                 expect(detailsPanel.title).toBe('something');
             });
 
-            it("set status to 'no selected layer'", function() {
-                expect(detailsPanel.setStatus).toHaveBeenCalledWith(OpenLayers.i18n('noActiveCollectionSelected'));
-            });
-
             it('hide contents', function() {
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
                 expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
@@ -80,7 +60,6 @@ describe("Portal.details.DetailsPanel", function() {
     });
 
     describe('step title', function() {
-
         it('is correct', function() {
 
             var expectedTitle = OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description') });

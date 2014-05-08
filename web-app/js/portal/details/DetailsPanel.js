@@ -9,11 +9,12 @@ Ext.namespace('Portal.details');
 
 Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
-    constructor: function (cfg) {
+    constructor : function(cfg) {
+        
         var config = Ext.apply({
             title: OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description')}),
             headerCfg: {
-                cls: 'steps'
+                cls : 'steps'
             },
             layout: 'vbox',
             layoutConfig: {
@@ -25,31 +26,20 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
         Portal.details.DetailsPanel.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (eventName, openlayer) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(eventName, openlayer) {
             this.updateDetailsPanel(openlayer);
         }, this);
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, function (eventName, openlayer) {
-            this.setStatus(OpenLayers.i18n('loadingMessage'));
-        }, this);
-
     },
 
-    initComponent: function () {
-        this.detailsPanelTabs = new Portal.details.DetailsPanelTab({
-            map: this.map
-        });
-
-        this.status = new Ext.Container({
-            html: OpenLayers.i18n('loadingMessage'),
-            cls: 'collectionTitle',
-            margins: {top:20, right:10, bottom:10, left:0},
-            autoHeight: true
-        });
+    initComponent : function() {
         
-        this.items = [
-            this.status,
-            this.detailsPanelTabs
-        ];
+        this.detailsPanelTabs = new Portal.details.DetailsPanelTab({
+                map: this.map
+            });
+
+        this.dataCollectionSelectorPanel = new Portal.details.DataCollectionSelectorPanel();
+
+        this.items = [ this.dataCollectionSelectorPanel, this.detailsPanelTabs ];
 
         Portal.details.DetailsPanel.superclass.initComponent.call(this);
 
@@ -57,30 +47,19 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     },
 
     // must be called when the panel is fully expanded for the slider
-    updateDetailsPanel: function (layer, forceOpen) {
+    updateDetailsPanel: function(layer, forceOpen) {
         if (layer) {
-
             if (layer.isOverlay()) {
-                this.setStatus(layer.name);
                 // show new layer unless user requested 'hideLayerOptions'
                 this.detailsPanelTabs.handleLayer(layer);
                 this.doLayout();
             }
-        }
-        else {
-            this.setStatus(OpenLayers.i18n('noActiveCollectionSelected'));
+        } else {
             this.hideDetailsPanelContents();
         }
     },
 
-    setStatus: function(status) {
-
-        if (this.status.rendered) {
-            this.status.update(status);
-        }
-    },
-
-    hideDetailsPanelContents: function () {
+    hideDetailsPanelContents: function() {
         // clear the details Panel. ie. Don't show any layer options
 
         //DO NOT HIDE THE opacitySlider directly, or you WILL break things.-Alex
@@ -90,5 +69,4 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     showDetailsPanelContents: function() {
         this.doLayout();
     }
-
 });
