@@ -12,6 +12,13 @@ Portal.cart.Downloader = Ext.extend(Object, {
 
         var wfsDownloadUrl = generateWfsUrlCallback.call(generateWfsUrlCallbackScope, collection, params);
 
+        log.info(
+            "Downloading collection: " + JSON.stringify({
+                'title': collection.title,
+                'download URL': wfsDownloadUrl
+            })
+        );
+
         if (params.asyncDownload) {
             this._downloadAsynchronously(collection, wfsDownloadUrl, params);
         }

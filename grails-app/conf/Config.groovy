@@ -263,7 +263,7 @@ indexedFile.fileSizeColumnName = "size"
 log4j = {
     appenders {
 
-        console name:'stdout', layout: pattern(conversionPattern: "%-5p %d [%-12t] %30.30c %X{userInfoForFile}- %m%n")
+        console name:'stdout', layout: pattern(conversionPattern: "%-5p %d [%-12t] %c %X{userInfoForFile}- %m%n")
     }
 
     root {
