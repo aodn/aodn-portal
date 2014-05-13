@@ -9,15 +9,7 @@ Ext.namespace('Portal.data');
 
 Portal.data.GogoduckAggregator = Ext.extend(Portal.data.Aggregator, {
 
-    isAodaacLayer: function() {
-        return false;
-    },
-
-    isGogoduckLayer: function() {
+    supportsSubsettedNetCdf: function() {
         return true;
-    },
-
-    isBodaacLayer: function() {
-        return false;
     }
 });
