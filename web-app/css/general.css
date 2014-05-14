@@ -1016,7 +1016,14 @@ div.allwhite {
 }
 
 /* Bug #9 - show blank tiles on image load error. */
-.olImageLoadError { display: none; }
+.olImageLoadError {
+    display: none;
+}
+
+#toplinks .highlight {
+    color: #222222;
+    text-shadow: none;
+}
 
 .WAMiniLogo {
 
@@ -1027,4 +1034,3 @@ div.allwhite {
 .highlight:hover {
     background-color : #ffff99
 }
-
