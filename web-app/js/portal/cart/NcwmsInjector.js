@@ -18,8 +18,6 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _getDataFilterEntry: function(collection) {
 
-        console.log(collection);
-
         var params = collection.ncwmsParams;
         var areaString = "";
         var dateString = "";
@@ -54,7 +52,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     _createMenuItems: function(collection) {
         var menuItems = [];
 
-        if (this._isBodaacLayer(collection)) {
+        if (this._isUrlListDownloadAvailable(collection)) {
 
             menuItems.push({
                 text: OpenLayers.i18n('downloadAsUrlsLabel'),
@@ -68,11 +66,11 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             });
         }
 
-        if (this._isAodaacLayer(collection) || this._isGogoduckLayer(collection)) {
+        if (this._isSubsettedNetCdfAvailable(collection)) {
 
             menuItems.push({
                 text: OpenLayers.i18n('downloadAsSubsettedNetCdfLabel'),
-                handler: this._downloadGogoduckHandler(collection, { format: 'nc' }),
+                handler: this._subsettedDownloadHandler(collection, { format: 'nc' }),
                 scope: this
             });
         }
@@ -80,7 +78,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return menuItems;
     },
 
-    _downloadGogoduckHandler: function(collection, params) {
+    _subsettedDownloadHandler: function(collection, params) {
 
         params.collectEmailAddress = true;
         params.asyncDownload = true;
@@ -114,7 +112,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             url = this._generateGogoduckJobUrl(collection, params.emailAddress);
         }
         else {
-            if (this._isAodaacLayer(collection)) {
+            if (this._isSubsettedNetCdfAvailable(collection)) {
                 url = this._generateAodaacJobUrl(collection, params.format, params.emailAddress);
             }
         }
@@ -122,40 +120,12 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return url;
     },
 
-    _isAodaacLayer: function(collection) {
-        var aodaac = false;
-
-        Ext.each(collection.aggregator, function(aggregator, index) {
-            if (aggregator.isAodaacLayer()) {
-                aodaac = true;
-            }
-        });
-
-        return aodaac;
+    _isSubsettedNetCdfAvailable: function(collection) {
+        return collection.aggregator.supportsSubsettedNetCdf();
     },
 
-    _isBodaacLayer: function(collection) {
-        var bodaac = false;
-
-        Ext.each(collection.aggregator, function(aggregator, index) {
-            if (aggregator.isBodaacLayer()) {
-                bodaac = true;
-            }
-        });
-
-        return bodaac;
-    },
-
-    _isGogoduckLayer: function(collection) {
-        var gogoduck = false;
-
-        Ext.each(collection.aggregator, function(aggregator, index) {
-            if (aggregator.isGogoduckLayer()) {
-                gogoduck = true;
-            }
-        });
-
-        return gogoduck;
+    _isUrlListDownloadAvailable: function(collection) {
+        return collection.aggregator.supportsNetCdfUrlList();
     },
 
     _generateAodaacJobUrl: function(collection, format, email) {

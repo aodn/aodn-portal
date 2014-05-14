@@ -20,4 +20,8 @@ describe('Portal.data.Aggregator', function() {
     it('supportsNetCdfUrlList returns false by default', function() {
         expect(aggregator.supportsNetCdfUrlList()).toBe(false);
     });
+
+    it('buildParams returns an empty string by default', function() {
+        expect(aggregator.buildParams()).toEqual('');
+    });
 });

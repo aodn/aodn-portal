@@ -26,6 +26,8 @@ Portal.data.AggregatorGroup = Ext.extend(Object, {
                 return true;
             }
         }
+
+        return false;
     },
 
     supportsNetCdfUrlList: function() {
@@ -38,6 +40,4 @@ Portal.data.AggregatorGroup = Ext.extend(Object, {
 
         return false;
     }
-
-
 });

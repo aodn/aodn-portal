@@ -8,10 +8,6 @@ Ext.namespace('Portal.data.GeoNetworkRecord');
 
 Portal.data.GeoNetworkRecord = function() {
 
-    var AODAAC_PROTOCOL_NAME = 'AODAAC';
-    var BODAAC_PROTOCOL_NAME = 'BODAAC';
-    var GOGODUCK_PROTOCOL_NAME = 'GoGoDuck';
-
     var linksField = {
         name: 'links',
         convert: convertXmlToLinks
@@ -77,16 +73,8 @@ Portal.data.GeoNetworkRecord = function() {
         convert: function(v, record) {
             var allLinks = convertXmlToLinks(v, record);
             var aggregatorFactory = new Portal.data.AggregatorFactory();
-            var aggregatorTypes = [];
 
-            Ext.each(allLinks, function(linkToCheck) {
-                if (linkToCheck.name == GOGODUCK_PROTOCOL_NAME || linkToCheck.name == BODAAC_PROTOCOL_NAME || linkToCheck.name == AODAAC_PROTOCOL_NAME) {
-                    var aggr = aggregatorFactory.newAggregator(linkToCheck.name);
-                    aggregatorTypes.push(aggr);
-                }
-            });
-
-            return aggregatorTypes;
+            return aggregatorFactory.newAggregatorGroup(allLinks);
         }
     };
 

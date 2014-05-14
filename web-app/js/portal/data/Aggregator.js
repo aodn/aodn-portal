@@ -15,5 +15,9 @@ Portal.data.Aggregator = Ext.extend(Object, {
 
     supportsNetCdfUrlList: function() {
         return false;
+    },
+
+    buildParams: function() {
+        return '';
     }
 });

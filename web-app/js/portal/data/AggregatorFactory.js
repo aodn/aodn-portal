@@ -9,10 +9,50 @@ Ext.namespace('Portal.data');
 
 Portal.data.AggregatorFactory = Ext.extend(Object, {
 
-    constructor: function() {
-        this.AODAAC_PROTOCOL_NAME = "AODAAC";
-        this.GOGODUCK_PROTOCOL_NAME = "GoGoDuck";
-        this.BODAAC_PROTOCOL_NAME = "BODAAC";
+    AODAAC_PROTOCOL_NAME: "AODAAC",
+    GOGODUCK_PROTOCOL_NAME: "GoGoDuck",
+    BODAAC_PROTOCOL_NAME: "BODAAC",
+
+    SUPPORTED_PROTOCOLS: [
+        "AODAAC",
+        "GoGoDuck",
+        "BODAAC"
+    ],
+
+    newAggregatorGroup: function(links) {
+
+        var group = new Portal.data.AggregatorGroup();
+        var linksWithOneAggr = this.cutAodaac(links);
+
+        Ext.each(linksWithOneAggr, function(linkToCheck) {
+            if (inArray(this.SUPPORTED_PROTOCOLS, linkToCheck.name)) {
+                var aggr = this.newAggregator(linkToCheck.name);
+                group.add(aggr);
+            }
+        }, this);
+
+        return group;
+    },
+
+    cutAodaac: function(links) {
+
+        var gogoduck = false;
+
+        Ext.each(links, function(link) {
+            if (link.name == this.GOGODUCK_PROTOCOL_NAME) {
+                gogoduck = true;
+            }
+        }, this);
+
+        if (gogoduck) {
+            Ext.each(links, function(link, index) {
+                if (link.name == this.AODAAC_PROTOCOL_NAME) {
+                    links.splice(index, 1);
+                }
+            }, this);
+        }
+
+        return links;
     },
 
     newAggregator: function(name) {

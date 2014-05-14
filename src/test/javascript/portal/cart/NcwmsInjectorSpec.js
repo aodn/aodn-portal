@@ -21,15 +21,15 @@ describe('Portal.cart.NcwmsInjector', function() {
 
     describe('createMenuItems', function() {
 
-        it('creates download options for URL list and subsetted NetCDF when bodaac is available', function() {
+        it('creates download options for URL list and subsetted NetCDF where supported by layer', function() {
             var menuItems;
             var urlListIncluded = false;
             var netCdfDownloadIncluded = false;
             var netCdfSubsetIncluded = false;
-            var mockGogoduckAggr = new Portal.data.GogoduckAggregator();
-            var mockBodaacAggr = new Portal.data.BodaacAggregator();
 
-            geoNetworkRecord.aggregator = [mockGogoduckAggr, mockBodaacAggr];
+            injector._isSubsettedNetCdfAvailable = function() { return true; };
+            injector._isUrlListDownloadAvailable = function() { return true; };
+
             menuItems = injector._createMenuItems(geoNetworkRecord);
 
             for (var i = 0; i < menuItems.length; i++) {
@@ -49,14 +49,15 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(netCdfDownloadIncluded).toBe(true);
         });
 
-        it('creates only subsetted NetCDF menu option where the bodaac aggregator is not available', function() {
+        it('creates only subsetted NetCDF menu option where bodaac is not supported', function() {
             var menuItems;
             var urlListIncluded = false;
             var netCdfDownloadIncluded = false;
             var netCdfSubsetIncluded = false;
-            var mockGogoduckAggr = new Portal.data.GogoduckAggregator();
 
-            geoNetworkRecord.aggregator = [mockGogoduckAggr];
+            injector._isSubsettedNetCdfAvailable = function() { return true; };
+            injector._isUrlListDownloadAvailable = function() { return false; };
+
             menuItems = injector._createMenuItems(geoNetworkRecord);
 
             for (var i = 0; i < menuItems.length; i++) {
@@ -212,9 +213,9 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
     });
 
-    describe('_downloadGogoduckHandler', function() {
+    describe('_subsettedDownloadHandler', function() {
         it('provides a function', function() {
-            expect(typeof(injector._downloadGogoduckHandler(geoNetworkRecord, 'nc'))).toEqual('function');
+            expect(typeof(injector._subsettedDownloadHandler(geoNetworkRecord, 'nc'))).toEqual('function');
         });
 
         it('calls downloadWithConfirmation', function() {
@@ -222,7 +223,7 @@ describe('Portal.cart.NcwmsInjector', function() {
             var collection = {};
             var params = {};
 
-            injector._downloadGogoduckHandler(collection, params);
+            injector._subsettedDownloadHandler(collection, params);
 
             var expectedParams = {
                 collectEmailAddress: true,
@@ -273,13 +274,13 @@ describe('Portal.cart.NcwmsInjector', function() {
             spyOn(injector, '_generateAodaacJobUrl');
             spyOn(injector, '_generateGogoduckJobUrl');
 
-            injector._isAodaacLayer = function() {return false};
+            injector._isSubsettedNetCdfAvailable = function() {return false};
             injector._isGogoduckLayer = function() {return false};
         });
 
         it('calls _generateAodaacJobUrl when an aodaac record is passed', function() {
 
-            injector._isAodaacLayer = function() {return true};
+            injector._isSubsettedNetCdfAvailable = function() {return true};
 
             url = injector._generateNcwmsUrl(collection, params);
             expect(injector._generateAodaacJobUrl).toHaveBeenCalled();
@@ -296,7 +297,7 @@ describe('Portal.cart.NcwmsInjector', function() {
         it('calls _generateGogoduckJobUrl when a record is passed that is configured for gogoduck and aodaac', function() {
 
             injector._isGogoduckLayer = function() {return true};
-            injector._isAodaacLayer = function() {return true};
+            injector._isSubsettedNetCdfAvailable = function() {return true};
 
             url = injector._generateNcwmsUrl(collection, params);
             expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
