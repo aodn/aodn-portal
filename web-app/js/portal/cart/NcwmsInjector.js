@@ -194,11 +194,6 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
              }
          };
 
-        if (collection.wmsLayer.gogoduckLayerName) {
-
-            args.layerName = collection.wmsLayer.gogoduckLayerName;
-        }
-
          var paramsAsJson = Ext.util.JSON.encode(args);
 
          return String.format('gogoduck/registerJob?jobParameters={0}', encodeURIComponent(paramsAsJson));
