@@ -260,10 +260,12 @@ marvl {
 indexedFile.fileSizeColumnName = "size"
 
 // log4j configuration
+log4jConversionPattern = env['LOG4J_CONVERSION_PATTERN'] ?: "%-5p %d [%-12t] %c %X{userInfoForFile}- %m%n"
+
 log4j = {
     appenders {
 
-        console name:'stdout', layout: pattern(conversionPattern: "%-5p %d [%-12t] %c %X{userInfoForFile}- %m%n")
+        console name:'stdout', layout: pattern(conversionPattern: log4jConversionPattern)
     }
 
     root {
