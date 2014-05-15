@@ -33,6 +33,7 @@ describe('Portal.details.NcWmsPanel', function() {
         ncwmsPanel._setBounds =  noOp;
         ncwmsPanel._removeLoadingInfo = noOp;
         ncwmsPanel.selectedLayer = layer;
+        ncwmsPanel._getParentRecordAggregator = function() { return new Portal.data.Aggregator() };
     });
 
     describe('GeoNetworkRecord', function() {
@@ -169,10 +170,17 @@ describe('Portal.details.NcWmsPanel', function() {
                 }
             }
         };
+        var mockParentAggregator = new Portal.data.GogoduckAggregator();
+        var dateRangeStart = '[date]';
+        var dateRangeEnd = '[date]';
 
-        it ('returns correct params for gogoduck configured layers', function() {
+        it ('calls buildParams on the aggregator object passed', function() {
 
+            spyOn(mockParentAggregator, 'buildParams');
 
+            ncwmsPanel._buildParameters(mockParentAggregator, layer, dateRangeStart, dateRangeEnd, geom);
+
+            expect(mockParentAggregator.buildParams).toHaveBeenCalled();
         });
     });
 

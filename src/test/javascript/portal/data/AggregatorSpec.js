@@ -24,4 +24,8 @@ describe('Portal.data.Aggregator', function() {
     it('buildParams returns an empty string by default', function() {
         expect(aggregator.buildParams()).toEqual('');
     });
+
+    it('generateUrl returns an empty string by default', function() {
+        expect(aggregator.generateUrl()).toEqual('');
+    });
 });

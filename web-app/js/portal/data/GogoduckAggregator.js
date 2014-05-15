@@ -13,6 +13,7 @@ Portal.data.GogoduckAggregator = Ext.extend(Portal.data.Aggregator, {
     LONG_MAX: 180,
     LAT_MIN: -90,
     LAT_MAX: 90,
+    PARAMS_DATE_FORMAT: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]',
 
     supportsSubsettedNetCdf: function() {
         return true;
@@ -50,5 +51,33 @@ Portal.data.GogoduckAggregator = Ext.extend(Portal.data.Aggregator, {
         }
 
         return name;
+    },
+
+    generateUrl: function(params, email) {
+        var args = {
+            layerName: params.layerName,
+            emailAddress: email,
+            subsetDescriptor: {
+                temporalExtent: {
+                    start: this._formatDate(params.dateRangeStart),
+                    end: this._formatDate(params.dateRangeEnd)
+                },
+                spatialExtent: {
+                    north: (params.latitudeRangeEnd || params.productLatitudeRangeEnd),
+                    south: (params.latitudeRangeStart || params.productLatitudeRangeStart),
+                    east: (params.longitudeRangeEnd || params.productLongitudeRangeEnd),
+                    west: (params.longitudeRangeStart || params.productLongitudeRangeStart)
+                }
+            }
+        };
+
+        var paramsAsJson = Ext.util.JSON.encode(args);
+
+        return String.format('gogoduck/registerJob?jobParameters={0}', encodeURIComponent(paramsAsJson));
+    },
+
+    _formatDate: function(date) {
+
+        return date.format(this.PARAMS_DATE_FORMAT);
     }
 });

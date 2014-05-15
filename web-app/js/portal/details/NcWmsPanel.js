@@ -212,18 +212,23 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         return new Ext.Spacer({ height: 10 });
     },
 
-    _buildParameters: function(geometry) {
+    _buildParameters: function(parentAggr, selectedLayer, dateRangeStart, dateRangeEnd, geometry) {
 
-        var parentAggr = this._getParentRecordAggregator(this.selectedLayer);
-        var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
-        var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
-
-        return parentAggr.buildParams(this.selectedLayer, dateRangeStart, dateRangeEnd, geometry);
+        return parentAggr.buildParams(selectedLayer, dateRangeStart, dateRangeEnd, geometry);
     },
 
     _getParentRecordAggregator: function(selectedLayer) {
 
-        return selectedLayer.parentGeoNetworkRecord.data.aggregator;
+        var parentAggrGroup = selectedLayer.parentGeoNetworkRecord.data.aggregator.childAggregators;
+        var parentAggr;
+
+        Ext.each(parentAggrGroup, function(aggr) {
+            if (aggr.supportsSubsettedNetCdf()) {
+                parentAggr = aggr;
+            }
+        });
+
+        return parentAggr;
     },
 
     _onDateSelected: function(datePicker, jsDate) {
@@ -253,11 +258,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _applyFilterValuesToCollection: function(geometry) {
+
+        var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
+        var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
+        var parentAggr = this._getParentRecordAggregator(this.selectedLayer);
+
         if (this.geoNetworkRecord) {
-
-            this._addDateTimeFilterToLayer(geometry);
-
-            this.geoNetworkRecord.updateNcwmsParams(this._buildParameters(geometry));
+            this._addDateTimeFilterToLayer();
+            this.geoNetworkRecord.updateNcwmsParams(this._buildParameters(parentAggr, this.selectedLayer, dateRangeStart, dateRangeEnd, geometry));
         }
     },
 

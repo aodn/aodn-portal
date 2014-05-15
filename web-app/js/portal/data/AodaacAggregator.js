@@ -9,6 +9,8 @@ Ext.namespace('Portal.data');
 
 Portal.data.AodaacAggregator = Ext.extend(Portal.data.Aggregator, {
 
+    PARAMS_DATE_FORMAT: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]',
+
     supportsSubsettedNetCdf: function() {
         return true;
     },
@@ -47,5 +49,26 @@ Portal.data.AodaacAggregator = Ext.extend(Portal.data.Aggregator, {
     _getMax: function(values) {
 
         return values[1];
+    },
+
+    generateUrl: function(params) {
+        var format = 'nc';
+
+        var args = "outputFormat=" + format;
+        args += "&dateRangeStart=" + encodeURIComponent(this._formatDate(params.dateRangeStart));
+        args += "&dateRangeEnd=" + encodeURIComponent(this._formatDate(params.dateRangeEnd));
+        args += "&latitudeRangeStart=" + (params.latitudeRangeStart || params.productLatitudeRangeStart);
+        args += "&latitudeRangeEnd=" + (params.latitudeRangeEnd || params.productLatitudeRangeEnd);
+        args += "&longitudeRangeStart=" + (params.longitudeRangeStart || params.productLongitudeRangeStart);
+        args += "&longitudeRangeEnd=" + (params.longitudeRangeEnd || params.productLongitudeRangeEnd);
+        args += "&productId=" + params.productId;
+        args += "&notificationEmailAddress=" + params.emailAddress;
+
+        return 'aodaac/createJob?' + args;
+    },
+
+    _formatDate: function(date) {
+
+        return date.format(this.PARAMS_DATE_FORMAT);
     }
 });

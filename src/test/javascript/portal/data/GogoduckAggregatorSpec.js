@@ -11,6 +11,8 @@ describe('Portal.data.GogoduckAggregator', function() {
     var layer;
     var dateRangeStart;
     var dateRangeEnd;
+    var startDate;
+    var endDate;
 
 
     beforeEach(function() {
@@ -22,6 +24,8 @@ describe('Portal.data.GogoduckAggregator', function() {
                 name: 'gogoDingo'
             }
         };
+        startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
+        endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
     });
 
     describe('supportsSubsettedNetCdf', function() {
@@ -70,6 +74,61 @@ describe('Portal.data.GogoduckAggregator', function() {
             expect(params.longitudeRangeStart).toBe(30);
             expect(params.latitudeRangeEnd).toBe(20);
             expect(params.longitudeRangeEnd).toBe(40);
+        });
+    });
+
+    describe('generateUrl', function() {
+
+        var url;
+        var geoNetworkRecord;
+        var email;
+
+        beforeEach(function() {
+            email = 'gogo@duck.com';
+            geoNetworkRecord = {
+                ncwmsParams: {
+                    dateRangeStart: startDate,
+                    dateRangeEnd: endDate,
+                    latitudeRangeStart: -42,
+                    latitudeRangeEnd: -20,
+                    longitudeRangeStart: 160,
+                    longitudeRangeEnd: 170,
+                    layerName: "gogoDingo"
+                }
+            };
+            url = decodeURIComponent(aggregator.generateUrl(geoNetworkRecord.ncwmsParams, email));
+        });
+
+        it('generates the gogoduck endpoint', function() {
+            expect(url.indexOf('gogoduck/registerJob?jobParameters=')).toBeGreaterThan(-1);
+        });
+
+        it('generates the layer name', function() {
+            expect(url.indexOf('gogoDingo')).not.toEqual(-1);
+        });
+
+        it('generates the longitude range start', function() {
+            expect(url.indexOf('160')).not.toEqual(-1);
+        });
+
+        it('generates the longitude range end', function() {
+            expect(url.indexOf('170')).not.toEqual(-1);
+        });
+
+        it('generates the latitude range start', function() {
+            expect(url.indexOf('-42')).not.toEqual(-1);
+        });
+
+        it('generates the latitude range end', function() {
+            expect(url.indexOf('-20')).not.toEqual(-1);
+        });
+
+        it('generates the time range start', function() {
+            expect(url.indexOf('2013-11-20T00:30:00.000Z')).not.toEqual(-1);
+        });
+
+        it('generates the time range end', function() {
+            expect(url.indexOf('2014-12-21T22:30:30.500Z')).not.toEqual(-1);
         });
     });
 });

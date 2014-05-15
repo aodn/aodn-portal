@@ -19,5 +19,9 @@ Portal.data.Aggregator = Ext.extend(Object, {
 
     buildParams: function() {
         return '';
+    },
+
+    generateUrl: function() {
+        return '';
     }
 });

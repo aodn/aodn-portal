@@ -106,7 +106,9 @@ describe('Portal.cart.InsertionService', function() {
     });
 
     function getWmsRecord() {
-        geoNetworkRecord.aggregator = [];
+        geoNetworkRecord.aggregator = {
+            childAggregators: []
+        };
         geoNetworkRecord.wmsLayer.wfsLayer = {};
         geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
 
@@ -115,7 +117,9 @@ describe('Portal.cart.InsertionService', function() {
 
     function getGogoduckRecord() {
         var mockNcwmsAggr = new Portal.data.GogoduckAggregator();
-        geoNetworkRecord.aggregator = [mockNcwmsAggr];
+        geoNetworkRecord.aggregator = {
+            childAggregators: [mockNcwmsAggr]
+        };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
 
         return geoNetworkRecord;
@@ -123,7 +127,9 @@ describe('Portal.cart.InsertionService', function() {
 
     function getAodaacRecord() {
         var mockNcwmsAggr = new Portal.data.AodaacAggregator();
-        geoNetworkRecord.aggregator = [mockNcwmsAggr];
+        geoNetworkRecord.aggregator = {
+            childAggregators: [mockNcwmsAggr]
+        };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
 
         return geoNetworkRecord;
@@ -131,14 +137,18 @@ describe('Portal.cart.InsertionService', function() {
 
     function getBodaacRecord() {
         var mockNcwmsAggr = new Portal.data.BodaacAggregator();
-        geoNetworkRecord.aggregator = [mockNcwmsAggr];
+        geoNetworkRecord.aggregator = {
+            childAggregators: [mockNcwmsAggr]
+        };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
 
         return geoNetworkRecord;
     }
 
     function getNoDataRecord() {
-        geoNetworkRecord.aggregator = [];
+        geoNetworkRecord.aggregator = {
+            childAggregators: []
+        };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
 
         return geoNetworkRecord;

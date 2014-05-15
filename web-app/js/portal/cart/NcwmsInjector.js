@@ -9,8 +9,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
-    PARAMS_DATE_FORMAT: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]',
-
     constructor: function(config) {
         Portal.cart.NcwmsInjector.superclass.constructor.call(this, Ext.apply(this, config));
         this._downloadUrl = this._bodaacCsvDownloadUrl;
@@ -106,18 +104,23 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _generateNcwmsUrl: function(collection, params) {
 
-        var url = '';
+        var recordAggregator = this._getRecordAggregator(collection);
 
-        if (this._isGogoduckLayer(collection)) {
-            url = this._generateGogoduckJobUrl(collection, params.emailAddress);
-        }
-        else {
-            if (this._isSubsettedNetCdfAvailable(collection)) {
-                url = this._generateAodaacJobUrl(collection, params.format, params.emailAddress);
+        return recordAggregator.generateUrl(collection.ncwmsParams, params.emailAddress);
+    },
+
+    _getRecordAggregator: function(collection) {
+
+        var aggrGroup = collection.aggregator.childAggregators;
+        var aggregator;
+
+        Ext.each(aggrGroup, function(aggr) {
+            if (aggr.supportsSubsettedNetCdf()) {
+                aggregator = aggr;
             }
-        }
+        });
 
-        return url;
+        return aggregator;
     },
 
     _isSubsettedNetCdfAvailable: function(collection) {
@@ -126,54 +129,6 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _isUrlListDownloadAvailable: function(collection) {
         return collection.aggregator.supportsNetCdfUrlList();
-    },
-
-    _generateAodaacJobUrl: function(collection, format, email) {
-
-        var params = collection.ncwmsParams;
-
-        var args = "outputFormat=" + format;
-        args += "&dateRangeStart=" + encodeURIComponent(this._formatDate(params.dateRangeStart));
-        args += "&dateRangeEnd=" + encodeURIComponent(this._formatDate(params.dateRangeEnd));
-        args += "&latitudeRangeStart=" + (params.latitudeRangeStart || params.productLatitudeRangeStart);
-        args += "&latitudeRangeEnd=" + (params.latitudeRangeEnd || params.productLatitudeRangeEnd);
-        args += "&longitudeRangeStart=" + (params.longitudeRangeStart || params.productLongitudeRangeStart);
-        args += "&longitudeRangeEnd=" + (params.longitudeRangeEnd || params.productLongitudeRangeEnd);
-        args += "&productId=" + params.productId;
-        args += "&notificationEmailAddress=" + email;
-
-        return 'aodaac/createJob?' + args;
-    },
-
-    _generateGogoduckJobUrl: function(collection, email) {
-
-        var params = collection.ncwmsParams;
-
-         var args = {
-             layerName: params.layerName,
-             emailAddress: email,
-             subsetDescriptor: {
-                 temporalExtent: {
-                     start: this._formatDate(params.dateRangeStart),
-                     end: this._formatDate(params.dateRangeEnd)
-                 },
-                 spatialExtent: {
-                     north: (params.latitudeRangeEnd || params.productLatitudeRangeEnd),
-                     south: (params.latitudeRangeStart || params.productLatitudeRangeStart),
-                     east: (params.longitudeRangeEnd || params.productLongitudeRangeEnd),
-                     west: (params.longitudeRangeStart || params.productLongitudeRangeStart)
-                 }
-             }
-         };
-
-        if (collection.wmsLayer.gogoduckLayerName) {
-
-            args.layerName = collection.wmsLayer.gogoduckLayerName;
-        }
-
-         var paramsAsJson = Ext.util.JSON.encode(args);
-
-         return String.format('gogoduck/registerJob?jobParameters={0}', encodeURIComponent(paramsAsJson));
     },
 
     _downloadSizeEstimator: function(values) {
