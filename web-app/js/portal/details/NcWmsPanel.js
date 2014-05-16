@@ -14,11 +14,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     ROW_HEIGHT: 32,
 
-    LONG_MIN: -180,
-    LONG_MAX: 180,
-    LAT_MIN: -90,
-    LAT_MAX: 90,
-
     constructor: function(cfg) {
         var config = Ext.apply({
             id: 'NcWmsPanel',
@@ -217,103 +212,27 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         return new Ext.Spacer({ height: 10 });
     },
 
-    _buildParameters: function(geometry) {
+    _buildParameters: function(parentAggr, selectedLayer, dateRangeStart, dateRangeEnd, geometry) {
 
-        var config;
-
-        if (this._isGogoduckLayer(this.selectedLayer.parentGeoNetworkRecord.data)) {
-            config = this._buildGogoduckParams(geometry);
-        }
-        else if (this._isAodaacLayer(this.selectedLayer.parentGeoNetworkRecord.data)) {
-            config = this._buildAodaacParams(geometry);
-        }
-
-        return config;
+        return parentAggr.buildParams(selectedLayer, dateRangeStart, dateRangeEnd, geometry);
     },
 
-    _buildAodaacParams: function(geometry) {
+    _getParentRecordAggregator: function(selectedLayer) {
 
-        var product = this.selectedLayer.aodaacProducts[0];
-        var productExtents = product.extents;
+        var parentAggrGroup;
+        var parentAggr;
 
-        var aodaacConfig = {
-            productId: product.id,
-            dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
-            dateRangeEnd:   this._getDateFromPicker(this.endDateTimePicker),
-            productLatitudeRangeStart:  this._getMin(productExtents.lat),
-            productLatitudeRangeEnd:    this._getMax(productExtents.lat),
-            productLongitudeRangeStart: this._getMin(productExtents.lon),
-            productLongitudeRangeEnd:   this._getMax(productExtents.lon)
-        };
-
-        if (geometry) {
-            var bounds = geometry.getBounds();
-
-            aodaacConfig.latitudeRangeStart  = bounds.bottom;
-            aodaacConfig.longitudeRangeStart = bounds.left;
-            aodaacConfig.latitudeRangeEnd    = bounds.top;
-            aodaacConfig.longitudeRangeEnd   = bounds.right;
+        if (selectedLayer) {
+            parentAggrGroup = selectedLayer.parentGeoNetworkRecord.data.aggregator.childAggregators;
         }
 
-        return aodaacConfig;
-    },
-
-    _buildGogoduckParams: function(geometry) {
-
-        var ncwmsConfig = {
-            layerName: this._selectedLayerWfsLayerName(),
-            dateRangeStart: this._getDateFromPicker(this.startDateTimePicker),
-            dateRangeEnd: this._getDateFromPicker(this.endDateTimePicker),
-            productLatitudeRangeStart: this.LAT_MIN,
-            productLongitudeRangeStart: this.LONG_MIN,
-            productLatitudeRangeEnd: this.LAT_MAX,
-            productLongitudeRangeEnd: this.LONG_MAX
-        };
-
-        if (geometry) {
-            var bounds = geometry.getBounds();
-
-            ncwmsConfig.latitudeRangeStart = bounds.bottom;
-            ncwmsConfig.longitudeRangeStart = bounds.left;
-            ncwmsConfig.latitudeRangeEnd = bounds.top;
-            ncwmsConfig.longitudeRangeEnd = bounds.right;
-        }
-
-        return ncwmsConfig;
-    },
-
-    _isAodaacLayer: function(collection) {
-        var aodaac = false;
-
-        Ext.each(collection.aggregator, function(aggregator, index) {
-            if (aggregator.isAodaacLayer()) {
-                aodaac = true;
+        Ext.each(parentAggrGroup, function(aggr) {
+            if (aggr.supportsSubsettedNetCdf()) {
+                parentAggr = aggr;
             }
         });
 
-        return aodaac;
-    },
-
-    _isGogoduckLayer: function(collection) {
-        var gogoduck = false;
-
-        Ext.each(collection.aggregator, function(aggregator, index) {
-            if (aggregator.isGogoduckLayer()) {
-                gogoduck = true;
-            }
-        });
-
-        return gogoduck;
-    },
-
-    _selectedLayerWfsLayerName: function() {
-        var name;
-
-        if (this.selectedLayer.wfsLayer) {
-            name = this.selectedLayer.wfsLayer.name;
-        }
-
-        return name;
+        return parentAggr;
     },
 
     _onDateSelected: function(datePicker, jsDate) {
@@ -343,11 +262,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _applyFilterValuesToCollection: function(geometry) {
+
+        var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
+        var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
+        var parentAggr = this._getParentRecordAggregator(this.selectedLayer);
+
         if (this.geoNetworkRecord) {
-
-            this._addDateTimeFilterToLayer(geometry);
-
-            this.geoNetworkRecord.updateNcwmsParams(this._buildParameters(geometry));
+            this._addDateTimeFilterToLayer();
+            this.geoNetworkRecord.updateNcwmsParams(this._buildParameters(parentAggr, this.selectedLayer, dateRangeStart, dateRangeEnd, geometry));
         }
     },
 
@@ -408,16 +330,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         if (moment(datePicker.getValue()).isValid()) {
             return moment.utc(datePicker.getValue());
         }
-    },
-
-    _getMin: function(values) {
-
-        return values[0];
-    },
-
-    _getMax: function(values) {
-
-        return values[1];
     },
 
     _clearDateTimeFields: function() {

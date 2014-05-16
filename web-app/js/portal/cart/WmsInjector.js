@@ -15,6 +15,7 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     },
 
     _getDataFilterEntry: function(collection) {
+
         var html;
         var infoLabel;
         var layerValues;

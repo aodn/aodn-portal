@@ -155,6 +155,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecordStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'AggregatorFactory.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'Aggregator.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'AggregatorGroup.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GogoduckAggregator.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'AodaacAggregator.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'BodaacAggregator.js')}"></script>

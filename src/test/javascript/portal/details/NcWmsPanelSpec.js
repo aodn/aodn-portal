@@ -33,6 +33,7 @@ describe('Portal.details.NcWmsPanel', function() {
         ncwmsPanel._setBounds =  noOp;
         ncwmsPanel._removeLoadingInfo = noOp;
         ncwmsPanel.selectedLayer = layer;
+        ncwmsPanel._getParentRecordAggregator = function() { return new Portal.data.Aggregator() };
     });
 
     describe('GeoNetworkRecord', function() {
@@ -169,176 +170,17 @@ describe('Portal.details.NcWmsPanel', function() {
                 }
             }
         };
+        var mockParentAggregator = new Portal.data.GogoduckAggregator();
+        var dateRangeStart = '[date]';
+        var dateRangeEnd = '[date]';
 
-        beforeEach(function() {
+        it ('calls buildParams on the aggregator object passed', function() {
 
-            spyOn(ncwmsPanel, '_buildAodaacParams');
-            spyOn(ncwmsPanel, '_buildGogoduckParams');
-        });
+            spyOn(mockParentAggregator, 'buildParams');
 
-        it('builds aodaac parameters if an aodaac layer is passed', function() {
+            ncwmsPanel._buildParameters(mockParentAggregator, layer, dateRangeStart, dateRangeEnd, geom);
 
-            ncwmsPanel._isAodaacLayer = function() { return true };
-            ncwmsPanel._isGogoduckLayer = function() { return false };
-
-            ncwmsPanel._buildParameters(geom);
-            expect(ncwmsPanel._buildAodaacParams).toHaveBeenCalledWith(geom);
-        });
-
-        it('builds gogoduck parameters if a gogoduck layer is passed', function() {
-
-            ncwmsPanel._isAodaacLayer = function() { return false };
-            ncwmsPanel._isGogoduckLayer = function() { return true };
-
-            ncwmsPanel._buildParameters(geom);
-            expect(ncwmsPanel._buildGogoduckParams).toHaveBeenCalledWith(geom);
-        });
-
-        it('builds gogoduck parameters if a layer is passed with gogoduck and aodaac configured in the metadata', function() {
-
-            ncwmsPanel._isAodaacLayer = function() { return true };
-            ncwmsPanel._isGogoduckLayer = function() { return true };
-
-            ncwmsPanel._buildParameters(geom);
-            expect(ncwmsPanel._buildGogoduckParams).toHaveBeenCalledWith(geom);
-        });
-    });
-
-    describe('_isAodaacLayer', function() {
-        it('returns true if layer is configured for aodaac in metadata', function() {
-
-            var aodaac;
-            var mockAodaacAggr = new Portal.data.AodaacAggregator();
-            geoNetworkRecord.aggregator = [mockAodaacAggr];
-
-            aodaac = ncwmsPanel._isAodaacLayer(geoNetworkRecord);
-            expect(aodaac).toEqual(true);
-        });
-
-        it('returns false if layer is not configured for aodaac in the metadata', function() {
-
-            var aodaac;
-            geoNetworkRecord.aggregator = [];
-
-            aodaac = ncwmsPanel._isAodaacLayer(geoNetworkRecord);
-            expect(aodaac).toEqual(false);
-        });
-    });
-
-    describe('_isGogoduckLayer', function() {
-        it('returns true if layer is configured for gogoduck in metadata', function() {
-
-            var gogoduck;
-            var mockGogoduckAggr = new Portal.data.GogoduckAggregator();
-
-            geoNetworkRecord.aggregator = [mockGogoduckAggr];
-
-            gogoduck = ncwmsPanel._isGogoduckLayer(geoNetworkRecord);
-            expect(gogoduck).toEqual(true);
-        });
-
-        it('returns false if layer is not configured for gogoduck in the metadata', function() {
-
-            var gogoduck;
-
-            geoNetworkRecord.aggregator = [];
-
-            gogoduck = ncwmsPanel._isGogoduckLayer(geoNetworkRecord);
-            expect(gogoduck).toEqual(false);
-        });
-    });
-
-    describe('_buildAodaacParams', function() {
-
-        beforeEach(function () {
-
-            spyOn(ncwmsPanel, '_getDateFromPicker').andReturn('[date]');
-
-            ncwmsPanel.selectedLayer.aodaacProducts = [{
-                id: 42,
-                extents: {
-                    lat: [1, 2],
-                    lon: [3, 4]
-                }
-            }];
-        });
-
-        it('includes some information regardless of geometry', function () {
-
-            var aodaacParameters = ncwmsPanel._buildAodaacParams(null);
-
-            expect(aodaacParameters.productId).toBe(42);
-            expect(aodaacParameters.dateRangeStart).toBe('[date]');
-            expect(aodaacParameters.dateRangeEnd).toBe('[date]');
-            expect(aodaacParameters.productLatitudeRangeStart).toBe(1);
-            expect(aodaacParameters.productLongitudeRangeStart).toBe(3);
-            expect(aodaacParameters.productLatitudeRangeEnd).toBe(2);
-            expect(aodaacParameters.productLongitudeRangeEnd).toBe(4);
-        });
-
-        it('includes spatialBounds if a geometry is present', function () {
-
-            var geom = {
-                getBounds: function() {
-                    return {
-                        bottom: 10,
-                        top: 20,
-                        left: 30,
-                        right: 40
-                    }
-                }
-            };
-
-            var aodaacParameters = ncwmsPanel._buildAodaacParams(geom, ncwmsPanel.selectedProductInfo);
-
-            expect(aodaacParameters.latitudeRangeStart).toBe(10);
-            expect(aodaacParameters.longitudeRangeStart).toBe(30);
-            expect(aodaacParameters.latitudeRangeEnd).toBe(20);
-            expect(aodaacParameters.longitudeRangeEnd).toBe(40);
-        });
-    });
-
-    describe('_buildGogoduckParams', function() {
-
-        beforeEach(function () {
-            ncwmsPanel.selectedLayer = layer;
-            spyOn(ncwmsPanel, '_getDateFromPicker').andReturn('[date]');
-        });
-
-        it('includes some information regardless of geometry', function () {
-
-            ncwmsPanel._isGogoduckLayer = function() { return true };
-            var gogoduckParameters = ncwmsPanel._buildParameters(null);
-
-            expect(gogoduckParameters.layerName).toBe('gogoDingo');
-            expect(gogoduckParameters.dateRangeStart).toBe('[date]');
-            expect(gogoduckParameters.dateRangeEnd).toBe('[date]');
-            expect(gogoduckParameters.productLatitudeRangeStart).toBe(-90);
-            expect(gogoduckParameters.productLongitudeRangeStart).toBe(-180);
-            expect(gogoduckParameters.productLatitudeRangeEnd).toBe(90);
-            expect(gogoduckParameters.productLongitudeRangeEnd).toBe(180);
-        });
-
-        it('includes spatialBounds if a geometry is present', function () {
-
-            ncwmsPanel._isGogoduckLayer = function() { return true };
-            var geom = {
-                getBounds: function() {
-                    return {
-                        bottom: 10,
-                        top: 20,
-                        left: 30,
-                        right: 40
-                    }
-                }
-            };
-
-            var gogoduckParameters = ncwmsPanel._buildParameters(geom);
-
-            expect(gogoduckParameters.latitudeRangeStart).toBe(10);
-            expect(gogoduckParameters.longitudeRangeStart).toBe(30);
-            expect(gogoduckParameters.latitudeRangeEnd).toBe(20);
-            expect(gogoduckParameters.longitudeRangeEnd).toBe(40);
+            expect(mockParentAggregator.buildParams).toHaveBeenCalled();
         });
     });
 

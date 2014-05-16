@@ -21,15 +21,15 @@ describe('Portal.cart.NcwmsInjector', function() {
 
     describe('createMenuItems', function() {
 
-        it('creates download options for URL list and subsetted NetCDF when bodaac is available', function() {
+        it('creates download options for URL list and subsetted NetCDF where supported by layer', function() {
             var menuItems;
             var urlListIncluded = false;
             var netCdfDownloadIncluded = false;
             var netCdfSubsetIncluded = false;
-            var mockGogoduckAggr = new Portal.data.GogoduckAggregator();
-            var mockBodaacAggr = new Portal.data.BodaacAggregator();
 
-            geoNetworkRecord.aggregator = [mockGogoduckAggr, mockBodaacAggr];
+            injector._isSubsettedNetCdfAvailable = function() { return true; };
+            injector._isUrlListDownloadAvailable = function() { return true; };
+
             menuItems = injector._createMenuItems(geoNetworkRecord);
 
             for (var i = 0; i < menuItems.length; i++) {
@@ -49,14 +49,15 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(netCdfDownloadIncluded).toBe(true);
         });
 
-        it('creates only subsetted NetCDF menu option where the bodaac aggregator is not available', function() {
+        it('creates only subsetted NetCDF menu option where bodaac is not supported', function() {
             var menuItems;
             var urlListIncluded = false;
             var netCdfDownloadIncluded = false;
             var netCdfSubsetIncluded = false;
-            var mockGogoduckAggr = new Portal.data.GogoduckAggregator();
 
-            geoNetworkRecord.aggregator = [mockGogoduckAggr];
+            injector._isSubsettedNetCdfAvailable = function() { return true; };
+            injector._isUrlListDownloadAvailable = function() { return false; };
+
             menuItems = injector._createMenuItems(geoNetworkRecord);
 
             for (var i = 0; i < menuItems.length; i++) {
@@ -212,9 +213,9 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
     });
 
-    describe('_downloadGogoduckHandler', function() {
+    describe('_subsettedDownloadHandler', function() {
         it('provides a function', function() {
-            expect(typeof(injector._downloadGogoduckHandler(geoNetworkRecord, 'nc'))).toEqual('function');
+            expect(typeof(injector._subsettedDownloadHandler(geoNetworkRecord, 'nc'))).toEqual('function');
         });
 
         it('calls downloadWithConfirmation', function() {
@@ -222,7 +223,7 @@ describe('Portal.cart.NcwmsInjector', function() {
             var collection = {};
             var params = {};
 
-            injector._downloadGogoduckHandler(collection, params);
+            injector._subsettedDownloadHandler(collection, params);
 
             var expectedParams = {
                 collectEmailAddress: true,
@@ -240,182 +241,19 @@ describe('Portal.cart.NcwmsInjector', function() {
     describe('_generateNcwmsUrl', function() {
 
         var url;
-        var format;
-        var emailAddress;
-        var collection;
-        var ncwmsParams;
-        var params;
 
-        beforeEach(function() {
+        it('calls generateUrl on the aggregator object for the record', function() {
 
-            format  = 'csv';
-            emailAddress = 'gogo@duck.com';
-            params = { format: format, emailAddress: emailAddress };
+            var mockAggregatorGroup = new Portal.data.AggregatorGroup();
+            var mockAggregator = new Portal.data.GogoduckAggregator();
 
-            ncwmsParams = {
-                dateRangeStart: startDate,
-                dateRangeEnd: endDate,
-                latitudeRangeStart: -42,
-                latitudeRangeEnd: -20,
-                longitudeRangeStart: 160,
-                longitudeRangeEnd: 170
-            };
+            mockAggregatorGroup.add(mockAggregator);
+            geoNetworkRecord.aggregator = mockAggregatorGroup;
+            mockAggregatorGroup.getRecordAggregator = function() { return mockAggregator };
 
-            collection = {
-                wmsLayer: {
-                    getDownloadFilter: function() {
-                        return "cql_filter"
-                    },
-                    getWfsLayerFeatureRequestUrl: noOp
-                },
-                ncwmsParams: ncwmsParams };
-
-            spyOn(injector, '_generateAodaacJobUrl');
-            spyOn(injector, '_generateGogoduckJobUrl');
-
-            injector._isAodaacLayer = function() {return false};
-            injector._isGogoduckLayer = function() {return false};
-        });
-
-        it('calls _generateAodaacJobUrl when an aodaac record is passed', function() {
-
-            injector._isAodaacLayer = function() {return true};
-
-            url = injector._generateNcwmsUrl(collection, params);
-            expect(injector._generateAodaacJobUrl).toHaveBeenCalled();
-        });
-
-        it('calls _generateGogoduckJobUrl when a gogoduck record is passed', function() {
-
-            injector._isGogoduckLayer = function() {return true};
-
-            url = injector._generateNcwmsUrl(collection, params);
-            expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
-        });
-
-        it('calls _generateGogoduckJobUrl when a record is passed that is configured for gogoduck and aodaac', function() {
-
-            injector._isGogoduckLayer = function() {return true};
-            injector._isAodaacLayer = function() {return true};
-
-            url = injector._generateNcwmsUrl(collection, params);
-            expect(injector._generateGogoduckJobUrl).toHaveBeenCalled();
-        });
-
-        it('returns an empty string if record is neither aodaac or gogoduck', function() {
-
-            url = injector._generateNcwmsUrl(collection, params);
-            expect(url).toEqual('');
-        });
-    });
-
-    describe('_generateAodaacJobUrl', function() {
-
-        var url;
-        var ncwmsParams;
-        var collection;
-
-        beforeEach(function() {
-
-            ncwmsParams = {
-                dateRangeStart: startDate,
-                dateRangeEnd: endDate,
-                latitudeRangeStart: -42,
-                latitudeRangeEnd: -20,
-                longitudeRangeStart: 160,
-                longitudeRangeEnd: 170,
-                productId: '1'
-            };
-
-            collection = {
-                wmsLayer: {
-                    getDownloadFilter: function() {
-                        return "cql_filter"
-                    },
-                    getWfsLayerFeatureRequestUrl: noOp,
-                    isNcwms: function() {return true},
-                    wfsLayer: true
-                },
-                ncwmsParams: ncwmsParams };
-
-            url = injector._generateAodaacJobUrl(collection, 'nc', 'aodaac@imos.org.au');
-        });
-
-        it('includes the aodaac endpoint', function() {
-            expect(url.indexOf('aodaac/createJob?')).toBeGreaterThan(-1);
-        });
-
-        it('includes the output format', function() {
-            expect(url).toHaveParameterWithValue('outputFormat', 'nc');
-        });
-
-        it('includes the product id', function() {
-            expect(url).toHaveParameterWithValue('productId', '1');
-        });
-
-        it('includes the date range start', function() {
-            expect(url).toHaveParameterWithValue('dateRangeStart', '2013-11-20T00:30:00.000Z');
-        });
-
-        it('includes the date range end', function() {
-            expect(url).toHaveParameterWithValue('dateRangeEnd', '2014-12-21T22:30:30.500Z');
-        });
-
-        it('includes the latitude range start', function() {
-            expect(url).toHaveParameterWithValue('latitudeRangeStart','-42');
-        });
-
-        it('includes the latitude range end', function() {
-            expect(url).toHaveParameterWithValue('latitudeRangeEnd', '-20');
-        });
-
-        it('includes the longitude range start', function() {
-            expect(url).toHaveParameterWithValue('longitudeRangeStart', '160');
-        });
-
-        it('includes the longitude range end', function() {
-            expect(url).toHaveParameterWithValue('longitudeRangeEnd', '170');
-        });
-    });
-
-    describe('_generateGogoduckJobUrl', function() {
-
-        var url;
-
-        beforeEach(function() {
-            url = decodeURIComponent(injector._generateGogoduckJobUrl(geoNetworkRecord, 'gogo@duck.com'));
-        });
-
-        it('generates the gogoduck endpoint', function() {
-            expect(url.indexOf('gogoduck/registerJob?jobParameters=')).toBeGreaterThan(-1);
-        });
-
-        it('generates the layer name', function() {
-            expect(url.indexOf('gogoDingo')).not.toEqual(-1);
-        });
-
-        it('generates the longitude range start', function() {
-            expect(url.indexOf('160')).not.toEqual(-1);
-        });
-
-        it('generates the longitude range end', function() {
-            expect(url.indexOf('170')).not.toEqual(-1);
-        });
-
-        it('generates the latitude range start', function() {
-            expect(url.indexOf('-42')).not.toEqual(-1);
-        });
-
-        it('generates the latitude range end', function() {
-            expect(url.indexOf('-20')).not.toEqual(-1);
-        });
-
-        it('generates the time range start', function() {
-            expect(url.indexOf('2013-11-20T00:30:00.000Z')).not.toEqual(-1);
-        });
-
-        it('generates the time range end', function() {
-            expect(url.indexOf('2014-12-21T22:30:30.500Z')).not.toEqual(-1);
+            spyOn(mockAggregator, 'generateUrl');
+            url = injector._generateNcwmsUrl(geoNetworkRecord, geoNetworkRecord.ncwmsParams);
+            expect(mockAggregator.generateUrl).toHaveBeenCalled();
         });
     });
 

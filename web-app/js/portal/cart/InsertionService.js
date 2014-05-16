@@ -46,7 +46,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
 
     _isDownloadable: function(collection) {
 
-        return (collection.wmsLayer.wfsLayer || collection.aggregator.length > 0);
+        return (collection.wmsLayer.wfsLayer || collection.aggregator.childAggregators.length > 0);
     },
 
     _getNcwmsInjector: function(config, collection) {
