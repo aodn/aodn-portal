@@ -50,4 +50,29 @@ describe('Portal.data.AggregatorGroup', function() {
             expect(aggregatorGroup.supportsNetCdfUrlList()).toBe(true);
         });
     });
+
+    describe('hasChildAggregators', function() {
+
+        it('returns false if the group contains no aggregators', function() {
+
+            expect(aggregatorGroup.hasChildAggregators()).toBe(false);
+        });
+
+        it('retuns true if the group contains one or more aggregators', function() {
+
+            aggregatorGroup.add(bodaacAggregator);
+            aggregatorGroup.add(gogoduckAggregator);
+            expect(aggregatorGroup.hasChildAggregators()).toBe(true);
+        });
+    });
+
+    describe('getRecordAggregator', function() {
+
+        it('returns a single subsetted netcdf aggregator from the aggregator group', function() {
+
+            aggregatorGroup.add(bodaacAggregator);
+            aggregatorGroup.add(gogoduckAggregator);
+            expect(aggregatorGroup.getRecordAggregator()).toBeInstanceOf(Portal.data.GogoduckAggregator);
+        });
+    })
 });

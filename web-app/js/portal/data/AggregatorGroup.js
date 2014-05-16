@@ -39,5 +39,23 @@ Portal.data.AggregatorGroup = Ext.extend(Object, {
         }
 
         return false;
+    },
+
+    hasChildAggregators: function() {
+
+        return this.childAggregators.length > 0;
+    },
+
+    getRecordAggregator: function() {
+
+        var recordAggregator;
+
+        Ext.each(this.childAggregators, function(aggr) {
+            if (aggr.supportsSubsettedNetCdf()) {
+                recordAggregator = aggr;
+            }
+        });
+
+        return recordAggregator;
     }
 });

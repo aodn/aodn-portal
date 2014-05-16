@@ -244,9 +244,13 @@ describe('Portal.cart.NcwmsInjector', function() {
 
         it('calls generateUrl on the aggregator object for the record', function() {
 
+            var mockAggregatorGroup = new Portal.data.AggregatorGroup();
             var mockAggregator = new Portal.data.GogoduckAggregator();
 
-            injector._getRecordAggregator = function() { return mockAggregator };
+            mockAggregatorGroup.add(mockAggregator);
+            geoNetworkRecord.aggregator = mockAggregatorGroup;
+            mockAggregatorGroup.getRecordAggregator = function() { return mockAggregator };
+
             spyOn(mockAggregator, 'generateUrl');
             url = injector._generateNcwmsUrl(geoNetworkRecord, geoNetworkRecord.ncwmsParams);
             expect(mockAggregator.generateUrl).toHaveBeenCalled();

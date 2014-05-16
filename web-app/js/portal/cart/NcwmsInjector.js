@@ -104,23 +104,9 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _generateNcwmsUrl: function(collection, params) {
 
-        var recordAggregator = this._getRecordAggregator(collection);
+        var recordAggregator = collection.aggregator.getRecordAggregator();
 
         return recordAggregator.generateUrl(collection.ncwmsParams, params.emailAddress);
-    },
-
-    _getRecordAggregator: function(collection) {
-
-        var aggrGroup = collection.aggregator.childAggregators;
-        var aggregator;
-
-        Ext.each(aggrGroup, function(aggr) {
-            if (aggr.supportsSubsettedNetCdf()) {
-                aggregator = aggr;
-            }
-        });
-
-        return aggregator;
     },
 
     _isSubsettedNetCdfAvailable: function(collection) {

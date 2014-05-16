@@ -161,6 +161,10 @@ Portal.data.GeoNetworkRecord = function() {
         return this.getFirstWmsLink() != undefined;
     };
 
+    prototype.isAggregatable = function() {
+        return this.aggregator.hasChildAggregators();
+    };
+
     prototype.convertedData = function() {
         var convertedData = {};
 
