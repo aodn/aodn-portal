@@ -219,8 +219,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     _getParentRecordAggregator: function(selectedLayer) {
 
-        var parentAggrGroup = selectedLayer.parentGeoNetworkRecord.data.aggregator.childAggregators;
+        var parentAggrGroup;
         var parentAggr;
+
+        if (selectedLayer) {
+            parentAggrGroup = selectedLayer.parentGeoNetworkRecord.data.aggregator.childAggregators;
+        }
 
         Ext.each(parentAggrGroup, function(aggr) {
             if (aggr.supportsSubsettedNetCdf()) {

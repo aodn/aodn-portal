@@ -14,7 +14,6 @@ describe('Portal.data.GogoduckAggregator', function() {
     var startDate;
     var endDate;
 
-
     beforeEach(function() {
         aggregator = new Portal.data.GogoduckAggregator();
         dateRangeStart = '[date]';

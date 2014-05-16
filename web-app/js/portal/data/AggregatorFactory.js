@@ -13,19 +13,18 @@ Portal.data.AggregatorFactory = Ext.extend(Object, {
     GOGODUCK_PROTOCOL_NAME: "GoGoDuck",
     BODAAC_PROTOCOL_NAME: "BODAAC",
 
-    SUPPORTED_PROTOCOLS: [
-        "AODAAC",
-        "GoGoDuck",
-        "BODAAC"
-    ],
-
     newAggregatorGroup: function(links) {
 
         var group = new Portal.data.AggregatorGroup();
         var linksWithOneAggr = this.cutAodaac(links);
+        var supportedProtocols = [
+            this.AODAAC_PROTOCOL_NAME,
+            this.BODAAC_PROTOCOL_NAME,
+            this.GOGODUCK_PROTOCOL_NAME
+        ];
 
         Ext.each(linksWithOneAggr, function(linkToCheck) {
-            if (inArray(this.SUPPORTED_PROTOCOLS, linkToCheck.name)) {
+            if (inArray(supportedProtocols, linkToCheck.name)) {
                 var aggr = this.newAggregator(linkToCheck.name);
                 group.add(aggr);
             }
