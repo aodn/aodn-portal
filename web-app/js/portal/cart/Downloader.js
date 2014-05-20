@@ -28,7 +28,7 @@ Portal.cart.Downloader = Ext.extend(Object, {
     },
 
     _downloadSynchronously: function(collection, wfsDownloadUrl, params) {
-        log.info('downloading synchronously', wfsDownloadUrl);
+        log.debug('downloading synchronously', wfsDownloadUrl);
 
         var proxyUrl = this._constructProxyUrl(collection, wfsDownloadUrl, params);
         this._openDownload(proxyUrl);
@@ -73,7 +73,7 @@ Portal.cart.Downloader = Ext.extend(Object, {
     },
 
     _downloadAsynchronously: function(collection, wfsDownloadUrl, params) {
-        log.info('downloading asynchronously', wfsDownloadUrl);
+        log.debug('downloading asynchronously', wfsDownloadUrl);
 
         Ext.Ajax.request({
             url: wfsDownloadUrl,
