@@ -31,7 +31,16 @@ describe('Portal.cart.InsertionService', function() {
             spyOn(mockInsertionService, '_getNoDataInjector');
         });
 
-        it('creates an ncwms injector for ncwms layers', function() {
+        it('creates an ncwms injector for aodaac layers', function() {
+
+            html = mockInsertionService.insertionValues(getAodaacRecord());
+
+            expect(mockInsertionService._getNcwmsInjector).toHaveBeenCalled();
+            expect(mockInsertionService._getWmsInjector).not.toHaveBeenCalled();
+            expect(mockInsertionService._getNoDataInjector).not.toHaveBeenCalled();
+        });
+
+        it('creates an ncwms injector for gogoduck layers', function() {
 
             html = mockInsertionService.insertionValues(getGogoduckRecord());
 
@@ -82,7 +91,7 @@ describe('Portal.cart.InsertionService', function() {
         geoNetworkRecord.aggregator = {
             childAggregators: []
         };
-		geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
+        geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
 
         return geoNetworkRecord;
@@ -94,7 +103,7 @@ describe('Portal.cart.InsertionService', function() {
             childAggregators: [mockNcwmsAggr]
         };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
-		geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
+        geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
 
         return geoNetworkRecord;
     }
@@ -105,8 +114,7 @@ describe('Portal.cart.InsertionService', function() {
             childAggregators: [mockNcwmsAggr]
         };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
-
-//      geoNetworkRecord.wmsLayer.aodaacProducts = [{ id: 123 }]
+        geoNetworkRecord.wmsLayer.aodaacProducts = [{ id: 123 }]
 
         return geoNetworkRecord;
     }
