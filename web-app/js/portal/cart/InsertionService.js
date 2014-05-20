@@ -49,7 +49,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
     },
 
     _hasAodaacProductId: function(wmsLayer) {
-        var aodaacProducts = wmsLayer.aodaacProducts
+        var aodaacProducts = wmsLayer.aodaacProducts;
         return aodaacProducts && aodaacProducts[0] && aodaacProducts[0].id;
     },
 
