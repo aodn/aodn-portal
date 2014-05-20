@@ -49,6 +49,9 @@ Portal.data.GogoduckAggregator = Ext.extend(Portal.data.Aggregator, {
         if (layer.wfsLayer) {
             name = layer.wfsLayer.name;
         }
+        else if (layer.gogoduckLayerName) {
+            name = layer.gogoduckLayerName;
+        }
 
         return name;
     },

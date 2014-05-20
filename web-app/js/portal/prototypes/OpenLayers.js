@@ -192,6 +192,10 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
+OpenLayers.Layer.WMS.prototype.gogoduckLayerName = function() {
+    return this.gogoduckLayerName;
+};
+
 OpenLayers.Layer.WMS.prototype.isKnownToThePortal = function() {
     return (this.grailsLayerId) ? true: false;
 };
