@@ -78,38 +78,11 @@ describe('Portal.cart.InsertionService', function() {
         });
     });
 
-    describe('is downloadable', function() {
-        it('returns true when collection has associated wfs layer', function() {
-            geoNetworkRecord.wmsLayer.wfsLayer = {};
-            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
-        });
-
-        it('returns true when collection is aggregatable using aodaac', function() {
-            geoNetworkRecord = getAodaacRecord();
-            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
-        });
-
-        it('returns true when collection is aggregatable using bodaac', function() {
-            geoNetworkRecord = getBodaacRecord();
-            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
-        });
-
-        it('returns true when collection is aggregatable using gogoduck', function() {
-            geoNetworkRecord = getGogoduckRecord();
-            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeTruthy();
-        });
-
-        it("returns false when collection doesn't have associated wfs layer or download URL field", function() {
-            geoNetworkRecord = getNoDataRecord();
-            expect(mockInsertionService._isDownloadable(geoNetworkRecord)).toBeFalsy();
-        });
-    });
-
     function getWmsRecord() {
         geoNetworkRecord.aggregator = {
             childAggregators: []
         };
-        geoNetworkRecord.wmsLayer.wfsLayer = {};
+		geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
 
         return geoNetworkRecord;
@@ -121,6 +94,7 @@ describe('Portal.cart.InsertionService', function() {
             childAggregators: [mockNcwmsAggr]
         };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
+		geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
 
         return geoNetworkRecord;
     }
@@ -131,6 +105,8 @@ describe('Portal.cart.InsertionService', function() {
             childAggregators: [mockNcwmsAggr]
         };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
+
+//      geoNetworkRecord.wmsLayer.aodaacProducts = [{ id: 123 }]
 
         return geoNetworkRecord;
     }
