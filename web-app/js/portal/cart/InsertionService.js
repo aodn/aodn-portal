@@ -21,32 +21,32 @@ Portal.cart.InsertionService = Ext.extend(Object, {
             downloadConfirmationScope: this
         };
 
-        var htmlInjection;
+        var wmsLayer = collection.wmsLayer;
+        var htmlInjection = null;
 
-        if (this._isDownloadable(collection)) {
-            if (this._isNcwms(collection)) {
-                htmlInjection = this._getNcwmsInjector(config, collection);
-            }
-            else {
-                htmlInjection = this._getWmsInjector(config, collection);
-            }
+        if (wmsLayer.isNcwms() && (this._hasGeonetworkLayerName(wmsLayer) || this._hasAodaacProductId(wmsLayer))) {
+
+            htmlInjection = this._getNcwmsInjector(config, collection);
+        }
+        else if (this._hasGeonetworkLayerName(wmsLayer)) {
+
+            htmlInjection = this._getWmsInjector(config, collection);
         }
         else {
+
             htmlInjection = this._getNoDataInjector(config, collection);
         }
-
         return htmlInjection;
-
     },
 
-    _isNcwms: function(collection) {
-
-        return collection.wmsLayer.isNcwms();
+    _hasGeonetworkLayerName: function(wmsLayer) {
+        var wfsLayer = wmsLayer.wfsLayer;
+        return (wfsLayer && wfsLayer.name) || wmsLayer.gogoduckLayerName;
     },
 
-    _isDownloadable: function(collection) {
-
-        return (collection.wmsLayer.wfsLayer || collection.wmsLayer.gogoduckLayerName || collection.aggregator.childAggregators.length > 0);
+    _hasAodaacProductId: function(wmsLayer) {
+        var aodaacProducts = wmsLayer.aodaacProducts
+        return aodaacProducts && aodaacProducts[0] && aodaacProducts[0].id;
     },
 
     _getNcwmsInjector: function(config, collection) {
