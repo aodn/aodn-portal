@@ -12,7 +12,7 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
         var config = Ext.apply({}, cfg);
-        Portal.ui.ActionsPanel.superclass.constructor.call(this, config);
+        Portal.details.DataCollectionSelectorPanel.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(eventName, openlayer) {
             this.updateLayerComboBox(openlayer);
