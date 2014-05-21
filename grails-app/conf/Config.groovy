@@ -157,7 +157,7 @@ environments {
     test {
 
         // URLs
-        grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
+        grails.serverURL = "http://localhost:8080/$appName"
         grails.mail.disabled = true
         grails.plugin.databasemigration.updateOnStart = false
         aodaacAggregator.allowApiCalls = false
