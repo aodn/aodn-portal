@@ -167,7 +167,7 @@ class CheckLayerAvailabilityService {
         getFeatureInfoUrlString += '&BBOX=' + URLEncoder.encode(minX + ',' + minY + ',' + layer.bboxMaxX + ',' + layer.bboxMaxY)
         getFeatureInfoUrlString += '&QUERY_LAYERS=' + URLEncoder.encode(layer.namespace + ":" + layer.name)
         getFeatureInfoUrlString += '&X=0&Y=0&I=0&J=0&WIDTH=1&HEIGHT=1&FEATURE_COUNT=1'
-        getFeatureInfoUrlString += '&INFO_FORMAT=' + params.format
+        getFeatureInfoUrlString += '&INFO_FORMAT=' + URLEncoder.encode(params.format)
 
         return _buildUrl(layer, getFeatureInfoUrlString)
     }
