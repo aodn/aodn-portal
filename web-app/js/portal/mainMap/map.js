@@ -28,7 +28,6 @@
 
 var proxyURL = "proxy?url=";
 var proxyCachedURL = "proxy/cache?URL=";
-var argos = null; // array of existing argo platform_numbers
 var layersLoading = 0; // Layer loading activity indicator
 var popup;
 
@@ -65,95 +64,6 @@ OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
 
     CLASS_NAME: "OpenLayers.Control.Click"
 });
-
-function closePopup() {
-    if (popup) {
-        popup.close();
-    }
-}
-
-function updatePopupDepthStatus(response) {
-
-    if (response != undefined) {
-        var xmldoc = response.responseXML;
-
-        if (xmldoc.getElementsByTagName('depth') != undefined) {
-
-            var depth = xmldoc.getElementsByTagName('depth')[0].firstChild.nodeValue;
-
-            var str =  (depth <= 0) ?  "Depth:" : "Altitude:";
-
-            if ( popup ) { // Popup may have been closed since request was sent
-                popup.popupHtml.update(popup.locationString + " <b>" + str + "</b> " + Math.abs(depth) + "m");
-            }
-        }
-    }
-    else {
-        // clear out any placeholder 'loading' text
-        popup.popupHtml.update("");
-    }
-}
-
-function updatePopupStatus(popup) {
-
-    //popup.setTitle("Features at " + popup.locationString);
-    if (popup.numGoodResults > 0) {
-        popup.setTitle("Feature information found for " + popup.numGoodResults + " / " + popup.numResultsToLoad + " layers");
-    }
-    else if (popup.numResultQueries == popup.numResultsToLoad) {
-        var layerStr = (popup.numResultsToLoad == 1) ? "layer" : "layers";
-        popup.setTitle("No features found for " + popup.numResultsToLoad + " queryable " + layerStr);
-    }
-}
-
-// Get tabs from getFeatureInfo popup
-function tabsFromPopup(popup) {
-    return popup.popupTab;
-}
-
-function getDepth(e) {
-
-    var I= e.xy.x; //pixel on map
-    var J= e.xy.y; // pixel on map
-    var click = mapPanel.map.getLonLatFromPixel(new OpenLayers.Pixel(I,J));
-
-    var url = "DepthServlet?" +
-        "lon=" + click.lon +
-        "&lat="  + click.lat ;
-
-    var request = OpenLayers.Request.GET({
-        url: url,
-        headers: {
-            "Content-Type": "application/xml"
-        },
-        callback: setDepth
-    });
-}
-
-function setDepth(response) {
-
-    var i = 0;
-    var total_depths = 0;
-    var xmldoc = response.responseXML;
-    var str = "";
-
-    // guard against the depth servlet going feral
-    var depthval = xmldoc.getElementsByTagName('depth')[0].firstChild.nodeValue.replace(/^\s+|\s+$/g, ''); //trim
-    if (depthval != "null") {
-        var depth = parseFloat(depthval);
-        var desc = (depth > 0) ? "Altitude " : "Depth ";
-        str = desc + "<b>" + Math.abs(depth) + "m</b>" ;
-    }
-
-    str = str + " Lon:<b> " + X + "</b> Lat:<b> " + Y + "</b>";
-    jQuery('#featureinfodepth').html(str);
-
-    // if this id is available populate it and hide featureinfodepth
-    if (jQuery('#featureinfoGeneral')) {
-        jQuery('#featureinfoGeneral').html(str).fadeIn(400);
-        jQuery('#featureinfodepth').hide();
-    }
-}
 
 function imgSizer(){
     //Configuration Options
@@ -198,9 +108,7 @@ function imgSizer(){
     }); //ends each function
 }
 
-function destroy_imagePopup(imagePopup) {
-    jQuery("#" + imagePopup ).hide();
-}
+
 
 /*jQuery showhide (toggle visibility of element)
  *  param: the dom element

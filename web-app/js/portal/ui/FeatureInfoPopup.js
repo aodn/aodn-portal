@@ -12,7 +12,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
     constructor: function (cfg) {
         this.numResultsToLoad = 0;
-        this.numResultQueries = 0;
+        this.numCompletedQueries = 0;
         this.numGoodResults = 0;
 
         var config = Ext.apply({
@@ -172,20 +172,41 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                 format: "text/xml"
             },
             success: function(resp, options) {
+
                 // Delegate HTML formatting of response to layer
-                this._addPopupTabContent(
-                    options.params.layer.formatFeatureInfoHtml(resp, options),
-                    options.params.name);
+                var result = options.params.layer.formatFeatureInfoHtml(resp, options);
+                if (result != undefined){
+                    this._addPopupTabContent(
+                        result,
+                        options.params.name
+                    );
+                    this.numGoodResults++;
+                    setTimeout(imgSizer, 0);
+                }
+
                 this._featureInfoRequestCompleted();
-                setTimeout(imgSizer, 0);
             },
 
             failure: this._featureInfoRequestCompleted
         });
     },
 
+    _updateStatus: function() {
+
+        var layerStr;
+
+        if (this.numGoodResults > 0) {
+            layerStr = (this.numGoodResults == 1) ? "layer" : "layers";
+            this.setTitle("Feature information found for " + this.numGoodResults + " " + layerStr);
+        }
+        else if (this.numCompletedQueries == this.numResultsToLoad) {
+            layerStr = layerStr = (this.numResultsToLoad == 1) ? "layer" : "layers";
+            this.setTitle("No features found for " + this.numResultsToLoad + " queryable " + layerStr);
+        }
+    },
+
     _featureInfoRequestCompleted: function() {
-        this.numResultQueries++;
+        this.numCompletedQueries++;
         this._updateStatus();
     },
 
@@ -288,15 +309,6 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         return "<b>" + text + "</b>";
     },
 
-    _updateStatus: function() {
-        if (this.numGoodResults > 0) {
-            this.setTitle("Feature information found for " + this.numGoodResults + " layers");
-        }
-        else if (this.numResultQueries == this.numResultsToLoad) {
-            var layerStr = (this.numResultsToLoad == 1) ? "layer" : "layers";
-            this.setTitle("No features found for " + this.numResultsToLoad + " queryable " + layerStr);
-        }
-    },
 
     _updatePopupDepthStatus: function(response) {
         if (response !== undefined) {
