@@ -24,9 +24,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         var wmsLayer = collection.wmsLayer;
         var htmlInjection = null;
 
-        if (wmsLayer.isNcwms()
-            && (this._hasGeonetworkLayerName(wmsLayer) || this._hasAodaacProductId(wmsLayer))
-        ) {
+        if (this._isNcwmsLayerWithData(wmsLayer)) {
 
             htmlInjection = this._getNcwmsInjector(config, collection);
         }
@@ -41,14 +39,18 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         return htmlInjection;
     },
 
+    _isNcwmsLayerWithData: function(wmsLayer) {
+        return wmsLayer.isNcwms() && (this._hasGeonetworkLayerName(wmsLayer) || this._hasAodaacProductId(wmsLayer));
+    },
+
     _hasGeonetworkLayerName: function(wmsLayer) {
         var wfsLayer = wmsLayer.wfsLayer;
-        return wfsLayer && wfsLayer.name
+        return (wfsLayer && wfsLayer.name) || wmsLayer.gogoduckLayerName;
     },
 
     _hasAodaacProductId: function(wmsLayer) {
-        var aodaacProducts = wmsLayer.aodaacProducts
-        return aodaacProducts && aodaacProducts[0] && aodaacProducts[0].id
+        var aodaacProducts = wmsLayer.aodaacProducts;
+        return aodaacProducts && aodaacProducts[0] && aodaacProducts[0].id;
     },
 
     _getNcwmsInjector: function(config, collection) {
