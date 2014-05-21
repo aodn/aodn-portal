@@ -158,6 +158,7 @@ environments {
 
         // URLs
         grails.serverURL = "http://localhost:8080/$appName"
+
         grails.mail.disabled = true
         grails.plugin.databasemigration.updateOnStart = false
         aodaacAggregator.allowApiCalls = false
