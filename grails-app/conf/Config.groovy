@@ -145,7 +145,7 @@ environments {
         grails.resources.debug = true
 
         // URLs
-        grails.serverURL = "http://131.217.38.41:8090/$appName"
+        grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
         spatialsearch.url = "http://search.aodn.org.au/aodnsearch/search/index"
         wmsScanner.url = env['WMS_SCANNER_URL'] ?: "http://localhost:8100/WmsScannerGrails/"
         wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
@@ -157,8 +157,7 @@ environments {
     test {
 
         // URLs
-        grails.serverURL = "http://localhost:8080/$appName"
-
+        grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
         grails.mail.disabled = true
         grails.plugin.databasemigration.updateOnStart = false
         aodaacAggregator.allowApiCalls = false
