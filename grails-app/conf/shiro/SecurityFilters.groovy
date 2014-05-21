@@ -80,12 +80,6 @@ class SecurityFilters {
             }
         }
 
-        checkLayerAvailabilityAccess(controller: "checkLayerAvailability", action: "show") {
-            before = {
-                request.accessAllowed = true
-            }
-        }
-
         serverAccess(controller: "server", action: "listAllowDiscoveriesAsJson") {
             before = {
                 request.accessAllowed = true
