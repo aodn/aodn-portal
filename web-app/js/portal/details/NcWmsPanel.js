@@ -267,7 +267,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
         var parentAggr = this._getParentRecordAggregator(this.selectedLayer);
 
-        if (this.geoNetworkRecord) {
+        if (this.geoNetworkRecord && parentAggr) {
             this._addDateTimeFilterToLayer();
             this.geoNetworkRecord.updateNcwmsParams(this._buildParameters(parentAggr, this.selectedLayer, dateRangeStart, dateRangeEnd, geometry));
         }
