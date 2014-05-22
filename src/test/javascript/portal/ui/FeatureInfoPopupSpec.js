@@ -38,6 +38,29 @@ describe("Portal.ui.FeatureInfoPopup", function()
         featureInfoPopup.destroy();
     });
 
+    it("popup title changes, found 2 results", function () {
+        featureInfoPopup.numResultsToLoad = 2;
+        featureInfoPopup.numGoodResults = 2;
+        featureInfoPopup.numCompletedQueries = 2;
+        featureInfoPopup._updateStatus();
+        expect(featureInfoPopup.title).toEqual("Feature information found for 2 layers");
+    });
+
+    it("popup title changes, not finished yet", function () {
+        featureInfoPopup.numResultsToLoad = 2;
+        featureInfoPopup.numGoodResults = 0;
+        featureInfoPopup.numCompletedQueries = 1;
+        featureInfoPopup._updateStatus();
+        expect(featureInfoPopup.title.toString()).toEqual("Searching for Features at your click point");
+    });
+    it("popup title changes, finished no results", function () {
+        featureInfoPopup.numResultsToLoad = 2;
+        featureInfoPopup.numGoodResults = 0;
+        featureInfoPopup.numCompletedQueries = 2;
+        featureInfoPopup._updateStatus();
+        expect(featureInfoPopup.title.toString()).toEqual("No features found for 2 queryable layers");
+    });
+
     // Simple case, two tabs, first one remains selected.
     it("load two tabs, first remains selected", function () {
         featureInfoPopup._addPopupTabContent("popup content 1", "tab 1");
