@@ -2,7 +2,6 @@ div.olMap {
     z-index: 0;
     padding: 0px!important;
     margin: 0px!important;
-    cursor: default;
 }
 
 div.olMapViewport {
@@ -277,6 +276,18 @@ div.olControlSaveFeaturesItemInactive {
     top: 18px;
     left: 18px;
     background-position: 18px 18px;
+}
+
+.olMapViewport {
+    cursor: crosshair;
+}
+
+.olMapViewport.olControlDragPanActive {
+    cursor: move;
+}
+
+.olControlNoSelect {
+    cursor: default;
 }
 
 /*
