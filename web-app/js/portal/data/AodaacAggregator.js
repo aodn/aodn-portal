@@ -17,28 +17,35 @@ Portal.data.AodaacAggregator = Ext.extend(Portal.data.Aggregator, {
 
     buildParams: function(selectedLayer, dateRangeStart, dateRangeEnd, geometry) {
         var product = selectedLayer.aodaacProducts[0];
-        var productExtents = product.extents;
 
-        var aodaacConfig = {
-            productId: product.id,
-            dateRangeStart: dateRangeStart,
-            dateRangeEnd:   dateRangeEnd,
-            productLatitudeRangeStart:  this._getMin(productExtents.lat),
-            productLatitudeRangeEnd:    this._getMax(productExtents.lat),
-            productLongitudeRangeStart: this._getMin(productExtents.lon),
-            productLongitudeRangeEnd:   this._getMax(productExtents.lon)
-        };
+        if (product) {
 
-        if (geometry) {
-            var bounds = geometry.getBounds();
+            var productExtents = product.extents;
 
-            aodaacConfig.latitudeRangeStart  = bounds.bottom;
-            aodaacConfig.longitudeRangeStart = bounds.left;
-            aodaacConfig.latitudeRangeEnd    = bounds.top;
-            aodaacConfig.longitudeRangeEnd   = bounds.right;
+            var aodaacConfig = {
+                productId: product.id,
+                dateRangeStart: dateRangeStart,
+                dateRangeEnd:   dateRangeEnd,
+                productLatitudeRangeStart:  this._getMin(productExtents.lat),
+                productLatitudeRangeEnd:    this._getMax(productExtents.lat),
+                productLongitudeRangeStart: this._getMin(productExtents.lon),
+                productLongitudeRangeEnd:   this._getMax(productExtents.lon)
+            };
+
+            if (geometry) {
+                var bounds = geometry.getBounds();
+
+                aodaacConfig.latitudeRangeStart  = bounds.bottom;
+                aodaacConfig.longitudeRangeStart = bounds.left;
+                aodaacConfig.latitudeRangeEnd    = bounds.top;
+                aodaacConfig.longitudeRangeEnd   = bounds.right;
+            }
+
+            return aodaacConfig;
         }
 
-        return aodaacConfig;
+        return null;
+
     },
 
     _getMin: function(values) {
