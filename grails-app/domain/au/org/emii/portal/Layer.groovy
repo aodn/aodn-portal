@@ -25,7 +25,6 @@ class Layer {
     String projection
     Boolean queryable
     Boolean isBaseLayer
-    Boolean available   //used by CheckLayerAvailabilityService
     String urlDownloadFieldName
     String gogoduckLayerName
 
@@ -83,7 +82,6 @@ class Layer {
         activeInLastScan()
         lastUpdated(nullable: true)
         layerHierarchyPath(nullable: true)
-        available(nullable: false)
         wfsLayer(nullable: true)
     }
 
@@ -104,7 +102,6 @@ class Layer {
         queryable = false
         isBaseLayer = false
         activeInLastScan = true
-        available = true
     }
 
     boolean equals(other) {
