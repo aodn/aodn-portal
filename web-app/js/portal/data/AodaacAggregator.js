@@ -45,7 +45,6 @@ Portal.data.AodaacAggregator = Ext.extend(Portal.data.Aggregator, {
         }
 
         return null;
-
     },
 
     _getMin: function(values) {
