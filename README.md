@@ -30,7 +30,7 @@ Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_h
 
 * [Get Portal](#getting-your-hands-on-portal)
 * [Configuration](#configuring-portal)
-* [How Do I Drive This Thing?](#getting-started-how-do-i-drive-this-thing-)
+* [How Do I Drive This Thing?](#getting-started-how-do-i-drive-this-thing)
 
 ### Getting Your Hands on Portal
 
@@ -38,7 +38,7 @@ Firstly we welcome contributions so please feel free to fork the project, addres
 a pull request.
 
 * [Building From Source](#building-from-source)
-* [Can I Get A Pre-Built War?](#can-i-get-a-pre-built-war-)
+* [Can I Get A Pre-Built War?](#can-i-get-a-pre-built-war)
 
 #### Building From Source
 
@@ -81,7 +81,7 @@ The full list of overridable configuration items is:
 * WMS_SCANNER_URL
 * WFS_SCANNER_URL
 * GOGODUCK_URL
-
+* LOG4J_CONVERSION_PATTERN
 
 ### Collaborating Applications
 
