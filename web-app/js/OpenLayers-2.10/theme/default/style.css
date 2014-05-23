@@ -283,12 +283,21 @@ div.olControlSaveFeaturesItemInactive {
 }
 
 .olMapViewport.olControlDragPanActive {
+    cursor: default;
+}
+
+.olMapViewport.olControlDragPanActive.olDragDown {
     cursor: move;
+}
+
+.miniMap>.olMapViewport {
+    cursor: default;
 }
 
 .olControlNoSelect {
     cursor: default;
 }
+
 
 /*
   .olControlZoomPanel {
