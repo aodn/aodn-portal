@@ -47,25 +47,30 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
         this._setExistingFilters();
     },
 
-    getVisualisationCQL: function() {
+    getFilterNameAsTitleCase: function() {
+        return this.filter.name.split('_').join(' ').toTitleCase();
+    },
+
+/*    getVisualisationCQL: function() {
+
         if (this.isDownloadOnly()) {
             return '';
         }
 
         return this.getCQL();
-    },
+    },*/
 
-    getDownloadCQL: function() {
+/*    getDownloadCQL: function() {
         return this.getCQL();
-    },
+    },*/
 
-    getWmsDownloadCQL: function() {
-        return this.getDownloadCQL();
-    },
-
-    getCQL: function() {
+    getFilterData: function() {
         throw "subclasses must override this function";
     },
+
+/*    getCQL: function() {
+        throw "subclasses must override this function";
+    },*/
 
     getFilterName: function() {
         return this.filter.name;
@@ -85,7 +90,7 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     hasValue: function() {
-        return this.getCQL() != "";
+        return this.layer.filterData != undefined;
     },
 
     _fireAddEvent: function() {

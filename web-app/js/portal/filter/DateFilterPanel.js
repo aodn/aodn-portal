@@ -81,6 +81,12 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         });
     },
 
+
+    _formatDate: function(date) {
+        console.log(date);
+        return moment(date).format(OpenLayers.i18n('dateTimeDisplayFormat'));
+    },
+
     _setMinMax: function(dateField, vals) {
         dateField.setMinValue(this.TIME_UTIL._parseIso8601Date(vals[0]));
 
@@ -142,6 +148,17 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         return '';
     },
 
+    _getDateHumanString: function(combo) {
+
+        var newDate = combo.getValue();
+        if (newDate) {
+            newDate.setHours(this.timeZoneCorrect);
+            return this._formatDate(newDate);
+        }
+
+        return '';
+    },
+
     _onSelect: function(picker, date) {
         if (this._isSelectedOpSetToBetween) {
             if (this.toField.isVisible()) {
@@ -157,11 +174,36 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
     },
 
-    getCQL: function() {
-        return this._getCQLUsingColumnNames(this.filter.name, this.filter.name);
+    getFilterData: function() {
+
+        return {
+            name: this.filter.name,
+            downloadOnly: this.isDownloadOnly(),
+            cql: this._getCQL(this.filter.name, this.filter.name),
+            humanValue: this._getCQLHumanValue()
+        }
     },
 
-    _getCQLUsingColumnNames: function(startDateRangeColumnName, endDateRangeColumnName) {
+    _getCQLHumanValue: function() {
+
+        var cql = '';
+
+        if (this._isFromFieldUsed()) {
+            cql = String.format("{0} >= {1}", "Start Date", this._getDateHumanString(this.fromField));
+        }
+
+        if (this._isFromFieldUsed() && this._isToFieldUsed()) {
+            cql += ' <i>and</i> ';
+        }
+
+        if (this._isToFieldUsed()) {
+            cql += String.format("{0} <= {1}", "End Date", this._getDateHumanString(this.toField));
+        }
+
+        return cql;
+    },
+
+    _getCQL: function(startDateRangeColumnName, endDateRangeColumnName) {
 
         var cql = '';
 

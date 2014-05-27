@@ -21,30 +21,33 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         var dateString = "";
 
         if (params.latitudeRangeStart) {
-            var areaStart = String.format('{0}<b>N</b>,&nbsp;{1}<b>E</b>,', params.latitudeRangeStart, params.longitudeRangeEnd);
-            var areaEnd = String.format('{0}<b>S</b>,&nbsp;{1}<b>W</b>', params.latitudeRangeEnd, params.longitudeRangeStart);
-            areaString = this._parameterString('parameterAreaLabel', areaStart, areaEnd);
+
+            var bboxString = String.format(
+                '{0},{1},{2},{3}',
+                params.longitudeRangeStart,
+                params.latitudeRangeStart,
+                params.longitudeRangeEnd,
+                params.latitudeRangeEnd
+            );
+            var bbox = Portal.utils.geo.bboxAsStringToBounds(bboxString);
+            areaString = String.format('{0}: {1}<br>', OpenLayers.i18n("boundingBoxDescription"), bbox.toString());
         }
 
         if (params.dateRangeStart != undefined) {
-            var displayDateFormat = OpenLayers.i18n('dateFilterDisplayFormat');
-            var startDateString = params.dateRangeStart.format(displayDateFormat);
-            var endDateString = params.dateRangeEnd.format(displayDateFormat);
-            dateString = this._parameterString('parameterDateLabel', startDateString, endDateString, " <b>-</b> ");
-        }
-        else {
-            dateString = OpenLayers.i18n('emptyDownloadDateRangePlaceholder');
+            var startDateString = this._formatDate(params.dateRangeStart);
+            var endDateString = this._formatDate(params.dateRangeEnd);
+            dateString = this._formatHumanDateInfo('parameterDateLabel', startDateString, endDateString);
         }
 
         if (areaString == "" && dateString == "") {
-            areaString = String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel"));
+            areaString =  OpenLayers.i18n("emptyDownloadPlaceholder");
         }
 
         return areaString + dateString;
     },
 
-    _parameterString: function (labelKey, value1, value2, delim) {
-        return String.format('<b>{0}:</b> &nbsp;<code>{1}</code> {3} <code>{2}</code><br>', OpenLayers.i18n(labelKey), value1, value2, (delim || ""));
+    _formatHumanDateInfo: function (labelKey, value1, value2) {
+        return String.format('{0}:&nbsp;{1} to {2}<br>', OpenLayers.i18n(labelKey), value1, value2);
     },
 
     _createMenuItems: function(collection) {
@@ -84,9 +87,9 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return this.downloadWithConfirmation(collection, this._generateNcwmsUrl, params);
     },
 
+    // a moment
     _formatDate: function(date) {
-
-        return date.format(this.PARAMS_DATE_FORMAT);
+        return date.format(OpenLayers.i18n('dateTimeDisplayFormat'));
     },
 
     _bodaacCsvDownloadUrl: function(collection) {

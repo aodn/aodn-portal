@@ -67,7 +67,7 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
     getCQL: function() {
 
         if (!this.geometry) {
-            return '';
+            return undefined;
         }
 
         return String.format(
@@ -75,5 +75,28 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
             this.filter.name,
             this.geometry.toWkt()
         );
+    },
+
+    getHumanGeometryValue: function() {
+
+        if (this.geometry) {
+            var explanation = (this.geometry.isBox()) ? OpenLayers.i18n("boundingBoxDescription") : OpenLayers.i18n("maxExtentOfPolygon");
+            return String.format('{0}: {1}',explanation, this.geometry.getBounds());
+        }
+        else {
+            return "";
+        }
+    },
+
+    getFilterData: function() {
+
+        return {
+            name: this.filter.name,
+            downloadOnly: this.isDownloadOnly(),
+            cql: this.getCQL(),
+            humanValue: this.getHumanGeometryValue()
+        }
     }
+
+
 });

@@ -160,7 +160,7 @@ describe('Portal.cart.NcwmsInjector', function() {
         it('returns a default message when no defined date', function() {
             geoNetworkRecord.ncwmsParams.latitudeRangeStart = undefined;
             geoNetworkRecord.ncwmsParams.dateRangeStart = null;
-            expect(injector._getDataFilterEntry(geoNetworkRecord)).toEqual(OpenLayers.i18n("emptyDownloadDateRangePlaceholder"));
+            expect(injector._getDataFilterEntry(geoNetworkRecord)).toEqual(OpenLayers.i18n("emptyDownloadPlaceholder"));
         });
 
         it('indicates a northerly bound', function() {
