@@ -77,7 +77,7 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
         );
     },
 
-    getHumanGeometryValue: function() {
+    _getCQLHumanValue: function() {
 
         if (this.geometry) {
             var explanation = (this.geometry.isBox()) ? OpenLayers.i18n("boundingBoxDescription") : OpenLayers.i18n("maxExtentOfPolygon");
@@ -94,7 +94,7 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
             name: this.filter.name,
             downloadOnly: this.isDownloadOnly(),
             cql: this.getCQL(),
-            humanValue: this.getHumanGeometryValue()
+            humanValue: this._getCQLHumanValue()
         }
     }
 

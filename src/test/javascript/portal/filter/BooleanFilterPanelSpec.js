@@ -42,10 +42,18 @@ describe("Portal.filter.BooleanFilterPanel", function() {
             booleanFilter.checkbox.getValue = function() { return false; };
             expect(booleanFilter.getCQL()).toEqual(undefined);
         });
+
+        it('human readable cql', function() {
+            booleanFilter.checkbox.getValue = function() { return true; };
+            expect(booleanFilter._getCQLHumanValue()).toEqual("Test = true");
+        });
+
     });
 
     it('_setExistingFilters should not set checked for empty CQL filter', function() {
         booleanFilter._setExistingFilters();
         expect(booleanFilter.checkbox.setValue).not.toHaveBeenCalled();
     });
+
+
 });
