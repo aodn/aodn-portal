@@ -30,7 +30,7 @@ describe("Portal.filter.BooleanFilterPanel", function() {
 
     describe('getCQL', function() {
         it('should initially return ""', function() {
-            expect(booleanFilter.getCQL()).toEqual('');
+            expect(booleanFilter.getCQL()).toEqual(undefined);
         });
 
         it('should return true values if checkbox selected', function() {
@@ -40,7 +40,7 @@ describe("Portal.filter.BooleanFilterPanel", function() {
 
         it('should return false values if checkbox not selected', function() {
             booleanFilter.checkbox.getValue = function() { return false; };
-            expect(booleanFilter.getCQL()).toEqual("");
+            expect(booleanFilter.getCQL()).toEqual(undefined);
         });
     });
 

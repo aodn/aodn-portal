@@ -46,26 +46,20 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
 
         it('after', function() {
             operator = 'after';
-            expectAllCQLFunctionsToEqual(filterPanel, 'wms_end_column >= 2000', 'wfs_column >= 2000');
+            expect(filterPanel._getCQL()).toEqual('wfs_column >= 2000');
         });
 
         it('before', function() {
             operator = 'before';
-            expectAllCQLFunctionsToEqual(filterPanel, 'wms_start_column <= 2013', 'wfs_column <= 2013');
+            expect(filterPanel._getCQL()).toEqual('wfs_column <= 2013');
         });
 
         it('between', function() {
             operator = 'between';
-            expectAllCQLFunctionsToEqual(
-                filterPanel,
-                'wms_end_column >= 2000 AND wms_start_column <= 2013',
+            expect(filterPanel._getCQL()).toEqual(
                 'wfs_column >= 2000 AND wfs_column <= 2013'
             );
         });
 
-        var expectAllCQLFunctionsToEqual = function(filterPanel, visualisationCQL, downloadCQL) {
-            expect(filterPanel.getVisualisationCQL()).toEqual(visualisationCQL);
-            expect(filterPanel.getDownloadCQL()).toEqual(downloadCQL);
-        }
     });
 });

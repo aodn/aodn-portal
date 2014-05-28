@@ -71,7 +71,7 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
         it('returns empty string when geometry is falsy', function() {
             boundingBoxFilter.geometry = undefined;
-            expect(boundingBoxFilter.getCQL()).toEqual('');
+            expect(boundingBoxFilter.getCQL()).toEqual(undefined);
         });
     });
 });

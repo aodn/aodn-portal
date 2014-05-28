@@ -83,7 +83,6 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
 
     _formatDate: function(date) {
-        console.log(date);
         return moment(date).format(OpenLayers.i18n('dateTimeDisplayFormat'));
     },
 
@@ -179,7 +178,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         return {
             name: this.filter.name,
             downloadOnly: this.isDownloadOnly(),
-            cql: this._getCQL(this.filter.name, this.filter.name),
+            cql: this._getCQL(),
             humanValue: this._getCQLHumanValue()
         }
     },
@@ -203,12 +202,12 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         return cql;
     },
 
-    _getCQL: function(startDateRangeColumnName, endDateRangeColumnName) {
+    _getCQL: function() {
 
         var cql = '';
 
         if (this._isFromFieldUsed()) {
-            cql = String.format("{0} >= {1}", endDateRangeColumnName, this._getDateString(this.fromField));
+            cql = String.format("{0} >= {1}", this.filter.name, this._getDateString(this.fromField));
         }
 
         if (this._isFromFieldUsed() && this._isToFieldUsed()) {
@@ -216,7 +215,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
 
         if (this._isToFieldUsed()) {
-            cql += String.format("{0} <= {1}", startDateRangeColumnName, this._getDateString(this.toField));
+            cql += String.format("{0} <= {1}", this.filter.name, this._getDateString(this.toField));
         }
 
         return cql;

@@ -74,7 +74,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // FacetedSearchResultsDataView.js
     platform: 'Platform',
     organisation: 'Organisation',
-    dateRange: 'Date Range',
     parameters: 'Parameters',
     temporalExtentDateFormat: 'YYYY',
     metadataLink: 'continue reading',
@@ -109,7 +108,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // Search form
     addCriteria: 'Limit search to',
-    boundingBoxDescription: 'Bounding Box: ',
+    boundingBoxDescription: 'Bounding Box',
     maxExtentOfPolygon: "Max extent of polygon: ",
     northBL: 'N',
     eastBL: 'E',

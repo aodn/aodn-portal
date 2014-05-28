@@ -187,26 +187,35 @@ describe("Portal.filter.DateFilterPanel", function() {
         it('after', function() {
             spyOn(filterPanel.operators, 'getValue').andReturn('after');
 
-            expectAllCQLFunctionsToEqual(filterPanel, 'some_column >= 2012');
+            expect(filterPanel._getCQL()).toEqual('some_column >= 2012');
         });
 
         it('before', function() {
             spyOn(filterPanel.operators, 'getValue').andReturn('before');
 
-            expectAllCQLFunctionsToEqual(filterPanel, 'some_column <= 2014');
+            expect(filterPanel._getCQL()).toEqual('some_column <= 2014');
         });
 
         it('between', function() {
             spyOn(filterPanel.operators, 'getValue').andReturn('between');
 
-            expectAllCQLFunctionsToEqual(filterPanel, 'some_column >= 2012 AND some_column <= 2014');
+            expect(filterPanel._getCQL()).toEqual('some_column >= 2012 AND some_column <= 2014');
+        });
+    });
+
+
+    describe('_getDateHumanString', function() {
+
+        beforeEach(function() {
+
+            filterPanel.combo = {
+                getValue: function() { return new Date('2012') }
+            };
         });
 
-        var expectAllCQLFunctionsToEqual = function(filterPanel, expectedCQL) {
-            expect(filterPanel.getCQL()).toEqual(expectedCQL);
-            expect(filterPanel.getVisualisationCQL()).toEqual(expectedCQL);
-            expect(filterPanel.getDownloadCQL()).toEqual(expectedCQL);
-        };
+        it('after', function() {
+            expect(filterPanel._getDateHumanString(filterPanel.combo)).toEqual('2012/Jan/01-10:00-UTC');
+        });
     });
 
     describe('_setExistingFilters', function() {
