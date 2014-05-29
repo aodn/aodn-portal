@@ -55,5 +55,4 @@ describe("Portal.filter.BooleanFilterPanel", function() {
         expect(booleanFilter.checkbox.setValue).not.toHaveBeenCalled();
     });
 
-
 });

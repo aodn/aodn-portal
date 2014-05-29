@@ -177,12 +177,6 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(entry.indexOf(OpenLayers.i18n("boundingBoxDescription"))).toBeGreaterThan(-1);
         });
 
-        it('date formatHumanDateInfo', function() {
-
-            var entry = injector._getDataFilterEntry(geoNetworkRecord);
-            expect(entry.indexOf(OpenLayers.i18n("boundingBoxDescription"))).toBeGreaterThan(-1);
-        });
-
         it('indicates temporal range', function() {
             geoNetworkRecord.ncwmsParams.dateRangeStart = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0));
             geoNetworkRecord.ncwmsParams.dateRangeEnd = moment.utc(Date.UTC(2014, 11, 21, 10, 30, 30, 500));

@@ -260,9 +260,6 @@ describe("Portal.filter.FilterGroupPanel", function() {
             });
 
             it('calls getVisualisationCQL when options.downloadOnly is false', function() {
-                /*filterDescriptor.downloadOnly = false;
-                var filterPanel = filterGroupPanel._createFilterPanel(layer, filterDescriptor);
-                spyOn(filterPanel, 'hasValue').andReturn(true);*/
 
                 expect(filterGroupPanel._getVisualisationCQLFilters(filterDescriptorData)).toEqual('pardon my French');
             });

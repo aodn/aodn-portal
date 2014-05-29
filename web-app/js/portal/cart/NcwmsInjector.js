@@ -40,13 +40,13 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         }
 
         if (areaString == "" && dateString == "") {
-            areaString =  OpenLayers.i18n("emptyDownloadPlaceholder");
+            areaString = OpenLayers.i18n("emptyDownloadPlaceholder");
         }
 
         return areaString + dateString;
     },
 
-    _formatHumanDateInfo: function (labelKey, value1, value2) {
+    _formatHumanDateInfo: function(labelKey, value1, value2) {
         return String.format('{0}:&nbsp;{1} to {2}<br>', OpenLayers.i18n(labelKey), value1, value2);
     },
 
