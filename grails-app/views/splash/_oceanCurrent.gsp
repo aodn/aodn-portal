@@ -7,7 +7,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 --%>
 
 <h2>Latest Ocean Currents and Temperature Graphs</h2>
-<div class="minispacer floatLeft homePanelWidget"  style="width:230px">
+<div class="miniSpacer floatLeft homePanelWidget"  style="width:230px">
 
   <a class="imageLabel" title="Latest 'OceanCurrent' graph for the randomly chosen region" href="${oceanCurrent.baseURL}${oceanCurrent.acron}${oceanCurrent.parentPage}"  target="_blank" >
     <img class="roundedImages" src="${oceanCurrent.imageURL}" width="230"> ${oceanCurrent.speil}</img>
@@ -15,7 +15,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
   <br/>
 </div>
 
-<div class="minispacer floatLeft homePanelWidget"  style="width:250px">
+<div class="miniSpacer floatLeft homePanelWidget"  style="width:250px">
   The oceans around Australia are dynamic and ever-changing, to view the latest state of Australian oceans and coastal seas,
   go to our <a class="external" title="Ocean Current page"  href="${oceanCurrent.baseURL}" target="_blank"><NOBR>Ocean Current</NOBR></a> page.
 

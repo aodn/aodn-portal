@@ -25,8 +25,8 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
     <div class="clear footer">
 
       <div class="spacer floatLeft homePanelWidget" style="width:100px">
-        <img class="minispacer" src="images/soos/baselogo-dark.png" alt="SOOS Logo" /><BR>
-        <a href="http://imos.org.au/"><img src="images/soos/IMOSLogo.png"  class="minispacer"  alt="IMOS Logo" /></a>
+        <img class="miniSpacer" src="images/soos/baselogo-dark.png" alt="SOOS Logo" /><BR>
+        <a href="http://imos.org.au/"><img src="images/soos/IMOSLogo.png"  class="miniSpacer"  alt="IMOS Logo" /></a>
       </div>
 
       <div class="spacer floatLeft homePanelWidget" style="width:370px">

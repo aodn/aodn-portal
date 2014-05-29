@@ -70,14 +70,14 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
                     <div class="footer">
                         <div class="landingSubLeft">
-                            <img class="logoSpacer" src="http://static.emii.org.au/images/logo/Utas_vert.png" alt="UTAS logo" />
-                            <img class="logoSpacer" src="http://static.emii.org.au/images/logo/NCRIS_Initiative_stacked200.png" width="110" alt="DIISTRE logo" />
+                            <img class="miniSpacer" src="http://static.emii.org.au/images/logo/utas/UTAS_MONO_190w.png" alt="UTAS logo" />
+                            <img class="miniSpacer" src="http://static.emii.org.au/images/logo/NCRIS_Initiative_stacked200.png" width="140" alt="DIISTRE logo" />
                             <br />
                             <a class="noUnderline" href="http://twitter.com/AusOceanDataNet" target="_blank">
-                                <img class="logoSpacer" src="${resource(dir: 'images', file: 'Twitter_logo_black.png')}" title="Follow us on twitter" alt="Follow us on twitter" />
+                                <img class="miniSpacer" src="${resource(dir: 'images', file: 'Twitter_logo_black.png')}" title="Follow us on twitter" alt="Follow us on twitter" />
                             </a>
                             <a class="noUnderline" href="http://www.facebook.com/AusOceanDataNet" target="_blank">
-                                <img class="logoSpacer" src="${resource(dir: 'images', file: 'FB-logo-gray.png')}" title="Find us on Facebook" alt="Find us on Facebook" />
+                                <img class="miniSpacer" src="${resource(dir: 'images', file: 'FB-logo-gray.png')}" title="Find us on Facebook" alt="Find us on Facebook" />
                             </a>
                         </div>
 
