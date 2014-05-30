@@ -15,8 +15,8 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         var contentPanel = new Ext.Panel({
             html: OpenLayers.i18n(
                 'downloadConfirmationWindowContent', {
-                    downloadDatasetHelpUrl: 'http://help.aodn.org.au/help/?q=node/6',
-                    helpUrl: 'http://help.aodn.org.au/help/'
+                    downloadDatasetHelpUrl: Portal.app.appConfig['help.downloadDatasetUrl'],
+                    helpUrl: Portal.app.appConfig['help.url']
                 }
             ),
             width: 450,
