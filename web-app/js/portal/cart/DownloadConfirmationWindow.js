@@ -13,7 +13,12 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
         // Content
         var contentPanel = new Ext.Panel({
-            html: Portal.app.config.downloadCartConfirmationWindowContent,
+            html: OpenLayers.i18n(
+                'downloadConfirmationWindowContent', {
+                    downloadDatasetHelpUrl: 'http://help.aodn.org.au/help/?q=node/6',
+                    helpUrl: 'http://help.aodn.org.au/help/'
+                }
+            ),
             width: 450,
             resizable: false
         });
