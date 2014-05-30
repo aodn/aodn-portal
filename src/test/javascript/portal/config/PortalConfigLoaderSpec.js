@@ -9,21 +9,18 @@
 describe("Portal.config.PortalConfigLoader", function() {
 
     var loader;
-    var successFn = jasmine.createSpy('success');
-    var failureFn = jasmine.createSpy('failure');
+    var successFn;
+    var failureFn;
 
     beforeEach(function() {
+
+        successFn = jasmine.createSpy('success');
+        failureFn = jasmine.createSpy('failure');
 
         loader = new Portal.config.PortalConfigLoader();
         loader.portal = {};
         loader.onSuccess = successFn;
         loader.onFailure = failureFn;
-    });
-
-    afterEach(function() {
-
-        successFn.reset();
-        failureFn.reset();
     });
 
     function expectSuccess() {
@@ -44,7 +41,7 @@ describe("Portal.config.PortalConfigLoader", function() {
 
             it('Should complete initialisation', function() {
 
-                loader.appConfigStoreLoadComplete(null, null, true);
+                loader.appConfigLoadSuccess({responseText: '{"a":"b"}'});
                 loader.viewportConfigLoadSuccess({responseText: '{"a":"b"}'});
                 loader.waitForConfigsAndComplete();
 
@@ -57,7 +54,7 @@ describe("Portal.config.PortalConfigLoader", function() {
             it('Should complete initialisation', function() {
 
                 loader.viewportConfigLoadSuccess({responseText: '{"a":"b"}'});
-                loader.appConfigStoreLoadComplete(null, null, true);
+                loader.appConfigLoadSuccess({responseText: '{"a":"b"}'});
                 loader.waitForConfigsAndComplete();
 
                 expectSuccess();
@@ -68,7 +65,7 @@ describe("Portal.config.PortalConfigLoader", function() {
 
             it('Should not complete initialisation', function() {
 
-                loader.appConfigStoreLoadComplete(null, null, false);
+                loader.appConfigLoadFailure({});
                 loader.viewportConfigLoadSuccess({responseText: '{"a":"b"}'});
                 loader.waitForConfigsAndComplete();
 
@@ -80,7 +77,7 @@ describe("Portal.config.PortalConfigLoader", function() {
 
             it('Should not complete initialisation', function() {
 
-                loader.appConfigStoreLoadComplete(null, null, true);
+                loader.appConfigLoadSuccess({responseText: '{"a":"b"}'});
                 loader.viewportConfigLoadFailure({});
                 loader.waitForConfigsAndComplete();
 
@@ -92,7 +89,7 @@ describe("Portal.config.PortalConfigLoader", function() {
 
             it('Should not complete initialisation', function() {
 
-                loader.appConfigStoreLoadComplete(null, null, true);
+                loader.appConfigLoadSuccess({responseText: '{"a":"b"}'});
                 loader.viewportConfigLoadSuccess({responseText: 'sadf (invalid json)'});
                 loader.waitForConfigsAndComplete();
 
