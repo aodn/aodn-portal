@@ -162,7 +162,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     _filtersSort: function(filters) {
 
         // override server order by adding the type in topFilters
-        var topFilters = ['DateRange','Date','BoundingBox']; // add in reverse order
+        var topFilters = ['DateRange', 'Date', 'BoundingBox']; // add in reverse order
 
         Ext.each(
             filters,
@@ -174,7 +174,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
         var _this = this;
 
-        filters.sort( function(firstFilter, secondFilter) {
+        filters.sort(function(firstFilter, secondFilter) {
             var comparisonResult = _this._compareElements(firstFilter.sortOrder, secondFilter.sortOrder);
 
             if (comparisonResult == 0) {
@@ -275,7 +275,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     _getVisualisationCQLFilters: function(layerFilterData) {
         var cql = [];
         Ext.each(layerFilterData, function(data) {
-            if (!data.downloadOnly){
+            if (!data.downloadOnly) {
 
                 var filterCQL = data.cql;
                 if (filterCQL) {

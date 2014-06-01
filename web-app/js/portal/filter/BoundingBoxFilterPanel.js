@@ -98,5 +98,4 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
         }
     }
 
-
 });
