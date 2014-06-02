@@ -66,7 +66,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'LayerDescriptor.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'BrowserWindow.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'ActionColumn.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'AppConfigStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'SaveDialog.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'MapPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'Controller.js')}"></script>

@@ -78,6 +78,7 @@ databaseChangeLog = {
     include file: '20140501-DN-AodaacJobParameters.groovy'
     include file: '20140507-JB-CsvMetadataHeaderOutputFormat.groovy'
     include file: '20140521-PB-RemoveUnusedAvailableLayerAttribute.groovy'
+    include file: '20140530-JB-DropDownloadCartConfirmationWindowContent.groovy'
 
     // Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 
