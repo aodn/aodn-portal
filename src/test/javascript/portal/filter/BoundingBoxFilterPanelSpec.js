@@ -12,7 +12,10 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
     var map;
 
     beforeEach(function() {
-        map = new OpenLayers.Map();
+        map = new OpenLayers.SpatialConstraintMap();
+        map.navigationControl = {};
+        map.navigationControl.deactivate = function() {return null}
+
 
         spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, 'setLayerAndFilter');
         spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, '_updateWithGeometry');
@@ -20,6 +23,7 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
             layer: { map: map },
             filter: { name: 'geom_filter' }
         });
+
     });
 
     it('filter name should be undefined', function() {
@@ -72,6 +76,19 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
         it('returns empty string when geometry is falsy', function() {
             boundingBoxFilter.geometry = undefined;
             expect(boundingBoxFilter.getCQL()).toEqual(undefined);
+        });
+    });
+
+    describe('is a real polygon', function() {
+
+        it('returns true when a polygon', function() {
+            boundingBoxFilter.map.updateSpatialConstraintStyle("polygon");
+            expect(boundingBoxFilter.isRealPolygon()).toEqual(true);
+        });
+
+        it('returns false when not a polygon', function() {
+            boundingBoxFilter.map.updateSpatialConstraintStyle("bogus");
+            expect(boundingBoxFilter.isRealPolygon()).toEqual(false);
         });
     });
 });

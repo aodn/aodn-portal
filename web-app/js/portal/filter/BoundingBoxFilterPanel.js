@@ -80,12 +80,16 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
     _getCQLHumanValue: function() {
 
         if (this.geometry) {
-            var explanation = (this.geometry.isBox()) ? OpenLayers.i18n("boundingBoxDescription") : OpenLayers.i18n("maxExtentOfPolygon");
+            var explanation = (this.isRealPolygon()) ? OpenLayers.i18n("maxExtentOfPolygon") : OpenLayers.i18n("boundingBoxDescription");
             return String.format('{0}: {1}',explanation, this.geometry.getBounds());
         }
         else {
             return "";
         }
+    },
+
+    isRealPolygon: function() {
+        return (this.map.getSpatialConstraintType() == "polygon");
     },
 
     getFilterData: function() {
