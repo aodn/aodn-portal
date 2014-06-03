@@ -58,6 +58,14 @@ describe('Portal.cart.InsertionService', function() {
             expect(mockInsertionService._getNoDataInjector).not.toHaveBeenCalled();
         });
 
+        it('creates a wms injector for download URL layers', function() {
+            html = mockInsertionService.insertionValues(getWmsUrlDownloadRecord());
+
+            expect(mockInsertionService._getNcwmsInjector).not.toHaveBeenCalled();
+            expect(mockInsertionService._getWmsInjector).toHaveBeenCalled();
+            expect(mockInsertionService._getNoDataInjector).not.toHaveBeenCalled();
+        });
+
         it('creates a no data injector for layers containing no data', function() {
 
             html = mockInsertionService.insertionValues(getNoDataRecord());
@@ -93,6 +101,15 @@ describe('Portal.cart.InsertionService', function() {
         };
         geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
+
+        return geoNetworkRecord;
+    }
+
+    function getWmsUrlDownloadRecord() {
+        geoNetworkRecord.aggregator = {
+            childAggregators: []
+        };
+        geoNetworkRecord.wmsLayer.urlDownloadFieldName = 'download_url';
 
         return geoNetworkRecord;
     }
