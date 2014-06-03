@@ -122,11 +122,51 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(eventSpy).toHaveBeenCalled();
         });
 
-        it('moves drawing/result layers to top when layer added', function() {
-             var newLayer = new OpenLayers.Layer.Vector('new layer');
-             map.addLayer(newLayer);
-             expect(map.layers[map.layers.length - 1]).toEqual(map.spatialConstraintControl.layer);
-             expect(map.layers[map.layers.length - 2]).toEqual(map.spatialConstraintControl.handler.layer);
+        it('moves drawing layers to larger z index when layer added', function() {
+            var newLayer = new OpenLayers.Layer.Vector('new layer');
+            map.addLayer(newLayer);
+
+            expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(newLayer.getZIndex());
+            expect(map.spatialConstraintControl.handler.layer.getZIndex()).toBeGreaterThan(newLayer.getZIndex());
+            expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(map.spatialConstraintControl.handler.layer.getZIndex());
+        });
+
+        it('moves drawing layers to larger z index when layer removed', function() {
+            var newLayer1 = new OpenLayers.Layer.Vector('new layer1');
+            var newLayer2 = new OpenLayers.Layer.Vector('new layer2');
+            map.addLayer(newLayer1);
+            map.addLayer(newLayer2);
+
+            map.removeLayer(newLayer2);
+
+            expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(newLayer1.getZIndex());
+            expect(map.spatialConstraintControl.handler.layer.getZIndex()).toBeGreaterThan(newLayer1.getZIndex());
+            expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(map.spatialConstraintControl.handler.layer.getZIndex());
+        });
+
+        it('moves drawing layers to larger z index when layers shuffled', function() {
+            var newLayer1 = new OpenLayers.Layer.Vector('new layer1');
+            var newLayer2 = new OpenLayers.Layer.Vector('new layer2');
+            var newLayer3 = new OpenLayers.Layer.Vector('new layer3');
+
+            map.addLayer(newLayer1);
+            map.addLayer(newLayer2);
+            map.addLayer(newLayer3);
+            map.raiseLayer(newLayer1, 2);
+
+            // Higher Z index than newLayer1
+            expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(newLayer1.getZIndex());
+            expect(map.spatialConstraintControl.handler.layer.getZIndex()).toBeGreaterThan(newLayer1.getZIndex());
+
+            // Higher Z index than newLayer2
+            expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(newLayer2.getZIndex());
+            expect(map.spatialConstraintControl.handler.layer.getZIndex()).toBeGreaterThan(newLayer2.getZIndex());
+
+            // Higher Z index than newLayer3
+            expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(newLayer3.getZIndex());
+            expect(map.spatialConstraintControl.handler.layer.getZIndex()).toBeGreaterThan(newLayer3.getZIndex());
+
+            expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(map.spatialConstraintControl.handler.layer.getZIndex());
         });
     });
 
