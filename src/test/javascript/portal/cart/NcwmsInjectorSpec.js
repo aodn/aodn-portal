@@ -174,7 +174,7 @@ describe('Portal.cart.NcwmsInjector', function() {
         it('indicates bounds properly created', function() {
 
             var entry = injector._getDataFilterEntry(geoNetworkRecord);
-            expect(entry.indexOf(OpenLayers.i18n("boundingBoxDescription"))).toBeGreaterThan(-1);
+            expect(entry.indexOf(OpenLayers.i18n("boundingBoxDescriptionNcWms"))).toBeGreaterThan(-1);
         });
 
         it('indicates temporal range', function() {
