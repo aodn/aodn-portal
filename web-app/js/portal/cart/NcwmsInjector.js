@@ -30,7 +30,8 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
                 params.latitudeRangeEnd
             );
             var bbox = Portal.utils.geo.bboxAsStringToBounds(bboxString);
-            areaString = String.format('{0}: {1}<br>', OpenLayers.i18n("boundingBoxDescription"), bbox.toString());
+            // differs from WMS layers. It will always be a bbox even when a polygon was used by the user
+            areaString = String.format('{0}:&nbsp;  {1}<br>', OpenLayers.i18n("boundingBoxDescriptionNcWms"), bbox.toString());
         }
 
         if (params.dateRangeStart != undefined) {
@@ -47,7 +48,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     },
 
     _formatHumanDateInfo: function(labelKey, value1, value2) {
-        return String.format('{0}:&nbsp;{1} to {2}<br>', OpenLayers.i18n(labelKey), value1, value2);
+        return String.format('{0}:&nbsp;  {1} to {2}<br>', OpenLayers.i18n(labelKey), value1, value2);
     },
 
     _createMenuItems: function(collection) {

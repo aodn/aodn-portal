@@ -109,7 +109,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // Search form
     addCriteria: 'Limit search to',
     boundingBoxDescription: 'Bounding Box',
-    maxExtentOfPolygon: "Max extent of polygon: ",
+    boundingBoxDescriptionNcWms: 'Bounding Area',
+    maxExtentOfPolygon: "Max extent of polygon",
     northBL: 'N',
     eastBL: 'E',
     westBL: 'W',
