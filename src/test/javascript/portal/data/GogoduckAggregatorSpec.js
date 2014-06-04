@@ -129,5 +129,9 @@ describe('Portal.data.GogoduckAggregator', function() {
         it('generates the time range end', function() {
             expect(url.indexOf('2014-12-21T22:30:30.500Z')).not.toEqual(-1);
         });
+
+        it('generates the email address', function() {
+            expect(url.indexOf('gogo@duck.com')).not.toEqual(-1);
+        });
     });
 });
