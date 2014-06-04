@@ -84,7 +84,7 @@ describe('Portal.data.AodaacAggregator', function() {
 
         var url;
         var ncwmsParams;
-        var email = 'gogo@duck.com';
+        var email = 'aodaac@aodaac.com';
 
         beforeEach(function() {
 
@@ -135,6 +135,10 @@ describe('Portal.data.AodaacAggregator', function() {
 
         it('includes the longitude range end', function() {
             expect(url).toHaveParameterWithValue('longitudeRangeEnd', '170');
+        });
+
+        it('includes the email address', function() {
+            expect(url).toHaveParameterWithValue('notificationEmailAddress', 'aodaac@aodaac.com', false);
         });
     });
 });
