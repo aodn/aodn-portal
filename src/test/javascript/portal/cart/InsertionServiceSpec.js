@@ -18,8 +18,10 @@ describe('Portal.cart.InsertionService', function() {
             title: 'the title',
             uuid: '42',
             wmsLayer: {
-                isNcwms: noOp
-            }
+                wfsLayer: undefined,
+                isNcwms: function() {return false}
+            },
+            aggregator: { childAggregators: [] }
         };
     });
 
@@ -32,39 +34,28 @@ describe('Portal.cart.InsertionService', function() {
         });
 
         it('creates an ncwms injector for aodaac layers', function() {
-
-            html = mockInsertionService.insertionValues(getAodaacRecord());
-
-            expect(mockInsertionService._getNcwmsInjector).toHaveBeenCalled();
-            expect(mockInsertionService._getWmsInjector).not.toHaveBeenCalled();
-            expect(mockInsertionService._getNoDataInjector).not.toHaveBeenCalled();
+            mockInsertionService.insertionValues(getAodaacRecord());
+            expectGetInjectorToHaveBeenCalled(mockInsertionService._getNcwmsInjector);
         });
 
         it('creates an ncwms injector for gogoduck layers', function() {
-
-            html = mockInsertionService.insertionValues(getGogoduckRecord());
-
-            expect(mockInsertionService._getNcwmsInjector).toHaveBeenCalled();
-            expect(mockInsertionService._getWmsInjector).not.toHaveBeenCalled();
-            expect(mockInsertionService._getNoDataInjector).not.toHaveBeenCalled();
+            mockInsertionService.insertionValues(getGogoduckRecord());
+            expectGetInjectorToHaveBeenCalled(mockInsertionService._getNcwmsInjector)
         });
 
         it('creates a wms injector for wms layers', function() {
+            mockInsertionService.insertionValues(getWmsRecord());
+            expectGetInjectorToHaveBeenCalled(mockInsertionService._getWmsInjector);
+        });
 
-            html = mockInsertionService.insertionValues(getWmsRecord());
-
-            expect(mockInsertionService._getNcwmsInjector).not.toHaveBeenCalled();
-            expect(mockInsertionService._getWmsInjector).toHaveBeenCalled();
-            expect(mockInsertionService._getNoDataInjector).not.toHaveBeenCalled();
+        it('creates a wms injector for download URL layers', function() {
+            mockInsertionService.insertionValues(getWmsUrlDownloadRecord());
+            expectGetInjectorToHaveBeenCalled(mockInsertionService._getWmsInjector);
         });
 
         it('creates a no data injector for layers containing no data', function() {
-
-            html = mockInsertionService.insertionValues(getNoDataRecord());
-
-            expect(mockInsertionService._getNcwmsInjector).not.toHaveBeenCalled();
-            expect(mockInsertionService._getWmsInjector).not.toHaveBeenCalled();
-            expect(mockInsertionService._getNoDataInjector).toHaveBeenCalled();
+            mockInsertionService.insertionValues(getNoDataRecord());
+            expectGetInjectorToHaveBeenCalled(mockInsertionService._getNoDataInjector);
         });
     });
 
@@ -87,13 +78,29 @@ describe('Portal.cart.InsertionService', function() {
         });
     });
 
-    function getWmsRecord() {
-        geoNetworkRecord.aggregator = {
-            childAggregators: []
-        };
-        geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
-        geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
+    function expectGetInjectorToHaveBeenCalled(getInjectorFn) {
+        expect(getInjectorFn).toHaveBeenCalled();
 
+        var getInjectorFns = [
+            mockInsertionService._getNcwmsInjector,
+            mockInsertionService._getWmsInjector,
+            mockInsertionService._getNoDataInjector
+        ];
+
+        for (var i = 0; i < getInjectorFns.length; i++) {
+            if (getInjectorFns[i] != getInjectorFn) {
+                expect(getInjectorFns[i]).not.toHaveBeenCalled();
+            }
+        }
+    }
+
+    function getWmsRecord() {
+        geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
+        return geoNetworkRecord;
+    }
+
+    function getWmsUrlDownloadRecord() {
+        geoNetworkRecord.wmsLayer.urlDownloadFieldName = 'download_url';
         return geoNetworkRecord;
     }
 
@@ -130,11 +137,6 @@ describe('Portal.cart.InsertionService', function() {
     }
 
     function getNoDataRecord() {
-        geoNetworkRecord.aggregator = {
-            childAggregators: []
-        };
-        geoNetworkRecord.wmsLayer.isNcwms = function() {return false};
-
         return geoNetworkRecord;
     }
 });
