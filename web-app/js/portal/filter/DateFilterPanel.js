@@ -122,7 +122,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
 
         if (this._isFromFieldUsed() && this._isToFieldUsed()) {
-            cql += ' <i>and</i> ';
+            cql += ' and ';
         }
 
         if (this._isToFieldUsed()) {
