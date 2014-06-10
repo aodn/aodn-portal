@@ -34,6 +34,22 @@ describe("Portal.filter.DateFilterPanel", function() {
         });
     });
 
+    describe('_getDateHumanString', function() {
+
+        beforeEach(function() {
+
+            filterPanel.combo = {
+                getValue: function() { return new Date('2012') }
+            };
+        });
+
+        it('after', function() {
+            // uses time zone so cant test for equality in Travis
+            expect(filterPanel._getDateHumanString(filterPanel.combo)).toNotEqual(undefined);
+        });
+
+    });
+
     describe('handleRemoveFilter', function() {
         beforeEach(function() {
             filterPanel.toDate.reset = jasmine.createSpy('toDate reset');
