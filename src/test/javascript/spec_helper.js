@@ -55,11 +55,14 @@ beforeEach(function() {
             return this.actual.indexOf(expected) == 0;
         },
 
-        toHaveParameterWithValue: function(key, value) {
+        toHaveParameterWithValue: function(key, value, encodeURI) {
 
             var notText = this.isNot ? " not" : "";
 
-            var encodedValue = encodeURIComponent(value);
+            var encodedValue = value;
+            if (encodeURI || encodeURI == null) {
+                encodedValue = encodeURIComponent(value);
+            }
 
             this.message = function() {
                 return "Expected the query string" + notText + " to contain the key '" + key + "' with the (URL encoded) value '" + encodedValue + "'. URL was: '" + this.actual + "'.";

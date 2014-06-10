@@ -100,26 +100,38 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     _removeMapEvents: function() {
         this.map.events.un({
             "addlayer": this._setLayersToTop
-        })
+        });
+
+        this.map.events.un({
+            "changelayer": this._layerChanged
+        });
+
+        this.map.events.un({
+            "removelayer": this._layerRemoved
+        });
     },
 
-    _setLayersToTop: function(addLayerEvent) {
-        this._setDrawingLayerToTop();
-        this._setResultLayerToTop();
+    _layerAdded: function(addLayerEvent) {
+        this._setDrawingLayersToTop();
     },
 
-    _setDrawingLayerToTop: function() {
-        this._setLayerToTop(this.handler.layer);
+    _layerChanged: function(layer, property) {
+        this._setDrawingLayersToTop();
     },
 
-    _setResultLayerToTop: function() {
-        this._setLayerToTop(this.layer);
+    _layerRemoved: function(layer) {
+        this._setDrawingLayersToTop();
     },
 
-    _setLayerToTop: function(layer) {
-        if (layer && layer.map)  {
-            layer.map.setLayerIndex(layer, layer.map.layers.length - 1);
+    _setDrawingLayersToTop: function() {
+        // Set drawing layer and polygon layer to be on top of any layer in
+        // terms of Z index
+        maxZIndexForOverlay = OpenLayers.Map.prototype.Z_INDEX_BASE['Feature'] - 1;
+
+        if (this.handler && this.handler.layer) {
+            this.handler.layer.setZIndex(maxZIndexForOverlay - 1);
         }
+        this.layer.setZIndex(maxZIndexForOverlay);
     },
 
     _getFeature: function() {
@@ -145,7 +157,17 @@ Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map,
 
     map.events.on({
         scope: map.spatialConstraintControl,
-        "addlayer": map.spatialConstraintControl._setLayersToTop
+        "addlayer": map.spatialConstraintControl._layerAdded
+    });
+
+    map.events.on({
+        scope: map.spatialConstraintControl,
+        "changelayer": map.spatialConstraintControl._layerChanged
+    });
+
+    map.events.on({
+        scope: map.spatialConstraintControl,
+        "removelayer": map.spatialConstraintControl._layerRemoved
     });
 
     map.spatialConstraintControl.events.on({

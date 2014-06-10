@@ -45,7 +45,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
 
     _hasGeonetworkLayerName: function(wmsLayer) {
         var wfsLayer = wmsLayer.wfsLayer;
-        return (wfsLayer && wfsLayer.name) || wmsLayer.gogoduckLayerName;
+        return (wfsLayer && wfsLayer.name) || wmsLayer.gogoduckLayerName || wmsLayer.urlDownloadFieldName;
     },
 
     _hasAodaacProductId: function(wmsLayer) {

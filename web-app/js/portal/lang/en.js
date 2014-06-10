@@ -218,10 +218,11 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     clearFilterOption: 'All',
 
     // DateFilterPanel.js
-    comboOptionNone: 'none',
-    comboOptionBefore: 'before',
-    comboOptionAfter: 'after',
-    comboOptionBetween: 'between',
+    fromDateLabel: 'From',
+    fromDateEmptyText: 'Min',
+    toDateLabel: 'To',
+    toDateEmptyText: 'Max',
+    resetActionText: 'reset',
 
     // BooleanFilterPanel.js
     checkboxDescription: 'Select only data with {0}(s)',

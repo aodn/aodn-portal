@@ -57,7 +57,7 @@ Portal.data.AodaacAggregator = Ext.extend(Portal.data.Aggregator, {
         return values[1];
     },
 
-    generateUrl: function(params) {
+    generateUrl: function(params, email) {
         var format = 'nc';
 
         var args = "outputFormat=" + format;
@@ -68,7 +68,7 @@ Portal.data.AodaacAggregator = Ext.extend(Portal.data.Aggregator, {
         args += "&longitudeRangeStart=" + (params.longitudeRangeStart || params.productLongitudeRangeStart);
         args += "&longitudeRangeEnd=" + (params.longitudeRangeEnd || params.productLongitudeRangeEnd);
         args += "&productId=" + params.productId;
-        args += "&notificationEmailAddress=" + params.emailAddress;
+        args += "&notificationEmailAddress=" + email;
 
         return 'aodaac/createJob?' + args;
     },

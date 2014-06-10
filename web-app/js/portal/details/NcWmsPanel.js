@@ -16,6 +16,17 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
         var config = Ext.apply({
+            layout: 'table',
+            layoutConfig: {
+                // The total column count must be specified here
+                columns: 1,
+                tableAttrs: {
+                    cellspacing: '10px',
+                    style: {
+                        width: '100%'
+                    }
+                }
+            },
             id: 'NcWmsPanel',
             bodyCls: 'aodaacTab',
             autoScroll: true
@@ -28,13 +39,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         Portal.details.NcWmsPanel.superclass.initComponent.call(this);
 
         this._addLoadingInfo();
-        this.add(this._newSectionSpacer());
-        this.add(this._newSectionSpacer());
-        this.add(this._newSectionSpacer());
         this._addSpatialConstraintDisplayPanel();
-        this.add(this._newSectionSpacer());
         this._addTemporalControls();
-        this.add(this._newSectionSpacer());
     },
 
     handleLayer: function(layer, show, hide, target) {
@@ -90,18 +96,18 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _addTemporalControls: function() {
-        var temporalExtentHeader = this._newHtmlElement(String.format("<b>{0}</b>", OpenLayers.i18n('temporalExtentHeading')));
+        var temporalExtentHeader = this._newHtmlElement(String.format("<h4>{0}</h4>", OpenLayers.i18n('temporalExtentHeading')));
 
         this._initTimeRangeLabel();
 
         var dateStartLabel = new Ext.form.Label({
-            html: OpenLayers.i18n('dateStartLabel'),
+            html: OpenLayers.i18n('fromDateLabel'),
             width: 40,
             flex: 2
         });
 
         var dateEndLabel = new Ext.form.Label({
-            html: OpenLayers.i18n('dateEndLabel'),
+            html: OpenLayers.i18n('toDateLabel'),
             width: 40,
             flex: 2
         });
@@ -111,6 +117,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         var dateStartRow = new Ext.Panel({
             xtype: 'panel',
             layout: 'hbox',
+            layoutConfig: {
+                align: 'middle'
+            },
             width: 255,
             height: this.ROW_HEIGHT,
             items: [
@@ -123,6 +132,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         var dateEndRow = new Ext.Panel({
             xtype: 'panel',
             layout: 'hbox',
+            layoutConfig: {
+                align: 'middle'
+            },
             width: 255,
             height: this.ROW_HEIGHT,
             items: [
@@ -171,7 +183,16 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
         // Group controls for hide/show
         this.temporalControls = new Ext.Container({
-            items: [temporalExtentHeader, this._newSectionSpacer(), dateStartRow, dateEndRow, this.buttonsPanel, this.timeRangeLabel, this._newSectionSpacer()]
+            items: [
+                temporalExtentHeader,
+                this._newSectionSpacer(5),
+                dateStartRow,
+                dateEndRow,
+                this._newSectionSpacer(10),
+                this.buttonsPanel,
+                this.timeRangeLabel,
+                this._newSectionSpacer(10)
+            ]
         });
 
         this.add(this.temporalControls);
@@ -208,8 +229,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    _newSectionSpacer: function() {
-        return new Ext.Spacer({ height: 10 });
+    _newSectionSpacer: function(height) {
+        return new Ext.Spacer({ height: height });
     },
 
     _buildParameters: function(parentAggr, selectedLayer, dateRangeStart, dateRangeEnd, geometry) {
