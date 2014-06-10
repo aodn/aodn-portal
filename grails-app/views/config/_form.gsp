@@ -270,15 +270,6 @@
                                 </td>
                             </tr>
 
-                           <tr class="prop">
-                               <td valign="top" class="name">
-                                   <label for="downloadCartConfirmationWindowContent"><g:message code="config.downloadCartConfirmationWindowContent.label" default="Download cart confirmation window content" /></label>
-                               </td>
-                               <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'downloadCartConfirmationWindowContent', 'errors')}">
-                                   <g:textArea rows="6"  style="width: 400px;" name="downloadCartConfirmationWindowContent" value="${configInstance?.downloadCartConfirmationWindowContent}" />
-                               </td>
-                           </tr>
-
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="wmsScannerCallbackPassword"><g:message code="config.wmsScannerCallbackPassword.label" default="WMS Scanner Callback Password" /></label>

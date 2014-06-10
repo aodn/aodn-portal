@@ -17,7 +17,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
 
         this.searcher = new Portal.service.CatalogSearcher({
             catalogUrl: Portal.app.config.catalogUrl,
-            spatialSearchUrl: appConfigStore.getById('spatialsearch.url').data.value,
+            spatialSearchUrl: Portal.app.appConfig['spatialsearch.url'],
             defaultParams: {
                 protocol: Portal.app.config.metadataLayerProtocols.split("\n").join(' or '),
                 sortBy: 'popularity'

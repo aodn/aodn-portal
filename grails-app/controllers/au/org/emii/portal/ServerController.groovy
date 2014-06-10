@@ -150,11 +150,7 @@ class ServerController {
         }
     }
 
-    def checkForBrokenLinks = {
-        log.debug "Preparing to scan server with id=${params.server} and user email: ${params.userEmailAddress}"
-        def result = checkLinksService.check(params.server, params.userEmailAddress)
-        render result
-    }
+
 
     def listByOwner = {
 

@@ -15,7 +15,7 @@ Portal.config.PortalConfigLoader = Ext.extend(Object, {
     onSuccess: undefined,
     onFailure: undefined,
 
-    appConfigStoreLoaded: undefined,
+    appConfigLoaded: undefined,
     viewportConfigLoaded: undefined,
 
     load: function(portal, onSuccess, onFailure) {
@@ -23,15 +23,20 @@ Portal.config.PortalConfigLoader = Ext.extend(Object, {
         this.onSuccess = onSuccess;
         this.onFailure = onFailure;
 
-        this.loadAppStoreConfig();
+        // These two AJAX calls could be combined, except the backend code for the viewport config is doing
+        // some pretty funky stuff and I don't really want to modify it until I can talk to @dnahodil about
+        // it.
+        this.loadAppConfig();
         this.loadViewportConfig();
         this.waitForConfigsAndComplete();
     },
 
-    loadAppStoreConfig: function() {
-        appConfigStore.load({
-            callback: this.appConfigStoreLoadComplete,
-            scope: this
+    loadAppConfig: function() {
+        Ext.Ajax.request({
+            url: 'home/config',
+            scope: this,
+            success: this.appConfigLoadSuccess,
+            failure: this.appConfigLoadFailure
         });
     },
 
@@ -44,26 +49,38 @@ Portal.config.PortalConfigLoader = Ext.extend(Object, {
         });
     },
 
-    appConfigStoreLoadComplete: function(r, options, success) {
-        this.appConfigStoreLoaded = success;
+    appConfigLoadSuccess: function(resp) {
+        this._configLoadSuccess(resp, 'app', 'appConfig', 'appConfigLoaded');
+    },
+
+    appConfigLoadFailure: function(resp) {
+        this._configLoadFailure(resp, 'app');
     },
 
     viewportConfigLoadSuccess: function(resp) {
-        var txt = resp.responseText;
-
-        try {
-            this.portal.config = Ext.util.JSON.decode(txt);
-            this.viewportConfigLoaded = true;
-        }
-        catch (e) {
-            log.error('Unable to load app config. Invalid response: ' + txt);
-            this.viewportConfigLoaded = false;
-        }
+        this._configLoadSuccess(resp, 'viewport', 'config', 'viewportConfigLoaded');
     },
 
     viewportConfigLoadFailure: function(resp) {
-        log.error("Unable to load viewport config: '" + resp.responseText + "' (status: " + resp.status + ")" );
-        this.viewportConfigLoaded = false;
+        this._configLoadFailure(resp, 'viewport');
+    },
+
+    _configLoadSuccess: function(resp, name, dst, loadedFlag) {
+        var txt = resp.responseText;
+
+        try {
+            this.portal[dst] = Ext.util.JSON.decode(txt);
+            this[loadedFlag] = true;
+        }
+        catch (e) {
+            log.error('Unable to load ' + name + ' config. Invalid response: ' + txt);
+            this[loadedFlag] = false;
+        }
+    },
+
+    _configLoadFailure: function(resp, name) {
+        log.error("Unable to load " + name + " config: '" + resp.responseText + "' (status: " + resp.status + ")" );
+        this[name + 'ConfigLoaded'] = false;
     },
 
     waitForConfigsAndComplete: function() {
@@ -81,10 +98,10 @@ Portal.config.PortalConfigLoader = Ext.extend(Object, {
     },
 
     bothConfigsLoaded: function() {
-        return this.viewportConfigLoaded === true && this.appConfigStoreLoaded === true
+        return this.viewportConfigLoaded === true && this.appConfigLoaded === true
     },
 
     eitherConfigFailed: function() {
-        return this.viewportConfigLoaded === false || this.appConfigStoreLoaded === false
+        return this.viewportConfigLoaded === false || this.appConfigLoaded === false
     }
 });

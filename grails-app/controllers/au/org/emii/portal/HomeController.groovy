@@ -8,6 +8,7 @@
 package au.org.emii.portal
 
 import grails.util.Environment
+import grails.converters.JSON
 
 class HomeController {
 
@@ -30,29 +31,7 @@ class HomeController {
     }
 
     def config = {
-        // This nearly works but there is some sort of IllegalAccessException
-        // deep in the bowels of an area we don't care about, so until that is
-        // somehow resolved we need to add options we want to use manually :(
-        //render grailsApplication.config as JSON
-        render(contentType: "text/json") {
-            /*
-             * We're aiming for something like the following
-             *
-             * { grailsConfig: [
-             *     {name: 'config.key.1', value:'setting.1'},
-             *     {name: 'config.key.2', value:'setting.2'}
-             *   ]
-             * }
-             */
-
-            grailsConfig = [
-                [name: 'spatialsearch.url', value: grailsApplication.config.spatialsearch.url],
-                [name: 'minimap.baselayer.name', value: grailsApplication.config.minimap.baselayer.name],
-                [name: 'minimap.baselayer.url', value: grailsApplication.config.minimap.baselayer.url],
-                [name: 'minimap.baselayer.params', value: grailsApplication.config.minimap.baselayer.params]
-                // To add another config add a column after the entry above and follow the same map format
-            ]
-        }
+        render(contentType: "text/json", text: grailsApplication.config.toProperties() as JSON)
     }
 
     def _appBuildInfo = {
