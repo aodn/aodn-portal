@@ -29,13 +29,13 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     _createField: function() {
         this.fromDate = this._createResettableDate('from');
         this.toDate = this._createResettableDate('to');
-        
+
         this.add(this.fromDate);
-        
+
         this.add(new Ext.Spacer({
             height: 5
         }));
-        
+
         this.add(this.toDate);
 
         if (this.filter.possibleValues != undefined) {
