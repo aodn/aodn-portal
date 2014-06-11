@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -115,12 +114,6 @@ function showhide(css_id) {
  */
 function show(css_id) {
     $(css_id).show(450);
-}
-// Used by IMOS getFeatureInfo content.ftl's
-function showChannel(css_id, facilityName) {
-    jQuery("#[id*=" + facilityName + "]").hide();
-    jQuery('#' + facilityName + css_id).show(450);
-    imgSizer();
 }
 
 function dressUpMyLine(line) {
