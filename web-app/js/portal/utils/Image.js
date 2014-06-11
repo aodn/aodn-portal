@@ -6,11 +6,16 @@
  */
 Ext.namespace('Portal.utils.Image');
 
-Portal.utils.Image.resizeWhenLoaded = function(selector) {
-
+Portal.utils.Image.resizeWhenLoadedAfterDelay = function(selector, delayMs) {
     $(selector).load(function() {
-        Portal.utils.Image.resize($(this));
+        Portal.utils.Image.resizeAfterDelay($(this), delayMs);
     });
+};
+
+Portal.utils.Image.resizeAfterDelay = function(img, delayMs) {
+    setTimeout(function() {
+        Portal.utils.Image.resize(img);
+    }, delayMs);
 };
 
 Portal.utils.Image.resize = function(img) {

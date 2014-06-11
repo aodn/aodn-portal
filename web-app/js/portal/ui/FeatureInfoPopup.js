@@ -166,7 +166,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                     options.extraParams.name
                 );
                 this._featureInfoRequestCompleted();
-                Portal.utils.Image.resizeWhenLoaded('div > .featureinfocontent .feature img');
+                Portal.utils.Image.resizeWhenLoadedAfterDelay('div > .featureinfocontent .feature img', 500);
             },
             failure: this._featureInfoRequestCompleted
         });
