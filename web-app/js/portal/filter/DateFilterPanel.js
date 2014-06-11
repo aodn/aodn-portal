@@ -102,9 +102,6 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     getFilterData: function() {
-
-        console.log("called");
-
         return {
             name: this.filter.name,
             downloadOnly: this.isDownloadOnly(),
