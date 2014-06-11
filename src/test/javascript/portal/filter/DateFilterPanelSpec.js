@@ -34,6 +34,22 @@ describe("Portal.filter.DateFilterPanel", function() {
         });
     });
 
+    describe('_getDateHumanString', function() {
+
+        beforeEach(function() {
+
+            filterPanel.combo = {
+                getValue: function() { return new Date('2012') }
+            };
+        });
+
+        it('after', function() {
+            // uses time zone so cant test for equality in Travis
+            expect(filterPanel._getDateHumanString(filterPanel.combo)).toNotEqual(undefined);
+        });
+
+    });
+
     describe('handleRemoveFilter', function() {
         beforeEach(function() {
             filterPanel.toDate.reset = jasmine.createSpy('toDate reset');
@@ -79,32 +95,26 @@ describe("Portal.filter.DateFilterPanel", function() {
         it('after', function() {
             setTestValue(filterPanel.fromDate, '2012');
             
-            expectAllCQLFunctionsToEqual(filterPanel, 'some_column >= 2012');
+            expect(filterPanel._getCQL()).toEqual('some_column >= 2012');
         });
 
         it('before', function() {
             setTestValue(filterPanel.toDate, '2014');
             
-            expectAllCQLFunctionsToEqual(filterPanel, 'some_column <= 2014');
+            expect(filterPanel._getCQL()).toEqual('some_column <= 2014');
         });
 
         it('between', function() {
             setTestValue(filterPanel.fromDate, '2012');
             setTestValue(filterPanel.toDate, '2014');
             
-            expectAllCQLFunctionsToEqual(filterPanel, 'some_column >= 2012 AND some_column <= 2014');
+            expect(filterPanel._getCQL()).toEqual('some_column >= 2012 AND some_column <= 2014');
         });
 
-        var expectAllCQLFunctionsToEqual = function(filterPanel, expectedCQL) {
-            expect(filterPanel.getCQL()).toEqual(expectedCQL);
-            expect(filterPanel.getVisualisationCQL()).toEqual(expectedCQL);
-            expect(filterPanel.getDownloadCQL()).toEqual(expectedCQL);
-        };
-        
         var setTestValue = function(resettableDate, value) {
             spyOn(resettableDate, 'getValue').andReturn(value);
             spyOn(resettableDate, 'hasValue').andReturn(true);
-        } 
+        };
     });
 
     describe('_setExistingFilters', function() {

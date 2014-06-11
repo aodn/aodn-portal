@@ -129,7 +129,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _getTemporalExtentAsHtml: function(template, temporalExtent) {
         if (temporalExtent.begin && temporalExtent.end) {
             return template.apply({
-                "label": OpenLayers.i18n('dateRange'),
+                "label": OpenLayers.i18n('parameterDateLabel'),
                 "value": String.format(
                     "{0} - {1}",
                     this._formatTemporalExtentDateString(temporalExtent.begin),

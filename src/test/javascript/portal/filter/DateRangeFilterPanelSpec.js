@@ -31,7 +31,7 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
                         return false;
                     }
                 }
-            }
+            };
             
             filterPanel.fromDate = mockDate();
             filterPanel.toDate = mockDate();
@@ -43,35 +43,27 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
 
         it('after', function() {
             setTestValue(filterPanel.fromDate, '2000');
-            
-            expectAllCQLFunctionsToEqual(filterPanel, 'wms_end_column >= 2000', 'wfs_column >= 2000');
+            expect(filterPanel._getCQL()).toEqual('wfs_column >= 2000');
         });
 
         it('before', function() {
             setTestValue(filterPanel.toDate, '2013');
-
-            expectAllCQLFunctionsToEqual(filterPanel, 'wms_start_column <= 2013', 'wfs_column <= 2013');
+            expect(filterPanel._getCQL()).toEqual('wfs_column <= 2013');
         });
 
         it('between', function() {
             setTestValue(filterPanel.fromDate, '2000');
             setTestValue(filterPanel.toDate, '2013');
-            
-            expectAllCQLFunctionsToEqual(
-                filterPanel,
-                'wms_end_column >= 2000 AND wms_start_column <= 2013',
+
+            expect(filterPanel._getCQL()).toEqual(
                 'wfs_column >= 2000 AND wfs_column <= 2013'
             );
         });
 
-        var expectAllCQLFunctionsToEqual = function(filterPanel, visualisationCQL, downloadCQL) {
-            expect(filterPanel.getVisualisationCQL()).toEqual(visualisationCQL);
-            expect(filterPanel.getDownloadCQL()).toEqual(downloadCQL);
-        }
 
         var setTestValue = function(resettableDate, value) {
             spyOn(resettableDate, 'getValue').andReturn(value);
             spyOn(resettableDate, 'hasValue').andReturn(true);
-        } 
+        }
     });
 });

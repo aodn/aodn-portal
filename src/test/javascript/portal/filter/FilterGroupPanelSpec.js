@@ -242,46 +242,28 @@ describe("Portal.filter.FilterGroupPanel", function() {
         });
     });
 
-    describe('visualise/download cql', function() {
-        describe('_getCqlFilter', function() {
+    describe('visualise cql', function() {
+        describe('_getVisualisationCQLFilters', function() {
 
-            var layer;
-            var filterDescriptor;
+            var filterDescriptorData;
 
             beforeEach(function() {
-                layer = {
-                    getDownloadFilter: function() {
-                    }
-                };
 
-                filterDescriptor = {
+                filterDescriptorData =  {
                     name: 'test',
                     label: 'some label',
-                    type: 'Boolean'
+                    cql: "pardon my French",
+                    type: 'Boolean',
+                    downloadOnly: false
                 }
+
             });
 
             it('calls getVisualisationCQL when options.downloadOnly is false', function() {
-                filterDescriptor.downloadOnly = false;
-                var filterPanel = filterGroupPanel._createFilterPanel(layer, filterDescriptor);
-                spyOn(filterPanel, 'getVisualisationCQL');
-                spyOn(filterPanel, 'hasValue').andReturn(true);
 
-                filterGroupPanel._getCqlFilter({ downloadOnly: false});
-
-                expect(filterPanel.getVisualisationCQL).toHaveBeenCalled();
+                expect(filterGroupPanel._getVisualisationCQLFilters(filterDescriptorData)).toEqual('pardon my French');
             });
 
-            it('calls getDownloadCQL when options.downloadOnly is true', function() {
-                filterDescriptor.downloadOnly = true;
-                var filterPanel = filterGroupPanel._createFilterPanel(layer, filterDescriptor);
-                spyOn(filterPanel, 'getDownloadCQL');
-                spyOn(filterPanel, 'hasValue').andReturn(true);
-
-                filterGroupPanel._getCqlFilter({ downloadOnly: true});
-
-                expect(filterPanel.getDownloadCQL).toHaveBeenCalled();
-            });
         });
     });
 });

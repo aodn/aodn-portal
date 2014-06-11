@@ -29,13 +29,13 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     _createField: function() {
         this.fromDate = this._createResettableDate('from');
         this.toDate = this._createResettableDate('to');
-        
+
         this.add(this.fromDate);
-        
+
         this.add(new Ext.Spacer({
             height: 5
         }));
-        
+
         this.add(this.toDate);
 
         if (this.filter.possibleValues != undefined) {
@@ -74,29 +74,75 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         return '';
     },
+    _getDateHumanString: function(combo) {
+
+        var newDate = combo.getValue();
+        if (newDate) {
+            newDate.setHours(this.timeZoneCorrect);
+            return this._formatHumanDate(newDate);
+        }
+
+        return '';
+    },
+
+    _formatHumanDate: function(date) {
+        return moment(date).format(OpenLayers.i18n('dateTimeDisplayFormat'));
+    },
 
     _applyDateFilterPanel: function() {
         this._fireAddEvent();
     },
 
-    getCQL: function() {
-        return this._getCQLUsingColumnNames(this.filter.name, this.filter.name);
+    _isFromFieldUsed: function() {
+        return this.fromDate.getValue();
     },
 
-    _getCQLUsingColumnNames: function(startDateRangeColumnName, endDateRangeColumnName) {
+    _isToFieldUsed: function() {
+        return this.toDate.getValue();
+    },
+
+    getFilterData: function() {
+        return {
+            name: this.filter.name,
+            downloadOnly: this.isDownloadOnly(),
+            cql: this._getCQL(),
+            humanValue: this._getCQLHumanValue()
+        }
+    },
+
+    _getCQLHumanValue: function() {
 
         var cql = '';
 
-        if (this.fromDate.hasValue()) {
-            cql = String.format("{0} >= {1}", endDateRangeColumnName, this._getDateString(this.fromDate));
+        if (this._isFromFieldUsed()) {
+            cql = String.format("{0} >= {1}", "Start Date", this._getDateHumanString(this.fromDate));
         }
 
-        if (this.fromDate.hasValue() && this.toDate.hasValue()) {
+        if (this._isFromFieldUsed() && this._isToFieldUsed()) {
+            cql += ' and ';
+        }
+
+        if (this._isToFieldUsed()) {
+            cql += String.format("{0} <= {1}", "End Date", this._getDateHumanString(this.toDate));
+        }
+
+        return cql;
+    },
+
+    _getCQL: function() {
+
+        var cql = '';
+
+        if (this._isFromFieldUsed()) {
+            cql = String.format("{0} >= {1}", this.filter.name, this._getDateString(this.fromDate));
+        }
+
+        if (this._isFromFieldUsed() && this._isToFieldUsed()) {
             cql += ' AND ';
         }
 
-        if (this.toDate.hasValue()) {
-            cql += String.format("{0} <= {1}", startDateRangeColumnName, this._getDateString(this.toDate));
+        if (this._isToFieldUsed()) {
+            cql += String.format("{0} <= {1}", this.filter.name, this._getDateString(this.toDate));
         }
 
         return cql;

@@ -86,7 +86,7 @@ OpenLayers.Layer.WMS.prototype.getWmsLayerFeatureRequestUrl = function(outputFor
         this.server.uri,
         this.params.LAYERS,
         outputFormat,
-        this.getWmsDownloadFilter()
+        this.getDownloadFilter()
     );
 };
 
@@ -222,23 +222,30 @@ OpenLayers.Layer.WMS.prototype.setCqlFilter = function(cqlFilter) {
 };
 
 OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
+
     var filters = [];
 
-    if (this.downloadOnlyFilters) {
-        filters.push(this.downloadOnlyFilters);
-    }
+    Ext.each(this.filterData, function(data) {
+        if (data.cql){
+            filters.push(data.cql);
+        }
 
-    return filters.join(' AND ');
+    });
+
+    return filters.join(" AND ");
 };
 
-OpenLayers.Layer.WMS.prototype.getWmsDownloadFilter = function() {
+OpenLayers.Layer.WMS.prototype.getWmsDownloadFilterDescriptions = function() {
+
     var filters = [];
 
-    if (this.wmsDownloadOnlyFilters) {
-        filters.push(this.wmsDownloadOnlyFilters);
-    }
+    Ext.each(this.filterData, function(data) {
+        if (data.humanValue && data.humanValue != ""){
+            filters.push(data.humanValue);
+        }
+    });
 
-    return filters.join(' AND ');
+    return filters.join("<br/> ");
 };
 
 OpenLayers.Layer.WMS.prototype.hasBoundingBox = function() {
