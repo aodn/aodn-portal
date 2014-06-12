@@ -90,6 +90,21 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _applyDateFilterPanel: function() {
+
+        if (this.fromDate.hasValue()) {
+            this.toDate.setMinValue(this.fromDate.getValue());
+        }
+        else {
+            this.toDate.applyDefaultValueLimits();
+        }
+
+        if (this.toDate.hasValue()) {
+            this.fromDate.setMaxValue(this.toDate.getValue());
+        }
+        else {
+            this.fromDate.applyDefaultValueLimits();
+        }
+
         this._fireAddEvent();
     },
 

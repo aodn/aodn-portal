@@ -22,16 +22,10 @@ describe("Portal.filter.DateFilterPanel", function() {
                     return '';
                 }
             },
-            fromDate: {
-                getValue: noOp,
-                hasValue: noOp
-            },
-            toDate: {
-                getValue: noOp,
-                hasValue: noOp
-            },
             setLayerAndFilter: noOp
         });
+
+        _mockFilterFields(filterPanel);
     });
 
     describe('_getDateHumanString', function() {
@@ -94,20 +88,20 @@ describe("Portal.filter.DateFilterPanel", function() {
 
         it('after', function() {
             setTestValue(filterPanel.fromDate, '2012');
-            
+
             expect(filterPanel._getCQL()).toEqual('some_column >= 2012');
         });
 
         it('before', function() {
             setTestValue(filterPanel.toDate, '2014');
-            
+
             expect(filterPanel._getCQL()).toEqual('some_column <= 2014');
         });
 
         it('between', function() {
             setTestValue(filterPanel.fromDate, '2012');
             setTestValue(filterPanel.toDate, '2014');
-            
+
             expect(filterPanel._getCQL()).toEqual('some_column >= 2012 AND some_column <= 2014');
         });
 
@@ -141,7 +135,9 @@ describe("Portal.filter.DateFilterPanel", function() {
     function _mockFilterFields(filterPanel) {
         Ext.each(['fromDate', 'toDate'], function(property, index, all) {
             this[property] = {
-                getValue: noOp
+                getValue: noOp,
+                hasValue: noOp,
+                applyDefaultValueLimits: noOp
             }
         }, filterPanel);
     }
