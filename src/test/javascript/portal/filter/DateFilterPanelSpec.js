@@ -22,10 +22,32 @@ describe("Portal.filter.DateFilterPanel", function() {
                     return '';
                 }
             },
+            fromDate: {
+                getValue: noOp,
+                hasValue: noOp
+            },
+            toDate: {
+                getValue: noOp,
+                hasValue: noOp
+            },
             setLayerAndFilter: noOp
         });
+    });
 
-        _mockFilterFields(filterPanel);
+    describe('_getDateHumanString', function() {
+
+        beforeEach(function() {
+
+            filterPanel.combo = {
+                getValue: function() { return new Date('2012') }
+            };
+        });
+
+        it('after', function() {
+            // uses time zone so cant test for equality in Travis
+            expect(filterPanel._getDateHumanString(filterPanel.combo)).toNotEqual(undefined);
+        });
+
     });
 
     describe('handleRemoveFilter', function() {
@@ -72,33 +94,27 @@ describe("Portal.filter.DateFilterPanel", function() {
 
         it('after', function() {
             setTestValue(filterPanel.fromDate, '2012');
-
-            expectAllCQLFunctionsToEqual(filterPanel, 'some_column >= 2012');
+            
+            expect(filterPanel._getCQL()).toEqual('some_column >= 2012');
         });
 
         it('before', function() {
             setTestValue(filterPanel.toDate, '2014');
-
-            expectAllCQLFunctionsToEqual(filterPanel, 'some_column <= 2014');
+            
+            expect(filterPanel._getCQL()).toEqual('some_column <= 2014');
         });
 
         it('between', function() {
             setTestValue(filterPanel.fromDate, '2012');
             setTestValue(filterPanel.toDate, '2014');
-
-            expectAllCQLFunctionsToEqual(filterPanel, 'some_column >= 2012 AND some_column <= 2014');
+            
+            expect(filterPanel._getCQL()).toEqual('some_column >= 2012 AND some_column <= 2014');
         });
-
-        var expectAllCQLFunctionsToEqual = function(filterPanel, expectedCQL) {
-            expect(filterPanel.getCQL()).toEqual(expectedCQL);
-            expect(filterPanel.getVisualisationCQL()).toEqual(expectedCQL);
-            expect(filterPanel.getDownloadCQL()).toEqual(expectedCQL);
-        };
 
         var setTestValue = function(resettableDate, value) {
             spyOn(resettableDate, 'getValue').andReturn(value);
             spyOn(resettableDate, 'hasValue').andReturn(true);
-        }
+        };
     });
 
     describe('_setExistingFilters', function() {
@@ -125,9 +141,7 @@ describe("Portal.filter.DateFilterPanel", function() {
     function _mockFilterFields(filterPanel) {
         Ext.each(['fromDate', 'toDate'], function(property, index, all) {
             this[property] = {
-                getValue: noOp,
-                hasValue: noOp,
-                applyDefaultValueLimits: noOp
+                getValue: noOp
             }
         }, filterPanel);
     }

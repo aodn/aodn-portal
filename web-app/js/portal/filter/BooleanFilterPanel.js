@@ -49,7 +49,27 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             return this.filter.name + " = true";
         }
         else {
-            return "";
+            return undefined;
+        }
+    },
+
+
+    _getCQLHumanValue: function() {
+        if (this.checkbox.getValue()) {
+            return this.getFilterNameAsTitleCase() + " = true";
+        }
+        else {
+            return undefined;
+        }
+    },
+
+    getFilterData: function() {
+
+        return {
+            name: this.filter.name,
+            downloadOnly: this.isDownloadOnly(),
+            cql: this.getCQL(),
+            humanValue: this._getCQLHumanValue()
         }
     },
 

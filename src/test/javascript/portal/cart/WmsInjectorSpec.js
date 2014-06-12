@@ -41,27 +41,6 @@ describe('Portal.cart.WmsInjector', function() {
         });
     });
 
-    describe('getDataFilterEntry returns wms specific filter information', function() {
-
-        it('returns text if there is a cql filter applied', function() {
-            var mockCql = 'CQL(intersects(0,0,0,0))';
-            injector._cql = function() {
-                return mockCql;
-            };
-
-            var filterString = injector._getDataFilterEntry(geoNetworkRecord);
-            expect(filterString).not.toEqual('<i>' + OpenLayers.i18n('noFilterLabel') + '</i> <code></code>');
-            expect(filterString.indexOf(OpenLayers.i18n('filterLabel'))).toBeGreaterThan(-1);
-            expect(filterString.indexOf(mockCql)).toBeGreaterThan(-1);
-        });
-
-        it('returns an a no filter message if there is no cql filter applied', function() {
-            injector._cql = function() {
-                return ''
-            };
-            expect(injector._getDataFilterEntry(geoNetworkRecord)).toEqual('<i>' + OpenLayers.i18n('noFilterLabel') + '</i> <code></code>');
-        });
-    });
 
     describe('createMenuItems', function() {
 

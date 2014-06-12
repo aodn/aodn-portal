@@ -42,8 +42,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // Download Step
     noCollectionsMessage: 'No data collections to show',
-    filterLabel: 'Filter applied:',
-    noFilterLabel: 'No filters applied.',
     noDataMessage: 'No direct access to data available currently.',
     downloadButtonLabel: 'Download as\u2026',
     downloadAsCsvLabel: 'CSV',
@@ -76,7 +74,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // FacetedSearchResultsDataView.js
     platform: 'Platform',
     organisation: 'Organisation',
-    dateRange: 'Date Range',
     parameters: 'Parameters',
     temporalExtentDateFormat: 'YYYY',
     metadataLink: 'continue reading',
@@ -111,18 +108,18 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // Search form
     addCriteria: 'Limit search to',
-    boundingBox: 'Bounding Box',
+    boundingBoxDescription: 'Bounding Box',
+    boundingBoxDescriptionNcWms: 'Bounding Area',
+    maxExtentOfPolygon: "Max extent of polygon",
     northBL: 'N',
     eastBL: 'E',
     westBL: 'W',
     southBL: 'S',
-    bboxHint: 'Hint: changing the mini-map extent updates the bounding box!',
     keyword: 'Keyword',
     parameter: 'Parameter',
     organisation: 'Organisation',
     downloadsOnly: 'Downloads Only',
     downloads: 'Downloads',
-    downloadsText: 'Show me results with downloads only',
     mapLayers: 'Map Collections',
     mapLayer: 'Map Collections',
     exactMatches: 'Exact Matches',
@@ -131,16 +128,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     goButton: 'Go',
     clearButton: 'Clear',
     fullTextSearch: 'What are you looking for?',
-    saveSearchButtonText: 'Save',
-    saveSearchButtonTip: 'Save the current search',
-    deleteSavedSearchButtonText: 'Delete',
-    deleteSavedSearchButtonTip: 'Delete the current saved search',
-    saveSearchDialogTitle: 'Save Search',
-    saveSearchName: 'Name',
-    saveSearchFailureErrMsg: 'Unexpected failure saving search',
-    chooseSavedSearch: 'Choose a Saved Search',
-    mySearches: 'My Searches',
-    registerToSave: 'Register or login to save your searches',
     newSearchText: 'New',
     newSearchTip: 'Start a new search',
 
@@ -260,7 +247,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateEndLabel: 'End',
     layerComboHeading: 'Data Collection',
 
-    emptyDownloadDateRangePlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",
+    emptyDownloadPlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",
 
     // FeatureInfoPopup.js
     noDataCollectionTitle: 'No data collection selected',
@@ -295,6 +282,5 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     estimatedDlTimeoutMsg: "The NetCDF size is too large to estimate.",
     transAbortMsg: "transaction aborted",
 
-    //NcwmsDataRowHtml
-    dateFilterDisplayFormat: 'DD MMM YYYY, HH:mm UTC'
+    dateTimeDisplayFormat: 'YYYY/MMM/DD-HH:mm-UTC' // moment formatting
 });

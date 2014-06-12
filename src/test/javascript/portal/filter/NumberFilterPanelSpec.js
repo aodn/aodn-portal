@@ -32,7 +32,7 @@ describe("Portal.filter.NumberFilterPanel", function() {
 
     describe('constructor', function() {
         it('should set CQL to ""', function() {
-            expect(numberFilter.getCQL()).toEqual("");
+            expect(numberFilter.getCQL()).toEqual(undefined);
         });
     });
 });

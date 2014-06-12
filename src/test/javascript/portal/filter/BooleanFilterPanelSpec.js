@@ -30,7 +30,7 @@ describe("Portal.filter.BooleanFilterPanel", function() {
 
     describe('getCQL', function() {
         it('should initially return ""', function() {
-            expect(booleanFilter.getCQL()).toEqual('');
+            expect(booleanFilter.getCQL()).toEqual(undefined);
         });
 
         it('should return true values if checkbox selected', function() {
@@ -40,12 +40,19 @@ describe("Portal.filter.BooleanFilterPanel", function() {
 
         it('should return false values if checkbox not selected', function() {
             booleanFilter.checkbox.getValue = function() { return false; };
-            expect(booleanFilter.getCQL()).toEqual("");
+            expect(booleanFilter.getCQL()).toEqual(undefined);
         });
+
+        it('human readable cql', function() {
+            booleanFilter.checkbox.getValue = function() { return true; };
+            expect(booleanFilter._getCQLHumanValue()).toEqual("Test = true");
+        });
+
     });
 
     it('_setExistingFilters should not set checked for empty CQL filter', function() {
         booleanFilter._setExistingFilters();
         expect(booleanFilter.checkbox.setValue).not.toHaveBeenCalled();
     });
+
 });

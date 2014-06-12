@@ -16,26 +16,10 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _getDataFilterEntry: function(collection) {
 
-        var html;
-        var infoLabel;
-        var layerValues;
+        var layerValues = collection.wmsLayer.getWmsDownloadFilterDescriptions();
 
-        if (this._cql(collection.wmsLayer)) {
-            html = '<b>{0}</b> <code>{1}</code>';
-            infoLabel = OpenLayers.i18n('filterLabel');
-            layerValues = this._cql(collection.wmsLayer);
-        }
-        else {
-            html = '<i>{0}</i> <code>{1}</code>';
-            infoLabel = OpenLayers.i18n('noFilterLabel');
-            layerValues = '';
-        }
-        return String.format(html, infoLabel, layerValues);
-    },
+        return  (layerValues != "") ? layerValues : OpenLayers.i18n('emptyDownloadPlaceholder');
 
-    _cql: function(wmsLayer) {
-
-        return wmsLayer.getWmsDownloadFilter();
     },
 
     _getDataMarkup: function(collection) {

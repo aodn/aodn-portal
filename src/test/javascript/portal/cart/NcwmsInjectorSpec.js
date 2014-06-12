@@ -153,6 +153,14 @@ describe('Portal.cart.NcwmsInjector', function() {
 
     describe('getDataFilterEntry', function() {
 
+
+        beforeEach(function() {
+            geoNetworkRecord.ncwmsParams.latitudeRangeStart = '-10';
+            geoNetworkRecord.ncwmsParams.latitudeRangeEnd = '40';
+            geoNetworkRecord.ncwmsParams.longitudeRangeEnd = '180';
+            geoNetworkRecord.ncwmsParams.longitudeRangeStart = '150';
+        });
+
         it('still returns date range stuff with no bbox', function() {
             expect(injector._getDataFilterEntry(geoNetworkRecord)).not.toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
         });
@@ -160,42 +168,13 @@ describe('Portal.cart.NcwmsInjector', function() {
         it('returns a default message when no defined date', function() {
             geoNetworkRecord.ncwmsParams.latitudeRangeStart = undefined;
             geoNetworkRecord.ncwmsParams.dateRangeStart = null;
-            expect(injector._getDataFilterEntry(geoNetworkRecord)).toEqual(OpenLayers.i18n("emptyDownloadDateRangePlaceholder"));
+            expect(injector._getDataFilterEntry(geoNetworkRecord)).toEqual(OpenLayers.i18n("emptyDownloadPlaceholder"));
         });
 
-        it('indicates a northerly bound', function() {
-            geoNetworkRecord.ncwmsParams.latitudeRangeStart = '-10';
-            var entry = injector._getDataFilterEntry(geoNetworkRecord);
-            expect(entry.indexOf('N')).toBeGreaterThan(-1);
-            expect(entry.indexOf('-10')).toBeGreaterThan(-1);
-            expect(entry.indexOf('N')).toBeGreaterThan(entry.indexOf('-10'));
-        });
+        it('indicates bounds properly created', function() {
 
-        it('indicates an easterly bound', function() {
-            geoNetworkRecord.ncwmsParams.latitudeRangeStart = '-10';
-            geoNetworkRecord.ncwmsParams.longitudeRangeEnd = '170';
             var entry = injector._getDataFilterEntry(geoNetworkRecord);
-            expect(entry.indexOf('E')).toBeGreaterThan(-1);
-            expect(entry.indexOf('170')).toBeGreaterThan(-1);
-            expect(entry.indexOf('E')).toBeGreaterThan(entry.indexOf('170'));
-        });
-
-        it('indicates a southerly bound', function() {
-            geoNetworkRecord.ncwmsParams.latitudeRangeStart = '-10';
-            geoNetworkRecord.ncwmsParams.latitudeRangeEnd = '-40';
-            var entry = injector._getDataFilterEntry(geoNetworkRecord);
-            expect(entry.indexOf('S')).toBeGreaterThan(-1);
-            expect(entry.indexOf('-40')).toBeGreaterThan(-1);
-            expect(entry.indexOf('S')).toBeGreaterThan(entry.indexOf('-40'));
-        });
-
-        it('indicates an westerly bound', function() {
-            geoNetworkRecord.ncwmsParams.latitudeRangeStart = '-10';
-            geoNetworkRecord.ncwmsParams.longitudeRangeStart = '150';
-            var entry = injector._getDataFilterEntry(geoNetworkRecord);
-            expect(entry.indexOf('W')).toBeGreaterThan(-1);
-            expect(entry.indexOf('150')).toBeGreaterThan(-1);
-            expect(entry.indexOf('W')).toBeGreaterThan(entry.indexOf('150'));
+            expect(entry.indexOf(OpenLayers.i18n("boundingBoxDescriptionNcWms"))).toBeGreaterThan(-1);
         });
 
         it('indicates temporal range', function() {
@@ -203,13 +182,11 @@ describe('Portal.cart.NcwmsInjector', function() {
             geoNetworkRecord.ncwmsParams.dateRangeEnd = moment.utc(Date.UTC(2014, 11, 21, 10, 30, 30, 500));
 
             var entry = injector._getDataFilterEntry(geoNetworkRecord);
+            expect(entry.indexOf(OpenLayers.i18n('parameterDateLabel'))).toBeGreaterThan(-1);
 
-            var startDateString = '20 Nov 2013, 00:30 UTC';
-            var endDateString = '21 Dec 2014, 10:30 UTC';
+            entry = injector._formatHumanDateInfo('parameterDateLabel', 'startdate', 'enddate');
+            expect(entry.indexOf('startdate')).toBeGreaterThan(-1);
 
-            expect(entry.indexOf(startDateString)).toBeGreaterThan(-1);
-            expect(entry.indexOf(endDateString)).toBeGreaterThan(-1);
-            expect(entry.indexOf(startDateString)).toBeLessThan(entry.indexOf(endDateString));
         });
     });
 
@@ -257,22 +234,6 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
     });
 
-    describe('_parameterString', function () {
-
-        beforeEach(function () {
-            spyOn(OpenLayers, 'i18n').andReturn('i18n value');
-            spyOn(String, 'format');
-            injector._parameterString('the_key', 'val1', 'val2', "delimiter");
-        });
-
-        it('calls OpenLayers.i18n()', function () {
-            expect(OpenLayers.i18n).toHaveBeenCalledWith('the_key');
-        });
-
-        it('calls String.format()', function () {
-            expect(String.format).toHaveBeenCalledWith('<b>{0}:</b> &nbsp;<code>{1}</code> {3} <code>{2}</code><br>', 'i18n value', 'val1', 'val2', "delimiter")
-        });
-    });
 
     describe('getPointOfTruthLinks', function() {
 

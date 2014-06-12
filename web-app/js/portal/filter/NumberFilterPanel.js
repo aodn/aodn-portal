@@ -96,7 +96,33 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             return cql;
         }
 
-        return '';
+        return undefined;
+    },
+
+    _getCQLHumanValue: function() {
+
+        if (this.firstField.getValue()) {
+            var cql = this.getFilterNameAsTitleCase() + " " + this.operators.getValue() + " " + this.firstField.getValue();
+
+            if (this._operatorIsBetween()) {
+
+                cql += " AND " + this.secondField.getValue();
+            }
+
+            return cql;
+        }
+
+        return undefined;
+    },
+
+    getFilterData: function() {
+
+        return {
+            name: this.filter.name,
+            downloadOnly: this.isDownloadOnly(),
+            cql: this.getCQL(),
+            humanValue: this._getCQLHumanValue()
+        }
     },
 
     _onSpecialKeyPressed: function(field, e) {

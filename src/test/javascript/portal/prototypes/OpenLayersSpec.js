@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -47,31 +46,31 @@ describe('OpenLayers', function() {
         describe("_is130", function() {
             it("returns false for ncwms", function() {
                 openLayer.isNcwms = function() { return true };
-                openLayer.server= {type: "NCWMS 1.3.0"};
+                openLayer.server = {type: "NCWMS 1.3.0"};
                 expect(openLayer._is130()).toBeFalsy();
             });
 
             it("returns true for 1.3.0 when not NCWMS", function() {
-                openLayer.server= {type: "WMS 1.3.0"};
+                openLayer.server = {type: "WMS 1.3.0"};
                 expect(openLayer._is130()).toBeTruthy();
             });
         });
 
         describe("proxy", function() {
             it("appends an ampersand to url when uri includes a question mark", function() {
-                openLayer.server= {username: "user", password: "pass", uri:"http://geoserver.uni.edu.au/geoserver/wms?namespace=org"};
+                openLayer.server = {username: "user", password: "pass", uri: "http://geoserver.uni.edu.au/geoserver/wms?namespace=org"};
                 openLayer.proxy("proxy?url=");
-                expect (openLayer.url).toEqual("proxy?url=http://geoserver.uni.edu.au/geoserver/wms?namespace=org&");
-                expect (openLayer.localProxy).toEqual("proxy?url=");
+                expect(openLayer.url).toEqual("proxy?url=http://geoserver.uni.edu.au/geoserver/wms?namespace=org&");
+                expect(openLayer.localProxy).toEqual("proxy?url=");
             });
         });
 
         describe("proxy", function() {
             it("appends a question mark to url when uri doesn't include one", function() {
-                openLayer.server= {username: "user", password: "pass", uri:"http://geoserver.uni.edu.au/geoserver/wms"};
+                openLayer.server = {username: "user", password: "pass", uri: "http://geoserver.uni.edu.au/geoserver/wms"};
                 openLayer.proxy("proxy?url=");
-                expect (openLayer.url).toEqual("proxy?url=http://geoserver.uni.edu.au/geoserver/wms?");
-                expect (openLayer.localProxy).toEqual("proxy?url=");
+                expect(openLayer.url).toEqual("proxy?url=http://geoserver.uni.edu.au/geoserver/wms?");
+                expect(openLayer.localProxy).toEqual("proxy?url=");
             });
         });
 
@@ -79,13 +78,13 @@ describe('OpenLayers', function() {
             it("Returns filter if defined", function() {
                 openLayer.params = {CQL_FILTER: "test='filter'"};
 
-                expect (openLayer.getCqlFilter()).toEqual("test='filter'");
+                expect(openLayer.getCqlFilter()).toEqual("test='filter'");
             });
 
             it("Returns empty string if cql filter not defined", function() {
                 openLayer.params = {};
 
-                expect (openLayer.getCqlFilter()).toEqual('');
+                expect(openLayer.getCqlFilter()).toEqual('');
             });
         });
 
@@ -98,7 +97,7 @@ describe('OpenLayers', function() {
                 openLayer.setCqlFilter("attribute='anotherfilter'");
 
                 expect(openLayer.mergeNewParams).toHaveBeenCalledWith({
-                    CQL_FILTER : "attribute='anotherfilter'"
+                    CQL_FILTER: "attribute='anotherfilter'"
                 });
             });
 
@@ -120,17 +119,6 @@ describe('OpenLayers', function() {
                 openLayer.setCqlFilter("");
 
                 expect(openLayer.redraw).toHaveBeenCalled();
-            });
-        });
-
-        describe("getDownloadFilter", function() {
-            it("does not join cql filters with download filters", function() {
-                openLayer.params = {CQL_FILTER: "test='filter'"};
-                openLayer.downloadOnlyFilters = "depth>=10";
-
-                var downloadFilter = openLayer.getDownloadFilter();
-
-                expect(downloadFilter).toBe("depth>=10");
             });
         });
 
@@ -156,33 +144,31 @@ describe('OpenLayers', function() {
 
         describe('getWmsLayerFeatureRequestUrl', function() {
 
-            it('calls _buildGetFeatureRequestUrl correctly', function () {
+            it('calls _buildGetFeatureRequestUrl correctly', function() {
 
                 spyOn(openLayer, '_buildGetFeatureRequestUrl');
 
                 openLayer.server = { uri: "uri" };
                 openLayer.params = { LAYERS: 'name' };
-                openLayer.wmsDownloadOnlyFilters = 'cql';
 
                 openLayer.getWmsLayerFeatureRequestUrl('csv');
 
-                expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('uri', 'name', 'csv', 'cql');
+                expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('uri', 'name', 'csv', '');
             });
         });
 
         describe('getWfsLayerFeatureRequestUrl', function() {
 
-            it('calls _buildGetFeatureRequestUrl correctly', function () {
+            it('calls _buildGetFeatureRequestUrl correctly', function() {
 
                 spyOn(openLayer, '_buildGetFeatureRequestUrl');
 
                 openLayer.wfsLayer = { server: { uri: "wfs_uri" } };
                 openLayer.wfsLayer.name = 'wfs_name';
-                openLayer.downloadOnlyFilters = 'cql';
 
                 openLayer.getWfsLayerFeatureRequestUrl('csv');
 
-                expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wfs_uri', 'wfs_name', 'csv', 'cql');
+                expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wfs_uri', 'wfs_name', 'csv', '');
             });
         });
 
@@ -281,6 +267,16 @@ describe('OpenLayers', function() {
                     expect(openLayer.getFeatureInfoRequestString()).toHaveParameterWithValue('FORMAT', 'text/html');
                     expect(openLayer.getFeatureInfoRequestString()).not.toHaveParameterWithValue('FORMAT', 'image/png');
                 });
+            });
+        });
+
+        describe('Human readable wms specific filter information', function() {
+
+            it('returns text if there is a cql filter applied', function() {
+                openLayer.params = {CQL_FILTER: "test='filter'"};
+
+                var filterString = openLayer.getWmsDownloadFilterDescriptions();
+                expect(filterString.indexOf(OpenLayers.i18n('noFilterLabel'))).toEqual(-1);
             });
         });
     });

@@ -60,7 +60,28 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             );
         }
 
-        return '';
+        return undefined;
+    },
+
+    getFilterData: function() {
+
+        return {
+            name: this.filter.name,
+            downloadOnly: this.isDownloadOnly(),
+            cql: this.getCQL(),
+            humanValue: this._getHumanValue()
+        }
+    },
+
+    _getHumanValue: function() {
+        var componentValue = this._escapeSingleQuotes(this.combo.getValue());
+        if (componentValue != ""){
+            return this.getFilterNameAsTitleCase() + " like \"" + componentValue + "\""
+        }
+        else {
+            return ""
+        }
+
     },
 
     _onSelected: function(combo, record, index) {
