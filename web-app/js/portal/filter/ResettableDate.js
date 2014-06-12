@@ -8,7 +8,8 @@ Ext.namespace('Portal.filter');
 
 Portal.filter.ResettableDate = Ext.extend(Ext.Container, {
     constructor: function(cfg) {
-        this._dateField = this._createDateField(cfg);
+        this._createDateField(cfg);
+        this.applyDefaultValueLimits();
 
         var spacer = new Ext.Spacer({
             width: 10
@@ -48,6 +49,7 @@ Portal.filter.ResettableDate = Ext.extend(Ext.Container, {
 
     reset: function() {
         var result = this._dateField.reset();
+        this.applyDefaultValueLimits();
         this._onChange();
         return result;
     },
@@ -60,16 +62,19 @@ Portal.filter.ResettableDate = Ext.extend(Ext.Container, {
         return this._dateField.setMaxValue(value);
     },
 
+    applyDefaultValueLimits: function() {
+        this.setMinValue(new Date(0));
+        this.setMaxValue(new Date());
+    },
+
     hasValue: function() {
         return this._dateField.getValue() != '';
     },
 
     _createDateField: function(cfg) {
-        return new Ext.form.DateField({
+        this._dateField = new Ext.form.DateField({
             name: cfg.name,
             format: "d/m/Y",
-            maxValue: new Date(),
-            minValue: new Date(0),
             emptyText: cfg.emptyText,
             width: 111,
             listeners: {
