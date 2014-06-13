@@ -8,8 +8,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadEstimator = Ext.extend(Object, {
 
-    ONE_GB_IN_BYTES: 1073741824,
-    ONE_MB_IN_BYTES: 1048576,
     HALF_GB_IN_BYTES: 536870912,
     EST_FAIL_CODE: -1,
 

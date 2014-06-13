@@ -96,4 +96,15 @@ describe('Portal.cart.DownloadEstimator', function() {
             expect(estimator.getIdElementName('1')).not.toEqual(otherEstimator.getIdElementName('1'));
         });
     });
+
+    describe('human readable filesize', function() {
+        it('gives correct units', function() {
+            var valsInBytes = [100, 1024, 36020, 11.1 * 1024 * 1024, 12.34 * 1024 * 1024 * 1024];
+            var expectedHumanReadableStrings = ['100B', '1.0kB', '35.2kB', '11.1MB', '12.3GB'];
+
+            for (var i = 0; i < valsInBytes.length; i++) {
+                expect(estimator._humanReadableFileSize(valsInBytes[i])).toEqual(expectedHumanReadableStrings[i]);
+            }
+        });
+    });
 });
