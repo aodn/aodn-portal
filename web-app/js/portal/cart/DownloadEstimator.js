@@ -95,34 +95,36 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     },
 
     _generateEstHtmlString: function(estimateInBytes) {
-        var html = '<div>{0} {1}{2} {3}</div><div class="clear"></div>';
+        var html = '<div>{0} {1} {2}</div><div class="clear"></div>';
         var downloadMessage;
         var fileSizeEstimate;
-        var fileMagnitude;
         var fileSizeImage;
 
         downloadMessage = OpenLayers.i18n("estimatedDlMessage");
 
-        if (estimateInBytes >= this.ONE_GB_IN_BYTES) {
-            downloadMessage = OpenLayers.i18n("estimatedDlMessage");
-            fileSizeEstimate = (estimateInBytes / this.ONE_GB_IN_BYTES).toFixed(1);
-            fileMagnitude = OpenLayers.i18n("fileSizeGb");
-            fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
-        }
-        else {
-            fileSizeEstimate = (estimateInBytes / this.ONE_MB_IN_BYTES).toFixed(1);
+        fileSizeEstimate = this._humanReadableFileSize(estimateInBytes);
+        fileSizeImage = (estimateInBytes >= this.HALF_GB_IN_BYTES) ? OpenLayers.i18n("fileSizeIconMarkup") : "";
 
-            if (estimateInBytes >= this.HALF_GB_IN_BYTES) {
-                fileMagnitude = OpenLayers.i18n("fileSizeMb");
-                fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
-            }
-            else {
-                fileMagnitude = OpenLayers.i18n("fileSizeMb");
-                fileSizeImage = "";
-            }
+        return String.format(html, downloadMessage, fileSizeEstimate, fileSizeImage);
+    },
+
+    // Credit: http://stackoverflow.com/a/14919494/627806
+    _humanReadableFileSize: function(bytes) {
+        var thresh = 1024;
+
+        if (bytes < thresh) {
+            return bytes + 'B';
         }
 
-        return String.format(html, downloadMessage, fileSizeEstimate, fileMagnitude, fileSizeImage);
+        var units = ['kB','MB','GB','TB','PB','EB','ZB','YB'];
+        var u = -1;
+
+        do {
+            bytes /= thresh;
+            ++u;
+        } while(bytes >= thresh);
+
+        return bytes.toFixed(1) + units[u];
     },
 
     _generateFailHtmlString: function() {
