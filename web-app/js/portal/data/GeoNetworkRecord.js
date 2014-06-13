@@ -131,7 +131,6 @@ Portal.data.GeoNetworkRecord = function() {
         pointOfTruthLinkField,
         aggregatorField,
         'source',
-        { name: 'canDownload', mapping: '*/canDownload', defaultValue: true },
         bboxField,
         'wmsLayer',
         'ncwmsParams'
