@@ -96,4 +96,17 @@ describe('Portal.cart.DownloadEstimator', function() {
             expect(estimator.getIdElementName('1')).not.toEqual(otherEstimator.getIdElementName('1'));
         });
     });
+
+    describe('human readable filesize', function() {
+        it('gives correct units', function() {
+            // Fix for #1162 is covered by the value 36020 below, which was originally being displayed
+            // as "0.0MB" but is now displayed as "35.2kB".
+            var valsInBytes = [100, 1024, 36020, 11.1 * 1024 * 1024, 12.34 * 1024 * 1024 * 1024];
+            var expectedHumanReadableStrings = ['100B', '1.0kB', '35.2kB', '11.1MB', '12.3GB'];
+
+            for (var i = 0; i < valsInBytes.length; i++) {
+                expect(estimator._humanReadableFileSize(valsInBytes[i])).toEqual(expectedHumanReadableStrings[i]);
+            }
+        });
+    });
 });
