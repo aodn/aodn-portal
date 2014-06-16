@@ -193,6 +193,14 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         assertTrue sendEmailCalled
     }
 
+    void testUpdateJobUnkownJob() {
+        // AODAAC returns empty JSON for unknown jobs (including those older than a certain age).
+        service.metaClass._makeApiCall = { [:] }
+
+        service.updateJob(testJob)
+        assertEquals testJob.status, UNKNOWN
+    }
+
     void testCheckIncompleteJobs() {
 
         testJob.setStatus FAIL
