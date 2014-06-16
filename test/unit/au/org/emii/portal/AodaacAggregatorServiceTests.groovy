@@ -193,12 +193,12 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         assertTrue sendEmailCalled
     }
 
-    void testUpdateJobUnkownJob() {
-        // AODAAC returns empty JSON for unknown jobs (including those older than a certain age).
+    void testUpdateJobForJobUnknownToAodaac() {
+        // AODAAC returns empty JSON for jobs it doesn't know about (including those older than a certain age).
         service.metaClass._makeApiCall = { [:] }
 
         service.updateJob(testJob)
-        assertEquals testJob.status, UNKNOWN
+        assertEquals testJob.status, ASSUME_EXPIRED
     }
 
     void testCheckIncompleteJobs() {
@@ -208,7 +208,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         AodaacJob.metaClass.static.findAll = { query ->
 
-            assertEquals "from AodaacJob as job where job.status not in ('FAIL','SUCCESS')", query
+            assertEquals "from AodaacJob as job where job.status not in ('FAIL','ASSUME_EXPIRED','SUCCESS')", query
             return [testJob]
         }
 

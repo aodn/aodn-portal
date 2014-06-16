@@ -95,7 +95,7 @@ class AodaacAggregatorService {
 
         log.debug "response: $currentDetails"
 
-        job.setStatus(currentDetails.status ?: UNKNOWN)
+        job.setStatus(currentDetails.status ?: ASSUME_EXPIRED)
             
         job.save failOnError: true
 
