@@ -95,7 +95,7 @@ class AodaacAggregatorService {
 
         log.debug "response: $currentDetails"
 
-        job.setStatus(currentDetails.status ? currentDetails.status : UNKNOWN)
+        job.setStatus(currentDetails.status ?: UNKNOWN)
             
         job.save failOnError: true
 
@@ -117,7 +117,7 @@ class AodaacAggregatorService {
                 updateJob it
             }
             catch (Throwable t) {
-                log.error "Error updating job.", t
+                log.error "Error updating job ${String.valueOf(it)}", t
             }
         }
     }
