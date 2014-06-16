@@ -283,5 +283,5 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     transAbortMsg: "transaction aborted",
 
     dateTimeDisplayFormat: 'YYYY/MM/DD-HH:mm-UTC', // moment formatting
-    dateTimeDisplayFormatExtJs: 'Y/m/d' // Ext.form.DateField formatting
+    dateDisplayFormatExtJs: 'Y/m/d' // Ext.form.DateField formatting
 });
