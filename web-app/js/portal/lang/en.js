@@ -282,5 +282,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     estimatedDlTimeoutMsg: "The NetCDF size is too large to estimate.",
     transAbortMsg: "transaction aborted",
 
-    dateTimeDisplayFormat: 'YYYY/MMM/DD-HH:mm-UTC' // moment formatting
+    dateTimeDisplayFormat: 'YYYY/MM/DD-HH:mm-UTC', // moment formatting
+    dateDisplayFormatExtJs: 'Y/m/d' // Ext.form.DateField formatting
 });
