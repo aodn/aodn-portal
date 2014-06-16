@@ -113,7 +113,12 @@ class AodaacAggregatorService {
         log.debug "number of jobs: " + jobList.size()
 
         jobList.each {
-            updateJob it
+            try {
+                updateJob it
+            }
+            catch (Throwable t) {
+                log.error "Error updating job.", t
+            }
         }
     }
 

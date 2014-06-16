@@ -225,6 +225,32 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         assertEquals(['1234'], jobIds)
     }
 
+    void testCheckIncompleteJobsWithException() {
+        def job1 = new AodaacJob('1111', testParams);
+        def job2 = new AodaacJob('2222', testParams);
+
+        AodaacJob.metaClass.static.findAll = { query ->
+            return [job1, job2]
+        }
+
+        def updateJobCalledWithJob2 = false
+        service.metaClass.updateJob = {
+
+            job ->
+
+            if (job == job1) {
+                throw new Exception('bad stuff just happened')
+            }
+
+            if (job == job2) {
+                updateJobCalledWithJob2 = true
+            }
+        }
+
+        service.checkIncompleteJobs()
+        assertTrue updateJobCalledWithJob2
+    }
+
     void testCreationApiCallArgs() {
 
         def testParams = [
