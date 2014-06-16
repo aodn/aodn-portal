@@ -126,6 +126,10 @@ baselayers = [
     ]
 ]
 
+allowedProxyHosts = [
+    geoserver_static.uri
+]
+
 // OpenID
 openId {
     // openID provider details to support login popup etc
