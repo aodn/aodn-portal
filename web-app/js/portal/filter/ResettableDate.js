@@ -74,7 +74,7 @@ Portal.filter.ResettableDate = Ext.extend(Ext.Container, {
     _createDateField: function(cfg) {
         this._dateField = new Ext.form.DateField({
             name: cfg.name,
-            format: "d/m/Y",
+            format: OpenLayers.i18n('dateTimeDisplayFormatExtJs'),
             emptyText: cfg.emptyText,
             width: 111,
             listeners: {
