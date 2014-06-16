@@ -57,7 +57,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
     },
 
     _getServerUri: function() {
-        return proxyURL + encodeURIComponent(Portal.app.appConfig['minimap.baselayer.url']);
+        return Portal.utils.Proxy.proxy(Portal.app.appConfig['minimap.baselayer.url']);
     },
 
     _getBaseLayer: function() {

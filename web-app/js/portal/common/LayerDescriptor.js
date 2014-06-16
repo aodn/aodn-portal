@@ -74,7 +74,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     },
 
     _getServerUri: function() {
-        return proxyURL + encodeURIComponent(this.server.uri);
+        return Portal.utils.Proxy.proxy(this.server.uri);
     },
 
     /**

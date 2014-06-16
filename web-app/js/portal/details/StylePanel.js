@@ -248,7 +248,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         if (useProxy) {
             // FORMAT here is for the proxy, so that it knows its a binary image required
-            url = proxyURL + encodeURIComponent(url) + "&";
+            url = Portal.utils.Proxy.proxy(url) + "&";
         }
         else {
             // see if this url already has some parameters on it
