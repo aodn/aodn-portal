@@ -73,19 +73,8 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         return "undefined";
     },
 
-    /**
-     * Refactor?
-     */
-    _getUri: function(server) {
-        return server.uri;
-    },
-
     _getServerUri: function() {
-        var serverUri = this._getUri(this.server);
-        if (this.cache == true) {
-            serverUri = window.location.href + proxyCachedURL + encodeURIComponent(serverUri);
-        }
-        return serverUri;
+        return proxyURL + encodeURIComponent(this.server.uri);
     },
 
     /**

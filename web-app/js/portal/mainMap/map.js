@@ -25,7 +25,7 @@
  *  along with aodn_ocean_portal  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var proxyCachedURL = "proxy/cache?URL=";
+var proxyURL = "proxy?url=";
 
 OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
     defaultHandlerOptions: {
