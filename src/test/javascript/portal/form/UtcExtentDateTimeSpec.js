@@ -78,7 +78,7 @@ describe("Portal.form.UtcExtentDateTime", function() {
             var subExtent = temporalExtent.subExtentForDate(temporalExtent.extent[30]);
             utcDateTime.setValue(subExtent.min(), true);
 
-            var expected = subExtent.max().format('HH:mm UTC');
+            var expected = subExtent.max().format(OpenLayers.i18n('timeDisplayFormat'));
             expect(utcDateTime.tf.getValue()).toEqual(expected);
         });
     });

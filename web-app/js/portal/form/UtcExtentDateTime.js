@@ -11,6 +11,13 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
     initComponent: function() {
         Portal.form.UtcExtentDateTime.superclass.initComponent.call(this);
+
+        // least nasty hack to add altFormats
+        this.df = this.df.cloneConfig({
+            altFormats: OpenLayers.i18n('dateAltFormats'),
+            emptyText : OpenLayers.i18n('loadingMessage')
+        });
+
         this._preventStoreChangesBeingIgnored();
         this.tf.on('select', function(field, record, index) {
             this.onBlur(field);
@@ -162,9 +169,11 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
     _matchTime: function() {
         var extent = this._getExtentForSelectedDate();
         var timeString = this.tf.getValue();
+
         for (var i = 0; i < extent.length(); i++) {
             var momentDate = extent.get(i);
-            if (momentDate.utc().format('HH:mm UTC') == timeString) {
+            if (momentDate.utc().format(OpenLayers.i18n('timeDisplayFormat')) == timeString) {
+
                 return momentDate.toDate();
             }
         }
@@ -188,7 +197,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         Ext.each(extent.extent, function(momentDate, index, all) {
             data.push({
                 timeValue: this.getLocalDateFromUtcValues(momentDate.toDate()),
-                displayTime: momentDate.format('HH:mm UTC')
+                displayTime: momentDate.format(OpenLayers.i18n('timeDisplayFormat'))
             });
         }, this);
         this.tf.getStore().loadData(data);
