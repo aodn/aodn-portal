@@ -56,24 +56,6 @@ describe('OpenLayers', function() {
             });
         });
 
-        describe("proxy", function() {
-            it("appends an ampersand to url when uri includes a question mark", function() {
-                openLayer.server = {username: "user", password: "pass", uri: "http://geoserver.uni.edu.au/geoserver/wms?namespace=org"};
-                openLayer.proxy("proxy?url=");
-                expect(openLayer.url).toEqual("proxy?url=http://geoserver.uni.edu.au/geoserver/wms?namespace=org&");
-                expect(openLayer.localProxy).toEqual("proxy?url=");
-            });
-        });
-
-        describe("proxy", function() {
-            it("appends a question mark to url when uri doesn't include one", function() {
-                openLayer.server = {username: "user", password: "pass", uri: "http://geoserver.uni.edu.au/geoserver/wms"};
-                openLayer.proxy("proxy?url=");
-                expect(openLayer.url).toEqual("proxy?url=http://geoserver.uni.edu.au/geoserver/wms?");
-                expect(openLayer.localProxy).toEqual("proxy?url=");
-            });
-        });
-
         describe("getCqlFilter", function() {
             it("Returns filter if defined", function() {
                 openLayer.params = {CQL_FILTER: "test='filter'"};

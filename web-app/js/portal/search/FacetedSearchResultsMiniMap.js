@@ -56,14 +56,10 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
         }
     },
 
-    _getServerUri: function() {
-        return Portal.utils.Proxy.proxy(Portal.app.appConfig['minimap.baselayer.url']);
-    },
-
     _getBaseLayer: function() {
         return new OpenLayers.Layer.WMS(
             Portal.app.appConfig['minimap.baselayer.name'],
-            this._getServerUri(),
+            Portal.app.appConfig['minimap.baselayer.url'],
             { layers: Portal.app.appConfig['minimap.baselayer.params.layers'] },
             { buffer: 0 },
             { wrapDateLine: true }

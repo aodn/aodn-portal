@@ -14,10 +14,3 @@ Portal.utils.Proxy.proxyURL = "proxy?url=";
 Portal.utils.Proxy.proxy = function(url) {
     return this.proxyURL + encodeURIComponent(url);
 };
-
-Portal.utils.Proxy.stripProxy = function(url) {
-    if (url && url.startsWith(this.proxyURL)) {
-        url = url.substring(this.proxyURL.length);
-    }
-    return url;
-};

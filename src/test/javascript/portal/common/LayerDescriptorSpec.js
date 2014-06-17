@@ -45,22 +45,16 @@ describe("Portal.common.LayerDescriptor", function() {
             });
         });
 
-        it('WMS layer with no layer defined', function() {
+        it('WMS layer', function() {
             var openLayer = layerDesc.toOpenLayer();
 
             expect(openLayer.isBaseLayer).toBe(true);
-            expect(openLayer.url).toBe("proxy?url=http://tilecache.emii.org.au/cgi-bin/tilecache.cgi?");
+            expect(openLayer.url).toBe("http://tilecache.emii.org.au/cgi-bin/tilecache.cgi");
             expect(openLayer.opacity).toBe(1);
             expect(openLayer).toBeInstanceOf(OpenLayers.Layer.WMS);
 
             var openLayerWithOptionOverrides = layerDesc.toOpenLayer({ opacity: 2});
             expect(openLayerWithOptionOverrides.opacity).toBe(2);
-        });
-
-        it('WMS layer with layer defined', function() {
-            layerDesc.server.uri = "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi?LAYERS=cake";
-            var openLayer = layerDesc.toOpenLayer();
-            expect(openLayer.url).toBe("proxy?url=http://tilecache.emii.org.au/cgi-bin/tilecache.cgi?LAYERS=cake&");
         });
     });
 
