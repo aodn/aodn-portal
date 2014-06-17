@@ -434,6 +434,18 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         assertEquals "test.aodaacJob.notification.email.failBody", result
     }
 
+    void testGetEmailBodyMessageCodeWhenAssumeExpired() {
+
+        def testJob = [
+            status: ASSUME_EXPIRED
+        ] as AodaacJob
+        def testDetails = [files: []]
+
+        def result = service._getEmailBodyMessageCode(testJob, testDetails)
+
+        assertEquals "test.aodaacJob.notification.email.assume_expiredBody", result
+    }
+
     void testGetEmailBodyMessageCodeWhenSuccessWithFiles() {
 
         def testJob = [
