@@ -12,6 +12,7 @@ import org.apache.commons.io.IOUtils
 
 import java.text.SimpleDateFormat
 
+import static au.org.emii.portal.AodaacJob.Status.*
 import static au.org.emii.portal.UrlUtils.ensureTrailingSlash
 
 class AodaacAggregatorService {
@@ -94,7 +95,8 @@ class AodaacAggregatorService {
 
         log.debug "response: $currentDetails"
 
-        job.setStatus currentDetails.status
+        job.setStatus(currentDetails.status ?: ASSUME_EXPIRED)
+            
         job.save failOnError: true
 
         if (job.hasEnded()) {
@@ -111,7 +113,12 @@ class AodaacAggregatorService {
         log.debug "number of jobs: " + jobList.size()
 
         jobList.each {
-            updateJob it
+            try {
+                updateJob it
+            }
+            catch (Throwable t) {
+                log.error "Error updating job ${String.valueOf(it)}", t
+            }
         }
     }
 

@@ -193,6 +193,14 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         assertTrue sendEmailCalled
     }
 
+    void testUpdateJobForJobUnknownToAodaac() {
+        // AODAAC returns empty JSON for jobs it doesn't know about (including those older than a certain age).
+        service.metaClass._makeApiCall = { [:] }
+
+        service.updateJob(testJob)
+        assertEquals testJob.status, ASSUME_EXPIRED
+    }
+
     void testCheckIncompleteJobs() {
 
         testJob.setStatus FAIL
@@ -200,7 +208,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         AodaacJob.metaClass.static.findAll = { query ->
 
-            assertEquals "from AodaacJob as job where job.status not in ('FAIL','SUCCESS')", query
+            assertEquals "from AodaacJob as job where job.status not in ('FAIL','ASSUME_EXPIRED','SUCCESS')", query
             return [testJob]
         }
 
@@ -215,6 +223,32 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         assertEquals 1, callCount
         assertEquals(['1234'], jobIds)
+    }
+
+    void testCheckIncompleteJobsWithException() {
+        def job1 = new AodaacJob('1111', testParams);
+        def job2 = new AodaacJob('2222', testParams);
+
+        AodaacJob.metaClass.static.findAll = { query ->
+            return [job1, job2]
+        }
+
+        def updateJobCalledWithJob2 = false
+        service.metaClass.updateJob = {
+
+            job ->
+
+            if (job == job1) {
+                throw new Exception('bad stuff just happened')
+            }
+
+            if (job == job2) {
+                updateJobCalledWithJob2 = true
+            }
+        }
+
+        service.checkIncompleteJobs()
+        assertTrue updateJobCalledWithJob2
     }
 
     void testCreationApiCallArgs() {
@@ -398,6 +432,18 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
         def result = service._getEmailBodyMessageCode(testJob, testDetails)
 
         assertEquals "test.aodaacJob.notification.email.failBody", result
+    }
+
+    void testGetEmailBodyMessageCodeWhenAssumeExpired() {
+
+        def testJob = [
+            status: ASSUME_EXPIRED
+        ] as AodaacJob
+        def testDetails = [files: []]
+
+        def result = service._getEmailBodyMessageCode(testJob, testDetails)
+
+        assertEquals "test.aodaacJob.notification.email.assume_expiredBody", result
     }
 
     void testGetEmailBodyMessageCodeWhenSuccessWithFiles() {
