@@ -13,20 +13,20 @@ Portal.data.GeoNetworkRecord = function() {
         convert: convertXmlToLinks
     };
 
-    var downloadableLinksField = {
-        name: 'downloadableLinks',
+    var linkedFilesField = {
+        name: 'linkedFiles',
         convert: function(v, record) {
 
             var allLinks = convertXmlToLinks(v, record);
-            var downloadableLinks = [];
+            var linkedFiles = [];
 
             Ext.each(allLinks, function(linkToCheck) {
                 if (isDownloadableProtocol(linkToCheck.protocol)) {
-                    downloadableLinks.push(linkToCheck);
+                    linkedFiles.push(linkToCheck);
                 }
             });
 
-            return downloadableLinks;
+            return linkedFiles;
         }
     };
 
@@ -78,6 +78,10 @@ Portal.data.GeoNetworkRecord = function() {
         }
     };
 
+    var downloadProtocols = {
+
+    };
+
     var parameterField = new Portal.data.ChildElementsField({
         name: 'parameter'
     });
@@ -90,9 +94,12 @@ Portal.data.GeoNetworkRecord = function() {
         var linkElems = Ext.DomQuery.jsSelect('link', record);
         var links = [];
 
+//        console.log('--------------------------------');
+
         Ext.each(linkElems, function(link) {
             var linkValue = link.firstChild ? link.firstChild.nodeValue : null;
             var elements = linkValue.split('|');
+//            console.log('> ' + elements[3]);
             links.push({
                 name: elements[0],
                 title: elements[1],
@@ -101,6 +108,8 @@ Portal.data.GeoNetworkRecord = function() {
                 type: elements[4]
             });
         }, this);
+
+//        console.log('--------------------------------');
 
         return links;
     }
@@ -127,7 +136,7 @@ Portal.data.GeoNetworkRecord = function() {
         { name: 'temporalExtentBegin', mapping: 'tempExtentBegin' },
         { name: 'temporalExtentEnd', mapping: 'tempExtentEnd' },
         linksField,
-        downloadableLinksField,
+        linkedFilesField,
         pointOfTruthLinkField,
         aggregatorField,
         'source',

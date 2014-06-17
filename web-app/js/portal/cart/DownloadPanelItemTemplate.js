@@ -94,7 +94,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getFileListEntries: function (values) {
-        var links = values.downloadableLinks;
+        var links = values.linkedFiles;
         var html = "";
         var htmlBreak = '<br>';
 

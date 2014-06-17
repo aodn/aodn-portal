@@ -20,7 +20,7 @@ Portal.cart.NoDataInjector = Ext.extend(Object, {
             title: collection.title,
             dataFilters: this._getDataFilterEntry(),
             dataMarkup: this._getDataMarkup(),
-            downloadableLinks: this._getMetadataLinks(collection),
+            linkedFiles: this._getMetadataLinks(collection),
             pointOfTruthLink: this._getPointOfTruthLink(collection)
         };
 
@@ -36,7 +36,7 @@ Portal.cart.NoDataInjector = Ext.extend(Object, {
     },
 
     _getMetadataLinks: function(collection) {
-        return collection.downloadableLinks;
+        return collection.linkedFiles;
     },
 
     _getPointOfTruthLink: function(collection) {

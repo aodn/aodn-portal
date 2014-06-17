@@ -19,7 +19,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
             title: collection.title,
             dataFilters: this._getDataFilterEntry(collection),
             dataMarkup: this._getDataMarkup(collection),
-            downloadableLinks: this._getMetadataLinks(collection),
+            linkedFiles: this._getMetadataLinks(collection),
             pointOfTruthLink: this._getPointOfTruthLink(collection),
             menuItems: this._createMenuItems(collection)
         };
@@ -82,7 +82,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
     },
 
     _getMetadataLinks: function(collection) {
-        return collection.downloadableLinks;
+        return collection.linkedFiles;
     },
 
     _getPointOfTruthLink: function(collection) {

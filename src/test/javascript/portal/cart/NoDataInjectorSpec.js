@@ -18,7 +18,7 @@ describe('Portal.cart.NoDataInjector', function() {
         geoNetworkRecord = {
             uuid: 9,
             pointOfTruthLink: 'Link!',
-            downloadableLinks: 'Downloadable link!'
+            linkedFiles: 'Downloadable link!'
         }
     });
 
