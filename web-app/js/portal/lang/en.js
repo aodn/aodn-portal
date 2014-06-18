@@ -237,15 +237,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     gogoduckJobCreateErrorMsg: 'Unable to create subsetting job. Please re-check the parameters you provided and try again.',
     gogoduckEmailProblemDialogTitle: 'Invalid email address',
     gogoduckNoEmailAddressMsg: 'Please enter a valid email address so we can notify you when the job is complete.',
-    productInfoHeading: 'Product Info',
     spatialExtentHeading: 'Spatial Extent',
     temporalExtentHeading: 'Temporal Extent',
-    areaCoveredLabel: 'Area covered: ',
     currentDateTimeLabel: 'Displaying',
-    timeRangeLabel: 'Time range between: ',
-    dateStartLabel: 'Start',
-    dateEndLabel: 'End',
-    layerComboHeading: 'Data Collection',
 
     emptyDownloadPlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",
 
