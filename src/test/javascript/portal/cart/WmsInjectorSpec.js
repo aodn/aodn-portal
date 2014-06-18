@@ -44,21 +44,6 @@ describe('Portal.cart.WmsInjector', function() {
 
     describe('createMenuItems', function() {
 
-        it('creates menu items if WFS layer is linked', function() {
-            var menuItems = injector._createMenuItems({
-                wmsLayer: {
-                    getWfsLayerFeatureRequestUrl: noOp,
-                    getWmsLayerFeatureRequestUrl: noOp,
-                    wfsLayer: {},
-                    isNcwms: function() {
-                        return false;
-                    }
-                }
-            });
-
-            expect(menuItems.length).toEqual(1);
-        });
-
         it('includes items for download url list and NetCDF download if urlDownloadFieldName exists', function() {
             var menuItems = injector._createMenuItems({
                 wmsLayer: {
@@ -86,22 +71,6 @@ describe('Portal.cart.WmsInjector', function() {
             expect(menuItems.length).toEqual(2); // URL List and NetCDF download
             expect(urlListIncluded).toBe(true);
             expect(netCdfDownloadIncluded).toBe(true);
-        });
-
-        it('includes all menu items when wfsLayer and urlDownloadFieldName exist', function() {
-            var menuItems = injector._createMenuItems({
-                wmsLayer: {
-                    getWfsLayerFeatureRequestUrl: noOp,
-                    getWmsLayerFeatureRequestUrl: noOp,
-                    urlDownloadFieldName: true,
-                    wfsLayer: {},
-                    isNcwms: function() {
-                        return false;
-                    }
-                }
-            });
-
-            expect(menuItems.length).toEqual(3);
         });
     });
 
@@ -140,13 +109,6 @@ describe('Portal.cart.WmsInjector', function() {
                     isNcwms: function() { return true }
                 }
             };
-        });
-
-        it('_wfsDownloadHandler calls downloadWithConfirmation', function() {
-            injector._wfsDownloadHandler({
-                wmsLayer: {}
-            });
-            expect(injector.downloadWithConfirmation).toHaveBeenCalled();
         });
 
         it('_urlListDownloadHandler calls downloadWithConfirmation', function() {

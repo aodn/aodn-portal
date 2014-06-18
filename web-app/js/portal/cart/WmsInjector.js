@@ -18,7 +18,7 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
         var layerValues = collection.wmsLayer.getWmsDownloadFilterDescriptions();
 
-        return  (layerValues != "") ? layerValues : OpenLayers.i18n('emptyDownloadPlaceholder');
+        return (layerValues != "") ? layerValues : OpenLayers.i18n('emptyDownloadPlaceholder');
 
     },
 
@@ -42,14 +42,6 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
         var menuItems = [];
 
-        if (collection.wmsLayer.wfsLayer) {
-            menuItems.push({
-                text: OpenLayers.i18n('downloadAsCsvLabel'),
-                handler: this._wfsDownloadHandler(collection),
-                scope: this
-            });
-        }
-
         if (collection.wmsLayer.urlDownloadFieldName) {
             menuItems.push({
                 text: OpenLayers.i18n('downloadAsUrlsLabel'),
@@ -69,14 +61,5 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     _csvDownloadUrl: function(collection) {
 
         return this._wmsDownloadUrl(collection, { format: 'csv' });
-    },
-
-    _wfsDownloadHandler: function(collection) {
-
-        return this.downloadWithConfirmation(
-            collection,
-            this._wfsDownloadUrl,
-            this._getDownloadParams(collection, '', "{0}.csv", 'csv')
-        );
     }
 });
