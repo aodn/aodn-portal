@@ -38,10 +38,10 @@ Portal.cart.Downloader = Ext.extend(Object, {
 
         var filename = this._constructFilename(collection, params);
         var encodedFilename = encodeURIComponent(this._sanitiseFilename(filename));
-        var url = encodeURIComponent(downloadUrl);
+        var encodedDownloadUrl = encodeURIComponent(downloadUrl);
         var additionalQueryString = this._additionalQueryStringFrom(params.downloadControllerArgs);
 
-        return String.format('download?url={0}&downloadFilename={1}{2}', url, encodedFilename, additionalQueryString);
+        return String.format('download?url={0}&downloadFilename={1}{2}', encodedDownloadUrl, encodedFilename, additionalQueryString);
     },
 
     _constructFilename: function(collection, params) {
@@ -64,9 +64,9 @@ Portal.cart.Downloader = Ext.extend(Object, {
         return queryString;
     },
 
-    _openDownload: function(downloadUrl) {
-        log.debug('Downloading from URL: ' + downloadUrl);
-        window.location = downloadUrl;
+    _openDownload: function(proxyUrl) {
+        log.debug('Downloading using URL: ' + proxyUrl);
+        window.location = proxyUrl;
     },
 
     _downloadAsynchronously: function(collection, downloadUrl, params) {
