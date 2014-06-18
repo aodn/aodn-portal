@@ -57,9 +57,8 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
             Ext.each(handler.getDownloadOptions(collection), function(downloadOption) {
 
                 var newMenuItem = {
-                    text: OpenLayers.i18n(downloadOption.textKey) + ' (new)',
+                    text: OpenLayers.i18n(downloadOption.textKey),
                     handler: (function(_this, _collection) { return function() { // TODO - DN: Closure trickery might not be needed. Check.
-                        console.log('Menu item from handlers');
                         _this.confirmDownload(_collection, this, downloadOption.handler, downloadOption.handlerParams)
                     }}(this, collection)),
                     scope: this

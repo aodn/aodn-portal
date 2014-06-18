@@ -11,13 +11,10 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Object, {
 
     constructor: function(onlineResource) {
 
-        console.log('WfsDownloadHandler constructed');
-
         this.onlineResource = onlineResource;
     },
 
     getDownloadOptions: function(collection) { // TODO - DN: Can we know about the collection already?
-        console.log('Getting download options');
 
         return [{
             textKey: 'downloadAsCsvLabel',
@@ -33,15 +30,10 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Object, {
 
     _getClickHandler: function(collection) {
 
-        console.log('_getClickHandler()');
-
         var layerName = this.onlineResource.name;
         var _collection = collection;
 
         return function() {
-            console.log('anon fn called');
-
-            console.log(_collection.wmsLayer.getWfsLayerFeatureRequestUrl(layerName, 'csv'));
             return _collection.wmsLayer.getWfsLayerFeatureRequestUrl(layerName, 'csv');
         };
     }
