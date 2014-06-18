@@ -26,8 +26,7 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Object, {
                 filenameFormat: "{0}.csv",
                 format: 'BET THIS IS NOT USED',
                 downloadControllerArgs: { // TODO - DN: Refactor this out into a separate params object?
-                    action: '',
-                    layerId: '-1' // TODO - DN: What to do about this?
+                    action: ''
                 }
             }
         }];
