@@ -14,24 +14,24 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Object, {
         this.onlineResource = onlineResource;
     },
 
-    getDownloadOptions: function(collection) { // TODO - DN: Can we know about the collection already?
+    getDownloadOptions: function() {
 
         return [{
             textKey: 'downloadAsCsvLabel',
-            handler: this._getClickHandler(collection),
+            handler: this._getClickHandler(),
             handlerParams: {
                 filenameFormat: "{0}.csv"
             }
         }];
     },
 
-    _getClickHandler: function(collection) {
+    _getClickHandler: function() {
 
         var layerName = this.onlineResource.name;
-        var _collection = collection;
 
-        return function() {
-            return _collection.wmsLayer.getWfsLayerFeatureRequestUrl(layerName, 'csv');
+        return function(collection) {
+
+            return collection.wmsLayer.getWfsLayerFeatureRequestUrl(layerName, 'csv');
         };
     }
 });
