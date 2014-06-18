@@ -87,13 +87,16 @@ Portal.cart.Downloader = Ext.extend(Object, {
 
     _onAsyncDownloadRequestSuccess: function() {
         Ext.Msg.alert(
-            OpenLayers.i18n('gogoduckPanelTitle'),
-            OpenLayers.i18n('gogoduckJobCreatedMsg', { email: this.params.emailAddress })
+            OpenLayers.i18n('asyncDownloadPanelTitle'),
+            OpenLayers.i18n('asyncDownloadSuccessMsg', { email: this.params.emailAddress })
         );
     },
 
     _onAsyncDownloadRequestFailure: function() {
-        Ext.Msg.alert(OpenLayers.i18n('gogoduckPanelTitle'), OpenLayers.i18n('gogoduckJobCreateErrorMsg'));
+        Ext.Msg.alert(
+            OpenLayers.i18n('asyncDownloadPanelTitle'),
+            OpenLayers.i18n('asyncDownloadErrorMsg')
+        );
     },
 
     _sanitiseFileName: function(str) {
