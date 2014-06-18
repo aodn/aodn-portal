@@ -20,10 +20,7 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Object, {
             textKey: 'downloadAsCsvLabel',
             handler: this._getClickHandler(collection),
             handlerParams: {
-                filenameFormat: "{0}.csv",
-                downloadControllerArgs: { // TODO - DN: Refactor this out into a separate params object?
-                    action: ''
-                }
+                filenameFormat: "{0}.csv"
             }
         }];
     },
