@@ -58,9 +58,9 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
 
                 var newMenuItem = {
                     text: OpenLayers.i18n(downloadOption.textKey),
-                    handler: (function(_this, _collection) { return function() { // TODO - DN: Closure trickery might not be needed. Check.
-                        _this.confirmDownload(_collection, this, downloadOption.handler, downloadOption.handlerParams)
-                    }}(this, collection)),
+                    handler: function() {
+                        this.confirmDownload(collection, this, downloadOption.handler, downloadOption.handlerParams)
+                    },
                     scope: this
                 };
 
