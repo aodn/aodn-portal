@@ -58,7 +58,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         return this._getDownloadParams(collection, 'downloadNetCdfFilesForLayer', "{0}_source_files.zip");
     },
 
-    _getDownloadParams: function(collection, action, fileNameFormat, fileFormat) {
+    _getDownloadParams: function(collection, action, filenameFormat, fileFormat) {
         var downloadControllerArgs = {
             action: action,
             layerId: collection.wmsLayer.grailsLayerId
@@ -66,7 +66,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
 
         return {
             format: fileFormat,
-            fileNameFormat: fileNameFormat,
+            filenameFormat: filenameFormat,
             downloadControllerArgs: downloadControllerArgs
         };
     },

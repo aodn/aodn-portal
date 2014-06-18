@@ -7,15 +7,15 @@
 describe("Portal.cart.Downloader", function() {
 
     var downloader;
-    var wfsDownloadUrl
-    var generateUrlCallback
+    var wfsDownloadUrl;
+    var generateUrlCallback;
 
     var collection;
     var params;
 
     beforeEach(function() {
         downloader = new Portal.cart.Downloader();
-        wfsDownloadUrl = 'http://download'
+        wfsDownloadUrl = 'http://download';
         generateUrlCallback = jasmine.createSpy('generateUrl').andReturn(wfsDownloadUrl);
 
         collection = {};
@@ -41,7 +41,7 @@ describe("Portal.cart.Downloader", function() {
         });
 
         it('calls downloadSynchronously for synchronous download', function() {
-            params.asyncDownload = true
+            params.asyncDownload = true;
             downloader.download(collection, this, generateUrlCallback, params);
             expect(downloader._downloadSynchronously).not.toHaveBeenCalled();
             expect(downloader._downloadAsynchronously).toHaveBeenCalledWith(collection, wfsDownloadUrl, params);
@@ -90,9 +90,9 @@ describe("Portal.cart.Downloader", function() {
     describe('constructProxyUrl', function() {
         it('returns URL-endcoded proxy URL', function() {
 
-            var theFileName = 'file name';
-            spyOn(downloader, '_sanitiseFileName').andReturn(theFileName);
-            spyOn(downloader, '_constructFileName').andReturn(theFileName);
+            var theFilename = 'file name';
+            spyOn(downloader, '_sanitiseFilename').andReturn(theFilename);
+            spyOn(downloader, '_constructFilename').andReturn(theFilename);
 
             var expectedProxyUrl = "download?url=http%3A%2F%2Fdownload&downloadFilename=file%20name&fieldName=the%20field";
             var params = {
@@ -102,18 +102,18 @@ describe("Portal.cart.Downloader", function() {
             };
 
             expect(downloader._constructProxyUrl(collection, wfsDownloadUrl, params)).toBe(expectedProxyUrl);
-            expect(downloader._sanitiseFileName).toHaveBeenCalledWith(theFileName);
+            expect(downloader._sanitiseFilename).toHaveBeenCalledWith(theFilename);
         });
     });
 
-    describe('_constructFileName', function() {
+    describe('_constructFilename', function() {
         it('constructs file name from format and collection title', function() {
             var params = {
-                fileNameFormat: '{0}_source_files.zip'
-            }
+                filenameFormat: '{0}_source_files.zip'
+            };
             collection.title = 'the title';
 
-            expect(downloader._constructFileName(collection, params)).toBe('the title_source_files.zip');
+            expect(downloader._constructFilename(collection, params)).toBe('the title_source_files.zip');
         });
     });
 
@@ -135,7 +135,7 @@ describe("Portal.cart.Downloader", function() {
         });
     });
 
-    describe('sanistiseFileName', function() {
+    describe('sanistiseFilename', function() {
 
         it('swaps out invalid filname characters (and spaces)', function() {
 
@@ -146,7 +146,7 @@ describe("Portal.cart.Downloader", function() {
             var sanitiserInput = source + source;
             var expectedOutput = sourceSanitised + sourceSanitised;
 
-            expect(downloader._sanitiseFileName(sanitiserInput)).toBe(expectedOutput);
+            expect(downloader._sanitiseFilename(sanitiserInput)).toBe(expectedOutput);
         });
     });
 });
