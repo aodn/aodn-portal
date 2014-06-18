@@ -78,10 +78,6 @@ Portal.data.GeoNetworkRecord = function() {
         }
     };
 
-    var downloadProtocols = {
-
-    };
-
     var parameterField = new Portal.data.ChildElementsField({
         name: 'parameter'
     });
@@ -94,12 +90,9 @@ Portal.data.GeoNetworkRecord = function() {
         var linkElems = Ext.DomQuery.jsSelect('link', record);
         var links = [];
 
-//        console.log('--------------------------------');
-
         Ext.each(linkElems, function(link) {
             var linkValue = link.firstChild ? link.firstChild.nodeValue : null;
             var elements = linkValue.split('|');
-//            console.log('> ' + elements[3]);
             links.push({
                 name: elements[0],
                 title: elements[1],
@@ -108,8 +101,6 @@ Portal.data.GeoNetworkRecord = function() {
                 type: elements[4]
             });
         }, this);
-
-//        console.log('--------------------------------');
 
         return links;
     }
