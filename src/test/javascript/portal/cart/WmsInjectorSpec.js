@@ -133,7 +133,6 @@ describe('Portal.cart.WmsInjector', function() {
             spyOn(injector, 'downloadWithConfirmation');
             spyOn(injector, '_getUrlListDownloadParams').andReturn(downloadParams);
             spyOn(injector, '_getNetCdfDownloadParams').andReturn(downloadParams);
-            spyOn(injector, '_wfsDownloadUrl');
 
             collection = {
                 wmsLayer: {
@@ -168,19 +167,6 @@ describe('Portal.cart.WmsInjector', function() {
                 injector._downloadUrl,
                 downloadParams
             );
-        });
-    });
-
-    describe('_wfsDownloadUrl', function() {
-
-        it('calls correct function on layer', function() {
-
-            var spy = jasmine.createSpy();
-            var testLayer = {getWfsLayerFeatureRequestUrl: spy, params: "blagh"};
-
-            injector._wfsDownloadUrl({ wmsLayer: testLayer }, { format: 'csv' });
-
-            expect(testLayer.getWfsLayerFeatureRequestUrl).toHaveBeenCalledWith('csv');
         });
     });
 

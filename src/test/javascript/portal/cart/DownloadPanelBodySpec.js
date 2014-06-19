@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -32,10 +31,10 @@ describe("Portal.cart.DownloadPanelBody", function() {
 
         var mockTemplate;
 
-        var testCollection1 = {uuid: '[Content 1]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}};
-        var testCollection2 = {uuid: '[Content 2]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}};
-        var testCollection3 = {uuid: '[Content 3]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}};
-        var testCollection4 = {uuid: '[Content 4]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}};
+        var testCollection1 = {uuid: '[Content 1]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}, dataDownloadHandlers: []};
+        var testCollection2 = {uuid: '[Content 2]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}, dataDownloadHandlers: []};
+        var testCollection3 = {uuid: '[Content 3]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}, dataDownloadHandlers: []};
+        var testCollection4 = {uuid: '[Content 4]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}, dataDownloadHandlers: []};
 
         beforeEach(function() {
 

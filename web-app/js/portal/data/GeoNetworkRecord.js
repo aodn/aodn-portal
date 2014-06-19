@@ -21,7 +21,7 @@ Portal.data.GeoNetworkRecord = function() {
             var linkedFiles = [];
 
             Ext.each(allLinks, function(linkToCheck) {
-                if (isDownloadableProtocol(linkToCheck.protocol)) {
+                if (isLinkedFileProtocol(linkToCheck.protocol)) {
                     linkedFiles.push(linkToCheck);
                 }
             });
@@ -78,6 +78,33 @@ Portal.data.GeoNetworkRecord = function() {
         }
     };
 
+    var dataDownloadHandlersField = {
+        name: 'dataDownloadHandlers',
+        convert: function(v, record) {
+            var allLinks = convertXmlToLinks(v, record);
+
+            var protocolHandlerConstructors = {
+                'OGC:WFS-1.0.0-http-get-capabilities': Portal.cart.WfsDownloadHandler/*,
+                'IMOS:AGGREGATION--aodaac:': function() { alert('AODAAC') },
+                'IMOS:AGGREGATION--bodaac:': function() { alert('BODAAC') },
+                'IMOS:AGGREGATION--gogoduck:': function() { alert('GoGoDuck') }*/
+            };
+            var applicableDownloadOptions = [];
+
+            Ext.each(allLinks, function(link) {
+                var constructor = protocolHandlerConstructors[link.protocol];
+
+                if (constructor) {
+                    applicableDownloadOptions.push(
+                        new constructor(link)
+                    );
+                }
+            }, this);
+
+            return applicableDownloadOptions;
+        }
+    };
+
     var parameterField = new Portal.data.ChildElementsField({
         name: 'parameter'
     });
@@ -105,7 +132,7 @@ Portal.data.GeoNetworkRecord = function() {
         return links;
     }
 
-    function isDownloadableProtocol(protocol) {
+    function isLinkedFileProtocol(protocol) {
 
         var protocols = [];
 
@@ -130,6 +157,7 @@ Portal.data.GeoNetworkRecord = function() {
         linkedFilesField,
         pointOfTruthLinkField,
         aggregatorField,
+        dataDownloadHandlersField,
         'source',
         bboxField,
         'wmsLayer',

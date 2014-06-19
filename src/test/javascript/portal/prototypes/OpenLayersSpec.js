@@ -132,16 +132,6 @@ describe('OpenLayers', function() {
             });
         });
 
-        describe('_getWfsLayerName', function() {
-
-            it('returns wfsLayer name', function() {
-
-                openLayer.wfsLayer = { name: 'argo_wfs' };
-
-                expect(openLayer._getWfsLayerName()).toBe('argo_wfs');
-            });
-        });
-
         describe('getWmsLayerFeatureRequestUrl', function() {
 
             it('calls _buildGetFeatureRequestUrl correctly', function() {
@@ -164,11 +154,10 @@ describe('OpenLayers', function() {
                 spyOn(openLayer, '_buildGetFeatureRequestUrl');
 
                 openLayer.wfsLayer = { server: { uri: "wfs_uri" } };
-                openLayer.wfsLayer.name = 'wfs_name';
 
-                openLayer.getWfsLayerFeatureRequestUrl('csv');
+                openLayer.getWfsLayerFeatureRequestUrl('layerName', 'csv');
 
-                expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wfs_uri', 'wfs_name', 'csv', '');
+                expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wfs_uri', 'layerName', 'csv', '');
             });
         });
 

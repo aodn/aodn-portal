@@ -30,8 +30,32 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         // Reverse the order of items, last item added will be displayed first
         for (var i = this.store.data.items.length - 1; i >= 0; i--) {
             var item = this.store.data.items[i];
+            var collection = item.data;
+
             var service = new Portal.cart.InsertionService(this);
-            var processedValues = service.insertionValues(item.data);
+            var processedValues = service.insertionValues(collection);
+
+            console.log(collection);
+            console.log(collection.dataDownloadHandlers);
+
+            // TODO - DN: Refactor loops
+            Ext.each(collection.dataDownloadHandlers, function(handler) {
+
+                Ext.each(handler.getDownloadOptions(collection), function(downloadOption) {
+                    processedValues.menuItems.push({
+                        text: OpenLayers.i18n(downloadOption.textKey),
+                        handler: (function(_this, _collection) { return function() { // TODO - DN: Closure trickery might not be needed. Check.
+                                _this.confirmDownload(_collection, this, downloadOption.handler, downloadOption.handlerParams)
+                            }}(this, collection)),
+                        scope: this
+                    });
+                }, this);
+            }, this);
+
+            console.log('----------------------------------');
+            console.log(processedValues);
+            console.log('----------------------------------');
+
             html += tpl.apply(processedValues);
         }
 
@@ -46,6 +70,8 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
     },
 
     confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
+
+        console.log('confirmDownload()');
 
         params.onAccept = function(callbackParams) {
             var downloader = new Portal.cart.Downloader();
