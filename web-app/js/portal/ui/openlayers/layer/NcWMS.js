@@ -56,7 +56,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     processTemporalExtent: function() {
 
-        if (this._destroyed())  {
+        if (this._destroyed()) {
             return;
         }
 

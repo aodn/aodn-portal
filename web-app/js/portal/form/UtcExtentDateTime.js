@@ -162,7 +162,6 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
             }
             if (field === this.tf) {
                 this.onBlur(this.tf);
-                console.log("close now?");
             }
         }
     },

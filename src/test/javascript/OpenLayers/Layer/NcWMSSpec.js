@@ -16,11 +16,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         params = {};
 
-/*        var extent = [
-            '2001-02-01T00:00',
-            '2001-02-03T00:00',
-            '2001-02-05T00:00'];*/
-
         cachedLayer = new OpenLayers.Layer.NcWMS(
             null,
             null,
@@ -28,9 +23,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
             null,
             { extent: extent }
         );
-/*
-        cachedLayer.processTemporalExtent();*/
-        //cachedLayer.temporalExtent.isValid = function() {return true};
 
         cachedLayer.mergeNewParams = noOp;
     });
@@ -165,7 +157,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
     describe('choose nearest available time', function() {
 
-
         describe('repeating interval', function() {
             beforeEach(function() {
                 cachedLayer.rawTemporalExtent = ['2000-01-01T00:00:00.000/2000-01-01T01:00:00.000/PT30M'];
@@ -183,14 +174,14 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-01T00:30:00.000'));
             });
 
-            it ('around half way between two possible values', function() {
+            it('around half way between two possible values', function() {
                 cachedLayer.toTime(moment.utc('2000-01-01T00:15:00.000'));
                 expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-01T00:30:00.000'));
                 cachedLayer.toTime(moment.utc('2000-01-01T00:15:01.000'));
                 expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-01T00:30:00.000'));
             });
 
-            it ('around last date/time', function() {
+            it('around last date/time', function() {
                 cachedLayer.toTime(moment.utc('2000-01-01T01:00:00.000'));
                 expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-01T01:00:00.000').valueOf());
                 cachedLayer.toTime(moment.utc('2000-01-01T00:59:59.000'));
