@@ -36,16 +36,16 @@ Portal.cart.Downloader = Ext.extend(Object, {
 
     _constructProxyUrl: function(collection, downloadUrl, params) {
 
-        var filename = this._constructFileName(collection, params);
-        var encodedFilename = encodeURIComponent(this._sanitiseFileName(filename));
+        var filename = this._constructFilename(collection, params);
+        var encodedFilename = encodeURIComponent(this._sanitiseFilename(filename));
         var url = encodeURIComponent(downloadUrl);
         var additionalQueryString = this._additionalQueryStringFrom(params.downloadControllerArgs);
 
         return String.format('download?url={0}&downloadFilename={1}{2}', url, encodedFilename, additionalQueryString);
     },
 
-    _constructFileName: function(collection, params) {
-        return String.format(params.fileNameFormat, collection.title);
+    _constructFilename: function(collection, params) {
+        return String.format(params.filenameFormat, collection.title);
     },
 
     _additionalQueryStringFrom: function(args) {
@@ -96,7 +96,7 @@ Portal.cart.Downloader = Ext.extend(Object, {
         );
     },
 
-    _sanitiseFileName: function(str) {
+    _sanitiseFilename: function(str) {
         return str.replace(/:/g, "#").replace(/[/\\ ]/g, "_");
     }
 });
