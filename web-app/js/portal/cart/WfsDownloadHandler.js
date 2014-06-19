@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.data');
+Ext.namespace('Portal.cart');
 
 Portal.cart.WfsDownloadHandler = Ext.extend(Object, {
 
@@ -16,13 +16,25 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Object, {
 
     getDownloadOptions: function() {
 
-        return [{
-            textKey: 'downloadAsCsvLabel',
-            handler: this._getClickHandler(),
-            handlerParams: {
-                filenameFormat: "{0}.csv"
-            }
-        }];
+        var downloadOptions = [];
+
+        if (this._hasRequiredInfo()) {
+
+            downloadOptions.push({
+                textKey: 'downloadAsCsvLabel',
+                handler: this._getClickHandler(),
+                handlerParams: {
+                    filenameFormat: "{0}.csv"
+                }
+            });
+        }
+
+        return downloadOptions;
+    },
+
+    _hasRequiredInfo: function() {
+
+        return this.onlineResource.name && this.onlineResource.name != "";
     },
 
     _getClickHandler: function() {
