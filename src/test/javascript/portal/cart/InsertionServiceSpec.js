@@ -26,10 +26,17 @@ describe('Portal.cart.InsertionService', function() {
 
     describe('insertionValues', function() {
 
+        var mockInjector;
+
         beforeEach(function() {
-            spyOn(mockInsertionService, '_getNcwmsInjector');
-            spyOn(mockInsertionService, '_getWmsInjector');
-            spyOn(mockInsertionService, '_getNoDataInjector');
+
+            mockInjector = {
+                getInjectionJson: jasmine.createSpy('getInjectionJson')
+            };
+
+            spyOn(mockInsertionService, '_getNcwmsInjector').andReturn(mockInjector);
+            spyOn(mockInsertionService, '_getWmsInjector').andReturn(mockInjector);
+            spyOn(mockInsertionService, '_getNoDataInjector').andReturn(mockInjector);
         });
 
         it('creates an ncwms injector for aodaac layers', function() {
@@ -55,6 +62,10 @@ describe('Portal.cart.InsertionService', function() {
         it('creates a no data injector for layers containing no data', function() {
             mockInsertionService.insertionValues(getNoDataRecord());
             expectGetInjectorToHaveBeenCalled(mockInsertionService._getNoDataInjector);
+        });
+
+        afterEach(function() {
+            expect(mockInjector.getInjectionJson).toHaveBeenCalled();
         });
     });
 

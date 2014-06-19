@@ -36,7 +36,8 @@ Portal.cart.InsertionService = Ext.extend(Object, {
 
             htmlInjection = this._getNoDataInjector(config, collection);
         }
-        return htmlInjection;
+
+        return htmlInjection.getInjectionJson(collection);
     },
 
     _isNcwmsLayerWithData: function(wmsLayer) {
@@ -59,7 +60,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
             this.ncwmsInjector = new Portal.cart.NcwmsInjector(config);
         }
 
-        return this.ncwmsInjector.getInjectionJson(collection);
+        return this.ncwmsInjector;
     },
 
     _getWmsInjector: function(config, collection) {
@@ -68,7 +69,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
             this.wmsInjector = new Portal.cart.WmsInjector(config);
         }
 
-        return this.wmsInjector.getInjectionJson(collection);
+        return this.wmsInjector;
     },
 
     _getNoDataInjector: function(config, collection) {
@@ -77,7 +78,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
             this.noDataInjector = new Portal.cart.NoDataInjector(config);
         }
 
-        return this.noDataInjector.getInjectionJson(collection);
+        return this.noDataInjector;
     },
 
     downloadWithConfirmation: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
