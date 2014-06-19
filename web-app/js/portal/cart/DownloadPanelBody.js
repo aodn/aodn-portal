@@ -35,26 +35,7 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
             var service = new Portal.cart.InsertionService(this);
             var processedValues = service.insertionValues(collection);
 
-            console.log(collection);
-            console.log(collection.dataDownloadHandlers);
-
-            // TODO - DN: Refactor loops
-            Ext.each(collection.dataDownloadHandlers, function(handler) {
-
-                Ext.each(handler.getDownloadOptions(collection), function(downloadOption) {
-                    processedValues.menuItems.push({
-                        text: OpenLayers.i18n(downloadOption.textKey),
-                        handler: (function(_this, _collection) { return function() { // TODO - DN: Closure trickery might not be needed. Check.
-                                _this.confirmDownload(_collection, this, downloadOption.handler, downloadOption.handlerParams)
-                            }}(this, collection)),
-                        scope: this
-                    });
-                }, this);
-            }, this);
-
-            console.log('----------------------------------');
-            console.log(processedValues);
-            console.log('----------------------------------');
+            this._loadMenuItemsFromHandlers(processedValues, collection);
 
             html += tpl.apply(processedValues);
         }
@@ -69,9 +50,27 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         }
     },
 
-    confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
+    _loadMenuItemsFromHandlers: function(processedValues, collection) {
 
-        console.log('confirmDownload()');
+        Ext.each(collection.dataDownloadHandlers, function(handler) {
+
+            Ext.each(handler.getDownloadOptions(collection), function(downloadOption) {
+
+                var newMenuItem = {
+                    text: OpenLayers.i18n(downloadOption.textKey) + ' (new)',
+                    handler: (function(_this, _collection) { return function() { // TODO - DN: Closure trickery might not be needed. Check.
+                        console.log('Menu item from handlers');
+                        _this.confirmDownload(_collection, this, downloadOption.handler, downloadOption.handlerParams)
+                    }}(this, collection)),
+                    scope: this
+                };
+
+                processedValues.menuItems.push(newMenuItem);
+            }, this);
+        }, this);
+    },
+
+    confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
 
         params.onAccept = function(callbackParams) {
             var downloader = new Portal.cart.Downloader();

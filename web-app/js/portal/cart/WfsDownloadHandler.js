@@ -16,7 +16,7 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Object, {
         this.onlineResource = onlineResource;
     },
 
-    getDownloadOptions: function(collection) {
+    getDownloadOptions: function(collection) { // TODO - DN: Can we know about the collection already?
         console.log('Getting download options');
 
         return [{
