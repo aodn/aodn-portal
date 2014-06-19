@@ -318,7 +318,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
     },
 
     isValid: function(searchDate) {
-        return (this._anyIndexOfSameDate(searchDate) != -1);
+        return (searchDate) ? (this._anyIndexOfSameDate(searchDate) != -1) : false;
     },
 
     _indexOfDay: function(searchDate) {

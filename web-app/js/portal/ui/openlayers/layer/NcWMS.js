@@ -135,7 +135,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
      *          parameters.
      */
     getURL: function(bounds) {
-
         if (this.time) {
             return this.getURLAtTime(bounds, this.time);
         }
