@@ -22,7 +22,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             },
             dataMarkup: 'markup!',
             dataFilters: 'Filters!',
-            downloadableLinks: [
+            linkedFiles: [
                 {
                     href: 'http://host/some.html',
                     name: 'imos:radar_stations',
@@ -137,7 +137,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         it('creates links', function() {
             var values = {
-                downloadableLinks: [{ href: href, title: text }]
+                linkedFiles: [{ href: href, title: text }]
             };
             var html = tpl._getFileListEntries(values);
 

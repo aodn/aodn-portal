@@ -105,13 +105,13 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
 
         describe('downloadable links', function() {
             it('field exists', function() {
-                expect(geoNetworkRecordStore.getAt(0).get('downloadableLinks')).toBeTruthy();
+                expect(geoNetworkRecordStore.getAt(0).get('linkedFiles')).toBeTruthy();
             });
 
             it('contains only downloadable links', function() {
-                var downloadableLinks = geoNetworkRecordStore.getAt(0).get('downloadableLinks');
-                expect(downloadableLinks.length).toBe(1);
-                expect(downloadableLinks[0].title).toBe('ACORN Radar Stations csv');
+                var linkedFiles = geoNetworkRecordStore.getAt(0).get('linkedFiles');
+                expect(linkedFiles.length).toBe(1);
+                expect(linkedFiles[0].title).toBe('ACORN Radar Stations csv');
             });
         });
     });

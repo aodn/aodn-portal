@@ -271,8 +271,8 @@ describe('Portal.cart.NcwmsInjector', function() {
                 wfsLayer: true
             },
             pointOfTruthLink: 'Link!',
-            downloadableLinks: 'Downloadable link!'
-        }
+            linkedFiles: 'Downloadable link!'
+        };
 
         return geoNetworkRecord;
     }

@@ -13,20 +13,20 @@ Portal.data.GeoNetworkRecord = function() {
         convert: convertXmlToLinks
     };
 
-    var downloadableLinksField = {
-        name: 'downloadableLinks',
+    var linkedFilesField = {
+        name: 'linkedFiles',
         convert: function(v, record) {
 
             var allLinks = convertXmlToLinks(v, record);
-            var downloadableLinks = [];
+            var linkedFiles = [];
 
             Ext.each(allLinks, function(linkToCheck) {
                 if (isDownloadableProtocol(linkToCheck.protocol)) {
-                    downloadableLinks.push(linkToCheck);
+                    linkedFiles.push(linkToCheck);
                 }
             });
 
-            return downloadableLinks;
+            return linkedFiles;
         }
     };
 
@@ -127,7 +127,7 @@ Portal.data.GeoNetworkRecord = function() {
         { name: 'temporalExtentBegin', mapping: 'tempExtentBegin' },
         { name: 'temporalExtentEnd', mapping: 'tempExtentEnd' },
         linksField,
-        downloadableLinksField,
+        linkedFilesField,
         pointOfTruthLinkField,
         aggregatorField,
         'source',
