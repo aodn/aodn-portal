@@ -24,18 +24,7 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _getDataMarkup: function(collection) {
 
-        var estimator = new Portal.cart.DownloadEstimator();
-        estimator._getDownloadEstimate(
-            collection,
-            this._csvDownloadUrl(collection)
-        );
-
-        return String.format(
-            "<div id=\"{0}\">{1}{2}</div>",
-            estimator.getIdElementName(collection.uuid),
-            OpenLayers.i18n("estimatedDlLoadingMessage"),
-            OpenLayers.i18n("estimatedDlLoadingSpinner")
-        );
+        return this._addDownloadEstimate(collection);
     },
 
     _createMenuItems: function(collection) {
