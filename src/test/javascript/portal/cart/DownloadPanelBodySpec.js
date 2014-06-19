@@ -43,6 +43,24 @@ describe("Portal.cart.DownloadPanelBody", function() {
             };
         };
 
+        var makeTestDownloadPanelBody = function(collections) {
+            var downloadPanelBody = new Portal.cart.DownloadPanelBody();
+
+            var items = [];
+            Ext.each(collections, function(collection) {
+                items.push({
+                    data: collection
+                });
+            });
+
+            downloadPanelBody.store.data.items = items;
+
+            downloadPanelBody.rendered = true;
+            spyOn(downloadPanelBody, 'update');
+
+            return downloadPanelBody;
+        };
+
         var testCollection1 = makeTestCollection('[Content 1]');
         var testCollection2 = makeTestCollection('[Content 2]');
         var testCollection3 = makeTestCollection('[Content 3]');
@@ -55,28 +73,27 @@ describe("Portal.cart.DownloadPanelBody", function() {
             };
 
             spyOn(Portal.cart, 'DownloadPanelItemTemplate').andReturn(mockTemplate);
-
-            downloadPanelBody = new Portal.cart.DownloadPanelBody();
-            downloadPanelBody.store.data.items = [
-                {data: testCollection1},
-                {data: testCollection2},
-                {data: testCollection3},
-                {data: testCollection4}
-            ];
-
-            downloadPanelBody.rendered = true;
-            downloadPanelBody.update =  function(){};
-            spyOn(downloadPanelBody, 'update');
-
-            downloadPanelBody.generateContent();
         });
 
         it('creates a DownloadPanelItemTemplate', function() {
+
+            downloadPanelBody = makeTestDownloadPanelBody([]);
+
+            downloadPanelBody.generateContent();
 
             expect(Portal.cart.DownloadPanelItemTemplate).toHaveBeenCalled();
         });
 
         it('reverse view order enforced', function() {
+
+            downloadPanelBody = makeTestDownloadPanelBody([
+                testCollection1,
+                testCollection2,
+                testCollection3,
+                testCollection4
+            ]);
+
+            downloadPanelBody.generateContent();
 
             // Order of items is reversed!!
             expect(mockTemplate.apply.callCount).toBe(4);
@@ -88,13 +105,18 @@ describe("Portal.cart.DownloadPanelBody", function() {
 
         it('calls update', function() {
 
+            downloadPanelBody = makeTestDownloadPanelBody([]);
+
+            downloadPanelBody.generateContent();
+
             expect(downloadPanelBody.update).toHaveBeenCalled();
         });
 
         it('calls _contentForEmptyView when empty', function() {
+            downloadPanelBody = makeTestDownloadPanelBody([]);
+
             spyOn(downloadPanelBody, '_contentForEmptyView').andReturn('empty cart content');
 
-            downloadPanelBody.store.data.items = [];
             downloadPanelBody.generateContent();
 
             expect(downloadPanelBody._contentForEmptyView).toHaveBeenCalled();
