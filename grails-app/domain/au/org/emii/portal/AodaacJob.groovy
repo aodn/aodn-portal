@@ -18,9 +18,10 @@ class AodaacJob {
         WAITING,
         RUNNING,
         FAIL,
+        ASSUME_EXPIRED,
         SUCCESS
 
-        static def endedStatuses = [FAIL, SUCCESS]
+        static def endedStatuses = [FAIL, ASSUME_EXPIRED, SUCCESS]
     }
 
     String productId

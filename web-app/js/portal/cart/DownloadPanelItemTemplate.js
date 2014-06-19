@@ -75,7 +75,8 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createDownloadButton: function (id, values) {
-        if (values.menuItems && Ext.get(id)) {
+
+        if (values.menuItems.length > 0 && Ext.get(id)) {
 
             // clear old button
             Ext.fly(id).update("");
@@ -94,7 +95,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getFileListEntries: function (values) {
-        var links = values.downloadableLinks;
+        var links = values.linkedFiles;
         var html = "";
         var htmlBreak = '<br>';
 

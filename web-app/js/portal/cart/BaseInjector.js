@@ -19,7 +19,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
             title: collection.title,
             dataFilters: this._getDataFilterEntry(collection),
             dataMarkup: this._getDataMarkup(collection),
-            downloadableLinks: this._getMetadataLinks(collection),
+            linkedFiles: this._getMetadataLinks(collection),
             pointOfTruthLink: this._getPointOfTruthLink(collection),
             menuItems: this._createMenuItems(collection)
         };
@@ -58,7 +58,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         return this._getDownloadParams(collection, 'downloadNetCdfFilesForLayer', "{0}_source_files.zip");
     },
 
-    _getDownloadParams: function(collection, action, fileNameFormat, fileFormat) {
+    _getDownloadParams: function(collection, action, filenameFormat, fileFormat) {
         var downloadControllerArgs = {
             action: action,
             layerId: collection.wmsLayer.grailsLayerId
@@ -66,7 +66,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
 
         return {
             format: fileFormat,
-            fileNameFormat: fileNameFormat,
+            filenameFormat: filenameFormat,
             downloadControllerArgs: downloadControllerArgs
         };
     },
@@ -82,7 +82,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
     },
 
     _getMetadataLinks: function(collection) {
-        return collection.downloadableLinks;
+        return collection.linkedFiles;
     },
 
     _getPointOfTruthLink: function(collection) {

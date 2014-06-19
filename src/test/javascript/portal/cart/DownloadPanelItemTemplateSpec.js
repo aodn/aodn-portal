@@ -22,7 +22,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             },
             dataMarkup: 'markup!',
             dataFilters: 'Filters!',
-            downloadableLinks: [
+            linkedFiles: [
                 {
                     href: 'http://host/some.html',
                     name: 'imos:radar_stations',
@@ -113,6 +113,31 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         });
     });
 
+    describe('createDownloadButton', function() {
+
+        beforeEach(function() {
+            spyOn(Ext, 'get').andReturn({});
+            spyOn(Ext, 'fly').andReturn({update: noOp});
+            spyOn(Ext.menu, 'Menu');
+            spyOn(Ext, 'Button');
+        });
+
+        it('should create a button if necessary', function() {
+
+            tpl._createDownloadButton(null, {menuItems: ['menu item 1']});
+
+            expect(Ext.Button).toHaveBeenCalled();
+
+        });
+
+        it('should not create a button if the array is empty', function() {
+
+            tpl._createDownloadButton(null, {menuItems: []});
+
+            expect(Ext.Button).not.toHaveBeenCalled();
+        });
+    });
+
     describe('file list entries', function() {
         var href = 'http://123.aodn.org.au';
         var text = 'portal';
@@ -137,7 +162,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         it('creates links', function() {
             var values = {
-                downloadableLinks: [{ href: href, title: text }]
+                linkedFiles: [{ href: href, title: text }]
             };
             var html = tpl._getFileListEntries(values);
 

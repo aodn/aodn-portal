@@ -18,7 +18,7 @@ describe('Portal.cart.NoDataInjector', function() {
         geoNetworkRecord = {
             uuid: 9,
             pointOfTruthLink: 'Link!',
-            downloadableLinks: 'Downloadable link!'
+            linkedFiles: 'Downloadable link!'
         }
     });
 
@@ -57,6 +57,13 @@ describe('Portal.cart.NoDataInjector', function() {
 
         it('returns no specific markup', function() {
             expect(injector._getDataMarkup()).toEqual('');
+        });
+    });
+
+    describe('createMenuItems', function() {
+
+        it('returns an empty array', function() {
+            expect(injector._createMenuItems().length).toBe(0);
         });
     });
 });

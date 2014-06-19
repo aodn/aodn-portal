@@ -7,24 +7,10 @@
 
 Ext.namespace('Portal.cart');
 
-Portal.cart.NoDataInjector = Ext.extend(Object, {
+Portal.cart.NoDataInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     constructor: function(config) {
         Portal.cart.NoDataInjector.superclass.constructor.call(this, Ext.apply(this, config));
-    },
-
-    getInjectionJson: function(collection) {
-
-        var injectionJson = {
-            uuid: collection.uuid,
-            title: collection.title,
-            dataFilters: this._getDataFilterEntry(),
-            dataMarkup: this._getDataMarkup(),
-            downloadableLinks: this._getMetadataLinks(collection),
-            pointOfTruthLink: this._getPointOfTruthLink(collection)
-        };
-
-        return injectionJson;
     },
 
     _getDataFilterEntry: function() {
@@ -35,11 +21,7 @@ Portal.cart.NoDataInjector = Ext.extend(Object, {
         return '';
     },
 
-    _getMetadataLinks: function(collection) {
-        return collection.downloadableLinks;
-    },
-
-    _getPointOfTruthLink: function(collection) {
-        return collection.pointOfTruthLink;
+    _createMenuItems: function() {
+        return [];
     }
 });

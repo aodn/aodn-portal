@@ -27,7 +27,7 @@ describe('Portal.cart.WmsInjector', function() {
                 wfsLayer: true
             },
             pointOfTruthLink: 'Link!',
-            downloadableLinks: 'Downloadable link!'
+            linkedFiles: 'Downloadable link!'
         }
     });
 
