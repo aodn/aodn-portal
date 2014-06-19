@@ -9,7 +9,6 @@ describe('Portal.cart.InsertionService', function() {
 
     var mockInsertionService;
     var geoNetworkRecord;
-    var html;
 
     beforeEach(function() {
         mockInsertionService = new Portal.cart.InsertionService();
@@ -27,10 +26,17 @@ describe('Portal.cart.InsertionService', function() {
 
     describe('insertionValues', function() {
 
+        var mockInjector;
+
         beforeEach(function() {
-            spyOn(mockInsertionService, '_getNcwmsInjector');
-            spyOn(mockInsertionService, '_getWmsInjector');
-            spyOn(mockInsertionService, '_getNoDataInjector');
+
+            mockInjector = {
+                getInjectionJson: jasmine.createSpy('getInjectionJson')
+            };
+
+            spyOn(mockInsertionService, '_getNcwmsInjector').andReturn(mockInjector);
+            spyOn(mockInsertionService, '_getWmsInjector').andReturn(mockInjector);
+            spyOn(mockInsertionService, '_getNoDataInjector').andReturn(mockInjector);
         });
 
         it('creates an ncwms injector for aodaac layers', function() {
@@ -56,6 +62,10 @@ describe('Portal.cart.InsertionService', function() {
         it('creates a no data injector for layers containing no data', function() {
             mockInsertionService.insertionValues(getNoDataRecord());
             expectGetInjectorToHaveBeenCalled(mockInsertionService._getNoDataInjector);
+        });
+
+        afterEach(function() {
+            expect(mockInjector.getInjectionJson).toHaveBeenCalled();
         });
     });
 
@@ -121,17 +131,7 @@ describe('Portal.cart.InsertionService', function() {
             childAggregators: [mockNcwmsAggr]
         };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
-        geoNetworkRecord.wmsLayer.aodaacProducts = [{ id: 123 }]
-
-        return geoNetworkRecord;
-    }
-
-    function getBodaacRecord() {
-        var mockNcwmsAggr = new Portal.data.BodaacAggregator();
-        geoNetworkRecord.aggregator = {
-            childAggregators: [mockNcwmsAggr]
-        };
-        geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
+        geoNetworkRecord.wmsLayer.aodaacProducts = [{ id: 123 }];
 
         return geoNetworkRecord;
     }
