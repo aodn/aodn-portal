@@ -122,5 +122,42 @@ describe("Portal.cart.DownloadPanelBody", function() {
             expect(downloadPanelBody._contentForEmptyView).toHaveBeenCalled();
             expect(downloadPanelBody.update).toHaveBeenCalledWith('empty cart content');
         });
+
+        it('includes menu items from download handlers', function() {
+
+            testCollection1.dataDownloadHandlers = [{
+                getDownloadOptions: function() {
+                    return [
+                        {
+                            textKey: 'key1',
+                            handler: {},
+                            handlerParams: {}
+                        },
+                        {
+                            textKey: 'key2',
+                            handler: {},
+                            handlerParams: {}
+                        }
+                    ];
+                }
+            }];
+
+            spyOn(Portal.cart, 'InsertionService').andReturn({
+                insertionValues: function() {return {menuItems: []}}
+            });
+
+            downloadPanelBody = makeTestDownloadPanelBody([
+                testCollection1
+            ]);
+
+            spyOn(OpenLayers, 'i18n');
+
+            downloadPanelBody.generateContent();
+            var applyArgs = mockTemplate.apply.mostRecentCall.args;
+            var processedValues = applyArgs[0];
+
+            expect(OpenLayers.i18n.argsForCall).toEqual([['key1'], ['key2']]);
+            expect(processedValues.menuItems.length).toBe(2);
+        });
     });
 });
