@@ -31,10 +31,22 @@ describe("Portal.cart.DownloadPanelBody", function() {
 
         var mockTemplate;
 
-        var testCollection1 = {uuid: '[Content 1]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}, dataDownloadHandlers: []};
-        var testCollection2 = {uuid: '[Content 2]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}, dataDownloadHandlers: []};
-        var testCollection3 = {uuid: '[Content 3]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}, dataDownloadHandlers: []};
-        var testCollection4 = {uuid: '[Content 4]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}, dataDownloadHandlers: []};
+        var makeTestCollection = function(uuid) {
+            return {
+                uuid: uuid,
+                aggregator: { childAggregators: []},
+                wmsLayer: {
+                    wfsLayer: null,
+                    isNcwms: noOp
+                },
+                dataDownloadHandlers: []
+            };
+        };
+
+        var testCollection1 = makeTestCollection('[Content 1]');
+        var testCollection2 = makeTestCollection('[Content 2]');
+        var testCollection3 = makeTestCollection('[Content 3]');
+        var testCollection4 = makeTestCollection('[Content 4]');
 
         beforeEach(function() {
 
