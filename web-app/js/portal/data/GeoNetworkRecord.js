@@ -84,10 +84,7 @@ Portal.data.GeoNetworkRecord = function() {
             var allLinks = convertXmlToLinks(v, record);
 
             var protocolHandlerConstructors = {
-                'OGC:WFS-1.0.0-http-get-capabilities': Portal.cart.WfsDownloadHandler/*,
-                'IMOS:AGGREGATION--aodaac:': function() { alert('AODAAC') },
-                'IMOS:AGGREGATION--bodaac:': function() { alert('BODAAC') },
-                'IMOS:AGGREGATION--gogoduck:': function() { alert('GoGoDuck') }*/
+                'OGC:WFS-1.0.0-http-get-capabilities': Portal.cart.WfsDownloadHandler
             };
             var applicableDownloadOptions = [];
 

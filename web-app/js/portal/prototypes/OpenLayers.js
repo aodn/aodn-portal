@@ -92,8 +92,6 @@ OpenLayers.Layer.WMS.prototype.getWmsLayerFeatureRequestUrl = function(outputFor
 
 OpenLayers.Layer.WMS.prototype.getWfsLayerFeatureRequestUrl = function(layerName, outputFormat) {
 
-    if (!outputFormat) throw 'Only 1 arg supplied';
-
     return this._buildGetFeatureRequestUrl(
         this._getWfsServerUrl(),
         layerName,
