@@ -9,7 +9,6 @@ describe('Portal.cart.InsertionService', function() {
 
     var mockInsertionService;
     var geoNetworkRecord;
-    var html;
 
     beforeEach(function() {
         mockInsertionService = new Portal.cart.InsertionService();
@@ -121,17 +120,7 @@ describe('Portal.cart.InsertionService', function() {
             childAggregators: [mockNcwmsAggr]
         };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
-        geoNetworkRecord.wmsLayer.aodaacProducts = [{ id: 123 }]
-
-        return geoNetworkRecord;
-    }
-
-    function getBodaacRecord() {
-        var mockNcwmsAggr = new Portal.data.BodaacAggregator();
-        geoNetworkRecord.aggregator = {
-            childAggregators: [mockNcwmsAggr]
-        };
-        geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
+        geoNetworkRecord.wmsLayer.aodaacProducts = [{ id: 123 }];
 
         return geoNetworkRecord;
     }
