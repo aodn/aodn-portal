@@ -126,9 +126,9 @@ describe('OpenLayers', function() {
 
             it('returns wfs server uri', function() {
 
-                openLayer.wfsLayer = {server: {uri: 'wfs_server_uri/wms'}};
+                openLayer.server = {uri: 'wms_server_uri/wms'};
 
-                expect(openLayer._getWfsServerUrl()).toBe('wfs_server_uri/wfs');
+                expect(openLayer._getWfsServerUrl()).toBe('wms_server_uri/wfs');
             });
         });
 
@@ -153,11 +153,11 @@ describe('OpenLayers', function() {
 
                 spyOn(openLayer, '_buildGetFeatureRequestUrl');
 
-                openLayer.wfsLayer = { server: { uri: "wfs_uri" } };
+                openLayer.server = { uri: "wms_uri" };
 
                 openLayer.getWfsLayerFeatureRequestUrl('layerName', 'csv');
 
-                expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wfs_uri', 'layerName', 'csv', '');
+                expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wms_uri', 'layerName', 'csv', '');
             });
         });
 
@@ -345,5 +345,4 @@ describe('OpenLayers', function() {
             expect(spatialConstraintClearedSpy).toHaveBeenCalled();
         });
     });
-
 });

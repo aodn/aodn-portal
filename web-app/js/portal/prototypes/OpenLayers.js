@@ -134,11 +134,7 @@ OpenLayers.Layer.WMS.prototype._getServerSupportedOutputFormat = function(output
 
 OpenLayers.Layer.WMS.prototype._getWfsServerUrl = function() {
 
-    var layer = this.wfsLayer;
-    var wmsUrl = layer.server.uri;
-    var wfsUrl = wmsUrl.replace('/wms', '/wfs');
-
-    return wfsUrl;
+    return this.server.uri.replace('/wms', '/wfs');
 };
 
 OpenLayers.Layer.WMS.prototype.getMetadataUrl = function() {
@@ -224,7 +220,6 @@ OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
         if (data.cql){
             filters.push(data.cql);
         }
-
     });
 
     return filters.join(" AND ");
