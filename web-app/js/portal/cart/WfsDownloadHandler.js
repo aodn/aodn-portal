@@ -30,7 +30,6 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Object, {
         var layerName = this.onlineResource.name;
 
         return function(collection) {
-
             return collection.wmsLayer.getWfsLayerFeatureRequestUrl(layerName, 'csv');
         };
     }
