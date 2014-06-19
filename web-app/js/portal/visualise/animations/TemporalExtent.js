@@ -317,6 +317,10 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         return binSearch(this.extent, searchDate, this._startOfDayIsAfter, this);
     },
 
+    isValid: function(searchDate) {
+        return (this._anyIndexOfSameDate(searchDate) != -1);
+    },
+
     _indexOfDay: function(searchDate) {
         return this._findFirstIndexOfDay(
             this._zeroIfNegative(this._anyIndexOfSameDate(searchDate)),

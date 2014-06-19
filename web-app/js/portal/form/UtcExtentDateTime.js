@@ -7,6 +7,8 @@
 
 Ext.namespace('Portal.form');
 
+
+
 Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
     initComponent: function() {
@@ -15,7 +17,9 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         // least nasty hack to add altFormats
         this.df = this.df.cloneConfig({
             altFormats: OpenLayers.i18n('dateAltFormats'),
-            emptyText : OpenLayers.i18n('loadingMessage')
+            emptyText : OpenLayers.i18n('loadingMessage'),
+            minText: OpenLayers.i18n('dateNcWmsMinError'),
+            maxText: OpenLayers.i18n('dateNcWmsMaxError')
         });
 
         this._preventStoreChangesBeingIgnored();
@@ -56,21 +60,30 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
     _setTimeValues: function(date, extent, toMaxTime) {
         var dayExtent = extent.subExtentForDate(date);
-        this._extentToStore(dayExtent);
-        this._setTimeMinValue(dayExtent);
-        this._setTimeMaxValue(dayExtent);
 
-        if (this.timeFieldChange) {
-            this._setTimeValue(date);
-        }
-        else {
-            if (toMaxTime) {
-                this._setTimeValue(dayExtent.max());
+        if (dayExtent.length() > 0) {
+            this._extentToStore(dayExtent);
+            this._setTimeMinValue(dayExtent);
+            this._setTimeMaxValue(dayExtent);
+
+            if (this.timeFieldChange) {
+                this._setTimeValue(date);
             }
             else {
-                this._setTimeValue(dayExtent.min());
+                if (toMaxTime) {
+                    this._setTimeValue(dayExtent.max());
+                }
+                else {
+                    this._setTimeValue(dayExtent.min());
+                }
             }
+            this.tf.setDisabled(false);
         }
+        else {
+            this._setTimeValue(date);
+            this.tf.setDisabled(true);
+        }
+
     },
 
     _setTimeMaxValue: function(extent) {
@@ -118,7 +131,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
     onBlur: function(field) {
         this._setTimeFieldChangeFlag(field);
-        if (this.isValid() && this._isDirty()) {
+        if (this.isDirty()) {
             this._fireEventsForChange(this._matchTime());
         }
     },
@@ -149,6 +162,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
             }
             if (field === this.tf) {
                 this.onBlur(this.tf);
+                console.log("close now?");
             }
         }
     },
@@ -170,15 +184,22 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         var extent = this._getExtentForSelectedDate();
         var timeString = this.tf.getValue();
 
-        for (var i = 0; i < extent.length(); i++) {
-            var momentDate = extent.get(i);
-            if (momentDate.utc().format(OpenLayers.i18n('timeDisplayFormat')) == timeString) {
+        if (extent.length() > 0) {
+            for (var i = 0; i < extent.length(); i++) {
+                var momentDate = extent.get(i);
+                if (momentDate.utc().format(OpenLayers.i18n('timeDisplayFormat')) == timeString) {
 
-                return momentDate.toDate();
+                    return momentDate.toDate();
+                }
             }
+            return this._getDefaultTime(extent);
+        }
+        // its
+        else {
+            return this.getUtcDateFromLocalValues(this.df.getValue());
         }
 
-        return this._getDefaultTime(extent);
+
     },
 
     _getExtentForSelectedDate: function() {
@@ -205,13 +226,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
     _preventStoreChangesBeingIgnored: function() {
         this.tf.generateStore = function() {};
-    },
-
-    isValid: function() {
-        return this.df.isValid();
-    },
-
-    _isDirty: function() {
-        return this.dateValue.getTime() != this._matchTime().getTime();
     }
+
+
 });

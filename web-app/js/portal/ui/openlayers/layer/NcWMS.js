@@ -229,6 +229,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _isValidTime: function(dateTime) {
-        return dateTime && this.time.valueOf() != dateTime.valueOf();
+        return dateTime && this.getTemporalExtent().isValid(dateTime) && this.time.valueOf() != dateTime.valueOf();
     }
 });

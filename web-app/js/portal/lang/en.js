@@ -286,5 +286,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     timeDisplayFormat: 'HH:mm UTC',
     timeDisplayFormatExtJs: 'H:i \\U\\TC',// Ext.form.DateField formatting
     dateDisplayFormatExtJs: 'Y/m/d', // Ext.form.DateField formatting
-    dateAltFormats: "Y|Y/m|d-m-Y" // Ext.form.DateField formatting
+    dateAltFormats: "Y|Y/m|d-m-Y", // Ext.form.DateField formatting
+    dateNcWmsMinError: "The entered date is earlier than the first available date: {0}",
+    dateNcWmsMaxError: "The entered date is greater than the last available date: {0}"
 });

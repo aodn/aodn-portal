@@ -16,6 +16,11 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         params = {};
 
+        var extent = [
+            '2001-02-01T00:00',
+            '2001-02-03T00:00',
+            '2001-02-05T00:00'];
+
         cachedLayer = new OpenLayers.Layer.NcWMS(
             null,
             null,
@@ -23,6 +28,9 @@ describe("OpenLayers.Layer.NcWMS", function() {
             null,
             { extent: extent }
         );
+
+        cachedLayer.processTemporalExtent();
+        //cachedLayer.temporalExtent.isValid = function() {return true};
 
         cachedLayer.mergeNewParams = noOp;
     });
@@ -60,6 +68,14 @@ describe("OpenLayers.Layer.NcWMS", function() {
             right: 10,
             top: 0,
             bottom: 10
+        });
+
+        beforeEach(function() {
+            cachedLayer.temporalExtent = null;
+            cachedLayer.rawTemporalExtent = [
+                '2011-07-08T03:32:45Z'
+            ];
+            cachedLayer.processTemporalExtent();
         });
 
         it('time specified', function() {
