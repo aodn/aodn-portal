@@ -7,8 +7,6 @@
 
 Ext.namespace('Portal.form');
 
-
-
 Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
     initComponent: function() {
@@ -17,7 +15,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         // least nasty hack to add altFormats
         this.df = this.df.cloneConfig({
             altFormats: OpenLayers.i18n('dateAltFormats'),
-            emptyText : OpenLayers.i18n('loadingMessage'),
+            emptyText: OpenLayers.i18n('loadingMessage'),
             minText: OpenLayers.i18n('dateNcWmsMinError'),
             maxText: OpenLayers.i18n('dateNcWmsMaxError')
         });
@@ -171,12 +169,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
     },
 
     _setTimeFieldChangeFlag: function(field) {
-        if (field === this.tf) {
-            this.timeFieldChange = true;
-        }
-        else {
-            this.timeFieldChange = false;
-        }
+        this.timeFieldChange = (field === this.tf);
     },
 
     _matchTime: function() {
@@ -193,11 +186,9 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
             }
             return this._getDefaultTime(extent);
         }
-        // its
         else {
             return this.getUtcDateFromLocalValues(this.df.getValue());
         }
-
 
     },
 
