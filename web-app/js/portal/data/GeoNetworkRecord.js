@@ -8,6 +8,9 @@ Ext.namespace('Portal.data.GeoNetworkRecord');
 
 Portal.data.GeoNetworkRecord = function() {
 
+    var PROTOCOL_WWW_METADATA_LINK = 'WWW:LINK-1.0-http--metadata-URL';
+    var PROTOCOL_OGC_WFS = 'OGC:WFS-1.0.0-http-get-capabilities';
+
     var linksField = {
         name: 'links',
         convert: convertXmlToLinks
@@ -58,7 +61,7 @@ Portal.data.GeoNetworkRecord = function() {
             var pointOfTruthLink = undefined;
 
             Ext.each(allLinks, function(linkToCheck) {
-                if (linkToCheck.protocol == 'WWW:LINK-1.0-http--metadata-URL') {
+                if (linkToCheck.protocol == PROTOCOL_WWW_METADATA_LINK) {
 
                     pointOfTruthLink = linkToCheck;
                 }
@@ -84,7 +87,7 @@ Portal.data.GeoNetworkRecord = function() {
             var allLinks = convertXmlToLinks(v, record);
 
             var protocolHandlerConstructors = {
-                'OGC:WFS-1.0.0-http-get-capabilities': Portal.cart.WfsDownloadHandler
+                PROTOCOL_OGC_WFS: Portal.cart.WfsDownloadHandler
             };
             var applicableDownloadOptions = [];
 
