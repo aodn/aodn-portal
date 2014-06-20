@@ -225,7 +225,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     resetActionText: 'reset',
 
     // BooleanFilterPanel.js
-    checkboxDescription: 'Select only data with {0}(s)',
+    checkboxDescription: 'Select only data with {0}',
 
     // ActiveLayersPanel.js
     dataCollectionsTitle: "Data Collections",
