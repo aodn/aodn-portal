@@ -9,8 +9,6 @@ Ext.namespace('Portal.details');
 
 Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
-    DATE_FORMAT: 'Y-m-d',
-    TIME_FORMAT: 'H:i \\U\\TC',
 
     ROW_HEIGHT: 32,
 
@@ -200,8 +198,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     _defaultDateTimePickerConfiguration: function() {
         return {
-            dateFormat: this.DATE_FORMAT,
-            timeFormat: this.TIME_FORMAT,
+            dateFormat: OpenLayers.i18n('dateDisplayFormatExtJs'),
+            timeFormat: OpenLayers.i18n('timeDisplayFormatExtJs'),
+            altDateFormats: OpenLayers.i18n('dateAltFormats'),
             flex: 2,
             listeners: {
                 scope: this,
@@ -326,9 +325,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _setDateTimePickerExtent: function(picker, extent, value, toMaxValue) {
-        picker.enable();
-        picker.setExtent(extent);
-        picker.setValue(value, toMaxValue);
+        if (value) {
+            picker.enable();
+            picker.setExtent(extent);
+            picker.setValue(value, toMaxValue);
+        }
     },
 
     _updateTimeRangeLabel: function() {

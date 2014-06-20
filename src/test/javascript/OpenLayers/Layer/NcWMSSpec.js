@@ -54,12 +54,23 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
     describe("getURL", function() {
 
-        var time = moment('2011-07-08T03:32:45Z');
+        var time = moment('2011-07-08T03:32:45Z').utc();
         var bounds = new OpenLayers.Bounds({
             left: 0,
             right: 10,
             top: 0,
             bottom: 10
+        });
+
+        beforeEach(function() {
+            cachedLayer.temporalExtent = null;
+            cachedLayer.rawTemporalExtent = [
+                '2011-07-02T01:32:45Z',
+                '2011-07-08T01:32:45Z',
+                '2011-07-08T03:22:45Z',
+                '2011-07-08T03:32:45Z'
+            ];
+            cachedLayer.processTemporalExtent();
         });
 
         it('time specified', function() {
@@ -123,7 +134,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
     describe('get next time', function() {
         beforeEach(function() {
-            delete cachedLayer.temporalExtent;
+            cachedLayer.temporalExtent = null;
             cachedLayer.rawTemporalExtent = ['2001-01-01T00:00:00', '2001-01-02T00:00:00', '2001-01-03T00:00:00'];
             cachedLayer.processTemporalExtent();
             waitsFor(function() {
@@ -146,10 +157,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
     describe('choose nearest available time', function() {
 
-        it('no extent restriction', function() {
-            expect(cachedLayer.toTime(moment.utc('2000-01-01T00:00:00'))).toBeSame(moment.utc('2000-01-01T00:00:00'));
-        });
-
         describe('repeating interval', function() {
             beforeEach(function() {
                 cachedLayer.rawTemporalExtent = ['2000-01-01T00:00:00.000/2000-01-01T01:00:00.000/PT30M'];
@@ -161,24 +168,20 @@ describe("OpenLayers.Layer.NcWMS", function() {
             });
 
             it('around first date/time', function() {
-                cachedLayer.toTime(moment.utc('1900-12-31T23:59:00.000'));
-                expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-01T00:00:00.000'));
-                cachedLayer.toTime(moment.utc('1999-12-31T23:59:00.000'));
-                expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-01T00:00:00.000'));
                 cachedLayer.toTime(moment.utc('2000-01-01T00:00:00.000'));
                 expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-01T00:30:00.000'));
                 cachedLayer.toTime(moment.utc('2000-01-01T00:00:01.000'));
                 expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-01T00:30:00.000'));
             });
 
-            it ('around half way between two possible values', function() {
+            it('around half way between two possible values', function() {
                 cachedLayer.toTime(moment.utc('2000-01-01T00:15:00.000'));
                 expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-01T00:30:00.000'));
                 cachedLayer.toTime(moment.utc('2000-01-01T00:15:01.000'));
                 expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-01T00:30:00.000'));
             });
 
-            it ('around last date/time', function() {
+            it('around last date/time', function() {
                 cachedLayer.toTime(moment.utc('2000-01-01T01:00:00.000'));
                 expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-01T01:00:00.000').valueOf());
                 cachedLayer.toTime(moment.utc('2000-01-01T00:59:59.000'));
@@ -203,10 +206,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
             });
 
             it('around first date/time', function() {
-                cachedLayer.toTime(moment.utc('1900-12-31T23:59:59.000'));
-                expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-01T00:00:00.000'));
-                cachedLayer.toTime(moment.utc('1999-12-31T23:59:59.000'));
-                expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-01T00:00:00.000'));
                 cachedLayer.toTime(moment.utc('2000-01-01T00:00:00.000'));
                 expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-02T00:00:00.000'));
                 cachedLayer.toTime(moment.utc('2000-01-01T00:00:01.000'));
@@ -229,19 +228,21 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-03T00:00:00.000').valueOf());
                 cachedLayer.toTime(moment.utc('2000-01-03T00:00:01.000'));
                 expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-03T00:00:01.000').valueOf());
-                cachedLayer.toTime(moment.utc('2010-01-03T00:00:00.000'));
-                expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2010-01-03T00:00:00.000').valueOf());
             });
+
         });
     });
 
-    describe('getExtent min/max', function() {
+    describe('getExtent min/max, and beyond...', function() {
+        var today;
         beforeEach(function() {
             var extent = [
-                '2001-02-01T00:00',
+                '2000-01-01T00:00',
                 '2001-02-03T00:00',
                 '2001-02-05T00:00'
             ];
+
+            today = moment.utc().startOf('day').valueOf();
 
             cachedLayer = new OpenLayers.Layer.NcWMS(
                 null,
@@ -260,11 +261,20 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
 
         it('getTemporalExtentMin value', function() {
-            expect(cachedLayer.getTemporalExtentMin()).toBeSame(moment.utc('2001-02-01T00:00'));
+            expect(cachedLayer.getTemporalExtentMin()).toBeSame(moment.utc('2000-01-01T00:00'));
         });
 
         it('getTemporalExtentMax value', function() {
             expect(cachedLayer.getTemporalExtentMax()).toBeSame(moment.utc('2001-02-05T00:00'));
+        });
+
+        it('date is not available in extent', function() {
+            cachedLayer.toTime(moment.utc('1900-12-31T23:59:59.000'));
+            expect(cachedLayer.nextTimeSlice().startOf('day').valueOf()).toEqual(today);
+            cachedLayer.toTime(moment.utc('1999-12-31T23:59:59.000'));
+            expect(cachedLayer.nextTimeSlice().startOf('day').valueOf()).toEqual(today);
+            cachedLayer.toTime(moment.utc('2030-01-03T00:00:00.000'));
+            expect(cachedLayer.nextTimeSlice().startOf('day').valueOf()).toEqual(today);
         });
     });
 

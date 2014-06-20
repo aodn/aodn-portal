@@ -36,10 +36,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this._initToMostRecentTime(temporalInfo.defaultValue);
         params['TIME'] = this._getTimeParameter(this.time);
 
-        if (!temporalInfo.extent) {
-            this.temporalExtent = new Portal.visualise.animations.TemporalExtent();
-        }
-
         // Initialize missingDays
         this.missingDays = [];
 
@@ -59,19 +55,26 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     processTemporalExtent: function() {
+
         if (this._destroyed()) {
             return;
         }
 
         if (this.temporalExtent) {
-            // Already processed
-            this._processTemporalExtentDone();
+            this.events.triggerEvent('temporalextentloaded', this);
             return;
         }
 
-        this.temporalExtent = new Portal.visualise.animations.TemporalExtent();
-        this.temporalExtent.on('extentparsed', this._processTemporalExtentDone, this);
-        this.temporalExtent.parse(this.rawTemporalExtent);
+        if (this.rawTemporalExtent) {
+            this.temporalExtent = new Portal.visualise.animations.TemporalExtent();
+            this.temporalExtent.on('extentparsed', this._processTemporalExtentDone, this);
+            this.temporalExtent.parse(this.rawTemporalExtent);
+        }
+        else {
+            // Already processed
+            this._processTemporalExtentDone();
+        }
+
     },
 
     _processTemporalExtentDone: function() {
@@ -132,7 +135,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
      *          parameters.
      */
     getURL: function(bounds) {
-
         if (this.time) {
             return this.getURLAtTime(bounds, this.time);
         }
@@ -218,14 +220,14 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     getSubsetExtentMin: function() {
-        return this.subsetExtent.min;
+        return (this.subsetExtent) ? this.subsetExtent.min : null;
     },
 
     getSubsetExtentMax: function() {
-        return this.subsetExtent.max;
+        return (this.subsetExtent) ? this.subsetExtent.max : null;
     },
 
     _isValidTime: function(dateTime) {
-        return dateTime && this.time.valueOf() != dateTime.valueOf();
+        return dateTime && this.getTemporalExtent().isValid(dateTime) && this.time.valueOf() != dateTime.valueOf();
     }
 });
