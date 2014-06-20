@@ -90,10 +90,10 @@ OpenLayers.Layer.WMS.prototype.getWmsLayerFeatureRequestUrl = function(outputFor
     );
 };
 
-OpenLayers.Layer.WMS.prototype.getWfsLayerFeatureRequestUrl = function(layerName, outputFormat) {
+OpenLayers.Layer.WMS.prototype.getWfsLayerFeatureRequestUrl = function(serverUrl, layerName, outputFormat) {
 
     return this._buildGetFeatureRequestUrl(
-        this._getWfsServerUrl(),
+        serverUrl,
         layerName,
         outputFormat,
         this.getDownloadFilter()
@@ -130,11 +130,6 @@ OpenLayers.Layer.WMS.prototype._getServerSupportedOutputFormat = function(output
     else {
         return 'csv';
     }
-};
-
-OpenLayers.Layer.WMS.prototype._getWfsServerUrl = function() {
-
-    return this.server.uri.replace('/wms', '/wfs');
 };
 
 OpenLayers.Layer.WMS.prototype.getMetadataUrl = function() {
@@ -220,6 +215,7 @@ OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
         if (data.cql){
             filters.push(data.cql);
         }
+
     });
 
     return filters.join(" AND ");

@@ -122,16 +122,6 @@ describe('OpenLayers', function() {
             });
         });
 
-        describe('_getWfsServerUrl', function() {
-
-            it('returns wfs server uri', function() {
-
-                openLayer.server = {uri: 'wms_server_uri/wms'};
-
-                expect(openLayer._getWfsServerUrl()).toBe('wms_server_uri/wfs');
-            });
-        });
-
         describe('getWmsLayerFeatureRequestUrl', function() {
 
             it('calls _buildGetFeatureRequestUrl correctly', function() {
@@ -152,12 +142,11 @@ describe('OpenLayers', function() {
             it('calls _buildGetFeatureRequestUrl correctly', function() {
 
                 spyOn(openLayer, '_buildGetFeatureRequestUrl');
+                spyOn(openLayer, 'getDownloadFilter').andReturn('download filters');
 
-                openLayer.server = { uri: "wms_uri" };
+                openLayer.getWfsLayerFeatureRequestUrl('wms_uri', 'layerName', 'csv');
 
-                openLayer.getWfsLayerFeatureRequestUrl('layerName', 'csv');
-
-                expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wms_uri', 'layerName', 'csv', '');
+                expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wms_uri', 'layerName', 'csv', 'download filters');
             });
         });
 

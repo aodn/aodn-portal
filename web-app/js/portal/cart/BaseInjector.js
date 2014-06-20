@@ -78,7 +78,9 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
 
     _wfsDownloadUrl: function(collection, params) {
 
-        return collection.wmsLayer.getWfsLayerFeatureRequestUrl(collection.wmsLayer.wfsLayer.name, params.format);
+        var wfsServerUrl = collection.wmsLayer.wfsLayer.server.uri.replace("/wms", "/wfs");
+
+        return collection.wmsLayer.getWfsLayerFeatureRequestUrl(wfsServerUrl, collection.wmsLayer.wfsLayer.name, params.format);
     },
 
     _getMetadataLinks: function(collection) {

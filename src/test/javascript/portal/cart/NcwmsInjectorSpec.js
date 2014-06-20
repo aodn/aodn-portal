@@ -250,7 +250,9 @@ describe('Portal.cart.NcwmsInjector', function() {
                 },
                 getWfsLayerFeatureRequestUrl: noOp,
                 isNcwms: function() {return true},
-                wfsLayer: true
+                wfsLayer: {
+                    server: {uri: 'wfs_server_url'}
+                }
             },
             pointOfTruthLink: 'Link!',
             linkedFiles: 'Downloadable link!'
