@@ -86,9 +86,9 @@ Portal.data.GeoNetworkRecord = function() {
         convert: function(v, record) {
             var allLinks = convertXmlToLinks(v, record);
 
-            var protocolHandlerConstructors = {
-                PROTOCOL_OGC_WFS: Portal.cart.WfsDownloadHandler
-            };
+            var protocolHandlerConstructors = {};
+            protocolHandlerConstructors[PROTOCOL_OGC_WFS] = Portal.cart.WfsDownloadHandler;
+
             var applicableDownloadOptions = [];
 
             Ext.each(allLinks, function(link) {
