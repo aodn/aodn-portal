@@ -215,7 +215,6 @@ OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
         if (data.cql){
             filters.push(data.cql);
         }
-
     });
 
     return filters.join(" AND ");
