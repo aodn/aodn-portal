@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -32,10 +31,40 @@ describe("Portal.cart.DownloadPanelBody", function() {
 
         var mockTemplate;
 
-        var testCollection1 = {uuid: '[Content 1]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}};
-        var testCollection2 = {uuid: '[Content 2]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}};
-        var testCollection3 = {uuid: '[Content 3]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}};
-        var testCollection4 = {uuid: '[Content 4]', aggregator: { childAggregators: []}, wmsLayer: {wfsLayer: null, isNcwms: noOp}};
+        var makeTestCollection = function(uuid) {
+            return {
+                uuid: uuid,
+                aggregator: { childAggregators: []},
+                wmsLayer: {
+                    wfsLayer: null,
+                    isNcwms: noOp
+                },
+                dataDownloadHandlers: []
+            };
+        };
+
+        var makeTestDownloadPanelBody = function(collections) {
+            var downloadPanelBody = new Portal.cart.DownloadPanelBody();
+
+            var items = [];
+            Ext.each(collections, function(collection) {
+                items.push({
+                    data: collection
+                });
+            });
+
+            downloadPanelBody.store.data.items = items;
+
+            downloadPanelBody.rendered = true;
+            spyOn(downloadPanelBody, 'update');
+
+            return downloadPanelBody;
+        };
+
+        var testCollection1 = makeTestCollection('[Content 1]');
+        var testCollection2 = makeTestCollection('[Content 2]');
+        var testCollection3 = makeTestCollection('[Content 3]');
+        var testCollection4 = makeTestCollection('[Content 4]');
 
         beforeEach(function() {
 
@@ -44,28 +73,27 @@ describe("Portal.cart.DownloadPanelBody", function() {
             };
 
             spyOn(Portal.cart, 'DownloadPanelItemTemplate').andReturn(mockTemplate);
-
-            downloadPanelBody = new Portal.cart.DownloadPanelBody();
-            downloadPanelBody.store.data.items = [
-                {data: testCollection1},
-                {data: testCollection2},
-                {data: testCollection3},
-                {data: testCollection4}
-            ];
-
-            downloadPanelBody.rendered = true;
-            downloadPanelBody.update =  function(){};
-            spyOn(downloadPanelBody, 'update');
-
-            downloadPanelBody.generateContent();
         });
 
         it('creates a DownloadPanelItemTemplate', function() {
+
+            downloadPanelBody = makeTestDownloadPanelBody([]);
+
+            downloadPanelBody.generateContent();
 
             expect(Portal.cart.DownloadPanelItemTemplate).toHaveBeenCalled();
         });
 
         it('reverse view order enforced', function() {
+
+            downloadPanelBody = makeTestDownloadPanelBody([
+                testCollection1,
+                testCollection2,
+                testCollection3,
+                testCollection4
+            ]);
+
+            downloadPanelBody.generateContent();
 
             // Order of items is reversed!!
             expect(mockTemplate.apply.callCount).toBe(4);
@@ -77,17 +105,59 @@ describe("Portal.cart.DownloadPanelBody", function() {
 
         it('calls update', function() {
 
+            downloadPanelBody = makeTestDownloadPanelBody([]);
+
+            downloadPanelBody.generateContent();
+
             expect(downloadPanelBody.update).toHaveBeenCalled();
         });
 
         it('calls _contentForEmptyView when empty', function() {
+            downloadPanelBody = makeTestDownloadPanelBody([]);
+
             spyOn(downloadPanelBody, '_contentForEmptyView').andReturn('empty cart content');
 
-            downloadPanelBody.store.data.items = [];
             downloadPanelBody.generateContent();
 
             expect(downloadPanelBody._contentForEmptyView).toHaveBeenCalled();
             expect(downloadPanelBody.update).toHaveBeenCalledWith('empty cart content');
+        });
+
+        it('includes menu items from download handlers', function() {
+
+            testCollection1.dataDownloadHandlers = [{
+                getDownloadOptions: function() {
+                    return [
+                        {
+                            textKey: 'key1',
+                            handler: {},
+                            handlerParams: {}
+                        },
+                        {
+                            textKey: 'key2',
+                            handler: {},
+                            handlerParams: {}
+                        }
+                    ];
+                }
+            }];
+
+            spyOn(Portal.cart, 'InsertionService').andReturn({
+                insertionValues: function() {return {menuItems: []}}
+            });
+
+            downloadPanelBody = makeTestDownloadPanelBody([
+                testCollection1
+            ]);
+
+            spyOn(OpenLayers, 'i18n');
+
+            downloadPanelBody.generateContent();
+            var applyArgs = mockTemplate.apply.mostRecentCall.args;
+            var processedValues = applyArgs[0];
+
+            expect(OpenLayers.i18n.argsForCall).toEqual([['key1'], ['key2']]);
+            expect(processedValues.menuItems.length).toBe(2);
         });
     });
 });

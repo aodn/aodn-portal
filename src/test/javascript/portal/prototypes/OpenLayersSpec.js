@@ -122,26 +122,6 @@ describe('OpenLayers', function() {
             });
         });
 
-        describe('_getWfsServerUrl', function() {
-
-            it('returns wfs server uri', function() {
-
-                openLayer.wfsLayer = {server: {uri: 'wfs_server_uri/wms'}};
-
-                expect(openLayer._getWfsServerUrl()).toBe('wfs_server_uri/wfs');
-            });
-        });
-
-        describe('_getWfsLayerName', function() {
-
-            it('returns wfsLayer name', function() {
-
-                openLayer.wfsLayer = { name: 'argo_wfs' };
-
-                expect(openLayer._getWfsLayerName()).toBe('argo_wfs');
-            });
-        });
-
         describe('getWmsLayerFeatureRequestUrl', function() {
 
             it('calls _buildGetFeatureRequestUrl correctly', function() {
@@ -162,13 +142,11 @@ describe('OpenLayers', function() {
             it('calls _buildGetFeatureRequestUrl correctly', function() {
 
                 spyOn(openLayer, '_buildGetFeatureRequestUrl');
+                spyOn(openLayer, 'getDownloadFilter').andReturn('download filters');
 
-                openLayer.wfsLayer = { server: { uri: "wfs_uri" } };
-                openLayer.wfsLayer.name = 'wfs_name';
+                openLayer.getWfsLayerFeatureRequestUrl('wms_uri', 'layerName', 'csv');
 
-                openLayer.getWfsLayerFeatureRequestUrl('csv');
-
-                expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wfs_uri', 'wfs_name', 'csv', '');
+                expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wms_uri', 'layerName', 'csv', 'download filters');
             });
         });
 
@@ -356,5 +334,4 @@ describe('OpenLayers', function() {
             expect(spatialConstraintClearedSpy).toHaveBeenCalled();
         });
     });
-
 });

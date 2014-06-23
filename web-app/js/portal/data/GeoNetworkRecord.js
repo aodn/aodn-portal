@@ -8,6 +8,8 @@ Ext.namespace('Portal.data.GeoNetworkRecord');
 
 Portal.data.GeoNetworkRecord = function() {
 
+    var PROTOCOL_WWW_METADATA_LINK = 'WWW:LINK-1.0-http--metadata-URL';
+
     var linksField = {
         name: 'links',
         convert: convertXmlToLinks
@@ -21,7 +23,7 @@ Portal.data.GeoNetworkRecord = function() {
             var linkedFiles = [];
 
             Ext.each(allLinks, function(linkToCheck) {
-                if (isDownloadableProtocol(linkToCheck.protocol)) {
+                if (isLinkedFileProtocol(linkToCheck.protocol)) {
                     linkedFiles.push(linkToCheck);
                 }
             });
@@ -58,7 +60,7 @@ Portal.data.GeoNetworkRecord = function() {
             var pointOfTruthLink = undefined;
 
             Ext.each(allLinks, function(linkToCheck) {
-                if (linkToCheck.protocol == 'WWW:LINK-1.0-http--metadata-URL') {
+                if (linkToCheck.protocol == PROTOCOL_WWW_METADATA_LINK) {
 
                     pointOfTruthLink = linkToCheck;
                 }
@@ -75,6 +77,30 @@ Portal.data.GeoNetworkRecord = function() {
             var aggregatorFactory = new Portal.data.AggregatorFactory();
 
             return aggregatorFactory.newAggregatorGroup(allLinks);
+        }
+    };
+
+    var dataDownloadHandlersField = {
+        name: 'dataDownloadHandlers',
+        convert: function(v, record) {
+            var allLinks = convertXmlToLinks(v, record);
+
+            var protocolHandlerConstructors = {
+                'OGC:WFS-1.0.0-http-get-capabilities': Portal.cart.WfsDownloadHandler
+            };
+            var applicableDownloadOptions = [];
+
+            Ext.each(allLinks, function(link) {
+                var constructor = protocolHandlerConstructors[link.protocol];
+
+                if (constructor) {
+                    applicableDownloadOptions.push(
+                        new constructor(link)
+                    );
+                }
+            }, this);
+
+            return applicableDownloadOptions;
         }
     };
 
@@ -105,7 +131,7 @@ Portal.data.GeoNetworkRecord = function() {
         return links;
     }
 
-    function isDownloadableProtocol(protocol) {
+    function isLinkedFileProtocol(protocol) {
 
         var protocols = [];
 
@@ -130,6 +156,7 @@ Portal.data.GeoNetworkRecord = function() {
         linkedFilesField,
         pointOfTruthLinkField,
         aggregatorField,
+        dataDownloadHandlersField,
         'source',
         bboxField,
         'wmsLayer',

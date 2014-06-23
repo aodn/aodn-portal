@@ -17,13 +17,13 @@ describe('Portal.cart.WmsInjector', function() {
         geoNetworkRecord = {
             uuid: 9,
             grailsLayerId: 42,
-            getWfsLayerFeatureRequestUrl: function() {},
+            getWfsLayerFeatureRequestUrl: noOp,
             wmsLayer: {
                 getDownloadFilter: function() {
                     return "cql_filter"
                 },
                 isNcwms: function() {return false},
-                getWmsLayerFeatureRequestUrl: function() {},
+                getWmsLayerFeatureRequestUrl: noOp,
                 wfsLayer: true
             },
             pointOfTruthLink: 'Link!',
@@ -43,21 +43,6 @@ describe('Portal.cart.WmsInjector', function() {
 
 
     describe('createMenuItems', function() {
-
-        it('creates menu items if WFS layer is linked', function() {
-            var menuItems = injector._createMenuItems({
-                wmsLayer: {
-                    getWfsLayerFeatureRequestUrl: noOp,
-                    getWmsLayerFeatureRequestUrl: noOp,
-                    wfsLayer: {},
-                    isNcwms: function() {
-                        return false;
-                    }
-                }
-            });
-
-            expect(menuItems.length).toEqual(1);
-        });
 
         it('includes items for download url list and NetCDF download if urlDownloadFieldName exists', function() {
             var menuItems = injector._createMenuItems({
@@ -86,22 +71,6 @@ describe('Portal.cart.WmsInjector', function() {
             expect(menuItems.length).toEqual(2); // URL List and NetCDF download
             expect(urlListIncluded).toBe(true);
             expect(netCdfDownloadIncluded).toBe(true);
-        });
-
-        it('includes all menu items when wfsLayer and urlDownloadFieldName exist', function() {
-            var menuItems = injector._createMenuItems({
-                wmsLayer: {
-                    getWfsLayerFeatureRequestUrl: noOp,
-                    getWmsLayerFeatureRequestUrl: noOp,
-                    urlDownloadFieldName: true,
-                    wfsLayer: {},
-                    isNcwms: function() {
-                        return false;
-                    }
-                }
-            });
-
-            expect(menuItems.length).toEqual(3);
         });
     });
 
@@ -133,7 +102,6 @@ describe('Portal.cart.WmsInjector', function() {
             spyOn(injector, 'downloadWithConfirmation');
             spyOn(injector, '_getUrlListDownloadParams').andReturn(downloadParams);
             spyOn(injector, '_getNetCdfDownloadParams').andReturn(downloadParams);
-            spyOn(injector, '_wfsDownloadUrl');
 
             collection = {
                 wmsLayer: {
@@ -141,13 +109,6 @@ describe('Portal.cart.WmsInjector', function() {
                     isNcwms: function() { return true }
                 }
             };
-        });
-
-        it('_wfsDownloadHandler calls downloadWithConfirmation', function() {
-            injector._wfsDownloadHandler({
-                wmsLayer: {}
-            });
-            expect(injector.downloadWithConfirmation).toHaveBeenCalled();
         });
 
         it('_urlListDownloadHandler calls downloadWithConfirmation', function() {
@@ -168,19 +129,6 @@ describe('Portal.cart.WmsInjector', function() {
                 injector._downloadUrl,
                 downloadParams
             );
-        });
-    });
-
-    describe('_wfsDownloadUrl', function() {
-
-        it('calls correct function on layer', function() {
-
-            var spy = jasmine.createSpy();
-            var testLayer = {getWfsLayerFeatureRequestUrl: spy, params: "blagh"};
-
-            injector._wfsDownloadUrl({ wmsLayer: testLayer }, { format: 'csv' });
-
-            expect(testLayer.getWfsLayerFeatureRequestUrl).toHaveBeenCalledWith('csv');
         });
     });
 

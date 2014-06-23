@@ -134,23 +134,6 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
     });
 
-    describe('_wfsDownloadUrl', function() {
-
-        it('calls correct function on layer', function() {
-
-            var spy = jasmine.createSpy();
-            var testLayer = {getWfsLayerFeatureRequestUrl: spy};
-
-            injector._wfsDownloadUrl({
-                wmsLayer: testLayer
-            }, {
-                format: 'csv'
-            });
-
-            expect(testLayer.getWfsLayerFeatureRequestUrl).toHaveBeenCalledWith('csv');
-        });
-    });
-
     describe('getDataFilterEntry', function() {
 
 
@@ -186,7 +169,6 @@ describe('Portal.cart.NcwmsInjector', function() {
 
             entry = injector._formatHumanDateInfo('parameterDateLabel', 'startdate', 'enddate');
             expect(entry.indexOf('startdate')).toBeGreaterThan(-1);
-
         });
     });
 
@@ -268,7 +250,9 @@ describe('Portal.cart.NcwmsInjector', function() {
                 },
                 getWfsLayerFeatureRequestUrl: noOp,
                 isNcwms: function() {return true},
-                wfsLayer: true
+                wfsLayer: {
+                    server: {uri: 'wfs_server_url'}
+                }
             },
             pointOfTruthLink: 'Link!',
             linkedFiles: 'Downloadable link!'
