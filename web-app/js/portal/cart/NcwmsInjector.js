@@ -100,7 +100,8 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     _getDataMarkup: function(collection) {
 
         if (collection.wmsLayer.wfsLayer) {
-            return this._downloadSizeEstimator(collection);
+
+            return this._addDownloadEstimate(collection);
         }
 
         return '';
@@ -119,20 +120,5 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _isUrlListDownloadAvailable: function(collection) {
         return collection.aggregator.supportsNetCdfUrlList();
-    },
-
-    _downloadSizeEstimator: function(values) {
-        var estimator = new Portal.cart.DownloadEstimator();
-        estimator._getDownloadEstimate(
-            values,
-            this._bodaacCsvDownloadUrl(values)
-        );
-
-        return String.format(
-            "<div id=\"{0}\">{1}{2}</div>",
-            estimator.getIdElementName(values.uuid),
-            OpenLayers.i18n("estimatedDlLoadingMessage"),
-            OpenLayers.i18n("estimatedDlLoadingSpinner")
-        );
     }
 });

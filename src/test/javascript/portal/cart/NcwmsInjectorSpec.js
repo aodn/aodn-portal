@@ -136,7 +136,6 @@ describe('Portal.cart.NcwmsInjector', function() {
 
     describe('getDataFilterEntry', function() {
 
-
         beforeEach(function() {
             geoNetworkRecord.ncwmsParams.latitudeRangeStart = '-10';
             geoNetworkRecord.ncwmsParams.latitudeRangeEnd = '40';
@@ -232,7 +231,8 @@ describe('Portal.cart.NcwmsInjector', function() {
     });
 
     function getMockGeonetworkRecord() {
-        geoNetworkRecord = {
+
+        return {
             uuid: 9,
             grailsLayerId: 42,
             ncwmsParams: {
@@ -257,7 +257,5 @@ describe('Portal.cart.NcwmsInjector', function() {
             pointOfTruthLink: 'Link!',
             linkedFiles: 'Downloadable link!'
         };
-
-        return geoNetworkRecord;
     }
 });

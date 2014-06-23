@@ -50,6 +50,23 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         }
     },
 
+    _addDownloadEstimate: function(collection) {
+
+        var estimator = new Portal.cart.DownloadEstimator();
+
+        estimator._getDownloadEstimate(
+            collection,
+            this._downloadUrl(collection)
+        );
+
+        return String.format(
+            "<div id=\"{0}\">{1}{2}</div>",
+            estimator.getIdElementName(collection.uuid),
+            OpenLayers.i18n("estimatedDlLoadingMessage"),
+            OpenLayers.i18n("estimatedDlLoadingSpinner")
+        );
+    },
+
     _getUrlListDownloadParams: function(collection) {
         return this._getDownloadParams(collection, 'urlListForLayer', "{0}_URLs.txt");
     },
