@@ -137,7 +137,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // Download View
     downloadConfirmationWindowTitle: 'Data Download',
     downloadConfirmationWindowContent: " \
-  <h3>Licence and use limitations</h3/> \
+  <h3>Licence and use limitations</h3> \
     <p>Data downloaded in a cart may include licence information or use limitations. \
        If an agreement is included with data in the cart then by using those data you are accepting the terms of that \
        agreement.</p> \
