@@ -9,7 +9,9 @@ Ext.namespace('Portal.data.GeoNetworkRecord');
 Portal.data.GeoNetworkRecord = function() {
 
     var PROTOCOL_WWW_METADATA_LINK = 'WWW:LINK-1.0-http--metadata-URL';
-    var PROTOCOL_OGC_WFS = 'OGC:WFS-1.0.0-http-get-capabilities';
+    var DOWNLOAD_HANDLER_CONSTRUCTORS = {
+        'OGC:WFS-1.0.0-http-get-capabilities': Portal.cart.WfsDownloadHandler
+    };
 
     var linksField = {
         name: 'links',
@@ -86,13 +88,10 @@ Portal.data.GeoNetworkRecord = function() {
         convert: function(v, record) {
             var allLinks = convertXmlToLinks(v, record);
 
-            var protocolHandlerConstructors = {
-                PROTOCOL_OGC_WFS: Portal.cart.WfsDownloadHandler
-            };
             var applicableDownloadOptions = [];
 
             Ext.each(allLinks, function(link) {
-                var constructor = protocolHandlerConstructors[link.protocol];
+                var constructor = DOWNLOAD_HANDLER_CONSTRUCTORS[link.protocol];
 
                 if (constructor) {
                     applicableDownloadOptions.push(
