@@ -287,22 +287,4 @@
                                 </td>
                             </tr>
 
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    AODAAC&nbsp;Linked&nbsp;Products
-                                </td>
-                                <td valign="top">
-                                    <g:if test="${linkedAodaacProducts.size()}">
-                                        <ul>
-                                            <g:each in="${linkedAodaacProducts}" var="linkedProduct">
-                                                <li>${linkedProduct.name}</li>
-                                            </g:each>
-                                        </ul>
-                                    </g:if>
-                                    <g:else>
-                                        <i>No linked AODAAC products</i>
-                                    </g:else>
-                                </td>
-                            </tr>
-
                             <tr class="prop"><td valign="top" class="name" colspan="2">&nbsp;</td></tr>
