@@ -51,7 +51,6 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
             }
         });
 
-        this.cls =
         this.items = [ this.spacer, this.layerComboBox ];
 
         Portal.details.DataCollectionSelectorPanel.superclass.initComponent.call(this);
