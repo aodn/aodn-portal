@@ -30,7 +30,7 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
         });
 
         this.layerComboBox = new Ext.form.ComboBox({
-            width: 235,
+            width: 320,
             typeAhead: true,
             triggerAction: 'all',
             lazyRender: true,
@@ -41,6 +41,7 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
             }),
             valueField: 'id',
             editable: false,
+            forceSelection: true,
             displayField: 'layerName',
             listeners: {
                 select: function(combo, record) {
@@ -50,6 +51,7 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
             }
         });
 
+        this.cls =
         this.items = [ this.spacer, this.layerComboBox ];
 
         Portal.details.DataCollectionSelectorPanel.superclass.initComponent.call(this);
@@ -61,6 +63,25 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
                 this.addTolayerComboBoxStore(layer);
             }
             this.layerComboBox.setValue(layer.name);
+            this.setCursorPosition(this.layerComboBox.el.dom,0); // fixes Chrome bug #1168
+        }
+    },
+
+    setCursorPosition: function(obj,pos) {
+        if(obj != null) {
+            if(obj.createTextRange) {
+                var range = obj.createTextRange();
+                range.move('character', pos);
+                range.select();
+            }
+            else {
+                if(obj.selectionStart) {
+                    obj.focus();
+                    obj.setSelectionRange(pos, pos);
+                }
+                else
+                    obj.focus();
+            }
         }
     },
 
