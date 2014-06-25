@@ -62,24 +62,27 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
                 this.addTolayerComboBoxStore(layer);
             }
             this.layerComboBox.setValue(layer.name);
-            this.setCursorPosition(this.layerComboBox.el.dom,0); // fixes Chrome bug #1168
+            if (this.layerComboBox.el) {
+                this.setCursorPosition(this.layerComboBox.el.dom, 0); // fixes Chrome bug #1168
+            }
         }
     },
 
-    setCursorPosition: function(obj,pos) {
-        if(obj != null) {
-            if(obj.createTextRange) {
+    setCursorPosition: function(obj, pos) {
+        if (obj != null) {
+            if (obj.createTextRange) {
                 var range = obj.createTextRange();
                 range.move('character', pos);
                 range.select();
             }
             else {
-                if(obj.selectionStart) {
+                if (obj.selectionStart) {
                     obj.focus();
                     obj.setSelectionRange(pos, pos);
                 }
-                else
+                else {
                     obj.focus();
+                }
             }
         }
     },
