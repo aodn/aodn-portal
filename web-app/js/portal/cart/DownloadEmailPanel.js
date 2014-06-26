@@ -10,10 +10,14 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
 
     initComponent: function() {
 
+        var emailVal = (Ext.util.Cookies.get('emailField') != "undefined") ? Ext.util.Cookies.get('emailField') : "";
+
         this.emailField = new Ext.form.TextField({
             name: "emailField",
-            value: Ext.util.Cookies.get('emailField'),
+            value: emailVal,
+            emptyText: OpenLayers.i18n('emailAddressPlaceholder'),
             invalidText: OpenLayers.i18n('emailAddressValidationError'),
+            width: 250,
             validator: this._validateEmailAddress,
             bubbleEvents: [ 'valid', 'invalid' ]
         });
@@ -22,9 +26,6 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
             padding: 10,
             cls: 'downloadEmailPanel',
             items: [
-                {
-                    html: OpenLayers.i18n('emailAddressPlaceholder')
-                },
                 {xtype: 'spacer', height: 5},
                 this.emailField,
                 {xtype: 'spacer', height: 5},

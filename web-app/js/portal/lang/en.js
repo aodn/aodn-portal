@@ -55,7 +55,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     parameterDateLabel: 'Date range',
     parameterTimeLabel: 'Time-of-day range',
     metadataLinkText: 'View metadata record',
-    emailAddressPlaceholder: '<b>Email address</b>',
+    emailAddressPlaceholder: 'Your email address',
     emailAddressValidationError: 'Enter a valid email address',
     notificationBlurbMessage: 'Subsetting gridded data can take a long time.<br>You will be notified via email when your data is ready for download.',
 
