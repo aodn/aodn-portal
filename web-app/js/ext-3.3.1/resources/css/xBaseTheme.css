@@ -237,6 +237,8 @@ ul.x-tab-strip li {
     margin-right: 2px;
     padding: 2px 4px ! important;
     border-radius: 3px;
+    text-overflow: ellipsis;
+    text-align: "left";
 }
 
 .x-form-select-one {
