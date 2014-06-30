@@ -46,11 +46,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         if (layer.isNcwms()) {
             this.geoNetworkRecord = layer.parentGeoNetworkRecord;
 
-            this._applyFilterValuesFromMap();
             this._clearDateTimeFields();
             this._attachTemporalEvents(); // creates listener for completing processTemporalExtent
+            this._attachSpatialEvents();
             this.selectedLayer.processTemporalExtent(); // triggers 'temporalextentloaded'
             this._removeLoadingInfo();
+            this._applyFilterValuesFromMap();
             this._showAllControls();
 
             show.call(target, this);
@@ -68,7 +69,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.remove(this.loadingInfo);
         delete this.loadingInfo;
 
-        this._applyFilterValuesFromMap();
     },
 
     _addLoadingInfo: function() {
@@ -77,20 +77,29 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _addSpatialConstraintDisplayPanel: function() {
-        this.map.events.on({
-            scope: this,
-            'spatialconstraintadded': function(geometry) {
-                this._applyFilterValuesToCollection(geometry);
-            },
-            'spatialconstraintcleared': function() {
-                this._applyFilterValuesToCollection();
-            }
-        });
 
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.map
         });
         this.add(this.spatialSubsetControlsPanel);
+    },
+
+    _attachSpatialEvents: function() {
+        if (!this.selectedLayer.attachedSpatialEvents) {
+
+            var currentLayer = this.selectedLayer;
+            currentLayer.map.events.on({
+                scope: this,
+                'spatialconstraintadded': function(geometry) {
+                    this._applyFilterValuesToCollection(currentLayer, geometry);
+                },
+                'spatialconstraintcleared': function() {
+                    this._applyFilterValuesToCollection(currentLayer, null);
+                }
+            });
+
+            this.selectedLayer.attachedSpatialEvents = true;
+        }
     },
 
     _addTemporalControls: function() {
@@ -278,18 +287,23 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     _applyFilterValuesFromMap: function() {
 
-        this._applyFilterValuesToCollection(this.map.getConstraint());
+        this._applyFilterValuesToCollection(this.selectedLayer, this.map.getConstraint());
     },
 
-    _applyFilterValuesToCollection: function(geometry) {
+    _applyFilterValuesToCollection: function(layer, geometry) {
 
-        var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
-        var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
-        var parentAggr = this._getParentRecordAggregator(this.selectedLayer);
+        if (layer.parentGeoNetworkRecord) {
 
-        if (this.geoNetworkRecord && parentAggr) {
-            this._addDateTimeFilterToLayer();
-            this.geoNetworkRecord.updateNcwmsParams(this._buildParameters(parentAggr, this.selectedLayer, dateRangeStart, dateRangeEnd, geometry));
+            var parentAggr = this._getParentRecordAggregator(layer);
+
+            if (parentAggr) {
+
+                var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
+                var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
+
+                this._addDateTimeFilterToLayer();
+                layer.parentGeoNetworkRecord.updateNcwmsParams(this._buildParameters(parentAggr, layer, dateRangeStart, dateRangeEnd, geometry));
+            }
         }
     },
 
