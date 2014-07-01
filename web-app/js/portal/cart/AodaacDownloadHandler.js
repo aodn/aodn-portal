@@ -56,26 +56,34 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Object, {
 
     _buildAodaacUrl: function(aggregationParams, outputFormat, notificationEmailAddress) {
 
-        var args = [];
+        var args = {
+            dateRangeStart: this._formatDate(aggregationParams.dateRangeStart),
+            dateRangeEnd: this._formatDate(aggregationParams.dateRangeEnd),
+            latitudeRangeStart: aggregationParams.latitudeRangeStart || aggregationParams.productLatitudeRangeStart,
+            latitudeRangeEnd: aggregationParams.latitudeRangeEnd || aggregationParams.productLatitudeRangeEnd,
+            longitudeRangeStart: aggregationParams.longitudeRangeStart || aggregationParams.productLongitudeRangeStart,
+            longitudeRangeEnd: aggregationParams.longitudeRangeEnd || aggregationParams.productLongitudeRangeEnd,
+            productId: aggregationParams.productId,
+            output: outputFormat,
+            notificationEmailAddress: notificationEmailAddress
+        };
 
-        this._addArg(args, "dateRangeStart", this._formatDate(aggregationParams.dateRangeStart));
-        this._addArg(args, "dateRangeEnd", this._formatDate(aggregationParams.dateRangeEnd));
-        this._addArg(args, "latitudeRangeStart", aggregationParams.latitudeRangeStart || aggregationParams.productLatitudeRangeStart);
-        this._addArg(args, "latitudeRangeEnd", aggregationParams.latitudeRangeEnd || aggregationParams.productLatitudeRangeEnd);
-        this._addArg(args, "longitudeRangeStart", aggregationParams.longitudeRangeStart || aggregationParams.productLongitudeRangeStart);
-        this._addArg(args, "longitudeRangeEnd", aggregationParams.longitudeRangeEnd || aggregationParams.productLongitudeRangeEnd);
-        this._addArg(args, "productId", aggregationParams.productId);
-        this._addArg(args, "output", outputFormat);
-        this._addArg(args, "notificationEmailAddress", notificationEmailAddress);
-
-        return 'aodaac/createJob?' + args.join("&");
+        return 'aodaac/createJob?' + this._makeQueryString(args);
     },
 
-    _addArg: function(args, key, value) {
+    _makeQueryString: function(args) {
 
-        var encValue = encodeURIComponent(value);
+        var elements = [];
 
-        args.push(String.format('{0}={1}', key, encValue));
+        Ext.each(Object.keys(args), function(key) {
+
+                var encValue = encodeURIComponent(args[key]);
+
+                elements.push(String.format("{0}={1}", key, encValue));
+            }
+        );
+
+        return elements.join("&");
     },
 
     _formatDate: function(date) {
