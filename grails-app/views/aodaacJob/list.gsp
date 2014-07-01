@@ -9,7 +9,6 @@
     <body>
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
-            <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
         </div>
         <div class="body">
             <h1><g:message code="default.list.label" args="[entityName]" /></h1>
@@ -33,7 +32,7 @@
 
                             <g:sortableColumn property="dateCreated" title="${message(code: 'aodaacJob.dateCreated.label', default: 'Date Created')}" />
 
-                            <g:sortableColumn property="dateRangeEnd" title="${message(code: 'aodaacJob.dateRangeEnd.label', default: 'Date Range End')}" />
+                            <g:sortableColumn property="notificationEmailAddress" title="${message(code: 'aodaacJob.notificationEmailAddress.label', default: 'Notification Email Address')}" />
 
                         </tr>
                     </thead>
@@ -53,15 +52,14 @@
 
                             <td><g:formatDate date="${aodaacJobInstance.dateCreated}" /></td>
 
-                            <td><g:formatDate date="${aodaacJobInstance.dateRangeEnd}" /></td>
-
+                            <td>${fieldValue(bean: aodaacJobInstance, field: "notificationEmailAddress")}</td>
                         </tr>
                     </g:each>
                     </tbody>
                 </table>
             </div>
-            <div class="paginateButtons">
-                <g:paginate total="${aodaacJobInstanceTotal}" />
+            <div class="pagination">
+                <g:paginate total="${aodaacJobInstanceTotal}" params="${params}" />
             </div>
         </div>
     </body>
