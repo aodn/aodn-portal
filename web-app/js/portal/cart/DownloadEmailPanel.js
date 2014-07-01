@@ -10,7 +10,12 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
 
     initComponent: function() {
 
-        var emailVal = (Ext.util.Cookies.get('emailField') != "undefined") ? Ext.util.Cookies.get('emailField') : "";
+        var emailVal = "";
+        var EMPTY_EXT3_3_0_COOKIE_STRING = "undefined";
+
+        if (Ext.util.Cookies.get('emailField') && Ext.util.Cookies.get('emailField') != EMPTY_EXT3_3_0_COOKIE_STRING) {
+            emailVal = Ext.util.Cookies.get('emailField');
+        }
 
         this.emailField = new Ext.form.TextField({
             name: "emailField",
