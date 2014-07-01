@@ -27,6 +27,7 @@ describe('Portal.details.NcWmsPanel', function() {
         layer.isNcwms = function() { return true };
         layer.events = { on: noOp };
         layer.processTemporalExtent = noOp;
+        layer.map = map;
         layer.aodaacProducts = ['1'];
 
         ncwmsPanel = new Portal.details.NcWmsPanel({ map: map });
