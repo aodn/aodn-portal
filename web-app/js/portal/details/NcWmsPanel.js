@@ -275,6 +275,16 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this._applyFilterValuesFromMap();
     },
 
+    _previousTimeSlice: function() {
+        this.selectedLayer.previousTimeSlice();
+        this._updateTimeRangeLabel();
+    },
+
+    _nextTimeSlice: function() {
+        this.selectedLayer.nextTimeSlice();
+        this._updateTimeRangeLabel();
+    },
+
     _applyFilterValuesFromMap: function() {
 
         this._applyFilterValuesToCollection(this.selectedLayer, this.map.getConstraint());
