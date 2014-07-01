@@ -266,16 +266,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this._applyFilterValuesFromMap();
     },
 
-    _previousTimeSlice: function() {
-        this.selectedLayer.previousTimeSlice();
-        this._updateTimeRangeLabel();
-    },
-
-    _nextTimeSlice: function() {
-        this.selectedLayer.nextTimeSlice();
-        this._updateTimeRangeLabel();
-    },
-
     _applyFilterValuesFromMap: function() {
 
         this._applyFilterValuesToCollection(this.map.getConstraint());
@@ -287,8 +277,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
         var parentAggr = this._getParentRecordAggregator(this.selectedLayer);
 
+        this._addDateTimeFilterToLayer();
+
         if (this.geoNetworkRecord && parentAggr) {
-            this._addDateTimeFilterToLayer();
             this.geoNetworkRecord.updateNcwmsParams(this._buildParameters(parentAggr, this.selectedLayer, dateRangeStart, dateRangeEnd, geometry));
         }
     },
