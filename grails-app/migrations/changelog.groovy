@@ -81,6 +81,7 @@ databaseChangeLog = {
     include file: '20140530-JB-DropDownloadCartConfirmationWindowContent.groovy'
     include file: '20140617-DN-FixOldAodaacJobs.groovy'
     include file: '20140620-DN-FixAodaacJobStatus.groovy'
+    include file: '20140701-PB-RemovalOfTable-aodaac_product_link.groovy'
 
     // Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 
