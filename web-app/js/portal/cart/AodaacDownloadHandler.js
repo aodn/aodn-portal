@@ -31,20 +31,6 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Object, {
                     collectEmailAddress: true
                 }
             });
-
-            // TODO - DN: Check with Edward King
-          /*  downloadOptions.push({
-                textKey: 'downloadAsHdfLabel',
-                handler: this._getClickHandler(),
-                handlerParams: {}
-            });*/
-
-            // TODO - DN: Needs changes in AODAAC
-            /*downloadOptions.push({
-                textKey: 'downloadAsUrlsLabel',
-                handler: this._getClickHandler(),
-                handlerParams: {}
-            });*/
         }
 
         return downloadOptions;
