@@ -52,12 +52,20 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
 
     _loadMenuItemsFromHandlers: function(processedValues, collection) {
 
+        if (!processedValues.menuItems) {
+            console.log('No menu items!');
+            processedValues.menuItems = [];
+        }
+        else {
+            console.log('\n\n**************8\nHas menu items!\n***********************\n\n')
+        }
+
         Ext.each(collection.dataDownloadHandlers, function(handler) {
 
             Ext.each(handler.getDownloadOptions(), function(downloadOption) {
 
                 var newMenuItem = {
-                    text: OpenLayers.i18n(downloadOption.textKey),
+                    text: OpenLayers.i18n(downloadOption.textKey) + ' (new)',
                     handler: function() {
                         this.confirmDownload(collection, this, downloadOption.handler, downloadOption.handlerParams)
                     },

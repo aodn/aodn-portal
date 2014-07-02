@@ -10,6 +10,10 @@ Ext.namespace('Portal.cart');
 Portal.cart.AodaacDownloadHandler = Ext.extend(Object, {
 
     DATE_FORMAT_FOR_PORTAL: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]',
+    DEFAULT_LAT_START: -90,
+    DEFAULT_LAT_END:    90,
+    DEFAULT_LON_START:   0,
+    DEFAULT_LON_END:   180,
 
     constructor: function(onlineResource) {
 
@@ -25,7 +29,7 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Object, {
             downloadOptions.push({
                 textKey: 'downloadAsSubsettedNetCdfLabel',
                 handler: this._getClickHandler(),
-                handlerParams: {
+                handlerParams: { // TODO - DN: Why pass these through? Could just use them here!
                     outputFormat: 'nc',
                     asyncDownload: true,
                     collectEmailAddress: true
@@ -43,27 +47,35 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Object, {
 
     _getClickHandler: function() {
 
-        var productId = this.onlineResource.name;
-        var serverUrl = this.onlineResource.href;
-
         var _this = this;
 
-        return function(collection, params) {
+        return function(collection, handlerParams) {
 
-            return _this._buildAodaacUrl(collection.ncwmsParams, params.outputFormat, params.emailAddress);
+            console.log('handlerParams');
+            console.log(handlerParams);
+
+            return _this._buildAodaacUrl(
+                collection.ncwmsParams,
+                _this.onlineResource.name,
+                handlerParams.outputFormat,
+                handlerParams.emailAddress
+            );
         };
     },
 
-    _buildAodaacUrl: function(aggregationParams, outputFormat, notificationEmailAddress) {
+    _buildAodaacUrl: function(aggregationParams, productId, outputFormat, notificationEmailAddress) {
+
+        console.log('aggregationParams');
+        console.log(aggregationParams);
 
         var args = {
             dateRangeStart: this._formatDate(aggregationParams.dateRangeStart),
             dateRangeEnd: this._formatDate(aggregationParams.dateRangeEnd),
-            latitudeRangeStart: aggregationParams.latitudeRangeStart || aggregationParams.productLatitudeRangeStart,
-            latitudeRangeEnd: aggregationParams.latitudeRangeEnd || aggregationParams.productLatitudeRangeEnd,
-            longitudeRangeStart: aggregationParams.longitudeRangeStart || aggregationParams.productLongitudeRangeStart,
-            longitudeRangeEnd: aggregationParams.longitudeRangeEnd || aggregationParams.productLongitudeRangeEnd,
-            productId: aggregationParams.productId,
+            latitudeRangeStart: aggregationParams.latitudeRangeStart || this.DEFAULT_LAT_START,
+            latitudeRangeEnd: aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END,
+            longitudeRangeStart: aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START,
+            longitudeRangeEnd: aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END,
+            productId: productId,
             output: outputFormat,
             notificationEmailAddress: notificationEmailAddress
         };
