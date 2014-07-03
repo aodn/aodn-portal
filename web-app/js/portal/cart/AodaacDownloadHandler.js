@@ -19,12 +19,7 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
             downloadOptions.push({
                 textKey: 'downloadAsSubsettedNetCdfLabel',
-                handler: this._getClickHandler(),
-                handlerParams: { // TODO - DN: Why pass these through? Could just use them here!
-                    outputFormat: 'nc',
-                    asyncDownload: true,
-                    collectEmailAddress: true
-                }
+                handler: this._getClickHandler()
             });
         }
 
@@ -45,10 +40,13 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
             console.log('handlerParams');
             console.log(handlerParams);
 
+            handlerParams.asyncDownload = true;
+            handlerParams.collectEmailAddress = true;
+
             return _this._buildAodaacUrl(
                 collection.ncwmsParams,
                 _this.onlineResource.name,
-                handlerParams.outputFormat,
+                'nc',
                 handlerParams.emailAddress
             );
         };
