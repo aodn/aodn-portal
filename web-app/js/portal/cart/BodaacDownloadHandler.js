@@ -9,6 +9,9 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.BodaacDownloadHandler = Ext.extend(Object, {
 
+    LAYER_NAME_INDEX: 0,
+    COLUMN_NAME_INDEX: 1,
+
     constructor: function(onlineResource) {
 
         this.onlineResource = onlineResource;
@@ -20,14 +23,23 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Object, {
 
         if (this._hasRequiredInfo()) {
 
+            //         var columnName = this._valueFromNameField(this.COLUMN_NAME_INDEX);
+
             downloadOptions.push({
                 textKey: 'downloadAllSourceFilesLabel',
-                handler: this._getFileDownloadClickHandler()
+                handler: this._getFileDownloadClickHandler(),
+                handlerParams: {
+                    asdf: 'yerp'
+                }              /*
+                this._getDownloadParams(collection, 'downloadNetCdfFilesForLayer', "{0}_source_files.zip")
+                */
             });
 
             downloadOptions.push({
                 textKey: 'downloadAsUrlsLabel',
-                handler: this._getUrlListClickHandler()
+                handler: this._getUrlListClickHandler()            /*
+                 this._getDownloadParams(collection, 'urlListForLayer', "{0}_URLs.txt")
+                 */
             });
         }
 
@@ -41,22 +53,19 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Object, {
 
     _getUrlListClickHandler: function() {
 
-        var productId = this.onlineResource.name;
+        var layerName = this._valueFromNameField(this.LAYER_NAME_INDEX);
         var serverUrl = this.onlineResource.href;
-
-        var _this = this;
 
         return function(collection, params) {
 
             alert('BODAAC, yo!');
 
-            /*
-             this._getDownloadParams(collection, 'urlListForLayer', "{0}_URLs.txt")
-             */
+            console.log('_getUrlListClickHandler - params');
+            console.log(params);
 
             collection.wmsLayer._buildGetFeatureRequestUrl(
                 serverUrl,
-                collection.wmsLayer.wfsLayer.name, // TODO - DN: Oh noes!
+                layerName,
                 'csv',
                 collection.wmsLayer.getDownloadFilter()
             );
@@ -65,26 +74,29 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Object, {
 
     _getFileDownloadClickHandler: function() {
 
-        var productId = this.onlineResource.name;
-        var serverUrl = this.onlineResource.href;
+        var layerName = this._valueFromNameField(this.LAYER_NAME_INDEX);
 
-        var _this = this;
+        var serverUrl = this.onlineResource.href;
 
         return function(collection, params) {
 
             alert('BODAAC, yo!');
 
-            /*
-             this._getDownloadParams(collection, 'downloadNetCdfFilesForLayer', "{0}_source_files.zip")
-             */
+            console.log('_getFileDownloadClickHandler - params');
+            console.log(params);
 
-            collection.wmsLayer._buildGetFeatureRequestUrl(
+            return collection.wmsLayer._buildGetFeatureRequestUrl(
                 serverUrl,
-                collection.wmsLayer.wfsLayer.name, // TODO - DN: Oh noes!
+                layerName,
                 'csv',
                 collection.wmsLayer.getDownloadFilter()
             );
         };
+    },
+
+    _valueFromNameField: function(index) {
+
+        return this.onlineResource.name.split("|")[index];
     },
 
     _getDownloadParams: function(collection, action, filenameFormat, fileFormat) {
