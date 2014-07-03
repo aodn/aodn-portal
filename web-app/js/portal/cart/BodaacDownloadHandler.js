@@ -21,8 +21,13 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Object, {
         if (this._hasRequiredInfo()) {
 
             downloadOptions.push({
+                textKey: 'downloadAllSourceFilesLabel',
+                handler: this._getFileDownloadClickHandler()
+            });
+
+            downloadOptions.push({
                 textKey: 'downloadAsUrlsLabel',
-                handler: this._getClickHandler()
+                handler: this._getUrlListClickHandler()
             });
         }
 
@@ -34,7 +39,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Object, {
         return this.onlineResource.name && this.onlineResource.name != "";
     },
 
-    _getClickHandler: function() {
+    _getUrlListClickHandler: function() {
 
         var productId = this.onlineResource.name;
         var serverUrl = this.onlineResource.href;
@@ -43,7 +48,56 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Object, {
 
         return function(collection, params) {
 
-            alert('BODAAC, yo!')
+            alert('BODAAC, yo!');
+
+            /*
+             this._getDownloadParams(collection, 'urlListForLayer', "{0}_URLs.txt")
+             */
+
+            collection.wmsLayer._buildGetFeatureRequestUrl(
+                serverUrl,
+                collection.wmsLayer.wfsLayer.name, // TODO - DN: Oh noes!
+                'csv',
+                collection.wmsLayer.getDownloadFilter()
+            );
+        };
+    },
+
+    _getFileDownloadClickHandler: function() {
+
+        var productId = this.onlineResource.name;
+        var serverUrl = this.onlineResource.href;
+
+        var _this = this;
+
+        return function(collection, params) {
+
+            alert('BODAAC, yo!');
+
+            /*
+             this._getDownloadParams(collection, 'downloadNetCdfFilesForLayer', "{0}_source_files.zip")
+             */
+
+            collection.wmsLayer._buildGetFeatureRequestUrl(
+                serverUrl,
+                collection.wmsLayer.wfsLayer.name, // TODO - DN: Oh noes!
+                'csv',
+                collection.wmsLayer.getDownloadFilter()
+            );
+        };
+    },
+
+    _getDownloadParams: function(collection, action, filenameFormat, fileFormat) {
+
+        var downloadControllerArgs = {
+            action: action,
+            layerId: collection.wmsLayer.grailsLayerId
+        };
+
+        return {
+            format: fileFormat,
+            filenameFormat: filenameFormat,
+            downloadControllerArgs: downloadControllerArgs
         };
     }
 });
