@@ -21,6 +21,7 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
     <title>ANFOG</title> \
     <abstract>This is about ANFOGs, man</abstract> \
     <geoBox>112|-44|154|-9</geoBox> \
+    <geoPolygon>POLYGON((-80 -38,-80 -36,-78 -36,-78 -38,-80 -38))</geoPolygon> \
     <geonet:info xmlns:geonet=\"http://www.fao.org/geonetwork\"> \
       <uuid>123456789</uuid> \
     </geonet:info> \
@@ -87,7 +88,7 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
 
         describe('bbox', function() {
             it('west', function() {
-                expect(geoNetworkRecordStore.getAt(0).get('bbox').getBounds().left).toBe(112);
+                expect(geoNetworkRecordStore.getAt(0).get('bbox').getBounds().left).toBe(-80);
             });
 
             it('south', function() {

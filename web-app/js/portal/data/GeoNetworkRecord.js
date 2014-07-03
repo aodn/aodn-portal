@@ -36,8 +36,13 @@ Portal.data.GeoNetworkRecord = function() {
         name: 'bbox',
         convert: function(v, record) {
             var metaDataExtent = new Portal.search.MetadataExtent();
+
             Ext.each(Ext.DomQuery.jsSelect('geoBox', record), function(geoBox) {
-                metaDataExtent.addPolygon(geoBox.firstChild.nodeValue);
+                metaDataExtent.addBBox(geoBox.firstChild.nodeValue);
+            }, this.scope);
+
+            Ext.each(Ext.DomQuery.jsSelect('geoPolygon', record), function(geoPolygon) {
+                metaDataExtent.addPolygon(geoPolygon.firstChild.nodeValue);
             }, this.scope);
 
             return metaDataExtent;

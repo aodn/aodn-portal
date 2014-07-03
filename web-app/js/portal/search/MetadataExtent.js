@@ -13,8 +13,12 @@ Portal.search.MetadataExtent = Ext.extend(Object, {
         this.polygons = [];
     },
 
-    addPolygon: function(geoBox) {
-        this.polygons.push(this._toGeoBox(geoBox))
+    addBBox: function(geoBox) {
+        this.polygons.push(this._toGeoBox(geoBox));
+    },
+
+    addPolygon: function(polygon) {
+        this.polygons.push(this._wktPolygonToGeoBox(polygon));
     },
 
     getLayer: function() {
@@ -27,9 +31,19 @@ Portal.search.MetadataExtent = Ext.extend(Object, {
 
     getBounds: function() {
         if (!this.bounds && this.polygons.length > 0) {
-            this.bounds = new OpenLayers.Bounds(this.polygons[0].west, this.polygons[0].south, this.polygons[0].east, this.polygons[0].north);
-        }
+            this.bounds = new OpenLayers.Bounds();
 
+            // Create a Bounds object and extend it to contain all given bounds
+            // defined in this.polygons
+            for (var i = 0; i < this.polygons.length; i++) {
+                this.bounds.extend(new OpenLayers.Bounds(
+                    this.polygons[i].west,
+                    this.polygons[i].south,
+                    this.polygons[i].east,
+                    this.polygons[i].north
+                ));
+            }
+        }
         return this.bounds;
     },
 
@@ -61,6 +75,17 @@ Portal.search.MetadataExtent = Ext.extend(Object, {
 
     _point: function(x, y) {
         return new OpenLayers.Geometry.Point(x, y);
+    },
+
+    _wktPolygonToGeoBox: function(polygon) {
+        var wktPolygon = new OpenLayers.Feature.Vector(OpenLayers.Geometry.fromWKT(polygon));
+        var bounds = wktPolygon.geometry.getBounds();
+        return {
+            west: bounds.left,
+            south: bounds.bottom,
+            east: bounds.right,
+            north: bounds.top
+        };
     },
 
     _toGeoBox: function(geoBoxStr) {
