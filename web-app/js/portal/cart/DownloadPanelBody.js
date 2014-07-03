@@ -53,11 +53,7 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
     _loadMenuItemsFromHandlers: function(processedValues, collection) {
 
         if (!processedValues.menuItems) {
-            console.log('No menu items!');
             processedValues.menuItems = [];
-        }
-        else {
-            console.log('\n\n**************8\nHas menu items!\n***********************\n\n')
         }
 
         Ext.each(collection.dataDownloadHandlers, function(handler) {
