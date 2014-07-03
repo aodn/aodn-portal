@@ -7,18 +7,9 @@
 
 Ext.namespace('Portal.cart');
 
-Portal.cart.AodaacDownloadHandler = Ext.extend(Object, {
+Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
-    DATE_FORMAT_FOR_PORTAL: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]',
-    DEFAULT_LAT_START: -90,
-    DEFAULT_LAT_END:    90,
-    DEFAULT_LON_START:   0,
-    DEFAULT_LON_END:   180,
-
-    constructor: function(onlineResource) {
-
-        this.onlineResource = onlineResource;
-    },
+    AODAAC_LON_START: 0, // Works around limitation in AODAAC
 
     getDownloadOptions: function() {
 
@@ -73,7 +64,7 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Object, {
             dateRangeEnd: this._formatDate(aggregationParams.dateRangeEnd),
             latitudeRangeStart: aggregationParams.latitudeRangeStart || this.DEFAULT_LAT_START,
             latitudeRangeEnd: aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END,
-            longitudeRangeStart: aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START,
+            longitudeRangeStart: aggregationParams.longitudeRangeStart || this.AODAAC_LON_START,
             longitudeRangeEnd: aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END,
             productId: productId,
             output: outputFormat,
@@ -97,9 +88,4 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Object, {
 
         return elements.join("&");
     },
-
-    _formatDate: function(date) {
-
-        return date.format(this.DATE_FORMAT_FOR_PORTAL);
-    }
 });

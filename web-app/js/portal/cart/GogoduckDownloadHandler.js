@@ -7,18 +7,7 @@
 
 Ext.namespace('Portal.cart');
 
-Portal.cart.GogoduckDownloadHandler = Ext.extend(Object, {
-
-    DATE_FORMAT_FOR_PORTAL: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]', // TODO - DN: Common superclass
-    DEFAULT_LAT_START: -90,
-    DEFAULT_LAT_END: 90,
-    DEFAULT_LON_START: -180,
-    DEFAULT_LON_END: 180,
-
-    constructor: function(onlineResource) {
-
-        this.onlineResource = onlineResource;
-    },
+Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     getDownloadOptions: function() {
 
@@ -86,10 +75,5 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Object, {
         var paramsAsJson = Ext.util.JSON.encode(args);
 
         return String.format('gogoduck/registerJob?jobParameters={0}', encodeURIComponent(paramsAsJson));
-    },
-
-    _formatDate: function(date) {
-
-        return date.format(this.DATE_FORMAT_FOR_PORTAL);
     }
 });

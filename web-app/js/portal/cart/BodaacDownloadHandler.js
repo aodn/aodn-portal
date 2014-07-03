@@ -7,15 +7,10 @@
 
 Ext.namespace('Portal.cart');
 
-Portal.cart.BodaacDownloadHandler = Ext.extend(Object, {
+Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     LAYER_NAME_INDEX: 0,
     COLUMN_NAME_INDEX: 1,
-
-    constructor: function(onlineResource) {
-
-        this.onlineResource = onlineResource;
-    },
 
     getDownloadOptions: function() {
 
