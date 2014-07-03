@@ -7,12 +7,7 @@
 
 Ext.namespace('Portal.cart');
 
-Portal.cart.WfsDownloadHandler = Ext.extend(Object, {
-
-    constructor: function(onlineResource) {
-
-        this.onlineResource = onlineResource;
-    },
+Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     getDownloadOptions: function() {
 
