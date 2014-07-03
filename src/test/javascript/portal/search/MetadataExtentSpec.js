@@ -46,18 +46,18 @@ describe("Portal.search.MetadataExtent", function() {
         expect(points[3].y).toEqual(geoBox.south);
     });
 
-    it("adds a polygon to the extent", function() {
+    it("adds a bbox to the extent", function() {
         var extent = new Portal.search.MetadataExtent();
         var before = extent.polygons.length;
-        extent.addPolygon("140|-60|180|-30");
+        extent.addBBox("140|-60|180|-30");
 
         expect(extent.polygons.length).toEqual(before + 1);
     });
 
-    it("creates a feature per polygon", function() {
+    it("creates a feature per bbox", function() {
         var extent = new Portal.search.MetadataExtent();
-        extent.addPolygon("140|-60|180|-30");
-        extent.addPolygon("-180|-60|-140|-30");
+        extent.addBBox("140|-60|180|-30");
+        extent.addBBox("-180|-60|-140|-30");
 
         expect(extent._vectorFeatures().length).toEqual(extent.polygons.length);
     });
@@ -76,20 +76,31 @@ describe("Portal.search.MetadataExtent", function() {
 
     it("creates a bounds", function() {
         var extent = new Portal.search.MetadataExtent();
-        extent.addPolygon("140|-60|180|-30");
+        extent.addBBox("140|-60|180|-30");
 
         expect(extent.getBounds()).not.toBeUndefined();
     });
 
-    it("creates a bounds from the first polygon when several are included", function() {
+    it("creates a bounds from all polygons", function() {
         var extent = new Portal.search.MetadataExtent();
-        extent.addPolygon("140|-60|180|-30");
-        extent.addPolygon("-180|-60|-140|-30");
+        extent.addBBox("140|-60|180|-30");
+        extent.addBBox("-180|-60|-140|-30");
 
         var boundsArray = extent.getBounds().toArray();
-        expect(boundsArray[0]).toEqual(140);
+        expect(boundsArray[0]).toEqual(-180);
         expect(boundsArray[1]).toEqual(-60);
         expect(boundsArray[2]).toEqual(180);
         expect(boundsArray[3]).toEqual(-30);
+    });
+
+    it("creates a bbox from WKT polygon", function() {
+        var extent = new Portal.search.MetadataExtent();
+        extent.addPolygon("POLYGON((-120 -38,-120 -40,-122 -40,-124 -40,-124 -38,-122 -38,-122 -36,-120 -36,-118 -36,-118 -38,-120 -38))");
+
+        var boundsArray = extent.getBounds().toArray();
+        expect(boundsArray[0]).toEqual(-124);
+        expect(boundsArray[1]).toEqual(-40);
+        expect(boundsArray[2]).toEqual(-118);
+        expect(boundsArray[3]).toEqual(-36);
     });
 });
