@@ -85,5 +85,5 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         );
 
         return elements.join("&");
-    },
+    }
 });
