@@ -64,9 +64,6 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         return function(collection, params) {
 
-            console.log('_getUrlListClickHandler - params');
-            console.log(params);
-
             var wmsLayer = collection.wmsLayer;
             var wfsLayer = wmsLayer.wfsLayer;
 

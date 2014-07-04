@@ -37,9 +37,6 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         return function(collection, handlerParams) {
 
-            console.log('handlerParams');
-            console.log(handlerParams);
-
             handlerParams.asyncDownload = true;
             handlerParams.collectEmailAddress = true;
 

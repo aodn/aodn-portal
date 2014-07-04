@@ -39,12 +39,6 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         return function(collection, handlerParams) {
 
-            console.log('handlerParams');
-            console.log(handlerParams);
-
-            console.log('collection.ncwmsParams');
-            console.log(collection.ncwmsParams);
-
             return _this._buildGogoduckUrl(
                 collection.ncwmsParams,
                 _this._resourceName(),
