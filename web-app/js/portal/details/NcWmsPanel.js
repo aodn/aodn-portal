@@ -9,7 +9,6 @@ Ext.namespace('Portal.details');
 
 Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
-
     ROW_HEIGHT: 32,
 
     constructor: function(cfg) {

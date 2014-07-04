@@ -13,7 +13,6 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
     LAYER_NAME_INDEX: 0,
     FIELD_NAME_INDEX: 1,
 
-
     getDownloadOptions: function() {
 
         var downloadOptions = [];
@@ -28,7 +27,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                     downloadControllerArgs: {
                         action: 'downloadNetCdfFilesForLayer',
                         layerId: null
-                        /*serverUrl: this._serverUrl(),
+                        /*serverUrl: this._resourceHref(),
                         urlFieldName: this._urlFieldName()*/
                     }
                 }
@@ -42,7 +41,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                     downloadControllerArgs: {
                         action: 'urlListForLayer',
                         layerId: null
-                        /*serverUrl: this._serverUrl(),
+                        /*serverUrl: this._resourceHref(),
                         urlFieldName: this._urlFieldName()*/
                     }
                 }
@@ -54,9 +53,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     _hasRequiredInfo: function() {
 
-        /*var theName = this.onlineResource.name;
-
-        return theName && (theName.indexOf(this.NAME_FIELD_DELIMETER) > -1);*/
+        /*return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty() && (this._resourceName().indexOf(this.NAME_FIELD_DELIMETER) > -1);*/
 
         return true; // Currently not using info from the metadata record
     },
@@ -76,7 +73,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
             params.downloadControllerArgs.layerId = wmsLayer.grailsLayerId;
 
             return collection.wmsLayer._buildGetFeatureRequestUrl(
-                /*_this._serverUrl(),
+                /*_this._resourceHref(),
                 _this._layerName(),*/
                 wfsLayer.server.uri.replace("/wms", "/wfs"),
                 wfsLayer.name,
@@ -92,10 +89,6 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     _urlFieldName: function() {
         return this._valueFromNameField(this.FIELD_NAME_INDEX);
-    },
-
-    _serverUrl: function() {
-        return this.onlineResource.href;
     },
 
     _valueFromNameField: function(index) {

@@ -29,16 +29,19 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     _hasRequiredInfo: function() {
 
-        return this.onlineResource.name && this.onlineResource.name != "";
+        return this._resourceNameNotEmpty();
     },
 
     _getClickHandler: function() {
 
-        var layerName = this.onlineResource.name;
-        var serverUrl = this.onlineResource.href;
+        var _this = this;
 
         return function(collection) {
-            return collection.wmsLayer.getWfsLayerFeatureRequestUrl(serverUrl, layerName, 'csv');
+            return collection.wmsLayer.getWfsLayerFeatureRequestUrl(
+                _this.resourceHref(),
+                _this._resourceName(),
+                'csv'
+            );
         };
     }
 });

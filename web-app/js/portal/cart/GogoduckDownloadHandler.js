@@ -30,13 +30,10 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     _hasRequiredInfo: function() {
 
-        return this.onlineResource.name && this.onlineResource.name != "";
+        return this._resourceNameNotEmpty();
     },
 
     _getClickHandler: function() {
-
-        var layerName = this.onlineResource.name;
-        var serverUrl = this.onlineResource.href;
 
         var _this = this;
 
@@ -48,7 +45,12 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
             console.log('collection.ncwmsParams');
             console.log(collection.ncwmsParams);
 
-            return _this._buildGogoduckUrl(collection.ncwmsParams, layerName, serverUrl, handlerParams.emailAddress);
+            return _this._buildGogoduckUrl(
+                collection.ncwmsParams,
+                _this._resourceName(),
+                _this._resourceHref(),
+                handlerParams.emailAddress
+            );
         };
     },
 

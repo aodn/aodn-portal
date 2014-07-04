@@ -28,7 +28,7 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     _hasRequiredInfo: function() {
 
-        return this.onlineResource.name && this.onlineResource.name != "";
+        return this._resourceNameNotEmpty();
     },
 
     _getClickHandler: function() {
@@ -45,7 +45,7 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
             return _this._buildAodaacUrl(
                 collection.ncwmsParams,
-                _this.onlineResource.name,
+                _this._resourceName(),
                 'nc',
                 handlerParams.emailAddress
             );

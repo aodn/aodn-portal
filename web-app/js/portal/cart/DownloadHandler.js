@@ -25,6 +25,30 @@ Portal.cart.DownloadHandler = Ext.extend(Object, {
         throw 'Should be implemented by subclasses';
     },
 
+    _resourceName: function() {
+
+        return this.onlineResource.name;
+    },
+
+    _resourceNameNotEmpty: function() {
+
+        var name = this._resourceName();
+
+        return name && name != "";
+    },
+
+    _resourceHref: function() {
+
+        return this.onlineResource.href;
+    },
+
+    _resourceHrefNotEmpty: function() {
+
+        var href = this._resourceHref();
+
+        return href && href != "";
+    },
+
     _formatDate: function(date) {
 
         return date.format(this.DATE_FORMAT_FOR_PORTAL);
