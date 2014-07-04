@@ -59,7 +59,7 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
             longitudeRangeStart: aggregationParams.longitudeRangeStart || this.AODAAC_DEFAULT_LON_START,
             longitudeRangeEnd: aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END,
             productId: productId,
-            output: outputFormat,
+            outputFormat: outputFormat,
             notificationEmailAddress: notificationEmailAddress
         };
 
