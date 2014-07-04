@@ -70,13 +70,18 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
             console.log('_getUrlListClickHandler - params');
             console.log(params);
 
-            collection.wmsLayer._buildGetFeatureRequestUrl(
+            var wmsLayer = collection.wmsLayer;
+            var wfsLayer = wmsLayer.wfsLayer;
+
+            params.downloadControllerArgs.layerId = wmsLayer.grailsLayerId;
+
+            return collection.wmsLayer._buildGetFeatureRequestUrl(
                 /*_this._serverUrl(),
                 _this._layerName(),*/
-                collection.wmsLayer.wfsLayer.server.uri.replace("/wms", "/wfs"),
-                collection.wmsLayer.wfsLayer.name,
+                wfsLayer.server.uri.replace("/wms", "/wfs"),
+                wfsLayer.name,
                 'csv',
-                collection.wmsLayer.getDownloadFilter()
+                wmsLayer.getDownloadFilter()
             );
         };
     }/*,
