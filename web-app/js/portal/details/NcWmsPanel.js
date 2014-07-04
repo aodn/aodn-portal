@@ -15,7 +15,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         var config = Ext.apply({
             layout: 'table',
             layoutConfig: {
-                // The total column count must be specified here
                 columns: 1,
                 tableAttrs: {
                     cellspacing: '10px',
@@ -46,9 +45,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             this.geoNetworkRecord = layer.parentGeoNetworkRecord;
 
             this._clearDateTimeFields();
-            this._attachTemporalEvents(); // creates listener for completing processTemporalExtent
+            this._attachTemporalEvents();
             this._attachSpatialEvents();
-            this.selectedLayer.processTemporalExtent(); // triggers 'temporalextentloaded'
+            this.selectedLayer.processTemporalExtent();
             this._removeLoadingInfo();
             this._applyFilterValuesFromMap();
             this._showAllControls();
@@ -271,7 +270,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
 
-        if (this.geoNetworkRecord) { // TODO - DN: When might geonetworkRecord be null/undefined?
+        if (this.geoNetworkRecord) {
             this._addDateTimeFilterToLayer();
             this.geoNetworkRecord.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
         }
