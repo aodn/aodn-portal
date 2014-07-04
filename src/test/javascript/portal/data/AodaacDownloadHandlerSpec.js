@@ -68,7 +68,7 @@ describe('Portal.cart.AodaacDownloadHandler', function () {
             url = clickHandler(testCollection, testHandlerParams);
         });
 
-        it('updated the handlerParams', function() {
+        it('updates the handlerParams', function() {
 
             expect(testHandlerParams.asyncDownload).toBe(true);
             expect(testHandlerParams.collectEmailAddress).toBe(true);

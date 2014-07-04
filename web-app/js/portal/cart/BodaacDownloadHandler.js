@@ -25,8 +25,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 handlerParams: {
                     filenameFormat: '{0}_source_files.zip',
                     downloadControllerArgs: {
-                        action: 'downloadNetCdfFilesForLayer',
-                        layerId: null
+                        action: 'downloadNetCdfFilesForLayer'
                         /*serverUrl: this._resourceHref(),
                         urlFieldName: this._urlFieldName()*/
                     }
@@ -39,8 +38,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 handlerParams: {
                     filenameFormat: '{0}_URLs.txt',
                     downloadControllerArgs: {
-                        action: 'urlListForLayer',
-                        layerId: null
+                        action: 'urlListForLayer'
                         /*serverUrl: this._resourceHref(),
                         urlFieldName: this._urlFieldName()*/
                     }
