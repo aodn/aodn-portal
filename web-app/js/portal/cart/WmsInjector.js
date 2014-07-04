@@ -38,7 +38,7 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
                 scope: this
             });
             menuItems.push({
-                text: OpenLayers.i18n('downloadAsAllSourceNetCdfLabel'),
+                text: OpenLayers.i18n('downloadAsAllSourceFilesLabel'),
                 handler: this._netCdfDownloadHandler(collection),
                 scope: this
             });

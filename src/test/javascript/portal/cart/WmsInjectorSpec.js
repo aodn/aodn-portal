@@ -63,7 +63,7 @@ describe('Portal.cart.WmsInjector', function() {
                 if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
                     urlListIncluded = true;
                 }
-                else if (menuItems[i].text == OpenLayers.i18n('downloadAsAllSourceNetCdfLabel')) {
+                else if (menuItems[i].text == OpenLayers.i18n('downloadAsAllSourceFilesLabel')) {
                     netCdfDownloadIncluded = true;
                 }
             }
