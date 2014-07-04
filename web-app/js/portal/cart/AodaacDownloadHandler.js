@@ -51,9 +51,6 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     _buildAodaacUrl: function(aggregationParams, productId, outputFormat, notificationEmailAddress) {
 
-        console.log('aggregationParams');
-        console.log(aggregationParams);
-
         var args = {
             dateRangeStart: this._formatDate(aggregationParams.dateRangeStart),
             dateRangeEnd: this._formatDate(aggregationParams.dateRangeEnd),
