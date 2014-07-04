@@ -61,7 +61,7 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
             Ext.each(handler.getDownloadOptions(), function(downloadOption) {
 
                 var newMenuItem = {
-                    text: OpenLayers.i18n(downloadOption.textKey) + ' (new)',
+                    text: OpenLayers.i18n(downloadOption.textKey),
                     handler: function() {
                         this.confirmDownload(collection, this, downloadOption.handler, downloadOption.handlerParams)
                     },
