@@ -72,6 +72,18 @@ beforeEach(function() {
             var searchValue = String.format("&{0}={1}&", key, encodedValue);
 
             return easySearchString.indexOf(searchValue) >= 0;
+        },
+
+        toBeNonEmptyString: function() {
+
+            this.message = function() {
+
+                var messageStart = this.isNot ? "Didn't expect" : "Expected";
+
+                return messageStart + " '" + this.actual + "' to be a non-empty String";
+            };
+
+            return this.actual && this.actual != '';
         }
     });
 });
