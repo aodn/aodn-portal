@@ -11,7 +11,7 @@ describe('Portal.details.NcWmsPanel', function() {
     var ncwmsPanel;
     var geoNetworkRecord = {
         id: '45678',
-        updateNcwmsParams: noOp,
+        updateNcwmsParams: jasmine.createSpy('updateNcwmsParams'),
         aggregator: []
     };
     var layer;
@@ -34,7 +34,6 @@ describe('Portal.details.NcWmsPanel', function() {
         ncwmsPanel._setBounds =  noOp;
         ncwmsPanel._removeLoadingInfo = noOp;
         ncwmsPanel.selectedLayer = layer;
-        ncwmsPanel._getParentRecordAggregator = function() { return new Portal.data.Aggregator() };
     });
 
     describe('GeoNetworkRecord', function() {
@@ -57,7 +56,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('updates the NcWMS panel object when the layer changes', function() {
             ncwmsPanel.handleLayer(layer, noOp, noOp, {});
-            expect(ncwmsPanel._buildParameters).toHaveBeenCalled();
+            expect(ncwmsPanel.geoNetworkRecord.updateNcwmsParams).toHaveBeenCalled();
             delete ncwmsPanel.geoNetworkRecord;
         });
 
@@ -159,36 +158,9 @@ describe('Portal.details.NcWmsPanel', function() {
         });
     });
 
-    describe('_buildParameters', function () {
-
-        var geom = {
-            getBounds: function() {
-                return {
-                    bottom: 10,
-                    top: 20,
-                    left: 30,
-                    right: 40
-                }
-            }
-        };
-        var mockParentAggregator = new Portal.data.GogoduckAggregator();
-        var dateRangeStart = '[date]';
-        var dateRangeEnd = '[date]';
-
-        it ('calls buildParams on the aggregator object passed', function() {
-
-            spyOn(mockParentAggregator, 'buildParams');
-
-            ncwmsPanel._buildParameters(mockParentAggregator, layer, dateRangeStart, dateRangeEnd, geom);
-
-            expect(mockParentAggregator.buildParams).toHaveBeenCalled();
-        });
-    });
-
     function _applyCommonSpies(panel) {
         var _panel = panel || ncwmsPanel;
         spyOn(_panel, '_showAllControls');
-        spyOn(_panel, '_buildParameters');
         spyOn(_panel, '_onDateSelected');
         spyOn(_panel, '_setBounds');
     }
