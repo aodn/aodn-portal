@@ -414,6 +414,7 @@
                         <include>portal/ui/MainPanel.js</include>
                         <include>portal/utils/moment.min.js</include>
                         <include>portal/utils/Proxy.js</include>
+                        <include>portal/cart/DownloadHandler.js</include>
                         <include>portal/**/*.js</include>
                     </sourceIncludes>
                     <sourceExcludes>
