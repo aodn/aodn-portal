@@ -58,5 +58,13 @@ describe('Custom matchers', function () {
 
             expect('potato').toBeNonEmptyString();
         });
+
+        it('returns false when given a non-string object', function() {
+
+            expect({}).not.toBeNonEmptyString();
+            expect(true).not.toBeNonEmptyString();
+            expect(1).not.toBeNonEmptyString();
+            expect([]).not.toBeNonEmptyString();
+        });
     });
 });

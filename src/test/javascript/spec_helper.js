@@ -83,7 +83,7 @@ beforeEach(function() {
                 return messageStart + " '" + this.actual + "' to be a non-empty String";
             };
 
-            return this.actual && this.actual != '';
+            return (typeof this.actual == 'string') && this.actual != '';
         }
     });
 });
