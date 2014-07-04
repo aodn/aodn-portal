@@ -30,7 +30,7 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     _hasRequiredInfo: function() {
 
-        return this._resourceNameNotEmpty();
+        return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty();
     },
 
     _getClickHandler: function() {
