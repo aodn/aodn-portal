@@ -115,10 +115,6 @@ describe('Portal.cart.InsertionService', function() {
     }
 
     function getGogoduckRecord() {
-        var mockNcwmsAggr = new Portal.data.GogoduckAggregator();
-        geoNetworkRecord.aggregator = {
-            childAggregators: [mockNcwmsAggr]
-        };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
         geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
 
@@ -126,10 +122,6 @@ describe('Portal.cart.InsertionService', function() {
     }
 
     function getAodaacRecord() {
-        var mockNcwmsAggr = new Portal.data.AodaacAggregator();
-        geoNetworkRecord.aggregator = {
-            childAggregators: [mockNcwmsAggr]
-        };
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
         geoNetworkRecord.wmsLayer.aodaacProducts = [{ id: 123 }];
 
