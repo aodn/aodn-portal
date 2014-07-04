@@ -11,8 +11,7 @@ describe('Portal.details.NcWmsPanel', function() {
     var ncwmsPanel;
     var geoNetworkRecord = {
         id: '45678',
-        updateNcwmsParams: jasmine.createSpy('updateNcwmsParams'),
-        aggregator: []
+        updateNcwmsParams: jasmine.createSpy('updateNcwmsParams')
     };
     var layer;
 
@@ -28,7 +27,6 @@ describe('Portal.details.NcWmsPanel', function() {
         layer.events = { on: noOp };
         layer.processTemporalExtent = noOp;
         layer.map = map;
-        layer.aodaacProducts = ['1'];
 
         ncwmsPanel = new Portal.details.NcWmsPanel({ map: map });
         ncwmsPanel._setBounds =  noOp;
