@@ -7,7 +7,7 @@
 
 describe('Portal.cart.WfsDownloadHandler', function () {
 
-    describe('getDownloadOption', function() {
+    describe('getDownloadOptions', function() {
 
         var downloadOptions;
 
