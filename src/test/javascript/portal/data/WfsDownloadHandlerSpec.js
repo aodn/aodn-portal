@@ -32,9 +32,8 @@ describe('Portal.cart.WfsDownloadHandler', function () {
 
                 var downloadOption = downloadOptions[0];
 
-                expect(downloadOption.textKey).not.toBeNull();
-                expect(downloadOption.textKey).not.toBe('');
-                expect(downloadOption.handler).not.toBeNull();
+                expect(downloadOption.textKey).toBeNonEmptyString();
+                expect(typeof downloadOption.handler).toBe('function');
                 expect(downloadOption.handlerParams).not.toBeNull();
 
                 var downloadHandler = downloadOption.handler;

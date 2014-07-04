@@ -27,7 +27,7 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
 
             var option = options[0];
 
-            expect(option.textKey).not.toBeUndefined();
+            expect(option.textKey).toBeNonEmptyString();
             expect(typeof option.handler).toBe('function');
         });
 

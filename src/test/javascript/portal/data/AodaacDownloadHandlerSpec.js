@@ -26,7 +26,7 @@ describe('Portal.cart.AodaacDownloadHandler', function () {
 
             var option = options[0];
 
-            expect(option.textKey).not.toBeUndefined();
+            expect(option.textKey).toBeNonEmptyString();
             expect(typeof option.handler).toBe('function');
         });
 

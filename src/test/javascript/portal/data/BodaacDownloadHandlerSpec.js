@@ -33,14 +33,14 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
             for (var i = 0; i < options.length; i++) {
                 var option = options[i];
 
-                expect(option.textKey).not.toBeUndefined();
+                expect(option.textKey).toBeNonEmptyString();
                 expect(typeof option.handler).toBe('function');
 
                 var params = option.handlerParams;
 
-                expect(params.filenameFormat).not.toBeUndefined();
+                expect(params.filenameFormat).toBeNonEmptyString();
                 expect(params.downloadControllerArgs).not.toBeUndefined();
-                expect(params.downloadControllerArgs.action).not.toBeUndefined();
+                expect(params.downloadControllerArgs.action).toBeNonEmptyString();
             }
         });
     });
