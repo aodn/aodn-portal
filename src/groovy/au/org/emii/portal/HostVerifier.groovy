@@ -74,7 +74,7 @@ class HostVerifier {
 
             // Add allowedProxyHosts
             if (grailsApplication.config.allowedProxyHosts) {
-                result = (result << grailsApplication.config.allowedProxyHosts).flatten()
+                result.addAll(grailsApplication.config.allowedProxyHosts)
             }
         }
         return result
