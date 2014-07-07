@@ -29,6 +29,8 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
 
             expect(option.textKey).toBeNonEmptyString();
             expect(typeof option.handler).toBe('function');
+            expect(option.handlerParams.asyncDownload).toBe(true);
+            expect(option.handlerParams.collectEmailAddress).toBe(true);
         });
 
         it('has no options when missing required href information', function() {
@@ -80,12 +82,6 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
             url = clickHandler(testCollection, testHandlerParams);
 
             json = jsonFromUrl(url, expectedUrlStart);
-        });
-
-        it('updates the handlerParams', function() {
-
-            expect(testHandlerParams.asyncDownload).toBe(true);
-            expect(testHandlerParams.collectEmailAddress).toBe(true);
         });
 
         it('builds the correct URL', function() {

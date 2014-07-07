@@ -28,6 +28,8 @@ describe('Portal.cart.AodaacDownloadHandler', function () {
 
             expect(option.textKey).toBeNonEmptyString();
             expect(typeof option.handler).toBe('function');
+            expect(option.handlerParams.asyncDownload).toBe(true);
+            expect(option.handlerParams.collectEmailAddress).toBe(true);
         });
 
         it('has no options when missing required information', function() {
@@ -66,12 +68,6 @@ describe('Portal.cart.AodaacDownloadHandler', function () {
             };
 
             url = clickHandler(testCollection, testHandlerParams);
-        });
-
-        it('updates the handlerParams', function() {
-
-            expect(testHandlerParams.asyncDownload).toBe(true);
-            expect(testHandlerParams.collectEmailAddress).toBe(true);
         });
 
         it('builds the correct URL', function() {
