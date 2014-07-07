@@ -123,6 +123,10 @@ class Config {
         return _configInstance
     }
 
+    static reload() {
+        _configInstance = null;
+    }
+
     static def recacheDefaultMenu() {
 
         def configInstance = Config.activeInstance()

@@ -8,8 +8,6 @@
 
 package au.org.emii.portal
 
-import au.org.emii.portal.config.JsonMarshallingRegistrar;
-
 class ServerServiceTests extends GroovyTestCase {
 
     protected void setUp() {
@@ -19,7 +17,7 @@ class ServerServiceTests extends GroovyTestCase {
     protected void tearDown() {
         super.tearDown()
     }
-	
+
     void testService() {
 
 //		JsonMarshallingRegistrar.registerJsonMarshallers()
@@ -89,6 +87,7 @@ class ServerServiceTests extends GroovyTestCase {
                                                          //is set as default layer
 
         conf.save(failOnError:  true,flush:true)
+        Config.reload()
 
         s1.delete(flush:true)
         s3.delete(flush:true)
