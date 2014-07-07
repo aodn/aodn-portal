@@ -16,10 +16,15 @@ final class UrlUtils {
     }
 
     static String urlWithQueryString(url, queryString) {
-
         def symbol = url.contains("?") ? "&" : "?"
 
-        return url + symbol + queryString
+        def returnUrl = url + symbol + queryString
+
+        if (returnUrl.endsWith("&")) {
+            returnUrl = returnUrl.substring(0, returnUrl.length() - 1)
+        }
+
+        return returnUrl
     }
 
     static String urlWithQueryString(url, Map queryStringValues) {

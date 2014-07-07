@@ -8,6 +8,12 @@ OpenLayers.Layer.prototype.isOverlay = function() {
     return !this.isBaseLayer;
 };
 
+// Override WMS.getURL to include proxy
+OpenLayers.Layer.WMS.prototype.___getURL = OpenLayers.Layer.WMS.prototype.getURL;
+OpenLayers.Layer.WMS.prototype.getURL = function(bounds) {
+    return Portal.utils.Proxy.proxy(this.___getURL(bounds));
+};
+
 OpenLayers.Layer.WMS.prototype.adjustBounds = function(bounds) {
     if (this.wrapDateLine) {
         // wrap around the date line, within the limits of rounding error
@@ -67,7 +73,7 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint
     }
 
     baseFeatureInfoParams = Ext.apply(baseFeatureInfoParams, overrideParams);
-    return this.unproxy(this.getFullRequestString(baseFeatureInfoParams));
+    return this.getFullRequestString(baseFeatureInfoParams);
 };
 
 OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function() {
@@ -147,19 +153,6 @@ OpenLayers.Layer.WMS.prototype.getMetadataUrl = function() {
         }
     }
     return result;
-};
-
-OpenLayers.Layer.WMS.prototype.proxy = function(proxy) {
-    if (this.server.username && this.server.password && !this.localProxy) {
-        var separator = (this.server.uri.indexOf("\?") !== -1) ? "&" : "?";
-        this.server.uri = proxy + this.server.uri + separator;
-        this.url = this.server.uri;
-        this.localProxy = proxy;
-    }
-};
-
-OpenLayers.Layer.WMS.prototype.unproxy = function(url) {
-    return url.replace(this.localProxy, '');
 };
 
 OpenLayers.Layer.WMS.prototype._getBoundingBox = function() {

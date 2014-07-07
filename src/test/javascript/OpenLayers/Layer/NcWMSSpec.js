@@ -23,8 +23,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
             null,
             { extent: extent }
         );
-
-        cachedLayer.mergeNewParams = noOp;
     });
 
     describe('constructor', function() {
@@ -75,17 +73,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         it('time specified', function() {
             cachedLayer.toTime(time);
-            expect(cachedLayer.getURL(bounds).split('&')).toContain('TIME=' + time.utc().format('YYYY-MM-DDTHH:mm:ss.SSS'));
-        });
-
-        it('no time specified', function() {
-            cachedLayer.toTime(null);
-            expect(cachedLayer.getURL(bounds).split('&')).not.toContain('TIME=' + time.format());
-        });
-
-        it('getURLAtTime', function() {
-            var dateTime = moment('2000-02-02T01:01:01+00:00');
-            expect(cachedLayer.getURLAtTime(bounds, dateTime).split('&')).toContain('TIME=2000-02-02T01:01:01.000');
+            expect(cachedLayer.params['TIME']).toBe(time.utc().format('YYYY-MM-DDTHH:mm:ss.SSS'));
         });
     });
 

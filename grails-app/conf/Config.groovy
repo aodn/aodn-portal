@@ -108,6 +108,8 @@ minimap {
     }
 }
 
+proxyWmsRequests = true
+
 geoserver_static = [
     uri: "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms",
     type: "WMS-1.1.1"
@@ -124,6 +126,10 @@ baselayers = [
         title: "Simple Baselayer",
         server: geoserver_static
     ]
+]
+
+allowedProxyHosts = [
+    geoserver_static.uri
 ]
 
 // OpenID

@@ -71,6 +71,11 @@ class HostVerifier {
             _addIf(result, grailsApplication.config.portal.instance.splash.index)
             _addIf(result, grailsApplication.config.portal.instance.splash.links)
             _addIf(result, grailsApplication.config.portal.instance.splash.community)
+
+            // Add allowedProxyHosts
+            if (grailsApplication.config.allowedProxyHosts) {
+                result.addAll(grailsApplication.config.allowedProxyHosts)
+            }
         }
         return result
     }

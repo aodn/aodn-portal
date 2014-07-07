@@ -27,7 +27,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         if (this._getTimeDimension()) {
             openLayer = new OpenLayers.Layer.NcWMS(
                 this.title,
-                this._getServerUri(),
+                this.server.uri,
                 new Portal.ui.openlayers.LayerParams(this, paramOverrides),
                 new Portal.ui.openlayers.LayerOptions(this, optionOverrides),
                 this._getTimeDimension()
@@ -36,7 +36,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         else {
             openLayer = new OpenLayers.Layer.WMS(
                 this.title,
-                this._getServerUri(),
+                this.server.uri,
                 new Portal.ui.openlayers.LayerParams(this, paramOverrides),
                 new Portal.ui.openlayers.LayerOptions(this, optionOverrides)
             );
@@ -74,30 +74,14 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     },
 
     /**
-     * Refactor?
-     */
-    _getUri: function(server) {
-        return server.uri;
-    },
-
-    _getServerUri: function() {
-        var serverUri = this._getUri(this.server);
-        if (this.cache == true) {
-            serverUri = window.location.href + proxyCachedURL + encodeURIComponent(serverUri);
-        }
-        return serverUri;
-    },
-
-    /**
      * Refactor.
      */
     _setDomainLayerProperties: function(openLayer) {
         openLayer.grailsLayerId = this.id;
         openLayer.server= this.server;
 
-        //injecting credentials for authenticated WMSes.  Openlayer doesn;t
+        //injecting credentials for authenticated WMSes.  Openlayer doesn't
         //provide a way to add header information to a WMS request
-        openLayer.proxy(Ext.ux.Ajax.proxyUrl);
         openLayer.cql = this.cql;
         openLayer.bboxMinX = this.bboxMinX;
         openLayer.bboxMinY = this.bboxMinY;
