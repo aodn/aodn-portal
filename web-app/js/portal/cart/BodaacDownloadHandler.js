@@ -20,7 +20,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         if (this._hasRequiredInfo()) {
 
             downloadOptions.push({
-                textKey: 'downloadAllSourceFilesLabel',
+                textKey: 'downloadAsAllSourceNetCdfLabel',
                 handler: this._getClickHandler(),
                 handlerParams: {
                     filenameFormat: '{0}_source_files.zip',
