@@ -90,6 +90,7 @@ class FilterControllerTests extends ControllerUnitTestCase {
         assertFalse controller._validateCredential("12345")
 
         cfg.wfsScannerCallbackPassword = "12345"
+        Config.reload()
 
         // Check wrong password
         assertFalse controller._validateCredential("asdf")

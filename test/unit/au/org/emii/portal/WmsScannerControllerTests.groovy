@@ -79,6 +79,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
     void testControls_NoProblems_ScanJobListReturned() {
 
         mockDomain Config, [validConfig]
+        Config.reload()
 
         // Prepare for calls
         Server.metaClass.static.findAllByTypeInListAndAllowDiscoveries = {
@@ -107,6 +108,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
     void testControls_ExceptionThrown_EmptyListReturned() {
 
         mockDomain Config, [validConfig]
+        Config.reload()
 
         // Prepare for calls
         Server.metaClass.static.findAllByTypeInListAndAllowDiscoveries = {
@@ -139,6 +141,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
     void testControls_InvalidConfig_EmptyListReturned() {
 
         mockDomain Config, [invalidConfig]
+        Config.reload()
 
         def returnParams = controller.controls() // Make the call
 
@@ -164,7 +167,6 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
         controller.callRegister()
 
         assertEquals count, 1
-
     }
 
     void testCallRegister_ExceptionThrown_RedirectedWithMessage() {
@@ -181,8 +183,6 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
 &callbackPassword=pwd\
 &scanFrequency=45\
 """
-
-
 
         Server.metaClass.static.get = { map -> return server2 }
 
@@ -224,7 +224,6 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
             count++
             return "Updated"
         }
-
 
         controller.callUpdate() // Make the call
 

@@ -113,8 +113,18 @@ class Config {
         defaultDatelineZoomBbox(size: 10..50)
     }
 
+    static Config _configInstance
     static Config activeInstance() {
-        return Config.list()[0]
+
+        if (!_configInstance) {
+            _configInstance = Config.list()[0]
+        }
+
+        return _configInstance
+    }
+
+    static reload() {
+        _configInstance = null;
     }
 
     static def recacheDefaultMenu() {
