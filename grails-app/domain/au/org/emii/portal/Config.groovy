@@ -19,7 +19,6 @@ class Config {
     Integer proxyPort
 
     // Search
-    String catalogUrl
     Boolean searchUsingBboxByDefault
 
     // Map behaviour
@@ -86,7 +85,6 @@ class Config {
         motdEnd(nullable: true)
         footerContent(nullable: true, maxSize: 4000)
         footerContentWidth(nullable: true, range: 150..1000)
-        catalogUrl(url: true)
         searchUsingBboxByDefault()
         baselayerMenu(nullable: true)
         defaultMenu(nullable: true)

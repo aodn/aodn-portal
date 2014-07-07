@@ -17,7 +17,6 @@ class HostVerifierTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
         _mockServer()
-        _mockConfig()
         request = new MockRequest()
 
         verifier = [retrieveResultsFromGeoNetwork: { server ->
@@ -88,6 +87,11 @@ class HostVerifierTests extends GrailsUnitTestCase {
         assertTrue(verifier.allowedHost(request, 'http://spatialsearchtest.emii.org.au'))
     }
 
+    void testGeonetworkAllowed() {
+        verifier.grailsApplication = _mockGrailsApplication(["config", "geonetwork", "url"], 'http://geonetwork.aodn.org.au/geonetwork')
+        assertTrue(verifier.allowedHost(request, 'http://geonetwork.aodn.org.au'))
+    }
+
     void testExternalIndexAllowed() {
         verifier.grailsApplication = _mockGrailsApplication(["config", "portal", "instance", "splash", "index"], 'http://aodnsplash.emii.org.au')
         assertTrue(verifier.allowedHost(request, 'http://aodnsplash.emii.org.au'))
@@ -118,14 +122,6 @@ class HostVerifierTests extends GrailsUnitTestCase {
                 new Server([id: 1, uri: 'http://geoserver.emii.org.au']),
                 new Server([id: 2, uri: 'http://geoserver.imos.org.au']),
             ]
-        }
-    }
-
-    def _mockConfig() {
-        Config.metaClass.'static'.activeInstance = {
-            def c = new Config()
-            c.catalogUrl = 'http://mest-test.emii.org.au'
-            return c
         }
     }
 
