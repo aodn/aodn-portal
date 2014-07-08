@@ -155,12 +155,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecord.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecordFetcher.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecordStore.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'AggregatorFactory.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'Aggregator.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'AggregatorGroup.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GogoduckAggregator.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'AodaacAggregator.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'BodaacAggregator.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'ActiveGeoNetworkRecordStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'EmptyDropZonePlaceholder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/mainMap', file: 'map.js')}"></script>
@@ -178,6 +172,10 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NoDataInjector.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'WmsInjector.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NcwmsInjector.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadHandler.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'AodaacDownloadHandler.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'BodaacDownloadHandler.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'GogoduckDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'WfsDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/visualise/animations', file: 'TemporalExtent.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/visualise/animations', file: 'TemporalExtentParser.js')}"></script>

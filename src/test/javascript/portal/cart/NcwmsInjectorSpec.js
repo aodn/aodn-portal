@@ -19,65 +19,6 @@ describe('Portal.cart.NcwmsInjector', function() {
         geoNetworkRecord = getMockGeonetworkRecord();
     });
 
-    describe('createMenuItems', function() {
-
-        it('creates download options for URL list and subsetted NetCDF where supported by layer', function() {
-            var menuItems;
-            var urlListIncluded = false;
-            var netCdfDownloadIncluded = false;
-            var netCdfSubsetIncluded = false;
-
-            injector._isSubsettedNetCdfAvailable = function() { return true; };
-            injector._isUrlListDownloadAvailable = function() { return true; };
-
-            menuItems = injector._createMenuItems(geoNetworkRecord);
-
-            for (var i = 0; i < menuItems.length; i++) {
-                if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
-                    urlListIncluded = true;
-                }
-                else if (menuItems[i].text == OpenLayers.i18n('downloadAsAllSourceNetCdfLabel')) {
-                    netCdfDownloadIncluded = true;
-                }
-                else if (menuItems[i].text == OpenLayers.i18n('downloadAsSubsettedNetCdfLabel')) {
-                    netCdfSubsetIncluded = true;
-                }
-            }
-
-            expect(menuItems.length).toEqual(3);
-            expect(urlListIncluded).toBe(true);
-            expect(netCdfDownloadIncluded).toBe(true);
-        });
-
-        it('creates only subsetted NetCDF menu option where bodaac is not supported', function() {
-            var menuItems;
-            var urlListIncluded = false;
-            var netCdfDownloadIncluded = false;
-            var netCdfSubsetIncluded = false;
-
-            injector._isSubsettedNetCdfAvailable = function() { return true; };
-            injector._isUrlListDownloadAvailable = function() { return false; };
-
-            menuItems = injector._createMenuItems(geoNetworkRecord);
-
-            for (var i = 0; i < menuItems.length; i++) {
-                if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
-                    urlListIncluded = true;
-                }
-                else if (menuItems[i].text == OpenLayers.i18n('downloadAsAllSourceNetCdfLabel')) {
-                    netCdfDownloadIncluded = true;
-                }
-                else if (menuItems[i].text == OpenLayers.i18n('downloadAsSubsettedNetCdfLabel')) {
-                    netCdfSubsetIncluded = true;
-                }
-            }
-
-            expect(menuItems.length).toEqual(1);
-            expect(urlListIncluded).toBe(false);
-            expect(netCdfDownloadIncluded).toBe(false);
-        });
-    });
-
     describe('getDataMarkup', function() {
 
         var markup;
@@ -91,46 +32,6 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(markup).not.toEqual('');
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingMessage"))).toBeGreaterThan(-1);
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingSpinner"))).toBeGreaterThan(-1);
-        });
-    });
-
-    describe('download handlers', function() {
-
-        var downloadParams;
-        var collection;
-
-        beforeEach(function() {
-            downloadParams = {};
-            spyOn(injector, 'downloadWithConfirmation');
-            spyOn(injector, '_getUrlListDownloadParams').andReturn(downloadParams);
-            spyOn(injector, '_getNetCdfDownloadParams').andReturn(downloadParams);
-
-            collection = {
-                wmsLayer: {
-                    grailsLayerId: 1,
-                    isNcwms: function() { return true }
-                }
-            };
-        });
-
-        it('BODAAC _urlListDownloadHandler calls downloadWithConfirmation', function() {
-            injector._urlListDownloadHandler(collection);
-
-            expect(injector.downloadWithConfirmation).toHaveBeenCalledWith(
-                collection,
-                injector._downloadUrl,
-                downloadParams
-            );
-        });
-
-        it('BODAAC _netCdfDownloadHandler calls downloadWithConfirmation', function() {
-            injector._netCdfDownloadHandler(collection);
-
-            expect(injector.downloadWithConfirmation).toHaveBeenCalledWith(
-                collection,
-                injector._downloadUrl,
-                downloadParams
-            );
         });
     });
 
@@ -170,51 +71,6 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(entry.indexOf('startdate')).toBeGreaterThan(-1);
         });
     });
-
-    describe('_subsettedDownloadHandler', function() {
-        it('provides a function', function() {
-            expect(typeof(injector._subsettedDownloadHandler(geoNetworkRecord, 'nc'))).toEqual('function');
-        });
-
-        it('calls downloadWithConfirmation', function() {
-            spyOn(injector, 'downloadWithConfirmation');
-            var collection = {};
-            var params = {};
-
-            injector._subsettedDownloadHandler(collection, params);
-
-            var expectedParams = {
-                collectEmailAddress: true,
-                asyncDownload: true
-            };
-
-            expect(injector.downloadWithConfirmation).toHaveBeenCalledWith(
-                collection,
-                injector._generateNcwmsUrl,
-                expectedParams
-            );
-        });
-    });
-
-    describe('_generateNcwmsUrl', function() {
-
-        var url;
-
-        it('calls generateUrl on the aggregator object for the record', function() {
-
-            var mockAggregatorGroup = new Portal.data.AggregatorGroup();
-            var mockAggregator = new Portal.data.GogoduckAggregator();
-
-            mockAggregatorGroup.add(mockAggregator);
-            geoNetworkRecord.aggregator = mockAggregatorGroup;
-            mockAggregatorGroup.getRecordAggregator = function() { return mockAggregator };
-
-            spyOn(mockAggregator, 'generateUrl');
-            url = injector._generateNcwmsUrl(geoNetworkRecord, geoNetworkRecord.ncwmsParams);
-            expect(mockAggregator.generateUrl).toHaveBeenCalled();
-        });
-    });
-
 
     describe('getPointOfTruthLinks', function() {
 

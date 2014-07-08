@@ -75,24 +75,18 @@ Portal.data.GeoNetworkRecord = function() {
         }
     };
 
-    var aggregatorField = {
-        name: 'aggregator',
-        convert: function(v, record) {
-            var allLinks = convertXmlToLinks(v, record);
-            var aggregatorFactory = new Portal.data.AggregatorFactory();
-
-            return aggregatorFactory.newAggregatorGroup(allLinks);
-        }
-    };
-
     var dataDownloadHandlersField = {
         name: 'dataDownloadHandlers',
         convert: function(v, record) {
             var allLinks = convertXmlToLinks(v, record);
 
             var protocolHandlerConstructors = {
-                'OGC:WFS-1.0.0-http-get-capabilities': Portal.cart.WfsDownloadHandler
+                'OGC:WFS-1.0.0-http-get-capabilities': Portal.cart.WfsDownloadHandler,
+                'IMOS:AGGREGATION--aodaac': Portal.cart.AodaacDownloadHandler,
+                'IMOS:AGGREGATION--bodaac': Portal.cart.BodaacDownloadHandler,
+                'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckDownloadHandler
             };
+
             var applicableDownloadOptions = [];
 
             Ext.each(allLinks, function(link) {
@@ -160,7 +154,6 @@ Portal.data.GeoNetworkRecord = function() {
         linksField,
         linkedFilesField,
         pointOfTruthLinkField,
-        aggregatorField,
         dataDownloadHandlersField,
         'source',
         bboxField,
@@ -234,7 +227,21 @@ Portal.data.GeoNetworkRecord = function() {
         };
     };
 
-    prototype.updateNcwmsParams = function(params) {
+    prototype.updateNcwmsParams = function(dateRangeStart, dateRangeEnd, geometry) {
+
+        var params = {
+            dateRangeStart: dateRangeStart,
+            dateRangeEnd: dateRangeEnd
+        };
+
+        if (geometry) {
+            var bounds = geometry.getBounds();
+
+            params.latitudeRangeStart = bounds.bottom;
+            params.longitudeRangeStart = bounds.left;
+            params.latitudeRangeEnd = bounds.top;
+            params.longitudeRangeEnd = bounds.right;
+        }
 
         this.set('ncwmsParams', params);
     };

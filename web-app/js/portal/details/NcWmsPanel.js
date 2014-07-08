@@ -9,14 +9,12 @@ Ext.namespace('Portal.details');
 
 Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
-
     ROW_HEIGHT: 32,
 
     constructor: function(cfg) {
         var config = Ext.apply({
             layout: 'table',
             layoutConfig: {
-                // The total column count must be specified here
                 columns: 1,
                 tableAttrs: {
                     cellspacing: '10px',
@@ -47,9 +45,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             this.geoNetworkRecord = layer.parentGeoNetworkRecord;
 
             this._clearDateTimeFields();
-            this._attachTemporalEvents(); // creates listener for completing processTemporalExtent
+            this._attachTemporalEvents();
             this._attachSpatialEvents();
-            this.selectedLayer.processTemporalExtent(); // triggers 'temporalextentloaded'
+            this.selectedLayer.processTemporalExtent();
             this._removeLoadingInfo();
             this._applyFilterValuesFromMap();
             this._showAllControls();
@@ -241,29 +239,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         return new Ext.Spacer({ height: height });
     },
 
-    _buildParameters: function(parentAggr, selectedLayer, dateRangeStart, dateRangeEnd, geometry) {
-
-        return parentAggr.buildParams(selectedLayer, dateRangeStart, dateRangeEnd, geometry);
-    },
-
-    _getParentRecordAggregator: function(selectedLayer) {
-
-        var parentAggrGroup;
-        var parentAggr;
-
-        if (selectedLayer) {
-            parentAggrGroup = selectedLayer.parentGeoNetworkRecord.data.aggregator.childAggregators;
-        }
-
-        Ext.each(parentAggrGroup, function(aggr) {
-            if (aggr.supportsSubsettedNetCdf()) {
-                parentAggr = aggr;
-            }
-        });
-
-        return parentAggr;
-    },
-
     _onDateSelected: function(datePicker, jsDate) {
         var selectedDateMoment = moment(jsDate);
         datePicker.setValue(selectedDateMoment);
@@ -292,19 +267,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     _applyFilterValuesToCollection: function(layer, geometry) {
 
-        if (layer.parentGeoNetworkRecord) {
+        var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
+        var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
 
-            var parentAggr = this._getParentRecordAggregator(layer);
-
+        if (this.geoNetworkRecord) {
             this._addDateTimeFilterToLayer();
-
-            if (parentAggr) {
-
-                var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
-                var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
-
-                layer.parentGeoNetworkRecord.updateNcwmsParams(this._buildParameters(parentAggr, layer, dateRangeStart, dateRangeEnd, geometry));
-            }
+            this.geoNetworkRecord.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
         }
     },
 
