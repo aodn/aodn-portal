@@ -71,15 +71,6 @@
                             </tr>
 
                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="catalogUrl"><g:message code="config.catalogUrl.label" default="Catalog Url" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'catalogUrl', 'errors')}">
-                                    <g:textField size="70" name="catalogUrl" value="${configInstance?.catalogUrl}" /><font class="hint">Should <b>not</b> end with a '/' character</font>
-                                </td>
-                            </tr>
-
-                           <tr class="prop">
                                <td valign="top" class="name">
                                    <label for="searchUsingBboxByDefault"><g:message code="config.searchUsingBboxByDefault.label" default="Search using bounding box by default" /></label>
                                </td>

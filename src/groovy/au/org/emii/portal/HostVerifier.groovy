@@ -20,7 +20,7 @@ class HostVerifier {
         try {
             def url = address.toURL()
 
-            def allowableServers = [request.getHeader("host"), Config.activeInstance().catalogUrl]
+            def allowableServers = [request.getHeader("host")]
             allowableServers.addAll _fromConfig()
             allowableServers.addAll _fromKnownServers()
 
@@ -44,7 +44,7 @@ class HostVerifier {
     }
 
     def retrieveResultsFromGeoNetwork(server) {
-        def catalog = Config.activeInstance().catalogUrl
+        def catalog = grailsApplication.config.geonetwork.url
 
         return new XmlParser().parse("$catalog/srv/eng/q?serverUrl=$server&fast=index&summaryOnly=true")
     }
@@ -67,6 +67,7 @@ class HostVerifier {
     def _fromConfig() {
         def result = []
         if (grailsApplication) {
+            _addIf(result, grailsApplication.config.geonetwork.url)
             _addIf(result, grailsApplication.config.spatialsearch.url)
             _addIf(result, grailsApplication.config.portal.instance.splash.index)
             _addIf(result, grailsApplication.config.portal.instance.splash.links)

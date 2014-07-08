@@ -11,8 +11,8 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
     var uuid;
 
     beforeEach(function() {
-        catalogUrl = 'http://geonetwork123'
-        Portal.app.config.catalogUrl = catalogUrl;
+        catalogUrl = 'http://geonetwork123';
+        Portal.app.appConfig['geonetwork.url'] = catalogUrl;
         fetcher = new Portal.data.GeoNetworkRecordFetcher();
         uuid = '1234';
     });
