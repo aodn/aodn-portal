@@ -19,9 +19,5 @@ Portal.cart.NoDataInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _getDataMarkup: function() {
         return '';
-    },
-
-    _createMenuItems: function() {
-        return [];
     }
 });

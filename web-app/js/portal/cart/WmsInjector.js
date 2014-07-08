@@ -19,32 +19,11 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         var layerValues = collection.wmsLayer.getWmsDownloadFilterDescriptions();
 
         return (layerValues != "") ? layerValues : OpenLayers.i18n('emptyDownloadPlaceholder');
-
     },
 
     _getDataMarkup: function(collection) {
 
         return this._addDownloadEstimate(collection);
-    },
-
-    _createMenuItems: function(collection) {
-
-        var menuItems = [];
-
-        if (collection.wmsLayer.urlDownloadFieldName) {
-            menuItems.push({
-                text: OpenLayers.i18n('downloadAsUrlsLabel'),
-                handler: this._urlListDownloadHandler(collection),
-                scope: this
-            });
-            menuItems.push({
-                text: OpenLayers.i18n('downloadAsAllSourceNetCdfLabel'),
-                handler: this._netCdfDownloadHandler(collection),
-                scope: this
-            });
-        }
-
-        return menuItems;
     },
 
     _csvDownloadUrl: function(collection) {

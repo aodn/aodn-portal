@@ -135,8 +135,9 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _setMetadataFirst: function(layer) {
-        var url = layer.url + "?layerName=" + layer.params.LAYERS + "&REQUEST=GetMetadata&item=layerDetails";
-        Ext.ux.Ajax.proxyRequest({
+        var url = layer.url + "layerName=" + layer.params.LAYERS + "&REQUEST=GetMetadata&item=layerDetails";
+
+        Ext.ux.Ajax.request({
             scope: this,
             url: url,
             success: function(resp, options) {

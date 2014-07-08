@@ -33,7 +33,6 @@ class JsonMarshallingRegistrar {
             result['name'] = cfg.name
             result['proxy'] = cfg.proxy
             result['proxyPort'] = cfg.proxyPort
-            result['catalogUrl'] = cfg.catalogUrl
             result['searchUsingBboxByDefault'] = cfg.searchUsingBboxByDefault
 
             // Map behaviour

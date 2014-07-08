@@ -51,44 +51,6 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return String.format('{0}:&nbsp;  {1} to {2}<br>', OpenLayers.i18n(labelKey), value1, value2);
     },
 
-    _createMenuItems: function(collection) {
-        var menuItems = [];
-
-        if (this._isUrlListDownloadAvailable(collection)) {
-
-            menuItems.push({
-                text: OpenLayers.i18n('downloadAsUrlsLabel'),
-                handler: this._urlListDownloadHandler(collection),
-                scope: this
-            });
-            menuItems.push({
-                text: OpenLayers.i18n('downloadAsAllSourceNetCdfLabel'),
-                handler: this._netCdfDownloadHandler(collection),
-                scope: this
-            });
-        }
-
-        if (this._isSubsettedNetCdfAvailable(collection)) {
-
-            menuItems.push({
-                text: OpenLayers.i18n('downloadAsSubsettedNetCdfLabel'),
-                handler: this._subsettedDownloadHandler(collection, { format: 'nc' }),
-                scope: this
-            });
-        }
-
-        return menuItems;
-    },
-
-    _subsettedDownloadHandler: function(collection, params) {
-
-        params.collectEmailAddress = true;
-        params.asyncDownload = true;
-
-        return this.downloadWithConfirmation(collection, this._generateNcwmsUrl, params);
-    },
-
-    // a moment
     _formatDate: function(date) {
         return date.format(OpenLayers.i18n('dateTimeDisplayFormat'));
     },
@@ -105,20 +67,5 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         }
 
         return '';
-    },
-
-    _generateNcwmsUrl: function(collection, params) {
-
-        var recordAggregator = collection.aggregator.getRecordAggregator();
-
-        return recordAggregator.generateUrl(collection.ncwmsParams, params.emailAddress);
-    },
-
-    _isSubsettedNetCdfAvailable: function(collection) {
-        return collection.aggregator.supportsSubsettedNetCdf();
-    },
-
-    _isUrlListDownloadAvailable: function(collection) {
-        return collection.aggregator.supportsNetCdfUrlList();
     }
 });

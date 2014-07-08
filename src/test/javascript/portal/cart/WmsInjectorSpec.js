@@ -41,39 +41,6 @@ describe('Portal.cart.WmsInjector', function() {
         });
     });
 
-
-    describe('createMenuItems', function() {
-
-        it('includes items for download url list and NetCDF download if urlDownloadFieldName exists', function() {
-            var menuItems = injector._createMenuItems({
-                wmsLayer: {
-                    getWfsLayerFeatureRequestUrl: noOp,
-                    getWmsLayerFeatureRequestUrl: noOp,
-                    urlDownloadFieldName: true,
-                    wfsLayer: null,
-                    isNcwms: function() {
-                        return false;
-                    }
-                }
-            });
-
-            var urlListIncluded = false;
-            var netCdfDownloadIncluded = false;
-            for (var i = 0; i < menuItems.length; i++) {
-                if (menuItems[i].text == OpenLayers.i18n('downloadAsUrlsLabel')) {
-                    urlListIncluded = true;
-                }
-                else if (menuItems[i].text == OpenLayers.i18n('downloadAsAllSourceNetCdfLabel')) {
-                    netCdfDownloadIncluded = true;
-                }
-            }
-
-            expect(menuItems.length).toEqual(2); // URL List and NetCDF download
-            expect(urlListIncluded).toBe(true);
-            expect(netCdfDownloadIncluded).toBe(true);
-        });
-    });
-
     describe('getDataMarkup', function() {
 
         var markup;
@@ -89,59 +56,6 @@ describe('Portal.cart.WmsInjector', function() {
         it('contains the download estimator spinner and loading message', function() {
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingMessage"))).toBeGreaterThan(-1);
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingSpinner"))).toBeGreaterThan(-1);
-        });
-    });
-
-    describe('download handlers', function() {
-
-        var downloadParams;
-        var collection;
-
-        beforeEach(function() {
-            downloadParams = {};
-            spyOn(injector, 'downloadWithConfirmation');
-            spyOn(injector, '_getUrlListDownloadParams').andReturn(downloadParams);
-            spyOn(injector, '_getNetCdfDownloadParams').andReturn(downloadParams);
-
-            collection = {
-                wmsLayer: {
-                    grailsLayerId: 1,
-                    isNcwms: function() { return true }
-                }
-            };
-        });
-
-        it('_urlListDownloadHandler calls downloadWithConfirmation', function() {
-            injector._urlListDownloadHandler(collection);
-
-            expect(injector.downloadWithConfirmation).toHaveBeenCalledWith(
-                collection,
-                injector._downloadUrl,
-                downloadParams
-            );
-        });
-
-        it('_netCdfDownloadHandler calls downloadWithConfirmation', function() {
-            injector._netCdfDownloadHandler(collection);
-
-            expect(injector.downloadWithConfirmation).toHaveBeenCalledWith(
-                collection,
-                injector._downloadUrl,
-                downloadParams
-            );
-        });
-    });
-
-    describe('_wmsDownloadUrl', function() {
-
-        it('calls correct function on layer', function() {
-
-            var spy = jasmine.createSpy();
-            var testLayer = {getWmsLayerFeatureRequestUrl: spy, params: "blagh"};
-
-            injector._wmsDownloadUrl({ wmsLayer: testLayer }, { format: 'xml' });
-
-            expect(testLayer.getWmsLayerFeatureRequestUrl).toHaveBeenCalledWith('xml');
         });
     });
 

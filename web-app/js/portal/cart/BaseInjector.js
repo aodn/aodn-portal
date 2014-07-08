@@ -20,27 +20,10 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
             dataFilters: this._getDataFilterEntry(collection),
             dataMarkup: this._getDataMarkup(collection),
             linkedFiles: this._getMetadataLinks(collection),
-            pointOfTruthLink: this._getPointOfTruthLink(collection),
-            menuItems: this._createMenuItems(collection)
+            pointOfTruthLink: this._getPointOfTruthLink(collection)
         };
 
         return injectionJson;
-    },
-
-    _urlListDownloadHandler: function(collection) {
-        return this.downloadWithConfirmation(
-            collection,
-            this._downloadUrl,
-            this._getUrlListDownloadParams(collection)
-        );
-    },
-
-    _netCdfDownloadHandler: function(collection) {
-        return this.downloadWithConfirmation(
-            collection,
-            this._downloadUrl,
-            this._getNetCdfDownloadParams(collection)
-        );
     },
 
     _downloadUrl: function() {
@@ -67,26 +50,6 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         );
     },
 
-    _getUrlListDownloadParams: function(collection) {
-        return this._getDownloadParams(collection, 'urlListForLayer', "{0}_URLs.txt");
-    },
-
-    _getNetCdfDownloadParams: function(collection) {
-        return this._getDownloadParams(collection, 'downloadNetCdfFilesForLayer', "{0}_source_files.zip");
-    },
-
-    _getDownloadParams: function(collection, action, filenameFormat, fileFormat) {
-        var downloadControllerArgs = {
-            action: action,
-            layerId: collection.wmsLayer.grailsLayerId
-        };
-
-        return {
-            format: fileFormat,
-            filenameFormat: filenameFormat,
-            downloadControllerArgs: downloadControllerArgs
-        };
-    },
 
     _wmsDownloadUrl: function(collection, params) {
 

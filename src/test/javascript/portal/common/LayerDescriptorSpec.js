@@ -40,7 +40,7 @@ describe("Portal.common.LayerDescriptor", function() {
                 "server": {
                     "opacity": 100,
                     "type": "WMS-1.1.1",
-                    "uri": "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi"
+                    "uri": "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi"
                 }
             });
         });
@@ -49,7 +49,7 @@ describe("Portal.common.LayerDescriptor", function() {
             var openLayer = layerDesc.toOpenLayer();
 
             expect(openLayer.isBaseLayer).toBe(true);
-            expect(openLayer.url).toBe("http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi");
+            expect(openLayer.url).toBe("http://tilecache.emii.org.au/cgi-bin/tilecache.cgi");
             expect(openLayer.opacity).toBe(1);
             expect(openLayer).toBeInstanceOf(OpenLayers.Layer.WMS);
 

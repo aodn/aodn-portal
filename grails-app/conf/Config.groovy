@@ -108,6 +108,8 @@ minimap {
     }
 }
 
+proxyWmsRequests = false
+
 geoserver_static = [
     uri: "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms",
     type: "WMS-1.1.1"
@@ -124,6 +126,10 @@ baselayers = [
         title: "Simple Baselayer",
         server: geoserver_static
     ]
+]
+
+allowedProxyHosts = [
+    geoserver_static.uri
 ]
 
 // OpenID
@@ -153,6 +159,7 @@ environments {
         wmsScanner.url = env['WMS_SCANNER_URL'] ?: "http://localhost:8100/WmsScannerGrails/"
         wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
         gogoduck.url = env['GOGODUCK_URL'] ?: "http://localhost:8300/go-go-duck"
+        geonetwork.url = env['GEONETWORK_URL'] ?: "http://catalogue-rc.aodn.org.au/geonetwork"
 
         grails.mail.disabled = true
     }
@@ -174,6 +181,7 @@ environments {
         spatialsearch.url = "http://search.aodn.org.au/search/search/index"
         wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
         wfsScanner.url = "http://wfsscannerpublic.aodn.org.au/wfsscanner"
+        geonetwork.url = "http://catalogue-123.aodn.org.au/geonetwork"
 
         grails {
             mail {

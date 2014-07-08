@@ -114,7 +114,7 @@ class WmsScannerController {
             setFlashMessage e.message
         }
 
-        redirect controller: "server", action: "list"
+        doRedirect()
     }
 
     def callUpdate = {
@@ -129,7 +129,7 @@ class WmsScannerController {
             setFlashMessage e.message
         }
 
-        redirect controller: "server", action: "list"
+        doRedirect()
     }
 
     def callDelete = {
@@ -142,8 +142,16 @@ class WmsScannerController {
             setFlashMessage e.message
         }
 
-        redirect controller: "server", action: "list"
+        doRedirect()
+    }
 
+    private void doRedirect() {
+
+        def canAccessServerList = SecurityUtils.subject.isPermitted("server:list")
+
+        def args = canAccessServerList ? [controller: "server", action: "list"] : [controller: "wmsScanner", action: "controls"]
+
+        redirect(args)
     }
 
     private void setFlashMessage(String response) {

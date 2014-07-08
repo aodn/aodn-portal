@@ -59,11 +59,4 @@ describe('Portal.cart.NoDataInjector', function() {
             expect(injector._getDataMarkup()).toEqual('');
         });
     });
-
-    describe('createMenuItems', function() {
-
-        it('returns an empty array', function() {
-            expect(injector._createMenuItems().length).toBe(0);
-        });
-    });
 });

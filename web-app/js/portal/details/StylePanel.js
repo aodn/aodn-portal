@@ -209,11 +209,9 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     buildGetLegend: function (layer, style, palette, colorBarOnly) {
 
         var url = "";
-        var useProxy = false;
 
         if (layer.cache === true) {
             url = layer.server.uri;
-            useProxy = true;
         }
         else {
             url = layer.url;
@@ -246,18 +244,12 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             opts += "&COLORSCALERANGE=" + layer.params.COLORSCALERANGE;
         }
 
-        if (useProxy) {
-            // FORMAT here is for the proxy, so that it knows its a binary image required
-            url = proxyCachedURL + encodeURIComponent(url) + "&";
+        // see if this url already has some parameters on it
+        if (url.contains("?")) {
+            url += "&";
         }
         else {
-            // see if this url already has some parameters on it
-            if (url.contains("?")) {
-                url += "&";
-            }
-            else {
-                url += "?";
-            }
+            url += "?";
         }
 
         opts += "&REQUEST=GetLegendGraphic"
@@ -272,6 +264,9 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         // strip off leading '&'
         opts = opts.replace(/^[&]+/g, "");
         url += opts;
+
+        // Proxy request if needed
+        url = Portal.utils.Proxy.proxy(url);
 
         return url;
     },

@@ -55,14 +55,11 @@ beforeEach(function() {
             return this.actual.indexOf(expected) == 0;
         },
 
-        toHaveParameterWithValue: function(key, value, encodeURI) {
+        toHaveParameterWithValue: function(key, value) {
 
             var notText = this.isNot ? " not" : "";
 
-            var encodedValue = value;
-            if (encodeURI || encodeURI == null) {
-                encodedValue = encodeURIComponent(value);
-            }
+            var encodedValue = encodeURIComponent(value);
 
             this.message = function() {
                 return "Expected the query string" + notText + " to contain the key '" + key + "' with the (URL encoded) value '" + encodedValue + "'. URL was: '" + this.actual + "'.";
@@ -72,6 +69,18 @@ beforeEach(function() {
             var searchValue = String.format("&{0}={1}&", key, encodedValue);
 
             return easySearchString.indexOf(searchValue) >= 0;
+        },
+
+        toBeNonEmptyString: function() {
+
+            this.message = function() {
+
+                var messageStart = this.isNot ? "Didn't expect" : "Expected";
+
+                return messageStart + " '" + this.actual + "' to be a non-empty String";
+            };
+
+            return (typeof this.actual == 'string') && this.actual != '';
         }
     });
 });

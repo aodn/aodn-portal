@@ -7,7 +7,7 @@
 
 describe('Custom matchers', function () {
 
-    describe('toHaveParameterWithValue', function () {
+    describe('toHaveParameterWithValue()', function () {
 
         it('returns false when key not found', function () {
 
@@ -34,6 +34,37 @@ describe('Custom matchers', function () {
 
             expect('name=Steve%20Jobs').toHaveParameterWithValue('name','Steve Jobs');
             expect('name=Steve%20Jobs').not.toHaveParameterWithValue('name','Steve%20Jobs');
+        });
+    });
+
+    describe('toBeNonEmptyString()', function() {
+
+        it('returns false when undefined', function() {
+
+            expect(undefined).not.toBeNonEmptyString();
+        });
+
+        it('returns false when null', function() {
+
+            expect(null).not.toBeNonEmptyString();
+        });
+
+        it('returns false when an empty string', function() {
+
+            expect('').not.toBeNonEmptyString();
+        });
+
+        it('returns true when a non-empty string', function() {
+
+            expect('potato').toBeNonEmptyString();
+        });
+
+        it('returns false when given a non-string object', function() {
+
+            expect({}).not.toBeNonEmptyString();
+            expect(true).not.toBeNonEmptyString();
+            expect(1).not.toBeNonEmptyString();
+            expect([]).not.toBeNonEmptyString();
         });
     });
 });

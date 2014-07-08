@@ -7,7 +7,13 @@ class AodaacJobController {
     }
 
     def list = {
-        params.max = 100
+        params.max = 30
+
+        if (!params.sort) {
+            params.sort = 'dateCreated'
+            params.order = 'desc'
+        }
+
         [aodaacJobInstanceList: AodaacJob.list(params), aodaacJobInstanceTotal: AodaacJob.count()]
     }
 

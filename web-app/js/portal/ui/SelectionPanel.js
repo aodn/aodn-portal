@@ -14,7 +14,7 @@ Portal.ui.SelectionPanel = Ext.extend(Ext.Panel, {
 
         this.searchPanel = new Portal.ui.search.SearchPanel({
             itemId: 'searchPanel',
-            catalogUrl: Portal.app.config.catalogUrl,
+            catalogUrl: Portal.app.appConfig['geonetwork.url'],
             protocols: config.searchRestriction.protocols,
             dragAndDrop: config.dragAndDrop,
             resultGridSize: 10

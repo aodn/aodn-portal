@@ -171,7 +171,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             isBaseLayer: true,
             queryable: false
         }, function () {
-            Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER)
+            Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
         });
     },
 

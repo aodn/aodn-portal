@@ -9,14 +9,12 @@ Ext.namespace('Portal.details');
 
 Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
-
     ROW_HEIGHT: 32,
 
     constructor: function(cfg) {
         var config = Ext.apply({
             layout: 'table',
             layoutConfig: {
-                // The total column count must be specified here
                 columns: 1,
                 tableAttrs: {
                     cellspacing: '10px',
@@ -46,11 +44,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         if (layer.isNcwms()) {
             this.geoNetworkRecord = layer.parentGeoNetworkRecord;
 
-            this._applyFilterValuesFromMap();
             this._clearDateTimeFields();
-            this._attachTemporalEvents(); // creates listener for completing processTemporalExtent
-            this.selectedLayer.processTemporalExtent(); // triggers 'temporalextentloaded'
+            this._attachTemporalEvents();
+            this._attachSpatialEvents();
+            this.selectedLayer.processTemporalExtent();
             this._removeLoadingInfo();
+            this._applyFilterValuesFromMap();
             this._showAllControls();
 
             show.call(target, this);
@@ -68,7 +67,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.remove(this.loadingInfo);
         delete this.loadingInfo;
 
-        this._applyFilterValuesFromMap();
     },
 
     _addLoadingInfo: function() {
@@ -77,20 +75,29 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _addSpatialConstraintDisplayPanel: function() {
-        this.map.events.on({
-            scope: this,
-            'spatialconstraintadded': function(geometry) {
-                this._applyFilterValuesToCollection(geometry);
-            },
-            'spatialconstraintcleared': function() {
-                this._applyFilterValuesToCollection();
-            }
-        });
 
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.map
         });
         this.add(this.spatialSubsetControlsPanel);
+    },
+
+    _attachSpatialEvents: function() {
+        if (!this.selectedLayer.attachedSpatialEvents) {
+
+            var currentLayer = this.selectedLayer;
+            currentLayer.map.events.on({
+                scope: this,
+                'spatialconstraintadded': function(geometry) {
+                    this._applyFilterValuesToCollection(currentLayer, geometry);
+                },
+                'spatialconstraintcleared': function() {
+                    this._applyFilterValuesToCollection(currentLayer, null);
+                }
+            });
+
+            this.selectedLayer.attachedSpatialEvents = true;
+        }
     },
 
     _addTemporalControls: function() {
@@ -232,29 +239,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         return new Ext.Spacer({ height: height });
     },
 
-    _buildParameters: function(parentAggr, selectedLayer, dateRangeStart, dateRangeEnd, geometry) {
-
-        return parentAggr.buildParams(selectedLayer, dateRangeStart, dateRangeEnd, geometry);
-    },
-
-    _getParentRecordAggregator: function(selectedLayer) {
-
-        var parentAggrGroup;
-        var parentAggr;
-
-        if (selectedLayer) {
-            parentAggrGroup = selectedLayer.parentGeoNetworkRecord.data.aggregator.childAggregators;
-        }
-
-        Ext.each(parentAggrGroup, function(aggr) {
-            if (aggr.supportsSubsettedNetCdf()) {
-                parentAggr = aggr;
-            }
-        });
-
-        return parentAggr;
-    },
-
     _onDateSelected: function(datePicker, jsDate) {
         var selectedDateMoment = moment(jsDate);
         datePicker.setValue(selectedDateMoment);
@@ -278,18 +262,17 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     _applyFilterValuesFromMap: function() {
 
-        this._applyFilterValuesToCollection(this.map.getConstraint());
+        this._applyFilterValuesToCollection(this.selectedLayer, this.map.getConstraint());
     },
 
-    _applyFilterValuesToCollection: function(geometry) {
+    _applyFilterValuesToCollection: function(layer, geometry) {
 
         var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
-        var parentAggr = this._getParentRecordAggregator(this.selectedLayer);
 
-        if (this.geoNetworkRecord && parentAggr) {
+        if (this.geoNetworkRecord) {
             this._addDateTimeFilterToLayer();
-            this.geoNetworkRecord.updateNcwmsParams(this._buildParameters(parentAggr, this.selectedLayer, dateRangeStart, dateRangeEnd, geometry));
+            this.geoNetworkRecord.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
         }
     },
 
