@@ -49,13 +49,6 @@ class AodaacAggregatorService {
         }
     }
 
-    def productIdsForLayer(layer) {
-
-        def productLinks = AodaacProductLink.findAllByLayerNameIlikeAndServer(layer.name, layer.server)
-
-        return productLinks.collect{ it.productId }.unique()
-    }
-
     def createJob(params) {
 
         log.debug "Creating AODAAC Job. Notication email address: '${params.notificationEmailAddress}'"
@@ -96,7 +89,7 @@ class AodaacAggregatorService {
         log.debug "response: $currentDetails"
 
         job.setStatus(currentDetails.status ?: ASSUME_EXPIRED)
-            
+
         job.save failOnError: true
 
         if (job.hasEnded()) {

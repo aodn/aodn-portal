@@ -227,7 +227,7 @@ class LayerController {
         layerInstance.properties = params
         layerInstance.dataSource = "Manual"
 
-        return [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)]
+        return [layerInstance: layerInstance]
     }
 
     def save = {
@@ -237,13 +237,8 @@ class LayerController {
             redirect(action: "list")
         }
         else {
-            render(view: "create", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)])
+            render(view: "create", model: [layerInstance: layerInstance])
         }
-    }
-
-    def _getAodaacProductInfo(layer) {
-        def productIds = aodaacAggregatorService.productIdsForLayer(layer)
-        return aodaacAggregatorService.getProductInfo(productIds)
     }
 
     def edit = {
@@ -255,7 +250,7 @@ class LayerController {
             redirect(action: "list")
         }
         else {
-            return [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)]
+            return [layerInstance: layerInstance]
         }
     }
 
@@ -267,7 +262,7 @@ class LayerController {
                 if (layerInstance.version > version) {
 
                     layerInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'layer.label', default: 'Layer')] as Object[], "Another user has updated this Layer while you were editing")
-                    render(view: "edit", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)])
+                    render(view: "edit", model: [layerInstance: layerInstance])
                     return
                 }
             }
@@ -284,7 +279,7 @@ class LayerController {
                 redirect(action: "list", id: layerInstance.id)
             }
             else {
-                render(view: "edit", model: [layerInstance: layerInstance, linkedAodaacProducts: _getAodaacProductInfo(layerInstance)])
+                render(view: "edit", model: [layerInstance: layerInstance])
             }
         }
         else {
@@ -640,9 +635,6 @@ class LayerController {
                 }
             }
         }
-
-        // Add AODAAC data
-        layerData.aodaacProducts = _getAodaacProductInfo(layer)
 
         return layerData
     }

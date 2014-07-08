@@ -19,7 +19,6 @@ class LayerControllerIntegrationTests extends ControllerUnitTestCase {
         super.setUp()
 
         layerController = new LayerController()
-        layerController.metaClass._getAodaacProductInfo = { null }
     }
 
     protected void tearDown() {

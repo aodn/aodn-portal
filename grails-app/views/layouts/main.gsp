@@ -66,8 +66,6 @@
               </span>
             </li>
 
-            <li class="controllerMenuItems"><g:link controller="aodaacProductLink">AODAAC Product Links</g:link></li>
-
             <li class="controllerMenuItems"><g:link controller="config"  >Site Configuration</g:link></li>
             <li class="controllerMenuItems"><g:link controller="systemTest" action="controls" >System Test Controls</g:link></li>
 

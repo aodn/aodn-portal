@@ -23,7 +23,6 @@ class AodaacControllerTests extends ControllerUnitTestCase {
         super.tearDown()
 
         AodaacJob.metaClass = null
-        AodaacProductLink.metaClass = null
         Layer.metaClass = null
     }
 
