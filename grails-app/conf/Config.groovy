@@ -159,7 +159,7 @@ environments {
         wmsScanner.url = env['WMS_SCANNER_URL'] ?: "http://localhost:8100/WmsScannerGrails/"
         wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
         gogoduck.url = env['GOGODUCK_URL'] ?: "http://localhost:8300/go-go-duck"
-        geonetwork.url = env['GEONETWORK_URL'] ?: "http://localhost:8080/geonetwork"
+        geonetwork.url = env['GEONETWORK_URL'] ?: "http://catalogue-rc.aodn.org.au/geonetwork"
 
         grails.mail.disabled = true
     }
