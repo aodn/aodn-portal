@@ -63,6 +63,7 @@ class ServerController {
 
         if (serverInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'server.label', default: 'Server'), serverInstance.id])}"
+            Server.serverUpdated()
             redirect(action: "list", id: serverInstance.id)
         }
         else {
@@ -102,6 +103,7 @@ class ServerController {
 
             if (!serverInstance.hasErrors() && serverInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'server.label', default: 'Server'), serverInstance.id])}"
+                Server.serverUpdated()
                 redirect(action: "list", id: serverInstance.id)
             }
             else {
@@ -120,6 +122,7 @@ class ServerController {
             try {
                 serverInstance.delete()
                 flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'server.label', default: 'Server'), params.id])}"
+                Server.serverUpdated()
                 redirect(action: "list")
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {

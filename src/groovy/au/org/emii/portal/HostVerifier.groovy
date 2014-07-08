@@ -64,7 +64,25 @@ class HostVerifier {
         return containsHost
     }
 
+    def _fromConfigTime
+    def _fromConfigValue
     def _fromConfig() {
+
+        if (_fromConfigTime < Config.lastUpdate) {
+            println "_fromConfigTime < Config.lastUpdate ($_fromConfigTime < ${Config.lastUpdate})"
+            _fromConfigValue = null
+        }
+
+        if (!_fromConfigValue) {
+            println "!_fromConfigValue"
+            _fromConfigValue = _calculateFromConfig()
+            _fromConfigTime = Config.lastUpdate
+        }
+
+        return _fromConfigValue
+    }
+
+    def _calculateFromConfig() {
         def result = []
         if (grailsApplication) {
             _addIf(result, grailsApplication.config.spatialsearch.url)
@@ -80,8 +98,22 @@ class HostVerifier {
         return result
     }
 
+    def _fromKnownServersTime
+    def _fromKnownServersValue
     def _fromKnownServers() {
-        return Server.list().collect { it.uri }
+
+        if (_fromKnownServersTime < Server.lastUpdate) {
+            println "_fromKnownServersTime < Server.lastUpdate ($_fromKnownServersTime < ${Server.lastUpdate})"
+            _fromKnownServersValue = null
+        }
+
+        if (!_fromKnownServersValue) {
+            println "!_fromKnownServersValue"
+            _fromKnownServersValue = Server.list().collect { it.uri }
+            _fromKnownServersTime = Server.lastUpdate
+        }
+
+        return _fromKnownServersValue
     }
 
     def _addIf(list, value) {

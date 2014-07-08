@@ -13,6 +13,8 @@ import groovy.time.TimeCategory
 import org.apache.commons.codec.binary.Base64
 
 class Server {
+    static def lastUpdate
+
     Long id
     String uri
     String shortAcron
@@ -222,5 +224,10 @@ class Server {
 
             operations << operation
         }
+    }
+
+    static def serverUpdated() {
+        println "Updating server last update"
+        lastUpdate = System.currentTimeMillis()
     }
 }
