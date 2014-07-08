@@ -141,6 +141,7 @@ class ConfigController {
 
             if (!configInstance.hasErrors() && configInstance.save(flush: true) && (flash.message == null)) {
                 flash.message = 'Config updated'
+                Config.configUpdated()
             }
 
             render(view: "edit", model: [configInstance: configInstance])

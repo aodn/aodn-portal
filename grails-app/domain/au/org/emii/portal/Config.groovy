@@ -14,6 +14,8 @@ Configuration domain for the portal
 */
 
 class Config {
+    static def lastUpdate
+
     String name
     String proxy
     Integer proxyPort
@@ -133,5 +135,10 @@ class Config {
             enableMOTD &&
             now.after(motdStart) &&
             now.before(motdEnd)
+    }
+
+    static def configUpdated() {
+        println "Updating config last update"
+        lastUpdate = System.currentTimeMillis()
     }
 }
