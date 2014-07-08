@@ -106,11 +106,15 @@ describe('Portal.cart.InsertionService', function() {
 
     function getWmsRecord() {
         geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
+        geoNetworkRecord.dataDownloadHandlers = [{}];
+
         return geoNetworkRecord;
     }
 
     function getWmsUrlDownloadRecord() {
         geoNetworkRecord.wmsLayer.urlDownloadFieldName = 'download_url';
+        geoNetworkRecord.dataDownloadHandlers = [{}];
+
         return geoNetworkRecord;
     }
 
@@ -118,12 +122,16 @@ describe('Portal.cart.InsertionService', function() {
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
         geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
 
+        geoNetworkRecord.dataDownloadHandlers = [{}];
+
         return geoNetworkRecord;
     }
 
     function getAodaacRecord() {
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
         geoNetworkRecord.wmsLayer.aodaacProducts = [{ id: 123 }];
+
+        geoNetworkRecord.dataDownloadHandlers = [{}];
 
         return geoNetworkRecord;
     }

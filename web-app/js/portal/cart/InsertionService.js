@@ -22,22 +22,25 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         };
 
         var wmsLayer = collection.wmsLayer;
-        var htmlInjection = null;
+        var htmlInjection;
 
-        if (this._isNcwmsLayerWithData(wmsLayer)) {
-
-            htmlInjection = this._getNcwmsInjector(config, collection);
-        }
-        else if (this._hasGeonetworkLayerName(wmsLayer)) {
-
-            htmlInjection = this._getWmsInjector(config, collection);
+        if (this._isCollectionDownloadable(collection)) {
+            if (this._isNcwmsLayerWithData(wmsLayer)) {
+                htmlInjection = this._getNcwmsInjector(config, collection);
+            }
+            else {
+                htmlInjection = this._getWmsInjector(config, collection);
+            }
         }
         else {
-
             htmlInjection = this._getNoDataInjector(config, collection);
         }
 
         return htmlInjection.getInjectionJson(collection);
+    },
+
+    _isCollectionDownloadable: function(collection) {
+        return collection.dataDownloadHandlers && (collection.dataDownloadHandlers.length > 0);
     },
 
     _isNcwmsLayerWithData: function(wmsLayer) {
