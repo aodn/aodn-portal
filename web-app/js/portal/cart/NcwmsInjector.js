@@ -66,6 +66,6 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             return this._addDownloadEstimate(collection);
         }
 
-        return '';
+        return String.format('<div>{0}</div>', OpenLayers.i18n('estimatedDlFailedMsg'));
     }
 });
