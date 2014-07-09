@@ -44,17 +44,12 @@ Portal.cart.InsertionService = Ext.extend(Object, {
     },
 
     _isNcwmsLayerWithData: function(wmsLayer) {
-        return wmsLayer.isNcwms() && (this._hasGeonetworkLayerName(wmsLayer) || this._hasAodaacProductId(wmsLayer));
+        return wmsLayer.isNcwms() && (this._hasGeonetworkLayerName(wmsLayer));
     },
 
     _hasGeonetworkLayerName: function(wmsLayer) {
         var wfsLayer = wmsLayer.wfsLayer;
         return (wfsLayer && wfsLayer.name) || wmsLayer.gogoduckLayerName || wmsLayer.urlDownloadFieldName;
-    },
-
-    _hasAodaacProductId: function(wmsLayer) {
-        var aodaacProducts = wmsLayer.aodaacProducts;
-        return aodaacProducts && aodaacProducts[0] && aodaacProducts[0].id;
     },
 
     _getNcwmsInjector: function(config) {
