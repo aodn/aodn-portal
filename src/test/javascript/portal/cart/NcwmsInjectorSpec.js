@@ -33,6 +33,14 @@ describe('Portal.cart.NcwmsInjector', function() {
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingMessage"))).toBeGreaterThan(-1);
             expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingSpinner"))).toBeGreaterThan(-1);
         });
+
+        it('generates estimate message even when wfs layer is not present', function() {
+            geoNetworkRecord.wmsLayer.wfsLayer = null;
+            markup = injector._getDataMarkup(geoNetworkRecord);
+
+            expect(markup).toBeNonEmptyString();
+            expect(markup).toContain(OpenLayers.i18n('estimatedDlFailedMsg'));
+        });
     });
 
     describe('getDataFilterEntry', function() {
