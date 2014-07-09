@@ -269,11 +269,11 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     fileSizeIconMarkup: '<img src="images/error.png">',
     fileSizeGb: "GB",
     fileSizeMb: "MB",
-    estimatedDlMessage: "The estimated NetCDF size is ",
-    estimatedDlFailedMsg: "The estimated NetCDF size is unknown.",
-    estimatedDlLoadingMessage: "Estimating NetCDF size...",
+    estimatedDlMessage: "The download size is ",
+    estimatedDlFailedMsg: "The download size is unknown.",
+    estimatedDlLoadingMessage: "Estimating download size...",
     estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />',
-    estimatedDlTimeoutMsg: "The NetCDF size is too large to estimate.",
+    estimatedDlTimeoutMsg: "The download size is too large to estimate.",
     transAbortMsg: "transaction aborted",
 
     dateTimeDisplayFormat: 'YYYY/MMM/DD-HH:mm-UTC', // moment formatting
