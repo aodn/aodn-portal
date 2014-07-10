@@ -18,7 +18,10 @@ Portal.search.MetadataExtent = Ext.extend(Object, {
     },
 
     addPolygon: function(polygon) {
-        this.polygons.push(this._wktPolygonToGeoBox(polygon));
+        var geoBox = this._wktPolygonToGeoBox(polygon);
+        if (geoBox) {
+            this.polygons.push(geoBox);
+        }
     },
 
     getLayer: function() {
@@ -79,13 +82,18 @@ Portal.search.MetadataExtent = Ext.extend(Object, {
 
     _wktPolygonToGeoBox: function(polygon) {
         var wktPolygon = new OpenLayers.Feature.Vector(OpenLayers.Geometry.fromWKT(polygon));
-        var bounds = wktPolygon.geometry.getBounds();
-        return {
-            west: bounds.left,
-            south: bounds.bottom,
-            east: bounds.right,
-            north: bounds.top
-        };
+        if (wktPolygon.geometry) {
+            var bounds = wktPolygon.geometry.getBounds();
+            return {
+                west: bounds.left,
+                south: bounds.bottom,
+                east: bounds.right,
+                north: bounds.top
+            };
+        }
+        else {
+            return null;
+        }
     },
 
     _toGeoBox: function(geoBoxStr) {
