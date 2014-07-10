@@ -115,10 +115,9 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     _getRequestUrl: function(page, summaryOnly) {
         var params = this._getParams(page, summaryOnly);
 
-        var searchProvider =
-            (params['geometry']) ? this.spatialSearchUrl : this.catalogUrl + '/srv/eng/' + this.serviceUrl;
+        var searchUrl = this.catalogUrl + '/srv/eng/' + this.serviceUrl;
 
-        return searchProvider  + '?' + Ext.urlEncode(params);
+        return searchUrl  + '?' + Ext.urlEncode(params);
     },
 
     _getParams: function(page, summaryOnly) {

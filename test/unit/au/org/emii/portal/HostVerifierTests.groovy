@@ -82,11 +82,6 @@ class HostVerifierTests extends GrailsUnitTestCase {
         assertTrue(verifier.allowedHost(request, 'http://localhost'))
     }
 
-    void testHostInConfigAllowed() {
-        verifier.grailsApplication = _mockGrailsApplication(["config", "spatialsearch", "url"], 'http://spatialsearchtest.emii.org.au')
-        assertTrue(verifier.allowedHost(request, 'http://spatialsearchtest.emii.org.au'))
-    }
-
     void testGeonetworkAllowed() {
         verifier.grailsApplication = _mockGrailsApplication(["config", "geonetwork", "url"], 'http://geonetwork.aodn.org.au/geonetwork')
         assertTrue(verifier.allowedHost(request, 'http://geonetwork.aodn.org.au'))

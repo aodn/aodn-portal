@@ -86,10 +86,10 @@ beforeEach(function() {
 });
 
 var setupTestConfigAndStubs = function() {
+    // Declare namespaces
     Ext.namespace('Portal.app.appConfig');
-    Portal.app.appConfig['spatialsearch.url'] = "spatialsearch.aodn.org.au";
-
     Ext.namespace('Portal.app.config');
+
     Portal.app.config.metadataLayerProtocols = "OGC:WMS-1.1.1-http-get-map\nOGC:WMS-1.3.0-http-get-map";
     Portal.app.config.defaultDatelineZoomBbox = '90, 90, -90, -90';
 

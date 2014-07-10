@@ -68,7 +68,6 @@ class HostVerifier {
         def result = []
         if (grailsApplication) {
             _addIf(result, grailsApplication.config.geonetwork.url)
-            _addIf(result, grailsApplication.config.spatialsearch.url)
             _addIf(result, grailsApplication.config.portal.instance.splash.index)
             _addIf(result, grailsApplication.config.portal.instance.splash.links)
             _addIf(result, grailsApplication.config.portal.instance.splash.community)
