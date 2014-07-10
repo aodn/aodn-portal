@@ -49,11 +49,6 @@ describe('Portal.cart.InsertionService', function() {
             expectGetInjectorToHaveBeenCalled(mockInsertionService._getWmsInjector);
         });
 
-        it('creates a wms injector for download URL layers', function() {
-            mockInsertionService.insertionValues(getWmsUrlDownloadRecord());
-            expectGetInjectorToHaveBeenCalled(mockInsertionService._getWmsInjector);
-        });
-
         it('creates a no data injector for layers containing no data', function() {
             mockInsertionService.insertionValues(getNoDataRecord());
             expectGetInjectorToHaveBeenCalled(mockInsertionService._getNoDataInjector);
@@ -106,25 +101,8 @@ describe('Portal.cart.InsertionService', function() {
         return geoNetworkRecord;
     }
 
-    function getWmsUrlDownloadRecord() {
-        geoNetworkRecord.wmsLayer.urlDownloadFieldName = 'download_url';
-        geoNetworkRecord.dataDownloadHandlers = [{}];
-
-        return geoNetworkRecord;
-    }
-
-    function getGogoduckRecord() {
+    function getNcwmsRecord() {
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
-        geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
-
-        geoNetworkRecord.dataDownloadHandlers = [{}];
-
-        return geoNetworkRecord;
-    }
-
-    function getAodaacRecord() {
-        geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
-        geoNetworkRecord.wmsLayer.aodaacProducts = [{ id: 123 }];
 
         geoNetworkRecord.dataDownloadHandlers = [{}];
 
