@@ -26,14 +26,14 @@ Portal.cart.InsertionService = Ext.extend(Object, {
 
         if (this._isCollectionDownloadable(collection)) {
             if (this._isNcwmsLayerWithData(wmsLayer)) {
-                htmlInjection = this._getNcwmsInjector(config, collection);
+                htmlInjection = this._getNcwmsInjector(config);
             }
             else {
-                htmlInjection = this._getWmsInjector(config, collection);
+                htmlInjection = this._getWmsInjector(config);
             }
         }
         else {
-            htmlInjection = this._getNoDataInjector(config, collection);
+            htmlInjection = this._getNoDataInjector(config);
         }
 
         return htmlInjection.getInjectionJson(collection);
@@ -44,7 +44,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
     },
 
     _isNcwmsLayerWithData: function(wmsLayer) {
-        return wmsLayer.isNcwms() && (this._hasGeonetworkLayerName(wmsLayer) || this._hasAodaacProductId(wmsLayer));
+        return wmsLayer.isNcwms() && (this._hasGeonetworkLayerName(wmsLayer));
     },
 
     _hasGeonetworkLayerName: function(wmsLayer) {
@@ -52,12 +52,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         return (wfsLayer && wfsLayer.name) || wmsLayer.gogoduckLayerName || wmsLayer.urlDownloadFieldName;
     },
 
-    _hasAodaacProductId: function(wmsLayer) {
-        var aodaacProducts = wmsLayer.aodaacProducts;
-        return aodaacProducts && aodaacProducts[0] && aodaacProducts[0].id;
-    },
-
-    _getNcwmsInjector: function(config, collection) {
+    _getNcwmsInjector: function(config) {
 
         if (!this.ncwmsInjector) {
             this.ncwmsInjector = new Portal.cart.NcwmsInjector(config);
@@ -66,7 +61,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         return this.ncwmsInjector;
     },
 
-    _getWmsInjector: function(config, collection) {
+    _getWmsInjector: function(config) {
 
         if (!this.wmsInjector) {
             this.wmsInjector = new Portal.cart.WmsInjector(config);
@@ -75,7 +70,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         return this.wmsInjector;
     },
 
-    _getNoDataInjector: function(config, collection) {
+    _getNoDataInjector: function(config) {
 
         if (!this.noDataInjector) {
             this.noDataInjector = new Portal.cart.NoDataInjector(config);
