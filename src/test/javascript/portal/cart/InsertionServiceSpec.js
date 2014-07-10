@@ -39,8 +39,8 @@ describe('Portal.cart.InsertionService', function() {
             spyOn(mockInsertionService, '_getNoDataInjector').andReturn(mockInjector);
         });
 
-        it('creates an ncwms injector for gogoduck layers', function() {
-            mockInsertionService.insertionValues(getGogoduckRecord());
+        it('creates an ncwms injector for ncwms layers', function() {
+            mockInsertionService.insertionValues(getNcwmsRecord());
             expectGetInjectorToHaveBeenCalled(mockInsertionService._getNcwmsInjector)
         });
 
@@ -116,6 +116,15 @@ describe('Portal.cart.InsertionService', function() {
     function getGogoduckRecord() {
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
         geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
+
+        geoNetworkRecord.dataDownloadHandlers = [{}];
+
+        return geoNetworkRecord;
+    }
+
+    function getAodaacRecord() {
+        geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
+        geoNetworkRecord.wmsLayer.aodaacProducts = [{ id: 123 }];
 
         geoNetworkRecord.dataDownloadHandlers = [{}];
 
