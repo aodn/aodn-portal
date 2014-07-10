@@ -278,13 +278,4 @@
                                 </td>
                             </tr>
 
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="gogoduckLayerName"><g:message code="layer.gogoduckLayerName.label" default="Gogoduck override layer name" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'gogoduckLayerName', 'errors')}">
-                                    <g:textField name="gogoduckLayerName" value="${layerInstance?.gogoduckLayerName}" />
-                                </td>
-                            </tr>
-
                             <tr class="prop"><td valign="top" class="name" colspan="2">&nbsp;</td></tr>
