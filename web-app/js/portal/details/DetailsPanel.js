@@ -22,8 +22,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             }
         }, cfg);
 
-        this.mapPanel = cfg.mapPanel;
-
         Portal.details.DetailsPanel.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(eventName, openlayer) {
