@@ -4,6 +4,10 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
+
+OpenLayers.Layer.DOWNLOAD_FORMAT_CSV = 'csv';
+OpenLayers.Layer.DOWNLOAD_FORMAT_CSV_WITH_METADATA = 'csv-with-metadata-header';
+
 OpenLayers.Layer.prototype.isOverlay = function() {
     return !this.isBaseLayer;
 };
@@ -126,15 +130,15 @@ OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl = function(baseUrl, la
 OpenLayers.Layer.WMS.prototype._getServerSupportedOutputFormat = function(outputFormat) {
 
     // No special handling for formats other than 'csv'.
-    if (outputFormat != 'csv') {
+    if (outputFormat != OpenLayers.Layer.DOWNLOAD_FORMAT_CSV_WITH_METADATA) {
         return outputFormat;
     }
     // Request to have metadata inserted, if it's available.
     else if (this.server.supportsCsvMetadataHeaderOutputFormat) {
-        return 'csv-with-metadata-header';
+        return OpenLayers.Layer.DOWNLOAD_FORMAT_CSV_WITH_METADATA;
     }
     else {
-        return 'csv';
+        return OpenLayers.Layer.DOWNLOAD_FORMAT_CSV;
     }
 };
 
