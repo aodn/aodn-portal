@@ -26,7 +26,6 @@ class Layer {
     Boolean queryable
     Boolean isBaseLayer
     String urlDownloadFieldName
-    String gogoduckLayerName
 
     // Extra info
     String dataSource
@@ -74,7 +73,6 @@ class Layer {
         queryable()
         viewParams(nullable: true)
         urlDownloadFieldName(nullable: true)
-        gogoduckLayerName(nullable: true)
 
         isBaseLayer()
 

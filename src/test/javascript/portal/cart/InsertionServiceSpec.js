@@ -39,18 +39,13 @@ describe('Portal.cart.InsertionService', function() {
             spyOn(mockInsertionService, '_getNoDataInjector').andReturn(mockInjector);
         });
 
-        it('creates an ncwms injector for gogoduck layers', function() {
-            mockInsertionService.insertionValues(getGogoduckRecord());
+        it('creates an ncwms injector for ncwms layers', function() {
+            mockInsertionService.insertionValues(getNcwmsRecord());
             expectGetInjectorToHaveBeenCalled(mockInsertionService._getNcwmsInjector)
         });
 
         it('creates a wms injector for wms layers', function() {
             mockInsertionService.insertionValues(getWmsRecord());
-            expectGetInjectorToHaveBeenCalled(mockInsertionService._getWmsInjector);
-        });
-
-        it('creates a wms injector for download URL layers', function() {
-            mockInsertionService.insertionValues(getWmsUrlDownloadRecord());
             expectGetInjectorToHaveBeenCalled(mockInsertionService._getWmsInjector);
         });
 
@@ -106,16 +101,8 @@ describe('Portal.cart.InsertionService', function() {
         return geoNetworkRecord;
     }
 
-    function getWmsUrlDownloadRecord() {
-        geoNetworkRecord.wmsLayer.urlDownloadFieldName = 'download_url';
-        geoNetworkRecord.dataDownloadHandlers = [{}];
-
-        return geoNetworkRecord;
-    }
-
-    function getGogoduckRecord() {
+    function getNcwmsRecord() {
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
-        geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
 
         geoNetworkRecord.dataDownloadHandlers = [{}];
 
