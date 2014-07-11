@@ -28,6 +28,8 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _csvDownloadUrl: function(collection) {
 
-        return this._wmsDownloadUrl(collection, { format: 'csv' });
+        return this._wmsDownloadUrl(collection, {
+            format: OpenLayers.Layer.DOWNLOAD_FORMAT_CSV
+        });
     }
 });
