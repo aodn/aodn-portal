@@ -91,4 +91,15 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
             expect(boundingBoxFilter.isRealPolygon()).toEqual(false);
         });
     });
+
+    it("hasValue() is true if spatial constraint set", function() {
+        boundingBoxFilter.geometry = "something";
+        expect(boundingBoxFilter.hasValue()).toBe(true);
+    });
+
+    it("hasValue() is false if spatial constraint unset", function() {
+        boundingBoxFilter.geometry = undefined;
+        expect(boundingBoxFilter.hasValue()).toBe(false);
+    });
+
 });
