@@ -43,7 +43,11 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Object, {
         var serverUrl = this.onlineResource.href;
 
         return function(collection) {
-            return collection.wmsLayer.getWfsLayerFeatureRequestUrl(serverUrl, layerName, 'csv');
+            return collection.wmsLayer.getWfsLayerFeatureRequestUrl(
+                serverUrl,
+                layerName,
+                OpenLayers.Layer.DOWNLOAD_FORMAT_CSV_WITH_METADATA
+            );
         };
     }
 });
