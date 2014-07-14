@@ -38,7 +38,7 @@ databaseChangeLog = {
             }
         }
 
-        changeSet(author: "dnahodil (generated)", id: "1334815305155-2", failOnError: true) {
+        /*changeSet(author: "dnahodil (generated)", id: "1334815305155-2", failOnError: true) {
 
             update(tableName: "config")
             {
@@ -169,7 +169,7 @@ databaseChangeLog = {
 </table>\
 """)
             }
-        }
+        }*/
 
         changeSet(author: "dnahodil (generated)", id: "1353908954037-2", failOnError: true) {
 
