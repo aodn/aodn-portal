@@ -8,20 +8,22 @@
 describe('Portal.cart.BodaacDownloadHandler', function () {
 
     var handler;
+    var options;
+
+    var createHandler = function(onlineResource) {
+        handler = new Portal.cart.BodaacDownloadHandler(onlineResource);
+        options = handler.getDownloadOptions();
+    };
 
     beforeEach(function() {
 
-        handler = new Portal.cart.BodaacDownloadHandler(/* onlineResource not used yet */);
+        createHandler({
+            href: 'geoserver_url',
+            name: 'layer_name#field_name'
+        });
     });
 
     describe('getDownloadOptions', function() {
-
-        var options;
-
-        beforeEach(function() {
-
-            options = handler.getDownloadOptions();
-        });
 
         it('has two valid options', function() {
 
@@ -37,11 +39,34 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
                 expect(typeof option.handler).toBe('function');
 
                 var params = option.handlerParams;
+                var controllerArgs = params.downloadControllerArgs;
 
                 expect(params.filenameFormat).toBeNonEmptyString();
-                expect(params.downloadControllerArgs).not.toBeUndefined();
-                expect(params.downloadControllerArgs.action).toBeNonEmptyString();
+                expect(controllerArgs).not.toBeUndefined();
+                expect(controllerArgs.action).toBeNonEmptyString();
+                expect(controllerArgs.serverUrl).toBe('geoserver_url');
+                expect(controllerArgs.urlFieldName).toBe('field_name');
             }
+        });
+
+        it('has no options when required info is missing', function() {
+
+            createHandler({
+                href: null,
+                name: 'layer_name#field_name'
+            });
+
+            expect(options.length).toBe(0);
+        });
+
+        it('has no options when name is invalid', function() {
+
+            createHandler({
+                href: 'geoserver_url',
+                name: 'only one value (ie. no separator)'
+            });
+
+            expect(options.length).toBe(0);
         });
     });
 
@@ -58,11 +83,6 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
             testCollection = {
                 wmsLayer: {
-                    grailsLayerId: 777,
-                    wfsLayer: {
-                        name: 'wfs_layer_name',
-                        server: { uri: 'geoserver/wms/' }
-                    },
                     getDownloadFilter: function() { return 'the_cql' },
                     _buildGetFeatureRequestUrl: buildUrlSpy
                 }
@@ -74,16 +94,11 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
             clickHandler(testCollection, testHandlerParams);
         });
 
-        it('updates the handlerParams', function() {
-
-            expect(testHandlerParams.downloadControllerArgs.layerId).toBe(777);
-        });
-
         it('builds the correct URL', function() {
 
             expect(buildUrlSpy).toHaveBeenCalledWith(
-                'geoserver/wfs/',
-                'wfs_layer_name',
+                'geoserver_url',
+                'layer_name',
                 'csv',
                 'the_cql'
             );
