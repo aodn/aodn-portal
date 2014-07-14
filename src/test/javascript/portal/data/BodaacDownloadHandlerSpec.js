@@ -44,6 +44,7 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
                 expect(params.filenameFormat).toBeNonEmptyString();
                 expect(controllerArgs).not.toBeUndefined();
                 expect(controllerArgs.action).toBeNonEmptyString();
+                expect(controllerArgs.serverUrl).toBe('geoserver_url');
                 expect(controllerArgs.urlFieldName).toBe('field_name');
             }
         });
