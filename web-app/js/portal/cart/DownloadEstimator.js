@@ -25,7 +25,9 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         return String.format("downloadEst-{0}-{1}", uuid, this.initTimestampString);
     },
 
-    _getDownloadEstimate: function(collection, downloadUrl) {
+    _getDownloadEstimate: function(collection, downloadUrl, callback) {
+
+
         Ext.Ajax.request({
             url: 'download/estimateSizeForLayer',
             timeout: 30000,
@@ -35,7 +37,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
                 url: downloadUrl
             },
             success: function(result, values) {
-                this._createDownloadEstimate(result, collection.uuid);
+                this._createDownloadEstimate(result, collection.uuid, callback);
             },
             failure: function(result, values) {
                 this._createFailMessage(result, collection.uuid);
@@ -67,12 +69,21 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         return estResponse;
     },
 
-    _createDownloadEstimate: function(result, uuid) {
-        this._addDownloadEstimate.defer(1, this, [parseInt(result.responseText), this.getIdElementName(uuid)]);
+    _createDownloadEstimate: function(result, uuid, callback) {
+        this._addDownloadEstimate.defer(1, this, [parseInt(result.responseText), uuid, callback]);
     },
 
-    _addDownloadEstimate: function(sizeEstimate, elementId) {
-        var sizeDiv = Ext.get(elementId);
+    _addDownloadEstimate: function(sizeEstimate, uuid, callback) {
+
+        var sizeDiv = Ext.get(this.getIdElementName(uuid));
+
+        if (sizeEstimate == 0 || isNaN(sizeEstimate)) {
+
+            sizeDiv.update(OpenLayers.i18n("estimatedNoDataMsg"));
+            callback(uuid);
+            return;
+        }
+
         var htmlAddition;
 
         if (sizeEstimate == OpenLayers.i18n('transAbortMsg')) {
@@ -83,6 +94,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
                 htmlAddition = this._generateFailHtmlString();
             }
             else {
+
                 htmlAddition = this._generateEstHtmlString(sizeEstimate);
             }
         }

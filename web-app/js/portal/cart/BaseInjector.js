@@ -33,13 +33,22 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         }
     },
 
+    _hideButton: function(uuid) {
+
+        var elementId = OpenLayers.i18n('downloadButtonId', {id: uuid});
+        if (Ext.get(elementId)) {
+            Ext.fly(elementId).update("");
+        }
+    },
+
     _addDownloadEstimate: function(collection) {
 
         var estimator = new Portal.cart.DownloadEstimator();
 
         estimator._getDownloadEstimate(
             collection,
-            this._downloadUrl(collection)
+            this._downloadUrl(collection),
+            this._hideButton
         );
 
         return String.format(
@@ -49,7 +58,6 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
             OpenLayers.i18n("estimatedDlLoadingSpinner")
         );
     },
-
 
     _wmsDownloadUrl: function(collection, params) {
 
@@ -73,7 +81,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
 
     downloadWithConfirmation: function(collection, generateUrlCallback, params) {
 
-        return function () {
+        return function() {
             this.downloadConfirmation.call(
                 this.downloadConfirmationScope,
                 collection,
