@@ -44,7 +44,6 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
     _addDownloadEstimate: function(collection) {
 
         var estimator = new Portal.cart.DownloadEstimator();
-
         estimator._getDownloadEstimate(
             collection,
             this._downloadUrl(collection),

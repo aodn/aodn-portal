@@ -122,19 +122,18 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             spyOn(Ext, 'Button');
         });
 
-        it('should create a button if necessary', function() {
-
-            tpl._createDownloadButton(null, {menuItems: ['menu item 1']});
-
-            expect(Ext.Button).toHaveBeenCalled();
-
-        });
-
         it('should not create a button if the array is empty', function() {
 
-            tpl._createDownloadButton(null, {menuItems: []});
-
+            tpl._createDownloadButton(mockDataInjection);
             expect(Ext.Button).not.toHaveBeenCalled();
+        });
+
+        it('should create a button if necessary', function() {
+
+            mockDataInjection.menuItems = ['menu item 1'];
+
+            tpl._createDownloadButton(mockDataInjection);
+            expect(Ext.Button).toHaveBeenCalled();
         });
     });
 
