@@ -38,7 +38,7 @@ databaseChangeLog = {
             }
         }
 
-        changeSet(author: "dnahodil (generated)", id: "1334815305155-2", failOnError: true) {
+        changeSet(author: "dnahodil (generated)", id: "1334815305155-2", failOnError: false) {
 
             update(tableName: "config")
             {
@@ -66,7 +66,7 @@ databaseChangeLog = {
             }
         }
 
-        changeSet(author: "dnahodil (generated)", id: "1337127215000-1", failOnError: true) {
+        changeSet(author: "dnahodil (generated)", id: "1337127215000-1", failOnError: false) {
 
             update(tableName: "config") {
 
@@ -101,7 +101,7 @@ databaseChangeLog = {
             }
         }
 
-        changeSet(author: "dnahodil (generated)", id: "1337313917932-2", failOnError: true) {
+        changeSet(author: "dnahodil (generated)", id: "1337313917932-2", failOnError: false) {
 
             update(tableName: "config") {
 
@@ -136,7 +136,7 @@ databaseChangeLog = {
             }
         }
 
-        changeSet(author: "dnahodil (generated)", id: "1353898149000-1", failOnError: true) {
+        changeSet(author: "dnahodil (generated)", id: "1353898149000-1", failOnError: false) {
 
             update(tableName: "config") {
 
