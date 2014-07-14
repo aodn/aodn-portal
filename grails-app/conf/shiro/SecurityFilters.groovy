@@ -80,6 +80,12 @@ class SecurityFilters {
             }
         }
 
+        downloadAccess(controller: "simpleCaptcha", action: "captcha") {
+            before = {
+                request.accessAllowed = true
+            }
+        }
+
         serverAccess(controller: "server", action: "listAllowDiscoveriesAsJson") {
             before = {
                 request.accessAllowed = true
