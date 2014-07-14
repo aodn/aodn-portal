@@ -68,6 +68,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
                 {
                     xtype: 'button',
                     text: OpenLayers.i18n("clearAllButtonLabel"),
+                    tooltip: OpenLayers.i18n("clearAllButtonTooltip"),
                     cls: "floatLeft buttonPad",
                     scope: this,
                     handler: this._clearAll

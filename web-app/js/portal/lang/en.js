@@ -202,11 +202,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // MapOptionsPanel
     autozoom: 'Auto zoom to data collection extent',
     hideDetailsPanel: 'Hide data collection details',
-    clearAllButtonLabel: 'Clear all',
-    removeAllControlLabel: 'Remove all data collections',
-    resetMapControlLabel: 'Reset map',
-    mapOptionsResetButton: 'This will remove all data collections from the portal, reset the map location and zoom level',
-    mapOptionsRemoveLayersButton: "Remove all data collections from the map and download pages",
+    clearAllButtonLabel: 'Clear and Reset',
+    clearAllButtonTooltip: 'This will remove all data collections from the subset and download pages, reset the map location and zoom level',
 
     // SubsetPanel.js
     subsetPanelTitle: 'Subset',
