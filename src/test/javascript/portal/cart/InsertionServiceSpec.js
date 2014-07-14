@@ -20,7 +20,7 @@ describe('Portal.cart.InsertionService', function() {
                 wfsLayer: undefined,
                 isNcwms: function() {return false}
             },
-            aggregator: { childAggregators: [] }
+            dataDownloadHandlers: [{}]
         };
     });
 
@@ -39,23 +39,13 @@ describe('Portal.cart.InsertionService', function() {
             spyOn(mockInsertionService, '_getNoDataInjector').andReturn(mockInjector);
         });
 
-        it('creates an ncwms injector for aodaac layers', function() {
-            mockInsertionService.insertionValues(getAodaacRecord());
+        it('creates an ncwms injector for ncwms layers', function() {
+            mockInsertionService.insertionValues(getNcwmsRecord());
             expectGetInjectorToHaveBeenCalled(mockInsertionService._getNcwmsInjector);
-        });
-
-        it('creates an ncwms injector for gogoduck layers', function() {
-            mockInsertionService.insertionValues(getGogoduckRecord());
-            expectGetInjectorToHaveBeenCalled(mockInsertionService._getNcwmsInjector)
         });
 
         it('creates a wms injector for wms layers', function() {
             mockInsertionService.insertionValues(getWmsRecord());
-            expectGetInjectorToHaveBeenCalled(mockInsertionService._getWmsInjector);
-        });
-
-        it('creates a wms injector for download URL layers', function() {
-            mockInsertionService.insertionValues(getWmsUrlDownloadRecord());
             expectGetInjectorToHaveBeenCalled(mockInsertionService._getWmsInjector);
         });
 
@@ -105,38 +95,18 @@ describe('Portal.cart.InsertionService', function() {
     }
 
     function getWmsRecord() {
-        geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
         return geoNetworkRecord;
     }
 
-    function getWmsUrlDownloadRecord() {
-        geoNetworkRecord.wmsLayer.urlDownloadFieldName = 'download_url';
-        return geoNetworkRecord;
-    }
-
-    function getGogoduckRecord() {
-        var mockNcwmsAggr = new Portal.data.GogoduckAggregator();
-        geoNetworkRecord.aggregator = {
-            childAggregators: [mockNcwmsAggr]
-        };
+    function getNcwmsRecord() {
         geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
-        geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
-
-        return geoNetworkRecord;
-    }
-
-    function getAodaacRecord() {
-        var mockNcwmsAggr = new Portal.data.AodaacAggregator();
-        geoNetworkRecord.aggregator = {
-            childAggregators: [mockNcwmsAggr]
-        };
-        geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
-        geoNetworkRecord.wmsLayer.aodaacProducts = [{ id: 123 }];
 
         return geoNetworkRecord;
     }
 
     function getNoDataRecord() {
+        geoNetworkRecord.dataDownloadHandlers = [];
+
         return geoNetworkRecord;
     }
 });
