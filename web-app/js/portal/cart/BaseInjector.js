@@ -50,7 +50,6 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         );
     },
 
-
     _wmsDownloadUrl: function(collection, params) {
 
         return collection.wmsLayer.getWmsLayerFeatureRequestUrl(params.format);
