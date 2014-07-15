@@ -90,11 +90,11 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function(resp, options) {
     return formatGetFeatureInfo(resp, options);
 };
 
-OpenLayers.Layer.WMS.prototype.getWmsLayerFeatureRequestUrl = function(outputFormat) {
+OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(serverUrl, layerName, outputFormat) {
 
     return this._buildGetFeatureRequestUrl(
-        this.server.uri,
-        this.params.LAYERS,
+        serverUrl,
+        layerName,
         outputFormat,
         this.getDownloadFilter()
     );

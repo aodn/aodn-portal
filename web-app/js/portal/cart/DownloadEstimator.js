@@ -141,6 +141,11 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     },
 
     _wmsDownloadUrl: function(layer, format) {
-        return layer.getWmsLayerFeatureRequestUrl(format);
+
+        return layer.getFeatureRequestUrl(
+            layer.server.uri,
+            layer.params.LAYERS,
+            format
+        );
     }
 });

@@ -23,8 +23,10 @@ describe('Portal.cart.WmsInjector', function() {
                     return "cql_filter"
                 },
                 isNcwms: function() {return false},
-                getWmsLayerFeatureRequestUrl: noOp,
-                wfsLayer: true
+                getFeatureRequestUrl: noOp,
+                wfsLayer: true,
+                server: {},
+                params: {}
             },
             pointOfTruthLink: 'Link!',
             linkedFiles: 'Downloadable link!'

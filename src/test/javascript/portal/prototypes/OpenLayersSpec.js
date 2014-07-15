@@ -104,16 +104,13 @@ describe('OpenLayers', function() {
             });
         });
 
-        describe('getWmsLayerFeatureRequestUrl', function() {
+        describe('getFeatureRequestUrl', function() {
 
             it('calls _buildGetFeatureRequestUrl correctly', function() {
 
                 spyOn(openLayer, '_buildGetFeatureRequestUrl');
 
-                openLayer.server = { uri: "uri" };
-                openLayer.params = { LAYERS: 'name' };
-
-                openLayer.getWmsLayerFeatureRequestUrl('csv');
+                openLayer.getFeatureRequestUrl('uri', 'name', 'csv');
 
                 expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('uri', 'name', 'csv', '');
             });
