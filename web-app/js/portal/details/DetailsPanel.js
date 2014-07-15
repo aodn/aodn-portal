@@ -85,7 +85,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     _addCardForLayer: function(layer) {
         var cardForLayer = new Portal.details.DetailsPanelTab({
             id: this._getCardIdForLayer(layer),
-            map: this.map
+            map: this.map,
+            layer: layer
         });
         this.layerDetailsPanel.add(cardForLayer);
         this.layerDetailsPanel.doLayout(false, true);

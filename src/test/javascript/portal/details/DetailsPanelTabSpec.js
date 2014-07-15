@@ -9,12 +9,14 @@ describe("Portal.details.DetailsPanelTab", function() {
     var detailsPanelTab;
 
     beforeEach(function() {
+
+        spyOn(Portal.details.StylePanel.prototype, '_initWithSelectedLayer');
+
         detailsPanelTab = new Portal.details.DetailsPanelTab({
             map: new OpenLayers.SpatialConstraintMap()
         });
 
         spyOn(detailsPanelTab.infoPanel, 'handleLayer');
-        spyOn(detailsPanelTab.stylePanel, 'handleLayer');
         spyOn(detailsPanelTab.subsetPanel, 'handleLayer');
     });
 
@@ -42,7 +44,6 @@ describe("Portal.details.DetailsPanelTab", function() {
             detailsPanelTab.handleLayer();
             expect(detailsPanelTab.subsetPanel.handleLayer).toHaveBeenCalled();
             expect(detailsPanelTab.infoPanel.handleLayer).toHaveBeenCalled();
-            expect(detailsPanelTab.stylePanel.handleLayer).toHaveBeenCalled();
         });
 
         it('calls show', function() {

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -11,9 +10,11 @@ Ext.namespace('Portal.details');
 Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
 
     constructor: function (cfg) {
-        this.subsetPanel = new Portal.details.SubsetPanel({ map: cfg.map });
-        this.infoPanel = new Portal.details.InfoPanel();
-        this.stylePanel = new Portal.details.StylePanel();
+        var childPanelConfig =  { map: cfg.map, layer: cfg.layer };
+
+        this.subsetPanel = new Portal.details.SubsetPanel(childPanelConfig);
+        this.infoPanel = new Portal.details.InfoPanel(childPanelConfig);
+        this.stylePanel = new Portal.details.StylePanel(childPanelConfig);
 
         var config = Ext.apply({
             defaults: {
@@ -40,7 +41,6 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
 
         this.subsetPanel.handleLayer(layer, this._showTab, this._hideTab, this);
         this.infoPanel.handleLayer(layer, this._showTab, this._hideTab, this);
-        this.stylePanel.handleLayer(layer, this._showTab, this._hideTab, this);
 
         this.show();
     },

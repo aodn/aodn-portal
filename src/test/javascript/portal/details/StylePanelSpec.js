@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -21,18 +20,16 @@ function getParameterByNameFromUrlString(urlString, name) {
     }
 }
 
-var stylePanel;
-
 describe("Portal.details.StylePanel", function() {
 
-    beforeEach(function() {
+    var stylePanel;
 
+    beforeEach(function() {
+        spyOn(Portal.details.StylePanel.prototype, '_initWithSelectedLayer');
         stylePanel = new Portal.details.StylePanel({});
     });
 
     describe("buildGetLegend()", function() {
-
-        var stylePanel = new Portal.details.StylePanel({});
 
         it("should have empty version when no type specified", function() {
 
@@ -98,38 +95,6 @@ describe("Portal.details.StylePanel", function() {
             };
             var urlString = stylePanel.buildGetLegend(layer, null, null, false);
             expect(getParameterByNameFromUrlString(urlString, "PALETTE")).toEqual(null);
-        });
-    });
-
-    describe("update() (incomplete, only tests some functionality)", function() {
-
-        var server = {
-            type: "NCWMS-1.3.0",
-            uri: "http://geoserver.imos.org.au/geoserver/wms"
-        };
-
-        var ncwmsLayer = new OpenLayers.Layer.WMS(
-            "test layer",
-            "http://geoserver.imos.org.au/geoserver/wms",
-            {
-                queryable: true
-            },
-            {isBaseLayer: false, server: server}
-        );
-
-        ncwmsLayer.allStyles = [{title: "black", name: "sillynoncolour"},{title:"primary", name: "extremelylimiting"}];
-
-        it("should call collapse() on StyleCombo combo box", function() {
-
-            spyOn(stylePanel.styleCombo, "collapse");
-            var ob = {};
-            ob.call = function(){return true;};
-            var func = function(){return true;};
-            stylePanel.refreshLegend = function(ncwmsLayer){};
-
-            stylePanel.handleLayer(ncwmsLayer, func, func, null);
-
-            expect(stylePanel.styleCombo.collapse).toHaveBeenCalled();
         });
     });
 
