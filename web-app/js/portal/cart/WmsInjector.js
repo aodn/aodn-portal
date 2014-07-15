@@ -11,8 +11,7 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     constructor: function(config) {
         Portal.cart.WmsInjector.superclass.constructor.call(this, Ext.apply(this, config));
-        this._downloadUrl = this._csvDownloadUrl;
-    },
+     },
 
     _getDataFilterEntry: function(collection) {
 
@@ -26,7 +25,7 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return this._addDownloadEstimate(collection);
     },
 
-    _csvDownloadUrl: function(collection) {
+    _downloadUrl: function(collection) {
 
         return this._wmsDownloadUrl(collection, {
             format: OpenLayers.Layer.DOWNLOAD_FORMAT_CSV

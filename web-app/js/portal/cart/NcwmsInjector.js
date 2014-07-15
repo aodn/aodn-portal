@@ -11,7 +11,6 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     constructor: function(config) {
         Portal.cart.NcwmsInjector.superclass.constructor.call(this, Ext.apply(this, config));
-        this._downloadUrl = this._bodaacCsvDownloadUrl;
     },
 
     _getDataFilterEntry: function(collection) {
@@ -55,7 +54,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return date.format(OpenLayers.i18n('dateTimeDisplayFormat'));
     },
 
-    _bodaacCsvDownloadUrl: function(collection) {
+    _downloadUrl: function(collection) {
         return this._wfsDownloadUrl(collection, { format: 'csv' });
     },
 
