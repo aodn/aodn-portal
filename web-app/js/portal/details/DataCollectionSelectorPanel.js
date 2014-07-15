@@ -108,12 +108,13 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
     },
 
     handleComboBoxStoreStatus: function() {
-
-        if (this.layerComboBox.store.data.items.length == 0 ){
-            this.layout.setActiveItem('emptyMessage');
-        }
-        else {
-            this.layout.setActiveItem('layerComboBox');
+        if (this.isRendered) {
+            if (this.layerComboBox.store.data.items.length == 0 ){
+                this.layout.setActiveItem('emptyMessage');
+            }
+            else {
+                this.layout.setActiveItem('layerComboBox');
+            }
         }
     }
 });

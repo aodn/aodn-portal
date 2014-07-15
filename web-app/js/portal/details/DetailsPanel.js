@@ -42,7 +42,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             layout: 'card',
             bodyStyle: 'padding:5px',
             boxMaxWidth: 330,
-            activeItem: 0
+            activeItem: 1
         });
 
         this.items = [  this.spacer,
