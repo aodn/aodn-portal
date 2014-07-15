@@ -10,13 +10,14 @@ describe("Portal.details.DetailsPanelTab", function() {
 
     beforeEach(function() {
 
-        spyOn(Portal.details.StylePanel.prototype, '_initWithSelectedLayer');
+        spyOn(Portal.details.InfoPanel.prototype, '_initWithLayer');
+        spyOn(Portal.details.StylePanel.prototype, '_initWithLayer');
 
         detailsPanelTab = new Portal.details.DetailsPanelTab({
             map: new OpenLayers.SpatialConstraintMap()
         });
 
-        spyOn(detailsPanelTab.infoPanel, 'handleLayer');
+//        spyOn(detailsPanelTab.infoPanel, 'handleLayer');
         spyOn(detailsPanelTab.subsetPanel, 'handleLayer');
     });
 
@@ -43,7 +44,6 @@ describe("Portal.details.DetailsPanelTab", function() {
         it('calls handleLayer of children', function() {
             detailsPanelTab.handleLayer();
             expect(detailsPanelTab.subsetPanel.handleLayer).toHaveBeenCalled();
-            expect(detailsPanelTab.infoPanel.handleLayer).toHaveBeenCalled();
         });
 
         it('calls show', function() {

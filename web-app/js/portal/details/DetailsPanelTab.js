@@ -40,7 +40,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         this._ensurePanelsRendered();
 
         this.subsetPanel.handleLayer(layer, this._showTab, this._hideTab, this);
-        this.infoPanel.handleLayer(layer, this._showTab, this._hideTab, this);
+//        this.infoPanel.handleLayer(layer, this._showTab, this._hideTab, this);
 
         this.show();
     },

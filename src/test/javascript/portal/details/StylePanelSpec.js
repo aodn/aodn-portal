@@ -25,7 +25,7 @@ describe("Portal.details.StylePanel", function() {
     var stylePanel;
 
     beforeEach(function() {
-        spyOn(Portal.details.StylePanel.prototype, '_initWithSelectedLayer');
+        spyOn(Portal.details.StylePanel.prototype, '_initWithLayer');
         stylePanel = new Portal.details.StylePanel({});
     });
 

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -11,6 +10,9 @@ Ext.namespace('Portal.details');
 Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
+
+        this.layer = cfg.layer;
+
         var config = Ext.apply({
             id: 'infoPanel',
             title: 'Info',
@@ -24,27 +26,14 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
 
     initComponent: function(cfg) {
         Portal.details.InfoPanel.superclass.initComponent.call(this);
+
+        this._initWithLayer();
     },
 
-    handleLayer: function(layer, show, hide, target) {
-        if (this._showBody(layer)) {
-            this._updateBody(layer);
-            show.call(target, this);
-        }
-        else {
-            hide.call(target, this);
-        }
-    },
-
-    _showBody: function(layer) {
-        return layer.getMetadataUrl();
-    },
-
-    _updateBody: function(layer) {
-        this.body.update(OpenLayers.i18n('loadingMessage'));
-        if (layer.getMetadataUrl()) {
+    _initWithLayer: function() {
+        if (this.layer.getMetadataUrl()) {
             Ext.Ajax.request({
-                url: 'layer/getFormattedMetadata?metaURL=' + encodeURIComponent(layer.getMetadataUrl()),
+                url: 'layer/getFormattedMetadata?metaURL=' + encodeURIComponent(this.layer.getMetadataUrl()),
                 scope: this,
                 success: function(resp, options) {
                     this.body.update(resp.responseText);

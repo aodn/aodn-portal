@@ -84,7 +84,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         Portal.details.StylePanel.superclass.initComponent.call(this);
 
-        this._initWithSelectedLayer();
+        this._initWithLayer();
     },
 
     makeCombo:function () {
@@ -135,7 +135,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         this.refreshLegend(this.layer);
     },
 
-    _initWithSelectedLayer: function() {
+    _initWithLayer: function() {
         this.opacitySliderContainer.hide();
         this.opacitySliderContainer.doLayout();
         this.opacitySliderContainer.show();
