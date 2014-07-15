@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2014 IMOS
  *
@@ -26,12 +25,6 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
         this.filterGroupPanels = {};
 
         Portal.details.SubsetPanel.superclass.constructor.call(this, config);
-
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(subject, openLayer) {
-            if (this.filterGroupPanels[openLayer.id]) {
-                this.filterGroupPanels[openLayer.id].destroy();
-            }
-        }, this);
     },
 
     handleLayer: function(layer, show, hide, target) {
