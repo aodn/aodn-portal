@@ -27,8 +27,7 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
 
         this.emptyMessage = new Portal.common.EmptyCollectionStatusPanel({
             id: 'emptyMessage',
-            height: 35,
-            hidden: true
+            height: 35
         });
 
         this.layerComboBox = new Ext.form.ComboBox({
