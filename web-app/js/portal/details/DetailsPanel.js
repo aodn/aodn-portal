@@ -42,6 +42,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             layout: 'card',
             bodyStyle: 'padding:5px',
             boxMaxWidth: 330,
+            layoutOnCardChange: true,
+            deferredRender: true,
             activeItem: 1
         });
 

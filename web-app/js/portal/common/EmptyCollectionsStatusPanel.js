@@ -19,8 +19,7 @@ Portal.common.EmptyCollectionStatusPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             html: this.toString(),
-            cls: 'x-panel-header',
-            height: 40
+            cls: 'x-panel-header'
         }, cfg);
 
         Ext.apply(this, config);
