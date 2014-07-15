@@ -11,11 +11,28 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
     constructor : function(cfg) {
 
+        this.spacer = new Ext.Spacer({height: 10});
+        this.dataCollectionSelectorPanel = new Portal.details.DataCollectionSelectorPanel({
+            layout: 'card',
+            bodyStyle: 'padding:5px',
+            boxMaxWidth: 330,
+            activeItem: 0
+        });
+        this.layerDetailsPanel = new Ext.Panel({
+            layout: 'card',
+            flex: 1
+        });
+
         var config = Ext.apply({
             title: OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description')}),
             headerCfg: {
                 cls : 'steps'
             },
+            items: [
+                this.spacer,
+                this.dataCollectionSelectorPanel,
+                this.layerDetailsPanel
+            ],
             layout: 'vbox',
             layoutConfig: {
                 align: 'stretch'
@@ -27,41 +44,25 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(eventName, openlayer) {
             this.updateDetailsPanel(openlayer);
         }, this);
-    },
 
-    initComponent : function() {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(eventName, openlayer) {
+            this._removeCardForLayer(openlayer);
+        }, this);
 
-        this.detailsPanelTabs = new Portal.details.DetailsPanelTab({
-                map: this.map
-            });
-
-        this.spacer = new Ext.Spacer({height: 10});
-        this.dataCollectionSelectorPanel = new Portal.details.DataCollectionSelectorPanel({
-            layout: 'card',
-            bodyStyle: 'padding:5px',
-            boxMaxWidth: 330,
-            activeItem: 0
-        });
-
-        this.items = [  this.spacer,
-                        this.dataCollectionSelectorPanel,
-                        this.detailsPanelTabs
-        ];
-
-        Portal.details.DetailsPanel.superclass.initComponent.call(this);
-
+        // TODO: why?  I think this might be unecessary now that the tab panel is not shared.
         this.hideDetailsPanelContents();
     },
 
-    // must be called when the panel is fully expanded for the slider
     updateDetailsPanel: function(layer, forceOpen) {
         if (layer) {
-            if (layer.isOverlay()) {
-                // show new layer unless user requested 'hideLayerOptions'
-                this.detailsPanelTabs.handleLayer(layer);
-                this.doLayout();
+            if (!this._cardExistsForLayer(layer)) {
+                this._addCardForLayer(layer);
             }
-        } else {
+
+            this._activateCardForLayer(layer);
+            this.showDetailsPanelContents;
+        }
+        else {
             this.hideDetailsPanelContents();
         }
     },
@@ -70,10 +71,39 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         // clear the details Panel. ie. Don't show any layer options
 
         //DO NOT HIDE THE opacitySlider directly, or you WILL break things.-Alex
-        this.detailsPanelTabs.setVisible(false);
+        this.layerDetailsPanel.setVisible(false);
     },
 
     showDetailsPanelContents: function() {
-        this.doLayout();
+        this.layerDetailsPanel.setVisible(true);
+    },
+
+    _cardExistsForLayer: function(layer) {
+        return this.layerDetailsPanel.items.item(this._getCardIdForLayer(layer));
+    },
+
+    _addCardForLayer: function(layer) {
+        var cardForLayer = new Portal.details.DetailsPanelTab({
+            id: this._getCardIdForLayer(layer),
+            map: this.map
+        });
+        this.layerDetailsPanel.add(cardForLayer);
+        this.layerDetailsPanel.doLayout(false, true);
+
+        cardForLayer.handleLayer(layer);
+    },
+
+    _activateCardForLayer: function(layer) {
+        this.layerDetailsPanel.layout.setActiveItem(this._getCardIdForLayer(layer));
+    },
+
+    _removeCardForLayer: function(layer) {
+        if (this._cardExistsForLayer(layer)) {
+            this.layerDetailsPanel.remove(this._getCardIdForLayer(layer));
+        }
+    },
+
+    _getCardIdForLayer: function(layer) {
+        return layer.id + '_detailsPanel';
     }
 });

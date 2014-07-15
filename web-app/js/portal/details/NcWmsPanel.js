@@ -305,6 +305,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this._updateTimeRangeLabel();
 
         this._applyFilterValuesFromMap();
+
+        this.doLayout();
     },
 
     _setDateTimePickerExtent: function(picker, extent, value, toMaxValue) {
