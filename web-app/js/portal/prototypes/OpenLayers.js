@@ -100,16 +100,6 @@ OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(serverUrl, layerN
     );
 };
 
-OpenLayers.Layer.WMS.prototype.getWfsLayerFeatureRequestUrl = function(serverUrl, layerName, outputFormat) {
-
-    return this._buildGetFeatureRequestUrl(
-        serverUrl,
-        layerName,
-        outputFormat,
-        this.getDownloadFilter()
-    );
-};
-
 OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl = function(baseUrl, layerName, outputFormat, downloadFilter) {
 
     var wfsUrl = baseUrl;

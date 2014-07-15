@@ -37,7 +37,7 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         var _this = this;
 
         return function(collection) {
-            return collection.wmsLayer.getWfsLayerFeatureRequestUrl(
+            return collection.wmsLayer.getFeatureRequestUrl(
                 _this._resourceHref(),
                 _this._resourceName(),
                 OpenLayers.Layer.DOWNLOAD_FORMAT_CSV_WITH_METADATA
