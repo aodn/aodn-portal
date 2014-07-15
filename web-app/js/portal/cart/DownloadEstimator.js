@@ -141,14 +141,5 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         var fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
 
         return String.format(html, downloadTimeoutMessage, fileSizeImage);
-    },
-
-    _wmsDownloadUrl: function(layer, format) {
-
-        return layer.getFeatureRequestUrl(
-            layer.server.uri,
-            layer.params.LAYERS,
-            format
-        );
     }
 });
