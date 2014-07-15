@@ -37,9 +37,18 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
                 map: this.map
             });
 
-        this.dataCollectionSelectorPanel = new Portal.details.DataCollectionSelectorPanel();
+        this.spacer = new Ext.Spacer({height: 10});
+        this.dataCollectionSelectorPanel = new Portal.details.DataCollectionSelectorPanel({
+            layout: 'card',
+            bodyStyle: 'padding:5px',
+            boxMaxWidth: 330,
+            activeItem: 0
+        });
 
-        this.items = [ this.dataCollectionSelectorPanel, this.detailsPanelTabs ];
+        this.items = [  this.spacer,
+                        this.dataCollectionSelectorPanel,
+                        this.detailsPanelTabs
+        ];
 
         Portal.details.DetailsPanel.superclass.initComponent.call(this);
 

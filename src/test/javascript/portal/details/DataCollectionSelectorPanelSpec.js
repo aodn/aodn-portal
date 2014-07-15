@@ -13,7 +13,7 @@ describe("Portal.details.DataCollectionSelectorPanelSpec", function() {
         dataCollectionSelectorPanel = new Portal.details.DataCollectionSelectorPanel();
         dataCollectionSelectorPanel.initComponent();
         spyOn(dataCollectionSelectorPanel, 'updateLayerComboBox');
-        spyOn(dataCollectionSelectorPanel, 'removeFromlayerComboBox');
+        spyOn(dataCollectionSelectorPanel, 'removeFromLayerComboBox');
 
         openLayer = new OpenLayers.Layer.WMS("the title",
                 "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
@@ -38,7 +38,7 @@ describe("Portal.details.DataCollectionSelectorPanelSpec", function() {
         });
 
         it('removes a layer from combobox', function() {
-            expect(dataCollectionSelectorPanel.removeFromlayerComboBox).toHaveBeenCalledWith(openLayer);
+            expect(dataCollectionSelectorPanel.removeFromLayerComboBox).toHaveBeenCalledWith(openLayer);
         });
     });
 });
