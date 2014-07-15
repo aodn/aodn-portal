@@ -95,7 +95,6 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
     },
 
     _valueFromNameField: function(index) {
-
         return this.onlineResource.name.split(this.NAME_FIELD_DELIMETER)[index];
     }
 });
