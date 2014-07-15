@@ -32,10 +32,9 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
                         maxValue: new Date(),
                         listeners: {
                             scope: this,
-                            select: this.onSelect,
-                            change: this.onSelect
-                        },
-                        bubbleEvents: ['select', 'change']
+                            invalid: this._onUpdate,
+                            valid: this._onUpdate
+                        }
                     }
                 ]
             },
@@ -59,10 +58,9 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
                         maxValue: new Date(),
                         listeners: {
                             scope: this,
-                            select: this.onSelect,
-                            change: this.onSelect
-                        },
-                        bubbleEvents: ['select', 'change']
+                            invalid: this._onUpdate,
+                            valid: this._onUpdate
+                        }
                     }
                 ]
             }
@@ -80,17 +78,51 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
 
     setFilterValue:function (v) {
         this.fromDate.setValue(new Date(v.fromDate));
+        this.fromDate.setMaxValue(this.toDate.getValue());
         this.toDate.setValue(new Date(v.toDate));
+        this.toDate.setMinValue(this.fromDate.getValue());
     },
 
     clearValues:function () {
         this.fromDate.reset();
         this.toDate.reset();
         this.toDate.setMinValue(new Date(0));
+        this.fromDate.setMaxValue(new Date());
     },
 
-    onSelect:function () {
+    isValid:function () {
+        return this.fromDate.getActiveError() == ''
+            && this.fromDate.getValue() != ''
+            && this.toDate.getActiveError() == ''
+            && this.toDate.getValue() != '';
+    },
+    
+    _onUpdate:function () {
+        this._setMinMax();
+        
+        if (this.isValid()) {
+            console.log("firing valid event");
+            this.fireEvent('valid');
+        } else {
+            console.log("firing invalid event");
+            this.fireEvent('invalid');
+        }
+    },
+    
+    _setMinMax: function () {
+        if (Ext.isDefined(this._updatingMinMax)) {
+            return;
+        }
+        
+        this._updatingMinMax = true;
+        
         this.toDate.setMinValue(this.fromDate.getValue());
+        this.toDate.validate();
+        this.fromDate.setMaxValue(this.toDate.getValue());
+        this.fromDate.validate();
+        
+        delete this._updatingMinMax;
+        
     }
 });
 

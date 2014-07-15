@@ -58,19 +58,12 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
 
         this.mon(this.goButton, 'click', this.onGo, this);
         this.mon(this.clearButton, 'click', this.clearDateRange, this);
-        this.mon(this.dateRange, 'select', this.onSelect, this);
-        this.mon(this.dateRange, 'change', this.onSelect, this);
+        this.mon(this.dateRange, 'valid', this._onValid, this);
+        this.mon(this.dateRange, 'invalid', this._onInvalid, this);
     },
 
     initComponent:function () {
         Portal.search.DateSelectionPanel.superclass.initComponent.apply(this, arguments);
-    },
-
-    onSelect: function() {
-        var range = this.dateRange.getFilterValue();
-        if (range.fromDate !== "" && range.toDate !== "") {
-            this.goButton.enable();
-        }
     },
 
     onGo: function() {
@@ -136,5 +129,13 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
         this.searcher.removeFilters("extTo");
         this.dateRange.clearValues();
         this.removeSelectedSubTitle();
+    },
+
+    _onValid: function() {
+        this.goButton.setDisabled(false);
+    },
+
+    _onInvalid: function() {
+        this.goButton.setDisabled(true);
     }
 });
