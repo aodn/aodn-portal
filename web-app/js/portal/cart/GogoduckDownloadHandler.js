@@ -39,12 +39,18 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         return function(collection, handlerParams) {
 
-            return _this._buildGogoduckUrl(
+            var gogoduckUrl = _this._buildGogoduckUrl(
                 collection.ncwmsParams,
                 _this._resourceName(),
                 _this._resourceHref(),
                 handlerParams.emailAddress
             );
+
+            if (handlerParams.challengeResponse) {
+                gogoduckUrl += String.format("&challengeResponse={0}", encodeURIComponent(handlerParams.challengeResponse));
+            }
+
+            return gogoduckUrl;
         };
     },
 

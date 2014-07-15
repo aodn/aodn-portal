@@ -68,23 +68,32 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
             expect(confirmationWindow.show).toHaveBeenCalled();
         });
 
-        describe('email address panel', function() {
+        describe('email & challenge address panel', function() {
 
             beforeEach(function() {
                 spyOn(confirmationWindow.downloadEmailPanel, 'show');
                 spyOn(confirmationWindow.downloadEmailPanel, 'hide');
+
+                spyOn(confirmationWindow.downloadChallengePanel, 'show');
+                spyOn(confirmationWindow.downloadChallengePanel, 'hide');
             });
 
             it('shows when required', function() {
                 confirmationWindow.showIfNeeded({ collectEmailAddress: true });
                 expect(confirmationWindow.downloadEmailPanel.show).toHaveBeenCalled();
                 expect(confirmationWindow.downloadEmailPanel.hide).not.toHaveBeenCalled();
+
+                expect(confirmationWindow.downloadChallengePanel.show).toHaveBeenCalled();
+                expect(confirmationWindow.downloadChallengePanel.hide).not.toHaveBeenCalled();
             });
 
             it('hides when required', function() {
                 confirmationWindow.showIfNeeded({ collectEmailAddress: false });
                 expect(confirmationWindow.downloadEmailPanel.show).not.toHaveBeenCalled();
                 expect(confirmationWindow.downloadEmailPanel.hide).toHaveBeenCalled();
+
+                expect(confirmationWindow.downloadChallengePanel.show).not.toHaveBeenCalled();
+                expect(confirmationWindow.downloadChallengePanel.hide).toHaveBeenCalled();
             });
 
 

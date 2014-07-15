@@ -11,6 +11,18 @@ import grails.test.*
 
 class GogoduckControllerTests extends ControllerUnitTestCase {
 
+    def downloadAuthService
+
+    protected void setUp() {
+
+        super.setUp()
+
+        downloadAuthService = mockFor(DownloadAuthService)
+        downloadAuthService.demand.static.verifyChallengeResponse {}
+
+        controller.downloadAuthService = downloadAuthService.createMock()
+    }
+
     void testRegisterJobNoParams() {
 
         controller.gogoduckService = [
