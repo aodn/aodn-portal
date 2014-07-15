@@ -10,8 +10,18 @@ package au.org.emii.portal
 class GogoduckController {
 
     def gogoduckService
+    def downloadAuthService
 
     def registerJob = {
+
+        // Verify request can go through
+        def challengeResponse = params.challengeResponse
+        def ipAddress         = request.getRemoteAddr()
+        if (! downloadAuthService.verifyChallengeResponse(ipAddress, session, challengeResponse)) {
+            log.info "Could not verify challenge '$challengeResponse' from '$ipAddress'"
+            render text: 'Could not verify challenge (captcha), denying download', status: 500
+            return
+        }
 
         log.debug "Registering GoGoDuck job. Params: $params"
 

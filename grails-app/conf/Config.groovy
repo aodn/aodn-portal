@@ -132,6 +132,12 @@ allowedProxyHosts = [
     geoserver_static.uri
 ]
 
+// Never show a captcha to those IP addresses
+trustedClients = [
+    '127..+',
+    '131.217.38..+'
+]
+
 // OpenID
 openId {
     // openID provider details to support login popup etc

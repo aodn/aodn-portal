@@ -80,7 +80,7 @@ class SecurityFilters {
             }
         }
 
-        downloadAccess(controller: "simpleCaptcha", action: "captcha") {
+        captchaAccess(controller: "simpleCaptcha", action: "captcha") {
             before = {
                 request.accessAllowed = true
             }
@@ -111,6 +111,12 @@ class SecurityFilters {
         }
 
         downloadAccess(controller: "download", action: "index|urlListForLayer|downloadNetCdfFilesForLayer|estimateSizeForLayer") {
+            before = {
+                request.accessAllowed = true
+            }
+        }
+
+        downloadAuthAccess(controller: "downloadAuth", action: "index") {
             before = {
                 request.accessAllowed = true
             }
