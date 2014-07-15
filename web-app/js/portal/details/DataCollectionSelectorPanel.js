@@ -116,7 +116,6 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
             else {
                 this.layout.setActiveItem('layerComboBox');
             }
-            this.doLayout();
         }
     }
 });
