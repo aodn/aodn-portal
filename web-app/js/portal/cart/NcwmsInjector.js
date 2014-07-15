@@ -9,10 +9,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
-    constructor: function(config) {
-        Portal.cart.NcwmsInjector.superclass.constructor.call(this, Ext.apply(this, config));
-    },
-
     _getDataFilterEntry: function(collection) {
 
         var params = collection.ncwmsParams;
@@ -55,7 +51,9 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     },
 
     _downloadUrl: function(collection) {
-        return this._wfsDownloadUrl(collection, { format: 'csv' });
+        return this._wfsDownloadUrl(collection, {
+            format: OpenLayers.Layer.DOWNLOAD_FORMAT_CSV
+        });
     },
 
     _getDataMarkup: function(collection) {

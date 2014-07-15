@@ -9,10 +9,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
-    constructor: function(config) {
-        Portal.cart.WmsInjector.superclass.constructor.call(this, Ext.apply(this, config));
-     },
-
     _getDataFilterEntry: function(collection) {
 
         var layerValues = collection.wmsLayer.getWmsDownloadFilterDescriptions();
