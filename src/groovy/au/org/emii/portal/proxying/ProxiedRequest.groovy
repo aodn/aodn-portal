@@ -36,8 +36,6 @@ class ProxiedRequest extends ExternalRequest {
 
         _determineResponseContentType()
 
-        _determineDownloadFilename()
-
         executeRequest(streamProcessor)
     }
 
@@ -46,26 +44,17 @@ class ProxiedRequest extends ExternalRequest {
         response.contentType = params.format ?: request.contentType
     }
 
-    def _determineDownloadFilename = {
-
-        // Force download if filename provided
-        if (params.downloadFilename) {
-            log.debug "downloadFilename is '${params.downloadFilename}'. Forcing download."
-            response.setHeader("Content-disposition", buildAttachmentHeaderValueWithFilename(params.downloadFilename))
-        }
-    }
-
     static def _getTargetUrl(params) {
 
+        def url = params.remove('url')
         def query = params.findAll { key, value ->
 
             key != "controller" &&
             key != "action" &&
-            key != "url" &&
             key != "format" &&
             key != "_dc"
         }
 
-        return urlWithQueryString(params.url, query).toURL()
+        return urlWithQueryString(url, query).toURL()
     }
 }
