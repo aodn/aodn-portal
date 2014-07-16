@@ -13,6 +13,7 @@ describe('Portal.details.NcWmsPanel', function() {
         id: '45678',
         updateNcwmsParams: jasmine.createSpy('updateNcwmsParams')
     };
+
     var layer;
 
     beforeEach(function() {
@@ -28,7 +29,11 @@ describe('Portal.details.NcWmsPanel', function() {
         layer.processTemporalExtent = noOp;
         layer.map = map;
 
-        ncwmsPanel = new Portal.details.NcWmsPanel({ map: map });
+        ncwmsPanel = new Portal.details.NcWmsPanel({
+            map: map,
+            layer: layer
+        });
+
         ncwmsPanel._setBounds =  noOp;
         ncwmsPanel._removeLoadingInfo = noOp;
         ncwmsPanel.selectedLayer = layer;
@@ -40,7 +45,7 @@ describe('Portal.details.NcWmsPanel', function() {
             _applyCommonSpies();
             spyOn(ncwmsPanel, '_removeLoadingInfo');
 
-            ncwmsPanel.handleLayer(layer, noOp, noOp, {});
+            ncwmsPanel._initWithLayer();
             expect(ncwmsPanel.geoNetworkRecord).toBeTruthy();
             expect(ncwmsPanel.geoNetworkRecord.id).toEqual(geoNetworkRecord.id);
         });
@@ -53,7 +58,7 @@ describe('Portal.details.NcWmsPanel', function() {
         });
 
         it('updates the NcWMS panel object when the layer changes', function() {
-            ncwmsPanel.handleLayer(layer, noOp, noOp, {});
+            ncwmsPanel._initWithLayer();
             expect(ncwmsPanel.geoNetworkRecord.updateNcwmsParams).toHaveBeenCalled();
             delete ncwmsPanel.geoNetworkRecord;
         });
@@ -72,7 +77,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('clears the date and time pickers when the layer is updating', function() {
             spyOn(ncwmsPanel, '_clearDateTimeFields');
-            ncwmsPanel.handleLayer(layer, noOp, noOp, {});
+            ncwmsPanel._initWithLayer();
             expect(ncwmsPanel._clearDateTimeFields).toHaveBeenCalled();
             delete ncwmsPanel.geoNetworkRecord;
         });

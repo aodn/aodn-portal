@@ -20,7 +20,6 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
                 layer: cfg.layer
             });
 
-            //ncwmsPanel.handleLayer(this.layer);
             items.push(ncwmsPanel);
         }
         else {
