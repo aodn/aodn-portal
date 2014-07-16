@@ -9,10 +9,12 @@ describe("Portal.details.DetailsPanel", function() {
     var detailsPanel;
 
     beforeEach(function() {
-        spyOn(Portal.details.SubsetPanel.prototype, 'handleLayer');
         spyOn(Portal.details.DetailsPanel.prototype, 'hideDetailsPanelContents');
 
-        detailsPanel = new Portal.details.DetailsPanel({ map: new OpenLayers.SpatialConstraintMap() });
+        detailsPanel = new Portal.details.DetailsPanel({
+            map: new OpenLayers.SpatialConstraintMap(),
+            layer: new OpenLayers.Layer.WMS()
+        });
     });
 
     afterEach(function() {

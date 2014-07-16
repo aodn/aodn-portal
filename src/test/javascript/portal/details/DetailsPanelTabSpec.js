@@ -14,11 +14,9 @@ describe("Portal.details.DetailsPanelTab", function() {
         spyOn(Portal.details.StylePanel.prototype, '_initWithLayer');
 
         detailsPanelTab = new Portal.details.DetailsPanelTab({
-            map: new OpenLayers.SpatialConstraintMap()
+            map: new OpenLayers.SpatialConstraintMap(),
+            layer: new OpenLayers.Layer.WMS()
         });
-
-//        spyOn(detailsPanelTab.infoPanel, 'handleLayer');
-        spyOn(detailsPanelTab.subsetPanel, 'handleLayer');
     });
 
     describe('initialisation', function() {
@@ -37,13 +35,6 @@ describe("Portal.details.DetailsPanelTab", function() {
             spyOn(detailsPanelTab, '_ensurePanelsRendered');
             detailsPanelTab.handleLayer();
             expect(detailsPanelTab._ensurePanelsRendered).toHaveBeenCalled();
-        });
-
-        // TODO: possibly better to have the children listening for the layer changed event directly - then
-        // this coupling between DetailsPanelTab and its children can be avoided.
-        it('calls handleLayer of children', function() {
-            detailsPanelTab.handleLayer();
-            expect(detailsPanelTab.subsetPanel.handleLayer).toHaveBeenCalled();
         });
 
         it('calls show', function() {

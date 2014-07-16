@@ -36,10 +36,11 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         Portal.details.DetailsPanelTab.superclass.constructor.call(this, config);
     },
 
+    // TODO: this function can probably go.
     handleLayer: function(layer) {
         this._ensurePanelsRendered();
 
-        this.subsetPanel.handleLayer(layer, this._showTab, this._hideTab, this);
+//        this.subsetPanel.handleLayer(layer, this._showTab, this._hideTab, this);
 //        this.infoPanel.handleLayer(layer, this._showTab, this._hideTab, this);
 
         this.show();
