@@ -62,8 +62,6 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
             var wmsLayer = collection.wmsLayer;
 
-            params.downloadControllerArgs.layerId = wmsLayer.grailsLayerId;
-
             return collection.wmsLayer._buildGetFeatureRequestUrl(
                 _this._resourceHref(),
                 _this._layerName(),
