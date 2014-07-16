@@ -7,14 +7,13 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
+Portal.details.InfoPanel = Ext.extend(Ext.form.Label, {
 
     constructor: function(cfg) {
 
         this.layer = cfg.layer;
 
         var config = Ext.apply({
-            id: 'infoPanel',
             title: 'Info',
             layout: 'fit',
             autoScroll: true,
@@ -22,10 +21,6 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         Portal.details.InfoPanel.superclass.constructor.call(this, config);
-    },
-
-    initComponent: function(cfg) {
-        Portal.details.InfoPanel.superclass.initComponent.call(this);
 
         this._initWithLayer();
     },
@@ -36,15 +31,15 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
                 url: 'layer/getFormattedMetadata?metaURL=' + encodeURIComponent(this.layer.getMetadataUrl()),
                 scope: this,
                 success: function(resp, options) {
-                    this.body.update(resp.responseText);
+                    this.setText(resp.responseText, false);
                 },
                 failure: function(resp) {
-                    this.body.update("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>");
+                    this.setText("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>", false);
                 }
             });
         }
         else {
-            this.body.update("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>");
+            this.setText("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>", false);
         }
     }
 });

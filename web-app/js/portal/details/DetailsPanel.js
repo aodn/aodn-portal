@@ -72,8 +72,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         });
         this.layerDetailsPanel.add(cardForLayer);
         this.layerDetailsPanel.doLayout(false, true);
-
-        cardForLayer.handleLayer(layer);
     },
 
     _activateCardForLayer: function(layer) {

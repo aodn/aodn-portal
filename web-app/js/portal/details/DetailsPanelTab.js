@@ -34,41 +34,5 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         }, cfg);
 
         Portal.details.DetailsPanelTab.superclass.constructor.call(this, config);
-    },
-
-    // TODO: this function can probably go.
-    handleLayer: function(layer) {
-        this._ensurePanelsRendered();
-
-//        this.subsetPanel.handleLayer(layer, this._showTab, this._hideTab, this);
-//        this.infoPanel.handleLayer(layer, this._showTab, this._hideTab, this);
-
-        this.show();
-    },
-
-    _ensurePanelsRendered: function() {
-        var items = this.items.items;
-        for (var i = items.length - 1; i >= 0; i--) {
-            items[i].show();
-        }
-    },
-
-    _hideTab: function(tab) {
-        this.hideTabStripItem(tab.id);
-        for (var i = 0; i < this.items.length; i++) {
-            var item = this.items.get(i);
-            if (item) {
-                if (Ext.get(this.getTabEl(item)) // tests fail without this test (but they shouldn't).
-                    && Ext.get(this.getTabEl(item)).isVisible())
-                {
-                    this.setActiveTab(item);
-                    i = this.items.length;
-                }
-            }
-        }
-    },
-
-    _showTab: function(tab) {
-        this.unhideTabStripItem(tab.id);
     }
 });
