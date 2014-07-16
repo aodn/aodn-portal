@@ -61,14 +61,13 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return function(collection, params) {
 
             var wmsLayer = collection.wmsLayer;
-            var wfsLayer = wmsLayer.wfsLayer;
 
             params.downloadControllerArgs.layerId = wmsLayer.grailsLayerId;
 
             return collection.wmsLayer._buildGetFeatureRequestUrl(
                 _this._resourceHref(),
                 _this._layerName(),
-                'csv',
+                OpenLayers.Layer.DOWNLOAD_FORMAT_CSV,
                 wmsLayer.getDownloadFilter()
             );
         };
