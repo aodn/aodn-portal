@@ -162,8 +162,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testEstimateSizeForLayerNoProblems() {
 
-
-
         def testStreamProcessor = new Object()
         controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->
             assertEquals "relativeFilePath", filenameFieldName
