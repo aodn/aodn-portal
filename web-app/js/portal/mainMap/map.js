@@ -71,6 +71,13 @@ function show(css_id) {
     $(css_id).show(450);
 }
 
+// Used by IMOS getFeatureInfo content.ftl's
+function showChannel(css_id, facilityName) {
+    jQuery("#[id*=" + facilityName + "]").hide();
+    jQuery('#' + facilityName + css_id).show(450);
+    Portal.utils.Image.resizeWhenLoadedAfterDelay('div > .featureinfocontent .feature img', 500);
+}
+
 function dressUpMyLine(line) {
     var x = line.split(",");
     var newString = "";
