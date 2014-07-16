@@ -13,7 +13,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         this.layer = cfg.layer;
 
         var config = Ext.apply({
-            id: 'stylePanel',
             title: 'Styles',
             autoScroll: true,
             style: { margin:5 }
