@@ -224,8 +224,6 @@ class DownloadController extends RequestProxyingController {
 
         def server = Server.findByUri(params.url.toURL().host)
 
-        println "Found Server: $server"
-
         return [
             params.urlFieldName,
             server?.urlListDownloadPrefixToRemove ?: "",
