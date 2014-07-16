@@ -10,7 +10,6 @@ package au.org.emii.portal.proxying
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilename
 import static au.org.emii.portal.UrlUtils.urlWithQueryString
 
 class ProxiedRequest extends ExternalRequest {
@@ -41,7 +40,7 @@ class ProxiedRequest extends ExternalRequest {
 
     def _determineResponseContentType = {
 
-        response.contentType = params.format ?: request.contentType
+        response.contentType = params.remove('format') ?: request.contentType
     }
 
     static def _getTargetUrl(params) {
@@ -51,7 +50,6 @@ class ProxiedRequest extends ExternalRequest {
 
             key != "controller" &&
             key != "action" &&
-            key != "format" &&
             key != "_dc"
         }
 

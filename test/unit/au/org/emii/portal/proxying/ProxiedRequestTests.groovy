@@ -67,7 +67,6 @@ class ProxiedRequestTests extends GrailsUnitTestCase {
             controller: 'a',
             action: 'b',
             url: 'http://www.google.com/',
-            format: 'd',
             _dc: 'e',
             two: '2'
         ]
