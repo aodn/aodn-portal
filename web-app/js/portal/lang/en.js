@@ -134,6 +134,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // errors
     errorDialogTitle: 'Error',
 
+    downloadButtonId: 'download-button-${id}',
+
     // Download View
     downloadConfirmationWindowTitle: 'Data Download',
     downloadConfirmationWindowContent: " \
@@ -155,9 +157,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // mainMapPanel
     layerExistsTitle: 'Add data collection',
     layerExistsMsg: 'This data collection has already been added to the map',
-    layerAddedTitle: 'Add data collection',
-    layerAddedMsg: "'${layerDesc}' has been added",
-    layerActions: 'Actions',
 
 
     // InfoPanel.js
@@ -268,6 +267,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     fileSizeMb: "MB",
     estimatedDlMessage: "The download size is ",
     estimatedDlFailedMsg: "The download size is unknown.",
+    estimatedNoDataMsg: "No data available. <i>(Try changing filters)</i>",
     estimatedDlLoadingMessage: "Estimating download size...",
     estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />',
     estimatedDlTimeoutMsg: "The download size is too large to estimate.",

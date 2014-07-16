@@ -80,6 +80,12 @@ describe('Portal.cart.DownloadEstimator', function() {
             var mockHtml = estimator._generateEstHtmlString(mockEstimate);
             expect(mockHtml).toEqual('<div>' + OpenLayers.i18n('estimatedDlMessage') + ' 400.0MB </div><div class="clear"></div>');
         });
+
+        it('_generateEstHtmlString formats correctly when size is 0', function() {
+            mockEstimate = 0;
+            var mockHtml = estimator._generateEstHtmlString(mockEstimate);
+            expect(mockHtml).toEqual('<div>' + OpenLayers.i18n('estimatedNoDataMsg') + '  </div><div class="clear"></div>');
+        });
     });
 
     describe('creates a unique html element per download view request', function() {
