@@ -48,9 +48,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(eventName, openlayer) {
             this._removeCardForLayer(openlayer);
         }, this);
-
-        // TODO: why?  I think this might be unecessary now that the tab panel is not shared.
-        this.hideDetailsPanelContents();
     },
 
     updateDetailsPanel: function(layer, forceOpen) {
@@ -60,22 +57,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             }
 
             this._activateCardForLayer(layer);
-            this.showDetailsPanelContents;
         }
-        else {
-            this.hideDetailsPanelContents();
-        }
-    },
-
-    hideDetailsPanelContents: function() {
-        // clear the details Panel. ie. Don't show any layer options
-
-        //DO NOT HIDE THE opacitySlider directly, or you WILL break things.-Alex
-        this.layerDetailsPanel.setVisible(false);
-    },
-
-    showDetailsPanelContents: function() {
-        this.layerDetailsPanel.setVisible(true);
     },
 
     _cardExistsForLayer: function(layer) {

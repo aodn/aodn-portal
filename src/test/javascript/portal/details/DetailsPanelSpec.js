@@ -9,8 +9,6 @@ describe("Portal.details.DetailsPanel", function() {
     var detailsPanel;
 
     beforeEach(function() {
-        spyOn(Portal.details.DetailsPanel.prototype, 'hideDetailsPanelContents');
-
         detailsPanel = new Portal.details.DetailsPanel({
             map: new OpenLayers.SpatialConstraintMap(),
             layer: new OpenLayers.Layer.WMS()
@@ -19,12 +17,6 @@ describe("Portal.details.DetailsPanel", function() {
 
     afterEach(function() {
         detailsPanel.destroy();
-    });
-
-    describe('initialisation', function() {
-        it('hides contents', function() {
-            expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
-        });
     });
 
     describe('selected collection changed', function() {
@@ -76,11 +68,6 @@ describe("Portal.details.DetailsPanel", function() {
                 expect(detailsPanel.title).toBe('something');
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
                 expect(detailsPanel.title).toBe('something');
-            });
-
-            it('hide contents', function() {
-                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
-                expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
             });
         });
     });
