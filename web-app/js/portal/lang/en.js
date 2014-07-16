@@ -89,11 +89,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     selectMapTimePeriod: 'Move Time on Map',
     errorSelectMapTimePeriod: "End of the Collections available dates",
 
-    // Map.js
-    controlButton_4AnimationControlsPanel: 'Animation Options',
-
     // Search results
-    descHeading: 'Description',
     addToMap: "Add '${layerDesc}' to portal",
 
     // Refine search panel
@@ -103,11 +99,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         dataParameters: 'Data Parameters'
     },
 
-    // Refine search panel revised
-    refineSearch: 'Current Search',
-
     // Search form
-    addCriteria: 'Limit search to',
     boundingBoxDescription: 'Bounding Box',
     boundingBoxDescriptionNcWms: 'Bounding Area',
     maxExtentOfPolygon: "Max extent of polygon",
@@ -118,18 +110,13 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     keyword: 'Keyword',
     parameter: 'Parameter',
     organisation: 'Organisation',
-    downloadsOnly: 'Downloads Only',
     downloads: 'Downloads',
     mapLayers: 'Map Collections',
     mapLayer: 'Map Collections',
-    exactMatches: 'Exact Matches',
     precision: 'Precision',
-    exactMatchesDesc: 'Must Match Search Terms Exactly',
     goButton: 'Go',
     clearButton: 'Clear',
     fullTextSearch: 'What are you looking for?',
-    newSearchText: 'New',
-    newSearchTip: 'Start a new search',
 
     // errors
     errorDialogTitle: 'Error',
@@ -158,27 +145,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerExistsTitle: 'Add data collection',
     layerExistsMsg: 'This data collection has already been added to the map',
 
-
     // InfoPanel.js
     loadingMessage: 'Loading ...',
     noMetadataMessage: 'No information available at this time.',
 
-    // Snapshots
-    saveMapButton: 'Save Map',
-    saveMapButtonTip: 'Save the current state of the map',
-    saveSnapshotDialogTitle: 'Save Map',
-    saveSnapshotName: 'Name',
-    saveSnapshotFailureErrMsg: 'Unexpected failure saving snapshot',
     btnSave: 'Save',
     btnCancel: 'Cancel',
-    chooseSavedMap: 'Load a Saved Map',
-    deleteSnapshot: 'Delete',
-    deleteSnapshotTip: 'Delete a saved map',
-    shareSnapshot: 'Share',
-    shareMapDialogTitle: 'Share Map',
-    shareSnapshotTip: 'Share a saved map',
-    savedMap: 'Saved Map',
-    mapUnavailable: 'The map you are attempting to view is not available.',
 
     // Faceted layer search
     searchTabTitle: 'Search',
@@ -251,9 +223,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     removeDataCollection: 'Remove data collection',
     zoomToDataCollection: 'Zoom to data collection',
 
-    // PolygonTypePanel
-    polygonTypePanelHeader: "Map Polygon Drawing Style",
-
     // PolygonTypeComboBox
     comboBoxTypeLabels: [
         { value: Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX, label: "bounding box" },
@@ -263,8 +232,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // WfsDataRowTemplate
     fileSizeIconMarkup: '<img src="images/error.png">',
-    fileSizeGb: "GB",
-    fileSizeMb: "MB",
     estimatedDlMessage: "The download size is ",
     estimatedDlFailedMsg: "The download size is unknown.",
     estimatedNoDataMsg: "No data available. <i>(Try changing filters)</i>",
