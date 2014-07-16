@@ -57,10 +57,19 @@ class DownloadController extends RequestProxyingController {
         def resultStream = new ByteArrayOutputStream()
         def streamProcessor = urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase)
 
-        _executeExternalRequest url, streamProcessor, resultStream
+        try {
+            _executeExternalRequest url, streamProcessor, resultStream
+        }
+        catch (Exception e) {
+            log.error "Could not download NetCDF files. Failed during _executeExternalRequest for $url", e
+            render 'An error occurred before downloading could begin'
+            return
+        }
+
         def urls = new String(resultStream.toByteArray(), 'UTF-8').split()
 
-        response.setHeader("Content-disposition", buildAttachmentHeaderValueWithFilename(params.downloadFilename))
+        def downloadFilename = params.remove('downloadFilename')
+        response.setHeader("Content-disposition", buildAttachmentHeaderValueWithFilename(downloadFilename))
 
         bulkDownloadService.generateArchiveOfFiles(urls, response.outputStream, request.locale)
     }
@@ -225,7 +234,7 @@ class DownloadController extends RequestProxyingController {
         def server = Server.findByUri(params.url.toURL().host)
 
         return [
-            params.urlFieldName,
+            params.remove('urlFieldName'),
             server?.urlListDownloadPrefixToRemove ?: "",
             server?.urlListDownloadPrefixToSubstitue ?: ""
         ]

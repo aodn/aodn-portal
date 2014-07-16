@@ -9,7 +9,7 @@ package au.org.emii.portal
 
 import grails.test.ControllerUnitTestCase
 
-import static au.org.emii.portal.DownloadController.getSIZE_ESTIMATE_ERROR
+import static au.org.emii.portal.DownloadController.SIZE_ESTIMATE_ERROR
 
 class DownloadControllerTests extends ControllerUnitTestCase {
 
@@ -73,6 +73,18 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         controller.urlListForLayer()
 
         assertEquals 1, performProxyingCalledCount
+    }
+
+    void testDownloadNetCdfFilesForLayerExceptionThrown() {
+
+        controller.metaClass._executeExternalRequest = { a, b, c ->
+
+            throw new Exception('Failed before downloading started')
+        }
+
+        controller.downloadNetCdfFilesForLayer()
+
+        assertEquals 'An error occurred before downloading could begin', mockResponse.contentAsString
     }
 
     void testDownloadNetCdfFilesForLayerInvalidHost() {
