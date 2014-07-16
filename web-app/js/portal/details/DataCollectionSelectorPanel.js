@@ -19,18 +19,19 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
         }, this);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(eventName, openlayer) {
-            this.removeFromlayerComboBox(openlayer);
+            this.removeFromLayerComboBox(openlayer);
         }, this);
     },
 
     initComponent: function() {
 
-        this.spacer = new Ext.Spacer({
-            height: 10
+        this.emptyMessage = new Portal.common.EmptyCollectionStatusPanel({
+            id: 'emptyMessage',
+            height: 35
         });
 
         this.layerComboBox = new Ext.form.ComboBox({
-            width: 320,
+            id: 'layerComboBox',
             typeAhead: true,
             triggerAction: 'all',
             lazyRender: true,
@@ -51,7 +52,7 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
             }
         });
 
-        this.items = [ this.spacer, this.layerComboBox ];
+        this.items = [ this.emptyMessage, this.layerComboBox ];
 
         Portal.details.DataCollectionSelectorPanel.superclass.initComponent.call(this);
     },
@@ -59,7 +60,7 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
     updateLayerComboBox: function(layer) {
         if (layer) {
             if (this.layerComboBox.store.find('id', layer.id) == -1) {
-                this.addTolayerComboBoxStore(layer);
+                this.addToLayerComboBoxStore(layer);
             }
             this.layerComboBox.setValue(layer.name);
             if (this.layerComboBox.el) {
@@ -87,19 +88,34 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    addTolayerComboBoxStore: function(layer) {
+    addToLayerComboBoxStore: function(layer) {
         var layerArray = new Array();
         layerArray['id'] = layer.id;
         layerArray['layerName'] = layer.name;
         layerArray['layer'] = layer;
         this.layerComboBox.store.insert(0, new Ext.data.Record(layerArray));
+
+        this.handleComboBoxStoreStatus();
+
     },
 
-    removeFromlayerComboBox: function(layer) {
+    removeFromLayerComboBox: function(layer) {
         var index = this.layerComboBox.store.find('id', layer.id);
         if (index != -1) {
             this.layerComboBox.setValue('');
             this.layerComboBox.store.removeAt(index);
+        }
+        this.handleComboBoxStoreStatus();
+    },
+
+    handleComboBoxStoreStatus: function() {
+        if (this.layout.setActiveItem) {
+            if (this.layerComboBox.store.data.items.length == 0 ){
+                this.layout.setActiveItem('emptyMessage');
+            }
+            else {
+                this.layout.setActiveItem('layerComboBox');
+            }
         }
     }
 });
