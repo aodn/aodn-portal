@@ -78,15 +78,3 @@ function showChannel(css_id, facilityName) {
     Portal.utils.Image.resizeWhenLoadedAfterDelay('div > .featureinfocontent .feature img', 500);
 }
 
-function dressUpMyLine(line) {
-    var x = line.split(",");
-    var newString = "";
-
-    for(i = 0; i < x.length; i++) {
-        var latlon = x[i].split(" ");
-        var lon = latlon[0].substring(0, latlon[0].lastIndexOf(".") + 4);
-        var lat = latlon[1].substring(0, latlon[1].lastIndexOf(".") + 4);
-        newString = newString + "Lon:" + lon + " Lat:" +lat + ",<BR>";
-    }
-    return newString;
-}
