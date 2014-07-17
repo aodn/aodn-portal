@@ -119,8 +119,6 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         var fileSizeImage = (estimateInBytes >= this.HALF_GB_IN_BYTES) ? OpenLayers.i18n("fileSizeIconMarkup") : "";
 
         return String.format(html, downloadMessage, fileSizeEstimate, fileSizeImage);
-
-
     },
 
     // Credit: http://stackoverflow.com/a/14919494/627806
