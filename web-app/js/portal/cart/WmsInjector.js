@@ -19,12 +19,5 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     _getDataMarkup: function(collection) {
 
         return this._addDownloadEstimate(collection);
-    },
-
-    _downloadUrl: function(collection) {
-
-        return this._wmsDownloadUrl(collection, {
-            format: OpenLayers.Layer.DOWNLOAD_FORMAT_CSV
-        });
     }
 });

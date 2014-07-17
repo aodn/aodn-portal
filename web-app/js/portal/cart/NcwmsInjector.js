@@ -50,12 +50,6 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         return date.format(OpenLayers.i18n('dateTimeDisplayFormat'));
     },
 
-    _downloadUrl: function(collection) {
-        return this._wfsDownloadUrl(collection, {
-            format: OpenLayers.Layer.DOWNLOAD_FORMAT_CSV
-        });
-    },
-
     _getDataMarkup: function(collection) {
 
         if (collection.wmsLayer.wfsLayer) {

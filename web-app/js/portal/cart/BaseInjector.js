@@ -26,13 +26,6 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         return injectionJson;
     },
 
-    _downloadUrl: function() {
-        throw {
-            name: 'Not Implemented Exception',
-            message: 'Subclasses must implement this function.'
-        }
-    },
-
     _hideButton: function(uuid) {
 
         var elementId = OpenLayers.i18n('downloadButtonId', {id: uuid});
@@ -46,7 +39,6 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         var estimator = new Portal.cart.DownloadEstimator();
         estimator._getDownloadEstimate(
             collection,
-            this._downloadUrl(collection),
             this._hideButton
         );
 
