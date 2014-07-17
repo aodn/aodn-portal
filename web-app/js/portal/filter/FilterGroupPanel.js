@@ -241,7 +241,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         this._updateLayerFilters();
 
         this.add(this.clearFiltersButton);
-        this.doLayout(false);
+        this.doLayout();
 
         this.show();
     },
