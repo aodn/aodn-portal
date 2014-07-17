@@ -17,14 +17,15 @@ describe('Portal.cart.WmsInjector', function() {
         geoNetworkRecord = {
             uuid: 9,
             grailsLayerId: 42,
-            getWfsLayerFeatureRequestUrl: noOp,
             wmsLayer: {
                 getDownloadFilter: function() {
                     return "cql_filter"
                 },
                 isNcwms: function() {return false},
-                getWmsLayerFeatureRequestUrl: noOp,
-                wfsLayer: true
+                getFeatureRequestUrl: noOp,
+                wfsLayer: true,
+                server: {},
+                params: {}
             },
             pointOfTruthLink: 'Link!',
             linkedFiles: 'Downloadable link!'

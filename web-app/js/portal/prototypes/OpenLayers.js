@@ -90,17 +90,7 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function(resp, options) {
     return formatGetFeatureInfo(resp, options);
 };
 
-OpenLayers.Layer.WMS.prototype.getWmsLayerFeatureRequestUrl = function(outputFormat) {
-
-    return this._buildGetFeatureRequestUrl(
-        this.server.uri,
-        this.params.LAYERS,
-        outputFormat,
-        this.getDownloadFilter()
-    );
-};
-
-OpenLayers.Layer.WMS.prototype.getWfsLayerFeatureRequestUrl = function(serverUrl, layerName, outputFormat) {
+OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(serverUrl, layerName, outputFormat) {
 
     return this._buildGetFeatureRequestUrl(
         serverUrl,
