@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2014 IMOS
  *
@@ -11,51 +10,32 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        this.ncwmsPanel = new Portal.details.NcWmsPanel({
-            map: cfg.map
-        });
+        this.layer = cfg.layer;
+
+        var items = [];
+
+        if (this.layer.isNcwms()) {
+            var ncwmsPanel = new Portal.details.NcWmsPanel({
+                map: cfg.map,
+                layer: cfg.layer
+            });
+
+            items.push(ncwmsPanel);
+        }
+        else {
+            var filterGroupPanel = new Portal.filter.FilterGroupPanel({
+                layer: cfg.layer
+            });
+
+            items.push(filterGroupPanel);
+        }
 
         var config = Ext.apply({
             title: OpenLayers.i18n('subsetPanelTitle'),
-            layout: new Ext.layout.CardLayout(),
-            items: [
-                this.ncwmsPanel
-            ]
+            layout: 'fit',
+            items: items
         }, cfg);
 
-        this.filterGroupPanels = {};
-
         Portal.details.SubsetPanel.superclass.constructor.call(this, config);
-
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(subject, openLayer) {
-            if (this.filterGroupPanels[openLayer.id]) {
-                this.filterGroupPanels[openLayer.id].destroy();
-            }
-        }, this);
-    },
-
-    handleLayer: function(layer, show, hide, target) {
-
-        if (layer.isNcwms()) {
-            this.layout.setActiveItem(this.ncwmsPanel.id);
-            this.ncwmsPanel.handleLayer(layer, show, hide, target);
-        }
-        else {
-            this._extJsLayoutHack(layer);
-            this.layout.setActiveItem(this.filterGroupPanel.id);
-            this.filterGroupPanel.handleLayer(layer, show, hide, target);
-        }
-    },
-
-    _extJsLayoutHack: function(layer) {
-        if (!layer.isNcwms()) {
-            if (!this.filterGroupPanels[layer.id]) {
-                var filterGroupPanel = new Portal.filter.FilterGroupPanel();
-                this.add(filterGroupPanel);
-                this.filterGroupPanels[layer.id] = filterGroupPanel;
-            }
-
-            this.filterGroupPanel = this.filterGroupPanels[layer.id];
-        }
     }
 });

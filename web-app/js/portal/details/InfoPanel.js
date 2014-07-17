@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -8,11 +7,13 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
+Portal.details.InfoPanel = Ext.extend(Ext.form.Label, {
 
     constructor: function(cfg) {
+
+        this.layer = cfg.layer;
+
         var config = Ext.apply({
-            id: 'infoPanel',
             title: 'Info',
             layout: 'fit',
             autoScroll: true,
@@ -20,42 +21,25 @@ Portal.details.InfoPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         Portal.details.InfoPanel.superclass.constructor.call(this, config);
+
+        this._initWithLayer();
     },
 
-    initComponent: function(cfg) {
-        Portal.details.InfoPanel.superclass.initComponent.call(this);
-    },
-
-    handleLayer: function(layer, show, hide, target) {
-        if (this._showBody(layer)) {
-            this._updateBody(layer);
-            show.call(target, this);
-        }
-        else {
-            hide.call(target, this);
-        }
-    },
-
-    _showBody: function(layer) {
-        return layer.getMetadataUrl();
-    },
-
-    _updateBody: function(layer) {
-        this.body.update(OpenLayers.i18n('loadingMessage'));
-        if (layer.getMetadataUrl()) {
+    _initWithLayer: function() {
+        if (this.layer.getMetadataUrl()) {
             Ext.Ajax.request({
-                url: 'layer/getFormattedMetadata?metaURL=' + encodeURIComponent(layer.getMetadataUrl()),
+                url: 'layer/getFormattedMetadata?metaURL=' + encodeURIComponent(this.layer.getMetadataUrl()),
                 scope: this,
                 success: function(resp, options) {
-                    this.body.update(resp.responseText);
+                    this.setText(resp.responseText, false);
                 },
                 failure: function(resp) {
-                    this.body.update("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>");
+                    this.setText("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>", false);
                 }
             });
         }
         else {
-            this.body.update("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>");
+            this.setText("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>", false);
         }
     }
 });

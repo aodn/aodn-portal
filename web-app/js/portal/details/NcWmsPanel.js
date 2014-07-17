@@ -12,6 +12,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     ROW_HEIGHT: 32,
 
     constructor: function(cfg) {
+
+        this.layer = cfg.layer;
+
         var config = Ext.apply({
             layout: 'table',
             layoutConfig: {
@@ -37,26 +40,20 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this._addLoadingInfo();
         this._addSpatialConstraintDisplayPanel();
         this._addTemporalControls();
+
+        this._initWithLayer();
     },
 
-    handleLayer: function(layer, show, hide, target) {
-        this.selectedLayer = layer;
-        if (layer.isNcwms()) {
-            this.geoNetworkRecord = layer.parentGeoNetworkRecord;
+    _initWithLayer: function() {
+        this.geoNetworkRecord = this.layer.parentGeoNetworkRecord;
 
-            this._clearDateTimeFields();
-            this._attachTemporalEvents();
-            this._attachSpatialEvents();
-            this.selectedLayer.processTemporalExtent();
-            this._removeLoadingInfo();
-            this._applyFilterValuesFromMap();
-            this._showAllControls();
-
-            show.call(target, this);
-        }
-        else {
-            hide.call(target, this);
-        }
+        this._clearDateTimeFields();
+        this._attachTemporalEvents();
+        this._attachSpatialEvents();
+        this.layer.processTemporalExtent();
+        this._removeLoadingInfo();
+        this._applyFilterValuesFromMap();
+        this._showAllControls();
     },
 
     _showAllControls: function() {
@@ -83,9 +80,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _attachSpatialEvents: function() {
-        if (!this.selectedLayer.attachedSpatialEvents) {
+        if (!this.layer.attachedSpatialEvents) {
 
-            var currentLayer = this.selectedLayer;
+            var currentLayer = this.layer;
             currentLayer.map.events.on({
                 scope: this,
                 'spatialconstraintadded': function(geometry) {
@@ -96,7 +93,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
                 }
             });
 
-            this.selectedLayer.attachedSpatialEvents = true;
+            this.layer.attachedSpatialEvents = true;
         }
     },
 
@@ -251,18 +248,18 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _previousTimeSlice: function() {
-        this.selectedLayer.previousTimeSlice();
+        this.layer.previousTimeSlice();
         this._updateTimeRangeLabel();
     },
 
     _nextTimeSlice: function() {
-        this.selectedLayer.nextTimeSlice();
+        this.layer.nextTimeSlice();
         this._updateTimeRangeLabel();
     },
 
     _applyFilterValuesFromMap: function() {
 
-        this._applyFilterValuesToCollection(this.selectedLayer, this.map.getConstraint());
+        this._applyFilterValuesToCollection(this.layer, this.map.getConstraint());
     },
 
     _applyFilterValuesToCollection: function(layer, geometry) {
@@ -278,8 +275,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     _addDateTimeFilterToLayer: function() {
 
-        if (this.selectedLayer) {
-            this.selectedLayer.bodaacFilterParams = {
+        if (this.layer) {
+            this.layer.bodaacFilterParams = {
                 dateRangeStart: moment(this.startDateTimePicker.getValue()),
                 dateRangeEnd: moment(this.endDateTimePicker.getValue())
             };
@@ -287,20 +284,20 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _attachTemporalEvents: function() {
-        if (!this.selectedLayer.attachedTemporalExtentLoaded) {
-            this.selectedLayer.events.on({
+        if (!this.layer.attachedTemporalExtentLoaded) {
+            this.layer.events.on({
                 'temporalextentloaded': this._layerTemporalExtentLoaded,
                 scope: this
             });
 
-            this.selectedLayer.attachedTemporalExtentLoaded = true;
+            this.layer.attachedTemporalExtentLoaded = true;
         }
     },
 
     _layerTemporalExtentLoaded: function() {
-        var extent = this.selectedLayer.getTemporalExtent();
-        this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.selectedLayer.getSubsetExtentMin(), false);
-        this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.selectedLayer.getSubsetExtentMax(), true);
+        var extent = this.layer.getTemporalExtent();
+        this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.layer.getSubsetExtentMin(), false);
+        this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.layer.getSubsetExtentMax(), true);
         this.buttonsPanel.show();
         this._updateTimeRangeLabel();
 
@@ -316,7 +313,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _updateTimeRangeLabel: function() {
-        this.timeRangeLabel.updateTime(this.selectedLayer.time.toUtcDisplayFormat());
+        this.timeRangeLabel.updateTime(this.layer.time.toUtcDisplayFormat());
     },
 
     _updateTimeRangeLabelLoading: function() {
@@ -328,7 +325,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _layerToTime: function(momentDate) {
-        this.selectedLayer.toTime(momentDate);
+        this.layer.toTime(momentDate);
     },
 
     _getDateFromPicker: function(datePicker) {
@@ -350,8 +347,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _setLayerSubsetExtent: function() {
-        if (this.selectedLayer) {
-            this.selectedLayer.setSubsetExtentView(
+        if (this.layer) {
+            this.layer.setSubsetExtentView(
                 moment.utc(this.startDateTimePicker.getValue()),
                 moment.utc(this.endDateTimePicker.getValue())
             );

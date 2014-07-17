@@ -10,6 +10,7 @@ Ext.namespace('Portal.filter');
 Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
+        this.layer = cfg.layer;
         this.loadingMessage = this.createLoadingMessageContainer();
 
         var config = Ext.apply({
@@ -40,6 +41,8 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         this.on('addFilter', this._handleAddFilter);
 
         Portal.filter.FilterGroupPanel.superclass.initComponent.call(this);
+
+        this._initWithLayer();
     },
 
     createLoadingMessageContainer: function() {
@@ -96,46 +99,42 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         this.add(label);
     },
 
-    handleLayer: function(layer, show, hide, target) {
+    _initWithLayer: function() {
         if (this._layerShouldBeHandled()) {
-            this._handleLayer(layer, show, hide, target);
+
+            if (this.layer.filters) {
+                this._showHideFilters();
+            }
+            else if (this.layer.isKnownToThePortal()) {
+
+                this.layerIsBeingHandled = true;
+
+                Ext.Ajax.request({
+                    url: this.GET_FILTER,
+                    params: {
+                        layerId: this.layer.grailsLayerId
+                    },
+                    scope: this,
+                    failure: function() {
+                        this.hide();
+                        this.layerIsBeingHandled = false;
+                    },
+                    success: function(resp, opts) {
+                        this.layer.filters = Ext.util.JSON.decode(resp.responseText);
+                        this._showHideFilters();
+                        this.layerIsBeingHandled = false;
+                    }
+                });
+            }
+            else {
+                this.addErrorMessage(OpenLayers.i18n('subsetParametersErrorText'));
+            }
         }
     },
 
-    _handleLayer: function(layer, show, hide, target) {
-        this.layer = layer;
+    _showHideFilters: function() {
 
-        if (layer.filters) {
-            this._showHideFilters(layer, show, hide, target);
-        }
-        else if (layer.isKnownToThePortal()) {
-
-            this.layerIsBeingHandled = true;
-
-            Ext.Ajax.request({
-                url: this.GET_FILTER,
-                params: {
-                    layerId: layer.grailsLayerId
-                },
-                scope: this,
-                failure: function() {
-                    this._hide(hide, target);
-                    this.layerIsBeingHandled = false;
-                },
-                success: function(resp, opts) {
-                    layer.filters = Ext.util.JSON.decode(resp.responseText);
-                    this._showHideFilters(layer, show, hide, target);
-                    this.layerIsBeingHandled = false;
-                }
-            });
-        }
-        else {
-            this.addErrorMessage(OpenLayers.i18n('subsetParametersErrorText'));
-        }
-    },
-
-    _showHideFilters: function(layer, show, hide, target) {
-
+        var layer = this.layer;
         var aFilterIsEnabled = false;
         if (this._isLayerActive(layer) && (layer.filters.length > 0)) {
 
@@ -152,7 +151,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         }
 
         if (aFilterIsEnabled) {
-            this._updateAndShow(show, target);
+            this._updateAndShow();
         }
         else {
             this.addErrorMessage(OpenLayers.i18n('subsetEmptyFiltersText'));
@@ -225,7 +224,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _updateAndShow: function(showFunction, showFunctionTarget) {
+    _updateAndShow: function() {
 
         this.clearFiltersButton = new Ext.Button({
             cls: "x-btn-text-icon",
@@ -244,7 +243,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
         this.add(this.clearFiltersButton);
         this.doLayout();
 
-        showFunction.call(showFunctionTarget, this);
+        this.show();
     },
 
     _hide: function(hideFunction, hideFunctionTarget) {

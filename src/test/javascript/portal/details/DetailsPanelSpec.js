@@ -9,34 +9,52 @@ describe("Portal.details.DetailsPanel", function() {
     var detailsPanel;
 
     beforeEach(function() {
-        spyOn(Portal.details.SubsetPanel.prototype, 'handleLayer');
-        detailsPanel = new Portal.details.DetailsPanel({ map: new OpenLayers.SpatialConstraintMap() });
-        spyOn(detailsPanel, 'hideDetailsPanelContents');
-        detailsPanel.initComponent();
+        detailsPanel = new Portal.details.DetailsPanel({
+            map: new OpenLayers.SpatialConstraintMap(),
+            layer: new OpenLayers.Layer.WMS()
+        });
     });
 
-    describe('initialisation', function() {
-        it('hides contents', function() {
-            expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
-        });
+    afterEach(function() {
+        detailsPanel.destroy();
     });
 
     describe('selected collection changed', function() {
         describe('selected collection', function() {
-            var openLayer;
+            var layer;
 
             beforeEach(function() {
-                openLayer = new OpenLayers.Layer.WMS(
-                    "the title",
-                    "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
-                    {},
-                    { isBaseLayer: false }
-                );
-                openLayer.server = {
-                    type: 'some type'
-                };
+                layer = {};
 
-                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
+                spyOn(detailsPanel, '_addCardForLayer');
+                spyOn(detailsPanel, '_activateCardForLayer');
+            });
+
+            it('activates existing DetailsPanelTab for previously selected layer', function() {
+                spyOn(detailsPanel, '_cardExistsForLayer').andReturn(true);
+
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
+
+                expect(detailsPanel._addCardForLayer).not.toHaveBeenCalled();
+                expect(detailsPanel._activateCardForLayer).toHaveBeenCalledWith(layer);
+            });
+
+            it('creates new DetailsPanelTab and activates for new layer', function() {
+                spyOn(detailsPanel, '_cardExistsForLayer').andReturn(false);
+
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
+
+                expect(detailsPanel._addCardForLayer).toHaveBeenCalledWith(layer);
+                expect(detailsPanel._activateCardForLayer).toHaveBeenCalledWith(layer);
+            });
+
+            it('removes DetailsPanelTab for removed layer', function() {
+                spyOn(detailsPanel, '_cardExistsForLayer').andReturn(true);
+                spyOn(detailsPanel, '_removeCardForLayer');
+
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);
+
+                expect(detailsPanel._removeCardForLayer).toHaveBeenCalledWith(layer);
             });
         });
 
@@ -50,11 +68,6 @@ describe("Portal.details.DetailsPanel", function() {
                 expect(detailsPanel.title).toBe('something');
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
                 expect(detailsPanel.title).toBe('something');
-            });
-
-            it('hide contents', function() {
-                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
-                expect(detailsPanel.hideDetailsPanelContents).toHaveBeenCalled();
             });
         });
     });

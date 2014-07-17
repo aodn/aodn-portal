@@ -7,11 +7,15 @@
 describe("Portal.filter.FilterGroupPanel", function() {
 
     var filterGroupPanel;
+    var layer;
 
     beforeEach(function() {
+        layer = new OpenLayers.Layer.WMS();
+        layer.isKnownToThePortal = function() { return true; }
 
-        filterGroupPanel = new Portal.filter.FilterGroupPanel({});
-
+        filterGroupPanel = new Portal.filter.FilterGroupPanel({
+            layer: layer
+        });
     });
 
     describe('responds to expected methods', function() {
@@ -22,20 +26,20 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
     describe('_showHideFilters', function() {
 
-        var fnTarget = {};
-        var showFunction = function() {};
-        var layer;
-
         beforeEach(function() {
             layer = {};
             layer.filters = "[{}]";
+
+            filterGroupPanel = new Portal.filter.FilterGroupPanel({
+                layer: layer
+            });
 
             spyOn(filterGroupPanel, '_createFilterPanel');
             spyOn(filterGroupPanel, '_updateAndShow');
             spyOn(filterGroupPanel, '_filtersSort').andReturn(layer);
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
 
-            filterGroupPanel._showHideFilters(layer, showFunction, noOp, {});
+            filterGroupPanel._showHideFilters();
         });
 
         it('creates a filter panel', function() {
@@ -45,12 +49,11 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         it('calls _updateAndShow', function() {
 
-            expect(filterGroupPanel._updateAndShow).toHaveBeenCalledWith(showFunction, fnTarget);
+            expect(filterGroupPanel._updateAndShow).toHaveBeenCalled();
         });
     });
 
     describe('filter sorting', function() {
-        var layer;
         var expectedReturn;
 
         beforeEach(function() {
@@ -71,6 +74,10 @@ describe("Portal.filter.FilterGroupPanel", function() {
                 {type : 'String', sortOrder : -1, label: 'D'},
                 {type : 'Boolean', sortOrder : -1, label: 'E'}
             ]
+
+            filterGroupPanel = new Portal.filter.FilterGroupPanel({
+                layer: layer
+            });
         });
 
         it('sorts with spatial and temporal filters at the top, alphabetic afterwards', function() {
@@ -80,20 +87,17 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
     describe('the clear all filters button', function() {
 
-        var layer;
-        var target;
-        var show;
-        var hide;
-
         beforeEach(function() {
             layer = {
                 grailsLayerId: 1499409
             };
-            layer.isKnownToThePortal = function(){return true};
+            layer.isKnownToThePortal = function() { return true };
             filterGroupPanel._isLayerActive = function() {return true};
-            target = {};
-            show = jasmine.createSpy('showCallBack');
-            hide = jasmine.createSpy('hideCallBack');
+
+            filterGroupPanel = new Portal.filter.FilterGroupPanel({
+                layer: layer
+            });
+            filterGroupPanel.layerIsBeingHandled = false;
 
             spyOn(filterGroupPanel, '_createFilterPanel');
             spyOn(filterGroupPanel, '_clearFilters');
@@ -111,15 +115,9 @@ describe("Portal.filter.FilterGroupPanel", function() {
                 }
             );
 
-            filterGroupPanel.handleLayer(
-                layer,
-                show,
-                hide,
-                target
-            );
+            filterGroupPanel._initWithLayer();
 
             expect(filterGroupPanel._createFilterPanel).toHaveBeenCalled();
-            expect(show).toHaveBeenCalled();
             filterGroupPanel.clearFiltersButton.fireEvent('click');
             expect(filterGroupPanel._clearFilters).toHaveBeenCalled();
             expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
@@ -130,12 +128,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             layer.grailsLayerId = undefined;
             layer.isKnownToThePortal = function(){return false};
 
-            filterGroupPanel.handleLayer(
-                layer,
-                show,
-                hide,
-                target
-            );
+            filterGroupPanel._initWithLayer();
 
             expect(filterGroupPanel.addErrorMessage).toHaveBeenCalled();
         });
@@ -143,20 +136,16 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
     describe('the _showHideFilters function', function() {
 
-        var layer;
-        var target;
-        var show;
-        var hide;
-
         beforeEach(function() {
             layer = {
                 grailsLayerId: 1499409
             };
             layer.isKnownToThePortal = function(){return true};
             filterGroupPanel._isLayerActive = function() {return true};
-            target = {};
-            show = jasmine.createSpy('showCallBack');
-            hide = jasmine.createSpy('hideCallBack');
+
+            filterGroupPanel = new Portal.filter.FilterGroupPanel({
+                layer: layer
+            });
 
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, 'addErrorMessage');
@@ -168,12 +157,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
             layer.filters = [];
 
-            filterGroupPanel._showHideFilters(
-                layer,
-                show,
-                hide,
-                target
-            );
+            filterGroupPanel._showHideFilters();
 
             expect(filterGroupPanel.addErrorMessage).toHaveBeenCalled();
         });
@@ -182,12 +166,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
             layer.filters = ["asda","asdasd"];
 
-            filterGroupPanel._showHideFilters(
-                layer,
-                show,
-                hide,
-                target
-            );
+            filterGroupPanel._showHideFilters();
 
             expect(filterGroupPanel.addErrorMessage).not.toHaveBeenCalled();
         });
@@ -228,11 +207,10 @@ describe("Portal.filter.FilterGroupPanel", function() {
             spyOn(filterGroupPanel.loadingMessage, 'hide');
             spyOn(filterGroupPanel, '_updateLayerFilters');
 
-            filterGroupPanel._updateAndShow(noOp, {});
+            filterGroupPanel._updateAndShow();
         });
 
         it('hides the loading message', function() {
-
             expect(filterGroupPanel.loadingMessage.hide).toHaveBeenCalled();
         });
 

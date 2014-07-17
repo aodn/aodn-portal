@@ -25,7 +25,9 @@ Portal.ui.TimeRangeLabel = Ext.extend(Ext.Container, {
     },
 
     loading: function() {
-        this.update(this._loadingMessage());
+        if (this.rendered) {
+            this.update(this._loadingMessage());
+        }
     },
 
     _loadingMessage: function() {

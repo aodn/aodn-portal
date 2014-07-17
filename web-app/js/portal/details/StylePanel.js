@@ -10,8 +10,9 @@ Ext.namespace('Portal.details');
 Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
     constructor: function (cfg) {
+        this.layer = cfg.layer;
+
         var config = Ext.apply({
-            id: 'stylePanel',
             title: 'Styles',
             autoScroll: true,
             style: { margin:5 }
@@ -20,7 +21,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         Portal.details.StylePanel.superclass.constructor.call(this, config);
     },
 
-    initComponent:function (cfg) {
+    initComponent: function (cfg) {
         this.legendImage = new GeoExt.LegendImage({
             id: 'legendImage',
             imgCls: 'legendImage',
@@ -82,7 +83,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         Portal.details.StylePanel.superclass.initComponent.call(this);
 
-        this.on('show', this._showHandler);
+        this._initWithLayer();
     },
 
     makeCombo:function () {
@@ -124,25 +125,21 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    setChosenStyle:function (record) {
-        this.selectedLayer.mergeNewParams({
+    setChosenStyle: function (record) {
+        this.layer.mergeNewParams({
             styles: record.get('myId')
         });
         // Params should already have been changed, but legend doesn't update if we don't do this...
-        this.selectedLayer.params.STYLES = record.get('myId');
-        this.refreshLegend(this.selectedLayer);
+        this.layer.params.STYLES = record.get('myId');
+        this.refreshLegend(this.layer);
     },
 
-    handleLayer:function (layer, show, hide, target) {
-        this.selectedLayer = layer;
-
-        show.call(target, this);
-
+    _initWithLayer: function() {
         this.opacitySliderContainer.hide();
         this.opacitySliderContainer.doLayout();
         this.opacitySliderContainer.show();
         //according to bug #1582, must set the layer for the opacity slider after the container has been shown
-        this.opacitySlider.setLayer(layer);
+        this.opacitySlider.setLayer(this.layer);
 
         // #2165 - need to "doLayout", since showing/hiding components above (or else, the opacity
         // slider won't be rendered properly, for example).
@@ -150,14 +147,14 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         this.styleCombo.hide();
 
-        if (layer.isNcwms()) {
-            this.ncwmsColourScalePanel.makeNcWMSColourScale(layer);
+        if (this.layer.isNcwms()) {
+            this.ncwmsColourScalePanel.makeNcWMSColourScale(this.layer);
         }
         else {
             this.ncwmsColourScalePanel.hide();
         }
 
-        var data = this._styleData(layer);
+        var data = this._styleData(this.layer);
 
         if (data.length > 0) {
             // populate the stylecombo picker
@@ -167,7 +164,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             this.styleCombo.show();
         }
 
-        this.refreshLegend(layer);
+        this.refreshLegend(this.layer);
     },
 
     _styleData: function (layer) {
@@ -287,11 +284,5 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         }
 
         return undefined;
-    },
-
-    _showHandler: function() {
-        // need to synch the slider with its value when we know its
-        // width given that the render is being forced prior to display
-        this.opacitySlider.syncThumb();
     }
 });
