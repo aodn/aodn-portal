@@ -50,24 +50,6 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         );
     },
 
-    _wmsDownloadUrl: function(collection, params) {
-
-        var wmsLayer = collection.wmsLayer;
-
-        return wmsLayer.getFeatureRequestUrl(
-            wmsLayer.server.uri,
-            wmsLayer.params.LAYERS,
-            params.format
-        );
-    },
-
-    _wfsDownloadUrl: function(collection, params) {
-
-        var wfsServerUrl = collection.wmsLayer.wfsLayer.server.uri.replace("/wms", "/wfs");
-
-        return collection.wmsLayer.getFeatureRequestUrl(wfsServerUrl, collection.wmsLayer.wfsLayer.name, params.format);
-    },
-
     _getMetadataLinks: function(collection) {
         return collection.linkedFiles;
     },
