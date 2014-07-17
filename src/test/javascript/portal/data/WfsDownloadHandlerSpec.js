@@ -39,7 +39,7 @@ describe('Portal.cart.WfsDownloadHandler', function () {
                 var downloadHandler = downloadOption.handler;
                 var dummyCollection = {
                     wmsLayer: {
-                        getFeatureRequestUrl: jasmine.createSpy('getWfsLayerFeatureRequestUrl')
+                        getFeatureRequestUrl: jasmine.createSpy('getFeatureRequestUrl')
                     }
                 };
 
