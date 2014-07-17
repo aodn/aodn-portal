@@ -80,10 +80,8 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         if (sizeDiv) {
             if (sizeEstimate == 0 || isNaN(sizeEstimate)) {
 
-                if (sizeDiv) {
-                    htmlAddition = this._generateEstHtmlString(sizeEstimate);
-                    callback(uuid);
-                }
+                htmlAddition = this._generateEstHtmlString(sizeEstimate);
+                callback(uuid);
             }
             else {
 
