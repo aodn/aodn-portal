@@ -837,6 +837,16 @@ ul.x-tab-strip-top li:hover * {
 
 /* openlayers */
 
+div.olMap:not(.miniMap) {
+    cursor: crosshair;
+}
+
+div.olMap div[class^="olControl"],
+.olDragDown,
+.olControlNavigationActive {
+    cursor: default;
+}
+
 .olControlPanel .olControlNavigationItemActive,
 .olControlPanel .olControlNavigationItemInactive,
 .olControlPanel .olControlZoomBoxItemActive,
