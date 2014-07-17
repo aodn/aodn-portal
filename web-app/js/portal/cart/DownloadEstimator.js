@@ -4,6 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
+
 Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadEstimator = Ext.extend(Object, {
@@ -25,16 +26,13 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         return String.format("downloadEst-{0}-{1}", uuid, this.initTimestampString);
     },
 
-    _getDownloadEstimate: function(collection, downloadUrl, callback) {
+    _getDownloadEstimate: function(collection, callback) {
 
         Ext.Ajax.request({
             url: 'download/estimateSizeForLayer',
             timeout: 30000,
             scope: this,
-            params: {
-                layerId: collection.wmsLayer.grailsLayerId,
-                url: downloadUrl
-            },
+            params: this._getEstimateRequestParams(collection),
             success: function(result, values) {
                 this._createDownloadEstimate(result, collection.uuid, callback);
             },
@@ -141,5 +139,24 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         var fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
 
         return String.format(html, downloadTimeoutMessage, fileSizeImage);
+    },
+
+    _getEstimateRequestParams: function(collection) {
+
+        var handlerToEstimateWith;
+
+        Ext.each(collection.dataDownloadHandlers, function(handler) {
+
+            if (handler.canEstimateDownloadSize()) {
+                handlerToEstimateWith = handler;
+            }
+        });
+
+        if (handlerToEstimateWith) {
+            return handlerToEstimateWith.getDownloadEstimateParams(collection);
+        }
+        else {
+            return null;
+        }
     }
 });
