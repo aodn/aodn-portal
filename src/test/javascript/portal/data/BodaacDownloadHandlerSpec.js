@@ -73,7 +73,6 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
         var clickHandler;
         var testCollection;
-        var testHandlerParams;
         var buildUrlSpy = jasmine.createSpy('_buildGetFeatureRequestUrl');
 
         beforeEach(function() {
@@ -86,11 +85,8 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
                     _buildGetFeatureRequestUrl: buildUrlSpy
                 }
             };
-            testHandlerParams = {
-                downloadControllerArgs: {}
-            };
 
-            clickHandler(testCollection, testHandlerParams);
+            clickHandler(testCollection);
         });
 
         it('builds the correct URL', function() {
@@ -101,6 +97,26 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
                 'csv',
                 'the_cql'
             );
+        });
+    });
+
+    describe('the estimate download size params', function() {
+
+        it('build the correct params object', function() {
+
+            var testCollection = {};
+
+            handler._getClickHandler = jasmine.createSpy('_getClickHandler()').andCallFake(function() {
+                return function(arg) {
+                    expect(arg).toBe(testCollection);
+                    return 'the_url';
+                }
+            });
+
+            var params = handler.getDownloadEstimateParams(testCollection);
+
+            expect(params.url).toBe('the_url');
+            expect(params.urlFieldName).toBe('field_name');
         });
     });
 });

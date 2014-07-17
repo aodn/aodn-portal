@@ -47,6 +47,19 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return downloadOptions;
     },
 
+    canEstimateDownloadSize: function() {
+
+        return true;
+    },
+
+    getDownloadEstimateParams: function(collection) {
+
+        return {
+            url: this._getClickHandler()(collection), // Ugh
+            urlFieldName: this._urlFieldName()
+        };
+    },
+
     _hasRequiredInfo: function() {
 
         return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty() && (this._resourceName().indexOf(this.NAME_FIELD_DELIMETER) > -1);
@@ -56,11 +69,11 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         var _this = this;
 
-        return function(collection, params) {
+        return function(collection) {
 
             var wmsLayer = collection.wmsLayer;
 
-            return collection.wmsLayer._buildGetFeatureRequestUrl(
+            return wmsLayer._buildGetFeatureRequestUrl(
                 _this._resourceHref(),
                 _this._layerName(),
                 OpenLayers.Layer.DOWNLOAD_FORMAT_CSV,
