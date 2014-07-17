@@ -21,7 +21,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
             downloadOptions.push({
                 textKey: 'downloadAsAllSourceNetCdfLabel',
-                handler: this._getClickHandler(),
+                handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
                     filenameFormat: '{0}_source_files.zip',
                     downloadControllerArgs: {
@@ -33,7 +33,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
             downloadOptions.push({
                 textKey: 'downloadAsUrlsLabel',
-                handler: this._getClickHandler(),
+                handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
                     filenameFormat: '{0}_URLs.txt',
                     downloadControllerArgs: {
@@ -54,8 +54,10 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     getDownloadEstimateParams: function(collection) {
 
+        var urlFn = this._getUrlGeneratorFunction(collection);
+
         return {
-            url: this._getClickHandler()(collection), // Ugh
+            url: urlFn(collection),
             urlFieldName: this._urlFieldName()
         };
     },
@@ -65,7 +67,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty() && (this._resourceName().indexOf(this.NAME_FIELD_DELIMETER) > -1);
     },
 
-    _getClickHandler: function() {
+    _getUrlGeneratorFunction: function() {
 
         var _this = this;
 

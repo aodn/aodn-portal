@@ -51,7 +51,7 @@ describe('Portal.cart.AodaacDownloadHandler', function () {
 
         beforeEach(function() {
 
-            clickHandler = handler._getClickHandler();
+            clickHandler = handler._getUrlGeneratorFunction();
 
             testCollection = {
                 ncwmsParams: {

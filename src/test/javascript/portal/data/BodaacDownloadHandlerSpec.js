@@ -69,15 +69,15 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
         });
     });
 
-    describe('the click handler', function() {
+    describe('the url generator function', function() {
 
-        var clickHandler;
+        var urlFn;
         var testCollection;
         var buildUrlSpy = jasmine.createSpy('_buildGetFeatureRequestUrl');
 
         beforeEach(function() {
 
-            clickHandler = handler._getClickHandler();
+            urlFn = handler._getUrlGeneratorFunction();
 
             testCollection = {
                 wmsLayer: {
@@ -86,7 +86,7 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
                 }
             };
 
-            clickHandler(testCollection);
+            urlFn(testCollection);
         });
 
         it('builds the correct URL', function() {
@@ -106,7 +106,7 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
             var testCollection = {};
 
-            handler._getClickHandler = jasmine.createSpy('_getClickHandler()').andCallFake(function() {
+            handler._getUrlGeneratorFunction = jasmine.createSpy('_getUrlGeneratorFunction()').andCallFake(function() {
                 return function(arg) {
                     expect(arg).toBe(testCollection);
                     return 'the_url';
