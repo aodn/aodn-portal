@@ -24,7 +24,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         controller = new DownloadController()
         controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
 
-        Server.metaClass.static.findByUri = { testServer }
+        Server.metaClass.static.findByUriLike = { testServer }
 
         _setUpExampleObjects()
         _setHostShouldBeValid(true)

@@ -231,7 +231,8 @@ class DownloadController extends RequestProxyingController {
 
     def _loadCommonFields(params) {
 
-        def server = Server.findByUri(params.url.toURL().host)
+        def url = params.url.toURL()
+        def server = Server.findByUriLike("%${url.host}%")
 
         return [
             params.remove('urlFieldName'),
