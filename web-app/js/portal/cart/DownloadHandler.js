@@ -30,7 +30,7 @@ Portal.cart.DownloadHandler = Ext.extend(Object, {
         return false;
     },
 
-    getDownloadEstimateUrl: function() {
+    getDownloadEstimateParams: function() {
 
         throw "Should be implemented by sublasses which return 'true' for canEstimateDownloadSize()";
     },
