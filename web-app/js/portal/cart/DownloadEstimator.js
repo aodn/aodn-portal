@@ -74,31 +74,20 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
 
     _addDownloadEstimate: function(sizeEstimate, uuid, callback) {
 
-        var htmlAddition;
+        var htmlAddition = this._generateEstHtmlString(sizeEstimate);
         var sizeDiv = Ext.get(this.getIdElementName(uuid));
 
         if (sizeDiv) {
-            if (sizeEstimate == 0 || isNaN(sizeEstimate)) {
-
-                if (sizeDiv) {
-                    htmlAddition = this._generateEstHtmlString(sizeEstimate);
-                    callback(uuid);
-                }
+            if (sizeEstimate == 0) {
+                callback(uuid);
             }
-            else {
-
-                if (sizeEstimate == OpenLayers.i18n('transAbortMsg')) {
-                    htmlAddition = this._generateTimeoutHtmlString();
-                }
-                else {
-                    if (sizeEstimate == this.EST_FAIL_CODE || isNaN(sizeEstimate)) {
-                        htmlAddition = this._generateFailHtmlString();
-                    }
-                    else {
-                        htmlAddition = this._generateEstHtmlString(sizeEstimate);
-                    }
-                }
+            else if (sizeEstimate == OpenLayers.i18n('transAbortMsg')) {
+                htmlAddition = this._generateTimeoutHtmlString();
             }
+            else if (sizeEstimate == this.EST_FAIL_CODE || isNaN(sizeEstimate)) {
+                htmlAddition = this._generateFailHtmlString();
+            }
+
             sizeDiv.update(htmlAddition);
         }
     },
