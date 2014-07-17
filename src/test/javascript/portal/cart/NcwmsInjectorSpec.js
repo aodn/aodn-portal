@@ -112,7 +112,7 @@ describe('Portal.cart.NcwmsInjector', function() {
                 getDownloadFilter: function() {
                     return "cql_filter"
                 },
-                getWfsLayerFeatureRequestUrl: noOp,
+                getFeatureRequestUrl: noOp,
                 isNcwms: function() {return true},
                 wfsLayer: {
                     server: {uri: 'wfs_server_url'}
