@@ -4,8 +4,6 @@ class DownloadAuthService {
 
     static transactional = true
 
-    static final DOWNLOAD_AUTH_TAG = 'downloadAuth'
-
     def grailsApplication
     def simpleCaptchaService
 
@@ -15,8 +13,6 @@ class DownloadAuthService {
 
         if (needsChallenge(ipAddress, session)) {
             if (simpleCaptchaService.validateCaptcha(response)) {
-                // Tag this session as one which doesn't need authentication anymore
-                session[DOWNLOAD_AUTH_TAG] = true
                 return true
             }
             else {
@@ -30,16 +26,11 @@ class DownloadAuthService {
 
     def needsChallenge(ipAddress, session) {
 
-        def needsChallenge = true
+        def needsChallenge = false
 
         if (isAbusingUs(ipAddress)) {
             log.info "Seems like $ipAddress might be trying to abuse us..."
-            session[DOWNLOAD_AUTH_TAG] = false
-        }
-
-        if (session[DOWNLOAD_AUTH_TAG]) {
-            log.info "$ipAddress already proved to be human"
-            return false
+            needsChallenge = true
         }
 
         grailsApplication.config.trustedClients.each {

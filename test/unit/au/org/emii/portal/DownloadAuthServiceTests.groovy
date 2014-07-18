@@ -31,23 +31,23 @@ class DownloadAuthServiceTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 
-    void testVerifyCorrectCaptchaAndSetSessionAuthTag() {
+    void testVerifyCorrectCaptchaAndNeedChallenge() {
+        service.metaClass.needsChallenge = { ipAddress, session -> return true }
         def challengeVerification = service.verifyChallengeResponse("12.12.12.12", session, "correct")
 
         assertTrue challengeVerification
-        assertTrue session[DownloadAuthService.DOWNLOAD_AUTH_TAG]
     }
 
-    void testVerifyWrongCaptchaAndSetSessionAuthTag() {
+    void testVerifyWrongCaptchaAndNeedChallenge() {
+        service.metaClass.needsChallenge = { ipAddress, session -> return true }
         def challengeVerification = service.verifyChallengeResponse("12.12.12.12", session, "wrong")
 
         assertFalse challengeVerification
     }
 
-    void testNeverVerifyAlwaysAllowForAllowedUsers() {
-        session[DownloadAuthService.DOWNLOAD_AUTH_TAG] = true
-
-        def challengeVerification = service.verifyChallengeResponse("12.12.12.12", session, "captcha response")
+    void testVerifyAnyCaptchaWhenDoesntNeedChallenge() {
+        service.metaClass.needsChallenge = { ipAddress, session -> return false }
+        def challengeVerification = service.verifyChallengeResponse("12.12.12.12", session, "wrong")
 
         assertTrue challengeVerification
     }
@@ -59,49 +59,46 @@ class DownloadAuthServiceTests extends GrailsUnitTestCase {
         assertFalse needsChallenge
     }
 
-    void testChallengeUserIfNotChallenged() {
-        boolean needsChallenge = service.needsChallenge("4.3.2.1", session)
-
-        assertTrue needsChallenge
-    }
-
-    void testDoesNotChallengeAlreadyChallengedClients() {
-        session[DownloadAuthService.DOWNLOAD_AUTH_TAG] = true
+    void testDoesNotChallengeNewClientsWhoDidntAbuse() {
         boolean needsChallenge = service.needsChallenge("4.3.2.1", session)
 
         assertFalse needsChallenge
     }
 
-    void testBeingAbused() {
+    void testFirstDownload() {
         service.grailsApplication = [config: [maxAggregatedDownloadsInTenMinutes: 1]]
         boolean needsChallenge = service.needsChallenge("1.1.1.1", session)
 
-        assertTrue needsChallenge
+        assertFalse needsChallenge
     }
 
     void testBeingAbusedFromTrustedClient() {
         service.grailsApplication = [config: [trustedClients: [ "4.3.2.1" ], maxAggregatedDownloadsInTenMinutes: 1]]
+
+        service.registerDownloadForAddress("4.3.2.1", "test1")
+        service.registerDownloadForAddress("4.3.2.1", "test2")
+
         boolean needsChallenge = service.needsChallenge("4.3.2.1", session)
 
         assertFalse needsChallenge
     }
 
-    void testBeingAbusedFromAlreadyChallengedClient() {
-        session[DownloadAuthService.DOWNLOAD_AUTH_TAG] = true
+    void testNotBeingAbusedButThenBeingAbused() {
         service.grailsApplication = [config: [maxAggregatedDownloadsInTenMinutes: 2]]
+
+        // First attempt - no need for challenge
+        boolean needsChallenge = service.needsChallenge("1.1.1.1", session)
+        assertFalse needsChallenge
 
         // Register 2 downloads
         service.registerDownloadForAddress("1.1.1.1", "test1")
         service.registerDownloadForAddress("1.1.1.1", "test2")
 
         // On the 3rd, we expect to display a challenge
-        boolean needsChallenge = service.needsChallenge("1.1.1.1", session)
+        needsChallenge = service.needsChallenge("1.1.1.1", session)
 
         // Has accounting for IP in the map
         assertEquals 1, service.ipAddressAccountingMap.size()
-
-        // Removes session tag
-        assertFalse session[DownloadAuthService.DOWNLOAD_AUTH_TAG]
 
         // Forces a Challenge
         assertTrue needsChallenge
