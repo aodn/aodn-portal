@@ -71,4 +71,26 @@ class GogoduckControllerTests extends ControllerUnitTestCase {
         assertEquals 1, registerCalledCount
         assertTrue mockResponse.contentAsString.length() > 0
     }
+
+    void testRegisterJobBadChallengeResponse() {
+
+        def testParams = new Object()
+        mockParams.put 'jobParameters', testParams
+
+        controller.gogoduckService = [
+            registerJob: { params ->
+                assertEquals testParams, params
+            }
+        ]
+
+        controller.downloadAuthService.metaClass.verifyChallengeResponse = {
+            ipAddress, session, challengeResponse ->
+
+            return false
+        }
+
+        controller.registerJob()
+
+        assertEquals 500, controller.renderArgs.status
+    }
 }
