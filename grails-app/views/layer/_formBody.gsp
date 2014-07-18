@@ -248,13 +248,3 @@
                                     ${layerInstance?.layerHierarchyPath}
                                 </td>
                             </tr>
-
-                            <tr class="prop"><td valign="top" class="name" colspan="2">&nbsp;</td></tr>
-
-                            <tr class="prop">
-                                <th valign="top" class="name" colspan="2">
-                                    Data Download
-                                </th>
-                            </tr>
-
-                            <tr class="prop"><td valign="top" class="name" colspan="2">&nbsp;</td></tr>
