@@ -188,43 +188,14 @@ Portal.data.GeoNetworkRecord = function() {
     prototype.convertedData = function() {
         var convertedData = {};
 
-        Ext.each(
-            Object.keys(this.data),
+        Ext.each(Object.keys(this.data),
             function(key) {
-                var item = this.data[key];
-                if (key == 'wmsLayer') {
-                    convertedData['wfsDownloadInfo'] = this.wfsDownloadInfoForLayer(item);
-                }
-                else {
-                    convertedData[key] = item;
-                }
+                convertedData[key] = this.data[key];
             },
             this
         );
 
         return convertedData;
-    };
-
-    prototype.wfsDownloadInfoForLayer = function(layer) {
-        var wfsLayer = layer.wfsLayer;
-        var layerName;
-        var serverUri;
-
-        if (wfsLayer) {
-            layerName = wfsLayer.name;
-            serverUri = wfsLayer.server.uri;
-        }
-        else {
-            layerName = layer.params.LAYERS;
-            serverUri = layer.server.uri;
-        }
-
-        return {
-            layerName: layerName,
-            serverUri: serverUri,
-            cqlFilter: layer.params.CQL_FILTER ? layer.params.CQL_FILTER : "",
-            metadataUrl: layer.getMetadataUrl()
-        };
     };
 
     prototype.updateNcwmsParams = function(dateRangeStart, dateRangeEnd, geometry) {

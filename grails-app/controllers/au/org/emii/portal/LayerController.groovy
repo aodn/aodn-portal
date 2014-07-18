@@ -269,8 +269,6 @@ class LayerController {
 
             _updateViewParams(layerInstance, params)
 
-            _updateWfsLayer(layerInstance, params)
-
             layerInstance.properties = params
 
             if (!layerInstance.hasErrors() && layerInstance.save(flush: true)) {
@@ -305,18 +303,6 @@ class LayerController {
         }
 
         params.remove('viewParams')
-    }
-
-    def _updateWfsLayer(layer, params) {
-
-        if (params.wfsLayerId) {
-            layer.wfsLayer = Layer.get(params.wfsLayerId)
-        }
-        else {
-            layer.wfsLayer = null
-        }
-
-        params.remove('wfsLayer')
     }
 
     def delete = {
@@ -575,23 +561,6 @@ class LayerController {
         return layers.collect { _getLayerDefaultData(it) }
     }
 
-    def _findLayersAndServers(layerIds) {
-
-        def layers = []
-        if (layerIds) {
-            def criteria = Layer.createCriteria()
-            layers = criteria.list {
-                'in'('id', layerIds)
-                eq("activeInLastScan", true)
-                eq("blacklisted", false)
-                join 'server'
-            }
-        }
-
-        // Put Layers in the order they were requested
-        return layers.sort { layerIds.indexOf(it.id) }
-    }
-
     def _renderLayer(layerInstance) {
         def excludes = [
             "class",
@@ -625,9 +594,6 @@ class LayerController {
                 if (!excludes.contains(name)) {
                     if ("layers".equals(name)) {
                         layerData[name] = _convertLayersToListOfMaps(value)
-                    }
-                    else if ("wfsLayer".equals(name) && value) {
-                        layerData[name] = _getLayerData(value, excludes + "wfsLayer")
                     }
                     else {
                         layerData[name] = value

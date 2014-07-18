@@ -36,7 +36,6 @@ class Layer {
     String overrideMetadataUrl
 
     Layer parent
-    Layer wfsLayer
 
     static mapping = {
         // Sorting
@@ -78,7 +77,6 @@ class Layer {
         activeInLastScan()
         lastUpdated(nullable: true)
         layerHierarchyPath(nullable: true)
-        wfsLayer(nullable: true)
     }
 
     static transients = ['layers']

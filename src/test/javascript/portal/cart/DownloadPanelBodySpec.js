@@ -36,7 +36,6 @@ describe("Portal.cart.DownloadPanelBody", function() {
                 uuid: uuid,
                 aggregator: { childAggregators: []},
                 wmsLayer: {
-                    wfsLayer: null,
                     isNcwms: noOp
                 },
                 dataDownloadHandlers: []

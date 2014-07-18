@@ -17,7 +17,6 @@ describe('Portal.cart.InsertionService', function() {
             title: 'the title',
             uuid: '42',
             wmsLayer: {
-                wfsLayer: undefined,
                 isNcwms: function() {return false}
             },
             aggregator: { childAggregators: [] }
@@ -95,7 +94,6 @@ describe('Portal.cart.InsertionService', function() {
     }
 
     function getWmsRecord() {
-        geoNetworkRecord.wmsLayer.wfsLayer = { name: 'layer123' };
         geoNetworkRecord.dataDownloadHandlers = [{}];
 
         return geoNetworkRecord;

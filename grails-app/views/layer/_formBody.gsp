@@ -257,16 +257,4 @@
                                 </th>
                             </tr>
 
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label><g:message code="layer.wfsLayer.label" default="WFS Download Layer" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'wfsLayerId', 'errors')}">
-
-                                    <g:render template="wfsSelectFilterScript"></g:render>
-                                    <input id="inputFilter" /> (type to filter) <i>Currently only works in Firefox</i><br/>
-                                    <g:select size="10" id="listofwfslayers" name="wfsLayerId" from="${Layer.findAllByActiveInLastScan(true).sort{it.toString()}}" optionKey="id" noSelection="${['':'- None selected -']}" value="${layerInstance?.wfsLayer?.id}"/>
-                                </td>
-                            </tr>
-
                             <tr class="prop"><td valign="top" class="name" colspan="2">&nbsp;</td></tr>

@@ -61,20 +61,6 @@ class LayerControllerTests extends ControllerUnitTestCase {
         assertEquals "Response text should match", "Complete (saved)", controller.response.contentAsString
     }
 
-    void testSetWfsLayerToNull() {
-        Layer wfsLayer = new Layer(id: 1000, name: "wfsLayer")
-        Layer layer = new Layer(id: 100, name: "mapLayer", wfsLayer: wfsLayer)
-
-        mockDomain Layer, [layer, wfsLayer]
-
-        controller.params.id = 100
-        controller.params.wfsLayer = ''
-
-        controller.update()
-
-        assertNull layer.wfsLayer
-    }
-
     void testToResponseMap() {
         def data = ['a', 'b', 'c', 'd', 'e', 'f']
         def response = this.controller._toResponseMap(data, data.size())
@@ -193,7 +179,6 @@ class LayerControllerTests extends ControllerUnitTestCase {
         layer1.id = 5
         layer1.name = "maplayer"
         layer1.server = server1
-        layer1.wfsLayer = layer2
 
         mockDomain(Server, [server1])
         mockDomain(Layer, [layer1, layer2])
@@ -205,15 +190,12 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
         assertEquals 5, layerAsJson.id
         assertEquals "maplayer", layerAsJson.name
-        assertEquals 4, layerAsJson.wfsLayer.id
-        assertEquals "downloadfeaturetype", layerAsJson.wfsLayer.name
     }
 
     void testShowLayerByItsIdWhenLayerReferencesItself() {
         def server1 = new Server(id: 1)
 
         def layer1 = new Layer(id: 5, name: 'layer', server: server1)
-        layer1.wfsLayer = layer1 // Set WFS layer as itself
 
         mockDomain(Server, [server1])
         mockDomain(Layer, [layer1])
@@ -225,9 +207,6 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
         assertEquals 5, layerAsJson.id
         assertEquals "layer", layerAsJson.name
-        assertEquals 5, layerAsJson.wfsLayer.id
-        assertEquals "layer", layerAsJson.wfsLayer.name
-        assertNull layerAsJson.wfsLayer.wfsLayer
     }
 
     void testUpdateNoViewParams() {
