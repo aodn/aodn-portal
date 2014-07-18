@@ -43,4 +43,8 @@ class DownloadAuthService {
         return needsChallenge
     }
 
+    def resetChallenge(session) {
+        session[simpleCaptchaService.CAPTCHA_IMAGE_ATTR] = null;
+    }
+
 }
