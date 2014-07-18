@@ -54,7 +54,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     getDownloadEstimateParams: function(collection) {
 
-        var urlFn = this._getUrlGeneratorFunction(collection);
+        var urlFn = this._getUrlGeneratorFunction();
 
         return {
             url: urlFn(collection),
