@@ -14,7 +14,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
 
     getInjectionJson: function(collection) {
 
-        var injectionJson = {
+        return {
             uuid: collection.uuid,
             title: collection.title,
             dataFilters: this._getDataFilterEntry(collection),
@@ -22,8 +22,6 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
             linkedFiles: this._getMetadataLinks(collection),
             pointOfTruthLink: this._getPointOfTruthLink(collection)
         };
-
-        return injectionJson;
     },
 
     _getMetadataLinks: function(collection) {
@@ -32,6 +30,24 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
 
     _getPointOfTruthLink: function(collection) {
         return collection.pointOfTruthLink;
+    },
+
+    _getDataMarkup: function(collection) {
+        return this._addDownloadEstimate(collection);
+    },
+
+    _getDownloadEstimateHandler: function(collection) {
+
+        var handlerToEstimateWith;
+
+        Ext.each(collection.dataDownloadHandlers, function(handler) {
+
+            if (handler.canEstimateDownloadSize()) {
+                handlerToEstimateWith = handler;
+            }
+        });
+
+        return handlerToEstimateWith;
     },
 
     _hideButton: function(uuid) {
@@ -44,18 +60,27 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
 
     _addDownloadEstimate: function(collection) {
 
-        var estimator = new Portal.cart.DownloadEstimator();
-        estimator._getDownloadEstimate(
-            collection,
-            this._hideButton
-        );
+        var estimateHandler = this._getDownloadEstimateHandler(collection);
 
-        return String.format(
-            "<div id=\"{0}\">{1}{2}</div>",
-            estimator.getIdElementName(collection.uuid),
-            OpenLayers.i18n("estimatedDlLoadingMessage"),
-            OpenLayers.i18n("estimatedDlLoadingSpinner")
-        );
+        if (estimateHandler) {
+            var estimator = new Portal.cart.DownloadEstimator({
+                estimateRequestParams: estimateHandler.getDownloadEstimateParams(collection)
+            });
+            estimator._getDownloadEstimate(
+                collection,
+                this._hideButton
+            );
+
+            return String.format(
+                "<div id=\"{0}\">{1}{2}</div>",
+                estimator.getIdElementName(collection.uuid),
+                OpenLayers.i18n("estimatedDlLoadingMessage"),
+                OpenLayers.i18n("estimatedDlLoadingSpinner")
+            );
+        }
+        else {
+            return String.format('<div>{0}</div>', OpenLayers.i18n('estimatedDlFailedMsg'));
+        }
     },
 
     downloadWithConfirmation: function(collection, generateUrlCallback, params) {

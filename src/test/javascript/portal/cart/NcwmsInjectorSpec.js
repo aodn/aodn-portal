@@ -19,30 +19,6 @@ describe('Portal.cart.NcwmsInjector', function() {
         geoNetworkRecord = getMockGeonetworkRecord();
     });
 
-    describe('getDataMarkup', function() {
-
-        var markup;
-
-        beforeEach(function() {
-
-            markup = injector._getDataMarkup(geoNetworkRecord);
-        });
-
-        it('generates correct markup for ncwms layers', function() {
-            expect(markup).not.toEqual('');
-            expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingMessage"))).toBeGreaterThan(-1);
-            expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingSpinner"))).toBeGreaterThan(-1);
-        });
-
-        it('generates estimate message even when wfs layer is not present', function() {
-            geoNetworkRecord.wmsLayer.wfsLayer = null;
-            markup = injector._getDataMarkup(geoNetworkRecord);
-
-            expect(markup).toBeNonEmptyString();
-            expect(markup).toContain(OpenLayers.i18n('estimatedDlFailedMsg'));
-        });
-    });
-
     describe('getDataFilterEntry', function() {
 
         beforeEach(function() {
@@ -80,46 +56,18 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
     });
 
-    describe('getPointOfTruthLinks', function() {
-
-        it('returns point of truth links as appropriate', function() {
-            expect(injector._getPointOfTruthLink(geoNetworkRecord)).toEqual('Link!');
-        });
-    });
-
-    describe('getMetadataLinks', function() {
-
-        it('returns metadata links as appropriate', function() {
-            expect(injector._getMetadataLinks(geoNetworkRecord)).toEqual('Downloadable link!');
-        });
-    });
-
     function getMockGeonetworkRecord() {
 
         return {
             uuid: 9,
-            grailsLayerId: 42,
             ncwmsParams: {
                 dateRangeStart: startDate,
                 dateRangeEnd: endDate,
                 latitudeRangeStart: -42,
                 latitudeRangeEnd: -20,
                 longitudeRangeStart: 160,
-                longitudeRangeEnd: 170,
-                layerName: "gogoDingo"
-            },
-            wmsLayer: {
-                getDownloadFilter: function() {
-                    return "cql_filter"
-                },
-                getFeatureRequestUrl: noOp,
-                isNcwms: function() {return true},
-                wfsLayer: {
-                    server: {uri: 'wfs_server_url'}
-                }
-            },
-            pointOfTruthLink: 'Link!',
-            linkedFiles: 'Downloadable link!'
+                longitudeRangeEnd: 170
+            }
         };
     }
 });

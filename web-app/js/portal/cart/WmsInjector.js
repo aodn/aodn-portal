@@ -14,10 +14,5 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         var layerValues = collection.wmsLayer.getWmsDownloadFilterDescriptions();
 
         return (layerValues != "") ? layerValues : OpenLayers.i18n('emptyDownloadPlaceholder');
-    },
-
-    _getDataMarkup: function(collection) {
-
-        return this._addDownloadEstimate(collection);
     }
 });
