@@ -256,6 +256,9 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
             this.layer.filterData = this._getActiveFilterData();
             this.layer.setCqlFilter(this._getVisualisationCQLFilters(this.layer.filterData));
+            // todo fix estimateSizeForLayer
+            // todo fix tests
+            // todo check filter creation / edit still works for a dateRangeFilter
         }
     },
 
@@ -274,9 +277,14 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     _getVisualisationCQLFilters: function(layerFilterData) {
         var cql = [];
         Ext.each(layerFilterData, function(data) {
+
+            var filterCQL= data.cql;
+
             if (!data.downloadOnly) {
 
-                var filterCQL = data.cql;
+                if (data.visualisationCql != undefined) {
+                    filterCQL = data.visualisationCql;
+                }
                 if (filterCQL) {
                     cql.push(filterCQL);
                 }

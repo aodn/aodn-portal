@@ -84,15 +84,6 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="label"><g:message code="filter.downloadOnly.label" default="Download Only" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'downloadfOnly', 'errors')}">
-                                    <g:checkBox name="downloadOnly" checked="${filterInstance?.downloadOnly}" />
-                                </td>
-                            </tr>
-
-                            <tr class="prop">
-                                <td valign="top" class="name">
                                   <label for="type"><g:message code="filter.type.label" default="Type" /></label>
                                 </td>
 
