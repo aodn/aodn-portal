@@ -19,6 +19,7 @@ class GogoduckControllerTests extends ControllerUnitTestCase {
 
         downloadAuthService = mockFor(DownloadAuthService)
         downloadAuthService.demand.static.verifyChallengeResponse {}
+        downloadAuthService.demand.static.registerDownloadForAddress {}
 
         controller.downloadAuthService = downloadAuthService.createMock()
     }

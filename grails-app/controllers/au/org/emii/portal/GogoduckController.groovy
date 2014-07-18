@@ -25,6 +25,9 @@ class GogoduckController {
 
         log.debug "Registering GoGoDuck job. Params: $params"
 
+        // Add accounting for that IP address
+        downloadAuthService.registerDownloadForAddress(ipAddress, "gogoduckController")
+
         if (!params.jobParameters) {
             render text: 'GoGoDuck job could not be registered. Job parameters were missing.', status: 400
             return
