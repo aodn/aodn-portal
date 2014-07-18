@@ -138,6 +138,10 @@ trustedClients = [
     '131.217.38..+'
 ]
 
+// Allow users to have to 2 aggregated downloads every 10 minutes without
+// displaying a challenge (captcha)
+maxAggregatedDownloadsInTenMinutes = 2
+
 // OpenID
 openId {
     // openID provider details to support login popup etc
