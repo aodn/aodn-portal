@@ -25,7 +25,6 @@ class Layer {
     String projection
     Boolean queryable
     Boolean isBaseLayer
-    String urlDownloadFieldName
 
     // Extra info
     String dataSource
@@ -72,7 +71,6 @@ class Layer {
         overrideMetadataUrl(nullable: true)
         queryable()
         viewParams(nullable: true)
-        urlDownloadFieldName(nullable: true)
 
         isBaseLayer()
 
