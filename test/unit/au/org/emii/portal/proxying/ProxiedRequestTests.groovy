@@ -33,7 +33,6 @@ class ProxiedRequestTests extends GrailsUnitTestCase {
 
         def executeRequestCallCount = 0
         def determineResponseTypeCallCount = 0
-        def determineDownloadFilenameCallCount = 0
 
         proxiedRequest.executeRequest = { streamProcessor ->
 
@@ -41,13 +40,11 @@ class ProxiedRequestTests extends GrailsUnitTestCase {
             executeRequestCallCount++
         }
         proxiedRequest._determineResponseContentType = { determineResponseTypeCallCount++ }
-        proxiedRequest._determineDownloadFilename = { determineDownloadFilenameCallCount++ }
 
         proxiedRequest.proxy(testStreamProcessor)
 
         assertEquals 1, executeRequestCallCount
         assertEquals 1, determineResponseTypeCallCount
-        assertEquals 1, determineDownloadFilenameCallCount
     }
 
     void testDetermineResponseContentType() {
@@ -63,23 +60,6 @@ class ProxiedRequestTests extends GrailsUnitTestCase {
         assertEquals 'text/html', response.contentType
     }
 
-    void testDetermineDownloadFilename() {
-
-        def setHeaderCallCount = 0
-        response.setHeader = { name, value ->
-            setHeaderCallCount++
-            assertEquals 'Content-disposition', name
-            assertEquals "attachment; filename*=UTF-8''the_filename.pdf", value
-        }
-
-        proxiedRequest._determineDownloadFilename()
-        assertEquals 0, setHeaderCallCount
-
-        params.downloadFilename = 'the_filename.pdf'
-        proxiedRequest._determineDownloadFilename()
-        assertEquals 1, setHeaderCallCount
-    }
-
     void testGetTargetUrl() {
 
         def params = [
@@ -87,7 +67,6 @@ class ProxiedRequestTests extends GrailsUnitTestCase {
             controller: 'a',
             action: 'b',
             url: 'http://www.google.com/',
-            format: 'd',
             _dc: 'e',
             two: '2'
         ]

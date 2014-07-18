@@ -7,6 +7,8 @@
 
 package au.org.emii.portal.proxying
 
+import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilename
+
 abstract class RequestProxyingController {
 
     def index = {
@@ -30,9 +32,21 @@ abstract class RequestProxyingController {
         else {
             def processedParams = paramProcessor ? paramProcessor(params) : params
 
+            // Use download filename if provided
+            _setDownloadFilename(response, params)
+
             // Make request
             def proxiedRequest = new ProxiedRequest(request, response, processedParams)
             proxiedRequest.proxy(streamProcessor)
+        }
+    }
+
+    def _setDownloadFilename(response, params) {
+
+        def downloadFilename = params.remove('downloadFilename')
+        if (downloadFilename) {
+            log.debug "Download filename is '${downloadFilename}'. Forcing download."
+            response.setHeader("Content-disposition", buildAttachmentHeaderValueWithFilename(downloadFilename))
         }
     }
 }

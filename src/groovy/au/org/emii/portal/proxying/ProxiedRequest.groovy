@@ -10,7 +10,6 @@ package au.org.emii.portal.proxying
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilename
 import static au.org.emii.portal.UrlUtils.urlWithQueryString
 
 class ProxiedRequest extends ExternalRequest {
@@ -36,36 +35,24 @@ class ProxiedRequest extends ExternalRequest {
 
         _determineResponseContentType()
 
-        _determineDownloadFilename()
-
         executeRequest(streamProcessor)
     }
 
     def _determineResponseContentType = {
 
-        response.contentType = params.format ?: request.contentType
-    }
-
-    def _determineDownloadFilename = {
-
-        // Force download if filename provided
-        if (params.downloadFilename) {
-            log.debug "downloadFilename is '${params.downloadFilename}'. Forcing download."
-            response.setHeader("Content-disposition", buildAttachmentHeaderValueWithFilename(params.downloadFilename))
-        }
+        response.contentType = params.remove('format') ?: request.contentType
     }
 
     static def _getTargetUrl(params) {
 
+        def url = params.remove('url')
         def query = params.findAll { key, value ->
 
             key != "controller" &&
             key != "action" &&
-            key != "url" &&
-            key != "format" &&
             key != "_dc"
         }
 
-        return urlWithQueryString(params.url, query).toURL()
+        return urlWithQueryString(url, query).toURL()
     }
 }

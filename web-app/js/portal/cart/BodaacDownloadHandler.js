@@ -9,7 +9,7 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
-    NAME_FIELD_DELIMETER: "|",
+    NAME_FIELD_DELIMETER: "#",
     LAYER_NAME_INDEX: 0,
     FIELD_NAME_INDEX: 1,
 
@@ -25,7 +25,8 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 handlerParams: {
                     filenameFormat: '{0}_source_files.zip',
                     downloadControllerArgs: {
-                        action: 'downloadNetCdfFilesForLayer'
+                        action: 'downloadNetCdfFilesForLayer',
+                        urlFieldName: this._urlFieldName()
                     }
                 }
             });
@@ -36,7 +37,8 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 handlerParams: {
                     filenameFormat: '{0}_URLs.txt',
                     downloadControllerArgs: {
-                        action: 'urlListForLayer'
+                        action: 'urlListForLayer',
+                        urlFieldName: this._urlFieldName()
                     }
                 }
             });
@@ -47,24 +49,35 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     _hasRequiredInfo: function() {
 
-        return true; // Currently not using info from the metadata record
+        return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty() && (this._resourceName().indexOf(this.NAME_FIELD_DELIMETER) > -1);
     },
 
     _getClickHandler: function() {
 
+        var _this = this;
+
         return function(collection, params) {
 
             var wmsLayer = collection.wmsLayer;
-            var wfsLayer = wmsLayer.wfsLayer;
-
-            params.downloadControllerArgs.layerId = wmsLayer.grailsLayerId;
 
             return collection.wmsLayer._buildGetFeatureRequestUrl(
-                wfsLayer.server.uri.replace("/wms", "/wfs"),
-                wfsLayer.name,
-                'csv',
+                _this._resourceHref(),
+                _this._layerName(),
+                OpenLayers.Layer.DOWNLOAD_FORMAT_CSV,
                 wmsLayer.getDownloadFilter()
             );
         };
+    },
+
+    _layerName: function() {
+        return this._valueFromNameField(this.LAYER_NAME_INDEX);
+    },
+
+    _urlFieldName: function() {
+        return this._valueFromNameField(this.FIELD_NAME_INDEX);
+    },
+
+    _valueFromNameField: function(index) {
+        return this.onlineResource.name.split(this.NAME_FIELD_DELIMETER)[index];
     }
 });

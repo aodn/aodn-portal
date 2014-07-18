@@ -25,21 +25,10 @@ class DownloadController extends RequestProxyingController {
 
     def urlListForLayer = {
 
-        def layerId = params.layerId
+        def (fieldName, prefixToRemove, newUrlBase) = _loadCommonFields(params)
 
-        if (!layerId) {
-            render text: "No layerId provided", status: 400
-            return
-        }
-
-        def layer = Layer.get(layerId)
-        def fieldName = layer.urlDownloadFieldName
-        def prefixToRemove = layer.server.urlListDownloadPrefixToRemove
-        def newUrlBase = layer.server.urlListDownloadPrefixToSubstitue
-
-        if (!prefixToRemove || !newUrlBase) {
-            log.error('Cannot proceed with URL download, prefixToRemove or newUrlBase are not configured')
-            render text: "Server is not configured for URL downloading, please contact server administrator", status: 404
+        if (!fieldName) {
+            render text: 'urlFieldName was not provided', status: 400
             return
         }
 
@@ -51,17 +40,13 @@ class DownloadController extends RequestProxyingController {
 
     def downloadNetCdfFilesForLayer = {
 
-        def layerId = params.layerId
+        def (fieldName, prefixToRemove, newUrlBase) = _loadCommonFields(params)
 
-        if (!layerId) {
-            render text: "No layerId provided", status: 400
+        if (!fieldName) {
+            render text: 'urlFieldName was not provided', status: 400
             return
         }
 
-        def layer = Layer.get(layerId)
-        def fieldName = layer.urlDownloadFieldName
-        def prefixToRemove = layer.server.urlListDownloadPrefixToRemove
-        def newUrlBase = layer.server.urlListDownloadPrefixToSubstitue
         def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$fieldName")
 
         if (!hostVerifier.allowedHost(request, url)) {
@@ -72,39 +57,42 @@ class DownloadController extends RequestProxyingController {
         def resultStream = new ByteArrayOutputStream()
         def streamProcessor = urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase)
 
-        _executeExternalRequest url, streamProcessor, resultStream
+        try {
+            _executeExternalRequest url, streamProcessor, resultStream
+        }
+        catch (Exception e) {
+            log.error "Could not download NetCDF files. Failed during _executeExternalRequest for $url", e
+            render 'An error occurred before downloading could begin'
+            return
+        }
+
         def urls = new String(resultStream.toByteArray(), 'UTF-8').split()
 
-        response.setHeader("Content-disposition", buildAttachmentHeaderValueWithFilename(params.downloadFilename))
+        def downloadFilename = params.remove('downloadFilename')
+        response.setHeader("Content-disposition", buildAttachmentHeaderValueWithFilename(downloadFilename))
 
         bulkDownloadService.generateArchiveOfFiles(urls, response.outputStream, request.locale)
     }
 
     def estimateSizeForLayer = {
 
-        def layerId = params.layerId
-
-        if (!layerId) {
-            render text: "No layerId provided", status: 400
-            return
-        }
-
-        def layer = Layer.get(layerId)
-        def urlDownloadFieldName = layer.urlDownloadFieldName
+        def urlFieldName = params.urlFieldName
         def sizeFieldName = grailsApplication.config.indexedFile.fileSizeColumnName
-        def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$urlDownloadFieldName,$sizeFieldName")
+        def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$urlFieldName,$sizeFieldName")
 
         if (!hostVerifier.allowedHost(request, url)) {
-            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: 400
+
+            log.error "Host for address '$url' not allowed"
+            render SIZE_ESTIMATE_ERROR
             return
         }
 
         def resultStream = new ByteArrayOutputStream()
 
-        if (layer.urlDownloadFieldName) {
+        if (urlFieldName) {
 
             try {
-                def streamProcessor = calculateSumStreamProcessor(urlDownloadFieldName, sizeFieldName)
+                def streamProcessor = calculateSumStreamProcessor(urlFieldName, sizeFieldName)
                 _executeExternalRequest url, streamProcessor, resultStream
             }
             catch (Exception e) {
@@ -116,7 +104,7 @@ class DownloadController extends RequestProxyingController {
         }
         else {
 
-            log.error "No urlDownloadFieldName configured"
+            log.error "No urlFieldName provided"
 
             resultStream << SIZE_ESTIMATE_ERROR
         }
@@ -239,5 +227,17 @@ class DownloadController extends RequestProxyingController {
 
             currentRow = reader.readNext()
         }
+    }
+
+    def _loadCommonFields(params) {
+
+        def url = params.url.toURL()
+        def server = Server.findByUriLike("%${url.host}%")
+
+        return [
+            params.remove('urlFieldName'),
+            server?.urlListDownloadPrefixToRemove ?: "",
+            server?.urlListDownloadPrefixToSubstitue ?: ""
+        ]
     }
 }
