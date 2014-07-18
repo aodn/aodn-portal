@@ -26,6 +26,14 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         return injectionJson;
     },
 
+    _getMetadataLinks: function(collection) {
+        return collection.linkedFiles;
+    },
+
+    _getPointOfTruthLink: function(collection) {
+        return collection.pointOfTruthLink;
+    },
+
     _hideButton: function(uuid) {
 
         var elementId = OpenLayers.i18n('downloadButtonId', {id: uuid});
@@ -48,14 +56,6 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
             OpenLayers.i18n("estimatedDlLoadingMessage"),
             OpenLayers.i18n("estimatedDlLoadingSpinner")
         );
-    },
-
-    _getMetadataLinks: function(collection) {
-        return collection.linkedFiles;
-    },
-
-    _getPointOfTruthLink: function(collection) {
-        return collection.pointOfTruthLink;
     },
 
     downloadWithConfirmation: function(collection, generateUrlCallback, params) {
