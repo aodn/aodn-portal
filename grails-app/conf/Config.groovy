@@ -132,15 +132,17 @@ allowedProxyHosts = [
     geoserver_static.uri
 ]
 
-// Never show a captcha to those IP addresses
-trustedClients = [
-    '127..+',
-    '131.217.38..+'
-]
+downloadAuth {
+    // Never show a captcha to those IP addresses
+    trustedClients = [
+        '131.217.38..+'
+    ]
 
-// Allow users to have to 2 aggregated downloads every 10 minutes without
-// displaying a challenge (captcha)
-maxAggregatedDownloadsInTenMinutes = 2
+    // Allow users to have to 2 aggregated downloads every 10 minutes without
+    // displaying a challenge (captcha)
+    maxAggregatedDownloadsInPeriod = 2
+    maxAggregatedDownloadsPeriodSeconds = 60 * 10
+}
 
 // OpenID
 openId {

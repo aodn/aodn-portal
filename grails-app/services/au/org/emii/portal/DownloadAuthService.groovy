@@ -33,7 +33,7 @@ class DownloadAuthService {
             needsChallenge = true
         }
 
-        grailsApplication.config.trustedClients.each {
+        grailsApplication.config.downloadAuth.trustedClients.each {
             if (ipAddress.matches(it)) {
                 needsChallenge = false
                 log.info "Allowing $ipAddress to download without challenge"
@@ -49,7 +49,7 @@ class DownloadAuthService {
 
     def isAbusingUs(ipAddress) {
         if (ipAddressAccountingMap[ipAddress]
-            && ipAddressAccountingMap[ipAddress].size() >= grailsApplication.config.maxAggregatedDownloadsInTenMinutes) {
+            && ipAddressAccountingMap[ipAddress].size() >= grailsApplication.config.downloadAuth.maxAggregatedDownloadsInPeriod) {
             return true
         }
         else {
@@ -61,7 +61,8 @@ class DownloadAuthService {
         cleanIpAddressAccountingMap()
 
         if (!ipAddressAccountingMap[ipAddress]) {
-            ipAddressAccountingMap[ipAddress] = new TimedEvictingQueue<String>()
+            def evictionPeriod = grailsApplication.config.downloadAuth.maxAggregatedDownloadsPeriodSeconds * 1000
+            ipAddressAccountingMap[ipAddress] = new TimedEvictingQueue<String>([backlogIntervalMilli: evictionPeriod])
         }
         ipAddressAccountingMap[ipAddress].add(comment)
     }
