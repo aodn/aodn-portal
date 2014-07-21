@@ -85,7 +85,7 @@ class GogoduckControllerTests extends ControllerUnitTestCase {
         ]
 
         controller.downloadAuthService.metaClass.verifyChallengeResponse = {
-            ipAddress, session, challengeResponse ->
+            ipAddress, challengeResponse ->
 
             return false
         }

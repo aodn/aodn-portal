@@ -17,7 +17,7 @@ class GogoduckController {
         // Verify request can go through
         def challengeResponse = params.challengeResponse
         def ipAddress         = request.getRemoteAddr()
-        if (! downloadAuthService.verifyChallengeResponse(ipAddress, session, challengeResponse)) {
+        if (! downloadAuthService.verifyChallengeResponse(ipAddress, challengeResponse)) {
             log.info "Could not verify challenge '$challengeResponse' from '$ipAddress'"
             render text: 'Could not verify challenge (captcha), denying download', status: 500
             return

@@ -23,7 +23,7 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
             items: [
                 {xtype: 'spacer', height: 5},
                 {
-                    html: "<div id=challenge></div>"
+                    html: "<div id='challenge'></div>"
                 },
                 {xtype: 'spacer', height: 5},
                 this.challengeResponseField
