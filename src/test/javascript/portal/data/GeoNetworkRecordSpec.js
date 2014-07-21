@@ -67,6 +67,23 @@ describe('Portal.data.GeoNetworkRecord', function() {
         });
     });
 
+    describe('convertedData()', function() {
+
+        var convertedData;
+
+        beforeEach(function() {
+
+            convertedData = record.convertedData();
+        });
+
+        it('fields should remain unchanged', function() {
+
+            expect(convertedData['abstract']).toBe(record.get('abstract'));
+            expect(convertedData['title']).toBe(record.get('title'));
+            expect(convertedData['links']).toBe(record.get('links'));
+        });
+    });
+
     describe('collaborates with an Gogoduck object', function() {
         it('responds to updateNcwmsParams', function() {
             expect(record.updateNcwmsParams).toBeTruthy();
