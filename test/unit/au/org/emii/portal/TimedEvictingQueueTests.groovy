@@ -62,4 +62,21 @@ class TimedEvictingQueueTests extends GrailsUnitTestCase {
         assertEquals 0, queue.size()
     }
 
+    void testTimedEvict() {
+        queue.backlogIntervalMilli = 2000
+        queue.add("test item1")
+        assertEquals 1, queue.size()
+
+        // Should still have 1 item
+        Thread.sleep(1000)
+        assertEquals 1, queue.size()
+
+        // Sleep enough so this item will be gone when we add the next
+        Thread.sleep(1500)
+        queue.add("test item2")
+
+        assertEquals 1, queue.size()
+        assertEquals "test item2", queue.queue.peek().item
+    }
+
 }
