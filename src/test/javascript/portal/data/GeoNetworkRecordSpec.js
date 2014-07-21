@@ -76,47 +76,11 @@ describe('Portal.data.GeoNetworkRecord', function() {
             convertedData = record.convertedData();
         });
 
-        it('other fields should remain unchanged', function() {
+        it('fields should remain unchanged', function() {
 
             expect(convertedData['abstract']).toBe(record.get('abstract'));
             expect(convertedData['title']).toBe(record.get('title'));
             expect(convertedData['links']).toBe(record.get('links'));
-        });
-
-        it('wmsLayer should not be set', function() {
-
-            expect(convertedData['wmsLayer']).toBeUndefined();
-        });
-
-        it('wfsDownloadInfo should have correct fields', function() {
-
-            var wfsInfo = convertedData['wfsDownloadInfo'];
-
-            expect(wfsInfo.layerName).toBe('layer name');
-            expect(wfsInfo.serverUri).toBe('server_url');
-            expect(wfsInfo.cqlFilter).toBe('cql_filter');
-            expect(wfsInfo.metadataUrl).toBe('metadata_url');
-            expect(wfsInfo.unusedField).toBeUndefined();
-        });
-
-        it('wfsDownloadInfo should have correct fields when wfsLayer is present', function() {
-
-            record.get('wmsLayer').wfsLayer = {
-                name: 'wfs layer name',
-                server: {
-                    uri: 'wfs_server_uri'
-                }
-            };
-
-            convertedData = record.convertedData();
-
-            var wfsInfo = convertedData['wfsDownloadInfo'];
-
-            expect(wfsInfo.layerName).toBe('wfs layer name');
-            expect(wfsInfo.serverUri).toBe('wfs_server_uri');
-            expect(wfsInfo.cqlFilter).toBe('cql_filter');
-            expect(wfsInfo.metadataUrl).toBe('metadata_url');
-            expect(wfsInfo.unusedField).toBeUndefined();
         });
     });
 

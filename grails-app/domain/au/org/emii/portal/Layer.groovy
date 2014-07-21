@@ -25,7 +25,6 @@ class Layer {
     String projection
     Boolean queryable
     Boolean isBaseLayer
-    String urlDownloadFieldName
 
     // Extra info
     String dataSource
@@ -37,7 +36,6 @@ class Layer {
     String overrideMetadataUrl
 
     Layer parent
-    Layer wfsLayer
 
     static mapping = {
         // Sorting
@@ -72,7 +70,6 @@ class Layer {
         overrideMetadataUrl(nullable: true)
         queryable()
         viewParams(nullable: true)
-        urlDownloadFieldName(nullable: true)
 
         isBaseLayer()
 
@@ -80,7 +77,6 @@ class Layer {
         activeInLastScan()
         lastUpdated(nullable: true)
         layerHierarchyPath(nullable: true)
-        wfsLayer(nullable: true)
     }
 
     static transients = ['layers']

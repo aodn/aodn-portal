@@ -98,20 +98,12 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         openLayer.allStyles = this._getAllStyles();
         openLayer.dimensions = this.dimensions;
         openLayer.layerHierarchyPath = this.layerHierarchyPath;
-        openLayer.urlDownloadFieldName = this.urlDownloadFieldName;
 
         if (this.viewParams) {
             openLayer.zoomOverride = {
                 centreLon: this.viewParams.centreLon,
                 centreLat: this.viewParams.centreLat,
                 openLayersZoomLevel: this.viewParams.openLayersZoomLevel
-            }
-        }
-
-        if (this.wfsLayer) {
-            openLayer.wfsLayer = {
-                name : this.wfsLayer.name,
-                server : { uri : this.wfsLayer.server.uri }
             }
         }
     },

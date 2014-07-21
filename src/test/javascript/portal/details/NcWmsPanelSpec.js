@@ -181,11 +181,8 @@ describe('Portal.details.NcWmsPanel', function() {
             getTemporalExtent: function() {
                 return this.temporalExtent;
             },
-            getSubsetExtentMin: function() { return extent.min() },
-            getSubsetExtentMax: function() { return extent.max() },
-            wfsLayer: {
-                name: 'gogoDingo'
-            }
+            getSubsetExtentMin: function() { return extent.min(); },
+            getSubsetExtentMax: function() { return extent.max(); }
         };
     }
 });

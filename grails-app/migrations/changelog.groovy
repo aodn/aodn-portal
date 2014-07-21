@@ -84,6 +84,8 @@ databaseChangeLog = {
     include file: '20140701-PB-RemovalOfTable-aodaac_product_link.groovy'
     include file: '20140708-DF-RemoveGeonetworkConfig.groovy'
     include file: '20140710-DN-RemoveGogoduckLayerName.groovy'
+    include file: '20140718-DN-RemoveUrlDownloadFieldName.groovy'
+    include file: '20140718-DN-RemoveWfsLayer.groovy'
 
     // Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 

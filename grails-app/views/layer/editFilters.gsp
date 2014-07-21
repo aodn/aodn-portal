@@ -28,8 +28,6 @@
                 }
             }
         </script>
-        <g:render template="wfsSelectFilterScript"></g:render>
-
     </head>
     <body>
         <div class="nav">

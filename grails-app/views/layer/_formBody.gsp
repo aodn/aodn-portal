@@ -248,34 +248,3 @@
                                     ${layerInstance?.layerHierarchyPath}
                                 </td>
                             </tr>
-
-                            <tr class="prop"><td valign="top" class="name" colspan="2">&nbsp;</td></tr>
-
-                            <tr class="prop">
-                                <th valign="top" class="name" colspan="2">
-                                    Data Download
-                                </th>
-                            </tr>
-
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label><g:message code="layer.wfsLayer.label" default="WFS Download Layer" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'wfsLayerId', 'errors')}">
-
-                                    <g:render template="wfsSelectFilterScript"></g:render>
-                                    <input id="inputFilter" /> (type to filter) <i>Currently only works in Firefox</i><br/>
-                                    <g:select size="10" id="listofwfslayers" name="wfsLayerId" from="${Layer.findAllByActiveInLastScan(true).sort{it.toString()}}" optionKey="id" noSelection="${['':'- None selected -']}" value="${layerInstance?.wfsLayer?.id}"/>
-                                </td>
-                            </tr>
-
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="urlDownloadFieldName"><g:message code="layer.urlDownloadFieldName.label" default="URL list download field (column) name" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: layerInstance, field: 'urlDownloadFieldName', 'errors')}">
-                                    <g:textField name="urlDownloadFieldName" value="${layerInstance?.urlDownloadFieldName}" />
-                                </td>
-                            </tr>
-
-                            <tr class="prop"><td valign="top" class="name" colspan="2">&nbsp;</td></tr>
