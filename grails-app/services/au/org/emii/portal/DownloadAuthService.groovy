@@ -9,27 +9,28 @@ class DownloadAuthService {
 
     def ipAddressAccountingMap = [:]
 
-    def verifyChallengeResponse(ipAddress, session, response) {
+    def getEvictionPeriodMilli() {
+        return grailsApplication.config.downloadAuth.maxAggregatedDownloadsPeriodSeconds * 1000
+    }
 
-        if (needsChallenge(ipAddress, session)) {
-            if (simpleCaptchaService.validateCaptcha(response)) {
-                return true
-            }
-            else {
-                return false
-            }
+    def verifyChallengeResponse(ipAddress, response) {
+
+        if (needsChallenge(ipAddress)) {
+            return simpleCaptchaService.validateCaptcha(response)
         }
         else {
             return true
         }
     }
 
-    def needsChallenge(ipAddress, session) {
+    def needsChallenge(ipAddress) {
 
         def needsChallenge = false
 
         if (isAbusingUs(ipAddress)) {
-            log.info "Seems like $ipAddress might be trying to abuse us..."
+            def downloadCount         = downloadCountForIpAddress(ipAddress)
+            def downloadPeriodMinutes = getEvictionPeriodMilli() / 1000 / 60
+            log.info "Seems like $ipAddress might be trying to abuse us, '$downloadCount' downloads in '$downloadPeriodMinutes' minutes"
             needsChallenge = true
         }
 
@@ -47,22 +48,27 @@ class DownloadAuthService {
         session[simpleCaptchaService.CAPTCHA_IMAGE_ATTR] = null;
     }
 
+    def downloadCountForIpAddress(ipAddress) {
+
+        def downloadCount = 0
+
+        if (ipAddressAccountingMap[ipAddress]) {
+            downloadCount = ipAddressAccountingMap[ipAddress].size()
+        }
+    }
+
     def isAbusingUs(ipAddress) {
-        if (ipAddressAccountingMap[ipAddress]
-            && ipAddressAccountingMap[ipAddress].size() >= grailsApplication.config.downloadAuth.maxAggregatedDownloadsInPeriod) {
-            return true
-        }
-        else {
-            return false
-        }
+        return downloadCountForIpAddress(ipAddress) >= grailsApplication.config.downloadAuth.maxAggregatedDownloadsInPeriod
     }
 
     def registerDownloadForAddress(ipAddress, comment) {
         cleanIpAddressAccountingMap()
 
         if (!ipAddressAccountingMap[ipAddress]) {
-            def evictionPeriod = grailsApplication.config.downloadAuth.maxAggregatedDownloadsPeriodSeconds * 1000
-            ipAddressAccountingMap[ipAddress] = new TimedEvictingQueue<String>([backlogIntervalMilli: evictionPeriod])
+            ipAddressAccountingMap[ipAddress] =
+                new TimedEvictingQueue<String>(
+                    [backlogIntervalMilli: getEvictionPeriodMilli()]
+                )
         }
         ipAddressAccountingMap[ipAddress].add(comment)
     }

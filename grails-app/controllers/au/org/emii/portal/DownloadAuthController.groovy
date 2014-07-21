@@ -7,7 +7,7 @@ class DownloadAuthController {
     def index = {
         downloadAuthService.resetChallenge(session)
 
-        if (downloadAuthService.needsChallenge(request.getRemoteAddr(), session)) {
+        if (downloadAuthService.needsChallenge(request.getRemoteAddr())) {
             render(view: "challenge")
         }
         else {
