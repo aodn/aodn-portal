@@ -25,12 +25,16 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
                 {
                     html: "<div id='challenge'></div>"
                 },
+                {
+                    xtype: 'label',
+                    text: OpenLayers.i18n('challengeInstructions')
+                },
                 {xtype: 'spacer', height: 5},
                 this.challengeResponseField
             ],
             listeners: {
                 scope: this,
-                'show': function() {
+                show: function() {
                     this._getChallenge();
                 }
             }
@@ -59,14 +63,16 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
     },
 
     _showChallenge: function(html) {
+        Ext.each(this.items.items, function(component) { component.show(); });
+
         $("#challenge").html(html);
-        this.challengeResponseField.show();
         this.challenged = true;
     },
 
     _hideChallenge: function() {
+        Ext.each(this.items.items, function(component) { component.hide(); });
+
         $("#challenge").html("");
-        this.challengeResponseField.hide();
         this.challenged = false;
     },
 

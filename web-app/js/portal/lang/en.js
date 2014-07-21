@@ -151,6 +151,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 ",
     downloadConfirmationDownloadText: 'I understand, download',
     downloadConfirmationCancelText: 'Cancel',
+    challengeInstructions: 'Type the characters you see in the image above',
 
     // mainMapPanel
     layerExistsTitle: 'Add data collection',
