@@ -19,7 +19,7 @@ class DownloadAuthServiceTests extends GrailsUnitTestCase {
         mockLogging DownloadAuthService
 
         service = new DownloadAuthService()
-        service.grailsApplication = [config: [downloadAuth: [trustedClients: [], maxAggregatedDownloadsInPeriod: 2, maxAggregatedDownloadsPeriodSeconds: 60 * 10]]]
+        service.grailsApplication = [config: [downloadAuth: [trustedClients: [], maxAggregatedDownloadsInPeriod: 2, maxAggregatedDownloadsPeriodMinutes: 10]]]
 
         service.simpleCaptchaService = new StubForSimpleCaptchaService()
     }
@@ -64,7 +64,7 @@ class DownloadAuthServiceTests extends GrailsUnitTestCase {
 
     void testFirstDownload() {
         service.grailsApplication.config.downloadAuth.maxAggregatedDownloadsInPeriod = 1
-        service.grailsApplication.config.downloadAuth.maxAggregatedDownloadsPeriodSeconds = 60
+        service.grailsApplication.config.downloadAuth.maxAggregatedDownloadsPeriodMinutes = 1
         boolean needsChallenge = service.needsChallenge("1.1.1.1")
 
         assertFalse needsChallenge
@@ -72,7 +72,7 @@ class DownloadAuthServiceTests extends GrailsUnitTestCase {
 
     void testBeingAbusedFromTrustedClient() {
         service.grailsApplication.config.downloadAuth.maxAggregatedDownloadsInPeriod = 1
-        service.grailsApplication.config.downloadAuth.maxAggregatedDownloadsPeriodSeconds = 60
+        service.grailsApplication.config.downloadAuth.maxAggregatedDownloadsPeriodMinutes = 1
         service.grailsApplication.config.downloadAuth.trustedClients = [ "4.3.2.1" ]
 
         service.registerDownloadForAddress("4.3.2.1", "test1")
@@ -85,7 +85,7 @@ class DownloadAuthServiceTests extends GrailsUnitTestCase {
 
     void testNotBeingAbusedButThenBeingAbused() {
         service.grailsApplication.config.downloadAuth.maxAggregatedDownloadsInPeriod = 2
-        service.grailsApplication.config.downloadAuth.maxAggregatedDownloadsPeriodSeconds = 60
+        service.grailsApplication.config.downloadAuth.maxAggregatedDownloadsPeriodMinutes = 1
 
         // First attempt - no need for challenge
         boolean needsChallenge = service.needsChallenge("1.1.1.1")

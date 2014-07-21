@@ -9,8 +9,12 @@ class DownloadAuthService {
 
     def ipAddressAccountingMap = [:]
 
+    def getEvictionPeriodMinutes() {
+        return grailsApplication.config.downloadAuth.maxAggregatedDownloadsPeriodMinutes
+    }
+
     def getEvictionPeriodMilli() {
-        return grailsApplication.config.downloadAuth.maxAggregatedDownloadsPeriodSeconds * 1000
+        return evictionPeriodMinutes * 60 * 1000
     }
 
     def verifyChallengeResponse(ipAddress, response) {
@@ -28,9 +32,8 @@ class DownloadAuthService {
         def needsChallenge = false
 
         if (isAbusingUs(ipAddress)) {
-            def downloadCount         = downloadCountForIpAddress(ipAddress)
-            def downloadPeriodMinutes = getEvictionPeriodMilli() / 1000 / 60
-            log.info "Seems like $ipAddress might be trying to abuse us, '$downloadCount' downloads in '$downloadPeriodMinutes' minutes"
+            def downloadCount = downloadCountForIpAddress(ipAddress)
+            log.info "Seems like $ipAddress might be trying to abuse us, '$downloadCount' downloads in '$evictionPeriodMinutes' minutes"
             needsChallenge = true
         }
 
