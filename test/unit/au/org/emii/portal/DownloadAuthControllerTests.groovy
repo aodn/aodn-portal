@@ -11,7 +11,7 @@ class DownloadAuthControllerTests extends ControllerUnitTestCase {
         DownloadAuthService.metaClass.resetChallenge = {}
         downloadAuthService = new DownloadAuthService()
         downloadAuthService.metaClass.needsChallenge = { ipAddress -> return true }
-        downloadAuthService.metaClass.getEvictionPeriodMilli = { return 60 * 10 * 1000 } // 10 minutes, as default
+        downloadAuthService.metaClass.getEvictionPeriodMilliseconds = { return 60 * 10 * 1000 } // 10 minutes, as default
 
         controller.downloadAuthService = downloadAuthService
     }

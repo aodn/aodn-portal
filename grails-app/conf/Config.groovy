@@ -141,7 +141,7 @@ downloadAuth {
     // Allow users to have to 2 aggregated downloads every 10 minutes without
     // displaying a challenge (captcha)
     maxAggregatedDownloadsInPeriod = 2
-    maxAggregatedDownloadsPeriodSeconds = 60 * 10
+    maxAggregatedDownloadsPeriodMs = 60 * 10 * 1000
 }
 
 // OpenID
