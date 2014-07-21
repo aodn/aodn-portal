@@ -143,11 +143,11 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         describe('make external link markup', function() {
             it('launches the link in a new window', function() {
-                expect(tpl._makeExternalLinkMarkup(href, text).indexOf('_blank')).toBeGreaterThan(-1);
+                expect(tpl._makeExternalLinkMarkup(href, text)).toContain('_blank');
             });
 
             it('displays the text when provided', function() {
-                expect(tpl._makeExternalLinkMarkup(href, text).indexOf(text)).toBeGreaterThan(-1);
+                expect(tpl._makeExternalLinkMarkup(href, text)).toContain(text);
             });
 
             it('displays the full link when text is not provided', function() {
@@ -165,8 +165,8 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             };
             var html = tpl._getFileListEntries(values);
 
-            expect(html.indexOf(href)).toBeGreaterThan(-1);
-            expect(html.indexOf(text)).toBeGreaterThan(-1);
+            expect(html).toContain(href);
+            expect(html).toContain(text);
         });
     });
 });

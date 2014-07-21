@@ -41,7 +41,7 @@ describe('Portal.cart.NcwmsInjector', function() {
         it('indicates bounds properly created', function() {
 
             var entry = injector._getDataFilterEntry(geoNetworkRecord);
-            expect(entry.indexOf(OpenLayers.i18n("boundingBoxDescriptionNcWms"))).toBeGreaterThan(-1);
+            expect(entry).toContain(OpenLayers.i18n("boundingBoxDescriptionNcWms"));
         });
 
         it('indicates temporal range', function() {
@@ -49,10 +49,10 @@ describe('Portal.cart.NcwmsInjector', function() {
             geoNetworkRecord.ncwmsParams.dateRangeEnd = moment.utc(Date.UTC(2014, 11, 21, 10, 30, 30, 500));
 
             var entry = injector._getDataFilterEntry(geoNetworkRecord);
-            expect(entry.indexOf(OpenLayers.i18n('parameterDateLabel'))).toBeGreaterThan(-1);
+            expect(entry).toContain(OpenLayers.i18n('parameterDateLabel'));
 
             entry = injector._formatHumanDateInfo('parameterDateLabel', 'startdate', 'enddate');
-            expect(entry.indexOf('startdate')).toBeGreaterThan(-1);
+            expect(entry).toContain('startdate');
         });
     });
 
