@@ -28,7 +28,9 @@ class DownloadAuthService {
         def needsChallenge = false
 
         if (isAbusingUs(ipAddress)) {
-            def downloadCount         = downloadCountForIpAddress(ipAddress)
+            // downloadCount is the amount of already requested download + 1
+            // which is the download the user has just requested
+            def downloadCount         = downloadCountForIpAddress(ipAddress) + 1
             def downloadPeriodMinutes = getEvictionPeriodMilliseconds() / 1000 / 60
             log.info "Seems like $ipAddress might be trying to abuse us, '$downloadCount' downloads in '$downloadPeriodMinutes' minutes"
             needsChallenge = true
