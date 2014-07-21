@@ -19,7 +19,7 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
             downloadOptions.push({
                 textKey: 'downloadAsSubsettedNetCdfLabel',
-                handler: this._getClickHandler(),
+                handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
                     asyncDownload: true,
                     collectEmailAddress: true
@@ -35,7 +35,7 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return this._resourceNameNotEmpty();
     },
 
-    _getClickHandler: function() {
+    _getUrlGeneratorFunction: function() {
 
         var _this = this;
 

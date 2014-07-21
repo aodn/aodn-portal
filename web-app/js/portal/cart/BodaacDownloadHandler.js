@@ -21,7 +21,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
             downloadOptions.push({
                 textKey: 'downloadAsAllSourceNetCdfLabel',
-                handler: this._getClickHandler(),
+                handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
                     filenameFormat: '{0}_source_files.zip',
                     downloadControllerArgs: {
@@ -33,7 +33,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
             downloadOptions.push({
                 textKey: 'downloadAsUrlsLabel',
-                handler: this._getClickHandler(),
+                handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
                     filenameFormat: '{0}_URLs.txt',
                     downloadControllerArgs: {
@@ -47,20 +47,35 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return downloadOptions;
     },
 
+    canEstimateDownloadSize: function() {
+
+        return true;
+    },
+
+    getDownloadEstimateParams: function(collection) {
+
+        var urlFn = this._getUrlGeneratorFunction();
+
+        return {
+            url: urlFn(collection),
+            urlFieldName: this._urlFieldName()
+        };
+    },
+
     _hasRequiredInfo: function() {
 
         return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty() && (this._resourceName().indexOf(this.NAME_FIELD_DELIMETER) > -1);
     },
 
-    _getClickHandler: function() {
+    _getUrlGeneratorFunction: function() {
 
         var _this = this;
 
-        return function(collection, params) {
+        return function(collection) {
 
             var wmsLayer = collection.wmsLayer;
 
-            return collection.wmsLayer._buildGetFeatureRequestUrl(
+            return wmsLayer._buildGetFeatureRequestUrl(
                 _this._resourceHref(),
                 _this._layerName(),
                 OpenLayers.Layer.DOWNLOAD_FORMAT_CSV,

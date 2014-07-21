@@ -17,7 +17,7 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
             downloadOptions.push({
                 textKey: 'downloadAsCsvLabel',
-                handler: this._getClickHandler(),
+                handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
                     filenameFormat: "{0}.csv"
                 }
@@ -32,7 +32,7 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty();
     },
 
-    _getClickHandler: function() {
+    _getUrlGeneratorFunction: function() {
 
         var _this = this;
 

@@ -9,11 +9,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
-    constructor: function(config) {
-        Portal.cart.NcwmsInjector.superclass.constructor.call(this, Ext.apply(this, config));
-        this._downloadUrl = this._bodaacCsvDownloadUrl;
-    },
-
     _getDataFilterEntry: function(collection) {
 
         var params = collection.ncwmsParams;
@@ -53,19 +48,5 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _formatDate: function(date) {
         return date.format(OpenLayers.i18n('dateTimeDisplayFormat'));
-    },
-
-    _bodaacCsvDownloadUrl: function(collection) {
-        return this._wfsDownloadUrl(collection, { format: 'csv' });
-    },
-
-    _getDataMarkup: function(collection) {
-
-        if (collection.wmsLayer.wfsLayer) {
-
-            return this._addDownloadEstimate(collection);
-        }
-
-        return String.format('<div>{0}</div>', OpenLayers.i18n('estimatedDlFailedMsg'));
     }
 });

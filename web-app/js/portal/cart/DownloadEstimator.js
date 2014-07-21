@@ -4,6 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
+
 Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadEstimator = Ext.extend(Object, {
@@ -25,16 +26,13 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         return String.format("downloadEst-{0}-{1}", uuid, this.initTimestampString);
     },
 
-    _getDownloadEstimate: function(collection, downloadUrl, callback) {
+    _getDownloadEstimate: function(collection, callback) {
 
         Ext.Ajax.request({
             url: 'download/estimateSizeForLayer',
             timeout: 30000,
             scope: this,
-            params: {
-                layerId: collection.wmsLayer.grailsLayerId,
-                url: downloadUrl
-            },
+            params: this.estimateRequestParams,
             success: function(result, values) {
                 this._createDownloadEstimate(result, collection.uuid, callback);
             },
@@ -47,9 +45,9 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     _createFailMessage: function(result, uuid) {
 
         log.error(
-                "Size estimation failed. Server response detailed below.\n" +
-                "Status: " + result.status + " - " + result.statusText + "\n" +
-                "Response text: '" + result.responseText + "'"
+            "Size estimation failed. Server response detailed below.\n" +
+            "Status: " + result.status + " - " + result.statusText + "\n" +
+            "Response text: '" + result.responseText + "'"
         );
 
         this._addDownloadEstimate.defer(1, this, [this._generateFailureResponse(result), this.getIdElementName(uuid)]);
@@ -93,7 +91,6 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     },
 
     _generateEstHtmlString: function(estimateInBytes) {
-
         var html = '<div>{0} {1} {2}</div><div class="clear"></div>';
         var downloadMessage = "";
         var fileSizeEstimate = "";
@@ -142,14 +139,5 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         var fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
 
         return String.format(html, downloadTimeoutMessage, fileSizeImage);
-    },
-
-    _wmsDownloadUrl: function(layer, format) {
-
-        return layer.getFeatureRequestUrl(
-            layer.server.uri,
-            layer.params.LAYERS,
-            format
-        );
     }
 });

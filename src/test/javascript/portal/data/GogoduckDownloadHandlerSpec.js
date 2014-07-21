@@ -63,7 +63,7 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
 
         beforeEach(function() {
 
-            clickHandler = handler._getClickHandler();
+            clickHandler = handler._getUrlGeneratorFunction();
 
             testCollection = {
                 ncwmsParams: {

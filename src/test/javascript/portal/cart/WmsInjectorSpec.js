@@ -8,69 +8,40 @@
 describe('Portal.cart.WmsInjector', function() {
 
     var injector;
-    var geoNetworkRecord;
+    var collectionWithFilters = {
+        wmsLayer: {
+            getWmsDownloadFilterDescriptions: function() {
+                return "Human readable filters"
+            }
+        }
+    };
+    var collectionWithNoFilters = {
+        wmsLayer: {
+            getWmsDownloadFilterDescriptions: function() {
+                return "";
+            }
+        }
+    };
 
     beforeEach(function() {
 
         injector = new Portal.cart.WmsInjector();
-
-        geoNetworkRecord = {
-            uuid: 9,
-            grailsLayerId: 42,
-            wmsLayer: {
-                getDownloadFilter: function() {
-                    return "cql_filter"
-                },
-                isNcwms: function() {return false},
-                getFeatureRequestUrl: noOp,
-                wfsLayer: true,
-                server: {},
-                params: {}
-            },
-            pointOfTruthLink: 'Link!',
-            linkedFiles: 'Downloadable link!'
-        }
     });
 
-    describe('constructor', function() {
+    describe('_getDataFilterEntry', function() {
 
-        it('assigns values from passed in config', function() {
-            var callback = noOp;
-            var _tpl = new Portal.cart.WmsInjector({ downloadConfirmation: callback, downloadConfirmationScope: this });
-            expect(_tpl.downloadConfirmation).toBe(callback);
-            expect(_tpl.downloadConfirmationScope).toBe(this);
-        });
-    });
+        it('returns filters text', function() {
 
-    describe('getDataMarkup', function() {
+            var entry = injector._getDataFilterEntry(collectionWithFilters);
 
-        var markup;
-
-        beforeEach(function() {
-            markup = injector._getDataMarkup(geoNetworkRecord);
+            expect(entry).toBe("Human readable filters");
         });
 
-        it('provides markup', function() {
-            expect(markup).not.toEqual('');
-        });
+        it('includes placeholder when no text returned', function() {
 
-        it('contains the download estimator spinner and loading message', function() {
-            expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingMessage"))).toBeGreaterThan(-1);
-            expect(markup.indexOf(OpenLayers.i18n("estimatedDlLoadingSpinner"))).toBeGreaterThan(-1);
-        });
-    });
+            var entry = injector._getDataFilterEntry(collectionWithNoFilters);
 
-    describe('getPointOfTruthLinks', function() {
-
-        it('returns point of truth links as appropriate', function() {
-            expect(injector._getPointOfTruthLink(geoNetworkRecord)).toEqual('Link!');
-        });
-    });
-
-    describe('getMetadataLinks', function() {
-
-        it('returns metadata links as appropriate', function() {
-            expect(injector._getMetadataLinks(geoNetworkRecord)).toEqual('Downloadable link!');
+            expect(entry).toContain(OpenLayers.i18n('emptyDownloadPlaceholder'));
         });
     });
 });
