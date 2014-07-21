@@ -156,7 +156,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         });
 
         it('returns nothing when there are no links', function() {
-            expect(tpl._getFileListEntries({}).indexOf("")).toBeGreaterThan(-1);
+            expect(tpl._getFileListEntries({})).toBe("");
         });
 
         it('creates links', function() {
