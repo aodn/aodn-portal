@@ -19,7 +19,7 @@ class DownloadAuthServiceTests extends GrailsUnitTestCase {
         mockLogging DownloadAuthService
 
         service = new DownloadAuthService()
-        service.grailsApplication = [config: [downloadAuth: [trustedClients: [], maxAggregatedDownloadsInPeriod: 2, maxAggregatedDownloadsPeriodMs: 60 * 10 * 1000]]]
+        service.grailsApplication = [config: [downloadAuth: [trustedClients: [], maxAggregatedDownloadsInPeriod: 2, maxAggregatedDownloadsPeriodMinutes: 10]]]
 
         service.simpleCaptchaService = new StubForSimpleCaptchaService()
     }
