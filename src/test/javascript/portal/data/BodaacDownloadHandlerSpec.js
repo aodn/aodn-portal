@@ -102,16 +102,20 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
     describe('the estimate download size params', function() {
 
-        it('build the correct params object', function() {
+        var testCollection;
 
-            var testCollection = {};
+        beforeEach(function() {
 
-            handler._getUrlGeneratorFunction = jasmine.createSpy('_getUrlGeneratorFunction()').andCallFake(function() {
-                return function(arg) {
-                    expect(arg).toBe(testCollection);
-                    return 'the_url';
+            testCollection = {
+                wmsLayer: {
+                    getDownloadFilter: function() { return 'the_cql' },
+                    _buildGetFeatureRequestUrl: function() { return 'the_url' },
+                    getVisualisationFilters: function() { return 'the_Vis_Cql' }
                 }
-            });
+            };
+        });
+
+        it('build the correct params object', function() {
 
             var params = handler.getDownloadEstimateParams(testCollection);
 

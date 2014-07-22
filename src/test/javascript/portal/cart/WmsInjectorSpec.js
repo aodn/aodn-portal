@@ -10,14 +10,14 @@ describe('Portal.cart.WmsInjector', function() {
     var injector;
     var collectionWithFilters = {
         wmsLayer: {
-            getWmsDownloadFilterDescriptions: function() {
+            getVisualisationFilterDescriptions: function() {
                 return "Human readable filters"
             }
         }
     };
     var collectionWithNoFilters = {
         wmsLayer: {
-            getWmsDownloadFilterDescriptions: function() {
+            getVisualisationFilterDescriptions: function() {
                 return "";
             }
         }
