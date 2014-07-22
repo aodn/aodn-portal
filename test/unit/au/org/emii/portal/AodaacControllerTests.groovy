@@ -12,11 +12,19 @@ import grails.test.ControllerUnitTestCase
 
 class AodaacControllerTests extends ControllerUnitTestCase {
 
+    def downloadAuthService
+
     protected void setUp() {
 
         super.setUp()
 
         mockDomain AodaacJob
+
+        downloadAuthService = mockFor(DownloadAuthService)
+        downloadAuthService.demand.static.verifyChallengeResponse {}
+        downloadAuthService.demand.static.registerDownloadForAddress {}
+
+        controller.downloadAuthService = downloadAuthService.createMock()
     }
 
     protected void tearDown() {

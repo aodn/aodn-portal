@@ -41,12 +41,18 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         return function(collection, handlerParams) {
 
-            return _this._buildAodaacUrl(
+            var aodaacUrl = _this._buildAodaacUrl(
                 collection.ncwmsParams,
                 _this._resourceName(),
                 'nc',
                 handlerParams.emailAddress
             );
+
+            if (handlerParams.challengeResponse) {
+                aodaacUrl += String.format("&challengeResponse={0}", encodeURIComponent(handlerParams.challengeResponse));
+            }
+
+            return aodaacUrl;
         };
     },
 
