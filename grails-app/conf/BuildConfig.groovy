@@ -46,6 +46,7 @@ grails.project.dependency.resolution = {
     plugins {
         runtime ":database-migration:1.0"
         test ":build-test-data:1.1.2"
+        compile ":simple-captcha:0.7.1"
     }
 }
 

@@ -11,6 +11,19 @@ import grails.test.*
 
 class GogoduckControllerTests extends ControllerUnitTestCase {
 
+    def downloadAuthService
+
+    protected void setUp() {
+
+        super.setUp()
+
+        downloadAuthService = mockFor(DownloadAuthService)
+        downloadAuthService.demand.static.verifyChallengeResponse {}
+        downloadAuthService.demand.static.registerDownloadForAddress {}
+
+        controller.downloadAuthService = downloadAuthService.createMock()
+    }
+
     void testRegisterJobNoParams() {
 
         controller.gogoduckService = [
@@ -58,5 +71,27 @@ class GogoduckControllerTests extends ControllerUnitTestCase {
 
         assertEquals 1, registerCalledCount
         assertTrue mockResponse.contentAsString.length() > 0
+    }
+
+    void testRegisterJobBadChallengeResponse() {
+
+        def testParams = new Object()
+        mockParams.put 'jobParameters', testParams
+
+        controller.gogoduckService = [
+            registerJob: { params ->
+                assertEquals testParams, params
+            }
+        ]
+
+        controller.downloadAuthService.metaClass.verifyChallengeResponse = {
+            ipAddress, challengeResponse ->
+
+            return false
+        }
+
+        controller.registerJob()
+
+        assertEquals 500, controller.renderArgs.status
     }
 }

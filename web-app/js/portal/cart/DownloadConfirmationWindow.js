@@ -56,6 +56,8 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
             }
         });
 
+        this.downloadChallengePanel = new Portal.cart.DownloadChallengePanel({});
+
         Ext.apply(this, {
             title:OpenLayers.i18n('downloadConfirmationWindowTitle'),
             modal: true,
@@ -68,6 +70,7 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
                 xtype: 'form',
                 items: [
                     this.downloadEmailPanel,
+                    this.downloadChallengePanel,
                     {xtype: 'spacer', height: 20},
                     contentPanel
                 ],
@@ -123,10 +126,12 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
         if (params.collectEmailAddress) {
             this.downloadEmailPanel.show();
+            this.downloadChallengePanel.show();
             this.downloadButton.disable();
         }
         else {
             this.downloadEmailPanel.hide();
+            this.downloadChallengePanel.hide();
             this.downloadButton.enable();
         }
     },
@@ -136,6 +141,9 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
         if (this.onAcceptCallback) {
             this.params.emailAddress = this.downloadEmailPanel.getEmailValue();
+            if (this.downloadChallengePanel.isChallenged()) {
+                this.params.challengeResponse = this.downloadChallengePanel.getChallengeResponseValue();
+            }
             this.onAcceptCallback(this.params);
         }
 
