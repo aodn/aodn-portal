@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import static au.org.emii.portal.AodaacJob.Status.*
 import static au.org.emii.portal.UrlUtils.ensureTrailingSlash
 
-class AodaacAggregatorService {
+class AodaacAggregatorService extends AsyncDownloadService {
 
     static transactional = true
 
@@ -26,6 +26,30 @@ class AodaacAggregatorService {
     // Date formats
     static final def FROM_JAVASCRIPT_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") // String from UI -> Date Object
     static final def TO_AGGREGATOR_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss") // Date Object -> String for AODAAC
+
+    String registerJob(params) {
+
+        log.debug "Creating AODAAC Job. Notication email address: '${params.notificationEmailAddress}'"
+        log.debug "params: ${params}"
+
+        def apiCallUrl = jobCreationUrl(
+            _creationApiCallArgs(params)
+        )
+        def response = _makeApiCall(apiCallUrl)
+
+        log.debug "response: $response"
+
+        if (response.error) {
+            log.error "Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response"
+            throw new RuntimeException("Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response")
+        }
+
+        def job = new AodaacJob(response.id, params)
+        job.save failOnError: true
+
+        return "Job created (ID: ${job.jobId})"
+    }
+
 
     def getProductInfo(productIds) {
 
@@ -48,29 +72,6 @@ class AodaacAggregatorService {
             return []
         }
     }
-
-    def createJob(params) {
-
-        log.debug "Creating AODAAC Job. Notication email address: '${params.notificationEmailAddress}'"
-        log.debug "params: ${params}"
-
-        def apiCallUrl = jobCreationUrl(
-            _creationApiCallArgs(params)
-        )
-        def response = _makeApiCall(apiCallUrl)
-
-        log.debug "response: $response"
-
-        if (response.error) {
-            log.error "Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response"
-            throw new RuntimeException("Error creating AODAAC job. Call was $apiCallUrl\n Response from system was $response")
-        }
-
-        def job = new AodaacJob(response.id, params)
-        job.save failOnError: true
-
-        return job
-     }
 
     void updateJob(job) {
 

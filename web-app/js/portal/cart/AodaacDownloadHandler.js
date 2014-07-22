@@ -11,6 +11,8 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     AODAAC_DEFAULT_LON_START: 0, // Works around limitation in AODAAC
 
+    ASYNC_DOWNLOAD_URL: 'asyncDownload?aggregatorService=aodaac&',
+
     getDownloadOptions: function() {
 
         var downloadOptions = [];
@@ -70,7 +72,7 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
             notificationEmailAddress: notificationEmailAddress
         };
 
-        return 'aodaac/createJob?' + this._makeQueryString(args);
+        return this.ASYNC_DOWNLOAD_URL + this._makeQueryString(args);
     },
 
     _makeQueryString: function(args) {

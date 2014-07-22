@@ -44,12 +44,6 @@ class SecurityFilters {
             }
         }
 
-        aodaacAccess(controller: "aodaac", action: "createJob") {
-            before = {
-                request.accessAllowed = true
-            }
-        }
-
         landingAccess(controller: "landing", action: "index") {
             before = {
                 request.accessAllowed = true
@@ -128,7 +122,7 @@ class SecurityFilters {
             }
         }
 
-        gogoduckAccess(controller: "gogoduck", action: "registerJob") {
+        asyncDownloadAccess(controller: "asyncDownload", action: "*") {
             before = {
                 request.accessAllowed = true
             }
