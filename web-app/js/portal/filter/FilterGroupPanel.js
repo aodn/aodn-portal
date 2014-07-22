@@ -256,9 +256,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
 
             this.layer.filterData = this._getActiveFilterData();
             this.layer.setCqlFilter(this._getVisualisationCQLFilters(this.layer.filterData));
-            // todo fix estimateSizeForLayer
-            // todo fix tests
-            // todo check filter creation / edit still works for a dateRangeFilter
         }
     },
 
