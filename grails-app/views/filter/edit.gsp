@@ -42,7 +42,7 @@
                                     <label for="label"><g:message code="filter.label.label" default="Filter Label" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'label', 'errors')}">
-                                    <g:textField name="label" value="${filterInstance?.label}" />
+                                    <g:textField required="required" name="label" value="${filterInstance?.label}" />
                                 </td>
                             </tr>
 
@@ -51,7 +51,7 @@
                                     <label for="name"><g:message code="filter.name.label" default="Name WFS/WMS" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'name', 'errors')}">
-                                    <g:textField name="name" value="${filterInstance?.name}" />
+                                    <g:textField required="required" name="name" value="${filterInstance?.name}" />
                                 </td>
                             </tr>
 
@@ -60,7 +60,7 @@
                                     <label for="wmsStartDateName"><g:message code="filter.wmsStartDateName.label" default="Name (WMS Start date)" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wmsStartDateName', 'errors')}">
-                                    <g:textField name="wmsStartDateName" value="${filterInstance?.wmsStartDateName}" />
+                                    <g:textField required="required" name="wmsStartDateName" value="${filterInstance?.wmsStartDateName}" />
                                 </td>
                             </tr>
 
@@ -69,7 +69,7 @@
                                     <label for="wmsEndDateName"><g:message code="filter.wmsEndDateName.label" default="Name (WMS End Date)" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wmsEndDateName', 'errors')}">
-                                    <g:textField name="wmsEndDateName" value="${filterInstance?.wmsEndDateName}" />
+                                    <g:textField required="required" name="wmsEndDateName" value="${filterInstance?.wmsEndDateName}" />
                                 </td>
                             </tr>
 
