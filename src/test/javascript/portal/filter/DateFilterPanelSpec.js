@@ -107,6 +107,19 @@ describe("Portal.filter.DateFilterPanel", function() {
             expect(filterPanel._getCQL()).toEqual('aWmsStartDateName >= 2012 AND aWmsEndDateName <= 2014');
         });
 
+        it('single date attribute', function() {
+            setTestValue(filterPanel.fromDate, '2012');
+            setTestValue(filterPanel.toDate, '2014');
+
+            filterPanel.filter.wmsStartDateName = null;
+            expect(filterPanel._getCQL()).toEqual('some_column >= 2012 AND aWmsEndDateName <= 2014');
+
+            filterPanel.filter.wmsStartDateName = 'updatedName';
+            filterPanel.filter.wmsEndDateName = null;
+            expect(filterPanel._getCQL()).toEqual('updatedName >= 2012 AND some_column <= 2014');
+
+        });
+
         var setTestValue = function(resettableDate, value) {
             spyOn(resettableDate, 'getValue').andReturn(value);
             spyOn(resettableDate, 'hasValue').andReturn(true);
