@@ -22,4 +22,20 @@ describe('Portal.ui.openlayers.layer.NcWMS', function() {
             );
         });
     });
+
+    describe('getMetadataUrl', function() {
+        it('constructs URL', function() {
+            var ncwmsLayer = new OpenLayers.Layer.NcWMS(
+                'someLayer',
+                'http://ncwms.aodn.org.au/ncwms/wms',
+                { LAYERS: 'ncwmsLayerName' },
+                {},
+                {}
+            );
+
+            expect(ncwmsLayer.getMetadataUrl()).toEqual(
+                'http://ncwms.aodn.org.au/ncwms/wms?layerName=ncwmsLayerName&REQUEST=GetMetadata&item=layerDetails'
+            );
+        });
+    });
 });

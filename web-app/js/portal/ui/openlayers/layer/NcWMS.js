@@ -142,6 +142,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return dateTime.clone().utc().format('YYYY-MM-DDTHH:mm:ss.SSS');
     },
 
+    getMetadataUrl: function() {
+        var metadataUrl = this.url + "?layerName=" + this.params.LAYERS + "&REQUEST=GetMetadata&item=layerDetails";
+        return metadataUrl;
+    },
+
     /* Overrides */
     getFeatureInfoRequestString: function(clickPoint, overrideParams) {
         overrideParams.TIME = this._getTimeParameter(this.time);
