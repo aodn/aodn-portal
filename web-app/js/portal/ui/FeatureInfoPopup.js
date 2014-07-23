@@ -115,13 +115,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
                 queryableVisibleLayersCount++;
 
-                if (layer.metadata.units == undefined && layer.isNcwms()) {
-                    // populate unit information now
-                    this._setMetadataFirst(layer);
-                }
-                else {
-                    this._requestFeatureInfo(layer);
-                }
+                this._requestFeatureInfo(layer);
             }
         }, this);
 
@@ -132,18 +126,6 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             this.setTitle(OpenLayers.i18n('noDataCollectionTitle'));
             this.depthInfoPanel.update("");
         }
-    },
-
-    _setMetadataFirst: function(layer) {
-        Ext.ux.Ajax.proxyRequest({
-            scope: this,
-            url: layer.getMetadataUrl(),
-            success: function(resp, options) {
-                // error check?
-                layer.metadata = Ext.util.JSON.decode(resp.responseText);
-                this._requestFeatureInfo(layer);
-            }
-        });
     },
 
     _requestFeatureInfo: function(layer) {

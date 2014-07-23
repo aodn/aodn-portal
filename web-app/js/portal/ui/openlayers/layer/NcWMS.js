@@ -42,6 +42,28 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, this._propagateDelete, this);
 
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, [name, url, params, options]);
+
+        // We assume that before the first GFI request we will be quick enough
+        // to complete that little tiny request
+        this._setMetadata();
+    },
+
+    _setMetadata: function() {
+        Ext.ux.Ajax.proxyRequest({
+            scope: this,
+            url: this._getMetadataUrl(),
+            success: function(resp, options) {
+                try {
+                    this.metadata = Ext.util.JSON.decode(resp.responseText);
+                }
+                catch (e) {
+                    log.error("Could not parse metadata for NcWMS layer '" + this.params.LAYERS + "'");
+                }
+            },
+            failure: function() {
+                log.error("Could not get metadata for NcWMS layer '" + this.params.LAYERS + "'");
+            }
+        });
     },
 
     _initToMostRecentTime: function(dateTimeString) {
@@ -142,7 +164,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return dateTime.clone().utc().format('YYYY-MM-DDTHH:mm:ss.SSS');
     },
 
-    getMetadataUrl: function() {
+    _getMetadataUrl: function() {
         var metadataUrl = this.url + "?layerName=" + this.params.LAYERS + "&REQUEST=GetMetadata&item=layerDetails";
         return metadataUrl;
     },
