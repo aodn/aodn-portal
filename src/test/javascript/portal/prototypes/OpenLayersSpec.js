@@ -253,8 +253,43 @@ describe('OpenLayers', function() {
             it('returns text if there is a cql filter applied', function() {
                 openLayer.params = {CQL_FILTER: "test='filter'"};
 
-                var filterString = openLayer.getWmsDownloadFilterDescriptions();
+                var filterString = openLayer.getDownloadFilterDescriptions();
                 expect(filterString.indexOf(OpenLayers.i18n('noFilterLabel'))).toEqual(-1);
+            });
+        });
+
+        describe('getMapLayerFilters filter information', function() {
+
+            it('returns text if there is a cql filters', function() {
+                openLayer.filterData = [{
+                    cql: "rararrr",
+                    enabled: true
+                }];
+                var filterString = openLayer.getMapLayerFilters();
+                expect(filterString).toContain("rararrr");
+            });
+
+            it('returns text if the cql filter is a geom when function is called with correct flag', function() {
+                openLayer.filterData = [{
+                    cql: "rararrr",
+                    enabled: true,
+                    type: "geom",
+                    downloadOnly: true
+                }];
+
+                expect(openLayer.getMapLayerFilters()).not.toContain("rararrr");
+                expect(openLayer.getMapLayerFilters(true)).toContain("rararrr");
+            });
+
+            it('returns nothing if the cql filter is download only', function() {
+                openLayer.filterData = [{
+                    cql: "rararrr",
+                    enabled: true,
+                    downloadOnly: true
+                }];
+
+                expect(openLayer.getMapLayerFilters()).not.toContain("rararrr");
+                expect(openLayer.getMapLayerFilters(true)).not.toContain("rararrr");
             });
         });
     });

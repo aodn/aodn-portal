@@ -90,7 +90,14 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
 
     _wmsDownloadUrl: function(collection, params) {
 
-        return collection.wmsLayer.getWmsLayerFeatureRequestUrl(params.format);
+        var layer = collection.wmsLayer;
+
+        return layer._buildGetFeatureRequestUrl(
+            layer.server.uri,
+            layer.params.LAYERS,
+            params.format,
+            layer.getMapLayerFilters(true)
+        );
     },
 
     _wfsDownloadUrl: function(collection, params) {

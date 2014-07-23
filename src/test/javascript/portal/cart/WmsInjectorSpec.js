@@ -19,11 +19,14 @@ describe('Portal.cart.WmsInjector', function() {
             grailsLayerId: 42,
             getWfsLayerFeatureRequestUrl: noOp,
             wmsLayer: {
+                server: {uri: 'server_uri'},
+                params: {LAYERS: ''},
                 getDownloadFilter: function() {
                     return "cql_filter"
                 },
                 isNcwms: function() {return false},
-                getWmsLayerFeatureRequestUrl: noOp,
+                _buildGetFeatureRequestUrl: noOp,
+                getMapLayerFilters: noOp,
                 wfsLayer: true
             },
             pointOfTruthLink: 'Link!',
@@ -137,11 +140,16 @@ describe('Portal.cart.WmsInjector', function() {
         it('calls correct function on layer', function() {
 
             var spy = jasmine.createSpy();
-            var testLayer = {getWmsLayerFeatureRequestUrl: spy, params: "blagh"};
+            var testLayer = {
+                params: {LAYERS: 'layer_name'},
+                server: {uri: 'server_uri'},
+                getMapLayerFilters: function() { return 'filters' },
+                _buildGetFeatureRequestUrl: spy
+            };
 
             injector._wmsDownloadUrl({ wmsLayer: testLayer }, { format: 'xml' });
 
-            expect(testLayer.getWmsLayerFeatureRequestUrl).toHaveBeenCalledWith('xml');
+            expect(testLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('server_uri', 'layer_name',  'xml', 'filters');
         });
     });
 

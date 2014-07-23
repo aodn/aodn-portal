@@ -21,7 +21,7 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
                 },
                 setLayerAndFilter: noOp
             });
-            
+
             var mockDate = function() {
                 return {
                     getValue: function() {
@@ -32,7 +32,7 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
                     }
                 }
             };
-            
+
             filterPanel.fromDate = mockDate();
             filterPanel.toDate = mockDate();
 
@@ -43,12 +43,12 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
 
         it('after', function() {
             setTestValue(filterPanel.fromDate, '2000');
-            expect(filterPanel._getCQL()).toEqual('wfs_column >= 2000');
+            expect(filterPanel._getCQL('wfs_column')).toEqual('wfs_column >= 2000');
         });
 
         it('before', function() {
             setTestValue(filterPanel.toDate, '2013');
-            expect(filterPanel._getCQL()).toEqual('wfs_column <= 2013');
+            expect(filterPanel._getCQL('wfs_column')).toEqual('wfs_column <= 2013');
         });
 
         it('between', function() {
@@ -56,10 +56,9 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
             setTestValue(filterPanel.toDate, '2013');
 
             expect(filterPanel._getCQL()).toEqual(
-                'wfs_column >= 2000 AND wfs_column <= 2013'
+                'wms_start_column >= 2000 AND wms_end_column <= 2013'
             );
         });
-
 
         var setTestValue = function(resettableDate, value) {
             spyOn(resettableDate, 'getValue').andReturn(value);
