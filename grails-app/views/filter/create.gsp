@@ -42,7 +42,7 @@
                                     <label for="label"><g:message code="filter.label.label" default="Filter Label" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'label', 'errors')}">
-                                    <g:textField name="label" value="${filterInstance?.label}" />
+                                    <g:textField required="required" name="label" value="${filterInstance?.label}" />
                                 </td>
                             </tr>
 
@@ -51,27 +51,28 @@
                                     <label for="name"><g:message code="filter.name.label" default="Name WFS/WMS" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'name', 'errors')}">
-                                    <g:textField name="name" value="${filterInstance?.name}" />
+                                    <g:textField required="required" name="name" value="${filterInstance?.name}" />
                                 </td>
                             </tr>
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="wmsStartDateName"><g:message code="filter.wmsStartDateName.label" default="Name (WMS Start date)" /></label>
+                                    <label class="dateRangeFilterAdminElement" for="wmsStartDateName"><g:message code="filter.wmsStartDateName.label" default="Name (WMS Start date)" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wmsStartDateName', 'errors')}">
-                                    <g:textField name="wmsStartDateName" value="${filterInstance?.wmsStartDateName}" />
+                                    <g:textField  class="dateRangeFilterAdminElement" required="required" name="wmsStartDateName" value="${filterInstance?.wmsStartDateName}" />
                                 </td>
                             </tr>
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="wmsEndDateName"><g:message code="filter.wmsEndDateName.label" default="Name (WMS End Date)" /></label>
+                                    <label class="dateRangeFilterAdminElement"  for="wmsEndDateName"><g:message code="filter.wmsEndDateName.label" default="Name (WMS End Date)" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wmsEndDateName', 'errors')}">
-                                    <g:textField name="wmsEndDateName" value="${filterInstance?.wmsEndDateName}" />
+                                    <g:textField class="dateRangeFilterAdminElement"  required="required" name="wmsEndDateName" value="${filterInstance?.wmsEndDateName}" />
                                 </td>
                             </tr>
+
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="label"><g:message code="filter.enabled.label" default="Enabled" /></label>
@@ -83,10 +84,10 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="label"><g:message code="filter.downloadOnly.label" default="Download Only" /></label>
+                                    <label class="downloadOnlyAdminElement"  for="label"><g:message code="filter.downloadOnly.label" default="Download Only" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'downloadfOnly', 'errors')}">
-                                    <g:checkBox name="downloadOnly" checked="${filterInstance?.downloadOnly}" />
+                                    <g:checkBox class="downloadOnlyAdminElement"  name="downloadOnly" checked="${filterInstance?.downloadOnly}" />
                                 </td>
                             </tr>
 
