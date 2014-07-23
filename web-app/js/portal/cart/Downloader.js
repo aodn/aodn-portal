@@ -15,7 +15,8 @@ Portal.cart.Downloader = Ext.extend(Object, {
         log.info(
             "Downloading collection: " + JSON.stringify({
                 'title': collection.title,
-                'download URL': downloadUrl
+                'download URL': downloadUrl,
+                'params': params
             })
         );
 
