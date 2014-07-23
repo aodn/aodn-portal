@@ -57,19 +57,19 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="wmsStartDateName"><g:message code="filter.wmsStartDateName.label" default="Name (WMS Start date)" /></label>
+                                    <label class="dateRangeFilterAdminElement" for="wmsStartDateName"><g:message code="filter.wmsStartDateName.label" default="Name (WMS Start date)" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wmsStartDateName', 'errors')}">
-                                    <g:textField required="required" name="wmsStartDateName" value="${filterInstance?.wmsStartDateName}" />
+                                    <g:textField  class="dateRangeFilterAdminElement" required="required" name="wmsStartDateName" value="${filterInstance?.wmsStartDateName}" />
                                 </td>
                             </tr>
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="wmsEndDateName"><g:message code="filter.wmsEndDateName.label" default="Name (WMS End Date)" /></label>
+                                    <label class="dateRangeFilterAdminElement"  for="wmsEndDateName"><g:message code="filter.wmsEndDateName.label" default="Name (WMS End Date)" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wmsEndDateName', 'errors')}">
-                                    <g:textField required="required" name="wmsEndDateName" value="${filterInstance?.wmsEndDateName}" />
+                                    <g:textField class="dateRangeFilterAdminElement"  required="required" name="wmsEndDateName" value="${filterInstance?.wmsEndDateName}" />
                                 </td>
                             </tr>
 
@@ -79,6 +79,15 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'enabled', 'errors')}">
                                     <g:checkBox name="enabled" checked="${filterInstance?.enabled}" />
+                                </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label class="downloadOnlyAdminElement"  for="label"><g:message code="filter.downloadOnly.label" default="Download Only" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'downloadfOnly', 'errors')}">
+                                    <g:checkBox class="downloadOnlyAdminElement"  name="downloadOnly" checked="${filterInstance?.downloadOnly}" />
                                 </td>
                             </tr>
 
