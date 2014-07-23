@@ -119,8 +119,9 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     getFilterData: function() {
         return {
             name: this.filter.name,
-            downloadOnly: this.isDownloadOnly(),
-            cql: this._getCQL(),
+            downloadOnly: false,
+            visualisationCql: this._getCQL(),
+            cql: this._getCQL(this.filter.name),
             humanValue: this._getCQLHumanValue()
         }
     },
@@ -144,12 +145,24 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         return cql;
     },
 
-    _getCQL: function() {
+    _getValidName: function(filterName, wmsAttribName) {
+
+        if (filterName) {
+            return filterName;
+        }
+        else {
+            return (wmsAttribName) ? wmsAttribName : this.filter.name;
+        }
+    },
+
+    _getCQL: function(filterName) {
 
         var cql = '';
+        var name = '';
 
         if (this._isFromFieldUsed()) {
-            cql = String.format("{0} >= {1}", this.filter.name, this._getDateString(this.fromDate));
+            name = this._getValidName(filterName, this.filter.wmsStartDateName);
+            cql = String.format("{0} >= {1}", name, this._getDateString(this.fromDate));
         }
 
         if (this._isFromFieldUsed() && this._isToFieldUsed()) {
@@ -157,7 +170,8 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
 
         if (this._isToFieldUsed()) {
-            cql += String.format("{0} <= {1}", this.filter.name, this._getDateString(this.toDate));
+            name = this._getValidName(filterName, this.filter.wmsEndDateName);
+            cql += String.format("{0} <= {1}", name, this._getDateString(this.toDate));
         }
 
         return cql;
