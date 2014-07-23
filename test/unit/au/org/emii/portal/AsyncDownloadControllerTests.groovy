@@ -80,7 +80,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
     void testAodaacJobFailure() {
         controller.params.aggregatorService ='aodaac'
-        controller.aodaacAggregatorService.metaClass.registerJob { params -> throw "error" }
+        controller.aodaacAggregatorService.metaClass.registerJob { params -> throw new Exception("should not be called") }
 
         controller.index()
 
@@ -97,7 +97,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
     void testGogoduckJobFailure() {
         controller.params.aggregatorService ='gogoduck'
-        controller.gogoduckService.metaClass.registerJob { params -> throw "error" }
+        controller.gogoduckService.metaClass.registerJob { params -> throw new Exception("should not be called") }
 
         controller.index()
 

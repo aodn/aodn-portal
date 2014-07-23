@@ -53,19 +53,14 @@ class DownloadAuthService {
 
     def needsChallenge(ipAddress) {
 
-        def needsChallenge = false
-
         if (isAbusingUs(ipAddress)) {
-            // downloadCount is the amount of already requested download + 1
-            // which is the download the user has just requested
-            def downloadCount         = downloadCountForIpAddress(ipAddress) + 1
+            def downloadCount = downloadCountForIpAddress(ipAddress) + 1
             log.info "Seems like $ipAddress might be trying to abuse us, '$downloadCount' downloads in '$evictionPeriodMinutes' minutes"
-            needsChallenge = true
         }
         else {
             // If we're not being abused by this IP address, we can just return
             // here without checking whitelistClients and blacklistClients
-            return needsChallenge
+            return false
         }
 
         return ! isIpAddressTrusted(ipAddress)

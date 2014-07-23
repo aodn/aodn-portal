@@ -19,19 +19,16 @@ class AsyncDownloadController {
 
     def verifyChallengeResponse(params, ipAddress) {
         // Verify request can go through
-        def challengeResponse = params.challengeResponse
+        def challengeResponse = params.remove('challengeResponse')
         if (! downloadAuthService.verifyChallengeResponse(ipAddress, challengeResponse)) {
             log.info "Could not verify challenge '$challengeResponse' from '$ipAddress'"
             throw new Exception('Could not verify challenge (captcha), denying download')
         }
-
-        params.remove('challengeResponse')
     }
 
     def index = {
 
-        def aggregatorServiceString = params['aggregatorService']
-        params.remove('aggregatorService')
+        def aggregatorServiceString = params.remove('aggregatorService')
 
         try {
             def ipAddress = request.getRemoteAddr()

@@ -14,7 +14,7 @@ class GogoduckService extends AsyncDownloadService {
 
         def jobParameters = params.jobParameters
 
-        if (!jobParameters || "" == jobParameters) {
+        if (!jobParameters) {
             throw new Exception("No parameters passed to gogoduckService")
         }
 
