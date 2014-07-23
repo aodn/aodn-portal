@@ -233,7 +233,7 @@ describe('OpenLayers', function() {
                     enabled: true}];
 
                 var filterString = openLayer.getMapLayerFilters();
-                expect(filterString.indexOf("rararrr")).toEqual(0);
+                expect(filterString).toContain("rararrr");
             });
 
             it('returns text if the cql filter is a geom when function is called with correct flag', function() {
@@ -244,9 +244,9 @@ describe('OpenLayers', function() {
                     downloadOnly: true}];
 
                 var filterString = openLayer.getMapLayerFilters();
-                expect(filterString.indexOf("rararrr")).toEqual(-1);
+                expect(filterString).not.toContain("rararrr");
                 var filterString = openLayer.getMapLayerFilters(true);
-                expect(filterString.indexOf("rararrr")).toEqual(0);
+                expect(filterString).toContain("rararrr");
             });
 
             it('returns nothing if the cql filter is download only', function() {
@@ -256,9 +256,9 @@ describe('OpenLayers', function() {
                     downloadOnly: true}];
 
                 var filterString = openLayer.getMapLayerFilters();
-                expect(filterString.indexOf("rararrr")).toEqual(-1);
+                expect(filterString).not.toContain("rararrr");
                 var filterString = openLayer.getMapLayerFilters(true);
-                expect(filterString.indexOf("rararrr")).toEqual(-1);
+                expect(filterString).not.toContain("rararrr");
             });
         });
     });

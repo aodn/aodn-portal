@@ -139,24 +139,5 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         var fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
 
         return String.format(html, downloadTimeoutMessage, fileSizeImage);
-    },
-
-    _getEstimateRequestParams: function(collection) {
-
-        var handlerToEstimateWith;
-
-        Ext.each(collection.dataDownloadHandlers, function(handler) {
-
-            if (handler.canEstimateDownloadSize()) {
-                handlerToEstimateWith = handler;
-            }
-        });
-
-        if (handlerToEstimateWith) {
-            return handlerToEstimateWith.getDownloadEstimateParams(collection);
-        }
-        else {
-            return null;
-        }
     }
 });
