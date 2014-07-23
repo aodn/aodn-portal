@@ -30,17 +30,17 @@ class DownloadAuthService {
     def isIpAddressTrusted(ipAddress) {
         def ipAddressTrusted = false
 
-        grailsApplication.config.downloadAuth.trustedClients.each {
+        grailsApplication.config.downloadAuth.whitelistClients.each {
             if (ipAddress.matches(it)) {
                 ipAddressTrusted = true
                 log.info "Allowing $ipAddress to download without challenge because it is trusted ('$it')"
             }
         }
 
-        // Check to see if IP is in rogueClients, treat it as a normal client
+        // Check to see if IP is in blacklistClients, treat it as a normal client
         // if it is
         if (ipAddressTrusted) {
-            grailsApplication.config.downloadAuth.rogueClients.each {
+            grailsApplication.config.downloadAuth.blacklistClients.each {
                 if (ipAddress.matches(it)) {
                     ipAddressTrusted = false
                     log.info "Challenging $ipAddress because it is a rogue '$it'"
@@ -64,7 +64,7 @@ class DownloadAuthService {
         }
         else {
             // If we're not being abused by this IP address, we can just return
-            // here without checking trustedClients and rogueClients
+            // here without checking whitelistClients and blacklistClients
             return needsChallenge
         }
 

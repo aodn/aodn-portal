@@ -19,7 +19,7 @@ class DownloadAuthServiceTests extends GrailsUnitTestCase {
         mockLogging DownloadAuthService
 
         service = new DownloadAuthService()
-        service.grailsApplication = [config: [downloadAuth: [trustedClients: [], rogueClients: [], maxAggregatedDownloadsInPeriod: 2, maxAggregatedDownloadsPeriodMinutes: 10]]]
+        service.grailsApplication = [config: [downloadAuth: [whitelistClients: [], blacklistClients: [], maxAggregatedDownloadsInPeriod: 2, maxAggregatedDownloadsPeriodMinutes: 10]]]
 
         service.simpleCaptchaService = new StubForSimpleCaptchaService()
     }
@@ -50,7 +50,7 @@ class DownloadAuthServiceTests extends GrailsUnitTestCase {
     }
 
     void testDoesNotChallengeIfTrusted() {
-        service.grailsApplication.config.downloadAuth.trustedClients = [ "4.3.2.1" ]
+        service.grailsApplication.config.downloadAuth.whitelistClients = [ "4.3.2.1" ]
         boolean needsChallenge = service.needsChallenge("4.3.2.1")
 
         assertFalse needsChallenge
@@ -71,7 +71,7 @@ class DownloadAuthServiceTests extends GrailsUnitTestCase {
 
     void testBeingAbusedFromTrustedClient() {
         service.grailsApplication.config.downloadAuth.maxAggregatedDownloadsInPeriod = 1
-        service.grailsApplication.config.downloadAuth.trustedClients = [ "4.3.2.1" ]
+        service.grailsApplication.config.downloadAuth.whitelistClients = [ "4.3.2.1" ]
 
         service.registerDownloadForAddress("4.3.2.1", "test1")
         service.registerDownloadForAddress("4.3.2.1", "test2")
@@ -83,8 +83,8 @@ class DownloadAuthServiceTests extends GrailsUnitTestCase {
 
     void testBeingAbusedFromRogueClientInTrustedSubnet() {
         service.grailsApplication.config.downloadAuth.maxAggregatedDownloadsInPeriod = 0
-        service.grailsApplication.config.downloadAuth.trustedClients = [ /80\.80\.80\..+/ ]
-        service.grailsApplication.config.downloadAuth.rogueClients   = [ '80.80.80.1' ]
+        service.grailsApplication.config.downloadAuth.whitelistClients = [ /80\.80\.80\..+/ ]
+        service.grailsApplication.config.downloadAuth.blacklistClients   = [ '80.80.80.1' ]
 
         // Anyone in 80.80.80.0/24 should never face a challenge except for
         // 80.80.80.1 which is a "rogue" client
