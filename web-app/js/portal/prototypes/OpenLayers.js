@@ -238,7 +238,7 @@ OpenLayers.Layer.WMS.prototype.getMapLayerFilters = function(featureRequest) {
     return filters.join(" AND ");
 };
 
-OpenLayers.Layer.WMS.prototype.getVisualisationFilterDescriptions = function() {
+OpenLayers.Layer.WMS.prototype.getDownloadFilterDescriptions = function() {
 
     var filters = [];
 
