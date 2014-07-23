@@ -76,18 +76,6 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         );
     },
 
-    _getWmsFeatureRequestUrl: function(collection) {
-
-        var wmsLayer = collection.wmsLayer;
-
-        return wmsLayer._buildGetFeatureRequestUrl(
-            this._resourceHref(),
-            this._layerName(),
-            OpenLayers.Layer.DOWNLOAD_FORMAT_CSV,
-            wmsLayer.getMapLayerFilters(true)
-        );
-    },
-
     _getUrlGeneratorFunction: function(collection) {
 
         var _this = this;
