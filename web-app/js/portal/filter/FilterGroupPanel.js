@@ -274,9 +274,14 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
     _getVisualisationCQLFilters: function(layerFilterData) {
         var cql = [];
         Ext.each(layerFilterData, function(data) {
+
+            var filterCQL= data.cql;
+
             if (!data.downloadOnly) {
 
-                var filterCQL = data.cql;
+                if (data.visualisationCql != undefined) {
+                    filterCQL = data.visualisationCql;
+                }
                 if (filterCQL) {
                     cql.push(filterCQL);
                 }

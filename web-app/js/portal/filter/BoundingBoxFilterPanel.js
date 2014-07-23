@@ -101,7 +101,8 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
             name: this.filter.name,
             downloadOnly: this.isDownloadOnly(),
             cql: this.getCQL(),
-            humanValue: this._getCQLHumanValue()
+            humanValue: this._getCQLHumanValue(),
+            type: "geom"
         }
     }
 

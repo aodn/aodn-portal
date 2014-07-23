@@ -15,7 +15,9 @@ describe("Portal.filter.DateFilterPanel", function() {
 
         filterPanel = new Portal.filter.DateFilterPanel({
             filter: {
-                name: 'some_column'
+                name: 'some_column',
+                wmsStartDateName: "aWmsStartDateName",
+                wmsEndDateName: "aWmsEndDateName"
             },
             layer: {
                 getDownloadFilter: function() {
@@ -89,20 +91,33 @@ describe("Portal.filter.DateFilterPanel", function() {
         it('after', function() {
             setTestValue(filterPanel.fromDate, '2012');
 
-            expect(filterPanel._getCQL()).toEqual('some_column >= 2012');
+            expect(filterPanel._getCQL('some_column')).toEqual('some_column >= 2012');
         });
 
         it('before', function() {
             setTestValue(filterPanel.toDate, '2014');
 
-            expect(filterPanel._getCQL()).toEqual('some_column <= 2014');
+            expect(filterPanel._getCQL("filterName")).toEqual('filterName <= 2014');
         });
 
         it('between', function() {
             setTestValue(filterPanel.fromDate, '2012');
             setTestValue(filterPanel.toDate, '2014');
 
-            expect(filterPanel._getCQL()).toEqual('some_column >= 2012 AND some_column <= 2014');
+            expect(filterPanel._getCQL()).toEqual('aWmsStartDateName >= 2012 AND aWmsEndDateName <= 2014');
+        });
+
+        it('single date attribute', function() {
+            setTestValue(filterPanel.fromDate, '2012');
+            setTestValue(filterPanel.toDate, '2014');
+
+            filterPanel.filter.wmsStartDateName = null;
+            expect(filterPanel._getCQL()).toEqual('some_column >= 2012 AND aWmsEndDateName <= 2014');
+
+            filterPanel.filter.wmsStartDateName = 'updatedName';
+            filterPanel.filter.wmsEndDateName = null;
+            expect(filterPanel._getCQL()).toEqual('updatedName >= 2012 AND some_column <= 2014');
+
         });
 
         var setTestValue = function(resettableDate, value) {

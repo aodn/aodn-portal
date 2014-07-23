@@ -29,9 +29,23 @@ $(document).ready(function() {
         }
     }
 
+    var showOrHideDateRangeFormElements = function() {
+        if ($("#possibleValuesType").val() != 'DateRange') {
+            $('.dateRangeFilterAdminElement').hide();
+            $('.downloadOnlyAdminElement').show();
+        }
+        else {
+            $('.dateRangeFilterAdminElement').show();
+            $('.downloadOnlyAdminElement').hide();
+        }
+    }
+
     $("#possibleValuesType").change(function() {
         showOrHidePossibleValues();
+        showOrHideDateRangeFormElements();
     });
 
     showOrHidePossibleValues();
+    showOrHideDateRangeFormElements();
+
 });

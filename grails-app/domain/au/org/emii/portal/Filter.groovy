@@ -41,7 +41,7 @@ class Filter implements Comparable {
         type(nullable: false, blank: false)
         layer(nullable: false)
         label(blank: false)
-        downloadOnly(nullable: false)
+        downloadOnly(nullable: true)
         possibleValues(validator: possibleValuesFieldValidator)
     }
 
