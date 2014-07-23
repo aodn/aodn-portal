@@ -27,6 +27,30 @@ class DownloadAuthService {
         }
     }
 
+    def isIpAddressTrusted(ipAddress) {
+        def ipAddressTrusted = false
+
+        grailsApplication.config.downloadAuth.trustedClients.each {
+            if (ipAddress.matches(it)) {
+                ipAddressTrusted = true
+                log.info "Allowing $ipAddress to download without challenge because it is trusted ('$it')"
+            }
+        }
+
+        // Check to see if IP is in rogueClients, treat it as a normal client
+        // if it is
+        if (ipAddressTrusted) {
+            grailsApplication.config.downloadAuth.rogueClients.each {
+                if (ipAddress.matches(it)) {
+                    ipAddressTrusted = false
+                    log.info "Challenging $ipAddress because it is a rogue '$it'"
+                }
+            }
+        }
+
+        return ipAddressTrusted
+    }
+
     def needsChallenge(ipAddress) {
 
         def needsChallenge = false
@@ -38,15 +62,13 @@ class DownloadAuthService {
             log.info "Seems like $ipAddress might be trying to abuse us, '$downloadCount' downloads in '$evictionPeriodMinutes' minutes"
             needsChallenge = true
         }
-
-        grailsApplication.config.downloadAuth.trustedClients.each {
-            if (ipAddress.matches(it)) {
-                needsChallenge = false
-                log.info "Allowing $ipAddress to download without challenge"
-            }
+        else {
+            // If we're not being abused by this IP address, we can just return
+            // here without checking trustedClients and rogueClients
+            return needsChallenge
         }
 
-        return needsChallenge
+        return ! isIpAddressTrusted(ipAddress)
     }
 
     def resetChallenge(session) {
@@ -60,6 +82,8 @@ class DownloadAuthService {
         if (ipAddressAccountingMap[ipAddress]) {
             downloadCount = ipAddressAccountingMap[ipAddress].size()
         }
+
+        return downloadCount
     }
 
     def isAbusingUs(ipAddress) {

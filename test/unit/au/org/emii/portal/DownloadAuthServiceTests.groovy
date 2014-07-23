@@ -19,7 +19,7 @@ class DownloadAuthServiceTests extends GrailsUnitTestCase {
         mockLogging DownloadAuthService
 
         service = new DownloadAuthService()
-        service.grailsApplication = [config: [downloadAuth: [trustedClients: [], maxAggregatedDownloadsInPeriod: 2, maxAggregatedDownloadsPeriodMinutes: 10]]]
+        service.grailsApplication = [config: [downloadAuth: [trustedClients: [], rogueClients: [], maxAggregatedDownloadsInPeriod: 2, maxAggregatedDownloadsPeriodMinutes: 10]]]
 
         service.simpleCaptchaService = new StubForSimpleCaptchaService()
     }
@@ -79,6 +79,20 @@ class DownloadAuthServiceTests extends GrailsUnitTestCase {
         boolean needsChallenge = service.needsChallenge("4.3.2.1")
 
         assertFalse needsChallenge
+    }
+
+    void testBeingAbusedFromRogueClientInTrustedSubnet() {
+        service.grailsApplication.config.downloadAuth.maxAggregatedDownloadsInPeriod = 0
+        service.grailsApplication.config.downloadAuth.trustedClients = [ /80\.80\.80\..+/ ]
+        service.grailsApplication.config.downloadAuth.rogueClients   = [ '80.80.80.1' ]
+
+        // Anyone in 80.80.80.0/24 should never face a challenge except for
+        // 80.80.80.1 which is a "rogue" client
+
+        assertFalse service.needsChallenge("80.80.80.18")
+        assertFalse service.needsChallenge("80.80.80.90")
+
+        assertTrue service.needsChallenge("80.80.80.1")
     }
 
     void testNotBeingAbusedButThenBeingAbused() {
