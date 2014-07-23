@@ -14,6 +14,10 @@ class GogoduckService extends AsyncDownloadService {
 
         def jobParameters = params.jobParameters
 
+        if (!jobParameters || "" == jobParameters) {
+            throw new Exception("No parameters passed to gogoduckService")
+        }
+
         _gogoduckConnection().post(
             [
                 body: _roundUpEndTime(jobParameters),

@@ -47,6 +47,19 @@ class GogoduckServiceTests extends GrailsUnitTestCase {
         assertEquals 1, roundUpEndTimeCount
     }
 
+    void testRegisterJobEmptyParams() {
+
+        def testParams = [jobParameters: ""]
+
+        // Verify an exception is thrown when empty params passed
+        try {
+            service.registerJob(testParams)
+            fail()
+        }
+        catch (Exception e) {
+        }
+    }
+
     void testGogoduckConnection() {
 
         def connection = service._gogoduckConnection()
