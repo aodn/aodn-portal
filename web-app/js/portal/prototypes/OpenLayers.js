@@ -106,7 +106,7 @@ OpenLayers.Layer.WMS.prototype.getWmsFeatureRequestUrl = function(serverUrl, lay
         serverUrl,
         layerName,
         outputFormat,
-        this.getVisualisationFilters()
+        this.getMapLayerFilters()
     );
 };
 
@@ -217,14 +217,15 @@ OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
     return filters.join(" AND ");
 };
 
-OpenLayers.Layer.WMS.prototype.getVisualisationFilters = function() {
+OpenLayers.Layer.WMS.prototype.getMapLayerFilters = function(featureRequest) {
 
     var filters = [];
 
     Ext.each(this.filterData, function(data) {
 
         var filterCQL = data.cql;
-        if (!data.downloadOnly) {
+
+        if (!data.downloadOnly || (featureRequest && data.type == "geom")) {
             if (data.visualisationCql != undefined) {
                 filterCQL = data.visualisationCql;
             }

@@ -224,6 +224,43 @@ describe('OpenLayers', function() {
                 expect(filterString.indexOf(OpenLayers.i18n('noFilterLabel'))).toEqual(-1);
             });
         });
+
+        describe('getMapLayerFilters filter information', function() {
+
+            it('returns text if there is a cql filters', function() {
+                openLayer.filterData = [{
+                    cql: "rararrr",
+                    enabled: true}];
+
+                var filterString = openLayer.getMapLayerFilters();
+                expect(filterString.indexOf("rararrr")).toEqual(0);
+            });
+
+            it('returns text if the cql filter is a geom when function is called with correct flag', function() {
+                openLayer.filterData = [{
+                    cql: "rararrr",
+                    enabled: true,
+                    type: "geom",
+                    downloadOnly: true}];
+
+                var filterString = openLayer.getMapLayerFilters();
+                expect(filterString.indexOf("rararrr")).toEqual(-1);
+                var filterString = openLayer.getMapLayerFilters(true);
+                expect(filterString.indexOf("rararrr")).toEqual(0);
+            });
+
+            it('returns nothing if the cql filter is download only', function() {
+                openLayer.filterData = [{
+                    cql: "rararrr",
+                    enabled: true,
+                    downloadOnly: true}];
+
+                var filterString = openLayer.getMapLayerFilters();
+                expect(filterString.indexOf("rararrr")).toEqual(-1);
+                var filterString = openLayer.getMapLayerFilters(true);
+                expect(filterString.indexOf("rararrr")).toEqual(-1);
+            });
+        });
     });
 
     describe('Geometry', function() {
