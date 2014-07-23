@@ -34,16 +34,18 @@ class AsyncDownloadController {
         params.remove('aggregatorService')
 
         try {
-            verifyChallengeResponse(params, request.getRemoteAddr())
+            def ipAddress = request.getRemoteAddr()
+
+            verifyChallengeResponse(params, ipAddress)
 
             AsyncDownloadService aggregatorService = getAggregatorService(aggregatorServiceString)
 
             def renderText = aggregatorService.registerJob(params)
 
             // Add accounting for that IP address
-            downloadAuthService.registerDownloadForAddress(ipAddress, "$aggregatorService")
+            downloadAuthService.registerDownloadForAddress(ipAddress, aggregatorServiceString)
 
-            render renderText
+            render "$aggregatorServiceString: $renderText"
         }
         catch (Exception e) {
             log.error "Problem registering new aggregator job with type '$aggregatorServiceString' and parameters: '$params'", e

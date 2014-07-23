@@ -20,13 +20,13 @@ class GogoduckServiceTests extends GrailsUnitTestCase {
         def postCallCount = 0
         def roundUpEndTimeCount = 0
 
-        def testParams = "{gogoduck_json}"
+        def testParams = [jobParameters: "{gogoduck_json}"]
         def testSuccessHandler = new Object()
         def testConnection = [
             post: { params, successHandler ->
 
                 postCallCount++
-                assertEquals testParams, params.body
+                assertEquals "{gogoduck_json}", params.body
                 assertEquals testSuccessHandler, successHandler
             }
         ]
