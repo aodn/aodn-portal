@@ -40,6 +40,11 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
     },
 
     setValue: function(momentDate, toMaxTime) {
+
+        if(typeof momentDate == 'string' ) {
+            momentDate = moment(momentDate);
+        }
+
         this.df.setValue(this.getLocalDateFromUtcValues(momentDate.utc().toDate()));
         this._setTimeValues(momentDate.utc(), this.extent, toMaxTime);
     },
