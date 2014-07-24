@@ -26,7 +26,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
                     }
                 }
             },
-            id: 'NcWmsPanel',
+            //id: 'NcWmsPanel',
             bodyCls: 'aodaacTab',
             autoScroll: true
         }, cfg);
@@ -38,22 +38,23 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         Portal.details.NcWmsPanel.superclass.initComponent.call(this);
 
         this._addLoadingInfo();
-        this._addSpatialConstraintDisplayPanel();
         this._addTemporalControls();
+        this._addSpatialConstraintDisplayPanel();
 
         this._initWithLayer();
     },
 
     _initWithLayer: function() {
+
         this.geoNetworkRecord = this.layer.parentGeoNetworkRecord;
 
+        this._showAllControls();
         this._clearDateTimeFields();
         this._attachTemporalEvents();
         this._attachSpatialEvents();
         this.layer.processTemporalExtent();
         this._removeLoadingInfo();
         this._applyFilterValuesFromMap();
-        this._showAllControls();
     },
 
     _showAllControls: function() {
@@ -67,7 +68,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _addLoadingInfo: function() {
-        this.loadingInfo = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
+        this.loadingInfo = this._newHtmlElement(OpenLayers.i18n('loadingSpinner', {resource: ""}));
         this.add(this.loadingInfo);
     },
 
@@ -76,7 +77,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.map
         });
-        this.add(this.spatialSubsetControlsPanel);
+        //this.add(this.spatialSubsetControlsPanel);
     },
 
     _attachSpatialEvents: function() {

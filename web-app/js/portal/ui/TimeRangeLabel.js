@@ -18,7 +18,19 @@ Portal.ui.TimeRangeLabel = Ext.extend(Ext.Container, {
         Portal.ui.TimeRangeLabel.superclass.constructor.call(this, config);
     },
 
+    initComponent: function() {
+
+        this.time = null;
+
+        this.on('afterrender', function() {
+            this.updateTime(this.time);
+        }, this);
+        Portal.ui.TimeRangeLabel.superclass.initComponent.call(this);
+    },
+
     updateTime: function(time) {
+
+        this.time = time;
         if (this.isVisible()) {
             this.update(String.format("<small><i><b>{0}</b>: {1}<br/></i></small>", OpenLayers.i18n('currentDateTimeLabel'), time));
         }
