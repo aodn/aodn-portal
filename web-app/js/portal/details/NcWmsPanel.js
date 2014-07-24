@@ -26,7 +26,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
                     }
                 }
             },
-            //id: 'NcWmsPanel',
             bodyCls: 'aodaacTab',
             autoScroll: true
         }, cfg);
@@ -38,8 +37,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         Portal.details.NcWmsPanel.superclass.initComponent.call(this);
 
         this._addLoadingInfo();
-        this._addTemporalControls();
         this._addSpatialConstraintDisplayPanel();
+        this._addTemporalControls();
 
         this._initWithLayer();
     },
@@ -55,6 +54,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.layer.processTemporalExtent();
         this._removeLoadingInfo();
         this._applyFilterValuesFromMap();
+        this._showAllControls();
     },
 
     _showAllControls: function() {
@@ -77,7 +77,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.map
         });
-        //this.add(this.spatialSubsetControlsPanel);
+        this.add(this.spatialSubsetControlsPanel);
     },
 
     _attachSpatialEvents: function() {
