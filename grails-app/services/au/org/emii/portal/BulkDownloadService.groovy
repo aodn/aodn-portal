@@ -88,7 +88,8 @@ class BulkDownloadService {
         }
         catch (Exception e) {
 
-            log.warn "Error adding file to download archive. URL: '$url'", e
+            log.warn "Error adding file to download archive. URL: '$url'"
+            log.debug "Caused by:", e
 
             if (!streamFromUrl) {
                 def filenameInArchive = filenameToUse + '.failed'
