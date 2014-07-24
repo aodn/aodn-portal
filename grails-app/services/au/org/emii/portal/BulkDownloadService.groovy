@@ -18,6 +18,10 @@ class BulkDownloadService {
     static scope = "request"
 
     static final def FILENAME_FROM_URL_REGEX = ~"(?:\\w*://).*/([\\w_-]*)(\\.[^&?/#]+)?" // http://aodn.org.au/world_map.gif -> ((world_map) (.gif))
+    static final def INDEX_MATCHES = 0
+    static final def INDEX_FILENAME = 1
+    static final def INDEX_EXTENSION = 2
+    static final def FILENAME_TO_USE_WHEN_UNKNOWN = 'file'
 
     def report
     def uniqueFilenameGenerator
@@ -112,12 +116,19 @@ class BulkDownloadService {
 
     def _filenamePartsFromUrl = { url ->
 
-        def matches = url =~ FILENAME_FROM_URL_REGEX
+        def matcher = url =~ FILENAME_FROM_URL_REGEX
 
-        return [
-            matches[0][1], // Filename
-            matches[0][2] ?: "" // Extension
-        ]
+        if (matcher) {
+            def matches = matcher[INDEX_MATCHES]
+
+            return [
+                matches[INDEX_FILENAME],
+                matches[INDEX_EXTENSION] ?: ""
+            ]
+        }
+        else {
+            return [FILENAME_TO_USE_WHEN_UNKNOWN, ""]
+        }
     }
 
     def _addDownloadReportToArchive = { ->

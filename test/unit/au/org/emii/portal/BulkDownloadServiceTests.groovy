@@ -25,6 +25,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
         mockLogging BulkDownloadService
 
         service = new BulkDownloadService()
+        service.uniqueFilenameGenerator = new UniqueFilenameGenerator()
     }
 
     @Override
@@ -198,6 +199,34 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
         assertEquals 2, successfulEntries
         assertEquals 1, failedEntries
+
+        responseStream.close()
+        service._closeStream()
+    }
+
+    void testAddFileEntryInvalidUrl() {
+
+        def testFile = 'invalid URL'
+
+        service.report = [
+            addSuccessfulFileEntry: { url, filename, size -> fail "Should not get called" },
+            addFailedFileEntry: { url, filename, result ->
+                assertTrue result.contains(url)
+            }
+        ]
+
+        def responseStream = new ByteArrayOutputStream()
+        service._createZipStream(responseStream)
+        service._addFileEntry testFile
+        service._addFileEntry testFile
+
+        assertZipEntriesValid(
+            responseStream,
+            [
+                [name: 'file.failed', size: 0],
+                [name: 'file(2).failed', size: 0]
+            ]
+        )
 
         responseStream.close()
         service._closeStream()
