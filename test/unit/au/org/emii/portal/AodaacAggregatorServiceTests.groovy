@@ -115,7 +115,7 @@ class AodaacAggregatorServiceTests extends GrailsUnitTestCase {
 
         assertEquals 0, AodaacJob.count()
 
-        service.createJob(testParams)
+        service.registerJob(testParams)
 
         assertEquals 1, AodaacJob.count()
 

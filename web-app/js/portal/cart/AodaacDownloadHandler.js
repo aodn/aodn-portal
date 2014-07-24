@@ -11,6 +11,8 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     AODAAC_DEFAULT_LON_START: 0, // Works around limitation in AODAAC
 
+    ASYNC_DOWNLOAD_URL: 'asyncDownload?aggregatorService=aodaac&',
+
     getDownloadOptions: function() {
 
         var downloadOptions = [];
@@ -41,12 +43,18 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         return function(collection, handlerParams) {
 
-            return _this._buildAodaacUrl(
+            var aodaacUrl = _this._buildAodaacUrl(
                 collection.ncwmsParams,
                 _this._resourceName(),
                 'nc',
                 handlerParams.emailAddress
             );
+
+            if (handlerParams.challengeResponse) {
+                aodaacUrl += String.format("&challengeResponse={0}", encodeURIComponent(handlerParams.challengeResponse));
+            }
+
+            return aodaacUrl;
         };
     },
 
@@ -64,7 +72,7 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
             notificationEmailAddress: notificationEmailAddress
         };
 
-        return 'aodaac/createJob?' + this._makeQueryString(args);
+        return this.ASYNC_DOWNLOAD_URL + this._makeQueryString(args);
     },
 
     _makeQueryString: function(args) {

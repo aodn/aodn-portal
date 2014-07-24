@@ -9,6 +9,8 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
+    ASYNC_DOWNLOAD_URL: 'asyncDownload?aggregatorService=gogoduck&',
+
     getDownloadOptions: function() {
 
         var downloadOptions = [];
@@ -76,6 +78,6 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         var paramsAsJson = Ext.util.JSON.encode(args);
 
-        return String.format('gogoduck/registerJob?jobParameters={0}', encodeURIComponent(paramsAsJson));
+        return String.format(this.ASYNC_DOWNLOAD_URL + 'jobParameters={0}', encodeURIComponent(paramsAsJson));
     }
 });

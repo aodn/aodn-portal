@@ -72,7 +72,7 @@ describe('Portal.cart.AodaacDownloadHandler', function () {
 
         it('builds the correct URL', function() {
 
-            expect(url).toStartWith('aodaac/createJob?');
+            expect(url).toStartWith(Portal.cart.AodaacDownloadHandler.prototype.ASYNC_DOWNLOAD_URL);
             expect(url).toHaveParameterWithValue('dateRangeStart', '2000-01-01T01:01:01.000Z');
             expect(url).toHaveParameterWithValue('dateRangeEnd', '2014-12-23T23:59:59.000Z');
             expect(url).toHaveParameterWithValue('latitudeRangeStart','-42');

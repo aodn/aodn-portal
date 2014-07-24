@@ -27,26 +27,43 @@ class DownloadAuthService {
         }
     }
 
-    def needsChallenge(ipAddress) {
+    def isIpAddressTrusted(ipAddress) {
+        def ipAddressTrusted = false
 
-        def needsChallenge = false
-
-        if (isAbusingUs(ipAddress)) {
-            // downloadCount is the amount of already requested download + 1
-            // which is the download the user has just requested
-            def downloadCount         = downloadCountForIpAddress(ipAddress) + 1
-            log.info "Seems like $ipAddress might be trying to abuse us, '$downloadCount' downloads in '$evictionPeriodMinutes' minutes"
-            needsChallenge = true
-        }
-
-        grailsApplication.config.downloadAuth.trustedClients.each {
+        grailsApplication.config.downloadAuth.whitelistClients.each {
             if (ipAddress.matches(it)) {
-                needsChallenge = false
-                log.info "Allowing $ipAddress to download without challenge"
+                ipAddressTrusted = true
+                log.info "Allowing $ipAddress to download without challenge because it is trusted ('$it')"
             }
         }
 
-        return needsChallenge
+        // Check to see if IP is in blacklistClients, treat it as a normal client
+        // if it is
+        if (ipAddressTrusted) {
+            grailsApplication.config.downloadAuth.blacklistClients.each {
+                if (ipAddress.matches(it)) {
+                    ipAddressTrusted = false
+                    log.info "Challenging $ipAddress because it is a rogue '$it'"
+                }
+            }
+        }
+
+        return ipAddressTrusted
+    }
+
+    def needsChallenge(ipAddress) {
+
+        if (isAbusingUs(ipAddress)) {
+            def downloadCount = downloadCountForIpAddress(ipAddress) + 1
+            log.info "Seems like $ipAddress might be trying to abuse us, '$downloadCount' downloads in '$evictionPeriodMinutes' minutes"
+        }
+        else {
+            // If we're not being abused by this IP address, we can just return
+            // here without checking whitelistClients and blacklistClients
+            return false
+        }
+
+        return ! isIpAddressTrusted(ipAddress)
     }
 
     def resetChallenge(session) {
@@ -60,6 +77,8 @@ class DownloadAuthService {
         if (ipAddressAccountingMap[ipAddress]) {
             downloadCount = ipAddressAccountingMap[ipAddress].size()
         }
+
+        return downloadCount
     }
 
     def isAbusingUs(ipAddress) {

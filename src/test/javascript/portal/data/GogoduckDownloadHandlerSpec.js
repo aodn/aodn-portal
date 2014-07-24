@@ -58,7 +58,7 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
         var testCollection;
         var testHandlerParams;
         var url;
-        var expectedUrlStart = 'gogoduck/registerJob?jobParameters=';
+        var expectedUrlStart = Portal.cart.GogoduckDownloadHandler.prototype.ASYNC_DOWNLOAD_URL;
         var json;
 
         beforeEach(function() {

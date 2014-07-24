@@ -134,9 +134,12 @@ allowedProxyHosts = [
 
 downloadAuth {
     // Never show a captcha to those IP addresses
-    trustedClients = [
-        '131.217.38..+'
+    whitelistClients = [
+        '127.0.0.1'
     ]
+
+    // Treat those as usual even if they're whitelisted
+    blacklistClients = []
 
     // Allow users to have to 2 aggregated downloads every 10 minutes without
     // displaying a challenge (captcha)

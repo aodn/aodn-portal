@@ -4,13 +4,19 @@ import grails.converters.JSON
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.HttpResponseException
 
-class GogoduckService {
+class GogoduckService extends AsyncDownloadService {
 
     static transactional = true
 
     def grailsApplication
 
-    void registerJob(jobParameters) throws HttpResponseException {
+    String registerJob(params) throws HttpResponseException {
+
+        def jobParameters = params.jobParameters
+
+        if (!jobParameters) {
+            throw new Exception("No parameters passed to gogoduckService")
+        }
 
         _gogoduckConnection().post(
             [
@@ -19,6 +25,8 @@ class GogoduckService {
             ],
             successHandler
         )
+
+        return "GogoDuck job registered"
     }
 
     def _gogoduckConnection() {
@@ -29,7 +37,6 @@ class GogoduckService {
     }
 
     def successHandler = { response, reader ->
-
         log.debug "GoGoDuck response: ${response.statusLine}"
     }
 
