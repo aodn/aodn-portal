@@ -41,7 +41,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
     setValue: function(momentDate, toMaxTime) {
 
-        if(typeof momentDate == 'string' ) {
+        if (typeof momentDate == 'string') { // todo - Temporary fix for an ncWMS date problem
             momentDate = moment(momentDate);
         }
 
