@@ -110,20 +110,6 @@ describe("Portal.ui.FeatureInfoPopup", function()
         });
     });
 
-    describe("_handleLayers", function(){
-
-        it("calls _setMetadataFirst when no metadata", function(){
-
-            featureInfoPopup._setMetadataFirst = function() { return true };
-            featureInfoPopup._requestFeatureInfo = function() { return true };
-
-            spyOn(featureInfoPopup, '_setMetadataFirst');
-
-            featureInfoPopup._handleLayers();
-            expect(featureInfoPopup._setMetadataFirst).toHaveBeenCalled();
-        });
-    });
-
     describe("Popup maximise behaviour", function() {
 
         it('Checks that setSize() is called on maximise', function() {

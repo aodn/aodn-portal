@@ -8,7 +8,7 @@ describe('Portal.ui.openlayers.layer.NcWMS', function() {
     describe('getCqlForTemporalExtent', function() {
         it('constructs CQL', function() {
 
-            var ncwmsLayer = new OpenLayers.Layer.NcWMS('name', 'url', {}, {}, {});
+            var ncwmsLayer = mockNcwmsLayer();
             var startTime = moment('2000-01-01T01:01:01Z');
             var endTime = moment('2001-01-01T01:01:01Z');
 
@@ -22,4 +22,45 @@ describe('Portal.ui.openlayers.layer.NcWMS', function() {
             );
         });
     });
+
+    describe('_setMetadata', function() {
+
+        it('called from initialize', function() {
+            spyOn(OpenLayers.Layer.NcWMS.prototype, '_setMetadata');
+
+            var ncwmsLayer = mockNcwmsLayer();
+
+            expect(ncwmsLayer._setMetadata).toHaveBeenCalled();
+        });
+
+        it('_getMetadataUrl generates URL', function() {
+            var ncwmsLayer = mockNcwmsLayer();
+
+            expect(ncwmsLayer._getMetadataUrl()).toEqual(
+                'http://ncwms.aodn.org.au/ncwms/wms?layerName=ncwmsLayerName&REQUEST=GetMetadata&item=layerDetails'
+            );
+        });
+
+        it('_setMetadata calls URL', function() {
+            spyOn(OpenLayers.Layer.NcWMS.prototype, '_getMetadataUrl').andReturn('mockedMetadataUrl');
+            spyOn(Ext.ux.Ajax, 'proxyRequest');
+
+            var ncwmsLayer = mockNcwmsLayer();
+
+            expect(ncwmsLayer._getMetadataUrl).toHaveBeenCalled();
+
+            var ajaxParams = Ext.ux.Ajax.proxyRequest.mostRecentCall.args[0];
+            expect(ajaxParams.url).toBe("mockedMetadataUrl");
+        });
+    });
+
+    function mockNcwmsLayer() {
+        return new OpenLayers.Layer.NcWMS(
+            'someLayer',
+            'http://ncwms.aodn.org.au/ncwms/wms',
+            { LAYERS: 'ncwmsLayerName' },
+            {},
+            {}
+        );
+    }
 });
