@@ -44,14 +44,6 @@ OpenLayers.Layer.WMS.prototype.adjustBounds = function(bounds) {
 };
 
 // Modifications to OpenLayers class prototypes
-OpenLayers.Layer.WMS.prototype.isNcwms = function() {
-    if (this.server) {
-        return ["NCWMS-1.1.1", "NCWMS-1.3.0", "THREDDS"].indexOf(this.server.type) >= 0;
-    }
-
-    return false;
-};
-
 OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint, overrideParams) {
     var baseFeatureInfoParams = {
         REQUEST: "GetFeatureInfo",
@@ -97,16 +89,6 @@ OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(serverUrl, layerN
         layerName,
         outputFormat,
         this.getDownloadFilter()
-    );
-};
-
-OpenLayers.Layer.WMS.prototype.getWmsFeatureRequestUrl = function(serverUrl, layerName, outputFormat) {
-
-    return this._buildGetFeatureRequestUrl(
-        serverUrl,
-        layerName,
-        outputFormat,
-        this.getMapLayerFilters()
     );
 };
 
