@@ -7,6 +7,8 @@
 
 Ext.namespace('Portal.cart');
 
+var $downloaderLink;
+
 Portal.cart.Downloader = Ext.extend(Object, {
     download: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
 
@@ -67,7 +69,14 @@ Portal.cart.Downloader = Ext.extend(Object, {
 
     _openDownload: function(proxyUrl) {
         log.debug('Downloading using URL: ' + proxyUrl);
-        window.location = proxyUrl;
+
+        // Download function shamelessly stolen from:
+        // http://stackoverflow.com/a/12671023/1920729
+        if ($downloaderLink && $downloaderLink.length > 0) {
+            $downloaderLink.attr('src', proxyUrl);
+        } else {
+            $downloaderLink = $('<iframe>', { id:'downloaderLink', src:proxyUrl }).hide().appendTo('body');
+        }
     },
 
     _downloadAsynchronously: function(collection, downloadUrl, params) {
