@@ -88,7 +88,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 _this._resourceHref(),
                 _this._layerName(),
                 OpenLayers.Layer.DOWNLOAD_FORMAT_CSV,
-                wmsLayer.getMapLayerFilters()
+                wmsLayer.getMapLayerFilters(true)
             );
         };
     },

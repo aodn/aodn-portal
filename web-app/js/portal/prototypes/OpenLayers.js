@@ -217,7 +217,7 @@ OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
     return filters.join(" AND ");
 };
 
-OpenLayers.Layer.WMS.prototype.getMapLayerFilters = function(featureRequest) {
+OpenLayers.Layer.WMS.prototype.getMapLayerFilters = function(includeGeomFilter) {
 
     var filters = [];
 
@@ -225,7 +225,7 @@ OpenLayers.Layer.WMS.prototype.getMapLayerFilters = function(featureRequest) {
 
         var filterCQL = data.cql;
 
-        if (!data.downloadOnly || (featureRequest && data.type == "geom")) {
+        if (!data.downloadOnly || (includeGeomFilter && data.type == "geom")) {
             if (data.visualisationCql != undefined) {
                 filterCQL = data.visualisationCql;
             }
