@@ -131,7 +131,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         var cql = '';
 
         if (this._isFromFieldUsed()) {
-            cql = String.format("{0} >= {1}", "Start Date", this._getDateHumanString(this.fromDate));
+            cql = String.format("{0} >= {1}", "End Date", this._getDateHumanString(this.fromDate));
         }
 
         if (this._isFromFieldUsed() && this._isToFieldUsed()) {
@@ -139,7 +139,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
 
         if (this._isToFieldUsed()) {
-            cql += String.format("{0} <= {1}", "End Date", this._getDateHumanString(this.toDate));
+            cql += String.format("{0} <= {1}", "Start Date", this._getDateHumanString(this.toDate));
         }
 
         return cql;
@@ -161,7 +161,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         var name = "";
 
         if (this._isFromFieldUsed()) {
-            name = this._getValidName(filterName,this.filter.wmsStartDateName);
+            name = this._getValidName(filterName,this.filter.wmsEndDateName);
             cql = String.format("{0} >= {1}", name , this._getDateString(this.fromDate));
         }
 
@@ -170,7 +170,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
 
         if (this._isToFieldUsed()) {
-            name = this._getValidName(filterName,this.filter.wmsEndDateName);
+            name = this._getValidName(filterName,this.filter.wmsStartDateName);
             cql += String.format("{0} <= {1}", name, this._getDateString(this.toDate));
         }
 
