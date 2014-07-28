@@ -21,7 +21,7 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
                 },
                 setLayerAndFilter: noOp
             });
-            
+
             var mockDate = function() {
                 return {
                     getValue: function() {
@@ -32,7 +32,7 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
                     }
                 }
             };
-            
+
             filterPanel.fromDate = mockDate();
             filterPanel.toDate = mockDate();
 
@@ -55,8 +55,9 @@ describe("Portal.filter.DateRangeFilterPanelSpec", function() {
             setTestValue(filterPanel.fromDate, '2000');
             setTestValue(filterPanel.toDate, '2013');
 
+            // To capture any data that falls within the range the end date is compared to the start of the range, and the start date is compared to the end of the range
             expect(filterPanel._getCQL()).toEqual(
-                'wms_start_column >= 2000 AND wms_end_column <= 2013'
+                'wms_end_column >= 2000 AND wms_start_column <= 2013'
             );
         });
 
