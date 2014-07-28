@@ -94,7 +94,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
                             </p>
 
-                            <div class="buildInfo">${portalBuildInfo}</div>
+                            <div class="buildInfo"><buildInfo:summary /></div>
                         </div>
                     </div>
                 </div>
