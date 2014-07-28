@@ -47,18 +47,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
         this.geoNetworkRecord = this.layer.parentGeoNetworkRecord;
 
-        this._showAllControls();
         this._clearDateTimeFields();
         this._attachTemporalEvents();
         this._attachSpatialEvents();
         this.layer.processTemporalExtent();
         this._removeLoadingInfo();
         this._applyFilterValuesFromMap();
-        this._showAllControls();
-    },
-
-    _showAllControls: function() {
-        this.temporalControls.show();
     },
 
     _removeLoadingInfo: function() {
