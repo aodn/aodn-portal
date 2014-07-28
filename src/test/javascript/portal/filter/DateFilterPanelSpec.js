@@ -104,7 +104,8 @@ describe("Portal.filter.DateFilterPanel", function() {
             setTestValue(filterPanel.fromDate, '2012');
             setTestValue(filterPanel.toDate, '2014');
 
-            expect(filterPanel._getCQL()).toEqual('aWmsEndDateName >= 2012 AND aWmsStartDateName <= 2014'); // To capture any data that falls within the range the end date is compared to the start of the range, and the start date is compared to the end of the range
+            // To capture any data that falls within the range the end date is compared to the start of the range, and the start date is compared to the end of the range
+            expect(filterPanel._getCQL()).toEqual('aWmsEndDateName >= 2012 AND aWmsStartDateName <= 2014');
         });
 
         it('single date attribute', function() {
