@@ -1,4 +1,3 @@
-
 <%--
 
  Copyright 2012 IMOS
@@ -77,11 +76,10 @@
 
           </ul>
           <br />
-        <b>Portal project build info</b><br />
-        Instance name: ${ grailsApplication.config.portal.instance.name ?: '<span style="color: red;">None supplied</span>' }<br />
-        Environment: ${Environment.current.name}<br />
-        Build date: ${grailsApplication.metadata['app.build.date'] ?: "Unk."}<br />
-        App version: ${grailsApplication.metadata['app.version']}
+
+          <b>Portal project build info</b>
+          <buildInfo:detailed />
+
         </div>
     </body>
 </html>

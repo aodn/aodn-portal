@@ -14,6 +14,9 @@ eventCreateWarStart = { warname, stagingDir ->
 
     includeTargets << new File("${basedir}/scripts/CollatePortalJavaScriptSource.groovy")
     collatePortalJavaScriptFiles()
+
+    includeTargets << new File("${basedir}/scripts/IncludeBuildInfoInWar.groovy")
+    includeBuildInfoInWar()
 }
 
 eventCompileStart = { kind ->

@@ -14,6 +14,8 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title>${cfg?.name}</title>
 
+        <buildInfo:comment />
+
         <g:render template="/js_includes"></g:render>
         <g:render template="/public_theme_includes"></g:render>
 
@@ -94,7 +96,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
                             </p>
 
-                            <div class="buildInfo">${portalBuildInfo}</div>
+                            <div class="buildInfo"><buildInfo:summary /></div>
                         </div>
                     </div>
                 </div>
