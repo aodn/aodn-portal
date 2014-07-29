@@ -17,21 +17,29 @@ class BuildInfoTagLib {
     def portalInstance
 
     def comment = { attrs, body ->
-        out << "<!--\n"
-        detailed.call(attrs, body)
-        out << "\n-->"
+        out << "<!--$detailedInfo-->"
     }
 
     def summary = { attrs, body ->
-        out << "${portalInstance.name()} Portal v${grailsApplication.metadata.'app.version'}, build date: ${grailsApplication.metadata.'app.build.date'}"
+        out << "${portalInstance.name()} Portal v${metadata.'app.version'}, build date: ${metadata.'app.build.date'}"
     }
 
     def detailed = { atts, body ->
-        out << """Instance name: ${portalInstance.name()} <br />
-Environment: ${Environment.current.name} <br />
-App version: ${grailsApplication.metadata.'app.version'} <br />
-Build date: ${grailsApplication.metadata.'app.build.date'} <br />
-Build number:  ${grailsApplication.metadata.'app.build.number'} <br />
-Git ref: ${grailsApplication.metadata.'app.build.scmRevision'} <br />"""
+        out << detailedInfo.replace('\n', '<br />\n')
+    }
+
+    def getDetailedInfo() {
+        """
+            Instance name: ${portalInstance.name()}
+            Environment: ${Environment.current.name}
+            App version: ${metadata.'app.version'}
+            Build date: ${metadata.'app.build.date'}
+            Build number: ${metadata.'app.build.number'}
+            Git ref: ${metadata.'app.build.scmRevision'}
+        """
+    }
+
+    def getMetadata() {
+        grailsApplication.metadata
     }
 }

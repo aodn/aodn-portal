@@ -77,7 +77,7 @@
           </ul>
           <br />
 
-          <b>Portal project build info</b><br />
+          <b>Portal project build info</b>
           <buildInfo:detailed />
 
         </div>
