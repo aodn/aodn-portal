@@ -163,7 +163,6 @@ describe('Portal.details.NcWmsPanel', function() {
 
     function _applyCommonSpies(panel) {
         var _panel = panel || ncwmsPanel;
-        spyOn(_panel, '_showAllControls');
         spyOn(_panel, '_onDateSelected');
         spyOn(_panel, '_setBounds');
     }
