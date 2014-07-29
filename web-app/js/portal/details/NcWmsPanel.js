@@ -26,7 +26,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
                     }
                 }
             },
-            id: 'NcWmsPanel',
             bodyCls: 'aodaacTab',
             autoScroll: true
         }, cfg);
@@ -45,6 +44,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _initWithLayer: function() {
+
         this.geoNetworkRecord = this.layer.parentGeoNetworkRecord;
 
         this._clearDateTimeFields();
@@ -53,11 +53,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.layer.processTemporalExtent();
         this._removeLoadingInfo();
         this._applyFilterValuesFromMap();
-        this._showAllControls();
-    },
-
-    _showAllControls: function() {
-        this.temporalControls.show();
     },
 
     _removeLoadingInfo: function() {
@@ -67,7 +62,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _addLoadingInfo: function() {
-        this.loadingInfo = this._newHtmlElement("<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\">&nbsp;<i>Loading...</i>");
+        this.loadingInfo = this._newHtmlElement(OpenLayers.i18n('loadingSpinner', {resource: ""}));
         this.add(this.loadingInfo);
     },
 

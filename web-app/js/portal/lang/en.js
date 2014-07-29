@@ -146,7 +146,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerExistsTitle: 'Add data collection',
     layerExistsMsg: 'This data collection has already been added to the map',
 
-    // InfoPanel.js
     loadingMessage: 'Loading ...',
     noMetadataMessage: 'No information available at this time.',
 
