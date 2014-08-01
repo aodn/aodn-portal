@@ -15,8 +15,8 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         var contentPanel = new Ext.Panel({
             html: OpenLayers.i18n(
                 'downloadConfirmationWindowContent', {
-                    downloadDatasetHelpUrl: Portal.app.appConfig['help.downloadDatasetUrl'],
-                    helpUrl: Portal.app.appConfig['help.url']
+                    downloadDatasetHelpUrl: Portal.app.appConfig.help.downloadDatasetUrl,
+                    helpUrl: Portal.app.appConfig.help.url
                 }
             ),
             width: 450,

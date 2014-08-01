@@ -125,8 +125,8 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
                 });
 
                 var expectPythonDownloadHandler = function(expected) {
-                    Ext.namespace('Portal.app.appConfig');
-                    Portal.app.appConfig['featureToggles.pythonDownload'] = expected ? "true": "false";
+                    Ext.namespace('Portal.app.appConfig.featureToggles');
+                    Portal.app.appConfig.featureToggles.pythonDownload = expected;
 
                     geoNetworkRecordStore = new Portal.data.GeoNetworkRecordStore();
                     geoNetworkRecordStore.loadData(doc);

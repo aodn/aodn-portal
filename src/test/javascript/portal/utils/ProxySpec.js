@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2013 IMOS
  *
@@ -9,7 +8,7 @@
 describe("Portal.util.Proxy", function() {
 
     it('proxy requests disabled', function() {
-        Portal.app.appConfig['proxyWmsRequests'] = "false";
+        Portal.app.appConfig.proxyWmsRequests = false;
 
         var url = "http://geoserver-123.aodn.org.au/geoserver/wms?LAYER=cake";
         var proxiedUrl = Portal.utils.Proxy.proxy(url);
@@ -17,7 +16,7 @@ describe("Portal.util.Proxy", function() {
     });
 
     it('proxy requests enabled', function() {
-        Portal.app.appConfig['proxyWmsRequests'] = "true";
+        Portal.app.appConfig.proxyWmsRequests = true;
 
         var url = "http://geoserver-123.aodn.org.au/geoserver/wms?LAYER=cake";
         var proxiedUrl = Portal.utils.Proxy.proxy(url);

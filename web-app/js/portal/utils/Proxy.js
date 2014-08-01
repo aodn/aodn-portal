@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -12,7 +11,7 @@ Ext.namespace('Portal.utils.Proxy');
 Portal.utils.Proxy.proxyURL = "proxy?url=";
 
 Portal.utils.Proxy.proxy = function(url) {
-    if ("true" == Portal.app.appConfig['proxyWmsRequests']) {
+    if (Portal.app.appConfig.proxyWmsRequests) {
         return this.proxyURL + encodeURIComponent(url);
     }
     else {

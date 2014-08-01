@@ -29,6 +29,22 @@ class HomeController {
     }
 
     def config = {
-        render(contentType: "text/json", text: grailsApplication.config.toProperties() as JSON)
+
+        // Workaround a problem converting to JSON (trying to convert the filtered 
+        // items results in an exception - not exactly sure what's going on there
+        // but we don't need these items' config on the front-end, so let's just
+        // not do it).
+        def filteredConfig = grailsApplication.config.findAll {
+
+            k, v ->
+
+            ![
+                "aodaacAggregator",
+                "log4j",
+
+             ].contains(k)
+        }
+
+        render(contentType: "text/json", text: filteredConfig as JSON)
     }
 }
