@@ -8,6 +8,7 @@
 package au.org.emii.portal
 
 import grails.converters.JSON
+import org.hibernate.mapping.Array
 
 class HomeController {
 

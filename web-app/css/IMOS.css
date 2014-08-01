@@ -46,6 +46,9 @@ body, html, td {
 h2 {
     margin-bottom: 14px;
 }
+h3 {
+    white-space: pre-wrap;
+}
 
 #landingBigButton {
     background: #ffba66; /* Old browsers */
@@ -150,9 +153,8 @@ cart-title,
 
 #toplinks a {
     color: #FFFFFF;
-    font-size: 13px;
-    font-weight: bold;
-    margin: 0px 2px 0px 3px;
+    font-size: 16px;
+
     text-decoration: none;
 }
 
@@ -228,6 +230,14 @@ input, select, textarea {
 
 #rightHomePanel {
     background-color: white;
+}
+
+.mainToolBar {
+    box-shadow: 0 -15px 15px -15px #ccc;
+}
+.mainToolBarFooter {
+    margin-right: 20px;
+    font-size: 12px! important;
 }
 
 .footer p {

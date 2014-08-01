@@ -72,7 +72,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
                     <div class="footer">
                         <div class="landingSubLeft">
-                            <img class="miniSpacer" src="http://static.emii.org.au/images/logo/utas/UTAS_MONO_190w.png" alt="UTAS logo" />
+                            <img  src="http://static.emii.org.au/images/logo/utas/UTAS_MONO_190w.png" alt="UTAS logo" />
                             <img class="miniSpacer" src="http://static.emii.org.au/images/logo/NCRIS_Initiative_stacked200.png" width="140" alt="DIISTRE logo" />
                             <br />
                             <a class="noUnderline" href="http://twitter.com/AusOceanDataNet" target="_blank">
@@ -84,17 +84,13 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
                         </div>
 
                         <div class="landingSubRight">
-                            <p>IMOS data is made freely available under the <a title="Conditions of Use" href="http://imos.org.au/fileadmin/user_upload/shared/IMOS%20General/documents/internal/IMOS_Policy_documents/Policy-Acknowledgement_of_use_of_IMOS_data_11Jun09.pdf" target="_blank">Conditions of Use</a>. <br />Both IMOS data and this site are licensed under a <a target="_blank" href="http://creativecommons.org/licenses/by/2.5/au/" title="Creative Commons License" class="external"><span>Creative Commons Attribution 2.5 Australia License</span>
-                            </a> <a target="_blank" href="http://creativecommons.org/licenses/by/2.5/au/" title="Creative Commons License" class="external"><img src="${resource(dir: 'images', file: 'by.png')}" />
-                            </a></p>
-
-                            <p>You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it. If you have any concerns about the veracity of the data, please make enquiries via <a href="mailto:info@emii.org.au">info@emii.org.au</a> to be directed to the data custodian.<br />
-
+                            <p>
                                 IMOS is a national collaborative research infrastructure, supported by
-                                Australian Government. It is led by University of Tasmania in partnership
+                                Australian Government. It is led by <a target="_blank" title="UTAS home page" href="http://www.utas.edu.au/">University of Tasmania</a> in partnership
                                 with the Australian marine & climate science community.
-
                             </p>
+
+                           ${grailsApplication.config.portal.footer.externalLinksHtml}
 
                             <div class="buildInfo"><buildInfo:summary /></div>
                         </div>
