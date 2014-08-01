@@ -160,6 +160,10 @@ openId {
     enableUserSuppliedProvider = true
 }
 
+featureToggles {
+    pythonDownload = false
+}
+
 // set per-environment serverURL stem for creating absolute links
 def env = System.getenv()
 
@@ -176,6 +180,8 @@ environments {
         geonetwork.url = env['GEONETWORK_URL'] ?: "http://catalogue-rc.aodn.org.au/geonetwork"
 
         grails.mail.disabled = true
+        
+        featureToggles.pythonDownload = true
     }
 
     test {

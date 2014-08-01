@@ -81,21 +81,29 @@ Portal.data.GeoNetworkRecord = function() {
             var allLinks = convertXmlToLinks(v, record);
 
             var protocolHandlerConstructors = {
-                'OGC:WFS-1.0.0-http-get-capabilities': Portal.cart.WfsDownloadHandler,
+                'OGC:WFS-1.0.0-http-get-capabilities': [
+                    Portal.cart.WfsDownloadHandler
+                ],
                 'IMOS:AGGREGATION--aodaac': Portal.cart.AodaacDownloadHandler,
                 'IMOS:AGGREGATION--bodaac': Portal.cart.BodaacDownloadHandler,
                 'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckDownloadHandler
             };
 
+            if (Portal.app.appConfig['featureToggles.pythonDownload'] === "true") {
+                protocolHandlerConstructors['OGC:WFS-1.0.0-http-get-capabilities'].push(Portal.cart.PythonDownloadHandler);
+            }
+
             var applicableDownloadOptions = [];
 
             Ext.each(allLinks, function(link) {
-                var constructor = protocolHandlerConstructors[link.protocol];
+                var constructors = protocolHandlerConstructors[link.protocol];
 
-                if (constructor) {
-                    applicableDownloadOptions.push(
-                        new constructor(link)
-                    );
+                if (constructors) {
+                    Ext.each(constructors, function(constructor) {
+                        applicableDownloadOptions.push(
+                            new constructor(link)
+                        );
+                    })
                 }
             }, this);
 

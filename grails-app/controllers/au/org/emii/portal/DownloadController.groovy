@@ -38,6 +38,13 @@ class DownloadController extends RequestProxyingController {
         )
     }
 
+    def downloadPythonSnippet = {
+        response.setContentType("text/plain")
+        response.setHeader('Content-Disposition', "Attachment;Filename=\"${params.downloadFilename}\"")       
+        response.outputStream << g.render(template: "pythonSnippet.py", model: [ collectionUrl: params.url])
+        return
+    }
+
     def downloadNetCdfFilesForLayer = {
 
         def (fieldName, prefixToRemove, newUrlBase) = _loadCommonFields(params)
