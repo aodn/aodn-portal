@@ -75,6 +75,22 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         assertEquals 1, performProxyingCalledCount
     }
 
+    void testDownloadPythonSnippet() {
+        controller.params.url = "http://someurl"
+        def renderParams
+
+        controller.g.metaClass.render = {
+            Map theRenderParams ->
+            renderParams = theRenderParams
+        }
+        controller.downloadPythonSnippet()
+        
+
+        assertEquals("text/plain", mockResponse.contentType)
+        assertEquals("pythonSnippet.py", renderParams.template)
+        assertEquals([ collectionUrl: "http://someurl" ], renderParams.model)
+    }
+
     void testDownloadNetCdfFilesForLayerExceptionThrown() {
 
         controller.metaClass._executeExternalRequest = { a, b, c ->
