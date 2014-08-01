@@ -42,7 +42,6 @@ class DownloadController extends RequestProxyingController {
         response.setContentType("text/plain")
         response.setHeader('Content-Disposition', "Attachment;Filename=\"${params.downloadFilename}\"")       
         response.outputStream << g.render(template: "pythonSnippet.py", model: [ collectionUrl: params.url])
-        return
     }
 
     def downloadNetCdfFilesForLayer = {

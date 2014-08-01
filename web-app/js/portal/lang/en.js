@@ -50,7 +50,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadAsHdfLabel: 'HDF',
     downloadAsAsciiLabel: 'ASCII text',
     downloadAsUrlsLabel: 'List of URLs',
-    downloadAsPythonLabel: 'Python',
+    downloadAsPythonSnippetLabel: 'Python',
     parametersLabel: 'Parameters:',
     parameterAreaLabel: 'Area',
     parameterDateLabel: 'Date range',

@@ -15,7 +15,7 @@ Portal.cart.PythonDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         if (this._hasRequiredInfo()) {
 
             downloadOptions.push({
-                textKey: 'downloadAsPythonLabel',
+                textKey: 'downloadAsPythonSnippetLabel',
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
                     filenameFormat: "{0}.py",
