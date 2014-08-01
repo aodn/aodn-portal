@@ -118,7 +118,7 @@ geoserver_static = [
 baselayers = [
     [
         name: "default_bathy",
-        title: "Bathymetry Baselayer test",
+        title: "Bathymetry Baselayer",
         server: geoserver_static
     ],
     [
@@ -215,7 +215,7 @@ portal {
             [
                 linkText: "Help",
                 tooltipText: "Portal help files",
-                href    : help.url
+                href: help.url
             ]
         ]
     }
