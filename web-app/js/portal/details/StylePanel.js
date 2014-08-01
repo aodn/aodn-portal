@@ -23,7 +23,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
     initComponent: function (cfg) {
         this.legendImage = new GeoExt.LegendImage({
-            id: 'legendImage',
             imgCls: 'legendImage',
             flex: 1
         });
@@ -31,7 +30,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         //create an opacity slider
         //usability bug #624 where the opacity slider thumb sits at the minimum slider value instead of the maximum one
         this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
-            id: "opacitySlider",
             layer: new OpenLayers.Layer("Dummy Layer"),
             keyIncrement: 10,
             increment: 5,
@@ -60,13 +58,19 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             items: [this.opacitySlider]
         });
 
-        this.ncwmsColourScalePanel = new Portal.details.NCWMSColourScalePanel();
+        this.ncwmsColourScalePanel = new Portal.details.NCWMSColourScalePanel({
+            stylePanelId: this.id
+        });
         this.styleCombo = this.makeCombo();
+
 
         //add the opacity slider container, style combo picker and colour scale panel to the Styles panel
         this.items = [
+            this._makeSpacer(),
             this.opacitySliderContainer,
+            this._makeSpacer(),
             this.styleCombo,
+            this._makeSpacer(),
             this.ncwmsColourScalePanel,
             {
                 xtype: 'panel',
@@ -84,6 +88,12 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         Portal.details.StylePanel.superclass.initComponent.call(this);
 
         this._initWithLayer();
+    },
+
+    _makeSpacer: function() {
+        return new Ext.Spacer({
+            height: 10
+        })
     },
 
     makeCombo:function () {

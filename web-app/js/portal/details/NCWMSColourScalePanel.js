@@ -9,10 +9,17 @@
 Ext.namespace('Portal.details');
 
 Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
+
     layout: 'form',
-    id: 'ncWMSColourScalePanel',
+
+    constructor: function (cfg) {
+
+        var config = Ext.apply({}, cfg);
+        Portal.details.NCWMSColourScalePanel.superclass.constructor.call(this, config);
+    },
 
     initComponent: function() {
+
         this.colourScaleHeader = new Ext.form.Label({
             html: "<h5>Set Parameter Range</h5>"
         });
@@ -46,6 +53,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
             }
         });
 
+
         this.items = [
             this.colourScaleHeader,
             this.colourScaleMax,
@@ -56,10 +64,11 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
     },
 
     makeNcWMSColourScale: function(layer) {
+
         this.selectedLayer = layer;
 
         if (layer.params && layer.params.COLORSCALERANGE) {
-            var range = layer.params.COLORSCALERANGE.split(',')
+            var range = layer.params.COLORSCALERANGE.split(',');
             this.colourScaleMin.setValue(range[0]);
             this.colourScaleMax.setValue(range[1]);
         }
@@ -74,18 +83,28 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
     updateScale: function(textfield, event) {
         //return key
         if (event.getKey() == 13) {
-            if ( parseFloat(this.colourScaleMax.getValue()) > parseFloat(this.colourScaleMin.getValue())) {
+
+            var scaleMin = parseFloat(this.colourScaleMin.getValue());
+            var scaleMax = parseFloat(this.colourScaleMax.getValue());
+            console.log(scaleMax > scaleMin);
+            console.log((!isNaN(scaleMin) && !isNaN(scaleMax)));
+
+            if ( scaleMax > scaleMin && (!isNaN(scaleMin) && !isNaN(scaleMax))) {
 
                 this.selectedLayer.mergeNewParams({
                     COLORSCALERANGE: this.colourScaleMin.getValue() + "," + this.colourScaleMax.getValue()
                 });
-                Ext.getCmp('stylePanel').refreshLegend(this.selectedLayer);
+
+                Ext.getCmp(this.stylePanelId).refreshLegend(this.selectedLayer);
 
                 // set the user selected range
                 this.selectedLayer.metadata.userScaleRange = [this.colourScaleMin.getValue(),this.colourScaleMax.getValue()];
             }
+            else if (isNaN(scaleMin) || isNaN(scaleMax)) {
+                alert(OpenLayers.i18n('colourScaleEmptyValuesError'));
+            }
             else {
-                alert("The Max Parameter Range value is less than the Min");
+                alert(OpenLayers.i18n('colourScaleError'));
             }
         }
     }

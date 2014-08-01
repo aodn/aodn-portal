@@ -89,6 +89,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     selectMapTimePeriod: 'Move Time on Map',
     errorSelectMapTimePeriod: "End of the Collections available dates",
 
+    colourScaleError: "The Max Parameter Range value must be greater than the Min",
+    colourScaleEmptyValuesError: "Both parameters need to be set",
+
     // Search results
     addToMap: "Add '${layerDesc}' to portal",
 
