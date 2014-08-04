@@ -58,9 +58,9 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
 
     _getBaseLayer: function() {
         return new OpenLayers.Layer.WMS(
-            Portal.app.appConfig['minimap.baselayer.name'],
-            Portal.app.appConfig['minimap.baselayer.url'],
-            { layers: Portal.app.appConfig['minimap.baselayer.params.layers'] },
+            Portal.app.appConfig.minimap.baselayer.name,
+            Portal.app.appConfig.minimap.baselayer.url,
+            { layers: Portal.app.appConfig.minimap.baselayer.params.layers },
             { buffer: 0 },
             { wrapDateLine: true }
         );

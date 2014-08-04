@@ -89,7 +89,7 @@ Portal.data.GeoNetworkRecord = function() {
                 'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckDownloadHandler
             };
 
-            if (Portal.app.appConfig['featureToggles.pythonDownload'] === "true") {
+            if (Portal.app.appConfig.featureToggles.pythonDownload) {
                 protocolHandlerConstructors['OGC:WFS-1.0.0-http-get-capabilities'].push(Portal.cart.PythonDownloadHandler);
             }
 
