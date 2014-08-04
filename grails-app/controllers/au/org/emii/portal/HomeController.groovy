@@ -14,6 +14,8 @@ class HomeController {
     def grailsApplication
     def portalInstance
 
+    static final def CONFIG_KEYS_TO_IGNORE = [  "aodaacAggregator", "log4j" ]
+
     def index = { // This is the main portal entry
 
         // Intercept OpenID verification calls
@@ -31,18 +33,13 @@ class HomeController {
     def config = {
 
         // Workaround a problem converting to JSON (trying to convert the filtered 
-        // items results in an exception - not exactly sure what's going on there
-        // but we don't need these items' config on the front-end, so let's just
-        // not do it).
+        // items results in an exception - the keys defined in CONFIG_KEYS_TO_IGNORE
+        // contain closures, which don't play well when with JSON converters.
         def filteredConfig = grailsApplication.config.findAll {
 
             k, v ->
 
-            ![
-                "aodaacAggregator",
-                "log4j",
-
-             ].contains(k)
+            !CONFIG_KEYS_TO_IGNORE.contains(k)
         }
 
         render(contentType: "text/json", text: filteredConfig as JSON)
