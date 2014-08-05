@@ -104,7 +104,7 @@ class SecurityFilters {
             }
         }
 
-        downloadAccess(controller: "download", action: "index|urlListForLayer|downloadNetCdfFilesForLayer|estimateSizeForLayer") {
+        downloadAccess(controller: "download", action: "index|urlListForLayer|downloadNetCdfFilesForLayer|estimateSizeForLayer|downloadPythonSnippet") {
             before = {
                 request.accessAllowed = true
             }
