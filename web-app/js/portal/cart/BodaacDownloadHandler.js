@@ -61,7 +61,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
             return collection.wmsLayer._buildGetFeatureRequestUrl(
                 wfsLayer.server.uri.replace("/wms", "/wfs"),
-                wfsLayer.name,
+                wmsLayer.bodaacLayerName,
                 'csv',
                 wmsLayer.getDownloadFilter()
             );
