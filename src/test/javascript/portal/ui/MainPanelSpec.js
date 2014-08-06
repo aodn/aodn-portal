@@ -14,9 +14,13 @@ describe("Portal.ui.MainPanel", function() {
     var mockDownloadPanel = new Ext.Panel();
 
     beforeEach(function() {
+
         spyOn(Portal.ui.MainToolbar.prototype, "_registerEvents").andCallFake(function() {});
+
+        Portal.app.appConfig.portal = {footer: {}};
         mainPanel = new Portal.ui.MainPanel({
             panels: [mockSearchPanel, mockVisualisePanel, mockDownloadPanel]
+
         });
     });
 
