@@ -18,6 +18,7 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
     <link>|Point of truth URL of this metadata record|http://imosmest/metadata?uuid=1a69252d|WWW:LINK-1.0-http--metadata-URL|text/html</link> \
     <link>imos:radar_stations|ACORN Radar Stations|http://geoserver.imos.org.au/geoserver/wms|OGC:WMS-1.1.1-http-get-map|application/vnd.ogc.wms_xml</link> \
     <link>imos:radar_stations|ACORN Radar Stations csv|http://geoserver/stations.csv|downloadable|text/csv</link> \
+    <link>imos:radar_stations|OGC WFS service|http://geoserver/ows|OGC:WFS-1.0.0-http-get-capabilities|OGC:WFS-1.0.0-http-get-capabilities</link> \
     <title>ANFOG</title> \
     <abstract>This is about ANFOGs, man</abstract> \
     <geoBox>112|-44|154|-9</geoBox> \
@@ -113,6 +114,46 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
                 var linkedFiles = geoNetworkRecordStore.getAt(0).get('linkedFiles');
                 expect(linkedFiles.length).toBe(1);
                 expect(linkedFiles[0].title).toBe('ACORN Radar Stations csv');
+            });
+        });
+
+        describe('download handlers', function() {
+            describe('python download handler', function() {
+
+                beforeEach(function() {
+                    spyOn(Portal.cart.PythonDownloadHandler.prototype, 'getDownloadOptions');
+                });
+
+                var expectPythonDownloadHandler = function(expected) {
+                    Ext.namespace('Portal.app.appConfig.featureToggles');
+                    Portal.app.appConfig.featureToggles.pythonDownload = expected;
+
+                    geoNetworkRecordStore = new Portal.data.GeoNetworkRecordStore();
+                    geoNetworkRecordStore.loadData(doc);
+
+                    var downloadHandlers = geoNetworkRecordStore.getAt(0).get('dataDownloadHandlers');
+
+                    // This is a bit of an indirect way of checking the download handler type,
+                    // since it doesn't seem possible to do it directly.
+                    Ext.each(downloadHandlers, function(downloadHandler) {
+                        downloadHandler.getDownloadOptions();
+                    });
+
+                    if (expected) {
+                        expect(Portal.cart.PythonDownloadHandler.prototype.getDownloadOptions).toHaveBeenCalled();
+                    }
+                    else {
+                        expect(Portal.cart.PythonDownloadHandler.prototype.getDownloadOptions).not.toHaveBeenCalled();
+                    }
+                };
+
+                it('configured when feature toggle is on', function() {
+                    expectPythonDownloadHandler(true);
+                });
+
+                it('not configured when feature toggle is off', function() {
+                    expectPythonDownloadHandler(false);
+                });
             });
         });
     });
