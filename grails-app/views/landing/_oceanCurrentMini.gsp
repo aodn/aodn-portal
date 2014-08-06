@@ -1,5 +1,5 @@
 <a title="Link to the IMOS Ocean Current site" href="${oceanCurrent.baseURL}">
-<h4>Ocean Currents and Temperature Graphs</h4></a>
+<h3>Ocean Currents and Temperature Graphs</h3></a>
 
 <div class="miniSpacer"  >
   To view the latest state of Australian oceans and coastal seas,
