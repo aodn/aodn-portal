@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -26,15 +25,15 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
 
         this.colourScaleMin = new Ext.form.TextField({
             fieldLabel: "Min",
-            //layout:'form',
             enableKeyEvents: true,
+            width: 75,
             labelStyle: "width:30px",
             ctCls: 'smallIndentInputBox',
             grow: true,
             listeners: {
                 scope: this,
-                keydown: function(textfield, event) {
-                    this.updateScale(textfield, event);
+                keyup: function() {
+                    this.setGoButton();
                 }
             }
         });
@@ -42,22 +41,34 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
         this.colourScaleMax = new Ext.form.TextField({
             fieldLabel: "Max",
             enableKeyEvents: true,
+            width: 75,
             labelStyle: "width:30px",
             ctCls: 'smallIndentInputBox',
             grow: true,
             listeners: {
                 scope: this,
-                keydown: function(textfield, event) {
-                    this.updateScale(textfield, event);
+                keyup: function() {
+                    this.setGoButton();
+                }
+            }
+        });
+        this.goButton = new Ext.Button({
+            text: OpenLayers.i18n("goButton"),
+            width: 65,
+            disabled: true,
+            listeners: {
+                scope: this,
+                click: function(button, event) {
+                    this.updateScale(button, event);
                 }
             }
         });
 
-
         this.items = [
             this.colourScaleHeader,
             this.colourScaleMax,
-            this.colourScaleMin
+            this.colourScaleMin,
+            this.goButton
         ];
 
         Portal.details.NCWMSColourScalePanel.superclass.initComponent.call(this);
@@ -80,32 +91,34 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
         this.show();
     },
 
-    updateScale: function(textfield, event) {
-        //return key
-        if (event.getKey() == 13) {
+    _canSubmit: function() {
+        var scaleMin = (this.colourScaleMin.getValue().length==0) ? undefined : parseFloat(this.colourScaleMin.getValue());
+        var scaleMax = (this.colourScaleMax.getValue().length==0) ? undefined : parseFloat(this.colourScaleMax.getValue());
+        return (!isNaN(scaleMin) && !isNaN(scaleMax) && (scaleMax > scaleMin));
+    },
+
+    setGoButton: function() {
+        this.goButton.setDisabled(!this._canSubmit());
+    },
+
+    updateScale: function(comp, event) {
+
+        this.setGoButton();
+
+        if ( this._canSubmit()) {
 
             var scaleMin = parseFloat(this.colourScaleMin.getValue());
             var scaleMax = parseFloat(this.colourScaleMax.getValue());
-            console.log(scaleMax > scaleMin);
-            console.log((!isNaN(scaleMin) && !isNaN(scaleMax)));
 
-            if ( scaleMax > scaleMin && (!isNaN(scaleMin) && !isNaN(scaleMax))) {
+            this.selectedLayer.mergeNewParams({
+                COLORSCALERANGE: this.colourScaleMin.getValue() + "," + this.colourScaleMax.getValue()
+            });
 
-                this.selectedLayer.mergeNewParams({
-                    COLORSCALERANGE: this.colourScaleMin.getValue() + "," + this.colourScaleMax.getValue()
-                });
+            Ext.getCmp(this.stylePanelId).refreshLegend(this.selectedLayer);
 
-                Ext.getCmp(this.stylePanelId).refreshLegend(this.selectedLayer);
+            // set the user selected range
+            this.selectedLayer.metadata.userScaleRange = [this.colourScaleMin.getValue(),this.colourScaleMax.getValue()];
 
-                // set the user selected range
-                this.selectedLayer.metadata.userScaleRange = [this.colourScaleMin.getValue(),this.colourScaleMax.getValue()];
-            }
-            else if (isNaN(scaleMin) || isNaN(scaleMax)) {
-                alert(OpenLayers.i18n('colourScaleEmptyValuesError'));
-            }
-            else {
-                alert(OpenLayers.i18n('colourScaleError'));
-            }
         }
     }
 });
