@@ -54,7 +54,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
     },
 
     _getMainToolBarLinksHtml: function() {
-        return Portal.app.appConfig['portal.footer.externalLinksHtml'];
+        return Portal.app.appConfig.portal.footer.externalLinksHtml;
     },
 
     _registerEvents: function() {
