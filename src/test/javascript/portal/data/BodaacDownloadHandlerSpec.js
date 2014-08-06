@@ -58,9 +58,9 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
             testCollection = {
                 wmsLayer: {
+                    bodaacLayerName: 'wms_layer_name',
                     grailsLayerId: 777,
                     wfsLayer: {
-                        name: 'wfs_layer_name',
                         server: { uri: 'geoserver/wms/' }
                     },
                     getDownloadFilter: function() { return 'the_cql' },
@@ -83,7 +83,7 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
             expect(buildUrlSpy).toHaveBeenCalledWith(
                 'geoserver/wfs/',
-                'wfs_layer_name',
+                'wms_layer_name',
                 'csv',
                 'the_cql'
             );
