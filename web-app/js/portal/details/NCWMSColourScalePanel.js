@@ -23,35 +23,9 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
             html: "<h5>Set Parameter Range</h5>"
         });
 
-        this.colourScaleMin = new Ext.form.TextField({
-            fieldLabel: "Min",
-            enableKeyEvents: true,
-            width: 75,
-            labelStyle: "width:30px",
-            ctCls: 'smallIndentInputBox',
-            grow: true,
-            listeners: {
-                scope: this,
-                keyup: function() {
-                    this.setGoButton();
-                }
-            }
-        });
+        this.colourScaleMin = this.makeSmallIndentInputBox("Min");
+        this.colourScaleMax = this.makeSmallIndentInputBox("Max");
 
-        this.colourScaleMax = new Ext.form.TextField({
-            fieldLabel: "Max",
-            enableKeyEvents: true,
-            width: 75,
-            labelStyle: "width:30px",
-            ctCls: 'smallIndentInputBox',
-            grow: true,
-            listeners: {
-                scope: this,
-                keyup: function() {
-                    this.setGoButton();
-                }
-            }
-        });
         this.goButton = new Ext.Button({
             text: OpenLayers.i18n("goButton"),
             width: 65,
@@ -72,6 +46,23 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
         ];
 
         Portal.details.NCWMSColourScalePanel.superclass.initComponent.call(this);
+    },
+
+    makeSmallIndentInputBox: function(fieldLabel) {
+        return new Ext.form.TextField({
+            fieldLabel: fieldLabel,
+            enableKeyEvents: true,
+            width: 75,
+            labelStyle: "width:30px",
+            ctCls: 'smallIndentInputBox',
+            grow: true,
+            listeners: {
+                scope: this,
+                keyup: function() {
+                    this.setGoButton();
+                }
+            }
+        });
     },
 
     makeNcWMSColourScale: function(layer) {
@@ -114,7 +105,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
                 COLORSCALERANGE: this.colourScaleMin.getValue() + "," + this.colourScaleMax.getValue()
             });
 
-            Ext.getCmp(this.stylePanelId).refreshLegend(this.selectedLayer);
+            Ext.MsgBus.publish(PORTAL_EVENTS.REFRESH_LEGEND, this.selectedLayer);
 
             // set the user selected range
             this.selectedLayer.metadata.userScaleRange = [this.colourScaleMin.getValue(),this.colourScaleMax.getValue()];
