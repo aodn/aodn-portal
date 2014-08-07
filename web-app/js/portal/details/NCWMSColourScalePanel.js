@@ -106,7 +106,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
                 COLORSCALERANGE: this.colourScaleMin.getValue() + "," + this.colourScaleMax.getValue()
             });
 
-            this.fireEvent('refreshLegendRequired', this.selectedLayer);
+            this.fireEvent('refreshLegendRequired');
 
             // set the user selected range
             this.selectedLayer.metadata.userScaleRange = [this.colourScaleMin.getValue(),this.colourScaleMax.getValue()];
