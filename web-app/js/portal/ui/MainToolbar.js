@@ -40,8 +40,10 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
                 this.nextButton,
                 '->',
                 {
-                    xtype: 'panel',
-                    html: OpenLayers.i18n('footerText')
+                    xtype: 'container',
+                    unstyled: true,
+                    cls: "mainToolBarFooter",
+                    html: this._getMainToolBarLinksHtml()
                 }
             ]
         }, cfg);
@@ -49,6 +51,10 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
         Portal.ui.MainToolbar.superclass.constructor.call(this, config);
 
         this._registerEvents();
+    },
+
+    _getMainToolBarLinksHtml: function() {
+        return Portal.app.appConfig.portal.footer.externalLinksHtml;
     },
 
     _registerEvents: function() {

@@ -173,7 +173,7 @@ environments {
         grails.resources.debug = true
 
         // URLs
-        grails.serverURL = "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
+        grails.serverURL = env['WMS_HOST_URL'] ?: "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
         wmsScanner.url = env['WMS_SCANNER_URL'] ?: "http://localhost:8100/WmsScannerGrails/"
         wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
         gogoduck.url = env['GOGODUCK_URL'] ?: "http://localhost:8300/go-go-duck"
@@ -219,22 +219,23 @@ portal {
         logo = "${defaultInstanceName}_logo.png"
         externalLinks = [
             [
-                linkText: "eMII",
-                tooltipText: "e-Marine Information Infrastructure",
-                href: "http://www.emii.org.au"
-            ],
-            [
-                linkText: "AODN",
-                tooltipText: "Australian Ocean Data Network",
-                href: "http://imos.org.au/aodn.html"
-            ],
-            [
                 linkText: "Help",
                 tooltipText: "Portal help files",
                 href: help.url
             ]
         ]
     }
+
+    footer {
+        externalLinksHtml =
+        """
+        <a title="Data usage acknowledgement" target="_blank" href=" """ + help.url + """/help/?q=node/81">Acknowledgement</a> <b>|</b>
+        <a title="Disclaimer information" target="_blank" href=" """ + help.url + """/help/?q=node/80">Disclaimer</a> <b>|</b>
+        <a title="e-Marine Information Infrastructure" target="_blank" href="http://www.emii.org.au">eMII</a>  <b>|</b>
+        <a title="Australian Ocean Data Network" target="_blank" href="http://imos.org.au/aodn.html">AODN</a>
+        """
+    }
+
     // Change authentication emails for IMOS
     systemEmail {
         fromAddress = "info@example.com"
