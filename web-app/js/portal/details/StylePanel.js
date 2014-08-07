@@ -18,9 +18,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             style: { margin: 5 }
         }, cfg);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.REFRESH_LEGEND, function(eventName, openlayer) {
-            this.refreshLegend(openlayer);
-        }, this);
+        this.addEvents('refreshLegendRequired');
+        this.on('refreshLegendRequired', this.refreshLegend, this);
 
         Portal.details.StylePanel.superclass.constructor.call(this, config);
     },

@@ -10,6 +10,5 @@ PORTAL_EVENTS = {
     ACTIVE_GEONETWORK_RECORD_REMOVED: "activeGeonetworkRecordRemoved",
     VIEW_GEONETWORK_RECORD:           "viewGeonetworkRecord",
     RESET:                            "reset",
-    LOAD_SNAPSHOT:                    "loadSnapshot",
-    REFRESH_LEGEND:                   "refreshLegendRequired"
+    LOAD_SNAPSHOT:                    "loadSnapshot"
 };
