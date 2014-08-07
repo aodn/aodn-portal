@@ -101,10 +101,8 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
         this._setMinMax();
         
         if (this.isValid()) {
-            console.log("firing valid event");
             this.fireEvent('valid');
         } else {
-            console.log("firing invalid event");
             this.fireEvent('invalid');
         }
     },

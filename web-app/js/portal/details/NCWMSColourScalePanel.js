@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -9,39 +8,32 @@
 Ext.namespace('Portal.details');
 
 Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
+
     layout: 'form',
-    id: 'ncWMSColourScalePanel',
+
+    constructor: function (cfg) {
+
+        var config = Ext.apply({}, cfg);
+        Portal.details.NCWMSColourScalePanel.superclass.constructor.call(this, config);
+    },
 
     initComponent: function() {
+
         this.colourScaleHeader = new Ext.form.Label({
             html: "<h5>Set Parameter Range</h5>"
         });
 
-        this.colourScaleMin = new Ext.form.TextField({
-            fieldLabel: "Min",
-            //layout:'form',
-            enableKeyEvents: true,
-            labelStyle: "width:30px",
-            ctCls: 'smallIndentInputBox',
-            grow: true,
-            listeners: {
-                scope: this,
-                keydown: function(textfield, event) {
-                    this.updateScale(textfield, event);
-                }
-            }
-        });
+        this.colourScaleMin = this.makeSmallIndentInputBox("Min");
+        this.colourScaleMax = this.makeSmallIndentInputBox("Max");
 
-        this.colourScaleMax = new Ext.form.TextField({
-            fieldLabel: "Max",
-            enableKeyEvents: true,
-            labelStyle: "width:30px",
-            ctCls: 'smallIndentInputBox',
-            grow: true,
+        this.goButton = new Ext.Button({
+            text: OpenLayers.i18n("goButton"),
+            width: 65,
+            disabled: true,
             listeners: {
                 scope: this,
-                keydown: function(textfield, event) {
-                    this.updateScale(textfield, event);
+                click: function(button, event) {
+                    this.updateScale(button, event);
                 }
             }
         });
@@ -49,17 +41,37 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
         this.items = [
             this.colourScaleHeader,
             this.colourScaleMax,
-            this.colourScaleMin
+            this.colourScaleMin,
+            this.goButton
         ];
 
+        this.addEvents('colourScaleUpdated');
         Portal.details.NCWMSColourScalePanel.superclass.initComponent.call(this);
     },
 
+    makeSmallIndentInputBox: function(fieldLabel) {
+        return new Ext.form.TextField({
+            fieldLabel: fieldLabel,
+            enableKeyEvents: true,
+            width: 75,
+            labelStyle: "width:30px",
+            ctCls: 'smallIndentInputBox',
+            grow: true,
+            listeners: {
+                scope: this,
+                keyup: function() {
+                    this.setGoButton();
+                }
+            }
+        });
+    },
+
     makeNcWMSColourScale: function(layer) {
+
         this.selectedLayer = layer;
 
         if (layer.params && layer.params.COLORSCALERANGE) {
-            var range = layer.params.COLORSCALERANGE.split(',')
+            var range = layer.params.COLORSCALERANGE.split(',');
             this.colourScaleMin.setValue(range[0]);
             this.colourScaleMax.setValue(range[1]);
         }
@@ -71,22 +83,34 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
         this.show();
     },
 
-    updateScale: function(textfield, event) {
-        //return key
-        if (event.getKey() == 13) {
-            if ( parseFloat(this.colourScaleMax.getValue()) > parseFloat(this.colourScaleMin.getValue())) {
+    _canSubmit: function() {
+        var scaleMin = (this.colourScaleMin.getValue().length==0) ? undefined : parseFloat(this.colourScaleMin.getValue());
+        var scaleMax = (this.colourScaleMax.getValue().length==0) ? undefined : parseFloat(this.colourScaleMax.getValue());
+        return (!isNaN(scaleMin) && !isNaN(scaleMax) && (scaleMax > scaleMin));
+    },
 
-                this.selectedLayer.mergeNewParams({
-                    COLORSCALERANGE: this.colourScaleMin.getValue() + "," + this.colourScaleMax.getValue()
-                });
-                Ext.getCmp('stylePanel').refreshLegend(this.selectedLayer);
+    setGoButton: function() {
+        this.goButton.setDisabled(!this._canSubmit());
+    },
 
-                // set the user selected range
-                this.selectedLayer.metadata.userScaleRange = [this.colourScaleMin.getValue(),this.colourScaleMax.getValue()];
-            }
-            else {
-                alert("The Max Parameter Range value is less than the Min");
-            }
+    updateScale: function(comp, event) {
+
+        this.setGoButton();
+
+        if ( this._canSubmit()) {
+
+            var scaleMin = parseFloat(this.colourScaleMin.getValue());
+            var scaleMax = parseFloat(this.colourScaleMax.getValue());
+
+            this.selectedLayer.mergeNewParams({
+                COLORSCALERANGE: this.colourScaleMin.getValue() + "," + this.colourScaleMax.getValue()
+            });
+
+            this.fireEvent('colourScaleUpdated');
+
+            // set the user selected range
+            this.selectedLayer.metadata.userScaleRange = [this.colourScaleMin.getValue(),this.colourScaleMax.getValue()];
+
         }
     }
 });

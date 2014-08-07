@@ -9,21 +9,20 @@ Ext.namespace('Portal.details');
 
 Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
-    constructor: function (cfg) {
+    constructor: function(cfg) {
         this.layer = cfg.layer;
 
         var config = Ext.apply({
             title: 'Styles',
             autoScroll: true,
-            style: { margin:5 }
+            style: { margin: 5 }
         }, cfg);
 
         Portal.details.StylePanel.superclass.constructor.call(this, config);
     },
 
-    initComponent: function (cfg) {
+    initComponent: function(cfg) {
         this.legendImage = new GeoExt.LegendImage({
-            id: 'legendImage',
             imgCls: 'legendImage',
             flex: 1
         });
@@ -31,7 +30,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         //create an opacity slider
         //usability bug #624 where the opacity slider thumb sits at the minimum slider value instead of the maximum one
         this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
-            id: "opacitySlider",
             layer: new OpenLayers.Layer("Dummy Layer"),
             keyIncrement: 10,
             increment: 5,
@@ -61,12 +59,17 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         });
 
         this.ncwmsColourScalePanel = new Portal.details.NCWMSColourScalePanel();
+        this.ncwmsColourScalePanel.on('colourScaleUpdated', this.refreshLegend, this);
+
         this.styleCombo = this.makeCombo();
 
         //add the opacity slider container, style combo picker and colour scale panel to the Styles panel
         this.items = [
+            this._makeSpacer(),
             this.opacitySliderContainer,
+            this._makeSpacer(),
             this.styleCombo,
+            this._makeSpacer(),
             this.ncwmsColourScalePanel,
             {
                 xtype: 'panel',
@@ -86,7 +89,13 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         this._initWithLayer();
     },
 
-    makeCombo:function () {
+    _makeSpacer: function() {
+        return new Ext.Spacer({
+            height: 10
+        })
+    },
+
+    makeCombo: function() {
         var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p><img src="{displayImage}" /></div></tpl>';
         var fields;
 
@@ -118,20 +127,20 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             tpl: tpl,
             listeners: {
                 scope: this,
-                select: function (cbbox, record, index) {
+                select: function(cbbox, record, index) {
                     this.setChosenStyle(record);
                 }
             }
         });
     },
 
-    setChosenStyle: function (record) {
+    setChosenStyle: function(record) {
         this.layer.mergeNewParams({
             styles: record.get('myId')
         });
         // Params should already have been changed, but legend doesn't update if we don't do this...
         this.layer.params.STYLES = record.get('myId');
-        this.refreshLegend(this.layer);
+        this.refreshLegend();
     },
 
     _initWithLayer: function() {
@@ -164,10 +173,10 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             this.styleCombo.show();
         }
 
-        this.refreshLegend(this.layer);
+        this.refreshLegend();
     },
 
-    _styleData: function (layer) {
+    _styleData: function(layer) {
         var data = [];
         var allStyles = layer.allStyles;
 
@@ -189,21 +198,22 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         return data;
     },
 
-    // full legend shown in layer option. The current legend
-    refreshLegend: function (layer) {
+    refreshLegend: function() {
+
         // get openlayers style as string
-        var styleName = layer.params.STYLES;
-        var palette = this._getPalette(layer, styleName);
-        var url = this.buildGetLegend(layer, styleName, palette, false);
+        var styleName = this.layer.params.STYLES;
+        var palette = this._getPalette(this.layer, styleName);
+        var url = this.buildGetLegend(this.layer, styleName, palette, false);
 
         this.legendImage.setUrl(url);
         this.legendImage.show();
         // dont worry if the form is visible here
         this.styleCombo.setValue(styleName);
+
     },
 
     // builds a getLegend image request for the combobox form and the selected palette
-    buildGetLegend: function (layer, style, palette, colorBarOnly) {
+    buildGetLegend: function(layer, style, palette, colorBarOnly) {
 
         var url = "";
 
@@ -250,8 +260,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         }
 
         opts += "&REQUEST=GetLegendGraphic"
-             +  "&LAYER=" + layer.params.LAYERS
-             +  "&FORMAT=" + layer.params.FORMAT;
+            + "&LAYER=" + layer.params.LAYERS
+            + "&FORMAT=" + layer.params.FORMAT;
 
         if (layer && layer.server && layer.server.type) {
             var version = layer.server.type.split('-')[1];

@@ -55,7 +55,7 @@ Portal.search.field.MultiSelectCombo = Ext.extend(Ext.ux.form.SuperBoxSelect, {
             scope: this,
             additem: this.onItemChange,
             removeitem: this.onItemChange,
-            clear: this.onItemChange,
+            clear: this.onItemChange
         });
 
         this.addEvents('contentchange');
