@@ -58,11 +58,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             items: [this.opacitySlider]
         });
 
-        this.ncwmsColourScalePanel = new Portal.details.NCWMSColourScalePanel({
-            stylePanelId: this.id
-        });
-
-        this.ncwmsColourScalePanel.on('refreshLegendRequired', this.refreshLegend, this);
+        this.ncwmsColourScalePanel = new Portal.details.NCWMSColourScalePanel();
+        this.ncwmsColourScalePanel.on('colourScaleUpdated', this.refreshLegend, this);
 
         this.styleCombo = this.makeCombo();
 
