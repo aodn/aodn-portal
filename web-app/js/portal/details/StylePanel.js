@@ -15,7 +15,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         var config = Ext.apply({
             title: 'Styles',
             autoScroll: true,
-            style: { margin:5 }
+            style: { padding:'10px 0px 10px 10px' }
         }, cfg);
 
         Portal.details.StylePanel.superclass.constructor.call(this, config);
@@ -23,15 +23,12 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
     initComponent: function (cfg) {
         this.legendImage = new GeoExt.LegendImage({
-            id: 'legendImage',
-            imgCls: 'legendImage',
-            flex: 1
+            ctCls: 'legendImage'
         });
 
         //create an opacity slider
         //usability bug #624 where the opacity slider thumb sits at the minimum slider value instead of the maximum one
         this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
-            id: "opacitySlider",
             layer: new OpenLayers.Layer("Dummy Layer"),
             keyIncrement: 10,
             increment: 5,
@@ -69,15 +66,9 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             this.styleCombo,
             this.ncwmsColourScalePanel,
             {
-                xtype: 'panel',
-                align: 'stretch',
-                items: [
-                    {
-                        xtype: 'panel',
-                        margin: 10,
-                        items: [this.legendImage]
-                    }
-                ]
+                xtype: "panel",
+                autoWidth: true,
+                items: [this.legendImage]
             }
         ];
 
@@ -104,7 +95,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         });
 
         return new Ext.form.ComboBox({
-            id: 'styleCombo',
             width: 200,
             fieldLabel: 'style',
             triggerAction: 'all',

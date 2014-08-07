@@ -14,8 +14,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         this.spacer = new Ext.Spacer({height: 10});
         this.dataCollectionSelectorPanel = new Portal.details.DataCollectionSelectorPanel({
             layout: 'card',
-            bodyStyle: 'padding:5px',
-            boxMaxWidth: 330,
             activeItem: 0
         });
         this.layerDetailsPanel = new Ext.Panel({
