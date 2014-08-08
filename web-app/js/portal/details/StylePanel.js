@@ -15,7 +15,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         var config = Ext.apply({
             title: 'Styles',
             autoScroll: true,
-            style: { padding:'10px 0px 10px 10px' }
+            style: { padding:'0 0 10px 10px' }
         }, cfg);
 
         Portal.details.StylePanel.superclass.constructor.call(this, config);
@@ -38,7 +38,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             width: 175,
             isFormField: true,
             inverse: false,
-            fieldLabel: "Opacity",
+            fieldLabel: "<b>Opacity</b>",
             plugins: new GeoExt.LayerOpacitySliderTip({
                 template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
             })
