@@ -12,6 +12,10 @@ Ext.ux.Ajax = Ext.Ajax;
 Ext.ux.Ajax.proxyUrl = 'proxy?url=';
 
 Ext.ux.Ajax.proxyRequest = function(params) {
-    params.url = Ext.ux.Ajax.proxyUrl + encodeURIComponent(params.url);
+    params.url = Ext.ux.Ajax.constructProxyUrl(params.url);
     Ext.Ajax.request(params);
 };
+
+Ext.ux.Ajax.constructProxyUrl = function(url) {
+    return Ext.ux.Ajax.proxyUrl + encodeURIComponent(url);
+}

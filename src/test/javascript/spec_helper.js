@@ -126,3 +126,38 @@ var noOp = function() {};
 var constructGeometry = function() {
     return OpenLayers.Geometry.fromWKT('POLYGON((1 2, 3 4, 1 2))');
 };
+
+//
+// Convert a string to XML Node Structure
+// Returns null on failure
+//
+// Credit: http://sweerdenburg.wordpress.com/2011/10/22/converting-a-string-to-xml-in-javascript/
+var textToXML = function(text) {
+    try {
+        var xml = null;
+
+        if (window.DOMParser) {
+
+            var parser = new DOMParser();
+            xml = parser.parseFromString(text, "text/xml");
+
+            var found = xml.getElementsByTagName("parsererror");
+
+            if (!found || !found.length || !found[ 0 ].childNodes.length) {
+                return xml;
+            }
+
+            return null;
+        }
+        else {
+            xml = new ActiveXObject("Microsoft.XMLDOM");
+
+            xml.async = false;
+            xml.loadXML( text );
+
+            return xml;
+        }
+    }
+    catch (e) {
+    }
+}

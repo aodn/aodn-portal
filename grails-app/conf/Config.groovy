@@ -182,6 +182,9 @@ environments {
         grails.mail.disabled = true
         
         featureToggles.pythonDownload = true
+
+        // Set to false to get non-hierarchical facets.
+        featureToggles.hierarchicalFacets = true
     }
 
     test {

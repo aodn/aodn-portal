@@ -25,6 +25,14 @@ abstract class RequestProxyingController {
         if (!url) {
             render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 400
         }
+        // Send a mock hierarchical response until such time as we can send a real one.
+        else if (grailsApplication.config.featureToggles?.hierarchicalFacets) {
+            render(
+                text: new File("test/integration/au/org/emii/portal/proxying/MockGeoNetworkResponse.xml").text,
+                contentType: "text/xml",
+                encoding: "UTF-8"
+            )
+        }
         else if (!hostVerifier.allowedHost(request, url)) {
             log.info "Proxy: The url $url was not allowed"
             render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: 400
