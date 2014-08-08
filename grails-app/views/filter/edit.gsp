@@ -60,7 +60,7 @@
                                     <label class="dateRangeFilterAdminElement" for="wmsStartDateName"><g:message code="filter.wmsStartDateName.label" default="Name (WMS Start date)" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wmsStartDateName', 'errors')}">
-                                    <g:textField  class="dateRangeFilterAdminElement" required="required" name="wmsStartDateName" value="${filterInstance?.wmsStartDateName}" />
+                                    <g:textField  class="dateRangeFilterAdminElement"  name="wmsStartDateName" value="${filterInstance?.wmsStartDateName}" />
                                 </td>
                             </tr>
 
@@ -69,7 +69,7 @@
                                     <label class="dateRangeFilterAdminElement"  for="wmsEndDateName"><g:message code="filter.wmsEndDateName.label" default="Name (WMS End Date)" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: filterInstance, field: 'wmsEndDateName', 'errors')}">
-                                    <g:textField class="dateRangeFilterAdminElement"  required="required" name="wmsEndDateName" value="${filterInstance?.wmsEndDateName}" />
+                                    <g:textField class="dateRangeFilterAdminElement"  name="wmsEndDateName" value="${filterInstance?.wmsEndDateName}" />
                                 </td>
                             </tr>
 
