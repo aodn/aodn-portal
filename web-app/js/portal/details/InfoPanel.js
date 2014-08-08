@@ -15,9 +15,9 @@ Portal.details.InfoPanel = Ext.extend(Ext.form.Label, {
 
         var config = Ext.apply({
             title: 'Info',
-            layout: 'fit',
             autoScroll: true,
-            html: OpenLayers.i18n('loadingMessage')
+            style: { display: "block", padding:'0 0 10px 10px'},
+            html: OpenLayers.i18n('loadingSpinner', {resource: " collection information"})
         }, cfg);
 
         Portal.details.InfoPanel.superclass.constructor.call(this, config);

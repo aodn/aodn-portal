@@ -15,7 +15,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         var config = Ext.apply({
             title: 'Styles',
             autoScroll: true,
-            style: { margin: 5 }
+            style: { padding:'0 0 10px 10px' }
         }, cfg);
 
         Portal.details.StylePanel.superclass.constructor.call(this, config);
@@ -23,8 +23,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
     initComponent: function(cfg) {
         this.legendImage = new GeoExt.LegendImage({
-            imgCls: 'legendImage',
-            flex: 1
+            ctCls: 'legendImage'
         });
 
         //create an opacity slider
@@ -39,7 +38,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             width: 175,
             isFormField: true,
             inverse: false,
-            fieldLabel: "Opacity",
+            fieldLabel: "<b>Opacity</b>",
             plugins: new GeoExt.LayerOpacitySliderTip({
                 template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
             })
@@ -72,15 +71,9 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             this._makeSpacer(),
             this.ncwmsColourScalePanel,
             {
-                xtype: 'panel',
-                align: 'stretch',
-                items: [
-                    {
-                        xtype: 'panel',
-                        margin: 10,
-                        items: [this.legendImage]
-                    }
-                ]
+                xtype: "panel",
+                autoWidth: true,
+                items: [this.legendImage]
             }
         ];
 
@@ -113,7 +106,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         });
 
         return new Ext.form.ComboBox({
-            id: 'styleCombo',
             width: 200,
             fieldLabel: 'style',
             triggerAction: 'all',
@@ -260,8 +252,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         }
 
         opts += "&REQUEST=GetLegendGraphic"
-            + "&LAYER=" + layer.params.LAYERS
-            + "&FORMAT=" + layer.params.FORMAT;
+             +  "&LAYER=" + layer.params.LAYERS
+             +  "&FORMAT=" + layer.params.FORMAT;
 
         if (layer && layer.server && layer.server.type) {
             var version = layer.server.type.split('-')[1];
