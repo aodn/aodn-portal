@@ -115,7 +115,13 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             openLayer.loading = true;
 
             openLayer.events.register('loadstart', this, function() {
+
+                // Only want to be notified of changes if not a base layer
+                if (!openLayer.options.isBaseLayer) {
+                    Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
+                }
                 openLayer.loading = true;
+
                 Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_START, openLayer);
             });
             openLayer.events.register('loadend', this, function() {
@@ -124,12 +130,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             });
 
             this.add(layerRecord);
-
-            // Only want to be notified of changes if not a base layer
-            if (!openLayer.options.isBaseLayer) {
-                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
-            }
-
             return layerRecord;
         }
         else {
@@ -152,8 +152,9 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             }
         });
 
-        if (alreadyAdded < 0)
+        if (alreadyAdded < 0) {
             return false;
+        }
 
         return true;
     },
@@ -170,7 +171,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         this._initWithLayersFromServer('layer/configuredBaselayers', {
             isBaseLayer: true,
             queryable: false
-        }, function () {
+        }, function() {
             Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
         });
     },
