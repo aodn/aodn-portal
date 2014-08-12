@@ -30,7 +30,7 @@ describe("Portal.search.data.GeoNetworkSearchResponseLoader", function() {
 </response> \
 ";
 
-    it('loads XML in to tree', function() {
+     it('loads XML in to tree', function() {
 
         spyOn(Ext.Ajax, 'request').andCallFake(function(opts) {
 

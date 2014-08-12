@@ -32,7 +32,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         Portal.service.CatalogSearcher.superclass.constructor.call(this, config);
 
-        this.addEvents('searchstart', 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved');
+        this.addEvents('searchstart', 'hiersearchcomplete', 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved');
     },
 
     reset: function() {
@@ -47,8 +47,10 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     _search: function(page) {
 
         this.fireEvent('searchstart');
+
         var requestUrl = this._getRequestUrl(page);
 
+        // TODO: this will go.
         Ext.ux.Ajax.proxyRequest({
             url: requestUrl,
             success: this._onSuccessfulSearch,
@@ -59,6 +61,46 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
                 'Content-Type': 'application/xml'
             }
         });
+
+        if (Portal.app.appConfig.featureToggles.hierarchicalFacets) {
+            var searchResponseLoader = this._newSearchResponseLoader({
+                preloadChildren: true,
+                url: Ext.ux.Ajax.constructProxyUrl(requestUrl),
+                listeners: {
+                    scope: this,
+                    load: this._onSuccessfulHierSearch,
+                    loadexception: this._logAndReturnErrors
+                }
+            });
+
+            searchResponseLoader.load(this.getSearchResultRootNode());
+        }
+    },
+
+    // TODO: this function only exists because I didn't have any luck spying
+    // GeoNetworkSearchResponseLoader's constructor.
+    _newSearchResponseLoader: function(loaderConfig) {
+        return new Portal.ui.search.data.GeoNetworkSearchResponseLoader(loaderConfig);
+    },
+
+    getSearchResultRootNode: function() {
+        if (!this.searchResultRootNode) {
+            this.searchResultRootNode = new Ext.tree.TreeNode();
+        }
+        return this.searchResultRootNode
+    },
+
+    getSummaryNode: function() {
+
+        var summaryNode;
+
+        if (this.searchResultRootNode) {
+            summaryNode = this.searchResultRootNode.findChildBy(function(node) {
+                return node.attributes.tagName == 'summary';
+            }, this, true);
+        }
+
+        return summaryNode;
     },
 
     goToPage: function(start, limit) {
@@ -97,8 +139,11 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     },
 
     _onSuccessfulSearch: function(response, options) {
-
         this.fireEvent('searchcomplete', response.responseXML, options.page);
+    },
+
+    _onSuccessfulHierSearch: function() {
+        this.fireEvent('hiersearchcomplete', this.getSummaryNode());
     },
 
     _logAndReturnErrors: function(response, options) {
@@ -145,5 +190,4 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         return params;
     }
-
 });

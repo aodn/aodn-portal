@@ -57,8 +57,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             { event: 'polygonadded', callback: this._showNewSearchForGeoFacet }
         ];
         this._monitor(this.searcher, searcherEvents, this);
-
-        this.on('afterrender', function() { this.searcher.search(); return true; }, this );
     },
 
     initComponent: function() {

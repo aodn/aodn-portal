@@ -10,8 +10,6 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
     var selectionPanel;
 
     beforeEach(function() {
-        spyOn(Portal.search.HierarchicalTermSelectionPanel.prototype, '_onSearchComplete');
-
         searcher = new Portal.service.CatalogSearcher();
 
         selectionPanel = new Portal.search.HierarchicalTermSelectionPanel({
@@ -19,12 +17,37 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
         });
     });
 
-    describe('search events', function() {
+    describe('initialisation', function() {
+        it('initialises with summary node from searcher', function() {
+            var summaryNode = {};
+            spyOn(searcher, 'getSummaryNode').andReturn(summaryNode);
+            spyOn(Portal.search.HierarchicalTermSelectionPanel.prototype, 'setRootNode');
 
-        it('searchcomplete triggers setRootNode', function() {
-            searcher.fireEvent('searchcomplete');
+            selectionPanel = new Portal.search.HierarchicalTermSelectionPanel({
+                searcher: searcher
+            });
+
+            expect(selectionPanel.setRootNode).toHaveBeenCalledWith(summaryNode);
+        });
+    });
+
+    describe('search events', function() {
+        it('search complete triggers setRootNode', function() {
+            spyOn(selectionPanel, '_onSearchComplete');
+
+            searcher.fireEvent('hiersearchcomplete');
             expect(selectionPanel._onSearchComplete).toHaveBeenCalled();
         });
+    });
 
+    describe('on search complete', function() {
+        it('sets root node', function() {
+            var summaryNode = {};
+            spyOn(selectionPanel, 'setRootNode');
+
+            selectionPanel._onSearchComplete({}, 0, summaryNode);
+
+            expect(selectionPanel.setRootNode).toHaveBeenCalledWith(summaryNode);
+        });
     });
 });

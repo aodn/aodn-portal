@@ -7,20 +7,23 @@
 
 Ext.namespace('Portal.search');
 
-Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Panel, {
+Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
 
     constructor: function(config) {
 
         config = Ext.apply({
-            html: "<i>Hierarchical FTW</i>"
+            root: config.searcher.getSummaryNode() ? config.searcher.getSummaryNode() : new Ext.tree.TreeNode(),
+            rootVisible: false
         }, config);
 
         Portal.search.HierarchicalTermSelectionPanel.superclass.constructor.call(this, config);
 
-        this.mon(this.searcher, 'searchcomplete',this._onSearchComplete, this);
+        this.mon(this.searcher, 'hiersearchcomplete', function(summaryNode) {
+            this._onSearchComplete(summaryNode);
+        }, this);
     },
 
-    _onSearchComplete: function(searchResponse) {
-        //debugger;
+    _onSearchComplete: function(summaryNode) {
+        this.setRootNode(summaryNode);
     }
 });
