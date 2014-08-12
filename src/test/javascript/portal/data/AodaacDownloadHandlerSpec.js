@@ -95,7 +95,7 @@ describe('Portal.cart.AodaacDownloadHandler', function () {
 
             expect(url).toHaveParameterWithValue('latitudeRangeStart','-90');
             expect(url).toHaveParameterWithValue('latitudeRangeEnd', '90');
-            expect(url).toHaveParameterWithValue('longitudeRangeStart', '0');
+            expect(url).toHaveParameterWithValue('longitudeRangeStart', '-180');
             expect(url).toHaveParameterWithValue('longitudeRangeEnd', '180');
         });
     });
