@@ -9,8 +9,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
-    AODAAC_DEFAULT_LON_START: 0, // Works around limitation in AODAAC
-
     ASYNC_DOWNLOAD_URL: 'asyncDownload?aggregatorService=aodaac&',
 
     getDownloadOptions: function() {
@@ -65,7 +63,7 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
             dateRangeEnd: this._formatDate(aggregationParams.dateRangeEnd),
             latitudeRangeStart: aggregationParams.latitudeRangeStart || this.DEFAULT_LAT_START,
             latitudeRangeEnd: aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END,
-            longitudeRangeStart: aggregationParams.longitudeRangeStart || this.AODAAC_DEFAULT_LON_START,
+            longitudeRangeStart: aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START,
             longitudeRangeEnd: aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END,
             productId: productId,
             outputFormat: outputFormat,
