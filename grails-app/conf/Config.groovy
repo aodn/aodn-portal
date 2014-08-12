@@ -183,8 +183,8 @@ environments {
         
         featureToggles.pythonDownload = true
 
-        // Set to false to get non-hierarchical facets.
-        featureToggles.hierarchicalFacets = true
+        // Set to true to get hierarchical facets.
+        featureToggles.hierarchicalFacets = false
     }
 
     test {

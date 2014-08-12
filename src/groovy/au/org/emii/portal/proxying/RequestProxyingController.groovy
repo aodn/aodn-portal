@@ -26,7 +26,7 @@ abstract class RequestProxyingController {
             render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 400
         }
         // Send a mock hierarchical response until such time as we can send a real one.
-        else if (grailsApplication.config.featureToggles?.hierarchicalFacets) {
+        else if (_isGeoNetworkSearchRequest(url) && grailsApplication.config.featureToggles?.hierarchicalFacets) {
             render(
                 text: new File("test/integration/au/org/emii/portal/proxying/MockGeoNetworkResponse.xml").text,
                 contentType: "text/xml",
@@ -47,6 +47,10 @@ abstract class RequestProxyingController {
             def proxiedRequest = new ProxiedRequest(request, response, processedParams)
             proxiedRequest.proxy(streamProcessor)
         }
+    }
+
+    def _isGeoNetworkSearchRequest(url) {
+        return url.startsWith("${grailsApplication.config.geonetwork.url}/srv/eng/xml.search.summary")
     }
 
     def _setDownloadFilename(response, params) {
