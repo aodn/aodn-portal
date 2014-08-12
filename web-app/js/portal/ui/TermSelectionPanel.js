@@ -66,7 +66,6 @@ Portal.ui.TermSelectionPanel = Ext.extend(Ext.Panel, {
         this.mon(this.selectedView, 'searchinvalidated', this._onSearchInvalidated, this);
 
         this.mon(this.searcher, 'searchcomplete', this._loadStore, this);
-        this.mon(this.searcher, 'summaryOnlySearchComplete', this._loadStore, this);
     },
 
     initComponent: function () {

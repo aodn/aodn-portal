@@ -35,10 +35,5 @@ describe('Portal.service.CatalogSearcher', function() {
             searcher._onSuccessfulSearch(response, options);
             expect(searcher.fireEvent).toHaveBeenCalledWith('searchcomplete', response.responseXML, options.page);
         });
-
-        it('fires searchcomplete on successful summary search', function() {
-            searcher._onSuccessfulSummarySearch(response, options);
-            expect(searcher.fireEvent).toHaveBeenCalledWith('summaryOnlySearchComplete', response.responseXML, options.page);
-        });
     });
 });

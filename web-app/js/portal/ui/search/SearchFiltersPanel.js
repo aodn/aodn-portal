@@ -51,7 +51,6 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
         var searcherEvents = [
             { event: 'searchcomplete', callback: this._hideSpinnerText },
-            { event: 'summaryOnlySearchComplete', callback: this._hideSpinnerText },
             { event: 'searcherror', callback: this._showError },
             { event: 'filteradded', callback: this._setupFacetedSearchUpdating },
             { event: 'filterremoved', callback: this._setNewSearchButtonVisibility },
@@ -59,7 +58,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         ];
         this._monitor(this.searcher, searcherEvents, this);
 
-        this.on('afterrender', function() { this.searcher.search( true ); return true; }, this );
+        this.on('afterrender', function() { this.searcher.search(); return true; }, this );
     },
 
     initComponent: function() {

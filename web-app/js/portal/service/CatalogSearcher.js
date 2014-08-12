@@ -39,19 +39,19 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this.searchFilters.removeAll();
     },
 
-    search: function(summaryOnly) {
+    search: function() {
         var page = {from: 1, to: this.pageSize};
-        this._search(page, summaryOnly);
+        this._search(page);
     },
 
-    _search: function(page, summaryOnly) {
+    _search: function(page) {
 
         this.fireEvent('searchstart');
-        var requestUrl = this._getRequestUrl(page, summaryOnly);
+        var requestUrl = this._getRequestUrl(page);
 
         Ext.ux.Ajax.proxyRequest({
             url: requestUrl,
-            success: summaryOnly ? this._onSuccessfulSummarySearch : this._onSuccessfulSearch,
+            success: this._onSuccessfulSearch,
             failure: this._logAndReturnErrors,
             page: page,
             scope: this,
@@ -101,25 +101,20 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this.fireEvent('searchcomplete', response.responseXML, options.page);
     },
 
-    _onSuccessfulSummarySearch: function(response, options) {
-
-        this.fireEvent('summaryOnlySearchComplete', response.responseXML, options.page);
-    },
-
     _logAndReturnErrors: function(response, options) {
         this.fireEvent('searcherror', response);
     },
 
     // Build request url to use from catalogUrl and filters
-    _getRequestUrl: function(page, summaryOnly) {
-        var params = this._getParams(page, summaryOnly);
+    _getRequestUrl: function(page) {
+        var params = this._getParams(page);
 
         var searchUrl = this.catalogUrl + '/srv/eng/' + this.serviceUrl;
 
         return searchUrl  + '?' + Ext.urlEncode(params);
     },
 
-    _getParams: function(page, summaryOnly) {
+    _getParams: function(page) {
         //--- Add search defaults (e.g. map layers only)
         var params = Ext.apply({}, this.defaultParams);
 
@@ -148,14 +143,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         //--- Add required base parameters (e.g. fast=index)
         Ext.apply(params, this.baseParams);
 
-        //--- Only return summary info if requested
-        if (summaryOnly) {
-            params[Portal.service.CatalogSearcher.BUILD_SUMMARY_ONLY] = true;
-        }
-
         return params;
     }
 
 });
-
-Portal.service.CatalogSearcher.BUILD_SUMMARY_ONLY = 'summaryOnly';
