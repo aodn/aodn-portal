@@ -162,6 +162,7 @@ openId {
 
 featureToggles {
     pythonDownload = false
+    hierarchicalFacets = false
 }
 
 // set per-environment serverURL stem for creating absolute links
