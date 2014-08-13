@@ -162,6 +162,7 @@ openId {
 
 featureToggles {
     pythonDownload = false
+    hierarchicalFacets = false
 }
 
 // set per-environment serverURL stem for creating absolute links
@@ -182,9 +183,6 @@ environments {
         grails.mail.disabled = true
         
         featureToggles.pythonDownload = true
-
-        // Set to true to get hierarchical facets.
-        featureToggles.hierarchicalFacets = false
     }
 
     test {
