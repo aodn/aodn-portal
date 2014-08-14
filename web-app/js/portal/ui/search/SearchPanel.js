@@ -25,12 +25,19 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
 
         this.resultsStore = new Portal.data.GeoNetworkRecordStore();
 
-        this.filtersPanel = new Portal.ui.search.SearchFiltersPanel({
+        var filtersPanelConfig = {
             searcher: this.searcher,
             region: 'west',
             width: 340,
             mapPanel: this.mapPanel
-        });
+        };
+
+        if (Portal.app.appConfig.featureToggles.hierarchicalFacets) {
+            this.filtersPanel = new Portal.search.HierarchicalSearchFiltersPanel(filtersPanelConfig);
+        }
+        else {
+            this.filtersPanel = new Portal.ui.search.SearchFiltersPanel(filtersPanelConfig);
+        }
 
         this.bodyPanel = new Portal.ui.search.SearchBodyPanel({
             id: 'searchBodypanel',

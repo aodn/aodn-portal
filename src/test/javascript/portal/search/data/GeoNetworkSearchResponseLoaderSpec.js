@@ -30,8 +30,9 @@ describe("Portal.search.data.GeoNetworkSearchResponseLoader", function() {
 </response> \
 ";
 
-    it('loads XML in to tree', function() {
+    var rootNode;
 
+    beforeEach(function() {
         spyOn(Ext.Ajax, 'request').andCallFake(function(opts) {
 
             var response = {
@@ -46,12 +47,24 @@ describe("Portal.search.data.GeoNetworkSearchResponseLoader", function() {
             dataUrl: 'http://url'
         });
 
-        var rootNode = new Ext.tree.TreeNode();
+        rootNode = new Ext.tree.TreeNode();
 
         treeLoader.load(rootNode);
+    });
 
+    it('loads XML in to tree', function() {
         var platformDimensionNode = rootNode.findChild('name', 'Platform', true);
         expect(platformDimensionNode).toBeTruthy();
         expect(platformDimensionNode.attributes.count).toBe('7');
+    });
+
+    describe('create node', function() {
+        it('creates name hierarchy', function() {
+            var shipCategoryNode = rootNode.findChild('name', 'Ship', true);
+            expect(shipCategoryNode.toNameHierarchy()).toBe('Platform/Ship');
+
+            var auroraCategoryNode = rootNode.findChild('name', 'Aurora Australis', true);
+            expect(auroraCategoryNode.toNameHierarchy()).toBe('Platform/Ship/Aurora Australis');
+        });
     });
 });

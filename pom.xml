@@ -409,6 +409,8 @@
                         <include>portal/data/ChildElementsField.js</include>
                         <include>portal/data/GeoNetwork*.js</include>
                         <include>portal/ui/MapPanel.js</include>
+                        <include>portal/ui/search/SearchFiltersPanel.js</include>
+                        <include>portal/search/HierarchicalSearchFiltersPanel.js</include>
                         <include>portal/ui/SearchPanel.js</include>
                         <include>portal/ui/VisualisePanel.js</include>
                         <include>portal/ui/MainPanel.js</include>

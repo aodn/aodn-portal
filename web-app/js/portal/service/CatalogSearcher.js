@@ -32,26 +32,28 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         Portal.service.CatalogSearcher.superclass.constructor.call(this, config);
 
-        this.addEvents('searchstart', 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved');
+        this.addEvents('searchstart', 'hiersearchcomplete', 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved');
     },
 
     reset: function() {
         this.searchFilters.removeAll();
     },
 
-    search: function(summaryOnly) {
+    search: function() {
         var page = {from: 1, to: this.pageSize};
-        this._search(page, summaryOnly);
+        this._search(page);
     },
 
-    _search: function(page, summaryOnly) {
+    _search: function(page) {
 
         this.fireEvent('searchstart');
-        var requestUrl = this._getRequestUrl(page, summaryOnly);
 
+        var requestUrl = this._getRequestUrl(page);
+
+        // TODO: this will go.
         Ext.ux.Ajax.proxyRequest({
             url: requestUrl,
-            success: summaryOnly ? this._onSuccessfulSummarySearch : this._onSuccessfulSearch,
+            success: this._onSuccessfulSearch,
             failure: this._logAndReturnErrors,
             page: page,
             scope: this,
@@ -59,6 +61,46 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
                 'Content-Type': 'application/xml'
             }
         });
+
+        if (Portal.app.appConfig.featureToggles.hierarchicalFacets) {
+            var searchResponseLoader = this._newSearchResponseLoader({
+                preloadChildren: true,
+                url: Ext.ux.Ajax.constructProxyUrl(requestUrl),
+                listeners: {
+                    scope: this,
+                    load: this._onSuccessfulHierSearch,
+                    loadexception: this._logAndReturnErrors
+                }
+            });
+
+            searchResponseLoader.load(this.getSearchResultRootNode());
+        }
+    },
+
+    // TODO: this function only exists because I didn't have any luck spying
+    // GeoNetworkSearchResponseLoader's constructor.
+    _newSearchResponseLoader: function(loaderConfig) {
+        return new Portal.ui.search.data.GeoNetworkSearchResponseLoader(loaderConfig);
+    },
+
+    getSearchResultRootNode: function() {
+        if (!this.searchResultRootNode) {
+            this.searchResultRootNode = new Ext.tree.TreeNode();
+        }
+        return this.searchResultRootNode
+    },
+
+    getSummaryNode: function() {
+
+        var summaryNode;
+
+        if (this.searchResultRootNode) {
+            summaryNode = this.searchResultRootNode.findChildBy(function(node) {
+                return node.attributes.tagName == 'summary';
+            }, this, true);
+        }
+
+        return summaryNode;
     },
 
     goToPage: function(start, limit) {
@@ -97,13 +139,11 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     },
 
     _onSuccessfulSearch: function(response, options) {
-
         this.fireEvent('searchcomplete', response.responseXML, options.page);
     },
 
-    _onSuccessfulSummarySearch: function(response, options) {
-
-        this.fireEvent('summaryOnlySearchComplete', response.responseXML, options.page);
+    _onSuccessfulHierSearch: function() {
+        this.fireEvent('hiersearchcomplete', this.getSummaryNode());
     },
 
     _logAndReturnErrors: function(response, options) {
@@ -111,15 +151,15 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     },
 
     // Build request url to use from catalogUrl and filters
-    _getRequestUrl: function(page, summaryOnly) {
-        var params = this._getParams(page, summaryOnly);
+    _getRequestUrl: function(page) {
+        var params = this._getParams(page);
 
         var searchUrl = this.catalogUrl + '/srv/eng/' + this.serviceUrl;
 
         return searchUrl  + '?' + Ext.urlEncode(params);
     },
 
-    _getParams: function(page, summaryOnly) {
+    _getParams: function(page) {
         //--- Add search defaults (e.g. map layers only)
         var params = Ext.apply({}, this.defaultParams);
 
@@ -148,14 +188,6 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         //--- Add required base parameters (e.g. fast=index)
         Ext.apply(params, this.baseParams);
 
-        //--- Only return summary info if requested
-        if (summaryOnly) {
-            params[Portal.service.CatalogSearcher.BUILD_SUMMARY_ONLY] = true;
-        }
-
         return params;
     }
-
 });
-
-Portal.service.CatalogSearcher.BUILD_SUMMARY_ONLY = 'summaryOnly';
