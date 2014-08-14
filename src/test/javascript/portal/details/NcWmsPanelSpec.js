@@ -96,50 +96,51 @@ describe('Portal.details.NcWmsPanel', function() {
     describe('clearing the date and time pickers', function() {
         it('resets the start picker', function() {
             spyOn(ncwmsPanel.startDateTimePicker, 'reset');
-            ncwmsPanel._clearDateTimeFields();
+            ncwmsPanel.resetConstraints();
             expect(ncwmsPanel.startDateTimePicker.reset).toHaveBeenCalled();
         });
 
         it('resets the end picker', function() {
             spyOn(ncwmsPanel.endDateTimePicker, 'reset');
-            ncwmsPanel._clearDateTimeFields();
+            ncwmsPanel.resetConstraints();
             expect(ncwmsPanel.endDateTimePicker.reset).toHaveBeenCalled();
         });
 
         it('hides the next and previous buttons', function() {
             spyOn(ncwmsPanel.buttonsPanel, 'hide');
-            ncwmsPanel._clearDateTimeFields();
+            ncwmsPanel.resetConstraints();
             expect(ncwmsPanel.buttonsPanel.hide).toHaveBeenCalled();
         });
 
         it('updates the time range label', function() {
             spyOn(ncwmsPanel, '_updateTimeRangeLabelLoading');
-            ncwmsPanel._clearDateTimeFields();
+            ncwmsPanel.resetConstraints();
             expect(ncwmsPanel._updateTimeRangeLabelLoading).toHaveBeenCalledWith();
         });
+        
     });
 
-    describe('layer temporal extent loaded', function() {
+    describe('layer temporal extent load', function() {
 
         it('enables the start date picker', function() {
-            ncwmsPanel._layerTemporalExtentLoaded();
+            ncwmsPanel._layerTemporalExtentLoad();
             expect(ncwmsPanel.startDateTimePicker.disabled).toBeFalsy();
         });
 
         it('enables the end date picker', function() {
-            ncwmsPanel._layerTemporalExtentLoaded();
+            ncwmsPanel._layerTemporalExtentLoad();
             expect(ncwmsPanel.endDateTimePicker.disabled).toBeFalsy();
         });
 
         it('shows the next and previous buttons', function() {
             spyOn(ncwmsPanel.buttonsPanel, 'show');
-            ncwmsPanel._layerTemporalExtentLoaded();
+            ncwmsPanel._layerTemporalExtentLoad();
             expect(ncwmsPanel.buttonsPanel.show).toHaveBeenCalled();
         });
 
         it('updates the time range label', function() {
             spyOn(ncwmsPanel, '_updateTimeRangeLabel');
-            ncwmsPanel._layerTemporalExtentLoaded();
+            ncwmsPanel._layerTemporalExtentLoad();
             expect(ncwmsPanel._updateTimeRangeLabel).toHaveBeenCalled();
         });
     });

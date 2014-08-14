@@ -10,6 +10,7 @@ Ext.namespace('Portal.details');
 Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     ROW_HEIGHT: 32,
+    ROW_WIDTH: 255,
 
     constructor: function(cfg) {
 
@@ -17,6 +18,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             layout: 'table',
+            autoScroll: true,
             layoutConfig: {
                 columns: 1,
                 tableAttrs: {
@@ -25,9 +27,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
                         width: '100%'
                     }
                 }
-            },
-            bodyCls: 'aodaacTab',
-            autoScroll: true
+            }
         }, cfg);
 
         Portal.details.NcWmsPanel.superclass.constructor.call(this, config);
@@ -53,6 +53,38 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.layer.processTemporalExtent();
         this._removeLoadingInfo();
         this._applyFilterValuesFromMap();
+        this._addClearButton();
+    },
+
+    _addClearButton: function() {
+
+        this.add(
+            new Ext.Button({
+                cls: "x-btn-text-icon",
+                icon: "images/go-back-icon.png",
+                text: OpenLayers.i18n('clearFilterButtonLabel'),
+                listeners: {
+                    scope: this,
+                    click: this.resetConstraints
+                }
+            })
+        );
+    },
+
+    resetConstraints: function() {
+
+        this._clearDateTimeFields();
+        this._layerTemporalExtentLoad();
+        this._clearSpatialControls();
+    },
+
+    _clearSpatialControls: function() {
+
+        if (this.spatialSubsetControlsPanel.map.spatialConstraintControl) {
+            this.spatialSubsetControlsPanel.map.spatialConstraintControl.clear();
+        }
+        this.spatialSubsetControlsPanel.map.events.triggerEvent('spatialconstraintcleared');
+
     },
 
     _removeLoadingInfo: function() {
@@ -117,7 +149,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             layoutConfig: {
                 align: 'middle'
             },
-            width: 255,
+            width: this.ROW_WIDTH,
             height: this.ROW_HEIGHT,
             items: [
                 dateStartLabel, this.startDateTimePicker
@@ -132,7 +164,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             layoutConfig: {
                 align: 'middle'
             },
-            width: 255,
+            width: this.ROW_WIDTH,
             height: this.ROW_HEIGHT,
             items: [
                 dateEndLabel, this.endDateTimePicker
@@ -281,18 +313,28 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     _attachTemporalEvents: function() {
         if (!this.layer.attachedTemporalExtentLoaded) {
             this.layer.events.on({
-                'temporalextentloaded': this._layerTemporalExtentLoaded,
+                'temporalextentloaded': this._layerTemporalExtentLoad,
                 scope: this
             });
 
-            this.layer.attachedTemporalExtentLoaded = true;
+
         }
     },
 
-    _layerTemporalExtentLoaded: function() {
+    _layerTemporalExtentLoad: function() {
+
+        if (!this.layer.attachedTemporalExtentLoaded) {
+
+            // save the defaults
+            this.startDateTimePicker.initvalue = this.layer.getSubsetExtentMin();
+            this.endDateTimePicker.initvalue = this.layer.getSubsetExtentMax();
+
+            this.layer.attachedTemporalExtentLoaded = true;
+        }
+
         var extent = this.layer.getTemporalExtent();
-        this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.layer.getSubsetExtentMin(), false);
-        this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.layer.getSubsetExtentMax(), true);
+        this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.startDateTimePicker.initvalue, false);
+        this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.endDateTimePicker.initvalue, true);
         this.buttonsPanel.show();
         this._updateTimeRangeLabel();
 
