@@ -242,11 +242,13 @@ hr {
 }
 
 #loginPopup {
-    padding: 6px;
-    border: solid 1px silver;
     background-color: #ffffff;
+    border: 1px solid silver;
+    border-radius: 6px;
+    padding: 6px;
     position: absolute;
-    border-radius: 10px;
+    right: 10px;
+    top: 25px;
 }
 
 .searchField {
