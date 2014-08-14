@@ -50,4 +50,30 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
             expect(selectionPanel.setRootNode).toHaveBeenCalledWith(summaryNode);
         });
     });
+
+    describe('events', function() {
+
+        var nameHierarchy = "some/drilldown/facet";
+
+        beforeEach(function() {
+            var clickedNode = {
+                toNameHierarchy: function() {
+                    return nameHierarchy;
+                }
+            };
+
+            spyOn(searcher, 'addDrilldownFilter');
+            spyOn(searcher, 'search');
+
+            selectionPanel.fireEvent('click', clickedNode);
+        });
+
+        it('adds drilldown filter to search on click', function() {
+            expect(searcher.addDrilldownFilter).toHaveBeenCalledWith(nameHierarchy);
+        });
+
+        it('searches on click', function() {
+            expect(searcher.search).toHaveBeenCalled();
+        });
+    });
 });

@@ -75,6 +75,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
                 }
             });
 
+            this.searchResultRootNode = new Ext.tree.TreeNode();
             searchResponseLoader.load(this.getSearchResultRootNode());
         }
     },
