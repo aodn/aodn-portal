@@ -8,6 +8,8 @@
 Ext.namespace('Portal.service');
 
 Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
+    DRILLDOWN_PARAMETER_NAME: "facet.q",
+
     constructor: function(cfg) {
         var defaults = {
             serviceUrl: 'xml.search.summary',
@@ -115,6 +117,10 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this.searchFilters.remove(filters.items);
 
         this.fireEvent( 'filterremoved' );
+    },
+
+    addDrilldownFilter: function(value) {
+        this.addFilter(this.DRILLDOWN_PARAMETER_NAME, value);
     },
 
     addFilter: function(name, value) {

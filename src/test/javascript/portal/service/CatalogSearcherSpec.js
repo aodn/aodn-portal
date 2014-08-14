@@ -9,7 +9,9 @@ describe('Portal.service.CatalogSearcher', function() {
     var searcher;
 
     beforeEach(function() {
-        searcher = new Portal.service.CatalogSearcher();
+        searcher = new Portal.service.CatalogSearcher({
+            baseParams: undefined
+        });
     });
 
     describe('events', function() {
@@ -46,6 +48,32 @@ describe('Portal.service.CatalogSearcher', function() {
         beforeEach(function() {
             Ext.namespace('Portal.app.appConfig.featureToggles');
             Portal.app.appConfig.featureToggles.hierarchicalFacets = true;
+        });
+
+        describe('query', function() {
+            it('adds drilldown value to drilldown parameter', function() {
+                searcher.addDrilldownFilter("Platform/Mooring");
+
+                var drilldownParam = searcher._getParams()[searcher.DRILLDOWN_PARAMETER_NAME];
+                expect(drilldownParam).toEqual('Platform/Mooring');
+                expect(Ext.urlEncode(searcher._getParams())).toBe('facet.q=Platform%2FMooring');
+            });
+
+            it('adds multiple drilldown values to drilldown parameter', function() {
+                searcher.addDrilldownFilter("Platform/Mooring");
+                searcher.addDrilldownFilter("Platform/Ship/Aurora Australis");
+
+                var drilldownParam = searcher._getParams()[searcher.DRILLDOWN_PARAMETER_NAME];
+                expect(drilldownParam).toEqual(['Platform/Mooring', 'Platform/Ship/Aurora Australis']);
+                expect(Ext.urlEncode(searcher._getParams())).toBe('facet.q=Platform%2FMooring&facet.q=Platform%2FShip%2FAurora%20Australis');
+            });
+
+            it('adds non drilldown value to its own parameter', function() {
+                searcher.addFilter("geometry", "some_geometry", false);
+
+                expect(searcher._getParams()['geometry']).toEqual("some_geometry");
+                expect(Ext.urlEncode(searcher._getParams())).toBe('geometry=some_geometry');
+            });
         });
 
         it('configures loader', function() {
