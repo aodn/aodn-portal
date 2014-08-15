@@ -78,7 +78,16 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
     });
 
     describe('setRootNode', function() {
+
         it('merges state from existing root node', function() {
+
+            Ext.namespace('Ext.tree');
+            Ext.tree.TreeNode.prototype.expand = function() {
+                this.expanded = true;
+            }
+            Ext.tree.TreeNode.prototype.collapse = function() {
+                this.expanded = false;
+            }
 
             var buildTestTree = function() {
 
@@ -128,11 +137,16 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
             oldTree.findChild('name', 'Platform', true).select();
             oldTree.findChild('name', 'Parameter', true).unselect();
 
+            oldTree.findChild('name', 'Platform', true).collapse();
+            oldTree.findChild('name', 'Parameter', true).expand();
+
             // Replace root node.
             treePanel.setRootNode(newTree);
 
             expect(newTree.findChild('name', 'Platform', true).isSelected()).toBeTruthy();
             expect(newTree.findChild('name', 'Parameter', true).isSelected()).toBeFalsy();
+            expect(newTree.findChild('name', 'Platform', true).isExpanded()).toBeFalsy();
+            expect(newTree.findChild('name', 'Parameter', true).isExpanded()).toBeTruthy();
         });
     });
 });

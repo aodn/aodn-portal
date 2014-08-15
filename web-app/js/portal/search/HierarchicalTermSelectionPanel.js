@@ -12,25 +12,34 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
     constructor: function(config) {
 
         config = Ext.apply({
+            animate: false,
             root: config.searcher.getSummaryNode() ? config.searcher.getSummaryNode() : new Ext.tree.TreeNode(),
             rootVisible: false,
-            listeners: {
-                scope: this,
-                click: this._onClick
-            }
+            // listeners: {
+            //     scope: this,
+            //     click: this._onClick
+            // }
         }, config);
 
         Portal.search.HierarchicalTermSelectionPanel.superclass.constructor.call(this, config);
 
+        this.getSelectionModel().on('selectionchange', this._onSelectionChange, this);
         this.mon(this.searcher, 'hiersearchcomplete', function(summaryNode) {
             this._onSearchComplete(summaryNode);
         }, this);
     },
 
-    _onClick: function(clickedNode) {
-        this.searcher.addDrilldownFilter(clickedNode.toNameHierarchy());
-        this.searcher.search();
+    _onSelectionChange: function(selectionModel, node) {
+        if (node.isSelected()) {
+            this.searcher.addDrilldownFilter(node.toNameHierarchy());
+            this.searcher.search();
+        }
     },
+
+    // _onClick: function(clickedNode) {
+    //     this.searcher.addDrilldownFilter(clickedNode.toNameHierarchy());
+    //     this.searcher.search();
+    // },
 
     _onSearchComplete: function(summaryNode) {
         this.setRootNode(summaryNode);
@@ -48,11 +57,13 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
      * replacing it with a new one.
      */
     setRootNode: function(newRootNode) {
+        this.getSelectionModel().un('selectionchange', this._onSelectionChange, this);
         var oldNodeStatesCache = this._getNodeStatesCache();
 
         Portal.search.HierarchicalTermSelectionPanel.superclass.setRootNode.call(this, newRootNode);
 
         this._mergeNodeStates(oldNodeStatesCache);
+        this.getSelectionModel().on('selectionchange', this._onSelectionChange, this);
     },
 
     _getNodeStatesCache: function() {
@@ -60,7 +71,10 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
 
         if (this.root) {
             this.root.eachNodeRecursive(function(node) {
-                nodeStatesCache[node.getTagNameAndName()] = { selected: node.isSelected() };
+                nodeStatesCache[node.getTagNameAndName()] = {
+                    selected: node.isSelected(),
+                    expanded: node.isExpanded()
+                };
                 return true;
             });
         }
@@ -74,6 +88,7 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
 
             if (oldNodeState) {
                 oldNodeState.selected ? node.select() : node.unselect();
+                oldNodeState.expanded ? node.expand() : node.collapse();
             }
 
             return true;
