@@ -30,6 +30,8 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         // Not done in Observable's constructor for some reason
         Ext.apply(this, config);
 
+        this.searchResultRootNode = new Ext.tree.TreeNode();
+
         Portal.service.CatalogSearcher.superclass.constructor.call(this, config);
 
         this.addEvents('searchstart', 'hiersearchcomplete', 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved');
@@ -72,8 +74,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
                     loadexception: this._logAndReturnErrors
                 }
             });
-
-            searchResponseLoader.load(this.getSearchResultRootNode());
+            searchResponseLoader.load(this.searchResultRootNode);
         }
     },
 
@@ -83,24 +84,22 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         return new Portal.ui.search.data.GeoNetworkSearchResponseLoader(loaderConfig);
     },
 
-    getSearchResultRootNode: function() {
-        if (!this.searchResultRootNode) {
-            this.searchResultRootNode = new Ext.tree.TreeNode();
-        }
-        return this.searchResultRootNode
-    },
-
     getSummaryNode: function() {
 
-        var summaryNode;
-
-        if (this.searchResultRootNode) {
-            summaryNode = this.searchResultRootNode.findChildBy(function(node) {
-                return node.attributes.tagName == 'summary';
-            }, this, true);
-        }
+        var summaryNode = this.searchResultRootNode.findChildBy(function(node) {
+            return node.attributes.tagName == 'summary';
+        }, this, true);
 
         return summaryNode;
+    },
+
+    getDimensionNodeByName: function(dimensionName) {
+
+        var resNode = this.searchResultRootNode.findChildBy(function(node) {
+            return node.attributes.tagName == 'dimension' && node.attributes.name == dimensionName;
+        }, this, true);
+
+        return resNode;
     },
 
     goToPage: function(start, limit) {
@@ -143,7 +142,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     },
 
     _onSuccessfulHierSearch: function() {
-        this.fireEvent('hiersearchcomplete', this.getSummaryNode());
+        this.fireEvent('hiersearchcomplete');
     },
 
     _logAndReturnErrors: function(response, options) {

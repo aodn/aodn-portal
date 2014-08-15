@@ -13,12 +13,32 @@ Portal.search.HierarchicalSearchFiltersPanel = Ext.extend(Portal.ui.search.Searc
 
     _initTermFilters: function(config) {
 
-        this._buildFilter(
-            Portal.search.HierarchicalTermSelectionPanel,
-            'hierarchicalTermFilter',
-            {
-                searcher: config.searcher
+        this._buildFilter(Portal.search.HierarchicalTermSelectionPanel, 'parameterFilter', {
+            dimensionName: "Parameter",
+            title: OpenLayers.i18n('parameterFilter'),
+            hierarchical: false,
+            //fieldGroup: 'longParamNames',
+            //fieldName: 'longParamName',
+            searcher: config.searcher,
+            collapsed: false,
+            listeners: {
+                expand: this._onExpand,
+                scope: this
             }
-        );
+        });
+
+        this._buildFilter(Portal.search.HierarchicalTermSelectionPanel, 'organisationFilter', {
+            dimensionName: "Platform",
+            title: OpenLayers.i18n('organisationFilter'),
+            hierarchical: false,
+            //fieldGroup: 'organisationNames',
+            //fieldName: 'orgName',
+            searcher: config.searcher,
+            listeners: {
+                expand: this._onExpand,
+                scope: this
+            }
+        });
+
     }
 });
