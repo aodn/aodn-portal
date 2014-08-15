@@ -31,7 +31,6 @@ class BuildInfoTagLib {
     def getDetailedInfo() {
         """
             Instance name: ${portalInstance.name()}
-            Environment: ${Environment.current.name}
             App version: ${metadata.'app.version'}
             Build date: ${metadata.'app.build.date'}
             Build number: ${metadata.'app.build.number'}
