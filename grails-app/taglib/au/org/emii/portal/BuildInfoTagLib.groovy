@@ -31,6 +31,7 @@ class BuildInfoTagLib {
     def getDetailedInfo() {
         """
             Instance name: ${portalInstance.name()}
+            URL: ${grailsApplication.config.grails.serverURL}
             Environment: ${Environment.current.name}
             App version: ${metadata.'app.version'}
             Build date: ${metadata.'app.build.date'}
