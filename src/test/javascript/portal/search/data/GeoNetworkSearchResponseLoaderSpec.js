@@ -31,24 +31,16 @@ describe("Portal.search.data.GeoNetworkSearchResponseLoader", function() {
 ";
 
     var rootNode;
+    var treeLoader;
 
     beforeEach(function() {
-        spyOn(Ext.Ajax, 'request').andCallFake(function(opts) {
+        mockAjaxXmlResponse(searchResponse);
 
-            var response = {
-                responseXML: textToXML(searchResponse),
-                argument: opts.argument
-            };
-
-            opts.success.call(opts.scope, response, opts)
-        });
-
-        var treeLoader = new Portal.ui.search.data.GeoNetworkSearchResponseLoader({
+        treeLoader = new Portal.ui.search.data.GeoNetworkSearchResponseLoader({
             dataUrl: 'http://url'
         });
 
         rootNode = new Ext.tree.TreeNode();
-
         treeLoader.load(rootNode);
     });
 

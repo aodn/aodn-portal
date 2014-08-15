@@ -76,4 +76,63 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
             expect(searcher.search).toHaveBeenCalled();
         });
     });
+
+    describe('setRootNode', function() {
+        it('merges state from existing root node', function() {
+
+            var buildTestTree = function() {
+
+                var rootNode = new Ext.tree.TreeNode({ tagName: 'response' });
+                var summaryNode = new Ext.tree.TreeNode({ tagName: 'summary' });
+
+                var platformDimensionNode = new Ext.tree.TreeNode({
+                    tagName: 'dimension',
+                    name: 'Platform'
+                });
+
+                var parameterDimensionNode = new Ext.tree.TreeNode({
+                    tagName: 'dimension',
+                    name: 'Parameter'
+                });
+
+                rootNode.appendChild(summaryNode);
+                summaryNode.appendChild([platformDimensionNode, parameterDimensionNode]);
+
+                return rootNode;
+            };
+
+            var oldTree = buildTestTree();
+            var newTree = buildTestTree();
+
+            // Add it to a panel, with a mocked selection model, so that we can run
+            // our tests.
+            var treePanel = new Portal.search.HierarchicalTermSelectionPanel({
+                searcher: searcher,
+                root: oldTree,
+                selModel: {
+                    select: function(node) {
+                        // console.log('selecting', node);
+                        node.selected = true;
+                    },
+                    unselect: function(node) {
+                        // console.log('unselecting', node);
+                        node.selected = false;
+                    },
+                    isSelected: function(node) {
+                        return node.selected;
+                    }
+                }
+            });
+
+            // Setup selected/unselected nodes.
+            oldTree.findChild('name', 'Platform', true).select();
+            oldTree.findChild('name', 'Parameter', true).unselect();
+
+            // Replace root node.
+            treePanel.setRootNode(newTree);
+
+            expect(newTree.findChild('name', 'Platform', true).isSelected()).toBeTruthy();
+            expect(newTree.findChild('name', 'Parameter', true).isSelected()).toBeFalsy();
+        });
+    });
 });
