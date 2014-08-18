@@ -86,7 +86,6 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
             this._setTimeValue(date);
             this.tf.setDisabled(true);
         }
-
     },
 
     _setTimeMaxValue: function(extent) {
@@ -134,9 +133,14 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
     onBlur: function(field) {
         this._setTimeFieldChangeFlag(field);
-        if (this.isDirty()) {
+
+        if (this._isDirty()) {
             this._fireEventsForChange(this._matchTime());
         }
+    },
+
+    _isDirty: function() {
+        return this.dateValue.getTime() != this._matchTime().getTime();
     },
 
     onFocus: function() {
@@ -194,7 +198,6 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         else {
             return this.getUtcDateFromLocalValues(this.df.getValue());
         }
-
     },
 
     _getExtentForSelectedDate: function() {
@@ -222,6 +225,4 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
     _preventStoreChangesBeingIgnored: function() {
         this.tf.generateStore = function() {};
     }
-
-
 });

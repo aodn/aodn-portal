@@ -114,13 +114,29 @@ describe("Portal.form.UtcExtentDateTime", function() {
     });
 
     describe('onBlur', function() {
-        it('no change events when invalid ', function() {
-            spyOn(utcDateTime.df, 'isValid').andReturn(false);
+
+        var matchTime;
+
+        beforeEach(function() {
+            matchTime = {getTime: function(){return '13:00'}};
+            spyOn(utcDateTime, '_matchTime').andReturn(matchTime);
             spyOn(utcDateTime, '_fireEventsForChange');
+        });
+
+        it('no change events when times are not "dirty"', function() {
+
+            spyOn(utcDateTime.dateValue, 'getTime').andReturn('13:00');
+
             utcDateTime.onBlur(utcDateTime.df);
             expect(utcDateTime._fireEventsForChange).not.toHaveBeenCalled();
         });
 
-    });
+        it('change events fired when times are "dirty"', function() {
 
+            spyOn(utcDateTime.dateValue, 'getTime').andReturn('14:00');
+
+            utcDateTime.onBlur(utcDateTime.df);
+            expect(utcDateTime._fireEventsForChange).toHaveBeenCalledWith(matchTime);
+        });
+    });
 });
