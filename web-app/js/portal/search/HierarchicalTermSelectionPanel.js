@@ -14,11 +14,7 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
         config = Ext.apply({
             animate: false,
             root: config.searcher.getSummaryNode() ? config.searcher.getSummaryNode() : new Ext.tree.TreeNode(),
-            rootVisible: false,
-            // listeners: {
-            //     scope: this,
-            //     click: this._onClick
-            // }
+            rootVisible: false
         }, config);
 
         Portal.search.HierarchicalTermSelectionPanel.superclass.constructor.call(this, config);
@@ -31,15 +27,10 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
 
     _onSelectionChange: function(selectionModel, node) {
         if (node.isSelected()) {
-            this.searcher.addDrilldownFilter(node.toNameHierarchy());
+            this.searcher.addDrilldownFilter(node.toValueHierarchy());
             this.searcher.search();
         }
     },
-
-    // _onClick: function(clickedNode) {
-    //     this.searcher.addDrilldownFilter(clickedNode.toNameHierarchy());
-    //     this.searcher.search();
-    // },
 
     _onSearchComplete: function(summaryNode) {
         this.setRootNode(summaryNode);
@@ -71,7 +62,7 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
 
         if (this.root) {
             this.root.eachNodeRecursive(function(node) {
-                nodeStatesCache[node.getTagNameAndName()] = {
+                nodeStatesCache[node.getUniqueId()] = {
                     selected: node.isSelected(),
                     expanded: node.isExpanded()
                 };
@@ -84,7 +75,7 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
 
     _mergeNodeStates: function(nodeStatesCache) {
         this.root.eachNodeRecursive(function(node) {
-            var oldNodeState = nodeStatesCache[node.getTagNameAndName()];
+            var oldNodeState = nodeStatesCache[node.getUniqueId()];
 
             if (oldNodeState) {
                 oldNodeState.selected ? node.select() : node.unselect();

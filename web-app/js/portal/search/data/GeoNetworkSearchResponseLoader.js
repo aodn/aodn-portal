@@ -12,16 +12,16 @@ Portal.ui.search.data.GeoNetworkSearchResponseLoader = Ext.extend(Ext.ux.tree.Xm
     createNode: function(attr) {
         var node = Portal.ui.search.data.GeoNetworkSearchResponseLoader.superclass.createNode.call(this, attr);
 
-        node.toNameHierarchy = function() {
-            var names = [];
+        node.toValueHierarchy = function() {
+            var values = [];
             var p = this;
 
             do {
-                names.push(p.attributes.name);
+                values.push(p.attributes.value);
                 p = p.parentNode;
             } while (p.parentNode)
 
-            return names.reverse().filter(function(n) {
+            return values.reverse().filter(function(n) {
                 return n;
             }).join('/');
         };
@@ -30,7 +30,11 @@ Portal.ui.search.data.GeoNetworkSearchResponseLoader = Ext.extend(Ext.ux.tree.Xm
     },
 
     processAttributes: function(attr) {
-        attr.text = String.format("{0} ({1})", attr.name, attr.count);
+        attr.text = String.format("{0} ({1})", attr.value, attr.count);
         attr.loaded = true;
+    },
+
+    getParams: function(node) {
+        return {};
     }
 });

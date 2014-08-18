@@ -7,10 +7,10 @@
 
 Ext.namespace('Ext.tree');
 
-Ext.tree.TreeNode.prototype.getTagNameAndName = function() {
+Ext.tree.TreeNode.prototype.getUniqueId = function() {
     return JSON.stringify({
         tagName: this.attributes.tagName,
-        name: this.attributes.name
+        value: this.attributes.value
     });
 };
 
@@ -24,5 +24,5 @@ Ext.tree.TreeNode.prototype.eachNodeRecursive = function(fn) {
 };
 
 Ext.tree.TreeNode.prototype.equals = function(other) {
-    return this.getTagNameAndName() === other.getTagNameAndName();
+    return this.getUniqueId() === other.getUniqueId();
 };

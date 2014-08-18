@@ -12,7 +12,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
     constructor: function(cfg) {
         var defaults = {
-            serviceUrl: 'xml.search.summary',
+            serviceUrl: 'xml.search.imos',
             baseParams: {
                 fast: 'index'
             },
@@ -66,6 +66,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         if (Portal.app.appConfig.featureToggles.hierarchicalFacets) {
             var searchResponseLoader = this._newSearchResponseLoader({
+                requestMethod: 'GET',
                 preloadChildren: true,
                 url: Ext.ux.Ajax.constructProxyUrl(requestUrl),
                 listeners: {

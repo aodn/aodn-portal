@@ -53,26 +53,30 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
 
     describe('events', function() {
 
-        var nameHierarchy = "some/drilldown/facet";
+        var valueHierarchy = "some/drilldown/facet";
 
         beforeEach(function() {
             var clickedNode = {
-                toNameHierarchy: function() {
-                    return nameHierarchy;
+                toValueHierarchy: function() {
+                    return valueHierarchy;
+                },
+                isSelected: function() {
+                    return true;
                 }
             };
 
             spyOn(searcher, 'addDrilldownFilter');
             spyOn(searcher, 'search');
 
-            selectionPanel.fireEvent('click', clickedNode);
+            var selModel = selectionPanel.getSelectionModel();
+            selModel.fireEvent('selectionchange', selModel, clickedNode);
         });
 
-        it('adds drilldown filter to search on click', function() {
-            expect(searcher.addDrilldownFilter).toHaveBeenCalledWith(nameHierarchy);
+        it('adds drilldown filter to search on selection change', function() {
+            expect(searcher.addDrilldownFilter).toHaveBeenCalledWith(valueHierarchy);
         });
 
-        it('searches on click', function() {
+        it('searches on selection change', function() {
             expect(searcher.search).toHaveBeenCalled();
         });
     });
@@ -96,12 +100,12 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
 
                 var platformDimensionNode = new Ext.tree.TreeNode({
                     tagName: 'dimension',
-                    name: 'Platform'
+                    value: 'Platform'
                 });
 
                 var parameterDimensionNode = new Ext.tree.TreeNode({
                     tagName: 'dimension',
-                    name: 'Parameter'
+                    value: 'Parameter'
                 });
 
                 rootNode.appendChild(summaryNode);
@@ -120,33 +124,33 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
                 root: oldTree,
                 selModel: {
                     select: function(node) {
-                        // console.log('selecting', node);
                         node.selected = true;
                     },
                     unselect: function(node) {
-                        // console.log('unselecting', node);
                         node.selected = false;
                     },
                     isSelected: function(node) {
                         return node.selected;
-                    }
+                    },
+                    on: noOp,
+                    un: noOp
                 }
             });
 
             // Setup selected/unselected nodes.
-            oldTree.findChild('name', 'Platform', true).select();
-            oldTree.findChild('name', 'Parameter', true).unselect();
+            oldTree.findChild('value', 'Platform', true).select();
+            oldTree.findChild('value', 'Parameter', true).unselect();
 
-            oldTree.findChild('name', 'Platform', true).collapse();
-            oldTree.findChild('name', 'Parameter', true).expand();
+            oldTree.findChild('value', 'Platform', true).collapse();
+            oldTree.findChild('value', 'Parameter', true).expand();
 
             // Replace root node.
             treePanel.setRootNode(newTree);
 
-            expect(newTree.findChild('name', 'Platform', true).isSelected()).toBeTruthy();
-            expect(newTree.findChild('name', 'Parameter', true).isSelected()).toBeFalsy();
-            expect(newTree.findChild('name', 'Platform', true).isExpanded()).toBeFalsy();
-            expect(newTree.findChild('name', 'Parameter', true).isExpanded()).toBeTruthy();
+            expect(newTree.findChild('value', 'Platform', true).isSelected()).toBeTruthy();
+            expect(newTree.findChild('value', 'Parameter', true).isSelected()).toBeFalsy();
+            expect(newTree.findChild('value', 'Platform', true).isExpanded()).toBeFalsy();
+            expect(newTree.findChild('value', 'Parameter', true).isExpanded()).toBeTruthy();
         });
     });
 });
