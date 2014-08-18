@@ -81,6 +81,23 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
         });
     });
 
+    describe('removeAnyFilters', function() {
+        it('removes drilldown filters from searcher', function() {
+            spyOn(searcher, 'removeDrilldownFilters');
+            selectionPanel.removeAnyFilters();
+            expect(searcher.removeDrilldownFilters).toHaveBeenCalled();
+        });
+
+        it('resets root node to empty node', function() {
+            selectionPanel.root = {
+                hasChildNodes: function() { return true; }
+            }
+            expect(selectionPanel.root.hasChildNodes()).toBeTruthy();
+            selectionPanel.removeAnyFilters();
+            expect(selectionPanel.root.hasChildNodes()).toBeFalsy();
+        });
+    });
+
     describe('setRootNode', function() {
 
         it('merges state from existing root node', function() {

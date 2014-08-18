@@ -25,6 +25,11 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
         }, this);
     },
 
+    removeAnyFilters: function() {
+        this.root = new Ext.tree.TreeNode();
+        this.searcher.removeDrilldownFilters();
+    },
+
     _onSelectionChange: function(selectionModel, node) {
         if (node.isSelected()) {
             this.searcher.addDrilldownFilter(node.toValueHierarchy());

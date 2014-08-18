@@ -112,6 +112,10 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this._search(page);
     },
 
+    removeDrilldownFilters: function() {
+        this.removeFilters(this.DRILLDOWN_PARAMETER_NAME);
+    },
+
     removeFilters: function(filterPattern) {
 
         var filters = this.searchFilters.query('name', filterPattern);

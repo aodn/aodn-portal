@@ -51,6 +51,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
         var searcherEvents = [
             { event: 'searchcomplete', callback: this._hideSpinnerText },
+            { event: 'hiersearchcomplete', callback: this._hideSpinnerText },
             { event: 'searcherror', callback: this._showError },
             { event: 'filteradded', callback: this._setupFacetedSearchUpdating },
             { event: 'filterremoved', callback: this._setNewSearchButtonVisibility },
