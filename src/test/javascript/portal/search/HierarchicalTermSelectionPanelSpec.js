@@ -5,7 +5,6 @@
  *
  */
 describe("Portal.search.HierarchicalTermSelectionPanel", function() {
-
     var searcher;
     var selectionPanel;
 
@@ -18,16 +17,15 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
     });
 
     describe('initialisation', function() {
-        it('initialises with summary node from searcher', function() {
-            var summaryNode = {};
-            spyOn(searcher, 'getSummaryNode').andReturn(summaryNode);
+        it('initialises with empty node', function() {
+
             spyOn(Portal.search.HierarchicalTermSelectionPanel.prototype, 'setRootNode');
 
             selectionPanel = new Portal.search.HierarchicalTermSelectionPanel({
                 searcher: searcher
             });
 
-            expect(selectionPanel.setRootNode).toHaveBeenCalledWith(summaryNode);
+            expect(selectionPanel.setRootNode).toHaveBeenCalled();
         });
     });
 
@@ -42,12 +40,10 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
 
     describe('on search complete', function() {
         it('sets root node', function() {
-            var summaryNode = {};
             spyOn(selectionPanel, 'setRootNode');
 
-            selectionPanel._onSearchComplete({}, 0, summaryNode);
-
-            expect(selectionPanel.setRootNode).toHaveBeenCalledWith(summaryNode);
+            selectionPanel._onSearchComplete();
+            expect(selectionPanel.setRootNode).toHaveBeenCalled();
         });
     });
 });

@@ -12,18 +12,20 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
     constructor: function(config) {
 
         config = Ext.apply({
-            root: config.searcher.getSummaryNode() ? config.searcher.getSummaryNode() : new Ext.tree.TreeNode(),
+            root: new Ext.tree.TreeNode(),
             rootVisible: false
         }, config);
 
         Portal.search.HierarchicalTermSelectionPanel.superclass.constructor.call(this, config);
 
-        this.mon(this.searcher, 'hiersearchcomplete', function(summaryNode) {
-            this._onSearchComplete(summaryNode);
+        this.mon(this.searcher, 'hiersearchcomplete', function() {
+            this._onSearchComplete();
         }, this);
     },
 
-    _onSearchComplete: function(summaryNode) {
-        this.setRootNode(summaryNode);
+    _onSearchComplete: function() {
+
+        var node = this.searcher.getDimensionNodeByName(this.dimensionName);
+        this.setRootNode(node);
     }
 });
