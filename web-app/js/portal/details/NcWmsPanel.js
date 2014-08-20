@@ -83,8 +83,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         if (this.map.spatialConstraintControl) {
             this.map.spatialConstraintControl.clear();
         }
+        
         this.map.events.triggerEvent('spatialconstraintcleared');
-
     },
 
     _removeLoadingInfo: function() {
@@ -316,8 +316,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
                 'temporalextentloaded': this._layerTemporalExtentLoad,
                 scope: this
             });
-
-
         }
     },
 
