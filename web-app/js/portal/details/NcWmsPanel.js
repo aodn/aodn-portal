@@ -80,10 +80,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
     _clearSpatialControls: function() {
 
-        if (this.map === this.spatialSubsetControlsPanel.map) {
-            console.log("is it the smae map");
-        }
-
         if (this.map.spatialConstraintControl) {
             this.map.spatialConstraintControl.clear();
         }
