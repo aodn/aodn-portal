@@ -12,7 +12,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
     constructor: function(cfg) {
         var defaults = {
-            serviceUrl: 'xml.search.imos',
+            serviceUrl: Portal.app.appConfig.geonetwork.searchPath,
             baseParams: {
                 fast: 'index'
             },
@@ -107,6 +107,15 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         return summaryNode;
     },
 
+    getDimensionNodeByValue: function(dimensionValue) {
+
+        var dimensionNode = this.searchResultRootNode.findChildBy(function(node) {
+            return node.attributes.tagName == 'dimension' && node.attributes.value == dimensionValue;
+        }, this, true);
+
+        return dimensionNode;
+    },
+
     goToPage: function(start, limit) {
         var page = {from: start, to: start + limit - 1};
         this._search(page);
@@ -155,7 +164,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     },
 
     _onSuccessfulHierSearch: function() {
-        this.fireEvent('hiersearchcomplete', this.getSummaryNode());
+        this.fireEvent('hiersearchcomplete');
     },
 
     _logAndReturnErrors: function(response, options) {

@@ -13,15 +13,16 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
 
         config = Ext.apply({
             animate: false,
-            root: config.searcher.getSummaryNode() ? config.searcher.getSummaryNode() : new Ext.tree.TreeNode(),
+            // TODO: initialise with actual node if it exists.
+            root: new Ext.tree.TreeNode(),
             rootVisible: false
         }, config);
 
         Portal.search.HierarchicalTermSelectionPanel.superclass.constructor.call(this, config);
 
         this.getSelectionModel().on('selectionchange', this._onSelectionChange, this);
-        this.mon(this.searcher, 'hiersearchcomplete', function(summaryNode) {
-            this._onSearchComplete(summaryNode);
+        this.mon(this.searcher, 'hiersearchcomplete', function() {
+            this._onSearchComplete();
         }, this);
     },
 
@@ -37,8 +38,9 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
         }
     },
 
-    _onSearchComplete: function(summaryNode) {
-        this.setRootNode(summaryNode);
+    _onSearchComplete: function() {
+        var node = this.searcher.getDimensionNodeByValue(this.dimensionValue);
+        this.setRootNode(node);
     },
 
     /**

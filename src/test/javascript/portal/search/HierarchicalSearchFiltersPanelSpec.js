@@ -17,6 +17,8 @@ describe("Portal.search.HierarchicalSearchFiltersPanel", function() {
     it('initialisation', function() {
         var expectedItemTypes = [
             Portal.search.HierarchicalTermSelectionPanel,
+            Portal.search.HierarchicalTermSelectionPanel,
+            Portal.search.HierarchicalTermSelectionPanel,
             Portal.search.DateSelectionPanel,
             Portal.search.GeoSelectionPanel
         ];

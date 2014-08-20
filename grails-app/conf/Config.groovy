@@ -165,6 +165,8 @@ featureToggles {
     hierarchicalFacets = false
 }
 
+geonetwork.searchPath = featureToggles.hierarchicalFacets ? 'xml.search.imos' : 'xml.search.summary'
+
 // set per-environment serverURL stem for creating absolute links
 def env = System.getenv()
 
