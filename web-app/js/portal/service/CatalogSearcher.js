@@ -8,9 +8,11 @@
 Ext.namespace('Portal.service');
 
 Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
+    DRILLDOWN_PARAMETER_NAME: "facet.q",
+
     constructor: function(cfg) {
         var defaults = {
-            serviceUrl: 'xml.search.summary',
+            serviceUrl: Portal.app.appConfig.geonetwork.searchPath,
             baseParams: {
                 fast: 'index'
             },
@@ -64,6 +66,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         if (Portal.app.appConfig.featureToggles.hierarchicalFacets) {
             var searchResponseLoader = this._newSearchResponseLoader({
+                requestMethod: 'GET',
                 preloadChildren: true,
                 url: Ext.ux.Ajax.constructProxyUrl(requestUrl),
                 listeners: {
@@ -73,6 +76,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
                 }
             });
 
+            this.searchResultRootNode = new Ext.tree.TreeNode();
             searchResponseLoader.load(this.getSearchResultRootNode());
         }
     },
@@ -103,9 +107,22 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         return summaryNode;
     },
 
+    getDimensionNodeByValue: function(dimensionValue) {
+
+        var dimensionNode = this.searchResultRootNode.findChildBy(function(node) {
+            return node.attributes.tagName == 'dimension' && node.attributes.value == dimensionValue;
+        }, this, true);
+
+        return dimensionNode;
+    },
+
     goToPage: function(start, limit) {
         var page = {from: start, to: start + limit - 1};
         this._search(page);
+    },
+
+    removeDrilldownFilters: function() {
+        this.removeFilters(this.DRILLDOWN_PARAMETER_NAME);
     },
 
     removeFilters: function(filterPattern) {
@@ -115,6 +132,10 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this.searchFilters.remove(filters.items);
 
         this.fireEvent( 'filterremoved' );
+    },
+
+    addDrilldownFilter: function(value) {
+        this.addFilter(this.DRILLDOWN_PARAMETER_NAME, value);
     },
 
     addFilter: function(name, value) {
@@ -143,7 +164,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     },
 
     _onSuccessfulHierSearch: function() {
-        this.fireEvent('hiersearchcomplete', this.getSummaryNode());
+        this.fireEvent('hiersearchcomplete');
     },
 
     _logAndReturnErrors: function(response, options) {

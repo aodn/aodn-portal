@@ -13,11 +13,49 @@ Portal.search.HierarchicalSearchFiltersPanel = Ext.extend(Portal.ui.search.Searc
 
     _initTermFilters: function(config) {
 
+        // TODO: add these dynamically.
         this._buildFilter(
             Portal.search.HierarchicalTermSelectionPanel,
-            'hierarchicalTermFilter',
+            'parameterFilter',
             {
-                searcher: config.searcher
+                dimensionValue: "Measured parameter",
+                title: OpenLayers.i18n('parameterFilter'),
+                searcher: config.searcher,
+                collapsed: false,
+                listeners: {
+                    expand: this._onExpand,
+                    scope: this
+                }
+            }
+        );
+
+        this._buildFilter(
+            Portal.search.HierarchicalTermSelectionPanel,
+            'organisationFilter',
+            {
+                dimensionValue: "Organisation",
+                title: OpenLayers.i18n('organisationFilter'),
+                searcher: config.searcher,
+                collapsed: false,
+                listeners: {
+                    expand: this._onExpand,
+                    scope: this
+                }
+            }
+        );
+
+        this._buildFilter(
+            Portal.search.HierarchicalTermSelectionPanel,
+            'platformFilter',
+            {
+                dimensionValue: "Platform",
+                title: OpenLayers.i18n('platformFilter'),
+                searcher: config.searcher,
+                collapsed: false,
+                listeners: {
+                    expand: this._onExpand,
+                    scope: this
+                }
             }
         );
     }

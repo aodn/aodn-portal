@@ -120,6 +120,18 @@ var mockMap = function() {
     };
 };
 
+var mockAjaxXmlResponse = function(responseContent) {
+    spyOn(Ext.Ajax, 'request').andCallFake(function(opts) {
+
+        var response = {
+            responseXML: textToXML(responseContent),
+            argument: opts.argument
+        };
+
+        opts.success.call(opts.scope, response, opts)
+    });
+};
+
 // An empty function to pass as a parameter
 var noOp = function() {};
 
