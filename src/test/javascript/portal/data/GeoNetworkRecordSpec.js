@@ -84,9 +84,51 @@ describe('Portal.data.GeoNetworkRecord', function() {
         });
     });
 
-    describe('collaborates with an Gogoduck object', function() {
-        it('responds to updateNcwmsParams', function() {
-            expect(record.updateNcwmsParams).toBeTruthy();
+    describe('updateNcwmsParams', function() {
+
+        beforeEach(function() {
+            spyOn(record, 'set');
+        });
+
+        it('updated start date', function() {
+
+            var testStartDate = moment();
+
+            record.updateNcwmsParams(testStartDate, moment('invalid date'), null);
+
+            expect(record.set).toHaveBeenCalledWith('ncwmsParams', {
+                dateRangeStart: testStartDate
+            })
+        });
+
+        it('updated end date', function() {
+
+            var testEndDate = moment();
+
+            record.updateNcwmsParams(moment('invalid date'), testEndDate, null);
+
+            expect(record.set).toHaveBeenCalledWith('ncwmsParams', {
+                dateRangeEnd: testEndDate
+            })
+        });
+
+        it('update geometry', function() {
+
+            record.updateNcwmsParams(null, null, {
+                getBounds: function() { return {
+                    bottom: 4,
+                    left: 3,
+                    right: 2,
+                    top: 1
+                }}
+            });
+
+            expect(record.set).toHaveBeenCalledWith('ncwmsParams', {
+                longitudeRangeStart: 3,
+                longitudeRangeEnd: 2,
+                latitudeRangeStart: 4,
+                latitudeRangeEnd: 1
+            })
         });
     });
 });
