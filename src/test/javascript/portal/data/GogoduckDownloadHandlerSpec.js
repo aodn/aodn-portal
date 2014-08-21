@@ -122,6 +122,18 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
             expect(spatialExtent.east).toBe(180);
             expect(spatialExtent.west).toBe(-180);
         });
+
+        it('builds the correct URL is no dates are specified', function() {
+            testCollection.ncwmsParams.dateRangeStart = null;
+            testCollection.ncwmsParams.dateRangeEnd = null;
+
+            url = clickHandler(testCollection, testHandlerParams);
+            json = jsonFromUrl(url, expectedUrlStart);
+
+            var temporalExtent = json.subsetDescriptor.temporalExtent;
+            expect(temporalExtent.start).toBe('1900-01-01T00:00:00.000Z');
+            expect(temporalExtent.end).toBe(handler._formatDate(handler.DEFAULT_DATE_END).toString());
+        });
     });
 });
 

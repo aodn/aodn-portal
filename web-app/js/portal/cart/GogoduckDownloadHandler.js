@@ -64,8 +64,8 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
             geoserver: serverUrl,
             subsetDescriptor: {
                 temporalExtent: {
-                    start: this._formatDate(aggregationParams.dateRangeStart),
-                    end: this._formatDate(aggregationParams.dateRangeEnd)
+                    start: this._formatDate(aggregationParams.dateRangeStart || this.DEFAULT_DATE_START),
+                    end: this._formatDate(aggregationParams.dateRangeEnd || this.DEFAULT_DATE_END)
                 },
                 spatialExtent: {
                     north: (aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END),

@@ -98,5 +98,15 @@ describe('Portal.cart.AodaacDownloadHandler', function () {
             expect(url).toHaveParameterWithValue('longitudeRangeStart', '-180');
             expect(url).toHaveParameterWithValue('longitudeRangeEnd', '180');
         });
+
+        it('builds the correct URL is no dates are specified', function() {
+            testCollection.ncwmsParams.dateRangeStart = null;
+            testCollection.ncwmsParams.dateRangeEnd = null;
+
+            url = clickHandler(testCollection, testHandlerParams);
+
+            expect(url).toHaveParameterWithValue('dateRangeStart','1900-01-01T00:00:00.000Z');
+            expect(url).toHaveParameterWithValue('dateRangeEnd', handler._formatDate(handler.DEFAULT_DATE_END));
+        });
     });
 });
