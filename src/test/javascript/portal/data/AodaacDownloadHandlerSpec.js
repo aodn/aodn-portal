@@ -55,8 +55,8 @@ describe('Portal.cart.AodaacDownloadHandler', function () {
 
             testCollection = {
                 ncwmsParams: {
-                    dateRangeStart: moment('2000-01-01T01:01:01'),
-                    dateRangeEnd: moment('2014-12-23T23:59:59'),
+                    dateRangeStart: moment.utc('2000-01-01T01:01:01'),
+                    dateRangeEnd: moment.utc('2014-12-23T23:59:59'),
                     latitudeRangeStart: -42,
                     latitudeRangeEnd: -20,
                     longitudeRangeStart: 160,
