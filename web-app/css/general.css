@@ -8,7 +8,7 @@
 
 
 body, html, td, p {
-    font-family: helvetica, arial, sans-serif;
+    font-family: arial, sans-serif;
     font-size: 12px;
 }
 
@@ -825,6 +825,10 @@ p.important {
     background-color: inherit;
     border: none;
     font-size: 13px;
+}
+
+.x-tree-node a span, .x-dd-drag-ghost a span {
+    font-size: 12px;
 }
 
 ul.x-tab-strip-top li:hover * {

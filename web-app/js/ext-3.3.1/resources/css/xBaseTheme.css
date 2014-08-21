@@ -1778,4 +1778,20 @@ body.x-body-masked .x-window-plain .x-window-mc {
     margin: 10px 0;
 }
 
-/* end Geo ext rules */
+
+/* Hierarchical Facet search tree requirements */
+.x-tree-icon, .x-tree-ec-icon, .x-tree-elbow-line, .x-tree-elbow, .x-tree-elbow-end, .x-tree-elbow-plus, .x-tree-elbow-minus, .x-tree-elbow-end-plus, .x-tree-elbow-end-minus {
+    width: 1px;
+}
+
+.x-tree-node-collapsed .x-tree-node-icon {
+    background-image: url("../images/xBase/tree/elbow-end-plus.gif");
+}
+
+.x-tree-node-expanded .x-tree-node-icon {
+    background-image: url("../images/xBase/tree/elbow-end-minus.gif");
+}
+
+.x-tree-node-leaf .x-tree-node-icon {
+    background: none;
+}
