@@ -48,5 +48,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
                 Ext.Msg.alert("Message", "${flash.openIdMessage.encodeAsHTML()}");
             </script>
         </g:if>
+
+        <g:render template="/google_analytics"></g:render>
     </body>
 </html>
