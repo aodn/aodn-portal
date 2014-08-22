@@ -165,6 +165,9 @@ featureToggles {
     hierarchicalFacets = false
 }
 
+// Google Analytics
+googleAnalytics.trackingId = null
+
 geonetwork.searchPath = featureToggles.hierarchicalFacets ? 'xml.search.imos' : 'xml.search.summary'
 
 // set per-environment serverURL stem for creating absolute links
@@ -183,7 +186,7 @@ environments {
         geonetwork.url = env['GEONETWORK_URL'] ?: "http://catalogue-rc.aodn.org.au/geonetwork"
 
         grails.mail.disabled = true
-        
+
         featureToggles.pythonDownload = true
     }
 
