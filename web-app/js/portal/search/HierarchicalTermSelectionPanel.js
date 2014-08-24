@@ -9,16 +9,27 @@ Ext.namespace('Portal.search');
 
 Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
 
-    constructor: function(config) {
+    constructor: function(cfg) {
 
-        config = Ext.apply({
-            animate: false,
+        cfg = cfg || {};
+
+        cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
+
+        cfg = Ext.apply({
             // TODO: initialise with actual node if it exists.
+            animate: false,
             root: new Ext.tree.TreeNode(),
-            rootVisible: false
-        }, config);
+            containerScroll: true,
+            autoScroll: true,
+            collapsible: true,
+            titleCollapse: true,
+            singleExpand: true,
+            rootVisible: false,
+            cls: "search-filter-panel term-selection-panel",
+            lines: false
+        }, cfg);
 
-        Portal.search.HierarchicalTermSelectionPanel.superclass.constructor.call(this, config);
+        Portal.search.HierarchicalTermSelectionPanel.superclass.constructor.call(this, cfg);
 
         this.getSelectionModel().on('selectionchange', this._onSelectionChange, this);
         this.mon(this.searcher, 'hiersearchcomplete', function() {
@@ -32,9 +43,14 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     _onSelectionChange: function(selectionModel, node) {
-        if (node.isSelected()) {
+
+        // todo can we have leaf information in the model?
+        if (!node.hasChildNodes()) {
             this.searcher.addDrilldownFilter(node.toValueHierarchy());
             this.searcher.search();
+        }
+        else {
+            node.expand();
         }
     },
 

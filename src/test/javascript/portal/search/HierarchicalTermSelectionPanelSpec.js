@@ -49,7 +49,10 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
                 toValueHierarchy: function() {
                     return valueHierarchy;
                 },
-                isSelected: function() {
+                hasChildNodes: function() {
+                    return false;
+                },
+                expand: function() {
                     return true;
                 }
             };
