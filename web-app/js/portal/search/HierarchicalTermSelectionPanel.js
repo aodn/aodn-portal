@@ -13,8 +13,7 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
 
         cfg = cfg || {};
 
-        this.titleText = cfg.title;
-        if (cfg.title) cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
+        cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
 
         cfg = Ext.apply({
             // TODO: initialise with actual node if it exists.
@@ -37,8 +36,6 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.tree.TreePanel, {
             this._onSearchComplete();
         }, this);
     },
-
-
 
     removeAnyFilters: function() {
         this.root = new Ext.tree.TreeNode();
