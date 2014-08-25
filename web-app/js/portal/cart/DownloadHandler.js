@@ -14,7 +14,7 @@ Portal.cart.DownloadHandler = Ext.extend(Object, {
     DEFAULT_LAT_END: 90,
     DEFAULT_LON_START: -180,
     DEFAULT_LON_END: 180,
-    DEFAULT_DATE_START: moment.utc('1901').startOf('year'),
+    DEFAULT_DATE_START: moment.utc('1900').startOf('year'),
     DEFAULT_DATE_END: moment.utc().endOf('day'),
 
     constructor: function(onlineResource) {
@@ -62,6 +62,8 @@ Portal.cart.DownloadHandler = Ext.extend(Object, {
     },
 
     _formatDate: function(date) {
+
+        console.log('_formatDate(' + date.format(this.DATE_FORMAT_FOR_PORTAL) + ')');
 
         return date.format(this.DATE_FORMAT_FOR_PORTAL);
     }
