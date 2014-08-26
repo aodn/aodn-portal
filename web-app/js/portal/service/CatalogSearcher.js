@@ -88,10 +88,11 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     },
 
     getSearchResultRootNode: function() {
+
         if (!this.searchResultRootNode) {
             this.searchResultRootNode = new Ext.tree.TreeNode();
         }
-        return this.searchResultRootNode
+        return this.searchResultRootNode;
     },
 
     getSummaryNode: function() {
@@ -128,9 +129,15 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     removeFilters: function(filterPattern) {
 
         var filters = this.searchFilters.query('name', filterPattern);
-
         this.searchFilters.remove(filters.items);
 
+        this.fireEvent( 'filterremoved' );
+    },
+
+    removeDimensionfilters: function(dimension) {
+
+        var filters = this.searchFilters.query('value', dimension);
+        this.searchFilters.remove(filters.items);
         this.fireEvent( 'filterremoved' );
     },
 

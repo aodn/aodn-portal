@@ -54,13 +54,19 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
                 },
                 expand: function() {
                     return true;
+                },
+                isSelected: function() {
+                    return true;
+                },
+                attributes: {
+                    value: "test"
                 }
             };
 
             spyOn(searcher, 'addDrilldownFilter');
             spyOn(searcher, 'search');
 
-            var selModel = selectionPanel.getSelectionModel();
+            var selModel = selectionPanel.tree.getSelectionModel();
             selModel.fireEvent('selectionchange', selModel, clickedNode);
         });
 
@@ -81,12 +87,12 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
         });
 
         it('resets root node to empty node', function() {
-            selectionPanel.root = {
+            selectionPanel.tree.root = {
                 hasChildNodes: function() { return true; }
             }
-            expect(selectionPanel.root.hasChildNodes()).toBeTruthy();
+            expect(selectionPanel.tree.root.hasChildNodes()).toBeTruthy();
             selectionPanel.removeAnyFilters();
-            expect(selectionPanel.root.hasChildNodes()).toBeFalsy();
+            expect(selectionPanel.tree.root.hasChildNodes()).toBeFalsy();
         });
     });
 

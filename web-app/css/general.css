@@ -1095,6 +1095,23 @@ div.allwhite {
 }
 
 /* Faceted search styles */
+.hierarchicalTree .x-tree-node-icon {
+    display: none !important;
+}
+
+.hierarchicalTree .x-tree-node-indent img {
+    width: 2px;
+}
+
+.treeResetContainer label {
+    font-size: 13px;
+    padding-top: 3px;
+}
+
+.treeResetContainer .x-form-checkbox {
+    margin-top: 3px! important;
+}
+
 .search-filter-panel .x-panel-header {
     height: 12px;
     font-size: 12px;

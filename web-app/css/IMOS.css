@@ -30,8 +30,6 @@ Complemetary
     src: url('../fonts/TerminalEvent.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
         url('../fonts/TerminalEvent.woff') format('woff'), /* Modern Browsers */
         url('../fonts/TerminalEvent.ttf') format('truetype'); /* Safari, Android, iOS */
-
-
 }
 
 html {
@@ -193,8 +191,6 @@ h1 {
     font-weight: bold;
 }
 
-
-
 hr {
     border: 0;
     height: 1px;
@@ -295,7 +291,7 @@ ul.x-tab-strip-top {
 }
 
 .x-btn {
-    padding: 0px 6px;
+    padding: 0 6px;
 }
 
 .x-btn,
@@ -366,3 +362,8 @@ ul.x-tab-strip-top {
 #mapActions {
     background: none repeat scroll 0 0 rgba(62, 93, 118, 0.22);
 }
+
+.treeResetContainer label {
+    color: #333333;
+}
+
