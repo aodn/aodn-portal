@@ -59,8 +59,8 @@ Portal.cart.AodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
     _buildAodaacUrl: function(aggregationParams, productId, outputFormat, notificationEmailAddress) {
 
         var args = {
-            dateRangeStart: this._formatDate(aggregationParams.dateRangeStart),
-            dateRangeEnd: this._formatDate(aggregationParams.dateRangeEnd),
+            dateRangeStart: this._formatDate(aggregationParams.dateRangeStart || this.DEFAULT_DATE_START),
+            dateRangeEnd: this._formatDate(aggregationParams.dateRangeEnd || this.DEFAULT_DATE_END),
             latitudeRangeStart: aggregationParams.latitudeRangeStart || this.DEFAULT_LAT_START,
             latitudeRangeEnd: aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END,
             longitudeRangeStart: aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START,

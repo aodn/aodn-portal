@@ -208,10 +208,15 @@ Portal.data.GeoNetworkRecord = function() {
 
     prototype.updateNcwmsParams = function(dateRangeStart, dateRangeEnd, geometry) {
 
-        var params = {
-            dateRangeStart: dateRangeStart,
-            dateRangeEnd: dateRangeEnd
-        };
+        var params = {};
+
+        if (dateRangeStart && dateRangeStart.isValid()) {
+            params.dateRangeStart = dateRangeStart;
+        }
+
+        if (dateRangeEnd && dateRangeEnd.isValid()) {
+            params.dateRangeEnd = dateRangeEnd;
+        }
 
         if (geometry) {
             var bounds = geometry.getBounds();

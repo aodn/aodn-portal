@@ -67,8 +67,8 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
 
             testCollection = {
                 ncwmsParams: {
-                    dateRangeStart: moment('2000-01-01T01:01:01'),
-                    dateRangeEnd: moment('2014-12-23T23:59:59'),
+                    dateRangeStart: moment.utc('2000-01-01T01:01:01'),
+                    dateRangeEnd: moment.utc('2014-12-23T23:59:59'),
                     latitudeRangeStart: -42,
                     latitudeRangeEnd: -20,
                     longitudeRangeStart: 160,
@@ -121,6 +121,18 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
             expect(spatialExtent.south).toBe(-90);
             expect(spatialExtent.east).toBe(180);
             expect(spatialExtent.west).toBe(-180);
+        });
+
+        it('builds the correct URL is no dates are specified', function() {
+            testCollection.ncwmsParams.dateRangeStart = null;
+            testCollection.ncwmsParams.dateRangeEnd = null;
+
+            url = clickHandler(testCollection, testHandlerParams);
+            json = jsonFromUrl(url, expectedUrlStart);
+
+            var temporalExtent = json.subsetDescriptor.temporalExtent;
+            expect(temporalExtent.start).toBe('1900-01-01T00:00:00.000Z');
+            expect(temporalExtent.end).toBe(handler._formatDate(handler.DEFAULT_DATE_END).toString());
         });
     });
 });

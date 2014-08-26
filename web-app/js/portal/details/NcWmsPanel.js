@@ -83,7 +83,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         if (this.map.spatialConstraintControl) {
             this.map.spatialConstraintControl.clear();
         }
-        
+
         this.map.events.triggerEvent('spatialconstraintcleared');
     },
 
@@ -303,10 +303,20 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     _addDateTimeFilterToLayer: function() {
 
         if (this.layer) {
-            this.layer.bodaacFilterParams = {
-                dateRangeStart: moment(this.startDateTimePicker.getValue()),
-                dateRangeEnd: moment(this.endDateTimePicker.getValue())
-            };
+
+            var params = {};
+
+            var start = moment(this.startDateTimePicker.getValue());
+            if (start.isValid()) {
+                params.dateRangeStart = start;
+            }
+
+            var end = moment(this.endDateTimePicker.getValue());
+            if (end.isValid()) {
+                params.dateRangeEnd = end;
+            }
+
+            this.layer.bodaacFilterParams = params;
         }
     },
 

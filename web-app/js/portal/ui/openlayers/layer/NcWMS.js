@@ -199,14 +199,23 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     getCqlForTemporalExtent: function() {
-        return encodeURIComponent(String.format(
-            'time >= {0} and time <= {1}',
-            this.bodaacFilterParams.dateRangeStart.toISOString(),
-            this.bodaacFilterParams.dateRangeEnd.toISOString()
-        ));
+
+        var cqlParts = [];
+
+        var start = this.bodaacFilterParams.dateRangeStart;
+        if (start) {
+            cqlParts.push('time >= ' + start.toISOString());
+        }
+
+        var end = this.bodaacFilterParams.dateRangeEnd;
+        if (end) {
+            cqlParts.push('time <= ' + end.toISOString());
+        }
+
+        return cqlParts.join(" and ");
     },
 
-    _buildGetFeatureRequestUrl: function(baseUrl, layerName, outputFormat, downloadFilter) {
+    _buildGetFeatureRequestUrl: function(baseUrl, layerName, outputFormat) {
         // Call the WMS class and apply NO download filters (null)
         var wfsRequest = OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl.apply(
             this,
@@ -217,8 +226,13 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                 null
             ]
         );
-        var cqlFilter = "&CQL_FILTER=" + this.getCqlForTemporalExtent();
-        return wfsRequest + cqlFilter;
+
+        var cql = this.getCqlForTemporalExtent();
+        if (cql) {
+            wfsRequest += "&CQL_FILTER=" + encodeURIComponent(cql);
+        }
+
+        return wfsRequest;
     },
 
     _initSubsetExtent: function() {

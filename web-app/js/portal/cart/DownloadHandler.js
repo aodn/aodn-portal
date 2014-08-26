@@ -14,6 +14,8 @@ Portal.cart.DownloadHandler = Ext.extend(Object, {
     DEFAULT_LAT_END: 90,
     DEFAULT_LON_START: -180,
     DEFAULT_LON_END: 180,
+    DEFAULT_DATE_START: moment.utc({year: 1900}).startOf('year'),
+    DEFAULT_DATE_END: moment.utc().endOf('day'),
 
     constructor: function(onlineResource) {
 
