@@ -9,8 +9,6 @@ Ext.namespace('Portal.search');
 
 Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
 
-
-
     constructor: function(cfg) {
 
         cfg = cfg || {};
@@ -40,7 +38,7 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
         this.selectedNodeCheckbox = new Ext.form.Checkbox({
             checked: true,
             flex: 1,
-            margins : {top:0, right:5, bottom:5, left:5},
+            margins: {top: 0, right: 5, bottom: 5, left: 5},
             listeners: {
                 scope: this,
                 'check': function(checkbox, checked) {
@@ -95,8 +93,7 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
     },
 
     removeAnyFilters: function() {
-
-        this.tree.root = new Ext.tree.TreeNode();
+        this.treeShowHide();
         this.searcher.removeDrilldownFilters();
     },
 
@@ -121,6 +118,7 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
 
         if (hideTree) {
             this.tree.collapse();
+            // todo: enable disable the collapse icon
             this.treeResetContainer.show();
         }
         else {
@@ -131,65 +129,13 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
     },
 
     _onSearchComplete: function() {
+
         var node = this.searcher.getDimensionNodeByValue(this.dimensionValue);
 
-        if (this.selectedNodeCheckbox.getValue()) {
-            //this.tree.selectPath(this.selectedNodeCheckbox.inputValue);
-            this.setRootNode(node);
-        }
-        else {
-            this.tree.setRootNode(node);
+        this.tree.setRootNode(node);
+        if (!this.selectedNodeCheckbox.getValue()) {
             this.treeShowHide();
         }
-    },
-
-    /**
-     * The purpose of this override is to preserve certain state when setting
-     * a new root node, namely whether nodes should be selected and or expanded.
-     *
-     * The difficulty lies in the fact that a node must be added to a TreePanel
-     * to have either of those states applied, but on the other hand, setting
-     * a new root node destroys the old root node and all of its children.
-     *
-     * Hence, we need to 'cache' the state of the existing root node before
-     * replacing it with a new one.
-     */
-    setRootNode: function(newRootNode) {
-        this.tree.getSelectionModel().un('selectionchange', this._onSelectionChange, this);
-        var oldNodeStatesCache = this._getNodeStatesCache();
-
-        this.tree.setRootNode(newRootNode);
-
-        this._mergeNodeStates(oldNodeStatesCache);
-        this.tree.getSelectionModel().on('selectionchange', this._onSelectionChange, this);
-    },
-
-    _getNodeStatesCache: function() {
-        var nodeStatesCache = {};
-
-        if (this.tree.root) {
-            this.tree.root.eachNodeRecursive(function(node) {
-                nodeStatesCache[node.getUniqueId()] = {
-                    selected: node.isSelected(),
-                    expanded: node.isExpanded()
-                };
-                return true;
-            });
-        }
-
-        return nodeStatesCache;
-    },
-
-    _mergeNodeStates: function(nodeStatesCache) {
-        this.tree.root.eachNodeRecursive(function(node) {
-            var oldNodeState = nodeStatesCache[node.getUniqueId()];
-
-            if (oldNodeState) {
-                oldNodeState.selected ? node.select() : node.unselect();
-                oldNodeState.expanded ? node.expand() : node.collapse();
-            }
-
-            return true;
-        });
     }
+
 });

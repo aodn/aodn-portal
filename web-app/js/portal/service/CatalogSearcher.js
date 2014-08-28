@@ -136,7 +136,10 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
     removeDimensionfilters: function(dimension) {
 
-        var filters = this.searchFilters.query('value', dimension);
+        var filters = this.searchFilters.queryBy( function(record) {
+            return (record.get('name') == 'facet.q' && record.get('value').startsWith(dimension));
+        });
+
         this.searchFilters.remove(filters.items);
         this.fireEvent( 'filterremoved' );
     },
