@@ -23,7 +23,7 @@ describe("Portal.search.data.GeoNetworkSearchResponseLoader", function() {
       <category count=\"1\" value=\"Concentration of ammonium {NH4} per unit volume of the water body\" /> \
     </dimension> \
     <dimension count=\"7\" value=\"Organisation\"> \
-      <category count=\"5\" value=\"CSIRO Division of Marine and Atmospheric Research - Hobart\" /> \
+      <category count=\"5\" value=\"Silly/name2Have - Hobart\" /> \
       <category count=\"2\" value=\"CSIRO Division of Marine and Atmospheric Research - Dutton Park\" /> \
     </dimension> \
   </summary> \
@@ -56,7 +56,7 @@ describe("Portal.search.data.GeoNetworkSearchResponseLoader", function() {
             expect(shipCategoryNode.toValueHierarchy()).toBe('Platform/Ship');
 
             var auroraCategoryNode = rootNode.findChild('value', 'Aurora Australis', true);
-            expect(auroraCategoryNode.toValueHierarchy()).toBe('Platform/Ship/Aurora Australis');
+            expect(auroraCategoryNode.toValueHierarchy()).toBe('Platform/Ship/Aurora%20Australis');
         });
     });
 });
