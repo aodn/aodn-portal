@@ -28,4 +28,14 @@ class PortalBranding {
 
         return logoImage
     }
+
+    def getExternalLinksHtml() {
+        def externalLinksHtml = grailsApplication.config.portal.footer.externalLinksHtml
+        if (grailsApplication.config.portal.brandingBase) {
+            def externalLinksUrl = "${grailsApplication.config.portal.brandingBase}/externalLinks.html"
+            externalLinksHtml = new URL(externalLinksUrl).text
+        }
+
+        return externalLinksHtml
+    }
 }
