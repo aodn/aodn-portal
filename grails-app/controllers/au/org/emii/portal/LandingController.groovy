@@ -8,14 +8,19 @@ class LandingController {
 
     def index = {
 
-        render(
-            view: portalInstance.name() + "index",
-            model:[
-                oceanCurrent: oceanCurrentService.getRandomDetails(),
-                cfg: Config.activeInstance(),
-                jsVerNum: grailsApplication.metadata.'app.version',
-                portalBranding: portalBranding
-            ]
-        )
+        if (portalBranding.landingPage != 'landing') {
+            redirect(url: portalBranding.landingPage)
+        }
+        else {
+            render(
+                view: portalInstance.name() + "index",
+                model:[
+                    oceanCurrent: oceanCurrentService.getRandomDetails(),
+                    cfg: Config.activeInstance(),
+                    jsVerNum: grailsApplication.metadata.'app.version',
+                    portalBranding: portalBranding
+                ]
+            )
+        }
     }
 }

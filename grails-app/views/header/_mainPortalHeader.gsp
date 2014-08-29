@@ -9,7 +9,7 @@
 <div id="header">
 
     <div id="logoContainer">
-        <a href="${portalBranding.landingPage}"><img src="${portalBranding.logoImage}" alt="logo" id="logo" />
+        <a href="landing"><img src="${portalBranding.logoImage}" alt="logo" id="logo" />
         </a>
     </div>
     <div id="landingHeaderContainer" class="headerHeightOverlord">
