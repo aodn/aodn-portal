@@ -11,10 +11,25 @@ class PortalBranding {
 
     def grailsApplication
 
+    def isUrlValid(url) {
+        try {
+            new URL(url).text
+            return true
+        }
+        catch (Exception e) {
+            return false
+        }
+    }
+
     def getLandingPage() {
         def landingPage = 'landing'
+
+        def brandedLandingPage = "${grailsApplication.config.portal.brandingBase}/landing.html"
+
         if (grailsApplication.config.portal.brandingBase) {
-                landingPage = "${grailsApplication.config.portal.brandingBase}/landing.html"
+            if (isUrlValid(brandedLandingPage)) {
+                landingPage = brandedLandingPage
+            }
         }
 
         return landingPage
@@ -22,8 +37,13 @@ class PortalBranding {
 
     def getLogoImage() {
         def logoImage = "images/${grailsApplication.config.portal.instance.name}_logo.png"
+
+        def brandedLogoImage = "${grailsApplication.config.portal.brandingBase}/logo.png"
+
         if (grailsApplication.config.portal.brandingBase) {
-            logoImage = "${grailsApplication.config.portal.brandingBase}/logo.png"
+            if (isUrlValid(brandedLogoImage)) {
+                logoImage = brandedLogoImage
+            }
         }
 
         return logoImage
@@ -31,9 +51,13 @@ class PortalBranding {
 
     def getExternalLinksHtml() {
         def externalLinksHtml = grailsApplication.config.portal.footer.externalLinksHtml
+
+        def brandedExternalLinksHtml = "${grailsApplication.config.portal.brandingBase}/externalLinks.html"
+
         if (grailsApplication.config.portal.brandingBase) {
-            def externalLinksUrl = "${grailsApplication.config.portal.brandingBase}/externalLinks.html"
-            externalLinksHtml = new URL(externalLinksUrl).text
+            if (isUrlValid(brandedExternalLinksHtml)) {
+                externalLinksHtml = new URL(brandedExternalLinksHtml).text
+            }
         }
 
         return externalLinksHtml
