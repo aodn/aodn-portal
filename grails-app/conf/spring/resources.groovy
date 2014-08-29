@@ -18,4 +18,8 @@ beans = {
     portalInstance(au.org.emii.portal.config.PortalInstance) { bean ->
         grailsApplication = ref('grailsApplication')
     }
+
+    portalBranding(au.org.emii.portal.PortalBranding) { bean ->
+        grailsApplication = ref('grailsApplication')
+    }
 }

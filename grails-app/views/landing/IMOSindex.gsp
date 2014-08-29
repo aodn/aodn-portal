@@ -28,7 +28,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
     </head>
 
     <body>
-        <g:render template="/header/mainPortalHeader" model="['showLinks': false, 'configInstance': cfg]"></g:render>
+        <g:render template="/header/mainPortalHeader" model="['showLinks': false, 'configInstance': cfg, 'portalBranding': portalBranding]"></g:render>
 
         <div>
             <div class="landingContainer">
@@ -90,7 +90,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
                                 with the Australian marine & climate science community.
                             </p>
 
-                           ${grailsApplication.config.portal.footer.externalLinksHtml}
+                            ${grailsApplication.config.portal.footer.externalLinksHtml}
 
                             <div class="buildInfo"><buildInfo:summary /></div>
                         </div>

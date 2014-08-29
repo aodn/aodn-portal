@@ -6,11 +6,10 @@
 
 --%>
 
-
 <div id="header">
 
     <div id="logoContainer">
-        <a href="landing"><img src="${resource(dir: 'images', file: grailsApplication.config.portal.header.logo)}" alt="logo" id="logo" />
+        <a href="${portalBranding.landingPage}"><img src="${portalBranding.logoImage}" alt="logo" id="logo" />
         </a>
     </div>
     <div id="landingHeaderContainer" class="headerHeightOverlord">

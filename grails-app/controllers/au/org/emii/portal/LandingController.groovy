@@ -4,6 +4,7 @@ class LandingController {
 
     def oceanCurrentService
     def portalInstance
+    def portalBranding
 
     def index = {
 
@@ -12,7 +13,8 @@ class LandingController {
             model:[
                 oceanCurrent: oceanCurrentService.getRandomDetails(),
                 cfg: Config.activeInstance(),
-                jsVerNum: grailsApplication.metadata.'app.version'
+                jsVerNum: grailsApplication.metadata.'app.version',
+                portalBranding: portalBranding
             ]
         )
     }

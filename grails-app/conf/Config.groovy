@@ -222,7 +222,6 @@ def defaultInstanceName = "IMOS"
 
 portal {
     header {
-        logo = "${defaultInstanceName}_logo.png"
         externalLinks = [
             [
                 linkText: "Help",
