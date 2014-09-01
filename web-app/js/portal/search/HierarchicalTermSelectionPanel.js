@@ -14,6 +14,7 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
         cfg = cfg || {};
         this.LABEL_LENGTH = 50;
         this.dimensionValue = cfg.dimensionValue;
+        this.collapsedByDefault = cfg.collapsedByDefault;
 
         this.searcher = cfg.searcher;
 
@@ -26,7 +27,7 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
             containerScroll: true,
             autoScroll: true,
             collapsible: true,
-            collapsed: true,
+            collapsed: cfg.collapsedByDefault,
             singleExpand: true,
             rootVisible: false,
             cls: "search-filter-panel hierarchicalTree term-selection-panel",
@@ -93,7 +94,7 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
     },
 
     removeAnyFilters: function() {
-        this.treeShowHide();
+        this.resetPanelDefaults();
         this.searcher.removeDrilldownFilters();
     },
 
@@ -112,6 +113,16 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
             node.expand();
         }
         this._setTreeResetContainer(node, label);
+    },
+
+    resetPanelDefaults: function() {
+        if (this.collapsedByDefault) {
+            this.tree.collapse();
+        }
+        else {
+            this.tree.expand();
+        }
+        this.treeResetContainer.hide();
     },
 
     treeShowHide: function(hideTree) {

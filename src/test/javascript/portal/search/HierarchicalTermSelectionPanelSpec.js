@@ -13,7 +13,11 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
         searcher = new Portal.service.CatalogSearcher();
 
         selectionPanel = new Portal.search.HierarchicalTermSelectionPanel({
-            searcher: searcher
+            searcher: searcher,
+            collapsedByDefault: false,
+            el: {
+                hasFxBlock: function() {return true;}
+            }
         });
     });
 
@@ -82,7 +86,7 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
     describe('removeAnyFilters', function() {
 
         beforeEach(function() {
-            selectionPanel.treeShowHide = function(){ return true;}
+            selectionPanel.resetPanelDefaults = function(){ return true; }
         });
 
         it('removes drilldown filters from searcher', function() {
@@ -90,7 +94,22 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
             selectionPanel.removeAnyFilters();
             expect(searcher.removeDrilldownFilters).toHaveBeenCalled();
         });
-
     });
 
+    describe('resetPanelDefaults', function() {
+
+        it('collapses the selection panel if collapsed by default', function() {
+            spyOn(selectionPanel.tree, 'collapse');
+            selectionPanel.collapsedByDefault = true;
+            selectionPanel.resetPanelDefaults();
+            expect(selectionPanel.tree.collapse).toHaveBeenCalled();
+        });
+
+        it('expands the selection panel if expanded by default', function() {
+            spyOn(selectionPanel.tree, 'expand');
+            selectionPanel.collapsedByDefault = false;
+            selectionPanel.resetPanelDefaults();
+            expect(selectionPanel.tree.expand).toHaveBeenCalled();
+        });
+    })
 });

@@ -21,7 +21,7 @@ Portal.search.HierarchicalSearchFiltersPanel = Ext.extend(Portal.ui.search.Searc
                 dimensionValue: "Measured parameter",
                 title: OpenLayers.i18n('parameterFilter'),
                 searcher: config.searcher,
-                collapsed: false,
+                collapsedByDefault: false,
                 listeners: {
                     expand: this._onExpand,
                     scope: this
@@ -36,7 +36,7 @@ Portal.search.HierarchicalSearchFiltersPanel = Ext.extend(Portal.ui.search.Searc
                 dimensionValue: "Organisation",
                 title: OpenLayers.i18n('organisationFilter'),
                 searcher: config.searcher,
-                collapsed: false,
+                collapsedByDefault: true,
                 listeners: {
                     expand: this._onExpand,
                     scope: this
@@ -51,7 +51,7 @@ Portal.search.HierarchicalSearchFiltersPanel = Ext.extend(Portal.ui.search.Searc
                 dimensionValue: "Platform",
                 title: OpenLayers.i18n('platformFilter'),
                 searcher: config.searcher,
-                collapsed: false,
+                collapsedByDefault: false,
                 listeners: {
                     expand: this._onExpand,
                     scope: this
