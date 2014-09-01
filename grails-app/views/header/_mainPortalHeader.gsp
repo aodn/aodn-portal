@@ -13,7 +13,7 @@
         </a>
     </div>
     <div id="landingHeaderContainer" class="headerHeightOverlord">
-        <h1 id="headerTitle">${configInstance?.name}</h1>
+        <h1 id="headerTitle">${portalBranding.siteHeader}</h1>
     </div>
 
     <g:if test="${showLinks}">

@@ -221,6 +221,8 @@ environments {
 def defaultInstanceName = "IMOS"
 
 portal {
+    siteHeader = "Open Access to Ocean Data"
+
     header {
         externalLinks = [
             [

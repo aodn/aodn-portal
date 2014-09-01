@@ -12,7 +12,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
         <meta http-equiv="content-script-type" content="text/javascript" />
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>${cfg?.name}</title>
+        <title>${portalBranding.siteHeader}</title>
 
         <buildInfo:comment />
 

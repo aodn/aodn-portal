@@ -21,6 +21,20 @@ class PortalBranding {
         }
     }
 
+    def getSiteHeader() {
+        def siteHeader = grailsApplication.config.portal.siteHeader
+
+        def siteHeaderUrl = "${grailsApplication.config.portal.brandingBase}/siteHeader"
+
+        if (grailsApplication.config.portal.brandingBase) {
+            if (isUrlValid(siteHeaderUrl)) {
+                siteHeader = new URL(siteHeaderUrl).text
+            }
+        }
+
+        return siteHeader
+    }
+
     def getLandingPage() {
         def landingPage = 'landing'
 

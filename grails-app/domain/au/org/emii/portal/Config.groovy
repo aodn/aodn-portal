@@ -14,7 +14,6 @@ Configuration domain for the portal
 */
 
 class Config {
-    String name
     String proxy
     Integer proxyPort
 
@@ -74,7 +73,6 @@ class Config {
     }
 
     static constraints = {
-        name(size: 5..255, nullable: true)
         proxy(nullable: true)
         proxyPort(nullable: true)
         initialBbox(size: 10..50)

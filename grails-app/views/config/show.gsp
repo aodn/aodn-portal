@@ -31,14 +31,6 @@
                 <table>
                     <tbody>
 
-
-
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="config.name.label" default="Site Name" /></td>
-                            <td valign="top" class="value"><h2>${fieldValue(bean: configInstance, field: "name")}</h2></td>
-
-                        </tr>
-
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="config.proxy.label" default="Proxy" /></td>
                             <td valign="top" class="value">${fieldValue(bean: configInstance, field: "proxy")}</td>
