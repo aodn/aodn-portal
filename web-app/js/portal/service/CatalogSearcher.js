@@ -123,6 +123,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     },
 
     removeDrilldownFilters: function() {
+
         this.removeFilters(this.DRILLDOWN_PARAMETER_NAME);
     },
 
@@ -137,7 +138,8 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     removeDimensionfilters: function(dimension) {
 
         var filters = this.searchFilters.queryBy( function(record) {
-            return (record.get('name') == this.DRILLDOWN_PARAMETER_NAME && record.get('value').startsWith(dimension));
+            var recordVal = decodeURIComponent(record.get('value'));
+            return (record.get('name') == this.DRILLDOWN_PARAMETER_NAME && recordVal.startsWith(dimension));
         }, this);
 
         this.searchFilters.remove(filters.items);

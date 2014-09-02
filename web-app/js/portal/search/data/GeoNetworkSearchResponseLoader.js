@@ -17,7 +17,9 @@ Portal.ui.search.data.GeoNetworkSearchResponseLoader = Ext.extend(Ext.ux.tree.Xm
             var p = this;
 
             do {
-                values.push(p.attributes.value);
+                if (p.attributes.value) {
+                    values.push(encodeURIComponent(p.attributes.value));
+                }
                 p = p.parentNode;
             } while (p.parentNode)
 
