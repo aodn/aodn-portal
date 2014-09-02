@@ -916,10 +916,6 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
     height: 15px;
 }
 
-.x-tree-ec-icon {
-    width: 0px;
-}
-
 .x-tree-lines .x-tree-elbow {
     background-image: url(../images/xBase/tree/elbow.gif);
 }
@@ -949,11 +945,11 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
 }
 
 .x-tree-no-lines .x-tree-elbow-plus {
-    background-image: url(../images/xBase/tree/elbow-plus-nl.gif);
+    background-image: url(../images/xBase/tree/elbow-end-plus-nl.gif);
 }
 
 .x-tree-no-lines .x-tree-elbow-minus {
-    background-image: url(../images/xBase/tree/elbow-minus-nl.gif);
+    background-image: url(../images/xBase/tree/elbow-end-minus-nl.gif);
 }
 
 .x-tree-no-lines .x-tree-elbow-end-plus {
@@ -1778,20 +1774,3 @@ body.x-body-masked .x-window-plain .x-window-mc {
     margin: 10px 0;
 }
 
-
-/* Hierarchical Facet search tree requirements */
-.x-tree-icon, .x-tree-ec-icon, .x-tree-elbow-line, .x-tree-elbow, .x-tree-elbow-end, .x-tree-elbow-plus, .x-tree-elbow-minus, .x-tree-elbow-end-plus, .x-tree-elbow-end-minus {
-    width: 1px;
-}
-
-.x-tree-node-collapsed .x-tree-node-icon {
-    background-image: url("../images/xBase/tree/elbow-end-plus.gif");
-}
-
-.x-tree-node-expanded .x-tree-node-icon {
-    background-image: url("../images/xBase/tree/elbow-end-minus.gif");
-}
-
-.x-tree-node-leaf .x-tree-node-icon {
-    background: none;
-}
