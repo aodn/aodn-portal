@@ -11,69 +11,61 @@ class PortalBranding {
 
     def grailsApplication
 
-    def isUrlValid(url) {
+    def fetchUrl(url) {
         try {
-            new URL(url).text
-            return true
+            return new URL(url).text
         }
         catch (Exception e) {
-            return false
+            return null
         }
     }
 
-    def getSiteHeader() {
-        def siteHeader = grailsApplication.config.portal.siteHeader
-
-        def siteHeaderUrl = "${grailsApplication.config.portal.brandingBase}/siteHeader"
+    def returnBrandedUrlIfValid(url, alternativeValue, returnUrlContent = false) {
+        def returnValue = alternativeValue
 
         if (grailsApplication.config.portal.brandingBase) {
-            if (isUrlValid(siteHeaderUrl)) {
-                siteHeader = new URL(siteHeaderUrl).text
+            def contentOfUrl = fetchUrl(url)
+
+            if (null != contentOfUrl) {
+                if (returnUrlContent) {
+                    returnValue = contentOfUrl
+                }
+                else {
+                    returnValue = url
+                }
             }
         }
 
-        return siteHeader
+        return returnValue
     }
 
     def getLandingPage() {
-        def landingPage = 'landing'
-
-        def brandedLandingPage = "${grailsApplication.config.portal.brandingBase}/landing.html"
-
-        if (grailsApplication.config.portal.brandingBase) {
-            if (isUrlValid(brandedLandingPage)) {
-                landingPage = brandedLandingPage
-            }
-        }
-
-        return landingPage
+        return returnBrandedUrlIfValid(
+            "${grailsApplication.config.portal.brandingBase}/landing.html",
+            null
+        )
     }
 
     def getLogoImage() {
-        def logoImage = "images/${grailsApplication.config.portal.instance.name}_logo.png"
+        return returnBrandedUrlIfValid(
+            "${grailsApplication.config.portal.brandingBase}/logo.png",
+            grailsApplication.config.portal.logo
+        )
+    }
 
-        def brandedLogoImage = "${grailsApplication.config.portal.brandingBase}/logo.png"
-
-        if (grailsApplication.config.portal.brandingBase) {
-            if (isUrlValid(brandedLogoImage)) {
-                logoImage = brandedLogoImage
-            }
-        }
-
-        return logoImage
+    def getSiteHeader() {
+        return returnBrandedUrlIfValid(
+            "${grailsApplication.config.portal.brandingBase}/siteHeader",
+            grailsApplication.config.portal.siteHeader,
+            true
+        )
     }
 
     def getExternalLinksHtml() {
-        def externalLinksHtml = grailsApplication.config.portal.footer.externalLinksHtml
-
-        def brandedExternalLinksHtml = "${grailsApplication.config.portal.brandingBase}/externalLinks.html"
-
-        if (grailsApplication.config.portal.brandingBase) {
-            if (isUrlValid(brandedExternalLinksHtml)) {
-                externalLinksHtml = new URL(brandedExternalLinksHtml).text
-            }
-        }
-
-        return externalLinksHtml
+        return returnBrandedUrlIfValid(
+            "${grailsApplication.config.portal.brandingBase}/externalLinks.html",
+            grailsApplication.config.portal.footer.externalLinksHtml,
+            true
+        )
     }
 }

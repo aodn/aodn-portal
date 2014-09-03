@@ -223,6 +223,7 @@ def defaultInstanceName = "IMOS"
 portal {
     siteHeader = "Open Access to Ocean Data"
 
+    logo = "images/${defaultInstanceName}_logo.png"
     header {
         externalLinks = [
             [

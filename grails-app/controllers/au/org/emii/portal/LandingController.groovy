@@ -8,7 +8,7 @@ class LandingController {
 
     def index = {
 
-        if (portalBranding.landingPage != 'landing') {
+        if (portalBranding.landingPage) {
             redirect(url: portalBranding.landingPage)
         }
         else {
