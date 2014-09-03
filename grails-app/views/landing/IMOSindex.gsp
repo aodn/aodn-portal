@@ -90,7 +90,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
                                 with the Australian marine & climate science community.
                             </p>
 
-                            ${portalBranding.externalLinksHtml}
+                            ${portalBranding.footerContent}
 
                             <div class="buildInfo"><buildInfo:summary /></div>
                         </div>

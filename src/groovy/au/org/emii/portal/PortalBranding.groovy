@@ -61,10 +61,10 @@ class PortalBranding {
         )
     }
 
-    def getExternalLinksHtml() {
+    def getFooterContent() {
         return returnBrandedUrlIfValid(
-            "${grailsApplication.config.portal.brandingBase}/externalLinks.html",
-            grailsApplication.config.portal.footer.externalLinksHtml,
+            "${grailsApplication.config.portal.brandingBase}/footerContent.html",
+            grailsApplication.config.portal.footerContent,
             true
         )
     }

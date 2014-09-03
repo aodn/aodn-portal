@@ -47,7 +47,7 @@ class HomeController {
         render(contentType: "text/json", text: filteredConfig as JSON)
     }
 
-    def externalLinks = {
-        render text: portalBranding.externalLinksHtml
+    def footerContent = {
+        render text: portalBranding.footerContent
     }
 }

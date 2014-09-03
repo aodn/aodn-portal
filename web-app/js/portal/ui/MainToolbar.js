@@ -43,7 +43,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
                     xtype: 'container',
                     unstyled: true,
                     cls: "mainToolBarFooter",
-                    html: "<div id='externalLinks'></div>"
+                    html: "<div id='footerContent'></div>"
                 }
             ]
         }, cfg);
@@ -57,10 +57,10 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
 
     _getMainToolBarLinksHtml: function() {
         Ext.Ajax.request({
-            url: 'home/externalLinks',
+            url: 'home/footerContent',
             scope: this,
             success: function(resp) {
-                $("#externalLinks").html(resp.responseText);
+                $("#footerContent").html(resp.responseText);
                 Ext.each(this.items.items, function(component) { component.show(); });
             },
             failure: function(resp) {
