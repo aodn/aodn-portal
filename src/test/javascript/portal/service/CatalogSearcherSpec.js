@@ -106,7 +106,7 @@ describe('Portal.service.CatalogSearcher', function() {
 
             spyOn(loader, 'load');
             spyOn(searcher, '_newSearchResponseLoader').andReturn(loader);
-            spyOn(searcher, 'getSearchResultRootNode').andReturn(rootNode)
+            spyOn(searcher, 'getSearchResultRootNode').andReturn(rootNode);
 
             searcher.search();
 
@@ -121,7 +121,7 @@ describe('Portal.service.CatalogSearcher', function() {
 
         var summaryNode = new Ext.tree.TreeNode({
             tagName: 'summary'
-        })
+        });
 
         rootNode.appendChild(summaryNode);
         searcher.searchResultRootNode = rootNode;
