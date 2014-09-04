@@ -221,8 +221,10 @@ environments {
 def defaultInstanceName = "IMOS"
 
 portal {
+    siteHeader = "Open Access to Ocean Data"
+
+    logo = "images/${defaultInstanceName}_logo.png"
     header {
-        logo = "${defaultInstanceName}_logo.png"
         externalLinks = [
             [
                 linkText: "Help",
@@ -232,15 +234,13 @@ portal {
         ]
     }
 
-    footer {
-        externalLinksHtml =
+    footerContent =
         """
         <a title="Data usage acknowledgement" target="_blank" href=" """ + help.url + """/help/?q=node/81">Acknowledgement</a> <b>|</b>
         <a title="Disclaimer information" target="_blank" href=" """ + help.url + """/help/?q=node/80">Disclaimer</a> <b>|</b>
         <a title="e-Marine Information Infrastructure" target="_blank" href="http://www.emii.org.au">eMII</a>  <b>|</b>
         <a title="Australian Ocean Data Network" target="_blank" href="http://imos.org.au/aodn.html">AODN</a>
         """
-    }
 
     // Change authentication emails for IMOS
     systemEmail {

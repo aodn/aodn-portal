@@ -30,7 +30,6 @@ class JsonMarshallingRegistrar {
         JSON.registerObjectMarshaller(Config) { cfg ->
 
             def result = [:]
-            result['name'] = cfg.name
             result['proxy'] = cfg.proxy
             result['proxyPort'] = cfg.proxyPort
             result['searchUsingBboxByDefault'] = cfg.searchUsingBboxByDefault

@@ -43,7 +43,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
                     xtype: 'container',
                     unstyled: true,
                     cls: "mainToolBarFooter",
-                    html: this._getMainToolBarLinksHtml()
+                    html: "<div id='footerContent'></div>"
                 }
             ]
         }, cfg);
@@ -51,10 +51,22 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
         Portal.ui.MainToolbar.superclass.constructor.call(this, config);
 
         this._registerEvents();
+
+        this._getMainToolBarLinksHtml();
     },
 
     _getMainToolBarLinksHtml: function() {
-        return Portal.app.appConfig.portal.footer.externalLinksHtml;
+        Ext.Ajax.request({
+            url: 'home/footerContent',
+            scope: this,
+            success: function(resp) {
+                $("#footerContent").html(resp.responseText);
+                Ext.each(this.items.items, function(component) { component.show(); });
+            },
+            failure: function(resp) {
+                log.debug("Failed to obtain external links from server");
+            }
+        });
     },
 
     _registerEvents: function() {

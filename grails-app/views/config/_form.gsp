@@ -7,15 +7,6 @@
 
 --%>
 
-   <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="name"><g:message code="config.name.label" default="Site Name" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'name', 'errors')}">
-                                    <g:textField name="name" maxlength="255" value="${configInstance?.name}" />
-                                </td>
-                            </tr>
-
                            <tr class="prop">
                                <td valign="top" class="name">
                                    <label for="initialBbox"><g:message code="config.initialBbox.label" default="Initial Map Bounding Box" /></label>

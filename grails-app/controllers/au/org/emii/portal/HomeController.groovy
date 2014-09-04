@@ -13,6 +13,7 @@ class HomeController {
 
     def grailsApplication
     def portalInstance
+    def portalBranding
 
     static final def CONFIG_KEYS_TO_IGNORE = [  "aodaacAggregator", "log4j" ]
 
@@ -26,7 +27,8 @@ class HomeController {
 
         [
             configInstance: Config.activeInstance(),
-            jsVerNum: grailsApplication.metadata.'app.version'
+            jsVerNum: grailsApplication.metadata.'app.version',
+            portalBranding: portalBranding
         ]
     }
 
@@ -43,5 +45,9 @@ class HomeController {
         }
 
         render(contentType: "text/json", text: filteredConfig as JSON)
+    }
+
+    def footerContent = {
+        render text: portalBranding.footerContent
     }
 }
