@@ -155,6 +155,10 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
                         that.setSelectionChangeListener(false);
 
                     }
+                    // only a checked leaf has the counts
+                    if (node.hasChildNodes()){
+                        node.setText(node.attributes.value);
+                    }
                 }
             });
         }
