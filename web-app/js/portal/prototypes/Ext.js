@@ -7,11 +7,19 @@
 
 Ext.namespace('Ext.tree');
 
-Ext.tree.TreeNode.prototype.getUniqueId = function() {
-    return JSON.stringify({
-        tagName: this.attributes.tagName,
-        value: this.attributes.value
-    });
+Ext.tree.TreeNode.prototype.toValueHierarchy = function() {
+    var values = [];
+    var p = this;
+    do {
+        if (p.attributes.value) {
+            values.push(encodeURIComponent(p.attributes.value));
+        }
+        p = p.parentNode;
+    } while (p && p.parentNode)
+
+    return values.reverse().filter(function(n) {
+        return n;
+    }).join('/');
 };
 
 Ext.tree.TreeNode.prototype.eachNodeRecursive = function(fn) {
@@ -23,6 +31,3 @@ Ext.tree.TreeNode.prototype.eachNodeRecursive = function(fn) {
     });
 };
 
-Ext.tree.TreeNode.prototype.equals = function(other) {
-    return this.getUniqueId() === other.getUniqueId();
-};

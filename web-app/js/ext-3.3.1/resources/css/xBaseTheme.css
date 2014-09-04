@@ -891,7 +891,7 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
 }
 
 .x-tree-node-leaf .x-tree-node-icon {
-    background-image: url(../images/xBase/tree/leaf.gif);
+    background-image: url(../images/xBase/tree/leaf.png);
 }
 
 .x-tree-node-collapsed .x-tree-node-icon {

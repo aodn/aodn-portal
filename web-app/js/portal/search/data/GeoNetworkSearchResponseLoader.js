@@ -10,25 +10,7 @@ Ext.namespace('Portal.ui.search.data');
 Portal.ui.search.data.GeoNetworkSearchResponseLoader = Ext.extend(Ext.ux.tree.XmlTreeLoader, {
 
     createNode: function(attr) {
-        var node = Portal.ui.search.data.GeoNetworkSearchResponseLoader.superclass.createNode.call(this, attr);
-
-        node.toValueHierarchy = function() {
-            var values = [];
-            var p = this;
-
-            do {
-                if (p.attributes.value) {
-                    values.push(encodeURIComponent(p.attributes.value));
-                }
-                p = p.parentNode;
-            } while (p.parentNode)
-
-            return values.reverse().filter(function(n) {
-                return n;
-            }).join('/');
-        };
-
-        return node;
+        return Portal.ui.search.data.GeoNetworkSearchResponseLoader.superclass.createNode.call(this, attr);
     },
 
     processAttributes: function(attr) {

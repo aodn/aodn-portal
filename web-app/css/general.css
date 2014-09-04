@@ -1095,21 +1095,16 @@ div.allwhite {
 }
 
 /* Faceted search styles */
-.hierarchicalTree .x-tree-node-icon {
+.hierarchicalTree .x-tree-node-el:not(.x-tree-node-leaf) .x-tree-node-icon {
     display: none !important;
 }
 
-.hierarchicalTree .x-tree-node-indent img {
-    width: 2px;
+.hierarchicalTree .x-tree-root-node {
+    margin-left: -27px;
 }
 
-.treeResetContainer label {
-    font-size: 13px;
-    padding-top: 3px;
-}
-
-.treeResetContainer .x-form-checkbox {
-    margin-top: 3px! important;
+.hierarchicalTree .x-tree-node-leaf {
+    margin-left: -20px;
 }
 
 .search-filter-panel .x-panel-header {

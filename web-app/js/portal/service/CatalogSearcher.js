@@ -122,11 +122,6 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this._search(page);
     },
 
-    removeDrilldownFilters: function() {
-
-        this.removeFilters(this.DRILLDOWN_PARAMETER_NAME);
-    },
-
     removeFilters: function(filterPattern) {
 
         var filters = this.searchFilters.query('name', filterPattern);
@@ -135,11 +130,11 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this.fireEvent( 'filterremoved' );
     },
 
-    removeDimensionfilters: function(dimension) {
+    removeDrilldownFilters: function(facetValue) {
 
         var filters = this.searchFilters.queryBy( function(record) {
             var recordVal = decodeURIComponent(record.get('value'));
-            return (record.get('name') == this.DRILLDOWN_PARAMETER_NAME && recordVal.startsWith(dimension));
+            return (record.get('name') == this.DRILLDOWN_PARAMETER_NAME && recordVal.startsWith(decodeURIComponent(facetValue)));
         }, this);
 
         this.searchFilters.remove(filters.items);
@@ -169,6 +164,20 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         } );
 
         return idx >= 0;
+    },
+
+    hasFilterOnNode: function(node) {
+
+        var nodeVal = node.toValueHierarchy();
+
+        var theFilters = this.searchFilters.queryBy( function(record) {
+            if (record.get('name') == this.DRILLDOWN_PARAMETER_NAME && decodeURIComponent(record.get('value')) == decodeURIComponent(nodeVal)) {
+                return true;
+            }
+        }, this);
+
+        return Object.keys(theFilters.items).length > 0;
+
     },
 
     _onSuccessfulSearch: function(response, options) {

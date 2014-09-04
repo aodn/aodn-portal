@@ -12,16 +12,14 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
     constructor: function(cfg) {
 
         cfg = cfg || {};
-        this.LABEL_LENGTH = 50;
-        this.dimensionValue = cfg.dimensionValue;
+        this.facetName = cfg.facetName;
         this.collapsedByDefault = cfg.collapsedByDefault;
 
         this.searcher = cfg.searcher;
 
         cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
 
-        cfg = Ext.apply({
-            // TODO: initialise with actual node if it exists.
+        this.defaultTreeConfig = Ext.apply({
             animate: false,
             root: new Ext.tree.TreeNode(),
             containerScroll: true,
@@ -34,118 +32,144 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
             lines: false
         }, cfg);
 
-        this.tree = new Ext.tree.TreePanel(cfg);
-
-        this.selectedNodeCheckbox = new Ext.form.Checkbox({
-            checked: true,
-            flex: 1,
-            margins: {top: 0, right: 5, bottom: 5, left: 5},
-            listeners: {
-                scope: this,
-                'check': function(checkbox, checked) {
-                    if (!checked) {
-                        this.removeFilters();
-                    }
-                }
-            }
-        });
-
-        this.selectedNodeLabel = new Ext.form.Label({
-            flex: 15,
-            value: ""
-        });
-
-        this.treeResetContainer = new Ext.Container({
-            layout: "hbox",
-            cls: 'treeResetContainer',
-            padding: 5,
-            hidden: true,
-            items: [
-                this.selectedNodeCheckbox,
-                this.selectedNodeLabel
-            ]
-        });
+        this.tree = this.createTree();
+        this.selectedNodeValueHierarchy;
 
         Portal.search.HierarchicalTermSelectionPanel.superclass.constructor.call(this, {
             items: [
-                this.tree,
-                this.treeResetContainer
+                this.tree
             ]
         });
 
-        this.tree.getSelectionModel().on('selectionchange', this._onSelectionChange, this);
+        this.setSelectionChangeListener();
+        this.tree.on('checkchange', this._onCheckChange, this);
+
         this.mon(this.searcher, 'hiersearchcomplete', function() {
             this._onSearchComplete();
         }, this);
     },
 
-    _setTreeResetContainer: function(node, label) {
-
-        this.selectedNodeCheckbox.inputValue = node.toValueHierarchy();
-        this.selectedNodeCheckbox.setValue(true);
-        this.selectedNodeLabel.setText(label);
-        this.treeShowHide(true);
-    },
-
-    removeFilters: function() {
-
-        this.searcher.removeDimensionfilters(this.dimensionValue);
-        this.searcher.search();
+    createTree: function(config) {
+        var cfg = Ext.apply(this.defaultTreeConfig, config);
+        return new Ext.tree.TreePanel(cfg);
     },
 
     removeAnyFilters: function() {
         this.resetPanelDefaults();
-        this.searcher.removeDrilldownFilters();
+        this.searcher.removeDrilldownFilters(this.facetName);
+    },
+
+    _onCheckChange: function(node) {
+        this.searcher.removeDrilldownFilters(node.toValueHierarchy());
+        this.searcher.search();
     },
 
     _onSelectionChange: function(selectionModel, node) {
 
-        if (node.isSelected()) {
-            this.searcher.addDrilldownFilter(node.toValueHierarchy());
-            this.searcher.search();
-        }
+        this.selectedNodeValueHierarchy = node.toValueHierarchy();
+        this.searcher.removeDrilldownFilters(this.facetName);
+        this.addFilters(node);
+        this.searcher.search();
 
-        var label = node.attributes.value;
-        if (label.length > this.LABEL_LENGTH) {
-            label = label.substr(0, this.LABEL_LENGTH) + '...';
+    },
+
+    addFilters: function(node) {
+
+        if (node && node != this.tree.getRootNode()) {
+            this.searcher.addDrilldownFilter(node.toValueHierarchy());
+            var parent = node.parentNode;
+            this.addFilters(parent);
         }
-        if (node.hasChildNodes()) {
-            node.expand();
-        }
-        this._setTreeResetContainer(node, label);
     },
 
     resetPanelDefaults: function() {
+
         if (this.collapsedByDefault) {
             this.tree.collapse();
         }
         else {
             this.tree.expand();
         }
-        this.treeResetContainer.hide();
     },
 
-    treeShowHide: function(hideTree) {
+    _removeSiblings: function(nodes) {
 
-        if (hideTree) {
-            this.tree.collapse();
-            // todo: enable disable the collapse icon
-            this.treeResetContainer.show();
+        var that = this;
+        Ext.each(nodes, function(node) {
+
+            if (node.attributes.checked) {
+                that._hidePreviousSiblings(node);
+                that._hideNextSiblings(node);
+            }
+
+        });
+    },
+
+    _hidePreviousSiblings: function(node) {
+        if (node.previousSibling) {
+            node.previousSibling.ui.hide();
+            this._hidePreviousSiblings(node.previousSibling);
         }
-        else {
-            this.tree.expand();
-            this.treeResetContainer.hide();
+    },
+
+    _hideNextSiblings: function(node) {
+        if (node.nextSibling) {
+            node.nextSibling.ui.hide();
+            this._hideNextSiblings(node.nextSibling);
         }
-        this.doLayout();
     },
 
     _onSearchComplete: function() {
 
-        var node = this.searcher.getDimensionNodeByValue(this.dimensionValue);
+        var that = this;
+        var rootNode = this.searcher.getDimensionNodeByValue(this.facetName);
+        if (rootNode) {
 
-        this.tree.setRootNode(node);
-        if (!this.selectedNodeCheckbox.getValue()) {
-            this.treeShowHide();
+            var nodesToKeep = [];
+
+            // setup the tree DNA
+            rootNode.eachNodeRecursive(function(thisNode) {
+                    if (that.searcher.hasFilterOnNode(thisNode)) {
+                        thisNode.attributes.checked = true;
+                        nodesToKeep.push(thisNode);
+                    }
+                }
+            );
+
+            // plant the tree
+            this.tree.setRootNode(rootNode);
+
+            // Prune the tree
+            this._removeSiblings(nodesToKeep);
+
+            // Present the tree
+            rootNode.eachNodeRecursive(function(node) {
+
+                if (node.attributes.checked) {
+
+                    node.expand();
+
+                    if (node.toValueHierarchy() == that.selectedNodeValueHierarchy) {
+                        that.setSelectionChangeListener(true);
+                        node.select();
+                        that.setSelectionChangeListener(false);
+
+                    }
+                    // only a checked leaf has the counts
+                    if (node.hasChildNodes()){
+                        node.setText(node.attributes.value);
+                    }
+                }
+            });
+        }
+    },
+
+    setSelectionChangeListener: function(deactivate) {
+        if (deactivate) {
+            this.tree.getSelectionModel().removeListener('selectionchange', this._onSelectionChange, this);
+        }
+        else {
+            this.tree.getSelectionModel().on('selectionchange', this._onSelectionChange, this);
         }
     }
 

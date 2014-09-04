@@ -32,7 +32,9 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
 
     describe('on search complete', function() {
         it('sets root node', function() {
-            var dimensionNode = {};
+            var dimensionNode = {
+                eachNodeRecursive: function() {return true;}
+            };
             spyOn(selectionPanel.tree, 'setRootNode');
             searcher.getDimensionNodeByValue = function() {
                 return dimensionNode;
