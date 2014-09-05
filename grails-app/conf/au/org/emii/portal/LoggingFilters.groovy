@@ -26,14 +26,14 @@ class LoggingFilters {
 
                 // User data
                 def principal = SecurityUtils?.subject?.principal
-                MDC.put 'userInfoForFile', userInfoForFile(principal)
+                MDC.put 'username', userInfoForFile(principal)
             }
 
             afterView = {
 
                 MDC.remove 'clientAddress'
                 MDC.remove 'userAgent'
-                MDC.remove 'userInfoForFile'
+                MDC.remove 'username'
             }
         }
     }
