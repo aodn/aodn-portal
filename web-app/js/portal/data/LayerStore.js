@@ -116,10 +116,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
             openLayer.events.register('loadstart', this, function() {
 
-                // Only want to be notified of changes if not a base layer
-                if (!openLayer.options.isBaseLayer) {
-                    Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
-                }
                 openLayer.loading = true;
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_START, openLayer);
@@ -130,6 +126,12 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             });
 
             this.add(layerRecord);
+
+            // Only want to be notified of changes if not a base layer
+            if (!openLayer.options.isBaseLayer) {
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
+            }
+
             return layerRecord;
         }
         else {
