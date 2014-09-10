@@ -44,10 +44,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             });
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, function(subject, openlayer) {
-            this._onBeforeSelectedLayerChanged(openlayer);
-        }, this);
-
         Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
@@ -70,10 +66,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         if (this.mapOptions.mapActionsControl) {
             this.mapOptions.mapActionsControl.maximizeControl();
         }
-    },
-
-    _onBeforeSelectedLayerChanged: function(openLayer) {
-
     },
 
     onSelectedLayerChanged: function (openLayer) {
