@@ -108,7 +108,7 @@ minimap {
     }
 }
 
-proxyWmsRequests = false
+proxyWmsRequests = true
 
 geoserver_static = [
     uri: "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms",
