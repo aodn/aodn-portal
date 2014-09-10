@@ -44,10 +44,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             });
         }, this);
 
-        this.on('tabchange', function () {
-            this._closeFeatureInfoPopup();
-        }, this);
-
         Ext.MsgBus.subscribe(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, function(subject, openlayer) {
             this._onBeforeSelectedLayerChanged(openlayer);
         }, this);
