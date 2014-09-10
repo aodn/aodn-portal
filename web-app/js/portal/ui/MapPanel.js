@@ -33,8 +33,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.initMap();
 
-        this.addEvents('tabchange', 'mouseover');
-
         this.on('afterlayout', function () {
             jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseover(function () {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").addClass('allwhite');
