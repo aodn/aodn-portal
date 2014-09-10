@@ -106,18 +106,12 @@ describe('Portal.details.NcWmsPanel', function() {
             expect(ncwmsPanel.endDateTimePicker.reset).toHaveBeenCalled();
         });
 
-        it('hides the next and previous buttons', function() {
-            spyOn(ncwmsPanel.buttonsPanel, 'hide');
-            ncwmsPanel.resetConstraints();
-            expect(ncwmsPanel.buttonsPanel.hide).toHaveBeenCalled();
-        });
-
         it('updates the time range label', function() {
             spyOn(ncwmsPanel, '_updateTimeRangeLabelLoading');
             ncwmsPanel.resetConstraints();
             expect(ncwmsPanel._updateTimeRangeLabelLoading).toHaveBeenCalledWith();
         });
-        
+
     });
 
     describe('layer temporal extent load', function() {
@@ -130,12 +124,6 @@ describe('Portal.details.NcWmsPanel', function() {
         it('enables the end date picker', function() {
             ncwmsPanel._layerTemporalExtentLoad();
             expect(ncwmsPanel.endDateTimePicker.disabled).toBeFalsy();
-        });
-
-        it('shows the next and previous buttons', function() {
-            spyOn(ncwmsPanel.buttonsPanel, 'show');
-            ncwmsPanel._layerTemporalExtentLoad();
-            expect(ncwmsPanel.buttonsPanel.show).toHaveBeenCalled();
         });
 
         it('updates the time range label', function() {

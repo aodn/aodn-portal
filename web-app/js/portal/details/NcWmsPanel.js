@@ -204,7 +204,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
 
         this.mapTimeControls = new Ext.Panel({
             layout: 'hbox',
-            hidden: true,
             plain: true,
             items: [this.selectMapTimeLabel, this.previousFrameButton, this.nextFrameButton],
             height: 40
@@ -343,7 +342,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         var extent = this.layer.getTemporalExtent();
         this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.startDateTimePicker.initvalue, false);
         this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.endDateTimePicker.initvalue, true);
-        this.mapTimeControls.show();
         this._updateTimeRangeLabel();
 
         this._applyFilterValuesFromMap();
@@ -382,7 +380,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     _clearDateTimeFields: function() {
         this._resetAndDisableDateTimePicker(this.startDateTimePicker);
         this._resetAndDisableDateTimePicker(this.endDateTimePicker);
-        this.mapTimeControls.hide();
         this._updateTimeRangeLabelLoading();
     },
 
