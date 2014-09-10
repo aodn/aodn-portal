@@ -197,16 +197,16 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             tooltip: OpenLayers.i18n('selectTimePeriod', {direction: "Next"})
         });
 
-        this.label = new Ext.form.Label({
-            html: "<h5>" + OpenLayers.i18n('selectMapTimePeriod', {direction: ""}) + "</h5>",
+        this.selectMapTimeLabel = new Ext.form.Label({
+            html: "<h5>" + OpenLayers.i18n('selectMapTimePeriod') + "</h5>",
             margins: {top: 0, right: 10, bottom: 0, left: 10}
         });
 
-        this.buttonsPanel = new Ext.Panel({
+        this.mapTimeControls = new Ext.Panel({
             layout: 'hbox',
             hidden: true,
             plain: true,
-            items: [this.label, this.previousFrameButton, this.nextFrameButton],
+            items: [this.selectMapTimeLabel, this.previousFrameButton, this.nextFrameButton],
             height: 40
         });
 
@@ -218,7 +218,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
                 dateStartRow,
                 dateEndRow,
                 this._newSectionSpacer(10),
-                this.buttonsPanel,
+                this.mapTimeControls,
                 this.timeRangeLabel,
                 this._newSectionSpacer(10)
             ]
@@ -343,7 +343,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         var extent = this.layer.getTemporalExtent();
         this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.startDateTimePicker.initvalue, false);
         this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.endDateTimePicker.initvalue, true);
-        this.buttonsPanel.show();
+        this.mapTimeControls.show();
         this._updateTimeRangeLabel();
 
         this._applyFilterValuesFromMap();
@@ -382,7 +382,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     _clearDateTimeFields: function() {
         this._resetAndDisableDateTimePicker(this.startDateTimePicker);
         this._resetAndDisableDateTimePicker(this.endDateTimePicker);
-        this.buttonsPanel.hide();
+        this.mapTimeControls.hide();
         this._updateTimeRangeLabelLoading();
     },
 
