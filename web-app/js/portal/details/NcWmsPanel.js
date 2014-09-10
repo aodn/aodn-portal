@@ -110,7 +110,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         if (!this.layer.attachedSpatialEvents) {
 
             var currentLayer = this.layer;
-            currentLayer.map.events.on({
+            this.map.events.on({
                 scope: this,
                 'spatialconstraintadded': function(geometry) {
                     this._applyFilterValuesToCollection(currentLayer, geometry);
