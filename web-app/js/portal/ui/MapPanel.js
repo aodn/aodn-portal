@@ -33,8 +33,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.initMap();
 
-        this.addEvents('tabchange', 'mouseover');
-
         this.on('afterlayout', function () {
             jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseover(function () {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").addClass('allwhite');
@@ -42,14 +40,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseout(function () {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").removeClass('allwhite');
             });
-        }, this);
-
-        this.on('tabchange', function () {
-            this._closeFeatureInfoPopup();
-        }, this);
-
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.BEFORE_SELECTED_LAYER_CHANGED, function(subject, openlayer) {
-            this._onBeforeSelectedLayerChanged(openlayer);
         }, this);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (subject, message) {
@@ -74,10 +64,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         if (this.mapOptions.mapActionsControl) {
             this.mapOptions.mapActionsControl.maximizeControl();
         }
-    },
-
-    _onBeforeSelectedLayerChanged: function(openLayer) {
-
     },
 
     onSelectedLayerChanged: function (openLayer) {
