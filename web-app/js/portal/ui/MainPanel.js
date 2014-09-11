@@ -51,8 +51,6 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     afterRender: function() {
         Portal.ui.MainPanel.superclass.afterRender.call(this);
         this._highlightActiveTab();
-
-        log.debug('MainPanel rendered');
     },
 
     getActiveTab: function() {
