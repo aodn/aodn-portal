@@ -37,8 +37,8 @@ describe("Portal.filter.BaseFilterPanel", function() {
             expectNewFilterPanelForString('DateFilterPanel', 'Date');
         });
 
-        it("should create DateRangeFilterPanel", function() {
-            expectNewFilterPanelForString('DateRangeFilterPanel', 'DateRange');
+        it("should create DateFilterPanel", function() {
+            expectNewFilterPanelForString('DateFilterPanel', 'DateRange');
         });
 
         it("should create BooleanFilterPanel", function() {
