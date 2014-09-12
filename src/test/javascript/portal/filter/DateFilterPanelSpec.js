@@ -91,13 +91,13 @@ describe("Portal.filter.DateFilterPanel", function() {
         it('after', function() {
             setTestValue(filterPanel.fromDate, '2012');
 
-            expect(filterPanel._getCQL('some_column')).toEqual('some_column >= 2012');
+            expect(filterPanel._getCQL('some_column')).toEqual("some_column >= '2012'");
         });
 
         it('before', function() {
             setTestValue(filterPanel.toDate, '2014');
 
-            expect(filterPanel._getCQL("filterName")).toEqual('filterName <= 2014');
+            expect(filterPanel._getCQL("filterName")).toEqual("filterName <= '2014'");
         });
 
         it('between', function() {
@@ -105,7 +105,7 @@ describe("Portal.filter.DateFilterPanel", function() {
             setTestValue(filterPanel.toDate, '2014');
 
             // To capture any data that falls within the range the end date is compared to the start of the range, and the start date is compared to the end of the range
-            expect(filterPanel._getCQL()).toEqual('aWmsEndDateName >= 2012 AND aWmsStartDateName <= 2014');
+            expect(filterPanel._getCQL()).toEqual("aWmsEndDateName >= '2012' AND aWmsStartDateName <= '2014'");
         });
 
         it('single date attribute', function() {
@@ -113,11 +113,11 @@ describe("Portal.filter.DateFilterPanel", function() {
             setTestValue(filterPanel.toDate, '2014');
 
             filterPanel.filter.wmsStartDateName = null;
-            expect(filterPanel._getCQL()).toEqual('aWmsEndDateName >= 2012 AND some_column <= 2014');
+            expect(filterPanel._getCQL()).toEqual("aWmsEndDateName >= '2012' AND some_column <= '2014'");
 
             filterPanel.filter.wmsStartDateName = 'updatedName';
             filterPanel.filter.wmsEndDateName = null;
-            expect(filterPanel._getCQL()).toEqual('some_column >= 2012 AND updatedName <= 2014');
+            expect(filterPanel._getCQL()).toEqual("some_column >= '2012' AND updatedName <= '2014'");
 
         });
 
@@ -131,7 +131,7 @@ describe("Portal.filter.DateFilterPanel", function() {
         it('sets from and to fields from cql parameter', function() {
             filterPanel.layer = {};
             filterPanel.layer.getDownloadFilter = function() {
-                return "some_column >= 2013-10-07T13:00:00Z AND some_column <= 2013-10-08T13:00:00Z";
+                return "some_column >= '2013-10-07T13:00:00Z' AND some_column <= '2013-10-08T13:00:00Z'";
             };
 
             var MockField = function() {
