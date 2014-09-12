@@ -162,7 +162,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         if (this._isFromFieldUsed()) {
             name = this._getValidName(filterName,this.filter.wmsEndDateName);
-            cql = String.format("{0} >= {1}", name , this._getDateString(this.fromDate));
+            cql = String.format("{0} >= '{1}'", name , this._getDateString(this.fromDate));
         }
 
         if (this._isFromFieldUsed() && this._isToFieldUsed()) {
@@ -171,7 +171,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         if (this._isToFieldUsed()) {
             name = this._getValidName(filterName,this.filter.wmsStartDateName);
-            cql += String.format("{0} <= {1}", name, this._getDateString(this.toDate));
+            cql += String.format("{0} <= '{1}'", name, this._getDateString(this.toDate));
         }
 
         return cql;
@@ -185,8 +185,8 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _setExistingFilters: function() {
-        var beforePattern = this.filter.name + " <= (.*?)( |$)";
-        var afterPattern = this.filter.name + " >= (.*?)( |$)";
+        var beforePattern = this.filter.name + " <= '(.*?)'( |$)";
+        var afterPattern = this.filter.name + " >= '(.*?)'( |$)";
 
         var betweenRe = new RegExp(afterPattern + "AND " + beforePattern);
         var beforeRe = new RegExp(beforePattern);
