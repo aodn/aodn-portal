@@ -95,7 +95,7 @@ Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
         newFilterPanel = new Portal.filter.DateFilterPanel(cfg);
     }
     else if (cfg.filter.type == "DateRange") {
-        newFilterPanel = new Portal.filter.DateRangeFilterPanel(cfg);
+        newFilterPanel = new Portal.filter.DateFilterPanel(cfg);
     }
     else if (cfg.filter.type === "Boolean") {
         newFilterPanel = new Portal.filter.BooleanFilterPanel(cfg);
