@@ -2851,7 +2851,7 @@ a.x-grid3-hd-btn:hover {
 
 input.x-tree-node-cb {
     margin-left:1px;
-    /*height: 19px;*/
+    height: 19px;
 	vertical-align: bottom;
 }
 

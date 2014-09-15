@@ -1113,6 +1113,10 @@ div.allwhite {
     margin-left: -20px;
 }
 
+.hierarchicalTree input.x-tree-node-cb {
+    height: inherit;
+}
+
 .search-filter-panel .x-panel-header {
     height: 12px;
     font-size: 12px;
