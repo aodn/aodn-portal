@@ -1101,10 +1101,20 @@ div.allwhite {
 
 .hierarchicalTree .x-tree-root-node {
     margin-left: -27px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.hierarchicalTree .x-tree-node .x-tree-selected {
+    background: none;
 }
 
 .hierarchicalTree .x-tree-node-leaf {
     margin-left: -20px;
+}
+
+.hierarchicalTree input.x-tree-node-cb {
+    height: inherit;
 }
 
 .search-filter-panel .x-panel-header {
