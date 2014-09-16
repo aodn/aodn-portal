@@ -50,27 +50,30 @@ h3 {
 
 #landingBigButton {
     background: #ffba66; /* Old browsers */
-    background: -moz-linear-gradient(top, #ffba66 60%, #ffd29f 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(60%, #ffba66), color-stop(100%, #ffd29f)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #ffba66 60%, #ffd29f 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #ffba66 60%, #ffd29f 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #ffba66 60%, #ffd29f 100%); /* IE10+ */
-    background: linear-gradient(to bottom, #ffba66 60%, #ffd29f 100%); /* W3C */
+    background: -moz-linear-gradient(top, #ffba66 95%, #ffd29f 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(95%, #ffba66), color-stop(100%, #ffd29f)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #ffba66 95%, #ffd29f 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #ffba66 95%, #ffd29f 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #ffba66 95%, #ffd29f 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #ffba66 95%, #ffd29f 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffba66', endColorstr='#ffd29f', GradientType=0); /* IE6-9 */
-    margin-top: 2px;
-    display: inline-block;
+    border: 1px solid #bf915d;
+    border-radius: 12px;
+    box-shadow: 3px 3px 4px #cccccc;
     color: #212121;
     cursor: pointer;
+    display: inline-block;
+    font-size: 22px;
     font-weight: bold;
+    padding: 34px 18px;
+    text-decoration: none;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
     vertical-align: middle;
     white-space: nowrap;
-    text-decoration: none;
-    border-radius: 10px;
-    border: 1px solid #BF915D;
-    padding: 10px 25px;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
-    box-shadow: 3px 3px 4px #cccccc;
-    font-size: 16px;
+}
+
+.landingBling {
+    margin: 15px 0 25px 0 ;
 }
 
 #logoContainer {
