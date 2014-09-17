@@ -57,7 +57,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
                     <div class="clear"></div>
 
-                    <div>
+                    <div >
                         <div class="landingSubLeft">
                             <g:render template='oceanCurrentMini' />
                         </div>
@@ -72,8 +72,8 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
                     <div class="footer">
                         <div class="landingSubLeft">
-                            <img  src="https://static.emii.org.au/images/logo/utas/UTAS_MONO_190w.png" alt="UTAS logo" />
-                            <img class="miniSpacer" src="https://static.emii.org.au/images/logo/NCRIS_Initiative_stacked200.png" width="140" alt="DIISTRE logo" />
+                            <a href="http://www.utas.edu.au/" title="UTAS home page" target="_blank"><img src="https://static.emii.org.au/images/logo/utas/UTAS_MONO_190w.png" alt="UTAS logo" /></a>
+                            <img class="miniSpacer" src="https://static.emii.org.au/images/logo/NCRIS_Initiative_stacked200.png" alt="NCRIS logo" />
                             <br />
                             <a class="noUnderline" href="http://twitter.com/AusOceanDataNet" target="_blank">
                                 <img class="miniSpacer" src="${resource(dir: 'images', file: 'Twitter_logo_black.png')}" title="Follow us on twitter" alt="Follow us on twitter" />
