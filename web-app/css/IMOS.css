@@ -59,7 +59,7 @@ h3 {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffba66', endColorstr='#ffd29f', GradientType=0); /* IE6-9 */
     border: 1px solid #bf915d;
     border-radius: 12px;
-    box-shadow: 3px 3px 4px #cccccc;
+    box-shadow: 2px 2px 4px #d3d3d3;
     color: #212121;
     cursor: pointer;
     display: inline-block;

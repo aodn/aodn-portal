@@ -42,9 +42,9 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
                     </div>
 
                     <div class="landingSubRight">
-                        <h1>IMOS Ocean Portal</h1>
+                        <h1>About the IMOS Ocean Portal</h1>
 
-                        <div class="bigtext">"All IMOS data is freely and openly available for the benefit of Australian marine and climate science as a whole."</div>
+                        <div class="bigtext">"All IMOS data is freely and openly available for the benefit of Australian marine and climate science as a whole." &nbsp;<a href="${resource(dir: 'home')}" ><small>Start searching here...</small></a></div>
                     </div>
 
                     <div class="clear"></div>
