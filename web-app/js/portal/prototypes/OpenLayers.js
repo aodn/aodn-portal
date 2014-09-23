@@ -124,23 +124,6 @@ OpenLayers.Layer.WMS.prototype._getServerSupportedOutputFormat = function(output
     }
 };
 
-OpenLayers.Layer.WMS.prototype.getMetadataUrl = function() {
-    var result = undefined;
-
-    if (this.overrideMetadataUrl) {
-        result = this.overrideMetadataUrl;
-    }
-    else if (this.metadataUrls && this.metadataUrls.length > 0) {
-        for (var i = 0; i < this.metadataUrls.length; i++) {
-            //TC211 is meant for MCP
-            if (this.metadataUrls[i].type == "TC211") {  //ideally there would be a MCP type in geoserver to compare with - rather than "other"
-                return this.metadataUrls[i].onlineResource.href;
-            }
-        }
-    }
-    return result;
-};
-
 OpenLayers.Layer.WMS.prototype._getBoundingBox = function() {
     var bounds = this._is130()
         ? new OpenLayers.Bounds.fromArray(this.getExtent().toArray(true))

@@ -26,20 +26,18 @@ Portal.details.InfoPanel = Ext.extend(Ext.form.Label, {
     },
 
     _initWithLayer: function() {
-        if (this.layer.getMetadataUrl()) {
-            Ext.Ajax.request({
-                url: 'layer/getFormattedMetadata?metaURL=' + encodeURIComponent(this.layer.getMetadataUrl()),
-                scope: this,
-                success: function(resp, options) {
-                    this.setText(resp.responseText, false);
-                },
-                failure: function(resp) {
-                    this.setText("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>", false);
-                }
-            });
-        }
-        else {
-            this.setText("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>", false);
-        }
+        var metadataUrl = 'layer/getFormattedMetadata?uuid=' +
+            encodeURIComponent(this.layer.metadataUuid);
+
+        Ext.Ajax.request({
+            url: metadataUrl,
+            scope: this,
+            success: function(resp, options) {
+                this.setText(resp.responseText, false);
+            },
+            failure: function(resp) {
+                this.setText("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>", false);
+            }
+        });
     }
 });

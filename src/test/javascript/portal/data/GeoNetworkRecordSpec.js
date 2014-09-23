@@ -36,7 +36,6 @@ describe('Portal.data.GeoNetworkRecord', function() {
                     LAYERS: 'layer name',
                     CQL_FILTER: 'cql_filter'
                 },
-                getMetadataUrl: function() { return 'metadata_url' },
                 someUnusedField: 'la la la'
             }
         });
