@@ -45,13 +45,13 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         // We assume that before the first GFI request we will be quick enough
         // to complete that little tiny request
-        this._setMetadata();
+        this._setMetadataFromNcWMS();
     },
 
-    _setMetadata: function() {
+    _setMetadataFromNcWMS: function() {
         Ext.ux.Ajax.proxyRequest({
             scope: this,
-            url: this._getMetadataUrl(),
+            url: this._getMetadataFromNcWMS(),
             success: function(resp, options) {
                 try {
                     this.metadata = Ext.util.JSON.decode(resp.responseText);
@@ -164,7 +164,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return dateTime.clone().utc().format('YYYY-MM-DDTHH:mm:ss.SSS');
     },
 
-    _getMetadataUrl: function() {
+    _getMetadataFromNcWMS: function() {
         var metadataUrl = this.url + "?layerName=" + this.params.LAYERS + "&REQUEST=GetMetadata&item=layerDetails";
         return metadataUrl;
     },
