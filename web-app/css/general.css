@@ -1325,3 +1325,10 @@ div.allwhite {
     font-style: italic;
 }
 
+.bboxExtentPicker .x-box-layout-ct {
+    margin: 4px;
+}
+.bboxExtentPicker .x-box-layout-ct label{
+    font-weight: bold;
+}
+
