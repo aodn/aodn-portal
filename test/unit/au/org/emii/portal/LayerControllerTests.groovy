@@ -337,4 +337,15 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
         assertEquals(String.valueOf(baselayerConfig as JSON), mockResponse.contentAsString)
     }
+
+    void testMetadataUrlConstruction() {
+
+        controller.metaClass.grailsApplication = new ConfigObject()
+        controller.grailsApplication.config.geonetwork.url = "http://geonetwork.com"
+
+        def uuid = "some_uuid"
+        def url = controller._getMetadataUrl(uuid)
+
+        assertEquals(url, "http://geonetwork.com/srv/eng/xml_iso19139.mcp?styleSheet=xml_iso19139.mcp.xsl&uuid=some_uuid")
+    }
 }
