@@ -280,6 +280,14 @@ ul.x-tab-strip-top {
     background-color: #D7D7D7;
 }
 
+.x-tab-strip-active span.x-tab-strip-text {
+    color: black;
+}
+
+.x-tab-strip-active .x-tab-right, .x-tab-strip-active .x-tab-left, .x-tab-strip-active .x-tab-strip-inner {
+    background-color: #C6C6C6;
+}
+
 .semiTransparent {
     background-color: #596169 !important;
     opacity: 0.6;
