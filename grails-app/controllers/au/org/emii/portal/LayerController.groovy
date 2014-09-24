@@ -394,11 +394,10 @@ class LayerController {
 
         def responseText
 
-        if (params.metaURL != null) {
+        if (params.uuid != null) {
 
             try {
-                //Connect
-                def con = new URL(params.metaURL).openConnection()
+                def con = new URL(_getMetadataUrl(params.uuid)).openConnection()
                 def metadataText = con.content.text
 
                 if (_isXmlContent(con.contentType)) {
@@ -605,12 +604,16 @@ class LayerController {
         return layerData
     }
 
+    def _getMetadataUrl(uuid) {
+        return grailsApplication.config.geonetwork.url +
+            "/srv/eng/xml_iso19139.mcp?styleSheet=xml_iso19139.mcp.xsl&uuid=" + uuid
+    }
+
     def _getLayerDefaultData(layer) {
         def excludes = [
             "class",
             "metaClass",
             "dimensions",
-            "metadataUrls",
             "hasMany",
             "handler",
             "belongsTo",

@@ -33,7 +33,6 @@ class Layer {
     Date lastUpdated
 
     String layerHierarchyPath
-    String overrideMetadataUrl
 
     Layer parent
 
@@ -44,11 +43,10 @@ class Layer {
         // Column types
         layerHierarchyPath type: "text"
         dimensions cascade: 'all-delete-orphan'
-        metadataUrls cascade: 'all-delete-orphan'
         filters cascade: 'all-delete-orphan'
     }
 
-    static hasMany = [metadataUrls: MetadataUrl, dimensions: WMSDimension, filters: Filter, styles: Style]
+    static hasMany = [dimensions: WMSDimension, filters: Filter, styles: Style]
     static hasOne = [viewParams: LayerViewParameters]
 
     static constraints = {
@@ -67,7 +65,6 @@ class Layer {
         bboxMaxX(nullable: true)
         bboxMaxY(nullable: true)
         projection(nullable: true)
-        overrideMetadataUrl(nullable: true)
         queryable()
         viewParams(nullable: true)
 
@@ -84,7 +81,6 @@ class Layer {
     Layer() {
 
         // Empty relationships
-        metadataUrls = []
         dimensions = []
         filters = []
         styles = []
@@ -116,13 +112,6 @@ class Layer {
         def t = title ?: "<no title>"
 
         return "${server?.shortAcron} - $n - $t"
-    }
-
-    String getOverrideMetadataUrl() {
-        if ((this.overrideMetadataUrl == null) && (this.getParent() != null)) {
-            return this.getParent().getOverrideMetadataUrl();
-        }
-        return this.overrideMetadataUrl;
     }
 
     void printTree(int depth = 0) {

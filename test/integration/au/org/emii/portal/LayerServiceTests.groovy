@@ -58,16 +58,6 @@ class LayerServiceTests extends GroovyTestCase {
                         { name: "layer_c_2", queryable: true }
                     ]
                 }
-            ],
-             metadataUrls: [
-                {
-                    type: "link1type",
-                    format: "fmt1",
-                    onlineResource: {
-                        type: "simple",
-                        href: "http://www.goofle.com/"
-                    }
-                }
             ]
         },
         {
@@ -86,24 +76,6 @@ class LayerServiceTests extends GroovyTestCase {
                     name: "boxfill/redblue",
                     abstractText: "boxfill style, using the redblue palette",
                     legends: []
-                }
-            ],
-            metadataUrls: [
-                {
-                    type: "link1type",
-                    format: "fmt1",
-                    onlineResource: {
-                        type: "simple",
-                        href: "http://www.goofle.com/"
-                    }
-                },
-                {
-                    type: "link2type",
-                    format: "fmt2",
-                    onlineResource: {
-                        type: "complex",
-                        href: "http://www.goofle.com/too"
-                    }
                 }
             ],
             children: [
@@ -146,20 +118,13 @@ class LayerServiceTests extends GroovyTestCase {
         def layerB = new Layer(title: "Layer B", name: "layer_b", dataSource: "testCode", server: server, layerHierarchyPath: layerBHierarchyPath)
         def layerC = new Layer(title: "Leyar C (oops, typos)", name: "layer_c", dataSource: "testCode", server: server, layerHierarchyPath: layerCHierarchyPath)
 
-        def layerCMetadataUrl = new MetadataUrl()
-        layerCMetadataUrl.format = "fmt"
-        layerCMetadataUrl.type = "type"
-        layerCMetadataUrl.onlineResource = new OnlineResource(type: "type", href: "href")
-
         layerB.save(failOnError: true)
         layerC.save(failOnError: true)
-        layerCMetadataUrl.save(failOnError: true)
         layerA.addToLayers layerB
         layerA.addToLayers layerC
         layerA.save(failOnError: true)
 
         assertEquals "Should be 3 layers to start with", 3, Layer.count()
-        assertEquals "Should be 1 metadataUrl to start with", 1, MetadataUrl.count()
 
         layerService.updateWithNewData JSON.parse(newData), server, layerDataSource
 
@@ -183,7 +148,6 @@ class LayerServiceTests extends GroovyTestCase {
 
         def numLayersExpected = hadExistingBAndC ? 10 : 8
         def layerAExpectedChildren = hadExistingBAndC ? 4 : 2
-        def numberExpectedMetadataUrls = hadExistingBAndC ? 4 : 3
 
         assertEquals "Should be ${numLayersExpected} layers in the end.", numLayersExpected, Layer.count()
 
@@ -324,32 +288,6 @@ class LayerServiceTests extends GroovyTestCase {
         assertEquals "layer_d parent should be layer_a.", layerA, layerD.parent
         assertEquals "layer_d should have one child layer.", 1, layerD.layers.size()
         assertEquals "layer_a -- Layer A // <no name> -- Layer D", layerD.layerHierarchyPath
-
-        // Test metadataUrls
-        assertEquals numberExpectedMetadataUrls, MetadataUrl.count()
-        assertEquals 2, layerD.metadataUrls.size()
-
-        layerD.metadataUrls.each {
-
-            switch (it.onlineResource.href) {
-
-                case "http://www.goofle.com/":
-
-                    assertEquals "link1type", it.type
-                    assertEquals "fmt1", it.format
-                    assertEquals "simple", it.onlineResource.type
-                    break;
-
-                case "http://www.goofle.com/too":
-
-                    assertEquals "link2type", it.type
-                    assertEquals "fmt2", it.format
-                    assertEquals "complex", it.onlineResource.type
-                    break;
-
-                default: fail "Not one of the expected values"
-            }
-        }
 
         def groupingUnderD = layerD.layers.toArray()[0]
         assertNotNull "'Grouping' should exist under Layer D.", groupingUnderD

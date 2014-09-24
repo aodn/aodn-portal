@@ -40,6 +40,8 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
                         geoNetworkRecord.data['wmsLayer'] = wmsLayer;
                         layerRecord.parentGeoNetworkRecord = geoNetworkRecord;
                         wmsLayer.parentGeoNetworkRecord = geoNetworkRecord;
+                        // Make it easier to access geonetwork UUID of this layer
+                        wmsLayer.metadataUuid = geoNetworkRecord.data.uuid;
                     }
                 );
             }

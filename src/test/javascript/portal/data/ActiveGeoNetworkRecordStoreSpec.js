@@ -80,6 +80,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
 
                 beforeEach(function() {
                     myRecord = new Portal.data.GeoNetworkRecord({
+                        uuid: 'my uuid',
                         title: 'geonetwork data collection name',
                         links: [{
                             href: 'http://somelayer/wms',
@@ -131,6 +132,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
 
                     it('adds geonetwork record to openlayer', function() {
                         expect(layerRecord.get('layer').parentGeoNetworkRecord).toBe(myRecord);
+                        expect(layerRecord.get('layer').metadataUuid).toBe(myRecord.data.uuid);
                     });
                 });
 
