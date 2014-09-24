@@ -16,6 +16,8 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     constructor: function(options) {
 
+        this.MIN_AREA_PERCENT = 0.01;
+
         this.layerName = 'spatial constraint';
 
         options = options || {};
@@ -55,7 +57,6 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
         this.layer.events.on({
             scope: this,
-            "sketchstarted": this._onSketchStarted,
             "sketchcomplete": this._onSketchComplete
         });
     },
@@ -140,12 +141,23 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         return this.layer.features[0];
     },
 
-    _onSketchStarted: function() {
-        this.clear();
+    _onSketchComplete: function(event) {
+
+        var area = event.feature.geometry.getArea();
+
+        if (this._getPercentOfViewportArea(area) > this.MIN_AREA_PERCENT){
+            this.clear();
+            this.events.triggerEvent('spatialconstraintadded', event.feature.geometry);
+        }
+        else {
+            return false; // will stop the sketch feature from being added to the layer.
+        }
     },
 
-    _onSketchComplete: function(event) {
-        this.events.triggerEvent('spatialconstraintadded', event.feature.geometry);
+    _getPercentOfViewportArea: function(spatialExtentArea) {
+
+        var mapArea = this.map.getExtent().toGeometry().getArea();
+        return Math.round((spatialExtentArea / mapArea ) * 100000) / 1000;
     }
 });
 

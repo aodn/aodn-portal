@@ -67,10 +67,14 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
             expect(spatialConstraint.redraw).toHaveBeenCalledWith(geometry);
         });
-
     });
 
     describe('layer', function() {
+
+        beforeEach(function() {
+            spatialConstraint._getPercentOfViewportArea = function() {return 50};
+        });
+
         it('intialises layer', function() {
             expect(spatialConstraint.layer).toBeInstanceOf(OpenLayers.Layer.Vector);
             expect(spatialConstraint.layer.displayInLayerSwitcher).toBeFalsy();
@@ -89,9 +93,12 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(eventSpy).toHaveBeenCalledWith(geometry);
         });
 
-        it('clears existing constraint on layer sketchstarted', function() {
+        it('clears existing constraint on layer sketchcomplete', function() {
             spyOn(spatialConstraint, 'clear');
-            spatialConstraint.layer.events.triggerEvent('sketchstarted');
+
+            var geometry = constructGeometry();
+            var feature = new OpenLayers.Feature.Vector(geometry);
+            spatialConstraint.layer.events.triggerEvent('sketchcomplete', { feature: feature });
             expect(spatialConstraint.clear).toHaveBeenCalled();
         });
     });
