@@ -29,7 +29,6 @@ class SnapshotLayerJsonMarshaller extends DomainClassMarshaller {
     static SNAPSHOT_LAYER_EXCLUDES = [
         "class",
         "metaClass",
-        "metadataUrls",
         "hasMany",
         "handler",
         "belongsTo",

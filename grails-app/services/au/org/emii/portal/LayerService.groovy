@@ -131,7 +131,6 @@ class LayerService {
                 _attachNameInfo      layerToUpdate, newData
                 _attachAbstractText  layerToUpdate, newData
                 _attachStyleInfo     layerToUpdate, newData
-                _attachMetadataUrls  layerToUpdate, newData
                 _attachWmsDimensions layerToUpdate, newData
 
                 // Scan info
@@ -252,24 +251,6 @@ class LayerService {
             layer.styles << styles
         }
 
-    }
-
-    def _attachMetadataUrls( layer, newData ) {
-
-        layer.metadataUrls*.delete()
-        layer.metadataUrls.clear()
-
-        newData.metadataUrls.each {
-
-            def metadataUrl = new MetadataUrl()
-
-            metadataUrl.format = it.format
-            metadataUrl.type = it.type
-            metadataUrl.onlineResource.type = it.onlineResource.type
-            metadataUrl.onlineResource.href = it.onlineResource.href
-
-            layer.metadataUrls << metadataUrl
-        }
     }
 
     def _attachWmsDimensions( layer, newData ) {

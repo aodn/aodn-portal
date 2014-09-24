@@ -614,7 +614,6 @@ class LayerController {
             "class",
             "metaClass",
             "dimensions",
-            "metadataUrls",
             "hasMany",
             "handler",
             "belongsTo",
