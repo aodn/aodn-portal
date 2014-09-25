@@ -42,6 +42,34 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         });
     });
 
+    describe('user', function() {
+
+        it("fires 'spatialconstraintadded' on redraw", function() {
+            var eventSpy = jasmine.createSpy('spatialconstraintadded');
+            spatialConstraint.events.on({
+                'spatialconstraintadded': eventSpy
+            });
+
+            var geometry = constructGeometry();
+            var feature = spatialConstraint.redraw(geometry);
+
+            expect(eventSpy).toHaveBeenCalledWith(geometry);
+        });
+
+        it("fires 'spatialconstraintuseradded' causes redraw", function() {
+
+            spyOn(spatialConstraint, 'redraw');
+
+            var geometry = constructGeometry();
+            var map = new OpenLayers.SpatialConstraintMap();
+            map.spatialConstraintControl = spatialConstraint;
+            map.events.triggerEvent('spatialconstraintuseradded', geometry);
+
+            expect(spatialConstraint.redraw).toHaveBeenCalledWith(geometry);
+        });
+
+    });
+
     describe('layer', function() {
         it('intialises layer', function() {
             expect(spatialConstraint.layer).toBeInstanceOf(OpenLayers.Layer.Vector);

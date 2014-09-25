@@ -10,7 +10,7 @@ Portal.ui.openlayers.SpatialConstraintType = {
     NONE: 'none',
     POLYGON: 'polygon',
     BOUNDING_BOX: 'bounding box'
-}
+};
 
 Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.DrawFeature, {
 
@@ -77,6 +77,12 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         this._isModified = true;
     },
 
+    redraw: function(geometry) {
+        this.clear();
+        this.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
+        this.events.triggerEvent('spatialconstraintadded', geometry);
+    },
+
     isModified: function() {
         return this._isModified;
     },
@@ -98,10 +104,6 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _removeMapEvents: function() {
-        this.map.events.un({
-            "addlayer": this._setLayersToTop
-        });
-
         this.map.events.un({
             "changelayer": this._layerChanged
         });

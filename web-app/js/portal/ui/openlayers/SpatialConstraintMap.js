@@ -10,6 +10,15 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
     initialize: function(div, options) {
 
         OpenLayers.Map.prototype.initialize.apply(this, arguments);
+
+        this.events.addEventType('spatialconstraintuseradded');
+        this.events.register(
+            'spatialconstraintuseradded',
+            this,
+            function(geometry) {
+                this.spatialConstraintControl.redraw(geometry);
+            }
+        );
     },
 
     getConstraint: function() {
