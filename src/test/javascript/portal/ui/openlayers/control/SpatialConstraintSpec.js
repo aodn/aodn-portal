@@ -56,6 +56,18 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(eventSpy).toHaveBeenCalledWith(geometry);
         });
 
+        it("fires 'spatialconstraintuseradded' causes redraw", function() {
+
+            spyOn(spatialConstraint, 'redraw');
+
+            var geometry = constructGeometry();
+            var map = new OpenLayers.SpatialConstraintMap();
+            map.spatialConstraintControl = spatialConstraint;
+            map.events.triggerEvent('spatialconstraintuseradded', geometry);
+
+            expect(spatialConstraint.redraw).toHaveBeenCalledWith(geometry);
+        });
+
     });
 
     describe('layer', function() {
