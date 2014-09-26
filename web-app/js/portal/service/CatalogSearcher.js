@@ -52,6 +52,8 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         var requestUrl = this._getRequestUrl(page);
 
+        this._logSearchRequest();
+
         // TODO: this will go.
         Ext.ux.Ajax.proxyRequest({
             url: requestUrl,
@@ -199,6 +201,53 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         var searchUrl = this.catalogUrl + '/srv/eng/' + this.serviceUrl;
 
         return searchUrl  + '?' + Ext.urlEncode(params);
+    },
+
+    // This function will get only the deepest facets a user has searched for.
+    // For instance an array like:
+    // [ "facet1/facet2", "facet1", "facet3", "facet3/facet4" ]
+    // Will return:
+    // [ "facet1/facet2", "facet3/facet4" ]
+    _getDeepestFacets: function(facets) {
+        facets = facets.sort();
+        var deepestFacets = [];
+
+        // Search for the deepest facet in the whole sorted array, then push it
+        // to deepestFacets if it's not already there
+        for(i = 0; i < facets.length; i++) {
+            var deepestFacet = facets[i];
+
+            for(j = 0; j < facets.length; j++) {
+                if (facets[j].startsWith(deepestFacet) &&
+                    facets[j].length > deepestFacet.length) {
+                    deepestFacet = facets[j];
+                }
+            }
+
+            if (-1 == deepestFacets.indexOf(deepestFacet)) {
+                deepestFacets.push(deepestFacet);
+            }
+        }
+
+        return deepestFacets;
+    },
+
+    _logSearchRequest: function() {
+        // Format search filters
+        var facets = [];
+        this.searchFilters.each(function(rec) {
+            facets.push(rec.get('value'));
+        });
+
+        if (facets.length > 0) {
+            var deepestFacets = this._getDeepestFacets(facets);
+
+            log.info(
+                "Searching collections: " + JSON.stringify({
+                    'facets': deepestFacets
+                })
+            );
+        }
     },
 
     _getParams: function(page) {
