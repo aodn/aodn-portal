@@ -14,9 +14,9 @@ Portal.ui.openlayers.SpatialConstraintType = {
 
 Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.DrawFeature, {
 
-    constructor: function(options) {
+    MIN_AREA_PERCENT: 0.01,
 
-        this.MIN_AREA_PERCENT = 0.01;
+    constructor: function(options) {
 
         this.layerName = 'spatial constraint';
 
@@ -155,9 +155,12 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _getPercentOfViewportArea: function(spatialExtentArea) {
+        var mapArea = this._getMapArea();
+        return (spatialExtentArea / parseFloat(mapArea)) * 100;
+    },
 
-        var mapArea = this.map.getExtent().toGeometry().getArea();
-        return Math.round((spatialExtentArea / mapArea ) * 100000) / 1000;
+    _getMapArea: function() {
+        return this.map.getExtent().toGeometry().getArea();
     }
 });
 

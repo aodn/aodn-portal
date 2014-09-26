@@ -80,7 +80,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(spatialConstraint.layer.displayInLayerSwitcher).toBeFalsy();
         });
 
-        it("fires 'spatialconstraintadded' on layer sketchcomplete", function() {
+        it("fires 'spatialconstraintadded' on layer sketchcomplete where viewport area is above minimum", function() {
             var eventSpy = jasmine.createSpy('spatialconstraintadded');
             spatialConstraint.events.on({
                 'spatialconstraintadded': eventSpy
@@ -93,13 +93,37 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(eventSpy).toHaveBeenCalledWith(geometry);
         });
 
-        it('clears existing constraint on layer sketchcomplete', function() {
+        it('clears existing constraint on layer sketchcomplete where viewport area is above minimum', function() {
             spyOn(spatialConstraint, 'clear');
 
             var geometry = constructGeometry();
             var feature = new OpenLayers.Feature.Vector(geometry);
             spatialConstraint.layer.events.triggerEvent('sketchcomplete', { feature: feature });
             expect(spatialConstraint.clear).toHaveBeenCalled();
+        });
+
+        it('does not fire spatialconstraintadded where viewport area is below minimum', function() {
+            spatialConstraint._getPercentOfViewportArea = function() {return 0.0001};
+            var eventSpy = jasmine.createSpy('spatialconstraintadded');
+            spatialConstraint.events.on({
+                'spatialconstraintadded': eventSpy
+            });
+
+            var geometry = constructGeometry();
+            var feature = new OpenLayers.Feature.Vector(geometry);
+            spatialConstraint.layer.events.triggerEvent('sketchcomplete', { feature: feature });
+
+            expect(eventSpy).not.toHaveBeenCalled();
+        });
+
+        it('does not clear constraint where viewport area is below minimum', function() {
+            spatialConstraint._getPercentOfViewportArea = function() {return 0.0001};
+
+            spyOn(spatialConstraint, 'clear');
+            var geometry = constructGeometry();
+            var feature = new OpenLayers.Feature.Vector(geometry);
+            spatialConstraint.layer.events.triggerEvent('sketchcomplete', { feature: feature });
+            expect(spatialConstraint.clear).not.toHaveBeenCalled();
         });
     });
 
@@ -224,6 +248,25 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             spatialConstraint.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
 
             expect(spatialConstraint.getConstraintAsWKT()).toBe('POLYGON((1 2,3 4,1 2))');
+        });
+    });
+
+    describe('getPercentOfViewportArea', function() {
+        beforeEach(function() {
+            spatialConstraint._getMapArea = function() { return 113 };
+        });
+
+        it('returns the correct percentage of viewport area', function() {
+            var viewportArea = 8;
+            var expectedSolution = 7.079646017699115;
+
+            expect(spatialConstraint._getPercentOfViewportArea(viewportArea)).toBe(expectedSolution);
+        });
+
+        it('returns a number', function() {
+            var viewportArea = 8;
+
+            expect(typeof spatialConstraint._getPercentOfViewportArea(viewportArea)).toEqual("number");
         });
     });
 });
