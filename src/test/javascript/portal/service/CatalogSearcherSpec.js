@@ -43,6 +43,37 @@ describe('Portal.service.CatalogSearcher', function() {
         });
     });
 
+    describe('logging', function() {
+        describe('_getDeepestFacets', function() {
+
+            it('already deepest facets', function() {
+                var facets = [ "facet1/facet2", "facet3/facet4" ];
+                expect(searcher._getDeepestFacets(facets)).toEqual([ "facet1/facet2", "facet3/facet4" ]);
+            });
+
+            it('filter shallower facets', function() {
+                var facets = [ "facet1/facet2", "facet1", "facet3", "facet3/facet4" ];
+                expect(searcher._getDeepestFacets(facets)).toEqual([ "facet1/facet2", "facet3/facet4" ]);
+            });
+
+            it('filter shallower facets unsorted real values', function() {
+                var facets = [
+                    "Measured%20parameter/Chemical",
+                    "Measured%20parameter/Chemical/Nitrate%20concentration/Concentration%20of%20nitrate%20%7BNO3%7D%20per%20unit%20mass%20of%20the%20water%20body",
+                    "Measured%20parameter/Chemical/Nitrate%20concentration",
+                    "Platform",
+                    "Platform/Ships/self-propelled%20boat",
+                    "Platform/Ships"
+                ];
+                expect(searcher._getDeepestFacets(facets)).toEqual([
+                    "Measured%20parameter/Chemical/Nitrate%20concentration/Concentration%20of%20nitrate%20%7BNO3%7D%20per%20unit%20mass%20of%20the%20water%20body",
+                    "Platform/Ships/self-propelled%20boat"
+                ]);
+            });
+
+        });
+    });
+
     describe('search', function() {
 
         beforeEach(function() {
