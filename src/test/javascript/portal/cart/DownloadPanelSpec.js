@@ -17,17 +17,19 @@ describe("Portal.cart.DownloadPanel", function() {
         spyOn(downloadPanel.downloadPanelBody, 'generateContent');
     });
 
+    afterEach(function() {
+        downloadPanel.destroy();
+    });
+
     describe('initComponent()', function() {
         it('listens for beforeshow event', function() {
             downloadPanel.fireEvent('beforeshow');
 
             expect(downloadPanel.downloadPanelBody.generateContent).toHaveBeenCalled();
         });
-    });
 
-    describe('onBeforeShow()', function() {
-        it('calls refresh() on its view', function() {
-            downloadPanel.onBeforeShow();
+        it('listens for ACTIVE_GEONETWORK_RECORD_ADDED event', function() {
+            Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
 
             expect(downloadPanel.downloadPanelBody.generateContent).toHaveBeenCalled();
         });

@@ -27,10 +27,15 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
         Ext.apply(this, config);
         Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);
-        this.on('beforeshow', function() { this.onBeforeShow() }, this);
+        this._registerEvents();
     },
 
-    onBeforeShow: function() {
+    _registerEvents: function() {
+        this.on('beforeshow', function() { this.generateContent() }, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, this.generateContent, this);
+    },
+
+    generateContent: function() {
         this.downloadPanelBody.generateContent();
     }
 });
