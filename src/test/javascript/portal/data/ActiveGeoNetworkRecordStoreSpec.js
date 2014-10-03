@@ -33,6 +33,28 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
             });
         });
 
+        describe('returns only loaded records', function() {
+            it('when no records', function() {
+                expect(activeRecordStore.getLoadedRecords().length).toBe(0);
+            });
+
+            it('when 3 records, only 1 loaded', function() {
+                activeRecordStore.add(new Portal.data.GeoNetworkRecord({ title: 'my record1' }));
+                activeRecordStore.add(new Portal.data.GeoNetworkRecord({ title: 'my record2' }));
+                activeRecordStore.add(new Portal.data.GeoNetworkRecord({ title: 'my record3' }));
+
+                // Sanity check to make sure we have 3 records in
+                expect(activeRecordStore.getLoadedRecords().length).toBe(3);
+
+                // Mark record as not loaded by setting loaded to false
+                activeRecordStore.data.items[0].loaded = false;
+                // Mark record as not loaded by removing attribute
+                delete activeRecordStore.data.items[1].loaded;
+
+                expect(activeRecordStore.getLoadedRecords().length).toBe(1);
+            });
+        });
+
         describe('interaction with MsgBus', function() {
 
             var myRecord;
@@ -47,7 +69,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
             describe('when adding/removing records', function() {
                 it('geonetwork added message is fired', function() {
                     activeRecordStore.add(myRecord);
-                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, [myRecord]);
+                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, myRecord);
                 });
 
                 it('geonetwork removed message is fired', function() {

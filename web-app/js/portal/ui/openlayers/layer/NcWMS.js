@@ -199,6 +199,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     getCqlForTemporalExtent: function() {
+        if (!this.bodaacFilterParams) {
+            return null;
+        }
 
         var cqlParts = [];
 

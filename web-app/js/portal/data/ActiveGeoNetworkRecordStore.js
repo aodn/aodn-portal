@@ -27,6 +27,8 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
     },
 
     _onAdd: function(store, geoNetworkRecords) {
+        var thisStore = this;
+
         Ext.each(geoNetworkRecords, function(geoNetworkRecord) {
             if (geoNetworkRecord.hasWmsLink()) {
 
@@ -42,12 +44,20 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
                         wmsLayer.parentGeoNetworkRecord = geoNetworkRecord;
                         // Make it easier to access geonetwork UUID of this layer
                         wmsLayer.metadataUuid = geoNetworkRecord.data.uuid;
+
+                        thisStore._recordLoaded(geoNetworkRecord);
                     }
                 );
             }
+            else {
+                thisStore._recordLoaded(geoNetworkRecord);
+            }
         }, this);
+    },
 
-        Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, geoNetworkRecords);
+    _recordLoaded: function(geoNetworkRecord) {
+        geoNetworkRecord.loaded = true;
+        Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, geoNetworkRecord);
     },
 
     _onRemove: function(store, record) {
@@ -110,6 +120,14 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
             return this.recordAttributes.uuid.key;
         }
         return null;
+    },
+
+    getLoadedRecords: function() {
+        var loadedRecords = [];
+        this.each(function(record) {
+            if (record.loaded) { loadedRecords.push(record); }
+        });
+        return loadedRecords;
     }
 });
 

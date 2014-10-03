@@ -28,8 +28,7 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         var html = '';
 
         // Reverse the order of items, last item added will be displayed first
-        for (var i = this.store.data.items.length - 1; i >= 0; i--) {
-            var item = this.store.data.items[i];
+        Ext.each(this.store.getLoadedRecords().reverse(), function(item) {
             var collection = item.data;
 
             var service = new Portal.cart.InsertionService(this);
@@ -38,7 +37,7 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
             this._loadMenuItemsFromHandlers(processedValues, collection);
 
             html += tpl.apply(processedValues);
-        }
+        }, this);
 
         if (!html) {
             html = this._contentForEmptyView();

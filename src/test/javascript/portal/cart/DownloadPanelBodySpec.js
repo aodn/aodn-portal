@@ -48,7 +48,8 @@ describe("Portal.cart.DownloadPanelBody", function() {
             var items = [];
             Ext.each(collections, function(collection) {
                 items.push({
-                    data: collection
+                    data: collection,
+                    loaded: true
                 });
             });
 
