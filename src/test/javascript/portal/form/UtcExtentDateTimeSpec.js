@@ -113,6 +113,29 @@ describe("Portal.form.UtcExtentDateTime", function() {
         });
     });
 
+    describe('getUtcDateFromLocalValues', function() {
+
+        var validDate = new Date();
+        beforeEach(function() {
+            spyOn(utcDateTime.dateValue, 'getTime').andReturn(validDate);
+        });
+
+        it('empty string passed, return last valid time', function() {
+            expect(utcDateTime.getUtcDateFromLocalValues("").toString()).toEqual(validDate.toString());
+        });
+
+        it('valid date passed, return given date as UTC', function() {
+            var anotherValidDate = new Date(0);
+            // getTimezoneOffset() returns offset in minutes, convert to milli
+            var timeOffsetMilli = anotherValidDate.getTimezoneOffset() * 60 * 1000;
+            var expectedUTCTime = anotherValidDate.getUTCTime() - timeOffsetMilli;
+
+            var UTCTime = utcDateTime.getUtcDateFromLocalValues(anotherValidDate).getUTCTime();
+
+            expect(UTCTime).toEqual(expectedUTCTime);
+        });
+    });
+
     describe('onBlur', function() {
 
         var matchTime;
