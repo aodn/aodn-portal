@@ -64,7 +64,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
     _setTimeValues: function(date, extent, toMaxTime) {
         var dayExtent = extent.subExtentForDate(date);
 
-        if (dayExtent.length() > 0) {
+        if (dayExtent && dayExtent.length() > 0) {
             this._extentToStore(dayExtent);
             this._setTimeMinValue(dayExtent);
             this._setTimeMaxValue(dayExtent);
@@ -119,14 +119,17 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
     },
 
     getUtcDateFromLocalValues: function(localDate) {
-        var utcDate = new Date();
-        utcDate.setUTCFullYear(localDate.getFullYear());
-        utcDate.setUTCMonth(localDate.getMonth());
-        utcDate.setUTCDate(localDate.getDate());
-        utcDate.setUTCHours(localDate.getHours());
-        utcDate.setUTCMinutes(localDate.getMinutes());
-        utcDate.setUTCSeconds(localDate.getSeconds());
-        utcDate.setUTCMilliseconds(localDate.getMilliseconds());
+        var utcDate = new Date(this.dateValue.getTime());
+
+        if (localDate && "" != localDate) {
+            utcDate.setUTCFullYear(localDate.getFullYear());
+            utcDate.setUTCMonth(localDate.getMonth());
+            utcDate.setUTCDate(localDate.getDate());
+            utcDate.setUTCHours(localDate.getHours());
+            utcDate.setUTCMinutes(localDate.getMinutes());
+            utcDate.setUTCSeconds(localDate.getSeconds());
+            utcDate.setUTCMilliseconds(localDate.getMilliseconds());
+        }
 
         return utcDate;
     },
@@ -185,7 +188,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         var extent = this._getExtentForSelectedDate();
         var timeString = this.tf.getValue();
 
-        if (extent.length() > 0) {
+        if (extent && extent.length() > 0) {
             for (var i = 0; i < extent.length(); i++) {
                 var momentDate = extent.get(i);
                 if (momentDate.utc().format(OpenLayers.i18n('timeDisplayFormat')) == timeString) {
@@ -201,7 +204,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
     },
 
     _getExtentForSelectedDate: function() {
-        return this.extent.subExtentForDate(this.getUtcDateFromLocalValues(this.df.getValue()))
+        return this.extent.subExtentForDate(this.getUtcDateFromLocalValues(this.df.getValue()));
     },
 
     _getDefaultTime: function(extent) {
