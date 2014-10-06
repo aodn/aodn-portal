@@ -5,8 +5,6 @@
  *
  */
 
-
-
 body, html, td, p {
     font-family: arial, sans-serif;
     font-size: 12px;
@@ -423,7 +421,7 @@ Site navigation
 }
 
 .x-btn.backwardsButton {
-    border-radius: 12px 0px 0px 12px;
+    border-radius: 12px 0 0 12px;
 }
 
 .community {
@@ -678,7 +676,7 @@ table.featureInfo caption {
 
 .animationControlsPanel {
     width: 450px;
-    padding: 2px 6px 0px 6px;
+    padding: 2px 6px 0 6px;
     margins: 2px;
 }
 
@@ -835,7 +833,6 @@ ul.x-tab-strip-top li:hover * {
     background-color: #AAA;
     color: white;
 }
-
 
 .addServerStatusPanel .x-panel-header {
     padding-top: 0;
@@ -1262,8 +1259,12 @@ div.allwhite {
     background: url('../images/software-update-urgent-2.png') center no-repeat transparent;
 }
 
+#activeLayerTreePanel .x-tree-root-ct {
+    margin-left: -15px;
+}
+
 #activeLayerTreePanel img.x-tree-node-icon {
-    width: 0px;
+    width: 0;
 }
 
 #activeLayerTreePanel input.x-tree-node-cb {
@@ -1283,7 +1284,7 @@ div.allwhite {
 }
 
 .downloadEstimateLabel {
-	padding: 10px 10px 2px 10px;
+    padding: 10px 10px 2px 10px;
 }
 
 /* Bug #9 - show blank tiles on image load error. */
@@ -1307,7 +1308,7 @@ div.allwhite {
 
 .search-filters-toolbar.x-toolbar {
     background-color: inherit;
-    border-width: 0px;
+    border-width: 0;
 }
 
 .search-filters-toolbar .x-panel-header-text {
@@ -1338,7 +1339,8 @@ div.allwhite {
 .bboxExtentPicker .x-box-layout-ct {
     margin: 4px;
 }
-.bboxExtentPicker .x-box-layout-ct label{
+
+.bboxExtentPicker .x-box-layout-ct label {
     font-weight: bold;
 }
 
