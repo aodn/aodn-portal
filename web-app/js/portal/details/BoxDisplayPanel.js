@@ -7,11 +7,12 @@
 Ext.namespace('Portal.details');
 
 Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
+    TABLE_WIDTH: 165,
+    TABLE_HEIGHT: 35,
+
     constructor: function(cfg) {
 
-        this.tableWidth = 165;
-        this.map= cfg.map;
-
+        this.map = cfg.map;
 
         var config = Ext.apply({
             cls: "bboxExtentPicker",
@@ -66,25 +67,28 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
 
         return [
             {
+                width: this.TABLE_WIDTH,
+                height: this.TABLE_HEIGHT,
+                height: 50,
                 xtype: 'container',
                 layout: {
                     type: 'hbox',
                     pack:'center',
                     align: 'middle'
                 },
-                width: this.tableWidth,
                 items: [
                     this._buildLabel('northBL'),
                     this.northBL
                 ]
             },
             {
+                width: this.TABLE_WIDTH,
+                height: this.TABLE_HEIGHT,
                 xtype: 'container',
                 layout: {
                     type: 'hbox',
                     align: 'middle'
                 },
-                width: this.tableWidth,
                 items: [
                     this._buildLabel('westBL'),
                     this.westBL,
@@ -103,13 +107,14 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                 ]
             },
             {
+                width: this.TABLE_WIDTH,
+                height: this.TABLE_HEIGHT,
                 xtype: 'container',
                 layout: {
                     type: 'hbox',
                     pack: 'center',
                     align: 'middle'
                 },
-                width: this.tableWidth,
                 items: [
                     this._buildLabel('southBL'),
                     this.southBL
