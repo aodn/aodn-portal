@@ -41,10 +41,6 @@ abstract class RequestProxyingController {
         }
     }
 
-    def _isGeoNetworkSearchRequest(url) {
-        return url.startsWith("${grailsApplication.config.geonetwork.url}/srv/eng/xml.search.imos")
-    }
-
     def _setDownloadFilename(response, params) {
 
         def downloadFilename = params.remove('downloadFilename')
