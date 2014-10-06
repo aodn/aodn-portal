@@ -7,7 +7,6 @@
 Ext.namespace('Portal.ui.openlayers.control');
 
 Portal.ui.openlayers.SpatialConstraintType = {
-    NONE: 'none',
     POLYGON: 'polygon',
     BOUNDING_BOX: 'bounding box'
 };
@@ -80,8 +79,10 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     redraw: function(geometry) {
         this.clear();
-        this.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
-        this.events.triggerEvent('spatialconstraintadded', geometry);
+        if (geometry.getBounds) {
+           this.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
+           this.events.triggerEvent('spatialconstraintadded', geometry);
+        }
     },
 
     isModified: function() {

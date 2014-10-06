@@ -115,6 +115,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     mapLayers: 'Map Collections',
     mapLayer: 'Map Collections',
     precision: 'Precision',
+    emptySpatialBL: 'enter',
     goButton: 'Go',
     clearButton: 'Clear',
     fullTextSearch: 'What are you looking for?',
@@ -226,10 +227,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // PolygonTypeComboBox
     comboBoxTypeLabels: [
-        { value: Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX, label: "bounding box" },
-        { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "polygon" },
-        { value: Portal.ui.openlayers.SpatialConstraintType.NONE, label: "none" }
+        { value: Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX, label: "Bounding Box" },
+        { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "Polygon" }
     ],
+
+    emptyBboxHelperText: "Enter extent manually or click and drag on the map",
+    emptyPolygonHelperText: "Click points on the map to create your polygon",
 
     // WfsDataRowTemplate
     fileSizeIconMarkup: '<img src="images/error.png">',
