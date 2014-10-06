@@ -289,6 +289,10 @@ hr {
     cursor: pointer;
 }
 
+.olDragDown:not(.olControlZoomBoxActive) {
+    cursor: crosshair;
+}
+
 #centerTabPanel {
     border: 0 solid white;
 }
@@ -848,7 +852,6 @@ div.olMap:not(.miniMap) {
 }
 
 div.olMap div[class^="olControl"],
-.olDragDown,
 .olControlNavigationActive {
     cursor: default;
 }
