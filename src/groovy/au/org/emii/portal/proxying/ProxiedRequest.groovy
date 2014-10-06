@@ -35,7 +35,15 @@ class ProxiedRequest extends ExternalRequest {
 
         _determineResponseContentType()
 
-        executeRequest(streamProcessor)
+        try {
+            executeRequest(streamProcessor)
+        }
+        catch (Exception e) {
+            // Nothing more can be done here, we just don't want the Exception to propagate
+            // The outputStream might already have been written-to so it's in an unknown state
+
+            log.warn "Failure while proxying request", e
+        }
     }
 
     def _determineResponseContentType = {
