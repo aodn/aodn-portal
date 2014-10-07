@@ -2,8 +2,6 @@ package au.org.emii.portal
 
 class MarvlController extends DownloadController {
 
-    def grailsApplication
-
     def urlListForFeatureRequest = {
 
         if (!params.propertyName) {
