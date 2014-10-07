@@ -11,12 +11,22 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
 
         OpenLayers.Map.prototype.initialize.apply(this, arguments);
 
-        this.events.addEventType('spatialconstraintuseradded');
+        this.events.addEventType('spatialconstraintusermodded');
+        this.events.addEventType('spatialconstraintcleared');
+
         this.events.register(
-            'spatialconstraintuseradded',
+            'spatialconstraintusermodded',
             this,
-            function(geometry) {
-                this.spatialConstraintControl.redraw(geometry);
+            function(obj) {
+                this.spatialConstraintControl.redraw(obj);
+            }
+        );
+
+        this.events.register(
+            'spatialconstraintcleared',
+            this,
+            function() {
+                this.resetSpatialConstraint();
             }
         );
     },
@@ -47,6 +57,7 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         // Avoid unnecessary removal/addition of the control.
         if (this.polygonStyle != polygonStyle) {
             this.updateSpatialConstraintStyle(polygonStyle);
+            this.events.triggerEvent('spatialconstrainttypechanged', polygonStyle);
         }
     },
 
@@ -69,18 +80,12 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
             this.spatialConstraintControl.removeFromMap();
         }
 
-        if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.NONE) {
-            this.spatialConstraintControl = undefined;
-            this.navigationControl.activate();
-            this.events.triggerEvent('spatialconstraintcleared');
-        }
-        else if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.POLYGON) {
+        if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.POLYGON) {
             this.addSpatialConstraintControlToMap(OpenLayers.Handler.Polygon);
         }
         else if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX) {
             this.addSpatialConstraintControlToMap();
         }
-        this.events.triggerEvent('spatialconstrainttypechanged', polygonStyle);
     },
 
     addSpatialConstraintControlToMap: function(handler) {

@@ -366,6 +366,10 @@ hr {
     margin: 2px;
 }
 
+.italic {
+    font-style: italic;
+}
+
 /*
 Site navigation
 */
@@ -475,6 +479,7 @@ a[rel="external"], a.external {
 
 .mainlinks {
     margin-right: 10px;
+    margin-left: 5px;
     padding-left: 10px;
 }
 
@@ -1301,6 +1306,10 @@ div.allwhite {
 
 .highlight:hover {
     background-color: #ffff99;
+}
+
+.hightlightInputbox {
+    border-width: 2px;
 }
 
 .WAMiniLogo {

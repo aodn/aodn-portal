@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -26,6 +25,15 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
 
     describe('map', function() {
 
+
+        it("subscribes to 'spatialconstrainttypechanged' event", function() {
+            var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
+            spyOn(displayPanel, '_showCard');
+
+            map.events.triggerEvent('spatialconstrainttypechanged',"Some Type");
+            expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.emptyPolygonDisplayPanel, undefined);
+        });
+
         it("subscribes to 'spatialconstraintadded' event", function() {
             var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
             spyOn(displayPanel.polygonDisplayPanel, 'setGeometry');
@@ -42,17 +50,9 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
 
             map.events.triggerEvent('spatialconstraintcleared');
 
-            expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.noneDisplayPanel);
+            expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.boxDisplayPanel);
         });
 
-        it("subscribes to 'spatialconstrainttypechanged' event", function() {
-            var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
-            spyOn(displayPanel, '_showCard');
-
-            map.events.triggerEvent('spatialconstrainttypechanged');
-
-            expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.noneDisplayPanel);
-        });
     });
 
     describe('box, polygon or none', function() {
@@ -60,8 +60,8 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
             expect(displayPanel.layout).toBeInstanceOf(Ext.layout.CardLayout);
         });
 
-        it('initialises with "none" as active item', function() {
-            expect(displayPanel.activeItem).toBe(displayPanel.noneDisplayPanel);
+        it('initialises with "boxDisplayPanel" as active item', function() {
+            expect(displayPanel.activeItem).toBe(displayPanel.boxDisplayPanel);
         });
 
         describe('spatial constraint added', function() {
@@ -94,7 +94,7 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
                 spyOn(displayPanel, '_showCard');
                 map.events.triggerEvent('spatialconstraintcleared');
 
-                expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.noneDisplayPanel);
+                expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.boxDisplayPanel);
             });
         });
 

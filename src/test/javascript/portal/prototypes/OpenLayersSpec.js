@@ -286,23 +286,6 @@ describe('OpenLayers', function() {
             }
         });
 
-        it('removes spatial constraint control when style is NONE', function() {
-            var spatialConstraintClearedSpy = jasmine.createSpy();
-            map.events.on({
-                'spatialconstraintcleared': spatialConstraintClearedSpy
-            });
-
-            map.setSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.NONE);
-
-            expect(map.spatialConstraintControl).toBeUndefined();
-            Ext.each(map.controls, function(control) {
-                expect(control).not.toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);
-            });
-            expect(map.navigationControl.deactivate).toHaveBeenCalled();
-            expect(map.navigationControl.activate).toHaveBeenCalled();
-            expect(spatialConstraintClearedSpy).toHaveBeenCalled();
-        });
-
         it('set polygon spatial constraint control when style is POLYGON', function() {
             map.setSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.POLYGON);
 
@@ -324,17 +307,17 @@ describe('OpenLayers', function() {
         });
 
         it('has spatial constraint control', function() {
-            map.setSpatialConstraintStyle('bounding box');
+            map.setSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX);
             expect(map.spatialConstraintControl).toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);
         });
 
-        it('clears spatialConstraintControl on spatial constraint type change', function() {
+        it('changes spatial constraint on type change', function() {
             var spatialConstraintClearedSpy = jasmine.createSpy();
             map.events.on({
-                'spatialconstraintcleared': spatialConstraintClearedSpy
+                'spatialconstrainttypechanged': spatialConstraintClearedSpy
             });
 
-            map.setSpatialConstraintStyle('none');
+            map.setSpatialConstraintStyle('a style  that the current style is not set too');
             expect(spatialConstraintClearedSpy).toHaveBeenCalled();
         });
     });
