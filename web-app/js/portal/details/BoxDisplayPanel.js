@@ -7,10 +7,12 @@
 Ext.namespace('Portal.details');
 
 Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
+    TABLE_WIDTH: 165,
+    TABLE_HEIGHT: 25,
+
     constructor: function(cfg) {
 
-        this.tableWidth = 165;
-        this.map= cfg.map;
+        this.map = cfg.map;
 
         var spacer = new Ext.Spacer({
             height: 5
@@ -91,7 +93,8 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     pack:'center',
                     align: 'middle'
                 },
-                width: this.tableWidth,
+                width: this.TABLE_WIDTH,
+                height: this.TABLE_HEIGHT,
                 items: [
                     this._buildLabel('northBL'),
                     this.northBL
@@ -103,7 +106,8 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     type: 'hbox',
                     align: 'middle'
                 },
-                width: this.tableWidth,
+                width: this.TABLE_WIDTH,
+                height: this.TABLE_HEIGHT,
                 items: [
                     this._buildLabel('westBL'),
                     this.westBL,
@@ -128,7 +132,8 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     pack: 'center',
                     align: 'middle'
                 },
-                width: this.tableWidth,
+                width: this.TABLE_WIDTH,
+                height: this.TABLE_HEIGHT,
                 items: [
                     this._buildLabel('southBL'),
                     this.southBL
