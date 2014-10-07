@@ -14,15 +14,28 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
 
         this.map = cfg.map;
 
+        var spacer = new Ext.Spacer({
+            height: 5
+        });
+
         var config = Ext.apply({
             cls: "bboxExtentPicker",
             items: [
+                this._getLabel(),
+                spacer,
                 this._buildBoundingBox(cfg)
             ],
-            padding: '0 0 0 20px'
+            padding: '0 5px 0 5px'
         }, cfg);
 
         Portal.details.BoxDisplayPanel.superclass.constructor.call(this, config);
+    },
+
+    _getLabel: function() {
+        return new Ext.form.Label({
+            cls: 'italic',
+            text: OpenLayers.i18n("emptyBboxHelperText")
+        });
     },
 
     setGeometry: function(geometry) {
@@ -38,7 +51,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
         if (this.map) {
             var newBoundsAsGeometry = this.getBounds().toGeometry();
             if (newBoundsAsGeometry.getArea() >= 0) {
-                this.map.events.triggerEvent('spatialconstraintuseradded', newBoundsAsGeometry);
+                this.map.events.triggerEvent('spatialconstraintusermodded', newBoundsAsGeometry);
             }
         }
     },
@@ -59,6 +72,13 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
         this.eastBL.setValue(bounds.right);
     },
 
+    emptyBounds: function() {
+        this.southBL.setRawValue();
+        this.westBL.setRawValue();
+        this.northBL.setRawValue();
+        this.eastBL.setRawValue();
+    },
+
     _buildBoundingBox: function(config) {
         this.northBL = this._buildCoord('northBL',-90,90);
         this.eastBL = this._buildCoord('eastBL',-180,180);
@@ -76,6 +96,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     pack:'center',
                     align: 'middle'
                 },
+                width: this.tableWidth,
                 items: [
                     this._buildLabel('northBL'),
                     this.northBL
@@ -89,6 +110,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     type: 'hbox',
                     align: 'middle'
                 },
+                width: this.tableWidth,
                 items: [
                     this._buildLabel('westBL'),
                     this.westBL,
@@ -115,6 +137,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                     pack: 'center',
                     align: 'middle'
                 },
+                width: this.tableWidth,
                 items: [
                     this._buildLabel('southBL'),
                     this.southBL
@@ -145,6 +168,8 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
             name: name,
             decimalPrecision: 2,
             width: 55,
+            overCls: "hightlightInputbox",
+            emptyText: OpenLayers.i18n('emptySpatialBL'),
             minValue : min,
             maxValue : max,
             listeners: {

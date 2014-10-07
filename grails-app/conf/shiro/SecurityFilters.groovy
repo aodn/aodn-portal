@@ -98,7 +98,7 @@ class SecurityFilters {
             }
         }
 
-        proxyAccess(controller: "proxy", action: "index|cache|wmsOnly") {
+        proxyAccess(controller: "proxy", action: "index") {
             before = {
                 request.accessAllowed = true
             }

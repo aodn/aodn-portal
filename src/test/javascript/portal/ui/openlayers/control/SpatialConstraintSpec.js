@@ -56,14 +56,14 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(eventSpy).toHaveBeenCalledWith(geometry);
         });
 
-        it("fires 'spatialconstraintuseradded' causes redraw", function() {
+        it("fires 'spatialconstraintusermodded' causes redraw", function() {
 
             spyOn(spatialConstraint, 'redraw');
 
             var geometry = constructGeometry();
             var map = new OpenLayers.SpatialConstraintMap();
             map.spatialConstraintControl = spatialConstraint;
-            map.events.triggerEvent('spatialconstraintuseradded', geometry);
+            map.events.triggerEvent('spatialconstraintusermodded', geometry);
 
             expect(spatialConstraint.redraw).toHaveBeenCalledWith(geometry);
         });
@@ -169,16 +169,6 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
                 map.spatialConstraintControl.clear();
                 expect(map.spatialConstraintControl.layer.destroyFeatures).toHaveBeenCalled();
             });
-        });
-
-        it('clears spatial constraint when constraint type none is selected', function() {
-            var eventSpy = jasmine.createSpy('spatial constraint cleared');
-            map.events.on({
-                'spatialconstraintcleared': eventSpy
-            });
-
-            map.updateSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.NONE);
-            expect(eventSpy).toHaveBeenCalled();
         });
 
         it('moves drawing layers to larger z index when layer added', function() {

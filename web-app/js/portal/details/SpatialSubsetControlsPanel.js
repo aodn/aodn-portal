@@ -9,28 +9,45 @@ Ext.namespace('Portal.details');
 
 Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
 
-    constructor: function(cfg) {
-        var config = Ext.apply({
-            width: 202
-        }, cfg);
-
-        Portal.details.SpatialSubsetControlsPanel.superclass.constructor.call(this, config);
-    },
-
     initComponent: function() {
         Portal.details.SpatialSubsetControlsPanel.superclass.initComponent.call(this);
         this._addLabel(OpenLayers.i18n('spatialExtentHeading'));
         this._addVerticalSpacer();
-        this._addPolygonTypeCombo();
+        this._addPickerPanel();
         this._addVerticalSpacer();
         this._addSpatialConstraintDisplayPanel();
     },
 
-    _addPolygonTypeCombo: function() {
+    _addPickerPanel: function() {
+
         this.polygonTypeCombo = new Portal.form.PolygonTypeComboBox({
             map: this.map
         });
-        this.add(this.polygonTypeCombo);
+
+        var resetLink = new Ext.ux.Hyperlink({
+            text: OpenLayers.i18n('resetActionText'),
+            anchorCls: 'resetText'
+        });
+
+        resetLink.on('click', function() {
+            this.map.events.triggerEvent('spatialconstraintcleared', Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX);
+        }, this);
+
+        var spacer = new Ext.Spacer({
+            width: 10
+        });
+
+        var pickerPanel = new Ext.Panel({
+            layout: 'hbox',
+            items: [
+                this.polygonTypeCombo,
+                spacer,
+                resetLink
+            ]
+        });
+
+        this.add(pickerPanel);
+
     },
 
     _addSpatialConstraintDisplayPanel: function() {
@@ -42,7 +59,7 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     _addVerticalSpacer: function() {
-        this.add(new Ext.Spacer({ height: 10 }));
+        this.add(new Ext.Spacer({ height: 5 }));
     },
 
     _addLabel: function(labelText) {

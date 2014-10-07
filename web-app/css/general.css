@@ -289,6 +289,10 @@ hr {
     cursor: pointer;
 }
 
+.olDragDown:not(.olControlZoomBoxActive) {
+    cursor: crosshair;
+}
+
 #centerTabPanel {
     border: 0 solid white;
 }
@@ -360,6 +364,10 @@ hr {
 
 .logoSpacer {
     margin: 2px;
+}
+
+.italic {
+    font-style: italic;
 }
 
 /*
@@ -471,6 +479,7 @@ a[rel="external"], a.external {
 
 .mainlinks {
     margin-right: 10px;
+    margin-left: 5px;
     padding-left: 10px;
 }
 
@@ -848,7 +857,6 @@ div.olMap:not(.miniMap) {
 }
 
 div.olMap div[class^="olControl"],
-.olDragDown,
 .olControlNavigationActive {
     cursor: default;
 }
@@ -1298,6 +1306,10 @@ div.allwhite {
 
 .highlight:hover {
     background-color: #ffff99;
+}
+
+.hightlightInputbox {
+    border-width: 2px;
 }
 
 .WAMiniLogo {
