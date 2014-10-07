@@ -24,8 +24,6 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
             setGeometry: function() {}
         });
 
-        this.lastSpatialGeometry = undefined;
-
         var config = Ext.apply({
             layout: new Ext.layout.CardLayout(),
             activeItem: this.boxDisplayPanel,

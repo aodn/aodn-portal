@@ -231,7 +231,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "Polygon" }
     ],
 
-    emptyBboxHelperText: "Enter extent manually or click and drag on the map",
+    emptyBboxHelperText: "Click and drag on the map to draw, or enter extents manually.",
     emptyPolygonHelperText: "Click points on the map to create your polygon",
 
     // WfsDataRowTemplate
