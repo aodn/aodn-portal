@@ -10,7 +10,7 @@ Ext.namespace('Portal.ui');
 Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     loadSpinner: null,
 
-    defaultSpatialConstraintType: OpenLayers.i18n('comboBoxTypeLabels')[0].label,
+    defaultSpatialConstraintType: OpenLayers.i18n('comboBoxTypeLabels')[0].value,
 
     constructor: function (cfg) {
 

@@ -7,7 +7,6 @@
 Ext.namespace('Portal.ui.openlayers.control');
 
 Portal.ui.openlayers.SpatialConstraintType = {
-    NONE: 'none',
     POLYGON: 'polygon',
     BOUNDING_BOX: 'bounding box'
 };

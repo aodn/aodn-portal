@@ -33,9 +33,6 @@ describe('Portal.form.PolygonTypeCombo', function() {
             expect(polygonTypeCombo.store.find('value', Portal.ui.openlayers.SpatialConstraintType.POLYGON)).toBeGreaterThan(-1);
         });
 
-        it('has a none item', function() {
-            expect(polygonTypeCombo.store.find('value', Portal.ui.openlayers.SpatialConstraintType.NONE)).toBeGreaterThan(-1);
-        });
     });
 
     describe('polygon combo box', function() {
