@@ -16,7 +16,6 @@ import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilenam
 class DownloadController extends RequestProxyingController {
 
     def grailsApplication
-    def hostVerifier
     def bulkDownloadService
 
     static def SIZE_ESTIMATE_ERROR = "-1"
@@ -40,7 +39,7 @@ class DownloadController extends RequestProxyingController {
 
     def downloadPythonSnippet = {
         response.setContentType("text/plain")
-        response.setHeader('Content-Disposition', "Attachment;Filename=\"${params.downloadFilename}\"")       
+        response.setHeader('Content-Disposition', "Attachment;Filename=\"${params.downloadFilename}\"")
         response.outputStream << g.render(template: "pythonSnippet.py", model: [ collectionUrl: params.url])
     }
 
