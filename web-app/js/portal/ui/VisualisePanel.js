@@ -38,6 +38,7 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
         Portal.ui.VisualisePanel.superclass.constructor.call(this, config);
 
         this.on('beforehide', function() { this.onBeforeHide() }, this);
+        this.on('show', function() { this.onVisualizeShow() }, this);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, function() {
             this.detailsPanel.expand();
@@ -46,5 +47,9 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
 
     onBeforeHide: function() {
         this.mapPanel.beforeParentHide();
+    },
+
+    onVisualizeShow: function() {
+        this.detailsPanel.layoutCard();
     }
 });
