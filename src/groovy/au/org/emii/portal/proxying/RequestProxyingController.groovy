@@ -11,6 +11,8 @@ import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilenam
 
 abstract class RequestProxyingController {
 
+    def hostVerifier
+
     def index = {
 
         _performProxying()
