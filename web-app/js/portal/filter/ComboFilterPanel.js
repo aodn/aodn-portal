@@ -22,7 +22,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             triggerAction: 'all',
             mode: 'local',
             width: 320,
-            editable: false,
+            editable: true,
             store: new Ext.data.ArrayStore({
                 fields: [
                     'text'
