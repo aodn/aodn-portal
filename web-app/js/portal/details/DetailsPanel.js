@@ -48,12 +48,11 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         }, this);
     },
 
-    updateDetailsPanel: function(layer, forceOpen) {
+    updateDetailsPanel: function(layer) {
         if (layer) {
             if (!this._cardExistsForLayer(layer)) {
                 this._addCardForLayer(layer);
             }
-
             this._activateCardForLayer(layer);
         }
     },
@@ -71,8 +70,13 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         this.layerDetailsPanel.add(cardForLayer);
     },
 
+    layoutCard: function() {
+        this.doLayout();
+    },
+
     _activateCardForLayer: function(layer) {
         this.layerDetailsPanel.layout.setActiveItem(this._getCardIdForLayer(layer));
+        this.layoutCard();
     },
 
     _removeCardForLayer: function(layer) {

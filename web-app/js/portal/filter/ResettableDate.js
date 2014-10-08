@@ -7,6 +7,8 @@
 Ext.namespace('Portal.filter');
 
 Portal.filter.ResettableDate = Ext.extend(Ext.Container, {
+    ELEMENT_HEIGHT: 25,
+
     constructor: function(cfg) {
         this._createDateField(cfg);
         this.applyDefaultValueLimits();
@@ -77,7 +79,7 @@ Portal.filter.ResettableDate = Ext.extend(Ext.Container, {
             format: OpenLayers.i18n('dateDisplayFormatExtJs'),
             altFormats: OpenLayers.i18n('dateAltFormats'),
             emptyText: cfg.emptyText,
-            width: 111,
+            height: this.ELEMENT_HEIGHT,
             listeners: {
                 scope: this,
                 select: this._onChange,

@@ -27,8 +27,8 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _createField: function() {
-        this.fromDate = this._createResettableDate('from');
-        this.toDate = this._createResettableDate('to');
+        this.fromDate = this._createResettableDate('fromDate', OpenLayers.i18n('fromDateLabel'), OpenLayers.i18n('fromDateEmptyText'));
+        this.toDate = this._createResettableDate('toDate', OpenLayers.i18n('toDateLabel'), OpenLayers.i18n('toDateEmptyText'));
 
         this.add(this.fromDate);
 
@@ -44,11 +44,11 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
     },
 
-    _createResettableDate: function(name) {
+    _createResettableDate: function(name, fieldLabel, emptyText) {
         return new Portal.filter.ResettableDate({
             name: name,
-            fieldLabel: OpenLayers.i18n(name + 'DateLabel'),
-            emptyText: OpenLayers.i18n(name + 'DateEmptyText'),
+            fieldLabel: fieldLabel,
+            emptyText: emptyText,
             listeners: {
                 scope: this,
                 change: this._applyDateFilterPanel
