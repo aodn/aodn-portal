@@ -194,12 +194,6 @@ input, select, textarea {
     background: none;
 }
 
-a.userlink {
-    font-size: inherit ! important;
-    text-decoration: underline ! important;
-    margin-right: 15px ! important;
-}
-
 .x-tab-strip span.x-tab-strip-text, .x-btn-text {
     color: #666;
 }
@@ -212,24 +206,8 @@ ul.x-tab-strip-top {
     background-color: #E6E9EB;
 }
 
-.semiTransparent {
-    background-color: #596169 !important;
-    opacity: 0.6;
-}
-
-.faceted-search-clear-all .x-hyperlink {
-    padding: 1px 3px;
-}
-
 .x-btn {
     padding: 0px 6px;
-}
-
-.x-btn,
-.faceted-search-clear-all div.x-hyperlink {
-    background-color: #E6E9EB;
-    border-radius: 6px;
-    margin-right: 3px;
 }
 
 .navigationButton.x-btn {
@@ -245,7 +223,6 @@ ul.x-tab-strip-top {
     background: #8e8e8e ! important;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) inset;
 }
-
 
 #viewPortLinks {
     box-shadow: 2px 2px 5px rgba(50, 50, 50, 0.75);

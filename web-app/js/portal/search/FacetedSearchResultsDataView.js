@@ -9,41 +9,44 @@ Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
-    /* These values cannot be exported to CSS as it will be processed "too
-     * late" after the openlayers minimap render */
-    MINIMAP_HEIGHT: 110,
-    MINIMAP_WIDTH: 230,
+    MINIMAP_HEIGHT: 101,
+    MINIMAP_WIDTH: 180, // 16:9 ratio http://size43.com/jqueryVideoTool.html
+    MINIMAP_PADDING: 8,
+    MAP_ID_PREFIX: "facetedSearchMap",
+
     DATE_FACET_INPUT_FORMAT: 'YYYY-MM-DDtHH:mm:ss:SSSz',
 
     initComponent: function() {
 
         this.rowId = 0;
 
+        this.setTplSizeVariables();
+
         var tpl = new Ext.XTemplate(
             '<tpl for=".">',
             '<div>',
-            '   <div class="x-panel-header resultsHeaderBackground">',
-            '       <h3 class="resultsRowHeader">{title}</h3>',
-            '       <div class="facetedSearchBtn" id="fsSearchAddBtn{[this.encode(values)]}">',
-            '           {[this.getButton(values)]}',
-            '       </div>',
-            '   </div>',
-            '   <div class="x-panel-body x-box-layout-ct facetedSearchResultBody" style="height:120px;">',
-            '       <div class="miniMap x-panel x-box-item"',
-            '            style="height:{[this.MINIMAP_HEIGHT]}px;width:{[this.MINIMAP_WIDTH]}px;border:1px solid #FFFFFF;"',
-            '            id="fsSearchMap{[this.encode(values)]}">',
-            '           {[this.getMiniMap(values)]}',
-            '       </div>',
-            '       <div class="x-panel x-box-item resultsTextBody" style="left:240px; ">',
-            '           {[this.getParametersAsHtml(values)]}',
-            '           <p class="resultsTextBody">',
-            '               <i>',
-            '                   {[this.trimAbstract(values.abstract,30)]}',
-            '               </i>',
-            '               &nbsp;{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
-            '           </p>',
-            '       </div>',
-            '   </div>',
+            '    <div class="x-panel-header resultsHeaderBackground">',
+            '        <h3 class="resultsRowHeader">{title}</h3>',
+            '        <div class="facetedSearchBtn" id="fsSearchAddBtn{[this.encode(values)]}">',
+            '            {[this.getButton(values)]}',
+            '        </div>',
+            '    </div>',
+            '    <div class="x-panel-body x-box-layout-ct facetedSearchResultBody" style="height:{[this.resultBodyHeight]}px;">',
+            '         <div class="x-panel x-box-item miniMap {[this.getStatusClasses(values)]}" title="{[this.getMiniMapLinkTitle(values)]}"',
+            '            style="height:{[this.MINIMAP_HEIGHT]}px;width:{[this.MINIMAP_WIDTH]}px;margin:{[this.MINIMAP_PADDING]}px! important"',
+            '            id="{[this.MAP_ID_PREFIX]}{[this.encode(values)]}">',
+            '            {[this.getMiniMap(values)]}',
+            '        </div>' +
+            '        <div class="x-panel x-box-item resultsTextBody {[this.getStatusClasses(values)]}" style="left:{[this.textBodyLeftMargin]}px; ">',
+            '            {[this.getParametersAsHtml(values)]}',
+            '            <p class="resultsTextBody">',
+            '                <i>',
+            '                    {[this.trimAbstract(values.abstract,30)]}',
+            '                </i>',
+            '                &nbsp;{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
+            '            </p>',
+            '        </div>',
+            '    </div>',
             '</div>',
             '</tpl>',
             this,
@@ -54,6 +57,12 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 },
                 encode: function(values) {
                     return this.superEncodeUuid(values.storeRowIndex, values.uuid);
+                },
+                getStatusClasses: function(values) {
+                    return (this.isRecActive(values.uuid)) ? "x-item-disabled" : "";
+                },
+                getMiniMapLinkTitle: function(values) {
+                    return (this.isRecActive(values.uuid)) ? OpenLayers.i18n('collectionExistsMsg') : OpenLayers.i18n("addDataCollectionMsg");
                 }
             }
         );
@@ -67,11 +76,27 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         Portal.search.FacetedSearchResultsDataView.superclass.initComponent.apply(this, arguments);
     },
 
-    collectData: function(records, startIndex){
-        var r = [],
-            i = 0,
-            len = records.length;
-        for(; i < len; i++) {
+    setTplSizeVariables: function() {
+        this.resultBodyHeight = this.MINIMAP_HEIGHT + (2 * this.MINIMAP_PADDING) + 2;
+        this.textBodyLeftMargin = this.MINIMAP_WIDTH + (3 * this.MINIMAP_PADDING);
+    },
+
+    addMinimapLink: function(storeRowIndex, uuid) {
+
+        var that = this;
+        var selector = '#' + this.getUniqueId(storeRowIndex, uuid);
+        jQuery(selector).live("click", that, function() {
+            var superUuid = jQuery(this).attr('id').replace(this.MAP_ID_PREFIX, '');
+            that.addRecordFromSuperUuid(superUuid);
+            jQuery(this).addClass("x-item-disabled");
+            return false;
+        });
+    },
+
+    collectData: function(records, startIndex) {
+        var r = [];
+
+        for (var i = 0; i < records.length; i++) {
             var newRecord = this.prepareData(records[i].data, startIndex + i, records[i]);
             newRecord = this._addStoreRowCount(newRecord);
             r[r.length] = newRecord;
@@ -91,7 +116,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '   <span>- {value}</span>',
             '</div>'
         );
-        var html= "";
+        var html = "";
 
         html += this._getOrganisationAsHtml(paramTpl, values.organisation);
         html += this._getPlatformAsHtml(paramTpl, values.platform);
@@ -164,9 +189,13 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     createButton: function(uuid, storeRowIndex) {
         var cls = "";
+        var tooltip = OpenLayers.i18n('collectionExistsMsg');
 
         if (this.isRecActive(uuid)) {
             cls = "x-btn-selected";
+        }
+        else {
+            tooltip = OpenLayers.i18n('addDataCollectionMsg');
         }
 
         var buttonElementId = "fsSearchAddBtn" + this.superEncodeUuid(storeRowIndex, uuid);
@@ -174,6 +203,8 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         if (Ext.get(buttonElementId)) {
             new Ext.Button({
                 text: OpenLayers.i18n('navigationButtonSelect'),
+                tooltip: tooltip,
+                tooltipType: "title",
                 cls: "navigationButton forwardsButton " + cls,
                 width: 100,
                 scope: this,
@@ -199,8 +230,13 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     getMiniMap: function(values) {
+
+        values.mapContainerId = this.getUniqueId(values.storeRowIndex, values.uuid);
+
         var miniMap = new Portal.search.FacetedSearchResultsMiniMap(values);
         miniMap.addLayersAndRender();
+
+        this.addMinimapLink(values.storeRowIndex, values.uuid);
 
         // Must return something, otherwise 'undefined' is rendered in the mini map div in some browsers,
         // e.g. firefox (but not chrome).
@@ -222,25 +258,33 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return record;
     },
 
-    trimAbstract: function(text,wordCount) {
+    trimAbstract: function(text, wordCount) {
         return text.split(' ').splice(0, wordCount).join(' ') + " ... ";
+    },
+
+    getUniqueId: function(storeRowIndex, uuid) {
+        return  this.MAP_ID_PREFIX + this.superEncodeUuid(storeRowIndex, uuid);
     },
 
     // uuid alone is unique unless search results have duplicates
     superEncodeUuid: function(storeRowIndex, uuid) {
-        return "-" + storeRowIndex + "-"  + uuid;
+        return "-" + storeRowIndex + "-" + uuid;
     },
 
     decodeSuperUuid: function(encodedUuid) {
         var chunks = encodedUuid.split("-");
-        chunks.splice(0,2);
+        chunks.splice(0, 2);
         return chunks.join("-");
     },
 
     _viewButtonOnClick: function(btn) {
 
         btn.addClass("x-btn-selected");
-        var superUuid = btn.container.id.replace("fsSearchAddBtn",'');
+        var superUuid = btn.container.id.replace("fsSearchAddBtn", '');
+        this.addRecordFromSuperUuid(superUuid);
+    },
+
+    addRecordFromSuperUuid: function(superUuid) {
         var uuid = this.decodeSuperUuid(superUuid);
         var record = this._getRecordFromUuid(uuid);
 

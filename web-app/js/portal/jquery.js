@@ -52,6 +52,7 @@ jQuery( window ).load(function() {
             var tabId = $(this).attr('id');
             jQuery(this).children('a').one('click', function(obj) {
                     setViewPortTab(parseInt(tabId.substr(tabId.length - 1)));
+                    return false;
                 }
             );
         });

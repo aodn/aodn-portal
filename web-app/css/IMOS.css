@@ -262,12 +262,6 @@ input, select, textarea {
     background: none;
 }
 
-a.userlink {
-    font-size: inherit ! important;
-    text-decoration: underline ! important;
-    margin-right: 15px ! important;
-}
-
 .x-tab-strip span.x-tab-strip-text, .x-btn-text {
     color: #666;
 }
@@ -288,21 +282,16 @@ ul.x-tab-strip-top {
     background-color: #C6C6C6;
 }
 
-.semiTransparent {
-    background-color: #596169 !important;
-    opacity: 0.6;
-}
-
-.faceted-search-clear-all .x-hyperlink {
-    padding: 1px 3px;
-}
-
 .clear {
     height: 10px;
 }
 
 .x-btn {
     padding: 0 6px;
+}
+
+.faceted-search-clear-all .x-hyperlink {
+    padding: 1px 3px;
 }
 
 .x-btn,
@@ -322,8 +311,7 @@ ul.x-tab-strip-top {
 }
 
 .x-btn-selected {
-    background: #8e8e8e ! important;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) inset;
+    background: #BBB8B5 ! important;
 }
 
 #viewPortLinks {
