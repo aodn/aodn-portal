@@ -11,6 +11,15 @@ databaseChangeLog = {
     if (System.getProperty("INSTANCE_NAME") == 'IMOS') {
         // All IMOS specific change sets must appear inside this if block
 
+        changeSet(author: "tfotak (generated)", id: "1332134693000-1", failOnError: false) {
+
+            update(tableName: "config")
+            {
+                column(name:"name", value: "Integrated Marine Observing System")
+                where "id = (select id from config limit 1)"
+            }
+        }
+
         changeSet(author: "tfotak (generated)", id: "1332201909000-1", failOnError: true) {
 
             update(tableName: "config")
