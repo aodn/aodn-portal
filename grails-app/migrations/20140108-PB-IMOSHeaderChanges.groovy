@@ -1,6 +1,6 @@
 databaseChangeLog = {
 
-	changeSet(author: "pmbohm (generated)", id: "1389151962237-1") {
+	changeSet(author: "pmbohm (generated)", id: "1389151962237-1", failOnError: false) {
 
         update(tableName: "config") {
             column(name: "header_height", value: "140")

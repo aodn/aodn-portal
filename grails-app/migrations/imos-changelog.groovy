@@ -11,7 +11,7 @@ databaseChangeLog = {
     if (System.getProperty("INSTANCE_NAME") == 'IMOS') {
         // All IMOS specific change sets must appear inside this if block
 
-        changeSet(author: "tfotak (generated)", id: "1332134693000-1", failOnError: true) {
+        changeSet(author: "tfotak (generated)", id: "1332134693000-1", failOnError: false) {
 
             update(tableName: "config")
             {
