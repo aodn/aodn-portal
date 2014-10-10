@@ -5,5 +5,9 @@ databaseChangeLog = {
         update(tableName: "config") {
             column(name: "header_height", value: "140")
         }
+
+        update(tableName: "config") {
+            column(name: "name", value: "Open Access to Ocean Data")
+        }
     }
 }
