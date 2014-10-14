@@ -14,8 +14,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
         Ext.apply(this, {
             controls: [],
             metadataExtent: values.bbox,
-            uuid: values.uuid,
-            storeRowIndex: values.storeRowIndex
+            mapContainerId: values.mapContainerId
         });
 
         Portal.search.FacetedSearchResultsMiniMap.superclass.constructor.call(this);
@@ -23,6 +22,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
 
     addLayersAndRender: function() {
         this._addBaseAndExtentLayers();
+
 
         var self = this;
         setTimeout(function() {
@@ -39,11 +39,10 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
 
     _renderAndPosition: function() {
 
-        var theUuid = "fsSearchMap-" + this.storeRowIndex + "-" + this.uuid;
         // element may have been removed see issue #938
-        if (Ext.get(theUuid)) {
+        if (Ext.get(this.mapContainerId)) {
 
-            this.render(theUuid);
+            this.render(this.mapContainerId);
             if (this.metadataExtent.getBounds()) {
                 this.setCenter(
                     this._getCenterLonLat(),

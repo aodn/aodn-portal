@@ -188,14 +188,6 @@ input, select, textarea {
     text-decoration: none;
 }
 
-
-
-a.userlink {
-    font-size: inherit! important;
-    text-decoration: underline! important;
-    margin-right: 15px! important;
-}
-
 .x-tab-strip span.x-tab-strip-text {
     color: #6A6A6A;
 }

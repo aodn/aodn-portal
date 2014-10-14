@@ -135,7 +135,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             return layerRecord;
         }
         else {
-            Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'), OpenLayers.i18n('layerExistsMsg'));
+            Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'), OpenLayers.i18n('collectionExistsMsg'));
         }
     },
 
