@@ -13,6 +13,18 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
         temporalExtent = new Portal.visualise.animations.TemporalExtent();
     });
 
+    describe('serialization', function() {
+        it('stringify/destringify', function() {
+            var date = new moment.utc("2014-09-08", Portal.visualise.animations.TemporalExtent.DATE_FORMAT);
+
+            var dateStringified = temporalExtent._stringifyDate(date);
+            expect(dateStringified).toEqual("2014-09-08");
+
+            var dateDestringified = temporalExtent._destringifyDate(dateStringified);
+            expect(dateDestringified.toDate()).toEqual(date.toDate());
+        });
+    });
+
     describe('empty', function() {
         it('is empty', function() {
             expect(temporalExtent.empty()).toBeTruthy();
@@ -71,6 +83,54 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
         });
     });
 
+    describe('getDay', function() {
+        it('return null when empty', function() {
+            expect(temporalExtent.getDay('2014-01-01')).toEqual(null);
+        });
+
+        it('return array when defined', function() {
+            temporalExtent.addDays([
+                moment.utc('2013-01-20T00:00:00.000Z')
+            ]);
+
+            expect(temporalExtent.getDay(moment.utc('2013-01-20T00:00:00.000Z'))).toEqual([]);
+        });
+    });
+
+    describe('_getFirstDay', function() {
+        it('when empty', function() {
+            expect(temporalExtent._getFirstDay()).toBeUndefined();
+        });
+
+        it('when no dates but only days', function() {
+            temporalExtent.addDays([
+                moment.utc('2013-01-20T00:00:00.000Z'),
+                moment.utc('2013-01-01T00:00:00.000Z'),
+                moment.utc('2013-01-30T00:00:00.000Z')
+            ]);
+
+            var expected = moment.utc('2013-01-01T00:00:00.000Z');
+            expect(temporalExtent._getFirstDay().toDate()).toEqual(expected.toDate());
+        });
+    });
+
+    describe('_getLastDay', function() {
+        it('when empty', function() {
+            expect(temporalExtent._getLastDay()).toBeUndefined();
+        });
+
+        it('when no dates but only days', function() {
+            temporalExtent.addDays([
+                moment.utc('2013-01-20T00:00:00.000Z'),
+                moment.utc('2013-01-01T00:00:00.000Z'),
+                moment.utc('2013-01-30T00:00:00.000Z')
+            ]);
+
+            var expected = moment.utc('2013-01-30T00:00:00.000Z');
+            expect(temporalExtent._getLastDay().toDate()).toEqual(expected.toDate());
+        });
+    });
+
     describe('max', function() {
         it('returns undefined when empty', function() {
             expect(temporalExtent.max()).toBeUndefined();
@@ -82,34 +142,6 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
             var expected = m.clone().add('days', 1);
             temporalExtent.add(expected);
             expect(temporalExtent.max().toDate()).toEqual(expected.toDate());
-        });
-    });
-
-    describe('zero if negative', function() {
-        it('returns zero if the parameter is negative', function() {
-            expect(temporalExtent._zeroIfNegative(-1)).toEqual(0);
-        });
-
-        it('returns the value if the parameter is not negative', function() {
-            expect(temporalExtent._zeroIfNegative(0)).toEqual(0);
-        });
-
-        it('returns the value if the parameter is positive', function() {
-            expect(temporalExtent._zeroIfNegative(3)).toEqual(3);
-        });
-    });
-
-    describe('when negative', function() {
-        it('returns the provided default value if the parameter is negative', function() {
-            expect(temporalExtent._whenNegative(-1, 0)).toEqual(0);
-        });
-
-        it('returns the value if the parameter is not negative', function() {
-            expect(temporalExtent._whenNegative(0, 3)).toEqual(0);
-        });
-
-        it('returns the value if the parameter is positive', function() {
-            expect(temporalExtent._whenNegative(3, 5)).toEqual(3);
         });
     });
 
@@ -146,7 +178,7 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
             it('keeps the moments in utc', function() {
                 var subExtent = temporalExtent.subExtentForDate(moment.utc('2013-01-01T00:00:00.000Z'));
                 for (var i = 0; i < 23; i++) {
-                    expect(subExtent.extent[i].toDate()).toEqual(expected[i].toDate());
+                    expect(subExtent.getDay('2013-01-01')[i].toDate()).toEqual(expected[i].toDate());
                 }
             });
         });
@@ -170,67 +202,6 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
                 expect(temporalExtent._equalToOrBefore(moment.utc('2013-01-01T00:00:00.000Z'), moment.utc('2013-01-01T00:00:00.001Z'))).toEqual(true);
             });
         });
-
-        describe('_findIndexOrNearestAfter', function() {
-            it('finds the index of the date equal to or after the search date', function() {
-                expect(temporalExtent._findIndexOrNearestAfter(moment.utc('2013-01-01T00:00:00.000Z'), 0)).toEqual(0);
-                expect(temporalExtent._findIndexOrNearestAfter(moment.utc('2013-01-01T00:30:00.000Z'), 0)).toEqual(1);
-                expect(temporalExtent._findIndexOrNearestAfter(moment.utc('2013-01-01T00:30:00.000Z'), 5)).toEqual(1);
-                expect(temporalExtent._findIndexOrNearestAfter(moment.utc('2013-01-01T00:30:00.000Z'), 49)).toEqual(1);
-                expect(temporalExtent._findIndexOrNearestAfter(moment.utc('2013-01-01T12:00:00.000Z'), 0)).toEqual(12);
-                expect(temporalExtent._findIndexOrNearestAfter(moment.utc('2013-01-01T12:00:00.000Z'), 12)).toEqual(12);
-                expect(temporalExtent._findIndexOrNearestAfter(moment.utc('2013-01-01T12:00:00.000Z'), 49)).toEqual(12);
-            });
-
-            it('returns the last index when the there is no date after the target in the extent', function() {
-                expect(temporalExtent._findIndexOrNearestAfter(moment.utc('2014-01-01T00:00:00.000Z'), 0)).toEqual(49);
-            });
-
-            it('returns the first index when the there is no date before the target in the extent', function() {
-                expect(temporalExtent._findIndexOrNearestAfter(moment.utc('2012-01-01T00:00:00.000Z'), 0)).toEqual(0);
-            });
-        });
-
-        describe('_findIndexOrNearestBefore', function() {
-            it('finds the index of the date nearest to but before the search date', function() {
-                expect(temporalExtent._findIndexOrNearestBefore(moment.utc('2013-01-01T00:00:00.000Z'), 0)).toEqual(0);
-                expect(temporalExtent._findIndexOrNearestBefore(moment.utc('2013-01-01T00:30:00.000Z'), 0)).toEqual(0);
-                expect(temporalExtent._findIndexOrNearestBefore(moment.utc('2013-01-01T00:30:00.000Z'), 1)).toEqual(0);
-                expect(temporalExtent._findIndexOrNearestBefore(moment.utc('2013-01-01T01:30:00.000Z'), 5)).toEqual(1);
-                expect(temporalExtent._findIndexOrNearestBefore(moment.utc('2013-01-01T01:30:00.000Z'), 0)).toEqual(1);
-                expect(temporalExtent._findIndexOrNearestBefore(moment.utc('2013-01-01T01:30:00.000Z'), 49)).toEqual(1);
-            });
-
-            it('returns the first index when the there is no date before the target in the extent', function() {
-                expect(temporalExtent._findIndexOrNearestBefore(moment.utc('2012-01-01T00:00:00.000Z'), 49)).toEqual(0);
-            });
-
-            it('returns the last index when the there is no date after the target in the extent', function() {
-                expect(temporalExtent._findIndexOrNearestBefore(moment.utc('2014-01-01T00:00:00.000Z'), 0)).toEqual(49);
-            });
-        });
-
-        describe('subExtent', function() {
-            it('gets a sub extent from one date to another', function() {
-                var subExtent = temporalExtent.subExtent(moment.utc('2013-01-01T22:00:00.000Z'), moment.utc('2013-01-02T02:00:00.000Z'));
-                expect(subExtent.length()).toBe(4);
-            });
-
-            it('gets a sub extent from one date to the end when no end date is provided', function() {
-                var subExtent = temporalExtent.subExtent(moment.utc('2013-01-03T00:00:00.000Z'));
-                expect(subExtent.length()).toBe(2);
-            });
-
-            it('gets a sub extent from start date to the end when no end date is provided and start date is the min', function() {
-                var subExtent = temporalExtent.subExtent(moment.utc('2013-01-01T00:00:00.000Z'));
-                expect(subExtent.length()).toBe(50);
-            });
-
-            it('gets the entire extent when the start and end date exceed the extent boundaries', function() {
-                var subExtent = temporalExtent.subExtent(moment.utc('2012-01-01T22:00:00.000Z'), moment.utc('2014-01-02T02:00:00.000Z'));
-                expect(subExtent.length()).toBe(50);
-            });
-        });
     });
 
     describe('navigation', function() {
@@ -245,53 +216,6 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
                 temporalExtent.add(m);
                 m.add('hours', 1);
             }
-        });
-
-        describe('_findFirstIndexAfter', function() {
-            it('finds the first index after the search date', function() {
-                expect(temporalExtent._findFirstIndexAfter(moment.utc('2013-01-01T00:00:00.000Z'), 0)).toEqual(1);
-                expect(temporalExtent._findFirstIndexAfter(moment.utc('2013-01-01T00:30:00.000Z'), 0)).toEqual(1);
-                expect(temporalExtent._findFirstIndexAfter(moment.utc('2013-01-01T00:30:00.000Z'), 5)).toEqual(1);
-                expect(temporalExtent._findFirstIndexAfter(moment.utc('2013-01-01T00:30:00.000Z'), 49)).toEqual(1);
-                expect(temporalExtent._findFirstIndexAfter(moment.utc('2013-01-01T12:00:00.000Z'), 0)).toEqual(13);
-                expect(temporalExtent._findFirstIndexAfter(moment.utc('2013-01-01T12:00:00.000Z'), 12)).toEqual(13);
-                expect(temporalExtent._findFirstIndexAfter(moment.utc('2013-01-01T12:00:00.000Z'), 49)).toEqual(13);
-            });
-
-            it('returns minus one when the there is no date after the target in the extent', function() {
-                expect(temporalExtent._findFirstIndexAfter(moment.utc('2014-01-01T00:00:00.000Z'), 0)).toEqual(-1);
-            });
-
-            it('returns the first index when the there is no date before the target in the extent', function() {
-                expect(temporalExtent._findFirstIndexAfter(moment.utc('2012-01-01T00:00:00.000Z'), 0)).toEqual(0);
-            });
-
-            it('returns the second index when the target is equal to the extent min starting at first index', function() {
-                expect(temporalExtent._findFirstIndexAfter(moment.utc('2013-01-01T00:00:00.000Z'), 0)).toEqual(1);
-            });
-        });
-
-        describe('_findFirstIndexBefore', function() {
-            it('finds the first index before the search date', function() {
-                expect(temporalExtent._findFirstIndexBefore(moment.utc('2013-01-01T01:00:00.000Z'), 0)).toEqual(0);
-                expect(temporalExtent._findFirstIndexBefore(moment.utc('2013-01-01T00:30:00.000Z'), 0)).toEqual(0);
-                expect(temporalExtent._findFirstIndexBefore(moment.utc('2013-01-01T00:30:00.000Z'), 1)).toEqual(0);
-                expect(temporalExtent._findFirstIndexBefore(moment.utc('2013-01-01T01:30:00.000Z'), 5)).toEqual(1);
-                expect(temporalExtent._findFirstIndexBefore(moment.utc('2013-01-01T08:00:00.000Z'), 5)).toEqual(7);
-                expect(temporalExtent._findFirstIndexBefore(moment.utc('2013-01-01T01:00:00.000Z'), 49)).toEqual(0);
-            });
-
-            it('returns minus one when the there is no date before the target in the extent', function() {
-                expect(temporalExtent._findFirstIndexBefore(moment.utc('2012-01-01T00:00:00.000Z'), 49)).toEqual(-1);
-            });
-
-            it('returns the last index when the there is no date after the target in the extent', function() {
-                expect(temporalExtent._findFirstIndexBefore(moment.utc('2014-01-01T00:00:00.000Z'), 0)).toEqual(49);
-            });
-
-            it('returns the penultimate index when the target is equal to the extent max starting at last index', function() {
-                expect(temporalExtent._findFirstIndexBefore(moment.utc('2013-01-03T01:00:00.000Z'), 49)).toEqual(48);
-            });
         });
 
         describe('next', function() {
@@ -345,17 +269,36 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
 
     describe('missing days', function() {
         describe('when parsing an extent', function() {
-            it('makes a call to generate missing days', function() {
-                spyOn(temporalExtent, '_generateMissingDays');
-                temporalExtent.parse('2013-01-01T00:00:00.000Z/2013-01-31T23:00:00.000Z/PT1H,2013-03-01T00:00:00.000Z');
-                expect(temporalExtent._generateMissingDays).toHaveBeenCalled();
-            });
-
             it('correctly generates missing days', function() {
-                temporalExtent.parse('2013-01-01T00:00:00.000Z/2013-01-31T23:00:00.000Z/PT1H,2013-03-01T00:00:00.000Z');
-                expect(temporalExtent.getMissingDays().length).toEqual(28);
+                temporalExtent.addDays([
+                    moment.utc('2013-01-01T00:00:00.000Z'),
+                    moment.utc('2013-01-10T00:00:00.000Z'),
+                    moment.utc('2013-01-20T00:00:00.000Z'),
+                    moment.utc('2013-01-30T00:00:00.000Z')
+                ]);
+
+                expect(temporalExtent.getMissingDays().length).toEqual(26);
                 expect(temporalExtent.getMissingDays()[0] instanceof Date).toBeTruthy();
             });
+        });
+    });
+
+    describe('days', function() {
+        it('correctly generates distinct existing days', function() {
+            temporalExtent.addDays([
+                moment.utc('2013-01-01T00:00:00.000Z'),
+                moment.utc('2013-01-10T00:10:00.000Z'),
+                moment.utc('2013-01-20T12:00:00.000Z'),
+                moment.utc('2013-01-20T15:30:00.000Z'),
+                moment.utc('2013-01-30T00:00:00.000Z'),
+                moment.utc('2013-01-30T13:00:00.000Z')
+            ]);
+
+            expect(temporalExtent.getDays().length).toEqual(4);
+            expect(temporalExtent.getDays()[0].toISOString()).toEqual("2013-01-01T00:00:00.000Z");
+            expect(temporalExtent.getDays()[1].toISOString()).toEqual("2013-01-10T00:00:00.000Z");
+            expect(temporalExtent.getDays()[2].toISOString()).toEqual("2013-01-20T00:00:00.000Z");
+            expect(temporalExtent.getDays()[3].toISOString()).toEqual("2013-01-30T00:00:00.000Z");
         });
     });
 });

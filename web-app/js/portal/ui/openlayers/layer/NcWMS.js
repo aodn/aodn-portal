@@ -54,7 +54,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             url: this._getMetadataFromNcWMS(),
             success: function(resp, options) {
                 try {
-                    this.metadata = Ext.util.JSON.decode(resp.responseText);
+                    this._metadataLoaded(resp.responseText);
                 }
                 catch (e) {
                     log.error("Could not parse metadata for NcWMS layer '" + this.params.LAYERS + "'");
@@ -64,6 +64,14 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                 log.error("Could not get metadata for NcWMS layer '" + this.params.LAYERS + "'");
             }
         });
+    },
+
+    _metadataLoaded: function(response) {
+        this.metadata = Ext.util.JSON.decode(response);
+        var datesWithData = this._parseDatesWithData(this.metadata);
+
+        this.temporalExtent.addDays(datesWithData);
+        this.events.triggerEvent('temporalextentloaded', this);
     },
 
     _initToMostRecentTime: function(dateTimeString) {
@@ -158,6 +166,23 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
      */
     getURL: function(bounds) {
         return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
+    },
+
+    _parseDatesWithData: function(ncwmsMetadata) {
+        datesWithDataArray = [];
+
+        if (ncwmsMetadata['datesWithData']) {
+            Ext.each(Object.keys(ncwmsMetadata['datesWithData']), function(year) {
+                Ext.each(Object.keys(ncwmsMetadata['datesWithData'][year]), function(month) {
+                    Ext.each(ncwmsMetadata['datesWithData'][year][month], function(day) {
+                        dateWithData = new moment.utc(year + "-" + month + "-" + day, "YYYY-MM-DD");
+                        datesWithDataArray.push(dateWithData);
+                    });
+                });
+            });
+        }
+
+        return datesWithDataArray;
     },
 
     _getTimeParameter: function(dateTime) {

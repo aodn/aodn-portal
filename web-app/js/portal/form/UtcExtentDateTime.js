@@ -216,7 +216,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
     _extentToStore: function(extent) {
         var data = new Array();
-        Ext.each(extent.extent, function(momentDate, index, all) {
+        Ext.each(extent.getDays(), function(momentDate, index, all) {
             data.push({
                 timeValue: this.getLocalDateFromUtcValues(momentDate.toDate()),
                 displayTime: momentDate.format(OpenLayers.i18n('timeDisplayFormat'))
