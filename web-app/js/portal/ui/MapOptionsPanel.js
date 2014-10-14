@@ -37,20 +37,10 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
             id: 'mapOptions',
             padding: 5,
             items: [
-                new Ext.Panel({
-                    height: 20,
-                    items: [
-                        {
-                            flex: 3,
-                            items: [
-                                this.autoZoomCheckbox
-                            ]
-                        }
-                    ]
-                }),
+                this.autoZoomCheckbox,
                 new Ext.Spacer({height: 5}),
                 this.buttonPanel,
-                new Ext.Spacer({height: 2}),
+                new Ext.Spacer({height: 5}),
                 this.baseLayerCombo
             ]
         }, cfg);

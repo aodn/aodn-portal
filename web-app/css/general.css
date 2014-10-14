@@ -924,6 +924,7 @@ div.olControlMousePosition {
     border-radius: 6px 0 0 6px;
     font-size: smaller ! important;
     font-weight: normal ! important;
+    color: inherit! important;
 }
 
 .olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
