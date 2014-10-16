@@ -312,6 +312,14 @@ ul.x-tab-strip-top {
     margin-right: 3px;
 }
 
+#downLoadCartWidget {
+    background-color: #FFBA66;
+    color: #212121;
+    border-radius: 12px;
+    right: 30px;
+    top: 65px;
+}
+
 .navigationButton.x-btn {
     background-color: #FFBA66;
 }
@@ -381,4 +389,6 @@ ul.x-tab-strip-top {
 .hightlightInputbox {
     border-color: #AEAEAE;
 }
+
+
 

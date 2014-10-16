@@ -172,4 +172,4 @@ var textToXML = function(text) {
     }
     catch (e) {
     }
-}
+};

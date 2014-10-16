@@ -431,7 +431,7 @@ Site navigation
 }
 
 .x-btn.backwardsButton {
-    border-radius: 12px 0px 0px 12px;
+    border-radius: 12px 0 0 12px;
 }
 
 .community {
@@ -1271,7 +1271,7 @@ div.allwhite {
 }
 
 #activeLayerTreePanel img.x-tree-node-icon {
-    width: 0px;
+    width: 0;
 }
 
 #activeLayerTreePanel input.x-tree-node-cb {
@@ -1291,7 +1291,7 @@ div.allwhite {
 }
 
 .downloadEstimateLabel {
-	padding: 10px 10px 2px 10px;
+    padding: 10px 10px 2px 10px;
 }
 
 /* Bug #9 - show blank tiles on image load error. */
@@ -1319,7 +1319,7 @@ div.allwhite {
 
 .search-filters-toolbar.x-toolbar {
     background-color: inherit;
-    border-width: 0px;
+    border-width: 0;
 }
 
 .search-filters-toolbar .x-panel-header-text {
@@ -1327,17 +1327,68 @@ div.allwhite {
     font-weight: bold;
 }
 
-.mainNavigationButton.x-btn {
-    background: none repeat scroll 0 0 #F4A62B;
-}
-
-.mainNavigationButton .x-btn-text {
-    font-size: 12px;
-}
-
 .collectionTitle {
     font-weight: bold;
     font-style: italic;
+}
+
+.viewPortTabExtras {
+    margin-left: 20px;
+}
+
+#downLoadCartWidget {
+    background-color: grey;
+    cursor: pointer;
+    color: white;
+    float: right;
+    padding: 4px 8px 6px;
+    position: absolute;
+    right: 25px;
+    top: 45px;
+}
+
+#downLoadCartWidget span {
+    display: inline-flex;
+    margin: 0 2px;
+    vertical-align:bottom;
+}
+
+.cartLogo {
+    height: 26px;
+    width: 30px;
+    background:  url("../images/cart.png") no-repeat left top transparent;
+}
+
+#downloadCartSize {
+    font-weight: bold;
+}
+
+#downLoadCartWidget:before, #downLoadCartWidget:after {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #FFBA66 transparent transparent #FFBA66;
+    border-image: none;
+    border-style: solid;
+    border-width: 6px;
+    content: " ";
+    height: 0;
+    left: 18px;
+    position: absolute;
+    top: 34px;
+    width: 0;
+}
+
+#downLoadCartWidget a {
+    font-size: 11px;
+    margin: 0 3px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#downLoadCartWidget a:hover {
+    text-decoration: underline;
 }
 
 .resetText {
