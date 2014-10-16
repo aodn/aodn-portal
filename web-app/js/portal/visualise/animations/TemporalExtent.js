@@ -27,8 +27,8 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
     },
 
     min: function() {
+        var minDate = null;
         if (this.notEmpty()) {
-            var minDate = null;
             for (var date in this.extent) {
                 if (!minDate || this.extent[date][0].isBefore(minDate)) {
                     minDate = this.extent[date][0].clone();
@@ -216,7 +216,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
 
         while (iter.isBefore(endDate)) {
             if (!this.getDay(iter)) {
-                missingDays.push(iter.toDate());
+                missingDays.push(iter.clone().toDate());
             }
             iter = iter.add(1, 'days');
         }

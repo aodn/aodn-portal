@@ -50,7 +50,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this._clearDateTimeFields();
         this._attachTemporalEvents();
         this._attachSpatialEvents();
-        this.layer.processTemporalExtent();
         this._removeLoadingInfo();
         this._applyFilterValuesFromMap();
         this._addClearButton();

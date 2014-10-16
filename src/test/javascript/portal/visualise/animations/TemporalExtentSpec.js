@@ -68,8 +68,8 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
     });
 
     describe('min', function() {
-        it('returns undefined when empty', function() {
-            expect(temporalExtent.min()).toBeUndefined();
+        it('returns null when empty', function() {
+            expect(temporalExtent.min()).toEqual(null);
         });
 
         it('returns the first element', function() {
@@ -99,7 +99,7 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
 
     describe('_getFirstDay', function() {
         it('when empty', function() {
-            expect(temporalExtent._getFirstDay()).toBeUndefined();
+            expect(temporalExtent._getFirstDay()).toEqual(null);
         });
 
         it('when no dates but only days', function() {

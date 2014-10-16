@@ -9,6 +9,15 @@ describe("OpenLayers.Layer.NcWMS", function() {
     var extent;
     var params;
 
+    var searchForDate = function(date, datesArray) {
+        for (var i = 0; i < datesArray.length; ++i) {
+            if (datesArray[i].isSame(date)) {
+                return i;
+            }
+        }
+        return -1;
+    };
+
     beforeEach(function() {
         OpenLayers.Layer.WMS.prototype.getURL = function(bounds) {
             return "http://someurl/page?param1=blaa";
@@ -42,7 +51,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 '2011-07-08T03:22:45Z',
                 '2011-07-08T03:32:45Z'
             ]);
-            cachedLayer.processTemporalExtent();
         });
 
         it('time specified', function() {
@@ -51,15 +59,72 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
+    describe("_getTimeSeriesUrl", function() {
+        it("returns correct url", function() {
+            cachedLayer.url = "urlprefix";
+            expect(cachedLayer._getTimeSeriesUrl(moment.utc('2011-07-02T01:32:45Z'))).toBe('urlprefix?layerName=undefined&REQUEST=GetMetadata&item=timesteps&day=2011-07-02T00:00:00.000Z');
+        });
+    });
+
+    describe("getTimeSeriesForDay", function() {
+        it("when already loaded", function() {
+            cachedLayer.temporalExtent.parse(['2001-07-02T00:00:00']);
+            expect(cachedLayer.getTimeSeriesForDay(moment.utc('2001-07-02T01:32:45Z')).length).toEqual(1);
+        });
+
+        it("when not loaded", function() {
+            expect(cachedLayer.getTimeSeriesForDay(moment.utc('2001-07-02T00:00:00Z'))).toEqual(null);
+        });
+    });
+
+    describe("loadTimeSeriesForDay", function() {
+        it("when already loaded", function() {
+            spyOn(cachedLayer, '_timeSeriesLoadedForDate').andCallFake(function() {});
+            cachedLayer.temporalExtent.parse(['2001-07-02T00:00:00']);
+
+            cachedLayer.loadTimeSeriesForDay(moment.utc('2001-07-02T00:00:00Z'));
+            expect(cachedLayer._timeSeriesLoadedForDate).toHaveBeenCalled();
+        });
+
+        it("when not loaded", function() {
+            spyOn(cachedLayer, '_fetchTimeSeriesForDay').andCallFake(function() {});
+
+            cachedLayer.loadTimeSeriesForDay(moment.utc('2001-07-02T00:00:00Z'));
+            expect(cachedLayer._fetchTimeSeriesForDay).toHaveBeenCalled();
+        });
+    });
+
+    describe("_parseTimesForDay", function() {
+        it("parses JSON and assembles dates", function() {
+            var date = moment.utc('2001-07-02T00:00:00Z');
+            var sampleJson = '{"timesteps":["00:30:00.000Z","01:30:00.000Z","02:30:00.000Z","03:30:00.000Z","04:30:00.000Z","05:30:00.000Z","06:30:00.000Z","07:30:00.000Z","08:30:00.000Z","09:30:00.000Z","10:30:00.000Z","11:30:00.000Z","12:30:00.000Z","13:30:00.000Z","14:30:00.000Z","15:30:00.000Z","16:30:00.000Z","17:30:00.000Z","18:30:00.000Z","19:30:00.000Z","20:30:00.000Z","21:30:00.000Z","22:30:00.000Z","23:30:00.000Z"]}'
+
+            var timeSeriesArray = cachedLayer._parseTimesForDay(date, sampleJson);
+            expect(timeSeriesArray.length).toEqual(24);
+
+            // Statistically check for a few elements in the array
+            expect(searchForDate(moment.utc('2001-07-02T00:30:00.000Z'), timeSeriesArray)).toBeGreaterThan(-1);
+            expect(searchForDate(moment.utc('2001-07-02T01:30:00.000Z'), timeSeriesArray)).toBeGreaterThan(-1);
+            expect(searchForDate(moment.utc('2001-07-02T20:30:00.000Z'), timeSeriesArray)).toBeGreaterThan(-1);
+            expect(searchForDate(moment.utc('2001-07-02T23:30:00.000Z'), timeSeriesArray)).toBeGreaterThan(-1);
+
+            // Control tests to make sure some things don't exist
+            expect(searchForDate(moment.utc('2200-07-02T23:30:00.000Z'), timeSeriesArray)).toEqual(-1);
+            expect(searchForDate(moment.utc('2001-07-02T23:31:00.000Z'), timeSeriesArray)).toEqual(-1);
+        });
+    });
+
     describe('_metadataLoaded', function() {
         var sampleJson = '{ test: 1 }';
+
         beforeEach(function() {
-            cachedLayer.temporalExtent = {};
-            cachedLayer.temporalExtent.addDays = function() {};
+            spyOn(cachedLayer, '_parseDatesWithData').andCallFake(function() {});
+            spyOn(cachedLayer.temporalExtent, '_getFirstDay').andCallFake(function() {});
+            spyOn(cachedLayer.temporalExtent, '_getLastDay').andCallFake(function() {});
+            spyOn(cachedLayer, 'loadTimeSeriesForDay').andCallFake(function() {});
         });
 
         it('calls _parseDatesWithData', function() {
-            spyOn(cachedLayer, '_parseDatesWithData').andCallFake(function() {});
             cachedLayer._metadataLoaded(sampleJson);
             expect(cachedLayer._parseDatesWithData).toHaveBeenCalled();
         });
@@ -69,6 +134,18 @@ describe("OpenLayers.Layer.NcWMS", function() {
             cachedLayer._metadataLoaded(sampleJson);
             expect(cachedLayer.temporalExtent.addDays).toHaveBeenCalled();
         });
+
+        it('loads first day', function() {
+            cachedLayer._metadataLoaded(sampleJson);
+            expect(cachedLayer.temporalExtent._getFirstDay).toHaveBeenCalled();
+            expect(cachedLayer.loadTimeSeriesForDay).toHaveBeenCalled();
+        });
+
+        it('loads last day', function() {
+            cachedLayer._metadataLoaded(sampleJson);
+            expect(cachedLayer.temporalExtent._getLastDay).toHaveBeenCalled();
+            expect(cachedLayer.loadTimeSeriesForDay).toHaveBeenCalled();
+        });
     });
 
     it('parses dates from NcWMS GetMetadata JSON', function() {
@@ -77,22 +154,14 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         var datesWithData = cachedLayer._parseDatesWithData(ncwmsMetadataLayerDetails);
 
-        var searchForDate = function(date, datesArray) {
-            for (var i = 0; i < datesArray.length; ++i) {
-                if (datesArray[i].isSame(date)) {
-                    return i;
-                }
-            }
-            return -1;
-        };
-
         expect(datesWithData.length).toEqual(192);
 
         // Statistically check for a few dates that were parsed
-        expect(searchForDate(moment.utc('2007-09-15'), datesWithData)).toBeGreaterThan(-1);
-        expect(searchForDate(moment.utc('2007-09-18'), datesWithData)).toBeGreaterThan(-1);
-        expect(searchForDate(moment.utc('2007-11-31'), datesWithData)).toBeGreaterThan(-1);
-        expect(searchForDate(moment.utc('2008-02-02'), datesWithData)).toBeGreaterThan(-1);
+        // Notice that when month is parsed, it's zero based (0-11)
+        expect(searchForDate(moment.utc('2007-10-15'), datesWithData)).toBeGreaterThan(-1);
+        expect(searchForDate(moment.utc('2007-10-18'), datesWithData)).toBeGreaterThan(-1);
+        expect(searchForDate(moment.utc('2007-12-31'), datesWithData)).toBeGreaterThan(-1);
+        expect(searchForDate(moment.utc('2008-03-02'), datesWithData)).toBeGreaterThan(-1);
 
         expect(searchForDate(moment.utc('2200-02-02'), datesWithData)).toEqual(-1);
     });
@@ -170,11 +239,10 @@ describe("OpenLayers.Layer.NcWMS", function() {
             it('around last date/time', function() {
                 cachedLayer.toTime(moment.utc('2000-01-02T23:59:59.000'));
                 expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-03T00:00:00.000'));
-                // TODO
-                //cachedLayer.toTime(moment.utc('2000-01-03T00:00:00.000'));
-                //expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-03T00:00:00.000').valueOf());
-                //cachedLayer.toTime(moment.utc('2000-01-03T00:00:01.000'));
-                //expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-03T00:00:01.000').valueOf());
+                cachedLayer.toTime(moment.utc('2000-01-03T00:00:00.000'));
+                expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-03T00:00:00.000').valueOf());
+                cachedLayer.toTime(moment.utc('2000-01-03T00:00:01.000'));
+                expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-03T00:00:01.000').valueOf());
             });
 
         });

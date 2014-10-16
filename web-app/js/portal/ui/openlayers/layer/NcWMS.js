@@ -68,6 +68,13 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var datesWithData = this._parseDatesWithData(this.metadata);
 
         this.temporalExtent.addDays(datesWithData);
+
+        this.loadTimeSeriesForDay(this.temporalExtent._getFirstDay());
+        this.loadTimeSeriesForDay(this.temporalExtent._getLastDay());
+
+        // TODO call after first and last days loaded
+        this._initSubsetExtent();
+
         this.events.triggerEvent('temporalextentloaded', this);
     },
 
@@ -81,20 +88,69 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
     },
 
-    processTemporalExtent: function() {
-
-        if (this._destroyed()) {
-            return;
+    getTimeSeriesForDay: function(date) {
+        if (this.temporalExtent.getDay(date) && this.temporalExtent.getDay(date).length > 0) {
+            return this.temporalExtent.getDay(date);
         }
-
-        // TODO
-        //this.temporalExtent.parse(this.rawTemporalExtent);
-        this._initSubsetExtent();
-        this.events.triggerEvent('temporalextentloaded', this);
+        else {
+            // Might not be loaded, will need to call loadTimeSeriesForDay before that!
+            return null;
+        }
     },
 
-    getTimeOfDay: function() {
-        /// TODO
+    loadTimeSeriesForDay: function(date) {
+        if (this.getTimeSeriesForDay(date)) {
+            this._timeSeriesLoadedForDate(date);
+        }
+        else {
+            this._fetchTimeSeriesForDay(date);
+        }
+    },
+
+    _timeSeriesLoadedForDate: function(date) {
+        this.events.triggerEvent('temporalextentloaded', this, date);
+    },
+
+    _parseTimesForDay: function(date, response) {
+        // NcWMS returns only time in the format of '02:30:00.000Z', we'll need
+        // to stick the day in front when parsing
+        var timeSeriesHash = Ext.util.JSON.decode(response);
+        var dateOnlyString = date.format('YYYY-MM-DD') + 'T';
+
+        var timeSeriesArray = [];
+
+        if (timeSeriesHash['timesteps']) {
+            Ext.each(timeSeriesHash['timesteps'], function(timestep) {
+                var fullDate = dateOnlyString + timestep;
+                timeSeriesArray.push(new moment.utc(fullDate));
+            });
+        }
+
+        return timeSeriesArray;
+    },
+
+    _fetchTimeSeriesForDay: function(date) {
+        var url = this._getTimeSeriesUrl(date);
+
+        Ext.ux.Ajax.proxyRequest({
+            scope: this,
+            url: url,
+            success: function(resp, options) {
+                try {
+                    var dateArray = this._parseTimesForDay(date, resp.responseText);
+                    Ext.each(dateArray, function(date) {
+                        this.temporalExtent.add(date);
+                    }, this);
+                    this._timeSeriesLoadedForDate(date);
+                }
+                catch (e) {
+                    log.error("Could not parse times for day '" + date.format('YYYY-MM-DD') + "'");
+                }
+            },
+            failure: function() {
+                log.error("Could not get times for day '" + date.format('YYYY-MM-DD') + "'");
+            }
+        });
     },
 
     _destroyed: function() {
@@ -156,9 +212,17 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         if (ncwmsMetadata['datesWithData']) {
             Ext.each(Object.keys(ncwmsMetadata['datesWithData']), function(year) {
+                year = parseInt(year);
                 Ext.each(Object.keys(ncwmsMetadata['datesWithData'][year]), function(month) {
+                    month = parseInt(month);
                     Ext.each(ncwmsMetadata['datesWithData'][year][month], function(day) {
-                        dateWithData = new moment.utc(year + "-" + month + "-" + day, "YYYY-MM-DD");
+                        day = parseInt(day);
+                        // IMPORTANT - month is zero based (0-11)
+                        var dateWithData = new moment.utc();
+                        dateWithData.year(year);
+                        dateWithData.month(month);
+                        dateWithData.date(day);
+                        dateWithData.startOf('day');
                         datesWithDataArray.push(dateWithData);
                     });
                 });
@@ -175,6 +239,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     _getMetadataFromNcWMS: function() {
         var metadataUrl = this.url + "?layerName=" + this.params.LAYERS + "&REQUEST=GetMetadata&item=layerDetails";
         return metadataUrl;
+    },
+
+    _getTimeSeriesUrl: function(date) {
+        var timeSeriesUrl = this.url + "?layerName=" + this.params.LAYERS + "&REQUEST=GetMetadata&item=timesteps&day=" + date.startOf('day').toISOString();
+        return timeSeriesUrl;
     },
 
     /* Overrides */
