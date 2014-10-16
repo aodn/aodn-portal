@@ -25,31 +25,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
         );
     });
 
-    describe('constructor', function() {
-        it('extent given', function() {
-            var extent = [
-                '2001-02-01T00:00',
-                '2001-02-03T00:00',
-                '2001-02-05T00:00'];
-
-            cachedLayer = new OpenLayers.Layer.NcWMS(
-                null,
-                null,
-                params,
-                null,
-                { extent: extent }
-            );
-            cachedLayer.processTemporalExtent();
-
-            waitsFor(function() {
-                return cachedLayer.temporalExtent;
-            }, "Temporal extent not processed", 1000);
-
-            expect(cachedLayer.temporalExtent).not.toBeUndefined();
-            expect(cachedLayer.temporalExtent.length()).toEqual(3);
-        });
-    });
-
     describe("getURL", function() {
 
         var time = moment('2011-07-08T03:32:45Z').utc();
@@ -61,13 +36,12 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
 
         beforeEach(function() {
-            cachedLayer.temporalExtent = null;
-            cachedLayer.rawTemporalExtent = [
+            cachedLayer.temporalExtent.parse([
                 '2011-07-02T01:32:45Z',
                 '2011-07-08T01:32:45Z',
                 '2011-07-08T03:22:45Z',
                 '2011-07-08T03:32:45Z'
-            ];
+            ]);
             cachedLayer.processTemporalExtent();
         });
 
@@ -123,51 +97,9 @@ describe("OpenLayers.Layer.NcWMS", function() {
         expect(searchForDate(moment.utc('2200-02-02'), datesWithData)).toEqual(-1);
     });
 
-    it("extent as array of strings", function() {
-        cachedLayer.temporalExtent = null;
-        cachedLayer.rawTemporalExtent = [
-            '2001-01-01T00:00:00',
-            '2001-01-02T00:00:00',
-            '2001-01-03T00:00:00'
-        ];
-        cachedLayer.processTemporalExtent();
-
-        waitsFor(function() {
-            return cachedLayer.temporalExtent;
-        }, "Temporal extent not processed", 1000);
-
-        expect(cachedLayer.temporalExtent.getDay('2001-01-01')[0].utc()).toBeSame(moment.utc('2001-01-01T00:00:00'));
-        expect(cachedLayer.temporalExtent.getDay('2001-01-02')[0].utc()).toBeSame(moment.utc('2001-01-02T00:00:00'));
-        expect(cachedLayer.temporalExtent.getDay('2001-01-03')[0].utc()).toBeSame(moment.utc('2001-01-03T00:00:00'));
-    });
-
-    it("extent as repeating interval", function() {
-        // I *think* there can be a 'Rn' at the beginning, but doesn't look like helper.js handles
-        // that.
-
-        //  TODO: hangs browser :-)
-        //cachedLayer.setTemporalExtent('2000-01-01T00:00:00.000/2000-01-03T00:00:00.000/PT1D');
-
-        cachedLayer.temporalExtent = null;
-        cachedLayer.rawTemporalExtent = ['2001-01-01T00:00:00/2001-01-03T00:00:00/PT24H'];
-        cachedLayer.processTemporalExtent();
-        waitsFor(function() {
-            return cachedLayer.temporalExtent;
-        }, "Temporal extent not processed", 1000);
-
-        expect(cachedLayer.temporalExtent.getDay('2001-01-01')[0].utc()).toBeSame(moment.utc('2001-01-01T00:00:00'));
-        expect(cachedLayer.temporalExtent.getDay('2001-01-02')[0].utc()).toBeSame(moment.utc('2001-01-02T00:00:00'));
-        expect(cachedLayer.temporalExtent.getDay('2001-01-03')[0].utc()).toBeSame(moment.utc('2001-01-03T00:00:00'));
-    });
-
     describe('get next time', function() {
         beforeEach(function() {
-            cachedLayer.temporalExtent = null;
-            cachedLayer.rawTemporalExtent = ['2001-01-01T00:00:00', '2001-01-02T00:00:00', '2001-01-03T00:00:00'];
-            cachedLayer.processTemporalExtent();
-            waitsFor(function() {
-                return cachedLayer.temporalExtent;
-            }, "Temporal extent not processed", 1000);
+            cachedLayer.temporalExtent.parse(['2001-01-01T00:00:00', '2001-01-02T00:00:00', '2001-01-03T00:00:00']);
         });
 
         it('next item returned', function() {
@@ -187,12 +119,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         describe('repeating interval', function() {
             beforeEach(function() {
-                cachedLayer.rawTemporalExtent = ['2000-01-01T00:00:00.000/2000-01-01T01:00:00.000/PT30M'];
-                cachedLayer.temporalExtent = null;
-                cachedLayer.processTemporalExtent();
-                waitsFor(function() {
-                    return cachedLayer.temporalExtent;
-                }, "Temporal extent not processed", 1000);
+                cachedLayer.temporalExtent.parse(['2000-01-01T00:00:00.000/2000-01-01T01:00:00.000/PT30M']);
             });
 
             it('around first date/time', function() {
@@ -221,16 +148,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         describe('time set specified', function() {
             beforeEach(function() {
-                cachedLayer.rawTemporalExtent = [
-                    '2000-01-01T00:00:00.000',
-                    '2000-01-02T00:00:00.000',
-                    '2000-01-03T00:00:00.000'
-                ];
-                cachedLayer.temporalExtent = null;
-                cachedLayer.processTemporalExtent();
-                waitsFor(function() {
-                    return cachedLayer.temporalExtent;
-                }, "Temporal extent not processed", 1000);
+                cachedLayer.temporalExtent.parse(['2000-01-01T00:00:00.000', '2000-01-02T00:00:00.000', '2000-01-03T00:00:00.000']);
             });
 
             it('around first date/time', function() {
@@ -252,6 +170,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
             it('around last date/time', function() {
                 cachedLayer.toTime(moment.utc('2000-01-02T23:59:59.000'));
                 expect(cachedLayer.nextTimeSlice()).toBeSame(moment.utc('2000-01-03T00:00:00.000'));
+                // TODO
                 //cachedLayer.toTime(moment.utc('2000-01-03T00:00:00.000'));
                 //expect(cachedLayer.nextTimeSlice().valueOf()).toEqual(moment.utc('2000-01-03T00:00:00.000').valueOf());
                 //cachedLayer.toTime(moment.utc('2000-01-03T00:00:01.000'));
@@ -280,12 +199,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 { extent: extent }
             );
 
-            cachedLayer.temporalExtent = null;
-            cachedLayer.processTemporalExtent();
-            waitsFor(function() {
-                return cachedLayer.temporalExtent;
-            }, "Temporal extent not processed", 1000);
-
+            cachedLayer.temporalExtent.parse(extent);
         });
 
         it('getTemporalExtentMin value', function() {
@@ -308,16 +222,12 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
     describe('subset extent', function() {
         beforeEach(function() {
-            cachedLayer.rawTemporalExtent = [
+            cachedLayer.temporalExtent.parse([
                 '2000-01-01T00:00:00.000',
                 '2000-01-02T00:00:00.000',
                 '2000-01-03T00:00:00.000'
-            ];
-            cachedLayer.temporalExtent = null;
-            cachedLayer.processTemporalExtent();
-            waitsFor(function() {
-                return cachedLayer.temporalExtent;
-            }, "Temporal extent not processed", 1000);
+            ]);
+            cachedLayer._initSubsetExtent();
         });
 
         it('sets the subset extent minimum', function() {

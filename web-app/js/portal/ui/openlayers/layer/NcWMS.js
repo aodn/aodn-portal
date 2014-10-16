@@ -18,10 +18,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
      * Valid temporal extent of the layer as Array of times.
      */
     temporalExtent: null,
-    /**
-     * Raw temporal extent, before transformation.
-     */
-    rawTemporalExtent: null,
 
     /**
      * Missing days in temporal extent
@@ -32,9 +28,10 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         this.EVENT_TYPES.push('temporalextentloaded');
 
-        this.rawTemporalExtent = temporalInfo.extent;
         this._initToMostRecentTime(temporalInfo.defaultValue);
         params['TIME'] = this._getTimeParameter(this.time);
+
+        this.temporalExtent = new Portal.visualise.animations.TemporalExtent();
 
         // Initialize missingDays
         this.missingDays = [];
@@ -90,28 +87,14 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             return;
         }
 
-        if (this.temporalExtent) {
-            this.events.triggerEvent('temporalextentloaded', this);
-            return;
-        }
-
-        if (this.rawTemporalExtent) {
-            this.temporalExtent = new Portal.visualise.animations.TemporalExtent();
-            this.temporalExtent.on('extentparsed', this._processTemporalExtentDone, this);
-            this.temporalExtent.parse(this.rawTemporalExtent);
-        }
-        else {
-            // Already processed
-            this._processTemporalExtentDone();
-        }
-
-    },
-
-    _processTemporalExtentDone: function() {
-        // Unset rawTemporalExtent, meaning that we're done
-        this.rawTemporalExtent = null;
+        // TODO
+        //this.temporalExtent.parse(this.rawTemporalExtent);
         this._initSubsetExtent();
         this.events.triggerEvent('temporalextentloaded', this);
+    },
+
+    getTimeOfDay: function() {
+        /// TODO
     },
 
     _destroyed: function() {

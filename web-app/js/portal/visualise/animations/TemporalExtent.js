@@ -24,7 +24,6 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
 
     constructor: function() {
         this.extent = {};
-        this.addEvents('extentparsed');
     },
 
     min: function() {
@@ -280,7 +279,6 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         for (var i = 0; i < _extent.length; ++i) {
             this.add(_extent[i]);
         }
-        this.fireEvent('extentparsed');
     },
 
     _equalToOrAfter: function(date1, date2) {
