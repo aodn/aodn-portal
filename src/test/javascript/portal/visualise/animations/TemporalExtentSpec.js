@@ -69,19 +69,28 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
 
     describe('min', function() {
         it('returns null when empty', function() {
-            expect(temporalExtent.min()).toEqual(null);
+            expect(temporalExtent.min()).toBeUndefined();
         });
 
         it('returns the first element', function() {
-            var expected = moment.utc();
-            temporalExtent.add(expected);
-
-            var m = expected.clone().add('days', 1);
-            temporalExtent.add(m);
-
+            var expected = moment.utc('2000-01-01T00:00:00.000');
+            temporalExtent.parse(['2000-01-01T00:00:00.000/2000-01-01T01:00:00.000/PT30M']);
             expect(temporalExtent.min().toDate()).toEqual(expected.toDate());
         });
     });
+
+    describe('max', function() {
+        it('returns undefined when empty', function() {
+            expect(temporalExtent.max()).toBeUndefined();
+        });
+
+        it('returns the last element', function() {
+            var expected = moment.utc('2000-01-01T01:00:00.000');
+            temporalExtent.parse(['2000-01-01T00:00:00.000/2000-01-01T01:00:00.000/PT30M']);
+            expect(temporalExtent.max().toDate()).toEqual(expected.toDate());
+        });
+    });
+
 
     describe('getDay', function() {
         it('return null when empty', function() {
@@ -128,20 +137,6 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
 
             var expected = moment.utc('2013-01-30T00:00:00.000Z');
             expect(temporalExtent._getLastDay().toDate()).toEqual(expected.toDate());
-        });
-    });
-
-    describe('max', function() {
-        it('returns undefined when empty', function() {
-            expect(temporalExtent.max()).toBeUndefined();
-        });
-
-        it('returns the last element', function() {
-            var m = moment.utc();
-            temporalExtent.add(m);
-            var expected = m.clone().add('days', 1);
-            temporalExtent.add(expected);
-            expect(temporalExtent.max().toDate()).toEqual(expected.toDate());
         });
     });
 

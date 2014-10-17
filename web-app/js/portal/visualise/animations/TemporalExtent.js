@@ -27,27 +27,21 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
     },
 
     min: function() {
-        var minDate = null;
-        if (this.notEmpty()) {
-            for (var date in this.extent) {
-                if (!minDate || this.extent[date][0].isBefore(minDate)) {
-                    minDate = this.extent[date][0].clone();
-                }
-            }
+        var firstDay = this._getFirstDay();
+        if (firstDay) {
+            return this.getDay(firstDay)[0];
         }
-        return minDate;
+
+        return undefined;
     },
 
     max: function() {
-        if (this.notEmpty()) {
-            var maxDate = null;
-            for (var date in this.extent) {
-                if (!maxDate || this.extent[date].last().isAfter(maxDate)) {
-                    maxDate = this.extent[date].last().clone();
-                }
-            }
+        var lastDay = this._getLastDay();
+        if (lastDay) {
+            return this.getDay(lastDay).last();
         }
-        return maxDate;
+
+        return undefined;
     },
 
     addDays: function(days) {
