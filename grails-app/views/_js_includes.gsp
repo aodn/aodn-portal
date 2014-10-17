@@ -58,6 +58,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Browser.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Image.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Proxy.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Set.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'portal.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'ObjectFactory.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'PortalEvents.js')}"></script>
