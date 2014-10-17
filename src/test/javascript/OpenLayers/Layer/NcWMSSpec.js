@@ -94,6 +94,33 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
+    describe("_timeSeriesLoadedForDate", function() {
+        beforeEach(function() {
+            spyOn(cachedLayer.events, 'triggerEvent');
+        });
+
+        it("triggers temporalextentloaded when no pending requests", function() {
+            cachedLayer._timeSeriesLoadedForDate();
+            expect(cachedLayer.events.triggerEvent).toHaveBeenCalledWith('temporalextentloaded', cachedLayer);
+        });
+
+        it("does not trigger temporalextentloaded when pending requests exist", function() {
+            cachedLayer.pendingRequests.add("pending request");
+            cachedLayer._timeSeriesLoadedForDate();
+            expect(cachedLayer.events.triggerEvent).not.toHaveBeenCalled();
+        });
+
+        it("triggers temporalextentloaded when requests are cleared", function() {
+            cachedLayer.pendingRequests.add("pending request");
+            cachedLayer._timeSeriesLoadedForDate();
+            expect(cachedLayer.events.triggerEvent).not.toHaveBeenCalled();
+
+            cachedLayer.pendingRequests.remove("pending request");
+            cachedLayer._timeSeriesLoadedForDate();
+            expect(cachedLayer.events.triggerEvent).toHaveBeenCalledWith('temporalextentloaded', cachedLayer);
+        });
+    });
+
     describe("_parseTimesForDay", function() {
         it("parses JSON and assembles dates", function() {
             var date = moment.utc('2001-07-02T00:00:00Z');

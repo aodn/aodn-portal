@@ -20,9 +20,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     temporalExtent: null,
 
     /**
-     * Missing days in temporal extent
+     * Pending ajax requests for obtaining times of day
      */
-    missingDays: null,
+    pendingRequests: null,
 
     initialize: function(name, url, params, options, temporalInfo) {
 
@@ -33,8 +33,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         this.temporalExtent = new Portal.visualise.animations.TemporalExtent();
 
-        // Initialize missingDays
-        this.missingDays = [];
+        this.pendingRequests = new Portal.utils.Set();
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, this._propagateDelete, this);
 
@@ -100,15 +99,17 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     loadTimeSeriesForDay: function(date) {
         if (this.getTimeSeriesForDay(date)) {
-            this._timeSeriesLoadedForDate(date);
+            this._timeSeriesLoadedForDate();
         }
         else {
             this._fetchTimeSeriesForDay(date);
         }
     },
 
-    _timeSeriesLoadedForDate: function(date) {
-        this.events.triggerEvent('temporalextentloaded', this, date);
+    _timeSeriesLoadedForDate: function() {
+        if (0 == this.pendingRequests.size()) {
+            this.events.triggerEvent('temporalextentloaded', this);
+        }
     },
 
     _parseTimesForDay: function(date, response) {
@@ -132,6 +133,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     _fetchTimeSeriesForDay: function(date) {
         var url = this._getTimeSeriesUrl(date);
 
+        this.pendingRequests.add(url);
         Ext.ux.Ajax.proxyRequest({
             scope: this,
             url: url,
@@ -141,14 +143,17 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                     Ext.each(dateArray, function(date) {
                         this.temporalExtent.add(date);
                     }, this);
-                    this._timeSeriesLoadedForDate(date);
+                    this.pendingRequests.remove(url);
+                    this._timeSeriesLoadedForDate();
                 }
                 catch (e) {
                     log.error("Could not parse times for day '" + date.format('YYYY-MM-DD') + "'");
+                    this.pendingRequests.remove(date.format('YYYY-MM-DD'));
                 }
             },
             failure: function() {
                 log.error("Could not get times for day '" + date.format('YYYY-MM-DD') + "'");
+                this.pendingRequests.remove(url);
             }
         });
     },
