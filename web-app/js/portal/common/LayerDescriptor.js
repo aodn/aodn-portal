@@ -29,8 +29,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
                 this.title,
                 this.server.uri,
                 new Portal.ui.openlayers.LayerParams(this, paramOverrides),
-                new Portal.ui.openlayers.LayerOptions(this, optionOverrides),
-                this._getTimeDimension()
+                new Portal.ui.openlayers.LayerOptions(this, optionOverrides)
             );
         }
         else {

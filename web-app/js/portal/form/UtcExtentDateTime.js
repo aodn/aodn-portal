@@ -40,7 +40,6 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
     },
 
     setValue: function(momentDate, toMaxTime) {
-
         if (typeof momentDate == 'string') { // todo - Temporary fix for an ncWMS date problem
             momentDate = moment(momentDate);
         }
@@ -185,18 +184,17 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
     },
 
     _matchTime: function() {
-        var extent = this._getExtentForSelectedDate();
+        var extentArray = this._getExtentForSelectedDate().getExtentAsArray();
         var timeString = this.tf.getValue();
 
-        if (extent && extent.length() > 0) {
-            for (var i = 0; i < extent.length(); i++) {
-                var momentDate = extent.get(i);
+        if (extentArray && extentArray.length > 0) {
+            for (var i = 0; i < extentArray.length; i++) {
+                var momentDate = extentArray[i];
                 if (momentDate.utc().format(OpenLayers.i18n('timeDisplayFormat')) == timeString) {
-
-                    return momentDate.toDate();
+                    return momentDate.clone().toDate();
                 }
             }
-            return this._getDefaultTime(extent);
+            return this._getDefaultTime(extentArray);
         }
         else {
             return this.getUtcDateFromLocalValues(this.df.getValue());
@@ -207,16 +205,16 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         return this.extent.subExtentForDate(this.getUtcDateFromLocalValues(this.df.getValue()));
     },
 
-    _getDefaultTime: function(extent) {
+    _getDefaultTime: function(extentArray) {
         if (this.timeFieldChange && this.startValue) {
             return this.startValue;
         }
-        return extent.min().toDate();
+        return extentArray[0].toDate();
     },
 
     _extentToStore: function(extent) {
         var data = new Array();
-        Ext.each(extent.getDays(), function(momentDate, index, all) {
+        Ext.each(extent.getExtentAsArray(), function(momentDate, index, all) {
             data.push({
                 timeValue: this.getLocalDateFromUtcValues(momentDate.toDate()),
                 displayTime: momentDate.format(OpenLayers.i18n('timeDisplayFormat'))

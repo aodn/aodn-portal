@@ -27,18 +27,18 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
     },
 
     min: function() {
-        var firstDay = this._getFirstDay();
+        var firstDay = this.getFirstDay();
         if (firstDay) {
-            return this.getDay(firstDay)[0];
+            return this.getDay(firstDay)[0].clone();
         }
 
         return undefined;
     },
 
     max: function() {
-        var lastDay = this._getLastDay();
+        var lastDay = this.getLastDay();
         if (lastDay) {
-            return this.getDay(lastDay).last();
+            return this.getDay(lastDay).last().clone();
         }
 
         return undefined;
@@ -73,9 +73,15 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
             return this.min();
         }
         else {
-            var lastTimeOfCurrent = this._lastTimeOfDay(current);
+            var lastTimeOfCurrent = this.lastTimeOfDay(current);
             if (this._equalToOrBefore(lastTimeOfCurrent, current)) {
-                return this._nextDay(current)[0];
+                var nextDay = this._nextDay(current);
+                if (nextDay && nextDay.length > 0) {
+                    return nextDay[0].clone();
+                }
+                else {
+                    return undefined;
+                }
             }
             else {
                 return this._nextTimeInDay(current);
@@ -93,9 +99,15 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
             return this.max();
         }
         else {
-            var firstTimeOfCurrent = this._firstTimeOfDay(current);
+            var firstTimeOfCurrent = this.firstTimeOfDay(current);
             if (this._equalToOrAfter(firstTimeOfCurrent, current)) {
-                return this._previousDay(current).last();
+                var previousDay = this._previousDay(current);
+                if (previousDay && previousDay.length > 0) {
+                    return previousDay.last().clone();
+                }
+                else {
+                    return undefined;
+                }
             }
             else {
                 return this._previousTimeInDay(current);
@@ -103,16 +115,16 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         }
     },
 
-    _firstTimeOfDay: function(dateTime) {
+    firstTimeOfDay: function(dateTime) {
         return this.getDay(dateTime)[0].clone();
     },
 
-    _lastTimeOfDay: function(dateTime) {
+    lastTimeOfDay: function(dateTime) {
         return this.getDay(dateTime).last().clone();
     },
 
     _previousTimeInDay: function(dateTime) {
-        for (var i = this.getDay(dateTime).length - 1; i > 0; --i) {
+        for (var i = this.getDay(dateTime).length - 1; i >= 0; --i) {
             if (this.getDay(dateTime)[i].isBefore(dateTime)) {
                 return this.getDay(dateTime)[i].clone();
             }
@@ -128,21 +140,21 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
     },
 
     _previousDay: function(dateTime) {
-        var iter = dateTime.substract(1, 'days');
+        var iter = dateTime.clone().utc().subtract(1, 'days');
         var startDate = this.min();
         while (iter.isAfter(startDate)) {
             if (this.getDay(iter)) {
                 return this.getDay(iter);
             }
-            iter = iter.clone().substract(1, 'days');
+            iter = iter.clone().subtract(1, 'days');
         }
 
-        // If we failed to find anything, return the first time of the first day
+        // If we failed to find anything, return first day
         return this.getDay(startDate);
     },
 
     _nextDay: function(dateTime) {
-        var iter = dateTime.add(1, 'days');
+        var iter = dateTime.clone().utc().add(1, 'days');
         var endDate = this.max();
         while (iter.isBefore(endDate)) {
             if (this.getDay(iter)) {
@@ -151,7 +163,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
             iter = iter.clone().add(1, 'days');
         }
 
-        // If we failed to find anything, return the last time of the last day
+        // If we failed to find anything, return the last day
         return this.getDay(endDate);
     },
 
@@ -172,7 +184,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         }
     },
 
-    _getFirstDay: function() {
+    getFirstDay: function() {
         var firstDay = undefined;
         Ext.iterate(this.extent, function(day, arrayOfDateTime) {
             var iter = this._destringifyDate(day);
@@ -183,7 +195,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         return firstDay;
     },
 
-    _getLastDay: function() {
+    getLastDay: function() {
         var lastDay = undefined;
         Ext.iterate(this.extent, function(day, arrayOfDateTime) {
             var iter = this._destringifyDate(day);
@@ -205,8 +217,8 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
     getMissingDays: function() {
         // Find leaps in the array, in terms of dates
         var missingDays = [];
-        var iter = this._getFirstDay();
-        var endDate = this._getLastDay();
+        var iter = this.getFirstDay();
+        var endDate = this.getLastDay();
 
         while (iter.isBefore(endDate)) {
             if (!this.getDay(iter)) {
@@ -222,8 +234,8 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         // Return an array of all days
         var days = [];
 
-        var iter = this._getFirstDay();
-        var endDate = this._getLastDay();
+        var iter = this.getFirstDay();
+        var endDate = this.getLastDay();
 
         if (!iter || !iter.isValid() || !endDate || !endDate.isValid()) {
             return days;
@@ -239,11 +251,36 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         return days;
     },
 
+    getExtentAsArray: function() {
+        // Returns extent as array (just the loaded dates)
+        var flatExtent = [];
+
+        var iter = this.getFirstDay();
+        var endDate = this.getLastDay();
+
+        if (!iter || !iter.isValid() || !endDate || !endDate.isValid()) {
+            return flatExtent;
+        }
+
+        while (this._equalToOrBefore(iter, endDate)) {
+            if (this.getDay(iter)) {
+                Ext.each(this.getDay(iter), function(date, index) {
+                    flatExtent.push(date.clone());
+                }, this);
+            }
+            iter = iter.add(1, 'days');
+        }
+
+        return flatExtent;
+    },
+
     subExtentForDate: function(date) {
         var sub = new Portal.visualise.animations.TemporalExtent();
 
-        for (var j = 0; j < this.getDay(date).length; ++j) {
-            sub.add(moment.utc(this.getDay(date)[j]));
+        if (this.getDay(date)) {
+            for (var j = 0; j < this.getDay(date).length; ++j) {
+                sub.add(moment.utc(this.getDay(date)[j]).clone());
+            }
         }
 
         return sub;

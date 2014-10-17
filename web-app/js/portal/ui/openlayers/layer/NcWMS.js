@@ -24,12 +24,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
      */
     pendingRequests: null,
 
-    initialize: function(name, url, params, options, temporalInfo) {
+    initialize: function(name, url, params, options) {
 
         this.EVENT_TYPES.push('temporalextentloaded');
-
-        this._initToMostRecentTime(temporalInfo.defaultValue);
-        params['TIME'] = this._getTimeParameter(this.time);
 
         this.temporalExtent = new Portal.visualise.animations.TemporalExtent();
 
@@ -68,17 +65,12 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         this.temporalExtent.addDays(datesWithData);
 
-        this.loadTimeSeriesForDay(this.temporalExtent._getFirstDay());
-        this.loadTimeSeriesForDay(this.temporalExtent._getLastDay());
-
-        // TODO call after first and last days loaded
-        this._initSubsetExtent();
-
-        this.events.triggerEvent('temporalextentloaded', this);
+        this.loadTimeSeriesForDay(this.temporalExtent.getFirstDay());
+        this.loadTimeSeriesForDay(this.temporalExtent.getLastDay());
     },
 
-    _initToMostRecentTime: function(dateTimeString) {
-        this.time = moment.utc(dateTimeString);
+    _initToMostRecentTime: function() {
+        this.time = moment.utc(this.temporalExtent.max());
     },
 
     _propagateDelete: function(label, thelayer) {
@@ -108,6 +100,13 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     _timeSeriesLoadedForDate: function() {
         if (0 == this.pendingRequests.size()) {
+            this._initSubsetExtent();
+
+            if (!this.time) {
+                this._initToMostRecentTime();
+                this.params['TIME'] = this._getTimeParameter(this.time);
+            }
+
             this.events.triggerEvent('temporalextentloaded', this);
         }
     },
@@ -147,12 +146,12 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                     this._timeSeriesLoadedForDate();
                 }
                 catch (e) {
-                    log.error("Could not parse times for day '" + date.format('YYYY-MM-DD') + "'");
-                    this.pendingRequests.remove(date.format('YYYY-MM-DD'));
+                    log.error("Could not parse times for day '" + date.format('YYYY-MM-DD') + "' for layer '" + this.params.LAYERS + "'");
+                    this.pendingRequests.remove(url);
                 }
             },
             failure: function() {
-                log.error("Could not get times for day '" + date.format('YYYY-MM-DD') + "'");
+                log.error("Could not get times for day '" + date.format('YYYY-MM-DD') + "' for layer '" + this.params.LAYERS + "'");
                 this.pendingRequests.remove(url);
             }
         });
@@ -165,6 +164,10 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     /**
      * Temporal extent functions
      */
+
+    getLoadedExtent: function() {
+        return this.temporalExtent.getLoadedExtent();
+    },
 
     getTemporalExtent: function() {
         return this.temporalExtent;
@@ -180,7 +183,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     toTime: function(dateTime) {
         // Don't send a request if we don't have to
-        if (this._isValidTime(dateTime)) {
+        if (!this.time || this._isValidTime(dateTime)) {
             this.time = dateTime;
             this.mergeNewParams({ TIME: this._getTimeParameter(this.time) });
         }
@@ -247,7 +250,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _getTimeSeriesUrl: function(date) {
-        var timeSeriesUrl = this.url + "?layerName=" + this.params.LAYERS + "&REQUEST=GetMetadata&item=timesteps&day=" + date.startOf('day').toISOString();
+        var timeSeriesUrl = this.url + "?layerName=" + this.params.LAYERS + "&REQUEST=GetMetadata&item=timesteps&day=" + date.clone().startOf('day').toISOString();
         return timeSeriesUrl;
     },
 
@@ -342,6 +345,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _isValidTime: function(dateTime) {
-        return dateTime && this.getTemporalExtent().isValid(dateTime) && this.time.valueOf() != dateTime.valueOf();
+        return dateTime && this.temporalExtent.isValid(dateTime) && this.time.valueOf() != dateTime.valueOf();
     }
 });
