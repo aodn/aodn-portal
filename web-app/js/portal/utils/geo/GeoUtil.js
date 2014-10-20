@@ -16,27 +16,6 @@ Portal.utils.geo.bboxAsStringToBounds = function(bboxAsString) {
     var maxx = parseFloat(bbox[2]); // E
     var maxy = parseFloat(bbox[3]); // N
 
-    if (!((minx >= -180 && minx <= 180)
-          && (maxx > -180 && maxx <= 180)
-          && (miny >= -90 && miny <= 90)
-          && (maxy >= -90 && maxy <= 90)
-          && minx < maxx
-          && miny < maxy)) {
-        alert("ERROR: wrong value in bbox ! \n\n" +
-              minx +
-              ":West = "+(minx >= -180 && minx <= 180)+"\n" +
-              miny +
-              ":South = "+(miny >= -90 && miny <= 90) +"\n" +
-              maxx +
-              ":East = "+ (maxx > -180 && maxx <= 180)+"\n" +
-              maxy +
-              ":North = "+(maxy >= -90 && maxy <= 90) +
-              "\n West > East = " + (minx < maxx) +
-              "\n South < North = " +(miny < maxy)
-             );
-        return null;
-    }
-
     return new OpenLayers.Bounds(minx, miny, maxx, maxy);
 };
 
