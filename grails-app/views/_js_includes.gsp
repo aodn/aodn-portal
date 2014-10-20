@@ -144,6 +144,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MainPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'FeatureInfoPopup.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'Viewport.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'DownloadCartWidget.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'SelectionPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'TimeRangeLabel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/search', file: 'SearchBodyPanel.js')}"></script>

@@ -61,6 +61,10 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         this.layout.setActiveTab(tabIndex);
     },
 
+    setDownloadTab: function() {
+        this.layout.setActiveTab(TAB_INDEX_DOWNLOAD);
+    },
+
     _highlightActiveTab: function() {
 
         // Ensure tab selectors reflect actual tab selected

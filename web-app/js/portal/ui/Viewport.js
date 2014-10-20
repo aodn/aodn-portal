@@ -39,6 +39,8 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
             ]
         });
 
+        this.downloadCartWidget = new Portal.ui.DownloadCartWidget({});
+
         var config = Ext.apply(
             {
                 layout: 'border',
@@ -83,7 +85,8 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
             {
                 unstyled: true,
                 region: 'north',
-                height: cfg.appConfig.headerHeight + this.viewportTabsHeight
+                height: cfg.appConfig.headerHeight + this.viewportTabsHeight,
+                items: this.downloadCartWidget
             },
             this.mainPanel,
             {
@@ -96,5 +99,9 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
     setActiveTab: function(tabIndex) {
         this.mainPanel.setActiveTab(tabIndex);
+    },
+
+    setDownloadTab: function() {
+        this.mainPanel.setDownloadTab();
     }
 });
