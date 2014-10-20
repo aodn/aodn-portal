@@ -77,15 +77,12 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
      */
     _setDomainLayerProperties: function(openLayer) {
         openLayer.grailsLayerId = this.id;
-        openLayer.server= this.server;
+        openLayer.server = this.server;
 
         //injecting credentials for authenticated WMSes.  Openlayer doesn't
         //provide a way to add header information to a WMS request
         openLayer.cql = this.cql;
-        openLayer.bboxMinX = this.bboxMinX;
-        openLayer.bboxMinY = this.bboxMinY;
-        openLayer.bboxMaxX = this.bboxMaxX;
-        openLayer.bboxMaxY = this.bboxMaxY;
+        this._setOpenLayerBounds(openLayer);
         openLayer.cache = this.cache;
         openLayer.projection = this.projection;
         openLayer.blacklist = this.blacklist;
@@ -102,6 +99,37 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
                 centreLat: this.viewParams.centreLat,
                 openLayersZoomLevel: this.viewParams.openLayersZoomLevel
             }
+        }
+    },
+
+    _setOpenLayerBounds: function(openLayer) {
+        if (this.bboxMinX && this.bboxMinY && this.bboxMaxX && this.bboxMaxY) {
+            openLayer.bboxMinX = this.bboxMinX;
+            openLayer.bboxMinY = this.bboxMinY;
+            openLayer.bboxMaxX = this.bboxMaxX;
+            openLayer.bboxMaxY = this.bboxMaxY;
+        }
+        else if (this.geonetworkRecord
+            && this.geonetworkRecord.data
+            && this.geonetworkRecord.data.bbox
+            && this.geonetworkRecord.data.bbox.bounds) {
+            var bounds = this.geonetworkRecord.data.bbox.bounds;
+            openLayer.bboxMinX = bounds.left;
+            openLayer.bboxMinY = bounds.bottom;
+            openLayer.bboxMaxX = bounds.right;
+            openLayer.bboxMaxY = bounds.top;
+        }
+    },
+
+    _getAttribute: function(attribute) {
+        if (this[attribute]) {
+            return this[attribute];
+        }
+        else if (this.geonetworkRecord && this.geonetworkRecord.data && this.geonetworkRecord.data[attribute]) {
+            return this.geonetworkRecord.data[attribute];
+        }
+        else {
+            return undefined
         }
     },
 
