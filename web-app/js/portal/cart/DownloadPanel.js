@@ -36,6 +36,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     },
 
     generateContent: function() {
-        this.downloadPanelBody.generateContent();
+        this.downloadPanelBody.generateBodyContent();
     }
 });

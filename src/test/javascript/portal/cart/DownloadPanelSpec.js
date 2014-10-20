@@ -14,7 +14,7 @@ describe("Portal.cart.DownloadPanel", function() {
             downloadPanelBody: new Portal.cart.DownloadPanelBody()
         });
 
-        spyOn(downloadPanel.downloadPanelBody, 'generateContent');
+        spyOn(downloadPanel.downloadPanelBody, 'generateBodyContent');
     });
 
     afterEach(function() {
@@ -25,13 +25,13 @@ describe("Portal.cart.DownloadPanel", function() {
         it('listens for beforeshow event', function() {
             downloadPanel.fireEvent('beforeshow');
 
-            expect(downloadPanel.downloadPanelBody.generateContent).toHaveBeenCalled();
+            expect(downloadPanel.downloadPanelBody.generateBodyContent).toHaveBeenCalled();
         });
 
         it('listens for ACTIVE_GEONETWORK_RECORD_ADDED event', function() {
             Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
 
-            expect(downloadPanel.downloadPanelBody.generateContent).toHaveBeenCalled();
+            expect(downloadPanel.downloadPanelBody.generateBodyContent).toHaveBeenCalled();
         });
     });
 

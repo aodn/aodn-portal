@@ -10,10 +10,24 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
 
     initComponent: function() {
 
+        this.bodyContent = new Ext.Panel();
+        this.initButtonPanel();
+
+        this.emptyMessage = new Portal.common.EmptyCollectionStatusPanel({
+            hidden: true,
+            height: 35
+        });
+
         var config = {
             autoScroll: true,
             boxMinWidth: 800,
-            width: 1024
+            width: 1024,
+            items: [
+                this.buttonPanel,
+                new Ext.Spacer({height: 10}),
+                this.emptyMessage,
+                this.bodyContent
+            ]
         };
 
         this.store = Portal.data.ActiveGeoNetworkRecordStore.instance();
@@ -23,7 +37,7 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         Portal.cart.DownloadPanelBody.superclass.initComponent.call(this, arguments);
     },
 
-    generateContent: function() {
+    generateBodyContent: function() {
         var tpl = new Portal.cart.DownloadPanelItemTemplate(this);
         var html = '';
 
@@ -40,13 +54,41 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         }, this);
 
         if (!html) {
-            html = this._contentForEmptyView();
+            html = "";
+            this.emptyMessage.show();
+            this.buttonPanel.hide();
+        }
+        else {
+            this.emptyMessage.hide();
+            this.buttonPanel.show();
         }
 
         // fix for tests
         if (this.rendered) {
-            this.update(html);
+            this.bodyContent.update(html);
         }
+    },
+
+    initButtonPanel: function () {
+        this.buttonPanel = new Ext.Panel({
+            border: true,
+            flex: 1,
+            items: [
+                {
+                    xtype: 'button',
+                    text: OpenLayers.i18n("clearAllButtonLabel") ,
+                    tooltip: OpenLayers.i18n("clearAllButtonTooltip"),
+                    cls: "floatRight buttonPad",
+                    scope: this,
+                    handler: this._clearAllAndReset
+                }
+            ]
+        });
+    },
+
+    _clearAllAndReset: function () {
+        Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
+        setViewPortTab(0);
     },
 
     _loadMenuItemsFromHandlers: function(processedValues, collection) {
@@ -80,9 +122,5 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         };
 
         this.confirmationWindow.showIfNeeded(params);
-    },
-
-    _contentForEmptyView: function() {
-        return String.format('<i>{0}</i>', OpenLayers.i18n('noCollectionsMessage'));
     }
 });

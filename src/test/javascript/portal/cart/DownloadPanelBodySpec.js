@@ -19,15 +19,22 @@ describe("Portal.cart.DownloadPanelBody", function() {
         });
     });
 
-    describe('_contentForEmptyView', function() {
-        it('returns marked-up text', function() {
-            var content = downloadPanelBody._contentForEmptyView();
-
-            expect(content).toContain( OpenLayers.i18n('noCollectionsMessage'));
+    describe('clear all', function() {
+        it('calls to active geo network record store remove all', function() {
+            spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'removeAll');
+            window.setViewPortTab = jasmine.createSpy();
+            downloadPanelBody._clearAllAndReset();
+            expect(Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll).toHaveBeenCalled();
         });
     });
 
-    describe('generateContent', function() {
+    describe('_contentForEmptyView', function() {
+        it('returns marked-up text', function() {
+            expect(downloadPanelBody.emptyMessage.html).toContain( OpenLayers.i18n('noActiveCollectionSelected'));
+        });
+    });
+
+    describe('generateBodyContent', function() {
 
         var mockTemplate;
 
@@ -56,7 +63,7 @@ describe("Portal.cart.DownloadPanelBody", function() {
             downloadPanelBody.store.data.items = items;
 
             downloadPanelBody.rendered = true;
-            spyOn(downloadPanelBody, 'update');
+            spyOn(downloadPanelBody.bodyContent, 'update');
 
             return downloadPanelBody;
         };
@@ -79,7 +86,7 @@ describe("Portal.cart.DownloadPanelBody", function() {
 
             downloadPanelBody = makeTestDownloadPanelBody([]);
 
-            downloadPanelBody.generateContent();
+            downloadPanelBody.generateBodyContent();
 
             expect(Portal.cart.DownloadPanelItemTemplate).toHaveBeenCalled();
         });
@@ -93,7 +100,7 @@ describe("Portal.cart.DownloadPanelBody", function() {
                 testCollection4
             ]);
 
-            downloadPanelBody.generateContent();
+            downloadPanelBody.generateBodyContent();
 
             // Order of items is reversed!!
             expect(mockTemplate.apply.callCount).toBe(4);
@@ -107,20 +114,19 @@ describe("Portal.cart.DownloadPanelBody", function() {
 
             downloadPanelBody = makeTestDownloadPanelBody([]);
 
-            downloadPanelBody.generateContent();
+            downloadPanelBody.generateBodyContent();
 
-            expect(downloadPanelBody.update).toHaveBeenCalled();
+            expect(downloadPanelBody.bodyContent.update).toHaveBeenCalled();
         });
 
         it('calls _contentForEmptyView when empty', function() {
             downloadPanelBody = makeTestDownloadPanelBody([]);
 
-            spyOn(downloadPanelBody, '_contentForEmptyView').andReturn('empty cart content');
+            spyOn(downloadPanelBody.emptyMessage, 'show');
 
-            downloadPanelBody.generateContent();
+            downloadPanelBody.generateBodyContent();
 
-            expect(downloadPanelBody._contentForEmptyView).toHaveBeenCalled();
-            expect(downloadPanelBody.update).toHaveBeenCalledWith('empty cart content');
+            expect(downloadPanelBody.emptyMessage.show).toHaveBeenCalled();
         });
 
         it('includes menu items from download handlers', function() {
@@ -152,7 +158,7 @@ describe("Portal.cart.DownloadPanelBody", function() {
 
             spyOn(OpenLayers, 'i18n');
 
-            downloadPanelBody.generateContent();
+            downloadPanelBody.generateBodyContent();
             var applyArgs = mockTemplate.apply.mostRecentCall.args;
             var processedValues = applyArgs[0];
 

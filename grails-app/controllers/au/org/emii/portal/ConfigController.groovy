@@ -40,8 +40,6 @@ class ConfigController {
 
         instanceAsGenericObj['defaultMenu'] = JSON.parse("{\"id\":${configInstance.defaultMenu?.id}}");
 
-        instanceAsGenericObj['downloadCartMimeTypeToExtensionMapping'] = JSON.parse(configInstance.downloadCartMimeTypeToExtensionMapping)
-
         // add current user details
         def userInstance = User.current()
         if (userInstance) {
