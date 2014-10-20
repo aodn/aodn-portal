@@ -27,9 +27,7 @@ Complemetary
 @font-face {
     font-family: imosheader;
     src: url('../fonts/TerminalEvent.eot'); /* IE9 Compat Modes */
-    src: url('../fonts/TerminalEvent.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-        url('../fonts/TerminalEvent.woff') format('woff'), /* Modern Browsers */
-        url('../fonts/TerminalEvent.ttf') format('truetype'); /* Safari, Android, iOS */
+    src: url('../fonts/TerminalEvent.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('../fonts/TerminalEvent.woff') format('woff'), /* Modern Browsers */ url('../fonts/TerminalEvent.ttf') format('truetype'); /* Safari, Android, iOS */
 }
 
 html {
@@ -44,6 +42,7 @@ body, html, td {
 h2 {
     margin-bottom: 14px;
 }
+
 h3 {
     white-space: pre-wrap;
 }
@@ -73,7 +72,7 @@ h3 {
 }
 
 .landingBling {
-    margin: 15px 0 25px 0 ;
+    margin: 15px 0 25px 0;
 }
 
 #logoContainer {
@@ -154,7 +153,6 @@ h1, h2, h3, h4,
 #toplinks a {
     color: #FFFFFF;
     font-size: 15px;
-
     text-decoration: none;
 }
 
@@ -227,9 +225,10 @@ input, select, textarea {
 .mainToolBar {
     box-shadow: 0 -15px 15px -15px #ccc;
 }
+
 .mainToolBarFooter {
     margin-right: 20px;
-    font-size: 12px! important;
+    font-size: 12px ! important;
 }
 
 .footer p {
@@ -389,6 +388,3 @@ ul.x-tab-strip-top {
 .hightlightInputbox {
     border-color: #AEAEAE;
 }
-
-
-

@@ -112,7 +112,6 @@ Portal.app = {
 // sets the tab from the external links in the header
 function setViewPortTab(tabIndex) {
     viewport.setActiveTab(tabIndex);
-    return false;
 }
 
 // Fix for closing animation time period window after selection

@@ -104,6 +104,4 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     setDownloadTab: function() {
         this.mainPanel.setDownloadTab();
     }
-
-
 });
