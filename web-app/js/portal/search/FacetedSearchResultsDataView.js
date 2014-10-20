@@ -78,7 +78,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     setTplSizeVariables: function() {
         this.resultBodyHeight = this.MINIMAP_HEIGHT + (2 * this.MINIMAP_PADDING) + 2;
-        this.textBodyLeftMargin = this.MINIMAP_WIDTH + (3 * this.MINIMAP_PADDING);
+        this.textBodyLeftMargin = this.MINIMAP_WIDTH + (2 * this.MINIMAP_PADDING);
     },
 
     addMinimapLink: function(storeRowIndex, uuid) {

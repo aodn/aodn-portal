@@ -86,8 +86,7 @@ input.readonlyInput {
 }
 
 .faceted-search-results {
-    box-shadow: 0 2px 15px 2px rgba(0, 0, 0, 0.1) inset;
-    border-radius: 6px;
+    box-shadow: 0 0 10px 0 #ccc;
 }
 
 #activeTreePanel input {
@@ -1093,7 +1092,7 @@ div.allwhite {
 
 .search-filter-panel .x-panel-header {
     height: 12px;
-    font-size: 12px;
+    font-size: 13px;
     padding: 5px 2px 5px 2px;
 }
 
@@ -1102,9 +1101,9 @@ div.allwhite {
 }
 
 .term-selection-panel .x-panel-header {
-    border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 4px;
     background-color: #e8e8e8;
-    padding-bottom: 7px;
+    padding: 10px 5px;
 }
 
 .term-selection-panel .x-panel-header:hover {
@@ -1172,8 +1171,10 @@ div.allwhite {
 }
 
 .resultsHeaderBackground {
-    background-color: #d9d9d9;
+    background-color: #E8E8E8;
     padding-left: 10px;
+    margin-right: 2px;
+    border-radius: 4px 4px 0 4px;
 }
 
 .resultsHeaderBackground:hover,
