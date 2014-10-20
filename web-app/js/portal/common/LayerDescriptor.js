@@ -9,56 +9,39 @@
 Ext.namespace('Portal.common');
 
 /**
- * A layer descriptor is essentially a representation of a layer as returned from the server.
+ * Layer descriptor constructs OpenLayers WMS object with parameters from
+ * server and geonetwork record
  */
 Portal.common.LayerDescriptor = Ext.extend(Object, {
 
-    constructor: function(cfg) {
+    geonetworkRecord: null,
+
+    constructor: function(cfg, geonetworkRecord, openLayerClass) {
         if (typeof cfg == "string") {
             cfg = Ext.util.JSON.decode(cfg);
         }
+
+        if (!openLayerClass) {
+            // By default, use the WMS Openlayer class
+            openLayerClass = OpenLayers.Layer.WMS;
+        }
+
+        this.openLayerClass = openLayerClass;
+        this.geonetworkRecord = geonetworkRecord;
 
         Ext.apply(this, cfg);
     },
 
     toOpenLayer: function(optionOverrides, paramOverrides) {
-        var openLayer;
-
-        if (this._getTimeDimension()) {
-            openLayer = new OpenLayers.Layer.NcWMS(
-                this.title,
-                this.server.uri,
-                new Portal.ui.openlayers.LayerParams(this, paramOverrides),
-                new Portal.ui.openlayers.LayerOptions(this, optionOverrides)
-            );
-        }
-        else {
-            openLayer = new OpenLayers.Layer.WMS(
-                this.title,
-                this.server.uri,
-                new Portal.ui.openlayers.LayerParams(this, paramOverrides),
-                new Portal.ui.openlayers.LayerOptions(this, optionOverrides)
-            );
-        }
-
+        var openLayer = new this.openLayerClass(
+            this.title,
+            this.server.uri,
+            new Portal.ui.openlayers.LayerParams(this, paramOverrides),
+            new Portal.ui.openlayers.LayerOptions(this, optionOverrides)
+        );
         this._setDomainLayerProperties(openLayer);
 
         return openLayer;
-    },
-
-    _getTimeDimension: function() {
-        var timeDimension = undefined;
-        if (!this.dimensions) {
-            return timeDimension;
-        }
-
-        Ext.each(this.dimensions, function(dimension) {
-            if (dimension.name == 'time') {
-                timeDimension = dimension;
-            }
-        });
-
-        return timeDimension;
     },
 
     _getWmsVersionString: function(server) {

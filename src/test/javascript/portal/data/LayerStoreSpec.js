@@ -106,7 +106,7 @@ describe("Portal.data.LayerStore", function() {
                     layerStore.failure();  // This is the easiest way to mock things (rather than calling success).
                 });
 
-                layerStore.addUsingLayerLink("layerName", layerLink, callback);
+                layerStore.addUsingLayerLink("layerName", layerLink, {}, callback);
                 expect(callback).toHaveBeenCalled();
                 expect(callback.mostRecentCall.args[0]).toBeInstanceOf(GeoExt.data.LayerRecord);
             });

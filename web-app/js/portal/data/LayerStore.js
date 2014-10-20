@@ -27,14 +27,24 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         this.addUsingOpenLayer(layerDescriptor.toOpenLayer(), layerRecordCallback);
     },
 
-    addUsingLayerLink: function(layerDisplayName, layerLink, layerRecordCallback) {
+    addUsingLayerLink: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback) {
         var serverUri = layerLink.server.uri;
+
+        // Temporary here, until everything goes stateless and then we don't
+        // need this if statement at all
+        if (this.isStateless(serverUri)) {
+            var layerDescriptor = new Portal.common.LayerDescriptor(layerLink, geonetworkRecord, OpenLayers.Layer.NcWMS);
+            layerDescriptor.title = layerDisplayName;
+            layerDescriptor.cql = layerLink.cql;
+            this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
+            return;
+        }
 
         Ext.Ajax.request({
             url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerLink.name}),
             scope: this,
             success: function(resp) {
-                var layerDescriptor = new Portal.common.LayerDescriptor(resp.responseText);
+                var layerDescriptor = new Portal.common.LayerDescriptor(resp.responseText, geonetworkRecord, OpenLayers.Layer.WMS);
                 if (layerDescriptor) {
                     // Override layer name with GeoNetwork layer name
                     layerDescriptor.title = layerDisplayName;
@@ -50,6 +60,12 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     addUsingOpenLayer: function(openLayer, layerRecordCallback) {
         return this._addLayer(openLayer, layerRecordCallback);
+    },
+
+    // PATCH PATCH PATCH! until we can distinguish in metadata between ncwms
+    // and regular geoserver layers
+    isStateless: function(uri) {
+        return uri.toLowerCase().match('/ncwms/wms');
     },
 
     removeAll: function() {
