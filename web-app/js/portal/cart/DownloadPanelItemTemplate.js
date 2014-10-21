@@ -8,9 +8,10 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
-    constructor: function() {
+    constructor: function(cfg) {
 
         var templateLines = this._getHtmlContent();
+        Ext.apply(this, cfg);
 
         Portal.cart.DownloadPanelItemTemplate.superclass.constructor.call(this, templateLines);
     },
@@ -21,7 +22,8 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             '<div class="downloadPanelResultsWrapper">',
             '  <div class="x-panel-header resultsHeaderBackground">',
             '    <h3 class="resultsRowHeader">{[this._getRecordTitle(values)]}</h3>',
-            '    <div class="floatRight downloadButtonWrapper" id="download-button-{uuid}">{[this._downloadButton(values)]}</div>',
+            '    <div class="floatRight listButtonWrapper" id="{[this._getButtonId(values,\'downloadButtonId\')]}">{[this._downloadButton(values)]}</div>',
+            '    <div class="floatRight listButtonWrapper removeButton" id="{[this._getButtonId(values,\'removeButtonId\')]}">{[this._createRemoveButtonAfterPageLoad(values)]}</div>',
             '  </div>',
             '  <div style="overflow:hidden;">',
             '    <div class="floatLeft dataFilterEntry" style="width:650px">',
@@ -74,7 +76,8 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     _createDownloadButton: function(collection) {
 
-        var elementId = OpenLayers.i18n('downloadButtonId', {id: collection.uuid});
+        var elementId = this._getButtonId(collection, 'downloadButtonId');
+
         if (collection.menuItems.length > 0 && Ext.get(elementId)) {
 
             // clear old button
@@ -91,6 +94,51 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
                 })
             });
         }
+    },
+
+    _createRemoveButtonAfterPageLoad: function(collection) {
+        this._createRemoveButton.defer(1, this, [collection]);
+        return '';
+    },
+
+    _createRemoveButton: function(collection) {
+        var elementId = this._getButtonId(collection, 'removeButtonId');
+        if (collection.menuItems.length > 0 && Ext.get(elementId)) {
+
+            // remove old button
+            Ext.fly(elementId).update("");
+
+            new Ext.Button({
+                text: OpenLayers.i18n("removeButton"),
+                tooltip: OpenLayers.i18n("removeButtonTooltip"),
+                width: 65,
+                scope: this,
+                renderTo: elementId,
+                listeners: {
+                    click: {
+                        fn: this._removeButtonOnClick,
+                        scope: this
+                    }
+                }
+            });
+        }
+    },
+
+    getIdFromButtonContainerId: function(button, i18Name) {
+        var collectionId = button.container.id;
+        var prefix = OpenLayers.i18n(i18Name, {id: ""});
+        return collectionId.replace(prefix, '');
+    },
+
+    _getButtonId: function(collection, i18Name) {
+        return OpenLayers.i18n(i18Name, {id: collection.uuid});
+    },
+
+    _removeButtonOnClick: function(button) {
+        var collectionId = this.getIdFromButtonContainerId(button, "removeButtonId");
+        var record = Portal.data.ActiveGeoNetworkRecordStore.instance().getRecordFromUuid(collectionId);
+        Portal.data.ActiveGeoNetworkRecordStore.instance().remove(record);
+        this.generateContent();
     },
 
     _getFileListEntries: function(values) {

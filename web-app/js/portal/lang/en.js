@@ -124,6 +124,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     errorDialogTitle: 'Error',
 
     downloadButtonId: 'download-button-${id}',
+    removeButtonId: 'remove-button-${id}',
+
+    removeButton: 'Remove',
 
     // Download View
     downloadConfirmationWindowTitle: 'Data Download',
@@ -173,11 +176,11 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
 
-    // MapOptionsPanel
     autozoom: 'Auto zoom to data collection extent',
     hideDetailsPanel: 'Hide data collection details',
     clearAllButtonLabel: 'Clear and Reset',
-    clearAllButtonTooltip: 'This will remove all data collections from the subset and download pages, reset the map location and zoom level',
+    clearAllButtonTooltip: 'Remove all data collections from the Subset and Download pages, reset the map location and zoom level',
+    removeButtonTooltip: 'Remove this data collection from the Subset and Download pages, the collection can be re-added from the search.',
 
     // SubsetPanel.js
     subsetPanelTitle: 'Subset',

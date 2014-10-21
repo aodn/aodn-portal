@@ -85,6 +85,16 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         }) != -1;
     },
 
+    getRecordFromUuid: function(uuid) {
+        var record = undefined;
+        this.each(function(rec) {
+            if (rec.data.uuid == uuid) {
+                record = rec;
+            }
+        });
+        return record;
+    },
+
     _removeRecordAttributes: function(record) {
         var uuid = record.get('uuid');
         if (this.recordAttributes.uuid) {

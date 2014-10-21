@@ -38,12 +38,20 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         };
     });
 
+    describe('_createRemoveButtonAfterPageLoad', function() {
+        it('returns empty string', function() {
+            spyOn(tpl, '_createRemoveButton');
+            expect(tpl._createRemoveButtonAfterPageLoad()).toEqual('');
+        });
+    });
+
     describe('apply', function() {
 
         beforeEach(function() {
 
             spyOn(tpl, '_getRecordTitle');
             spyOn(tpl, '_downloadButton');
+            spyOn(tpl, '_createRemoveButtonAfterPageLoad');
             spyOn(tpl, '_getDataFilterEntry');
             spyOn(tpl, '_getPointOfTruthLinkEntry');
             spyOn(tpl, '_getFileListEntries');
@@ -57,6 +65,10 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         it('creates a download button', function() {
             expect(tpl._downloadButton).toHaveBeenCalled();
+        });
+
+        it('creates a remove button', function() {
+            expect(tpl._createRemoveButtonAfterPageLoad).toHaveBeenCalled();
         });
 
         it('creates a data filter entry', function() {
@@ -113,7 +125,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         });
     });
 
-    describe('createDownloadButton', function() {
+    describe('create Button', function() {
 
         beforeEach(function() {
             spyOn(Ext, 'get').andReturn({});
@@ -128,12 +140,20 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             expect(Ext.Button).not.toHaveBeenCalled();
         });
 
-        it('should create a button if necessary', function() {
+        it('should create a download button if necessary', function() {
 
             mockDataInjection.menuItems = ['menu item 1'];
 
             tpl._createDownloadButton(mockDataInjection);
             expect(Ext.Button).toHaveBeenCalled();
+        });
+    });
+
+    describe('get id', function() {
+        it('from button Container Id', function() {
+            var buttonId = tpl._getButtonId(mockDataInjection,"removeButtonId");
+            expect(buttonId).not.toBeNull();
+            expect(typeof buttonId).toEqual('string');
         });
     });
 
