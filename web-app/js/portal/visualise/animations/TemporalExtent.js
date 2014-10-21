@@ -22,8 +22,11 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
     // Date format used for stringifying/destringifying moments
     DATE_FORMAT: "YYYY-MM-DD",
 
+    missingDays: null,
+
     constructor: function() {
         this.extent = {};
+        this.missingDays = [];
     },
 
     min: function() {
@@ -45,8 +48,29 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
     },
 
     addDays: function(days) {
+        if (days && days.length == 0) {
+            return;
+        }
+
         Ext.each(days, function(day, index) {
+            // Create the day
             this._createDay(day);
+
+            // Fill the gap for all the non existing dates
+            if (index > 0) {
+                var previousExistingDay = days[index-1].clone().startOf('day');
+                var currentExistingDay  = days[index].clone().startOf('day');
+
+                // Fill in all the days in this gap (if there's any), a day after
+                // the previous existing date, until a day before the current
+                // existing date
+                for (var nonExistingDay = previousExistingDay.clone().add('days', 1);
+                    nonExistingDay.isBefore(currentExistingDay);
+                    nonExistingDay = nonExistingDay.add('days', 1))
+                {
+                    this.missingDays.push(nonExistingDay.toDate().clone());
+                }
+            }
         }, this);
     },
 
@@ -214,20 +238,23 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         return new moment.utc(stringifiedDate, this.DATE_FORMAT);
     },
 
-    getMissingDays: function() {
-        // Find leaps in the array, in terms of dates
-        var missingDays = [];
-        var iter = this.getFirstDay();
-        var endDate = this.getLastDay();
+    getMissingDays: function(reindex) {
+        if (reindex) {
+            // Find leaps in the array, in terms of dates
+            var missingDays = [];
+            var iter = this.getFirstDay();
+            var endDate = this.getLastDay();
 
-        while (iter.isBefore(endDate)) {
-            if (!this.getDay(iter)) {
-                missingDays.push(iter.clone().toDate());
+            while (iter.isBefore(endDate)) {
+                if (!this.getDay(iter)) {
+                    missingDays.push(iter.clone().toDate());
+                }
+                iter = iter.add(1, 'days');
             }
-            iter = iter.add(1, 'days');
+            this.missingDays = missingDays;
         }
 
-        return missingDays;
+        return this.missingDays;
     },
 
     getDays: function() {
