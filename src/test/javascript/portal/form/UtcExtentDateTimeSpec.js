@@ -75,7 +75,7 @@ describe("Portal.form.UtcExtentDateTime", function() {
         });
 
         it('sets the time field value to the max time for the date', function() {
-            var subExtent = temporalExtent.subExtentForDate(temporalExtent.extent[30]);
+            var subExtent = temporalExtent.subExtentForDate(temporalExtent.max());
             utcDateTime.setValue(subExtent.min(), true);
 
             var expected = subExtent.max().format(OpenLayers.i18n('timeDisplayFormat'));

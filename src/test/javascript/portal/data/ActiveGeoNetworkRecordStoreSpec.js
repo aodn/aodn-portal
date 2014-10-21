@@ -137,7 +137,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                         });
 
                         spyOn(activeRecordStore.layerStore, 'addUsingLayerLink').andCallFake(
-                            function(layerDisplayName, layerLink, layerRecordCallback) {
+                            function(layerDisplayName, layerLink, myRecord, layerRecordCallback) {
                                 layerRecordCallback(layerRecord);
                             });
 

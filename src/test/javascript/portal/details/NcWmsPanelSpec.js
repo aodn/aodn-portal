@@ -65,13 +65,13 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('updates the date when the start date changes via edit', function() {
             ncwmsPanel._addTemporalControls();
-            ncwmsPanel.startDateTimePicker.fireEvent('change');
+            ncwmsPanel.startDateTimePicker.fireEvent('change', ncwmsPanel.startDateTimePicker);
             expect(ncwmsPanel._onDateSelected).toHaveBeenCalled();
         });
 
         it('updates the date when the end date changes via edit', function() {
             ncwmsPanel._addTemporalControls();
-            ncwmsPanel.endDateTimePicker.fireEvent('change');
+            ncwmsPanel.startDateTimePicker.fireEvent('change', ncwmsPanel.endDateTimePicker);
             expect(ncwmsPanel._onDateSelected).toHaveBeenCalled();
         });
 
@@ -115,7 +115,6 @@ describe('Portal.details.NcWmsPanel', function() {
     });
 
     describe('layer temporal extent load', function() {
-
         it('enables the start date picker', function() {
             ncwmsPanel._layerTemporalExtentLoad();
             expect(ncwmsPanel.startDateTimePicker.disabled).toBeFalsy();
@@ -169,6 +168,7 @@ describe('Portal.details.NcWmsPanel', function() {
             getTemporalExtent: function() {
                 return this.temporalExtent;
             },
+            setSubsetExtentView: function() {},
             getSubsetExtentMin: function() { return extent.min(); },
             getSubsetExtentMax: function() { return extent.max(); }
         };

@@ -50,7 +50,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this._clearDateTimeFields();
         this._attachTemporalEvents();
         this._attachSpatialEvents();
-        this.layer.processTemporalExtent();
         this._removeLoadingInfo();
         this._applyFilterValuesFromMap();
         this._addClearButton();
@@ -234,7 +233,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             flex: 2,
             listeners: {
                 scope: this,
-                change: this._onDateSelected
+                change: this._onChange
             },
             timeConfig: {
                 store: new Ext.data.JsonStore({
@@ -262,15 +261,51 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         return new Ext.Spacer({ height: height });
     },
 
-    _onDateSelected: function(datePicker, jsDate) {
-        var selectedDateMoment = moment(jsDate);
-        datePicker.setValue(selectedDateMoment);
-        var selectedTimeMoment = moment.utc(datePicker.getValue());
-        this._layerToTime(selectedTimeMoment);
+    _attachSelectedDateToPicker: function(datePicker, dateMoment) {
+        if (dateMoment) {
+            datePicker['selectedDate'] = dateMoment.clone();
+        }
+    },
+
+    _getAttachedSelectedDate: function(datePicker) {
+        return datePicker['selectedDate'];
+    },
+
+    _removeAttachedSelectedDate: function(datePicker) {
+        delete datePicker['selectedDate'];
+    },
+
+    _onChange: function(datePicker, jsDate) {
+        var selectedDateTimeMoment = moment(jsDate);
+        var selectedDatePickerMoment = moment.utc(datePicker.getValue());
+
+        // When comparing those two dates, we must make sure we perform a UTC
+        // comparison. The pickers are in UTC.
+        if (this.layer.getTemporalExtent()._isSameDay(selectedDatePickerMoment.utc(), selectedDateTimeMoment.utc())) {
+            this._onTimeSelected(datePicker, selectedDateTimeMoment);
+        }
+        else {
+            this._onDateSelected(datePicker, selectedDateTimeMoment);
+        }
+    },
+
+    _onTimeSelected: function(datePicker, selectedDateTimeMoment) {
+        datePicker.setValue(selectedDateTimeMoment);
+        this._layerToTime(selectedDateTimeMoment);
         this._setLayerSubsetExtent();
         this._updateTimeRangeLabel();
-
         this._applyFilterValuesFromMap();
+    },
+
+    _onDateSelected: function(datePicker, selectedDateTimeMoment) {
+        // Store selected date, so when we wake up from event, we know which
+        // date to move to
+        this._attachSelectedDateToPicker(datePicker, selectedDateTimeMoment);
+
+        datePicker.setValue(selectedDateTimeMoment);
+
+        this.layer.loadTimeSeriesForDay(selectedDateTimeMoment);
+        // Now we wait for the event of 'temporalextentloaded'
     },
 
     _previousTimeSlice: function() {
@@ -320,29 +355,37 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _attachTemporalEvents: function() {
-        if (!this.layer.attachedTemporalExtentLoaded) {
-            this.layer.events.on({
-                'temporalextentloaded': this._layerTemporalExtentLoad,
-                scope: this
-            });
+        this.layer.events.on({
+            'temporalextentloaded': this._layerTemporalExtentLoad,
+            scope: this
+        });
+    },
+
+    _initializeDateTimePicker: function(dateTimePicker, defaultValue) {
+        if (this._getAttachedSelectedDate(dateTimePicker)) {
+            var selectedDate = this._getAttachedSelectedDate(dateTimePicker).clone();
+            this._removeAttachedSelectedDate(dateTimePicker);
+            var selectedTimeMoment = this.layer.getTemporalExtent().firstTimeOfDay(selectedDate);
+            dateTimePicker.initvalue = selectedTimeMoment.clone();
+            this._removeAttachedSelectedDate(dateTimePicker);
+            this._layerToTime(selectedTimeMoment);
+        }
+        else {
+            dateTimePicker.initvalue = defaultValue;
         }
     },
 
     _layerTemporalExtentLoad: function() {
-
-        if (!this.layer.attachedTemporalExtentLoaded) {
-
-            // save the defaults
-            this.startDateTimePicker.initvalue = this.layer.getSubsetExtentMin();
-            this.endDateTimePicker.initvalue = this.layer.getSubsetExtentMax();
-
-            this.layer.attachedTemporalExtentLoaded = true;
-        }
+        // Initialize pickers
+        this._initializeDateTimePicker(this.startDateTimePicker, this.layer.getSubsetExtentMin());
+        this._initializeDateTimePicker(this.endDateTimePicker, this.layer.getSubsetExtentMax());
 
         var extent = this.layer.getTemporalExtent();
         this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.startDateTimePicker.initvalue, false);
         this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.endDateTimePicker.initvalue, true);
         this._updateTimeRangeLabel();
+
+        this._setLayerSubsetExtent();
 
         this._applyFilterValuesFromMap();
     },
