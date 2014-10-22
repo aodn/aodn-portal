@@ -82,7 +82,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
             spyOn(cachedLayer, '_timeSeriesLoadedForDate').andCallFake(function() {});
             cachedLayer.temporalExtent.parse(['2001-07-02T00:00:00']);
 
-            cachedLayer.loadTimeSeriesForDay(moment.utc('2001-07-02T00:00:00Z'));
+            cachedLayer.loadTimeSeriesForDay(moment.utc('2001-07-02T00:00:00Z'), cachedLayer._timeSeriesLoadedForDate);
             expect(cachedLayer._timeSeriesLoadedForDate).toHaveBeenCalled();
         });
 

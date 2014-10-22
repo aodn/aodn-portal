@@ -65,8 +65,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         this.temporalExtent.addDays(datesWithData);
 
-        this.loadTimeSeriesForDay(this.temporalExtent.getFirstDay());
-        this.loadTimeSeriesForDay(this.temporalExtent.getLastDay());
+        this.loadTimeSeriesForDay(this.temporalExtent.getFirstDay(), this._timeSeriesLoadedForDate);
+        this.loadTimeSeriesForDay(this.temporalExtent.getLastDay(), this._timeSeriesLoadedForDate);
     },
 
     _initToMostRecentTime: function() {
@@ -89,16 +89,17 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
     },
 
-    loadTimeSeriesForDay: function(date) {
+    loadTimeSeriesForDay: function(date, callback, callbackCtx) {
         if (this.getTimeSeriesForDay(date)) {
-            this._timeSeriesLoadedForDate();
+            callback.call(callbackCtx);
         }
         else {
-            this._fetchTimeSeriesForDay(date);
+            this._fetchTimeSeriesForDay(date, callback, callbackCtx);
         }
     },
 
     _timeSeriesLoadedForDate: function() {
+        console.log('_timeSeriesLoadedForDate');
         if (0 == this.pendingRequests.size()) {
             this._initSubsetExtent();
 
@@ -129,7 +130,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return timeSeriesArray;
     },
 
-    _fetchTimeSeriesForDay: function(date) {
+    _fetchTimeSeriesForDay: function(date, callback, callbackCtx) {
         var url = this._getTimeSeriesUrl(date);
 
         this.pendingRequests.add(url);
@@ -143,7 +144,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                         this.temporalExtent.add(date);
                     }, this);
                     this.pendingRequests.remove(url);
-                    this._timeSeriesLoadedForDate();
+                    callback.call(this);
                 }
                 catch (e) {
                     log.error("Could not parse times for day '" + date.format('YYYY-MM-DD') + "' for layer '" + this.params.LAYERS + "'");
