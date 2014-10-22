@@ -80,6 +80,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         var styles = [];
 
+        this.metadata.supportedStyles.sort();
+        this.metadata.palettes.sort();
+
         Ext.each(this.metadata.supportedStyles, function(style) {
 
             Ext.each(this.metadata.palettes, function(palette) {

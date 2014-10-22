@@ -142,7 +142,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
     });
 
     describe('_metadataLoaded', function() {
-        var sampleJson = '{ test: 1 }';
+        var sampleJson = '{ test: 1, supportedStyles: [], palettes: [] }';
 
         beforeEach(function() {
             spyOn(cachedLayer, '_parseDatesWithData').andCallFake(function() {});
@@ -180,18 +180,23 @@ describe("OpenLayers.Layer.NcWMS", function() {
         it('sets styles property from metadata', function() {
 
             cachedLayer.metadata = {
-                supportedStyles: ['style1', 'style2'],
-                palettes: ['palette1', 'palette2']
+                supportedStyles: ['styleA', 'styleC', 'styleB'],
+                palettes: ['paletteB', 'paletteC', 'paletteA']
             };
 
             cachedLayer._loadStylesFromMetadata();
 
             expect(cachedLayer.styles).toEqual(
                 [
-                    {name: 'style1', palette: 'palette1'},
-                    {name: 'style1', palette: 'palette2'},
-                    {name: 'style2', palette: 'palette1'},
-                    {name: 'style2', palette: 'palette2'}
+                    {name: 'styleA', palette: 'paletteA'},
+                    {name: 'styleA', palette: 'paletteB'},
+                    {name: 'styleA', palette: 'paletteC'},
+                    {name: 'styleB', palette: 'paletteA'},
+                    {name: 'styleB', palette: 'paletteB'},
+                    {name: 'styleB', palette: 'paletteC'},
+                    {name: 'styleC', palette: 'paletteA'},
+                    {name: 'styleC', palette: 'paletteB'},
+                    {name: 'styleC', palette: 'paletteC'}
                 ]
             );
         });
