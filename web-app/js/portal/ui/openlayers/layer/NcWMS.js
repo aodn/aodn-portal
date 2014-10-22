@@ -62,14 +62,18 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     _metadataLoaded: function(response) {
         this.metadata = Ext.util.JSON.decode(response);
+
+        this._loadTimesFromMetadata();
+        this._loadStylesFromMetadata();
+    },
+
+    _loadTimesFromMetadata: function() {
         var datesWithData = this._parseDatesWithData(this.metadata);
 
         this.temporalExtent.addDays(datesWithData);
 
         this.loadTimeSeriesForDay(this.temporalExtent.getFirstDay());
         this.loadTimeSeriesForDay(this.temporalExtent.getLastDay());
-
-        this._loadStylesFromMetadata();
     },
 
     _loadStylesFromMetadata: function() {
