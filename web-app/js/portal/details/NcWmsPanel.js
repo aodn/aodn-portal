@@ -190,7 +190,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             listeners: {
                 scope: this,
                 'click': function () {
-                    this._nextTimeSlice();
+                    this._loadNextTimeSlice();
                 }
             },
             tooltip: OpenLayers.i18n('selectTimePeriod', {direction: "Next"})
@@ -309,12 +309,22 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _previousTimeSlice: function() {
-        this.layer.previousTimeSlice();
+        this.layer.getPreviousTimeSlice(this._previousTimeSliceLoaded, this);
+        // Now we wait for the callback at _previousTimeSliceLoaded
+    },
+
+    _previousTimeSliceLoaded: function() {
+        this.layer.goToPreviousTimeSlice();
         this._updateTimeRangeLabel();
     },
 
-    _nextTimeSlice: function() {
-        this.layer.nextTimeSlice();
+    _loadNextTimeSlice: function() {
+        this.layer.getNextTimeSlice(this._nextTimeSliceLoaded, this);
+        // Now we wait for the callback at _nextTimeSliceLoaded
+    },
+
+    _nextTimeSliceLoaded: function() {
+        this.layer.goToNextTimeSlice();
         this._updateTimeRangeLabel();
     },
 

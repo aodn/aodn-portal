@@ -65,8 +65,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         this.temporalExtent.addDays(datesWithData);
 
-        this.loadTimeSeriesForDay(this.temporalExtent.getFirstDay(), this._timeSeriesLoadedForDate);
-        this.loadTimeSeriesForDay(this.temporalExtent.getLastDay(), this._timeSeriesLoadedForDate);
+        this.loadTimeSeriesForDay(this.temporalExtent.getFirstDay(), this._timeSeriesLoadedForDate, this);
+        this.loadTimeSeriesForDay(this.temporalExtent.getLastDay(), this._timeSeriesLoadedForDate, this);
     },
 
     _initToMostRecentTime: function() {
@@ -99,7 +99,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _timeSeriesLoadedForDate: function() {
-        console.log('_timeSeriesLoadedForDate');
         if (0 == this.pendingRequests.size()) {
             this._initSubsetExtent();
 
@@ -144,7 +143,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                         this.temporalExtent.add(date);
                     }, this);
                     this.pendingRequests.remove(url);
-                    callback.call(this);
+                    callback.call(callbackCtx);
                 }
                 catch (e) {
                     log.error("Could not parse times for day '" + date.format('YYYY-MM-DD') + "' for layer '" + this.params.LAYERS + "'");
@@ -276,12 +275,36 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return true;
     },
 
-    previousTimeSlice: function() {
-        return this.toTime(this.temporalExtent.previous(this.time));
+    getPreviousTimeSlice: function(callback, ctx) {
+        if (!this.temporalExtent.previous(this.time)) {
+            var previousDay = this.temporalExtent.previousValidDate(this.time);
+            this.loadTimeSeriesForDay(previousDay, callback, ctx);
+        }
+        else {
+            callback.call(ctx);
+        }
     },
 
-    nextTimeSlice: function() {
-        return this.toTime(this.temporalExtent.next(this.time));
+    goToPreviousTimeSlice: function() {
+        if (this.temporalExtent.previous(this.time)) {
+            this.toTime(this.temporalExtent.previous(this.time));
+        }
+    },
+
+    getNextTimeSlice: function(callback, ctx) {
+        if (!this.temporalExtent.next(this.time)) {
+            var nextDay = this.temporalExtent.nextValidDate(this.time);
+            this.loadTimeSeriesForDay(nextDay, callback, ctx);
+        }
+        else {
+            callback.call(ctx);
+        }
+    },
+
+    goToNextTimeSlice: function() {
+        if (this.temporalExtent.next(this.time)) {
+            this.toTime(this.temporalExtent.next(this.time));
+        }
     },
 
     getCqlForTemporalExtent: function() {

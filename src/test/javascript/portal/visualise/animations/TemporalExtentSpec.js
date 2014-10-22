@@ -140,6 +140,97 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
         });
     });
 
+    describe('previousValidDate', function() {
+        it('returns undefined when empty', function() {
+            expect(temporalExtent.previousValidDate(moment.utc())).toBeUndefined();
+        });
+
+        it('returns previous available date', function() {
+            temporalExtent.parse([
+                '2013-01-01T00:00:00.000Z',
+                '2013-01-20T00:00:00.000Z',
+                '2013-02-20T00:00:00.000Z',
+                '2013-03-30T00:00:00.000Z'
+            ]);
+
+            // Before first date
+            var expected = moment.utc('2013-01-01T00:00:00.000Z');
+            expect(temporalExtent.previousValidDate(moment.utc('2013-01-01T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.previousValidDate(moment.utc('2012-11-30T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+
+            // Between first and second dates
+            expected = moment.utc('2013-01-01T00:00:00.000Z');
+            expect(temporalExtent.previousValidDate(moment.utc('2013-01-20T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.previousValidDate(moment.utc('2013-01-19T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.previousValidDate(moment.utc('2013-01-02T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+
+            // Between second and third dates
+            expected = moment.utc('2013-01-20T00:00:00.000Z');
+            expect(temporalExtent.previousValidDate(moment.utc('2013-01-21T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.previousValidDate(moment.utc('2013-01-22T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.previousValidDate(moment.utc('2013-02-19T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.previousValidDate(moment.utc('2013-02-20T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+
+            // Between third and fourth dates
+            expected = moment.utc('2013-02-20T00:00:00.000Z');
+            expect(temporalExtent.previousValidDate(moment.utc('2013-02-21T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.previousValidDate(moment.utc('2013-03-03T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.previousValidDate(moment.utc('2013-03-30T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+
+            // After fourth date
+            expected = moment.utc('2013-03-30T00:00:00.000Z');
+            expect(temporalExtent.previousValidDate(moment.utc('2013-03-31T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.previousValidDate(moment.utc('2013-04-01T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.previousValidDate(moment.utc('2038-01-01T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+        });
+    });
+
+    describe('nextValidDate', function() {
+        it('returns undefined when empty', function() {
+            expect(temporalExtent.nextValidDate(moment.utc())).toBeUndefined();
+        });
+
+        it('returns next available date', function() {
+            temporalExtent.parse([
+                '2013-01-01T00:00:00.000Z',
+                '2013-01-20T00:00:00.000Z',
+                '2013-02-20T00:00:00.000Z',
+                '2013-03-30T00:00:00.000Z'
+            ]);
+
+            // Before first date
+            var expected = moment.utc('2013-01-01T00:00:00.000Z');
+            expect(temporalExtent.nextValidDate(moment.utc('2012-12-31T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.nextValidDate(moment.utc('2012-11-30T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+
+            // Between first and second dates
+            expected = moment.utc('2013-01-20T00:00:00.000Z');
+            expect(temporalExtent.nextValidDate(moment.utc('2013-01-01T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.nextValidDate(moment.utc('2013-01-02T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.nextValidDate(moment.utc('2013-01-19T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+
+            // Between second and third dates
+            expected = moment.utc('2013-02-20T00:00:00.000Z');
+            expect(temporalExtent.nextValidDate(moment.utc('2013-01-20T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.nextValidDate(moment.utc('2013-01-21T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.nextValidDate(moment.utc('2013-02-18T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.nextValidDate(moment.utc('2013-02-19T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+
+            // Between third and fourth dates
+            expected = moment.utc('2013-03-30T00:00:00.000Z');
+            expect(temporalExtent.nextValidDate(moment.utc('2013-02-20T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.nextValidDate(moment.utc('2013-03-03T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.nextValidDate(moment.utc('2013-03-29T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+
+            // After fourth date
+            expected = moment.utc('2013-03-30T00:00:00.000Z');
+            expect(temporalExtent.nextValidDate(moment.utc('2013-03-30T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.nextValidDate(moment.utc('2013-03-31T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.nextValidDate(moment.utc('2013-04-01T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+            expect(temporalExtent.nextValidDate(moment.utc('2038-01-01T00:00:00.000Z')).valueOf()).toEqual(expected.valueOf());
+        });
+    });
+
     describe('getExtentAsArray', function() {
         it('returns empty array when no dates defined', function() {
             expect(temporalExtent.getExtentAsArray()).toEqual([]);

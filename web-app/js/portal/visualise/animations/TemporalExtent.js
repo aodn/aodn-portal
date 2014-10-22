@@ -164,31 +164,64 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
     },
 
     _previousDay: function(dateTime) {
+        var previousDay = this.previousValidDate(dateTime);
+        if (previousDay) {
+            return this.getDay(previousDay);
+        }
+        else {
+            // If we failed to find anything, return the first day
+            return this.getDay(this.min());
+        }
+    },
+
+    _nextDay: function(dateTime) {
+        var nextDay = this.nextValidDate(dateTime);
+        if (nextDay) {
+            return this.getDay(nextDay);
+        }
+        else {
+            // If we failed to find anything, return the last day
+            return this.getDay(this.max());
+        }
+    },
+
+    previousValidDate: function(dateTime) {
         var iter = dateTime.clone().utc().subtract(1, 'days');
         var startDate = this.min();
+
+        // In the case no times were loaded
+        if (!startDate) {
+            return undefined;
+        }
+
         while (iter.isAfter(startDate)) {
             if (this.getDay(iter)) {
-                return this.getDay(iter);
+                return this._destringifyDate(iter);
             }
             iter = iter.clone().subtract(1, 'days');
         }
 
         // If we failed to find anything, return first day
-        return this.getDay(startDate);
+        return this._destringifyDate(startDate);
     },
 
-    _nextDay: function(dateTime) {
+    nextValidDate: function(dateTime) {
         var iter = dateTime.clone().utc().add(1, 'days');
         var endDate = this.max();
+
+        // In the case no times were loaded
+        if (!endDate) {
+            return undefined;
+        }
+
         while (iter.isBefore(endDate)) {
             if (this.getDay(iter)) {
-                return this.getDay(iter);
+                return this._destringifyDate(iter);
             }
             iter = iter.clone().add(1, 'days');
         }
 
-        // If we failed to find anything, return the last day
-        return this.getDay(endDate);
+        return this._destringifyDate(endDate);
     },
 
     _createDay: function(date) {
