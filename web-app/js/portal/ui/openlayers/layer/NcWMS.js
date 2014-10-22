@@ -65,8 +65,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         this.temporalExtent.addDays(datesWithData);
 
-        this.loadTimeSeriesForDay(this.temporalExtent.getFirstDay(), this._timeSeriesLoadedForDate, this);
-        this.loadTimeSeriesForDay(this.temporalExtent.getLastDay(), this._timeSeriesLoadedForDate, this);
+        this.loadTimeSeriesForDay(this.temporalExtent.getFirstDay());
+        this.loadTimeSeriesForDay(this.temporalExtent.getLastDay());
     },
 
     _initToMostRecentTime: function() {
@@ -90,6 +90,10 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     loadTimeSeriesForDay: function(date, callback, callbackCtx) {
+        // If callback and callbackCtx are undefined, use the default ones
+        callback    = typeof callback    !== 'undefined' ? callback    : this._timeSeriesLoadedForDate;
+        callbackCtx = typeof callbackCtx !== 'undefined' ? callbackCtx : this;
+
         if (this.getTimeSeriesForDay(date)) {
             callback.call(callbackCtx);
         }
