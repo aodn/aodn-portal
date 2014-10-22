@@ -27,6 +27,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     initialize: function(name, url, params, options) {
 
         this.EVENT_TYPES.push('temporalextentloaded');
+        this.EVENT_TYPES.push('stylesloaded');
 
         this.temporalExtent = new Portal.visualise.animations.TemporalExtent();
 
@@ -67,6 +68,28 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         this.loadTimeSeriesForDay(this.temporalExtent.getFirstDay());
         this.loadTimeSeriesForDay(this.temporalExtent.getLastDay());
+
+        this._loadStylesFromMetadata();
+    },
+
+    _loadStylesFromMetadata: function() {
+
+        var styles = [];
+
+        Ext.each(this.metadata.supportedStyles, function(style) {
+
+            Ext.each(this.metadata.palettes, function(palette) {
+
+                styles.push({
+                    name: style,
+                    palette: palette
+                });
+            });
+        }, this);
+
+        this.styles = styles;
+
+        this.events.triggerEvent('stylesloaded', this);
     },
 
     _initToMostRecentTime: function() {

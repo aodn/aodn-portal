@@ -19,6 +19,15 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         Portal.details.StylePanel.superclass.constructor.call(this, config);
+
+        this._attachEvents();
+    },
+
+    _attachEvents: function() {
+        this.layer.events.on({
+            'stylesloaded': this._stylesLoaded,
+            scope: this
+        });
     },
 
     initComponent: function(cfg) {
@@ -89,12 +98,11 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     makeCombo: function() {
-        var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{displayText}</p><img src="{displayImage}" /></div></tpl>';
+        var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{styleName}</p><img src="{displayImage}" /></div></tpl>';
         var fields;
 
         fields = [
-            { name: 'myId' },
-            { name: 'displayText' },
+            { name: 'styleName' },
             { name: 'displayImage' }
         ];
 
@@ -114,8 +122,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             mode: 'local',
             store: valueStore,
             emptyText: OpenLayers.i18n('pickAStyle'),
-            valueField: 'myId',
-            displayField: 'displayText',
+            valueField: 'styleName',
+            displayField: 'styleName',
             tpl: tpl,
             listeners: {
                 scope: this,
@@ -124,15 +132,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
                 }
             }
         });
-    },
-
-    setChosenStyle: function(record) {
-        this.layer.mergeNewParams({
-            styles: record.get('myId')
-        });
-        // Params should already have been changed, but legend doesn't update if we don't do this...
-        this.layer.params.STYLES = record.get('myId');
-        this.refreshLegend();
     },
 
     _initWithLayer: function() {
@@ -155,39 +154,47 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             this.ncwmsColourScalePanel.hide();
         }
 
-        var data = this._styleData(this.layer);
-
-        if (data.length > 0) {
-            // populate the stylecombo picker
-            this.styleCombo.store.loadData(data);
-            // change the displayed data in the style picker
-            this.styleCombo.collapse();
-            this.styleCombo.show();
-        }
-
         this.refreshLegend();
     },
 
-    _styleData: function(layer) {
-        var data = [];
-        var allStyles = layer.allStyles;
+    _stylesLoaded: function() {
 
-        if (allStyles != undefined && allStyles.length > 1) {
+        var styleData = this._processStyleData(this.layer);
 
-            for (var j = 0; j < allStyles.length; j++) {
+        if (styleData.length > 1) {
+            this.styleCombo.store.loadData(styleData);
 
-                var title = allStyles[j].title;
-                var name = allStyles[j].name;
-
-                var label = (title != "") ? title : name;
-                var palette = this._getPalette(layer, title);
-                var imageUrl = this.buildGetLegend(layer, name, palette, true);
-
-                data.push([name, label, imageUrl]);
-            }
+            this.styleCombo.collapse();
+            this.styleCombo.show();
         }
+    },
+
+    _processStyleData: function(layer) {
+        var data = [];
+
+        Ext.each(layer.styles, function(style) {
+
+            var palette = style.palette;
+            var styleName = style.name + '/' + palette;
+            var imageUrl = this.buildGetLegend(layer, styleName, palette, true);
+
+            data.push([styleName, imageUrl]);
+        }, this);
 
         return data;
+    },
+
+    setChosenStyle: function(record) {
+
+        var styleName = record.get('styleName');
+
+        this.layer.mergeNewParams({
+            styles: styleName
+        });
+
+        // Params should already have been changed, but legend doesn't update if we don't do this...
+        this.layer.params.STYLES = styleName;
+        this.refreshLegend();
     },
 
     refreshLegend: function() {
@@ -201,7 +208,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         this.legendImage.show();
         // dont worry if the form is visible here
         this.styleCombo.setValue(styleName);
-
     },
 
     // builds a getLegend image request for the combobox form and the selected palette
