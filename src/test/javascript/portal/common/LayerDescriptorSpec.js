@@ -74,22 +74,6 @@ describe("Portal.common.LayerDescriptor", function() {
         expect(layerDescriptor._getParentName()).toBeFalsy();
     });
 
-    describe('_getAllStyles', function() {
-
-        it('returns object or empty Array if undefined', function() {
-
-            var testStyles = ['Style 1', 'Style 2'];
-
-            var layerDescriptor = new Portal.common.LayerDescriptor({
-                allStyles: testStyles
-            });
-
-            expect(layerDescriptor._getAllStyles()).toEqual(testStyles);
-            layerDescriptor.allStyles = undefined;
-            expect(layerDescriptor._getAllStyles()).toEqual([]);
-        });
-    });
-
     describe('zoom override', function() {
 
         var layerDesc = new Portal.common.LayerDescriptor({
