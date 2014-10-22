@@ -325,12 +325,16 @@ hr {
     background: url("../images/animation/stop.png") no-repeat left top transparent;
 }
 
-.downloadButtonWrapper {
-    margin-top: 2px;
+.listButtonWrapper {
+    margin-top: 1px;
 }
 
 .downloadButton {
     background: url("../images/animation/download.png") no-repeat left top transparent;
+}
+
+.removeButton {
+    margin-right: 10px;
 }
 
 .spacer {
