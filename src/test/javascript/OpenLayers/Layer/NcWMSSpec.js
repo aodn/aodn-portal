@@ -92,15 +92,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
             cachedLayer.loadTimeSeriesForDay(moment.utc('2001-07-02T00:00:00Z'));
             expect(cachedLayer._fetchTimeSeriesForDay).toHaveBeenCalled();
         });
-
-        it("calls user defined callback", function() {
-            cachedLayer.callbackMock = function() {};
-            spyOn(cachedLayer, 'callbackMock');
-            cachedLayer.temporalExtent.parse(['2001-07-02T00:00:00']);
-
-            cachedLayer.loadTimeSeriesForDay(moment.utc('2001-07-02T00:00:00Z'), cachedLayer.callbackMock);
-            expect(cachedLayer.callbackMock).toHaveBeenCalled();
-        });
     });
 
     describe("_timeSeriesLoadedForDate", function() {

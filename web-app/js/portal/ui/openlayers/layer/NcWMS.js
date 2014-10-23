@@ -89,16 +89,12 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
     },
 
-    loadTimeSeriesForDay: function(date, callback, callbackCtx) {
-        // If callback and callbackCtx are undefined, use the default ones
-        callback    = typeof callback    !== 'undefined' ? callback    : this._timeSeriesLoadedForDate;
-        callbackCtx = typeof callbackCtx !== 'undefined' ? callbackCtx : this;
-
+    loadTimeSeriesForDay: function(date) {
         if (this.getTimeSeriesForDay(date)) {
-            callback.call(callbackCtx);
+            this._timeSeriesLoadedForDate();
         }
         else {
-            this._fetchTimeSeriesForDay(date, callback, callbackCtx);
+            this._fetchTimeSeriesForDay(date);
         }
     },
 
@@ -133,7 +129,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return timeSeriesArray;
     },
 
-    _fetchTimeSeriesForDay: function(date, callback, callbackCtx) {
+    _fetchTimeSeriesForDay: function(date) {
         var url = this._getTimeSeriesUrl(date);
 
         this.pendingRequests.add(url);
@@ -147,7 +143,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
                         this.temporalExtent.add(date);
                     }, this);
                     this.pendingRequests.remove(url);
-                    callback.call(callbackCtx);
+                    this._timeSeriesLoadedForDate();
                 }
                 catch (e) {
                     log.error("Could not parse times for day '" + date.format('YYYY-MM-DD') + "' for layer '" + this.params.LAYERS + "'");
@@ -279,14 +275,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return true;
     },
 
-    getPreviousTimeSlice: function(callback, ctx) {
-        if (!this.temporalExtent.previous(this.time)) {
-            var previousDay = this.temporalExtent.previousValidDate(this.time);
-            this.loadTimeSeriesForDay(previousDay, callback, ctx);
-        }
-        else {
-            callback.call(ctx);
-        }
+    getPreviousTimeSlice: function() {
+        var previousDay = this.temporalExtent.previousValidDate(this.time);
+        this.loadTimeSeriesForDay(previousDay);
     },
 
     goToPreviousTimeSlice: function() {
@@ -295,14 +286,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
     },
 
-    getNextTimeSlice: function(callback, ctx) {
-        if (!this.temporalExtent.next(this.time)) {
-            var nextDay = this.temporalExtent.nextValidDate(this.time);
-            this.loadTimeSeriesForDay(nextDay, callback, ctx);
-        }
-        else {
-            callback.call(ctx);
-        }
+    getNextTimeSlice: function() {
+        var nextDay = this.temporalExtent.nextValidDate(this.time);
+        this.loadTimeSeriesForDay(nextDay);
     },
 
     goToNextTimeSlice: function() {
