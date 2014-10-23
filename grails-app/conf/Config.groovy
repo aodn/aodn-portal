@@ -108,8 +108,6 @@ minimap {
     }
 }
 
-proxyWmsRequests = true
-
 geoserver_static = [
     uri: "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms",
     type: "WMS-1.1.1"
@@ -163,6 +161,7 @@ openId {
 featureToggles {
     pythonDownload = false
     hierarchicalFacets = false
+    proxyWmsRequests = true
 }
 
 // Google Analytics

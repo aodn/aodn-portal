@@ -11,7 +11,7 @@ Ext.namespace('Portal.utils.Proxy');
 Portal.utils.Proxy.proxyURL = "proxy?url=";
 
 Portal.utils.Proxy.proxy = function(url) {
-    if (Portal.app.appConfig.proxyWmsRequests) {
+    if (Portal.app.appConfig.featureToggles.proxyWmsRequests) {
         return this.proxyURL + encodeURIComponent(url);
     }
     else {
