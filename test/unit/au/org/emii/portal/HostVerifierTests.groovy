@@ -20,36 +20,39 @@ class HostVerifierTests extends GrailsUnitTestCase {
         request = new MockRequest()
 
         verifier = [retrieveResultsFromGeoNetwork: { server ->
-            if (server.equals("http://www.geoserver2.imos.org.au/wms")) {
-                return new XmlParser().parseText('''
+                if (server.equals("http://www.geoserver2.imos.org.au/wms")) {
+                    return new XmlParser().parseText('''
+                            <response>
+                              <summary count="3169" type="local" hitsusedforsummary="1000">
+                                <keywords>
+                                  <keyword count="754" name="Oceans | Ocean Temperature | Water Temperature" indexKey="keyword" />
+                                  <keyword count="569" name="Oceans | Salinity/density | Salinity" indexKey="keyword" />
+                                  <keyword count="541" name="Oceans | Ocean Pressure | Water Pressure" indexKey="keyword" />
+                                  <keyword count="530" name="Profiling Float | Autonomous Profiling Float" indexKey="keyword" />
+                                  <keyword count="294" name="Data Loggers" indexKey="keyword" />
+                                  <keyword count="201" name="Oceans | Salinity/density | Conductivity" indexKey="keyword" />
+                                  <keyword count="197" name="Oceans | Ocean Optics | Fluorescence" indexKey="keyword" />
+                                  <keyword count="195" name="Fluorometers" indexKey="keyword" />
+                                  <keyword count="195" name="Oceans | Ocean Optics | Turbidity" indexKey="keyword" />
+                                  <keyword count="193" name="Oceans | Ocean Chemistry | Oxygen" indexKey="keyword" />
+                                </keywords>
+                              </summary>
+                            </response>
+                      ''')
+                }
+                else {
+                    return new XmlParser().parseText('''
                         <response>
-                          <summary count="3169" type="local" hitsusedforsummary="1000">
-                            <keywords>
-                              <keyword count="754" name="Oceans | Ocean Temperature | Water Temperature" indexKey="keyword" />
-                              <keyword count="569" name="Oceans | Salinity/density | Salinity" indexKey="keyword" />
-                              <keyword count="541" name="Oceans | Ocean Pressure | Water Pressure" indexKey="keyword" />
-                              <keyword count="530" name="Profiling Float | Autonomous Profiling Float" indexKey="keyword" />
-                              <keyword count="294" name="Data Loggers" indexKey="keyword" />
-                              <keyword count="201" name="Oceans | Salinity/density | Conductivity" indexKey="keyword" />
-                              <keyword count="197" name="Oceans | Ocean Optics | Fluorescence" indexKey="keyword" />
-                              <keyword count="195" name="Fluorometers" indexKey="keyword" />
-                              <keyword count="195" name="Oceans | Ocean Optics | Turbidity" indexKey="keyword" />
-                              <keyword count="193" name="Oceans | Ocean Chemistry | Oxygen" indexKey="keyword" />
-                            </keywords>
+                          <summary count="0" type="local" hitsusedforsummary="0">
+                            <keywords />
                           </summary>
                         </response>
-                  ''')
+                      ''')
+                }
             }
-            else {
-                return new XmlParser().parseText('''
-                    <response>
-                      <summary count="0" type="local" hitsusedforsummary="0">
-                        <keywords />
-                      </summary>
-                    </response>
-                  ''')
-            }
-        }] as HostVerifier
+        ] as HostVerifier
+
+        verifier.grailsApplication = _mockGrailsApplication("config", [:])
     }
 
     protected void tearDown() {

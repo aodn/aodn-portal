@@ -66,17 +66,14 @@ class HostVerifier {
 
     def _fromConfig() {
         def result = []
-        if (grailsApplication) {
-            _addIf(result, grailsApplication.config.geonetwork.url)
-            _addIf(result, grailsApplication.config.portal.instance.splash.index)
-            _addIf(result, grailsApplication.config.portal.instance.splash.links)
-            _addIf(result, grailsApplication.config.portal.instance.splash.community)
 
-            // Add allowedProxyHosts
-            if (grailsApplication.config.allowedProxyHosts) {
-                result.addAll(grailsApplication.config.allowedProxyHosts)
-            }
-        }
+        _addIf(result, grailsApplication.config.geonetwork.url)
+        _addIf(result, grailsApplication.config.portal.instance.splash.index)
+        _addIf(result, grailsApplication.config.portal.instance.splash.links)
+        _addIf(result, grailsApplication.config.portal.instance.splash.community)
+
+        result.addAll(grailsApplication.config.allowedProxyHosts)
+
         return result
     }
 
