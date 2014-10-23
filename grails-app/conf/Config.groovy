@@ -168,8 +168,6 @@ featureToggles {
 // Google Analytics
 googleAnalytics.trackingId = null
 
-geonetwork.searchPath = featureToggles.hierarchicalFacets ? 'xml.search.imos' : 'xml.search.summary'
-
 // set per-environment serverURL stem for creating absolute links
 def env = System.getenv()
 
@@ -188,6 +186,7 @@ environments {
         grails.mail.disabled = true
 
         featureToggles.pythonDownload = true
+        featureToggles.hierarchicalFacets = true
     }
 
     test {
@@ -217,6 +216,8 @@ environments {
         }
     }
 }
+
+geonetwork.searchPath = featureToggles.hierarchicalFacets ? 'xml.search.imos' : 'xml.search.summary'
 
 def defaultInstanceName = "IMOS"
 
