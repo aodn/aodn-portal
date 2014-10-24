@@ -44,28 +44,28 @@ describe('Portal.ui.openlayers.layer.NcWMS', function() {
     describe('_setMetadataFromNcWMS', function() {
 
         it('called from initialize', function() {
-            spyOn(OpenLayers.Layer.NcWMS.prototype, '_setMetadataFromNcWMS');
+            spyOn(OpenLayers.Layer.NcWMS.prototype, '_setExtraLayerInfoFromNcWMS');
 
             var ncwmsLayer = mockNcwmsLayer();
 
-            expect(ncwmsLayer._setMetadataFromNcWMS).toHaveBeenCalled();
+            expect(ncwmsLayer._setExtraLayerInfoFromNcWMS).toHaveBeenCalled();
         });
 
-        it('_getMetadataFromNcWMS generates URL', function() {
+        it('_getExtraLayerInfoFromNcwmsUrl generates URL', function() {
             var ncwmsLayer = mockNcwmsLayer();
 
-            expect(ncwmsLayer._getMetadataFromNcWMS()).toEqual(
+            expect(ncwmsLayer._getExtraLayerInfoFromNcwmsUrl()).toEqual(
                 'http://ncwms.aodn.org.au/ncwms/wms?layerName=ncwmsLayerName&REQUEST=GetMetadata&item=layerDetails'
             );
         });
 
-        it('_setMetadataFromNcWMS calls URL', function() {
-            spyOn(OpenLayers.Layer.NcWMS.prototype, '_getMetadataFromNcWMS').andReturn('mockedMetadataUrl');
+        it('_setExtraLayerInfoFromNcWMS calls URL', function() {
+            spyOn(OpenLayers.Layer.NcWMS.prototype, '_getExtraLayerInfoFromNcwmsUrl').andReturn('mockedMetadataUrl');
             spyOn(Ext.ux.Ajax, 'proxyRequest');
 
             var ncwmsLayer = mockNcwmsLayer();
 
-            expect(ncwmsLayer._getMetadataFromNcWMS).toHaveBeenCalled();
+            expect(ncwmsLayer._getExtraLayerInfoFromNcwmsUrl).toHaveBeenCalled();
 
             var ajaxParams = Ext.ux.Ajax.proxyRequest.mostRecentCall.args[0];
             expect(ajaxParams.url).toBe("mockedMetadataUrl");

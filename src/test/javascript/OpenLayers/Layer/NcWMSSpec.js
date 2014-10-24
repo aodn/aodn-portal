@@ -141,7 +141,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
-    describe('_metadataLoaded', function() {
+    describe('_extraLayerInfoLoaded', function() {
         var sampleJson = '{ test: 1, supportedStyles: [], palettes: [] }';
 
         beforeEach(function() {
@@ -152,39 +152,39 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
 
         it('calls _parseDatesWithData', function() {
-            cachedLayer._metadataLoaded(sampleJson);
+            cachedLayer._extraLayerInfoLoaded(sampleJson);
             expect(cachedLayer._parseDatesWithData).toHaveBeenCalled();
         });
 
         it('calls addDays', function() {
             spyOn(cachedLayer.temporalExtent, 'addDays');
-            cachedLayer._metadataLoaded(sampleJson);
+            cachedLayer._extraLayerInfoLoaded(sampleJson);
             expect(cachedLayer.temporalExtent.addDays).toHaveBeenCalled();
         });
 
         it('loads first day', function() {
-            cachedLayer._metadataLoaded(sampleJson);
+            cachedLayer._extraLayerInfoLoaded(sampleJson);
             expect(cachedLayer.temporalExtent.getFirstDay).toHaveBeenCalled();
             expect(cachedLayer.loadTimeSeriesForDay).toHaveBeenCalled();
         });
 
         it('loads last day', function() {
-            cachedLayer._metadataLoaded(sampleJson);
+            cachedLayer._extraLayerInfoLoaded(sampleJson);
             expect(cachedLayer.temporalExtent.getLastDay).toHaveBeenCalled();
             expect(cachedLayer.loadTimeSeriesForDay).toHaveBeenCalled();
         });
     });
 
-    describe('_loadStylesFromMetadata', function() {
+    describe('_loadStylesFromExtraLayerInfo', function() {
 
-        it('sets styles property from metadata', function() {
+        it('sets styles property from extraLayerInfo', function() {
 
-            cachedLayer.metadata = {
+            cachedLayer.extraLayerInfo = {
                 supportedStyles: ['styleA', 'styleC', 'styleB'],
                 palettes: ['paletteB', 'paletteC', 'paletteA']
             };
 
-            cachedLayer._loadStylesFromMetadata();
+            cachedLayer._loadStylesFromExtraLayerInfo();
 
             expect(cachedLayer.styles).toEqual(
                 [
