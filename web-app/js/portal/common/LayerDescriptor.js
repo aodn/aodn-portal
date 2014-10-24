@@ -72,7 +72,6 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         openLayer.abstractTrimmed = this.abstractTrimmed;
         openLayer.parentLayerId = this._getParentId();
         openLayer.parentLayerName = this._getParentName();
-        openLayer.allStyles = this._getAllStyles();
         openLayer.dimensions = this.dimensions;
         openLayer.layerHierarchyPath = this.layerHierarchyPath;
 
@@ -135,15 +134,6 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         }
         else {
             return undefined;
-        }
-    },
-
-    _getAllStyles: function() {
-        if (this.allStyles) {
-            return this.allStyles;
-        }
-        else {
-            return [];
         }
     }
 });

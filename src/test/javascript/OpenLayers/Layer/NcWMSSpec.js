@@ -142,7 +142,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
     });
 
     describe('_metadataLoaded', function() {
-        var sampleJson = '{ test: 1 }';
+        var sampleJson = '{ test: 1, supportedStyles: [], palettes: [] }';
 
         beforeEach(function() {
             spyOn(cachedLayer, '_parseDatesWithData').andCallFake(function() {});
@@ -172,6 +172,33 @@ describe("OpenLayers.Layer.NcWMS", function() {
             cachedLayer._metadataLoaded(sampleJson);
             expect(cachedLayer.temporalExtent.getLastDay).toHaveBeenCalled();
             expect(cachedLayer.loadTimeSeriesForDay).toHaveBeenCalled();
+        });
+    });
+
+    describe('_loadStylesFromMetadata', function() {
+
+        it('sets styles property from metadata', function() {
+
+            cachedLayer.metadata = {
+                supportedStyles: ['styleA', 'styleC', 'styleB'],
+                palettes: ['paletteB', 'paletteC', 'paletteA']
+            };
+
+            cachedLayer._loadStylesFromMetadata();
+
+            expect(cachedLayer.styles).toEqual(
+                [
+                    {name: 'styleA', palette: 'paletteA'},
+                    {name: 'styleA', palette: 'paletteB'},
+                    {name: 'styleA', palette: 'paletteC'},
+                    {name: 'styleB', palette: 'paletteA'},
+                    {name: 'styleB', palette: 'paletteB'},
+                    {name: 'styleB', palette: 'paletteC'},
+                    {name: 'styleC', palette: 'paletteA'},
+                    {name: 'styleC', palette: 'paletteB'},
+                    {name: 'styleC', palette: 'paletteC'}
+                ]
+            );
         });
     });
 
