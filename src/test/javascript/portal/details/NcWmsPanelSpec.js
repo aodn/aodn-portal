@@ -149,6 +149,39 @@ describe('Portal.details.NcWmsPanel', function() {
         });
     });
 
+    describe('next and previous buttons', function() {
+        beforeEach(function() {
+            ncwmsPanel.layer.getPreviousTimeSlice = function() {};
+            ncwmsPanel.layer.getNextTimeSlice = function() {};
+            spyOn(ncwmsPanel.layer, 'getPreviousTimeSlice');
+            spyOn(ncwmsPanel.layer, 'getNextTimeSlice');
+        });
+
+        describe('_previousTimeSlice', function() {
+            it('attaches pending event', function() {
+                ncwmsPanel._loadPreviousTimeSlice();
+                expect(ncwmsPanel._getPendingEvent()).toEqual('previous');
+            });
+
+            it('loads previous time slice', function() {
+                ncwmsPanel._loadPreviousTimeSlice();
+                expect(ncwmsPanel.layer.getPreviousTimeSlice).toHaveBeenCalled();
+            });
+        });
+
+        describe('_nextTimeSlice', function() {
+            it('attaches pending event', function() {
+                ncwmsPanel._loadNextTimeSlice();
+                expect(ncwmsPanel._getPendingEvent()).toEqual('next');
+            });
+
+            it('loads next time slice', function() {
+                ncwmsPanel._loadNextTimeSlice();
+                expect(ncwmsPanel.layer.getNextTimeSlice).toHaveBeenCalled();
+            });
+        });
+    });
+
     function _applyCommonSpies(panel) {
         var _panel = panel || ncwmsPanel;
         spyOn(_panel, '_onDateSelected');

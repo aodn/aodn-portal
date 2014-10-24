@@ -305,12 +305,26 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return true;
     },
 
-    previousTimeSlice: function() {
-        return this.toTime(this.temporalExtent.previous(this.time));
+    getPreviousTimeSlice: function() {
+        var previousDay = this.temporalExtent.previousValidDate(this.time);
+        this.loadTimeSeriesForDay(previousDay);
     },
 
-    nextTimeSlice: function() {
-        return this.toTime(this.temporalExtent.next(this.time));
+    goToPreviousTimeSlice: function() {
+        if (this.temporalExtent.previous(this.time)) {
+            this.toTime(this.temporalExtent.previous(this.time));
+        }
+    },
+
+    getNextTimeSlice: function() {
+        var nextDay = this.temporalExtent.nextValidDate(this.time);
+        this.loadTimeSeriesForDay(nextDay);
+    },
+
+    goToNextTimeSlice: function() {
+        if (this.temporalExtent.next(this.time)) {
+            this.toTime(this.temporalExtent.next(this.time));
+        }
     },
 
     getCqlForTemporalExtent: function() {

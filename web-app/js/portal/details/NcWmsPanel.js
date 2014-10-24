@@ -12,6 +12,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     ROW_HEIGHT: 32,
     ROW_WIDTH: 255,
 
+    PENDING_EVENT_ATTR: 'PENDING_EVENT',
+
     constructor: function(cfg) {
 
         this.layer = cfg.layer;
@@ -177,7 +179,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             listeners: {
                 scope: this,
                 'click': function () {
-                    this._previousTimeSlice();
+                    this._loadPreviousTimeSlice();
                 }
             },
             tooltip: OpenLayers.i18n('selectTimePeriod', {direction: "Previous"})
@@ -190,7 +192,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
             listeners: {
                 scope: this,
                 'click': function () {
-                    this._nextTimeSlice();
+                    this._loadNextTimeSlice();
                 }
             },
             tooltip: OpenLayers.i18n('selectTimePeriod', {direction: "Next"})
@@ -308,13 +310,37 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         // Now we wait for the event of 'temporalextentloaded'
     },
 
-    _previousTimeSlice: function() {
-        this.layer.previousTimeSlice();
+    _getPendingEvent: function() {
+        return this[this.PENDING_EVENT_ATTR];
+    },
+
+    _attachPendingEvent: function(buttonClicked) {
+        this[this.PENDING_EVENT_ATTR] = buttonClicked;
+    },
+
+    _removePendingEvent: function(datePicker) {
+        delete this[this.PENDING_EVENT_ATTR];
+    },
+
+    _loadPreviousTimeSlice: function() {
+        this._attachPendingEvent('previous');
+        this.layer.getPreviousTimeSlice();
+        // Now we wait for the event 'temporalextentloaded'
+    },
+
+    _goToPreviousTimeSlice: function() {
+        this.layer.goToPreviousTimeSlice();
         this._updateTimeRangeLabel();
     },
 
-    _nextTimeSlice: function() {
-        this.layer.nextTimeSlice();
+    _loadNextTimeSlice: function() {
+        this._attachPendingEvent('next');
+        this.layer.getNextTimeSlice();
+        // Now we wait for the event 'temporalextentloaded'
+    },
+
+    _goToNextTimeSlice: function() {
+        this.layer.goToNextTimeSlice();
         this._updateTimeRangeLabel();
     },
 
@@ -376,18 +402,28 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
     },
 
     _layerTemporalExtentLoad: function() {
-        // Initialize pickers
-        this._initializeDateTimePicker(this.startDateTimePicker, this.layer.getSubsetExtentMin());
-        this._initializeDateTimePicker(this.endDateTimePicker, this.layer.getSubsetExtentMax());
+        if ('next' == this._getPendingEvent()) {
+            this._removePendingEvent();
+            this._goToNextTimeSlice();
+        }
+        else if ('previous' == this._getPendingEvent()) {
+            this._removePendingEvent();
+            this._goToPreviousTimeSlice();
+        }
+        else {
+            // Initialize/modify pickers
+            this._initializeDateTimePicker(this.startDateTimePicker, this.layer.getSubsetExtentMin());
+            this._initializeDateTimePicker(this.endDateTimePicker, this.layer.getSubsetExtentMax());
 
-        var extent = this.layer.getTemporalExtent();
-        this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.startDateTimePicker.initvalue, false);
-        this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.endDateTimePicker.initvalue, true);
-        this._updateTimeRangeLabel();
+            var extent = this.layer.getTemporalExtent();
+            this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.startDateTimePicker.initvalue, false);
+            this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.endDateTimePicker.initvalue, true);
+            this._updateTimeRangeLabel();
 
-        this._setLayerSubsetExtent();
+            this._setLayerSubsetExtent();
 
-        this._applyFilterValuesFromMap();
+            this._applyFilterValuesFromMap();
+        }
     },
 
     _setDateTimePickerExtent: function(picker, extent, value, toMaxValue) {
