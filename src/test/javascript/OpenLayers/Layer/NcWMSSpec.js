@@ -145,31 +145,42 @@ describe("OpenLayers.Layer.NcWMS", function() {
         var sampleJson = '{ test: 1, supportedStyles: [], palettes: [] }';
 
         beforeEach(function() {
-            spyOn(cachedLayer, '_parseDatesWithData').andCallFake(function() {});
+            spyOn(cachedLayer, '_parseDatesWithDataAsync').andCallFake(function() {});
             spyOn(cachedLayer.temporalExtent, 'getFirstDay').andCallFake(function() {});
             spyOn(cachedLayer.temporalExtent, 'getLastDay').andCallFake(function() {});
             spyOn(cachedLayer, 'loadTimeSeriesForDay').andCallFake(function() {});
         });
 
-        it('calls _parseDatesWithData', function() {
+        it('calls _parseDatesWithDataAsync', function() {
             cachedLayer._metadataLoaded(sampleJson);
-            expect(cachedLayer._parseDatesWithData).toHaveBeenCalled();
+            expect(cachedLayer._parseDatesWithDataAsync).toHaveBeenCalled();
+        });
+    });
+
+    describe('_loadTimesFromMetadataDone', function() {
+        var sampleJson = '{ test: 1, supportedStyles: [], palettes: [] }';
+
+        beforeEach(function() {
+            spyOn(cachedLayer, '_parseDatesWithDataAsync').andCallFake(function() {});
+            spyOn(cachedLayer.temporalExtent, 'getFirstDay').andCallFake(function() {});
+            spyOn(cachedLayer.temporalExtent, 'getLastDay').andCallFake(function() {});
+            spyOn(cachedLayer, 'loadTimeSeriesForDay').andCallFake(function() {});
         });
 
         it('calls addDays', function() {
             spyOn(cachedLayer.temporalExtent, 'addDays');
-            cachedLayer._metadataLoaded(sampleJson);
+            cachedLayer._loadTimesFromMetadataDone(sampleJson);
             expect(cachedLayer.temporalExtent.addDays).toHaveBeenCalled();
         });
 
         it('loads first day', function() {
-            cachedLayer._metadataLoaded(sampleJson);
+            cachedLayer._loadTimesFromMetadataDone(sampleJson);
             expect(cachedLayer.temporalExtent.getFirstDay).toHaveBeenCalled();
             expect(cachedLayer.loadTimeSeriesForDay).toHaveBeenCalled();
         });
 
         it('loads last day', function() {
-            cachedLayer._metadataLoaded(sampleJson);
+            cachedLayer._loadTimesFromMetadataDone(sampleJson);
             expect(cachedLayer.temporalExtent.getLastDay).toHaveBeenCalled();
             expect(cachedLayer.loadTimeSeriesForDay).toHaveBeenCalled();
         });
@@ -202,22 +213,65 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
-    it('parses dates from NcWMS GetMetadata JSON', function() {
+    describe('date parsing', function() {
         var ncwmsMetadataLayerDetailsJson = '{ "units": "m s-1", "bbox": ["150.781701", "-24.195812", "153.55338", "-21.92031"], "scaleRange": ["-1.0", "1.0"], "numColorBands": 253, "supportedStyles": ["boxfill"], "datesWithData": { "2007": { "9": [15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31], "10": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30], "11": [1,2,3,5,6,7,8,9,10,11,12,13,14,15,16,17,20,21,22,23,24,25,26,27,28,29,30,31] }, "2008": { "0": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31], "1": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29], "2": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29], "3": [3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] } } }';
-        var ncwmsMetadataLayerDetails = Ext.util.JSON.decode(ncwmsMetadataLayerDetailsJson);
+        var ncwmsMetadataLayerDetails;
 
-        var datesWithData = cachedLayer._parseDatesWithData(ncwmsMetadataLayerDetails);
+        beforeEach(function() {
+            ncwmsMetadataLayerDetails = Ext.util.JSON.decode(ncwmsMetadataLayerDetailsJson);
+        });
 
-        expect(datesWithData.length).toEqual(192);
+        it('get years from json', function() {
+            var yearsWithData = cachedLayer._getYearsWithDates(ncwmsMetadataLayerDetails);
+            expect(yearsWithData).toEqual([2007, 2008]);
+        });
 
-        // Statistically check for a few dates that were parsed
-        // Notice that when month is parsed, it's zero based (0-11)
-        expect(searchForDate(moment.utc('2007-10-15'), datesWithData)).toBeGreaterThan(-1);
-        expect(searchForDate(moment.utc('2007-10-18'), datesWithData)).toBeGreaterThan(-1);
-        expect(searchForDate(moment.utc('2007-12-31'), datesWithData)).toBeGreaterThan(-1);
-        expect(searchForDate(moment.utc('2008-03-02'), datesWithData)).toBeGreaterThan(-1);
+        it('parse a single year when exists', function() {
+            var datesWithData;
 
-        expect(searchForDate(moment.utc('2200-02-02'), datesWithData)).toEqual(-1);
+            datesWithData = cachedLayer._parseSingleYear(ncwmsMetadataLayerDetails, 2007);
+            expect(datesWithData.length).toEqual(75);
+
+            datesWithData = cachedLayer._parseSingleYear(ncwmsMetadataLayerDetails, 2008);
+            expect(datesWithData.length).toEqual(117);
+        });
+
+        it('parse a single year when does not exist', function() {
+            var datesWithData = cachedLayer._parseSingleYear(ncwmsMetadataLayerDetails, 2200);
+            expect(datesWithData).toEqual([]);
+        });
+
+        it('async date parsing from NcWMS GetMetadata JSON', function() {
+            var datesWithData = null;
+
+            spyOn(cachedLayer, '_loadTimesFromMetadataDone').andCallFake(
+                function(_datesWithData) {
+                    datesWithData = _datesWithData;
+                }
+            );
+
+            cachedLayer._parseDatesWithDataAsync(ncwmsMetadataLayerDetails);
+
+            // Wait for function to return
+            waitsFor(function() {
+                return datesWithData;
+            }, "Temporal extent not processed", 1000);
+
+            runs(function() {
+                expect(cachedLayer._loadTimesFromMetadataDone).toHaveBeenCalled();
+
+                expect(datesWithData.length).toEqual(192);
+
+                // Statistically check for a few dates that were parsed
+                // Notice that when month is parsed, it's zero based (0-11)
+                expect(searchForDate(moment.utc('2007-10-15'), datesWithData)).toBeGreaterThan(-1);
+                expect(searchForDate(moment.utc('2007-10-18'), datesWithData)).toBeGreaterThan(-1);
+                expect(searchForDate(moment.utc('2007-12-31'), datesWithData)).toBeGreaterThan(-1);
+                expect(searchForDate(moment.utc('2008-03-02'), datesWithData)).toBeGreaterThan(-1);
+
+                expect(searchForDate(moment.utc('2200-02-02'), datesWithData)).toEqual(-1);
+            });
+        });
     });
 
     describe('get next time', function() {
