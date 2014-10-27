@@ -37,10 +37,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, [name, url, params, options]);
 
-        // We assume that before the first GFI request we will be quick enough
-        // to complete that little tiny request
         this._setMetadataFromNcWMS();
-
         this._loadTimeSeriesDates();
         this._loadStyles();
     },
@@ -52,6 +49,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             success: function(resp, options) {
                 try {
                     this.metadata = Ext.util.JSON.decode(resp.responseText);
+                    // This means we are "GFI ready"
+                    this.params.QUERYABLE = true;
                 }
                 catch (e) {
                     log.error("Could not parse metadata for NcWMS layer '" + this.params.LAYERS + "'");
