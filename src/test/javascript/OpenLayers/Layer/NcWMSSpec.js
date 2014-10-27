@@ -62,7 +62,8 @@ describe("OpenLayers.Layer.NcWMS", function() {
     describe("_getTimeSeriesUrl", function() {
         it("returns correct url", function() {
             cachedLayer.url = "urlprefix";
-            expect(cachedLayer._getTimeSeriesUrl(moment.utc('2011-07-02T01:32:45Z'))).toBe('urlprefix?layerName=undefined&REQUEST=GetMetadata&item=timesteps&day=2011-07-02T00:00:00.000Z');
+            cachedLayer.params.LAYERS = "test_layer";
+            expect(cachedLayer._getTimeSeriesUrl(moment.utc('2011-07-02T01:32:45Z'))).toBe('layer/getFilterValuesAsJSON?serverType=ncwms&server=urlprefix&layer=test_layer&filter=2011-07-02T00:00:00.000Z');
         });
     });
 
@@ -118,26 +119,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
             cachedLayer.pendingRequests.remove("pending request");
             cachedLayer._timeSeriesLoadedForDate();
             expect(cachedLayer.events.triggerEvent).toHaveBeenCalledWith('temporalextentloaded', cachedLayer);
-        });
-    });
-
-    describe("_parseTimesForDay", function() {
-        it("parses JSON and assembles dates", function() {
-            var date = moment.utc('2001-07-02T00:00:00Z');
-            var sampleJson = '{"timesteps":["00:30:00.000Z","01:30:00.000Z","02:30:00.000Z","03:30:00.000Z","04:30:00.000Z","05:30:00.000Z","06:30:00.000Z","07:30:00.000Z","08:30:00.000Z","09:30:00.000Z","10:30:00.000Z","11:30:00.000Z","12:30:00.000Z","13:30:00.000Z","14:30:00.000Z","15:30:00.000Z","16:30:00.000Z","17:30:00.000Z","18:30:00.000Z","19:30:00.000Z","20:30:00.000Z","21:30:00.000Z","22:30:00.000Z","23:30:00.000Z"]}'
-
-            var timeSeriesArray = cachedLayer._parseTimesForDay(date, sampleJson);
-            expect(timeSeriesArray.length).toEqual(24);
-
-            // Statistically check for a few elements in the array
-            expect(searchForDate(moment.utc('2001-07-02T00:30:00.000Z'), timeSeriesArray)).toBeGreaterThan(-1);
-            expect(searchForDate(moment.utc('2001-07-02T01:30:00.000Z'), timeSeriesArray)).toBeGreaterThan(-1);
-            expect(searchForDate(moment.utc('2001-07-02T20:30:00.000Z'), timeSeriesArray)).toBeGreaterThan(-1);
-            expect(searchForDate(moment.utc('2001-07-02T23:30:00.000Z'), timeSeriesArray)).toBeGreaterThan(-1);
-
-            // Control tests to make sure some things don't exist
-            expect(searchForDate(moment.utc('2200-07-02T23:30:00.000Z'), timeSeriesArray)).toEqual(-1);
-            expect(searchForDate(moment.utc('2001-07-02T23:31:00.000Z'), timeSeriesArray)).toEqual(-1);
         });
     });
 
@@ -203,20 +184,19 @@ describe("OpenLayers.Layer.NcWMS", function() {
     });
 
     it('parses dates from NcWMS GetMetadata JSON', function() {
-        var ncwmsMetadataLayerDetailsJson = '[ { "label": "Time", "type": "TimeSeries", "name": "timesteps", "possibleValues": { "2007": { "9": [15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31], "10": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30], "11": [1,2,3,5,6,7,8,9,10,11,12,13,14,15,16,17,20,21,22,23,24,25,26,27,28,29,30,31] }, "2008": { "0": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31], "1": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29], "2": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29], "3": [3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] } } } ]';
-        var ncwmsMetadataLayerDetails = Ext.util.JSON.decode(ncwmsMetadataLayerDetailsJson);
+        var ncwmsFiltersJson = '[{"label":"Time","type":"TimeSeries","name":"timesteps","possibleValues":["2010-02-23T00:00:00Z","2010-03-10T00:00:00Z","2010-03-11T00:00:00Z","2010-03-12T00:00:00Z","2010-03-13T00:00:00Z"]}]';
+        var ncwmsFilters = Ext.util.JSON.decode(ncwmsFiltersJson);
 
-        var datesWithData = cachedLayer._parseDatesWithData(ncwmsMetadataLayerDetails);
+        var datesWithData = cachedLayer._parseDatesWithData(ncwmsFilters);
 
-        expect(datesWithData.length).toEqual(192);
+        expect(datesWithData.length).toEqual(5);
+        expect(searchForDate(moment.utc('2010-02-23'), datesWithData)).toBeGreaterThan(-1);
+        expect(searchForDate(moment.utc('2010-03-10'), datesWithData)).toBeGreaterThan(-1);
+        expect(searchForDate(moment.utc('2010-03-11'), datesWithData)).toBeGreaterThan(-1);
+        expect(searchForDate(moment.utc('2010-03-12'), datesWithData)).toBeGreaterThan(-1);
+        expect(searchForDate(moment.utc('2010-03-13'), datesWithData)).toBeGreaterThan(-1);
 
-        // Statistically check for a few dates that were parsed
-        // Notice that when month is parsed, it's zero based (0-11)
-        expect(searchForDate(moment.utc('2007-10-15'), datesWithData)).toBeGreaterThan(-1);
-        expect(searchForDate(moment.utc('2007-10-18'), datesWithData)).toBeGreaterThan(-1);
-        expect(searchForDate(moment.utc('2007-12-31'), datesWithData)).toBeGreaterThan(-1);
-        expect(searchForDate(moment.utc('2008-03-02'), datesWithData)).toBeGreaterThan(-1);
-
+        // Search for something that shouldn't be there
         expect(searchForDate(moment.utc('2200-02-02'), datesWithData)).toEqual(-1);
     });
 

@@ -166,6 +166,44 @@ class LayerControllerTests extends ControllerUnitTestCase {
         assertEquals expected, this.controller.response.contentAsString
     }
 
+    void testGetFiltersAsJsonNcWMS() {
+        this.controller.params.serverType = 'ncwms'
+        this.controller.params.server = 'some_server'
+        this.controller.params.layer = 'some_layer'
+
+        def methodCalled = false
+        wms.NcwmsServer.metaClass.getFilters = { server, layer ->
+            methodCalled = true
+            return []
+        }
+
+        this.controller.getFiltersAsJSON()
+
+        // Restore original wms.NcwmsServer class
+        wms.NcwmsServer.metaClass = null
+
+        assertTrue methodCalled
+    }
+
+    void testGetSylesAsJsonNcWMS() {
+        this.controller.params.serverType = 'ncwms'
+        this.controller.params.server = 'some_server'
+        this.controller.params.layer = 'some_layer'
+
+        def methodCalled = false
+        wms.NcwmsServer.metaClass.getStyles = { server, layer ->
+            methodCalled = true
+            return []
+        }
+
+        this.controller.getStylesAsJSON()
+
+        // Restore original wms.NcwmsServer class
+        wms.NcwmsServer.metaClass = null
+
+        assertTrue methodCalled
+    }
+
     void testShowLayerByItsId() {
         def server1 = new Server()
         server1.id = 1

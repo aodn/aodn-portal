@@ -8,6 +8,8 @@
 package au.org.emii.portal.wms
 
 import grails.converters.JSON
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 
 class NcwmsServer extends WmsServer {
     def getStyles(server, layer) {
@@ -41,6 +43,16 @@ class NcwmsServer extends WmsServer {
     }
 
     def getFilterValues(server, layer, filter) {
+        return []
+    }
+
+    def getTimeSeries(server, layer, date) {
+        def urlFilterValues = String.format('%1$s?layerName=%2$s&REQUEST=GetMetadata&item=timesteps&day=%3$s', server, layer, date)
+        def json = JSON.parse(getUrlContent(urlFilterValues))
+
+        def filterValues = parseTimeSteps(date, json.timesteps)
+
+        return filterValues.sort()
     }
 
     private parseDatesWithData(datesWithData) {
@@ -54,7 +66,20 @@ class NcwmsServer extends WmsServer {
                 };
             };
         };
-        return datesWithDataFormatted
+        return datesWithDataFormatted.sort()
+    }
+
+    private parseTimeSteps(date, timeSteps) {
+        // Parse date and attach it to every timestep
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        Date day = format.parse(date)
+
+        def timeStepsFormatted = []
+        timeSteps.each() { timestep ->
+            def formattedTimeStep = String.format('%sT%s', day.format("yyyy-MM-dd"), timestep)
+            timeStepsFormatted.push(formattedTimeStep)
+        }
+        return timeStepsFormatted
     }
 
     private String getUrlContent(url) {

@@ -82,9 +82,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _loadStyles: function() {
+        var url = "layer/getStylesAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS;
+
         Ext.Ajax.request({
             scope: this,
-            url: "layer/getStylesAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS,
+            url: url,
             success: function(resp, options) {
                 try {
                     this._stylesLoaded(Ext.util.JSON.decode(resp.responseText));
@@ -167,34 +169,16 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
     },
 
-    _parseTimesForDay: function(date, response) {
-        // NcWMS returns only time in the format of '02:30:00.000Z', we'll need
-        // to stick the day in front when parsing
-        var timeSeriesHash = Ext.util.JSON.decode(response);
-        var dateOnlyString = date.format('YYYY-MM-DD') + 'T';
-
-        var timeSeriesArray = [];
-
-        if (timeSeriesHash['timesteps']) {
-            Ext.each(timeSeriesHash['timesteps'], function(timestep) {
-                var fullDate = dateOnlyString + timestep;
-                timeSeriesArray.push(new moment.utc(fullDate));
-            });
-        }
-
-        return timeSeriesArray;
-    },
-
     _fetchTimeSeriesForDay: function(date) {
         var url = this._getTimeSeriesUrl(date);
-
         this.pendingRequests.add(url);
-        Ext.ux.Ajax.proxyRequest({
+
+        Ext.Ajax.request({
             scope: this,
             url: url,
             success: function(resp, options) {
                 try {
-                    var dateArray = this._parseTimesForDay(date, resp.responseText);
+                    var dateArray = Ext.util.JSON.decode(resp.responseText);
                     Ext.each(dateArray, function(date) {
                         this.temporalExtent.add(date);
                     }, this);
@@ -278,21 +262,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var dateFilter = response[0];
 
         if (dateFilter['possibleValues']) {
-            Ext.each(Object.keys(dateFilter['possibleValues']), function(year) {
-                year = parseInt(year);
-                Ext.each(Object.keys(dateFilter['possibleValues'][year]), function(month) {
-                    month = parseInt(month);
-                    Ext.each(dateFilter['possibleValues'][year][month], function(day) {
-                        day = parseInt(day);
-                        // IMPORTANT - month is zero based (0-11)
-                        var dateWithData = new moment.utc();
-                        dateWithData.year(year);
-                        dateWithData.month(month);
-                        dateWithData.date(day);
-                        dateWithData.startOf('day');
-                        datesWithDataArray.push(dateWithData);
-                    });
-                });
+            Ext.each(dateFilter['possibleValues'], function(dateString) {
+                var dateWithData = new moment.utc(dateString);
+                datesWithDataArray.push(dateWithData);
             });
         }
 
@@ -309,7 +281,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _getTimeSeriesUrl: function(date) {
-        var timeSeriesUrl = this.url + "?layerName=" + this.params.LAYERS + "&REQUEST=GetMetadata&item=timesteps&day=" + date.clone().startOf('day').toISOString();
+        var timeSeriesUrl = "layer/getFilterValuesAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS + "&filter=" + date.clone().startOf('day').toISOString();
         return timeSeriesUrl;
     },
 

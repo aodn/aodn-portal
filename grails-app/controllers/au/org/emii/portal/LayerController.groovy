@@ -8,6 +8,7 @@
 package au.org.emii.portal
 
 import au.org.emii.portal.display.MenuJsonCache
+import au.org.emii.portal.wms.NcwmsServer
 import grails.converters.JSON
 import groovy.time.TimeCategory
 import org.hibernate.criterion.MatchMode
@@ -635,14 +636,19 @@ class LayerController {
             def server = params.server
             def layer = params.layer
 
-            def ncwmsMetadataUrl = new URL(String.format('%1$s?layerName=%2$s&REQUEST=GetMetadata&item=layerDetails', server, layer))
-            def json = JSON.parse(ncwmsMetadataUrl.text)
+            def ncwmsServer = new NcwmsServer()
+            render text: ncwmsServer.getStyles(server, layer) as JSON
+        }
+    }
 
-            def styles = [
-                styles: json.supportedStyles,
-                palettes: json.palettes
-            ]
-            render text: styles as JSON
+    def getFilterValuesAsJSON = {
+        if (params.serverType == 'ncwms') {
+            def server = params.server
+            def layer = params.layer
+            def filter = params.filter
+
+            def ncwmsServer = new NcwmsServer()
+            render text: ncwmsServer.getTimeSeries(server, layer, filter) as JSON
         }
     }
 
@@ -651,18 +657,8 @@ class LayerController {
             def server = params.server
             def layer = params.layer
 
-            def ncwmsMetadataUrl = new URL(String.format('%1$s?layerName=%2$s&REQUEST=GetMetadata&item=layerDetails', server, layer))
-            def json = JSON.parse(ncwmsMetadataUrl.text)
-
-            def filters = [
-                [
-                    label: "Time",
-                    type: "TimeSeries",
-                    name: "timesteps",
-                    possibleValues: json.datesWithData
-                ]
-            ]
-            render text: filters as JSON
+            def ncwmsServer = new NcwmsServer()
+            render text: ncwmsServer.getFilters(server, layer) as JSON
         }
         else {
             def layerInstance = Layer.get(params.layerId)

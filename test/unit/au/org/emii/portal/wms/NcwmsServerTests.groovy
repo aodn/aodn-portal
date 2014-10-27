@@ -50,7 +50,7 @@ class NcwmsServerTests extends GrailsUnitTestCase {
 
         def expected = '["2013-01-01T00:00:00Z","2013-01-02T00:00:00Z","2013-01-31T00:00:00Z","2013-02-05T00:00:00Z","2014-01-02T00:00:00Z"]'
 
-        assertEquals (((datesWithData.sort() as JSON).toString()), expected)
+        assertEquals (((datesWithData as JSON).toString()), expected)
     }
 
     void testFiltersInvalidJson() {
@@ -58,5 +58,15 @@ class NcwmsServerTests extends GrailsUnitTestCase {
 
         def filters = ncwmsServer.getFilters("http://server", "layer")
         assertEquals ((filters as JSON).toString(), '[{"label":"Time","type":"TimeSeries","name":"timesteps","possibleValues":[]}]')
+    }
+
+    void testParseTimeSteps() {
+        def timeStepsJson = JSON.parse('["21:30:00.000Z","22:30:00.000Z","23:30:00.000Z"]')
+
+        def timeSteps = ncwmsServer.parseTimeSteps("2014-10-10T00:00:00.000Z", timeStepsJson)
+
+        def expected = ["2014-10-10T21:30:00.000Z","2014-10-10T22:30:00.000Z","2014-10-10T23:30:00.000Z"]
+
+        assertEquals timeSteps, expected
     }
 }
