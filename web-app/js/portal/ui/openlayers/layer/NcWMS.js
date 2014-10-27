@@ -63,15 +63,14 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     _metadataLoaded: function(response) {
         this.metadata = Ext.util.JSON.decode(response);
 
-        this._loadTimesFromMetadata();
+        // This function will call _loadTimesFromMetadataDone when finished
+        this._parseDatesWithDataAsync(this.metadata);
+
         this._loadStylesFromMetadata();
     },
 
-    _loadTimesFromMetadata: function() {
-        var datesWithData = this._parseDatesWithData(this.metadata);
-
+    _loadTimesFromMetadataDone: function(datesWithData) {
         this.temporalExtent.addDays(datesWithData);
-
         this.loadTimeSeriesForDay(this.temporalExtent.getFirstDay());
         this.loadTimeSeriesForDay(this.temporalExtent.getLastDay());
     },
@@ -245,29 +244,76 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
     },
 
-    _parseDatesWithData: function(ncwmsMetadata) {
-        datesWithDataArray = [];
+    _parseSingleYear: function(ncwmsMetadata, year) {
+        var dates = [];
 
+        if (! ncwmsMetadata['datesWithData'][year]) {
+            return dates;
+        }
+
+        Ext.each(Object.keys(ncwmsMetadata['datesWithData'][year]), function(month) {
+            month = parseInt(month);
+            Ext.each(ncwmsMetadata['datesWithData'][year][month], function(day) {
+                day = parseInt(day);
+                // IMPORTANT - month is zero based (0-11)
+                var dateWithData = new moment.utc();
+                dateWithData.year(year);
+                dateWithData.month(month);
+                dateWithData.date(day);
+                dateWithData.startOf('day');
+                dates.push(dateWithData);
+            });
+        });
+
+        return dates;
+    },
+
+    _getYearsWithDates: function(ncwmsMetadata) {
+        var yearsWithDates = []
         if (ncwmsMetadata['datesWithData']) {
             Ext.each(Object.keys(ncwmsMetadata['datesWithData']), function(year) {
                 year = parseInt(year);
-                Ext.each(Object.keys(ncwmsMetadata['datesWithData'][year]), function(month) {
-                    month = parseInt(month);
-                    Ext.each(ncwmsMetadata['datesWithData'][year][month], function(day) {
-                        day = parseInt(day);
-                        // IMPORTANT - month is zero based (0-11)
-                        var dateWithData = new moment.utc();
-                        dateWithData.year(year);
-                        dateWithData.month(month);
-                        dateWithData.date(day);
-                        dateWithData.startOf('day');
-                        datesWithDataArray.push(dateWithData);
-                    });
-                });
-            });
+                yearsWithDates.push(year);
+            }, this);
         }
 
-        return datesWithDataArray;
+        return yearsWithDates;
+    },
+
+    _parseDatesWithDataAsync: function(ncwmsMetadata) {
+        datesWithDataArray = [];
+
+        var yearsWithDates = this._getYearsWithDates(ncwmsMetadata);
+
+        // Interleave processing of each year, so we release control back to
+        // the browser, allowing it to be responsive for the user. This is more
+        // significant on slow machines and on data collections that include
+        // many years of data.
+        var yearIndex = 0;
+        var that = this;
+
+        if (0 == yearsWithDates.length) {
+            that._loadTimesFromMetadataDone(datesWithDataArray);
+        }
+
+        (function () {
+            function _parseYear() {
+                (function () {
+                    var currentYear = yearsWithDates[yearIndex];
+                    var datesForYear = that._parseSingleYear(ncwmsMetadata, currentYear);
+                    Array.prototype.push.apply(datesWithDataArray, datesForYear);
+                    ++yearIndex;
+
+                    if (yearIndex < yearsWithDates.length) {
+                        setTimeout(arguments.callee, 0);
+                    }
+                    else {
+                        that._loadTimesFromMetadataDone(datesWithDataArray);
+                    }
+                })();
+            }
+            _parseYear();
+        })();
     },
 
     _getTimeParameter: function(dateTime) {
