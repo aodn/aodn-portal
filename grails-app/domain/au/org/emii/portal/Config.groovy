@@ -51,7 +51,6 @@ class Config {
     String downloadCartFilename
     Integer downloadCartMaxNumFiles
     Integer downloadCartMaxFileSize
-    String downloadCartMimeTypeToExtensionMapping
     String downloadCartDownloadableProtocols
 
     String metadataLinkProtocols
@@ -98,7 +97,6 @@ class Config {
         downloadCartFilename(blank: false)
         downloadCartMaxNumFiles(min: 1)
         downloadCartMaxFileSize(min: 1)
-        downloadCartMimeTypeToExtensionMapping(size: 2..2000)
         downloadCartDownloadableProtocols(size: 0..255)
         metadataLinkProtocols(size: 0..255)
         metadataLayerProtocols(size: 0..255)

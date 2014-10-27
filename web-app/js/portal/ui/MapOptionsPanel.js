@@ -30,16 +30,12 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
             box.fireEvent(event, box, checked);
         }, this);
 
-        this.initButtonPanel();
-
         var config = Ext.apply({
             collapseMode: 'mini',
             id: 'mapOptions',
             padding: 5,
             items: [
                 this.autoZoomCheckbox,
-                new Ext.Spacer({height: 5}),
-                this.buttonPanel,
                 new Ext.Spacer({height: 5}),
                 this.baseLayerCombo
             ]
@@ -48,27 +44,6 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
         Portal.ui.MapOptionsPanel.superclass.constructor.call(this, config);
 
         this.relayEvents(this.autoZoomCheckbox, ['autozoomchecked', 'autozoomunchecked']);
-    },
-
-    initButtonPanel: function () {
-        this.buttonPanel = new Ext.Panel({
-            border: true,
-            flex: 1,
-            items: [
-                {
-                    xtype: 'button',
-                    text: OpenLayers.i18n("clearAllButtonLabel"),
-                    tooltip: OpenLayers.i18n("clearAllButtonTooltip"),
-                    cls: "floatLeft buttonPad",
-                    scope: this,
-                    handler: this._clearAll
-                }
-            ]
-        });
-    },
-
-    _clearAll: function () {
-        Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
     },
 
     autoZoomEnabled: function () {

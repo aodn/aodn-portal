@@ -41,7 +41,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     geoSelectionPanelHelp: "Choose a method of defining a bounding area.",
 
     // Download Step
-    noCollectionsMessage: 'No data collections to show',
     noDataMessage: 'No direct access to data available currently.',
     downloadButtonLabel: 'Download as\u2026',
     downloadAsCsvLabel: 'CSV',

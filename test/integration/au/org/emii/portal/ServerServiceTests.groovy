@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -80,7 +79,6 @@ class ServerServiceTests extends GroovyTestCase {
                                     headerHeight: 100, footerHeight: 100, activeLayersHeight: 100, popupWidth: 1,
                                     poopupMenuHeight: 1, westWidth: 1, downloadCartFilename: "dl", popupHeight: 1,
                                     downloadCartMaxNumFiles: 1, downloadCartMaxFileSize: 1,
-                                    downloadCartMimeTypeToExtensionMapping: "asdf",
                                     downloadCartConfirmationWindowContent: "Content",
                                     mapGetFeatureInfoBuffer: 1,
                                     metadataLinkProtocols: "asdf", metadataLayerProtocols: "adsf",
