@@ -40,15 +40,18 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         // We assume that before the first GFI request we will be quick enough
         // to complete that little tiny request
         this._setMetadataFromNcWMS();
+
+        this._loadTimeSeriesDates();
+        this._loadStyles();
     },
 
     _setMetadataFromNcWMS: function() {
-        Ext.ux.Ajax.proxyRequest({
+        Ext.Ajax.proxyRequest({
             scope: this,
             url: this._getMetadataFromNcWMS(),
             success: function(resp, options) {
                 try {
-                    this._metadataLoaded(resp.responseText);
+                    this.metadata = Ext.util.JSON.decode(resp.responseText);
                 }
                 catch (e) {
                     log.error("Could not parse metadata for NcWMS layer '" + this.params.LAYERS + "'");
@@ -60,15 +63,44 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         });
     },
 
-    _metadataLoaded: function(response) {
-        this.metadata = Ext.util.JSON.decode(response);
-
-        this._loadTimesFromMetadata();
-        this._loadStylesFromMetadata();
+    _loadTimeSeriesDates: function() {
+        Ext.Ajax.request({
+            scope: this,
+            url: "layer/getFiltersAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS,
+            success: function(resp, options) {
+                try {
+                    this._timeSeriesDatesLoaded(Ext.util.JSON.decode(resp.responseText));
+                }
+                catch (e) {
+                    log.error("Could not parse filters for NcWMS layer '" + this.params.LAYERS + "'");
+                }
+            },
+            failure: function() {
+                log.error("Could not get filters for NcWMS layer '" + this.params.LAYERS + "'");
+            }
+        });
     },
 
-    _loadTimesFromMetadata: function() {
-        var datesWithData = this._parseDatesWithData(this.metadata);
+    _loadStyles: function() {
+        Ext.Ajax.request({
+            scope: this,
+            url: "layer/getStylesAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS,
+            success: function(resp, options) {
+                try {
+                    this._stylesLoaded(Ext.util.JSON.decode(resp.responseText));
+                }
+                catch (e) {
+                    log.error("Could not parse styles for NcWMS layer '" + this.params.LAYERS + "'");
+                }
+            },
+            failure: function() {
+                log.error("Could not get styles for NcWMS layer '" + this.params.LAYERS + "'");
+            }
+        });
+    },
+
+    _timeSeriesDatesLoaded: function(response) {
+        var datesWithData = this._parseDatesWithData(response);
 
         this.temporalExtent.addDays(datesWithData);
 
@@ -76,17 +108,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this.loadTimeSeriesForDay(this.temporalExtent.getLastDay());
     },
 
-    _loadStylesFromMetadata: function() {
-
+    _stylesLoaded: function(response) {
         var styles = [];
 
-        this.metadata.supportedStyles.sort();
-        this.metadata.palettes.sort();
-
-        Ext.each(this.metadata.supportedStyles, function(style) {
-
-            Ext.each(this.metadata.palettes, function(palette) {
-
+        Ext.each(response.styles.sort(), function(style) {
+            Ext.each(response.palettes.sort(), function(palette) {
                 styles.push({
                     name: style,
                     palette: palette
@@ -245,15 +271,18 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
     },
 
-    _parseDatesWithData: function(ncwmsMetadata) {
+    _parseDatesWithData: function(response) {
         datesWithDataArray = [];
 
-        if (ncwmsMetadata['datesWithData']) {
-            Ext.each(Object.keys(ncwmsMetadata['datesWithData']), function(year) {
+        // Assume only one filter which is the one we're after
+        var dateFilter = response[0];
+
+        if (dateFilter['possibleValues']) {
+            Ext.each(Object.keys(dateFilter['possibleValues']), function(year) {
                 year = parseInt(year);
-                Ext.each(Object.keys(ncwmsMetadata['datesWithData'][year]), function(month) {
+                Ext.each(Object.keys(dateFilter['possibleValues'][year]), function(month) {
                     month = parseInt(month);
-                    Ext.each(ncwmsMetadata['datesWithData'][year][month], function(day) {
+                    Ext.each(dateFilter['possibleValues'][year][month], function(day) {
                         day = parseInt(day);
                         // IMPORTANT - month is zero based (0-11)
                         var dateWithData = new moment.utc();

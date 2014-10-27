@@ -18,6 +18,7 @@ import org.xml.sax.SAXException
 
 import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
+import grails.converters.JSON
 
 class LayerController {
 
@@ -629,22 +630,57 @@ class LayerController {
         server.recache(MenuJsonCache.instance())
     }
 
+    def getStylesAsJSON = {
+        if (params.serverType == 'ncwms') {
+            def server = params.server
+            def layer = params.layer
+
+            def ncwmsMetadataUrl = new URL(String.format('%1$s?layerName=%2$s&REQUEST=GetMetadata&item=layerDetails', server, layer))
+            def json = JSON.parse(ncwmsMetadataUrl.text)
+
+            def styles = [
+                styles: json.supportedStyles,
+                palettes: json.palettes
+            ]
+            render text: styles as JSON
+        }
+    }
+
     def getFiltersAsJSON = {
-        def layerInstance = Layer.get(params.layerId)
+        if (params.serverType == 'ncwms') {
+            def server = params.server
+            def layer = params.layer
 
-        if (layerInstance) {
+            def ncwmsMetadataUrl = new URL(String.format('%1$s?layerName=%2$s&REQUEST=GetMetadata&item=layerDetails', server, layer))
+            def json = JSON.parse(ncwmsMetadataUrl.text)
 
-            def filters = layerInstance.filters?.sort()
-
-            render filters
-                .findAll { it.enabled }
-                .collect { it.toLayerData() } as JSON
+            def filters = [
+                [
+                    label: "Time",
+                    type: "TimeSeries",
+                    name: "timesteps",
+                    possibleValues: json.datesWithData
+                ]
+            ]
+            render text: filters as JSON
         }
         else {
-            def queryString = request.queryString ? "?$request.queryString" : ""
-            def msg = "Layer with id '$params.layerId' does not exist. URL was: $request.forwardURI$queryString"
-            log.info msg
-            render text: msg, contentType: "text/html", encoding: "UTF-8", status: 500
+            def layerInstance = Layer.get(params.layerId)
+
+            if (layerInstance) {
+
+                def filters = layerInstance.filters?.sort()
+
+                render filters
+                    .findAll { it.enabled }
+                    .collect { it.toLayerData() } as JSON
+            }
+            else {
+                def queryString = request.queryString ? "?$request.queryString" : ""
+                def msg = "Layer with id '$params.layerId' does not exist. URL was: $request.forwardURI$queryString"
+                log.info msg
+                render text: msg, contentType: "text/html", encoding: "UTF-8", status: 500
+            }
         }
     }
 

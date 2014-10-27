@@ -141,7 +141,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
-    describe('_metadataLoaded', function() {
+    describe('_timeSeriesLoadedForDate', function() {
         var sampleJson = '{ test: 1, supportedStyles: [], palettes: [] }';
 
         beforeEach(function() {
@@ -152,24 +152,24 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
 
         it('calls _parseDatesWithData', function() {
-            cachedLayer._metadataLoaded(sampleJson);
+            cachedLayer._timeSeriesDatesLoaded(sampleJson);
             expect(cachedLayer._parseDatesWithData).toHaveBeenCalled();
         });
 
         it('calls addDays', function() {
             spyOn(cachedLayer.temporalExtent, 'addDays');
-            cachedLayer._metadataLoaded(sampleJson);
+            cachedLayer._timeSeriesDatesLoaded(sampleJson);
             expect(cachedLayer.temporalExtent.addDays).toHaveBeenCalled();
         });
 
         it('loads first day', function() {
-            cachedLayer._metadataLoaded(sampleJson);
+            cachedLayer._timeSeriesDatesLoaded(sampleJson);
             expect(cachedLayer.temporalExtent.getFirstDay).toHaveBeenCalled();
             expect(cachedLayer.loadTimeSeriesForDay).toHaveBeenCalled();
         });
 
         it('loads last day', function() {
-            cachedLayer._metadataLoaded(sampleJson);
+            cachedLayer._timeSeriesDatesLoaded(sampleJson);
             expect(cachedLayer.temporalExtent.getLastDay).toHaveBeenCalled();
             expect(cachedLayer.loadTimeSeriesForDay).toHaveBeenCalled();
         });
@@ -179,12 +179,12 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         it('sets styles property from metadata', function() {
 
-            cachedLayer.metadata = {
-                supportedStyles: ['styleA', 'styleC', 'styleB'],
+            stylesResponse = {
+                styles: ['styleA', 'styleC', 'styleB'],
                 palettes: ['paletteB', 'paletteC', 'paletteA']
             };
 
-            cachedLayer._loadStylesFromMetadata();
+            cachedLayer._stylesLoaded(stylesResponse);
 
             expect(cachedLayer.styles).toEqual(
                 [
@@ -203,7 +203,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
     });
 
     it('parses dates from NcWMS GetMetadata JSON', function() {
-        var ncwmsMetadataLayerDetailsJson = '{ "units": "m s-1", "bbox": ["150.781701", "-24.195812", "153.55338", "-21.92031"], "scaleRange": ["-1.0", "1.0"], "numColorBands": 253, "supportedStyles": ["boxfill"], "datesWithData": { "2007": { "9": [15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31], "10": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30], "11": [1,2,3,5,6,7,8,9,10,11,12,13,14,15,16,17,20,21,22,23,24,25,26,27,28,29,30,31] }, "2008": { "0": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31], "1": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29], "2": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29], "3": [3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] } } }';
+        var ncwmsMetadataLayerDetailsJson = '[ { "label": "Time", "type": "TimeSeries", "name": "timesteps", "possibleValues": { "2007": { "9": [15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31], "10": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30], "11": [1,2,3,5,6,7,8,9,10,11,12,13,14,15,16,17,20,21,22,23,24,25,26,27,28,29,30,31] }, "2008": { "0": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31], "1": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29], "2": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29], "3": [3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] } } } ]';
         var ncwmsMetadataLayerDetails = Ext.util.JSON.decode(ncwmsMetadataLayerDetailsJson);
 
         var datesWithData = cachedLayer._parseDatesWithData(ncwmsMetadataLayerDetails);
