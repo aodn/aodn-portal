@@ -830,6 +830,10 @@ div.olMap div[class^="olControl"],
     cursor: default;
 }
 
+div.olMap .olControlDragPanActive.olDragDown {
+    cursor: all-scroll;
+}
+
 .olControlPanel .olControlNavigationItemActive,
 .olControlPanel .olControlNavigationItemInactive,
 .olControlPanel .olControlZoomBoxItemActive,
