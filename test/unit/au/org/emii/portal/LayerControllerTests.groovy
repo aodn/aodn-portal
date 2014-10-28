@@ -15,12 +15,16 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
     def validConfig = new Config(wmsScannerCallbackPassword: "pwd")
     def messageArgs
+    def hostVerifier
 
     protected void setUp() {
         super.setUp()
 
         controller.metaClass.message = { LinkedHashMap args -> messageArgs = args }
         controller.metaClass._recache = {}
+        hostVerifier = mockFor(HostVerifier)
+        hostVerifier.demand.allowedHost { request, address -> return true }
+        controller.hostVerifier = hostVerifier.createMock()
     }
 
     void testIndex() {

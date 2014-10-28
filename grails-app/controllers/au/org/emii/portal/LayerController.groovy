@@ -28,6 +28,7 @@ class LayerController {
     def aodaacAggregatorService
     def layerService
     def dataSource
+    def hostVerifier
 
     def index = {
         redirect(action: "list", params: params)
@@ -636,8 +637,13 @@ class LayerController {
             def server = params.server
             def layer = params.layer
 
-            def ncwmsServer = new NcwmsServer()
-            render text: ncwmsServer.getStyles(server, layer) as JSON
+            if (!hostVerifier.allowedHost(request, params.server)) {
+                render text: "Host '$params.server' not allowed"
+            }
+            else {
+                def ncwmsServer = new NcwmsServer()
+                render text: ncwmsServer.getStyles(server, layer) as JSON
+            }
         }
     }
 
@@ -647,8 +653,13 @@ class LayerController {
             def layer = params.layer
             def filter = params.filter
 
-            def ncwmsServer = new NcwmsServer()
-            render text: ncwmsServer.getTimeSeries(server, layer, filter) as JSON
+            if (!hostVerifier.allowedHost(request, params.server)) {
+                render text: "Host '$params.server' not allowed"
+            }
+            else {
+                def ncwmsServer = new NcwmsServer()
+                render text: ncwmsServer.getTimeSeries(server, layer, filter) as JSON
+            }
         }
     }
 
@@ -657,8 +668,13 @@ class LayerController {
             def server = params.server
             def layer = params.layer
 
-            def ncwmsServer = new NcwmsServer()
-            render text: ncwmsServer.getFilters(server, layer) as JSON
+            if (!hostVerifier.allowedHost(request, params.server)) {
+                render text: "Host '$params.server' not allowed"
+            }
+            else {
+                def ncwmsServer = new NcwmsServer()
+                render text: ncwmsServer.getFilters(server, layer) as JSON
+            }
         }
         else {
             def layerInstance = Layer.get(params.layerId)
