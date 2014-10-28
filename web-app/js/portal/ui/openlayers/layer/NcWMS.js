@@ -148,7 +148,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     loadTimeSeriesForDay: function(date) {
         if (this.getTimeSeriesForDay(date)) {
-            this._timeSeriesLoadedForDate();
+            // Give UI precedence by using delayed function call (setTimeout)
+            var that = this;
+            setTimeout(function() { that._timeSeriesLoadedForDate(); }, 10);
         }
         else {
             this._fetchTimeSeriesForDay(date);
