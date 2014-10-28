@@ -59,6 +59,25 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
+    describe("url generation", function() {
+        beforeEach(function() {
+            cachedLayer.url = "urlprefix";
+            cachedLayer.params.LAYERS = "test_layer";
+        });
+
+        it("_getFiltersUrl ", function() {
+            expect(cachedLayer._getFiltersUrl()).toBe('layer/getFiltersAsJSON?serverType=ncwms&server=urlprefix&layer=test_layer');
+        });
+
+        it("_getStylesUrl ", function() {
+            expect(cachedLayer._getStylesUrl()).toBe('layer/getStylesAsJSON?serverType=ncwms&server=urlprefix&layer=test_layer');
+        });
+
+        it("_getTimeSeriesUrl ", function() {
+            expect(cachedLayer._getTimeSeriesUrl(moment.utc('2011-07-02T01:32:45Z'))).toBe('layer/getFilterValuesAsJSON?serverType=ncwms&server=urlprefix&layer=test_layer&filter=2011-07-02T00:00:00.000Z');
+        });
+    });
+
     describe("_getTimeSeriesUrl", function() {
         it("returns correct url", function() {
             cachedLayer.url = "urlprefix";

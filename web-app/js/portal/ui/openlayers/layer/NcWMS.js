@@ -64,9 +64,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _loadTimeSeriesDates: function() {
+        var url = this._getFiltersUrl();
+
         Ext.Ajax.request({
             scope: this,
-            url: "layer/getFiltersAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS,
+            url: url,
             success: function(resp, options) {
                 try {
                     this._timeSeriesDatesLoaded(Ext.util.JSON.decode(resp.responseText));
@@ -82,7 +84,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _loadStyles: function() {
-        var url = "layer/getStylesAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS;
+        var url = this._getStylesUrl();
 
         Ext.Ajax.request({
             scope: this,
@@ -278,6 +280,14 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     _getMetadataFromNcWMS: function() {
         var metadataUrl = this.url + "?layerName=" + this.params.LAYERS + "&REQUEST=GetMetadata&item=layerDetails";
         return metadataUrl;
+    },
+
+    _getFiltersUrl: function() {
+        return "layer/getFiltersAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS;
+    },
+
+    _getStylesUrl: function() {
+        return "layer/getStylesAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS;
     },
 
     _getTimeSeriesUrl: function(date) {
