@@ -60,34 +60,94 @@ describe("Portal.data.LayerStore", function() {
         expect(layerStore.getCount()).toBe(1);
     });
 
-    // The search results deal with "layer links"...
-    describe('add layer link', function() {
+    describe('_getAddFunctionForServerType', function() {
+        it('default', function() {
+            var serverInfo = { type: 'GeoServer' };
+            expect(layerStore._getAddFunctionForServerType(serverInfo)).toBe(layerStore._addUsingLayerLinkDefault);
+        });
 
+        it('ncwms', function() {
+            var serverInfo = { type: 'ncWMS' };
+            expect(layerStore._getAddFunctionForServerType(serverInfo)).toBe(layerStore._addUsingLayerLinkNcwms);
+        });
+    });
+
+    describe('addUsingLayerLink', function() {
+        beforeEach(function() {
+            spyOn(Ext.MsgBus, 'publish');
+        });
+
+        describe('blocked server', function() {
+            beforeEach(function() {
+                spyOn(layerStore, '_serverBlocked').andCallFake(function() {});
+            });
+
+            it('empty response', function() {
+                spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
+                    options.success.call(layerStore, { responseText: Ext.util.JSON.encode({}) });
+                });
+                layerStore.addUsingLayerLink("layerName", layerLink);
+
+                expect(layerStore._serverBlocked).toHaveBeenCalled();
+            });
+
+            it('failure', function() {
+                spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
+                    options.failure.call(layerStore, { responseText: Ext.util.JSON.encode({}) });
+                });
+                layerStore.addUsingLayerLink("layerName", layerLink);
+
+                expect(layerStore._serverBlocked).toHaveBeenCalled();
+            });
+        });
+
+        it('GeoServer', function() {
+            spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
+                options.success.call(layerStore, { responseText: Ext.util.JSON.encode({ type: 'GeoServer' }) });
+            });
+            spyOn(layerStore, '_addUsingLayerLinkDefault').andCallFake(function() {});
+
+            layerStore.addUsingLayerLink("layerName", layerLink);
+
+            expect(layerStore._addUsingLayerLinkDefault).toHaveBeenCalled();
+        });
+
+        it('ncwms', function() {
+            spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
+                options.success.call(layerStore, { responseText: Ext.util.JSON.encode({ type: 'ncwms' }) });
+            });
+            spyOn(layerStore, '_addUsingLayerLinkNcwms').andCallFake(function() {});
+
+            layerStore.addUsingLayerLink("layerName", layerLink);
+
+            expect(layerStore._addUsingLayerLinkNcwms).toHaveBeenCalled();
+        });
+    });
+
+    describe('_addUsingLayerLinkDefault', function() {
         beforeEach(function() {
             spyOn(Ext.MsgBus, 'publish');
         });
 
         it('success', function() {
-
             spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
                 options.success.call(layerStore, { responseText: Ext.util.JSON.encode(layerDescriptor) });
             });
 
-            layerStore.addUsingLayerLink("layerName", layerLink);
+            layerStore._addUsingLayerLinkDefault("layerName", layerLink);
 
             expect(Ext.Ajax.request).toHaveBeenCalled();
             expect(layerStore.getCount()).toBe(1);
         });
 
         it('failure', function() {
-
             spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
                 options.failure.call(layerStore, {});
             });
 
             spyOn(layerStore, 'addUsingDescriptor').andCallThrough();
 
-            layerStore.addUsingLayerLink("LayerName", layerLink);
+            layerStore._addUsingLayerLinkDefault("LayerName", layerLink);
 
             expect(Ext.Ajax.request).toHaveBeenCalled();
             expect(layerStore.addUsingDescriptor).toHaveBeenCalled();
@@ -96,7 +156,7 @@ describe("Portal.data.LayerStore", function() {
 
         describe('layer record callback', function() {
             it('no callback', function() {
-                layerStore.addUsingLayerLink("layerName", layerLink);
+                layerStore._addUsingLayerLinkDefault("layerName", layerLink);
             });
 
             it('callback', function() {
@@ -106,26 +166,25 @@ describe("Portal.data.LayerStore", function() {
                     layerStore.failure();  // This is the easiest way to mock things (rather than calling success).
                 });
 
-                layerStore.addUsingLayerLink("layerName", layerLink, {}, callback);
+                layerStore._addUsingLayerLinkDefault("layerName", layerLink, {}, callback);
                 expect(callback).toHaveBeenCalled();
                 expect(callback.mostRecentCall.args[0]).toBeInstanceOf(GeoExt.data.LayerRecord);
             });
         });
-
     });
 
     describe('adding layers', function() {
         it('add open layer', function() {
             spyOn(Ext.MsgBus, 'publish');
-            layerStore.addUsingOpenLayer(createOpenLayer());
+            layerStore._addLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
         });
 
         it('add duplicate layer', function() {
             spyOn(Ext.Msg, "alert");
             spyOn(Ext.MsgBus, 'publish');
-            layerStore.addUsingOpenLayer(createOpenLayer());
-            layerStore.addUsingOpenLayer(createOpenLayer());
+            layerStore._addLayer(createOpenLayer());
+            layerStore._addLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
             expect(Ext.Msg.alert).toHaveBeenCalled();
         });
@@ -140,7 +199,7 @@ describe("Portal.data.LayerStore", function() {
         it('addLayerUsingOpenLayer', function() {
             spyOn(Ext.MsgBus, 'publish');
             expect(layerStore.getCount()).toBe(0);
-            layerStore.addUsingOpenLayer(createOpenLayer());
+            layerStore._addLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
         });
 
@@ -151,7 +210,7 @@ describe("Portal.data.LayerStore", function() {
             spyOn(Ext.MsgBus, 'publish').andCallThrough();
 
             expect(layerStore.getCount()).toBe(0);
-            layerStore.addUsingOpenLayer(openLayer);
+            layerStore._addLayer(openLayer);
             expect(layerStore.getCount()).toBe(1);
             expect(Ext.MsgBus.publish).not.toHaveBeenCalledWith(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
         });
@@ -182,7 +241,7 @@ describe("Portal.data.LayerStore", function() {
 
                 spyOn(Ext.MsgBus, 'publish');
                 openLayer = createOpenLayer();
-                layerStore.addUsingOpenLayer(openLayer);
+                layerStore._addLayer(openLayer);
                 openLayer.loading = false;
             });
 
@@ -210,7 +269,7 @@ describe("Portal.data.LayerStore", function() {
         it('reset', function() {
 
             spyOn(Ext.MsgBus, 'publish');
-            layerStore.addUsingOpenLayer(createOpenLayer());
+            layerStore._addLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
 
 
@@ -234,7 +293,7 @@ describe("Portal.data.LayerStore", function() {
             layer1.layerHierarchyPath = "this/is/hierarchy";
             layer2.layerHierarchyPath = "this/is/also/hierarchy";
 
-            layerStore.addUsingOpenLayer(layer1);
+            layerStore._addLayer(layer1);
             expect(layerStore.containsOpenLayer(layer2)).toBeFalsy();
         });
 
@@ -242,19 +301,19 @@ describe("Portal.data.LayerStore", function() {
             var layer1 = createOpenLayer();
             var layer2 = createOpenLayer();
 
-            layerStore.addUsingOpenLayer(layer1);
+            layerStore._addLayer(layer1);
             expect(layerStore.containsOpenLayer(layer2)).toBeTruthy();
         });
 
         it('returns true with duplicate layerHierarchies ', function() {
             var layer1 = createOpenLayer();
             var layer2 = createOpenLayer();
-            layerStore.addUsingOpenLayer(createOpenLayer());
+            layerStore._addLayer(createOpenLayer());
             layer1.layerHierarchyPath = "this/is/hierarchy";
             layer2.layerHierarchyPath = "this/is/hierarchy";
 
 
-            layerStore.addUsingOpenLayer(layer1);
+            layerStore._addLayer(layer1);
             expect(layerStore.containsOpenLayer(layer2)).toBeTruthy();
         });
     });
@@ -266,20 +325,20 @@ describe("Portal.data.LayerStore", function() {
             spyOn(Ext.MsgBus, 'publish');
             // Non-base layers
             var l1 = createOpenLayer("1");
-            layerStore.addUsingOpenLayer(l1);
+            layerStore._addLayer(l1);
 
             var l2 = createOpenLayer("2");
             l2.options.isBaseLayer = undefined; // Happens with layers added from search
-            layerStore.addUsingOpenLayer(l2);
+            layerStore._addLayer(l2);
 
             // Base layer
             var l3 = createOpenLayer("base");
             l3.options.isBaseLayer = true;
-            layerStore.addUsingOpenLayer(l3);
+            layerStore._addLayer(l3);
 
             // Vector layer
             var vectorLayer = new OpenLayers.Layer.Vector();
-            layerStore.addUsingOpenLayer(vectorLayer);
+            layerStore._addLayer(vectorLayer);
         });
 
         it('get base layers', function() {
@@ -299,7 +358,7 @@ describe("Portal.data.LayerStore", function() {
         beforeEach(function() {
             baseLayer = createOpenLayer("base");
             baseLayer.options.isBaseLayer = true;
-            baseLayerRecord = layerStore.addUsingOpenLayer(baseLayer);
+            baseLayerRecord = layerStore._addLayer(baseLayer);
         });
 
         it('selectDefaultBaseLayer', function() {
@@ -322,7 +381,7 @@ describe("Portal.data.LayerStore", function() {
             spyOn(Ext.MsgBus, 'publish');
             layer = createOpenLayer("somelayer");
             layer.options.isBaseLayer = false;
-            baseLayerRecord = layerStore.addUsingOpenLayer(layer);
+            baseLayerRecord = layerStore._addLayer(layer);
         });
 
         it('sets loading=true on loadstart', function() {
