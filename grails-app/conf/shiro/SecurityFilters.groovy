@@ -80,7 +80,7 @@ class SecurityFilters {
             }
         }
 
-        serverAccess(controller: "server", action: "listAllowDiscoveriesAsJson") {
+        serverAccess(controller: "server", action: "listAllowDiscoveriesAsJson|getInfo") {
             before = {
                 request.accessAllowed = true
             }

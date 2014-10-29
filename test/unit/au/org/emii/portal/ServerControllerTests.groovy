@@ -12,6 +12,21 @@ import grails.test.ControllerUnitTestCase
 class ServerControllerTests extends ControllerUnitTestCase {
     protected void setUp() {
         super.setUp()
+
+        controller.grailsApplication = [
+            config: [
+                knownServers: [
+                    [
+                        uri: 'http://geoserver1.example.com',
+                        type: 'some_type',
+                        filteredAttribute: 'filtered'
+                    ],
+                    [
+                        uri: 'http://geoserver2.example.com'
+                    ]
+                ]
+            ]
+        ]
     }
 
     protected void tearDown() {
@@ -35,5 +50,21 @@ class ServerControllerTests extends ControllerUnitTestCase {
         assertTrue content.contains('"shortAcron":"A"')
     }
 
+    void testGetInfoWhenServerNotFound() {
+        controller.params.server = 'nonExistingServer'
+        controller.getInfo()
+        assertEquals "{}", controller.response.contentAsString
+    }
 
+    void testGetInfoWhenServerFound1() {
+        controller.params.server = 'http://geoserver1.example.com'
+        controller.getInfo()
+        assertEquals '{"uri":"http://geoserver1.example.com","type":"some_type"}', controller.response.contentAsString
+    }
+
+    void testGetInfoWhenServerFound2() {
+        controller.params.server = 'http://geoserver2.example.com'
+        controller.getInfo()
+        assertEquals '{"uri":"http://geoserver2.example.com"}', controller.response.contentAsString
+    }
 }
