@@ -15,12 +15,16 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
     def validConfig = new Config(wmsScannerCallbackPassword: "pwd")
     def messageArgs
+    def hostVerifier
 
     protected void setUp() {
         super.setUp()
 
         controller.metaClass.message = { LinkedHashMap args -> messageArgs = args }
         controller.metaClass._recache = {}
+        hostVerifier = mockFor(HostVerifier)
+        hostVerifier.demand.allowedHost { request, address -> return true }
+        controller.hostVerifier = hostVerifier.createMock()
     }
 
     void testIndex() {
@@ -164,6 +168,44 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
         def expected = "[]"
         assertEquals expected, this.controller.response.contentAsString
+    }
+
+    void testGetFiltersAsJsonNcWMS() {
+        this.controller.params.serverType = 'ncwms'
+        this.controller.params.server = 'some_server'
+        this.controller.params.layer = 'some_layer'
+
+        def methodCalled = false
+        wms.NcwmsServer.metaClass.getFilters = { server, layer ->
+            methodCalled = true
+            return []
+        }
+
+        this.controller.getFiltersAsJSON()
+
+        // Restore original wms.NcwmsServer class
+        wms.NcwmsServer.metaClass = null
+
+        assertTrue methodCalled
+    }
+
+    void testGetSylesAsJsonNcWMS() {
+        this.controller.params.serverType = 'ncwms'
+        this.controller.params.server = 'some_server'
+        this.controller.params.layer = 'some_layer'
+
+        def methodCalled = false
+        wms.NcwmsServer.metaClass.getStyles = { server, layer ->
+            methodCalled = true
+            return []
+        }
+
+        this.controller.getStylesAsJSON()
+
+        // Restore original wms.NcwmsServer class
+        wms.NcwmsServer.metaClass = null
+
+        assertTrue methodCalled
     }
 
     void testShowLayerByItsId() {

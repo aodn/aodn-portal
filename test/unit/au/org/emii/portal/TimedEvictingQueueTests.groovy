@@ -25,7 +25,6 @@ class TimedEvictingQueueTests extends GrailsUnitTestCase {
     }
 
     void testQueue() {
-        //assertTrue false
         queue.add("test item1")
         queue.add("test item2")
 

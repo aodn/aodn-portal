@@ -8,6 +8,7 @@
 package au.org.emii.portal
 
 import au.org.emii.portal.display.MenuJsonCache
+import au.org.emii.portal.wms.NcwmsServer
 import grails.converters.JSON
 import groovy.time.TimeCategory
 import org.hibernate.criterion.MatchMode
@@ -18,6 +19,7 @@ import org.xml.sax.SAXException
 
 import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
+import grails.converters.JSON
 
 class LayerController {
 
@@ -26,6 +28,7 @@ class LayerController {
     def aodaacAggregatorService
     def layerService
     def dataSource
+    def hostVerifier
 
     def index = {
         redirect(action: "list", params: params)
@@ -629,22 +632,67 @@ class LayerController {
         server.recache(MenuJsonCache.instance())
     }
 
+    def getStylesAsJSON = {
+        if (params.serverType == 'ncwms') {
+            def server = params.server
+            def layer = params.layer
+
+            if (!hostVerifier.allowedHost(request, params.server)) {
+                render text: "Host '$params.server' not allowed"
+            }
+            else {
+                def ncwmsServer = new NcwmsServer()
+                render text: ncwmsServer.getStyles(server, layer) as JSON
+            }
+        }
+    }
+
+    def getFilterValuesAsJSON = {
+        if (params.serverType == 'ncwms') {
+            def server = params.server
+            def layer = params.layer
+            def filter = params.filter
+
+            if (!hostVerifier.allowedHost(request, params.server)) {
+                render text: "Host '$params.server' not allowed"
+            }
+            else {
+                def ncwmsServer = new NcwmsServer()
+                render text: ncwmsServer.getTimeSeries(server, layer, filter) as JSON
+            }
+        }
+    }
+
     def getFiltersAsJSON = {
-        def layerInstance = Layer.get(params.layerId)
+        if (params.serverType == 'ncwms') {
+            def server = params.server
+            def layer = params.layer
 
-        if (layerInstance) {
-
-            def filters = layerInstance.filters?.sort()
-
-            render filters
-                .findAll { it.enabled }
-                .collect { it.toLayerData() } as JSON
+            if (!hostVerifier.allowedHost(request, params.server)) {
+                render text: "Host '$params.server' not allowed"
+            }
+            else {
+                def ncwmsServer = new NcwmsServer()
+                render text: ncwmsServer.getFilters(server, layer) as JSON
+            }
         }
         else {
-            def queryString = request.queryString ? "?$request.queryString" : ""
-            def msg = "Layer with id '$params.layerId' does not exist. URL was: $request.forwardURI$queryString"
-            log.info msg
-            render text: msg, contentType: "text/html", encoding: "UTF-8", status: 500
+            def layerInstance = Layer.get(params.layerId)
+
+            if (layerInstance) {
+
+                def filters = layerInstance.filters?.sort()
+
+                render filters
+                    .findAll { it.enabled }
+                    .collect { it.toLayerData() } as JSON
+            }
+            else {
+                def queryString = request.queryString ? "?$request.queryString" : ""
+                def msg = "Layer with id '$params.layerId' does not exist. URL was: $request.forwardURI$queryString"
+                log.info msg
+                render text: msg, contentType: "text/html", encoding: "UTF-8", status: 500
+            }
         }
     }
 

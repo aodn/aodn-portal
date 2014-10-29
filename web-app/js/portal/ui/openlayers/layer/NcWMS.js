@@ -37,18 +37,20 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, [name, url, params, options]);
 
-        // We assume that before the first GFI request we will be quick enough
-        // to complete that little tiny request
         this._setMetadataFromNcWMS();
+        this._loadTimeSeriesDates();
+        this._loadStyles();
     },
 
     _setMetadataFromNcWMS: function() {
-        Ext.ux.Ajax.proxyRequest({
+        Ext.Ajax.proxyRequest({
             scope: this,
             url: this._getMetadataFromNcWMS(),
             success: function(resp, options) {
                 try {
-                    this._metadataLoaded(resp.responseText);
+                    this.metadata = Ext.util.JSON.decode(resp.responseText);
+                    // This means we are "GFI ready"
+                    this.params.QUERYABLE = true;
                 }
                 catch (e) {
                     log.error("Could not parse metadata for NcWMS layer '" + this.params.LAYERS + "'");
@@ -60,15 +62,48 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         });
     },
 
-    _metadataLoaded: function(response) {
-        this.metadata = Ext.util.JSON.decode(response);
+    _loadTimeSeriesDates: function() {
+        var url = this._getFiltersUrl();
 
-        this._loadTimesFromMetadata();
-        this._loadStylesFromMetadata();
+        Ext.Ajax.request({
+            scope: this,
+            url: url,
+            success: function(resp, options) {
+                try {
+                    this._timeSeriesDatesLoaded(Ext.util.JSON.decode(resp.responseText));
+                }
+                catch (e) {
+                    log.error("Could not parse filters for NcWMS layer '" + this.params.LAYERS + "'");
+                }
+            },
+            failure: function() {
+                log.error("Could not get filters for NcWMS layer '" + this.params.LAYERS + "'");
+            }
+        });
     },
 
-    _loadTimesFromMetadata: function() {
-        var datesWithData = this._parseDatesWithData(this.metadata);
+    _loadStyles: function() {
+        var url = this._getStylesUrl();
+
+        Ext.Ajax.request({
+            scope: this,
+            url: url,
+            success: function(resp, options) {
+                try {
+                    this._stylesLoaded(Ext.util.JSON.decode(resp.responseText));
+                }
+                catch (e) {
+                    log.error("Could not parse styles for NcWMS layer '" + this.params.LAYERS + "'");
+                }
+            },
+            failure: function() {
+                log.error("Could not get styles for NcWMS layer '" + this.params.LAYERS + "'");
+            }
+        });
+    },
+
+    _timeSeriesDatesLoaded: function(response) {
+        var datesWithData = this._parseDatesWithData(response);
 
         this.temporalExtent.addDays(datesWithData);
 
@@ -76,17 +111,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this.loadTimeSeriesForDay(this.temporalExtent.getLastDay());
     },
 
-    _loadStylesFromMetadata: function() {
-
+    _stylesLoaded: function(response) {
         var styles = [];
 
-        this.metadata.supportedStyles.sort();
-        this.metadata.palettes.sort();
-
-        Ext.each(this.metadata.supportedStyles, function(style) {
-
-            Ext.each(this.metadata.palettes, function(palette) {
-
+        Ext.each(response.styles.sort(), function(style) {
+            Ext.each(response.palettes.sort(), function(palette) {
                 styles.push({
                     name: style,
                     palette: palette
@@ -141,34 +170,16 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
     },
 
-    _parseTimesForDay: function(date, response) {
-        // NcWMS returns only time in the format of '02:30:00.000Z', we'll need
-        // to stick the day in front when parsing
-        var timeSeriesHash = Ext.util.JSON.decode(response);
-        var dateOnlyString = date.format('YYYY-MM-DD') + 'T';
-
-        var timeSeriesArray = [];
-
-        if (timeSeriesHash['timesteps']) {
-            Ext.each(timeSeriesHash['timesteps'], function(timestep) {
-                var fullDate = dateOnlyString + timestep;
-                timeSeriesArray.push(new moment.utc(fullDate));
-            });
-        }
-
-        return timeSeriesArray;
-    },
-
     _fetchTimeSeriesForDay: function(date) {
         var url = this._getTimeSeriesUrl(date);
-
         this.pendingRequests.add(url);
-        Ext.ux.Ajax.proxyRequest({
+
+        Ext.Ajax.request({
             scope: this,
             url: url,
             success: function(resp, options) {
                 try {
-                    var dateArray = this._parseTimesForDay(date, resp.responseText);
+                    var dateArray = Ext.util.JSON.decode(resp.responseText);
                     Ext.each(dateArray, function(date) {
                         this.temporalExtent.add(date);
                     }, this);
@@ -245,25 +256,16 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
     },
 
-    _parseDatesWithData: function(ncwmsMetadata) {
+    _parseDatesWithData: function(response) {
         datesWithDataArray = [];
 
-        if (ncwmsMetadata['datesWithData']) {
-            Ext.each(Object.keys(ncwmsMetadata['datesWithData']), function(year) {
-                year = parseInt(year);
-                Ext.each(Object.keys(ncwmsMetadata['datesWithData'][year]), function(month) {
-                    month = parseInt(month);
-                    Ext.each(ncwmsMetadata['datesWithData'][year][month], function(day) {
-                        day = parseInt(day);
-                        // IMPORTANT - month is zero based (0-11)
-                        var dateWithData = new moment.utc();
-                        dateWithData.year(year);
-                        dateWithData.month(month);
-                        dateWithData.date(day);
-                        dateWithData.startOf('day');
-                        datesWithDataArray.push(dateWithData);
-                    });
-                });
+        // Assume only one filter which is the one we're after
+        var dateFilter = response[0];
+
+        if (dateFilter['possibleValues']) {
+            Ext.each(dateFilter['possibleValues'], function(dateString) {
+                var dateWithData = new moment.utc(dateString);
+                datesWithDataArray.push(dateWithData);
             });
         }
 
@@ -279,8 +281,16 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return metadataUrl;
     },
 
+    _getFiltersUrl: function() {
+        return "layer/getFiltersAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS;
+    },
+
+    _getStylesUrl: function() {
+        return "layer/getStylesAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS;
+    },
+
     _getTimeSeriesUrl: function(date) {
-        var timeSeriesUrl = this.url + "?layerName=" + this.params.LAYERS + "&REQUEST=GetMetadata&item=timesteps&day=" + date.clone().startOf('day').toISOString();
+        var timeSeriesUrl = "layer/getFilterValuesAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS + "&filter=" + date.clone().startOf('day').toISOString();
         return timeSeriesUrl;
     },
 
