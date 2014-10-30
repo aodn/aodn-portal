@@ -7,7 +7,7 @@
 
 package au.org.emii.portal
 
-import grails.converters.deep.JSON
+import grails.converters.JSON
 
 class ServerController {
 
@@ -16,6 +16,22 @@ class ServerController {
     def checkLinksService
     def wmsScannerService
     def wfsScannerService
+    def grailsApplication
+
+    def getInfo = {
+        def server = params.server
+
+        def serverInformation = grailsApplication.config.knownServers.find { it.uri == server }
+        if (!serverInformation) {
+            serverInformation = [:]
+        }
+        else {
+            // Filter only the attributes we're passing to the client
+            serverInformation = serverInformation.subMap(['uri', 'wmsVersion', 'type']).findAll { it.value }
+        }
+
+        render text: serverInformation as JSON
+    }
 
     def index = {
         redirect(action: "list", params: params)
@@ -42,6 +58,7 @@ class ServerController {
 
     def listAllowDiscoveriesAsJson = {
         def layerInstanceList = Server.findAllByAllowDiscoveriesNotEqual(false)
+        JSON.use('deep')
         render layerInstanceList as JSON
     }
 
@@ -143,6 +160,7 @@ class ServerController {
         }
 
         if (serverInstance) {
+            JSON.use('deep')
             render serverInstance as JSON
         }
         else {

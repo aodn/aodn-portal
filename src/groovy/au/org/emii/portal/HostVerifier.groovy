@@ -7,7 +7,12 @@
 
 package au.org.emii.portal
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 class HostVerifier {
+
+    static final Logger log = LoggerFactory.getLogger(this)
 
     def grailsApplication
 
@@ -20,16 +25,13 @@ class HostVerifier {
         try {
             def url = address.toURL()
 
-            def allowableServers = [request.getHeader("host")]
-            allowableServers.addAll _fromConfig()
-            allowableServers.addAll _fromKnownServers()
-
             def allowed = false
-            allowableServers.each {
+            findAllowableServers(request).each {
                 if (it.contains(url.host)) {
                     allowed = true
                 }
             }
+
             /*if allowed is still false then server isn't us, our catalog or in our wms servers list,
                 but it might have been retrieved from geonetwork, so we check if its registered
                 as a layer server with geonetwork*/
@@ -39,6 +41,9 @@ class HostVerifier {
             return allowed
         }
         catch (Exception e) {
+
+            log.error "Problem while validating host", e
+
             return false
         }
     }
@@ -54,6 +59,9 @@ class HostVerifier {
     }
 
     def _checkCatalog(url) {
+
+        log.info "Resorting to catalogue check for '$url'"
+
         def containsHost = false
         def server = extractServer(url)
         def results = retrieveResultsFromGeoNetwork(server)
@@ -64,23 +72,29 @@ class HostVerifier {
         return containsHost
     }
 
-    def _fromConfig() {
-        def result = []
-        if (grailsApplication) {
-            _addIf(result, grailsApplication.config.geonetwork.url)
-            _addIf(result, grailsApplication.config.portal.instance.splash.index)
-            _addIf(result, grailsApplication.config.portal.instance.splash.links)
-            _addIf(result, grailsApplication.config.portal.instance.splash.community)
+    def findAllowableServers(request) {
 
-            // Add allowedProxyHosts
-            if (grailsApplication.config.allowedProxyHosts) {
-                result.addAll(grailsApplication.config.allowedProxyHosts)
-            }
-        }
-        return result
+        def allowableServers = []
+        allowableServers.add request.getHeader("host")
+
+        def appConfig = grailsApplication.config
+        allowableServers.add appConfig.geonetwork.url
+
+        allowableServers.add appConfig.baselayerServer.uri
+        allowableServers.addAll appConfig.knownServers*.uri
+
+        // Todo - This might be able to go. I don't think we use the splash screen anymore.
+        def splashConfig = appConfig.portal.instance.splash
+        _addIf allowableServers, splashConfig.index
+        _addIf allowableServers, splashConfig.links
+        _addIf allowableServers, splashConfig.community
+
+        allowableServers.addAll _fromServersInDatabase() // Todo - Can be removed when we go full stateless
+
+        return allowableServers
     }
 
-    def _fromKnownServers() {
+    def _fromServersInDatabase() {
         return Server.list().collect { it.uri }
     }
 

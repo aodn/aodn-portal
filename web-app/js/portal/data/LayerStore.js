@@ -24,21 +24,50 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     addUsingDescriptor: function(layerDescriptor, layerRecordCallback) {
-        this.addUsingOpenLayer(layerDescriptor.toOpenLayer(), layerRecordCallback);
+        return this._addLayer(layerDescriptor.toOpenLayer(), layerRecordCallback);
     },
 
     addUsingLayerLink: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback) {
         var serverUri = layerLink.server.uri;
 
-        // Temporary here, until everything goes stateless and then we don't
-        // need this if statement at all
-        if (this.isStateless(serverUri)) {
-            var layerDescriptor = new Portal.common.LayerDescriptor(layerLink, geonetworkRecord, OpenLayers.Layer.NcWMS);
-            layerDescriptor.title = layerDisplayName;
-            layerDescriptor.cql = layerLink.cql;
-            this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
-            return;
+        Ext.Ajax.request({
+            url: 'server/getInfo?' + Ext.urlEncode({server: serverUri}),
+            scope: this,
+            success: function(resp) {
+                try {
+                    var serverInfo = Ext.util.JSON.decode(resp.responseText);
+                    this._serverInfoLoaded(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
+                }
+                catch(e) {
+                    log.error("Failed parsing information for server '" + serverUri + "', response : '" + resp.responseText + "'");
+                }
+            },
+            failure: function(resp) {
+                log.error("Failed getting information for server '" + serverUri + "'");
+                this._serverUnrecognized(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, null);
+            }
+        });
+    },
+
+    _serverInfoLoaded: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
+        if ($.isEmptyObject(serverInfo)) {
+            this._serverUnrecognized(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
         }
+        else if (serverInfo.type && serverInfo.type.toLowerCase() == 'ncwms') {
+            this._addUsingLayerLinkNcwms(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
+        }
+        else {
+            this._addUsingLayerLinkDefault(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
+        }
+    },
+
+    _serverUnrecognized: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
+        var serverUri = layerLink.server.uri;
+        log.error("Server '" + serverUri + "' is blocked!!");
+    },
+
+    _addUsingLayerLinkDefault: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
+        var serverUri = layerLink.server.uri;
 
         Ext.Ajax.request({
             url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerLink.name}),
@@ -58,14 +87,11 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         });
     },
 
-    addUsingOpenLayer: function(openLayer, layerRecordCallback) {
-        return this._addLayer(openLayer, layerRecordCallback);
-    },
-
-    // PATCH PATCH PATCH! until we can distinguish in metadata between ncwms
-    // and regular geoserver layers
-    isStateless: function(uri) {
-        return uri.toLowerCase().match('/ncwms/wms');
+    _addUsingLayerLinkNcwms: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
+        var layerDescriptor = new Portal.common.LayerDescriptor(layerLink, geonetworkRecord, OpenLayers.Layer.NcWMS);
+        layerDescriptor.title = layerDisplayName;
+        layerDescriptor.cql = layerLink.cql;
+        this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
     },
 
     removeAll: function() {

@@ -99,37 +99,6 @@ aodaacAggregator {
 // Depth service
 depthService.url = "http://depthservice.aodn.org.au/depth"
 
-// Search results mini map configuration
-minimap {
-    baselayer {
-        name = "baselayer"
-        url = "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms"
-        params = [layers: 'default_bathy']
-    }
-}
-
-geoserver_static = [
-    uri: "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms",
-    type: "WMS-1.1.1"
-]
-
-baselayers = [
-    [
-        name: "default_bathy",
-        title: "Bathymetry Baselayer",
-        server: geoserver_static
-    ],
-    [
-        name: "default_basemap_simple",
-        title: "Simple Baselayer",
-        server: geoserver_static
-    ]
-]
-
-allowedProxyHosts = [
-    geoserver_static.uri
-]
-
 downloadAuth {
     // Never show a captcha to those IP addresses
     whitelistClients = [
@@ -217,6 +186,77 @@ environments {
 }
 
 geonetwork.searchPath = featureToggles.hierarchicalFacets ? 'xml.search.imos' : 'xml.search.summary'
+
+// Server configuration
+baselayerServer = [
+    uri: "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms",
+    type: "WMS-1.1.1"
+]
+
+// This array should be populated from chef config
+knownServers = [
+    /*
+     * An example of the possible fields for a Server
+     * Only url is required. All other fields have defaults (used if they are omitted)
+     * Maybe WMS version might be required. Not sure about that yet. I feel that for most cases either 1.1.1 or 1.3.0 would work well as a default
+    [
+        uri: '', // The server URL (required) -- I would prefer to see that is url rather than uri but I have it as uri for now to match the field in the Server domain class.
+        wmsVersion: '', // The version number as a string e.g. "1.1.1", "1.3.0" (not sure if we should make this required or not)
+        type: '', // Identifying the specific server software. e.g. "nvWMS", "GeoServer". If omitted or blank then it is considered to just be a general WMS server without any extra functionality. Should be case insensitive.
+        supportsCsvMetadataHeaderOutputFormat: true, // False if omitted. Basically this tells us whether we can use the csvWithMetadata output type on this server
+        httpAuthUsername: '', // Some servers use HTTP authentication, so store the credentials here. Null be default
+        httpAuthPassword: '',
+        urlListDownloadPrefixToRemove: '', // For the time being these are still needed for BODAAC functionality, null by default
+        urlListDownloadPrefixToSubstitue: ''
+    ]*/
+    [
+        uri: 'http://geoserver-123.aodn.org.au/geoserver/wms',
+        wmsVersion: '1.1.1',
+        type: 'GeoServer',
+        supportsCsvMetadataHeaderOutputFormat: true,
+        urlListDownloadPrefixToRemove: '/mnt/imos-t3/',
+        urlListDownloadPrefixToSubstitue: 'http://data.aodn.org.au/'
+    ],
+    [
+        uri: 'http://ncwms.aodn.org.au/ncwms/wms',
+        wmsVersion: '1.1.1',
+        type: 'ncWMS',
+        urlListDownloadPrefixToRemove: '/mnt/imos-t3/IMOS/opendap/',
+        urlListDownloadPrefixToSubstitue: 'http://thredds.aodn.org.au/thredds/fileServer/IMOS/'
+    ],
+    [
+        uri: 'http://rs-data1-mel.csiro.au/ncWMS/wms',
+        wmsVersion: '1.1.1',
+        type: 'ncWMS'
+    ],
+    [
+        uri: 'http://catami.org/geoserver/wms?namespace=catami',
+        wmsVersion: '1.3.0',
+        type: 'GeoServer'
+    ]
+]
+
+// Search results mini map configuration
+minimap {
+    baselayer {
+        name = "baselayer"
+        url = baselayerServer.uri
+        params = [layers: 'default_bathy']
+    }
+}
+
+baselayers = [
+    [
+        name: "default_bathy",
+        title: "Bathymetry Baselayer",
+        server: baselayerServer
+    ],
+    [
+        name: "default_basemap_simple",
+        title: "Simple Baselayer",
+        server: baselayerServer
+    ]
+]
 
 def defaultInstanceName = "IMOS"
 
