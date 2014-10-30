@@ -59,22 +59,10 @@ describe("Portal.data.LayerStore", function() {
         expect(layerStore.getCount()).toBe(1);
     });
 
-    describe('_getAddFunctionForServerType', function() {
-        it('default', function() {
-            var serverInfo = { type: 'GeoServer' };
-            expect(layerStore._getAddFunctionForServerType(serverInfo)).toBe(layerStore._addUsingLayerLinkDefault);
-        });
-
-        it('ncwms', function() {
-            var serverInfo = { type: 'ncWMS' };
-            expect(layerStore._getAddFunctionForServerType(serverInfo)).toBe(layerStore._addUsingLayerLinkNcwms);
-        });
-    });
-
     describe('addUsingLayerLink', function() {
         describe('blocked server', function() {
             beforeEach(function() {
-                spyOn(layerStore, '_serverBlocked').andCallFake(function() {});
+                spyOn(layerStore, '_serverUnrecognized').andCallFake(function() {});
             });
 
             it('empty response', function() {
@@ -83,7 +71,7 @@ describe("Portal.data.LayerStore", function() {
                 });
                 layerStore.addUsingLayerLink("layerName", layerLink);
 
-                expect(layerStore._serverBlocked).toHaveBeenCalled();
+                expect(layerStore._serverUnrecognized).toHaveBeenCalled();
             });
 
             it('failure', function() {
@@ -92,7 +80,7 @@ describe("Portal.data.LayerStore", function() {
                 });
                 layerStore.addUsingLayerLink("layerName", layerLink);
 
-                expect(layerStore._serverBlocked).toHaveBeenCalled();
+                expect(layerStore._serverUnrecognized).toHaveBeenCalled();
             });
         });
 
