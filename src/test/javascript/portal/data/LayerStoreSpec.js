@@ -55,7 +55,6 @@ describe("Portal.data.LayerStore", function() {
     };
 
     it('add layer descriptor', function() {
-        spyOn(Ext.MsgBus, 'publish');
         layerStore.addUsingDescriptor(layerDescriptor);
         expect(layerStore.getCount()).toBe(1);
     });
@@ -73,10 +72,6 @@ describe("Portal.data.LayerStore", function() {
     });
 
     describe('addUsingLayerLink', function() {
-        beforeEach(function() {
-            spyOn(Ext.MsgBus, 'publish');
-        });
-
         describe('blocked server', function() {
             beforeEach(function() {
                 spyOn(layerStore, '_serverBlocked').andCallFake(function() {});
@@ -125,10 +120,6 @@ describe("Portal.data.LayerStore", function() {
     });
 
     describe('_addUsingLayerLinkDefault', function() {
-        beforeEach(function() {
-            spyOn(Ext.MsgBus, 'publish');
-        });
-
         it('success', function() {
             spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
                 options.success.call(layerStore, { responseText: Ext.util.JSON.encode(layerDescriptor) });
@@ -175,14 +166,12 @@ describe("Portal.data.LayerStore", function() {
 
     describe('adding layers', function() {
         it('add open layer', function() {
-            spyOn(Ext.MsgBus, 'publish');
             layerStore._addLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
         });
 
         it('add duplicate layer', function() {
             spyOn(Ext.Msg, "alert");
-            spyOn(Ext.MsgBus, 'publish');
             layerStore._addLayer(createOpenLayer());
             layerStore._addLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
@@ -190,14 +179,12 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('addLayerUsingDescriptor', function() {
-            spyOn(Ext.MsgBus, 'publish');
             expect(layerStore.getCount()).toBe(0);
             layerStore.addUsingDescriptor(layerDescriptor);
             expect(layerStore.getCount()).toBe(1);
         });
 
         it('addLayerUsingOpenLayer', function() {
-            spyOn(Ext.MsgBus, 'publish');
             expect(layerStore.getCount()).toBe(0);
             layerStore._addLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
@@ -238,7 +225,6 @@ describe("Portal.data.LayerStore", function() {
             var openLayer;
 
             beforeEach(function() {
-
                 spyOn(Ext.MsgBus, 'publish');
                 openLayer = createOpenLayer();
                 layerStore._addLayer(openLayer);
@@ -258,8 +244,6 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('removeAll', function() {
-
-            spyOn(Ext.MsgBus, 'publish');
             spyOn(layerStore, 'remove');
             layerStore.removeAll();
 
@@ -267,8 +251,6 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('reset', function() {
-
-            spyOn(Ext.MsgBus, 'publish');
             layerStore._addLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
 
@@ -281,11 +263,6 @@ describe("Portal.data.LayerStore", function() {
     });
 
     describe('containsOpenLayer', function() {
-
-        beforeEach(function() {
-            spyOn(Ext.MsgBus, 'publish');
-        });
-
         it('returns false with duplicate names if layerHierarchy are different', function() {
             var layer1 = createOpenLayer();
             var layer2 = createOpenLayer();
@@ -321,8 +298,6 @@ describe("Portal.data.LayerStore", function() {
     describe('getLayers', function() {
 
         beforeEach(function() {
-
-            spyOn(Ext.MsgBus, 'publish');
             // Non-base layers
             var l1 = createOpenLayer("1");
             layerStore._addLayer(l1);
@@ -378,7 +353,6 @@ describe("Portal.data.LayerStore", function() {
         var layer;
 
         beforeEach(function() {
-            spyOn(Ext.MsgBus, 'publish');
             layer = createOpenLayer("somelayer");
             layer.options.isBaseLayer = false;
             baseLayerRecord = layerStore._addLayer(layer);
