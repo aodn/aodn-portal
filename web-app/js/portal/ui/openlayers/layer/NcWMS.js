@@ -70,7 +70,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             url: url,
             success: function(resp, options) {
                 try {
-                    this._timeSeriesDatesLoaded(Ext.util.JSON.decode(resp.responseText));
+                    this._parseDatesWithDataAsync(Ext.util.JSON.decode(resp.responseText));
                 }
                 catch (e) {
                     log.error("Could not parse filters for NcWMS layer '" + this.params.LAYERS + "'");
@@ -102,9 +102,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         });
     },
 
-    _timeSeriesDatesLoaded: function(response) {
-        var datesWithData = this._parseDatesWithData(response);
-
+    _timeSeriesDatesLoaded: function(datesWithData) {
         this.temporalExtent.addDays(datesWithData);
 
         this.loadTimeSeriesForDay(this.temporalExtent.getFirstDay());
@@ -150,7 +148,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     loadTimeSeriesForDay: function(date) {
         if (this.getTimeSeriesForDay(date)) {
-            this._timeSeriesLoadedForDate();
+            // Give UI precedence by using delayed function call (setTimeout)
+            var that = this;
+            setTimeout(function() { that._timeSeriesLoadedForDate(); }, 10);
         }
         else {
             this._fetchTimeSeriesForDay(date);
@@ -256,20 +256,31 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
     },
 
-    _parseDatesWithData: function(response) {
+    _parseDatesWithDataAsync: function(response) {
         var datesWithDataArray = [];
 
         // Assume only one filter which is the one we're after
         var dateFilter = response[0];
+        var datesToProcess = dateFilter['possibleValues'];
 
-        if (dateFilter['possibleValues']) {
-            Ext.each(dateFilter['possibleValues'], function(dateString) {
-                var dateWithData = new moment.utc(dateString);
-                datesWithDataArray.push(dateWithData);
-            });
-        }
+        // Interleave processing into chunks, browser will be more responsive
+        var chunkSize = 256;
+        var idx = 0;
+        var that = this;
+        (function() {
+            var chunkEnd = idx + chunkSize;
+            for (; idx < datesToProcess.length && idx < chunkEnd; ++idx) {
+                datesWithDataArray.push(new moment.utc(datesToProcess[idx]));
+            }
 
-        return datesWithDataArray;
+            if (idx >= datesToProcess.length) {
+                // We're done, stop processing
+                that._timeSeriesDatesLoaded(datesWithDataArray);
+            }
+            else {
+                setTimeout(arguments.callee, 0);
+            }
+        })();
     },
 
     _getTimeParameter: function(dateTime) {

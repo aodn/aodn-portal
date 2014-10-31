@@ -99,11 +99,19 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
     describe("loadTimeSeriesForDay", function() {
         it("when already loaded", function() {
-            spyOn(cachedLayer, '_timeSeriesLoadedForDate').andCallFake(function() {});
+            var functionCalled = false;
+            spyOn(cachedLayer, '_timeSeriesLoadedForDate').andCallFake(function() { functionCalled = true });
             cachedLayer.temporalExtent.parse(['2001-07-02T00:00:00']);
 
             cachedLayer.loadTimeSeriesForDay(moment.utc('2001-07-02T00:00:00Z'));
-            expect(cachedLayer._timeSeriesLoadedForDate).toHaveBeenCalled();
+
+            waitsFor(function() {
+                return functionCalled;
+            }, "_timeSeriesDatesLoaded not called", 1000);
+
+            runs(function() {
+                expect(cachedLayer._timeSeriesLoadedForDate).toHaveBeenCalled();
+            });
         });
 
         it("when not loaded", function() {
@@ -145,15 +153,9 @@ describe("OpenLayers.Layer.NcWMS", function() {
         var sampleJson = '{ test: 1, supportedStyles: [], palettes: [] }';
 
         beforeEach(function() {
-            spyOn(cachedLayer, '_parseDatesWithData').andCallFake(function() {});
             spyOn(cachedLayer.temporalExtent, 'getFirstDay').andCallFake(function() {});
             spyOn(cachedLayer.temporalExtent, 'getLastDay').andCallFake(function() {});
             spyOn(cachedLayer, 'loadTimeSeriesForDay').andCallFake(function() {});
-        });
-
-        it('calls _parseDatesWithData', function() {
-            cachedLayer._timeSeriesDatesLoaded(sampleJson);
-            expect(cachedLayer._parseDatesWithData).toHaveBeenCalled();
         });
 
         it('calls addDays', function() {
@@ -202,21 +204,38 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
-    it('parses dates from NcWMS GetMetadata JSON', function() {
+    it('async parses dates from NcWMS GetMetadata JSON', function() {
         var ncwmsFiltersJson = '[{"label":"Time","type":"TimeSeries","name":"timesteps","possibleValues":["2010-02-23T00:00:00Z","2010-03-10T00:00:00Z","2010-03-11T00:00:00Z","2010-03-12T00:00:00Z","2010-03-13T00:00:00Z"]}]';
         var ncwmsFilters = Ext.util.JSON.decode(ncwmsFiltersJson);
 
-        var datesWithData = cachedLayer._parseDatesWithData(ncwmsFilters);
+        var datesWithData = null;
 
-        expect(datesWithData.length).toEqual(5);
-        expect(searchForDate(moment.utc('2010-02-23'), datesWithData)).toBeGreaterThan(-1);
-        expect(searchForDate(moment.utc('2010-03-10'), datesWithData)).toBeGreaterThan(-1);
-        expect(searchForDate(moment.utc('2010-03-11'), datesWithData)).toBeGreaterThan(-1);
-        expect(searchForDate(moment.utc('2010-03-12'), datesWithData)).toBeGreaterThan(-1);
-        expect(searchForDate(moment.utc('2010-03-13'), datesWithData)).toBeGreaterThan(-1);
+        spyOn(cachedLayer, '_timeSeriesDatesLoaded').andCallFake(
+            function(_datesWithData) {
+                datesWithData = _datesWithData;
+            }
+        );
 
-        // Search for something that shouldn't be there
-        expect(searchForDate(moment.utc('2200-02-02'), datesWithData)).toEqual(-1);
+        cachedLayer._parseDatesWithDataAsync(ncwmsFilters);
+
+        // Wait for function to return
+        waitsFor(function() {
+            return datesWithData;
+        }, "Temporal extent not processed", 1000);
+
+        runs(function() {
+            expect(cachedLayer._timeSeriesDatesLoaded).toHaveBeenCalled();
+
+            expect(datesWithData.length).toEqual(5);
+            expect(searchForDate(moment.utc('2010-02-23'), datesWithData)).toBeGreaterThan(-1);
+            expect(searchForDate(moment.utc('2010-03-10'), datesWithData)).toBeGreaterThan(-1);
+            expect(searchForDate(moment.utc('2010-03-11'), datesWithData)).toBeGreaterThan(-1);
+            expect(searchForDate(moment.utc('2010-03-12'), datesWithData)).toBeGreaterThan(-1);
+            expect(searchForDate(moment.utc('2010-03-13'), datesWithData)).toBeGreaterThan(-1);
+
+            // Search for something that shouldn't be there
+            expect(searchForDate(moment.utc('2200-02-02'), datesWithData)).toEqual(-1);
+        });
     });
 
     describe('get next time', function() {
