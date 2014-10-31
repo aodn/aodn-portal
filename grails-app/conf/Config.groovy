@@ -97,7 +97,7 @@ aodaacAggregator {
 }
 
 // Depth service
-depthService.url = "http://depthservice.aodn.org.au/depth"
+depthService.url = "https://depthservice.aodn.org.au/depth"
 
 downloadAuth {
     // Never show a captcha to those IP addresses
