@@ -277,19 +277,36 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _getExtraLayerInfoFromNcwms: function() {
-        return this.url + "?layerName=" + this.params.LAYERS + "&REQUEST=GetMetadata&item=layerDetails";
+        return String.format(
+            "{0}?layerName={1}&REQUEST=GetMetadata&item=layerDetails",
+            this.url,
+            this.params.LAYERS
+        );
     },
 
     _getFiltersUrl: function() {
-        return "layer/getFiltersAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS;
+        return String.format(
+            "layer/getFiltersAsJSON?serverType=ncwms&server={0}&layer={1}",
+            encodeURIComponent(this.url),
+            this.params.LAYERS
+        );
     },
 
     _getStylesUrl: function() {
-        return "layer/getStylesAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS;
+        return String.format(
+            "layer/getStylesAsJSON?serverType=ncwms&server={0}&layer={1}",
+            encodeURIComponent(this.url),
+            this.params.LAYERS
+        );
     },
 
     _getTimeSeriesUrl: function(date) {
-        return "layer/getFilterValuesAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS + "&filter=" + date.clone().startOf('day').toISOString();
+        return String.format(
+            "layer/getFilterValuesAsJSON?serverType=ncwms&server={0}&layer={1}&filter={2}",
+            encodeURIComponent(this.url),
+            this.params.LAYERS,
+            date.clone().startOf('day').toISOString()
+        );
     },
 
     /* Overrides */
