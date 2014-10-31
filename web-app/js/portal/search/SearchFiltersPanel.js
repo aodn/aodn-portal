@@ -5,9 +5,9 @@
  *
  */
 
-Ext.namespace('Portal.ui.search');
+Ext.namespace('Portal.search');
 
-Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
+Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(config) {
 
@@ -47,7 +47,7 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             items: this.filters
         }, config);
 
-        Portal.ui.search.SearchFiltersPanel.superclass.constructor.call(this, config);
+        Portal.search.SearchFiltersPanel.superclass.constructor.call(this, config);
 
         var searcherEvents = [
             { event: 'searchcomplete', callback: this._hideSpinnerText },
@@ -61,47 +61,56 @@ Portal.ui.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     initComponent: function() {
-        Portal.ui.search.SearchFiltersPanel.superclass.initComponent.apply(this);
+        Portal.search.SearchFiltersPanel.superclass.initComponent.apply(this);
     },
 
     _initTermFilters: function(config) {
-        this._buildTermFilter('parameterFilter', {
-            title: OpenLayers.i18n('parameterFilter'),
-            hierarchical: false,
-            fieldGroup: 'longParamNames',
-            fieldName: 'longParamName',
-            searcher: config.searcher,
-            collapsed: false,
-            listeners: {
-                expand: this._onExpand,
-                scope: this
-            }
-        });
 
-        this._buildTermFilter('organisationFilter', {
-            title: OpenLayers.i18n('organisationFilter'),
-            hierarchical: false,
-            fieldGroup: 'organisationNames',
-            fieldName: 'orgName',
-            searcher: config.searcher,
-            listeners: {
-                expand: this._onExpand,
-                scope: this
+        // TODO: add these dynamically.
+        this._buildFilter(
+            Portal.search.TermSelectionPanel,
+            'parameterFilter',
+            {
+                facetName: "Measured parameter",
+                title: OpenLayers.i18n('parameterFilter'),
+                searcher: config.searcher,
+                collapsedByDefault: false,
+                listeners: {
+                    expand: this._onExpand,
+                    scope: this
+                }
             }
-        });
+        );
 
-        this._buildTermFilter('platformFilter', {
-            title: OpenLayers.i18n('platformFilter'),
-            hierarchical: false,
-            fieldGroup: 'platformNames',
-            fieldName: 'platform',
-            searcher: config.searcher,
-            collapsed: false,
-            listeners: {
-                expand: this._onExpand,
-                scope: this
+        this._buildFilter(
+            Portal.search.TermSelectionPanel,
+            'organisationFilter',
+            {
+                facetName: "Organisation",
+                title: OpenLayers.i18n('organisationFilter'),
+                searcher: config.searcher,
+                collapsedByDefault: true,
+                listeners: {
+                    expand: this._onExpand,
+                    scope: this
+                }
             }
-        });
+        );
+
+        this._buildFilter(
+            Portal.search.TermSelectionPanel,
+            'platformFilter',
+            {
+                facetName: "Platform",
+                title: OpenLayers.i18n('platformFilter'),
+                searcher: config.searcher,
+                collapsedByDefault: false,
+                listeners: {
+                    expand: this._onExpand,
+                    scope: this
+                }
+            }
+        );
     },
 
     _showError: function() {

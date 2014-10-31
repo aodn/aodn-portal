@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.search');
 
-Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
+Portal.search.TermSelectionPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
 
@@ -35,7 +35,7 @@ Portal.search.HierarchicalTermSelectionPanel = Ext.extend(Ext.Container, {
         this.tree = this.createTree();
         this.selectedNodeValueHierarchy;
 
-        Portal.search.HierarchicalTermSelectionPanel.superclass.constructor.call(this, {
+        Portal.search.TermSelectionPanel.superclass.constructor.call(this, {
             items: [
                 this.tree
             ]

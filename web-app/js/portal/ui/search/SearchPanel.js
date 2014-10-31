@@ -32,12 +32,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             mapPanel: this.mapPanel
         };
 
-        if (Portal.app.appConfig.featureToggles.hierarchicalFacets) {
-            this.filtersPanel = new Portal.search.HierarchicalSearchFiltersPanel(filtersPanelConfig);
-        }
-        else {
-            this.filtersPanel = new Portal.ui.search.SearchFiltersPanel(filtersPanelConfig);
-        }
+        this.filtersPanel = new Portal.search.SearchFiltersPanel(filtersPanelConfig);
 
         this.bodyPanel = new Portal.ui.search.SearchBodyPanel({
             id: 'searchBodypanel',

@@ -54,7 +54,6 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         this._logSearchRequest();
 
-        // TODO: this will go.
         Ext.ux.Ajax.proxyRequest({
             url: requestUrl,
             success: this._onSuccessfulSearch,
@@ -66,21 +65,19 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
             }
         });
 
-        if (Portal.app.appConfig.featureToggles.hierarchicalFacets) {
-            var searchResponseLoader = this._newSearchResponseLoader({
-                requestMethod: 'GET',
-                preloadChildren: true,
-                url: Ext.ux.Ajax.constructProxyUrl(requestUrl),
-                listeners: {
-                    scope: this,
-                    load: this._onSuccessfulHierSearch,
-                    loadexception: this._logAndReturnErrors
-                }
-            });
+        var searchResponseLoader = this._newSearchResponseLoader({
+            requestMethod: 'GET',
+            preloadChildren: true,
+            url: Ext.ux.Ajax.constructProxyUrl(requestUrl),
+            listeners: {
+                scope: this,
+                load: this._onSuccessfulHierSearch,
+                loadexception: this._logAndReturnErrors
+            }
+        });
 
-            this.searchResultRootNode = new Ext.tree.TreeNode();
-            searchResponseLoader.load(this.getSearchResultRootNode());
-        }
+        this.searchResultRootNode = new Ext.tree.TreeNode();
+        searchResponseLoader.load(this.getSearchResultRootNode());
     },
 
     // TODO: this function only exists because I didn't have any luck spying

@@ -152,12 +152,8 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/search', file: 'SearchPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/search', file: 'FreeTextSearchPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/service', file: 'CatalogSearcher.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/ui/search', file: 'SearchFiltersPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'HierarchicalTermSelectionPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'HierarchicalSearchFiltersPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'TopTermStoreSortOrder.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'TopTermStore.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'TermSelectionPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'SearchFiltersPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'TermSelectionPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'ChildElementsField.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecord.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecordFetcher.js')}"></script>
