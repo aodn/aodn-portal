@@ -129,7 +129,6 @@ openId {
 
 featureToggles {
     pythonDownload = false
-    hierarchicalFacets = false
     proxyWmsRequests = true
 }
 
@@ -154,7 +153,6 @@ environments {
         grails.mail.disabled = true
 
         featureToggles.pythonDownload = true
-        featureToggles.hierarchicalFacets = true
     }
 
     test {
@@ -185,7 +183,7 @@ environments {
     }
 }
 
-geonetwork.searchPath = featureToggles.hierarchicalFacets ? 'xml.search.imos' : 'xml.search.summary'
+geonetwork.searchPath = 'xml.search.imos'
 
 // Server configuration
 baselayerServer = [

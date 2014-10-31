@@ -76,11 +76,6 @@ describe('Portal.service.CatalogSearcher', function() {
 
     describe('search', function() {
 
-        beforeEach(function() {
-            Ext.namespace('Portal.app.appConfig.featureToggles');
-            Portal.app.appConfig.featureToggles.hierarchicalFacets = true;
-        });
-
         describe('query', function() {
             it('adds drilldown value to drilldown parameter', function() {
                 searcher.addDrilldownFilter("Platform/Mooring");

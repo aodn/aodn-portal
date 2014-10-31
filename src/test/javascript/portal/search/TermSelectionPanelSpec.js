@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.search.HierarchicalTermSelectionPanel", function() {
+describe("Portal.search.TermSelectionPanel", function() {
 
     var searcher;
     var selectionPanel;
@@ -12,7 +12,7 @@ describe("Portal.search.HierarchicalTermSelectionPanel", function() {
     beforeEach(function() {
         searcher = new Portal.service.CatalogSearcher();
 
-        selectionPanel = new Portal.search.HierarchicalTermSelectionPanel({
+        selectionPanel = new Portal.search.TermSelectionPanel({
             searcher: searcher,
             collapsedByDefault: false,
             el: {

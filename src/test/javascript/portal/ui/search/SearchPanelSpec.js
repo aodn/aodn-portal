@@ -18,7 +18,7 @@ describe("Portal.ui.search.SearchPanel", function() {
         });
 
         it('initialises SearchFiltersPanel', function() {
-            expect(searchPanel.filtersPanel).toBeInstanceOf(Portal.ui.search.SearchFiltersPanel);
+            expect(searchPanel.filtersPanel).toBeInstanceOf(Portal.search.SearchFiltersPanel);
             expect(searchPanel.filtersPanel.searcher).toBeTruthy();
         });
 

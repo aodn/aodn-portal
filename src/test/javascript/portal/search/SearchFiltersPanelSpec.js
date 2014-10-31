@@ -4,13 +4,27 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.ui.search.SearchFiltersPanel", function() {
+describe("Portal.search.SearchFiltersPanel", function() {
 
     var searchFiltersPanel;
 
     beforeEach(function() {
-        searchFiltersPanel = new Portal.ui.search.SearchFiltersPanel(_mockConfig());
+        searchFiltersPanel = new Portal.search.SearchFiltersPanel(_mockConfig());
         spyOn(searchFiltersPanel, '_setSpinnerText');
+    });
+
+    it('initialisation', function() {
+        var expectedItemTypes = [
+            Portal.search.TermSelectionPanel,
+            Portal.search.TermSelectionPanel,
+            Portal.search.TermSelectionPanel,
+            Portal.search.DateSelectionPanel,
+            Portal.search.GeoSelectionPanel
+        ];
+
+        Ext.each(expectedItemTypes, function(expectedType, index) {
+            expect(searchFiltersPanel.items.itemAt(index)).toBeInstanceOf(expectedType);
+        });
     });
 
     describe('new search', function() {
@@ -46,12 +60,12 @@ describe("Portal.ui.search.SearchFiltersPanel", function() {
     describe('default configuration', function() {
         it('expands the parameter filter', function() {
             // Parameter filter is the first element in the filter array
-            expect(searchFiltersPanel.filters[0].collapsed).toEqual(false);
+            expect(searchFiltersPanel.filters[0].items.items[0].collapsed).toEqual(false);
         });
 
         it('expands the platform filter', function() {
             // Platform filter is the third element in the filter array
-            expect(searchFiltersPanel.filters[2].collapsed).toEqual(false);
+            expect(searchFiltersPanel.filters[2].items.items[0].collapsed).toEqual(false);
         });
     });
 
