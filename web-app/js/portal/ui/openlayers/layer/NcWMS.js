@@ -37,27 +37,27 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, [name, url, params, options]);
 
-        this._setMetadataFromNcWMS();
+        this._setExtraLayerInfoFromNcwms();
         this._loadTimeSeriesDates();
         this._loadStyles();
     },
 
-    _setMetadataFromNcWMS: function() {
+    _setExtraLayerInfoFromNcwms: function() {
         Ext.Ajax.proxyRequest({
             scope: this,
-            url: this._getMetadataFromNcWMS(),
+            url: this._getExtraLayerInfoFromNcwms(),
             success: function(resp, options) {
                 try {
-                    this.metadata = Ext.util.JSON.decode(resp.responseText);
+                    this.extraLayerInfo = Ext.util.JSON.decode(resp.responseText);
                     // This means we are "GFI ready"
                     this.params.QUERYABLE = true;
                 }
                 catch (e) {
-                    log.error("Could not parse metadata for NcWMS layer '" + this.params.LAYERS + "'");
+                    log.error("Could not parse extra layer info for NcWMS layer '" + this.params.LAYERS + "'");
                 }
             },
             failure: function() {
-                log.error("Could not get metadata for NcWMS layer '" + this.params.LAYERS + "'");
+                log.error("Could not get extra layer info for NcWMS layer '" + this.params.LAYERS + "'");
             }
         });
     },
@@ -257,7 +257,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _parseDatesWithData: function(response) {
-        datesWithDataArray = [];
+        var datesWithDataArray = [];
 
         // Assume only one filter which is the one we're after
         var dateFilter = response[0];
@@ -276,9 +276,8 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return dateTime.clone().utc().format('YYYY-MM-DDTHH:mm:ss.SSS');
     },
 
-    _getMetadataFromNcWMS: function() {
-        var metadataUrl = this.url + "?layerName=" + this.params.LAYERS + "&REQUEST=GetMetadata&item=layerDetails";
-        return metadataUrl;
+    _getExtraLayerInfoFromNcwms: function() {
+        return this.url + "?layerName=" + this.params.LAYERS + "&REQUEST=GetMetadata&item=layerDetails";
     },
 
     _getFiltersUrl: function() {
@@ -290,8 +289,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _getTimeSeriesUrl: function(date) {
-        var timeSeriesUrl = "layer/getFilterValuesAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS + "&filter=" + date.clone().startOf('day').toISOString();
-        return timeSeriesUrl;
+        return "layer/getFilterValuesAsJSON" + "?serverType=ncwms&server=" + this.url + "&layer=" + this.params.LAYERS + "&filter=" + date.clone().startOf('day').toISOString();
     },
 
     /* Overrides */

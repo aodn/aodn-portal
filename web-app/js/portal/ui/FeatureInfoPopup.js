@@ -130,6 +130,9 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
     _requestFeatureInfo: function(layer) {
         this.numResultsToLoad++;
+
+        var extraLayerInfo = layer.extraLayerInfo ? layer.extraLayerInfo : {};
+
         Ext.ux.Ajax.proxyRequest({
             scope: this,
             url: this._getLayerFeatureInfoRequestString(layer),
@@ -137,8 +140,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                 layer: layer,
                 name: layer.name,
                 expectedFormat: layer.getFeatureInfoFormat(),
-                units: layer.metadata.units,
-                copyright: layer.metadata.copyright
+                units: extraLayerInfo.units,
+                copyright: extraLayerInfo.copyright
             },
             success: function(resp, options) {
                 // Delegate HTML formatting of response to layer

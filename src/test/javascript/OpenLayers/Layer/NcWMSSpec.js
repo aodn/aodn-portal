@@ -175,11 +175,11 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
-    describe('_loadStylesFromMetadata', function() {
+    describe('_loadStyles', function() {
 
-        it('sets styles property from metadata', function() {
+        it('sets styles property from extra layer info', function() {
 
-            stylesResponse = {
+            var stylesResponse = {
                 styles: ['styleA', 'styleC', 'styleB'],
                 palettes: ['paletteB', 'paletteC', 'paletteA']
             };
