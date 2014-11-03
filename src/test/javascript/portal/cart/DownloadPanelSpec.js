@@ -33,6 +33,12 @@ describe("Portal.cart.DownloadPanel", function() {
 
             expect(downloadPanel.downloadPanelBody.generateBodyContent).toHaveBeenCalled();
         });
+
+        it('listens for ACTIVE_GEONETWORK_RECORD_REMOVED event', function() {
+            Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED);
+
+            expect(downloadPanel.downloadPanelBody.generateBodyContent).toHaveBeenCalled();
+        });
     });
 
     describe('step title', function() {
