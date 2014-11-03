@@ -11,7 +11,6 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     constructor: function(cfg) {
 
         var templateLines = this._getHtmlContent();
-        Ext.apply(this, cfg);
 
         Portal.cart.DownloadPanelItemTemplate.superclass.constructor.call(this, templateLines);
     },
@@ -138,7 +137,6 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         var collectionId = this.getIdFromButtonContainerId(button, "removeButtonId");
         var record = Portal.data.ActiveGeoNetworkRecordStore.instance().getRecordFromUuid(collectionId);
         Portal.data.ActiveGeoNetworkRecordStore.instance().remove(record);
-        this.generateContent();
     },
 
     _getFileListEntries: function(values) {
