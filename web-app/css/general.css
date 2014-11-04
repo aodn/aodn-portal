@@ -345,6 +345,16 @@ hr {
     margin: 7px 0;
 }
 
+.block {
+    display: block;
+    clear: both;
+}
+
+/* matches fixed width comboFilters */
+.clearFiltersButton {
+    margin-left: 220px;
+}
+
 .logoSpacer {
     margin: 2px;
 }
@@ -1099,6 +1109,10 @@ div.allwhite {
     height: inherit;
 }
 
+.filterGroupPanel {
+    padding-left: 10px ;
+}
+
 .search-filter-panel .x-panel-header {
     height: 12px;
     font-size: 13px;
@@ -1117,6 +1131,10 @@ div.allwhite {
 
 .term-selection-panel .x-panel-header:hover {
     background-color: #eeeeee;
+}
+
+.filterGroupPanel h4 {
+    padding: 7px 0;
 }
 
 .p-selected-view {
@@ -1374,7 +1392,9 @@ div.allwhite {
     top: 3px;
     font-style: italic;
 }
-
+.x-menu-list-item {
+    font: inherit;
+}
 .bboxExtentPicker .x-box-layout-ct {
     margin: 4px;
 }

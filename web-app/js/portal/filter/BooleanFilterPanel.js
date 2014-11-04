@@ -13,7 +13,6 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         var config = Ext.apply({
             layout: 'menu',
             layoutConfig: {
-                padding: '5',
                 align: 'centre'
             },
             autoDestroy: true
@@ -25,7 +24,8 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.checkbox = new Ext.form.Checkbox({
             name: this.filter.name,
             value: true,
-            boxLabel: String.format(OpenLayers.i18n('checkboxDescription'), this._formatBoxLabel()),
+            labelStyle: "inheritFont",
+            boxLabel: this._formatBoxLabel(),
             listeners: {
                 scope: this,
                 check: this._buttonChecked
@@ -35,8 +35,13 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.add(this.checkbox);
     },
 
+    getFilterName: function() {
+        // No titles for booleans
+        return null;
+    },
+
     _formatBoxLabel: function() {
-        var label = this.filter.label.split('_').join(' ').toLowerCase();
+        var label = this.filter.label.split('_').join(' ').toTitleCase();
         return label;
     },
 
@@ -52,7 +57,6 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             return undefined;
         }
     },
-
 
     _getCQLHumanValue: function() {
         if (this.checkbox.getValue()) {

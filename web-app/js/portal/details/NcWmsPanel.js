@@ -19,17 +19,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.layer = cfg.layer;
 
         var config = Ext.apply({
-            layout: 'table',
+            cls: 'filterGroupPanel',
             autoScroll: true,
-            layoutConfig: {
-                columns: 1,
-                tableAttrs: {
-                    cellspacing: '10px',
-                    style: {
-                        width: '100%'
-                    }
-                }
-            }
+            items: [this._getASpacer(10)]
         }, cfg);
 
         Portal.details.NcWmsPanel.superclass.constructor.call(this, config);
@@ -57,11 +49,18 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this._addClearButton();
     },
 
+    _getASpacer: function(sizeInPixels) {
+        return new Ext.Spacer({
+            cls:'block',
+            height: sizeInPixels
+        })
+    },
+
     _addClearButton: function() {
 
         this.add(
             new Ext.Button({
-                cls: "x-btn-text-icon",
+                cls: "x-btn-text-icon clearFiltersButton",
                 icon: "images/go-back-icon.png",
                 text: OpenLayers.i18n('clearFilterButtonLabel'),
                 listeners: {
@@ -214,7 +213,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.temporalControls = new Ext.Container({
             items: [
                 temporalExtentHeader,
-                this._newSectionSpacer(5),
                 dateStartRow,
                 dateEndRow,
                 this._newSectionSpacer(10),

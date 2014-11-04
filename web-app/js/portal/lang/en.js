@@ -197,9 +197,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     toDateEmptyText: 'Max',
     resetActionText: 'reset',
 
-    // BooleanFilterPanel.js
-    checkboxDescription: 'Select only data with {0}',
-
     // ActiveLayersPanel.js
     dataCollectionsTitle: "Data Collections",
     noCollectionSelectedHelp: "Please return and search for data collections.",
@@ -209,9 +206,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     asyncDownloadSuccessMsg: 'Your subsetting job has been created. Processing commenced.<br /><br />When the job is complete we will send an email to <i>${email}</i> with download instructions.<br /><br />NB. Subsetting jobs can vary considerably in how long they take, from minutes to hours. Both the number of source files and the selected area can affect how long a job takes to run.',
     asyncDownloadErrorMsg: 'Unable to create subsetting job. Please re-check the parameters you provided and try again.',
 
-    // Gridded data
     spatialExtentHeading: 'Spatial Extent',
     temporalExtentHeading: 'Temporal Extent',
+    generalFilterHeading: 'Specific Filters',
     currentDateTimeLabel: 'Displaying',
 
     emptyDownloadPlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",
