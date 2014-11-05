@@ -11,7 +11,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
     beforeEach(function() {
         layer = new OpenLayers.Layer.WMS();
-        layer.isKnownToThePortal = function() { return true; }
+        layer.isKnownToThePortal = function() { return true; };
 
         filterGroupPanel = new Portal.filter.FilterGroupPanel({
             layer: layer
@@ -60,27 +60,27 @@ describe("Portal.filter.FilterGroupPanel", function() {
             layer = {};
             layer.filters = [
                 {type: 'Boolean', label: 'A'},
-                {type: 'Boolean', label: 'E'},
                 {type: 'Date', label: 'B'},
                 {type: 'DateRange', label: 'Z'},
+                {type: 'Boolean', label: 'E'},
                 {type: 'BoundingBox', label: 'C'},
                 {type: 'String', label: 'D'}
             ];
             expectedReturn = [
-                {type : 'BoundingBox', sortOrder : 2, label: 'C'},
-                {type : 'Date', sortOrder : 1, label: 'B'},
-                {type : 'DateRange', sortOrder : 0, label: 'Z'},
-                {type : 'Boolean', sortOrder : -1, label: 'A'},
-                {type : 'String', sortOrder : -1, label: 'D'},
-                {type : 'Boolean', sortOrder : -1, label: 'E'}
-            ]
+                {type : 'BoundingBox', sortOrder : 5, label: 'C'},
+                {type : 'Date', sortOrder : 4, label: 'B'},
+                {type : 'DateRange', sortOrder : 3, label: 'Z'},
+                {type : 'Boolean', sortOrder : 2, label: 'A'},
+                {type : 'Boolean', sortOrder : 2, label: 'E'},
+                {type : 'String', sortOrder : 0, label: 'D'}
+            ];
 
             filterGroupPanel = new Portal.filter.FilterGroupPanel({
                 layer: layer
             });
         });
 
-        it('sorts with spatial and temporal filters at the top, alphabetic afterwards', function() {
+        it('sorts by specified order', function() {
             expect(filterGroupPanel._filtersSort(layer.filters)).toEqual(expectedReturn);
         });
     });

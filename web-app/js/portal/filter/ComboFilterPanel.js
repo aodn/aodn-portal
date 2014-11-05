@@ -38,6 +38,12 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         });
 
         this.add(this.combo);
+        this.add(
+            new Ext.Spacer({
+                cls:'block',
+                height: 5
+            })
+        );
 
         var data = [];
         var clearFilter = [OpenLayers.i18n('clearFilterOption')];

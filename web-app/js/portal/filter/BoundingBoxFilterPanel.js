@@ -11,7 +11,11 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
     constructor: function(cfg) {
 
-        Portal.filter.BoundingBoxFilterPanel.superclass.constructor.call(this, cfg);
+        var config = Ext.apply({
+            typeLabel: OpenLayers.i18n('spatialExtentHeading')
+        }, cfg);
+
+        Portal.filter.BoundingBoxFilterPanel.superclass.constructor.call(this, config);
 
         this.map = cfg.layer.map;
         this.map.events.on({
@@ -27,7 +31,8 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
     _createField: function() {
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
-            map: this.layer.map
+            map: this.layer.map,
+            hideLabel: true
         });
         this.add(this.spatialSubsetControlsPanel);
     },

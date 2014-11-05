@@ -12,7 +12,6 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
     initComponent: function() {
         Portal.details.SpatialSubsetControlsPanel.superclass.initComponent.call(this);
         this._addLabel(OpenLayers.i18n('spatialExtentHeading'));
-        this._addVerticalSpacer();
         this._addPickerPanel();
         this._addVerticalSpacer();
         this._addSpatialConstraintDisplayPanel();
@@ -63,10 +62,13 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
     },
 
     _addLabel: function(labelText) {
-        var label = new Ext.form.Label({
-            html: "<h4>" + labelText + "</h4>"
-        });
 
-        this.add(label);
+        if (!this.hideLabel){
+            var label = new Ext.form.Label({
+                html: "<h4>" + labelText + "</h4>"
+            });
+
+            this.add(label);
+        }
     }
 });

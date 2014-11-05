@@ -13,6 +13,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         var config = Ext.apply({
             layout: 'form',
             labelSeparator: '',
+            typeLabel: OpenLayers.i18n('temporalExtentHeading'),
             labelWidth: 35,
             layoutConfig: {
                 align: 'left'
@@ -31,17 +32,23 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.toDate = this._createResettableDate('toDate', OpenLayers.i18n('toDateLabel'), OpenLayers.i18n('toDateEmptyText'));
 
         this.add(this.fromDate);
-
-        this.add(new Ext.Spacer({
-            height: 5
-        }));
-
+        this._addVerticalSpacer(5);
         this.add(this.toDate);
+        this._addVerticalSpacer(15);
 
         if (this.filter.possibleValues != undefined) {
             this._setMinMax(this.fromDate, this.filter.possibleValues);
             this._setMinMax(this.toDate, this.filter.possibleValues);
         }
+    },
+
+    _addVerticalSpacer: function(sizeInPixels) {
+        this.add(
+            new Ext.Spacer({
+                cls:'block',
+                height: sizeInPixels
+            })
+        );
     },
 
     _createResettableDate: function(name, fieldLabel, emptyText) {
@@ -54,6 +61,11 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
                 change: this._applyDateFilterPanel
             }
         });
+    },
+
+    getFilterName: function() {
+        // No titles for DateFilter
+        return null;
     },
 
     _setMinMax: function(resettableDate, vals) {
