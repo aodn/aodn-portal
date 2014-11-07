@@ -81,15 +81,6 @@
                                 </td>
                             </tr>
 
-                             <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="footerContent"><g:message code="config.footerContent.label" default="Footer HTML Content" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'footerContent', 'errors')}">
-                                    <g:textArea rows="4" style="width: 400px;" name="footerContent" value="${configInstance?.footerContent}" escapeHtml="false" /><font class="hint">Any valid HTML</font>
-                                </td>
-                            </tr>
-
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="mapGetFeatureInfoBuffer"><g:message code="config.mapGetFeatureInfoBuffer.label" default="Pixel radius to use for map clicks with GetFeatureInfo dialog" /></label>

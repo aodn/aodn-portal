@@ -28,7 +28,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
         <img class="miniSpacer" src="http://static.emii.org.au/images/logo/NCRIS_Initiative_stacked110.png" alt="DIISTRE logo"/>
       </div>
       <div class="spacer floatLeft homePanelWidget"  style="width:360px">
-        ${ cfg.footerContent }
+        ${portalBranding.footerContent}
       </div>
     </div>
     <div class="clear footer"> ${ portalBuildInfo }</div>

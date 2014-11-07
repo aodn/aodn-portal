@@ -25,7 +25,6 @@ class Config {
     Motd motd
     Date motdStart
     Date motdEnd
-    String footerContent
 
     Integer mapGetFeatureInfoBuffer
     String baselayerList
@@ -39,16 +38,12 @@ class Config {
     static transients = [
         "baselayerList" // baselayerMenu can be expanded to baselayers
     ]
-    static mapping = {
-        footerContent type: 'text'
-    }
 
     static constraints = {
         enableMOTD(nullable: true)
         motd(nullable: true)
         motdStart(nullable: true)
         motdEnd(nullable: true)
-        footerContent(nullable: true, maxSize: 4000)
         baselayerMenu(nullable: true)
         defaultMenu(nullable: true)
         contributorMenu(nullable: true)
