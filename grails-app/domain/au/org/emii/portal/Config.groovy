@@ -28,10 +28,6 @@ class Config {
     String footerContent
     Integer footerContentWidth
 
-    // heights and widths
-    Integer popupWidth
-    Integer popupHeight
-
     String downloadCartFilename
     Integer downloadCartMaxNumFiles
     Integer downloadCartMaxFileSize
@@ -66,8 +62,6 @@ class Config {
         defaultMenu(nullable: true)
         contributorMenu(nullable: true)
         regionMenu(nullable: true)
-        popupWidth()
-        popupHeight()
         defaultLayers(nullable: true)
         downloadCartFilename(blank: false)
         downloadCartMaxNumFiles(min: 1)

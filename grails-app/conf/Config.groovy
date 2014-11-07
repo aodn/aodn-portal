@@ -289,6 +289,9 @@ portal {
     autoZoom = false
     defaultDatelineZoomBbox = "110,-50,160,-3"
     enableDefaultDatelineZoom = false
+
+    popupWidth = 550
+    popupHeight = 325
 }
 
 // MARVL project integration

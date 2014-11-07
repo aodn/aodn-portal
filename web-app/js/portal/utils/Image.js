@@ -21,7 +21,7 @@ Portal.utils.Image.resizeAfterDelay = function(img, delayMs) {
 Portal.utils.Image.resize = function(img) {
     // from stack overflow: http://stackoverflow.com/questions/318630/get-real-image-width-and-height-with-javascript-in-safari-chrome
     // Configuration Options
-    var max_width = Portal.app.config.popupWidth - 70 ;     //Sets the max width, in pixels, for every image
+    var max_width = Portal.app.appConfig.portal.popupWidth - 70 ;     //Sets the max width, in pixels, for every image
 
     var width = img.width();
     var height = img.height();

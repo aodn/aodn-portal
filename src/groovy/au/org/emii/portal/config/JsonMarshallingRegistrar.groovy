@@ -40,10 +40,6 @@ class JsonMarshallingRegistrar {
             result['footerContent'] = cfg.footerContent
             result['footerContentWidth'] = cfg.footerContentWidth
 
-            // heights and widths
-            result['popupWidth'] = cfg.popupWidth
-            result['popupHeight'] = cfg.popupHeight
-
             result['downloadCartMaxNumFiles'] = cfg.downloadCartMaxNumFiles
             result['downloadCartDownloadableProtocols'] = cfg.downloadCartDownloadableProtocols
 
