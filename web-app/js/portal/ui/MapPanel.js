@@ -24,8 +24,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             header: false,
             initialBbox: Portal.app.appConfig.portal.initialBbox,
             autoZoom: Portal.app.appConfig.portal.autoZoom,
-            enableDefaultDatelineZoom: this.appConfig.enableDefaultDatelineZoom,
-            defaultDatelineZoomBbox: this.appConfig.defaultDatelineZoomBbox,
+            enableDefaultDatelineZoom: Portal.app.appConfig.portal.enableDefaultDatelineZoom,
+            defaultDatelineZoomBbox: Portal.app.appConfig.portal.defaultDatelineZoomBbox,
             hideLayerOptions: this.appConfig.hideLayerOptions
         }, cfg);
 

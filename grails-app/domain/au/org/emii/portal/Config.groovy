@@ -20,10 +20,6 @@ class Config {
     // Search
     Boolean searchUsingBboxByDefault
 
-    // Map behaviour
-    Boolean enableDefaultDatelineZoom
-    String defaultDatelineZoomBbox
-
     // Menus
     Menu baselayerMenu
     Menu defaultMenu
@@ -99,8 +95,6 @@ class Config {
         mapGetFeatureInfoBuffer(min: 0)
         wmsScannerCallbackPassword(nullable: true)
         wfsScannerCallbackPassword(nullable: true)
-        enableDefaultDatelineZoom(nullable: true)
-        defaultDatelineZoomBbox(size: 10..50)
     }
 
     static Config activeInstance() {

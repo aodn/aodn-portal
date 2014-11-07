@@ -34,10 +34,6 @@ class JsonMarshallingRegistrar {
             result['proxyPort'] = cfg.proxyPort
             result['searchUsingBboxByDefault'] = cfg.searchUsingBboxByDefault
 
-            // Map behaviour
-            result['enableDefaultDatelineZoom'] = cfg.enableDefaultDatelineZoom
-            result['defaultDatelineZoomBbox'] = cfg.defaultDatelineZoomBbox
-
             // Menus
             result['baselayerMenu'] = cfg.baselayerMenu
             result['defaultMenu'] = cfg.defaultMenu
