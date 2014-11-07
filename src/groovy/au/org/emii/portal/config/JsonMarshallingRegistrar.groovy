@@ -38,7 +38,6 @@ class JsonMarshallingRegistrar {
             result['regionMenu'] = cfg.regionMenu
 
             result['footerContent'] = cfg.footerContent
-            result['footerContentWidth'] = cfg.footerContentWidth
 
             result['mapGetFeatureInfoBuffer'] = cfg.mapGetFeatureInfoBuffer
 

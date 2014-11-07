@@ -26,7 +26,6 @@ class Config {
     Date motdStart
     Date motdEnd
     String footerContent
-    Integer footerContentWidth
 
     Integer mapGetFeatureInfoBuffer
     String baselayerList
@@ -50,7 +49,6 @@ class Config {
         motdStart(nullable: true)
         motdEnd(nullable: true)
         footerContent(nullable: true, maxSize: 4000)
-        footerContentWidth(nullable: true, range: 150..1000)
         baselayerMenu(nullable: true)
         defaultMenu(nullable: true)
         contributorMenu(nullable: true)
