@@ -10,7 +10,16 @@ describe("Portal.search.GeoSelectionPanel", function() {
     var searcher;
 
     beforeEach(function() {
-        Portal.app.config.initialBbox = '1, 2, 3, 4';  // So that mini-map doesn't get upset.
+        Portal.app = {
+            appConfig: {
+                portal: {
+                    initialBbox: '1, 2, 3, 4'
+                },
+                geonetwork: {
+                    searchPath: 'searchPath'
+                }
+            }
+        };
         searcher = new Portal.service.CatalogSearcher();
         geoFilter = new Portal.search.GeoSelectionPanel({
             title: "Geo Filter",
