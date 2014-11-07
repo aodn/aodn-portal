@@ -19,11 +19,11 @@ Portal.search.MetadataExtent = Ext.extend(Object, {
 
     addPolygon: function(wktPolygon) {
         var geometry = new OpenLayers.Geometry.fromWKT(wktPolygon);
-        if (geometry) {
+        if (geometry instanceof OpenLayers.Geometry) {
             this.geometries.push(geometry);
         }
         else {
-            log.debug("Cannot make polygon out of " + wktPolygon);
+            log.error("Cannot make polygon out of '" + wktPolygon + "'");
         }
     },
 
