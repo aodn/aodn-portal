@@ -21,7 +21,6 @@ class Config {
     Boolean searchUsingBboxByDefault
 
     // Map behaviour
-    Boolean autoZoom
     Boolean enableDefaultDatelineZoom
     String defaultDatelineZoomBbox
 
@@ -73,7 +72,6 @@ class Config {
     static constraints = {
         proxy(nullable: true)
         proxyPort(nullable: true)
-        autoZoom()
         enableMOTD(nullable: true)
         motd(nullable: true)
         motdStart(nullable: true)

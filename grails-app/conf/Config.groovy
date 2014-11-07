@@ -286,6 +286,7 @@ portal {
     }
 
     initialBbox = "110,-50,160,-3"
+    autoZoom = false
 }
 
 // MARVL project integration

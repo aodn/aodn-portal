@@ -35,7 +35,6 @@ class JsonMarshallingRegistrar {
             result['searchUsingBboxByDefault'] = cfg.searchUsingBboxByDefault
 
             // Map behaviour
-            result['autoZoom'] = cfg.autoZoom
             result['enableDefaultDatelineZoom'] = cfg.enableDefaultDatelineZoom
             result['defaultDatelineZoomBbox'] = cfg.defaultDatelineZoomBbox
 
