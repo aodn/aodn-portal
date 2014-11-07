@@ -28,8 +28,6 @@ class Config {
     String footerContent
     Integer footerContentWidth
 
-    String downloadCartDownloadableProtocols
-
     String metadataLinkProtocols
     String metadataLayerProtocols
     Integer mapGetFeatureInfoBuffer
@@ -60,7 +58,6 @@ class Config {
         contributorMenu(nullable: true)
         regionMenu(nullable: true)
         defaultLayers(nullable: true)
-        downloadCartDownloadableProtocols(size: 0..255)
         metadataLinkProtocols(size: 0..255)
         metadataLayerProtocols(size: 0..255)
         mapGetFeatureInfoBuffer(min: 0)
