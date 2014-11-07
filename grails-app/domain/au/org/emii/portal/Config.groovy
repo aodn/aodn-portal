@@ -28,9 +28,6 @@ class Config {
     String footerContent
     Integer footerContentWidth
 
-    String downloadCartFilename
-    Integer downloadCartMaxNumFiles
-    Integer downloadCartMaxFileSize
     String downloadCartDownloadableProtocols
 
     String metadataLinkProtocols
@@ -63,9 +60,6 @@ class Config {
         contributorMenu(nullable: true)
         regionMenu(nullable: true)
         defaultLayers(nullable: true)
-        downloadCartFilename(blank: false)
-        downloadCartMaxNumFiles(min: 1)
-        downloadCartMaxFileSize(min: 1)
         downloadCartDownloadableProtocols(size: 0..255)
         metadataLinkProtocols(size: 0..255)
         metadataLayerProtocols(size: 0..255)
