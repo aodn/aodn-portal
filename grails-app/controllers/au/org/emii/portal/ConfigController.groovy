@@ -29,8 +29,6 @@ class ConfigController {
     def viewport = {
 
         def configInstance = Config.activeInstance()
-        // Clean ^M characters
-        configInstance.metadataLayerProtocols = configInstance.metadataLayerProtocols.replaceAll("\\r", "")
 
         // get instance now with all 'deep' details as a JSON string
         def x = (configInstance as JSON).toString()

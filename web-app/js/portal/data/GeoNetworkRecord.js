@@ -184,7 +184,7 @@ Portal.data.GeoNetworkRecord = function() {
             }
         });
 
-        linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
+        linkStore.filterByProtocols(Portal.app.appConfig.portal.metadataLayerProtocols);
 
         return linkStore.getLayerLink(0);
     };

@@ -40,8 +40,6 @@ class JsonMarshallingRegistrar {
             result['footerContent'] = cfg.footerContent
             result['footerContentWidth'] = cfg.footerContentWidth
 
-            result['metadataLinkProtocols'] = cfg.metadataLinkProtocols
-            result['metadataLayerProtocols'] = cfg.metadataLayerProtocols
             result['mapGetFeatureInfoBuffer'] = cfg.mapGetFeatureInfoBuffer
 
             return result
