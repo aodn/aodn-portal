@@ -31,10 +31,6 @@ class Config {
     // heights and widths
     Integer popupWidth
     Integer popupHeight
-    Integer westWidth
-    Integer headerHeight
-    Integer footerHeight
-    Integer activeLayersHeight
 
     String downloadCartFilename
     Integer downloadCartMaxNumFiles
@@ -70,12 +66,8 @@ class Config {
         defaultMenu(nullable: true)
         contributorMenu(nullable: true)
         regionMenu(nullable: true)
-        headerHeight()
-        footerHeight()
-        activeLayersHeight()
         popupWidth()
         popupHeight()
-        westWidth()
         defaultLayers(nullable: true)
         downloadCartFilename(blank: false)
         downloadCartMaxNumFiles(min: 1)
