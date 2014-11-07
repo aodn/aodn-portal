@@ -22,7 +22,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             forceLayout: true,   // Makes the map appear (almost) instantly when user clicks the 'map' button.
             split: true,
             header: false,
-            initialBbox: this.appConfig.initialBbox,
+            initialBbox: Portal.app.appConfig.portal.initialBbox,
             autoZoom: this.appConfig.autoZoom,
             enableDefaultDatelineZoom: this.appConfig.enableDefaultDatelineZoom,
             defaultDatelineZoomBbox: this.appConfig.defaultDatelineZoomBbox,

@@ -284,6 +284,8 @@ portal {
     systemEmail {
         fromAddress = "info@example.com"
     }
+
+    initialBbox = "110,-50,160,-3"
 }
 
 // MARVL project integration
