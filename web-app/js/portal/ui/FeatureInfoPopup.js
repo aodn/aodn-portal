@@ -165,7 +165,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         return layer.getFeatureInfoRequestString(
             this._clickPoint(),
             {
-                BUFFER: this.appConfig.mapGetFeatureInfoBuffer
+                BUFFER: Portal.app.appConfig.portal.mapGetFeatureInfoBuffer
             }
         );
     },

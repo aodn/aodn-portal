@@ -37,8 +37,6 @@ class JsonMarshallingRegistrar {
             result['contributorMenu'] = cfg.contributorMenu
             result['regionMenu'] = cfg.regionMenu
 
-            result['mapGetFeatureInfoBuffer'] = cfg.mapGetFeatureInfoBuffer
-
             return result
         }
     }

@@ -133,12 +133,16 @@ describe("Portal.ui.FeatureInfoPopup", function()
             featureInfoPopup._clickPoint = function() { return {}; };
             spyOn(layer, 'getFeatureInfoRequestString');
 
+            Ext.namespace('Portal.app.appConfig.portal');
+            Portal.app.appConfig.portal.mapGetFeatureInfoBuffer = 10;
+
             featureInfoPopup._getLayerFeatureInfoRequestString(layer);
 
+            expect(Portal.app.appConfig.portal.mapGetFeatureInfoBuffer).toBeTruthy();
             expect(layer.getFeatureInfoRequestString).toHaveBeenCalledWith(
                 featureInfoPopup._clickPoint(),
                 {
-                    BUFFER: featureInfoPopup.appConfig.mapGetFeatureInfoBuffer
+                    BUFFER: Portal.app.appConfig.portal.mapGetFeatureInfoBuffer
                 }
             );
         });

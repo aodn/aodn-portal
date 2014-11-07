@@ -26,7 +26,6 @@ class Config {
     Date motdStart
     Date motdEnd
 
-    Integer mapGetFeatureInfoBuffer
     String baselayerList
     List defaultLayers
 
@@ -49,7 +48,6 @@ class Config {
         contributorMenu(nullable: true)
         regionMenu(nullable: true)
         defaultLayers(nullable: true)
-        mapGetFeatureInfoBuffer(min: 0)
         wmsScannerCallbackPassword(nullable: true)
         wfsScannerCallbackPassword(nullable: true)
     }
