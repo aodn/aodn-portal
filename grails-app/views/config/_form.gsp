@@ -6,24 +6,6 @@
 
 --%>
 
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="proxy"><g:message code="config.proxy.label" default="Proxy" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'proxy', 'errors')}">
-                                    <g:textField name="proxy" value="${configInstance?.proxy}" />
-                                </td>
-                            </tr>
-
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="proxyPort"><g:message code="config.proxyPort.label" default="Proxy Port" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'proxyPort', 'errors')}">
-                                    <g:textField name="proxyPort" value="${fieldValue(bean: configInstance, field: 'proxyPort')}" />
-                                </td>
-                            </tr>
-
                            <tr class="prop">
                                <td valign="top" class="name">
                                    <label for="searchUsingBboxByDefault"><g:message code="config.searchUsingBboxByDefault.label" default="Search using bounding box by default" /></label>

@@ -14,9 +14,6 @@ Configuration domain for the portal
 */
 
 class Config {
-    String proxy
-    Integer proxyPort
-
     // Search
     Boolean searchUsingBboxByDefault
 
@@ -66,8 +63,6 @@ class Config {
     }
 
     static constraints = {
-        proxy(nullable: true)
-        proxyPort(nullable: true)
         enableMOTD(nullable: true)
         motd(nullable: true)
         motdStart(nullable: true)

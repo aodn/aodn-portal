@@ -32,18 +32,6 @@
                     <tbody>
 
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="config.proxy.label" default="Proxy" /></td>
-                            <td valign="top" class="value">${fieldValue(bean: configInstance, field: "proxy")}</td>
-
-                        </tr>
-
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="config.proxyPort.label" default="Proxy Port" /></td>
-                            <td valign="top" class="value">${fieldValue(bean: configInstance, field: "proxyPort")}</td>
-
-                        </tr>
-
-                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="config.defaultMenu.label" default="Default Menu" /></td>
                             <td valign="top" class="value"><g:link controller="menu" action="show" id="${configInstance?.defaultMenu?.id}">${configInstance?.defaultMenu?.encodeAsHTML()}</g:link></td>
 
