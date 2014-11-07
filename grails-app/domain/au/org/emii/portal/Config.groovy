@@ -14,9 +14,6 @@ Configuration domain for the portal
 */
 
 class Config {
-    // Search
-    Boolean searchUsingBboxByDefault
-
     // Menus
     Menu baselayerMenu
     Menu defaultMenu
@@ -69,7 +66,6 @@ class Config {
         motdEnd(nullable: true)
         footerContent(nullable: true, maxSize: 4000)
         footerContentWidth(nullable: true, range: 150..1000)
-        searchUsingBboxByDefault()
         baselayerMenu(nullable: true)
         defaultMenu(nullable: true)
         contributorMenu(nullable: true)

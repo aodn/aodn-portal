@@ -30,7 +30,6 @@ class JsonMarshallingRegistrar {
         JSON.registerObjectMarshaller(Config) { cfg ->
 
             def result = [:]
-            result['searchUsingBboxByDefault'] = cfg.searchUsingBboxByDefault
 
             // Menus
             result['baselayerMenu'] = cfg.baselayerMenu

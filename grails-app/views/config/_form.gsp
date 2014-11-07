@@ -6,15 +6,6 @@
 
 --%>
 
-                           <tr class="prop">
-                               <td valign="top" class="name">
-                                   <label for="searchUsingBboxByDefault"><g:message code="config.searchUsingBboxByDefault.label" default="Search using bounding box by default" /></label>
-                               </td>
-                               <td valign="top" class="value ${hasErrors(bean: configInstance, field: 'searchUsingBboxByDefault', 'errors')}">
-                                   <g:checkBox name="searchUsingBboxByDefault" value="${configInstance?.searchUsingBboxByDefault}" />
-                               </td>
-                           </tr>
-
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="baselayerMenu"><g:message code="config.contributorMenu.label" default="Default Base Layer Menu" /></label>
