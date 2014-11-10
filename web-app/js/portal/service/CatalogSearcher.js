@@ -34,7 +34,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         Portal.service.CatalogSearcher.superclass.constructor.call(this, config);
 
-        this.addEvents('searchstart', 'hiersearchcomplete', 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved');
+        this.addEvents('searchstart', 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved');
     },
 
     reset: function() {
@@ -54,24 +54,13 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         this._logSearchRequest();
 
-        Ext.ux.Ajax.proxyRequest({
-            url: requestUrl,
-            success: this._onSuccessfulSearch,
-            failure: this._logAndReturnErrors,
-            page: page,
-            scope: this,
-            defaultHeaders: {
-                'Content-Type': 'application/xml'
-            }
-        });
-
         var searchResponseLoader = this._newSearchResponseLoader({
             requestMethod: 'GET',
             preloadChildren: true,
             url: Ext.ux.Ajax.constructProxyUrl(requestUrl),
             listeners: {
                 scope: this,
-                load: this._onSuccessfulHierSearch,
+                load: this._onSuccessfulSearch.bind(this, page),
                 loadexception: this._logAndReturnErrors
             }
         });
@@ -179,12 +168,8 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
     },
 
-    _onSuccessfulSearch: function(response, options) {
-        this.fireEvent('searchcomplete', response.responseXML, options.page);
-    },
-
-    _onSuccessfulHierSearch: function() {
-        this.fireEvent('hiersearchcomplete');
+    _onSuccessfulSearch: function(page, caller, node, response) {
+        this.fireEvent('searchcomplete', response.responseXML, page);
     },
 
     _logAndReturnErrors: function(response, options) {
