@@ -284,6 +284,28 @@ portal {
     systemEmail {
         fromAddress = "info@example.com"
     }
+
+    initialBbox = "110,-50,160,-3"
+    autoZoom = false
+    defaultDatelineZoomBbox = "110,-50,160,-3"
+    enableDefaultDatelineZoom = false
+
+    popupWidth = 550
+    popupHeight = 325
+
+    downloadCartDownloadableProtocols = [
+        "WWW:DOWNLOAD-1.0-http--download",
+        "WWW:DOWNLOAD-1.0-http--downloaddata",
+        "WWW:DOWNLOAD-1.0-http--downloadother",
+        "WWW:LINK-1.0-http--downloaddata"
+    ]
+
+    metadataLayerProtocols = [
+        "OGC:WMS-1.1.1-http-get-map",
+        "OGC:WMS-1.3.0-http-get-map"
+    ]
+
+    mapGetFeatureInfoBuffer = 10
 }
 
 // MARVL project integration

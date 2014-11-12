@@ -32,24 +32,6 @@
                     <tbody>
 
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="config.proxy.label" default="Proxy" /></td>
-                            <td valign="top" class="value">${fieldValue(bean: configInstance, field: "proxy")}</td>
-
-                        </tr>
-
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="config.proxyPort.label" default="Proxy Port" /></td>
-                            <td valign="top" class="value">${fieldValue(bean: configInstance, field: "proxyPort")}</td>
-
-                        </tr>
-
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="config.initialBbox.label" default="Initial Bbox" /></td>
-                            <td valign="top" class="value">${fieldValue(bean: configInstance, field: "initialBbox")}</td>
-
-                        </tr>
-
-                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="config.defaultMenu.label" default="Default Menu" /></td>
                             <td valign="top" class="value"><g:link controller="menu" action="show" id="${configInstance?.defaultMenu?.id}">${configInstance?.defaultMenu?.encodeAsHTML()}</g:link></td>
 
@@ -90,25 +72,8 @@
                             <td valign="top" class="value"><g:formatDate  format="EEE, d MMM yyyy HH:mm:ss"  date="${configInstance?.motdEnd}" /></td>
 
                         </tr>
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="config.headerHeight.label" default="Header Height" /></td>
-                            <td valign="top" class="value">${fieldValue(bean: configInstance, field: "headerHeight")}</td>
-                        </tr>
 
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="config.footerHeight.label" default="Footer Height" /></td>
-                            <td valign="top" class="value">${fieldValue(bean: configInstance, field: "footerHeight")}</td>
-                        </tr>
 
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="config.activeLayersHeight.label" default="Active Layers Height" /></td>
-                            <td valign="top" class="value">${fieldValue(bean: configInstance, field: "activeLayersHeight")}</td>
-                        </tr>
-
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="config.westWidth.label" default="West Menus initial Width" /></td>
-                            <td valign="top" class="value">${fieldValue(bean: configInstance, field: "westWidth")}</td>
-                        </tr>
 
 
 

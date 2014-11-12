@@ -78,7 +78,7 @@ Portal.app = {
                 buttons: Ext.Msg.OK,
                 cls: 'motd',
                 width: 600,
-                msg: this.portal.config.footerContent
+                msg: this.portal.appConfig.portal.footerContent
             });
         }
 

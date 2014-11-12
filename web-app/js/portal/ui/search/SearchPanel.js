@@ -18,7 +18,7 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         this.searcher = new Portal.service.CatalogSearcher({
             catalogUrl: Portal.app.appConfig.geonetwork.url,
             defaultParams: {
-                protocol: Portal.app.config.metadataLayerProtocols.split("\n").join(' or '),
+                protocol: Portal.app.appConfig.portal.metadataLayerProtocols.join(' or '),
                 sortBy: 'popularity'
             }
         });

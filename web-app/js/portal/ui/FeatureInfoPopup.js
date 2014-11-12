@@ -16,7 +16,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
         var config = Ext.apply({
             title: OpenLayers.i18n('searchingTitle'),
-            width: cfg.appConfig.popupWidth,
+            width: Portal.app.appConfig.portal.popupWidth,
             height: 80, // set height later when there are results
             maximizable: true,
             anchored: true,
@@ -120,7 +120,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         }, this);
 
         if (queryableVisibleLayersCount > 0) {
-            this.setSize(this.appConfig.popupWidth, this.appConfig.popupHeight);
+            this.setSize(Portal.app.appConfig.portal.popupWidth, Portal.app.appConfig.portal.popupHeight);
         }
         else if (queryableVisibleLayersCount == 0) {
             this.setTitle(OpenLayers.i18n('noDataCollectionTitle'));
@@ -165,7 +165,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         return layer.getFeatureInfoRequestString(
             this._clickPoint(),
             {
-                BUFFER: this.appConfig.mapGetFeatureInfoBuffer
+                BUFFER: Portal.app.appConfig.portal.mapGetFeatureInfoBuffer
             }
         );
     },
