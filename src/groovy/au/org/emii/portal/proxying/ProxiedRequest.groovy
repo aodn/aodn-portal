@@ -7,6 +7,7 @@
 
 package au.org.emii.portal.proxying
 
+import org.apache.catalina.connector.ClientAbortException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -38,11 +39,14 @@ class ProxiedRequest extends ExternalRequest {
         try {
             executeRequest(streamProcessor)
         }
+        catch (ClientAbortException e) {
+            log.debug "ClientAbortException caught while proxying request. URL: $targetUrl", e
+        }
         catch (Exception e) {
             // Nothing more can be done here, we just don't want the Exception to propagate
             // The outputStream might already have been written-to so it's in an unknown state
 
-            log.warn "Failure while proxying request", e
+            log.warn "Failure while proxying request. URL: $targetUrl", e
         }
     }
 
