@@ -44,7 +44,7 @@ Portal.search.TermSelectionPanel = Ext.extend(Ext.Container, {
         this.setSelectionChangeListener();
         this.tree.on('checkchange', this._onCheckChange, this);
 
-        this.mon(this.searcher, 'hiersearchcomplete', function() {
+        this.mon(this.searcher, 'searchcomplete', function() {
             this._onSearchComplete();
         }, this);
     },

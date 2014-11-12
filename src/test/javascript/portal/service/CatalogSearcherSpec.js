@@ -36,9 +36,10 @@ describe('Portal.service.CatalogSearcher', function() {
         it('fires searchcomplete on successful search', function() {
             var summaryNode = {};
             spyOn(searcher, 'getSummaryNode').andReturn(summaryNode);
-            searcher._onSuccessfulSearch(response, options);
+            var page = {};
+            searcher._onSuccessfulSearch(page, null, null, response);
             expect(searcher.fireEvent).toHaveBeenCalledWith(
-                'searchcomplete', response.responseXML, options.page
+                'searchcomplete', response.responseXML, page
             );
         });
     });
@@ -116,14 +117,18 @@ describe('Portal.service.CatalogSearcher', function() {
 
             spyOn(Ext.ux.Ajax, 'constructProxyUrl').andCallFake(proxy);
 
-            searcher.search();
+            var page = {from: 1, to: 10};
+            searcher._search(page);
 
             var loaderConfig = searcher._newSearchResponseLoader.mostRecentCall.args[0];
 
             expect(searcher._newSearchResponseLoader).toHaveBeenCalled();
             expect(loaderConfig.url).toBe(proxy(url));
-            expect(loaderConfig.listeners.load).toBe(searcher._onSuccessfulHierSearch);
             expect(loaderConfig.listeners.loadexception).toBe(searcher._logAndReturnErrors);
+
+            // Can't really compare a function.bind() request, so compare the
+            // string output of the two functions
+            expect(''+loaderConfig.listeners.load).toEqual(''+searcher._onSuccessfulSearch.bind(searcher, page));
         });
 
         it('loads loader', function() {
