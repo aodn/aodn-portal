@@ -10,6 +10,7 @@ package au.org.emii.portal
 import au.com.bytecode.opencsv.CSVReader
 import au.org.emii.portal.proxying.ExternalRequest
 import au.org.emii.portal.proxying.RequestProxyingController
+import org.apache.catalina.connector.ClientAbortException
 
 import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilename
 
@@ -76,7 +77,18 @@ class DownloadController extends RequestProxyingController {
         def downloadFilename = params.remove('downloadFilename')
         response.setHeader("Content-disposition", buildAttachmentHeaderValueWithFilename(downloadFilename))
 
-        bulkDownloadService.generateArchiveOfFiles(urls, response.outputStream, request.locale)
+        try {
+            bulkDownloadService.generateArchiveOfFiles(urls, response.outputStream, request.locale)
+        }
+        catch (Exception e) {
+
+            if (e.cause.class == ClientAbortException) {
+                log.debug "ClientAbortException caught during bulk download.", e
+            }
+            else {
+                log.error "Unhandled exception during bulk download", e
+            }
+        }
     }
 
     def estimateSizeForLayer = {

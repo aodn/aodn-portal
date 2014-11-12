@@ -39,11 +39,15 @@ class BulkDownloadService {
             _writeFilesToStream urlList
         }
         finally {
-            _closeStream()
 
-            use(TimeCategory) {
+            try {
+                _closeStream()
+            }
+            finally {
+                use(TimeCategory) {
 
-                log.info "Bulk download complete. ${urlList.size()} URLs; time taken: ${new Date() - processingStart}"
+                    log.info "Bulk download complete. ${urlList.size()} URLs; time taken: ${new Date() - processingStart}"
+                }
             }
         }
     }
