@@ -1109,10 +1109,6 @@ div.allwhite {
     height: inherit;
 }
 
-.filterGroupPanel {
-    padding-left: 10px ;
-}
-
 .search-filter-panel .x-panel-header {
     height: 12px;
     font-size: 13px;
@@ -1258,6 +1254,7 @@ div.allwhite {
 
 .layer-loaded-button {
     visibility: hidden;
+    width:0;
 }
 
 .layer-error-button {
@@ -1265,11 +1262,11 @@ div.allwhite {
     background: url('../images/software-update-urgent-2.png') center no-repeat transparent;
 }
 
-#activeLayerTreePanel img.x-tree-node-icon {
+.activeLayerTreePanel img.x-tree-node-icon {
     width: 0;
 }
 
-#activeLayerTreePanel input.x-tree-node-cb {
+.activeLayerTreePanel input.x-tree-node-cb {
     vertical-align: middle;
 }
 
@@ -1403,3 +1400,15 @@ div.allwhite {
     font-weight: bold;
 }
 
+.legendImage {
+    margin: 10px 0;
+}
+.legendImage img {
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.smallFieldLabel label {
+    width: 50px;
+   }

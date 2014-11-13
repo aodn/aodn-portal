@@ -7,18 +7,15 @@
 
 Ext.namespace('Portal.filter');
 
-Portal.filter.FilterGroupPanel = Ext.extend(Ext.Panel, {
+Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
     constructor: function(cfg) {
 
         this.layer = cfg.layer;
         this.loadingMessage = this.createLoadingMessageContainer();
-        var spacer = this._getVerticalSpacer(10);
         var config = Ext.apply({
-            autoScroll: true,
             autoDestroy: true,
             cls: 'filterGroupPanel',
             items: [
-                spacer,
                 this.loadingMessage
             ]
         }, cfg);

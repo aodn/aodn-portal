@@ -28,7 +28,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // DetailsPanel.js
     opacity: "Opacity",
     wmsLayerProblem: "There is a problem with the availability of this collection",
-    pickAStyle : ' ** Pick a style ** ',
+    pickAStyle : ' ** Pick a Layer style ** ',
     noActiveCollectionSelected: "No data collections selected",
 
     // Geographic Bounds
@@ -83,6 +83,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // MapOptions
     panControl: 'Pan/Zoom Control',
+    mapGlobalOptionsTitle: "Global Map Options",
+
+    layerOptionsTitle: "Layer Options",
 
     // Animation Panel
     selectTimePeriod: 'Select ${direction} Time Period',

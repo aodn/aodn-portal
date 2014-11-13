@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
+Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     ROW_HEIGHT: 32,
     ROW_WIDTH: 255,
@@ -19,9 +19,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Panel, {
         this.layer = cfg.layer;
 
         var config = Ext.apply({
-            cls: 'filterGroupPanel',
-            autoScroll: true,
-            items: [this._getASpacer(10)]
+            cls: 'filterGroupPanel'
         }, cfg);
 
         Portal.details.NcWmsPanel.superclass.constructor.call(this, config);

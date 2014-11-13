@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -18,7 +17,8 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
 
     constructor: function(config) {
 
-        this.buttonsRendered = false;
+        this.mapPanel = config.attributes.mapPanel;
+        this.buttonsRendered;
         Portal.ui.ActiveLayersTreeNodeUI.superclass.constructor.call(this, config);
         this.buttons = {};
     },
@@ -30,43 +30,49 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
     },
 
     addButtons: function() {
-        var cb = this.checkbox;
-        var node = this;
-        var that = this;
 
-        Ext.each([
-                {
-                    tooltip: '',
-                    cls: '',
-                    name: 'loadingStatus'
-                },
-                {
-                    tooltip: OpenLayers.i18n('removeDataCollection'),
-                    cls: 'remove-layer-button',
-                    clickHandler: this.removeLayer,
-                    name: 'remove'
-                },
-                {
-                    tooltip: OpenLayers.i18n('zoomToDataCollection'),
-                    cls: 'zoom-to-layer-button',
-                    clickHandler: this.zoomToLayer,
-                    name: 'zoom'
-                }
-            ],
-            function(item) {
-                var button = Ext.DomHelper.insertBefore(
-                    cb,
-                    "<input type='button' class='" + item.cls + "' title='" + item.tooltip + "'/>"
-                );
-                that.buttons[item.name] = button;
+        if (!this.buttonsRendered) {
 
-                if (item.clickHandler) {
-                    $(button).click(function() {
-                        item.clickHandler.call(node);
-                    });
+            var cb = this.checkbox;
+            var node = this;
+            var that = this;
+
+            Ext.each([
+                    {
+                        tooltip: '',
+                        cls: '',
+                        name: 'loadingStatus'
+                    },
+                    {
+                        tooltip: OpenLayers.i18n('removeDataCollection'),
+                        cls: 'remove-layer-button',
+                        clickHandler: this.removeLayer,
+                        name: 'remove'
+                    },
+                    {
+                        tooltip: OpenLayers.i18n('zoomToDataCollection'),
+                        cls: 'zoom-to-layer-button',
+                        clickHandler: this.zoomToLayer,
+                        name: 'zoom'
+                    }
+                ],
+                function(item) {
+                    var button = Ext.DomHelper.insertBefore(
+                        cb,
+                            "<input type='button' class='" + item.cls + "' title='" + item.tooltip + "'/>"
+                    );
+                    that.buttons[item.name] = button;
+
+                    if (item.clickHandler) {
+                        $(button).click(function() {
+                            item.clickHandler.call(node);
+                        });
+                    }
                 }
-            }
-        );
+            );
+            this.buttonsRendered = true;
+        }
+
 
         if (this._isLayerLoading()) {
             this.layerLoadingStart();
@@ -87,7 +93,7 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
     },
 
     zoomToLayer: function() {
-        this.deferToDelegate("zoomToLayer");
+        this.mapPanel.zoomToLayer(this.node.layer);
     },
 
     layerLoadingStart: function() {
@@ -112,20 +118,6 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
 
     statusIndicator: function() {
         return $(this.buttons['loadingStatus']);
-    },
-
-    deferToDelegate: function(delegateFnName) {
-
-        // TODO: how else to either a) fire Ext event (this is not an Ext component)
-        // or b) call removeLayer indirectly?
-        var activeLayersTreePanel = Ext.getCmp('activeLayerTreePanel');
-
-        Ext.TaskMgr.start({
-            run : function() {
-                activeLayersTreePanel[delegateFnName]();
-            },
-            interval : 0,
-            repeat : 1
-        });
     }
+
 });

@@ -54,6 +54,10 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
                 this._addCardForLayer(layer);
             }
             this._activateCardForLayer(layer);
+            this.layerDetailsPanel.show();
+        }
+        else {
+            this.layerDetailsPanel.hide();
         }
     },
 
@@ -65,6 +69,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         var cardForLayer = new Portal.details.DetailsPanelTab({
             id: this._getCardIdForLayer(layer),
             map: this.map,
+            mapPanel: this.mapPanel,
             layer: layer
         });
         this.layerDetailsPanel.add(cardForLayer);
@@ -81,7 +86,8 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
     _removeCardForLayer: function(layer) {
         if (this._cardExistsForLayer(layer)) {
-            this.layerDetailsPanel.remove(this._getCardIdForLayer(layer));
+            // todo throws errors
+            //this.layerDetailsPanel.remove(this._getCardIdForLayer(layer));
         }
     },
 
