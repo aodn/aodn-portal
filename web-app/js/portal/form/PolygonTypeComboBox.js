@@ -38,7 +38,7 @@ Portal.form.PolygonTypeComboBox = Ext.extend(Ext.form.ComboBox, {
         });
         this.map.events.on({
             scope: this,
-            'spatialconstraintcleared': this._updateValue
+            'spatialconstraintcleared': this._spatialConstraintCleared
         });
     },
 
@@ -59,5 +59,10 @@ Portal.form.PolygonTypeComboBox = Ext.extend(Ext.form.ComboBox, {
     _updateValue: function(spatialConstraintType) {
         this.updating = true;
         this.setValue(spatialConstraintType);
+    },
+
+    _spatialConstraintCleared: function() {
+        var firstItem = this.store.getAt(0).data.value;
+        this.setValue(firstItem);
     }
 });
