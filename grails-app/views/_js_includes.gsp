@@ -99,7 +99,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'ServerNodeLayerDescriptorStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'MenuItemToNodeBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'ActiveLayersTreeNodeUI.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'ActionsPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MapActionsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'ActiveLayersPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'FormUtil.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'TimeUtil.js')}"></script>
