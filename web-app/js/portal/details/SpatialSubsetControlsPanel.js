@@ -29,7 +29,7 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
         });
 
         resetLink.on('click', function() {
-            this.map.events.triggerEvent('spatialconstraintcleared', Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX);
+            this.map.events.triggerEvent('spatialconstraintcleared');
         }, this);
 
         var spacer = new Ext.Spacer({
