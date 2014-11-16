@@ -7,16 +7,14 @@
 
 package au.org.emii.portal.wms
 
-import au.org.emii.portal.Layer
-import au.org.emii.portal.Server
 import au.org.emii.portal.proxying.ExternalRequest
 import groovy.xml.MarkupBuilder
 
 class GeoserverServer extends WmsServer {
-    def filterSource
+    def dynamicFilters
 
-    GeoserverServer(filterSource) {
-        this.filterSource = filterSource
+    GeoserverServer(dynamicFilters) {
+        this.dynamicFilters = dynamicFilters
     }
 
     def getStyles(server, layer) {
@@ -51,18 +49,11 @@ class GeoserverServer extends WmsServer {
 
     def _getFiltersXml(server, layer) {
 
-        switch (filterSource) {
-            case 'database':
-                return _getFiltersXmlFromDatabase(server, layer)
-
-            case 'geoserver':
-                return _getFiltersXmlFromGeoserver(server, layer)
-
-            case 'file':
-                return _getFiltersXmlFromFile(layer)
-
-            default :
-                throw new Exception("Unsupported filter source: '$filterSource'")
+        if (dynamicFilters) {
+            return _getFiltersXmlFromGeoserver(server, layer)
+        }
+        else {
+            return _getFiltersXmlFromFile(layer)
         }
     }
 
@@ -82,30 +73,6 @@ class GeoserverServer extends WmsServer {
         return outputStream.toString("utf-8")
     }
 
-    def _getFiltersXmlFromDatabase(serverAddress, fullLayerName) {
-
-        def filters = _filtersForLayer(serverAddress, fullLayerName)
-
-        def xmlOutput = new StringWriter()
-        def builder = new MarkupBuilder(xmlOutput)
-
-        builder.'filters' {
-            filters.each { currentFilter ->
-
-                'filter' {
-                    'label' currentFilter.label
-                    'name' currentFilter.name
-                    'type' currentFilter.type
-                    'visualised' !currentFilter.downloadOnly
-                    'wmsStartDateName' currentFilter.wmsStartDateName
-                    'wmsEndDateName' currentFilter.wmsEndDateName
-                }
-            }
-        }
-
-        return xmlOutput.toString()
-    }
-
     def getFilterValues(server, layer, filter) {
         def values = []
 
@@ -123,18 +90,11 @@ class GeoserverServer extends WmsServer {
 
     def _getFilterValuesXml(server, layer, filter) {
 
-        switch (filterSource) {
-            case 'database':
-                return _getFilterValuesXmlFromDatabase(server, layer, filter)
-
-            case 'geoserver':
-                return _getFilterValuesXmlFromGeoserver(server, layer, filter)
-
-            case 'file':
-                return _getFilterValuesXmlFromFile(layer, filter)
-
-            default :
-                throw new Exception("Unsupported filter source: '$filterSource'")
+        if (dynamicFilters) {
+            return _getFilterValuesXmlFromGeoserver(server, layer, filter)
+        }
+        else {
+            return _getFilterValuesXmlFromFile(layer, filter)
         }
     }
 
@@ -152,23 +112,6 @@ class GeoserverServer extends WmsServer {
 
         request.executeRequest()
         return outputStream.toString("utf-8")
-    }
-
-    def _getFilterValuesXmlFromDatabase(serverAddress, fullLayerName, filterName) {
-
-        def filters = _filtersForLayer(serverAddress, fullLayerName)
-        def filter = filters.find{ it.name == filterName }
-
-        def xmlOutput = new StringWriter()
-        def builder = new MarkupBuilder(xmlOutput)
-
-        builder.'uniqueValues' {
-            filter.possibleValues.each {
-                'value' it
-            }
-        }
-
-        return xmlOutput.toString()
     }
 
     def _filtersForLayer(serverAddress, fullLayerName) {

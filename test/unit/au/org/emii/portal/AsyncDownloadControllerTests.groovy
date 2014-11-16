@@ -7,7 +7,6 @@ import static au.org.emii.portal.HttpUtils.Status.*
 class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
     def downloadAuthService
-    def aodaacAggregatorService
     def gogoduckService
 
     protected void setUp() {
@@ -18,10 +17,6 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
         downloadAuthService.demand.static.registerDownloadForAddress { ipAddress, comment -> return }
 
         controller.downloadAuthService = downloadAuthService.createMock()
-
-        aodaacAggregatorService = mockFor(AodaacAggregatorService)
-        aodaacAggregatorService.demand.static.registerJob { params -> return "aodaac_rendered_text" }
-        controller.aodaacAggregatorService = aodaacAggregatorService.createMock()
 
         gogoduckService = mockFor(GogoduckService)
         gogoduckService.demand.static.registerJob { params -> return "gogoduck_rendered_text" }
@@ -50,43 +45,26 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
     void testParametersPassedToAggregatorService() {
         def createJobCalledTimes = 0
 
-        controller.params.aggregatorService ='aodaac'
+        controller.params.aggregatorService ='gogoduck'
         controller.params.a = "b"
         controller.params.c = "d"
 
         // Note that the 'aggregatorService' will be stripped off
         def mockParams = [a: 'b', c: 'd']
 
-        controller.aodaacAggregatorService.metaClass.registerJob {
+        controller.gogoduckService.metaClass.registerJob {
             params ->
 
             createJobCalledTimes++
             assertEquals mockParams, params
 
-            return "aodaac_mocked_rendered_text"
+            return "gogoduck_rendered_text"
         }
 
         controller.index()
 
         assertEquals 1, createJobCalledTimes
-        assertEquals "aodaac: aodaac_mocked_rendered_text", mockResponse.contentAsString
-    }
-
-    void testAodaacJobSucces() {
-        controller.params.aggregatorService ='aodaac'
-
-        controller.index()
-
-        assertEquals "aodaac: aodaac_rendered_text", mockResponse.contentAsString
-    }
-
-    void testAodaacJobFailure() {
-        controller.params.aggregatorService ='aodaac'
-        controller.aodaacAggregatorService.metaClass.registerJob { params -> throw new Exception("should not be called") }
-
-        controller.index()
-
-        assertEquals HTTP_500_INTERNAL_SERVER_ERROR, controller.renderArgs.status
+        assertEquals "gogoduck: gogoduck_rendered_text", mockResponse.contentAsString
     }
 
     void testGogoduckJobSuccess() {
