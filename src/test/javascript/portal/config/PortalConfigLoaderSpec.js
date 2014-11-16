@@ -24,77 +24,29 @@ describe("Portal.config.PortalConfigLoader", function() {
     });
 
     function expectSuccess() {
-
         expect(successFn).toHaveBeenCalled();
         expect(failureFn).not.toHaveBeenCalled();
     }
 
     function expectFailure() {
-
         expect(successFn).not.toHaveBeenCalled();
         expect(failureFn).toHaveBeenCalled();
     }
 
-    describe('Async loading of viewport config and app config', function() {
-
-        describe('Viewport config loads first', function() {
-
-            it('Should complete initialisation', function() {
-
-                loader.appConfigLoadSuccess({responseText: '{"a":"b"}'});
-                loader.viewportConfigLoadSuccess({responseText: '{"a":"b"}'});
-                loader.waitForConfigsAndComplete();
-
-                expectSuccess();
-            });
+    describe('Async loading of app config', function() {
+        it('calls success callback', function() {
+            loader._configLoadSuccess({responseText: '{"a":"b"}'});
+            expectSuccess();
         });
 
-        describe('App config loads first', function() {
-
-            it('Should complete initialisation', function() {
-
-                loader.viewportConfigLoadSuccess({responseText: '{"a":"b"}'});
-                loader.appConfigLoadSuccess({responseText: '{"a":"b"}'});
-                loader.waitForConfigsAndComplete();
-
-                expectSuccess();
-            });
+        it('calls failure callback', function() {
+            loader._configLoadFailure({responseText: '{"a":"b"}'});
+            expectFailure();
         });
 
-        describe('App config load fails', function() {
-
-            it('Should not complete initialisation', function() {
-
-                loader.appConfigLoadFailure({});
-                loader.viewportConfigLoadSuccess({responseText: '{"a":"b"}'});
-                loader.waitForConfigsAndComplete();
-
-                expectFailure();
-            });
-        });
-
-        describe('Viewport config load fails', function() {
-
-            it('Should not complete initialisation', function() {
-
-                loader.appConfigLoadSuccess({responseText: '{"a":"b"}'});
-                loader.viewportConfigLoadFailure({});
-                loader.waitForConfigsAndComplete();
-
-                expectFailure();
-            });
-        });
-
-        describe('Viewport config invalid response', function() {
-
-            it('Should not complete initialisation', function() {
-
-                loader.appConfigLoadSuccess({responseText: '{"a":"b"}'});
-                loader.viewportConfigLoadSuccess({responseText: 'sadf (invalid json)'});
-                loader.waitForConfigsAndComplete();
-
-                expectFailure();
-            });
+        it('invalid json results in failure', function() {
+            loader._configLoadSuccess({responseText: 'sadf (invalid json)'});
+            expectFailure();
         });
     });
 });

@@ -67,24 +67,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _addUsingLayerLinkDefault: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
-        var serverUri = layerLink.server.uri;
-
-        Ext.Ajax.request({
-            url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerLink.name}),
-            scope: this,
-            success: function(resp) {
-                var layerDescriptor = new Portal.common.LayerDescriptor(resp.responseText, geonetworkRecord, OpenLayers.Layer.WMS);
-                if (layerDescriptor) {
-                    // Override layer name with GeoNetwork layer name
-                    layerDescriptor.title = layerDisplayName;
-                    layerDescriptor.cql = layerLink.cql;
-                    this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
-                }
-            },
-            failure: function(resp) {
-                this.addUsingDescriptor(new Portal.common.LayerDescriptor(layerLink), layerRecordCallback);
-            }
-        });
+        var layerDescriptor = new Portal.common.LayerDescriptor(layerLink, geonetworkRecord, OpenLayers.Layer.WMS);
+        layerDescriptor.title = layerDisplayName;
+        layerDescriptor.cql = layerLink.cql;
+        this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
     },
 
     _addUsingLayerLinkNcwms: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
