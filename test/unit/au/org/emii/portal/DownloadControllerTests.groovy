@@ -24,7 +24,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         controller = new DownloadController()
         controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
 
-        Server.metaClass.static.findByUriLike = { testServer }
+        DownloadController.metaClass.static._getServer = { testServer }
 
         _setUpExampleObjects()
         _setHostShouldBeValid(true)
@@ -32,8 +32,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     protected void tearDown() {
         super.tearDown()
-
-        Server.metaClass = null
     }
 
     void testUrlListForLayerNoUrlFieldName() {
@@ -84,7 +82,6 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             renderParams = theRenderParams
         }
         controller.downloadPythonSnippet()
-        
 
         assertEquals("text/plain", mockResponse.contentType)
         assertEquals("pythonSnippet.py", renderParams.template)
@@ -270,17 +267,20 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
     }
 
     void _setUpExampleObjects() {
+        testServer = [
+            name: 'My Server',
+            uri: "http://www.google.com/",
+            urlListDownloadPrefixToRemove: "/mnt/imos-t4",
+            urlListDownloadPrefixToSubstitue: "http://data.imos.org.au"
+        ]
 
-        testServer = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
-
-        mockDomain Server, [testServer]
+        controller.grailsApplication.config.knownServers = [ testServer ]
 
         mockParams.url = 'http://www.example.com/'
         mockParams.urlFieldName = 'relativeFilePath'
     }
 
     void _setHostShouldBeValid(valid) {
-
         controller.hostVerifier = [allowedHost: { r, u -> valid }]
     }
 

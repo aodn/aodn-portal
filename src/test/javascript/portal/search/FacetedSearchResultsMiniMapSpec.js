@@ -17,7 +17,6 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
             bbox: bbox,
             mapContainerId: mapContainerId
         });
-
     });
 
     describe('initialisation', function() {
@@ -72,6 +71,8 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
             spyOn(miniMap, 'setCenter');
             spyOn(miniMap, 'zoomToExtent');
             spyOn(Ext, 'get').andReturn(true);
+
+            Portal.app.appConfig.portal.defaultDatelineZoomBbox = "0,90,0,90";
         });
 
         it('calls render', function() {
