@@ -7,7 +7,6 @@
 
 package au.org.emii.portal.proxying
 
-import au.org.emii.portal.Server
 import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -37,7 +36,6 @@ class ExternalRequest {
         log.debug "Opening connection to target URL: $targetUrl"
 
         def conn = targetUrl.openConnection()
-        _addAuthentication(conn, targetUrl)
 
         try {
             processStream conn.inputStream, outputStream
@@ -46,16 +44,5 @@ class ExternalRequest {
         finally {
             IOUtils.closeQuietly(outputStream)
         }
-    }
-
-    void _addAuthentication(connection, url) {
-        def server = _getServer(url)
-        if (server) {
-            server.addAuthentication(connection)
-        }
-    }
-
-    def _getServer(url) {
-        return Server.findByUriLike("%${url.host}%")
     }
 }

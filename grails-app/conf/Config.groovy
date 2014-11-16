@@ -61,39 +61,10 @@ grails.spring.bean.packages = []
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
 
-// Database migration.
-grails.plugin.databasemigration.updateOnStart = true
-grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
-
 // Portal help site
 help {
     url = "http://help.aodn.org.au"
     downloadDatasetUrl = "${help.url}/?q=node/6"
-}
-
-// AODAAC Aggregator
-aodaacAggregator {
-    url = "http://aodaac.aodn.org.au"
-    environment = "prod"
-    allowApiCalls = true
-    apiCallsConnectTimeout = 1000
-    apiCallsReadTimeout = 2000
-    idleJobTimeout = 1 // In hours
-    errorLookup = [
-        /.*java\.lang\.Exception: requested ~ [0-9]+ bytes; limit = [0-9]+/: {
-
-            errorMessage ->
-
-            def numBytes = (errorMessage =~ /[0-9]+/)
-            assert(numBytes.count == 2): "Expecting 2 numerical values in error string: " + errorMessage
-            def actualBytes = Long.valueOf(numBytes[0])
-            def limitBytes = Long.valueOf(numBytes[1])
-
-            def amountOver = Math.round(actualBytes/limitBytes)
-
-            return "The requested job will have too much data. You have requested roughly ${amountOver} times the maximum output size."
-        }
-    ]
 }
 
 // Depth service
@@ -112,19 +83,6 @@ downloadAuth {
     // displaying a challenge (captcha)
     maxAggregatedDownloadsInPeriod = 2
     maxAggregatedDownloadsPeriodMinutes = 10
-}
-
-// OpenID
-openId {
-    // openID provider details to support login popup etc
-    providers = [
-        [name: "Google", iconHref: "images/openid_icons/Google.png", providerHref: "https://www.google.com/accounts/o8/id"],
-        [name: "Yahoo",  iconHref: "images/openid_icons/Yahoo.png",  providerHref: "https://me.yahoo.com/"]
-        // Add your own providers here ...
-    ]
-
-    // Enable user to supply their their own OpenId url via textfield in popup list
-    enableUserSuppliedProvider = true
 }
 
 featureToggles {
@@ -158,8 +116,6 @@ environments {
         grails.serverURL = "http://localhost:8080/$appName"
 
         grails.mail.disabled = true
-        grails.plugin.databasemigration.updateOnStart = false
-        aodaacAggregator.allowApiCalls = false
     }
 
     production {
@@ -342,19 +298,15 @@ log4j = {
         'org.codehaus.groovy.grails.plugins', // plugins
         'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
         'org.springframework',
-        'org.hibernate',
-        'net.sf.ehcache.hibernate',
         'org.grails.plugin.resource.ResourceMeta'
 
     warn    'org.mortbay.log'
 
     info    'grails.app.tagLib.au.org.emii.portal.UserTagLib',
-        'grails.app.filters.shiro.SecurityFilters',
         'grails.app.controller.au.org.emii.portal.LayerController',
         'grails.app.controller.au.org.emii.portal.AuthController',
         'grails.app.service.au.org.emii.portal.LayerService',
         'au.org.emii.portal.display.MenuJsonCache',
-        'org.apache.shiro',
         'grails.app.controller'
 
     debug   'grails.app.job',

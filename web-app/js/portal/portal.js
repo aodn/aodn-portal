@@ -75,7 +75,7 @@ Portal.app = {
         }
 
         viewport = new Portal.ui.Viewport({
-            appConfig: Portal.app.config,
+            appConfig: Portal.app.appConfig,
             startSnapshot: startSnapshot
         });
 

@@ -14,8 +14,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     constructor: function (cfg) {
 
-        this.appConfig = Portal.app.config;
-        var portalConfig = Portal.app.appConfig.portal;
+        this.appConfig = Portal.app.appConfig;
+        var portalConfig = this.appConfig.portal;
 
         var config = Ext.apply({
             stateful: false,
@@ -83,7 +83,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     autoZoomCheckboxHandler: function (box, checked) {
-        Portal.app.config.autoZoom = checked;
+        Portal.app.appConfig.portal.autoZoom = checked;
         this.autoZoom = checked;
     },
 

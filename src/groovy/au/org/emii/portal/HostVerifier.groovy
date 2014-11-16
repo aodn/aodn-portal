@@ -31,13 +31,6 @@ class HostVerifier {
                     allowed = true
                 }
             }
-
-            /*if allowed is still false then server isn't us, our catalog or in our wms servers list,
-                but it might have been retrieved from geonetwork, so we check if its registered
-                as a layer server with geonetwork*/
-            if (!allowed) {
-                allowed = _checkCatalog(url)
-            }
             return allowed
         }
         catch (Exception e) {
@@ -58,20 +51,6 @@ class HostVerifier {
         return url.protocol + "://" + url.host + url.path
     }
 
-    def _checkCatalog(url) {
-
-        log.info "Resorting to catalogue check for '$url'"
-
-        def containsHost = false
-        def server = extractServer(url)
-        def results = retrieveResultsFromGeoNetwork(server)
-
-        if (results?.summary[0]?.'@count' != "0") {
-            containsHost = true
-        }
-        return containsHost
-    }
-
     def findAllowableServers(request) {
 
         def allowableServers = []
@@ -89,13 +68,7 @@ class HostVerifier {
         _addIf allowableServers, splashConfig.links
         _addIf allowableServers, splashConfig.community
 
-        allowableServers.addAll _fromServersInDatabase() // Todo - Can be removed when we go full stateless
-
         return allowableServers
-    }
-
-    def _fromServersInDatabase() {
-        return Server.list().collect { it.uri }
     }
 
     def _addIf(list, value) {
