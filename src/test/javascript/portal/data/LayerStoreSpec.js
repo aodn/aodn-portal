@@ -122,31 +122,6 @@ describe("Portal.data.LayerStore", function() {
     });
 
     describe('_addUsingLayerLinkDefault', function() {
-        it('success', function() {
-            spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
-                options.success.call(layerStore, { responseText: Ext.util.JSON.encode(layerDescriptor) });
-            });
-
-            layerStore._addUsingLayerLinkDefault("layerName", layerLink);
-
-            expect(Ext.Ajax.request).toHaveBeenCalled();
-            expect(layerStore.getCount()).toBe(1);
-        });
-
-        it('failure', function() {
-            spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
-                options.failure.call(layerStore, {});
-            });
-
-            spyOn(layerStore, 'addUsingDescriptor').andCallThrough();
-
-            layerStore._addUsingLayerLinkDefault("LayerName", layerLink);
-
-            expect(Ext.Ajax.request).toHaveBeenCalled();
-            expect(layerStore.addUsingDescriptor).toHaveBeenCalled();
-            expect(layerStore.getCount()).toBe(1);
-        });
-
         describe('layer record callback', function() {
             it('no callback', function() {
                 layerStore._addUsingLayerLinkDefault("layerName", layerLink);
