@@ -126,8 +126,6 @@ describe('Portal.service.CatalogSearcher', function() {
             expect(loaderConfig.url).toBe(proxy(url));
             expect(loaderConfig.listeners.loadexception).toBe(searcher._logAndReturnErrors);
 
-            expect(Ext.Ajax.defaultHeaders).toEqual({ 'Content-Type': 'application/xml' });
-
             // Can't really compare a function.bind() request, so compare the
             // string output of the two functions
             expect(''+loaderConfig.listeners.load).toEqual(''+searcher._onSuccessfulSearch.bind(searcher, page));

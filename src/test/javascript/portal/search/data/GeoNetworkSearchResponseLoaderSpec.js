@@ -33,30 +33,50 @@ describe("Portal.search.data.GeoNetworkSearchResponseLoader", function() {
     var rootNode;
     var treeLoader;
 
-    beforeEach(function() {
-        mockAjaxXmlResponse(searchResponse);
+    describe('requestData', function() {
+        it('sets defaultHeaders to application/xml', function() {
+            Ext.Ajax.defaultHeaders = "originalHeaders";
 
-        treeLoader = new Portal.ui.search.data.GeoNetworkSearchResponseLoader({
-            dataUrl: 'http://url'
+            spyOn(Ext.Ajax, 'request').andCallFake(function() {
+                expect(Ext.Ajax.defaultHeaders).toEqual({ 'Content-Type': 'application/xml' });
+            });
+
+            treeLoader = new Portal.ui.search.data.GeoNetworkSearchResponseLoader({
+                dataUrl: 'http://url'
+            });
+
+            treeLoader.requestData();
+
+            expect(Ext.Ajax.defaultHeaders).toEqual("originalHeaders");
+        });
+    });
+
+    describe('core tests', function() {
+        beforeEach(function() {
+            mockAjaxXmlResponse(searchResponse);
+
+            treeLoader = new Portal.ui.search.data.GeoNetworkSearchResponseLoader({
+                dataUrl: 'http://url'
+            });
+
+            rootNode = new Ext.tree.TreeNode();
+            treeLoader.load(rootNode);
         });
 
-        rootNode = new Ext.tree.TreeNode();
-        treeLoader.load(rootNode);
-    });
+        it('loads XML in to tree', function() {
+            var platformDimensionNode = rootNode.findChild('value', 'Platform', true);
+            expect(platformDimensionNode).toBeTruthy();
+            expect(platformDimensionNode.attributes.count).toBe('7');
+        });
 
-    it('loads XML in to tree', function() {
-        var platformDimensionNode = rootNode.findChild('value', 'Platform', true);
-        expect(platformDimensionNode).toBeTruthy();
-        expect(platformDimensionNode.attributes.count).toBe('7');
-    });
+        describe('create node', function() {
+            it('creates value hierarchy', function() {
+                var shipCategoryNode = rootNode.findChild('value', 'Ship', true);
+                expect(shipCategoryNode.toValueHierarchy()).toBe('Platform/Ship');
 
-    describe('create node', function() {
-        it('creates value hierarchy', function() {
-            var shipCategoryNode = rootNode.findChild('value', 'Ship', true);
-            expect(shipCategoryNode.toValueHierarchy()).toBe('Platform/Ship');
-
-            var auroraCategoryNode = rootNode.findChild('value', 'Aurora Australis', true);
-            expect(auroraCategoryNode.toValueHierarchy()).toBe('Platform/Ship/Aurora%20Australis');
+                var auroraCategoryNode = rootNode.findChild('value', 'Aurora Australis', true);
+                expect(auroraCategoryNode.toValueHierarchy()).toBe('Platform/Ship/Aurora%20Australis');
+            });
         });
     });
 });
