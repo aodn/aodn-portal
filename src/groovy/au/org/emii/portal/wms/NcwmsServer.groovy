@@ -15,16 +15,10 @@ class NcwmsServer extends WmsServer {
     def getStyles(server, layer) {
         def json = JSON.parse(getUrlContent(getMetadataUrl(server, layer)))
 
-        def styles = []
-
-        if (json && json.supportedStyles && json.palettes) {
-            styles = [
-                styles: json.supportedStyles,
-                palettes: json.palettes
-            ]
-        }
-
-        return styles
+        return [
+            styles: json.supportedStyles,
+            palettes: json.palettes
+        ]
     }
 
     def getFilters(server, layer) {

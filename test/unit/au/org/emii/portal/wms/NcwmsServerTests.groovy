@@ -24,8 +24,14 @@ class NcwmsServerTests extends GrailsUnitTestCase {
 
     void testStylesInvalidJson() {
         ncwmsServer.metaClass.getUrlContent = { url -> return "invalid json string" }
+
+        def expected = [
+            styles: null,
+            palettes: null
+        ]
         def styles = ncwmsServer.getStyles("http://server", "layer")
-        assertEquals([], styles)
+
+        assertEquals expected, styles
     }
 
     void testStylesValidJson() {
