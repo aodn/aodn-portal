@@ -37,6 +37,7 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
 
 
         var config = Ext.apply({
+            title: OpenLayers.i18n('mapTabTitle'),
             items: [
                 this.label,
                 this.autoZoomCheckbox,
@@ -46,6 +47,10 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         Portal.ui.MapOptionsPanel.superclass.constructor.call(this, config);
+
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(subject, openLayer) {
+            this.setAutoZoomCheckbox();
+        }, this);
 
         this.relayEvents(this.autoZoomCheckbox, ['autozoomchecked', 'autozoomunchecked']);
     },

@@ -36,7 +36,7 @@ Ext.ux.tree.XmlTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
     XML_NODE_TEXT : 3,
 
     // private override
-    processResponse : function(response, node, callback){
+    processResponse : function(response, node, callback, scope){
         var xmlData = response.responseXML,
             root = xmlData.documentElement || xmlData;
 

@@ -15,23 +15,22 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         this.subsetPanel = new Portal.details.SubsetPanel(childPanelConfig);
         this.infoPanel = new Portal.details.InfoPanel(childPanelConfig);
         this.stylePanel = new Portal.details.StylePanel(childPanelConfig);
-        this.actionsPanel = new Portal.ui.MapActionsPanel(childPanelConfig);
+        this.mapOptionsPanel = new Portal.ui.MapOptionsPanel(childPanelConfig);
 
         var config = Ext.apply({
+            autoHeight: true,
             defaults: {
-                style: {padding:'10px 15px 10px 10px'}
+                style: {padding:'10px 15px 10px 10px'},
+                autoHeight: true
             },
-            ref: 'detailsPanelTabs',
             border: false,
             activeTab: 0,
-            enableTabScroll: true,
             items: [
                 this.subsetPanel,
                 this.infoPanel,
                 this.stylePanel,
-                this.actionsPanel
-            ],
-            flex: 1
+                this.mapOptionsPanel
+            ]
         }, cfg);
 
         Portal.details.DetailsPanelTab.superclass.constructor.call(this, config);

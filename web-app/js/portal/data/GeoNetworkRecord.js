@@ -142,8 +142,8 @@ Portal.data.GeoNetworkRecord = function() {
 
         var protocols = [];
 
-        Ext.each(Portal.app.config.downloadCartDownloadableProtocols.split("\n"), function(protocol) {
-            protocols.push(protocol.trim())
+        Ext.each(Portal.app.appConfig.portal.downloadCartDownloadableProtocols, function(protocol) {
+            protocols.push(protocol.trim());
         });
 
         return (protocols.indexOf(protocol) >= 0);
@@ -184,7 +184,7 @@ Portal.data.GeoNetworkRecord = function() {
             }
         });
 
-        linkStore.filterByProtocols(Portal.app.config.metadataLayerProtocols);
+        linkStore.filterByProtocols(Portal.app.appConfig.portal.metadataLayerProtocols);
 
         return linkStore.getLayerLink(0);
     };

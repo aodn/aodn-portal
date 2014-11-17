@@ -12,9 +12,11 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
     constructor: function(cfg) {
 
         var self = this;
+        this.mapPanel = cfg.mapPanel;
 
         var config = Ext.apply({
             title: this._getDefaultEmptyMapText(),
+            header: true,
             cls: 'activeLayerTreePanel',
             enableDD: true,
             useArrows: true,
@@ -45,6 +47,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
                     // subsequent tree nodes
                     insert: function(tree, thisNode, node, refNode) {
                         this.setActiveNode(node);
+                        this.expand();
                     }
                 }
             })
@@ -54,6 +57,13 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         this.addEvents('zoomtolayer', 'selectedactivelayerchanged');
 
         this.on("click", this.activeLayersTreePanelClickHandler, this);
+        this.on("collapse", function() {
+            this.updateTitle();
+        });
+        this.on("expand", function() {
+            this.updateTitle();
+        });
+
         this.mon(this.root, 'append', this.updateTitle, this);
         this.mon(this.root, 'insert', this.updateTitle, this);
 
@@ -67,6 +77,12 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         this.on('beforeremove', this.beforeActiveLayerRemoved, this);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(subject, openLayer) {
+            if (openLayer) {
+                this.selectedChangedLayer = openLayer;
+                if (Portal.app.config.autoZoom) {
+                    this.mapPanel.zoomToLayer(openLayer);
+                }
+            }
             var selectedNode = this.findNodeByLayer(openLayer);
             if (selectedNode) {
                 selectedNode.select();
@@ -101,6 +117,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
             else { // No Layers left on map
                 this.setActiveNode(null);
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
+                this.updateTitle();
             }
         }, this);
     },
@@ -151,7 +168,6 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
     activeLayersTreePanelClickHandler: function(node, event) {
         this.setActiveNode(node);
     },
-
 
     beforeActiveLayerRemoved: function(tree, parent, node) {
         var selected = this.getSelectedNode();
@@ -222,8 +238,16 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     updateTitle: function() {
+
         var title = OpenLayers.i18n('dataCollectionsTitle');
+
+        if (!this.root.hasChildNodes()) {
+            title = this._getDefaultEmptyMapText();
+        }
+        else if (this.collapsed) {
+            title = this.selectedChangedLayer.name;
+        }
+
         this.setTitle(title);
-        this.show(this.root.hasChildNodes());
     }
 });

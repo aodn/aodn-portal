@@ -25,7 +25,7 @@ describe("Portal.search.TermSelectionPanel", function() {
         it('search complete triggers setRootNode', function() {
             spyOn(selectionPanel, '_onSearchComplete');
 
-            searcher.fireEvent('hiersearchcomplete');
+            searcher.fireEvent('searchcomplete');
             expect(selectionPanel._onSearchComplete).toHaveBeenCalled();
         });
     });

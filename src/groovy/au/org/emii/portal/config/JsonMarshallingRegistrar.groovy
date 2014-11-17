@@ -30,39 +30,12 @@ class JsonMarshallingRegistrar {
         JSON.registerObjectMarshaller(Config) { cfg ->
 
             def result = [:]
-            result['proxy'] = cfg.proxy
-            result['proxyPort'] = cfg.proxyPort
-            result['searchUsingBboxByDefault'] = cfg.searchUsingBboxByDefault
-
-            // Map behaviour
-            result['initialBbox'] = cfg.initialBbox
-            result['autoZoom'] = cfg.autoZoom
-            result['enableDefaultDatelineZoom'] = cfg.enableDefaultDatelineZoom
-            result['defaultDatelineZoomBbox'] = cfg.defaultDatelineZoomBbox
 
             // Menus
             result['baselayerMenu'] = cfg.baselayerMenu
             result['defaultMenu'] = cfg.defaultMenu
             result['contributorMenu'] = cfg.contributorMenu
             result['regionMenu'] = cfg.regionMenu
-
-            result['footerContent'] = cfg.footerContent
-            result['footerContentWidth'] = cfg.footerContentWidth
-
-            // heights and widths
-            result['popupWidth'] = cfg.popupWidth
-            result['popupHeight'] = cfg.popupHeight
-            result['westWidth'] = cfg.westWidth
-            result['headerHeight'] = cfg.headerHeight
-            result['footerHeight'] = cfg.footerHeight
-            result['activeLayersHeight'] = cfg.activeLayersHeight
-
-            result['downloadCartMaxNumFiles'] = cfg.downloadCartMaxNumFiles
-            result['downloadCartDownloadableProtocols'] = cfg.downloadCartDownloadableProtocols
-
-            result['metadataLinkProtocols'] = cfg.metadataLinkProtocols
-            result['metadataLayerProtocols'] = cfg.metadataLayerProtocols
-            result['mapGetFeatureInfoBuffer'] = cfg.mapGetFeatureInfoBuffer
 
             return result
         }

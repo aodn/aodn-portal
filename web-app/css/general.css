@@ -1178,7 +1178,6 @@ div.allwhite {
     height: 19px;
     vertical-align: top;
     margin: 1px;
-    background-color: #ffff99;
     border: 0;
 }
 
@@ -1262,8 +1261,29 @@ div.allwhite {
     background: url('../images/software-update-urgent-2.png') center no-repeat transparent;
 }
 
-.activeLayerTreePanel img.x-tree-node-icon {
+.overflow-y {
+    overflow-y: auto;
+}
+
+.activeLayerTreePanel {
+    border-width: 1px;
+    border-radius: 3px;
+    border-color: #666;
+}
+
+.activeLayerTreePanel:not(:hover) li.x-tree-node
+ div:not(.x-tree-selected) * {
+    filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' height=\'0\'><filter id=\'greyscale\'><feColorMatrix type=\'saturate\' values=\'0\' /></filter></svg>#greyscale");
+    opacity: 0.6;
+}
+.activeLayerTreePanel li.x-tree-node div.x-tree-selected * {
+    font-weight: bold;
+}
+
+.activeLayerTreePanel img.x-tree-node-icon,
+.activeLayerTreePanel img[class*="x-tree-elbow"] {
     width: 0;
+    margin-left: 1px;
 }
 
 .activeLayerTreePanel input.x-tree-node-cb {
@@ -1412,3 +1432,8 @@ div.allwhite {
 .smallFieldLabel label {
     width: 50px;
    }
+
+.x-tree-node-el {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

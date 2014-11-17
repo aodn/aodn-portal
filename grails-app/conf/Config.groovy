@@ -148,7 +148,7 @@ environments {
         wmsScanner.url = env['WMS_SCANNER_URL'] ?: "http://localhost:8100/WmsScannerGrails/"
         wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
         gogoduck.url = env['GOGODUCK_URL'] ?: "http://localhost:8300/go-go-duck"
-        geonetwork.url = env['GEONETWORK_URL'] ?: "https://catalogue-rc.aodn.org.au/geonetwork"
+        geonetwork.url = env['GEONETWORK_URL'] ?: "https://catalogue-123.aodn.org.au/geonetwork"
 
         grails.mail.disabled = true
 
@@ -228,7 +228,7 @@ knownServers = [
         type: 'ncWMS'
     ],
     [
-        uri: 'http://catami.org/geoserver/wms?namespace=catami',
+        uri: 'http://catami.org/geoserver/catami/wms',
         wmsVersion: '1.3.0',
         type: 'GeoServer'
     ]
@@ -284,6 +284,28 @@ portal {
     systemEmail {
         fromAddress = "info@example.com"
     }
+
+    initialBbox = "110,-50,160,-3"
+    autoZoom = false
+    defaultDatelineZoomBbox = "110,-50,160,-3"
+    enableDefaultDatelineZoom = false
+
+    popupWidth = 550
+    popupHeight = 325
+
+    downloadCartDownloadableProtocols = [
+        "WWW:DOWNLOAD-1.0-http--download",
+        "WWW:DOWNLOAD-1.0-http--downloaddata",
+        "WWW:DOWNLOAD-1.0-http--downloadother",
+        "WWW:LINK-1.0-http--downloaddata"
+    ]
+
+    metadataLayerProtocols = [
+        "OGC:WMS-1.1.1-http-get-map",
+        "OGC:WMS-1.3.0-http-get-map"
+    ]
+
+    mapGetFeatureInfoBuffer = 10
 }
 
 // MARVL project integration

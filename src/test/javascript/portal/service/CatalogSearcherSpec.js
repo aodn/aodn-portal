@@ -36,41 +36,39 @@ describe('Portal.service.CatalogSearcher', function() {
         it('fires searchcomplete on successful search', function() {
             var summaryNode = {};
             spyOn(searcher, 'getSummaryNode').andReturn(summaryNode);
-            searcher._onSuccessfulSearch(response, options);
+            var page = {};
+            searcher._onSuccessfulSearch(page, null, null, response);
             expect(searcher.fireEvent).toHaveBeenCalledWith(
-                'searchcomplete', response.responseXML, options.page
+                'searchcomplete', response.responseXML, page
             );
         });
     });
 
-    describe('logging', function() {
-        describe('_getDeepestFacets', function() {
+    describe('getDeepestFacets', function() {
 
-            it('already deepest facets', function() {
-                var facets = [ "facet1/facet2", "facet3/facet4" ];
-                expect(searcher._getDeepestFacets(facets)).toEqual([ "facet1/facet2", "facet3/facet4" ]);
-            });
+        it('already deepest facets', function() {
+            var facets = [ "facet1/facet2", "facet3/facet4" ];
+            expect(searcher.getDeepestFacets(facets)).toEqual([ "facet1/facet2", "facet3/facet4" ]);
+        });
 
-            it('filter shallower facets', function() {
-                var facets = [ "facet1/facet2", "facet1", "facet3", "facet3/facet4" ];
-                expect(searcher._getDeepestFacets(facets)).toEqual([ "facet1/facet2", "facet3/facet4" ]);
-            });
+        it('filter shallower facets', function() {
+            var facets = [ "facet1/facet2", "facet1", "facet3", "facet3/facet4" ];
+            expect(searcher.getDeepestFacets(facets)).toEqual([ "facet1/facet2", "facet3/facet4" ]);
+        });
 
-            it('filter shallower facets unsorted real values', function() {
-                var facets = [
-                    "Measured%20parameter/Chemical",
-                    "Measured%20parameter/Chemical/Nitrate%20concentration/Concentration%20of%20nitrate%20%7BNO3%7D%20per%20unit%20mass%20of%20the%20water%20body",
-                    "Measured%20parameter/Chemical/Nitrate%20concentration",
-                    "Platform",
-                    "Platform/Ships/self-propelled%20boat",
-                    "Platform/Ships"
-                ];
-                expect(searcher._getDeepestFacets(facets)).toEqual([
-                    "Measured%20parameter/Chemical/Nitrate%20concentration/Concentration%20of%20nitrate%20%7BNO3%7D%20per%20unit%20mass%20of%20the%20water%20body",
-                    "Platform/Ships/self-propelled%20boat"
-                ]);
-            });
-
+        it('filter shallower facets unsorted real values', function() {
+            var facets = [
+                "Measured%20parameter/Chemical",
+                "Measured%20parameter/Chemical/Nitrate%20concentration/Concentration%20of%20nitrate%20%7BNO3%7D%20per%20unit%20mass%20of%20the%20water%20body",
+                "Measured%20parameter/Chemical/Nitrate%20concentration",
+                "Platform",
+                "Platform/Ships/self-propelled%20boat",
+                "Platform/Ships"
+            ];
+            expect(searcher.getDeepestFacets(facets)).toEqual([
+                "Measured%20parameter/Chemical/Nitrate%20concentration/Concentration%20of%20nitrate%20%7BNO3%7D%20per%20unit%20mass%20of%20the%20water%20body",
+                "Platform/Ships/self-propelled%20boat"
+            ]);
         });
     });
 
@@ -116,14 +114,18 @@ describe('Portal.service.CatalogSearcher', function() {
 
             spyOn(Ext.ux.Ajax, 'constructProxyUrl').andCallFake(proxy);
 
-            searcher.search();
+            var page = {from: 1, to: 10};
+            searcher._search(page);
 
             var loaderConfig = searcher._newSearchResponseLoader.mostRecentCall.args[0];
 
             expect(searcher._newSearchResponseLoader).toHaveBeenCalled();
             expect(loaderConfig.url).toBe(proxy(url));
-            expect(loaderConfig.listeners.load).toBe(searcher._onSuccessfulHierSearch);
             expect(loaderConfig.listeners.loadexception).toBe(searcher._logAndReturnErrors);
+
+            // Can't really compare a function.bind() request, so compare the
+            // string output of the two functions
+            expect(''+loaderConfig.listeners.load).toEqual(''+searcher._onSuccessfulSearch.bind(searcher, page));
         });
 
         it('loads loader', function() {

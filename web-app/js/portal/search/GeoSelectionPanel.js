@@ -31,7 +31,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
         Ext.apply(this, cfg, defaults);
 
         this.facetMap = new Portal.search.FacetMapPanel({
-            initialBbox: Portal.app.config.initialBbox,
+            initialBbox: Portal.app.appConfig.portal.initialBbox,
             mainMap: cfg.mapPanel,
             height: 250,
             width: 250

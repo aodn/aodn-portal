@@ -27,6 +27,7 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
         var config = Ext.apply({
             layout: new Ext.layout.CardLayout(),
             activeItem: this.boxDisplayPanel,
+            layoutOnCardChange: true, // required for boxDisplayPanel
             items: [
                 this.boxDisplayPanel,
                 this.polygonDisplayPanel,
@@ -100,7 +101,5 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
         if (geometry) {
             card.setGeometry(geometry);
         }
-        // doLayout call required here to correctly redraw the box display panel on initialisation
-        this.doLayout();
     }
 });

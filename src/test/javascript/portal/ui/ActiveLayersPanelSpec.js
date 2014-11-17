@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -29,6 +28,16 @@ describe("Portal.ui.ActiveLayersPanel", function() {
             activeLayersPanel.activeLayersTreePanelBeforeSelectHandler({}, { layer: { isAnimatable: function() { return false}}});
             expect(beforeSelectedLayerChangedSpy).toHaveBeenCalled();
         });
+
+        it("stores the last changed layer as selectedChangedLayer", function() {
+            var dummyLayer = { isAnimatable: function() { return false}};
+            activeLayersPanel.selectedChangedLayer = null;
+            var selectedLayerChangedSpy = jasmine.createSpy('messageBusSubscriber');
+            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, dummyLayer);
+
+            expect(activeLayersPanel.selectedChangedLayer).toEqual(dummyLayer);
+        });
+
     });
 
     describe("layerRemoved event", function() {
@@ -37,6 +46,7 @@ describe("Portal.ui.ActiveLayersPanel", function() {
 
             // Create spies
             activeLayersPanel.setActiveNode = jasmine.createSpy('setActiveNodeSpy');
+            activeLayersPanel.updateTitle = jasmine.createSpy('updateTitleSpy');
             activeLayersPanel.getActiveLayerNodes = function() {return []};
 
             var selectedLayerChangedSpy = jasmine.createSpy('messageBusSubscriber');
@@ -54,6 +64,11 @@ describe("Portal.ui.ActiveLayersPanel", function() {
 
                 expect(selectedLayerChangedSpy).toHaveBeenCalled();
             });
+
+            it("update title should have been called", function() {
+                expect(activeLayersPanel.updateTitle).toHaveBeenCalled();
+            });
+
         });
     });
 
@@ -65,7 +80,7 @@ describe("Portal.ui.ActiveLayersPanel", function() {
             mockedLayer = { ui: {} };
             mockedLayer.ui.layerLoadingStart = function() {};
             mockedLayer.ui.layerLoadingEnd   = function() {};
-            mockedLayer.hasImgLoadErrors     = function() { return true; }
+            mockedLayer.hasImgLoadErrors     = function() { return true; };
             return [ mockedLayer ];
         });
 

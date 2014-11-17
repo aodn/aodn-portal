@@ -15,16 +15,17 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     constructor: function (cfg) {
 
         this.appConfig = Portal.app.config;
+        var portalConfig = Portal.app.appConfig.portal;
 
         var config = Ext.apply({
             stateful: false,
             forceLayout: true,   // Makes the map appear (almost) instantly when user clicks the 'map' button.
             split: true,
             header: false,
-            initialBbox: this.appConfig.initialBbox,
-            autoZoom: this.appConfig.autoZoom,
-            enableDefaultDatelineZoom: this.appConfig.enableDefaultDatelineZoom,
-            defaultDatelineZoomBbox: this.appConfig.defaultDatelineZoomBbox,
+            initialBbox: portalConfig.initialBbox,
+            autoZoom: portalConfig.autoZoom,
+            enableDefaultDatelineZoom: portalConfig.enableDefaultDatelineZoom,
+            defaultDatelineZoomBbox: portalConfig.defaultDatelineZoomBbox,
             hideLayerOptions: this.appConfig.hideLayerOptions
         }, cfg);
 

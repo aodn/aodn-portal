@@ -34,8 +34,14 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
         var geoNetworkRecordStore;
 
         beforeEach(function() {
-            Ext.namespace('Portal.app.config');
-            Portal.app.config.downloadCartDownloadableProtocols = 'downloadable\nsome other downloadable protocol\n';
+            Portal.app.appConfig = {
+                portal: {
+                    downloadCartDownloadableProtocols: [ 'downloadable', 'some other downloadable protocol']
+                },
+                featureToggles: {
+                    pythonDownload: true
+                }
+            };
 
             geoNetworkRecordStore = new Portal.data.GeoNetworkRecordStore();
             geoNetworkRecordStore.loadData(doc);

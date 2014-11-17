@@ -13,8 +13,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         this.layer = cfg.layer;
 
         var config = Ext.apply({
-            title: 'Layer',
-            autoScroll: true
+            title: OpenLayers.i18n('stylePanelTitle')
         }, cfg);
 
         Portal.details.StylePanel.superclass.constructor.call(this, config);
@@ -160,7 +159,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
         if (styleData.length > 1) {
             this.styleCombo.store.loadData(styleData);
-
+            this.styleCombo.setValue(this.layer.defaultStyle);
             this.styleCombo.collapse();
             this.styleCombo.show();
         }

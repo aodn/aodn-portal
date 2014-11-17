@@ -50,4 +50,26 @@ describe('Portal.form.PolygonTypeCombo', function() {
             expect(mockMap.setSpatialConstraintStyle).toHaveBeenCalled();
         });
     });
+
+    describe('_spatialConstraintCleared', function() {
+        var labelsData = [
+            { value: "value1", label: "Some label 1" },
+            { value: "value2", label: "Some label 2" }
+        ];
+
+        beforeEach(function() {
+            polygonTypeCombo.store = new Ext.data.JsonStore({
+                fields: ['value', 'label'],
+                data: labelsData
+            });
+        });
+
+        it('sets to first item in store', function() {
+            spyOn(polygonTypeCombo, 'setValue');
+
+            polygonTypeCombo._spatialConstraintCleared();
+
+            expect(polygonTypeCombo.setValue).toHaveBeenCalledWith("value1");
+        });
+    });
 });

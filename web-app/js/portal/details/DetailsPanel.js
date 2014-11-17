@@ -11,14 +11,20 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
     constructor : function(cfg) {
 
-        this.spacer = new Ext.Spacer({height: 10});
-        this.dataCollectionSelectorPanel = new Portal.details.DataCollectionSelectorPanel({
-            layout: 'card',
-            activeItem: 0
+        this.activeLayersPanel = new Portal.ui.ActiveLayersPanel(
+            Ext.apply({
+                style: {padding:'10px 15px 10px 5px'}
+            }, cfg)
+        );
+        this.activeLayersContainer = new Ext.Panel({
+            items: [
+                this.activeLayersPanel
+            ]
         });
-        this.layerDetailsPanel = new Ext.Panel({
+
+        this.layerDetailsPanel = new Ext.Container({
             layout: 'card',
-            flex: 1
+            ctCls: "overflow-y"
         });
 
         var config = Ext.apply({
@@ -26,15 +32,13 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             headerCfg: {
                 cls : 'steps'
             },
+
             items: [
-                this.spacer,
-                this.dataCollectionSelectorPanel,
+                new Ext.Spacer({height: 20}),
+                this.activeLayersContainer,
+                new Ext.Spacer({height: 10}),
                 this.layerDetailsPanel
-            ],
-            layout: 'vbox',
-            layoutConfig: {
-                align: 'stretch'
-            }
+            ]
         }, cfg);
 
         Portal.details.DetailsPanel.superclass.constructor.call(this, config);
@@ -75,19 +79,13 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         this.layerDetailsPanel.add(cardForLayer);
     },
 
-    layoutCard: function() {
-        this.doLayout();
-    },
-
     _activateCardForLayer: function(layer) {
         this.layerDetailsPanel.layout.setActiveItem(this._getCardIdForLayer(layer));
-        this.layoutCard();
     },
 
     _removeCardForLayer: function(layer) {
         if (this._cardExistsForLayer(layer)) {
-            // todo throws errors
-            //this.layerDetailsPanel.remove(this._getCardIdForLayer(layer));
+            this.layerDetailsPanel.remove(this._getCardIdForLayer(layer));
         }
     },
 

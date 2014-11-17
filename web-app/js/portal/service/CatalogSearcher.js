@@ -34,7 +34,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         Portal.service.CatalogSearcher.superclass.constructor.call(this, config);
 
-        this.addEvents('searchstart', 'hiersearchcomplete', 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved');
+        this.addEvents('searchstart', 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved');
     },
 
     reset: function() {
@@ -52,26 +52,13 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         var requestUrl = this._getRequestUrl(page);
 
-        this._logSearchRequest();
-
-        Ext.ux.Ajax.proxyRequest({
-            url: requestUrl,
-            success: this._onSuccessfulSearch,
-            failure: this._logAndReturnErrors,
-            page: page,
-            scope: this,
-            defaultHeaders: {
-                'Content-Type': 'application/xml'
-            }
-        });
-
         var searchResponseLoader = this._newSearchResponseLoader({
             requestMethod: 'GET',
             preloadChildren: true,
             url: Ext.ux.Ajax.constructProxyUrl(requestUrl),
             listeners: {
                 scope: this,
-                load: this._onSuccessfulHierSearch,
+                load: this._onSuccessfulSearch.bind(this, page),
                 loadexception: this._logAndReturnErrors
             }
         });
@@ -179,12 +166,8 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
     },
 
-    _onSuccessfulSearch: function(response, options) {
-        this.fireEvent('searchcomplete', response.responseXML, options.page);
-    },
-
-    _onSuccessfulHierSearch: function() {
-        this.fireEvent('hiersearchcomplete');
+    _onSuccessfulSearch: function(page, caller, node, response) {
+        this.fireEvent('searchcomplete', response.responseXML, page);
     },
 
     _logAndReturnErrors: function(response, options) {
@@ -205,16 +188,16 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     // [ "facet1/facet2", "facet1", "facet3", "facet3/facet4" ]
     // Will return:
     // [ "facet1/facet2", "facet3/facet4" ]
-    _getDeepestFacets: function(facets) {
+    getDeepestFacets: function(facets) {
         facets = facets.sort();
         var deepestFacets = [];
 
         // Search for the deepest facet in the whole sorted array, then push it
         // to deepestFacets if it's not already there
-        for(i = 0; i < facets.length; i++) {
+        for(var i = 0; i < facets.length; i++) {
             var deepestFacet = facets[i];
 
-            for(j = 0; j < facets.length; j++) {
+            for(var j = 0; j < facets.length; j++) {
                 if (facets[j].startsWith(deepestFacet) &&
                     facets[j].length > deepestFacet.length) {
                     deepestFacet = facets[j];
@@ -229,24 +212,6 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         return deepestFacets;
     },
 
-    _logSearchRequest: function() {
-        // Format search filters
-        var facets = [];
-        this.searchFilters.each(function(rec) {
-            facets.push(rec.get('value'));
-        });
-
-        if (facets.length > 0) {
-            var deepestFacets = this._getDeepestFacets(facets);
-
-            log.info(
-                "Searching collections: " + JSON.stringify({
-                    'facets': deepestFacets
-                })
-            );
-        }
-    },
-
     _getParams: function(page) {
         //--- Add search defaults (e.g. map layers only)
         var params = Ext.apply({}, this.defaultParams);
@@ -256,9 +221,9 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         //--- Add current search filters
         this.searchFilters.each(function(rec) {
-            name = rec.get('name');
-            param = params[name];
-            value = rec.get('value');
+            var name = rec.get('name');
+            var param = params[name];
+            var value = rec.get('value');
 
             if (Ext.isDefined(param)) {
                 if (Ext.isArray(param)) {

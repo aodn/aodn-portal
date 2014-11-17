@@ -32,9 +32,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Container, {
 
         var config = Ext.apply({
             title: OpenLayers.i18n('subsetPanelTitle'),
-            layout: 'fit',
             hideMode: 'offsets', // fixes #1278
-            autoScroll: true,
             items: items
         }, cfg);
 
