@@ -54,13 +54,6 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         this._logSearchRequest();
 
-        // DF: Set default headers to application/xml in order to avoid apache
-        // embedding a text/plain and then response.responseXML being unset,
-        // resulting in the XML tree class failing
-        // This parameter is globally set, but doesn't seem to interfere with
-        // the rest of the portal operation
-        Ext.Ajax.defaultHeaders = { 'Content-Type': 'application/xml' };
-
         var searchResponseLoader = this._newSearchResponseLoader({
             requestMethod: 'GET',
             preloadChildren: true,
