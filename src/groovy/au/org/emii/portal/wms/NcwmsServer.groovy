@@ -38,10 +38,9 @@ class NcwmsServer extends WmsServer {
     }
 
     def getFilterValues(server, layer, filter) {
-        return []
-    }
+        // Assume for NcWMS only date can be the filter request
+        def date = filter
 
-    def getTimeSeries(server, layer, date) {
         def urlFilterValues = String.format('%1$s?layerName=%2$s&REQUEST=GetMetadata&item=timesteps&day=%3$s', server, layer, date)
         def json = JSON.parse(getUrlContent(urlFilterValues))
 
