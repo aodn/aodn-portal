@@ -8,6 +8,7 @@
 package au.org.emii.portal
 
 import au.org.emii.portal.wms.NcwmsServer
+import au.org.emii.portal.wms.GeoserverServer
 import grails.converters.JSON
 import groovy.time.TimeCategory
 import org.springframework.beans.BeanUtils
@@ -107,53 +108,52 @@ class LayerController {
             "/srv/eng/xml_iso19139.mcp?styleSheet=xml_iso19139.mcp.xsl&uuid=" + uuid
     }
 
+    def _getServerClass(serverType) {
+        if (serverType == 'ncwms') {
+            return new NcwmsServer()
+        }
+        else {
+            return new GeoserverServer()
+        }
+    }
+
     def getStylesAsJSON = {
-        if (params.serverType == 'ncwms') {
+        if (hostVerifier.allowedHost(request, params.server)) {
             def server = params.server
             def layer = params.layer
+            def serverObject = _getServerClass(params.serverType)
 
-            if (!hostVerifier.allowedHost(request, params.server)) {
-                render text: "Host '$params.server' not allowed"
-            }
-            else {
-                def ncwmsServer = new NcwmsServer()
-                render text: ncwmsServer.getStyles(server, layer) as JSON
-            }
+            render text: serverObject.getStyles(server, layer) as JSON
+        }
+        else (!hostVerifier.allowedHost(request, params.server)) {
+            render text: "Host '$params.server' not allowed"
         }
     }
 
     def getFilterValuesAsJSON = {
-        if (params.serverType == 'ncwms') {
+        if (hostVerifier.allowedHost(request, params.server)) {
             def server = params.server
             def layer = params.layer
             def filter = params.filter
+            def serverObject = _getServerClass(params.serverType)
 
-            if (!hostVerifier.allowedHost(request, params.server)) {
-                render text: "Host '$params.server' not allowed"
-            }
-            else {
-                def ncwmsServer = new NcwmsServer()
-                render text: ncwmsServer.getTimeSeries(server, layer, filter) as JSON
-            }
+            render text: serverObject.getFilterValues(server, layer, filter) as JSON
+        }
+        else {
+            render text: "Host '$params.server' not allowed"
         }
     }
 
     def getFiltersAsJSON = {
-        if (params.serverType == 'ncwms') {
+        if (hostVerifier.allowedHost(request, params.server)) {
             def server = params.server
             def layer = params.layer
+            def serverObject = _getServerClass(params.serverType)
 
-            if (!hostVerifier.allowedHost(request, params.server)) {
-                render text: "Host '$params.server' not allowed"
-            }
-            else {
-                def ncwmsServer = new NcwmsServer()
-                render text: ncwmsServer.getFilters(server, layer) as JSON
-            }
+            render text: serverObject.getFilters(server, layer) as JSON
         }
         else {
-            // TODO render text: geoserverServer.getFilters(server, layer) as JSON
-            render text: [:] as JSON
+            render text: "Host '$params.server' not allowed"
         }
     }
 
