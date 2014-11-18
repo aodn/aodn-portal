@@ -196,10 +196,10 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         // Search for the deepest facet in the whole sorted array, then push it
         // to deepestFacets if it's not already there
-        for(i = 0; i < facets.length; i++) {
+        for(var i = 0; i < facets.length; i++) {
             var deepestFacet = facets[i];
 
-            for(j = 0; j < facets.length; j++) {
+            for(var j = 0; j < facets.length; j++) {
                 if (facets[j].startsWith(deepestFacet) &&
                     facets[j].length > deepestFacet.length) {
                     deepestFacet = facets[j];
@@ -241,9 +241,9 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         //--- Add current search filters
         this.searchFilters.each(function(rec) {
-            name = rec.get('name');
-            param = params[name];
-            value = rec.get('value');
+            var name = rec.get('name');
+            var param = params[name];
+            var value = rec.get('value');
 
             if (Ext.isDefined(param)) {
                 if (Ext.isArray(param)) {
