@@ -11,6 +11,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
     beforeEach(function() {
         layer = new OpenLayers.Layer.WMS();
+        layer.server = { uri: "uri" };
         layer.isKnownToThePortal = function() { return true; };
 
         filterGroupPanel = new Portal.filter.FilterGroupPanel({
@@ -89,7 +90,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         beforeEach(function() {
             layer = {
-                grailsLayerId: 1499409
+                server: { uri: "uri" }
             };
             layer.isKnownToThePortal = function() { return true };
             filterGroupPanel._isLayerActive = function() {return true};
@@ -122,25 +123,14 @@ describe("Portal.filter.FilterGroupPanel", function() {
             expect(filterGroupPanel._clearFilters).toHaveBeenCalled();
             expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
         });
-
-        it('calls the addErrorMessage function when layer is unknown', function() {
-
-            layer.grailsLayerId = undefined;
-            layer.isKnownToThePortal = function(){return false};
-
-            filterGroupPanel._initWithLayer();
-
-            expect(filterGroupPanel.addErrorMessage).toHaveBeenCalled();
-        });
     });
 
     describe('the _showHideFilters function', function() {
 
         beforeEach(function() {
             layer = {
-                grailsLayerId: 1499409
+                server: { uri: "uri" }
             };
-            layer.isKnownToThePortal = function(){return true};
             filterGroupPanel._isLayerActive = function() {return true};
 
             filterGroupPanel = new Portal.filter.FilterGroupPanel({
