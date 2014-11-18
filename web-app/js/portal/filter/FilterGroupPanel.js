@@ -113,18 +113,18 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
             if (this.layer.filters) {
                 this._showHideFilters();
             }
-            else if (this.layer.isKnownToThePortal()) {
-
+            else {
                 this.layerIsBeingHandled = true;
 
                 Ext.Ajax.request({
                     url: this.GET_FILTER,
                     params: {
-                        layerId: this.layer.grailsLayerId
+                        server: this.layer.server.uri,
+                        layer: this.layer.wmsName
                     },
                     scope: this,
                     failure: function() {
-                        this.hide();
+                        this.addErrorMessage(OpenLayers.i18n('subsetParametersErrorText'));
                         this.layerIsBeingHandled = false;
                     },
                     success: function(resp, opts) {
@@ -133,9 +133,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
                         this.layerIsBeingHandled = false;
                     }
                 });
-            }
-            else {
-                this.addErrorMessage(OpenLayers.i18n('subsetParametersErrorText'));
             }
         }
     },
