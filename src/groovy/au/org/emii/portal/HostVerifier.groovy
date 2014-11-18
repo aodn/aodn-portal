@@ -16,64 +16,47 @@ class HostVerifier {
 
     def grailsApplication
 
-    def allowedHost(request, address) {
+    def allowedHosts = null
+
+    def allowedHost(address) {
+
+        initializeAllowedHostsIfNeeded()
 
         if (!address) {
             return false
         }
 
-        try {
-            def url = address.toURL()
+        def host = extractHost(address)
 
-            def allowed = false
-            findAllowableServers(request).each {
-                if (it.contains(url.host)) {
-                    allowed = true
-                }
-            }
-            return allowed
+        if (allowedHosts[host]) {
+            return true
         }
-        catch (Exception e) {
-
-            log.error "Problem while validating host", e
-
+        else {
+            log.error "Not allowing request to address '${address}'"
             return false
         }
     }
 
-    def retrieveResultsFromGeoNetwork(server) {
-        def catalog = grailsApplication.config.geonetwork.url
-
-        return new XmlParser().parse("$catalog/srv/eng/q?serverUrl=$server&fast=index&summaryOnly=true")
+    def extractHost(url) {
+        return url.toURL().host
     }
 
-    def extractServer(url) {
-        return url.protocol + "://" + url.host + url.path
+    def initializeAllowedHostsIfNeeded() {
+        if (!allowedHosts) {
+            initializeAllowedHosts()
+        }
     }
 
-    def findAllowableServers(request) {
+    private synchronized initializeAllowedHosts() {
+        if(!allowedHosts) {
+            def appConfig = grailsApplication.config
+            allowedHosts = [:]
+            allowedHosts[extractHost(appConfig.geonetwork.url)] = true
+            allowedHosts[extractHost(appConfig.baselayerServer.uri)] = true
 
-        def allowableServers = []
-        allowableServers.add request.getHeader("host")
-
-        def appConfig = grailsApplication.config
-        allowableServers.add appConfig.geonetwork.url
-
-        allowableServers.add appConfig.baselayerServer.uri
-        allowableServers.addAll appConfig.knownServers*.uri
-
-        // Todo - This might be able to go. I don't think we use the splash screen anymore.
-        def splashConfig = appConfig.portal.instance.splash
-        _addIf allowableServers, splashConfig.index
-        _addIf allowableServers, splashConfig.links
-        _addIf allowableServers, splashConfig.community
-
-        return allowableServers
-    }
-
-    def _addIf(list, value) {
-        if (value) {
-            list.add(value)
+            appConfig.knownServers.each { server ->
+                allowedHosts[extractHost(server.uri)] = true
+            }
         }
     }
 }

@@ -22,7 +22,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
         controller.metaClass.message = { LinkedHashMap args -> messageArgs = args }
         controller.metaClass._recache = {}
         hostVerifier = mockFor(HostVerifier)
-        hostVerifier.demand.allowedHost { request, address -> return true }
+        hostVerifier.demand.allowedHost { address -> return true }
         controller.hostVerifier = hostVerifier.createMock()
     }
 
