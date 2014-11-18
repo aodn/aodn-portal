@@ -192,13 +192,13 @@ describe("OpenLayers.Layer.NcWMS", function() {
             expect(cachedLayer.styles).toEqual(
                 [
                     {name: 'barb', palette: 'greyscale'},
-                    {name: 'barb', palette: 'rainbow'},
-                    {name: 'barb', palette: 'redblue'},
                     {name: 'boxfill', palette: 'greyscale'},
-                    {name: 'boxfill', palette: 'rainbow'},
-                    {name: 'boxfill', palette: 'redblue'},
                     {name: 'vector', palette: 'greyscale'},
+                    {name: 'barb', palette: 'rainbow'},
+                    {name: 'boxfill', palette: 'rainbow'},
                     {name: 'vector', palette: 'rainbow'},
+                    {name: 'barb', palette: 'redblue'},
+                    {name: 'boxfill', palette: 'redblue'},
                     {name: 'vector', palette: 'redblue'}
                 ]
             );

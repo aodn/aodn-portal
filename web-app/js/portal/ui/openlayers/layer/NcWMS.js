@@ -114,13 +114,14 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         var includesVectorStyle = false;
 
-        Ext.each(response.styles.sort(), function(style) {
+        Ext.each(response.palettes.sort(), function(palette) {
 
-            if (style == 'vector') {
-                includesVectorStyle = true;
-            }
+            Ext.each(response.styles.sort(), function(style) {
 
-            Ext.each(response.palettes.sort(), function(palette) {
+                if (style == 'vector') {
+                    includesVectorStyle = true;
+                }
+
                 styles.push({
                     name: style,
                     palette: palette
