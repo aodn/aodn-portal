@@ -13,9 +13,12 @@ describe("Portal.details.DetailsPanelTab", function() {
         spyOn(Portal.details.InfoPanel.prototype, '_initWithLayer');
         spyOn(Portal.details.StylePanel.prototype, '_initWithLayer');
 
+        var layer = new OpenLayers.Layer.WMS();
+        layer.server = { uri: "uri" };
+
         detailsPanelTab = new Portal.details.DetailsPanelTab({
             map: new OpenLayers.SpatialConstraintMap(),
-            layer: new OpenLayers.Layer.WMS(),
+            layer: layer,
             mapPanel: new Portal.ui.MapPanel()
         });
     });
