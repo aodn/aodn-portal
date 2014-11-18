@@ -59,8 +59,8 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
      * Refactor.
      */
     _setDomainLayerProperties: function(openLayer) {
-        openLayer.grailsLayerId = this.id;
         openLayer.server = this.server;
+        openLayer.wmsName = this.name;
 
         //injecting credentials for authenticated WMSes.  Openlayer doesn't
         //provide a way to add header information to a WMS request
@@ -70,8 +70,6 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         openLayer.projection = this.projection;
         openLayer.blacklist = this.blacklist;
         openLayer.abstractTrimmed = this.abstractTrimmed;
-        openLayer.parentLayerId = this._getParentId();
-        openLayer.parentLayerName = this._getParentName();
         openLayer.dimensions = this.dimensions;
         openLayer.layerHierarchyPath = this.layerHierarchyPath;
 

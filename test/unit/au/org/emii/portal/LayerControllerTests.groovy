@@ -26,40 +26,23 @@ class LayerControllerTests extends ControllerUnitTestCase {
         controller.hostVerifier = hostVerifier.createMock()
     }
 
-    // TODO should be tested
-    /*void testGetFiltersAsJson() {
-        def server1 = new Server()
-        server1.id = 1
+    void testGetFiltersAsJsonGeoserver() {
+        this.controller.params.server = 'some_server'
+        this.controller.params.layer = 'some_layer'
 
-        def layer1 = new Layer()
-        layer1.id = 3
-        layer1.server = server1
+        def methodCalled = false
+        wms.GeoserverServer.metaClass.getFilters = { server, layer ->
+            methodCalled = true
+            return []
+        }
 
-        def filter1 = new Filter(name: "vesselName", wmsStartDateName: "start_date", wmsEndDateName: "end_date", type: FilterType.String, label: "Vessel Name", possibleValues: ["ship1", "ship2", "ship3"], layer: layer1, enabled: true, downloadOnly: false)
-        def filter2 = new Filter(name: "voyage dates", wmsStartDateName: "start_date", wmsEndDateName: "end_date",  type: FilterType.Date, label: "Voyage Dates", possibleValues: [], layer: layer1, enabled: true, downloadOnly: true)
-        def filter3 = new Filter(name: "disabled filter", wmsStartDateName: "start_date", wmsEndDateName: "end_date",  type: FilterType.String, label: "Sensor Type", possibleValues: ["type1", "type2"], layer: layer1, enabled: false, downloadOnly: false)
-        def filter4 = new Filter(name: "numberFilter", wmsStartDateName: "start_date", wmsEndDateName: "end_date",  type: FilterType.Number, label: "numberFilter", possibleValues: [], layer: layer1, enabled: true, downloadOnly: false)
-
-        layer1.filters = [filter1, filter2, filter3, filter4]
-
-        mockDomain(Server, [server1])
-        mockDomain(Layer, [layer1])
-        mockDomain(Filter, [filter1, filter2, filter3])
-
-        //test layer with filters
-        this.controller.params.layerId = 3
         this.controller.getFiltersAsJSON()
 
-        def response = this.controller.response.contentAsString
+        // Restore original wms.GeoserverServer class
+        wms.GeoserverServer.metaClass = null
 
-        def expected = """[\
-{"label":"numberFilter","type":"Number","name":"numberFilter","wmsStartDateName":"start_date","wmsEndDateName":"end_date","layerId":3,"enabled":true,"possibleValues":[],"downloadOnly":false},\
-{"label":"Vessel Name","type":"String","name":"vesselName","wmsStartDateName":"start_date","wmsEndDateName":"end_date","layerId":3,"enabled":true,"possibleValues":["ship1","ship2","ship3"],"downloadOnly":false},\
-{"label":"Voyage Dates","type":"Date","name":"voyage dates","wmsStartDateName":"start_date","wmsEndDateName":"end_date","layerId":3,"enabled":true,"possibleValues":[],"downloadOnly":true}\
-]"""
-
-        assertEquals expected, response // Validates encoding, ordering and only including 'enabled' filters
-    }*/
+        assertTrue methodCalled
+    }
 
     void testGetFiltersAsJsonNcWMS() {
         this.controller.params.serverType = 'ncwms'
