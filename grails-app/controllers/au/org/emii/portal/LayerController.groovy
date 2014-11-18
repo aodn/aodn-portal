@@ -118,20 +118,20 @@ class LayerController {
     }
 
     def getStylesAsJSON = {
-        if (hostVerifier.allowedHost(request, params.server)) {
+        if (hostVerifier.allowedHost(params.server)) {
             def server = params.server
             def layer = params.layer
             def serverObject = _getServerClass(params.serverType)
 
             render text: serverObject.getStyles(server, layer) as JSON
         }
-        else (!hostVerifier.allowedHost(request, params.server)) {
+        else (!hostVerifier.allowedHost(params.server)) {
             render text: "Host '$params.server' not allowed"
         }
     }
 
     def getFilterValuesAsJSON = {
-        if (hostVerifier.allowedHost(request, params.server)) {
+        if (hostVerifier.allowedHost(params.server)) {
             def server = params.server
             def layer = params.layer
             def filter = params.filter
@@ -145,7 +145,7 @@ class LayerController {
     }
 
     def getFiltersAsJSON = {
-        if (hostVerifier.allowedHost(request, params.server)) {
+        if (hostVerifier.allowedHost(params.server)) {
             def server = params.server
             def layer = params.layer
             def serverObject = _getServerClass(params.serverType)
