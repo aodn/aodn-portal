@@ -112,7 +112,14 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     _stylesLoaded: function(response) {
         var styles = [];
 
+        var includesVectorStyle = false;
+
         Ext.each(response.styles.sort(), function(style) {
+
+            if (style == 'vector') {
+                includesVectorStyle = true;
+            }
+
             Ext.each(response.palettes.sort(), function(palette) {
                 styles.push({
                     name: style,
@@ -121,7 +128,11 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             });
         }, this);
 
+        var defaultStyle = (includesVectorStyle ? 'vector' : 'boxfill');
+        defaultStyle += '/' + response.defaultPalette;
+
         this.styles = styles;
+        this.defaultStyle = defaultStyle;
 
         this.events.triggerEvent('stylesloaded', this);
     },

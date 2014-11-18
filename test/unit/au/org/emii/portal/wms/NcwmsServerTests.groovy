@@ -27,7 +27,8 @@ class NcwmsServerTests extends GrailsUnitTestCase {
 
         def expected = [
             styles: null,
-            palettes: null
+            palettes: null,
+            defaultPalette: null
         ]
         def styles = ncwmsServer.getStyles("http://server", "layer")
 
@@ -40,7 +41,7 @@ class NcwmsServerTests extends GrailsUnitTestCase {
         }
 
         def styles = ncwmsServer.getStyles("http://server", "layer")
-        assertEquals '{"styles":["vector","boxfill"],"palettes":["redblue","alg","greyscale","alg2","ncview","occam","rainbow","sst_36","ferret","occam_pastel-30"]}', (styles as JSON).toString()
+        assertEquals '{"styles":["vector","boxfill"],"palettes":["redblue","alg","greyscale","alg2","ncview","occam","rainbow","sst_36","ferret","occam_pastel-30"],"defaultPalette":"rainbow"}', (styles as JSON).toString()
     }
 
     void testParseDatesWithData() {

@@ -17,7 +17,8 @@ class NcwmsServer extends WmsServer {
 
         return [
             styles: json.supportedStyles,
-            palettes: json.palettes
+            palettes: json.palettes,
+            defaultPalette: json.defaultPalette
         ]
     }
 

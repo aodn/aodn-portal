@@ -177,13 +177,14 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
-    describe('_loadStyles', function() {
+    describe('_stylesLoaded', function() {
 
         it('sets styles property from extra layer info', function() {
 
             var stylesResponse = {
                 styles: ['boxfill', 'vector', 'barb'],
-                palettes: ['rainbow', 'redblue', 'greyscale']
+                palettes: ['rainbow', 'redblue', 'greyscale'],
+                defaultPalette: 'redblue'
             };
 
             cachedLayer._stylesLoaded(stylesResponse);
@@ -201,6 +202,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                     {name: 'vector', palette: 'redblue'}
                 ]
             );
+            expect(cachedLayer.defaultStyle).toBe('vector/redblue');
         });
     });
 
