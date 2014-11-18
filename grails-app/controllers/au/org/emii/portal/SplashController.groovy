@@ -67,7 +67,7 @@ class SplashController {
     }
 
     def _pageCanBeProxied(page) {
-        return portalInstance.page(page) && hostVerifier.allowedHost(request, portalInstance.page(page))
+        return portalInstance.page(page) && hostVerifier.allowedHost(portalInstance.page(page))
     }
 
     def _renderInclude(page) {

@@ -41,38 +41,24 @@ class HostVerifierTests extends GrailsUnitTestCase {
     }
 
     void testAddressIsNull() {
-        assertFalse(verifier.allowedHost(request, null))
+        assertFalse(verifier.allowedHost(null))
     }
 
     void testAddressIsEmptyString() {
-        assertFalse(verifier.allowedHost(request, ''))
+        assertFalse(verifier.allowedHost(''))
     }
 
     void testHostNotAllowed() {
-        assertFalse(verifier.allowedHost(request, 'http://www.google.com'))
+        assertFalse(verifier.allowedHost('http://www.google.com'))
     }
 
     void testHostAllowed() {
-        assertTrue(verifier.allowedHost(request, 'http://geoserver.emii.org.au'))
-        assertTrue(verifier.allowedHost(request, 'http://geoserver.imos.org.au'))
-    }
-
-    void testHostInHeaderAllowed() {
-        assertTrue(verifier.allowedHost(request, 'http://localhost'))
+        assertTrue(verifier.allowedHost('http://geoserver.emii.org.au'))
+        assertTrue(verifier.allowedHost('http://geoserver.imos.org.au'))
     }
 
     void testGeonetworkAllowed() {
-        assertTrue(verifier.allowedHost(request, 'http://geonetwork.aodn.org.au'))
-    }
-
-    void testExternalIndexAllowed() {
-        _addConfig(mockConfig, ["config", "portal", "instance", "splash", "index"], 'http://aodnsplash.emii.org.au')
-        assertTrue(verifier.allowedHost(request, 'http://aodnsplash.emii.org.au'))
-    }
-
-    void testExternalLinksAllowed() {
-        _addConfig(mockConfig, ["config", "portal", "instance", "splash", "links"], 'http://aodnlinks.emii.org.au')
-        assertTrue(verifier.allowedHost(request, 'http://aodnlinks.emii.org.au'))
+        assertTrue(verifier.allowedHost('http://geonetwork.aodn.org.au'))
     }
 
     def _addConfig(configObject, keys, value) {
