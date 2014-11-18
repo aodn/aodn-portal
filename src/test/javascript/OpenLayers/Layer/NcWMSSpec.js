@@ -177,30 +177,32 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
     });
 
-    describe('_loadStyles', function() {
+    describe('_stylesLoaded', function() {
 
         it('sets styles property from extra layer info', function() {
 
             var stylesResponse = {
-                styles: ['styleA', 'styleC', 'styleB'],
-                palettes: ['paletteB', 'paletteC', 'paletteA']
+                styles: ['boxfill', 'vector', 'barb'],
+                palettes: ['rainbow', 'redblue', 'greyscale'],
+                defaultPalette: 'redblue'
             };
 
             cachedLayer._stylesLoaded(stylesResponse);
 
             expect(cachedLayer.styles).toEqual(
                 [
-                    {name: 'styleA', palette: 'paletteA'},
-                    {name: 'styleA', palette: 'paletteB'},
-                    {name: 'styleA', palette: 'paletteC'},
-                    {name: 'styleB', palette: 'paletteA'},
-                    {name: 'styleB', palette: 'paletteB'},
-                    {name: 'styleB', palette: 'paletteC'},
-                    {name: 'styleC', palette: 'paletteA'},
-                    {name: 'styleC', palette: 'paletteB'},
-                    {name: 'styleC', palette: 'paletteC'}
+                    {name: 'barb', palette: 'greyscale'},
+                    {name: 'boxfill', palette: 'greyscale'},
+                    {name: 'vector', palette: 'greyscale'},
+                    {name: 'barb', palette: 'rainbow'},
+                    {name: 'boxfill', palette: 'rainbow'},
+                    {name: 'vector', palette: 'rainbow'},
+                    {name: 'barb', palette: 'redblue'},
+                    {name: 'boxfill', palette: 'redblue'},
+                    {name: 'vector', palette: 'redblue'}
                 ]
             );
+            expect(cachedLayer.defaultStyle).toBe('vector/redblue');
         });
     });
 

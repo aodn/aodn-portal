@@ -145,12 +145,16 @@ describe("Portal.details.StylePanel", function() {
             combo = {
                 collapse: jasmine.createSpy('collapse'),
                 show: jasmine.createSpy('show'),
+                setValue: jasmine.createSpy('setValue'),
                 store: {
                     loadData: jasmine.createSpy('loadData')
                 }
             };
 
             stylePanel.styleCombo = combo;
+            stylePanel.layer = {
+                defaultStyle: 'theDefault'
+            };
         });
 
         it('does not load combo box data if 1 style or fewer', function() {
@@ -160,6 +164,7 @@ describe("Portal.details.StylePanel", function() {
             stylePanel._stylesLoaded();
 
             expect(combo.store.loadData).not.toHaveBeenCalled();
+            expect(combo.setValue).not.toHaveBeenCalled();
             expect(combo.collapse).not.toHaveBeenCalled();
             expect(combo.show).not.toHaveBeenCalled();
         });
@@ -172,6 +177,7 @@ describe("Portal.details.StylePanel", function() {
             stylePanel._stylesLoaded();
 
             expect(combo.store.loadData).toHaveBeenCalledWith(styles);
+            expect(combo.setValue).toHaveBeenCalledWith('theDefault');
             expect(combo.collapse).toHaveBeenCalled();
             expect(combo.show).toHaveBeenCalled();
         });

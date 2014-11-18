@@ -163,7 +163,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         if (styleData.length > 1) {
             this.styleCombo.store.loadData(styleData);
-
+            this.styleCombo.setValue(this.layer.defaultStyle);
             this.styleCombo.collapse();
             this.styleCombo.show();
         }
