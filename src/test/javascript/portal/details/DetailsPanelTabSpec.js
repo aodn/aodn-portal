@@ -15,7 +15,8 @@ describe("Portal.details.DetailsPanelTab", function() {
 
         detailsPanelTab = new Portal.details.DetailsPanelTab({
             map: new OpenLayers.SpatialConstraintMap(),
-            layer: new OpenLayers.Layer.WMS()
+            layer: new OpenLayers.Layer.WMS(),
+            mapPanel: new Portal.ui.MapPanel()
         });
     });
 

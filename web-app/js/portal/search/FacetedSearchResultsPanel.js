@@ -20,7 +20,7 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
         this.dataView = new Portal.search.FacetedSearchResultsDataView({
             store: this.store
-        })
+        });
 
         var config = {
             title: false,
@@ -61,6 +61,7 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
     _subscribeToActiveGeoNetworkRecordStoreEvents: function() {
         Ext.each([PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED], function(eventName) {
+
             Ext.MsgBus.subscribe(eventName, function() {
                 this._refreshView();
             }, this);

@@ -15,7 +15,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 
         var config = Ext.apply({
             title: this._getDefaultEmptyMapText(),
-            id: 'activeLayerTreePanel',
+            cls: 'activeLayerTreePanel',
             enableDD: true,
             useArrows: true,
             rootVisible: false,
@@ -30,6 +30,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
                     createNode: function(attr) {
 
                         attr.uiProvider = Portal.ui.ActiveLayersTreeNodeUI;
+                        attr.mapPanel = cfg.mapPanel;
                         return GeoExt.tree.LayerLoader.prototype.createNode.call(this, attr);
                     }
                 }),
@@ -222,9 +223,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
 
     updateTitle: function() {
         var title = OpenLayers.i18n('dataCollectionsTitle');
-        if (!this.root.hasChildNodes()) {
-            title = this._getDefaultEmptyMapText();
-        }
         this.setTitle(title);
+        this.show(this.root.hasChildNodes());
     }
 });

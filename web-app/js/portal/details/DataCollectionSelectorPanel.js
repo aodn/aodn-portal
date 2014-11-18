@@ -26,12 +26,10 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
     initComponent: function() {
 
         this.emptyMessage = new Portal.common.EmptyCollectionStatusPanel({
-            id: 'emptyMessage',
             height: 35
         });
 
         this.layerComboBox = new Ext.form.ComboBox({
-            id: 'layerComboBox',
             typeAhead: true,
             triggerAction: 'all',
             lazyRender: true,
@@ -111,10 +109,10 @@ Portal.details.DataCollectionSelectorPanel = Ext.extend(Ext.Panel, {
     handleComboBoxStoreStatus: function() {
         if (this.layout.setActiveItem) {
             if (this.layerComboBox.store.data.items.length == 0 ){
-                this.layout.setActiveItem('emptyMessage');
+                this.layout.setActiveItem(this.emptyMessage);
             }
             else {
-                this.layout.setActiveItem('layerComboBox');
+                this.layout.setActiveItem(this.layerComboBox);
             }
         }
     }
