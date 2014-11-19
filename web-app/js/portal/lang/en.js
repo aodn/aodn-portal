@@ -208,7 +208,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     spatialExtentHeading: 'Spatial Extent',
     temporalExtentHeading: 'Temporal Extent',
-    generalFilterHeading: 'Specific Filters',
+    generalFilterHeading: 'Filters',
     currentDateTimeLabel: 'Displaying',
 
     emptyDownloadPlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",
