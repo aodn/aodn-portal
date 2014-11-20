@@ -55,7 +55,7 @@ describe('Portal.service.SearchRequestLogger', function() {
 
             searcher.fireEvent('searchcomplete');
 
-            expect(log.info).toHaveBeenCalledWith('Searched collection: {"status":"complete","duration (ms)":123}');
+            expect(log.info).toHaveBeenCalledWith('Searched collection: {"status":"success","duration (ms)":123}');
         });
 
         it('logs elapsed time on search error', function() {

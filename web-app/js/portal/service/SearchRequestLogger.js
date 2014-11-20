@@ -23,7 +23,7 @@ Portal.service.SearchRequestLogger = Ext.extend(Ext.util.Observable, {
         this.searcher.on('searchcomplete', function() {
             this.stopWatch.stop();
             log.info(String.format('Searched collection: {0}', JSON.stringify({
-                'status': 'complete',
+                'status': 'success',
                 'duration (ms)': this.stopWatch.getElapsedMillis()
             })));
         }, this);
