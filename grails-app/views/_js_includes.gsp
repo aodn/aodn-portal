@@ -102,6 +102,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'ActionsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'ActiveLayersPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'FormUtil.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'StopWatch.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'TimeUtil.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'moment.min.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'Moment.js')}"></script>
@@ -151,6 +152,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/search', file: 'SearchBodyPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/search', file: 'SearchPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/search', file: 'FreeTextSearchPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/service', file: 'SearchRequestLogger.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/service', file: 'CatalogSearcher.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'SearchFiltersPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'TermSelectionPanel.js')}"></script>
