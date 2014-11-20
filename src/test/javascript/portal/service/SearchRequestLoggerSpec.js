@@ -41,6 +41,14 @@ describe('Portal.service.SearchRequestLogger', function() {
     });
 
     describe('logging', function() {
+
+        it('logs "searching collections" on search start', function() {
+            spyOn(requestLogger, '_logSearchStart');
+            searcher.fireEvent('searchstart');
+
+            expect(requestLogger._logSearchStart).toHaveBeenCalled();
+        });
+
         it('logs elapsed time on search complete', function() {
             spyOn(log, 'info');
             spyOn(requestLogger.stopWatch, 'getElapsedMillis').andReturn(123);

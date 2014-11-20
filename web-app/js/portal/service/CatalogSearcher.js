@@ -52,8 +52,6 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         var requestUrl = this._getRequestUrl(page);
 
-        this._logSearchRequest();
-
         var searchResponseLoader = this._newSearchResponseLoader({
             requestMethod: 'GET',
             preloadChildren: true,
@@ -190,7 +188,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     // [ "facet1/facet2", "facet1", "facet3", "facet3/facet4" ]
     // Will return:
     // [ "facet1/facet2", "facet3/facet4" ]
-    _getDeepestFacets: function(facets) {
+    getDeepestFacets: function(facets) {
         facets = facets.sort();
         var deepestFacets = [];
 
@@ -212,24 +210,6 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         }
 
         return deepestFacets;
-    },
-
-    _logSearchRequest: function() {
-        // Format search filters
-        var facets = [];
-        this.searchFilters.each(function(rec) {
-            facets.push(rec.get('value'));
-        });
-
-        if (facets.length > 0) {
-            var deepestFacets = this._getDeepestFacets(facets);
-
-            log.info(
-                "Searching collections: " + JSON.stringify({
-                    'facets': deepestFacets
-                })
-            );
-        }
     },
 
     _getParams: function(page) {
