@@ -228,7 +228,7 @@ knownServers = [
         type: 'ncWMS'
     ],
     [
-        uri: 'http://catami.org/geoserver/wms?namespace=catami',
+        uri: 'http://catami.org/geoserver/catami/wms',
         wmsVersion: '1.3.0',
         type: 'GeoServer'
     ]
