@@ -16,30 +16,31 @@ Portal.service.SearchRequestLogger = Ext.extend(Ext.util.Observable, {
         this.searcher = config.searcher;
 
         this.searcher.on('searchstart', function() {
-            this.stopWatch.start();
             this._logSearchStart();
         }, this);
 
         this.searcher.on('searchcomplete', function() {
-            this.stopWatch.stop();
-            log.info(String.format('Searched collection: {0}', JSON.stringify({
-                'status': 'success',
-                'duration (ms)': this.stopWatch.getElapsedMillis()
-            })));
+            this._logElapsedTime('info', 'success');
         }, this);
 
         this.searcher.on('searcherror', function() {
-            this.stopWatch.stop();
-            log.warn(String.format('Searched collection: {0}', JSON.stringify({
-                'status': 'failed',
-                'duration (ms)': this.stopWatch.getElapsedMillis()
-            })));
+            this._logElapsedTime('warn', 'failed');
         }, this);
 
         Portal.service.SearchRequestLogger.superclass.constructor.call(this, config)
     },
 
+    _logElapsedTime: function(logLevel, status) {
+        this.stopWatch.stop();
+        log[logLevel](String.format('Searched collections: {0}', JSON.stringify({
+            'status': status,
+            'duration (ms)': this.stopWatch.getElapsedMillis()
+        })));
+    },
+
     _logSearchStart: function() {
+        this.stopWatch.start();
+
         // Format search filters
         var facets = [];
 

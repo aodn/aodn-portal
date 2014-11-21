@@ -55,7 +55,7 @@ describe('Portal.service.SearchRequestLogger', function() {
 
             searcher.fireEvent('searchcomplete');
 
-            expect(log.info).toHaveBeenCalledWith('Searched collection: {"status":"success","duration (ms)":123}');
+            expect(log.info).toHaveBeenCalledWith('Searched collections: {"status":"success","duration (ms)":123}');
         });
 
         it('logs elapsed time on search error', function() {
@@ -64,7 +64,7 @@ describe('Portal.service.SearchRequestLogger', function() {
 
             searcher.fireEvent('searcherror');
 
-            expect(log.warn).toHaveBeenCalledWith('Searched collection: {"status":"failed","duration (ms)":123}');
+            expect(log.warn).toHaveBeenCalledWith('Searched collections: {"status":"failed","duration (ms)":123}');
         });
     });
 });
