@@ -23,6 +23,10 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             }
         });
 
+        new Portal.service.SearchRequestLogger({
+            searcher: this.searcher
+        });
+
         this.resultsStore = new Portal.data.GeoNetworkRecordStore();
 
         var filtersPanelConfig = {
