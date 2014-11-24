@@ -102,8 +102,6 @@ environments {
 
         // URLs
         grails.serverURL = env['WMS_HOST_URL'] ?: "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
-        wmsScanner.url = env['WMS_SCANNER_URL'] ?: "http://localhost:8100/WmsScannerGrails/"
-        wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
         gogoduck.url = env['GOGODUCK_URL'] ?: "http://localhost:8300/go-go-duck"
         geonetwork.url = env['GEONETWORK_URL'] ?: "https://catalogue-123.aodn.org.au/geonetwork"
 
@@ -122,8 +120,6 @@ environments {
 
         // URLs
         grails.serverURL = "http://myaodn.example.com"
-        wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
-        wfsScanner.url = "http://wfsscannerpublic.aodn.org.au/wfsscanner"
         geonetwork.url = "http://catalogue-123.aodn.org.au/geonetwork"
 
         grails {
