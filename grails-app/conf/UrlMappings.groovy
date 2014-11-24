@@ -20,9 +20,6 @@ class UrlMappings {
             controller = (Environment.current == Environment.DEVELOPMENT) ? "home" : "landing"
         }
 
-        "/admin"{ controller="config"  }
-        "/administration"{ controller="config"  }
-
         "500"(view:'/error')
 
         //This uses SystemController to allow individual controllers to
