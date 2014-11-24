@@ -26,13 +26,13 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
         this.autoZoomCheckbox = new Ext.form.Checkbox({
             boxLabel: OpenLayers.i18n('autozoom'),
             inputType: 'checkbox',
-            checked: Portal.app.config.autoZoom
+            checked: Portal.app.appConfig.portal.autoZoom
         });
         this.autoZoomCheckbox.addEvents('autozoomchecked', 'autozoomunchecked');
         this.autoZoomCheckbox.on('check', function (box, checked) {
             var event = checked ? 'autozoomchecked' : 'autozoomunchecked';
             box.fireEvent(event, box, checked);
-            Portal.app.config.autoZoom = checked;
+            Portal.app.appConfig.portal.autoZoom = checked;
         }, this);
 
 
@@ -60,8 +60,8 @@ Portal.ui.MapOptionsPanel = Ext.extend(Ext.Panel, {
     },
 
     setAutoZoomCheckbox: function() {
-        if (Portal.app.config.autoZoom != this.autoZoomCheckbox.getValue() && this.rendered) {
-            this.autoZoomCheckbox.setValue(Portal.app.config.autoZoom);
+        if (Portal.app.appConfig.portal.autoZoom != this.autoZoomCheckbox.getValue() && this.rendered) {
+            this.autoZoomCheckbox.setValue(Portal.app.appConfig.portal.autoZoom);
         }
     }
 
