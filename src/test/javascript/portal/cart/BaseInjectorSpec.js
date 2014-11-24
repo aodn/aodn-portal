@@ -36,7 +36,34 @@ describe('Portal.cart.BaseInjector', function() {
         });
     });
 
+    describe('_shouldEstimateSize', function() {
+        beforeEach(function() {
+            viewport = {
+                isOnTab: function(tabIndex) {
+                    return viewport.currentTab == tabIndex;
+                },
+                currentTab: -1
+            };
+        });
+
+        it('on download step', function() {
+            viewport.currentTab = TAB_INDEX_DOWNLOAD;
+            spyOn(viewport, 'isOnTab').andCallThrough();
+            expect(injector._shouldEstimateSize()).toEqual(true);
+            expect(viewport.isOnTab).toHaveBeenCalledWith(TAB_INDEX_DOWNLOAD);
+        });
+
+        it('any other step', function() {
+            spyOn(viewport, 'isOnTab').andCallThrough();
+            expect(injector._shouldEstimateSize()).toEqual(false);
+            expect(viewport.isOnTab).toHaveBeenCalledWith(TAB_INDEX_DOWNLOAD);
+        });
+    });
+
     describe('getDataMarkup', function() {
+        beforeEach(function() {
+            injector._shouldEstimateSize = function() { return true; }
+        });
 
         it('returns the failed message if it can not calculate an estimate', function() {
 

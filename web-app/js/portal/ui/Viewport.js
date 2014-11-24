@@ -103,5 +103,10 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
     setDownloadTab: function() {
         this.mainPanel.setDownloadTab();
+    },
+
+    isOnTab: function(tabIndex) {
+        var currentTabIndex = this.mainPanel.items.indexOf(this.mainPanel.getActiveTab());
+        return tabIndex == currentTabIndex;
     }
 });
