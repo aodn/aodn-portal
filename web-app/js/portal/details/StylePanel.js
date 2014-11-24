@@ -7,15 +7,13 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.StylePanel = Ext.extend(Ext.Panel, {
+Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
         this.layer = cfg.layer;
 
         var config = Ext.apply({
-            title: 'Styles',
-            autoScroll: true,
-            style: { padding:'0 0 10px 10px' }
+            title: OpenLayers.i18n('stylePanelTitle')
         }, cfg);
 
         Portal.details.StylePanel.superclass.constructor.call(this, config);
@@ -24,15 +22,21 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
     },
 
     _attachEvents: function() {
+
         this.layer.events.on({
             'stylesloaded': this._stylesLoaded,
             scope: this
         });
     },
 
-    initComponent: function(cfg) {
+    initComponent: function() {
+
         this.legendImage = new GeoExt.LegendImage({
             ctCls: 'legendImage'
+        });
+
+        this.label = new Ext.form.Label({
+            html: "<h4>" + OpenLayers.i18n('layerOptionsTitle') + "</h4>"
         });
 
         //create an opacity slider
@@ -47,7 +51,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
             width: 175,
             isFormField: true,
             inverse: false,
-            fieldLabel: "<b>Opacity</b>",
+            fieldLabel: OpenLayers.i18n('Opacity'),
             plugins: new GeoExt.LayerOpacitySliderTip({
                 template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
             })
@@ -56,13 +60,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
         //create a container for the opacity slider, and add the opacity slider object to the container
         this.opacitySliderContainer = new Ext.Panel({
             layout: 'form',
-            height: 26,
-            margins: {
-                top: 5,
-                right: 5,
-                bottom: 0,
-                left: 5
-            },
             items: [this.opacitySlider]
         });
 
@@ -73,9 +70,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Panel, {
 
         //add the opacity slider container, style combo picker and colour scale panel to the Styles panel
         this.items = [
-            this._makeSpacer(),
+            this.label,
             this.opacitySliderContainer,
-            this._makeSpacer(),
             this.styleCombo,
             this._makeSpacer(),
             this.ncwmsColourScalePanel,

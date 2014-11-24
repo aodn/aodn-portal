@@ -1109,10 +1109,6 @@ div.allwhite {
     height: inherit;
 }
 
-.filterGroupPanel {
-    padding-left: 10px ;
-}
-
 .search-filter-panel .x-panel-header {
     height: 12px;
     font-size: 13px;
@@ -1182,7 +1178,6 @@ div.allwhite {
     height: 19px;
     vertical-align: top;
     margin: 1px;
-    background-color: #ffff99;
     border: 0;
 }
 
@@ -1258,6 +1253,7 @@ div.allwhite {
 
 .layer-loaded-button {
     visibility: hidden;
+    width:0;
 }
 
 .layer-error-button {
@@ -1265,11 +1261,32 @@ div.allwhite {
     background: url('../images/software-update-urgent-2.png') center no-repeat transparent;
 }
 
-#activeLayerTreePanel img.x-tree-node-icon {
-    width: 0;
+.overflow-y {
+    overflow-y: auto;
 }
 
-#activeLayerTreePanel input.x-tree-node-cb {
+.activeLayerTreePanel {
+    border-width: 1px;
+    border-radius: 3px;
+    border-color: #666;
+}
+
+.activeLayerTreePanel:not(:hover) li.x-tree-node
+ div:not(.x-tree-selected) * {
+    filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' height=\'0\'><filter id=\'greyscale\'><feColorMatrix type=\'saturate\' values=\'0\' /></filter></svg>#greyscale");
+    opacity: 0.6;
+}
+.activeLayerTreePanel li.x-tree-node div.x-tree-selected * {
+    font-weight: bold;
+}
+
+.activeLayerTreePanel img.x-tree-node-icon,
+.activeLayerTreePanel img[class*="x-tree-elbow"] {
+    width: 0;
+    margin-left: 1px;
+}
+
+.activeLayerTreePanel input.x-tree-node-cb {
     vertical-align: middle;
 }
 
@@ -1403,3 +1420,20 @@ div.allwhite {
     font-weight: bold;
 }
 
+.legendImage {
+    margin: 10px 0;
+}
+.legendImage img {
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.smallFieldLabel label {
+    width: 50px;
+   }
+
+.x-tree-node-el {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

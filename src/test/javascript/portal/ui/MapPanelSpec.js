@@ -132,13 +132,6 @@ describe("Portal.ui.MapPanel", function() {
             Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
             expect(mapPanel._maximiseMapActionsControl).toHaveBeenCalled();
         });
-
-        it('calls map actions control maximise', function() {
-            mapPanel.mapOptions._initMapActionsControl(mapPanel);
-            spyOn(mapPanel.mapOptions.mapActionsControl, 'maximizeControl');
-            Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
-            expect(mapPanel.mapOptions.mapActionsControl.maximizeControl).toHaveBeenCalled();
-        });
     });
 
     describe('removeAllLayers event', function() {

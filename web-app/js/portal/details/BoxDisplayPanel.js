@@ -12,30 +12,17 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        var spacer = new Ext.Spacer({
-            height: 5
-        });
-
         this.map = cfg.map;
 
         var config = Ext.apply({
             cls: "bboxExtentPicker",
             items: [
-                this._getLabel(),
-                spacer,
                 this._buildBoundingBox(cfg)
             ],
             padding: '0 5px 0 5px'
         }, cfg);
 
         Portal.details.BoxDisplayPanel.superclass.constructor.call(this, config);
-    },
-
-    _getLabel: function() {
-        return new Ext.form.Label({
-            cls: 'italic',
-            text: OpenLayers.i18n("emptyBboxHelperText")
-        });
     },
 
     setGeometry: function(geometry) {

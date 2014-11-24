@@ -7,22 +7,22 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.InfoPanel = Ext.extend(Ext.form.Label, {
+Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
 
         this.layer = cfg.layer;
 
         var config = Ext.apply({
-            title: 'Info',
-            autoScroll: true,
-            style: { display: "block", padding:'0 15px 10px 10px'},
-            html: OpenLayers.i18n('loadingSpinner', {resource: " collection information"})
+            title: OpenLayers.i18n('infoTabTitle'),
+            html: OpenLayers.i18n('loadingSpinner', {resource: " collection information"}),
+            listeners: {
+                scope: this,
+                render: this._initWithLayer
+            }
         }, cfg);
 
         Portal.details.InfoPanel.superclass.constructor.call(this, config);
-
-        this._initWithLayer();
     },
 
     _initWithLayer: function() {
@@ -33,11 +33,13 @@ Portal.details.InfoPanel = Ext.extend(Ext.form.Label, {
             url: metadataUrl,
             scope: this,
             success: function(resp, options) {
-                this.setText(resp.responseText, false);
+                this.update(resp.responseText, false);
             },
             failure: function(resp) {
-                this.setText("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>", false);
+                this.update("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>", false);
             }
         });
     }
+
+
 });

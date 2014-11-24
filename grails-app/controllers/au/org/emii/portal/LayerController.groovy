@@ -413,7 +413,7 @@ class LayerController {
                     def onlineResourcesList = xml.distributionInfo.MD_Distribution.transferOptions.MD_DigitalTransferOptions.onLine.list()
 
                     def html = "<!DOCTYPE html>\n"
-                    html += "<BR><b>Abstract</b><BR>${abstractText}<BR><BR><b>Online Resources</b><BR>\n"
+                    html += "<h4>Abstract</h4>${abstractText}<BR><h4>Online Resources</h4>\n"
 
                     html += "<ul>\n"
                     onlineResourcesList.each {

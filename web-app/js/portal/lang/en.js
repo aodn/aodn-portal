@@ -30,6 +30,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     wmsLayerProblem: "There is a problem with the availability of this collection",
     pickAStyle : ' ** Pick a style ** ',
     noActiveCollectionSelected: "No data collections selected",
+    dataCollectionsTitle: "Data Collections",
+    noCollectionSelectedHelp: "Please return and search for data collections.",
 
     // Geographic Bounds
     navigate: 'Select by Map Bounds',
@@ -83,6 +85,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // MapOptions
     panControl: 'Pan/Zoom Control',
+    mapGlobalOptionsTitle: "Global Map Options",
+
+    layerOptionsTitle: "Layer Options",
 
     // Animation Panel
     selectTimePeriod: 'Select ${direction} Time Period',
@@ -91,6 +96,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // Search results
     addToMap: "Add '${layerDesc}' to portal",
+
+    // tab titles
+    subsetPanelTitle: 'Subset',
+    stylePanelTitle: 'Layer',
+    infoTabTitle: 'Info',
+    mapTabTitle: 'Map',
 
     // Refine search panel
     filterNames: {
@@ -181,8 +192,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     clearAllButtonTooltip: 'Remove all data collections from the Subset and Download pages, reset the map location and zoom level',
     removeButtonTooltip: 'Remove this data collection from the Subset and Download pages, the collection can be re-added from the search.',
 
-    // SubsetPanel.js
-    subsetPanelTitle: 'Subset',
 
     // FilterGroupPanel.js
     clearFilterButtonLabel: 'Clear subset',
@@ -197,9 +206,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     toDateEmptyText: 'Max',
     resetActionText: 'reset',
 
-    // ActiveLayersPanel.js
-    dataCollectionsTitle: "Data Collections",
-    noCollectionSelectedHelp: "Please return and search for data collections.",
 
     // Async Downloads
     asyncDownloadPanelTitle: 'Subset',
@@ -231,7 +237,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "Polygon" }
     ],
 
-    emptyBboxHelperText: "Click and drag on the map, or enter extents manually.",
     emptyPolygonHelperText: "Click points on the map to create your polygon.",
 
     // WfsDataRowTemplate
