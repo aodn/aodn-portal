@@ -85,7 +85,6 @@ Portal.data.GeoNetworkRecord = function() {
                     Portal.cart.WfsDownloadHandler,
                     Portal.cart.PythonDownloadHandler
                 ],
-                'IMOS:AGGREGATION--aodaac': Portal.cart.AodaacDownloadHandler,
                 'IMOS:AGGREGATION--bodaac': Portal.cart.BodaacDownloadHandler,
                 'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckDownloadHandler
             };
