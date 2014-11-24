@@ -3,13 +3,10 @@ package au.org.emii.portal
 class AsyncDownloadController {
 
     def gogoduckService
-    def aodaacAggregatorService
     def downloadAuthService
 
     AsyncDownloadService getAggregatorService(aggregatorService) {
         switch (aggregatorService) {
-            case "aodaac":
-                return aodaacAggregatorService
             case "gogoduck":
                 return gogoduckService
             default:
