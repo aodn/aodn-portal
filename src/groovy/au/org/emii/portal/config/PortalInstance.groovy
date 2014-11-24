@@ -22,8 +22,4 @@ class PortalInstance {
         }
         return null
     }
-
-    def page(page) {
-        return grailsApplication.config.portal.instance.splash."$page"
-    }
 }
