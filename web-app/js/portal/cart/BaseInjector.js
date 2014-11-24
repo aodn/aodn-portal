@@ -58,6 +58,10 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         }
     },
 
+    _shouldEstimateSize: function() {
+        return viewport.isOnTab(TAB_INDEX_DOWNLOAD);
+    },
+
     _addDownloadEstimate: function(collection) {
 
         var estimateHandler = this._getDownloadEstimateHandler(collection);
@@ -66,10 +70,13 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
             var estimator = new Portal.cart.DownloadEstimator({
                 estimateRequestParams: estimateHandler.getDownloadEstimateParams(collection)
             });
-            estimator._getDownloadEstimate(
-                collection,
-                this._hideButton
-            );
+
+            if (this._shouldEstimateSize()) {
+                estimator._getDownloadEstimate(
+                    collection,
+                    this._hideButton
+                );
+            }
 
             return String.format(
                 "<div id=\"{0}\">{1}{2}</div>",
