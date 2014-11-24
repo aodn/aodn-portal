@@ -106,8 +106,6 @@ environments {
         gogoduck.url = env['GOGODUCK_URL'] ?: "http://localhost:8300/go-go-duck"
         geonetwork.url = env['GEONETWORK_URL'] ?: "https://catalogue-123.aodn.org.au/geonetwork"
 
-        grails.mail.disabled = true
-
         featureToggles.pythonDownload = true
     }
 
@@ -115,8 +113,6 @@ environments {
 
         // URLs
         grails.serverURL = "http://localhost:8080/$appName"
-
-        grails.mail.disabled = true
     }
 
     production {
@@ -124,14 +120,6 @@ environments {
         // URLs
         grails.serverURL = "http://myaodn.example.com"
         geonetwork.url = "http://catalogue-123.aodn.org.au/geonetwork"
-
-        grails {
-            mail {
-                host = "localhost"
-                port = 25
-                props = ["mail.smtp.auth": "false"]
-            }
-        }
     }
 }
 
@@ -231,11 +219,6 @@ portal {
         <a title="Integrated Marine Observing System" target="_blank" href="http://www.imos.org.au">IMOS</a>  <b>|</b>
         <a title="Australian Ocean Data Network" target="_blank" href="http://imos.org.au/aodn.html">AODN</a>
         """
-
-    // Change authentication emails for IMOS
-    systemEmail {
-        fromAddress = "info@example.com"
-    }
 
     initialBbox = "110,-50,160,-3"
     autoZoom = false
