@@ -410,7 +410,6 @@
                     </sourceIncludes>
                     <sourceExcludes>
                         <exclude>portal/portal.js</exclude>
-                        <exclude>portal/config/grid2treedrag.js</exclude>
                     </sourceExcludes>
                     <specIncludes>
                         <include>jasmine-slow.js</include>
