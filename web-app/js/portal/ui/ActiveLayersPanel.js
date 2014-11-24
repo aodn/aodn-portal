@@ -79,7 +79,7 @@ Portal.ui.ActiveLayersPanel = Ext.extend(Ext.tree.TreePanel, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(subject, openLayer) {
             if (openLayer) {
                 this.selectedChangedLayer = openLayer;
-                if (Portal.app.config.autoZoom) {
+                if (Portal.app.appConfig.portal.autoZoom) {
                     this.mapPanel.zoomToLayer(openLayer);
                 }
             }
