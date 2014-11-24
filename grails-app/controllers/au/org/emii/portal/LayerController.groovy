@@ -9,31 +9,16 @@ package au.org.emii.portal
 
 import au.org.emii.portal.wms.NcwmsServer
 import au.org.emii.portal.wms.GeoserverServer
-import grails.converters.JSON
-import groovy.time.TimeCategory
-import org.springframework.beans.BeanUtils
 import org.springframework.web.util.HtmlUtils
 import org.xml.sax.SAXException
 
-import java.beans.PropertyDescriptor
-import java.lang.reflect.Method
 import grails.converters.JSON
 
 class LayerController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def aodaacAggregatorService
-    def layerService
-    def dataSource
     def hostVerifier
-
-    def listBaseLayersAsJson = {
-        def layerInstanceList = Layer.findAllByIsBaseLayerNotEqual(false)
-        JSON.use("deep") {
-            render layerInstanceList as JSON
-        }
-    }
 
     def configuredBaselayers = {
         render grailsApplication.config.baselayers as JSON
