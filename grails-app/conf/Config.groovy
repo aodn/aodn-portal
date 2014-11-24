@@ -302,7 +302,6 @@ log4j = {
 
     debug   'grails.app.job',
         'grails.app.tagLib',
-        'grails.app.service.au.org.emii.portal.AodaacAggregatorService',
         'grails.app.controller.au.org.emii.portal.SystemController',
         'grails.app.domain',
         'grails.app.realms'
