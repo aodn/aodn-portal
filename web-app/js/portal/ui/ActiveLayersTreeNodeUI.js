@@ -98,9 +98,9 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
 
     layerLoadingStart: function() {
         this.statusIndicator().
+            addClass("layer-loading-button").
             removeClass("layer-error-button").
-            removeClass("layer-loaded-button").
-            addClass   ("layer-loading-button");
+            removeClass("layer-loaded-button");
     },
 
     layerLoadingEnd: function(loadedWithErrors) {
