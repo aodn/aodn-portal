@@ -20,7 +20,8 @@ class PortalBranding {
         }
     }
 
-    def returnBrandedUrlIfValid(url, alternativeValue, returnUrlContent = false) {
+    def returnBrandedUrlIfValid(urlSuffix, alternativeValue, returnUrlContent = false) {
+        def url = "${grailsApplication.config.portal.brandingBase}/${urlSuffix}"
         def returnValue = alternativeValue
 
         if (grailsApplication.config.portal.brandingBase) {
@@ -41,21 +42,21 @@ class PortalBranding {
 
     def getLandingPage() {
         return returnBrandedUrlIfValid(
-            "${grailsApplication.config.portal.brandingBase}/landing.html",
+            "landing.html",
             null
         )
     }
 
     def getLogoImage() {
         return returnBrandedUrlIfValid(
-            "${grailsApplication.config.portal.brandingBase}/logo.png",
+            "logo.png",
             grailsApplication.config.portal.logo
         )
     }
 
     def getSiteHeader() {
         return returnBrandedUrlIfValid(
-            "${grailsApplication.config.portal.brandingBase}/siteHeader",
+            "siteHeader",
             grailsApplication.config.portal.siteHeader,
             true
         )
@@ -63,8 +64,16 @@ class PortalBranding {
 
     def getFooterContent() {
         return returnBrandedUrlIfValid(
-            "${grailsApplication.config.portal.brandingBase}/footerContent.html",
+            "footerContent.html",
             grailsApplication.config.portal.footerContent,
+            true
+        )
+    }
+
+    def getCss() {
+        return returnBrandedUrlIfValid(
+            "overrides.css",
+            "",
             true
         )
     }

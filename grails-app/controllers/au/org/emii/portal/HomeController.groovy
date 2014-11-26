@@ -50,4 +50,8 @@ class HomeController {
     def footerContent = {
         render text: portalBranding.footerContent
     }
+
+    def css = {
+        render text: portalBranding.css
+    }
 }

@@ -50,7 +50,7 @@ class SecurityFilters {
             }
         }
 
-        homeAccess(controller: "home", action: "index|config|footerContent") {
+        homeAccess(controller: "home", action: "index|config|footerContent|css") {
             before = {
                 request.accessAllowed = true
             }
