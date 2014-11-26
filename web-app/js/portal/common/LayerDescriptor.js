@@ -94,8 +94,8 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         else if (this.geonetworkRecord
             && this.geonetworkRecord.data
             && this.geonetworkRecord.data.bbox
-            && this.geonetworkRecord.data.bbox.bounds) {
-            var bounds = this.geonetworkRecord.data.bbox.bounds;
+            && this.geonetworkRecord.data.bbox.geometries) {
+            var bounds = this.geonetworkRecord.data.bbox.getBounds();
             openLayer.bboxMinX = bounds.left;
             openLayer.bboxMinY = bounds.bottom;
             openLayer.bboxMaxX = bounds.right;
