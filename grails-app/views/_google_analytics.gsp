@@ -6,6 +6,7 @@
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
         ga('create', '${grailsApplication.config.googleAnalytics.trackingId}', 'auto');
+        ga('require', 'displayfeatures');
         ga('send', 'pageview');
     </script>
 </g:if>
