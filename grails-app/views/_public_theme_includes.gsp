@@ -16,3 +16,6 @@
 <g:elseif test="${grailsApplication.config.portal.instance?.name}">
     <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: grailsApplication.config.portal.instance.name + '.css')}"/>
 </g:elseif>
+
+<% now = new Date() %>
+<link rel="stylesheet" type="text/css" href="${createLink(controller: 'home', action: 'css')}?${now.getTime()}"/>

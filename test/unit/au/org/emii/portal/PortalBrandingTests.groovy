@@ -18,7 +18,8 @@ class PortalBrandingTests extends GrailsUnitTestCase {
         portalBranding = new PortalBranding()
 
         portalBranding.metaClass.fetchUrl = { url ->
-            if ("validBrandedUrl" == url) {
+            if ("isBranded/validBrandedUrl" == url) {
+                println url
                 return "some url content"
             }
             else {
@@ -44,7 +45,7 @@ class PortalBrandingTests extends GrailsUnitTestCase {
     void testBrandedUrlAccessibleWhenBranded() {
         portalBranding.grailsApplication.config.portal.brandingBase = "isBranded"
         assertEquals(
-            "validBrandedUrl",
+            "isBranded/validBrandedUrl",
             portalBranding.returnBrandedUrlIfValid("validBrandedUrl", "nonBrandedValue", false)
         )
     }
