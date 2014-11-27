@@ -61,7 +61,6 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
             scope: this,
             success: function(resp) {
                 $("#footerContent").html(resp.responseText);
-                Ext.each(this.items.items, function(component) { component.show(); });
             },
             failure: function(resp) {
                 log.debug("Failed to obtain external links from server");
