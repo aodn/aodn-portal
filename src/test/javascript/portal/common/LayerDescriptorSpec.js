@@ -148,32 +148,9 @@ describe("Portal.common.LayerDescriptor", function() {
     });
 
     describe('_setOpenLayerBounds', function() {
-        var openLayer;
-
-        beforeEach(function() {
-            openLayer = {};
-        });
-
-        it('from class', function() {
-            var layerDescriptor = new Portal.common.LayerDescriptor(
-                {
-                    bboxMinX: 1,
-                    bboxMinY: 2,
-                    bboxMaxX: 3,
-                    bboxMaxY: 4
-                },
-                {}
-            );
-
-            layerDescriptor._setOpenLayerBounds(openLayer);
-
-            expect(openLayer.bboxMinX).toEqual(1);
-            expect(openLayer.bboxMinY).toEqual(2);
-            expect(openLayer.bboxMaxX).toEqual(3);
-            expect(openLayer.bboxMaxY).toEqual(4);
-        });
-
         it('from geonetwork', function() {
+            var openLayer = {};
+
             var geonetworkRecord = {
                 data: {
                     bbox: {
