@@ -83,13 +83,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     },
 
     _setOpenLayerBounds: function(openLayer) {
-        if (this.bboxMinX && this.bboxMinY && this.bboxMaxX && this.bboxMaxY) {
-            openLayer.bboxMinX = this.bboxMinX;
-            openLayer.bboxMinY = this.bboxMinY;
-            openLayer.bboxMaxX = this.bboxMaxX;
-            openLayer.bboxMaxY = this.bboxMaxY;
-        }
-        else if (this.geonetworkRecord
+        if (this.geonetworkRecord
             && this.geonetworkRecord.data
             && this.geonetworkRecord.data.bbox
             && this.geonetworkRecord.data.bbox.geometries) {
