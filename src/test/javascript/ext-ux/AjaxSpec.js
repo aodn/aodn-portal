@@ -19,4 +19,57 @@ describe("Ext.ux.Ajax", function() {
             });
         });
     });
+
+    describe('setContentType', function() {
+        describe('adds content type', function() {
+            it('empty headers', function() {
+                var expectedParams = {
+                    headers: {
+                        'Content-Type': 'content-type'
+                    }
+                };
+                expect(Ext.ux.Ajax.setContentType({}, 'content-type')).toEqual(expectedParams);
+            });
+
+            it('existing headers', function() {
+                var params = {
+                    headers: {
+                        'test': 'test'
+                    }
+                };
+
+                var expectedParams = {
+                    headers: {
+                        'test': 'test',
+                        'Content-Type': 'content-type'
+                    }
+                };
+                expect(Ext.ux.Ajax.setContentType(params, 'content-type')).toEqual(expectedParams);
+            });
+        });
+    });
+
+    describe('proxyRequestXML', function() {
+        it('adds Content-Type application/xml', function() {
+            spyOn(Ext.ux.Ajax, 'setContentType');
+            spyOn(Ext.ux.Ajax, 'proxyRequest').andCallFake(function() {});
+
+            Ext.ux.Ajax.proxyRequestXML({});
+
+            expect(Ext.ux.Ajax.setContentType).toHaveBeenCalledWith({}, 'application/xml');
+            expect(Ext.ux.Ajax.proxyRequest).toHaveBeenCalled();
+        });
+    });
+
+    describe('proxyRequestJSON', function() {
+        it('adds Content-Type application/json', function() {
+            spyOn(Ext.ux.Ajax, 'setContentType');
+            spyOn(Ext.ux.Ajax, 'proxyRequest').andCallFake(function() {});
+
+            Ext.ux.Ajax.proxyRequestJSON({});
+
+            expect(Ext.ux.Ajax.setContentType).toHaveBeenCalledWith({}, 'application/json');
+            expect(Ext.ux.Ajax.proxyRequest).toHaveBeenCalled();
+        });
+    });
 });

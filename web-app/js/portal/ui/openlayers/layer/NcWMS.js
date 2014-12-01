@@ -43,7 +43,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _setExtraLayerInfoFromNcwms: function() {
-        Ext.Ajax.proxyRequest({
+        Ext.Ajax.proxyRequestJSON({
             scope: this,
             url: this._getExtraLayerInfoFromNcwms(),
             success: function(resp, options) {
