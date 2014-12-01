@@ -72,8 +72,7 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint
 };
 
 OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function() {
-    // Should usually be 'text/html'
-    return this.server.infoFormat;
+    return 'text/html';
 };
 
 // formatFeatureInfoHtml may be overriden by sub classes (like NcWMS)
