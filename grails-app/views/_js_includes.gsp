@@ -45,7 +45,6 @@
 <script src="${resource(dir: 'js/Geonetwork/lib/GeoNetwork/map', file: 'ExtentMap.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js/Geonetwork/lib/GeoNetwork/map/Ext.ux/form', file: 'DateTime.js')}" type="text/javascript"></script>
 
-<script src="${resource(dir: 'js/ext-ux', file: 'Ajax.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js/ext-ux/SuperBoxSelect', file: 'SuperBoxSelect.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js/ext-ux', file: 'ScrollTo.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js/ext-ux/Hyperlink', file: 'Hyperlink.js')}" type="text/javascript"></script>
@@ -64,6 +63,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'PortalEvents.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'Array.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'Ext.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'ExtUxAjax.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'Object.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'String.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'OpenLayers.js')}"></script>
