@@ -63,15 +63,29 @@ describe("Portal.data.LayerStore", function() {
         describe('blocked server', function() {
             beforeEach(function() {
                 spyOn(layerStore, '_serverUnrecognized').andCallFake(function() {});
+                layerLink = {
+                    title: "imos:detection_count_per_station_mv",
+                    server: {
+                        type: "WMS-1.1.1",
+                        uri: "http://geoserver.imos.org.au/geoserver/wms"
+                    },
+                    name: "imos:detection_count_per_station_mv",
+                    protocol: "OGC:WMS-1.1.1-http-get-map"
+                };
+                geonetworkRecord = {id: "blagh"};
+                layerRecordCallback = function(){};
             });
 
             it('empty response', function() {
                 spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
                     options.success.call(layerStore, { responseText: Ext.util.JSON.encode({}) });
                 });
-                layerStore.addUsingLayerLink("layerName", layerLink);
+
+                layerStore.addUsingLayerLink("layerName", layerLink, geonetworkRecord, layerRecordCallback);
 
                 expect(layerStore._serverUnrecognized).toHaveBeenCalled();
+                expect(layerStore.geonetworkRecord).toEqual(undefined);
+                expect(layerStore.layerRecordCallback).toEqual(undefined);
             });
 
             it('failure', function() {

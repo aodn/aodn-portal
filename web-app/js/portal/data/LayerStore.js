@@ -16,6 +16,9 @@ Ext.namespace('Portal.data');
  */
 Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
+    BLOCKED_URI: "http://blocked",
+    BLOCKED_TYPE: "blocked",
+
     constructor: function(cfg) {
         Portal.data.LayerStore.superclass.constructor.call(this, cfg);
 
@@ -38,22 +41,33 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                     var serverInfo = Ext.util.JSON.decode(resp.responseText);
                     this._serverInfoLoaded(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
                 }
-                catch(e) {
+                catch (e) {
                     log.error("Failed parsing information for server '" + serverUri + "', response : '" + resp.responseText + "'");
                 }
             },
             failure: function(resp) {
                 log.error("Failed getting information for server '" + serverUri + "'");
-                this._serverUnrecognized(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, null);
+                this._serverUnrecognized(layerDisplayName, layerLink);
             }
         });
     },
 
     _serverInfoLoaded: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
         if ($.isEmptyObject(serverInfo)) {
-            this._serverUnrecognized(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
+
+            this._serverUnrecognized(layerDisplayName, layerLink);
+
+            // break this layer as the server is unrecognised
+            // openLayers needs the minimum to attempt loading #1476
+            layerLink.server = {
+                uri: this.BLOCKED_URI,
+                type: this.BLOCKED_TYPE
+            };
+            layerRecordCallback = undefined;
+            geonetworkRecord = undefined;
         }
-        else if (serverInfo.type && serverInfo.type.toLowerCase() == 'ncwms') {
+
+        if (serverInfo.type && serverInfo.type.toLowerCase() == 'ncwms') {
             this._addUsingLayerLinkNcwms(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
         }
         else {
@@ -61,12 +75,12 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         }
     },
 
-    _serverUnrecognized: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
+    _serverUnrecognized: function(layerDisplayName, layerLink) {
         var serverUri = layerLink.server.uri;
         log.error("Server '" + serverUri + "' is blocked!!");
     },
 
-    _addUsingLayerLinkDefault: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
+    _addUsingLayerLinkDefault: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback) {
         var serverUri = layerLink.server.uri;
 
         Ext.Ajax.request({
