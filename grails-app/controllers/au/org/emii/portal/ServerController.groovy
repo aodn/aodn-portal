@@ -19,12 +19,12 @@ class ServerController {
     def grailsApplication
 
     def getInfo = {
-        def server = params.server
 
+        def server = params.server
         def allowableServers = []
 
-        allowableServers.addAll _fromServersInDatabase() // Todo - Can be removed when we go full stateless
         allowableServers.addAll grailsApplication.config.knownServers
+        allowableServers.addAll _fromServersInDatabase() // Todo - Can be removed when we go full stateless
 
         def allowedServer = allowableServers.find { it.uri == server }
         if (!allowedServer) {
@@ -32,9 +32,12 @@ class ServerController {
         }
         else {
             // Filter only the attributes we're passing to the client
-            allowedServer = allowedServer.subMap(['uri', 'wmsVersion', 'type']).findAll { it.value }
+            allowedServer = [
+                'uri': allowedServer.uri,
+                'wmsVersion': allowedServer.wmsVersion,
+                'type': allowedServer.type
+            ]
         }
-
         render text: allowedServer as JSON
     }
 
