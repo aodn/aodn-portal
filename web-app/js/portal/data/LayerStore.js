@@ -38,22 +38,33 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                     var serverInfo = Ext.util.JSON.decode(resp.responseText);
                     this._serverInfoLoaded(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
                 }
-                catch(e) {
+                catch (e) {
                     log.error("Failed parsing information for server '" + serverUri + "', response : '" + resp.responseText + "'");
                 }
             },
             failure: function(resp) {
                 log.error("Failed getting information for server '" + serverUri + "'");
-                this._serverUnrecognized(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, null);
+                this._serverUnrecognized(layerDisplayName, layerLink);
             }
         });
     },
 
     _serverInfoLoaded: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
         if ($.isEmptyObject(serverInfo)) {
-            this._serverUnrecognized(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
+
+            this._serverUnrecognized(layerDisplayName, layerLink);
+
+            // break this layer as the server is unrecognised
+            // openLayers needs the minimum to attempt loading #1476
+            layerLink.server = {
+                uri: "http://blockeddummygeoserver",
+                type: "dummy"
+            };
+            layerRecordCallback = undefined;
+            geonetworkRecord = undefined;
         }
-        else if (serverInfo.type && serverInfo.type.toLowerCase() == 'ncwms') {
+
+        if (serverInfo.type && serverInfo.type.toLowerCase() == 'ncwms') {
             this._addUsingLayerLinkNcwms(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
         }
         else {
@@ -61,12 +72,13 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         }
     },
 
-    _serverUnrecognized: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
+    _serverUnrecognized: function(layerDisplayName, layerLink) {
         var serverUri = layerLink.server.uri;
         log.error("Server '" + serverUri + "' is blocked!!");
-    },
+    }
+    ,
 
-    _addUsingLayerLinkDefault: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
+    _addUsingLayerLinkDefault: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback) {
         var serverUri = layerLink.server.uri;
 
         Ext.Ajax.request({
@@ -85,56 +97,65 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                 this.addUsingDescriptor(new Portal.common.LayerDescriptor(layerLink), layerRecordCallback);
             }
         });
-    },
+    }
+    ,
 
     _addUsingLayerLinkNcwms: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
         var layerDescriptor = new Portal.common.LayerDescriptor(layerLink, geonetworkRecord, OpenLayers.Layer.NcWMS);
         layerDescriptor.title = layerDisplayName;
         layerDescriptor.cql = layerLink.cql;
         this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
-    },
+    }
+    ,
 
     removeAll: function() {
         this.remove(this.getOverlayLayers().getRange());
         Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
         this.selectDefaultBaseLayer();
-    },
+    }
+    ,
 
     selectDefaultBaseLayer: function() {
         var defaultBaseLayer = this.getDefaultBaseLayer();
         var openLayer = defaultBaseLayer ? defaultBaseLayer.data.layer : null;
         Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_CHANGED, openLayer);
-    },
+    }
+    ,
 
     getDefaultBaseLayer: function() {
         return this.getBaseLayers().first();
-    },
+    }
+    ,
 
     getBaseLayers: function() {
         return this._getLayers(function(record) {
             return record.getLayer().options && record.getLayer().options.isBaseLayer;
         })
-    },
+    }
+    ,
 
     getOverlayLayers: function() {
         return this._getLayers(function(record) {
             var layer = record.getLayer();
             return layer.options && !layer.options.isBaseLayer && !(layer instanceof OpenLayers.Layer.Vector);
         })
-    },
+    }
+    ,
 
     _getLayers: function(predicate) {
         return this.queryBy(function(record, id) {
             return predicate(record);
         });
-    },
+    }
+    ,
 
     removeUsingOpenLayer: function(openLayer) {
         var layerRecordToRemove = this.getByLayer(openLayer);
         openLayer.destroy();
         this.remove(layerRecordToRemove);
         Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
-    },
+    }
+    ,
 
     _addLayer: function(openLayer, layerRecordCallback) {
         if (!this.containsOpenLayer(openLayer)) {
@@ -179,7 +200,8 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         else {
             Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'), OpenLayers.i18n('collectionExistsMsg'));
         }
-    },
+    }
+    ,
 
     containsOpenLayer: function(openLayer) {
         var path;
@@ -201,14 +223,16 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         }
 
         return true;
-    },
+    }
+    ,
 
     _registerMessageListeners: function() {
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function(subject, openLayer) {
             this.removeAll();
         }, this);
-    },
+    }
+    ,
 
     _initBaseLayers: function() {
         // TODO: shouldn't these be set properly in the server in the first place?
@@ -218,7 +242,8 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         }, function() {
             Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
         });
-    },
+    }
+    ,
 
     _initWithLayersFromServer: function(url, configOverrides, successCallback) {
         Ext.Ajax.request({
@@ -245,4 +270,5 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             }
         });
     }
-});
+})
+;
