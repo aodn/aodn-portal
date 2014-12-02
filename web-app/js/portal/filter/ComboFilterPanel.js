@@ -21,6 +21,9 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.combo = new Ext.form.ComboBox({
             triggerAction: 'all',
             mode: 'local',
+            typeAhead: true,
+            forceSelection: true,
+            validator: this.validateValue,
             width: 320,
             editable: true,
             store: new Ext.data.ArrayStore({
@@ -33,7 +36,8 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             displayField: 'text',
             listeners: {
                 scope: this,
-                select: this._onSelected
+                select: this._onSelected,
+                valid: this._onSelected
             }
         });
 
@@ -55,6 +59,20 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         this.combo.clearValue();
         this.combo.getStore().loadData(data);
+    },
+
+    validateValue : function(value) {
+
+        if(value != "") {
+            var val = this.getRawValue();
+            var rec = this.findRecord(this.displayField, val);
+            if(!rec) {
+                this.markInvalid(true);
+                return false;
+            }
+        }
+
+        return true;
     },
 
     getCQL: function() {

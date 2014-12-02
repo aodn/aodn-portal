@@ -59,4 +59,26 @@ describe("Portal.filter.ComboFilterPanel", function() {
 
         expect(comboFilter.combo.setValue).toHaveBeenCalledWith('testvalue');
     });
+
+    describe('validateValue function', function() {
+
+        beforeEach(function() {
+            comboFilter.combo = {};
+            comboFilter.getRawValue = function() { return "L'Astrolabe"; };
+            comboFilter.markInvalid = function() {noOp};
+        });
+        it('should return true when in the store', function() {
+
+            comboFilter.findRecord = function() { return true; };
+            expect(comboFilter.validateValue()).toEqual(true);
+        });
+        it('should mark combo invalid when not in the store', function() {
+
+            spyOn(comboFilter, 'markInvalid');
+            comboFilter.findRecord = function() { return undefined; };
+            comboFilter.validateValue("anything");
+            expect(comboFilter.markInvalid).toHaveBeenCalled();
+            expect(comboFilter.validateValue()).toEqual(false);
+        });
+    });
 });
