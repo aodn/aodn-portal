@@ -22,7 +22,6 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             triggerAction: 'all',
             mode: 'local',
             width: this.MAX_COMPONENT_WIDTH,
-            width: this.MAX_COMPONENT_WIDTH,
             typeAhead: true,
             forceSelection: true,
             validator: this.validateValue,
