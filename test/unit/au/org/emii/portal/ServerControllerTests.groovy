@@ -11,9 +11,8 @@ import grails.test.ControllerUnitTestCase
 
 class ServerControllerTests extends ControllerUnitTestCase {
     protected void setUp() {
-
         super.setUp()
-        mockDomain(Server, []);
+
         controller.grailsApplication = [
             config: [
                 knownServers: [
@@ -40,7 +39,6 @@ class ServerControllerTests extends ControllerUnitTestCase {
     }
 
     void testShowServerByItsId() {
-
         mockDomain(Server, [new Server(id: 10, uri: "uri1", shortAcron: "A", name: "name1", type: "WMS-1.1.1", lastScanDate: null, scanFrequency: 0, disable: false, allowDiscoveries: true, opacity: 3, imageFormat: "image/png", comments: "", username: null, password: null)])
         this.controller.params.serverId = "10_10"
         this.controller.showServerByItsId()
