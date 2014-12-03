@@ -44,7 +44,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.add(this.combo);
         this.add(
             new Ext.Spacer({
-                cls:'block',
+                cls: 'block',
                 height: 5
             })
         );
@@ -61,7 +61,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.combo.getStore().loadData(data);
     },
 
-    validateValue : function(value) {
+    validateValue: function(value) {
 
         if (value != "") {
             var val = this.getRawValue();
@@ -99,7 +99,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     _getHumanValue: function() {
         var componentValue = this._escapeSingleQuotes(this.combo.getValue());
-        if (componentValue != ""){
+        if (componentValue != "") {
             return this.getFilterNameAsTitleCase() + " like \"" + componentValue + "\""
         }
         else {
@@ -109,7 +109,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _onSelected: function(combo, record, index) {
-        if(this.combo.getValue() == OpenLayers.i18n('clearFilterOption')) {
+        if (this.combo.getValue() == OpenLayers.i18n('clearFilterOption')) {
             this.combo.clearValue();
         }
         this._fireAddEvent();
