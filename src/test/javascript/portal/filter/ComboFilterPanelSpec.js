@@ -69,13 +69,13 @@ describe("Portal.filter.ComboFilterPanel", function() {
         });
         it('should return true when in the store', function() {
 
-            comboFilter.findRecord = function() { return true};
+            comboFilter.findRecord = function() { return true; };
             expect(comboFilter.validateValue()).toEqual(true);
         });
         it('should mark combo invalid when not in the store', function() {
 
             spyOn(comboFilter, 'markInvalid');
-            comboFilter.findRecord = function() { return undefined};
+            comboFilter.findRecord = function() { return undefined; };
             comboFilter.validateValue("anything");
             expect(comboFilter.markInvalid).toHaveBeenCalled();
             expect(comboFilter.validateValue()).toEqual(false);

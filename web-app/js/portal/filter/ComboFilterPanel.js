@@ -60,14 +60,14 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.combo.getStore().loadData(data);
     },
 
-    validateValue : function(value) {
+    validateValue: function(value) {
 
         var errors = [];
 
-        if(value || value != "") {
+        if (value || value != "") {
             var val = this.getRawValue();
             var rec = this.findRecord(this.displayField, val);
-            if(!rec) {
+            if (!rec) {
                 errors.push("Invalid Selection");
             }
         }
