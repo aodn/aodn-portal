@@ -63,10 +63,10 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     validateValue : function(value) {
 
-        if(value != "") {
+        if (value != "") {
             var val = this.getRawValue();
             var rec = this.findRecord(this.displayField, val);
-            if(!rec) {
+            if (!rec) {
                 this.markInvalid(true);
                 return false;
             }
