@@ -21,7 +21,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.combo = new Ext.form.ComboBox({
             triggerAction: 'all',
             mode: 'local',
-            width: 320,
+            width: this.MAXCOMPONENTWIDTH,
             editable: true,
             store: new Ext.data.ArrayStore({
                 fields: [
