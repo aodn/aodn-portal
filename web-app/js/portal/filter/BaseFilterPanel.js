@@ -12,7 +12,7 @@ Ext.namespace('Portal.filter');
 **/
 Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
 
-    MAXCOMPONENTWIDTH: 315,
+    MAX_COMPONENT_WIDTH: 315,
 
     constructor: function(cfg) {
         var config = Ext.apply({

@@ -21,7 +21,11 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.combo = new Ext.form.ComboBox({
             triggerAction: 'all',
             mode: 'local',
-            width: this.MAXCOMPONENTWIDTH,
+            width: this.MAX_COMPONENT_WIDTH,
+            width: this.MAX_COMPONENT_WIDTH,
+            typeAhead: true,
+            forceSelection: true,
+            validator: this.validateValue,
             editable: true,
             store: new Ext.data.ArrayStore({
                 fields: [
@@ -33,14 +37,15 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             displayField: 'text',
             listeners: {
                 scope: this,
-                select: this._onSelected
+                select: this._onSelected,
+                valid: this._onSelected
             }
         });
 
         this.add(this.combo);
         this.add(
             new Ext.Spacer({
-                cls:'block',
+                cls: 'block',
                 height: 5
             })
         );
@@ -55,6 +60,20 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         this.combo.clearValue();
         this.combo.getStore().loadData(data);
+    },
+
+    validateValue: function(value) {
+
+        if (value != "") {
+            var val = this.getRawValue();
+            var rec = this.findRecord(this.displayField, val);
+            if (!rec) {
+                this.markInvalid(true);
+                return false;
+            }
+        }
+
+        return true;
     },
 
     getCQL: function() {
@@ -81,7 +100,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     _getHumanValue: function() {
         var componentValue = this._escapeSingleQuotes(this.combo.getValue());
-        if (componentValue != ""){
+        if (componentValue != "") {
             return this.getFilterNameAsTitleCase() + " like \"" + componentValue + "\""
         }
         else {
@@ -91,7 +110,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _onSelected: function(combo, record, index) {
-        if(this.combo.getValue() == OpenLayers.i18n('clearFilterOption')) {
+        if (this.combo.getValue() == OpenLayers.i18n('clearFilterOption')) {
             this.combo.clearValue();
         }
         this._fireAddEvent();
