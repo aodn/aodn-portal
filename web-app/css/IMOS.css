@@ -289,12 +289,7 @@ ul.x-tab-strip-top {
     padding: 0 6px;
 }
 
-.faceted-search-clear-all .x-hyperlink {
-    padding: 1px 3px;
-}
-
-.x-btn,
-.faceted-search-clear-all div.x-hyperlink {
+.x-btn{
     background-color: #D9D9D9;
     border-radius: 6px;
     margin-right: 3px;

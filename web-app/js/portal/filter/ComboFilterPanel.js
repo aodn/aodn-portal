@@ -24,7 +24,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             typeAhead: true,
             forceSelection: true,
             validator: this.validateValue,
-            width: 320,
+            width: this.MAX_COMPONENT_WIDTH,
             editable: true,
             store: new Ext.data.ArrayStore({
                 fields: [
