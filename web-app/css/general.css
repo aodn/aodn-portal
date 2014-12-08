@@ -350,9 +350,9 @@ hr {
     clear: both;
 }
 
-/* matches fixed width comboFilters */
-.clearFiltersButton {
-    margin-left: 220px;
+.x-btn.clearFiltersButton {
+    float: right;
+    margin-right: 12px;
 }
 
 .logoSpacer {

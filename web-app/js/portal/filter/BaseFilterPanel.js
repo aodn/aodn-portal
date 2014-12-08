@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -12,6 +11,9 @@ Ext.namespace('Portal.filter');
    This is the base type of all filters for geoserver layers.
 **/
 Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
+
+    MAX_COMPONENT_WIDTH: 315,
+
     constructor: function(cfg) {
         var config = Ext.apply({
             emptyText : OpenLayers.i18n("pleasePickCondensed"),
