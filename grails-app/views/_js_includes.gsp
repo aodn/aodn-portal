@@ -170,7 +170,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'WfsDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/visualise/animations', file: 'TemporalExtent.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/visualise/animations', file: 'TemporalExtentParser.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/openId', file: 'Popup.js')}"></script>
 </g:if>
 <g:else>
     <script src="${resource(dir: 'js', file: 'portal-all.js')}?v=${resourceVersionNumber}" type="text/javascript"></script>
