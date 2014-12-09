@@ -104,6 +104,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'StopWatch.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'TimeUtil.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'moment.min.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'trackUsage.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'Moment.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'BoxDisplayPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'PolygonDisplayPanel.js')}"></script>

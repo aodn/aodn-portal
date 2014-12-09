@@ -39,6 +39,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
             var newBoundsAsGeometry = this.getBounds().toGeometry();
             if (newBoundsAsGeometry.getArea() >= 0) {
                 this.map.events.triggerEvent('spatialconstraintusermodded', newBoundsAsGeometry);
+                trackUsage( 'Filters', 'SpatialConstraint', 'typedBbox');
             }
         }
     },

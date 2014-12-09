@@ -104,7 +104,7 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
                 var newMenuItem = {
                     text: OpenLayers.i18n(downloadOption.textKey),
                     handler: function() {
-                        this.confirmDownload(collection, this, downloadOption.handler, downloadOption.handlerParams)
+                        this.confirmDownload(collection, this, downloadOption.handler, downloadOption.handlerParams, downloadOption.textKey)
                     },
                     scope: this
                 };
@@ -114,11 +114,12 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         }, this);
     },
 
-    confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
+    confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params, textKey) {
 
         params.onAccept = function(callbackParams) {
             var downloader = new Portal.cart.Downloader();
             downloader.download(collection, generateUrlCallbackScope, generateUrlCallback, callbackParams);
+            trackUsage(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(textKey), collection.title);
         };
 
         this.confirmationWindow.showIfNeeded(params);

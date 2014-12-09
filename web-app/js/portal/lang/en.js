@@ -255,5 +255,34 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateDisplayFormatExtJs: 'Y/m/d', // Ext.form.DateField formatting
     dateAltFormats: "Y|Y/m|d-m-Y", // Ext.form.DateField formatting
     dateNcWmsMinError: "The entered date is earlier than the first available date: {0}",
-    dateNcWmsMaxError: "The entered date is greater than the last available date: {0}"
+    dateNcWmsMaxError: "The entered date is greater than the last available date: {0}",
+
+    // Google Analytics
+    navigationTrackingCategory: "Navigation",
+    navigationTrackingMainAction: "Main",
+    navigationTrackingPrimaryAction: "Primary",
+    navigationTrackingSecondaryAction: "Secondary",
+    navigationTrackingCartButtonAction: "Cart Button",
+    navigationTrackingStepPrefix: "Step ",
+    downloadTrackingCategory: "DataCollections",
+    downloadTrackingActionPrefix: "Download - ",
+    filtersTrackingCategory: "Filters",
+    detailsTrackingCategory: "Details",
+    detailsTabsTrackingAction: "Tabs",
+    filtersTrackingBooleanAction: "Boolean",
+    filtersTrackingComboAction: 'Combo',
+    filtersTrackingDateAction: 'Date',
+    filtersTrackingNumberAction: 'Number',
+    filtersTrackingSpatialConstraintAction: 'Spatial Constraint',
+    featureInfoTrackingCategory: "FeatureInfo",
+    metadataTrackingCategory: "Metadata",
+    metadataTrackingStep1Action: "Search",
+    metadataTrackingStep3Action: "Download",
+    trackingUserSet: "user set",
+    trackingDefaultValueReset: "reset",
+    trackingValueCleared: "cleared",
+    trackingSpatialConstraintSketched: "sketched",
+    trackingClickLabel: "click",
+    facetTrackingCategory: "Facets",
+    goButtonTrackingLabel: "Go"
 });

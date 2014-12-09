@@ -17,7 +17,8 @@ describe("Portal.search.TermSelectionPanel", function() {
             collapsedByDefault: false,
             el: {
                 hasFxBlock: function() {return true;}
-            }
+            },
+            facetName: 'Parameter'
         });
     });
 
@@ -27,6 +28,23 @@ describe("Portal.search.TermSelectionPanel", function() {
 
             searcher.fireEvent('searchcomplete');
             expect(selectionPanel._onSearchComplete).toHaveBeenCalled();
+        });
+    });
+
+    describe('onSelectionChange', function() {
+
+        var nodeSelected = {
+            attributes: {
+                value: 'Oxygen'
+            },
+            toValueHierarchy: function() {return true;}
+        };
+
+        it('triggers track usage', function() {
+            spyOn(window, 'trackUsage');
+
+            selectionPanel._onSelectionChange('selectionchange', nodeSelected);
+            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('facetTrackingCategory'), 'Parameter', 'Oxygen');
         });
     });
 

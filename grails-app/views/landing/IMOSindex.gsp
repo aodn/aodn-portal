@@ -38,7 +38,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
                 <div id="landingCentre">
                     <div class="landingSubLeft">
-                        <a href="${resource(dir: 'home')}" id="landingBigButton" title="Get Ocean Data">Get Ocean Data</a>
+                        <a href="${resource(dir: 'home')}" id="landingBigButton" title="Get Ocean Data" onclick="trackUsage('Get Ocean Data Button', 'Clicked');return true;">Get Ocean Data</a>
                     </div>
 
                     <div class="landingSubRight">

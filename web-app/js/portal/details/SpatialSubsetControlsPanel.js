@@ -30,6 +30,7 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
 
         resetLink.on('click', function() {
             this.map.events.triggerEvent('spatialconstraintcleared');
+            trackUsage( 'Filters', 'SpatialConstraint', 'cleared');
         }, this);
 
         var spacer = new Ext.Spacer({
