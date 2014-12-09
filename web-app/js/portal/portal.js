@@ -32,7 +32,7 @@ Portal.app = {
         var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0
 
         var agent = navigator.userAgent.toLowerCase();
-        var isIOS = /(ipad|iphone|ipod)/g.test( agent );
+        var isIOS = /(ipad|iphone|ipod)/g.test(agent);
         var isAndroid = (agent.indexOf("android") > -1 && agent.indexOf("mobile") > -1);
 
         if (isChrome || isFirefox ) {  supported = true; }
@@ -112,6 +112,13 @@ Portal.app = {
 // sets the tab from the external links in the header
 function setViewPortTab(tabIndex) {
     viewport.setActiveTab(tabIndex);
+}
+
+// wrapper to the Google Analytics function
+function trackUsage(category, action, label, value) {
+    if ( typeof ga == 'function' ) {
+        ga('send', 'event', category, action, label, value);
+    }
 }
 
 // Fix for closing animation time period window after selection
