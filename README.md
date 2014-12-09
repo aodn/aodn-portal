@@ -8,8 +8,8 @@ The application integrates with the [GeoNetwork](http://geonetwork-opensource.or
 
 You can view the portal in action at the following locations;
 
-* [AODN](http://portal.aodn.org.au) the main AODN portal
-* [IMOS](http://imos.aodn.org.au) the [Integrated Marine Observation Systems](http://www.imos.org.au) portal
+* [IMOS](http://imos.aodn.org.au) the [Integrated Marine Observation Systems](http://www.imos.org.au) portal (always runs the latest version of the code)
+* [AODN](http://portal.aodn.org.au) the [Australian Ocean Data Network](http://imos.org.au/aodn.html) portal
 * [WAODN](http://wa.aodn.org.au) a Western Australia-focused portal
 
 ## Contact
