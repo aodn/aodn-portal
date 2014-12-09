@@ -68,6 +68,7 @@ Portal.ui.DownloadCartWidget = Ext.extend(Ext.Panel, {
     },
 
     openDownloadTab: function() {
+        trackUsage('Navigation', 'Step 3 (cart button)');
         viewport.setDownloadTab();
     },
 
