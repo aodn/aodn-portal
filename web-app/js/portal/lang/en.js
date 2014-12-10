@@ -268,5 +268,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     filtersTrackingSpatialConstraintAction: 'Spatial Constraint',
     trackingUserSet: "user set",
     trackingDefaultValueReset: "reset",
-    trackingValueCleared: "cleared"
+    trackingValueCleared: "cleared",
+    vocabTermCategory: "Facets",
+    goButtonLabel: "Go"
 });

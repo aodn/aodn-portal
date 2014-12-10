@@ -53,6 +53,15 @@ describe("Portal.search.GeoSelectionPanel", function() {
             expect(searcher.search.callCount).toEqual(1);
         });
 
+        it("calls trackUsage when polygon vector is set", function() {
+            spyOn(geoFilter.facetMap, 'hasCurrentFeature').andReturn(true);
+            spyOn(searcher, 'search');
+            spyOn(window, 'trackUsage');
+
+            geoFilter.onGo();
+            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('vocabTermCategory'), 'Geo Filter', 'Go');
+        });
+
         it("search parameters", function() {
 
             spyOn(geoFilter.facetMap, 'hasCurrentFeature').andReturn(true);

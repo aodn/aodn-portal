@@ -93,6 +93,8 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
             this.setSelectedSubTitle(newSub);
 
             this.searcher.search();
+
+            trackUsage(OpenLayers.i18n('vocabTermCategory'), this.titleText, OpenLayers.i18n('goButtonLabel'));
         }
     },
 

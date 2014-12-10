@@ -71,6 +71,7 @@ Portal.search.TermSelectionPanel = Ext.extend(Ext.Container, {
         this.addFilters(node);
         this.searcher.search();
 
+        trackUsage(OpenLayers.i18n('vocabTermCategory'), this.facetName, node.attributes.value);
     },
 
     addFilters: function(node) {
