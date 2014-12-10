@@ -114,13 +114,6 @@ function setViewPortTab(tabIndex) {
     viewport.setActiveTab(tabIndex);
 }
 
-// wrapper to the Google Analytics function
-function trackUsage(category, action, label, value) {
-    if ( typeof ga == 'function' ) {
-        ga('send', 'event', category, action, label, value);
-    }
-}
-
 // Fix for closing animation time period window after selection
 // http://www.sencha.com/forum/archive/index.php/t-98338.html
 // Bug in Ext.form.MessageTargets in connection with using compositeFields
