@@ -261,6 +261,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadTrackingCategory: "DataCollections",
     downloadTrackingActionPrefix: "Download - ",
     filtersTrackingCategory: "Filters",
+    detailsTrackingCategory: "Details",
+    detailsTabsTrackingAction: "Tabs",
     filtersTrackingBooleanAction: "Boolean",
     filtersTrackingComboAction: 'Combo',
     filtersTrackingDateAction: 'Date',
