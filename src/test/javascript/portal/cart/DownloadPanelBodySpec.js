@@ -166,4 +166,40 @@ describe("Portal.cart.DownloadPanelBody", function() {
             expect(processedValues.menuItems.length).toBe(2);
         });
     });
+
+    describe('confirmDownload', function() {
+
+        var makeTestCollection = function(uuid) {
+            return {
+                uuid: uuid,
+                aggregator: { childAggregators: []},
+                title: "Argo",
+                wmsLayer: {
+                    isNcwms: noOp
+                },
+                dataDownloadHandlers: []
+            };
+        };
+
+        var makeTestParams = function() {
+            return {
+                filenameFormat: "{0}.csv"
+            };
+        };
+
+        it('calls trackUsage when the user accepts download', function() {
+            var testParams = makeTestParams();
+            var testCollection = makeTestCollection();
+            var callbackScope = downloadPanelBody;
+            var callback = noOp;
+            var testKey = "downloadAsCsvLabel"
+
+            spyOn(downloadPanelBody.confirmationWindow, 'showIfNeeded');
+            spyOn(window, 'trackUsage');
+
+            downloadPanelBody.confirmDownload(testCollection, callbackScope, callback, testParams, testKey);
+            testParams.onAccept(testParams);
+            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(testKey), testCollection.title);
+        });
+    });
 });
