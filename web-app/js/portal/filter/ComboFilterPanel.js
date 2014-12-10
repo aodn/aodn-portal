@@ -36,7 +36,6 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             displayField: 'text',
             listeners: {
                 scope: this,
-                select: this._onSelected,
                 valid: this._onSelected
             }
         });
@@ -112,7 +111,14 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         if (this.combo.getValue() == OpenLayers.i18n('clearFilterOption')) {
             this.combo.clearValue();
         }
-        this._fireAddEvent();
+        else if (this.combo.getValue() != "") {
+
+            trackUsage( OpenLayers.i18n('filtersTrackingCategory'),
+                OpenLayers.i18n('filtersTrackingComboAction'),
+                this.filter.name);
+
+            this._fireAddEvent();
+        }
     },
 
     handleRemoveFilter: function() {

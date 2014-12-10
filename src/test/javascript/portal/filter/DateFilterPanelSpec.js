@@ -74,11 +74,12 @@ describe("Portal.filter.DateFilterPanel", function() {
 
         beforeEach(function() {
             spyOn(filterPanel, '_fireAddEvent');
+            spyOn(window, 'trackUsage');
         });
 
-        it('fires event when required fields are set', function() {
+        it('fires events when required fields are set', function() {
             filterPanel._applyDateFilterPanel();
-
+            expect(window.trackUsage).toHaveBeenCalled();
             expect(filterPanel._fireAddEvent).toHaveBeenCalled();
         });
     });

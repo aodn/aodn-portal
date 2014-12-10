@@ -37,6 +37,8 @@ describe('Portal.details.NcWmsPanel', function() {
         ncwmsPanel._setBounds =  noOp;
         ncwmsPanel._removeLoadingInfo = noOp;
         ncwmsPanel.selectedLayer = layer;
+
+        spyOn(window, 'trackUsage');
     });
 
     describe('GeoNetworkRecord', function() {
@@ -48,6 +50,13 @@ describe('Portal.details.NcWmsPanel', function() {
             ncwmsPanel._initWithLayer();
             expect(ncwmsPanel.geoNetworkRecord).toBeTruthy();
             expect(ncwmsPanel.geoNetworkRecord.id).toEqual(geoNetworkRecord.id);
+        });
+    });
+
+    describe('tracking ', function() {
+        it('is called by _clearSpatialControls', function() {
+            ncwmsPanel._clearSpatialControls();
+            expect(window.trackUsage).toHaveBeenCalled();
         });
     });
 

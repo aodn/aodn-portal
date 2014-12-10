@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2013 IMOS
  *
@@ -14,8 +13,7 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
     beforeEach(function() {
         map = new OpenLayers.SpatialConstraintMap();
         map.navigationControl = {};
-        map.navigationControl.deactivate = function() {return null}
-
+        map.navigationControl.deactivate = function() {return null};
 
         spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, 'setLayerAndFilter');
         spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, '_updateWithGeometry');
@@ -24,6 +22,7 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
             filter: { name: 'geom_filter' }
         });
 
+        spyOn(window, 'trackUsage');
     });
 
     it('filter name should be undefined', function() {
@@ -62,6 +61,7 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
             boundingBoxFilter.handleRemoveFilter();
             expect(map.spatialConstraintControl.clear).toHaveBeenCalled();
+            expect(window.trackUsage).toHaveBeenCalled();
             expect(boundingBoxFilter._updateWithGeometry).toHaveBeenCalledWith();
         });
     });

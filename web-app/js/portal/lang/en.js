@@ -259,5 +259,14 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // Google Analytics
     downloadTrackingCategory: "DataCollections",
-    downloadTrackingActionPrefix: "Download - "
+    downloadTrackingActionPrefix: "Download - ",
+    filtersTrackingCategory: "Filters",
+    filtersTrackingBooleanAction: "Boolean",
+    filtersTrackingComboAction: 'Combo',
+    filtersTrackingDateAction: 'Date',
+    filtersTrackingNumberAction: 'Number',
+    filtersTrackingSpatialConstraintAction: 'Spatial Constraint',
+    trackingUserSet: "user set",
+    trackingDefaultValueReset: "reset",
+    trackingValueCleared: "cleared"
 });
