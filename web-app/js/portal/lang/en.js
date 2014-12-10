@@ -266,7 +266,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     filtersTrackingDateAction: 'Date',
     filtersTrackingNumberAction: 'Number',
     filtersTrackingSpatialConstraintAction: 'Spatial Constraint',
+    featureInfoTrackingCategory: "FeatureInfo",
     trackingUserSet: "user set",
     trackingDefaultValueReset: "reset",
-    trackingValueCleared: "cleared"
+    trackingValueCleared: "cleared",
+    trackingClickLabel: "click"
 });
