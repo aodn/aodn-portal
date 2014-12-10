@@ -7,6 +7,7 @@
 describe("Portal.filter.DateFilterPanel", function() {
 
     var filterPanel;
+    var component;
 
     beforeEach(function() {
         Portal.filter.DateFilterPanel.prototype._createField = function() {};
@@ -75,10 +76,11 @@ describe("Portal.filter.DateFilterPanel", function() {
         beforeEach(function() {
             spyOn(filterPanel, '_fireAddEvent');
             spyOn(window, 'trackUsage');
+            component = {'_dateField':{"name":"atestname"}}
         });
 
         it('fires events when required fields are set', function() {
-            filterPanel._applyDateFilterPanel();
+            filterPanel._applyDateFilterPanel(component);
             expect(window.trackUsage).toHaveBeenCalled();
             expect(filterPanel._fireAddEvent).toHaveBeenCalled();
         });
