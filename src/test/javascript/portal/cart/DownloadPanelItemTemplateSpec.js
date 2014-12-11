@@ -189,4 +189,15 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             expect(html).toContain(text);
         });
     });
+
+    describe('_getPointOfTruthLinkEntry', function() {
+        it('creates valid link', function() {
+            var values = {
+                title: "Rottnest ...QC'd (is bad for embedding in a function)",
+                pointOfTruthLink: true
+            };
+            var res = tpl._getPointOfTruthLinkEntry(values);
+            expect(res).toContain('Rottnest ...QCd is bad for embedding in a function');
+        });
+    });
 });

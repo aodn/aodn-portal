@@ -58,7 +58,14 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         var markup = "";
 
         if (record.pointOfTruthLink) {
-            markup = this._makeExternalLinkMarkup(record.pointOfTruthLink.href, OpenLayers.i18n('metadataLinkText'));
+
+            var trackUsageText = String.format(" onclick=\"trackUsage('{0}','{1}','{2}');return true;\"",
+                OpenLayers.i18n('metadataTrackingCategory'),
+                OpenLayers.i18n('metadataTrackingStep3Action'),
+                cleanStringForFunctionParameter(record.title)
+            );
+
+            markup = this._makeExternalLinkMarkup(record.pointOfTruthLink.href, OpenLayers.i18n('metadataLinkText'), trackUsageText);
         }
 
         return markup;
@@ -160,7 +167,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         return this._makeExternalLinkMarkup(link.href, link.title);
     },
 
-    _makeExternalLinkMarkup: function(href, text) {
-        return String.format('<a href="{0}" target="_blank" class="external">{1}</a>', href, (text || href));
+    _makeExternalLinkMarkup: function(href, text, extras) {
+        return String.format('<a href="{0}" target="_blank" class="external" {1} >{2}</a>', href, extras, (text || href));
     }
 });
