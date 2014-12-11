@@ -30,9 +30,22 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
                 this.infoPanel,
                 this.stylePanel,
                 this.mapOptionsPanel
-            ]
+            ],
+            listeners: {
+                beforetabchange: this._doTracking
+            }
         }, cfg);
 
         Portal.details.DetailsPanelTab.superclass.constructor.call(this, config);
+    },
+
+    _doTracking: function(tabPanel, newTab, oldTab){
+        if(oldTab) {
+            trackUsage(OpenLayers.i18n('detailsTrackingCategory'),
+                OpenLayers.i18n('detailsTabsTrackingAction'),
+                newTab.title
+            );
+        }
+        return true;
     }
 });
