@@ -258,6 +258,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateNcWmsMaxError: "The entered date is greater than the last available date: {0}",
 
     // Google Analytics
+    navigationTrackingCategory: "Navigation",
+    navigationTrackingMainAction: "Main",
+    navigationTrackingPrimaryAction: "Primary",
+    navigationTrackingSecondaryAction: "Secondary",
+    navigationTrackingCartButtonAction: "Cart Button",
+    navigationTrackingStepPrefix: "Step ",
     downloadTrackingCategory: "DataCollections",
     downloadTrackingActionPrefix: "Download - ",
     filtersTrackingCategory: "Filters",

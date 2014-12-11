@@ -61,8 +61,10 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
 
     // call after a navigation event
     _doTrackUsage: function() {
-        var newStep = "Step " + (this.mainPanel.layout.getActiveItemIndex() + 1);
-        trackUsage('Navigation', newStep);
+        var newStep = OpenLayers.i18n('navigationTrackingStepPrefix') + (this.mainPanel.layout.getActiveItemIndex() + 1);
+        trackUsage(OpenLayers.i18n('navigationTrackingCategory'),
+            OpenLayers.i18n('navigationTrackingSecondaryAction'),
+            newStep);
     },
 
     _getMainToolBarLinksHtml: function() {
