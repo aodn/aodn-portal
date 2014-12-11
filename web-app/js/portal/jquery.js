@@ -52,7 +52,9 @@ jQuery( window ).load(function() {
             var tabId = $(this).attr('id');
             var tabIdInt = parseInt(tabId.substr(tabId.length - 1));
             jQuery(this).children('a').one('click', function(obj) {
-                    trackUsage('Navigation', 'Step ' + (tabIdInt + 1));
+                    trackUsage(OpenLayers.i18n('navigationTrackingCategory'),
+                        OpenLayers.i18n('navigationTrackingPrimaryAction'),
+                        OpenLayers.i18n('navigationTrackingStepPrefix') + (tabIdInt + 1));
                     setViewPortTab(tabIdInt);
                     return false;
                 }
