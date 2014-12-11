@@ -56,4 +56,21 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             expect(facetedSearchDataView._parseTemporalExtentDateString).toHaveBeenCalled();
         });
     });
+
+    describe('getGeoNetworkRecordPointOfTruthLinkAsHtml', function() {
+        it('creates valid link', function() {
+            var values = {
+                title: "Rottnest ...QC'd (is bad for embedding in a function)",
+                pointOfTruthLink: {
+                    href: "http://blagh",
+                    title: "the title"
+                }
+            };
+            var res = facetedSearchDataView.getGeoNetworkRecordPointOfTruthLinkAsHtml(values);
+            expect(res).toContain('Rottnest ...QCd is bad for embedding in a function')
+        });
+    });
+
+
+
 });
