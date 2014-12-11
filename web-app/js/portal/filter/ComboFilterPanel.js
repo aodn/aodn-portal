@@ -115,7 +115,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
             trackUsage( OpenLayers.i18n('filtersTrackingCategory'),
                 OpenLayers.i18n('filtersTrackingComboAction'),
-                this.filter.name);
+                this.filter.name, this.layer.name);
 
             this._fireAddEvent();
         }

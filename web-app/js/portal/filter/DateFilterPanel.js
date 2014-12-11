@@ -119,7 +119,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         else {
             this.fromDate.applyDefaultValueLimits();
         }
-        trackUsage( OpenLayers.i18n('filtersTrackingCategory'), OpenLayers.i18n('filtersTrackingDateAction'), component._dateField.name + " " + usageLabel);
+        trackUsage( OpenLayers.i18n('filtersTrackingCategory'), OpenLayers.i18n('filtersTrackingDateAction'), component._dateField.name + " " + usageLabel, this.layer.name);
         this._fireAddEvent();
     },
 
