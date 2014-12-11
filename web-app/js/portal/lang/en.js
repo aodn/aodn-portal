@@ -276,5 +276,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     trackingUserSet: "user set",
     trackingDefaultValueReset: "reset",
     trackingValueCleared: "cleared",
-    trackingClickLabel: "click"
+    trackingClickLabel: "click",
+    facetTrackingCategory: "Facets",
+    goButtonTrackingLabel: "Go"
 });

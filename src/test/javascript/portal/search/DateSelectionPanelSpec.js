@@ -109,6 +109,16 @@ describe("Portal.search.DateSelectionPanel", function()
 
             expect(dateFilter.searcher.timesSearchCalled).toEqual(3);
         });
+
+        it("calls trackUsage when fromDate and/or toDate are set", function() {
+            var dateFilter = buildMockSelectionPanel();
+
+            spyOn(window, 'trackUsage');
+
+            dateFilter.dateRange.setFilterValue({fromDate:Date.parseDate("2012-10-20","Y-m-d"),toDate:Date.parseDate("2012-10-27","Y-m-d")});
+            dateFilter.onGo();
+            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('facetTrackingCategory'), 'Date Filter', 'Go');
+        });
     });
 
     describe("go button", function() {
