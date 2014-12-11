@@ -70,7 +70,7 @@ Portal.ui.DownloadCartWidget = Ext.extend(Ext.Panel, {
     openDownloadTab: function() {
         trackUsage(OpenLayers.i18n('navigationTrackingCategory'),
             OpenLayers.i18n('navigationTrackingCartButtonAction'),
-            'Step 3');
+            OpenLayers.i18n('navigationTrackingStepPrefix') + '3');
         viewport.setDownloadTab();
     },
 
