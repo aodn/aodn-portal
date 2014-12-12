@@ -83,6 +83,10 @@ function pad(numNumber, numLength) {
     return strString;
 }
 
+function cleanStringForFunctionParameter(parameter) {
+    return parameter.replace(/["()']+/g, "");
+}
+
 //if its XML then ncWMS is assumed. XML can mean errors
 function formatGetFeatureInfo(response, options) {
 
