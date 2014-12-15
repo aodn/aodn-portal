@@ -43,7 +43,8 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         if(oldTab) {
             trackUsage(OpenLayers.i18n('detailsTrackingCategory'),
                 OpenLayers.i18n('detailsTabsTrackingAction'),
-                newTab.title
+                newTab.title,
+                this.layer.name
             );
         }
         return true;

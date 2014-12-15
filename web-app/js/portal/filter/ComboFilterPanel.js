@@ -107,7 +107,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     },
 
-    _onSelected: function(combo, record, index) {
+    _onSelected: function() {
         if (this.combo.getValue() == OpenLayers.i18n('clearFilterOption')) {
             this.combo.clearValue();
         }

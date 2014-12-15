@@ -23,6 +23,7 @@ describe("Portal.filter.BooleanFilterPanel", function() {
                 name: 'test'
             },
             layer: {
+                name: 'test layer',
                 getDownloadFilter: function() { return ""; }
             }
         });
@@ -59,7 +60,7 @@ describe("Portal.filter.BooleanFilterPanel", function() {
 
     it('tracking on booleanFilter click', function() {
         booleanFilter._buttonChecked();
-        expect(window.trackUsage).toHaveBeenCalled();
+        expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Boolean", "test=false", "test layer");
     });
 
 });

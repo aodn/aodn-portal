@@ -21,6 +21,7 @@ describe("Portal.filter.DateFilterPanel", function() {
                 wmsEndDateName: "aWmsEndDateName"
             },
             layer: {
+                name: 'layerName',
                 getDownloadFilter: function() {
                     return '';
                 }
@@ -81,7 +82,7 @@ describe("Portal.filter.DateFilterPanel", function() {
 
         it('fires events when required fields are set', function() {
             filterPanel._applyDateFilterPanel(component);
-            expect(window.trackUsage).toHaveBeenCalled();
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Date", "atestname reset", "layerName");
             expect(filterPanel._fireAddEvent).toHaveBeenCalled();
         });
     });
