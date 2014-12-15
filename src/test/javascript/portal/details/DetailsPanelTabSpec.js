@@ -30,4 +30,20 @@ describe("Portal.details.DetailsPanelTab", function() {
             expect(detailsPanelTab.items.itemAt(0)).toBe(detailsPanelTab.subsetPanel);
         });
     });
+
+    describe('doTracking', function() {
+        it('fires an analytics event', function() {
+            var testOldTab = {
+                title: 'old tab'
+            };
+            var testNewTab = {
+                title: 'new tab'
+            };
+            detailsPanelTab.layer.name = 'test layer';
+
+            spyOn(window, 'trackUsage');
+            detailsPanelTab._doTracking(detailsPanelTab, testNewTab, testOldTab);
+            expect(window.trackUsage).toHaveBeenCalledWith('Details', 'Tabs', 'new tab', 'test layer');
+        });
+    });
 });

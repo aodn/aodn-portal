@@ -18,7 +18,9 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
         spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, 'setLayerAndFilter');
         spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, '_updateWithGeometry');
         boundingBoxFilter = new Portal.filter.BoundingBoxFilterPanel({
-            layer: { map: map },
+            layer: {
+                map: map
+            },
             filter: { name: 'geom_filter' }
         });
 
@@ -61,7 +63,7 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
             boundingBoxFilter.handleRemoveFilter();
             expect(map.spatialConstraintControl.clear).toHaveBeenCalled();
-            expect(window.trackUsage).toHaveBeenCalled();
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Spatial Constraint", "cleared");
             expect(boundingBoxFilter._updateWithGeometry).toHaveBeenCalledWith();
         });
     });
