@@ -283,7 +283,9 @@ describe('OpenLayers', function() {
             map.navigationControl = {
                 activate: jasmine.createSpy(),
                 deactivate: jasmine.createSpy()
-            }
+            };
+
+            spyOn(window, 'trackUsage');
         });
 
         it('set polygon spatial constraint control when style is POLYGON', function() {
@@ -319,6 +321,8 @@ describe('OpenLayers', function() {
 
             map.setSpatialConstraintStyle('a style  that the current style is not set too');
             expect(spatialConstraintClearedSpy).toHaveBeenCalled();
+
+            expect(window.trackUsage).toHaveBeenCalled();
         });
     });
 });

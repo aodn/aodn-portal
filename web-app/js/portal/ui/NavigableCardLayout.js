@@ -36,13 +36,17 @@ Portal.ui.NavigableCardLayout = Ext.extend(Ext.layout.CardLayout, {
     navigateToNextTab: function() {
         if (this.hasNextTab()) {
             this.setActiveTab(this.getActiveItemIndex() + 1);
+            return true;
         }
+        return false;
     },
 
     navigateToPrevTab: function() {
         if (this.hasPrevTab()) {
             this.setActiveTab(this.getActiveItemIndex() - 1);
+            return true;
         }
+        return false;
     },
 
     getNextNavigationLabel: function() {

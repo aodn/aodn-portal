@@ -56,4 +56,32 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             expect(facetedSearchDataView._parseTemporalExtentDateString).toHaveBeenCalled();
         });
     });
+
+    describe('getGeoNetworkRecordPointOfTruthLinkAsHtml', function() {
+        var values;
+
+        beforeEach(function(){
+            values = {
+                title: "Rottnest ...QC'd (is bad for embedding in a function)",
+                pointOfTruthLink: {
+                    href: "http://geonetwork"
+                }
+            };
+        });
+
+        it('creates valid link from problematic title', function() {
+            var res = facetedSearchDataView.getGeoNetworkRecordPointOfTruthLinkAsHtml(values);
+
+            expect(res).toContain('http://geonetwork');
+            expect(res).toContain("trackUsage('Metadata','Search','Rottnest ...QCd is bad for embedding in a function');return true;");
+        });
+
+        it('creates valid link from non-problematic title', function() {
+            values.title = "Argo Profiles";
+            var res = facetedSearchDataView.getGeoNetworkRecordPointOfTruthLinkAsHtml(values);
+
+            expect(res).toContain('http://geonetwork');
+            expect(res).toContain("trackUsage('Metadata','Search','Argo Profiles');return true;");
+        });
+    });
 });

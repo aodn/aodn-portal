@@ -12,7 +12,7 @@ describe("Portal.filter.BooleanFilterPanel", function() {
         var MockButton = function() {
             this.getValue = function() { return false; };
             this.setValue = jasmine.createSpy();
-        }
+        };
 
         Portal.filter.BooleanFilterPanel.prototype._createField = function() {
             this.checkbox = new MockButton();
@@ -23,9 +23,12 @@ describe("Portal.filter.BooleanFilterPanel", function() {
                 name: 'test'
             },
             layer: {
+                name: 'test layer',
                 getDownloadFilter: function() { return ""; }
             }
         });
+
+        spyOn(window, 'trackUsage');
     });
 
     describe('getCQL', function() {
@@ -53,6 +56,11 @@ describe("Portal.filter.BooleanFilterPanel", function() {
     it('_setExistingFilters should not set checked for empty CQL filter', function() {
         booleanFilter._setExistingFilters();
         expect(booleanFilter.checkbox.setValue).not.toHaveBeenCalled();
+    });
+
+    it('tracking on booleanFilter click', function() {
+        booleanFilter._buttonChecked();
+        expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Boolean", "test=false", "test layer");
     });
 
 });

@@ -226,7 +226,17 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var html;
 
         if (values.pointOfTruthLink) {
-            html = String.format('<a href="{0}" target="_blank" class="nowrap" title="{1}">{2}</a>', values.pointOfTruthLink.href, values.pointOfTruthLink.title, OpenLayers.i18n('metadataLink'));
+
+            var trackUsageText = String.format(" onclick=\"trackUsage('{0}','{1}','{2}');return true;\"",
+                OpenLayers.i18n('metadataTrackingCategory'),
+                OpenLayers.i18n('metadataTrackingStep1Action'),
+                cleanStringForFunctionParameter(values.title));
+
+            html = String.format('<a href="{0}" target="_blank" class="nowrap" title="{1}" {2} >{3}</a>',
+                values.pointOfTruthLink.href,
+                values.pointOfTruthLink.title,
+                trackUsageText,
+                OpenLayers.i18n('metadataLink'));
         }
 
         return html;
