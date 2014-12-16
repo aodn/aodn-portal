@@ -224,7 +224,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         if (values.pointOfTruthLink) {
 
-            var trackUsageText = String.format(" onclick=\"trackUsage('{0}','{1}','{2}');return true;\"",
+            var trackUsageText = String.format(OpenLayers.i18n('onClickTrackUsageFunction'),
                 OpenLayers.i18n('metadataTrackingCategory'),
                 OpenLayers.i18n('metadataTrackingStep1Action'),
                 cleanStringForFunctionParameter(values.title));

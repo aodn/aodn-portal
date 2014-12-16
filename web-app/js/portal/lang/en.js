@@ -258,6 +258,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateNcWmsMaxError: "The entered date is greater than the last available date: {0}",
 
     // Google Analytics
+    onClickTrackUsageFunction: " onclick=\"trackUsage('{0}','{1}','{2}');return true;\"",
     navigationTrackingCategory: "Navigation",
     navigationTrackingMainAction: "Main",
     navigationTrackingPrimaryAction: "Primary",

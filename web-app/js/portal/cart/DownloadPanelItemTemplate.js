@@ -59,7 +59,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
         if (record.pointOfTruthLink) {
 
-            var trackUsageText = String.format(" onclick=\"trackUsage('{0}','{1}','{2}');return true;\"",
+            var trackUsageText = String.format(OpenLayers.i18n('onClickTrackUsageFunction'),
                 OpenLayers.i18n('metadataTrackingCategory'),
                 OpenLayers.i18n('metadataTrackingStep3Action'),
                 cleanStringForFunctionParameter(record.title)
