@@ -284,6 +284,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     trackingSpatialConstraintSketched: "sketched",
     trackingClickLabel: "click",
     trackingInitLabel: 'created-init',
+    trackingTypedBboxLabel: 'typedBbox',
     facetTrackingCategory: "Facets",
     goButtonTrackingLabel: "Go"
 });

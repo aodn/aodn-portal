@@ -63,7 +63,7 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
             boundingBoxFilter.handleRemoveFilter();
             expect(map.spatialConstraintControl.clear).toHaveBeenCalled();
-            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Spatial Constraint", "cleared");
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Spatial Constraint", "cleared", undefined);
             expect(boundingBoxFilter._updateWithGeometry).toHaveBeenCalledWith();
         });
     });

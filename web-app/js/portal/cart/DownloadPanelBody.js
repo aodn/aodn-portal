@@ -119,7 +119,11 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         params.onAccept = function(callbackParams) {
             var downloader = new Portal.cart.Downloader();
             downloader.download(collection, generateUrlCallbackScope, generateUrlCallback, callbackParams);
-            trackUsage(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(textKey), collection.title);
+            trackUsage(
+                OpenLayers.i18n('downloadTrackingCategory'),
+                OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(textKey),
+                collection.title
+            );
         };
 
         this.confirmationWindow.showIfNeeded(params);

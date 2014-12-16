@@ -94,7 +94,7 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
 
             this.searcher.search();
 
-            trackUsage(OpenLayers.i18n('facetTrackingCategory'), this.titleText, OpenLayers.i18n('goButtonTrackingLabel'));
+            trackFacetUsage(this.titleText, OpenLayers.i18n('goButtonTrackingLabel'));
         }
     },
 

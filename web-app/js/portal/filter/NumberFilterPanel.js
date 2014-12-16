@@ -136,7 +136,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     _updateFilter: function(combo, record, index) {
 
         if (this.firstField.validate() && this.secondField.validate()) {
-            trackUsage( OpenLayers.i18n('filtersTrackingCategory'), OpenLayers.i18n('filtersTrackingNumberAction'), this._getCQLHumanValue(), this.layer.name);
+            trackFiltersUsage('filtersTrackingNumberAction', this._getCQLHumanValue(), this.layer.name);
             this._fireAddEvent();
         }
     },

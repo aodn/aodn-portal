@@ -83,7 +83,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
 
         this.map.events.triggerEvent('spatialconstraintcleared');
-        trackUsage(OpenLayers.i18n('filtersTrackingCategory'), OpenLayers.i18n('filtersTrackingSpatialConstraintAction'), OpenLayers.i18n('trackingValueCleared'));
+        trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingValueCleared'));
     },
 
     _removeLoadingInfo: function() {

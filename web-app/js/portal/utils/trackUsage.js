@@ -7,3 +7,29 @@ function trackUsage(category, action, label, collection, value) {
         });
     }
 }
+
+function trackNavigationUsage(actionKey, label) {
+    trackUsage(
+        OpenLayers.i18n('navigationTrackingCategory'),
+        OpenLayers.i18n(actionKey),
+        label
+    );
+}
+
+function trackFacetUsage(action, label) {
+    trackUsage(
+        OpenLayers.i18n('facetTrackingCategory'),
+        action,
+        label
+    );
+}
+
+function trackFiltersUsage(actionKey, label, collection) {
+    trackUsage(
+        OpenLayers.i18n('filtersTrackingCategory'),
+        OpenLayers.i18n(actionKey),
+        label,
+        collection
+    );
+}
+

@@ -277,7 +277,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
             spyOn(window, 'trackUsage');
             spatialConstraint._onSketchComplete(testEvent);
-            expect(window.trackUsage).toHaveBeenCalledWith('Filters', 'Spatial Constraint', 'sketched');
+            expect(window.trackUsage).toHaveBeenCalledWith('Filters', 'Spatial Constraint', 'sketched', undefined);
 
         })
     });
