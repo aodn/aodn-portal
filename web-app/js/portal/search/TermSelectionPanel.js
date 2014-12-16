@@ -71,6 +71,7 @@ Portal.search.TermSelectionPanel = Ext.extend(Ext.Container, {
         this.addFilters(node);
         this.searcher.search();
 
+        trackFacetUsage(this.facetName, node.attributes.value);
     },
 
     addFilters: function(node) {

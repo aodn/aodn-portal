@@ -126,6 +126,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
             this.setTitle(OpenLayers.i18n('noDataCollectionTitle'));
             this.depthInfoPanel.update("");
         }
+        trackUsage(OpenLayers.i18n('featureInfoTrackingCategory'), OpenLayers.i18n('trackingClickLabel'));
     },
 
     _requestFeatureInfo: function(layer) {

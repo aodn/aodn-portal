@@ -189,4 +189,31 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             expect(html).toContain(text);
         });
     });
+
+    describe('_getPointOfTruthLinkEntry', function() {
+        var values;
+
+        beforeEach(function() {
+            values = {
+                title: "Rottnest ...QC'd (is bad for embedding in a function)",
+                pointOfTruthLink: {
+                    href: "http://geonetwork"
+                }
+            };
+        });
+
+        it('creates valid link from problematic title', function() {
+            var res = tpl._getPointOfTruthLinkEntry(values);
+            expect(res).toContain('http://geonetwork');
+            expect(res).toContain("trackUsage('Metadata','Download','Rottnest ...QCd is bad for embedding in a function');return true;");
+        });
+
+        it('creates valid link for non-problematic title', function() {
+            values.title = "Argo Profiles";
+
+            var res = tpl._getPointOfTruthLinkEntry(values);
+            expect(res).toContain('http://geonetwork');
+            expect(res).toContain("trackUsage('Metadata','Download','Argo Profiles');return true;");
+        });
+    });
 });

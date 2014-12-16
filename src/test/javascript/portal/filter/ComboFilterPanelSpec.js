@@ -22,6 +22,7 @@ describe("Portal.filter.ComboFilterPanel", function() {
                 name: 'test'
             },
             layer: {
+                name: 'test layer',
                 getDownloadFilter: function() { return ""; }
             }
         });
@@ -79,6 +80,18 @@ describe("Portal.filter.ComboFilterPanel", function() {
             comboFilter.validateValue("anything");
             expect(comboFilter.markInvalid).toHaveBeenCalled();
             expect(comboFilter.validateValue()).toEqual(false);
+        });
+    });
+
+    describe('onSelected', function() {
+        it('tracks usage using google analytics', function() {
+            spyOn(window, 'trackUsage');
+            comboFilter.combo.getValue = function() {
+                return "value";
+            }
+            comboFilter._onSelected();
+
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "test", "test layer");
         });
     });
 });

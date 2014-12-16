@@ -44,6 +44,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         if (options.initialConstraint) {
             this.layer.addFeatures(new OpenLayers.Feature.Vector(options.initialConstraint));
             this.events.triggerEvent('spatialconstraintadded');
+            trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingInitLabel'));
         }
 
         this._isModified = false;
@@ -147,6 +148,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         if (this._getPercentOfViewportArea(area) > this.MIN_AREA_PERCENT){
             this.clear();
             this.events.triggerEvent('spatialconstraintadded', event.feature.geometry);
+            trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingSpatialConstraintSketched'));
         }
         else {
             return false; // will stop the sketch feature from being added to the layer.

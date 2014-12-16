@@ -46,7 +46,9 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
         if (this.map.spatialConstraintControl) {
             this.map.spatialConstraintControl.clear();
         }
+
         this.map.events.triggerEvent('spatialconstraintcleared');
+        trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingValueCleared'));
     },
 
     hasValue: function() {

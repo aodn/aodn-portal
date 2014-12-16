@@ -58,6 +58,9 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         if (this.polygonStyle != polygonStyle) {
             this.updateSpatialConstraintStyle(polygonStyle);
             this.events.triggerEvent('spatialconstrainttypechanged', polygonStyle);
+
+            var val = 'type=' + polygonStyle;
+            trackFiltersUsage('filtersTrackingSpatialConstraintAction', val);
         }
     },
 

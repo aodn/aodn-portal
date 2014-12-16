@@ -79,6 +79,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
             this.searcher.addFilter(this.GEOMETRY_FIELD, this.facetMap.getBoundingPolygonAsWKT());
         }
         this.searcher.search();
+        trackFacetUsage(this.titleText, OpenLayers.i18n('goButtonTrackingLabel'));
     },
 
     resetFilter: function() {

@@ -45,8 +45,10 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         return label;
     },
 
-    _buttonChecked: function(button, checked) {
+    _buttonChecked: function() {
         this._fireAddEvent();
+        var val = this.filter.name + "=" + this.checkbox.getValue();
+        trackFiltersUsage('filtersTrackingBooleanAction', val, this.layer.name);
     },
 
     getCQL: function() {

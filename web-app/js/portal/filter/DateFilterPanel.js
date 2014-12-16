@@ -101,10 +101,12 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         return moment(date).format(OpenLayers.i18n('dateTimeDisplayFormat'));
     },
 
-    _applyDateFilterPanel: function() {
+    _applyDateFilterPanel: function(component) {
 
+        var usageLabel = OpenLayers.i18n('trackingDefaultValueReset');
         if (this.fromDate.hasValue()) {
             this.toDate.setMinValue(this.fromDate.getValue());
+            usageLabel = OpenLayers.i18n('trackingUserSet');
         }
         else {
             this.toDate.applyDefaultValueLimits();
@@ -112,11 +114,14 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         if (this.toDate.hasValue()) {
             this.fromDate.setMaxValue(this.toDate.getValue());
+            usageLabel = OpenLayers.i18n('trackingUserSet');
         }
         else {
             this.fromDate.applyDefaultValueLimits();
         }
 
+        var val = component._dateField.name + " " + usageLabel;
+        trackFiltersUsage('filtersTrackingDateAction', val, this.layer.name);
         this._fireAddEvent();
     },
 

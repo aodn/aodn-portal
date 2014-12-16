@@ -20,7 +20,9 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
             hidden: true
         });
         this.prevButton.on('click', function() {
-            this.mainPanel.layout.navigateToPrevTab();
+            if (this.mainPanel.layout.navigateToPrevTab()) {
+                this._doTrackUsage();
+            }
         }, this);
 
         this.nextButton = new Ext.Button({
@@ -30,7 +32,9 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
             hidden: true
         });
         this.nextButton.on('click', function() {
-            this.mainPanel.layout.navigateToNextTab();
+            if (this.mainPanel.layout.navigateToNextTab()) {
+                this._doTrackUsage();
+            }
         }, this);
 
         var config = Ext.apply({
@@ -53,6 +57,12 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
         this._registerEvents();
 
         this._getMainToolBarLinksHtml();
+    },
+
+    // call after a navigation event
+    _doTrackUsage: function() {
+        var newStep = OpenLayers.i18n('navigationTrackingStepPrefix') + (this.mainPanel.layout.getActiveItemIndex() + 1);
+        trackNavigationUsage('navigationTrackingSecondaryAction', newStep);
     },
 
     _getMainToolBarLinksHtml: function() {

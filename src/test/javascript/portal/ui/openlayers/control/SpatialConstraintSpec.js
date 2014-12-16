@@ -259,4 +259,26 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(typeof spatialConstraint._getPercentOfViewportArea(viewportArea)).toEqual("number");
         });
     });
+
+    describe('onSketchComplete', function() {
+        it('fires off an analytics report', function() {
+            var testEvent = {
+                feature: {
+                    geometry: {
+                        getArea: function() {
+                            return true;
+                        }
+                    }
+                }
+            };
+            spatialConstraint._getPercentOfViewportArea = function() {
+                return 0.02;
+            };
+
+            spyOn(window, 'trackUsage');
+            spatialConstraint._onSketchComplete(testEvent);
+            expect(window.trackUsage).toHaveBeenCalledWith('Filters', 'Spatial Constraint', 'sketched', undefined);
+
+        })
+    });
 });
