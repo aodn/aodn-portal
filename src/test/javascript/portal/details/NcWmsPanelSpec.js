@@ -56,7 +56,7 @@ describe('Portal.details.NcWmsPanel', function() {
     describe('tracking ', function() {
         it('is called by _clearSpatialControls', function() {
             ncwmsPanel._clearSpatialControls();
-            expect(window.trackUsage).toHaveBeenCalled();
+            expect(window.trackUsage).toHaveBeenCalledWith('Filters', 'Spatial Constraint', 'cleared');
         });
     });
 

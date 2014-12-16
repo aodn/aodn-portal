@@ -44,7 +44,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         if (options.initialConstraint) {
             this.layer.addFeatures(new OpenLayers.Feature.Vector(options.initialConstraint));
             this.events.triggerEvent('spatialconstraintadded');
-            trackUsage( 'Filters', 'SpatialConstraint', 'created-init');
+            trackUsage(OpenLayers.i18n('filtersTrackingCategory'), OpenLayers.i18n('filtersTrackingSpatialConstraintAction'), OpenLayers.i18n('trackingInitLabel'));
         }
 
         this._isModified = false;

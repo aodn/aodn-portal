@@ -283,6 +283,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     trackingValueCleared: "cleared",
     trackingSpatialConstraintSketched: "sketched",
     trackingClickLabel: "click",
+    trackingInitLabel: 'created-init',
     facetTrackingCategory: "Facets",
     goButtonTrackingLabel: "Go"
 });

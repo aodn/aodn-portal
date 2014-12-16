@@ -319,10 +319,10 @@ describe('OpenLayers', function() {
                 'spatialconstrainttypechanged': spatialConstraintClearedSpy
             });
 
-            map.setSpatialConstraintStyle('a style  that the current style is not set too');
+            map.setSpatialConstraintStyle('a style  that the current style is not set to');
             expect(spatialConstraintClearedSpy).toHaveBeenCalled();
 
-            expect(window.trackUsage).toHaveBeenCalled();
+            expect(window.trackUsage).toHaveBeenCalledWith('Filters', 'Spatial Constraint', 'type=a style  that the current style is not set to');
         });
     });
 });

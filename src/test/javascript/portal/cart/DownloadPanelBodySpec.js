@@ -37,17 +37,10 @@ describe("Portal.cart.DownloadPanelBody", function() {
     describe('generateBodyContent', function() {
 
         var mockTemplate;
-
-        var makeTestCollection = function(uuid) {
-            return {
-                uuid: uuid,
-                aggregator: { childAggregators: []},
-                wmsLayer: {
-                    isNcwms: noOp
-                },
-                dataDownloadHandlers: []
-            };
-        };
+        var testCollection1;
+        var testCollection2;
+        var testCollection3;
+        var testCollection4;
 
         var makeTestDownloadPanelBody = function(collections) {
             var downloadPanelBody = new Portal.cart.DownloadPanelBody();
@@ -68,16 +61,17 @@ describe("Portal.cart.DownloadPanelBody", function() {
             return downloadPanelBody;
         };
 
-        var testCollection1 = makeTestCollection('[Content 1]');
-        var testCollection2 = makeTestCollection('[Content 2]');
-        var testCollection3 = makeTestCollection('[Content 3]');
-        var testCollection4 = makeTestCollection('[Content 4]');
-
         beforeEach(function() {
 
             mockTemplate = {
                 apply: jasmine.createSpy('template apply').andCallFake(function(collection) { return collection.value })
             };
+
+
+            testCollection1 = makeTestCollection('[Content 1]');
+            testCollection2 = makeTestCollection('[Content 2]');
+            testCollection3 = makeTestCollection('[Content 3]');
+            testCollection4 = makeTestCollection('[Content 4]');
 
             spyOn(Portal.cart, 'DownloadPanelItemTemplate').andReturn(mockTemplate);
         });
@@ -169,18 +163,6 @@ describe("Portal.cart.DownloadPanelBody", function() {
 
     describe('confirmDownload', function() {
 
-        var makeTestCollection = function(uuid) {
-            return {
-                uuid: uuid,
-                aggregator: { childAggregators: []},
-                title: "Argo",
-                wmsLayer: {
-                    isNcwms: noOp
-                },
-                dataDownloadHandlers: []
-            };
-        };
-
         var makeTestParams = function() {
             return {
                 filenameFormat: "{0}.csv"
@@ -192,7 +174,7 @@ describe("Portal.cart.DownloadPanelBody", function() {
             var testCollection = makeTestCollection();
             var callbackScope = downloadPanelBody;
             var callback = noOp;
-            var testKey = "downloadAsCsvLabel"
+            var testKey = "downloadAsCsvLabel";
 
             spyOn(downloadPanelBody.confirmationWindow, 'showIfNeeded');
             spyOn(window, 'trackUsage');
@@ -202,4 +184,16 @@ describe("Portal.cart.DownloadPanelBody", function() {
             expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(testKey), testCollection.title);
         });
     });
+
+    var makeTestCollection = function(uuid) {
+        return {
+            uuid: uuid,
+            aggregator: { childAggregators: []},
+            title: "Argo",
+            wmsLayer: {
+                isNcwms: noOp
+            },
+            dataDownloadHandlers: []
+        };
+    };
 });
