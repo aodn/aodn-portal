@@ -20,7 +20,7 @@ Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
         var config = Ext.apply({
             autoHeight: true,
             defaults: {
-                style: {padding:'10px 15px 10px 10px'},
+                style: {padding:'10px 25px 10px 10px'},
                 autoHeight: true
             },
             border: false,

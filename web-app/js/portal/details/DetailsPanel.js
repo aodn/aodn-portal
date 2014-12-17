@@ -13,7 +13,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
         this.activeLayersPanel = new Portal.ui.ActiveLayersPanel(
             Ext.apply({
-                style: {padding:'10px 15px 10px 5px'}
+                style: {padding:'10px 20px 10px 5px'}
             }, cfg)
         );
         this.activeLayersContainer = new Ext.Panel({
