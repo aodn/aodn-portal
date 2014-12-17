@@ -45,19 +45,25 @@ jQuery( window ).load(function() {
             jQuery(this).removeClass("fullTransparency");
         });
 
-    // activate onclick - exclude disabled main viewport tabs
+    // exclude disabled main viewport tabs
     jQuery('.viewPortTab:not(.viewPortTabDisabled)')
         .live("mouseenter", function(){
-            // activate the onclick action
             var tabId = $(this).attr('id');
             var tabIdInt = parseInt(tabId.substr(tabId.length - 1));
-            jQuery(this).children('a').one('click', function(obj) {
-                    trackNavigationUsage(
-                        'navigationTrackingPrimaryAction',
-                        OpenLayers.i18n('navigationTrackingStepPrefix') + (tabIdInt + 1)
-                    );
-                    setViewPortTab(tabIdInt);
-                    return false;
+            jQuery(this).children('a').each(
+                function() {
+                    var events = jQuery(this).data('events');
+                    if (events == undefined || typeof (events.click) != "object") {
+                        // activate the onclick action
+                        jQuery(this).click(function() {
+                            trackNavigationUsage(
+                                'navigationTrackingPrimaryAction',
+                                OpenLayers.i18n('navigationTrackingStepPrefix') + (tabIdInt + 1)
+                            );
+                            setViewPortTab(tabIdInt);
+                            return false;
+                        });
+                    }
                 }
             );
         });
