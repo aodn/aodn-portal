@@ -62,8 +62,8 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
         return this.filter.name;
     },
 
-    isDownloadOnly: function() {
-        return this.filter.downloadOnly;
+    isVisualised: function() {
+        return this.filter.visualised;
     },
 
     /**

@@ -37,8 +37,8 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
         this.add(this.spatialSubsetControlsPanel);
     },
 
-    isDownloadOnly: function() {
-        return true;
+    isVisualised: function() {
+        return false;
     },
 
     handleRemoveFilter: function() {
@@ -106,7 +106,7 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
         return {
             name: this.filter.name,
-            downloadOnly: this.isDownloadOnly(),
+            visualised: this.isVisualised(),
             cql: this.getCQL(),
             humanValue: this._getCQLHumanValue(),
             type: "geom"
