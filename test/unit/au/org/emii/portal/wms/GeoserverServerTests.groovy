@@ -26,28 +26,28 @@ class GeoserverServerTests extends GrailsUnitTestCase {
     <label>Date (UTC)</label>
     <name>TIME</name>
     <type>DateRange</type>
-    <downloadOnly>false</downloadOnly>
-    <possibleValues/>
+    <visualised>true</visualised>
+    <values/>
   </filter>
   <filter>
     <label>deployment_code</label>
     <name>deployment_code</name>
     <type>String</type>
-    <downloadOnly>false</downloadOnly>
-    <possibleValues>
-      <possibleValue>EAC1-2012</possibleValue>
-      <possibleValue>EAC2-2012</possibleValue>
-      <possibleValue>EAC3-2012</possibleValue>
-      <possibleValue>EAC4-2012</possibleValue>
-      <possibleValue>EAC5-2012</possibleValue>
-    </possibleValues>
+    <visualised>true</visualised>
+    <values>
+      <value>EAC1-2012</value>
+      <value>EAC2-2012</value>
+      <value>EAC3-2012</value>
+      <value>EAC4-2012</value>
+      <value>EAC5-2012</value>
+    </values>
   </filter>
   <filter>
     <label>geom</label>
     <name>geom</name>
     <type>BoundingBox</type>
-    <downloadOnly>false</downloadOnly>
-    <possibleValues/>
+    <visualised>true</visualised>
+    <values/>
   </filter>
 </filters>"""
     }
@@ -60,15 +60,15 @@ class GeoserverServerTests extends GrailsUnitTestCase {
                 label: "Date (UTC)",
                 type: "DateRange",
                 name: "TIME",
-                downloadOnly: false,
-                possibleValues: []
+                visualised: true,
+                values: []
             ],
             [
                 label: "deployment_code",
                 type: "String",
                 name: "deployment_code",
-                downloadOnly: false,
-                possibleValues: [
+                visualised: true,
+                values: [
                     "EAC1-2012",
                     "EAC2-2012",
                     "EAC3-2012",
@@ -80,13 +80,12 @@ class GeoserverServerTests extends GrailsUnitTestCase {
                 label: "geom",
                 type: "BoundingBox",
                 name: "geom",
-                downloadOnly: false,
-                possibleValues: []
+                visualised: true,
+                values: []
             ]
         ]
 
         def filtersJson = geoserverServer.getFilters("http://server", "layer")
-
         assertEquals expected, filtersJson
     }
 
@@ -98,5 +97,37 @@ class GeoserverServerTests extends GrailsUnitTestCase {
         def filtersJson = geoserverServer.getFilters("http://server", "layer")
 
         assertEquals expected, filtersJson
+    }
+
+    void testGetOwsEndpoint() {
+        def server = "http://geoserver-123.aodn.org.au/geoserver/wms"
+        assertEquals("http://geoserver-123.aodn.org.au/geoserver/ows", geoserverServer.getOwsEndpoint(server))
+    }
+
+    void testGetFiltersUrl() {
+        def server = "http://geoserver-123.aodn.org.au/geoserver/wms"
+        def layer = "aodn:aodn_dsto_glider_trajectory_map"
+        assertEquals(
+            "http://geoserver-123.aodn.org.au/geoserver/ows?request=enabledFilters&service=layerFilters&version=1.0.0&workspace=aodn&layer=aodn_dsto_glider_trajectory_map",
+            geoserverServer.getFiltersUrl(server, layer)
+        )
+    }
+
+    void testGetWorkspace() {
+        def fullLayerName = "aodn:aodn_dsto_glider_trajectory_map"
+        def layerName = geoserverServer.getLayerName(fullLayerName)
+        def workspace = geoserverServer.getLayerWorkspace(fullLayerName)
+
+        assertEquals("aodn", workspace)
+        assertEquals("aodn_dsto_glider_trajectory_map", layerName)
+    }
+
+    void testGetWorkspaceWhenNoWorkspaceSpecified() {
+        def fullLayerName = "aodn_dsto_glider_trajectory_map"
+        def layerName = geoserverServer.getLayerName(fullLayerName)
+        def workspace = geoserverServer.getLayerWorkspace(fullLayerName)
+
+        assertEquals("", workspace)
+        assertEquals(fullLayerName, layerName)
     }
 }

@@ -20,4 +20,4 @@ plugins
 .idea/*
 !.idea/codeStyleSettings.xml
 
-filters
+filters/**

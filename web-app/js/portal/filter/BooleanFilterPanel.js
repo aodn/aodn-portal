@@ -73,7 +73,7 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         return {
             name: this.filter.name,
-            downloadOnly: this.isDownloadOnly(),
+            visualised: this.isVisualised(),
             cql: this.getCQL(),
             humanValue: this._getCQLHumanValue()
         }
