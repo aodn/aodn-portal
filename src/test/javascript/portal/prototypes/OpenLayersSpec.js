@@ -221,7 +221,8 @@ describe('OpenLayers', function() {
             it('returns text if there is a cql filters', function() {
                 openLayer.filterData = [{
                     cql: "rararrr",
-                    enabled: true}];
+                    enabled: true,
+                    visualised: true }];
 
                 var filterString = openLayer.getMapLayerFilters();
                 expect(filterString).toContain("rararrr");
@@ -232,7 +233,7 @@ describe('OpenLayers', function() {
                     cql: "rararrr",
                     enabled: true,
                     type: "geom",
-                    downloadOnly: true}];
+                    visualised: false}];
 
                 var filterString = openLayer.getMapLayerFilters();
                 expect(filterString).not.toContain("rararrr");
@@ -244,7 +245,7 @@ describe('OpenLayers', function() {
                 openLayer.filterData = [{
                     cql: "rararrr",
                     enabled: true,
-                    downloadOnly: true}];
+                    visualised: false}];
 
                 var filterString = openLayer.getMapLayerFilters();
                 expect(filterString).not.toContain("rararrr");

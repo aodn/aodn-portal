@@ -95,11 +95,11 @@ def filter_json_to_xml(filters)
           xml.label         filter['label']
           xml.name          filter['name']
           xml.type          filter['type']
-          xml.downloadOnly  filter['downloadOnly']
+          xml.visualised    !filter['downloadOnly']
           if filter['possibleValues']
-            xml.possibleValues {
-              filter['possibleValues'].each do |possibleValue|
-                xml.possibleValue possibleValue
+            xml.values {
+              filter['possibleValues'].each do |value|
+                xml.value value
               end
             }
           end
@@ -127,8 +127,11 @@ def get_filters_main(opts)
       filters_xml = filter_json_to_xml(filters)
 
       if output_dir
-        FileUtils.mkdir_p output_dir
-        layer_xml_path = File.join(output_dir, "#{layer}.xml")
+        workspace = layer.split(":")[0]
+        layer_name = layer.split(":")[1]
+        filters_dir = File.join(output_dir, workspace, layer_name)
+        FileUtils.mkdir_p filters_dir
+        layer_xml_path = File.join(filters_dir, "filters.xml")
         $logger.info "Dumping XML '#{layer_xml_path}'"
         file = File.open(layer_xml_path, "w")
         file << filters_xml
