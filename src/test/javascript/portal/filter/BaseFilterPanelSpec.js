@@ -64,7 +64,7 @@ describe("Portal.filter.BaseFilterPanel", function() {
         };
     });
 
-    describe("isDownloadOnly()", function() {
+    describe("isVisualised()", function() {
         var buildFilter = function(filterConfig) {
             var baseFilter = new Portal.filter.BaseFilterPanel({
                 layer: {},
@@ -76,18 +76,18 @@ describe("Portal.filter.BaseFilterPanel", function() {
 
         it("should return true when the filter is for downloads only", function() {
             var baseFilter = buildFilter({
-                downloadOnly: true
+                visualised: true
             });
 
-            expect(baseFilter.isDownloadOnly()).toBe(true);
+            expect(baseFilter.isVisualised()).toBe(true);
         });
 
         it("should return false when the filter is not only for downloads", function() {
             var baseFilter = buildFilter({
-                downloadOnly: false
+                visualised: false
             });
 
-            expect(baseFilter.isDownloadOnly()).toBe(false);
+            expect(baseFilter.isVisualised()).toBe(false);
         });
     });
 });

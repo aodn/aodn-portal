@@ -315,7 +315,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
             var filterCQL = data.cql;
 
-            if (!data.downloadOnly) {
+            if (data.visualised) {
 
                 if (data.visualisationCql != undefined) {
                     filterCQL = data.visualisationCql;

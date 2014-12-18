@@ -36,9 +36,9 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.add(this.toDate);
         this._addVerticalSpacer(15);
 
-        if (this.filter.possibleValues != undefined) {
-            this._setMinMax(this.fromDate, this.filter.possibleValues);
-            this._setMinMax(this.toDate, this.filter.possibleValues);
+        if (this.filter.values != undefined) {
+            this._setMinMax(this.fromDate, this.filter.values);
+            this._setMinMax(this.toDate, this.filter.values);
         }
     },
 
@@ -137,7 +137,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     getFilterData: function() {
         return {
             name: this.filter.name,
-            downloadOnly: false,
+            visualised: true,
             visualisationCql: this._getCQL(),
             cql: this._getCQL(this.filter.name),
             humanValue: this._getCQLHumanValue()

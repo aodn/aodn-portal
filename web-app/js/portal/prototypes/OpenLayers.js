@@ -178,7 +178,7 @@ OpenLayers.Layer.WMS.prototype.getMapLayerFilters = function(includeGeomFilter) 
 
         var filterCQL = data.cql;
 
-        if (!data.downloadOnly || (includeGeomFilter && data.type == "geom")) {
+        if (data.visualised || (includeGeomFilter && data.type == "geom")) {
             if (data.visualisationCql != undefined) {
                 filterCQL = data.visualisationCql;
             }
