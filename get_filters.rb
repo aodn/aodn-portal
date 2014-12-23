@@ -96,13 +96,13 @@ def filter_json_to_xml(filters)
           xml.name          filter['name']
           xml.type          filter['type']
           xml.visualised    !filter['downloadOnly']
-          if filter['possibleValues']
-            xml.values {
-              filter['possibleValues'].each do |value|
-                xml.value value
-              end
-            }
-          end
+          # if filter['possibleValues']
+          #   xml.values {
+          #     filter['possibleValues'].each do |value|
+          #       xml.value value
+          #     end
+          #   }
+          # end
         }
       end
     }
