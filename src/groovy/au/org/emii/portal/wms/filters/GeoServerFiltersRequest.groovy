@@ -22,7 +22,7 @@ class GeoServerFiltersRequest {
     }
 
     def getRequestString() {
-        return "${server}/ows/request=${request}&service=${service}&version=${version}&workspace=${getLayerWorkspace()}&layer=${getLayerName()}"
+        return "${server}/ows?request=${request}&service=${service}&version=${version}&workspace=${getLayerWorkspace()}&layer=${getLayerName()}"
     }
 
     def getLayerWorkspace() {

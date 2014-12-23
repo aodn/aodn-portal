@@ -27,7 +27,7 @@ class GeoServerFiltersRequestTest extends GrailsUnitTestCase {
 
     void testGetRequestString() {
         assertEquals(
-            "http://geoserver-123.aodn.org.au/geoserver/ows/request=enabledFilters&service=layerFilters&version=1.0.0&workspace=aodn&layer=aodn_dsto_glider_trajectory_map",
+            "http://geoserver-123.aodn.org.au/geoserver/ows?request=enabledFilters&service=layerFilters&version=1.0.0&workspace=aodn&layer=aodn_dsto_glider_trajectory_map",
             geoServerFiltersRequest.getRequestString()
         )
     }
