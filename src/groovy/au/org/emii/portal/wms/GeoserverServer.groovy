@@ -7,6 +7,7 @@
 
 package au.org.emii.portal.wms
 
+import au.org.emii.portal.proxying.ExternalRequest
 import au.org.emii.portal.wms.filters.GeoServerFiltersRequest
 
 class GeoserverServer extends WmsServer {
@@ -50,10 +51,11 @@ class GeoserverServer extends WmsServer {
 
     def _getFiltersXml(server, layer) {
         def geoServerFilterRequest = new GeoServerFiltersRequest(getGeoServerUrlPath(server), layer)
+        def outputStream = new ByteArrayOutputStream();
+        def request = new ExternalRequest(outputStream, geoServerFilterRequest.getRequestString().toURL())
 
-        // TODO fetch this from geoserver
-        def inputFile = new File("filters/${layer}.xml")
-        return inputFile.text
+        request.executeRequest()
+        return outputStream.toString("utf-8")
     }
 
     def getGeoServerUrlPath(server) {
