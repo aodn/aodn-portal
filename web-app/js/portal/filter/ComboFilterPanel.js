@@ -52,8 +52,8 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         var clearFilter = [OpenLayers.i18n('clearFilterOption')];
         data.push(clearFilter);
 
-        for (var i = 0; i < this.filter.possibleValues.length; i++) {
-            data.push([this.filter.possibleValues[i]]);
+        for (var i = 0; i < this.filter.values.length; i++) {
+            data.push([this.filter.values[i]]);
         }
 
         this.combo.clearValue();
@@ -90,7 +90,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         return {
             name: this.filter.name,
-            downloadOnly: this.isDownloadOnly(),
+            visualised: this.isVisualised(),
             cql: this.getCQL(),
             humanValue: this._getHumanValue()
         }

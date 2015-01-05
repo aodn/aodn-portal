@@ -26,28 +26,28 @@ class GeoserverServerTests extends GrailsUnitTestCase {
     <label>Date (UTC)</label>
     <name>TIME</name>
     <type>DateRange</type>
-    <downloadOnly>false</downloadOnly>
-    <possibleValues/>
+    <visualised>true</visualised>
+    <values/>
   </filter>
   <filter>
     <label>deployment_code</label>
     <name>deployment_code</name>
     <type>String</type>
-    <downloadOnly>false</downloadOnly>
-    <possibleValues>
-      <possibleValue>EAC1-2012</possibleValue>
-      <possibleValue>EAC2-2012</possibleValue>
-      <possibleValue>EAC3-2012</possibleValue>
-      <possibleValue>EAC4-2012</possibleValue>
-      <possibleValue>EAC5-2012</possibleValue>
-    </possibleValues>
+    <visualised>true</visualised>
+    <values>
+      <value>EAC1-2012</value>
+      <value>EAC2-2012</value>
+      <value>EAC3-2012</value>
+      <value>EAC4-2012</value>
+      <value>EAC5-2012</value>
+    </values>
   </filter>
   <filter>
     <label>geom</label>
     <name>geom</name>
     <type>BoundingBox</type>
-    <downloadOnly>false</downloadOnly>
-    <possibleValues/>
+    <visualised>true</visualised>
+    <values/>
   </filter>
 </filters>"""
     }
@@ -60,15 +60,15 @@ class GeoserverServerTests extends GrailsUnitTestCase {
                 label: "Date (UTC)",
                 type: "DateRange",
                 name: "TIME",
-                downloadOnly: false,
-                possibleValues: []
+                visualised: true,
+                values: []
             ],
             [
                 label: "deployment_code",
                 type: "String",
                 name: "deployment_code",
-                downloadOnly: false,
-                possibleValues: [
+                visualised: true,
+                values: [
                     "EAC1-2012",
                     "EAC2-2012",
                     "EAC3-2012",
@@ -80,13 +80,12 @@ class GeoserverServerTests extends GrailsUnitTestCase {
                 label: "geom",
                 type: "BoundingBox",
                 name: "geom",
-                downloadOnly: false,
-                possibleValues: []
+                visualised: true,
+                values: []
             ]
         ]
 
         def filtersJson = geoserverServer.getFilters("http://server", "layer")
-
         assertEquals expected, filtersJson
     }
 
@@ -98,5 +97,25 @@ class GeoserverServerTests extends GrailsUnitTestCase {
         def filtersJson = geoserverServer.getFilters("http://server", "layer")
 
         assertEquals expected, filtersJson
+    }
+
+    void testGetFirstUrlPathSegment() {
+        def server = "http://geoserver-123.aodn.org.au/geoserver/wms"
+        assertEquals("geoserver", geoserverServer.getFirstUrlPathSegment(server))
+    }
+
+    void testGetServerUrlPathStart() {
+        def server = "http://geoserver-123.aodn.org.au/geoserver/wms"
+        assertEquals(32, geoserverServer.getServerUrlPathStart(server))
+    }
+
+    void testGetServerUrlPathEnd() {
+        def server = "http://geoserver-123.aodn.org.au/geoserver/wms"
+        assertEquals(42, geoserverServer.getServerUrlPathEnd(server))
+    }
+
+    void testGetGeoServerUrlPath() {
+        def server = "http://geoserver-123.aodn.org.au/geoserver/wms"
+        assertEquals("http://geoserver-123.aodn.org.au/geoserver", geoserverServer.getGeoServerUrlPath(server))
     }
 }

@@ -35,8 +35,8 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
         expect(boundingBoxFilter.getFilterName()).toEqual(undefined);
     });
 
-    it("isDownloadOnly() should return true", function() {
-        expect(boundingBoxFilter.isDownloadOnly()).toBe(true);
+    it("isVisualised() should return false", function() {
+        expect(boundingBoxFilter.isVisualised()).toBe(false);
     });
 
     describe('map', function() {
