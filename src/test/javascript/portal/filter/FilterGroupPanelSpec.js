@@ -222,7 +222,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
                     label: 'some label',
                     cql: "pardon my French",
                     type: 'Boolean',
-                    downloadOnly: false
+                    visualised: true
                 }
 
             });
