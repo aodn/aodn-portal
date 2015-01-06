@@ -27,11 +27,6 @@ describe("Portal.filter.NumberFilterPanel", function() {
                     return true;
                 }
             };
-            this.operators = {
-                getValue: function() {
-                    return 'BETWEEN';
-                }
-            };
         };
 
         numberFilter = new Portal.filter.NumberFilterPanel({
@@ -58,13 +53,15 @@ describe("Portal.filter.NumberFilterPanel", function() {
         beforeEach(function() {
             numberFilter._createField();
             numberFilter.firstField.getValue = function() { return 5 };
+            numberFilter.operators = {
+                lastSelectionText: 'less than'
+            };
         });
 
         it('sends correct tracking data  when operator is not between', function() {
             spyOn(window, 'trackUsage');
 
             numberFilter._operatorIsBetween = function() {return false};
-            numberFilter.operators.lastSelectionText = 'less than';
             numberFilter._updateFilter();
 
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Number", "testLabel less than 5", "test layer");

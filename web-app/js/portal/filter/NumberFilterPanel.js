@@ -141,23 +141,17 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
             this._fireAddEvent();
 
-            if (!this._operatorIsBetween()) {
-                trackFiltersUsage('filtersTrackingNumberAction', val, this.layer.name);
-            }
-            else if (this._hasSecondValue()) {
+            if (!this._operatorIsBetween() || this._hasSecondValue()) {
                 trackFiltersUsage('filtersTrackingNumberAction', val, this.layer.name);
             }
         }
     },
 
     _getTrackUsageLabel: function() {
-        var label;
+        var label = this.filter.label + " " + this.operators.lastSelectionText + " " + this.firstField.getValue();
 
         if (this._operatorIsBetween()) {
-            label = this.filter.label + " " + this.operators.lastSelectionText + " " + this.firstField.getValue() + " and " + this.secondField.getValue();
-        }
-        else {
-            label = this.filter.label + " " + this.operators.lastSelectionText + " " + this.firstField.getValue();
+            label = label + " and " + this.secondField.getValue();
         }
 
         return label;
