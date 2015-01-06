@@ -81,8 +81,9 @@ describe("Portal.filter.DateFilterPanel", function() {
         });
 
         it('fires events when required fields are set', function() {
+            component._dateField.getValue = function() { return '12-02-1990'};
             filterPanel._applyDateFilterPanel(component);
-            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Date", "atestname reset", "layerName");
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Date", "atestname reset 12-02-1990", "layerName");
             expect(filterPanel._fireAddEvent).toHaveBeenCalled();
         });
     });
