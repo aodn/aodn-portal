@@ -91,7 +91,7 @@ describe("Portal.filter.ComboFilterPanel", function() {
             }
             comboFilter._onSelected();
 
-            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "test", "test layer");
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "test=value", "test layer");
         });
     });
 });

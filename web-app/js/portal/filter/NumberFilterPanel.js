@@ -136,17 +136,47 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     _updateFilter: function(combo, record, index) {
 
         if (this.firstField.validate() && this.secondField.validate()) {
-            trackFiltersUsage('filtersTrackingNumberAction', this._getCQLHumanValue(), this.layer.name);
+
+            var val = this._getTrackUsageLabel();
+
             this._fireAddEvent();
+
+            if (!this._operatorIsBetween()) {
+                trackFiltersUsage('filtersTrackingNumberAction', val, this.layer.name);
+            }
+            else if (this._hasSecondValue()) {
+                trackFiltersUsage('filtersTrackingNumberAction', val, this.layer.name);
+            }
         }
+    },
+
+    _getTrackUsageLabel: function() {
+        var label;
+
+        if (this._operatorIsBetween()) {
+            label = this.filter.label + " " + this.operators.lastSelectionText + " " + this.firstField.getValue() + " and " + this.secondField.getValue();
+        }
+        else {
+            label = this.filter.label + " " + this.operators.lastSelectionText + " " + this.firstField.getValue();
+        }
+
+        return label;
+    },
+
+    _hasFirstValue: function() {
+        return !(this.firstField.getValue() == null || this.firstField.getValue() == "");
+    },
+
+    _hasSecondValue: function() {
+        return !(this.secondField.getValue() == null || this.secondField.getValue() == "");
     },
 
     _onOperationSelected: function(combo, record, index) {
         var shouldUpdate;
         var useSecondField = this._operatorIsBetween();
         var noneSelected = this._operatorIsNone();
-        var hasFirstValue = !(this.firstField.getValue() == null || this.firstField.getValue() == "");
-        var hasSecondValue = !(this.secondField.getValue() == null || this.secondField.getValue() == "");
+        var hasFirstValue = this._hasFirstValue();
+        var hasSecondValue = this._hasSecondValue();
 
         this.secondField.setVisible(useSecondField);
 
@@ -166,7 +196,6 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _operatorIsBetween: function() {
-
         return this.operators.getValue() == "BETWEEN";
     },
 

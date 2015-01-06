@@ -112,7 +112,8 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             this.combo.clearValue();
         }
         else if (this.combo.getValue() != "") {
-            trackFiltersUsage('filtersTrackingComboAction', this.filter.name, this.layer.name);
+            var val = this.filter.name + "=" + this.combo.getValue();
+            trackFiltersUsage('filtersTrackingComboAction', val, this.layer.name);
             this._fireAddEvent();
         }
     },
