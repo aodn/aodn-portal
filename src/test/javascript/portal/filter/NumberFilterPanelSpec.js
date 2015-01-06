@@ -27,11 +27,17 @@ describe("Portal.filter.NumberFilterPanel", function() {
                     return true;
                 }
             };
+            this.operators = {
+                getValue: function() {
+                    return 'BETWEEN';
+                }
+            };
         };
 
         numberFilter = new Portal.filter.NumberFilterPanel({
             filter: {
-                name: 'test'
+                name: 'test',
+                label: 'testLabel'
             },
             layer: {
                 name: 'test layer',
@@ -49,14 +55,30 @@ describe("Portal.filter.NumberFilterPanel", function() {
     });
 
     describe('_updateFilter', function() {
-        it('sends tracking data to google analytics', function() {
+        beforeEach(function() {
+            numberFilter._createField();
+            numberFilter.firstField.getValue = function() { return 5 };
+        });
+
+        it('sends correct tracking data  when operator is not between', function() {
             spyOn(window, 'trackUsage');
-            numberFilter._getCQLHumanValue = function() {
-                return "value";
-            };
+
+            numberFilter._operatorIsBetween = function() {return false};
+            numberFilter.operators.lastSelectionText = 'less than';
             numberFilter._updateFilter();
 
-            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Number", "value", "test layer");
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Number", "testLabel less than 5", "test layer");
         });
+
+        it('sends correct tracking data when operator is between', function() {
+            spyOn(window, 'trackUsage');
+
+            numberFilter._operatorIsBetween = function() {return true};
+            numberFilter.operators.lastSelectionText = 'between';
+            numberFilter.secondField.getValue = function() { return 6 };
+            numberFilter._updateFilter();
+
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Number", "testLabel between 5 and 6", "test layer");
+        })
     });
 });

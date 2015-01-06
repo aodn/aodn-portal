@@ -120,7 +120,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             this.fromDate.applyDefaultValueLimits();
         }
 
-        var val = component._dateField.name + " " + usageLabel;
+        var val = component._dateField.name + " " + usageLabel + " " + component._dateField.getValue();
         trackFiltersUsage('filtersTrackingDateAction', val, this.layer.name);
         this._fireAddEvent();
     },
