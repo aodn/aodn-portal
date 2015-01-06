@@ -19,7 +19,8 @@ describe("Portal.filter.ComboFilterPanel", function() {
 
         comboFilter = new Portal.filter.ComboFilterPanel({
             filter: {
-                name: 'test'
+                name: 'test',
+                label: 'testLabel'
             },
             layer: {
                 name: 'test layer',
@@ -91,7 +92,7 @@ describe("Portal.filter.ComboFilterPanel", function() {
             }
             comboFilter._onSelected();
 
-            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "test", "test layer");
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "testLabel=value", "test layer");
         });
     });
 });

@@ -20,7 +20,8 @@ describe("Portal.filter.BooleanFilterPanel", function() {
 
         booleanFilter = new Portal.filter.BooleanFilterPanel({
             filter: {
-                name: 'test'
+                name: 'test',
+                label: 'testLabel'
             },
             layer: {
                 name: 'test layer',
@@ -60,7 +61,7 @@ describe("Portal.filter.BooleanFilterPanel", function() {
 
     it('tracking on booleanFilter click', function() {
         booleanFilter._buttonChecked();
-        expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Boolean", "test=false", "test layer");
+        expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Boolean", "testLabel=false", "test layer");
     });
 
 });
