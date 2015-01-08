@@ -63,28 +63,10 @@ Portal.app = {
     },
 
     afterConfigLoad: function() {
-        // Load saved map (snapshot) if required
-        var startSnapshot = null;
-        if (window.location.search.length > 0) {
-            var regPattern = new RegExp(/\?savedMapId=([0-9]+)/);
-            var matches = regPattern.exec(window.location.search);
-
-            if (matches != null && matches.length == 2) {
-                startSnapshot = matches[1];
-            }
-        }
 
         viewport = new Portal.ui.Viewport({
-            appConfig: Portal.app.appConfig,
-            startSnapshot: startSnapshot
+            appConfig: Portal.app.appConfig
         });
-
-        if (startSnapshot) {
-            Ext.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER, function() {
-                Ext.MsgBus.unsubscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
-                Ext.MsgBus.publish(PORTAL_EVENTS.LOAD_SNAPSHOT, startSnapshot);
-            }, this);
-        }
     },
 
     configLoadFailed: function() {
