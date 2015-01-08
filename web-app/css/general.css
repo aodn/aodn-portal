@@ -315,24 +315,8 @@ hr {
     background: url("../images/arrowPrev.png") no-repeat left top transparent;
 }
 
-.pauseButton {
-    background: url("../images/animation/pause.png") no-repeat left top transparent;
-}
-
-.playButton {
-    background: url("../images/animation/play.png") no-repeat left top transparent;
-}
-
-.stopButton {
-    background: url("../images/animation/stop.png") no-repeat left top transparent;
-}
-
 .listButtonWrapper {
     margin-top: 1px;
-}
-
-.downloadButton {
-    background: url("../images/animation/download.png") no-repeat left top transparent;
 }
 
 .removeButton {
