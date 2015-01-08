@@ -308,11 +308,11 @@ hr {
 
 /* animation buttons */
 .nextButton {
-    background: url("../images/animation/fastForward.png") no-repeat left top transparent;
+    background: url("../images/arrowNext.png") no-repeat left top transparent;
 }
 
 .previousButton {
-    background: url("../images/animation/rewind.png") no-repeat left top transparent;
+    background: url("../images/arrowPrev.png") no-repeat left top transparent;
 }
 
 .pauseButton {
