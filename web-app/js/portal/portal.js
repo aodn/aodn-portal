@@ -72,14 +72,6 @@ Portal.app = {
             if (matches != null && matches.length == 2) {
                 startSnapshot = matches[1];
             }
-
-            Ext.Msg.show({
-                title: "<h2>Disclaimer</h2>",
-                buttons: Ext.Msg.OK,
-                cls: 'motd',
-                width: 600,
-                msg: this.portal.appConfig.portal.footerContent
-            });
         }
 
         viewport = new Portal.ui.Viewport({
