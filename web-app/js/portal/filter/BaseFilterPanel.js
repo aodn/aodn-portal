@@ -16,7 +16,7 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
         var config = Ext.apply({
-            emptyText : OpenLayers.i18n("pleasePickCondensed"),
+            emptyText: OpenLayers.i18n("pleasePickCondensed"),
             typeLabel: OpenLayers.i18n('generalFilterHeading'),
             listeners: {
                 beforeremove: function(panel, component) {
@@ -40,7 +40,7 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
        This method generates all the component fields required for this filter to work, e.g. textfields, buttons, etc.
        Note that the "x" button is created in the filterGroupPanel. See also handleRemoveFilter.
     **/
-    _createField:function() {
+    _createField: function() {
     },
 
     setLayerAndFilter: function(layer, filter) {

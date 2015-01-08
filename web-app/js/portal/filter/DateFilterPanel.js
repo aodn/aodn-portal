@@ -86,6 +86,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         return '';
     },
+
     _getDateHumanString: function(combo) {
 
         var newDate = combo.getValue();
