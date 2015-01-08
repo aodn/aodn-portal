@@ -12,6 +12,8 @@ You can view the portal in action at the following locations;
 * [AODN](http://portal.aodn.org.au) the [Australian Ocean Data Network](http://imos.org.au/aodn.html) portal
 * [WAODN](http://wa.aodn.org.au) a Western Australia-focused portal
 
+The IMOS Portal publishes the [IMOS data collection](https://imos.aodn.org.au/data_collections.html).
+
 ## Contact
 Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_help/?q=forum).
 
