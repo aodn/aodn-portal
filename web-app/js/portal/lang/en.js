@@ -73,13 +73,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     min: 'Min',
     max: 'Max',
 
-    // FacetedSearchResultsDataView.js
-    platform: 'Platform',
-    organisation: 'Organisation',
-    parameters: 'Parameters',
-    temporalExtentDateFormat: 'YYYY',
-    metadataLink: 'continue reading',
-
     // LayerGridPanel.js
     dragLayersOrServers: 'Drag layers or Servers to the menu tree',
 
@@ -129,6 +122,14 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     goButton: 'Go',
     clearButton: 'Clear',
     fullTextSearch: 'What are you looking for?',
+
+    // FacetedSearchResultsDataView.js
+    searchPlatformText: ' ',
+    searchOrganisationText: ' ',
+    searchDateText: ' ',
+    searchParametersText: ' ',
+    temporalExtentDateFormat: 'YYYY',
+    metadataLink: 'continue reading',
 
     // errors
     errorDialogTitle: 'Error',

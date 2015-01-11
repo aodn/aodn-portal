@@ -26,7 +26,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '<tpl for=".">',
             '<div>',
             '    <div class="x-panel-header resultsHeaderBackground">',
-            '        <h3 class="resultsRowHeader">{title}</h3>',
+            '        <h3 class="resultsRowHeader">{[this.getTitle(values)]}</h3>',
             '        <div class="facetedSearchBtn" id="fsSearchAddBtn{[this.encode(values)]}">',
             '            {[this.getButton(values)]}',
             '        </div>',
@@ -40,9 +40,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '        <div class="x-panel x-box-item resultsTextBody {[this.getStatusClasses(values)]}" style="left:{[this.textBodyLeftMargin]}px; ">',
             '            {[this.getParametersAsHtml(values)]}',
             '            <p class="resultsTextBody">',
-            '                <i>',
-            '                    {[this.trimAbstract(values.abstract,30)]}',
-            '                </i>',
+            '                {[values.title]}',
             '                &nbsp;{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
             '            </p>',
             '        </div>',
@@ -63,6 +61,22 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 },
                 getMiniMapLinkTitle: function(values) {
                     return (this.isRecActive(values.uuid)) ? OpenLayers.i18n('collectionExistsMsg') : OpenLayers.i18n("addDataCollectionMsg");
+                },
+                getTitle: function(values) {
+                    var broader = [];  
+                    Ext.each(values.parameter, function(param) {
+                        var broaderTerms = this.classificationStore.getBroaderTerms(param, 2, 'Measured parameter');
+                        if(broaderTerms.length > 0) { 
+                            broader = broader.concat(broaderTerms); 
+                        }
+                        else {
+                            console.log("Could not find broader term for parameter '" + param  + "'");
+                        }
+                    }, this);
+                    broader = broader.sort();
+                    return broader.filter( function(item, pos) {
+                        return !pos || item != broader[pos - 1];
+                    }).join( ', ');
                 }
             }
         );
@@ -124,7 +138,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             begin: values.temporalExtentBegin,
             end: values.temporalExtentEnd
         });
-        html += this._getParametersAsHtml(paramTpl, values.parameter);
 
         return html;
     },
@@ -141,13 +154,13 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     _getPlatformAsHtml: function(template, platform) {
+        var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
         if (platform) {
             return template.apply({
-                "label": OpenLayers.i18n('platform'),
+                "label": label,
                 "value": platform
             });
         }
-
         return "";
     },
 
@@ -163,7 +176,8 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             });
         }
 
-        return "";
+    _buildLabel: function(fontAwesomeClass, text) {
+        return "<span class=\"fa fa-fw " + fontAwesomeClass + "\"></span> " + text;
     },
 
     _formatTemporalExtentDateString: function(dateString) {
@@ -266,10 +280,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             }
         });
         return record;
-    },
-
-    trimAbstract: function(text, wordCount) {
-        return text.split(' ').splice(0, wordCount).join(' ') + " ... ";
     },
 
     getUniqueId: function(storeRowIndex, uuid) {
