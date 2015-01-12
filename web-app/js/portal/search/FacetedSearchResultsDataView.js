@@ -127,7 +127,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     getParametersAsHtml: function(values) {
         var paramTpl = new Ext.Template(
             '<div><span class="x-panel-header">{label}</span>',
-            '   <span>- {value}</span>',
+            '   <span> {value}</span>',
             '</div>'
         );
         var html = "";
