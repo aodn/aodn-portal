@@ -26,7 +26,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '<tpl for=".">',
             '<div>',
             '    <div class="x-panel-header resultsHeaderBackground">',
-            '        <h3 class="resultsRowHeader">{title}</h3>',
+            '        <h3 class="resultsRowHeader">{[this.getTitle(values)]}</h3>',
             '        <div class="facetedSearchBtn" id="fsSearchAddBtn{[this.encode(values)]}">',
             '            {[this.getButton(values)]}',
             '        </div>',
@@ -40,9 +40,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '        <div class="x-panel x-box-item resultsTextBody {[this.getStatusClasses(values)]}" style="left:{[this.textBodyLeftMargin]}px; ">',
             '            {[this.getParametersAsHtml(values)]}',
             '            <p class="resultsTextBody">',
-            '                <i>',
-            '                    {[this.trimAbstract(values.abstract,30)]}',
-            '                </i>',
+            '                {[values.title]}',
             '                &nbsp;{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
             '            </p>',
             '        </div>',
@@ -63,6 +61,19 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 },
                 getMiniMapLinkTitle: function(values) {
                     return (this.isRecActive(values.uuid)) ? OpenLayers.i18n('collectionExistsMsg') : OpenLayers.i18n("addDataCollectionMsg");
+                },
+                getTitle: function(values) {
+                    var broader = [];  
+                    Ext.each(values.parameter, function(param) {
+                        var broaderTerms = this.classificationStore.getBroaderTerms(param, 2, 'Measured parameter');
+                        if(broaderTerms.length > 0) { 
+                            broader = broader.concat(broaderTerms); 
+                        }
+                    }, this);
+                    broader = broader.sort();
+                    return broader.filter( function(item, pos) {
+                        return !pos || item != broader[pos - 1];
+                    }).join( ', ');
                 }
             }
         );
@@ -113,7 +124,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     getParametersAsHtml: function(values) {
         var paramTpl = new Ext.Template(
             '<div><span class="x-panel-header">{label}</span>',
-            '   <span>- {value}</span>',
+            '   <span> {value}</span>',
             '</div>'
         );
         var html = "";
@@ -124,7 +135,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             begin: values.temporalExtentBegin,
             end: values.temporalExtentEnd
         });
-        html += this._getParametersAsHtml(paramTpl, values.parameter);
 
         return html;
     },
@@ -141,11 +151,18 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     _getPlatformAsHtml: function(template, platform) {
+
         var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
-        if (platform) {
+
+        var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform');	
+        if(broader.length > 0) { 
+            broader = broader.sort();
+            broader = broader.filter( function(item, pos) {
+                return !pos || item != broader[pos - 1];
+            });
             return template.apply({
                 "label": label,
-                "value": platform
+                "value": broader.join( ', ')
             });
         }
         return "";
@@ -161,17 +178,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                     this._formatTemporalExtentDateString(temporalExtent.begin),
                     this._formatTemporalExtentDateString(temporalExtent.end)
                 )
-            });
-        }
-        return "";
-    },
-
-    _getParametersAsHtml: function(template, parameters) {
-        var label = this._buildLabel("fa-list-ol", OpenLayers.i18n('searchParametersText'));
-        if (parameters.length > 0) {
-            return template.apply({
-                "label": label,
-                "value": parameters.join(" | ")
             });
         }
         return "";
@@ -269,10 +275,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             }
         });
         return record;
-    },
-
-    trimAbstract: function(text, wordCount) {
-        return text.split(' ').splice(0, wordCount).join(' ') + " ... ";
     },
 
     getUniqueId: function(storeRowIndex, uuid) {
