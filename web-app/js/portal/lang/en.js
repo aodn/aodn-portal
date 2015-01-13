@@ -264,6 +264,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     navigationTrackingStepPrefix: "Step ",
     downloadTrackingCategory: "DataCollections",
     downloadTrackingActionPrefix: "Download - ",
+    layerSelectionTrackingCategory: "Collection",
+    layerSelectionTrackingAction: "select",
     filtersTrackingCategory: "Filters",
     detailsTrackingCategory: "Details",
     detailsTabsTrackingAction: "Tabs",
