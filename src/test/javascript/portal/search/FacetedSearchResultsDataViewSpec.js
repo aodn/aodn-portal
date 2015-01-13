@@ -84,4 +84,34 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             expect(res).toContain("trackUsage('Metadata','Search','Argo Profiles');return true;");
         });
     });
+
+    describe('addRecordFromSuperUuid', function () {
+        var record;
+        var mockRecordStore;
+
+        beforeEach(function() {
+            record = {
+                data: {
+                    title: "Argo Australia Profiles"
+                },
+                get: function() { noOp() },
+                join: function() { noOp() },
+                hasWmsLink: function() { noOp() }
+            };
+
+            facetedSearchDataView.decodeSuperUuid = function() {
+                return "my uuid";
+            };
+
+            facetedSearchDataView._getRecordFromUuid = function() {
+                return record;
+            };
+        });
+
+        it('sends correct tracking data', function() {
+            spyOn(window, 'trackUsage');
+            facetedSearchDataView.addRecordFromSuperUuid("my super uuid");
+            expect(window.trackUsage).toHaveBeenCalledWith("Collection", "select", "Argo Australia Profiles");
+        });
+    });
 });

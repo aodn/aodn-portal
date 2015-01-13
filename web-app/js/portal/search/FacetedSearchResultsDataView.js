@@ -303,6 +303,8 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var uuid = this.decodeSuperUuid(superUuid);
         var record = this._getRecordFromUuid(uuid);
 
+        trackUsage(OpenLayers.i18n('layerSelectionTrackingCategory'), OpenLayers.i18n('layerSelectionTrackingAction'), record.data.title);
+
         if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
             log.info(
                 "Selected collection: " + JSON.stringify({
