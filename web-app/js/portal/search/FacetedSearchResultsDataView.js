@@ -130,32 +130,31 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     _getOrganisationAsHtml: function(template, organisation) {
-        var label = this._buildLabel("fa-institution", OpenLayers.i18n('searchOrganisationText'));
         if (organisation) {
             return template.apply({
-                "label": label,
+                "label": OpenLayers.i18n('organisation'),
                 "value": organisation.join(', ')
             });
         }
+
         return "";
     },
 
     _getPlatformAsHtml: function(template, platform) {
-        var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
         if (platform) {
             return template.apply({
-                "label": label,
+                "label": OpenLayers.i18n('platform'),
                 "value": platform
             });
         }
+
         return "";
     },
 
     _getTemporalExtentAsHtml: function(template, temporalExtent) {
-        var label = this._buildLabel("fa-calendar", OpenLayers.i18n('searchDateText'));
         if (temporalExtent.begin && temporalExtent.end) {
             return template.apply({
-                "label": label,
+                "label": OpenLayers.i18n('parameterDateLabel'),
                 "value": String.format(
                     "{0} - {1}",
                     this._formatTemporalExtentDateString(temporalExtent.begin),
@@ -163,31 +162,29 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 )
             });
         }
-        return "";
-    },
 
-    _getParametersAsHtml: function(template, parameters) {
-        var label = this._buildLabel("fa-list-ol", OpenLayers.i18n('searchParametersText'));
-        if (parameters.length > 0) {
-            return template.apply({
-                "label": label,
-                "value": parameters.join(" | ")
-            });
-        }
         return "";
-    },
-
-    _buildLabel: function(fontAwesomeClass, text) {
-        return "<span class=\"fa fa-fw " + fontAwesomeClass + "\"></span> " + text;
     },
 
     _formatTemporalExtentDateString: function(dateString) {
+
         var dateFormat = OpenLayers.i18n('temporalExtentDateFormat');
         return this._parseTemporalExtentDateString(dateString).format(dateFormat);
     },
 
     _parseTemporalExtentDateString: function(dateString) {
         return moment(dateString, this.DATE_FACET_INPUT_FORMAT);
+    },
+
+    _getParametersAsHtml: function(template, parameters) {
+        if (parameters.length > 0) {
+            return template.apply({
+                "label": OpenLayers.i18n('parameters'),
+                "value": parameters.join(" | ")
+            });
+        }
+
+        return "";
     },
 
     createButton: function(uuid, storeRowIndex) {
