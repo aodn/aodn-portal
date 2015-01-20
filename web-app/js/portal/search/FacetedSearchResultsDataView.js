@@ -69,6 +69,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                         if(broaderTerms.length > 0) { 
                             broader = broader.concat(broaderTerms); 
                         }
+                        else {
+                            console.log("Could not find broader term for parameter '" + param  + "'");
+                        }
                     }, this);
                     broader = broader.sort();
                     return broader.filter( function(item, pos) {
@@ -164,6 +167,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 "label": label,
                 "value": broader.join( ', ')
             });
+        }
+        else {
+            console.log("Could not find broader term for platform '" + platform  + "'");
         }
         return "";
     },
