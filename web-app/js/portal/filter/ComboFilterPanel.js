@@ -108,14 +108,15 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _onSelected: function() {
+
         if (this.combo.getValue() == OpenLayers.i18n('clearFilterOption')) {
             this.combo.clearValue();
         }
         else if (this.combo.getValue() != "") {
             var val = this.filter.label + "=" + this.combo.getValue();
             trackFiltersUsage('filtersTrackingComboAction', val, this.layer.name);
-            this._fireAddEvent();
         }
+        this._fireAddEvent();
     },
 
     handleRemoveFilter: function() {
