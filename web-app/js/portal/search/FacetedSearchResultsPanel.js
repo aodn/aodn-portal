@@ -19,8 +19,7 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
         });
 
         this.dataView = new Portal.search.FacetedSearchResultsDataView({
-            store: this.store,
-            classificationStore: this.classificationStore
+            store: this.store
         });
 
         var config = {
