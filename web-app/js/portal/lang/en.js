@@ -125,7 +125,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     searchDateText: ' ',
     searchParametersText: ' ',
     temporalExtentDateFormat: 'YYYY',
-    metadataLink: 'full metadata',
+    metadataLink: 'continue reading',
 
     // errors
     errorDialogTitle: 'Error',
