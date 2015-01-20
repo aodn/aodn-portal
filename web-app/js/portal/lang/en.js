@@ -73,13 +73,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     min: 'Min',
     max: 'Max',
 
-    // FacetedSearchResultsDataView.js
-    platform: 'Platform',
-    organisation: 'Organisation',
-    parameters: 'Parameters',
-    temporalExtentDateFormat: 'YYYY',
-    metadataLink: 'continue reading',
-
     // LayerGridPanel.js
     dragLayersOrServers: 'Drag layers or Servers to the menu tree',
 
@@ -110,7 +103,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
         dataParameters: 'Data Parameters'
     },
 
-    // Search form
+    // Search
     boundingBoxDescription: 'Bounding Box',
     boundingBoxDescriptionNcWms: 'Bounding Area',
     maxExtentOfPolygon: "Max extent of polygon",
@@ -119,16 +112,20 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     westBL: 'W',
     southBL: 'S',
     keyword: 'Keyword',
-    parameter: 'Parameter',
-    organisation: 'Organisation',
-    downloads: 'Downloads',
     mapLayers: 'Map Collections',
     mapLayer: 'Map Collections',
-    precision: 'Precision',
     emptySpatialBL: 'enter',
     goButton: 'Go',
     clearButton: 'Clear',
     fullTextSearch: 'What are you looking for?',
+
+    // FacetedSearchResultsDataView.js
+    searchPlatformText: ' ',
+    searchOrganisationText: ' ',
+    searchDateText: ' ',
+    searchParametersText: ' ',
+    temporalExtentDateFormat: 'YYYY',
+    metadataLink: 'full metadata',
 
     // errors
     errorDialogTitle: 'Error',
