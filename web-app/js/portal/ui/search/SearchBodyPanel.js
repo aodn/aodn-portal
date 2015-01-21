@@ -20,8 +20,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
 
         this.searchResultsPanel = new Portal.search.FacetedSearchResultsPanel({
             searcher: this.searcher,
-            store: this.resultsStore,
-            classificationStore: cfg.classificationStore
+            store: this.resultsStore
         });
 
         var config = Ext.apply({

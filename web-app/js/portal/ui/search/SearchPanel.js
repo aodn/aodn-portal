@@ -28,7 +28,6 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
         });
 
         this.resultsStore = new Portal.data.GeoNetworkRecordStore();
-        this.classificationStore = new Portal.data.TermClassificationStore();
 
         var filtersPanelConfig = {
             searcher: this.searcher,
@@ -45,7 +44,6 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
             region: 'center',
             unstyled: true,
             resultsStore: this.resultsStore,
-            classificationStore: this.classificationStore,
             searcher: this.searcher
         });
 
@@ -73,7 +71,6 @@ Portal.ui.search.SearchPanel = Ext.extend(Ext.Panel, {
     },
 
     _loadResults: function(response, page) {
-        this.classificationStore.loadData(response);
         this.resultsStore.startRecord = page.from - 1;
         this.resultsStore.loadData(response);
     }
