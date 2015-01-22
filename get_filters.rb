@@ -75,9 +75,14 @@ end
 
 def get_layer_id(portal, geoserver, layer)
   url = "#{portal}/layer/findLayerAsJson?serverUri=#{URI::encode(geoserver)}&name=#{URI::encode(layer)}"
-  layer_info = URI.parse(url).read
-  layer_info_json = JSON.parse(layer_info)
-  return layer_info_json['id']
+  begin
+    layer_info = URI.parse(url).read
+    layer_info_json = JSON.parse(layer_info)
+    return layer_info_json['id']
+  rescue
+    $logger.info "Layer '#{layer}' does not exist"
+    return nil
+  end
 end
 
 def get_filters(portal, layer_id)
