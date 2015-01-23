@@ -92,16 +92,19 @@ def get_filters(portal, layer_id)
   return filters_json
 end
 
-def filter_json_to_xml(filters)
+def filter_json_to_xml(filters, opts)
   builder = Nokogiri::XML::Builder.new do |xml|
     xml.filters {
       filters.each do |filter|
         xml.filter {
-          xml.label         filter['label']
-          xml.name          filter['name']
-          xml.type          filter['type']
-          xml.visualised    !filter['downloadOnly']
-          if filter['possibleValues']
+          xml.name                 filter['name']
+          xml.type                 filter['type']
+          xml.label                filter['label']
+          xml.visualised           !filter['downloadOnly']
+          xml.excludedFromDownload false
+
+          # Output values only if requested to
+          if opts[:values] && filter['possibleValues']
             xml.values {
               filter['possibleValues'].each do |value|
                 xml.value value
@@ -129,7 +132,7 @@ def get_filters_main(opts)
     layer_id = get_layer_id(opts[:portal], opts[:geoserver], layer)
     if layer_id
       filters = get_filters(opts[:portal], layer_id)
-      filters_xml = filter_json_to_xml(filters)
+      filters_xml = filter_json_to_xml(filters, opts)
 
       if output_dir
         workspace = layer.split(":")[0]
@@ -176,6 +179,9 @@ EOS
   opt :dir, "Directory to write filters to",
     :type  => :string,
     :short => '-d'
+  opt :values, "Dump possible values",
+    :type  => :boolean,
+    :short => '-v'
 end
 
 if __FILE__ == $0
