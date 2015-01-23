@@ -21,3 +21,4 @@ plugins
 !.idea/codeStyleSettings.xml
 
 filters/**
+filters-no-values/**
