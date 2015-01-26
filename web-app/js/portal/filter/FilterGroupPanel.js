@@ -281,9 +281,10 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         this.add(this._getVerticalSpacer(15));
         this.add(this.clearFiltersButton);
         this.add(this._getVerticalSpacer(25));
-        this.doLayout();
 
-        this.show();
+        if (this._isDisplayed()) {
+            this.doLayout();
+        }
     },
 
     _hide: function(hideFunction, hideFunctionTarget) {
@@ -368,5 +369,17 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _layerShouldBeHandled: function() {
         return !(this.layerIsBeingHandled || this._layerHasBeenHandled());
+    },
+    
+    _isDisplayed: function() {
+        var foundHiddenParent = false;
+        
+        this.bubble(function() {
+            if (this.isVisible && !this.isVisible()) {
+                foundHiddenParent = true;
+            }
+        });
+        
+        return !foundHiddenParent;
     }
 });
