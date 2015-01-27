@@ -9,9 +9,9 @@ Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
-    MINIMAP_HEIGHT: 101,
-    MINIMAP_WIDTH: 180, // 16:9 ratio http://size43.com/jqueryVideoTool.html
-    MINIMAP_PADDING: 8,
+    MINIMAP_HEIGHT: 90,
+    MINIMAP_WIDTH: 160, // 16:9 ratio http://size43.com/jqueryVideoTool.html
+    MINIMAP_PADDING: 4,
     MAP_ID_PREFIX: "facetedSearchMap",
 
     DATE_FACET_INPUT_FORMAT: 'YYYY-MM-DDtHH:mm:ss:SSSz',
@@ -24,9 +24,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         var tpl = new Ext.XTemplate(
             '<tpl for=".">',
-            '<div>',
-            '    <div class="x-panel-header resultsHeaderBackground">',
-            '        <h3 class="resultsRowHeader">{[this.getTitle(values)]}</h3>',
+            '<div class="resultsHeaderBackground">',
+            '    <div class="x-panel-header">',
+            '        <div class="resultsRowHeaderTitle"><h3>{[this.getTitle(values)]}</h3></div>',
             '        <div class="facetedSearchBtn" id="fsSearchAddBtn{[this.encode(values)]}">',
             '            {[this.getButton(values)]}',
             '        </div>',
@@ -38,11 +38,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '            {[this.getMiniMap(values)]}',
             '        </div>' +
             '        <div class="x-panel x-box-item resultsTextBody {[this.getStatusClasses(values)]}" style="left:{[this.textBodyLeftMargin]}px; ">',
-            '            {[this.getParametersAsHtml(values)]}',
-            '            <p class="resultsTextBody">',
+            '            <h5 class="resultsTextBody"><i>',
             '                {[values.title]}',
             '                &nbsp;{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
-            '            </p>',
+            '            </i></h5>',
+            '            {[this.getParametersAsHtml(values)]}',
             '        </div>',
             '    </div>',
             '</div>',

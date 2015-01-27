@@ -404,11 +404,11 @@ Site navigation
 }
 
 .x-btn.forwardsButton {
-    border-radius: 2px 12px 12px 2px;
+    border-radius: 2px 8px 8px 2px;
 }
 
 .x-btn.backwardsButton {
-    border-radius: 12px 0 0 12px;
+    border-radius: 8px 0 0 8px;
 }
 
 .community {
@@ -617,7 +617,7 @@ table.featureInfo caption {
 }
 
 div.olMap.miniMap{
-    border: 1px solid #eaeaea;
+    border: 1px solid #ccc;
 }
 
 div.olMap.miniMap:hover:not(.x-item-disabled) {
@@ -1177,25 +1177,35 @@ div.allwhite {
 }
 
 .resultsHeaderBackground {
-    background-color: #E8E8E8;
-    padding-left: 10px;
-    margin-right: 2px;
-    border-radius: 4px 4px 0 4px;
+    padding: 0;
+    margin-bottom: 5px;
 }
 
-.resultsHeaderBackground:hover,
+.resultsHeaderBackground .x-panel-header {
+    padding: 0 5px;
+}
+
 .downloadEmailPanel {
     background-color: #eeeeee;
 }
 
 .facetedSearchBtn {
-    float: right;
+    float: left;
     margin-right: 10px;
 }
 
-.resultsRowHeader {
+.resultsRowHeaderTitle {
     float: left;
-    line-height: 25px;
+    width: 540px;
+    background-color: #E8E8E8;
+    margin-top: 3px;
+    padding: 2px 10px;
+    margin-right: 5px;
+}
+
+.resultsRowHeaderTitle h3 {
+    font-weight: normal;
+    font-style: italic;
 }
 
 .resultsTextBody {
