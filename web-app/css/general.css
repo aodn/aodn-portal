@@ -1222,10 +1222,6 @@ div.allwhite {
     width: 70%;
 }
 
-.downloadPanelResultsWrapper.resultsTextMsgs {
-    width: 220px;
-}
-
 .navigationButton div {
     vertical-align: middle;
 }
@@ -1437,3 +1433,7 @@ div.allwhite {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
+
+
