@@ -1203,6 +1203,10 @@ div.allwhite {
     margin-right: 5px;
 }
 
+.resultsRowHeaderTitle.downloads {
+    width: 780px;
+}
+
 .resultsRowHeaderTitle h3 {
     font-weight: normal;
     font-style: italic;
