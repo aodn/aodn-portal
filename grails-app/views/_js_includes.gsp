@@ -80,7 +80,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'MenuTreeLoader.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'SuggestionStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/data', file: 'LinkStore.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/search/data', file: 'FacetStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/data', file: 'GeoNetworkSearchResponseLoader.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'FreeText.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'DateRange.js')}"></script>

@@ -34,8 +34,6 @@ describe('Portal.service.CatalogSearcher', function() {
         });
 
         it('fires searchcomplete on successful search', function() {
-            var summaryNode = {};
-            spyOn(searcher, 'getSummaryNode').andReturn(summaryNode);
             var page = {};
             searcher._onSuccessfulSearch(page, null, null, response);
             expect(searcher.fireEvent).toHaveBeenCalledWith(
@@ -140,20 +138,5 @@ describe('Portal.service.CatalogSearcher', function() {
 
             expect(loader.load).toHaveBeenCalledWith(rootNode);
         });
-    });
-
-    it('finds summary node', function() {
-        var rootNode = new Ext.tree.TreeNode({
-            tagName: 'response'
-        });
-
-        var summaryNode = new Ext.tree.TreeNode({
-            tagName: 'summary'
-        });
-
-        rootNode.appendChild(summaryNode);
-        searcher.searchResultRootNode = rootNode;
-
-        expect(searcher.getSummaryNode()).toBe(summaryNode);
     });
 });
