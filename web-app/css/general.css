@@ -1236,6 +1236,11 @@ div.allwhite {
     width: 780px;
 }
 
+.resultsRowHeaderTitle h3 {
+    font-weight: normal;
+    font-style: italic;
+}
+
 .resultsRowHeaderTitle * {
     margin: 2px 0;
     display: inline-block;
@@ -1470,7 +1475,7 @@ div.drilldown-separator {
 div.hierarchicalTree:first-child div.drilldown-separator {
     height: 0;
     margin: 0;
-} 
+}
 
 div.tool-plus-disabled {
     opacity: 0.5;
