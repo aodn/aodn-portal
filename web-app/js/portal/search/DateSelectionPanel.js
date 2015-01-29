@@ -14,7 +14,7 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
 
         this.titleText = cfg.title;
 
-        if (cfg.title) cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
+        if (cfg.title) cfg.title = '<span class="filter-selection-panel-header">' + cfg.title + '</span>';
 
         if (!cfg.separator)
             cfg.separator = "|";
@@ -29,7 +29,7 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             layout: 'form',
-            cls: 'search-filter-panel term-selection-panel',
+            cls: 'search-filter-panel filter-selection-panel',
             items: [
                 this.dateRange = new Portal.search.field.FacetedDateRange(),
 
@@ -116,13 +116,13 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     },
 
     setSelectedSubTitle: function(subtitle) {
-        var newTitle = '<span class="term-selection-panel-header-selected">' + this.titleText + '</span>';
+        var newTitle = '<span class="filter-selection-panel-header-selected">' + this.titleText + '</span>';
         newTitle += " - " + subtitle;
         this.setTitle(newTitle);
     },
 
     removeSelectedSubTitle: function() {
-        var newTitle = '<span class="term-selection-panel-header">' + this.titleText + '</span>';
+        var newTitle = '<span class="filter-selection-panel-header">' + this.titleText + '</span>';
         this.setTitle(newTitle);
     },
 

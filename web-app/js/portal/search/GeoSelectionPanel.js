@@ -17,7 +17,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
 
         this.titleText = cfg.title;
 
-        if (cfg.title) cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
+        if (cfg.title) cfg.title = '<span class="filter-selection-panel-header">' + cfg.title + '</span>';
 
         if (!cfg.separator)
             cfg.separator = "|";
@@ -39,7 +39,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             layout:'form',
-            cls:'search-filter-panel term-selection-panel',
+            cls:'search-filter-panel filter-selection-panel',
             items:[
                 this.facetMap,
                 new Ext.Container({

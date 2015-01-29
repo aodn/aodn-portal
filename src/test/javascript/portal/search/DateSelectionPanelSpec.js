@@ -40,7 +40,7 @@ describe("Portal.search.DateSelectionPanel", function()
     it("has title with header css class", function() {
         var dateFilter = buildMockSelectionPanel();
 
-        expect(dateFilter.title.contains('<span class="term-selection-panel-header">' + "Date Filter" + '</span>')).toBeTruthy();
+        expect(dateFilter.title.contains('<span class="filter-selection-panel-header">' + "Date Filter" + '</span>')).toBeTruthy();
     });
 
     describe("setSelectedSubTitle", function() {
@@ -49,7 +49,7 @@ describe("Portal.search.DateSelectionPanel", function()
 
             dateFilter.setSelectedSubTitle("sub");
 
-            expect(dateFilter.title.contains('<span class="term-selection-panel-header-selected">' + "Date Filter" + '</span>')).toBeTruthy();
+            expect(dateFilter.title.contains('<span class="filter-selection-panel-header-selected">' + "Date Filter" + '</span>')).toBeTruthy();
 
             expect(dateFilter.title.contains('sub')).toBeTruthy();
 
@@ -62,7 +62,7 @@ describe("Portal.search.DateSelectionPanel", function()
 
             dateFilter.removeSelectedSubTitle();
 
-            expect(dateFilter.title.contains('<span class="term-selection-panel-header">' + "Date Filter" + '</span>')).toBeTruthy();
+            expect(dateFilter.title.contains('<span class="filter-selection-panel-header">' + "Date Filter" + '</span>')).toBeTruthy();
         });
     });
 
