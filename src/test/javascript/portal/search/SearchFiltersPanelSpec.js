@@ -15,9 +15,9 @@ describe("Portal.search.SearchFiltersPanel", function() {
 
     it('initialisation', function() {
         var expectedItemTypes = [
-            Portal.search.TermSelectionPanel,
-            Portal.search.TermSelectionPanel,
-            Portal.search.TermSelectionPanel,
+            Portal.search.FacetFilterPanel,
+            Portal.search.FacetFilterPanel,
+            Portal.search.FacetFilterPanel,
             Portal.search.DateSelectionPanel,
             Portal.search.GeoSelectionPanel
         ];

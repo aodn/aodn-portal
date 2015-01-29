@@ -11,7 +11,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(config) {
 
-        this._initTermFilters(config);
+        this._initFacetFilters(config);
 
         this._buildFilter(Portal.search.DateSelectionPanel, 'dateFilter', {
             title: OpenLayers.i18n('dateFilter'),
@@ -63,11 +63,11 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         Portal.search.SearchFiltersPanel.superclass.initComponent.apply(this);
     },
 
-    _initTermFilters: function(config) {
+    _initFacetFilters: function(config) {
 
         // TODO: add these dynamically.
         this._buildFilter(
-            Portal.search.TermSelectionPanel,
+            Portal.search.FacetFilterPanel,
             'parameterFilter',
             {
                 facetName: "Measured parameter",
@@ -82,7 +82,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         );
 
         this._buildFilter(
-            Portal.search.TermSelectionPanel,
+            Portal.search.FacetFilterPanel,
             'organisationFilter',
             {
                 facetName: "Organisation",
@@ -97,7 +97,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         );
 
         this._buildFilter(
-            Portal.search.TermSelectionPanel,
+            Portal.search.FacetFilterPanel,
             'platformFilter',
             {
                 facetName: "Platform",
@@ -182,8 +182,8 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this._hideSpinnerText();
     },
 
-    _buildTermFilter: function(name, config) {
-        return this._buildFilter(Portal.ui.TermSelectionPanel, name, config);
+    _buildFacetFilter: function(name, config) {
+        return this._buildFilter(Portal.ui.FacetFilterPanel, name, config);
     },
 
     _buildFilter: function(constructor, name, config) {
@@ -195,11 +195,11 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             this.filterFactory = new Portal.ObjectFactory();
         }
 
-        var termFilter = this.filterFactory.getInstance(constructor, Ext.apply({}, config));
+        var facetFilter = this.filterFactory.getInstance(constructor, Ext.apply({}, config));
 
-        this.filters.push(termFilter);
-        this[name] = termFilter;
-        return termFilter;
+        this.filters.push(facetFilter);
+        this[name] = facetFilter;
+        return facetFilter;
     },
 
     _monitor: function(object, events, scope) {

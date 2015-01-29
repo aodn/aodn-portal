@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.search');
 
-Portal.search.TermSelectionPanel = Ext.extend(Ext.Container, {
+Portal.search.FacetFilterPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
 
@@ -17,7 +17,7 @@ Portal.search.TermSelectionPanel = Ext.extend(Ext.Container, {
 
         this.searcher = cfg.searcher;
 
-        cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
+        cfg.title = '<span class="filter-selection-panel-header">' + cfg.title + '</span>';
 
         this.defaultTreeConfig = Ext.apply({
             animate: false,
@@ -28,13 +28,13 @@ Portal.search.TermSelectionPanel = Ext.extend(Ext.Container, {
             collapsed: cfg.collapsedByDefault,
             singleExpand: true,
             rootVisible: false,
-            cls: "search-filter-panel hierarchicalTree term-selection-panel",
+            cls: "search-filter-panel hierarchicalTree filter-selection-panel",
             lines: false
         }, cfg);
 
         this.tree = this.createTree();
 
-        Portal.search.TermSelectionPanel.superclass.constructor.call(this, {
+        Portal.search.FacetFilterPanel.superclass.constructor.call(this, {
             items: [
                 this.tree
             ]

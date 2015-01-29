@@ -1115,17 +1115,17 @@ div.allwhite {
     padding: 5px 2px 5px 2px;
 }
 
-.term-selection-panel {
+.filter-selection-panel {
     margin-bottom: 3px;
 }
 
-.term-selection-panel .x-panel-header {
+.filter-selection-panel .x-panel-header {
     border-radius: 4px 4px 0 4px;
     background-color: #e8e8e8;
     padding: 10px 5px;
 }
 
-.term-selection-panel .x-panel-header:hover {
+.filter-selection-panel .x-panel-header:hover {
     background-color: #eeeeee;
 }
 
@@ -1146,11 +1146,11 @@ div.allwhite {
     margin-right: 5px;
 }
 
-.term-selection-panel-header {
+.filter-selection-panel-header {
     padding-left: 3px;
 }
 
-.search-filter-panel .term-selection-panel-header-selected {
+.search-filter-panel .filter-selection-panel-header-selected {
     color: #666;
     font-weight: bold;
     font-style: italic;
