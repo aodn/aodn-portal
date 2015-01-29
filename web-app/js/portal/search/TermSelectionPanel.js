@@ -33,7 +33,6 @@ Portal.search.TermSelectionPanel = Ext.extend(Ext.Container, {
         }, cfg);
 
         this.tree = this.createTree();
-        this.selectedNodeValueHierarchy;
 
         Portal.search.TermSelectionPanel.superclass.constructor.call(this, {
             items: [

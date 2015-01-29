@@ -81,19 +81,6 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         return this.searchResultRootNode;
     },
 
-    getSummaryNode: function() {
-
-        var summaryNode;
-
-        if (this.searchResultRootNode) {
-            summaryNode = this.searchResultRootNode.findChildBy(function(node) {
-                return node.attributes.tagName == 'summary';
-            }, this, true);
-        }
-
-        return summaryNode;
-    },
-
     getDimensionNodeByValue: function(dimensionValue) {
 
         var dimensionNode = this.searchResultRootNode.findChildBy(function(node) {
