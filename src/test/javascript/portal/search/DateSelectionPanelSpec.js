@@ -21,7 +21,8 @@ describe("Portal.search.DateSelectionPanel", function()
         };
 
         var dateFilter = new Portal.search.DateSelectionPanel({
-            title: "Date Filter",
+            title: '<span class="fontAwsomeClasses">Date Filter</span>',
+            titleText: "Date Filter",
             hierarchical: false,
             searcher: searcher
         });
@@ -35,12 +36,6 @@ describe("Portal.search.DateSelectionPanel", function()
 
     afterEach(function() {
         testWindow.close();
-    });
-
-    it("has title with header css class", function() {
-        var dateFilter = buildMockSelectionPanel();
-
-        expect(dateFilter.title.contains('<span class="term-selection-panel-header">' + "Date Filter" + '</span>')).toBeTruthy();
     });
 
     describe("setSelectedSubTitle", function() {

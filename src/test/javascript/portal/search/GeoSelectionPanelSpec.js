@@ -22,7 +22,8 @@ describe("Portal.search.GeoSelectionPanel", function() {
         };
         searcher = new Portal.service.CatalogSearcher();
         geoFilter = new Portal.search.GeoSelectionPanel({
-            title: "Geo Filter",
+            title: '<span class="fontAwsomeClasses">Date Filter</span>',
+            titleText: "Geo Filter",
             hierarchical: false,
             searcher: searcher
         });

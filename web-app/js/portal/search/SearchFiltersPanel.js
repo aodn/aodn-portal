@@ -14,7 +14,8 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this._initTermFilters(config);
 
         this._buildFilter(Portal.search.DateSelectionPanel, 'dateFilter', {
-            title: OpenLayers.i18n('dateFilter'),
+            title: this.createAwesomeTitle("fa-calendar", OpenLayers.i18n('dateFilter')),
+            titleText: OpenLayers.i18n('dateFilter'),
             hierarchical: false,
             searcher: config.searcher,
             listeners: {
@@ -24,7 +25,8 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         });
 
         this._buildFilter(Portal.search.GeoSelectionPanel, 'geoFilter', {
-            title: OpenLayers.i18n('geoFilter'),
+            title: this.createAwesomeTitle("fa-globe", OpenLayers.i18n('geoFilter')),
+            titleText: OpenLayers.i18n('geoFilter'),
             hierarchical: false,
             searcher: config.searcher,
             mapPanel: config.mapPanel,
@@ -63,6 +65,13 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         Portal.search.SearchFiltersPanel.superclass.initComponent.apply(this);
     },
 
+    createAwesomeTitle: function(fontAwesome, title) {
+        return String.format('<span class="fa fa-fw {0}"></span>' +
+            '<span class="term-selection-panel-header"> {1}</span>',
+            fontAwesome,
+            title);
+    },
+
     _initTermFilters: function(config) {
 
         // TODO: add these dynamically.
@@ -71,7 +80,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             'parameterFilter',
             {
                 facetName: "Measured parameter",
-                title: OpenLayers.i18n('parameterFilter'),
+                title: this.createAwesomeTitle("fa-cog", OpenLayers.i18n('parameterFilter')),
                 searcher: config.searcher,
                 collapsedByDefault: false,
                 listeners: {
@@ -86,7 +95,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             'organisationFilter',
             {
                 facetName: "Organisation",
-                title: OpenLayers.i18n('organisationFilter'),
+                title: this.createAwesomeTitle("fa-institution", OpenLayers.i18n('organisationFilter')),
                 searcher: config.searcher,
                 collapsedByDefault: true,
                 listeners: {
@@ -101,7 +110,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             'platformFilter',
             {
                 facetName: "Platform",
-                title: OpenLayers.i18n('platformFilter'),
+                title: this.createAwesomeTitle("fa-tags", OpenLayers.i18n('platformFilter')),
                 searcher: config.searcher,
                 collapsedByDefault: false,
                 listeners: {

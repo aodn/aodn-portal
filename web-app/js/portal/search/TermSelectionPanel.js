@@ -17,8 +17,6 @@ Portal.search.TermSelectionPanel = Ext.extend(Ext.Container, {
 
         this.searcher = cfg.searcher;
 
-        cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
-
         this.defaultTreeConfig = Ext.apply({
             animate: false,
             root: new Ext.tree.TreeNode(),

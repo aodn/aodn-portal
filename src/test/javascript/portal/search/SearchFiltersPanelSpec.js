@@ -36,7 +36,7 @@ describe("Portal.search.SearchFiltersPanel", function() {
                 'platformFilter',
                 'dateFilter',
                 'geoFilter'
-            ]
+            ];
 
             for (var i = 0; i < filters.length; i++) {
                 spyOnFilter(searchFiltersPanel[filters[i]]);
@@ -94,6 +94,14 @@ describe("Portal.search.SearchFiltersPanel", function() {
 
             var expectedTitle = OpenLayers.i18n('stepHeader', { stepNumber: 1, stepDescription: OpenLayers.i18n('step1Description') });
             expect(searchFiltersPanel.title).toEqual(expectedTitle);
+        });
+    });
+
+    describe('createAwesomeTitle function', function() {
+
+        it('exists', function() {
+            var awesomeTitle = searchFiltersPanel.createAwesomeTitle("asdsa", "createAwesomeTitle");
+            expect(awesomeTitle).toContain("<span");
         });
     });
 

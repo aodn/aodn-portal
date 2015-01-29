@@ -12,10 +12,6 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     constructor: function (cfg) {
         cfg = cfg || {};
 
-        this.titleText = cfg.title;
-
-        if (cfg.title) cfg.title = '<span class="term-selection-panel-header">' + cfg.title + '</span>';
-
         if (!cfg.separator)
             cfg.separator = "|";
 

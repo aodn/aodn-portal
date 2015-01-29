@@ -26,19 +26,22 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '<tpl for=".">',
             '<div class="resultsHeaderBackground">',
             '    <div class="x-panel-header">',
-            '        <div class="resultsRowHeaderTitle"><h3>{[this.getTitle(values)]}</h3></div>',
+            '        <div class="resultsRowHeaderTitle">',
+            '            <span class="fa fa-fw fa-cog"></span>',
+            '            <h3>{[this.getTitle(values)]}</h3>',
+            '        </div>',
             '        <div class="facetedSearchBtn" id="fsSearchAddBtn{[this.encode(values)]}">',
             '            {[this.getButton(values)]}',
             '        </div>',
             '    </div>',
-            '    <div class="x-panel-body x-box-layout-ct facetedSearchResultBody" style="height:{[this.resultBodyHeight]}px;">',
-            '         <div class="x-panel x-box-item miniMap {[this.getStatusClasses(values)]}" title="{[this.getMiniMapLinkTitle(values)]}"',
+            '    <div class="x-panel-body facetedSearchResultBody">',
+            '         <div class="x-panel miniMap {[this.getStatusClasses(values)]}" title="{[this.getMiniMapLinkTitle(values)]}"',
             '            style="height:{[this.MINIMAP_HEIGHT]}px;width:{[this.MINIMAP_WIDTH]}px;margin:{[this.MINIMAP_PADDING]}px! important"',
             '            id="{[this.MAP_ID_PREFIX]}{[this.encode(values)]}">',
             '            {[this.getMiniMap(values)]}',
             '        </div>' +
-            '        <div class="x-panel x-box-item resultsTextBody {[this.getStatusClasses(values)]}" style="left:{[this.textBodyLeftMargin]}px; ">',
-            '            <h5 class="resultsTextBody"><i>',
+            '        <div class="x-panel resultsTextBody {[this.getStatusClasses(values)]}">',
+            '            <h5><i>',
             '                {[values.title]}',
             '                &nbsp;{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
             '            </i></h5>',
@@ -154,7 +157,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
 
-        var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform');	
+        var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform');
         if(broader.length > 0) { 
             broader = broader.sort();
             broader = broader.filter( function(item, pos) {
