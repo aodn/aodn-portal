@@ -632,7 +632,7 @@ table.featureInfo caption {
     filter: alpha(opacity=0); /* IE6/IE7 */
 }
 
-div.olMap.miniMap{
+div.olMap.miniMap {
     border: 1px solid #eaeaea;
 }
 
@@ -907,7 +907,7 @@ div.olControlMousePosition {
     border-radius: 6px 0 0 6px;
     font-size: smaller ! important;
     font-weight: normal ! important;
-    color: inherit! important;
+    color: inherit ! important;
 }
 
 .olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
@@ -1249,7 +1249,7 @@ div.allwhite {
 
 .layer-loaded-button {
     visibility: hidden;
-    width:0;
+    width: 0;
 }
 
 .layer-error-button {
@@ -1268,10 +1268,11 @@ div.allwhite {
 }
 
 .activeLayerTreePanel:not(:hover) li.x-tree-node
- div:not(.x-tree-selected) * {
+div:not(.x-tree-selected) * {
     filter: url("data:image/svg+xml;utf8,<svg version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' height=\'0\'><filter id=\'greyscale\'><feColorMatrix type=\'saturate\' values=\'0\' /></filter></svg>#greyscale");
     opacity: 0.6;
 }
+
 .activeLayerTreePanel li.x-tree-node div.x-tree-selected * {
     font-weight: bold;
 }
@@ -1358,13 +1359,13 @@ div.allwhite {
 #downLoadCartWidget span {
     display: inline-flex;
     margin: 0 2px;
-    vertical-align:bottom;
+    vertical-align: bottom;
 }
 
 .cartLogo {
     height: 26px;
     width: 30px;
-    background:  url("../images/cart.png") no-repeat left top transparent;
+    background: url("../images/cart.png") no-repeat left top transparent;
 }
 
 #downloadCartSize {
@@ -1405,9 +1406,11 @@ div.allwhite {
     top: 3px;
     font-style: italic;
 }
+
 .x-menu-list-item {
     font: inherit;
 }
+
 .bboxExtentPicker .x-box-layout-ct {
     margin: 4px;
 }
@@ -1419,6 +1422,7 @@ div.allwhite {
 .legendImage {
     margin: 10px 0;
 }
+
 .legendImage img {
     background-color: #fcfcfc;
     border: 1px solid #ccc;
@@ -1427,13 +1431,9 @@ div.allwhite {
 
 .smallFieldLabel label {
     width: 50px;
-   }
+}
 
 .x-tree-node-el {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
-
-
-
