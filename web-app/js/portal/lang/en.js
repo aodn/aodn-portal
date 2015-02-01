@@ -289,5 +289,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     trackingInitLabel: 'created-init',
     trackingTypedBboxLabel: 'typedBbox',
     facetTrackingCategory: "Facets",
-    goButtonTrackingLabel: "Go"
+    goButtonTrackingLabel: "Go",
+
+    shareButton: "New portal with only this collection"
 });

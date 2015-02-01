@@ -16,7 +16,6 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getHtmlContent: function() {
-
         return [
             '<div class="downloadPanelResultsWrapper">',
             '  <div class="x-panel-header resultsHeaderBackground">',
@@ -29,7 +28,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             '      <div class="resultsTextBody">',
             '        {[this._getDataFilterEntry(values)]}',
             '      </div>',
-            '      <div class="floatLeft resultsTextBody">',
+            '      <div class="resultsTextBody">',
             '        <div>',
             '          {[this._getPointOfTruthLinkEntry(values)]}',
             '        </div>',
@@ -38,8 +37,9 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             '        </div>',
             '      </div>',
             '    </div>',
-            '    <div class="floatRight" id="resultsTextMsgs-{uuid}" style="padding-top:4px">',
-            '      {[this._dataSpecificMarkup(values)]}',
+            '    <div class="floatRight resultsTextBody">',
+            '      {[this._dataSpecificMarkup(values)]}<br>',
+            '      {[this._shareButtonMarkup(values)]}',
             '    </div>',
             '  </div>',
             '</div>'
@@ -48,6 +48,16 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     _getRecordTitle: function(values) {
         return values.title;
+    },
+
+    _shareButtonMarkup: function(values) {
+        return String.format(
+            '      <span class="fa fa-fw fa-share-alt fa-lg"></span>' +
+            '      <input readonly onclick="this.focus();this.select();" title="{0}" value="{1}?uuid={2}" />',
+            OpenLayers.i18n('shareButton'),
+            Portal.app.appConfig.grails.serverURL,
+            values.uuid
+        );
     },
 
     _getDataFilterEntry: function(values) {

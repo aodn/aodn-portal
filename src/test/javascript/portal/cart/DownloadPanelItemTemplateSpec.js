@@ -14,6 +14,8 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         tpl = new Portal.cart.DownloadPanelItemTemplate();
 
+        Portal.app.appConfig.grails = {serverURL: "munt"};
+
         mockDataInjection = {
             uuid: '42',
             title: 'the title',
@@ -56,6 +58,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             spyOn(tpl, '_getPointOfTruthLinkEntry');
             spyOn(tpl, '_getFileListEntries');
             spyOn(tpl, '_dataSpecificMarkup');
+            spyOn(tpl, '_shareButtonMarkup');
             tpl.apply(mockDataInjection);
         });
 
@@ -85,6 +88,10 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         it('creates data specific markup', function() {
             expect(tpl._dataSpecificMarkup).toHaveBeenCalled();
+        });
+
+        it('creates share button markup', function() {
+            expect(tpl._shareButtonMarkup).toHaveBeenCalled();
         });
     });
 
