@@ -26,7 +26,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '<tpl for=".">',
             '<div class="resultsHeaderBackground">',
             '    <div class="x-panel-header">',
-            '        <div class="resultsRowHeaderTitle"><h3>{[this.getTitle(values)]}</h3></div>',
+            '        <div class="resultsRowHeaderTitle">',
+            '            <h3>{[values.title]}</h3>',
+            '        </div>',
             '        <div class="facetedSearchBtn" id="fsSearchAddBtn{[this.encode(values)]}">',
             '            {[this.getButton(values)]}',
             '        </div>',
@@ -37,6 +39,8 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '            id="{[this.MAP_ID_PREFIX]}{[this.encode(values)]}">',
             '            {[this.getMiniMap(values)]}',
             '        </div>' +
+            '        <div class="x-panel resultsTextBody {[this.getStatusClasses(values)]}">',
+            '            <h5 class="floatRight"><i>{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
             '        <div class="x-panel x-box-item resultsTextBody {[this.getStatusClasses(values)]}" style="left:{[this.textBodyLeftMargin]}px; ">',
             '            <h5 class="resultsTextBody"><i>',
             '                {[values.title]}',
@@ -61,19 +65,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 },
                 getMiniMapLinkTitle: function(values) {
                     return (this.isRecActive(values.uuid)) ? OpenLayers.i18n('collectionExistsMsg') : OpenLayers.i18n("addDataCollectionMsg");
-                },
-                getTitle: function(values) {
-                    var broader = [];  
-                    Ext.each(values.parameter, function(param) {
-                        var broaderTerms = this.classificationStore.getBroaderTerms(param, 2, 'Measured parameter');
-                        if(broaderTerms.length > 0) { 
-                            broader = broader.concat(broaderTerms); 
-                        }
-                    }, this);
-                    broader = broader.sort();
-                    return broader.filter( function(item, pos) {
-                        return !pos || item != broader[pos - 1];
-                    }).join( ', ');
                 }
             }
         );
@@ -129,6 +120,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         );
         var html = "";
 
+        html += this._getMeasuredParametersAsHtml(paramTpl, values);
         html += this._getOrganisationAsHtml(paramTpl, values.organisation);
         html += this._getPlatformAsHtml(paramTpl, values.platform);
         html += this._getTemporalExtentAsHtml(paramTpl, {
@@ -137,6 +129,31 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         });
 
         return html;
+    },
+
+    _getMeasuredParametersAsHtml: function(template, values) {
+        var label = this._buildLabel("fa-cog", OpenLayers.i18n('searchParametersText'));
+        if (values.parameter) {
+            return template.apply({
+                "label": label,
+                "value": this.getMeasuredParameters(values)
+            });
+        }
+        return "";
+    },
+
+    getMeasuredParameters: function(values) {
+        var broader = [];
+        Ext.each(values.parameter, function(param) {
+            var broaderTerms = this.classificationStore.getBroaderTerms(param, 2, 'Measured parameter');
+            if(broaderTerms.length > 0) {
+                broader = broader.concat(broaderTerms);
+            }
+        }, this);
+        broader = broader.sort();
+        return broader.filter( function(item, pos) {
+            return !pos || item != broader[pos - 1];
+        }).join( ', ');
     },
 
     _getOrganisationAsHtml: function(template, organisation) {
