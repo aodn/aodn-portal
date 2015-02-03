@@ -50,17 +50,17 @@ describe("Portal.search.FacetFilterPanel", function() {
 
     describe('on search complete', function() {
         it('sets root node', function() {
-            var dimensionNode = {
+            var facetNode = {
                 eachNodeRecursive: function() {return true;}
             };
             spyOn(selectionPanel.tree, 'setRootNode');
-            searcher.getDimensionNodeByValue = function() {
-                return dimensionNode;
+            searcher.getFacetNode = function() {
+                return facetNode;
             };
 
             selectionPanel._onSearchComplete();
 
-            expect(selectionPanel.tree.setRootNode).toHaveBeenCalledWith(dimensionNode);
+            expect(selectionPanel.tree.setRootNode).toHaveBeenCalledWith(facetNode);
         });
     });
 

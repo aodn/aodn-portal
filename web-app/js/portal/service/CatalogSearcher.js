@@ -63,8 +63,8 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
             }
         });
 
-        this.searchResultRootNode = new Ext.tree.TreeNode();
-        searchResponseLoader.load(this.getSearchResultRootNode());
+        this._searchResultRootNode = new Ext.tree.TreeNode();
+        searchResponseLoader.load(this._searchResultRootNode);
     },
 
     // TODO: this function only exists because I didn't have any luck spying
@@ -73,21 +73,16 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         return new Portal.ui.search.data.GeoNetworkSearchResponseLoader(loaderConfig);
     },
 
-    getSearchResultRootNode: function() {
-
-        if (!this.searchResultRootNode) {
-            this.searchResultRootNode = new Ext.tree.TreeNode();
-        }
-        return this.searchResultRootNode;
-    },
-
-    getDimensionNodeByValue: function(dimensionValue) {
-
-        var dimensionNode = this.searchResultRootNode.findChildBy(function(node) {
-            return node.attributes.tagName == 'dimension' && node.attributes.value == dimensionValue;
-        }, this, true);
-
-        return dimensionNode;
+    getFacetNode: function(facetName) {
+	    var facetNode = this._searchResultRootNode.findChildBy(function(node) {
+	        return node.attributes.tagName == 'dimension' && node.attributes.value == facetName;
+	    }, this, true);
+	
+	    if (!facetNode) {
+	    	return null;
+	    }
+	    
+	    return facetNode.clone(true);
     },
 
     goToPage: function(start, limit) {
