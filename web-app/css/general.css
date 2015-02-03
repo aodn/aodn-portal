@@ -1153,7 +1153,7 @@ div.allwhite {
 
 .resultsTextBody {
     margin: 5px;
-    width: 580px;
+    width: 560px;
 }
 
 .resultsTextBody h5 {
@@ -1222,8 +1222,6 @@ div.allwhite {
 }
 
 .resultsRowHeaderTitle * {
-    font-weight: normal! important;
-    font-style: italic;
     margin: 2px 0;
     display: inline-block;
 }
