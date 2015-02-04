@@ -189,5 +189,5 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/openId', file: 'Popup.js')}"></script>
 </g:if>
 <g:else>
-    <script src="${resource(dir: 'js', file: 'portal-all.js')}?v=${jsVerNum}" type="text/javascript"></script>
+    <script src="${resource(dir: 'js', file: 'portal-all.js')}?v=${resourceVersionNumber}" type="text/javascript"></script>
 </g:else>
