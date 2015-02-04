@@ -909,7 +909,7 @@ div.olControlMousePosition {
     border-radius: 6px 0 0 6px;
     font-size: smaller ! important;
     font-weight: normal ! important;
-    color: inherit ! important;
+    color: inherit! important;
 }
 
 .olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
@@ -1162,8 +1162,9 @@ div.allwhite {
     overflow: auto;
 }
 
-.resultsTextBody .x-panel-header {
-    font-size: 13px;
+.facetedSearchResultBody .minimap,
+.facetedSearchResultBody .resultsTextBody{
+    float: left;
 }
 
 .resultsTextBody {
@@ -1223,11 +1224,12 @@ div.allwhite {
 
 .resultsRowHeaderTitle {
     float: left;
-    width: 540px;
+    width: 620px;
     background-color: #E8E8E8;
-    margin-top: 3px;
-    padding: 2px 10px;
+    margin-top: 1px;
+    padding: 1px 10px 2px 5px;
     margin-right: 5px;
+    border-radius: 3px 0 0 3px;
 }
 
 .resultsRowHeaderTitle.downloads {
@@ -1237,10 +1239,6 @@ div.allwhite {
 .resultsRowHeaderTitle * {
     margin: 2px 0;
     display: inline-block;
-}
-
-.resultsTextBody {
-    margin: 5px;
 }
 
 .downloadPanelResultsWrapper.dataFilterEntry {
@@ -1431,7 +1429,6 @@ div:not(.x-tree-selected) * {
     top: 3px;
     font-style: italic;
 }
-
 .x-menu-list-item {
     font: inherit;
 }
@@ -1461,4 +1458,9 @@ div:not(.x-tree-selected) * {
 .x-tree-node-el {
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* font Awesome icons */
+.fa {
+    opacity: 0.8;
 }

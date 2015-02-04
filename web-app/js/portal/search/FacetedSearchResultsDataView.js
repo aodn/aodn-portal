@@ -33,18 +33,14 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '            {[this.getButton(values)]}',
             '        </div>',
             '    </div>',
-            '    <div class="x-panel-body x-box-layout-ct facetedSearchResultBody" style="height:{[this.resultBodyHeight]}px;">',
-            '         <div class="x-panel x-box-item miniMap {[this.getStatusClasses(values)]}" title="{[this.getMiniMapLinkTitle(values)]}"',
+            '    <div class="x-panel-body facetedSearchResultBody">',
+            '         <div class="x-panel miniMap {[this.getStatusClasses(values)]}" title="{[this.getMiniMapLinkTitle(values)]}"',
             '            style="height:{[this.MINIMAP_HEIGHT]}px;width:{[this.MINIMAP_WIDTH]}px;margin:{[this.MINIMAP_PADDING]}px! important"',
             '            id="{[this.MAP_ID_PREFIX]}{[this.encode(values)]}">',
             '            {[this.getMiniMap(values)]}',
             '        </div>' +
             '        <div class="x-panel resultsTextBody {[this.getStatusClasses(values)]}">',
             '            <h5 class="floatRight"><i>{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
-            '        <div class="x-panel x-box-item resultsTextBody {[this.getStatusClasses(values)]}" style="left:{[this.textBodyLeftMargin]}px; ">',
-            '            <h5 class="resultsTextBody"><i>',
-            '                {[values.title]}',
-            '                &nbsp;{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
             '            </i></h5>',
             '            {[this.getParametersAsHtml(values)]}',
             '        </div>',
@@ -157,31 +153,39 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     _getOrganisationAsHtml: function(template, organisation) {
+        var label = this._buildLabel("fa-institution", OpenLayers.i18n('searchOrganisationText'));
         if (organisation) {
             return template.apply({
-                "label": OpenLayers.i18n('organisation'),
+                "label": label,
                 "value": organisation.join(', ')
             });
         }
-
         return "";
     },
 
     _getPlatformAsHtml: function(template, platform) {
+
         var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
-        if (platform) {
+
+        var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform');
+        if(broader.length > 0) {
+            broader = broader.sort();
+            broader = broader.filter( function(item, pos) {
+                return !pos || item != broader[pos - 1];
+            });
             return template.apply({
                 "label": label,
-                "value": platform
+                "value": broader.join( ', ')
             });
         }
         return "";
     },
 
     _getTemporalExtentAsHtml: function(template, temporalExtent) {
+        var label = this._buildLabel("fa-calendar", OpenLayers.i18n('searchDateText'));
         if (temporalExtent.begin && temporalExtent.end) {
             return template.apply({
-                "label": OpenLayers.i18n('parameterDateLabel'),
+                "label": label,
                 "value": String.format(
                     "{0} - {1}",
                     this._formatTemporalExtentDateString(temporalExtent.begin),
@@ -189,30 +193,20 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 )
             });
         }
+        return "";
+    },
 
     _buildLabel: function(fontAwesomeClass, text) {
         return "<span class=\"fa fa-fw " + fontAwesomeClass + "\"></span> " + text;
     },
 
     _formatTemporalExtentDateString: function(dateString) {
-
         var dateFormat = OpenLayers.i18n('temporalExtentDateFormat');
         return this._parseTemporalExtentDateString(dateString).format(dateFormat);
     },
 
     _parseTemporalExtentDateString: function(dateString) {
         return moment(dateString, this.DATE_FACET_INPUT_FORMAT);
-    },
-
-    _getParametersAsHtml: function(template, parameters) {
-        if (parameters.length > 0) {
-            return template.apply({
-                "label": OpenLayers.i18n('parameters'),
-                "value": parameters.join(" | ")
-            });
-        }
-
-        return "";
     },
 
     createButton: function(uuid, storeRowIndex) {
