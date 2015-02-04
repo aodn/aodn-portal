@@ -27,14 +27,14 @@ class HomeController {
 
         [
             configInstance: Config.activeInstance(),
-            jsVerNum: grailsApplication.metadata.'app.version',
+            resourceVersionNumber: grailsApplication.metadata.'app.version',
             portalBranding: portalBranding
         ]
     }
 
     def config = {
 
-        // Workaround a problem converting to JSON (trying to convert the filtered 
+        // Workaround a problem converting to JSON (trying to convert the filtered
         // items results in an exception - the keys defined in CONFIG_KEYS_TO_IGNORE
         // contain closures, which don't play well when with JSON converters.
         def filteredConfig = grailsApplication.config.findAll {
