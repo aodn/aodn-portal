@@ -86,7 +86,9 @@ input.readonlyInput {
 }
 
 .faceted-search-results {
-    box-shadow: 0 0 10px 0 #ccc;
+    box-shadow: inset 6px 1px 10px 2px #eee;
+    border-radius: 3px;
+    padding: 10px 6px;
 }
 
 #activeTreePanel input {
@@ -420,11 +422,11 @@ Site navigation
 }
 
 .x-btn.forwardsButton {
-    border-radius: 2px 12px 12px 2px;
+    border-radius: 2px 8px 8px 2px;
 }
 
 .x-btn.backwardsButton {
-    border-radius: 12px 0 0 12px;
+    border-radius: 8px 0 0 8px;
 }
 
 .community {
@@ -632,8 +634,8 @@ table.featureInfo caption {
     filter: alpha(opacity=0); /* IE6/IE7 */
 }
 
-div.olMap.miniMap {
-    border: 1px solid #eaeaea;
+div.olMap.miniMap{
+    border: 1px solid #ccc;
 }
 
 div.olMap.miniMap:hover:not(.x-item-disabled) {
@@ -907,7 +909,7 @@ div.olControlMousePosition {
     border-radius: 6px 0 0 6px;
     font-size: smaller ! important;
     font-weight: normal ! important;
-    color: inherit ! important;
+    color: inherit! important;
 }
 
 .olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
@@ -1160,8 +1162,18 @@ div.allwhite {
     overflow: auto;
 }
 
-.resultsTextBody .x-panel-header {
-    font-size: 13px;
+.facetedSearchResultBody .minimap,
+.facetedSearchResultBody .resultsTextBody{
+    float: left;
+}
+
+.resultsTextBody {
+    margin: 5px;
+    width: 560px;
+}
+
+.resultsTextBody h5 {
+    margin: 5px;
 }
 
 .faceted-search-disclaimer {
@@ -1193,29 +1205,40 @@ div.allwhite {
 }
 
 .resultsHeaderBackground {
-    background-color: #E8E8E8;
-    padding-left: 10px;
-    margin-right: 2px;
-    border-radius: 4px 4px 0 4px;
+    padding: 0;
+    margin-bottom: 5px;
 }
 
-.resultsHeaderBackground:hover,
+.resultsHeaderBackground .x-panel-header {
+    padding: 0 5px;
+}
+
 .downloadEmailPanel {
     background-color: #eeeeee;
 }
 
 .facetedSearchBtn {
-    float: right;
+    float: left;
     margin-right: 10px;
 }
 
-.resultsRowHeader {
+.resultsRowHeaderTitle {
     float: left;
-    line-height: 25px;
+    width: 620px;
+    background-color: #E8E8E8;
+    margin-top: 1px;
+    padding: 1px 10px 2px 5px;
+    margin-right: 5px;
+    border-radius: 3px 0 0 3px;
 }
 
-.resultsTextBody {
-    margin: 5px;
+.resultsRowHeaderTitle.downloads {
+    width: 780px;
+}
+
+.resultsRowHeaderTitle * {
+    margin: 2px 0;
+    display: inline-block;
 }
 
 .downloadPanelResultsWrapper.dataFilterEntry {
@@ -1406,7 +1429,6 @@ div:not(.x-tree-selected) * {
     top: 3px;
     font-style: italic;
 }
-
 .x-menu-list-item {
     font: inherit;
 }
@@ -1436,4 +1458,9 @@ div:not(.x-tree-selected) * {
 .x-tree-node-el {
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* font Awesome icons */
+.fa {
+    opacity: 0.8;
 }

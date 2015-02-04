@@ -9,9 +9,9 @@ Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
-    MINIMAP_HEIGHT: 101,
-    MINIMAP_WIDTH: 180, // 16:9 ratio http://size43.com/jqueryVideoTool.html
-    MINIMAP_PADDING: 8,
+    MINIMAP_HEIGHT: 90,
+    MINIMAP_WIDTH: 160, // 16:9 ratio http://size43.com/jqueryVideoTool.html
+    MINIMAP_PADDING: 4,
     MAP_ID_PREFIX: "facetedSearchMap",
 
     DATE_FACET_INPUT_FORMAT: 'YYYY-MM-DDtHH:mm:ss:SSSz',
@@ -24,27 +24,25 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         var tpl = new Ext.XTemplate(
             '<tpl for=".">',
-            '<div>',
-            '    <div class="x-panel-header resultsHeaderBackground">',
-            '        <h3 class="resultsRowHeader">{title}</h3>',
+            '<div class="resultsHeaderBackground">',
+            '    <div class="x-panel-header">',
+            '        <div class="resultsRowHeaderTitle">',
+            '            <h3>{[values.title]}</h3>',
+            '        </div>',
             '        <div class="facetedSearchBtn" id="fsSearchAddBtn{[this.encode(values)]}">',
             '            {[this.getButton(values)]}',
             '        </div>',
             '    </div>',
-            '    <div class="x-panel-body x-box-layout-ct facetedSearchResultBody" style="height:{[this.resultBodyHeight]}px;">',
-            '         <div class="x-panel x-box-item miniMap {[this.getStatusClasses(values)]}" title="{[this.getMiniMapLinkTitle(values)]}"',
+            '    <div class="x-panel-body facetedSearchResultBody">',
+            '         <div class="x-panel miniMap {[this.getStatusClasses(values)]}" title="{[this.getMiniMapLinkTitle(values)]}"',
             '            style="height:{[this.MINIMAP_HEIGHT]}px;width:{[this.MINIMAP_WIDTH]}px;margin:{[this.MINIMAP_PADDING]}px! important"',
             '            id="{[this.MAP_ID_PREFIX]}{[this.encode(values)]}">',
             '            {[this.getMiniMap(values)]}',
             '        </div>' +
-            '        <div class="x-panel x-box-item resultsTextBody {[this.getStatusClasses(values)]}" style="left:{[this.textBodyLeftMargin]}px; ">',
+            '        <div class="x-panel resultsTextBody {[this.getStatusClasses(values)]}">',
+            '            <h5 class="floatRight"><i>{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
+            '            </i></h5>',
             '            {[this.getParametersAsHtml(values)]}',
-            '            <p class="resultsTextBody">',
-            '                <i>',
-            '                    {[this.trimAbstract(values.abstract,30)]}',
-            '                </i>',
-            '                &nbsp;{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
-            '            </p>',
             '        </div>',
             '    </div>',
             '</div>',
@@ -113,48 +111,81 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     getParametersAsHtml: function(values) {
         var paramTpl = new Ext.Template(
             '<div><span class="x-panel-header">{label}</span>',
-            '   <span>- {value}</span>',
+            '   <span> {value}</span>',
             '</div>'
         );
         var html = "";
 
+        html += this._getMeasuredParametersAsHtml(paramTpl, values);
         html += this._getOrganisationAsHtml(paramTpl, values.organisation);
         html += this._getPlatformAsHtml(paramTpl, values.platform);
         html += this._getTemporalExtentAsHtml(paramTpl, {
             begin: values.temporalExtentBegin,
             end: values.temporalExtentEnd
         });
-        html += this._getParametersAsHtml(paramTpl, values.parameter);
 
         return html;
     },
 
+    _getMeasuredParametersAsHtml: function(template, values) {
+        var label = this._buildLabel("fa-cog", OpenLayers.i18n('searchParametersText'));
+        if (values.parameter) {
+            return template.apply({
+                "label": label,
+                "value": this.getMeasuredParameters(values)
+            });
+        }
+        return "";
+    },
+
+    getMeasuredParameters: function(values) {
+        var broader = [];
+        Ext.each(values.parameter, function(param) {
+            var broaderTerms = this.classificationStore.getBroaderTerms(param, 2, 'Measured parameter');
+            if(broaderTerms.length > 0) {
+                broader = broader.concat(broaderTerms);
+            }
+        }, this);
+        broader = broader.sort();
+        return broader.filter( function(item, pos) {
+            return !pos || item != broader[pos - 1];
+        }).join( ', ');
+    },
+
     _getOrganisationAsHtml: function(template, organisation) {
+        var label = this._buildLabel("fa-institution", OpenLayers.i18n('searchOrganisationText'));
         if (organisation) {
             return template.apply({
-                "label": OpenLayers.i18n('organisation'),
+                "label": label,
                 "value": organisation.join(', ')
             });
         }
-
         return "";
     },
 
     _getPlatformAsHtml: function(template, platform) {
-        if (platform) {
+
+        var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
+
+        var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform');
+        if(broader.length > 0) {
+            broader = broader.sort();
+            broader = broader.filter( function(item, pos) {
+                return !pos || item != broader[pos - 1];
+            });
             return template.apply({
-                "label": OpenLayers.i18n('platform'),
-                "value": platform
+                "label": label,
+                "value": broader.join( ', ')
             });
         }
-
         return "";
     },
 
     _getTemporalExtentAsHtml: function(template, temporalExtent) {
+        var label = this._buildLabel("fa-calendar", OpenLayers.i18n('searchDateText'));
         if (temporalExtent.begin && temporalExtent.end) {
             return template.apply({
-                "label": OpenLayers.i18n('parameterDateLabel'),
+                "label": label,
                 "value": String.format(
                     "{0} - {1}",
                     this._formatTemporalExtentDateString(temporalExtent.begin),
@@ -162,29 +193,20 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 )
             });
         }
-
         return "";
     },
 
-    _formatTemporalExtentDateString: function(dateString) {
+    _buildLabel: function(fontAwesomeClass, text) {
+        return "<span class=\"fa fa-fw " + fontAwesomeClass + "\"></span> " + text;
+    },
 
+    _formatTemporalExtentDateString: function(dateString) {
         var dateFormat = OpenLayers.i18n('temporalExtentDateFormat');
         return this._parseTemporalExtentDateString(dateString).format(dateFormat);
     },
 
     _parseTemporalExtentDateString: function(dateString) {
         return moment(dateString, this.DATE_FACET_INPUT_FORMAT);
-    },
-
-    _getParametersAsHtml: function(template, parameters) {
-        if (parameters.length > 0) {
-            return template.apply({
-                "label": OpenLayers.i18n('parameters'),
-                "value": parameters.join(" | ")
-            });
-        }
-
-        return "";
     },
 
     createButton: function(uuid, storeRowIndex) {
@@ -266,10 +288,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             }
         });
         return record;
-    },
-
-    trimAbstract: function(text, wordCount) {
-        return text.split(' ').splice(0, wordCount).join(' ') + " ... ";
     },
 
     getUniqueId: function(storeRowIndex, uuid) {
