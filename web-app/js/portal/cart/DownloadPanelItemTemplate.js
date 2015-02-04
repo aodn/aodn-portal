@@ -53,7 +53,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     _shareButtonMarkup: function(values) {
         return String.format(
             '      <span class="fa fa-fw fa-share-alt fa-lg"></span>' +
-            '      <input readonly onclick="this.focus();this.select();" title="{0}" value="{1}?uuid={2}" />',
+            '      <input readonly onclick="this.focus(); this.select();" title="{0}" value="{1}/home?uuid={2}" />',
             OpenLayers.i18n('shareButton'),
             Portal.app.appConfig.grails.serverURL,
             values.uuid
