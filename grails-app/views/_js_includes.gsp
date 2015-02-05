@@ -34,17 +34,7 @@
     <script src="${resource(dir: 'js/GeoExt1.1/script', file: 'GeoExt.js')}" type="text/javascript"></script>
 </g:else>
 
-<!-- GeoNetwork - required classes only -->
-<script src="${resource(dir: 'js/Geonetwork/lib/OpenLayers/addins/Format', file: 'GeoNetworkRecords.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js/Geonetwork/lib/GeoNetwork', file: 'Util.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js/Geonetwork/lib/GeoNetwork/lang', file: 'en.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js/Geonetwork/lib/GeoNetwork', file: 'Catalogue.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js/Geonetwork/lib/GeoNetwork/util', file: 'SearchTools.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js/Geonetwork/lib/GeoNetwork/data', file: 'OpenSearchSuggestionReader.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js/Geonetwork/lib/GeoNetwork/data', file: 'OpenSearchSuggestionStore.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js/Geonetwork/lib/GeoNetwork/map', file: 'ExtentMap.js')}" type="text/javascript"></script>
-<script src="${resource(dir: 'js/Geonetwork/lib/GeoNetwork/map/Ext.ux/form', file: 'DateTime.js')}" type="text/javascript"></script>
-
+<script src="${resource(dir: 'js/ext-ux/form', file: 'DateTime.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js/ext-ux/SuperBoxSelect', file: 'SuperBoxSelect.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js/ext-ux', file: 'ScrollTo.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js/ext-ux/Hyperlink', file: 'Hyperlink.js')}" type="text/javascript"></script>
