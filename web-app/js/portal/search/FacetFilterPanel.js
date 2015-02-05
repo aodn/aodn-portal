@@ -122,7 +122,7 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Container, {
     _onSearchComplete: function() {
 
         var that = this;
-        var rootNode = this.searcher.getDimensionNodeByValue(this.facetName);
+        var rootNode = this.searcher.getFacetNode(this.facetName);
         if (rootNode) {
 
             var nodesToKeep = [];

@@ -128,15 +128,13 @@ describe('Portal.service.CatalogSearcher', function() {
 
         it('loads loader', function() {
             var loader = new Portal.ui.search.data.GeoNetworkSearchResponseLoader();
-            var rootNode = new Ext.tree.TreeNode();
 
             spyOn(loader, 'load');
             spyOn(searcher, '_newSearchResponseLoader').andReturn(loader);
-            spyOn(searcher, 'getSearchResultRootNode').andReturn(rootNode);
 
             searcher.search();
 
-            expect(loader.load).toHaveBeenCalledWith(rootNode);
+            expect(loader.load).toHaveBeenCalled();
         });
     });
 });
