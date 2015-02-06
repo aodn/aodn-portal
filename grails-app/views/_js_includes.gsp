@@ -71,7 +71,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'SuggestionStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/data', file: 'LinkStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/data', file: 'GeoNetworkSearchResponseLoader.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'FreeText.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'DateRange.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'FacetedDateRange.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'MultiSelectCombo.js')}"></script>
@@ -135,11 +134,9 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'FeatureInfoPopup.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'Viewport.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'DownloadCartWidget.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'SelectionPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'TimeRangeLabel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/search', file: 'SearchBodyPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/search', file: 'SearchPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/ui/search', file: 'FreeTextSearchPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/service', file: 'SearchRequestLogger.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/service', file: 'CatalogSearcher.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'SearchFiltersPanel.js')}"></script>
