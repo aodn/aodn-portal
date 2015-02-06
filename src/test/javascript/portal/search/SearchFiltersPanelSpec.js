@@ -115,7 +115,8 @@ describe("Portal.search.SearchFiltersPanel", function() {
     function _mockSearcher() {
         return {
             on: noOp,
-            search: noOp
+            search: noOp,
+            hasFacetNode: function() {return false;}
         }
     }
 });

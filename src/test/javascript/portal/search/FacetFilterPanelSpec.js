@@ -7,12 +7,12 @@
 describe("Portal.search.FacetFilterPanel", function() {
 
     var searcher;
-    var selectionPanel;
+    var filterPanel;
 
     beforeEach(function() {
         searcher = new Portal.service.CatalogSearcher();
 
-        selectionPanel = new Portal.search.FacetFilterPanel({
+        filterPanel = new Portal.search.FacetFilterPanel({
             searcher: searcher,
             collapsedByDefault: false,
             el: {
@@ -22,114 +22,41 @@ describe("Portal.search.FacetFilterPanel", function() {
         });
     });
 
-    describe('search events', function() {
-        it('search complete triggers setRootNode', function() {
-            spyOn(selectionPanel, '_onSearchComplete');
-
-            searcher.fireEvent('searchcomplete');
-            expect(selectionPanel._onSearchComplete).toHaveBeenCalled();
-        });
-    });
-
-    describe('onSelectionChange', function() {
-
-        var nodeSelected = {
-            attributes: {
-                value: 'Oxygen'
-            },
-            toValueHierarchy: function() {return true;}
-        };
-
-        it('triggers track usage', function() {
-            spyOn(window, 'trackUsage');
-
-            selectionPanel._onSelectionChange('selectionchange', nodeSelected);
-            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('facetTrackingCategory'), 'Parameter', 'Oxygen');
-        });
-    });
-
-    describe('on search complete', function() {
-        it('sets root node', function() {
-            var facetNode = {
-                eachNodeRecursive: function() {return true;}
-            };
-            spyOn(selectionPanel.tree, 'setRootNode');
-            searcher.getFacetNode = function() {
-                return facetNode;
-            };
-
-            selectionPanel._onSearchComplete();
-
-            expect(selectionPanel.tree.setRootNode).toHaveBeenCalledWith(facetNode);
-        });
-    });
-
-    describe('events', function() {
-
-        var valueHierarchy = "some/drilldown/facet";
-
-        beforeEach(function() {
-            var clickedNode = {
-                toValueHierarchy: function() {
-                    return valueHierarchy;
-                },
-                hasChildNodes: function() {
-                    return false;
-                },
-                expand: function() {
-                    return true;
-                },
-                isSelected: function() {
-                    return true;
-                },
-                attributes: {
-                    value: "test"
-                }
-            };
-
+    describe('drilldownChange', function() {
+        it('calls search with selected drilldown', function() {
+            var drilldownPanel = filterPanel.items.first();
+            var selectedDrilldownPath = 'facet/category/subcategory';
+            spyOn(drilldownPanel, 'getDrilldownPath').andReturn(selectedDrilldownPath);
             spyOn(searcher, 'addDrilldownFilter');
             spyOn(searcher, 'search');
-
-            var selModel = selectionPanel.tree.getSelectionModel();
-            selModel.fireEvent('selectionchange', selModel, clickedNode);
-        });
-
-        it('adds drilldown filter to search on selection change', function() {
-            expect(searcher.addDrilldownFilter).toHaveBeenCalledWith(valueHierarchy);
-        });
-
-        it('searches on selection change', function() {
+            drilldownPanel.fireEvent('drilldownchange');
+            expect(searcher.addDrilldownFilter).toHaveBeenCalledWith(selectedDrilldownPath);
             expect(searcher.search).toHaveBeenCalled();
         });
     });
 
     describe('removeAnyFilters', function() {
-
-        beforeEach(function() {
-            selectionPanel.resetPanelDefaults = function(){ return true; }
-        });
-
         it('removes drilldown filters from searcher', function() {
             spyOn(searcher, 'removeDrilldownFilters');
-            selectionPanel.removeAnyFilters();
+            filterPanel.removeAnyFilters();
             expect(searcher.removeDrilldownFilters).toHaveBeenCalled();
         });
     });
 
-    describe('resetPanelDefaults', function() {
+    describe('_resetPanelDefaults', function() {
 
         it('collapses the selection panel if collapsed by default', function() {
-            spyOn(selectionPanel.tree, 'collapse');
-            selectionPanel.collapsedByDefault = true;
-            selectionPanel.resetPanelDefaults();
-            expect(selectionPanel.tree.collapse).toHaveBeenCalled();
+            filterPanel.collapsedByDefault = true;
+            spyOn(filterPanel, 'collapse');
+            filterPanel._resetPanelDefaults();
+            expect(filterPanel.collapse).toHaveBeenCalled();;
         });
 
         it('expands the selection panel if expanded by default', function() {
-            spyOn(selectionPanel.tree, 'expand');
-            selectionPanel.collapsedByDefault = false;
-            selectionPanel.resetPanelDefaults();
-            expect(selectionPanel.tree.expand).toHaveBeenCalled();
+            filterPanel.collapsedByDefault = false;
+            spyOn(filterPanel, 'expand');
+            filterPanel._resetPanelDefaults();
+            expect(filterPanel.expand).toHaveBeenCalled();;
         });
     })
 });
