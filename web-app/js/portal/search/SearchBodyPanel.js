@@ -4,12 +4,12 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext.namespace('Portal.ui.search');
+Ext.namespace('Portal.search');
 
 // TODO: note that this panel is probably redundant now that it has only one child - we can just use
 // FacetedSearchResultsGrid where this panel is used - however, waiting for Phil's latest changes
 // to be merged before getting rid of this (else there will be conflicts).
-Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
+Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
 
     constructor: function (cfg) {
 
@@ -30,7 +30,7 @@ Portal.ui.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
             items: [this.searchResultsPanel]
         }, cfg);
 
-        Portal.ui.search.SearchBodyPanel.superclass.constructor.call(this, config);
+        Portal.search.SearchBodyPanel.superclass.constructor.call(this, config);
 
         this.resultsStore.on('load', function() {
             this._onResultsStoreLoad();

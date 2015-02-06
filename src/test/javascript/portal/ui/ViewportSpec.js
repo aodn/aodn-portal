@@ -26,7 +26,7 @@ describe("Portal.ui.Viewport", function() {
 
         spyOn(Portal.ui, 'MapPanel');
         spyOn(Portal.ui, 'VisualisePanel');
-        spyOn(Portal.ui.search, 'SearchPanel');
+        spyOn(Portal.search, 'SearchPanel');
         spyOn(Portal.cart, 'DownloadPanel');
         spyOn(Portal.cart, 'DownloadPanelBody');
 
@@ -44,7 +44,7 @@ describe("Portal.ui.Viewport", function() {
 
         expect(Portal.ui.MapPanel).toHaveBeenCalled();
         expect(Portal.ui.VisualisePanel).toHaveBeenCalled();
-        expect(Portal.ui.search.SearchPanel).toHaveBeenCalled();
+        expect(Portal.search.SearchPanel).toHaveBeenCalled();
         expect(Portal.cart.DownloadPanel).toHaveBeenCalled();
         expect(Portal.cart.DownloadPanelBody).toHaveBeenCalled();
     });

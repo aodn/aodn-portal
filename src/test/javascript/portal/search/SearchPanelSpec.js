@@ -4,12 +4,12 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.ui.search.SearchPanel", function() {
+describe("Portal.search.SearchPanel", function() {
 
     var searchPanel;
 
     beforeEach(function() {
-        searchPanel = new Portal.ui.search.SearchPanel({ protocols: {} });
+        searchPanel = new Portal.search.SearchPanel({ protocols: {} });
     });
 
     describe('initialisation', function() {
@@ -28,7 +28,7 @@ describe("Portal.ui.search.SearchPanel", function() {
         });
 
         it('initialises SearchBodyPanel', function() {
-            expect(searchPanel.bodyPanel).toBeInstanceOf(Portal.ui.search.SearchBodyPanel);
+            expect(searchPanel.bodyPanel).toBeInstanceOf(Portal.search.SearchBodyPanel);
         });
     });
 
@@ -48,7 +48,7 @@ describe("Portal.ui.search.SearchPanel", function() {
     describe('initComponent', function() {
         it('calls searcher search', function() {
             spyOn(searchPanel.searcher, 'search');
-            spyOn(Portal.ui.search.SearchPanel.superclass, 'initComponent');
+            spyOn(Portal.search.SearchPanel.superclass, 'initComponent');
             searchPanel.initComponent();
             expect(searchPanel.searcher.search).toHaveBeenCalled();
         });

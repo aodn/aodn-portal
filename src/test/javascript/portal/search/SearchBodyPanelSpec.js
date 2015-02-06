@@ -4,12 +4,12 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.ui.search.SearchBodyPanel", function() {
+describe("Portal.search.SearchBodyPanel", function() {
 
     var searchBodyPanel;
 
     beforeEach(function() {
-        searchBodyPanel = new Portal.ui.search.SearchBodyPanel({
+        searchBodyPanel = new Portal.search.SearchBodyPanel({
             resultsStore: new Portal.data.GeoNetworkRecordStore(),
             searcher: new Portal.service.CatalogSearcher()
         });
