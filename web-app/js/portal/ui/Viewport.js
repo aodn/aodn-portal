@@ -27,7 +27,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
             region: 'center',
             mapPanel: mapPanel,
             panels: [
-                new Portal.ui.search.SearchPanel({
+                new Portal.search.SearchPanel({
                     mapPanel: mapPanel
                 }),
                 new Portal.ui.VisualisePanel({

@@ -11,7 +11,7 @@ Portal.ui.SelectionPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(config) {
 
-        this.searchPanel = new Portal.ui.search.SearchPanel({
+        this.searchPanel = new Portal.search.SearchPanel({
             itemId: 'searchPanel',
             catalogUrl: Portal.app.appConfig.geonetwork.url,
             protocols: config.searchRestriction.protocols,
