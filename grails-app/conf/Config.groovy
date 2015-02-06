@@ -128,8 +128,7 @@ openId {
 }
 
 featureToggles {
-    pythonDownload = false
-    proxyWmsRequests = true
+    // someFeature = <boolean>
 }
 
 // Google Analytics
@@ -151,8 +150,6 @@ environments {
         geonetwork.url = env['GEONETWORK_URL'] ?: "https://catalogue-123.aodn.org.au/geonetwork"
 
         grails.mail.disabled = true
-
-        featureToggles.pythonDownload = true
     }
 
     test {
