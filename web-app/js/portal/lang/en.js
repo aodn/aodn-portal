@@ -179,8 +179,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     parameterFilter: 'Measured parameter',
     dateFilter: 'Date (UTC)',
     geoFilter: "Geographic Boundary",
-    freeTextFilter: 'Free Text',
-    freeTextSearch: 'Go',
     facetedSearchNewSearchButton: 'Start new search',
     facetedSearchUnavailable: 'Search is currently unavailable.',
     facetedSearchResetting: 'Resetting search',
