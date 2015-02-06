@@ -128,7 +128,7 @@ openId {
 }
 
 featureToggles {
-    pythonDownload = false
+    pythonDownload = true
     proxyWmsRequests = true
 }
 
