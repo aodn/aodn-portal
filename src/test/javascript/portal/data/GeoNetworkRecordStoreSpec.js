@@ -37,9 +37,6 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
             Portal.app.appConfig = {
                 portal: {
                     downloadCartDownloadableProtocols: [ 'downloadable', 'some other downloadable protocol']
-                },
-                featureToggles: {
-                    pythonDownload: true
                 }
             };
 
@@ -124,42 +121,23 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
         });
 
         describe('download handlers', function() {
-            describe('python download handler', function() {
+            it('python download handler', function() {
 
-                beforeEach(function() {
-                    spyOn(Portal.cart.PythonDownloadHandler.prototype, 'getDownloadOptions');
+                spyOn(Portal.cart.PythonDownloadHandler.prototype, 'getDownloadOptions');
+
+
+                geoNetworkRecordStore = new Portal.data.GeoNetworkRecordStore();
+                geoNetworkRecordStore.loadData(doc);
+
+                var downloadHandlers = geoNetworkRecordStore.getAt(0).get('dataDownloadHandlers');
+
+                // This is a bit of an indirect way of checking the download handler type,
+                // since it doesn't seem possible to do it directly.
+                Ext.each(downloadHandlers, function(downloadHandler) {
+                    downloadHandler.getDownloadOptions();
                 });
 
-                var expectPythonDownloadHandler = function(expected) {
-                    Ext.namespace('Portal.app.appConfig.featureToggles');
-                    Portal.app.appConfig.featureToggles.pythonDownload = expected;
-
-                    geoNetworkRecordStore = new Portal.data.GeoNetworkRecordStore();
-                    geoNetworkRecordStore.loadData(doc);
-
-                    var downloadHandlers = geoNetworkRecordStore.getAt(0).get('dataDownloadHandlers');
-
-                    // This is a bit of an indirect way of checking the download handler type,
-                    // since it doesn't seem possible to do it directly.
-                    Ext.each(downloadHandlers, function(downloadHandler) {
-                        downloadHandler.getDownloadOptions();
-                    });
-
-                    if (expected) {
-                        expect(Portal.cart.PythonDownloadHandler.prototype.getDownloadOptions).toHaveBeenCalled();
-                    }
-                    else {
-                        expect(Portal.cart.PythonDownloadHandler.prototype.getDownloadOptions).not.toHaveBeenCalled();
-                    }
-                };
-
-                it('configured when feature toggle is on', function() {
-                    expectPythonDownloadHandler(true);
-                });
-
-                it('not configured when feature toggle is off', function() {
-                    expectPythonDownloadHandler(false);
-                });
+                expect(Portal.cart.PythonDownloadHandler.prototype.getDownloadOptions).toHaveBeenCalled();
             });
         });
     });

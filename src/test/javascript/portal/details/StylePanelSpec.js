@@ -7,6 +7,7 @@
 
 function getParameterByNameFromUrlString(urlString, name) {
 
+    urlString = decodeURIComponent(urlString);
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regexS = "[\\?&]" + name + "=([^&#]*)";
     var regex = new RegExp(regexS);
