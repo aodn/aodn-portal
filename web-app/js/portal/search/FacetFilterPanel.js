@@ -7,170 +7,73 @@
 
 Ext.namespace('Portal.search');
 
-Portal.search.FacetFilterPanel = Ext.extend(Ext.Container, {
+Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
         cfg = cfg || {};
-        this.facetName = cfg.facetName;
-        this.collapsedByDefault = cfg.collapsedByDefault;
 
+        this.facetName = cfg.facetName;
         this.searcher = cfg.searcher;
 
-        cfg.title = '<span class="filter-selection-panel-header">' + cfg.title + '</span>';
-
-        this.defaultTreeConfig = Ext.apply({
-            animate: false,
-            root: new Ext.tree.TreeNode(),
+        Ext.apply(cfg, {
+            title: '<span class="filter-selection-panel-header">' + cfg.title + '</span>',
             containerScroll: true,
             autoScroll: true,
             collapsible: true,
             collapsed: cfg.collapsedByDefault,
-            singleExpand: true,
-            rootVisible: false,
-            cls: "search-filter-panel hierarchicalTree filter-selection-panel",
-            lines: false
-        }, cfg);
-
-        this.tree = this.createTree();
-
-        Portal.search.FacetFilterPanel.superclass.constructor.call(this, {
-            items: [
-                this.tree
-            ]
+            cls: "search-filter-panel filter-selection-panel"
         });
 
-        this.setSelectionChangeListener();
-        this.tree.on('checkchange', this._onCheckChange, this);
+        Portal.search.FacetFilterPanel.superclass.constructor.call(this, cfg);
 
-        this.mon(this.searcher, 'searchcomplete', function() {
-            this._onSearchComplete();
-        }, this);
-    },
-
-    createTree: function(config) {
-        var cfg = Ext.apply(this.defaultTreeConfig, config);
-        return new Ext.tree.TreePanel(cfg);
+        this._addDrilldownPanel();
     },
 
     removeAnyFilters: function() {
-        this.resetPanelDefaults();
+        this._resetPanelDefaults();
+        this._removeDrilldownPanels();
         this.searcher.removeDrilldownFilters(this.facetName);
+        this._addDrilldownPanel();
     },
 
-    _onCheckChange: function(node) {
-        this.searcher.removeDrilldownFilters(node.toValueHierarchy());
-        this.searcher.search();
-    },
-
-    _onSelectionChange: function(selectionModel, node) {
-
-        this.selectedNodeValueHierarchy = node.toValueHierarchy();
-        this.searcher.removeDrilldownFilters(this.facetName);
-        this.addFilters(node);
-        this.searcher.search();
-
-        trackFacetUsage(this.facetName, node.attributes.value);
-    },
-
-    addFilters: function(node) {
-
-        if (node && node != this.tree.getRootNode()) {
-            this.searcher.addDrilldownFilter(node.toValueHierarchy());
-            var parent = node.parentNode;
-            this.addFilters(parent);
-        }
-    },
-
-    resetPanelDefaults: function() {
-
+    _resetPanelDefaults: function() {
         if (this.collapsedByDefault) {
-            this.tree.collapse();
+            this.collapse();
         }
         else {
-            this.tree.expand();
+            this.expand();
         }
     },
 
-    _removeSiblings: function(nodes) {
-
-        var that = this;
-        Ext.each(nodes, function(node) {
-
-            if (node.attributes.checked) {
-                that._hidePreviousSiblings(node);
-                that._hideNextSiblings(node);
-            }
-
+    _addDrilldownPanel: function() {
+        var drilldownPanel = new Portal.search.FacetDrilldownPanel({
+            facetName: this.facetName,
+            searcher: this.searcher
         });
+
+        this.add(drilldownPanel);
+        this.mon(drilldownPanel, 'drilldownchange', this._onDrilldownChange, this);
+
+        return drilldownPanel;
     },
 
-    _hidePreviousSiblings: function(node) {
-        if (node.previousSibling) {
-            node.previousSibling.ui.hide();
-            this._hidePreviousSiblings(node.previousSibling);
-        }
+    _onDrilldownChange: function() {
+        this.searcher.removeDrilldownFilters(this.facetName);
+        this._addDrilldownFilters();
+        this.searcher.search();
     },
 
-    _hideNextSiblings: function(node) {
-        if (node.nextSibling) {
-            node.nextSibling.ui.hide();
-            this._hideNextSiblings(node.nextSibling);
-        }
+    _addDrilldownFilters: function() {
+        var drilldownPanels = this.findByType(Portal.search.FacetDrilldownPanel, true);
+
+        Ext.each(drilldownPanels, function(drilldownPanel) {
+            this.searcher.addDrilldownFilter(drilldownPanel.getDrilldownPath());
+        }, this);
     },
 
-    _onSearchComplete: function() {
-
-        var that = this;
-        var rootNode = this.searcher.getFacetNode(this.facetName);
-        if (rootNode) {
-
-            var nodesToKeep = [];
-
-            // setup the tree DNA
-            rootNode.eachNodeRecursive(function(thisNode) {
-                    if (that.searcher.hasFilterOnNode(thisNode)) {
-                        thisNode.attributes.checked = true;
-                        nodesToKeep.push(thisNode);
-                    }
-                }
-            );
-
-            // plant the tree
-            this.tree.setRootNode(rootNode);
-
-            // Prune the tree
-            this._removeSiblings(nodesToKeep);
-
-            // Present the tree
-            rootNode.eachNodeRecursive(function(node) {
-
-                if (node.attributes.checked) {
-
-                    node.expand();
-
-                    if (node.toValueHierarchy() == that.selectedNodeValueHierarchy) {
-                        that.setSelectionChangeListener(true);
-                        node.select();
-                        that.setSelectionChangeListener(false);
-
-                    }
-                    // only a checked leaf has the counts
-                    if (node.hasChildNodes()){
-                        node.setText(node.attributes.value);
-                    }
-                }
-            });
-        }
-    },
-
-    setSelectionChangeListener: function(deactivate) {
-        if (deactivate) {
-            this.tree.getSelectionModel().removeListener('selectionchange', this._onSelectionChange, this);
-        }
-        else {
-            this.tree.getSelectionModel().on('selectionchange', this._onSelectionChange, this);
-        }
+    _removeDrilldownPanels: function() {
+        this.removeAll();
     }
 
 });

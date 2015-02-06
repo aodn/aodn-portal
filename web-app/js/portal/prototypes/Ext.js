@@ -22,15 +22,6 @@ Ext.tree.TreeNode.prototype.toValueHierarchy = function() {
     }).join('/');
 };
 
-Ext.tree.TreeNode.prototype.eachNodeRecursive = function(fn) {
-
-    fn(this);
-
-    this.eachChild(function(childNode) {
-        childNode.eachNodeRecursive(fn);
-    });
-};
-
 Ext.tree.TreeNode.prototype.clone = function(recursive) {
     var clone = new Ext.tree.TreeNode();
     Ext.applyIf(clone.attributes, this.attributes);

@@ -143,6 +143,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/service', file: 'SearchRequestLogger.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/service', file: 'CatalogSearcher.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'SearchFiltersPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'FacetDrilldownPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'FacetFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'ChildElementsField.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecord.js')}"></script>

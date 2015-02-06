@@ -34,6 +34,8 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         Portal.service.CatalogSearcher.superclass.constructor.call(this, config);
 
+        this._searchResultRootNode = new Ext.tree.TreeNode();
+
         this.addEvents('searchstart', 'searchcomplete', 'searcherror', 'filteradded', 'filterremoved');
     },
 
@@ -73,16 +75,22 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         return new Portal.ui.search.data.GeoNetworkSearchResponseLoader(loaderConfig);
     },
 
+    hasFacetNode: function(facetName) {
+        return this._getFacetNode(facetName) != null;
+    },
+
     getFacetNode: function(facetName) {
-	    var facetNode = this._searchResultRootNode.findChildBy(function(node) {
-	        return node.attributes.tagName == 'dimension' && node.attributes.value == facetName;
-	    }, this, true);
-	
-	    if (!facetNode) {
-	    	return null;
-	    }
-	    
-	    return facetNode.clone(true);
+        if (this.hasFacetNode(facetName)) {
+            return this._getFacetNode(facetName).clone(true);
+        } else {
+            return null;
+        }
+    },
+
+    _getFacetNode: function(facetName) {
+        return this._searchResultRootNode.findChildBy(function(node) {
+            return node.attributes.tagName == 'dimension' && node.attributes.value == facetName;
+        }, this, true);
     },
 
     goToPage: function(start, limit) {
@@ -98,11 +106,11 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this.fireEvent( 'filterremoved' );
     },
 
-    removeDrilldownFilters: function(facetValue) {
+    removeDrilldownFilters: function(facetName) {
 
         var filters = this.searchFilters.queryBy( function(record) {
             var recordVal = decodeURIComponent(record.get('value'));
-            return (record.get('name') == this.DRILLDOWN_PARAMETER_NAME && recordVal.startsWith(decodeURIComponent(facetValue)));
+            return (record.get('name') == this.DRILLDOWN_PARAMETER_NAME && recordVal.startsWith(decodeURIComponent(facetName)));
         }, this);
 
         this.searchFilters.remove(filters.items);
@@ -132,20 +140,6 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         } );
 
         return idx >= 0;
-    },
-
-    hasFilterOnNode: function(node) {
-
-        var nodeVal = node.toValueHierarchy();
-
-        var theFilters = this.searchFilters.queryBy( function(record) {
-            if (record.get('name') == this.DRILLDOWN_PARAMETER_NAME && decodeURIComponent(record.get('value')) == decodeURIComponent(nodeVal)) {
-                return true;
-            }
-        }, this);
-
-        return Object.keys(theFilters.items).length > 0;
-
     },
 
     _onSuccessfulSearch: function(page, caller, node, response) {
