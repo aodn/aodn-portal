@@ -35,6 +35,7 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
         this._removeDrilldownPanels();
         this.searcher.removeDrilldownFilters(this.facetName);
         this._addDrilldownPanel();
+        this.doLayout();
     },
 
     _resetPanelDefaults: function() {
