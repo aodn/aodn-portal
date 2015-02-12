@@ -205,6 +205,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     toDateEmptyText: 'Max',
     resetActionText: 'reset',
 
+    // FacetFilterPanel
+    addAnother: 'Add another filter',
 
     // Async Downloads
     asyncDownloadPanelTitle: 'Subset',

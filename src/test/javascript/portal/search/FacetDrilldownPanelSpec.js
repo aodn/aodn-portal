@@ -33,7 +33,7 @@ describe("Portal.search.FacetDrilldownPanel", function() {
         it('fires drilldownchange event', function() {
             spyOn(drilldownPanel, 'fireEvent');
             drilldownPanel._onSelectionChange('selectionchange', nodeSelected);
-            expect(drilldownPanel.fireEvent).toHaveBeenCalledWith('drilldownchange');
+            expect(drilldownPanel.fireEvent).toHaveBeenCalledWith('drilldownchange', drilldownPanel);
         });
 
         it('sets drilldown path', function() {
