@@ -13,8 +13,8 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         this.layer = cfg.layer;
         this.loadingMessage = this.createLoadingMessageContainer();
         var config = Ext.apply({
-            autoDestroy: true,
-            cls: 'filterGroupPanel',
+            //autoDestroy: true,
+            //cls: 'filterGroupPanel',
             items: [
                 this.loadingMessage
             ]

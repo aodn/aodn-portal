@@ -11,33 +11,35 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
     constructor : function(cfg) {
 
-        this.activeLayersPanel = new Portal.ui.ActiveLayersPanel(
+/*        this.activeLayersPanel = new Portal.ui.ActiveLayersPanel(
             Ext.apply({
                 style: {padding:'10px 20px 10px 5px'}
             }, cfg)
         );
+
         this.activeLayersContainer = new Ext.Panel({
             items: [
                 this.activeLayersPanel
             ]
-        });
+        });*/
 
-        this.layerDetailsPanel = new Ext.Container({
-            layout: 'card',
-            ctCls: "overflow-y"
+        this.layerDetailsAccordion = new Portal.details.DetailsPanelAccordion({
+            map: cfg.map,
+            mapPanel: cfg.mapPanel
         });
 
         var config = Ext.apply({
+            autoScroll: true,
             title: OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description')}),
             headerCfg: {
                 cls : 'steps'
             },
 
             items: [
-                new Ext.Spacer({height: 20}),
-                this.activeLayersContainer,
-                new Ext.Spacer({height: 10}),
-                this.layerDetailsPanel
+                //this.activeLayersContainer, // todo move back to the map
+                // todo add the spatial extent bit
+                this.layerDetailsAccordion,
+                new Ext.Spacer({height: 20})
             ]
         }, cfg);
 
@@ -48,48 +50,48 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
         }, this);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(eventName, openlayer) {
-            this._removeCardForLayer(openlayer);
+            this._removeTabForLayer(openlayer);
         }, this);
     },
 
     updateDetailsPanel: function(layer) {
         if (layer) {
-            if (!this._cardExistsForLayer(layer)) {
-                this._addCardForLayer(layer);
+            if (!this._tabExistsForLayer(layer)) {
+                console.log("creating tab");
+                this._addTabForLayer(layer);
             }
-            this._activateCardForLayer(layer);
-            this.layerDetailsPanel.show();
-        }
-        else {
-            this.layerDetailsPanel.hide();
+            this._activateTabForLayer(layer);
+            this.layerDetailsAccordion.doLayout();
         }
     },
 
-    _cardExistsForLayer: function(layer) {
-        return this.layerDetailsPanel.items.item(this._getCardIdForLayer(layer));
+    _tabExistsForLayer: function(layer) {
+        return this.layerDetailsAccordion.items.item(this._getTabIdForLayer(layer));
     },
 
-    _addCardForLayer: function(layer) {
-        var cardForLayer = new Portal.details.DetailsPanelTab({
-            id: this._getCardIdForLayer(layer),
+    _addTabForLayer: function(layer) {
+
+        var tabForLayer = new Portal.details.SubsetPanel( {
+            id: this._getTabIdForLayer(layer),
             map: this.map,
             mapPanel: this.mapPanel,
             layer: layer
         });
-        this.layerDetailsPanel.add(cardForLayer);
+        this.layerDetailsAccordion.add(tabForLayer);
     },
 
-    _activateCardForLayer: function(layer) {
-        this.layerDetailsPanel.layout.setActiveItem(this._getCardIdForLayer(layer));
+    _activateTabForLayer: function(layer) {
+        this.layerDetailsAccordion.layout.setActiveItem(this._getTabIdForLayer(layer));
+        this.layerDetailsAccordion.doLayout();
     },
 
-    _removeCardForLayer: function(layer) {
-        if (this._cardExistsForLayer(layer)) {
-            this.layerDetailsPanel.remove(this._getCardIdForLayer(layer));
+    _removeTabForLayer: function(layer) {
+        if (this._tabExistsForLayer(layer)) {
+            this.layerDetailsAccordion.remove(this._getTabIdForLayer(layer));
         }
     },
 
-    _getCardIdForLayer: function(layer) {
+    _getTabIdForLayer: function(layer) {
         return layer.id + '_detailsPanel';
     }
 });

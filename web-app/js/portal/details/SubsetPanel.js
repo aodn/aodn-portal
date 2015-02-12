@@ -6,7 +6,7 @@
  */
 Ext.namespace('Portal.details');
 
-Portal.details.SubsetPanel = Ext.extend(Ext.Container, {
+Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
@@ -31,8 +31,8 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Container, {
         }
 
         var config = Ext.apply({
-            title: OpenLayers.i18n('subsetPanelTitle'),
-            hideMode: 'offsets', // fixes #1278
+            title: '<h4>' + cfg.layer.name + '</h4>',
+            autoHeight: true,
             items: items
         }, cfg);
 

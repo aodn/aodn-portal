@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.details.DetailsPanelTab", function() {
+describe("Portal.details.DetailsPanelAccordion", function() {
 
     var detailsPanelTab;
 
@@ -13,7 +13,7 @@ describe("Portal.details.DetailsPanelTab", function() {
         spyOn(Portal.details.InfoPanel.prototype, '_initWithLayer');
         spyOn(Portal.details.StylePanel.prototype, '_initWithLayer');
 
-        detailsPanelTab = new Portal.details.DetailsPanelTab({
+        detailsPanelTab = new Portal.details.DetailsPanelAccordion({
             map: new OpenLayers.SpatialConstraintMap(),
             layer: new OpenLayers.Layer.WMS(),
             mapPanel: new Portal.ui.MapPanel()
