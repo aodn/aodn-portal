@@ -92,7 +92,26 @@ def get_filters(portal, layer_id)
   return filters_json
 end
 
-def filter_json_to_xml(filters, opts)
+def write_filter_values(filters_dir, filter, values)
+  # Skip geometry filter
+  "geom" == filter && return
+
+  builder = Nokogiri::XML::Builder.new do |xml|
+    xml.uniqueValues {
+      values.each do |value|
+        xml.value value
+      end
+    }
+  end
+
+  filter_values_xml_path = File.join(filters_dir, "#{filter}.xml")
+  $logger.info "Dumping filter '#{filter}' values XML to '#{filter_values_xml_path}'"
+  file = File.open(filter_values_xml_path, "w")
+  file << builder.to_xml
+  file.close
+end
+
+def write_filters(filters_dir, filters, opts)
   builder = Nokogiri::XML::Builder.new do |xml|
     xml.filters {
       filters.each do |filter|
@@ -103,20 +122,25 @@ def filter_json_to_xml(filters, opts)
           xml.visualised           !filter['downloadOnly']
           xml.excludedFromDownload false
 
-          # Output values only if requested to
-          if opts[:values] && filter['possibleValues']
-            xml.values {
-              filter['possibleValues'].each do |value|
-                xml.value value
-              end
-            }
-          end
+          # Output values to a separate file
+          write_filter_values(filters_dir, filter['name'], filter['possibleValues'])
         }
       end
     }
   end
 
-  return builder.to_xml
+  layer_xml_path = File.join(filters_dir, "filters.xml")
+  $logger.info "Dumping filters XML to '#{layer_xml_path}'"
+  $logger.info "------------------------------------------"
+  file = File.open(layer_xml_path, "w")
+  file << builder.to_xml
+  file.close
+end
+
+def get_layer_directory(prefix, layer)
+  workspace = layer.split(":")[0]
+  layer_name = layer.split(":")[1]
+  return File.join(prefix, workspace, layer_name)
 end
 
 def get_filters_main(opts)
@@ -131,19 +155,12 @@ def get_filters_main(opts)
   layers.each do |layer|
     layer_id = get_layer_id(opts[:portal], opts[:geoserver], layer)
     if layer_id
-      filters = get_filters(opts[:portal], layer_id)
-      filters_xml = filter_json_to_xml(filters, opts)
-
       if output_dir
-        workspace = layer.split(":")[0]
-        layer_name = layer.split(":")[1]
-        filters_dir = File.join(output_dir, workspace, layer_name)
+        filters_dir = get_layer_directory(output_dir, layer)
         FileUtils.mkdir_p filters_dir
-        layer_xml_path = File.join(filters_dir, "filters.xml")
-        $logger.info "Dumping XML '#{layer_xml_path}'"
-        file = File.open(layer_xml_path, "w")
-        file << filters_xml
-        file.close
+
+        filters = get_filters(opts[:portal], layer_id)
+        write_filters(filters_dir, filters, opts)
       end
     else
       $logger.error "Could not get ID of layer '#{layer}'"
@@ -179,9 +196,6 @@ EOS
   opt :dir, "Directory to write filters to",
     :type  => :string,
     :short => '-d'
-  opt :values, "Dump possible values",
-    :type  => :boolean,
-    :short => '-v'
 end
 
 if __FILE__ == $0
