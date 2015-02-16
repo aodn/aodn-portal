@@ -21,13 +21,23 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
             containerScroll: true,
             autoScroll: true,
             collapsible: true,
+            collapseFirst: false,
             collapsed: cfg.collapsedByDefault,
-            cls: "search-filter-panel filter-selection-panel"
+            cls: "search-filter-panel filter-selection-panel",
+            toolTemplate: new Ext.Template('<div class="x-tool x-tool-{id}" title="{title}">&#160;</div>'),
+            tools: [{
+                id: 'plus',
+                handler: this._onAdd,
+                scope: this,
+                title: OpenLayers.i18n('addAnother')
+            }]
         });
 
         Portal.search.FacetFilterPanel.superclass.constructor.call(this, cfg);
 
         this._addDrilldownPanel();
+
+        this._registerHandlers();
     },
 
     removeAnyFilters: function() {
@@ -36,6 +46,20 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
         this.searcher.removeDrilldownFilters(this.facetName);
         this._addDrilldownPanel();
         this.doLayout();
+    },
+
+    setSelectedDrilldown: function(drilldown, categories) {
+        var drilldownPanel = this._getDrilldownPanels()[drilldown];
+        drilldownPanel.setSelectedDrilldown(categories);
+    },
+
+    clearDrilldown: function(drilldown) {
+        var drilldownPanel = this._getDrilldownPanels()[drilldown];
+        drilldownPanel.clearDrilldown();
+    },
+
+    _registerHandlers: function() {
+        this.on('afterlayout', this._setAddButtonAvailability, this);
     },
 
     _resetPanelDefaults: function() {
@@ -59,22 +83,63 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
         return drilldownPanel;
     },
 
-    _onDrilldownChange: function() {
+    _onDrilldownChange: function(drilldownPanel) {
+        if (drilldownPanel.hasNoDrilldown() && this._hasOtherDrilldownPanels()) {
+            this.remove(drilldownPanel);
+        }
+        this._setAddButtonAvailability();
         this.searcher.removeDrilldownFilters(this.facetName);
         this._addDrilldownFilters();
         this.searcher.search();
     },
 
-    _addDrilldownFilters: function() {
-        var drilldownPanels = this.findByType(Portal.search.FacetDrilldownPanel, true);
+    _hasOtherDrilldownPanels: function() {
+        return this.items.length > 1;
+    },
 
-        Ext.each(drilldownPanels, function(drilldownPanel) {
+    _setAddButtonAvailability: function() {
+        if (this._hasEmptyDrilldownPanel()) {
+            this.tools.plus.disabled = true;
+            this.tools.plus.addClass('tool-plus-disabled');
+        } else {
+            this.tools.plus.disabled = false;
+            this.tools.plus.removeClass('tool-plus-disabled');
+        }
+    },
+
+    _hasEmptyDrilldownPanel: function() {
+        var result = false;
+
+        Ext.each(this._getDrilldownPanels(), function(drilldownPanel) {
+            if (drilldownPanel.hasNoDrilldown()) {
+                result = true;
+                return false;
+            }
+        }, this);
+
+        return result;
+    },
+
+    _addDrilldownFilters: function() {
+        Ext.each(this._getDrilldownPanels(), function(drilldownPanel) {
             this.searcher.addDrilldownFilter(drilldownPanel.getDrilldownPath());
         }, this);
     },
 
     _removeDrilldownPanels: function() {
         this.removeAll();
-    }
+    },
 
+    _getDrilldownPanels: function() {
+        return this.findByType(Portal.search.FacetDrilldownPanel, true);
+    },
+
+    _onAdd: function() {
+        if (this.tools.plus.disabled) {
+            return;
+        }
+
+        this._addDrilldownPanel();
+        this.doLayout();
+    }
 });

@@ -16,13 +16,16 @@ Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
             singleExpand: true,
             rootVisible: false,
             cls: "hierarchicalTree",
-            lines: false
+            lines: false,
+            headerCfg: {
+                cls: 'drilldown-separator'
+            },
+            pathSeparator: '\u001F'
         });
 
         Portal.search.FacetDrilldownPanel.superclass.constructor.call(this, cfg);
 
-        this._selectedNodeValueHierarchy = "";
-        this._initRootNode();
+        this._initDrilldown();
 
         this.addEvents('drilldownchange');
 
@@ -38,28 +41,66 @@ Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
         return this._selectedNodeValueHierarchy;
     },
 
-    _initRootNode: function() {
-        if (this.searcher.hasFacetNode(this.facetName)) {
-            this.setRootNode(this.searcher.getFacetNode(this.facetName));
-        } else {
-            this.setRootNode(new Ext.tree.TreeNode());
+    hasDrilldown: function() {
+        return this._selectedNodeValueHierarchy  
+            && this._selectedNodeValueHierarchy != this.root.toValueHierarchy();
+    },
+
+    hasNoDrilldown: function() {
+        return !this.hasDrilldown();
+    },
+
+    setSelectedDrilldown: function(categories) {
+        var nodeToSelect = this._getNode(categories);
+        this._setSelectedNode(nodeToSelect);
+    },
+
+    _setSelectedNode: function(node) {
+        this._selectedNodeValueHierarchy = node.toValueHierarchy();
+        this._buildTree();
+        this.fireEvent('drilldownchange', this);
+    },
+
+    _getNode: function(categories) {
+        var path = this.pathSeparator + categories.join(this.pathSeparator);
+
+        return this.root.findChildBy(function(node) {
+            return node.getPath('value') == path;
+        }, this, true);
+    },
+
+    clearDrilldown: function() {
+        if (this.hasDrilldown()) {
+            this._initDrilldown();
+            this.fireEvent('drilldownchange', this);
         }
+    },
+
+    _initDrilldown: function() {
+        this._selectedNodeValueHierarchy = "";
+        this._buildTree();
     },
 
     _onCheckChange: function(node) {
         this._selectedNodeValueHierarchy = node.parentNode.toValueHierarchy();
-        this.fireEvent('drilldownchange');
+        this.fireEvent('drilldownchange', this);
     },
 
     _onSelectionChange: function(selectionModel, node) {
         this._selectedNodeValueHierarchy = node.toValueHierarchy();
         trackFacetUsage(this.facetName, node.attributes.value);
-        this.fireEvent('drilldownchange');
+        this.fireEvent('drilldownchange', this);
     },
 
     _onSearchComplete: function() {
+        this._buildTree();
+    },
+
+    _buildTree: function() {
         if (this.searcher.hasFacetNode(this.facetName)) {
-            this.setRootNode(this.searcher.getFacetNode(this.facetName))
+            this.setRootNode(this.searcher.getFacetNode(this.facetName));
+        } else {
+            this.setRootNode(new Ext.tree.TreeNode());
         }
     },
 
@@ -87,7 +128,7 @@ Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     _isSelected: function(node) {
-        return this._selectedNodeValueHierarchy.startsWith(node.toValueHierarchy())
+        return this._selectedNodeValueHierarchy.startsWith(node.toValueHierarchy());
     },
 
     _hidePreviousSiblings: function(node) {

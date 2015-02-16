@@ -1460,6 +1460,23 @@ div:not(.x-tree-selected) * {
     text-overflow: ellipsis;
 }
 
+div.drilldown-separator {
+    margin: 10px 0 5px 0;
+    height: 1px;
+    background: #ccc;
+    line-height: 1px;
+}
+
+div.hierarchicalTree:first-child div.drilldown-separator {
+    height: 0;
+    margin: 0;
+} 
+
+div.tool-plus-disabled {
+    opacity: 0.5;
+    background-position:0 -240px;
+}
+
 /* font Awesome icons */
 .fa {
     opacity: 0.8;
