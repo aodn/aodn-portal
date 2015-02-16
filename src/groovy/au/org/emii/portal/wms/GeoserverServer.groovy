@@ -22,16 +22,20 @@ class GeoserverServer extends WmsServer {
             def xml = new XmlSlurper().parseText(_getFiltersXml(server, layer))
 
             xml.filter.each { filter ->
+                def filterName = filter.name.text()
+                def filterType = filter.type.text()
+
                 def values = []
-                if (filter.values.size() > 0 && filter.values.value.size() > 0) {
-                    values = filter.values.value.collect() { it -> it.text() }
+
+                if (_filterHasValues(filterType)) {
+                    values = getFilterValues(server, layer, filterName)
                 }
 
                 filters.push(
                     [
                         label: filter.label.text(),
-                        type: filter.type.text(),
-                        name: filter.name.text(),
+                        type: filterType,
+                        name: filterName,
                         visualised: Boolean.valueOf(filter.visualised.text()),
                         values: values
                     ]
@@ -43,11 +47,6 @@ class GeoserverServer extends WmsServer {
         }
         return filters
     }
-
-    def getFilterValues(server, layer, filter) {
-        return []
-    }
-
     // TODO remove this function
     def _getFiltersXml(server, layer) {
         def workspaceName = getLayerWorkspace(layer)
@@ -59,6 +58,41 @@ class GeoserverServer extends WmsServer {
     // TODO rename this function to _getFiltersXml
     def _getFiltersXmlFromGeoserver(server, layer) {
         def filtersUrl = getFiltersUrl(server, layer)
+        def outputStream = new ByteArrayOutputStream();
+        def request = new ExternalRequest(outputStream, filtersUrl.toURL())
+
+        request.executeRequest()
+        return outputStream.toString("utf-8")
+    }
+
+    def getFilterValues(server, layer, filter) {
+        def values = []
+
+        try {
+            def xml = new XmlSlurper().parseText(_getFilterValuesXml(server, layer, filter))
+
+            if (xml.value.size() > 0) {
+                values = xml.value.collect() { it -> it.text() }
+            }
+        }
+        catch (e) {
+            log.error "Unable to parse filters values for server '${server}', layer '${layer}', filter '${filter}': '${e}'"
+        }
+
+        return values
+    }
+
+    // TODO remove this function
+    def _getFilterValuesXml(server, layer, filter) {
+        def workspaceName = getLayerWorkspace(layer)
+        def layerName = getLayerName(layer)
+        def inputFile = new File("filters/${workspaceName}/${layerName}/${filter}.xml")
+        return inputFile.text
+    }
+
+    // TODO rename this function to _getFilterValuesXml
+    def _getFilterValuesXmlFromGeoserver(server, layer, filter) {
+        def filtersUrl = getFilterValuesUrl(server, layer, filter)
         def outputStream = new ByteArrayOutputStream();
         def request = new ExternalRequest(outputStream, filtersUrl.toURL())
 
@@ -91,15 +125,26 @@ class GeoserverServer extends WmsServer {
         return elements[0..elements.size()-2].join('/') + "/ows"
     }
 
-    static String getFiltersUrl(server, layer) {
+    static String _getFiltersUrlBase(server, layer, request, extraOpts) {
         def serverOwsEndpoint = getOwsEndpoint(server)
         def workspaceName = getLayerWorkspace(layer)
         def layerName = getLayerName(layer)
 
-        def final request = "enabledFilters"
         def final service = "layerFilters"
         def final version = "1.0.0"
 
-        return serverOwsEndpoint + "?request=${request}&service=${service}&version=${version}&workspace=${workspaceName}&layer=${layerName}"
+        return serverOwsEndpoint + "?request=${request}&service=${service}&version=${version}&workspace=${workspaceName}&layer=${layerName}${extraOpts}"
+    }
+
+    static String getFiltersUrl(server, layer) {
+        return _getFiltersUrlBase(server, layer, "enabledFilters", "")
+    }
+
+    static String getFilterValuesUrl(server, layer, filter) {
+        return _getFiltersUrlBase(server, layer, "uniqueValues", "&propertyName=${filter}")
+    }
+
+    static Boolean _filterHasValues(filterType) {
+        return filterType != "BoundingBox"
     }
 }
