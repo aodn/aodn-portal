@@ -14,6 +14,8 @@ class GeoserverServerTests extends GrailsUnitTestCase {
 
     def geoserverServer
     def validGeoserverResponse
+    def filterValuesXml
+    def emptyXml
 
     protected void setUp() {
         super.setUp()
@@ -27,33 +29,70 @@ class GeoserverServerTests extends GrailsUnitTestCase {
     <name>TIME</name>
     <type>DateRange</type>
     <visualised>true</visualised>
-    <values/>
   </filter>
   <filter>
     <label>deployment_code</label>
     <name>deployment_code</name>
     <type>String</type>
     <visualised>true</visualised>
-    <values>
-      <value>EAC1-2012</value>
-      <value>EAC2-2012</value>
-      <value>EAC3-2012</value>
-      <value>EAC4-2012</value>
-      <value>EAC5-2012</value>
-    </values>
   </filter>
   <filter>
     <label>geom</label>
     <name>geom</name>
     <type>BoundingBox</type>
     <visualised>true</visualised>
-    <values/>
   </filter>
 </filters>"""
+
+        filterValuesXml =
+"""<?xml version="1.0"?>
+<uniqueValues>
+  <value>EAC1-2012</value>
+  <value>EAC2-2012</value>
+  <value>EAC3-2012</value>
+  <value>EAC4-2012</value>
+  <value>EAC5-2012</value>
+</uniqueValues>"""
+
+        emptyXml = """<?xml version="1.0"?>"""
+    }
+
+    void testValidFilterValues() {
+        geoserverServer.metaClass._getFilterValuesXml = { server, layer, filter -> return filterValuesXml }
+
+        def expected = [
+            "EAC1-2012",
+            "EAC2-2012",
+            "EAC3-2012",
+            "EAC4-2012",
+            "EAC5-2012"
+        ]
+
+        def filterValues = geoserverServer.getFilterValues("http://server", "layer", "some_filter")
+
+        assertEquals expected, filterValues
+    }
+
+    void testInvalidFilterValues() {
+        geoserverServer.metaClass._getFilterValuesXml = { server, layer, filter -> return "here be invalid xml" }
+
+        def expected = []
+
+        def filterValues = geoserverServer.getFilterValues("http://server", "layer", "some_filter")
+
+        assertEquals expected, filterValues
     }
 
     void testValidFilters() {
         geoserverServer.metaClass._getFiltersXml = { server, layer -> return validGeoserverResponse }
+        geoserverServer.metaClass._getFilterValuesXml = { server, layer, filter ->
+            if (filter == "TIME" || filter == "geom") {
+                return emptyXml
+            }
+            else {
+                return filterValuesXml
+            }
+        }
 
         def expected = [
             [
@@ -110,6 +149,16 @@ class GeoserverServerTests extends GrailsUnitTestCase {
         assertEquals(
             "http://geoserver-123.aodn.org.au/geoserver/ows?request=enabledFilters&service=layerFilters&version=1.0.0&workspace=aodn&layer=aodn_dsto_glider_trajectory_map",
             geoserverServer.getFiltersUrl(server, layer)
+        )
+    }
+
+    void testGetFilterValuesUrl() {
+        def server = "http://geoserver-123.aodn.org.au/geoserver/wms"
+        def layer = "aodn:aodn_dsto_glider_trajectory_map"
+        def filter = "driftnum"
+        assertEquals(
+            "http://geoserver-123.aodn.org.au/geoserver/ows?request=uniqueValues&service=layerFilters&version=1.0.0&workspace=aodn&layer=aodn_dsto_glider_trajectory_map&propertyName=driftnum",
+            geoserverServer.getFilterValuesUrl(server, layer, filter)
         )
     }
 
