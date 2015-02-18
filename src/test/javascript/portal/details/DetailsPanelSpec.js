@@ -30,7 +30,7 @@ describe("Portal.details.DetailsPanel", function() {
                 spyOn(detailsPanel, '_activateTabForLayer');
             });
 
-            it('activates existing DetailsPanelAccordion for previously selected layer', function() {
+            it('activates existing SubsetPanelAccordion for previously selected layer', function() {
                 spyOn(detailsPanel, '_tabExistsForLayer').andReturn(true);
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
@@ -39,7 +39,7 @@ describe("Portal.details.DetailsPanel", function() {
                 expect(detailsPanel._activateTabForLayer).toHaveBeenCalledWith(layer);
             });
 
-            it('creates new DetailsPanelAccordion and activates for new layer', function() {
+            it('creates new SubsetPanelAccordion and activates for new layer', function() {
                 spyOn(detailsPanel, '_tabExistsForLayer').andReturn(false);
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
@@ -48,7 +48,7 @@ describe("Portal.details.DetailsPanel", function() {
                 expect(detailsPanel._activateTabForLayer).toHaveBeenCalledWith(layer);
             });
 
-            it('removes DetailsPanelAccordion for removed layer', function() {
+            it('removes SubsetPanelAccordion for removed layer', function() {
                 spyOn(detailsPanel, '_tabExistsForLayer').andReturn(true);
                 spyOn(detailsPanel, '_removeTabForLayer');
 

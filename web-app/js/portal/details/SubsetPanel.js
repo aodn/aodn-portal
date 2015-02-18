@@ -11,7 +11,6 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
         this.layer = cfg.layer;
-
         var items = [];
 
         if (this.layer.isNcwms()) {
@@ -24,6 +23,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
         }
         else {
             var filterGroupPanel = new Portal.filter.FilterGroupPanel({
+                map: cfg.map,
                 layer: cfg.layer
             });
 

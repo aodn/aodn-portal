@@ -7,20 +7,17 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.DetailsPanelAccordion = Ext.extend(Ext.Panel, {
+Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
 
     constructor: function (cfg) {
 
         //var childPanelConfig =  { map: cfg.map, layer: cfg.layer, mapPanel: cfg.mapPanel };
 
-        //this.subsetPanel = new Portal.details.SubsetPanel(childPanelConfig);
         //this.infoPanel = new Portal.details.InfoPanel(childPanelConfig);
         //this.stylePanel = new Portal.details.StylePanel(childPanelConfig);
         //this.mapOptionsPanel = new Portal.ui.MapOptionsPanel(childPanelConfig);
 
         var config = Ext.apply({
-            //containerScroll: true,
-            //cls: "search-filter-panel filter-selection-panel",
             defaults: {
                 // applied to each contained panel
                 bodyStyle: 'padding:15px',
@@ -32,9 +29,7 @@ Portal.details.DetailsPanelAccordion = Ext.extend(Ext.Panel, {
             layoutConfig: {
                 // layout-specific configs go here
                 animate: true
-                //fill: true,
             },
-            //titleCollapse: true,
             closable:true,
             listeners: {
                 beforeAdd : this.collapseAll,
@@ -42,7 +37,7 @@ Portal.details.DetailsPanelAccordion = Ext.extend(Ext.Panel, {
             }
         }, cfg);
 
-        Portal.details.DetailsPanelAccordion.superclass.constructor.call(this, config);
+        Portal.details.SubsetPanelAccordion.superclass.constructor.call(this, config);
     },
 
     collapseAll: function(accordion, newItem, index) {
@@ -52,14 +47,14 @@ Portal.details.DetailsPanelAccordion = Ext.extend(Ext.Panel, {
     },
 
     _doTracking: function(tabPanel, newTab, oldTab) {
-        /*        if(oldTab) {
-         trackUsage(OpenLayers.i18n('detailsTrackingCategory'),
-         OpenLayers.i18n('detailsTabsTrackingAction'),
-         newTab.title,
-         this.layer.name
-         );
-         }
-         return true;*/
+        if (oldTab) {
+            trackUsage(OpenLayers.i18n('detailsTrackingCategory'),
+                OpenLayers.i18n('detailsTabsTrackingAction'),
+                newTab.title,
+                this.layer.name
+            );
+        }
+        return true;
     }
 
 });

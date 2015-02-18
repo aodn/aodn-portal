@@ -11,21 +11,16 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
 
     constructor : function(cfg) {
 
-/*        this.activeLayersPanel = new Portal.ui.ActiveLayersPanel(
-            Ext.apply({
-                style: {padding:'10px 20px 10px 5px'}
-            }, cfg)
-        );
-
-        this.activeLayersContainer = new Ext.Panel({
-            items: [
-                this.activeLayersPanel
-            ]
-        });*/
-
-        this.layerDetailsAccordion = new Portal.details.DetailsPanelAccordion({
+        this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
+            typeLabel: OpenLayers.i18n('spatialExtentHeading'),
             map: cfg.map,
-            mapPanel: cfg.mapPanel
+            hideLabel: false
+        });
+
+        this.layerDetailsAccordion = new Portal.details.SubsetPanelAccordion({
+            map: cfg.map,
+            mapPanel: cfg.mapPanel,
+            bboxFilter: this.spatialSubsetControlsPanel
         });
 
         var config = Ext.apply({
@@ -36,8 +31,7 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
             },
 
             items: [
-                //this.activeLayersContainer, // todo move back to the map
-                // todo add the spatial extent bit
+                this.spatialSubsetControlsPanel,
                 this.layerDetailsAccordion,
                 new Ext.Spacer({height: 20})
             ]
@@ -57,7 +51,6 @@ Portal.details.DetailsPanel = Ext.extend(Ext.Panel, {
     updateDetailsPanel: function(layer) {
         if (layer) {
             if (!this._tabExistsForLayer(layer)) {
-                console.log("creating tab");
                 this._addTabForLayer(layer);
             }
             this._activateTabForLayer(layer);

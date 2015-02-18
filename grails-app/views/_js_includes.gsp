@@ -104,7 +104,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'ConfigPage.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'ResettableDate.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'DateFilterPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'BoundingBoxFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'BooleanFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'NumberFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'FilterGroupPanel.js')}"></script>
@@ -114,7 +113,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'StylePanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DetailsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NcWmsPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DetailsPanelAccordion.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanelAccordion.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DataCollectionSelectorPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'InfoPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanel.js')}"></script>

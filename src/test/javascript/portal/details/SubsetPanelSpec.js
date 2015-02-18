@@ -17,7 +17,7 @@ describe("Portal.details.SubsetPanel", function() {
             'http://someaddress',
             {},
             {},
-            { extent: ['2014-01-01T10:00:00'] }
+            {extent: ['2014-01-01T10:00:00']}
         );
         layer.map = map;
 
@@ -30,7 +30,7 @@ describe("Portal.details.SubsetPanel", function() {
     describe('initialisation', function() {
 
         it('sets title', function() {
-            expect(subsetPanel.title).toEqual(OpenLayers.i18n('subsetPanelTitle'));
+            expect(subsetPanel.title).toEqual("<h4>the title</h4>");
         });
 
         it('initialises aodaacPanel for NcWMS layer', function() {
@@ -40,6 +40,6 @@ describe("Portal.details.SubsetPanel", function() {
             expect(childPanel).toBeInstanceOf(Portal.details.NcWmsPanel);
             expect(childPanel.map).toBe(map);
             expect(childPanel.title).toBeUndefined();
-       });
+        });
     });
 });
