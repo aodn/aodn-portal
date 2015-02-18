@@ -128,7 +128,7 @@ openId {
 }
 
 featureToggles {
-    // someFeature = <boolean>
+    dynamicGeoserverFilters = false
 }
 
 // Google Analytics
