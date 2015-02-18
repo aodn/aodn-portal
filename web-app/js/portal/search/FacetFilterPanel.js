@@ -60,6 +60,7 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
 
     _registerHandlers: function() {
         this.on('afterlayout', this._setAddButtonAvailability, this);
+        this.mon(this.searcher, 'searchcomplete', this._setAddButtonAvailability, this);
     },
 
     _resetPanelDefaults: function() {
@@ -98,7 +99,11 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     _setAddButtonAvailability: function() {
-        if (this._hasEmptyDrilldownPanel()) {
+        if (!this.tools || !this.tools.plus) {
+            return;
+        }
+
+        if (this._hasEmptyDrilldownPanel() || this._noDrilldownsAvailable()) {
             this.tools.plus.disabled = true;
             this.tools.plus.addClass('tool-plus-disabled');
         } else {
@@ -141,5 +146,25 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
 
         this._addDrilldownPanel();
         this.doLayout();
+    },
+
+    _noDrilldownsAvailable: function() {
+        return !this._hasSelectableDrilldown(this.searcher.getFacetNode(this.facetName));
+    },
+
+    _hasSelectableDrilldown: function(node) {
+        if (this.searcher.hasDrilldown(node.getHierarchy('value'))) {
+            return false;
+        } 
+
+        if (!node.hasChildNodes()) {
+            return true;
+        }
+
+        var childWithSelectableDrilldown = node.findChildBy(function(child) {
+            return this._hasSelectableDrilldown(child);
+        }, this);
+
+        return childWithSelectableDrilldown != null;
     }
 });

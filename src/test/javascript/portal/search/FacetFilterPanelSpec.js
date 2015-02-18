@@ -9,6 +9,7 @@ describe("Portal.search.FacetFilterPanel", function() {
     var searcher;
     var filterPanel;
     var testContainer;
+    var mockSearchResponse = Portal.search.SearchSpecHelper.mockSearchResponse;
 
     beforeEach(function() {
         searcher = new Portal.service.CatalogSearcher();
@@ -23,7 +24,31 @@ describe("Portal.search.FacetFilterPanel", function() {
             items: [filterPanel]
         });
 
-        loadTestData();
+        mockSearchResponse(searcher, {
+            tagName: 'response',
+            children: [{
+                tagName: 'summary',
+                count: 10,
+                children: [{
+                    tagName: 'dimension',
+                    value: 'Measured Parameter',
+                    count: 10,
+                    children: [{
+                        value: 'Salinity',
+                        count: 6,
+                        leaf: true
+                    }, {
+                        value: 'Pressure',
+                        count: 5,
+                        leaf: true
+                    }, {
+                        value: 'Temperature',
+                        count: 2,
+                        leaf: true
+                    }]
+                }]
+            }]
+        });
 
         spyOn(searcher, 'search').andCallFake(function() {
             searcher.fireEvent('searchcomplete');
@@ -138,33 +163,14 @@ describe("Portal.search.FacetFilterPanel", function() {
             expect(filterPanel.tools.plus.disabled).toEqual(false);
         });
 
+        it('is disabled when no drilldowns would be available', function() {
+            filterPanel.setSelectedDrilldown(0, ['Measured Parameter', 'Temperature']);
+            filterPanel._onAdd();
+            filterPanel.setSelectedDrilldown(1, ['Measured Parameter', 'Pressure']);
+            filterPanel._onAdd();
+            filterPanel.setSelectedDrilldown(2, ['Measured Parameter', 'Salinity']);
+            expect(filterPanel.tools.plus.disabled).toEqual(true);
+        });
     });
 
-    var loadTestData = function() {
-        var loader = new Ext.tree.TreeLoader({
-            preloadChildren: true
-        });
-
-        searcher._searchResultRootNode = loader.createNode({
-            value: 'Summary',
-            children: [{
-                tagName: 'dimension',
-                value: 'Measured Parameter',
-                count: 10,
-                children: [{
-                    value: 'Salinity',
-                    count: 6,
-                    leaf: true
-                }, {
-                    value: 'Pressure',
-                    count: 5,
-                    leaf: true
-                }]
-            }]
-        });
-
-        loader.load(searcher._searchResultRootNode);
-
-        searcher.fireEvent('searchcomplete');
-    }
 });
