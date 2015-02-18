@@ -29,6 +29,7 @@ class LayerController {
     def aodaacAggregatorService
     def layerService
     def dataSource
+    def grailsApplication
     def hostVerifier
 
     def index = {
@@ -638,7 +639,7 @@ class LayerController {
             return new NcwmsServer()
         }
         else {
-            return new GeoserverServer()
+            return new GeoserverServer(grailsApplication.config.featureToggles.dynamicGeoserverFilters)
         }
     }
 
