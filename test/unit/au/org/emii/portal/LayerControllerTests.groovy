@@ -24,9 +24,12 @@ class LayerControllerTests extends ControllerUnitTestCase {
         hostVerifier = mockFor(HostVerifier)
         hostVerifier.demand.allowedHost { address -> return true }
         controller.hostVerifier = hostVerifier.createMock()
+
+        controller.grailsApplication = new ConfigObject()
     }
 
     void testGetFiltersAsJsonGeoserver() {
+        controller.grailsApplication.config.featureToggles.dynamicGeoserverFilters = false
         this.controller.params.server = 'some_server'
         this.controller.params.layer = 'some_layer'
 
@@ -124,8 +127,6 @@ class LayerControllerTests extends ControllerUnitTestCase {
     }
 
     void testMetadataUrlConstruction() {
-
-        controller.metaClass.grailsApplication = new ConfigObject()
         controller.grailsApplication.config.geonetwork.url = "http://geonetwork.com"
 
         def uuid = "some_uuid"

@@ -18,6 +18,7 @@ class LayerController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    def grailsApplication
     def hostVerifier
 
     def configuredBaselayers = {
@@ -98,7 +99,7 @@ class LayerController {
             return new NcwmsServer()
         }
         else {
-            return new GeoserverServer()
+            return new GeoserverServer(grailsApplication.config.featureToggles.dynamicGeoserverFilters)
         }
     }
 

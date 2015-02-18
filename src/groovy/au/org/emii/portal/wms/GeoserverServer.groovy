@@ -10,6 +10,12 @@ package au.org.emii.portal.wms
 import au.org.emii.portal.proxying.ExternalRequest
 
 class GeoserverServer extends WmsServer {
+    def dynamicFilters
+
+    GeoserverServer(dynamicFilters) {
+        this.dynamicFilters = dynamicFilters
+    }
+
     def getStyles(server, layer) {
         def styles = []
         return styles
@@ -47,15 +53,23 @@ class GeoserverServer extends WmsServer {
         }
         return filters
     }
-    // TODO remove this function
+
     def _getFiltersXml(server, layer) {
+        if (dynamicFilters) {
+            return _getFiltersXmlFromGeoserver(server, layer)
+        }
+        else {
+            return _getFiltersXmlFromFile(server, layer)
+        }
+    }
+
+    def _getFiltersXmlFromFile(server, layer) {
         def workspaceName = getLayerWorkspace(layer)
         def layerName = getLayerName(layer)
         def inputFile = new File("filters/${workspaceName}/${layerName}/filters.xml")
         return inputFile.text
     }
 
-    // TODO rename this function to _getFiltersXml
     def _getFiltersXmlFromGeoserver(server, layer) {
         def filtersUrl = getFiltersUrl(server, layer)
         def outputStream = new ByteArrayOutputStream();
@@ -82,15 +96,22 @@ class GeoserverServer extends WmsServer {
         return values
     }
 
-    // TODO remove this function
     def _getFilterValuesXml(server, layer, filter) {
+        if (dynamicFilters) {
+            return _getFilterValuesXmlFromGeoserver(server, layer, filter)
+        }
+        else {
+            return _getFilterValuesXmlFromFile(server, layer, filter)
+        }
+    }
+
+    def _getFilterValuesXmlFromFile(server, layer, filter) {
         def workspaceName = getLayerWorkspace(layer)
         def layerName = getLayerName(layer)
         def inputFile = new File("filters/${workspaceName}/${layerName}/${filter}.xml")
         return inputFile.text
     }
 
-    // TODO rename this function to _getFilterValuesXml
     def _getFilterValuesXmlFromGeoserver(server, layer, filter) {
         def filtersUrl = getFilterValuesUrl(server, layer, filter)
         def outputStream = new ByteArrayOutputStream();

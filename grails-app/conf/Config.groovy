@@ -86,7 +86,7 @@ downloadAuth {
 }
 
 featureToggles {
-    // someFeature = <boolean>
+    dynamicGeoserverFilters = false
 }
 
 // Google Analytics
