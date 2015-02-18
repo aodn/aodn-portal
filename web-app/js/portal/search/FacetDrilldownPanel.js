@@ -112,6 +112,7 @@ Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
         this._hideSiblings(checkedNodes);
         this._expand(checkedNodes);
         this._removeCount(checkedNodes);
+        this._hidePreviousDrilldowns();
     },
 
     _checkSelectedNodes: function(facetNode) {
@@ -169,5 +170,18 @@ Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
                 node.setText(node.attributes.value);
             }
         });
+    },
+
+    _hidePreviousDrilldowns: function() {
+        this.root.cascade(function(node) {
+            if (!node.attributes.checked && this._hasPreviouslyBeenSelected(node)) {
+                node.ui.hide();
+            }
+        }, this);
+    },
+
+    _hasPreviouslyBeenSelected: function(node) {
+        var drilldown = node.getHierarchy('value');
+        return this.searcher.hasDrilldown(drilldown); 
     }
 });

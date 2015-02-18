@@ -8,13 +8,15 @@ describe("Portal.search.FacetDrilldownPanel", function() {
 
     var searcher;
     var drilldownPanel;
+    var testContainer;
+    var mockSearchResponse = Portal.search.SearchSpecHelper.mockSearchResponse;
 
     beforeEach(function() {
         searcher = new Portal.service.CatalogSearcher();
 
         drilldownPanel = new Portal.search.FacetDrilldownPanel({
             searcher: searcher,
-            facetName: 'Parameter'
+            facetName: 'Measured Parameter'
         });
     });
 
@@ -27,7 +29,7 @@ describe("Portal.search.FacetDrilldownPanel", function() {
             spyOn(window, 'trackUsage');
 
             drilldownPanel._onSelectionChange('selectionchange', nodeSelected);
-            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('facetTrackingCategory'), 'Parameter', 'Oxygen');
+            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('facetTrackingCategory'), 'Measured Parameter', 'Oxygen');
         });
 
         it('fires drilldownchange event', function() {
@@ -53,6 +55,39 @@ describe("Portal.search.FacetDrilldownPanel", function() {
 
             expect(drilldownPanel.setRootNode).toHaveBeenCalledWith(facetNode);
         });
-    });
 
+        it('hides previously selected drilldowns', function() {
+            searcher.addDrilldownFilter('Measured%20Parameter/Salinity');
+
+            mockSearchResponse(searcher, {
+                tagName: 'response',
+                children: [{
+                    tagName: 'summary',
+                    count: 10,
+                    children: [{
+                        tagName: 'dimension',
+                        value: 'Measured Parameter',
+                        count: 10,
+                        children: [{
+                            value: 'Salinity',
+                            count: 6,
+                            leaf: true
+                        }, {
+                            value: 'Pressure',
+                            count: 5,
+                            leaf: true
+                        }, {
+                            value: 'Temperature',
+                            count: 2,
+                            leaf: true
+                        }]
+                    }]
+                }]
+            });
+
+            var salinityNode = drilldownPanel.root.findChild('value', 'Salinity', true);
+
+            expect(salinityNode.hidden).toEqual(true);
+        });
+    });
 });

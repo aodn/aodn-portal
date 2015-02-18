@@ -415,6 +415,7 @@
                     <specIncludes>
                         <include>jasmine-slow.js</include>
                         <include>spec_helper.js</include>
+                        <include>portal/search/SearchSpecHelper.js</include>
                         <include>**/*.js</include>
                     </specIncludes>
                 </configuration>
