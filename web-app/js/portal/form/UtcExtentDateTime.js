@@ -14,6 +14,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
         // least nasty hack to add altFormats
         this.df = this.df.cloneConfig({
+            enableKeyEvents: true,
             altFormats: OpenLayers.i18n('dateAltFormats'),
             emptyText: OpenLayers.i18n('loadingMessage'),
             minText: OpenLayers.i18n('dateNcWmsMinError'),
@@ -25,7 +26,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
             this.onBlur(field);
         }, this);
 
-        this.df.on('select', function(field, record, index) {
+        this.df.on('keyup', function(field, e) {
             this.onBlur(field);
         }, this);
     },
