@@ -31,19 +31,12 @@ class GeoserverServer extends WmsServer {
                 def filterName = filter.name.text()
                 def filterType = filter.type.text()
 
-                def values = []
-
-                if (_filterHasValues(filterType)) {
-                    values = getFilterValues(server, layer, filterName)
-                }
-
                 filters.push(
                     [
                         label: filter.label.text(),
                         type: filterType,
                         name: filterName,
-                        visualised: Boolean.valueOf(filter.visualised.text()),
-                        values: values
+                        visualised: Boolean.valueOf(filter.visualised.text())
                     ]
                 )
             }
