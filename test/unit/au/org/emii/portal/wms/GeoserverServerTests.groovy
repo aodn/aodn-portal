@@ -99,28 +99,19 @@ class GeoserverServerTests extends GrailsUnitTestCase {
                 label: "Date (UTC)",
                 type: "DateRange",
                 name: "TIME",
-                visualised: true,
-                values: []
+                visualised: true
             ],
             [
                 label: "deployment_code",
                 type: "String",
                 name: "deployment_code",
-                visualised: true,
-                values: [
-                    "EAC1-2012",
-                    "EAC2-2012",
-                    "EAC3-2012",
-                    "EAC4-2012",
-                    "EAC5-2012"
-                ]
+                visualised: true
             ],
             [
                 label: "geom",
                 type: "BoundingBox",
                 name: "geom",
-                visualised: true,
-                values: []
+                visualised: true
             ]
         ]
 
