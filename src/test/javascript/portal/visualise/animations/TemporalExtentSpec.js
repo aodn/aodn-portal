@@ -91,6 +91,26 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
         });
     });
 
+    describe('_createDay', function() {
+        var aMomentInTime = moment.utc('2000-01-01T01:00:00.000');
+        var calledWith = null;
+
+        beforeEach(function() {
+            spyOn(temporalExtent, '_setFirstDay').andCallFake(function(date) { calledWith = date; });
+            spyOn(temporalExtent, '_setLastDay').andCallFake(function(date) { calledWith = date; });
+            temporalExtent._createDay(aMomentInTime);
+        });
+
+        it('calls _setFirstDay', function() {
+            expect(temporalExtent._setFirstDay).toHaveBeenCalled();
+            expect(aMomentInTime).toBeSame(calledWith);
+        });
+
+        it('calls _setLastDay', function() {
+            expect(temporalExtent._setLastDay).toHaveBeenCalled();
+            expect(aMomentInTime).toBeSame(calledWith);
+        });
+    });
 
     describe('getDay', function() {
         it('return null when empty', function() {
@@ -248,11 +268,12 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
 
         it('returns all defined dates in array', function() {
             temporalExtent.parse(['2000-01-01T23:00:00.000/2000-01-02T01:00:00.000/PT30M']);
-            expect(temporalExtent.getExtentAsArray()[0].toISOString()).toBe('2000-01-01T23:00:00.000Z');
-            expect(temporalExtent.getExtentAsArray()[1].toISOString()).toBe('2000-01-01T23:30:00.000Z');
-            expect(temporalExtent.getExtentAsArray()[2].toISOString()).toBe('2000-01-02T00:00:00.000Z');
-            expect(temporalExtent.getExtentAsArray()[3].toISOString()).toBe('2000-01-02T00:30:00.000Z');
-            expect(temporalExtent.getExtentAsArray()[4].toISOString()).toBe('2000-01-02T01:00:00.000Z');
+            var flatArrayOfDates = temporalExtent.getExtentAsArray();
+            expect(flatArrayOfDates[0].toISOString()).toBe('2000-01-01T23:00:00.000Z');
+            expect(flatArrayOfDates[1].toISOString()).toBe('2000-01-01T23:30:00.000Z');
+            expect(flatArrayOfDates[2].toISOString()).toBe('2000-01-02T00:00:00.000Z');
+            expect(flatArrayOfDates[3].toISOString()).toBe('2000-01-02T00:30:00.000Z');
+            expect(flatArrayOfDates[4].toISOString()).toBe('2000-01-02T01:00:00.000Z');
         });
     });
 

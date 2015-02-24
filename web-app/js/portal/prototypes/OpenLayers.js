@@ -6,7 +6,6 @@
  */
 
 OpenLayers.Layer.DOWNLOAD_FORMAT_CSV = 'csv';
-OpenLayers.Layer.DOWNLOAD_FORMAT_CSV_WITH_METADATA = 'csv-with-metadata-header';
 
 OpenLayers.Layer.prototype.isOverlay = function() {
     return !this.isBaseLayer;
@@ -98,7 +97,7 @@ OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl = function(baseUrl, la
     wfsUrl += (wfsUrl.indexOf('?') !== -1) ? "&" : "?";
     wfsUrl += 'typeName=' + layerName;
     wfsUrl += '&SERVICE=WFS';
-    wfsUrl += '&outputFormat=' + this._getServerSupportedOutputFormat(outputFormat);
+    wfsUrl += '&outputFormat=' + outputFormat;
     wfsUrl += '&REQUEST=GetFeature';
     wfsUrl += '&VERSION=1.0.0';
 
@@ -109,19 +108,13 @@ OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl = function(baseUrl, la
     return wfsUrl;
 };
 
-OpenLayers.Layer.WMS.prototype._getServerSupportedOutputFormat = function(outputFormat) {
+OpenLayers.Layer.WMS.prototype.getCsvDownloadFormat = function() {
 
-    // No special handling for formats other than 'csv'.
-    if (outputFormat != OpenLayers.Layer.DOWNLOAD_FORMAT_CSV_WITH_METADATA) {
-        return outputFormat;
+    if (this.server.csvDownloadFormat) {
+        return this.server.csvDownloadFormat;
     }
-    // Request to have metadata inserted, if it's available.
-    else if (this.server.supportsCsvMetadataHeaderOutputFormat) {
-        return OpenLayers.Layer.DOWNLOAD_FORMAT_CSV_WITH_METADATA;
-    }
-    else {
-        return OpenLayers.Layer.DOWNLOAD_FORMAT_CSV;
-    }
+
+    return OpenLayers.Layer.DOWNLOAD_FORMAT_CSV;
 };
 
 OpenLayers.Layer.WMS.prototype._getBoundingBox = function() {

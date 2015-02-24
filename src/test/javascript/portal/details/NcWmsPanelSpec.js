@@ -66,9 +66,15 @@ describe('Portal.details.NcWmsPanel', function() {
             _applyCommonSpies();
         });
 
-        it('updates the NcWMS panel object when the layer changes', function() {
+        it('updates the record when panel is created', function() {
             ncwmsPanel._initWithLayer();
             expect(ncwmsPanel.geoNetworkRecord.updateNcwmsParams).toHaveBeenCalled();
+        });
+
+        it('calls ACTIVE_GEONETWORK_RECORD_MODIFIED when the record changes', function() {
+            spyOn(Ext.MsgBus, 'publish');
+            ncwmsPanel._applyFilterValuesToCollection();
+            expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_MODIFIED);
             delete ncwmsPanel.geoNetworkRecord;
         });
 

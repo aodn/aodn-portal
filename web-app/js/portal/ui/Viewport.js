@@ -39,6 +39,8 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
             ]
         });
 
+        this.urlUpdater = new Portal.data.UrlUpdater();
+
         this.downloadCartWidget = new Portal.ui.DownloadCartWidget({});
 
         var config = Ext.apply(

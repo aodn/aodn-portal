@@ -29,17 +29,15 @@ class ServerControllerTests extends ControllerUnitTestCase {
         ]
     }
 
-    protected void tearDown() {
-        super.tearDown()
-    }
-
     void testIndex() {
         this.controller.index()
         assertEquals "list", this.controller.redirectArgs["action"]
     }
 
     void testShowServerByItsId() {
-        mockDomain(Server, [new Server(id: 10, uri: "uri1", shortAcron: "A", name: "name1", type: "WMS-1.1.1", lastScanDate: null, scanFrequency: 0, disable: false, allowDiscoveries: true, opacity: 3, imageFormat: "image/png", comments: "", username: null, password: null)])
+        def server = new Server(id: 10, uri: "uri1", shortAcron: "A", name: "name1", type: "WMS-1.1.1", lastScanDate: null, scanFrequency: 0, disable: false, allowDiscoveries: true, opacity: 3, imageFormat: "image/png", comments: "", username: null, password: null)
+        server.grailsApplication = [ config: [:] ]
+        mockDomain(Server, [server])
         this.controller.params.serverId = "10_10"
         this.controller.showServerByItsId()
 

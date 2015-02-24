@@ -13,6 +13,8 @@ import groovy.time.TimeCategory
 import org.apache.commons.codec.binary.Base64
 
 class Server {
+    def grailsApplication
+
     Long id
     String uri
     String shortAcron
@@ -28,9 +30,6 @@ class Server {
     String username
     String password
 
-    String urlListDownloadPrefixToRemove
-    String urlListDownloadPrefixToSubstitue
-
     Date lastScanDate
     Integer scanFrequency = 120 // 2 hours
 
@@ -44,6 +43,8 @@ class Server {
 
         operations cascade: 'all-delete-orphan'
     }
+
+    static transients = [ 'urlListDownloadSubstitutions' ]
 
     static constraints = {
         uri(unique: true, url: true)
@@ -78,8 +79,6 @@ class Server {
         comments(nullable: true)
         username(nullable: true)
         password(nullable: true)
-        urlListDownloadPrefixToRemove(nullable: true)
-        urlListDownloadPrefixToSubstitue(nullable: true)
         owners(nullable: true, validator: {
             //This is totally not a great way to do things
             def ownerRole = UserRole.findByName(UserRole.SERVEROWNER)
@@ -222,5 +221,11 @@ class Server {
 
             operations << operation
         }
+    }
+
+    def getUrlListDownloadSubstitutions() {
+        return grailsApplication.config.knownServers.find {
+            this.uri.startsWith(it.uri)
+        }?.urlListDownloadSubstitutions ?: [:]
     }
 }

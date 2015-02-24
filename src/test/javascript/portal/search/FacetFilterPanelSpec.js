@@ -10,6 +10,7 @@ describe("Portal.search.FacetFilterPanel", function() {
     var filterPanel;
     var testContainer;
     var mockSearchResponse = Portal.search.SearchSpecHelper.mockSearchResponse;
+    var mockDrilldownPanel;
 
     beforeEach(function() {
         searcher = new Portal.service.CatalogSearcher();
@@ -92,6 +93,36 @@ describe("Portal.search.FacetFilterPanel", function() {
             var drilldownPanels = filterPanel._getDrilldownPanels();
             expect(drilldownPanels.length).toEqual(1);
             expect(drilldownPanels[0].hasNoDrilldown()).toEqual(true);
+        });
+    });
+
+    describe('_addDrilldownFilters', function() {
+        beforeEach(function() {
+            mockDrilldownPanel = {
+                hasDrilldown: function() {
+                    return false;
+                },
+                getDrilldownPath: function() {
+                    return 'a shrubbery';
+                }
+            };
+
+            spyOn(filterPanel, '_getDrilldownPanels').andReturn(mockDrilldownPanel);
+            spyOn(searcher, 'addDrilldownFilter');
+        });
+
+        it('does not add a filter to the catalogue searcher if the panel has no drilldown', function() {
+            filterPanel._addDrilldownFilters();
+            expect(searcher.addDrilldownFilter).not.toHaveBeenCalled();
+        });
+
+        it('adds a filter if the panel has a drilldown', function() {
+            mockDrilldownPanel.hasDrilldown = function() {
+                return true;
+            };
+
+            filterPanel._addDrilldownFilters();
+            expect(searcher.addDrilldownFilter).toHaveBeenCalled();
         });
     });
 

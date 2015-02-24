@@ -198,7 +198,7 @@ knownServers = [
         uri: '', // The server URL (required) -- I would prefer to see that is url rather than uri but I have it as uri for now to match the field in the Server domain class.
         wmsVersion: '', // The version number as a string e.g. "1.1.1", "1.3.0" (not sure if we should make this required or not)
         type: '', // Identifying the specific server software. e.g. "nvWMS", "GeoServer". If omitted or blank then it is considered to just be a general WMS server without any extra functionality. Should be case insensitive.
-        supportsCsvMetadataHeaderOutputFormat: true, // False if omitted. Basically this tells us whether we can use the csvWithMetadata output type on this server
+        csvDownloadFormat: '', // We have some specialised CSV formats: 'csv-restricted-column' and 'csv-with-metadata-header'
         httpAuthUsername: '', // Some servers use HTTP authentication, so store the credentials here. Null be default
         httpAuthPassword: '',
         urlListDownloadPrefixToRemove: '', // For the time being these are still needed for BODAAC functionality, null by default
@@ -208,16 +208,19 @@ knownServers = [
         uri: 'http://geoserver-123.aodn.org.au/geoserver/wms',
         wmsVersion: '1.1.1',
         type: 'GeoServer',
-        supportsCsvMetadataHeaderOutputFormat: true,
-        urlListDownloadPrefixToRemove: '/mnt/imos-t3/',
-        urlListDownloadPrefixToSubstitue: 'http://data.aodn.org.au/'
+        csvDownloadFormat: 'csv-with-metadata-header',
+        urlListDownloadSubstitutions: [
+            '/mnt/imos-t3/': 'http://data.aodn.org.au/',
+            '/mnt/opendap/2/SRS': 'http://thredds.aodn.org.au/thredds/fileServer/srs'
+        ]
     ],
     [
         uri: 'http://ncwms.aodn.org.au/ncwms/wms',
         wmsVersion: '1.1.1',
         type: 'ncWMS',
-        urlListDownloadPrefixToRemove: '/mnt/imos-t3/IMOS/opendap/',
-        urlListDownloadPrefixToSubstitue: 'http://thredds.aodn.org.au/thredds/fileServer/IMOS/'
+        urlListDownloadSubstitutions: [
+            '/mnt/imos-t3/IMOS/opendap/': 'http://thredds.aodn.org.au/thredds/fileServer/IMOS/'
+        ]
     ],
     [
         uri: 'http://rs-data1-mel.csiro.au/ncWMS/wms',
