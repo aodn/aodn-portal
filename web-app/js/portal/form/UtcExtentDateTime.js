@@ -26,6 +26,12 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
             this.onBlur(field);
         }, this);
 
+        // date picker selection
+        this.df.on('select', function(field, e) {
+            this.onBlur(field);
+        }, this);
+
+        // typing a date
         this.df.on('keyup', function(field, e) {
             this.onBlur(field);
         }, this);
