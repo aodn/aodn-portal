@@ -52,9 +52,9 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         var clearFilter = [OpenLayers.i18n('clearFilterOption')];
         data.push(clearFilter);
 
-        for (var i = 0; i < this.filter.values.length; i++) {
-            data.push([this.filter.values[i]]);
-        }
+        //for (var i = 0; i < this.filter.values.length; i++) {
+            //data.push([this.filter.values[i]]);
+        //}
 
         this.combo.clearValue();
         this.combo.getStore().loadData(data);

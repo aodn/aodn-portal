@@ -129,6 +129,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
                     },
                     success: function(resp, opts) {
                         this.layer.filters = Ext.util.JSON.decode(resp.responseText);
+                        console.log(this.layer.filters);
                         this._showHideFilters();
                         this.layerIsBeingHandled = false;
                     }
