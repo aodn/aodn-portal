@@ -350,10 +350,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
-
+        
         if (this.geoNetworkRecord) {
             this._addDateTimeFilterToLayer();
             this.geoNetworkRecord.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
+            Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_MODIFIED);
         }
     },
 
