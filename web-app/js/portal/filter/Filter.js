@@ -9,21 +9,14 @@ Ext.namespace('Portal.filter');
 
 Portal.filter.Filter = Ext.extend(Object, {
 
-    constructor: function(filterDetail, collection) {
+    constructor: function(filterDetail, layer) {
 
-        this.collection = collection;
+        this.layer = layer;
         this.filterName = filterDetail.name;
-        this.filterLabel = filterDetail.label;
+        this.displayLabel = filterDetail.label;
         this.filterType = filterDetail.type;
         this.sortOrder = filterDetail.sortOrder;
         this.range = [];
-    },
-
-    getRange: function() {
-
-        var filterService  = new Portal.filter.FilterService();
-
-        this.range = filterService.getFilterRange(this.filterName, this.collection, this._callback, this);
     },
 
     setValue: function(value) {
@@ -41,9 +34,9 @@ Portal.filter.Filter = Ext.extend(Object, {
         return this.filterName;
     },
 
-    getFilterLabel: function() {
+    getDisplayLabel: function() {
 
-        return this.filterLabel;
+        return this.displayLabel;
     },
 
     getFilterType: function() {
@@ -56,13 +49,16 @@ Portal.filter.Filter = Ext.extend(Object, {
         return this.sortOrder;
     },
 
-    getCollection: function() {
+    getLayer: function() {
 
-        return this.collection;
+        return this.layer;
     },
 
     _callback: function(scope, range) {
 
-        return range;
+        console.log(scope);
+        console.log(range);
+
+        scope.range = range;
     }
 });

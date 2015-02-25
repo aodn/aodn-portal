@@ -15,36 +15,57 @@ Portal.filter.FilterService = Ext.extend(Object, {
         this.GET_FILTER_VALUES = "layer/getFilterValuesAsJSON";
     },
 
-    getFilters: function(collection, onLoadedCallback, callbackScope) {
+    loadFilters: function(layer, onLoadedCallback, callbackScope) {
 
         Ext.Ajax.request({
             url: this.GET_FILTER,
             params: {
-                server: collection.server.uri,
-                layer: collection.wmsName
+                server: layer.server.uri,
+                layer: layer.wmsName
             },
             scope: this,
             failure: function() {
+                alert("got 99 problems");
             },
-            success: function(resp, opts) {
-                var filters = Ext.util.JSON.decode(resp.responseText);
-
-                onLoadedCallback.call(callbackScope, filters);
-            }
+            success: this._filtersLoaded,
+            callbackFunction: onLoadedCallback,
+            callbackScope: callbackScope,
+            layer: layer
         });
     },
 
-    getFilterRange: function(filterId, collection, onLoadedCallback, callbackScope) {
+    _filtersLoaded: function(response, opts) {
+
+        console.log("filters loaded");
+
+        var callbackFunction = opts.callbackFunction;
+        var callbackScope = opts.callbackScope;
+        var layer = opts.layer;
+        var filterDetails = Ext.util.JSON.decode(response.responseText);
+        var filterObjects = [];
+
+        Ext.each(filterDetails, function(filterDetail) {
+
+            var newFilterObject = new Portal.filter.Filter(filterDetail, layer);
+
+            filterObjects.push(newFilterObject);
+        });
+
+        callbackFunction.call(callbackScope, filterObjects);
+    },
+
+    loadFilterRange: function(filterId, layer, onLoadedCallback, callbackScope) {
 
         Ext.Ajax.request({
             url: this.GET_FILTER_VALUES,
             params: {
                 filter: filterId,
-                server: collection.server.uri,
-                layer: collection.wmsName
+                server: layer.server.uri,
+                layer: layer.wmsName
             },
             scope: this,
             failure: function() {
+                alert("not in da club");
             },
             success: function(resp, opts) {
                 var filterRange = Ext.util.JSON.decode(resp.responseText);

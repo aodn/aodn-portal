@@ -14,6 +14,8 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             autoDestroy: true
         }, cfg);
 
+        this.filter = cfg.filter;
+
         Portal.filter.ComboFilterPanel.superclass.constructor.call(this, config);
     },
 
@@ -47,17 +49,6 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
                 height: 5
             })
         );
-
-        var data = [];
-        var clearFilter = [OpenLayers.i18n('clearFilterOption')];
-        data.push(clearFilter);
-
-        //for (var i = 0; i < this.filter.values.length; i++) {
-            //data.push([this.filter.values[i]]);
-        //}
-
-        this.combo.clearValue();
-        this.combo.getStore().loadData(data);
     },
 
     validateValue: function(value) {
@@ -78,7 +69,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         if (this.combo.getValue()) {
             return String.format(
                 "{0} LIKE '{1}'",
-                this.filter.name,
+                this.filter.getFilterName(),
                 this._escapeSingleQuotes(this.combo.getValue())
             );
         }
@@ -89,7 +80,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     getFilterData: function() {
 
         return {
-            name: this.filter.name,
+            name: this.filter.getFilterName(),
             visualised: this.isVisualised(),
             cql: this.getCQL(),
             humanValue: this._getHumanValue()
@@ -99,7 +90,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     _getHumanValue: function() {
         var componentValue = this._escapeSingleQuotes(this.combo.getValue());
         if (componentValue != "") {
-            return this.getFilterNameAsTitleCase() + " like \"" + componentValue + "\""
+            return this.filter.getDisplayLabel() + " like \"" + componentValue + "\""
         }
         else {
             return ""
@@ -124,13 +115,30 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _setExistingFilters: function() {
-        this.re = new RegExp(this.filter.name + " LIKE '(.*?)'");
+        this.re = new RegExp(this.filter.getFilterName() + " LIKE '(.*?)'");
 
         var m = this.re.exec(this.layer.getDownloadFilter());
 
         if (m != null && m.length == 2) {
             this.combo.setValue(m[1]);
         }
+    },
+
+    needsFilterRange: function() {
+        return true;
+    },
+
+    setFilterRange: function(range) {
+        var data = [];
+        var clearFilter = [OpenLayers.i18n('clearFilterOption')];
+        data.push(clearFilter);
+
+        for (var i = 0; i < range.length; i++) {
+            data.push([range[i]]);
+        }
+
+        this.combo.clearValue();
+        this.combo.getStore().loadData(data);
     },
 
     _escapeSingleQuotes: function(text) {

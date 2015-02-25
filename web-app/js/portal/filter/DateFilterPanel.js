@@ -202,6 +202,10 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.toDate.setMinValue(new Date(0));
     },
 
+    needsFilterRange: function() {
+        return false;
+    },
+
     _setExistingFilters: function() {
         var beforePattern = this.filter.name + " <= '(.*?)'( |$)";
         var afterPattern = this.filter.name + " >= '(.*?)'( |$)";

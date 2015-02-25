@@ -84,6 +84,14 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     _setExistingFilters: function() {
+    },
+
+    needsFilterRange: function() {
+        throw "must implement this function"
+    },
+
+    setFilterRange: function() {
+        throw "must override this function if needs filterRange returns true"
     }
 });
 
@@ -91,22 +99,24 @@ Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
 
     var newFilterPanel;
 
-    if (cfg.filter.type === "String") {
+    console.log(cfg);
+
+    if (cfg.filter.filterType === "String") {
         newFilterPanel = new Portal.filter.ComboFilterPanel(cfg);
     }
-    else if (cfg.filter.type == "Date") {
+    else if (cfg.filter.filterType == "Date") {
         newFilterPanel = new Portal.filter.DateFilterPanel(cfg);
     }
-    else if (cfg.filter.type == "DateRange") {
+    else if (cfg.filter.filterType == "DateRange") {
         newFilterPanel = new Portal.filter.DateFilterPanel(cfg);
     }
-    else if (cfg.filter.type === "Boolean") {
+    else if (cfg.filter.filterType === "Boolean") {
         newFilterPanel = new Portal.filter.BooleanFilterPanel(cfg);
     }
-    else if (cfg.filter.type === "BoundingBox") {
+    else if (cfg.filter.filterType === "BoundingBox") {
         newFilterPanel = new Portal.filter.BoundingBoxFilterPanel(cfg);
     }
-    else if (cfg.filter.type === "Number") {
+    else if (cfg.filter.filterType === "Number") {
         newFilterPanel = new Portal.filter.NumberFilterPanel(cfg);
     }
     else {

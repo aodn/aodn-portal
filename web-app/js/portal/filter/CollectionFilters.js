@@ -15,25 +15,27 @@ Portal.filter.CollectionFilters = Ext.extend(Object, {
         this.filterObjects = [];
     },
 
-    getFilters: function() {
+    loadFilters: function(callbackFunction, callbackScope) {
+        alert("bloody collection filters fuck off");
 
         var filterService  = new Portal.filter.FilterService();
 
-        this.filterObjects = filterService.getFilters(this.collection, this._callback, this);
+        filterService.getFilters(this.collection, this._callback, this);
     },
 
     _callback: function(scope, filterDetails) {
 
         var filterObjects = [];
+        var collection = scope.collection;
 
         Ext.each(filterDetails, function(filterDetail) {
 
-            var newFilterObject = new Portal.filter.Filter(filterDetail, this.collection);
+            var newFilterObject = new Portal.filter.Filter(filterDetail, collection);
 
             filterObjects.push(newFilterObject);
         });
 
-        return filterObjects;
+        scope.filterObjects = filterObjects;
     },
 
     getFilterObjects: function() {

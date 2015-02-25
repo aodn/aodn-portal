@@ -20,9 +20,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
             ]
         }, cfg);
 
-        this.GET_FILTER = "layer/getFiltersAsJSON";
-        this.filters = [];
-
         Portal.filter.FilterGroupPanel.superclass.constructor.call(this, config);
     },
 
@@ -31,6 +28,8 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         this.on('addFilter', this._handleAddFilter);
 
         Portal.filter.FilterGroupPanel.superclass.initComponent.call(this);
+
+        this.collectionFilters = new Portal.filter.CollectionFilters(this.layer);
 
         this._initWithLayer();
     },
@@ -108,39 +107,57 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     _initWithLayer: function() {
-        if (this._layerShouldBeHandled()) {
 
-            if (this.layer.filters) {
-                this._showHideFilters();
-            }
-            else {
-                this.layerIsBeingHandled = true;
+        var filterService  = new Portal.filter.FilterService();
 
-                Ext.Ajax.request({
-                    url: this.GET_FILTER,
-                    params: {
-                        server: this.layer.server.uri,
-                        layer: this.layer.wmsName
-                    },
-                    scope: this,
-                    failure: function() {
-                        this.addErrorMessage(OpenLayers.i18n('subsetParametersErrorText'));
-                        this.layerIsBeingHandled = false;
-                    },
-                    success: function(resp, opts) {
-                        this.layer.filters = Ext.util.JSON.decode(resp.responseText);
-                        console.log(this.layer.filters);
-                        this._showHideFilters();
-                        this.layerIsBeingHandled = false;
-                    }
-                });
+        filterService.loadFilters(this.layer, this._filtersLoaded, this);
+    },
+
+    _filtersLoaded: function(filters) {
+
+        var filterPanels = [];
+
+        Ext.each(filters, function(filterObject) {
+            console.log(filterObject);
+
+            var filterPanel = this._createFilterPanel(filterObject);
+
+            filterPanels.push(filterPanel);
+
+            if (filterPanel.needsFilterRange()) {
+
+                var filterService  = new Portal.filter.FilterService();
+
+                filterService.loadFilterRange(filterObject.filterName, filterObject.layer, function(filterRange) {
+                    this._filterRangeLoaded(filterRange, filterPanel)
+                }, this);
             }
+
+        }, this);
+
+        this.filterPanels = filterPanels;
+
+        if (this.filterPanels.length > 0) {
+            this._updateAndShow();
+        }
+        else {
+            this.addErrorMessage(OpenLayers.i18n('subsetEmptyFiltersText'));
         }
     },
 
-    _showHideFilters: function() {
+    _filterRangeLoaded: function(filterRange, filterPanel) {
 
-        var layer = this.layer;
+        console.log("filter range loaded");
+
+        filterPanel.setFilterRange(filterRange);
+    },
+
+    _showHideFilters: function(filterObjects) {
+
+
+
+
+        /*var layer = this.layer;
         var aFilterIsEnabled = false;
         if (this._isLayerActive(layer) && (layer.filters.length > 0)) {
 
@@ -161,7 +178,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         }
         else {
             this.addErrorMessage(OpenLayers.i18n('subsetEmptyFiltersText'));
-        }
+        }*/
     },
 
     _filtersSort: function(filters) {
@@ -210,8 +227,11 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         return result;
     },
 
-    _createFilterPanel: function(layer, filter) {
+    _createFilterPanel: function(filter) {
 
+        console.log(filter);
+
+        var layer  = filter.layer;
         var newFilterPanel = Portal.filter.BaseFilterPanel.newFilterPanelFor({
             filter: filter,
             layer: layer
@@ -226,7 +246,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
             }
             this.currentGroupContainer.add(newFilterPanel);
 
-            this.filters.push(newFilterPanel);
             return newFilterPanel;
         }
     },
@@ -301,7 +320,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
     _getActiveFilterData: function() {
         var activeFilters = [];
 
-        Ext.each(this.filters, function(filter) {
+        Ext.each(this.filterPanels, function(filter) {
             if (filter.hasValue()) {
                 activeFilters.push(filter.getFilterData());
             }
@@ -355,14 +374,14 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     _clearFilters: function() {
-        Ext.each(this.filters, function(filter) {
+        Ext.each(this.filterPanels, function(filter) {
             filter.handleRemoveFilter();
         });
         this._updateLayerFilters();
     },
 
     _layerHasBeenHandled: function() {
-        return this.filters.length > 0;
+        return this.filterPanels.length > 0;
     },
 
     _layerShouldBeHandled: function() {

@@ -102,6 +102,10 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
         return (this.map.getSpatialConstraintType() == "polygon");
     },
 
+    needsFilterRange: function() {
+        return false;
+    },
+
     getFilterData: function() {
 
         return {

@@ -41,8 +41,7 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _formatBoxLabel: function() {
-        var label = this.filter.label.split('_').join(' ').toTitleCase();
-        return label;
+        return this.filter.getDisplayLabel();
     },
 
     _buttonChecked: function() {
@@ -81,6 +80,10 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     handleRemoveFilter: function() {
         this.checkbox.setValue(false);
+    },
+
+    needsFilterRange: function() {
+        return false;
     },
 
     _setExistingFilters: function() {
