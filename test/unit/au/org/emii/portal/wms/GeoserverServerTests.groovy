@@ -128,16 +128,11 @@ class GeoserverServerTests extends GrailsUnitTestCase {
         assertEquals expected, filtersJson
     }
 
-    void testGetOwsEndpoint() {
-        def server = "http://geoserver-123.aodn.org.au/geoserver/wms"
-        assertEquals("http://geoserver-123.aodn.org.au/geoserver/ows", geoserverServer.getOwsEndpoint(server))
-    }
-
     void testGetFiltersUrl() {
         def server = "http://geoserver-123.aodn.org.au/geoserver/wms"
         def layer = "aodn:aodn_dsto_glider_trajectory_map"
         assertEquals(
-            "http://geoserver-123.aodn.org.au/geoserver/ows?request=enabledFilters&service=layerFilters&version=1.0.0&workspace=aodn&layer=aodn_dsto_glider_trajectory_map",
+            "http://geoserver-123.aodn.org.au/geoserver/wms?request=enabledFilters&service=layerFilters&version=1.0.0&workspace=aodn&layer=aodn_dsto_glider_trajectory_map",
             geoserverServer.getFiltersUrl(server, layer)
         )
     }
@@ -147,7 +142,7 @@ class GeoserverServerTests extends GrailsUnitTestCase {
         def layer = "aodn:aodn_dsto_glider_trajectory_map"
         def filter = "driftnum"
         assertEquals(
-            "http://geoserver-123.aodn.org.au/geoserver/ows?request=uniqueValues&service=layerFilters&version=1.0.0&workspace=aodn&layer=aodn_dsto_glider_trajectory_map&propertyName=driftnum",
+            "http://geoserver-123.aodn.org.au/geoserver/wms?request=uniqueValues&service=layerFilters&version=1.0.0&workspace=aodn&layer=aodn_dsto_glider_trajectory_map&propertyName=driftnum",
             geoserverServer.getFilterValuesUrl(server, layer, filter)
         )
     }

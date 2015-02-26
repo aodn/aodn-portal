@@ -195,22 +195,14 @@ class GeoserverServer extends WmsServer {
         }
     }
 
-    static String getOwsEndpoint(server) {
-        // Strip the '/wms' suffix and add '/ows' instead, s.t.:
-        // https://geoserver/wms -> https://geoserver/ows
-        def elements = server.split('/')
-        return elements[0..elements.size()-2].join('/') + "/ows"
-    }
-
     static String _getFiltersUrlBase(server, layer, request, extraOpts) {
-        def serverOwsEndpoint = getOwsEndpoint(server)
         def workspaceName = getLayerWorkspace(layer)
         def layerName = getLayerName(layer)
 
         def final service = "layerFilters"
         def final version = "1.0.0"
 
-        return serverOwsEndpoint + "?request=${request}&service=${service}&version=${version}&workspace=${workspaceName}&layer=${layerName}${extraOpts}"
+        return server + "?request=${request}&service=${service}&version=${version}&workspace=${workspaceName}&layer=${layerName}${extraOpts}"
     }
 
     static String getFiltersUrl(server, layer) {
