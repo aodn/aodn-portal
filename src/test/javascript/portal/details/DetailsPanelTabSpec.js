@@ -15,6 +15,7 @@ describe("Portal.details.DetailsPanelTab", function() {
 
         var layer = new OpenLayers.Layer.WMS();
         layer.server = { uri: "uri" };
+        layer.getDownloadLayer = function() { return "downloadLayer"; };
 
         detailsPanelTab = new Portal.details.DetailsPanelTab({
             map: new OpenLayers.SpatialConstraintMap(),

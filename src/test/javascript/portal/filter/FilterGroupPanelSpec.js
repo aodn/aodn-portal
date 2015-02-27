@@ -12,6 +12,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
     beforeEach(function() {
         layer = new OpenLayers.Layer.WMS();
         layer.server = { uri: "uri" };
+        layer.getDownloadLayer = function() { return "downloadLayer"; };
         layer.isKnownToThePortal = function() { return true; };
 
         filterGroupPanel = new Portal.filter.FilterGroupPanel({
