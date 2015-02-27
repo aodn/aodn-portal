@@ -55,6 +55,14 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         return "undefined";
     },
 
+    _getLayerWorkspace: function(layerName) {
+        var workspace = null;
+        if (layerName.indexOf(":") != -1) {
+            workspace = layerName.split(":")[0];
+        }
+        return workspace;
+    },
+
     /**
      * Refactor.
      */
@@ -66,6 +74,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         //provide a way to add header information to a WMS request
         openLayer.cql = this.cql;
         this._setOpenLayerBounds(openLayer);
+        this._setDownloadLayers(openLayer);
         openLayer.cache = this.cache;
         openLayer.projection = this.projection;
         openLayer.blacklist = this.blacklist;
@@ -81,6 +90,30 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
                 openLayersZoomLevel: this.viewParams.openLayersZoomLevel
             }
         }
+    },
+
+    _setDownloadLayers: function(openLayer) {
+        var downloadLayers = [];
+
+        if (this.geonetworkRecord && this.geonetworkRecord.data && this.geonetworkRecord.data.dataDownloadHandlers) {
+            var dataDownloadHandlers = this.geonetworkRecord.data.dataDownloadHandlers;
+            for (var i = 0; i < dataDownloadHandlers.length; ++i) {
+                var downloadLayer = dataDownloadHandlers[i].onlineResource.name;
+
+                // If layer has no workspace defined, assume it is in the same
+                // workspace as the WMS layer
+                if (! this._getLayerWorkspace(downloadLayer) &&
+                    this._getLayerWorkspace(openLayer.wmsName)) {
+                    downloadLayer = this._getLayerWorkspace(openLayer.wmsName) + ":" + downloadLayer;
+                }
+
+                if (-1 ==  $.inArray(downloadLayer, downloadLayers)) {
+                    downloadLayers.push(downloadLayer);
+                }
+            }
+        }
+        openLayer.downloadLayers = downloadLayers;
+        openLayer.getDownloadLayer = function() { return this.downloadLayers[0]; }
     },
 
     _setOpenLayerBounds: function(openLayer) {

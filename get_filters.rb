@@ -22,13 +22,13 @@ class GeonetworkConnector
     @geoserver_url  = geoserver_url
   end
 
-  # Method for connecting to a given geonetwork url and extract wms layers
+  # Method for connecting to a given geonetwork url and extract wfs layers
   #
   # Params:
   # * *Returns* :
   #   - Array of layers in geonetwork
   #
-  def wms_layers
+  def layers
     geonetwork_search_results = URI.parse(@geonetwork_url).read
     geonetwork_search_results_xml = Nokogiri::XML(geonetwork_search_results)
 
@@ -37,11 +37,11 @@ class GeonetworkConnector
       next unless metadata.name == 'metadata'
 
       geonetwork_links = GeonetworkMetadataLinks.new(metadata)
-      wms_server, wms_layer = geonetwork_links.wms_link
+      server, wms_layer, wfs_layer = geonetwork_links.wms_wfs_links
 
-      if wms_server == @geoserver_url && wms_layer
-        $logger.info "Probed layer from Geonetwork: '#{wms_layer}' on '#{wms_server}'"
-        layers << wms_layer
+      if server == @geoserver_url && wfs_layer && wms_layer
+        $logger.info "Probed layer from Geonetwork: '#{wfs_layer}' <-> '#{wms_layer}' on '#{server}'"
+        layers << [ wms_layer, wfs_layer ]
       end
     end
 
@@ -58,16 +58,21 @@ class GeonetworkConnector
       end
     end
 
-    def wms_link
-      wms_link = [nil, nil]
+    def wms_wfs_links
+      links = [nil, nil, nil]
       @links.each do |link|
         link_parts = link.split("|")
         if link_parts[3] == 'OGC:WMS-1.1.1-http-get-map'
-          wms_link = [ link_parts[2], link_parts[0] ]
+          # Set WMS link + server
+          links[0] = link_parts[2]
+          links[1] = link_parts[0]
+        elsif link_parts[3] == 'OGC:WFS-1.0.0-http-get-capabilities'
+          # Set WFS link
+          links[2] = link_parts[0]
         end
       end
 
-      return wms_link
+      return links
     end
   end # class GeonetworkConnector
 
@@ -138,8 +143,15 @@ def write_filters(filters_dir, filters, opts)
 end
 
 def get_layer_directory(prefix, layer)
-  workspace = layer.split(":")[0]
-  layer_name = layer.split(":")[1]
+  layer_name = layer
+  # Assume 'imos' workspace if unspecified
+  workspace = "imos"
+
+  if layer.match(/:/)
+    workspace = layer.split(":")[0]
+    layer_name = layer.split(":")[1]
+  end
+
   return File.join(prefix, workspace, layer_name)
 end
 
@@ -148,22 +160,25 @@ def get_filters_main(opts)
 
   # Get layers from Geonetwork URL
   geonetwork_connector = GeonetworkConnector.new(opts[:geonetwork], opts[:geoserver])
-  layers = geonetwork_connector.wms_layers
+  layers = geonetwork_connector.layers
 
   output_dir = opts[:dir]
 
-  layers.each do |layer|
-    layer_id = get_layer_id(opts[:portal], opts[:geoserver], layer)
+  layers.each do |layer_tuple|
+    wms_layer = layer_tuple[0]
+    wfs_layer = layer_tuple[1]
+
+    layer_id = get_layer_id(opts[:portal], opts[:geoserver], wms_layer)
     if layer_id
       if output_dir
-        filters_dir = get_layer_directory(output_dir, layer)
+        filters_dir = get_layer_directory(output_dir, wfs_layer)
         FileUtils.mkdir_p filters_dir
 
         filters = get_filters(opts[:portal], layer_id)
         write_filters(filters_dir, filters, opts)
       end
     else
-      $logger.error "Could not get ID of layer '#{layer}'"
+      $logger.error "Could not get ID of layer '#{wms_layer}'"
     end
   end
 
