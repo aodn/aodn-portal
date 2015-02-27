@@ -22,7 +22,7 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
     _createField: function() {
         this.checkbox = new Ext.form.Checkbox({
-            name: this.filter.name,
+            name: this.filter.getFilterName(),
             value: true,
             labelStyle: "inheritFont",
             boxLabel: this._formatBoxLabel(),
@@ -46,13 +46,13 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     _buttonChecked: function() {
         this._fireAddEvent();
-        var val = this.filter.label + "=" + this.checkbox.getValue();
-        trackFiltersUsage('filtersTrackingBooleanAction', val, this.layer.name);
+        //var val = this.filter.label + "=" + this.checkbox.getValue();
+        //trackFiltersUsage('filtersTrackingBooleanAction', val, this.layer.name);
     },
 
     getCQL: function() {
         if (this.checkbox.getValue()) {
-            return this.filter.name + " = true";
+            return this.filter.getFilterName() + " = true";
         }
         else {
             return undefined;

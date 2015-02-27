@@ -99,7 +99,9 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _addLabelToFilterPanel: function(filter) {
 
-        var labelText = filter.label.split('_').join(' ').toTitleCase();
+        console.log(filter.getDisplayLabel());
+
+        var labelText = filter.getDisplayLabel();
         var label = new Ext.form.Label({
             html: "<label>" + labelText + "</label>"
         });
@@ -229,9 +231,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _createFilterPanel: function(filter) {
 
-        console.log(filter);
-
-        var layer  = filter.layer;
+        var layer  = filter.getLayer();
         var newFilterPanel = Portal.filter.BaseFilterPanel.newFilterPanelFor({
             filter: filter,
             layer: layer
@@ -268,13 +268,13 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
             this._addFilterTypeSpacer(filter);
         }
 
-        this.currentFilterType = filter.type;
+        this.currentFilterType = filter.getFilterType();
 
     },
 
     _addFilterTypeSpacer: function(filter) {
 
-        if (this.currentFilterType != filter.type) {
+        if (this.currentFilterType != filter.getFilterType()) {
             this.currentGroupContainer.add(this._getVerticalSpacer(15));
         }
     },
@@ -312,7 +312,11 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
     _updateLayerFilters: function() {
         if (this._isLayerActive(this.layer)) {
 
+            console.log("update layer filters and layer is active");
+
             this.layer.filterData = this._getActiveFilterData();
+
+            console.log(this.layer.filterData);
             this.layer.setCqlFilter(this._getVisualisationCQLFilters(this.layer.filterData));
         }
     },
@@ -340,6 +344,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
                 if (data.visualisationCql != undefined) {
                     filterCQL = data.visualisationCql;
                 }
+
                 if (filterCQL) {
                     cql.push(filterCQL);
                 }
@@ -350,7 +355,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     _logFilterRequest: function(aFilter) {
-        var layer = aFilter.layer;
+        var layer = aFilter.getLayer();
         var filterData = layer.filterData;
 
         var jsonStringifyObject = {};
@@ -370,7 +375,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _handleAddFilter: function(aFilter) {
         this._updateLayerFilters();
-        this._logFilterRequest(aFilter);
+        this._logFilterRequest(aFilter.filter);
     },
 
     _clearFilters: function() {

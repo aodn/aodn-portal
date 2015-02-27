@@ -51,7 +51,7 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     getFilterNameAsTitleCase: function() {
-        return this.filter.name.split('_').join(' ').toTitleCase();
+        return this.filter.getDisplayLabel();
     },
 
     getFilterData: function() {
@@ -59,7 +59,7 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     getFilterName: function() {
-        return this.filter.name;
+        return this.filter.getDisplayLabel();
     },
 
     isVisualised: function() {
@@ -99,7 +99,7 @@ Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
 
     var newFilterPanel;
 
-    console.log(cfg);
+    //console.log(cfg);
 
     if (cfg.filter.filterType === "String") {
         newFilterPanel = new Portal.filter.ComboFilterPanel(cfg);
