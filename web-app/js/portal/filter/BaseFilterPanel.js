@@ -87,19 +87,21 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     needsFilterRange: function() {
-        throw "must implement this function"
+        throw "must implement this function";
+    },
+
+    enableFilterPanel: function() {
+        throw "must implement this function if needs filterRange returns true";
     },
 
     setFilterRange: function() {
-        throw "must override this function if needs filterRange returns true"
+        throw "must override this function if needs filterRange returns true";
     }
 });
 
 Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
 
     var newFilterPanel;
-
-    //console.log(cfg);
 
     if (cfg.filter.filterType === "String") {
         newFilterPanel = new Portal.filter.ComboFilterPanel(cfg);

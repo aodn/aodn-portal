@@ -98,7 +98,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'TimeComboBox.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'FilterService.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'Filter.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'CollectionFilters.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'BaseFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'ComboFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'ConfigPage.js')}"></script>

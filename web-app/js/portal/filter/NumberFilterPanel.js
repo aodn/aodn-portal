@@ -26,6 +26,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     _createField: function() {
 
         this.operators = new Ext.form.ComboBox({
+            disabled: false,
             triggerAction: 'all',
             mode: 'local',
             emptyText : OpenLayers.i18n("pleasePickCondensed"),
@@ -56,6 +57,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         });
 
         this.firstField = new Ext.form.TextField({
+            disabled: false,
             name: 'from',
             width: 146,
             listeners: {
@@ -66,6 +68,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         });
 
         this.secondField = new Ext.form.TextField({
+            disabled: false,
             name: 'to',
             width: 146,
             hidden: true,
@@ -86,7 +89,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     getCQL: function() {
 
         if (this.firstField.getValue()) {
-            var cql = this.filter.name + " " + this.operators.getValue() + " " + this.firstField.getValue();
+            var cql = this.filter.getFilterName() + " " + this.operators.getValue() + " " + this.firstField.getValue();
 
             if (this._operatorIsBetween()) {
 
@@ -102,7 +105,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     _getCQLHumanValue: function() {
 
         if (this.firstField.getValue()) {
-            var cql = this.getFilterNameAsTitleCase() + " " + this.operators.getValue() + " " + this.firstField.getValue();
+            var cql = this.filter.getDisplayLabel() + " " + this.operators.getValue() + " " + this.firstField.getValue();
 
             if (this._operatorIsBetween()) {
 
@@ -118,7 +121,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     getFilterData: function() {
 
         return {
-            name: this.filter.name,
+            name: this.filter.getFilterName(),
             visualised: this.isVisualised(),
             cql: this.getCQL(),
             humanValue: this._getCQLHumanValue()
@@ -147,8 +150,12 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
     },
 
+    needsFilterRange: function() {
+        return false;
+    },
+
     _getTrackUsageLabel: function() {
-        var label = this.filter.label + " " + this.operators.lastSelectionText + " " + this.firstField.getValue();
+        var label = this.filter.getDisplayLabel() + " " + this.operators.lastSelectionText + " " + this.firstField.getValue();
 
         if (this._operatorIsBetween()) {
             label = label + " and " + this.secondField.getValue();
@@ -206,7 +213,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     _setExistingFilters: function() {
 
-        var name = this.filter.name;
+        var name = this.filter.getFilterName();
         var num = "([+-]?\\d+(\\.\\d+)?)";
 
         this.re = new RegExp(name + " ((>|>=|=|<>|<|<=) " + num + "|BETWEEN " + num + " AND " + num + ")");

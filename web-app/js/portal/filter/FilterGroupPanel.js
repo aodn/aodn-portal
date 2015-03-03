@@ -29,8 +29,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         Portal.filter.FilterGroupPanel.superclass.initComponent.call(this);
 
-        this.collectionFilters = new Portal.filter.CollectionFilters(this.layer);
-
         this._initWithLayer();
     },
 
@@ -151,36 +149,10 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         console.log("filter range loaded");
 
+        console.log(filterRange);
+
+        filterPanel.enableFilterPanel();
         filterPanel.setFilterRange(filterRange);
-    },
-
-    _showHideFilters: function(filterObjects) {
-
-
-
-
-        /*var layer = this.layer;
-        var aFilterIsEnabled = false;
-        if (this._isLayerActive(layer) && (layer.filters.length > 0)) {
-
-            layer.filters = this._filtersSort(layer.filters);
-
-            Ext.each(
-                layer.filters,
-                function(filterConfig, index, all) {
-                    this._createFilterPanel(layer, filterConfig);
-                    aFilterIsEnabled = true;
-                },
-                this
-            );
-        }
-
-        if (aFilterIsEnabled) {
-            this._updateAndShow();
-        }
-        else {
-            this.addErrorMessage(OpenLayers.i18n('subsetEmptyFiltersText'));
-        }*/
     },
 
     _filtersSort: function(filters) {

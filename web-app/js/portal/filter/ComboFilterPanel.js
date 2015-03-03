@@ -21,6 +21,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     _createField: function() {
         this.combo = new Ext.form.ComboBox({
+            disabled: true,
             triggerAction: 'all',
             mode: 'local',
             typeAhead: true,
@@ -139,6 +140,10 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         this.combo.clearValue();
         this.combo.getStore().loadData(data);
+    },
+
+    enableFilterPanel: function() {
+        this.combo.enable();
     },
 
     _escapeSingleQuotes: function(text) {
