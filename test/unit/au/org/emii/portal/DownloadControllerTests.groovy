@@ -80,7 +80,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.g.metaClass.render = {
             Map theRenderParams ->
-            renderParams = theRenderParams
+                renderParams = theRenderParams
         }
         controller.downloadPythonSnippet()
 
@@ -120,12 +120,12 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             assertEquals 'relativeFilePath', fieldName
             assertEquals testServer.urlListDownloadSubstitutions, urlSubstitutions
 
-            { inputStream, outputStream ->
-                outputStream << """\
+                { inputStream, outputStream ->
+                    outputStream << """\
                     url1
                     url2
                 """
-            }
+                }
         }
         controller.bulkDownloadService = [
             generateArchiveOfFiles: { urlList, outputStream, locale ->

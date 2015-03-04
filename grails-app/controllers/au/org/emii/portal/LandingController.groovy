@@ -16,7 +16,6 @@ class LandingController {
                 view: portalInstance.name() + "index",
                 model:[
                     oceanCurrent: oceanCurrentService.getRandomDetails(),
-                    cfg: Config.activeInstance(),
                     resourceVersionNumber: grailsApplication.metadata.'app.version',
                     portalBranding: portalBranding
                 ]
