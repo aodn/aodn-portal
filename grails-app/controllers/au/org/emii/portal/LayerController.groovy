@@ -10,7 +10,6 @@ package au.org.emii.portal
 import au.org.emii.portal.display.MenuJsonCache
 import au.org.emii.portal.wms.NcwmsServer
 import au.org.emii.portal.wms.GeoserverServer
-import grails.converters.JSON
 import groovy.time.TimeCategory
 import org.hibernate.criterion.MatchMode
 import org.hibernate.criterion.Restrictions
@@ -26,7 +25,6 @@ class LayerController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def aodaacAggregatorService
     def layerService
     def dataSource
     def grailsApplication
@@ -651,7 +649,7 @@ class LayerController {
 
             render text: serverObject.getStyles(server, layer) as JSON
         }
-        else (!hostVerifier.allowedHost(params.server)) {
+        else {
             render text: "Host '$params.server' not allowed"
         }
     }
@@ -691,7 +689,7 @@ class LayerController {
         if (layerInstance) {
             render(view: "editFilters", model: [layerInstance: layerInstance])
         }
-    }    
+    }
 
     def _isXmlContent(contentType) {
         return contentType.find(/(text|application)\/xml/)
