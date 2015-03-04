@@ -104,7 +104,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
         else if (this.combo.getValue() != "") {
             var val = this.filter.getDisplayLabel() + "=" + this.combo.getValue();
-            trackFiltersUsage('filtersTrackingComboAction', val, this.layer.getName());
+            trackFiltersUsage('filtersTrackingComboAction', val, this.layer.name);
         }
         this._fireAddEvent();
     },
