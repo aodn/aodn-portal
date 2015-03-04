@@ -32,7 +32,7 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
             name: 'this name should be ignored'
         };
 
-        expect(boundingBoxFilter.getFilterName()).toEqual(undefined);
+        expect(boundingBoxFilter.getName()).toEqual(undefined);
     });
 
     it("isVisualised() should return false", function() {
