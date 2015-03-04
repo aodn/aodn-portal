@@ -24,6 +24,9 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
 
     missingDays: null,
 
+    firstDay: undefined,
+    lastDay: undefined,
+
     constructor: function() {
         this.extent = {};
         this.missingDays = [];
@@ -229,6 +232,10 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         if (date.isValid() && ! this.extent[this._stringifyDate(date)]) {
             this.extent[this._stringifyDate(date)] = [];
         }
+
+        // When creating new days, initialize the min/max (firstDay/lastDay)
+        this._setFirstDay(date);
+        this._setLastDay(date);
     },
 
     getDay: function(date) {
@@ -241,26 +248,34 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         }
     },
 
+    _setFirstDay: function(day) {
+        if (!this.firstDay || day.isBefore(this.firstDay)) {
+            this.firstDay = this._startOfDay(day);
+        }
+    },
+
     getFirstDay: function() {
-        var firstDay = undefined;
-        Ext.iterate(this.extent, function(day, arrayOfDateTime) {
-            var iter = this._destringifyDate(day);
-            if (!firstDay || iter.isBefore(firstDay)) {
-                firstDay = iter.clone();
-            }
-        }, this);
-        return firstDay;
+        if (this.firstDay) {
+            return this.firstDay.clone();
+        }
+        else {
+            return undefined;
+        }
+    },
+
+    _setLastDay: function(day) {
+        if (!this.lastDay || day.isAfter(this.lastDay)) {
+            this.lastDay = this._startOfDay(day);
+        }
     },
 
     getLastDay: function() {
-        var lastDay = undefined;
-        Ext.iterate(this.extent, function(day, arrayOfDateTime) {
-            var iter = this._destringifyDate(day);
-            if (!lastDay || iter.isAfter(lastDay)) {
-                lastDay = iter.clone();
-            }
-        }, this);
-        return lastDay;
+        if (this.lastDay) {
+            return this.lastDay.clone();
+        }
+        else {
+            return undefined;
+        }
     },
 
     _stringifyDate: function(date) {
