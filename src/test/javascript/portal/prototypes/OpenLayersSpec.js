@@ -169,17 +169,18 @@ describe('OpenLayers', function() {
             });
 
             describe('_getServerSupportedOutputFormat', function() {
-                it("returns 'csv-with-metadata-header' if server does support CSV metadata header", function() {
-                    openLayer.server.supportsCsvMetadataHeaderOutputFormat = true;
-                    expect(openLayer._getServerSupportedOutputFormat('csv-with-metadata-header')).toBe('csv-with-metadata-header');
+
+                it("returns configured CSV output format for server", function() {
+                    openLayer.server.csvDownloadFormat = 'csv-rulz-man';
+                    expect(openLayer._getServerSupportedOutputFormat('csv')).toBe('csv-rulz-man');
                 });
 
-                it("returns 'csv' if server does not support CSV metadata header", function() {
-                    openLayer.server.supportsCsvMetadataHeaderOutputFormat = false;
-                    expect(openLayer._getServerSupportedOutputFormat('csv-with-metadata-header')).toBe('csv');
+                it("returns 'csv' by default", function() {
+                    openLayer.server.csvDownloadFormat = null;
+                    expect(openLayer._getServerSupportedOutputFormat('csv')).toBe('csv');
                 });
 
-                it("returns given outputFormat for formats other than 'csv-with-metadata-header'", function() {
+                it("returns given outputFormat for formats other than 'csv'", function() {
                     expect(openLayer._getServerSupportedOutputFormat('xyz')).toBe('xyz');
                 });
             });
