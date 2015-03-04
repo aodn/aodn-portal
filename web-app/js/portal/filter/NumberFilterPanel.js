@@ -86,7 +86,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     getCQL: function() {
 
         if (this.firstField.getValue()) {
-            var cql = this.filter.name + " " + this.operators.getValue() + " " + this.firstField.getValue();
+            var cql = this.filter.getName() + " " + this.operators.getValue() + " " + this.firstField.getValue();
 
             if (this._operatorIsBetween()) {
 
@@ -102,7 +102,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     _getCQLHumanValue: function() {
 
         if (this.firstField.getValue()) {
-            var cql = this.getFilterNameAsTitleCase() + " " + this.operators.getValue() + " " + this.firstField.getValue();
+            var cql = this.filter + " " + this.operators.getValue() + " " + this.firstField.getValue();
 
             if (this._operatorIsBetween()) {
 

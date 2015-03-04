@@ -51,7 +51,7 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     getFilterNameAsTitleCase: function() {
-        return this.filter.name.split('_').join(' ').toTitleCase();
+        return this.filter.getDisplayLabel();
     },
 
     getFilterData: function() {
@@ -59,11 +59,11 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     getFilterName: function() {
-        return this.filter.name;
+        return this.filter.getName();
     },
 
     isVisualised: function() {
-        return this.filter.visualised;
+        return this.filter.getVisualised();
     },
 
     /**
@@ -84,6 +84,18 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     _setExistingFilters: function() {
+    },
+
+    needsFilterRange: function() {
+        throw "must implement this function";
+    },
+
+    enableFilterPanel: function() {
+        throw "must implement this function if needs filterRange returns true";
+    },
+
+    setFilterRange: function() {
+        throw "must override this function if needs filterRange returns true";
     }
 });
 
@@ -91,22 +103,22 @@ Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
 
     var newFilterPanel;
 
-    if (cfg.filter.type === "String") {
+    if (cfg.filter.getType() === "String") {
         newFilterPanel = new Portal.filter.ComboFilterPanel(cfg);
     }
-    else if (cfg.filter.type == "Date") {
+    else if (cfg.filter.getType() == "Date") {
         newFilterPanel = new Portal.filter.DateFilterPanel(cfg);
     }
-    else if (cfg.filter.type == "DateRange") {
+    else if (cfg.filter.getType() == "DateRange") {
         newFilterPanel = new Portal.filter.DateFilterPanel(cfg);
     }
-    else if (cfg.filter.type === "Boolean") {
+    else if (cfg.filter.getType() === "Boolean") {
         newFilterPanel = new Portal.filter.BooleanFilterPanel(cfg);
     }
-    else if (cfg.filter.type === "BoundingBox") {
+    else if (cfg.filter.getType() === "BoundingBox") {
         newFilterPanel = new Portal.filter.BoundingBoxFilterPanel(cfg);
     }
-    else if (cfg.filter.type === "Number") {
+    else if (cfg.filter.getType() === "Number") {
         newFilterPanel = new Portal.filter.NumberFilterPanel(cfg);
     }
     else {

@@ -83,7 +83,7 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
         return String.format(
             "INTERSECTS({0},{1})",
-            this.filter.name,
+            this.filter.getName(),
             this.geometry.toWkt()
         );
     },
@@ -102,10 +102,14 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
         return (this.map.getSpatialConstraintType() == "polygon");
     },
 
+    needsFilterRange: function() {
+        return false;
+    },
+
     getFilterData: function() {
 
         return {
-            name: this.filter.name,
+            name: this.filter.getName(),
             visualised: this.isVisualised(),
             cql: this.getCQL(),
             humanValue: this._getCQLHumanValue(),

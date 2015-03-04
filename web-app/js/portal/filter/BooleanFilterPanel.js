@@ -22,7 +22,7 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
     _createField: function() {
         this.checkbox = new Ext.form.Checkbox({
-            name: this.filter.name,
+            name: this.filter.getName(),
             value: true,
             labelStyle: "inheritFont",
             boxLabel: this._formatBoxLabel(),
@@ -41,19 +41,19 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _formatBoxLabel: function() {
-        var label = this.filter.label.split('_').join(' ').toTitleCase();
+        var label = this.filter.getDisplayLabel();
         return label;
     },
 
     _buttonChecked: function() {
         this._fireAddEvent();
-        var val = this.filter.label + "=" + this.checkbox.getValue();
-        trackFiltersUsage('filtersTrackingBooleanAction', val, this.layer.name);
+        var val = this.filter.getDisplayLabel() + "=" + this.checkbox.getValue();
+        trackFiltersUsage('filtersTrackingBooleanAction', val, this.layer.getName());
     },
 
     getCQL: function() {
         if (this.checkbox.getValue()) {
-            return this.filter.name + " = true";
+            return this.filter.getName() + " = true";
         }
         else {
             return undefined;
@@ -72,7 +72,7 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     getFilterData: function() {
 
         return {
-            name: this.filter.name,
+            name: this.filter.getName(),
             visualised: this.isVisualised(),
             cql: this.getCQL(),
             humanValue: this._getCQLHumanValue()
@@ -83,8 +83,12 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.checkbox.setValue(false);
     },
 
+    needsFilterRange: function() {
+        return false;
+    },
+
     _setExistingFilters: function() {
-        this.re = new RegExp(this.filter.name + " = (.*?)( |$)");
+        this.re = new RegExp(this.filter.getName() + " = (.*?)( |$)");
 
         var m = this.re.exec(this.layer.getDownloadFilter());
 
