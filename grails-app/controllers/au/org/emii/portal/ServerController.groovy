@@ -27,7 +27,7 @@ class ServerController {
         }
         else {
             // Filter only the attributes we're passing to the client
-            serverInformation = serverInformation.subMap(['uri', 'wmsVersion', 'type', 'csvDownloadFormat']).findAll { it.value }
+            serverInformation = serverInformation.subMap(['uri', 'wmsVersion', 'type']).findAll { it.value }
         }
 
         render text: serverInformation as JSON
