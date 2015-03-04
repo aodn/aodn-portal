@@ -33,6 +33,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
         controller.grailsApplication.config.featureToggles.dynamicGeoserverFilters = false
         this.controller.params.server = 'some_server'
         this.controller.params.layer = 'some_layer'
+    }
 
     void testSaveOrUpdate() {
 
