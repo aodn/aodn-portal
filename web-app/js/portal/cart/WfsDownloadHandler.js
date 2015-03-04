@@ -40,7 +40,7 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
             return collection.wmsLayer.getFeatureRequestUrl(
                 _this._resourceHref(),
                 _this._resourceName(),
-                OpenLayers.Layer.DOWNLOAD_FORMAT_CSV_WITH_METADATA
+                OpenLayers.Layer.DOWNLOAD_FORMAT_CSV
             );
         };
     }
