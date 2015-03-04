@@ -81,10 +81,9 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.g.metaClass.render = {
             Map theRenderParams ->
-            renderParams = theRenderParams
+                renderParams = theRenderParams
         }
         controller.downloadPythonSnippet()
-        
 
         assertEquals("text/plain", mockResponse.contentType)
         assertEquals("pythonSnippet.py", renderParams.template)
@@ -122,12 +121,12 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             assertEquals testServer.urlListDownloadPrefixToRemove, prefixToRemove
             assertEquals testServer.urlListDownloadPrefixToSubstitue, newUrlBase
 
-            { inputStream, outputStream ->
-                outputStream << """\
+                { inputStream, outputStream ->
+                    outputStream << """\
                     url1
                     url2
                 """
-            }
+                }
         }
         controller.bulkDownloadService = [
             generateArchiveOfFiles: { urlList, outputStream, locale ->
