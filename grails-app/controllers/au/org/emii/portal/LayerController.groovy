@@ -664,36 +664,7 @@ class LayerController {
     }
 
     def getFiltersAsJSON = {
-        if (params.serverType == 'ncwms') {
-            def server = params.server
-            def layer = params.layer
-
-            if (!hostVerifier.allowedHost(request, params.server)) {
-                render text: "Host '$params.server' not allowed"
-            }
-            else {
-                def ncwmsServer = new NcwmsServer()
-                render text: ncwmsServer.getFilters(server, layer) as JSON
-            }
-        }
-        else {
-            def layerInstance = Layer.get(params.layerId)
-
-            if (layerInstance) {
-
-                def filters = layerInstance.filters?.sort()
-
-                render filters
-                    .findAll { it.enabled }
-                    .collect { it.toLayerData() } as JSON
-            }
-            else {
-                def queryString = request.queryString ? "?$request.queryString" : ""
-                def msg = "Layer with id '$params.layerId' does not exist. URL was: $request.forwardURI$queryString"
-                log.info msg
-                render text: msg, contentType: "text/html", encoding: "UTF-8", status: 500
-            }
-        }
+        render [:] as JSON
     }
 
     def editFilters = {
