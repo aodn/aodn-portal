@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2013 IMOS
  *
@@ -7,6 +6,10 @@
  */
 
 Ext.namespace('Portal.config');
+
+Portal.config.isFeatureToggleEnabled = function(toggleName) {
+    return Portal.app.appConfig.featureToggles[toggleName];
+}
 
 // Loads the various configs the Portal needs and calls functions based on success or failure
 Portal.config.PortalConfigLoader = Ext.extend(Object, {

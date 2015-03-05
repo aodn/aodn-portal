@@ -129,6 +129,7 @@ openId {
 
 featureToggles {
     // someFeature = <boolean>
+    chatOnFailedSearch = true
 }
 
 // Google Analytics
