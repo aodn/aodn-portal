@@ -114,4 +114,27 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             expect(window.trackUsage).toHaveBeenCalledWith("Collection", "select", "Argo Australia Profiles");
         });
     });
+
+    describe('_getMeasuredParametersAsCommaSeparatedString', function() {
+
+        var params;
+
+        beforeEach(function() {
+            params = [];
+
+            facetedSearchDataView._getMeasuredParameters = function() {
+                return params;
+            };
+        });
+
+
+        it('with some parameters', function() {
+            params = ['temp', 'salinity'];
+            expect(facetedSearchDataView._getMeasuredParametersText()).toEqual('temp, salinity');
+        });
+
+        it('with no parameters', function() {
+            expect(facetedSearchDataView._getMeasuredParametersText()).toEqual('No parameters');
+        });
+    });
 });
