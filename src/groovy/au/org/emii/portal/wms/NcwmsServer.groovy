@@ -51,9 +51,9 @@ class NcwmsServer extends WmsServer {
 
     private parseDatesWithData(datesWithData) {
         def datesWithDataFormatted = []
-        datesWithData.each() { year, months ->
-            months.each() { month, days ->
-                days.each() { day ->
+        datesWithData.each { year, months ->
+            months.each { month, days ->
+                days.each { day ->
                     // Month is zero based, so lets handle this
                     def formattedDate = String.format("%02d-%02d-%02dT00:00:00Z", year.toInteger(), month.toInteger() + 1, day.toInteger())
                     datesWithDataFormatted.push(formattedDate)
@@ -69,7 +69,7 @@ class NcwmsServer extends WmsServer {
         Date day = format.parse(date)
 
         def timeStepsFormatted = []
-        timeSteps.each() { timestep ->
+        timeSteps.each { timestep ->
             def formattedTimeStep = String.format('%sT%s', day.format("yyyy-MM-dd"), timestep)
             timeStepsFormatted.push(formattedTimeStep)
         }

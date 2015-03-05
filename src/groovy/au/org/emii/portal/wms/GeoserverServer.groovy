@@ -17,8 +17,8 @@ class GeoserverServer extends WmsServer {
     }
 
     def getStyles(server, layer) {
-        def styles = []
-        return styles
+
+        return []
     }
 
     def getFilters(server, layer) {
@@ -28,22 +28,19 @@ class GeoserverServer extends WmsServer {
             def xml = new XmlSlurper().parseText(_getFiltersXml(server, layer))
 
             xml.filter.each { filter ->
-                def filterName = filter.name.text()
-                def filterType = filter.type.text()
 
-                filters.push(
-                    [
-                        label: filter.label.text(),
-                        type: filterType,
-                        name: filterName,
-                        visualised: Boolean.valueOf(filter.visualised.text())
-                    ]
-                )
+                filters.push([
+                    label: filter.label.text(),
+                    type: filter.type.text(),
+                    name: filter.name.text(),
+                    visualised: Boolean.valueOf(filter.visualised.text())
+                ])
             }
         }
         catch (e) {
-            log.error "Unable to parse filters for server '${server}', layer '${layer}': '${e}'"
+            log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
         }
+
         return filters
     }
 
@@ -65,7 +62,7 @@ class GeoserverServer extends WmsServer {
 
     def _getFiltersXmlFromGeoserver(server, layer) {
         def filtersUrl = getFiltersUrl(server, layer)
-        def outputStream = new ByteArrayOutputStream();
+        def outputStream = new ByteArrayOutputStream()
         def request = new ExternalRequest(outputStream, filtersUrl.toURL())
 
         request.executeRequest()
@@ -78,12 +75,10 @@ class GeoserverServer extends WmsServer {
         try {
             def xml = new XmlSlurper().parseText(_getFilterValuesXml(server, layer, filter))
 
-            if (xml.value.size() > 0) {
-                values = xml.value.collect() { it -> it.text() }
-            }
+            values = xml.value.collect { it.text() }
         }
         catch (e) {
-            log.error "Unable to parse filters values for server '${server}', layer '${layer}', filter '${filter}': '${e}'"
+            log.error "Unable to parse filters values for server '${server}', layer '${layer}', filter '${filter}'", e
         }
 
         return values
@@ -107,7 +102,7 @@ class GeoserverServer extends WmsServer {
 
     def _getFilterValuesXmlFromGeoserver(server, layer, filter) {
         def filtersUrl = getFilterValuesUrl(server, layer, filter)
-        def outputStream = new ByteArrayOutputStream();
+        def outputStream = new ByteArrayOutputStream()
         def request = new ExternalRequest(outputStream, filtersUrl.toURL())
 
         request.executeRequest()
@@ -156,9 +151,5 @@ class GeoserverServer extends WmsServer {
 
     static String getFilterValuesUrl(server, layer, filter) {
         return _getFiltersUrlBase(server, layer, "uniqueValues", "&propertyName=${filter}")
-    }
-
-    static Boolean _filterHasValues(filterType) {
-        return filterType != "BoundingBox"
     }
 }
