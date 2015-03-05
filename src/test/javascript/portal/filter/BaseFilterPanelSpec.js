@@ -65,16 +65,16 @@ describe("Portal.filter.BaseFilterPanel", function() {
     });
 
     describe("isVisualised()", function() {
+
         var buildFilterWithVisualised = function(isVisualised) {
-            var baseFilter = new Portal.filter.BaseFilterPanel({
+
+            return new Portal.filter.BaseFilterPanel({
                 layer: {},
                 filter: {
                     visualised: isVisualised
                 }
             });
-
-            return baseFilter;
-        }
+        };
 
         it("should return true when the filter is for downloads only", function() {
             var baseFilter = buildFilterWithVisualised(true);
