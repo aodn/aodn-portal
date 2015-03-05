@@ -71,7 +71,7 @@ describe("Portal.filter.BaseFilterPanel", function() {
             return new Portal.filter.BaseFilterPanel({
                 layer: {},
                 filter: {
-                    visualised: isVisualised
+                    getVisualised: function() { return isVisualised }
                 }
             });
         };
