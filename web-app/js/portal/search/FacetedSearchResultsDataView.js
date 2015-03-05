@@ -132,13 +132,13 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         if (values.parameter) {
             return template.apply({
                 "label": label,
-                "value": this._getMeasuredParametersAsCommaSeparatedString(values)
+                "value": this._getMeasuredParametersText(values)
             });
         }
         return "";
     },
 
-    _getMeasuredParametersAsCommaSeparatedString: function(values) {
+    _getMeasuredParametersText: function(values) {
         var params = this._getMeasuredParameters(values);
 
         if (params.length > 0) {

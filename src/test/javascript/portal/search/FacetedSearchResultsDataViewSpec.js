@@ -117,6 +117,8 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
 
     describe('_getMeasuredParametersAsCommaSeparatedString', function() {
 
+        var params;
+
         beforeEach(function() {
             params = [];
 
@@ -128,11 +130,11 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
 
         it('with some parameters', function() {
             params = ['temp', 'salinity'];
-            expect(facetedSearchDataView._getMeasuredParametersAsCommaSeparatedString()).toEqual('temp, salinity');
+            expect(facetedSearchDataView._getMeasuredParametersText()).toEqual('temp, salinity');
         });
 
         it('with no parameters', function() {
-            expect(facetedSearchDataView._getMeasuredParametersAsCommaSeparatedString()).toEqual('No parameters');
+            expect(facetedSearchDataView._getMeasuredParametersText()).toEqual('No parameters');
         });
     });
 });
