@@ -7,7 +7,10 @@
 
 package au.org.emii.portal.wms
 
+import au.org.emii.portal.Layer
+import au.org.emii.portal.Server
 import au.org.emii.portal.proxying.ExternalRequest
+import groovy.xml.MarkupBuilder
 
 class GeoserverServer extends WmsServer {
     def dynamicFilters
@@ -46,10 +49,11 @@ class GeoserverServer extends WmsServer {
 
     def _getFiltersXml(server, layer) {
         if (dynamicFilters) {
-            return _getFiltersXmlFromGeoserver(server, layer)
+            //return _getFiltersXmlFromGeoserver(server, layer)
+            return _getFiltersXmlFromFile(server, layer)
         }
         else {
-            return _getFiltersXmlFromFile(server, layer)
+            return _getFiltersXmlFromDatabase(server, layer)
         }
     }
 
@@ -69,6 +73,28 @@ class GeoserverServer extends WmsServer {
         return outputStream.toString("utf-8")
     }
 
+    def _getFiltersXmlFromDatabase(serverAddress, fullLayerName) {
+
+        def filters = _filtersForLayer(serverAddress, fullLayerName)
+
+        def xmlOutput = new StringWriter()
+        def builder = new MarkupBuilder(xmlOutput)
+
+        builder.'filters' {
+            filters.each { currentFilter ->
+
+                'filter' {
+                    'label' currentFilter.label
+                    'name' currentFilter.name
+                    'type' currentFilter.type
+                    'visualised' !currentFilter.downloadOnly
+                }
+            }
+        }
+
+        return xmlOutput.toString()
+    }
+
     def getFilterValues(server, layer, filter) {
         def values = []
 
@@ -86,10 +112,11 @@ class GeoserverServer extends WmsServer {
 
     def _getFilterValuesXml(server, layer, filter) {
         if (dynamicFilters) {
-            return _getFilterValuesXmlFromGeoserver(server, layer, filter)
+            // return _getFilterValuesXmlFromGeoserver(server, layer, filter)
+            return _getFilterValuesXmlFromFile(server, layer, filter)
         }
         else {
-            return _getFilterValuesXmlFromFile(server, layer, filter)
+            return _getFilterValuesXmlFromDatabase(server, layer, filter)
         }
     }
 
@@ -107,6 +134,38 @@ class GeoserverServer extends WmsServer {
 
         request.executeRequest()
         return outputStream.toString("utf-8")
+    }
+
+    def _getFilterValuesXmlFromDatabase(serverAddress, fullLayerName, filterName) {
+
+        println "filterName = $filterName"
+
+        def filters = _filtersForLayer(serverAddress, fullLayerName)
+        def filter = filters.find{ it.name == filterName }
+
+        def xmlOutput = new StringWriter()
+        def builder = new MarkupBuilder(xmlOutput)
+
+        builder.'uniqueValues' {
+            filter.possibleValues.each {
+
+                'value' it
+            }
+        }
+
+        println "-----------------------------------------------"
+        println "xmlOutput = $xmlOutput"
+        println "-----------------------------------------------"
+
+        return xmlOutput.toString()
+    }
+
+    def _filtersForLayer(serverAddress, fullLayerName) {
+        def server = Server.findByUri(serverAddress)
+        def layerName = getLayerName(fullLayerName)
+        def layer = Layer.findByNameAndServer(layerName, server)
+
+        return layer.filters.asList().findAll{ it.enabled }
     }
 
     static String getLayerWorkspace(fullLayerName) {
