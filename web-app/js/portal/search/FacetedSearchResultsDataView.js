@@ -132,13 +132,24 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         if (values.parameter) {
             return template.apply({
                 "label": label,
-                "value": this.getMeasuredParameters(values)
+                "value": this._getMeasuredParametersAsCommaSeparatedString(values)
             });
         }
         return "";
     },
 
-    getMeasuredParameters: function(values) {
+    _getMeasuredParametersAsCommaSeparatedString: function(values) {
+        var params = this._getMeasuredParameters(values);
+
+        if (params.length > 0) {
+            return params.join(', ');
+        }
+        else {
+            return OpenLayers.i18n('noParametersForCollection');
+        }
+    },
+
+    _getMeasuredParameters: function(values) {
         var broader = [];
         Ext.each(values.parameter, function(param) {
             var broaderTerms = this.classificationStore.getBroaderTerms(param, 2, 'Measured parameter');
@@ -149,7 +160,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         broader = broader.sort();
         return broader.filter( function(item, pos) {
             return !pos || item != broader[pos - 1];
-        }).join( ', ');
+        });
     },
 
     _getOrganisationAsHtml: function(template, organisation) {

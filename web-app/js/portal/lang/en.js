@@ -182,6 +182,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     facetedSearchNewSearchButton: 'Start new search',
     facetedSearchUnavailable: 'Search is currently unavailable.',
     facetedSearchResetting: 'Resetting search',
+    noParametersForCollection: 'No parameters',
 
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
 
