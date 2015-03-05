@@ -67,13 +67,15 @@ describe("Portal.filter.ComboFilterPanel", function() {
         beforeEach(function() {
             filterPanel.combo = {};
             filterPanel.getRawValue = function() { return "L'Astrolabe"; };
-            filterPanel.markInvalid = function() {noOp};
+            filterPanel.markInvalid = noOp;
         });
+
         it('should return true when in the store', function() {
 
             filterPanel.findRecord = function() { return true; };
             expect(filterPanel.validateValue()).toEqual(true);
         });
+
         it('should mark combo invalid when not in the store', function() {
 
             spyOn(filterPanel, 'markInvalid');
@@ -89,7 +91,8 @@ describe("Portal.filter.ComboFilterPanel", function() {
             spyOn(window, 'trackUsage');
             filterPanel.combo.getValue = function() {
                 return "value";
-            }
+            };
+
             filterPanel._onSelected();
 
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "testLabel=value", "test layer");
