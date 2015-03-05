@@ -19,8 +19,8 @@ describe("Portal.filter.ComboFilterPanel", function() {
 
         filterPanel = new Portal.filter.ComboFilterPanel({
             filter: {
-                name: 'test',
-                label: 'testLabel'
+                getName: function() { return 'test' },
+                getDisplayLabel: function() { return 'testLabel' }
             },
             layer: {
                 name: 'test layer',
@@ -43,7 +43,9 @@ describe("Portal.filter.ComboFilterPanel", function() {
 
     describe('getCQL', function() {
         it('should create the cql filter replacing single quotes in the filter value with two single quotes', function() {
-            filterPanel.filter = { name: "vessel_name" };
+            filterPanel.filter = {
+                getName: function() { return "vessel_name" }
+            };
 
             filterPanel.combo = {};
             filterPanel.combo.getValue = function() { return "L'Astrolabe"; };
