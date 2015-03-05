@@ -158,12 +158,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
             spyOn(cachedLayer, 'loadTimeSeriesForDay').andCallFake(function() {});
         });
 
-        it('calls addDays', function() {
-            spyOn(cachedLayer.temporalExtent, 'addDays');
-            cachedLayer._timeSeriesDatesLoaded(sampleJson);
-            expect(cachedLayer.temporalExtent.addDays).toHaveBeenCalled();
-        });
-
         it('loads first day', function() {
             cachedLayer._timeSeriesDatesLoaded(sampleJson);
             expect(cachedLayer.temporalExtent.getFirstDay).toHaveBeenCalled();
@@ -213,8 +207,8 @@ describe("OpenLayers.Layer.NcWMS", function() {
         var datesWithData = null;
 
         spyOn(cachedLayer, '_timeSeriesDatesLoaded').andCallFake(
-            function(_datesWithData) {
-                datesWithData = _datesWithData;
+            function() {
+                datesWithData = cachedLayer.temporalExtent.getDays();
             }
         );
 
