@@ -13,7 +13,7 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
     beforeEach(function() {
         map = new OpenLayers.SpatialConstraintMap();
         map.navigationControl = {};
-        map.navigationControl.deactivate = function() {return null};
+        map.navigationControl.deactivate = function() { return null };
 
         spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, 'setLayerAndFilter');
         spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, '_updateWithGeometry');
@@ -21,7 +21,9 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
             layer: {
                 map: map
             },
-            filter: { name: 'geom_filter' }
+            filter: {
+                getName: function() { return 'geom_filter' }
+            }
         });
 
         spyOn(window, 'trackUsage');
@@ -29,10 +31,10 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
 
     it('filter name should be undefined', function() {
         filterPanel.filter = {
-            name: 'this name should be ignored'
+            getName: function() { return 'this name should be ignored' }
         };
 
-        expect(filterPanel.getName()).toEqual(undefined);
+        expect(filterPanel.getFilterName()).toEqual(undefined);
     });
 
     it("isVisualised() should return false", function() {
@@ -103,5 +105,4 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
         filterPanel.geometry = undefined;
         expect(filterPanel.hasValue()).toBe(false);
     });
-
 });
