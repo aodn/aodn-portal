@@ -21,6 +21,8 @@ describe("Portal.filter.BaseFilterPanel", function() {
 
         it("should return undefined", function() {
 
+            filter.getType = function() { return null };
+
             panel = newFilterPanelFor({
                 layer: {},
                 filter: filter
@@ -54,12 +56,15 @@ describe("Portal.filter.BaseFilterPanel", function() {
         });
 
         var expectNewFilterPanelForString = function(filterPanelType, filterTypeAsString) {
-            filter.type = filterTypeAsString;
+
+            filter.getType = function() { return filterTypeAsString };
             var constructorSpy = spyOn(Portal.filter, filterPanelType);
+
             newFilterPanelFor({
                 layer: {},
                 filter: filter
             });
+
             expect(constructorSpy).toHaveBeenCalled();
         };
     });
