@@ -94,7 +94,6 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         else {
             return ""
         }
-
     },
 
     _onSelected: function() {
