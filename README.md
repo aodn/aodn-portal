@@ -1,6 +1,8 @@
 AODN Open Geospatial Portal
 ===========================
 
+[![Join the chat at https://gitter.im/aodn/aodn-portal](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/aodn/aodn-portal?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/aodn/aodn-portal.png?branch=master)](https://travis-ci.org/aodn/aodn-portal)
 
 The AODN open geospatial portal is a [Grails](http://grails.org/) application for finding, visualising, and downloading geospatial data. 
