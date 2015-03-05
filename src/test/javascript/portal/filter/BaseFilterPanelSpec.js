@@ -65,27 +65,25 @@ describe("Portal.filter.BaseFilterPanel", function() {
     });
 
     describe("isVisualised()", function() {
-        var buildFilter = function(filterConfig) {
+        var buildFilterWithVisualised = function(isVisualised) {
             var baseFilter = new Portal.filter.BaseFilterPanel({
                 layer: {},
-                filter: filterConfig
+                filter: {
+                    visualised: isVisualised
+                }
             });
 
             return baseFilter;
         }
 
         it("should return true when the filter is for downloads only", function() {
-            var baseFilter = buildFilter({
-                visualised: true
-            });
+            var baseFilter = buildFilterWithVisualised(true);
 
             expect(baseFilter.isVisualised()).toBe(true);
         });
 
         it("should return false when the filter is not only for downloads", function() {
-            var baseFilter = buildFilter({
-                visualised: false
-            });
+            var baseFilter = buildFilterWithVisualised(false);
 
             expect(baseFilter.isVisualised()).toBe(false);
         });
