@@ -140,5 +140,11 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
                 expect(Portal.cart.PythonDownloadHandler.prototype.getDownloadOptions).toHaveBeenCalled();
             });
         });
+
+        it('returns UUIDs array', function() {
+            expect(geoNetworkRecordStore.getUuids()).toEqual(['123456789']);
+
+        });
+
     });
 });
