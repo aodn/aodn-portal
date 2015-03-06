@@ -102,27 +102,26 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
 Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
 
     var newFilterPanel;
+    var type = cfg.filter.getType();
 
-    if (cfg.filter.getType() === "String") {
+    if (type === "String") {
         newFilterPanel = new Portal.filter.ComboFilterPanel(cfg);
     }
-    else if (cfg.filter.getType() == "Date") {
+    else if (type == "Date" || type == "DateRange") {
         newFilterPanel = new Portal.filter.DateFilterPanel(cfg);
     }
-    else if (cfg.filter.getType() == "DateRange") {
-        newFilterPanel = new Portal.filter.DateFilterPanel(cfg);
-    }
-    else if (cfg.filter.getType() === "Boolean") {
+    else if (type === "Boolean") {
         newFilterPanel = new Portal.filter.BooleanFilterPanel(cfg);
     }
-    else if (cfg.filter.getType() === "BoundingBox") {
+    else if (type === "BoundingBox") {
         newFilterPanel = new Portal.filter.BoundingBoxFilterPanel(cfg);
     }
-    else if (cfg.filter.getType() === "Number") {
+    else if (type === "Number") {
         newFilterPanel = new Portal.filter.NumberFilterPanel(cfg);
     }
     else {
         //Filter hasn't been defined
+        log.error("Could not create filter panel for type'" + type + "'");
     }
 
     return newFilterPanel;
