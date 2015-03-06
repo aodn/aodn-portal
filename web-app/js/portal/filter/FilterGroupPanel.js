@@ -106,40 +106,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _initWithLayer: function() {
 
-        /*
-         if (this._layerShouldBeHandled()) {
-
-         if (this.layer.filters) {
-         this._showHideFilters();
-         }
-         else {
-         this.layerIsBeingHandled = true;
-         var filterLayer = this.layer.wmsName;
-         if (this.layer.getDownloadLayer) {
-         filterLayer = this.layer.getDownloadLayer();
-         }
-
-         Ext.Ajax.request({
-         url: this.GET_FILTER,
-         params: {
-         server: this.layer.server.uri,
-         layer: filterLayer
-         },
-         scope: this,
-         failure: function() {
-         this.addErrorMessage(OpenLayers.i18n('subsetParametersErrorText'));
-         this.layerIsBeingHandled = false;
-         },
-         success: function(resp, opts) {
-         this.layer.filters = Ext.util.JSON.decode(resp.responseText);
-         this._showHideFilters();
-         this.layerIsBeingHandled = false;
-         }
-         });
-         }
-         }
-         */
-
         var filterService  = new Portal.filter.FilterService();
 
         filterService.loadFilters(this.layer, this._filtersLoaded, this);
@@ -271,7 +237,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         }
 
         this.currentFilterType = filter.getType();
-
     },
 
     _addFilterTypeSpacer: function(filter) {

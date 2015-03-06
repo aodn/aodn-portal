@@ -81,7 +81,9 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
         var filterLayer = layer.wmsName;
 
-        if (layer.getDownloadLayer) {
+        var shouldUseDownloadLayerIfPossible = Portal.app.appConfig.featureToggles.dynamicGeoserverFilters == true; // Todo - DN: Can be removed when DB/GeoServer feature toggle is removed
+
+        if (shouldUseDownloadLayerIfPossible && layer.getDownloadLayer) {
             filterLayer = layer.getDownloadLayer();
         }
 
