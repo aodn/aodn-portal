@@ -114,7 +114,7 @@ Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
         newFilterPanel = new Portal.filter.BooleanFilterPanel(cfg);
     }
     else if (type === "BoundingBox") {
-        newFilterPanel = new Portal.filter.BoundingBoxFilterPanel(cfg);
+        newFilterPanel = new Portal.filter.GeometryFilterPanel(cfg);
     }
     else if (type === "Number") {
         newFilterPanel = new Portal.filter.NumberFilterPanel(cfg);
