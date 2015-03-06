@@ -47,8 +47,8 @@ describe("Portal.filter.BaseFilterPanel", function() {
             expectNewFilterPanelForString('BooleanFilterPanel', 'Boolean');
         });
 
-        it("should create BoundingBoxFilterPanel", function() {
-            expectNewFilterPanelForString('BoundingBoxFilterPanel', 'BoundingBox');
+        it("should create GeometryFilterPanel", function() {
+            expectNewFilterPanelForString('GeometryFilterPanel', 'BoundingBox');
         });
 
         it("should create NumberFilterPanel", function() {
