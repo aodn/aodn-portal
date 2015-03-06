@@ -15,6 +15,7 @@ Portal.filter.Filter = Ext.extend(Object, {
         this.displayLabel = filterDetail.label;
         this.type = filterDetail.type;
         this.visualised = filterDetail.visualised;
+        this.sortOrder = filterDetail.sortOrder;
     },
 
     setValue: function(value) {
@@ -47,8 +48,13 @@ Portal.filter.Filter = Ext.extend(Object, {
         return this.visualised;
     },
 
-    _callback: function(scope, range) {
-        alert("callback used in filter.js");
-        scope.range = range;
+    getSortOrder: function() {
+
+        return this.sortOrder;
+    },
+
+    setSortOrder: function(sortOrder) {
+
+        this.sortOrder = sortOrder;
     }
 });

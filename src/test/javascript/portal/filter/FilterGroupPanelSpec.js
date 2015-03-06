@@ -8,6 +8,9 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
     var filterGroupPanel;
     var layer;
+    var cfg;
+    var filterPanel;
+    var filters;
 
     beforeEach(function() {
         layer = new OpenLayers.Layer.WMS();
@@ -25,27 +28,48 @@ describe("Portal.filter.FilterGroupPanel", function() {
         });
     });
 
-    describe('_showHideFilters', function() {
+    describe('_filtersLoaded', function() {
 
         beforeEach(function() {
-            layer = {};
-            layer.filters = "[{}]";
+            layer = {
+                server: {
+                    uri: {}
+                },
+                filters: [{
+                    getType: function() {
+                        return Boolean;
+                    }
+                }]
+            };
 
-            filterGroupPanel = new Portal.filter.FilterGroupPanel({
+            cfg = {
                 layer: layer
-            });
+            }
 
-            spyOn(filterGroupPanel, '_createFilterPanel');
+            filterPanel = {
+                needsFilterRange: function() {
+                    return false;
+                }
+            };
+
+            filterGroupPanel = new Portal.filter.FilterGroupPanel(cfg);
+
             spyOn(filterGroupPanel, '_updateAndShow');
             spyOn(filterGroupPanel, '_filtersSort').andReturn(layer);
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
+            spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
 
-            filterGroupPanel._showHideFilters();
+            filterGroupPanel._filtersLoaded(layer.filters);
         });
 
         it('creates a filter panel', function() {
 
             expect(filterGroupPanel._createFilterPanel).toHaveBeenCalled();
+        });
+
+        it('sorts the filters according to sort order', function() {
+
+            expect(filterGroupPanel._filtersSort).toHaveBeenCalled();
         });
 
         it('calls _updateAndShow', function() {
@@ -56,29 +80,60 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
     describe('filter sorting', function() {
         var expectedReturn;
+        var filterConfigs;
+        var testBooleanFilterA;
+        var testDateFilter;
+        var testDateRangeFilter;
+        var testBooleanFilterE;
+        var testBboxFilter;
+        var testStringFilter;
 
         beforeEach(function() {
-            layer = {};
-            layer.filters = [
-                {type: 'Boolean', label: 'A'},
-                {type: 'Date', label: 'B'},
-                {type: 'DateRange', label: 'Z'},
-                {type: 'Boolean', label: 'E'},
-                {type: 'BoundingBox', label: 'C'},
-                {type: 'String', label: 'D'}
-            ];
-            expectedReturn = [
-                {type : 'BoundingBox', sortOrder : 5, label: 'C'},
-                {type : 'Date', sortOrder : 4, label: 'B'},
-                {type : 'DateRange', sortOrder : 3, label: 'Z'},
-                {type : 'Boolean', sortOrder : 2, label: 'A'},
-                {type : 'Boolean', sortOrder : 2, label: 'E'},
-                {type : 'String', sortOrder : 0, label: 'D'}
+            layer = {
+                server: {
+                    uri: {}
+                }
+            };
+
+            cfg = {
+                layer: layer
+            }
+
+            filterConfigs = [
+                {type: 'Boolean', label: 'A', name: 'A', visualised: true},
+                {type: 'Date', label: 'B', name: 'B', visualised: true},
+                {type: 'DateRange', label: 'Z', name: 'Z', visualised: true},
+                {type: 'Boolean', label: 'E', name: 'E', visualised: true},
+                {type: 'BoundingBox', label: 'C', name: 'C', visualised: true},
+                {type: 'String', label: 'D', name: 'D', visualised: true}
             ];
 
-            filterGroupPanel = new Portal.filter.FilterGroupPanel({
-                layer: layer
-            });
+            testBooleanFilterA = new Portal.filter.Filter(filterConfigs[0]);
+            testDateFilter = new Portal.filter.Filter(filterConfigs[1]);
+            testDateRangeFilter = new Portal.filter.Filter(filterConfigs[2]);
+            testBooleanFilterE = new Portal.filter.Filter(filterConfigs[3]);
+            testBboxFilter = new Portal.filter.Filter(filterConfigs[4]);
+            testStringFilter = new Portal.filter.Filter(filterConfigs[5]);
+
+            layer.filters = [
+                testBooleanFilterA,
+                testDateFilter,
+                testDateRangeFilter,
+                testBooleanFilterE,
+                testBboxFilter,
+                testStringFilter
+            ];
+
+            expectedReturn = [
+                testBboxFilter,
+                testDateFilter,
+                testDateRangeFilter,
+                testBooleanFilterA,
+                testBooleanFilterE,
+                testStringFilter
+            ];
+
+            filterGroupPanel = new Portal.filter.FilterGroupPanel(cfg);
         });
 
         it('sorts by specified order', function() {
@@ -98,25 +153,27 @@ describe("Portal.filter.FilterGroupPanel", function() {
             filterGroupPanel = new Portal.filter.FilterGroupPanel({
                 layer: layer
             });
-            filterGroupPanel.layerIsBeingHandled = false;
 
-            spyOn(filterGroupPanel, '_createFilterPanel');
+            filters = ["Boolean"];
+
+            filterPanel = {
+                needsFilterRange: function() {
+                    return false;
+                }
+            };
+
             spyOn(filterGroupPanel, '_clearFilters');
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, 'addErrorMessage');
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
+            spyOn(filterGroupPanel, '_filtersSort').andReturn(layer);
+            spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
         });
 
 
         it('calls the _clearFilters method', function() {
 
-            spyOn(Ext.Ajax, 'request').andCallFake(
-                function(params) {
-                    params.success.call(params.scope, { responseText: '[{"label":"data_centre","type":"String","name":"data_centre","possibleValues":["ifremer","aoml","csio","kordi","jma","kma","jamstec","incois","bodc","csiro"],"layerId":1499409,"enabled":true}]' });
-                }
-            );
-
-            filterGroupPanel._initWithLayer();
+            filterGroupPanel._filtersLoaded(filters);
 
             expect(filterGroupPanel._createFilterPanel).toHaveBeenCalled();
             filterGroupPanel.clearFiltersButton.fireEvent('click');
@@ -125,7 +182,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
         });
     });
 
-    describe('the _showHideFilters function', function() {
+    describe('the _filtersLoaded function', function() {
 
         beforeEach(function() {
             layer = {
@@ -137,8 +194,16 @@ describe("Portal.filter.FilterGroupPanel", function() {
                 layer: layer
             });
 
+            filterPanel = {
+                needsFilterRange: function() {
+                    return false;
+                }
+            };
+
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, 'addErrorMessage');
+            spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
+            //spyOn(filterGroupPanel, '_filtersSort').andReturn(layer);
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
         });
 
@@ -147,16 +212,18 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
             layer.filters = [];
 
-            filterGroupPanel._showHideFilters();
+            filterGroupPanel._filtersLoaded(layer.filters);
 
             expect(filterGroupPanel.addErrorMessage).toHaveBeenCalled();
         });
 
         it('addErrorMessage function not called when filters are configured', function() {
+            
+            layer.filters = ["Boolean","Combo"];
 
-            layer.filters = ["asda","asdasd"];
+            spyOn(filterGroupPanel, '_filtersSort').andReturn(layer);
 
-            filterGroupPanel._showHideFilters();
+            filterGroupPanel._filtersLoaded(layer.filters);
 
             expect(filterGroupPanel.addErrorMessage).not.toHaveBeenCalled();
         });
@@ -166,7 +233,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         var removeFilterSpy = jasmine.createSpy('handleRemoveFilter');
 
-        var _mockFilter = function(name) {
+        var _mockFilterPanel = function(name) {
 
             return {
                 handleRemoveFilter: removeFilterSpy
@@ -175,10 +242,10 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         it('clears all filters', function() {
 
-            filterGroupPanel.filters = [
-                _mockFilter('oxygen_sensor'),
-                _mockFilter('data_centre'),
-                _mockFilter('pi')
+            filterGroupPanel.filterPanels = [
+                _mockFilterPanel('oxygen_sensor'),
+                _mockFilterPanel('data_centre'),
+                _mockFilterPanel('pi')
             ];
 
             spyOn(filterGroupPanel, '_updateLayerFilters');
