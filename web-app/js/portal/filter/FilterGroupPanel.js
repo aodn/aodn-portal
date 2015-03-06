@@ -149,6 +149,8 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         var filterPanels = [];
 
+        filters = this._filtersSort(filters);
+
         Ext.each(filters, function(filterObject) {
 
             var filterPanel = this._createFilterPanel(filterObject);
@@ -189,8 +191,9 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         Ext.each(
             filters,
-            function(filterConfig, index, all) {
-                filterConfig.sortOrder = topFilters.indexOf(filterConfig.type, 0);
+            function(filter) {
+                var sortOrder = topFilters.indexOf(filter.getType(), 0);
+                filter.setSortOrder(sortOrder);
             },
             this
         );
@@ -198,10 +201,10 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         var _this = this;
 
         filters.sort(function(firstFilter, secondFilter) {
-            var comparisonResult = _this._compareElements(firstFilter.sortOrder, secondFilter.sortOrder);
+            var comparisonResult = _this._compareElements(firstFilter.getSortOrder(), secondFilter.getSortOrder());
 
             if (comparisonResult == 0) {
-                comparisonResult = _this._compareElements(secondFilter.label, firstFilter.label)
+                comparisonResult = _this._compareElements(secondFilter.getDisplayLabel(), firstFilter.getDisplayLabel());
             }
 
             return comparisonResult;
@@ -378,14 +381,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
             filter.handleRemoveFilter();
         });
         this._updateLayerFilters();
-    },
-
-    _layerHasBeenHandled: function() {
-        return this.filterPanels.length > 0;
-    },
-
-    _layerShouldBeHandled: function() {
-        return !(this.layerIsBeingHandled || this._layerHasBeenHandled());
     },
 
     _isDisplayed: function() {
