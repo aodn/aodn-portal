@@ -19,7 +19,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
         var params = {
             server: layer.server.uri,
-            layer: layer.wmsName
+            layer:  this._filterLayerName(layer)
         };
 
         Ext.Ajax.request({
@@ -59,7 +59,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
         var params = {
             filter: filterId,
             server: layer.server.uri,
-            layer: layer.wmsName
+            layer: this._filterLayerName(layer)
         };
 
         Ext.Ajax.request({
@@ -75,5 +75,16 @@ Portal.filter.FilterService = Ext.extend(Object, {
                 onLoadedCallback.call(callbackScope, filterRange);
             }
         });
+    },
+
+    _filterLayerName: function(layer) {
+
+        var filterLayer = layer.wmsName;
+
+        if (layer.getDownloadLayer) {
+            filterLayer = layer.getDownloadLayer();
+        }
+
+        return filterLayer;
     }
 });
