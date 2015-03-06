@@ -5,7 +5,7 @@
  *
  */
 
-describe("Portal.filter.BoundingBoxFilterPanel", function() {
+describe("Portal.filter.GeometryFilterPanel", function() {
 
     var filterPanel;
     var map;
@@ -15,9 +15,9 @@ describe("Portal.filter.BoundingBoxFilterPanel", function() {
         map.navigationControl = {};
         map.navigationControl.deactivate = function() { return null };
 
-        spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, 'setLayerAndFilter');
-        spyOn(Portal.filter.BoundingBoxFilterPanel.prototype, '_updateWithGeometry');
-        filterPanel = new Portal.filter.BoundingBoxFilterPanel({
+        spyOn(Portal.filter.GeometryFilterPanel.prototype, 'setLayerAndFilter');
+        spyOn(Portal.filter.GeometryFilterPanel.prototype, '_updateWithGeometry');
+        filterPanel = new Portal.filter.GeometryFilterPanel({
             layer: {
                 map: map
             },
