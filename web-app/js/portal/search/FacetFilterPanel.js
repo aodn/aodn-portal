@@ -17,7 +17,7 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
         this.searcher = cfg.searcher;
 
         Ext.apply(cfg, {
-            title: '<span class="filter-selection-panel-header">' + cfg.title + '</span>',
+            title: '<span class="filter-selection-panel-header">' + cfg.title + '</span>', // todo create en.js entry so its reusable
             containerScroll: true,
             autoScroll: true,
             collapsible: true,

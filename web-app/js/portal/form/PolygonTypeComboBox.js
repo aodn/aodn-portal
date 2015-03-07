@@ -15,7 +15,6 @@ Portal.form.PolygonTypeComboBox = Ext.extend(Ext.form.ComboBox, {
                 fields: ['value', 'label'],
                 data: OpenLayers.i18n('comboBoxTypeLabels')
             }),
-            width: 165,
             valueField: 'value',
             displayField: 'label',
             mode: 'local',

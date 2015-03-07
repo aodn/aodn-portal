@@ -26,35 +26,35 @@ describe("Portal.details.DetailsPanel", function() {
             beforeEach(function() {
                 layer = {};
 
-                spyOn(detailsPanel, '_addCardForLayer');
-                spyOn(detailsPanel, '_activateCardForLayer');
+                spyOn(detailsPanel, '_addTabForLayer');
+                spyOn(detailsPanel, '_activateTabForLayer');
             });
 
-            it('activates existing DetailsPanelTab for previously selected layer', function() {
-                spyOn(detailsPanel, '_cardExistsForLayer').andReturn(true);
+            it('activates existing SubsetPanelAccordion for previously selected layer', function() {
+                spyOn(detailsPanel, '_tabExistsForLayer').andReturn(true);
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
 
-                expect(detailsPanel._addCardForLayer).not.toHaveBeenCalled();
-                expect(detailsPanel._activateCardForLayer).toHaveBeenCalledWith(layer);
+                expect(detailsPanel._addTabForLayer).not.toHaveBeenCalled();
+                expect(detailsPanel._activateTabForLayer).toHaveBeenCalledWith(layer);
             });
 
-            it('creates new DetailsPanelTab and activates for new layer', function() {
-                spyOn(detailsPanel, '_cardExistsForLayer').andReturn(false);
+            it('creates new SubsetPanelAccordion and activates for new layer', function() {
+                spyOn(detailsPanel, '_tabExistsForLayer').andReturn(false);
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
 
-                expect(detailsPanel._addCardForLayer).toHaveBeenCalledWith(layer);
-                expect(detailsPanel._activateCardForLayer).toHaveBeenCalledWith(layer);
+                expect(detailsPanel._addTabForLayer).toHaveBeenCalledWith(layer);
+                expect(detailsPanel._activateTabForLayer).toHaveBeenCalledWith(layer);
             });
 
-            it('removes DetailsPanelTab for removed layer', function() {
-                spyOn(detailsPanel, '_cardExistsForLayer').andReturn(true);
-                spyOn(detailsPanel, '_removeCardForLayer');
+            it('removes SubsetPanelAccordion for removed layer', function() {
+                spyOn(detailsPanel, '_tabExistsForLayer').andReturn(true);
+                spyOn(detailsPanel, '_removeTabForLayer');
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);
 
-                expect(detailsPanel._removeCardForLayer).toHaveBeenCalledWith(layer);
+                expect(detailsPanel._removeTabForLayer).toHaveBeenCalledWith(layer);
             });
         });
 

@@ -626,7 +626,7 @@ table.featureInfo caption {
     z-index: 3;
     font-family: Arial;
     font-size: smaller;
-    border-radius: 5 ! important;
+    border-radius: 5px ! important;
     border-width: 1px 1px 0 0;
     background-color: #3c668d;
     opacity: 0.0;
@@ -1222,23 +1222,45 @@ div.allwhite {
     margin-right: 10px;
 }
 
-.resultsRowHeaderTitle {
-    float: left;
-    width: 620px;
+.resultsRowHeaderTitle,
+.downloadPanelResultsTitle,
+.detailsPanelAccordion .x-panel-header {
     background-color: #E8E8E8;
-    margin-top: 1px;
-    padding: 1px 10px 2px 5px;
-    margin-right: 5px;
     border-radius: 3px 0 0 3px;
 }
 
-.resultsRowHeaderTitle.downloads {
-    width: 780px;
+.detailsPanelAccordion .x-panel-header {
+    margin: 5px 5px 0 0;
+    border-radius: 3px;
+    padding: 2px 5px;
 }
 
-.resultsRowHeaderTitle * {
+.detailsPanelAccordion .x-panel-collapsed * {
+    font-weight: normal;
+}
+
+.detailsPanelAccordion .x-tool {
+    margin-top: 3px;
+}
+
+.resultsRowHeaderTitle {
+    float: left;
+    margin-top: 1px;
+    padding: 1px 10px 2px 5px;
+    margin-right: 5px;
+}
+
+.faceted-search-results .resultsRowHeaderTitle {
+    width: 620px;
+}
+
+.faceted-search-results .resultsRowHeaderTitle * {
     margin: 2px 0;
     display: inline-block;
+}
+
+.downloadPanelResultsTitle {
+    margin-bottom: 6px;
 }
 
 .downloadPanelResultsWrapper.dataFilterEntry {
@@ -1480,4 +1502,15 @@ div.tool-plus-disabled {
 /* font Awesome icons */
 .fa {
     opacity: 0.8;
+}
+
+#visualisePanel div:not(.detailsPanelAccordion) h4 {
+    margin-bottom: 5px;
+}
+
+.spatialSubsetControl {
+    margin-right: 5px;
+    padding: 20px;
+    border-radius: 3px;
+    background-color: #f5f5f5;
 }

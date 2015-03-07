@@ -29,6 +29,7 @@ Portal.details.PolygonDisplayPanel = Ext.extend(Ext.grid.GridPanel, {
             }),
             viewConfig: {
                 autoFill: true,
+                forceFit: true,
                 headersDisabled: true
             }
         }, cfg);
