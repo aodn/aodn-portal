@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 require 'nokogiri'
 require 'open-uri'
@@ -72,6 +72,11 @@ class GeonetworkConnector
         end
       end
 
+      # If the layer lacks a WFS link, use the WMS link
+      if ! links[2]
+        links[2] = links[1]
+      end
+
       return links
     end
   end # class GeonetworkConnector
@@ -116,13 +121,38 @@ def write_filter_values(filters_dir, filter, values)
   file.close
 end
 
+def convert_filter_type(filter_type, filter_name)
+  # Convert filter type to a geoserver type
+  return_filter_type = filter_type
+
+  if filter_type == "String"
+    return_filter_type = "string"
+  elsif filter_type == "Boolean"
+    return_filter_type = "boolean"
+  elsif filter_type == "Date"
+    return_filter_type = "datetime"
+  elsif filter_type == "DateRange"
+    return_filter_type = "datetime"
+  elsif filter_type == "Number"
+    return_filter_type = "decimal"
+  elsif filter_type == "BoundingBox"
+    return_filter_type = "geometrypropertytype"
+  else
+    $logger.info "Could not find match for #{filter_type} for filter '#{filter_name}'"
+  end
+
+  return return_filter_type
+end
+
 def write_filters(filters_dir, filters, opts)
   builder = Nokogiri::XML::Builder.new do |xml|
     xml.filters {
       filters.each do |filter|
         xml.filter {
+          filter_type = convert_filter_type(filter['type'], filter['name'])
+
           xml.name                 filter['name']
-          xml.type                 filter['type']
+          xml.type                 filter_type
           xml.label                filter['label']
           xml.visualised           !filter['downloadOnly']
           xml.excludedFromDownload false

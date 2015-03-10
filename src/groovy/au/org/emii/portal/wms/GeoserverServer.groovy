@@ -7,7 +7,10 @@
 
 package au.org.emii.portal.wms
 
+import au.org.emii.portal.Layer
+import au.org.emii.portal.Server
 import au.org.emii.portal.proxying.ExternalRequest
+import groovy.xml.MarkupBuilder
 
 class GeoserverServer extends WmsServer {
     def dynamicFilters
@@ -17,8 +20,8 @@ class GeoserverServer extends WmsServer {
     }
 
     def getStyles(server, layer) {
-        def styles = []
-        return styles
+
+        return []
     }
 
     def getFilters(server, layer) {
@@ -28,31 +31,29 @@ class GeoserverServer extends WmsServer {
             def xml = new XmlSlurper().parseText(_getFiltersXml(server, layer))
 
             xml.filter.each { filter ->
-                def filterName = filter.name.text()
-                def filterType = filter.type.text()
 
-                filters.push(
-                    [
-                        label: filter.label.text(),
-                        type: filterType,
-                        name: filterName,
-                        visualised: Boolean.valueOf(filter.visualised.text())
-                    ]
-                )
+                filters.push([
+                    label: filter.label.text(),
+                    type: filter.type.text(),
+                    name: filter.name.text(),
+                    visualised: Boolean.valueOf(filter.visualised.text())
+                ])
             }
         }
         catch (e) {
-            log.error "Unable to parse filters for server '${server}', layer '${layer}': '${e}'"
+            log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
         }
+
         return filters
     }
 
     def _getFiltersXml(server, layer) {
         if (dynamicFilters) {
-            return _getFiltersXmlFromGeoserver(server, layer)
+            //return _getFiltersXmlFromGeoserver(server, layer)
+            return _getFiltersXmlFromFile(server, layer)
         }
         else {
-            return _getFiltersXmlFromFile(server, layer)
+            return _getFiltersXmlFromDatabase(server, layer)
         }
     }
 
@@ -65,11 +66,33 @@ class GeoserverServer extends WmsServer {
 
     def _getFiltersXmlFromGeoserver(server, layer) {
         def filtersUrl = getFiltersUrl(server, layer)
-        def outputStream = new ByteArrayOutputStream();
+        def outputStream = new ByteArrayOutputStream()
         def request = new ExternalRequest(outputStream, filtersUrl.toURL())
 
         request.executeRequest()
         return outputStream.toString("utf-8")
+    }
+
+    def _getFiltersXmlFromDatabase(serverAddress, fullLayerName) {
+
+        def filters = _filtersForLayer(serverAddress, fullLayerName)
+
+        def xmlOutput = new StringWriter()
+        def builder = new MarkupBuilder(xmlOutput)
+
+        builder.'filters' {
+            filters.each { currentFilter ->
+
+                'filter' {
+                    'label' currentFilter.label
+                    'name' currentFilter.name
+                    'type' currentFilter.type
+                    'visualised' !currentFilter.downloadOnly
+                }
+            }
+        }
+
+        return xmlOutput.toString()
     }
 
     def getFilterValues(server, layer, filter) {
@@ -78,12 +101,10 @@ class GeoserverServer extends WmsServer {
         try {
             def xml = new XmlSlurper().parseText(_getFilterValuesXml(server, layer, filter))
 
-            if (xml.value.size() > 0) {
-                values = xml.value.collect() { it -> it.text() }
-            }
+            values = xml.value.collect { it.text() }
         }
         catch (e) {
-            log.error "Unable to parse filters values for server '${server}', layer '${layer}', filter '${filter}': '${e}'"
+            log.error "Unable to parse filters values for server '${server}', layer '${layer}', filter '${filter}'", e
         }
 
         return values
@@ -91,10 +112,11 @@ class GeoserverServer extends WmsServer {
 
     def _getFilterValuesXml(server, layer, filter) {
         if (dynamicFilters) {
-            return _getFilterValuesXmlFromGeoserver(server, layer, filter)
+            // return _getFilterValuesXmlFromGeoserver(server, layer, filter)
+            return _getFilterValuesXmlFromFile(server, layer, filter)
         }
         else {
-            return _getFilterValuesXmlFromFile(server, layer, filter)
+            return _getFilterValuesXmlFromDatabase(server, layer, filter)
         }
     }
 
@@ -107,11 +129,43 @@ class GeoserverServer extends WmsServer {
 
     def _getFilterValuesXmlFromGeoserver(server, layer, filter) {
         def filtersUrl = getFilterValuesUrl(server, layer, filter)
-        def outputStream = new ByteArrayOutputStream();
+        def outputStream = new ByteArrayOutputStream()
         def request = new ExternalRequest(outputStream, filtersUrl.toURL())
 
         request.executeRequest()
         return outputStream.toString("utf-8")
+    }
+
+    def _getFilterValuesXmlFromDatabase(serverAddress, fullLayerName, filterName) {
+
+        println "filterName = $filterName"
+
+        def filters = _filtersForLayer(serverAddress, fullLayerName)
+        def filter = filters.find{ it.name == filterName }
+
+        def xmlOutput = new StringWriter()
+        def builder = new MarkupBuilder(xmlOutput)
+
+        builder.'uniqueValues' {
+            filter.possibleValues.each {
+
+                'value' it
+            }
+        }
+
+        println "-----------------------------------------------"
+        println "xmlOutput = $xmlOutput"
+        println "-----------------------------------------------"
+
+        return xmlOutput.toString()
+    }
+
+    def _filtersForLayer(serverAddress, fullLayerName) {
+        def server = Server.findByUri(serverAddress)
+        def layerName = getLayerName(fullLayerName)
+        def layer = Layer.findByNameAndServer(layerName, server)
+
+        return layer.filters.asList().findAll{ it.enabled }
     }
 
     static String getLayerWorkspace(fullLayerName) {
@@ -156,9 +210,5 @@ class GeoserverServer extends WmsServer {
 
     static String getFilterValuesUrl(server, layer, filter) {
         return _getFiltersUrlBase(server, layer, "uniqueValues", "&propertyName=${filter}")
-    }
-
-    static Boolean _filterHasValues(filterType) {
-        return filterType != "BoundingBox"
     }
 }

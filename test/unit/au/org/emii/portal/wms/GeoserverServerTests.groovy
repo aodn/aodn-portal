@@ -6,7 +6,6 @@
  */
 
 package au.org.emii.portal.wms
-import grails.converters.JSON
 
 import grails.test.GrailsUnitTestCase
 
@@ -19,7 +18,7 @@ class GeoserverServerTests extends GrailsUnitTestCase {
 
     protected void setUp() {
         super.setUp()
-        geoserverServer = new GeoserverServer()
+        geoserverServer = new GeoserverServer(true)
 
         validGeoserverResponse =
 """<?xml version="1.0"?>
