@@ -24,7 +24,7 @@ describe("Portal.filter.BooleanFilterPanel", function() {
                 getDisplayLabel: function() { return 'testLabel' }
             },
             layer: {
-                getName: function() { return 'test layer' },
+                name: 'test layer',
                 getDownloadFilter: function() { return ""; }
             }
         });
