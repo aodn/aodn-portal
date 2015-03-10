@@ -11,21 +11,14 @@ describe("Portal.filter.BaseFilterPanel", function() {
     describe("newFilterPanelFor()", function() {
 
         var newFilterPanelFor = Portal.filter.BaseFilterPanel.newFilterPanelFor;
-        var filter;
-        var panel;
-
-        beforeEach(function() {
-
-            filter = {};
-        });
 
         it("should return undefined", function() {
 
-            filter.getType = function() { return '' };
-
-            panel = newFilterPanelFor({
+            var panel = newFilterPanelFor({
                 layer: {},
-                filter: filter
+                filter: {
+                    getType: function() { return '' }
+                }
             });
 
             expect(panel).toBeUndefined();
@@ -57,12 +50,13 @@ describe("Portal.filter.BaseFilterPanel", function() {
 
         var expectNewFilterPanelForString = function(filterPanelType, filterTypeAsString) {
 
-            filter.getType = function() { return filterTypeAsString };
             var constructorSpy = spyOn(Portal.filter, filterPanelType);
 
             newFilterPanelFor({
                 layer: {},
-                filter: filter
+                filter: {
+                    getType: function() { return filterTypeAsString }
+                }
             });
 
             expect(constructorSpy).toHaveBeenCalled();
