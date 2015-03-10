@@ -101,23 +101,47 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
 
 Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
 
-    var newFilterPanel;
-    var type = cfg.filter.getType();
+    var type = cfg.filter.getType().toLowerCase();
 
-    if (type === "String") {
+    // Todo - DN: Remove when loading filters from DBis removed
+    // Portal types --> GeoServer types (temporary)
+    if (type == "daterange") {
+        type = 'datetime'
+    }
+    else if (type === "boundingbox") {
+        type = 'geometrypropertytype'
+    }
+    else if (type === "number") {
+        type = 'decimal'
+    }
+    // Todo - DN: End of temp code
+
+    var typeMatches = function(toMatch) {
+        var anyMatch = false;
+
+        Ext.each(toMatch, function(currentMatch) {
+            anyMatch |= type === currentMatch;
+        });
+
+        return anyMatch;
+    };
+
+    var newFilterPanel;
+
+    if (typeMatches('string')) {
         newFilterPanel = new Portal.filter.ComboFilterPanel(cfg);
     }
-    else if (type == "Date" || type == "DateRange") {
-        newFilterPanel = new Portal.filter.DateFilterPanel(cfg);
-    }
-    else if (type === "Boolean") {
+    else if (typeMatches('boolean')) {
         newFilterPanel = new Portal.filter.BooleanFilterPanel(cfg);
     }
-    else if (type === "BoundingBox") {
-        newFilterPanel = new Portal.filter.GeometryFilterPanel(cfg);
+    else if (typeMatches(['date', 'datetime'])) {
+        newFilterPanel = new Portal.filter.DateFilterPanel(cfg);
     }
-    else if (type === "Number") {
+    else if (typeMatches(['double', 'float', 'integer', 'int', 'long', 'short', 'decimal'])) {
         newFilterPanel = new Portal.filter.NumberFilterPanel(cfg);
+    }
+    else if (typeMatches(['pointpropertytype', 'geometrypropertytype', 'multilinepropertytype', 'surfacepropertytype', 'curvepropertytype'])) {
+        newFilterPanel = new Portal.filter.GeometryFilterPanel(cfg);
     }
     else {
         //Filter hasn't been defined

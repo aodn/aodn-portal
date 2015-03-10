@@ -21,7 +21,7 @@ describe("Portal.filter.BaseFilterPanel", function() {
 
         it("should return undefined", function() {
 
-            filter.getType = function() { return null };
+            filter.getType = function() { return '' };
 
             panel = newFilterPanelFor({
                 layer: {},
