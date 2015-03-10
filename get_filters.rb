@@ -125,14 +125,20 @@ def convert_filter_type(filter_type, filter_name)
   # Convert filter type to a geoserver type
   return_filter_type = filter_type
 
-  if filter_type == "BoundingBox"
-    return_filter_type = "Geometry"
+  if filter_type == "String"
+    return_filter_type = "string"
+  elsif filter_type == "Boolean"
+    return_filter_type = "boolean"
   elsif filter_type == "Date"
-    return_filter_type = "Timestamp"
-  elsif filter_name == "DEPTH"
-    return_filter_type = "Float"
-  elsif filter_name == "driftnum"
-    return_filter_type = "Long"
+    return_filter_type = "datetime"
+  elsif filter_type == "DateRange"
+    return_filter_type = "datetime"
+  elsif filter_type == "Number"
+    return_filter_type = "decimal"
+  elsif filter_type == "BoundingBox"
+    return_filter_type = "geometrypropertytype"
+  else
+    $logger.info "Could not find match for #{filter_type} for filter '#{filter_name}'"
   end
 
   return return_filter_type
