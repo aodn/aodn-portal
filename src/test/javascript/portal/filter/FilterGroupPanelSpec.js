@@ -4,6 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
+
 describe("Portal.filter.FilterGroupPanel", function() {
 
     var filterGroupPanel;
@@ -23,12 +24,6 @@ describe("Portal.filter.FilterGroupPanel", function() {
         });
     });
 
-    describe('responds to expected methods', function() {
-        it('has a _clearFilters method', function() {
-            expect(filterGroupPanel._clearFilters).toBeDefined();
-        });
-    });
-
     describe('_filtersLoaded', function() {
 
         beforeEach(function() {
@@ -45,7 +40,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
             cfg = {
                 layer: layer
-            }
+            };
 
             filterPanel = {
                 needsFilterRange: function() {
@@ -98,7 +93,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
             cfg = {
                 layer: layer
-            }
+            };
 
             filterConfigs = [
                 {type: 'Boolean', label: 'A', name: 'A', visualised: true},
@@ -204,7 +199,6 @@ describe("Portal.filter.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, 'addErrorMessage');
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
-            //spyOn(filterGroupPanel, '_filtersSort').andReturn(layer);
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
         });
 
@@ -219,7 +213,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
         });
 
         it('addErrorMessage function not called when filters are configured', function() {
-            
+
             layer.filters = ["Boolean","Combo"];
 
             spyOn(filterGroupPanel, '_filtersSort').andReturn(layer);
