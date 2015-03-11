@@ -224,7 +224,7 @@ class Server {
     }
 
     def getUrlListDownloadSubstitutions() {
-        return grailsApplication?.config?.knownServers?.find {
+        return grailsApplication.config.knownServers.find {
             this.uri.startsWith(it.uri)
         }?.urlListDownloadSubstitutions ?: [:]
     }

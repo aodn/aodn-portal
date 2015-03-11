@@ -240,7 +240,6 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
         def inputStream = new ByteArrayInputStream(input.bytes)
         def outputStream = new ByteArrayOutputStream()
 
-        //def sp = controller.urlListStreamProcessor('relativeFilePath', '/mnt/imos-t4/', 'http://data.imos.org.au/')
         def sp = controller.urlListStreamProcessor(
             'relativeFilePath',
             [
