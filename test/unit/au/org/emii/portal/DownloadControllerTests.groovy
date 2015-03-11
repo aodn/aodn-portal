@@ -54,10 +54,9 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         }
 
         def testStreamProcessor = new Object()
-        controller.metaClass.urlListStreamProcessor = { fieldName, prefixToRemove, newUrlBase ->
+        controller.metaClass.urlListStreamProcessor = { fieldName, urlSubstitutions ->
             assertEquals 'relativeFilePath', fieldName
-            assertEquals testServer.urlListDownloadPrefixToRemove, prefixToRemove
-            assertEquals testServer.urlListDownloadPrefixToSubstitue, newUrlBase
+            assertEquals testServer.urlListDownloadSubstitutions, urlSubstitutions
 
             return testStreamProcessor
         }
@@ -84,7 +83,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             renderParams = theRenderParams
         }
         controller.downloadPythonSnippet()
-        
+
 
         assertEquals("text/plain", mockResponse.contentType)
         assertEquals("pythonSnippet.py", renderParams.template)
@@ -117,10 +116,9 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         mockParams.downloadFilename = 'somedata.txt'
 
         def archiveGenerated = false
-        controller.metaClass.urlListStreamProcessor = { fieldName, prefixToRemove, newUrlBase ->
+        controller.metaClass.urlListStreamProcessor = { fieldName, urlSubstitutions ->
             assertEquals 'relativeFilePath', fieldName
-            assertEquals testServer.urlListDownloadPrefixToRemove, prefixToRemove
-            assertEquals testServer.urlListDownloadPrefixToSubstitue, newUrlBase
+            assertEquals testServer.urlListDownloadSubstitutions, urlSubstitutions
 
             { inputStream, outputStream ->
                 outputStream << """\
@@ -227,6 +225,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             aatams_sattag_nrt_wfs.331442,/mnt/imos-t4/IMOS/Q9900541.nc
             aatams_sattag_nrt_wfs.331443,/mnt/imos-t4/IMOS/Q9900542.nc
             aatams_sattag_nrt_wfs.331445,/mnt/imos-t4/IMOS/Q9900543.nc
+            some_cool_data,/some_path/foo/123.nc
 
         """
 
@@ -235,12 +234,19 @@ http://data.imos.org.au/IMOS/Q9900542.nc\n\
 http://data.imos.org.au/IMOS/Q9900543.nc\n\
 http://data.imos.org.au/IMOS/Q9900540.nc\n\
 http://data.imos.org.au/IMOS/Q9900541.nc\n\
+/some_path/bar/123.nc\n\
 """
 
         def inputStream = new ByteArrayInputStream(input.bytes)
         def outputStream = new ByteArrayOutputStream()
 
-        def sp = controller.urlListStreamProcessor('relativeFilePath', '/mnt/imos-t4/', 'http://data.imos.org.au/')
+        def sp = controller.urlListStreamProcessor(
+            'relativeFilePath',
+            [
+                '/mnt/imos-t4/': 'http://data.imos.org.au/',
+                'foo': 'bar'
+            ]
+        )
         sp(inputStream, outputStream)
 
         def output = outputStream.toString("UTF-8")
@@ -271,7 +277,20 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
 
     void _setUpExampleObjects() {
 
-        testServer = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
+        testServer = new Server(name: 'My Server', uri: "http://www.google.com/")
+
+        testServer.grailsApplication = [
+            config: [
+                knownServers: [
+                    [
+                        uri: 'http://www.google.com/',
+                        urlListDownloadSubstitutions: [
+                            '/mnt/imos-t4': 'http://data.aodn.org.au'
+                        ]
+                    ]
+                ]
+            ]
+        ]
 
         mockDomain Server, [testServer]
 

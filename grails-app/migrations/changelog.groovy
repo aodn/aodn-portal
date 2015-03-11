@@ -88,6 +88,7 @@ databaseChangeLog = {
     include file: '20140718-DN-RemoveWfsLayer.groovy'
     include file: '20140901-DF-RemoveNameConfig.groovy'
     include file: '20140924-DF-RemoveMetadataUrls.groovy'
+    include file: '20150310-JB-DropUrlSubstitution.groovy'
 
     // Changes that apply to all instances must be included here, above the calls to instance-specific change logs
 
