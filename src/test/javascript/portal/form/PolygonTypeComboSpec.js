@@ -11,13 +11,7 @@ describe('Portal.form.PolygonTypeCombo', function() {
     var polygonTypeCombo;
 
     beforeEach(function() {
-        mockMap = {
-            setSpatialConstraintStyle: jasmine.createSpy(),
-            getSpatialConstraintType: jasmine.createSpy(),
-            events: {
-                on: jasmine.createSpy()
-            }
-        };
+        mockMap = getMockMap();
 
         polygonTypeCombo = new Portal.form.PolygonTypeComboBox({
             map: mockMap
@@ -32,7 +26,6 @@ describe('Portal.form.PolygonTypeCombo', function() {
         it('has a polygon item', function() {
             expect(polygonTypeCombo.store.find('value', Portal.ui.openlayers.SpatialConstraintType.POLYGON)).toBeGreaterThan(-1);
         });
-
     });
 
     describe('polygon combo box', function() {
