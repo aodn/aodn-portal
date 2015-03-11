@@ -112,9 +112,14 @@ var mockLayoutForMainPanel = function(mainPanel) {
     };
 };
 
-var mockMap = function() {
+var getMockMap = function() {
     return {
-        events: { register: function(event, scope, fn) {}}
+        events: {
+            register: jasmine.createSpy(),
+            on: jasmine.createSpy()
+        },
+        setSpatialConstraintStyle: jasmine.createSpy(),
+        getSpatialConstraintType: jasmine.createSpy()
     };
 };
 
