@@ -45,6 +45,18 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         })
     },
 
+    _createFilterLabel: function(labelText) {
+        return new Ext.form.Label({
+            html: "<label>" + labelText + "</label>"
+        });
+    },
+
+    _createFilterGroupHeading: function(headerText) {
+        return new Ext.Container({
+            html: "<h4>" + headerText + "</h4>"
+        });
+    },
+
     _createLoadingMessageContainer: function() {
         return new Ext.Container({
             autoEl: 'div',
@@ -98,9 +110,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
     _addLabelToFilterPanel: function(filter) {
 
         var labelText = filter.getDisplayLabel();
-        var label = new Ext.form.Label({
-            html: "<label>" + labelText + "</label>"
-        });
+        var label = this._createFilterLabel(labelText);
         this.currentGroupContainer.add(label);
     },
 
@@ -220,14 +230,12 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
     _createNewGroupContainer: function(filter, filterPanel) {
 
         if (filterPanel.typeLabel != this.currentFilterTypeLabel) {
-            var label = new Ext.Container({
-                html: "<h4>" + filterPanel.typeLabel + "</h4>"
-            });
+            var heading = this._createFilterGroupHeading(filterPanel.typeLabel);
 
             this.currentFilterTypeLabel = filterPanel.typeLabel;
 
             this.currentGroupContainer = this._createGroupContainer();
-            this.currentGroupContainer.add(label);
+            this.currentGroupContainer.add(heading);
             this.add(this.currentGroupContainer);
         }
         else {
@@ -316,7 +324,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         return cql.join(this.AND_QUERY);
     },
 
-    _logFilterRequest: function(aFilter) {
+    _logFilterRequest: function() {
         var layer = this.layer;
         var filterData = layer.filterData;
 
