@@ -11,7 +11,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
     constructor: function(cfg) {
 
         this.layer = cfg.layer;
-        this.loadingMessage = this.createLoadingMessageContainer();
+        this.loadingMessage = this._createLoadingMessageContainer();
         var config = Ext.apply({
             autoDestroy: true,
             cls: 'filterGroupPanel',
@@ -32,24 +32,24 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         this._initWithLayer();
     },
 
-    _getGroupContainer: function() {
+    _createGroupContainer: function() {
         return new Ext.Container({
             cls: 'filterGroupContainer'
         })
     },
 
-    _getVerticalSpacer: function(sizeInPixels) {
+    _createVerticalSpacer: function(sizeInPixels) {
         return new Ext.Spacer({
             cls: 'block',
             height: sizeInPixels
         })
     },
 
-    createLoadingMessageContainer: function() {
+    _createLoadingMessageContainer: function() {
         return new Ext.Container({
             autoEl: 'div',
             items: [
-                this._getVerticalSpacer(10),
+                this._createVerticalSpacer(10),
                 {
                     html: OpenLayers.i18n('loadingSpinner', {resource: OpenLayers.i18n('subsetParametersText')})
                 }
@@ -57,30 +57,30 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         });
     },
 
-    createErrorMessageContainer: function() {
+    _createErrorMessageContainer: function() {
         return new Ext.Container({
             autoEl: 'div',
             html: ""
         })
     },
 
-    setErrorMessageText: function(msg, errorMsgContainer) {
+    _setErrorMessageText: function(msg, errorMsgContainer) {
         errorMsgContainer.html = "<i>" + msg + "</i>";
     },
 
-    removeLoadingMessage: function() {
+    _removeLoadingMessage: function() {
         this.remove(this.loadingMessage);
         delete this.loadingMessage;
     },
 
-    addErrorMessage: function(msg) {
+    _addErrorMessage: function(msg) {
         if (this.errorMessage) {
-            this.setErrorMessageText(msg, this.errorMessage);
+            this._setErrorMessageText(msg, this.errorMessage);
         }
         else {
-            this.removeLoadingMessage();
-            this.errorMessage = this.createErrorMessageContainer();
-            this.setErrorMessageText(msg, this.errorMessage);
+            this._removeLoadingMessage();
+            this.errorMessage = this._createErrorMessageContainer();
+            this._setErrorMessageText(msg, this.errorMessage);
             this.add(this.errorMessage);
             this.doLayout();
         }
@@ -138,7 +138,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
             this._updateAndShow();
         }
         else {
-            this.addErrorMessage(OpenLayers.i18n('subsetEmptyFiltersText'));
+            this._addErrorMessage(OpenLayers.i18n('subsetEmptyFiltersText'));
         }
     },
 
@@ -226,7 +226,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
             this.currentFilterTypeLabel = filterPanel.typeLabel;
 
-            this.currentGroupContainer = this._getGroupContainer();
+            this.currentGroupContainer = this._createGroupContainer();
             this.currentGroupContainer.add(label);
             this.add(this.currentGroupContainer);
         }
@@ -241,7 +241,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
     _addFilterTypeSpacer: function(filter) {
 
         if (this.currentFilterType != filter.getType()) {
-            this.currentGroupContainer.add(this._getVerticalSpacer(15));
+            this.currentGroupContainer.add(this._createVerticalSpacer(15));
         }
     },
 
@@ -261,9 +261,9 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         this._updateLayerFilters();
 
-        this.add(this._getVerticalSpacer(15));
+        this.add(this._createVerticalSpacer(15));
         this.add(this.clearFiltersButton);
-        this.add(this._getVerticalSpacer(25));
+        this.add(this._createVerticalSpacer(25));
 
         if (this._isDisplayed()) {
             this.doLayout();
