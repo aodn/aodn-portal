@@ -44,7 +44,7 @@ a pull request.
 
 #### Building From Source
 
-If you want to build from source you will need to have [Grails](http://grails.org/) installed on your build machine.
+If you want to build from source you will need to have [Grails](http://grails.org/) 1.3.7 installed on your build machine.
 
 Once you have the source it should be as simple as ```$ grails war``` in the root folder where you have checked out portal
 then deploy the war to your application server.
