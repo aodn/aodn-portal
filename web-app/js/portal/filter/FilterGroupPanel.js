@@ -106,7 +106,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _initWithLayer: function() {
 
-        var filterService  = new Portal.filter.FilterService();
+        var filterService = new Portal.filter.FilterService();
 
         filterService.loadFilters(this.layer, this._filtersLoaded, this);
     },
@@ -115,11 +115,9 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         var filterPanels = [];
 
-        filters = this._filtersSort(filters);
+        Ext.each(filters, function(filter) {
 
-        Ext.each(filters, function(filterObject) {
-
-            var filterPanel = this._createFilterPanel(filterObject);
+            var filterPanel = this._createFilterPanel(filter);
 
             filterPanels.push(filterPanel);
 
@@ -127,14 +125,14 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
                 var filterService  = new Portal.filter.FilterService();
 
-                filterService.loadFilterRange(filterObject.getName(), this.layer, function(filterRange) {
+                filterService.loadFilterRange(filter.getName(), this.layer, function(filterRange) {
                     this._filterRangeLoaded(filterRange, filterPanel)
                 }, this);
             }
 
         }, this);
 
-        this.filterPanels = filterPanels;
+        this.filterPanels = this._sortPanels(filterPanels);
 
         if (this.filterPanels.length > 0) {
             this._updateAndShow();
@@ -150,33 +148,34 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         filterPanel.setFilterRange(filterRange);
     },
 
-    _filtersSort: function(filters) {
+    _sortPanels: function(panels) {
 
-        // override server order by adding the type in topFilters
-        var topFilters = ['String', 'Number', 'Boolean', 'DateRange', 'Date', 'BoundingBox']; // add in reverse order
+        var panelOrder = [
+            Portal.filter.GeometryFilterPanel,
+            Portal.filter.DateFilterPanel,
+            Portal.filter.BooleanFilterPanel,
+            Portal.filter.NumberFilterPanel,
+            Portal.filter.ComboFilterPanel
+        ];
 
-        Ext.each(
-            filters,
-            function(filter) {
-                var sortOrder = topFilters.indexOf(filter.getType(), 0);
-                filter.setSortOrder(sortOrder);
-            },
-            this
-        );
+        var typeOrder = function (panel) {
+            return panelOrder.indexOf(panel.constructor) * -1;
+        };
 
         var _this = this;
-
-        filters.sort(function(firstFilter, secondFilter) {
-            var comparisonResult = _this._compareElements(firstFilter.getSortOrder(), secondFilter.getSortOrder());
+        panels.sort(function(firstPanel, secondPanel) {
+            var comparisonResult = _this._compareElements(typeOrder(firstPanel), typeOrder(secondPanel));
 
             if (comparisonResult == 0) {
-                comparisonResult = _this._compareElements(secondFilter.getDisplayLabel(), firstFilter.getDisplayLabel());
+                var firstFilterName = firstPanel.filter.getDisplayLabel();
+                var secondFilterName = secondPanel.filter.getDisplayLabel();
+                comparisonResult = _this._compareElements(secondFilterName, firstFilterName);
             }
 
             return comparisonResult;
         });
 
-        return filters;
+        return panels;
     },
 
     _compareElements: function(first, second) {
