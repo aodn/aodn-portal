@@ -147,7 +147,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
             spyOn(filterGroupPanel, '_clearFilters');
             spyOn(filterGroupPanel, '_updateLayerFilters');
-            spyOn(filterGroupPanel, 'addErrorMessage');
+            spyOn(filterGroupPanel, '_addErrorMessage');
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
             spyOn(filterGroupPanel, '_sortPanels').andReturn([{}]);
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
@@ -183,21 +183,21 @@ describe("Portal.filter.FilterGroupPanel", function() {
             };
 
             spyOn(filterGroupPanel, '_updateLayerFilters');
-            spyOn(filterGroupPanel, 'addErrorMessage');
+            spyOn(filterGroupPanel, '_addErrorMessage');
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
         });
 
-        it('calls the addErrorMessage function when filters set but has no filters configured', function() {
+        it('calls the _addErrorMessage function when filters set but has no filters configured', function() {
 
             layer.filters = [];
 
             filterGroupPanel._filtersLoaded(layer.filters);
 
-            expect(filterGroupPanel.addErrorMessage).toHaveBeenCalled();
+            expect(filterGroupPanel._addErrorMessage).toHaveBeenCalled();
         });
 
-        it('addErrorMessage function not called when filters are configured', function() {
+        it('_addErrorMessage function not called when filters are configured', function() {
 
             layer.filters = ["Boolean", "Combo"];
 
@@ -205,7 +205,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
             filterGroupPanel._filtersLoaded(layer.filters);
 
-            expect(filterGroupPanel.addErrorMessage).not.toHaveBeenCalled();
+            expect(filterGroupPanel._addErrorMessage).not.toHaveBeenCalled();
         });
     });
 
