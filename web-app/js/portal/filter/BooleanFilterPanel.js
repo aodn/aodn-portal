@@ -20,6 +20,7 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         Portal.filter.BooleanFilterPanel.superclass.constructor.call(this, config);
     },
+
     _createField: function() {
         this.checkbox = new Ext.form.Checkbox({
             name: this.filter.getName(),
