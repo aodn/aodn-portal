@@ -52,7 +52,6 @@ class LayerControllerTests extends ControllerUnitTestCase {
         mockDomain Server, [server]
         mockDomain Config, [validConfig]
 
-
         def mockLayer = new Layer()
         def layerServiceControl = mockFor(LayerService)
         layerServiceControl.demand.updateWithNewData(1..1){ JSONElement e, Server s, String ds -> mockLayer }
@@ -209,8 +208,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
     }
 
     void testShowLayerByItsId() {
-        def server1 = new Server()
-        server1.id = 1
+        def server1 = _getNewServer()
 
         def layer2 = new Layer()
         layer2.id = 4
@@ -219,10 +217,9 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
         def layer1 = new Layer()
         layer1.id = 5
-        layer1.name = "maplayer"
+        layer1.name = "layer"
         layer1.server = server1
 
-        mockDomain(Server, [server1])
         mockDomain(Layer, [layer1, layer2])
 
         this.controller.params.layerId = 5
@@ -231,15 +228,14 @@ class LayerControllerTests extends ControllerUnitTestCase {
         def layerAsJson = JSON.parse(controller.response.contentAsString)
 
         assertEquals 5, layerAsJson.id
-        assertEquals "maplayer", layerAsJson.name
+        assertEquals "layer", layerAsJson.name
     }
 
     void testShowLayerByItsIdWhenLayerReferencesItself() {
-        def server1 = new Server(id: 1)
+        def server1 = _getNewServer()
 
         def layer1 = new Layer(id: 5, name: 'layer', server: server1)
 
-        mockDomain(Server, [server1])
         mockDomain(Layer, [layer1])
 
         this.controller.params.layerId = 5
@@ -251,6 +247,14 @@ class LayerControllerTests extends ControllerUnitTestCase {
         assertEquals "layer", layerAsJson.name
     }
 
+    def _getNewServer() {
+        def server = new Server(id: 1)
+        server.grailsApplication = [ config: [:] ]
+
+        mockDomain(Server, [server])
+
+        return server
+    }
     void testUpdateNoViewParams() {
         _updateViewParamsSetup(null)
         def updatedLayer = Layer.get(controller.redirectArgs['id'])
