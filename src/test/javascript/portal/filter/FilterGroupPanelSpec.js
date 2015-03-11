@@ -51,7 +51,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             filterGroupPanel = new Portal.filter.FilterGroupPanel(cfg);
 
             spyOn(filterGroupPanel, '_updateAndShow');
-            spyOn(filterGroupPanel, '_filtersSort').andReturn(layer);
+            spyOn(filterGroupPanel, '_sortPanels').andReturn([{}]);
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
 
@@ -65,7 +65,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         it('sorts the filters according to sort order', function() {
 
-            expect(filterGroupPanel._filtersSort).toHaveBeenCalled();
+            expect(filterGroupPanel._sortPanels).toHaveBeenCalled();
         });
 
         it('calls _updateAndShow', function() {
@@ -75,65 +75,52 @@ describe("Portal.filter.FilterGroupPanel", function() {
     });
 
     describe('filter sorting', function() {
-        var expectedReturn;
-        var filterConfigs;
-        var testBooleanFilterA;
-        var testDateFilter;
-        var testDateRangeFilter;
-        var testBooleanFilterE;
-        var testBboxFilter;
-        var testStringFilter;
 
-        beforeEach(function() {
-            layer = {
-                server: {
-                    uri: {}
-                }
-            };
+        it('sorts panels in expected order', function() {
 
-            cfg = {
-                layer: layer
-            };
+            spyOn(Portal.filter.BooleanFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.BooleanFilterPanel.prototype, '_setExistingFilters');
+            spyOn(Portal.filter.NumberFilterPanel.prototype, '_setExistingFilters');
+            spyOn(Portal.filter.GeometryFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.GeometryFilterPanel.prototype, 'setLayerAndFilter');
+            spyOn(Portal.filter.DateFilterPanel.prototype, '_setExistingFilters');
+            spyOn(Portal.filter.DateFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ComboFilterPanel.prototype, '_setExistingFilters');
 
-            filterConfigs = [
-                {type: 'Boolean', label: 'A', name: 'A', visualised: true},
-                {type: 'Date', label: 'B', name: 'B', visualised: true},
-                {type: 'DateRange', label: 'Z', name: 'Z', visualised: true},
-                {type: 'Boolean', label: 'E', name: 'E', visualised: true},
-                {type: 'BoundingBox', label: 'C', name: 'C', visualised: true},
-                {type: 'String', label: 'D', name: 'D', visualised: true}
+            var booleanPanelA = new Portal.filter.BooleanFilterPanel({
+                filter: { getDisplayLabel: function() { return 'A' } }
+            });
+            var booleanPanelB = new Portal.filter.BooleanFilterPanel({
+                filter: { getDisplayLabel: function() { return 'B' } }
+            });
+            var numberPanel =  new Portal.filter.NumberFilterPanel();
+            var geometryPanel = new Portal.filter.GeometryFilterPanel({
+                layer: { map: getMockMap() }
+            });
+            var datePanel = new Portal.filter.DateFilterPanel();
+            var comboPanel = new Portal.filter.ComboFilterPanel();
+
+            var panels = [
+                booleanPanelB,
+                comboPanel,
+                datePanel,
+                booleanPanelA,
+                geometryPanel,
+                numberPanel
             ];
 
-            testBooleanFilterA = new Portal.filter.Filter(filterConfigs[0]);
-            testDateFilter = new Portal.filter.Filter(filterConfigs[1]);
-            testDateRangeFilter = new Portal.filter.Filter(filterConfigs[2]);
-            testBooleanFilterE = new Portal.filter.Filter(filterConfigs[3]);
-            testBboxFilter = new Portal.filter.Filter(filterConfigs[4]);
-            testStringFilter = new Portal.filter.Filter(filterConfigs[5]);
-
-            layer.filters = [
-                testBooleanFilterA,
-                testDateFilter,
-                testDateRangeFilter,
-                testBooleanFilterE,
-                testBboxFilter,
-                testStringFilter
-            ];
-
-            expectedReturn = [
-                testBboxFilter,
-                testDateFilter,
-                testDateRangeFilter,
-                testBooleanFilterA,
-                testBooleanFilterE,
-                testStringFilter
+            var expectedPanelOrder = [
+                geometryPanel,
+                datePanel,
+                booleanPanelA,
+                booleanPanelB,
+                numberPanel,
+                comboPanel
             ];
 
             filterGroupPanel = new Portal.filter.FilterGroupPanel(cfg);
-        });
 
-        it('sorts by specified order', function() {
-            expect(filterGroupPanel._filtersSort(layer.filters)).toEqual(expectedReturn);
+            expect(filterGroupPanel._sortPanels(panels)).toEqual(expectedPanelOrder);
         });
     });
 
@@ -162,10 +149,9 @@ describe("Portal.filter.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, 'addErrorMessage');
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
-            spyOn(filterGroupPanel, '_filtersSort').andReturn(layer);
+            spyOn(filterGroupPanel, '_sortPanels').andReturn([{}]);
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
         });
-
 
         it('calls the _clearFilters method', function() {
 
@@ -202,7 +188,6 @@ describe("Portal.filter.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
         });
 
-
         it('calls the addErrorMessage function when filters set but has no filters configured', function() {
 
             layer.filters = [];
@@ -214,9 +199,9 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         it('addErrorMessage function not called when filters are configured', function() {
 
-            layer.filters = ["Boolean","Combo"];
+            layer.filters = ["Boolean", "Combo"];
 
-            spyOn(filterGroupPanel, '_filtersSort').andReturn(layer);
+            spyOn(filterGroupPanel, '_sortPanels').andReturn([{},{}]);
 
             filterGroupPanel._filtersLoaded(layer.filters);
 
@@ -286,14 +271,12 @@ describe("Portal.filter.FilterGroupPanel", function() {
                     type: 'Boolean',
                     visualised: true
                 }
-
             });
 
             it('calls getVisualisationCQL when options.downloadOnly is false', function() {
 
                 expect(filterGroupPanel._getVisualisationCQLFilters(filterDescriptorData)).toEqual('pardon my French');
             });
-
         });
     });
 });
