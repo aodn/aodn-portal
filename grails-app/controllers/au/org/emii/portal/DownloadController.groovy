@@ -25,7 +25,7 @@ class DownloadController extends RequestProxyingController {
 
     def urlListForLayer = {
 
-        def (fieldName, prefixToRemove, newUrlBase) = _loadCommonFields(params)
+        def (fieldName, urlSubstitutions) = _loadCommonFields(params)
 
         if (!fieldName) {
             render text: 'urlFieldName was not provided', status: 400
@@ -34,7 +34,7 @@ class DownloadController extends RequestProxyingController {
 
         _performProxying(
             requestSingleFieldParamProcessor(fieldName),
-            urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase)
+            urlListStreamProcessor(fieldName, urlSubstitutions)
         )
     }
 
@@ -46,7 +46,7 @@ class DownloadController extends RequestProxyingController {
 
     def downloadNetCdfFilesForLayer = {
 
-        def (fieldName, prefixToRemove, newUrlBase) = _loadCommonFields(params)
+        def (fieldName, urlSubstitutions) = _loadCommonFields(params)
 
         if (!fieldName) {
             render text: 'urlFieldName was not provided', status: 400
@@ -61,7 +61,7 @@ class DownloadController extends RequestProxyingController {
         }
 
         def resultStream = new ByteArrayOutputStream()
-        def streamProcessor = urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase)
+        def streamProcessor = urlListStreamProcessor(fieldName, urlSubstitutions)
 
         try {
             _executeExternalRequest url, streamProcessor, resultStream
@@ -145,7 +145,7 @@ class DownloadController extends RequestProxyingController {
         }
     }
 
-    def urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase) {
+    def urlListStreamProcessor(fieldName, urlSubstitutions) {
 
         return { inputStream, outputStream ->
 
@@ -174,10 +174,14 @@ class DownloadController extends RequestProxyingController {
                 if (fieldIndex < currentRow.length) {
 
                     def rowValue = currentRow[fieldIndex].trim()
-                    rowValue = rowValue.replace(prefixToRemove, newUrlBase)
+                    urlSubstitutions.each {
+                        search, replace ->
+
+                        rowValue = rowValue.replaceAll(search, replace)
+                    }
 
                     if (rowValue && includedUrls.add(rowValue)) {
-                        outputWriter.print "$rowValue\n"
+                        outputWriter.println rowValue
                     }
                 }
             }
@@ -253,8 +257,7 @@ class DownloadController extends RequestProxyingController {
 
         return [
             params.remove('urlFieldName'),
-            server?.urlListDownloadPrefixToRemove ?: "",
-            server?.urlListDownloadPrefixToSubstitue ?: ""
+            server?.urlListDownloadSubstitutions ?: ""
         ]
     }
 }

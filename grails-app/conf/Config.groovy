@@ -213,14 +213,19 @@ knownServers = [
         type: 'GeoServer',
         supportsCsvMetadataHeaderOutputFormat: true,
         urlListDownloadPrefixToRemove: '/mnt/imos-t3/',
-        urlListDownloadPrefixToSubstitue: 'http://data.aodn.org.au/'
+        urlListDownloadPrefixToSubstitue: 'http://data.aodn.org.au/',
+        urlListDownloadSubstitutions: [
+            '/mnt/imos-t3/': 'http://data.aodn.org.au/',
+            '/mnt/opendap/2/SRS': 'http://thredds.aodn.org.au/thredds/fileServer/srs'
+        ]
     ],
     [
         uri: 'http://ncwms.aodn.org.au/ncwms/wms',
         wmsVersion: '1.1.1',
         type: 'ncWMS',
-        urlListDownloadPrefixToRemove: '/mnt/imos-t3/IMOS/opendap/',
-        urlListDownloadPrefixToSubstitue: 'http://thredds.aodn.org.au/thredds/fileServer/IMOS/'
+        urlListDownloadSubstitutions: [
+            '/mnt/imos-t3/IMOS/opendap/': 'http://thredds.aodn.org.au/thredds/fileServer/IMOS/'
+        ]
     ],
     [
         uri: 'http://rs-data1-mel.csiro.au/ncWMS/wms',
