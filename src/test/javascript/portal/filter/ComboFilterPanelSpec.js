@@ -54,16 +54,6 @@ describe("Portal.filter.ComboFilterPanel", function() {
         });
     });
 
-    it('_setExistingFilters should set value to matching CQL parameter (only)', function() {
-        filterPanel.layer.getDownloadFilter = function() {
-            return "filter1 LIKE 'somevalue' AND test LIKE 'testvalue' AND filter3 LIKE 'anothervalue'";
-        };
-
-        filterPanel._setExistingFilters();
-
-        expect(filterPanel.combo.setValue).toHaveBeenCalledWith('testvalue');
-    });
-
     describe('validateValue function', function() {
 
         beforeEach(function() {

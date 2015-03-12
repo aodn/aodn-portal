@@ -132,27 +132,6 @@ describe("Portal.filter.DateFilterPanel", function() {
         };
     });
 
-    describe('_setExistingFilters', function() {
-        it('sets from and to fields from cql parameter', function() {
-            filterPanel.layer = {};
-            filterPanel.layer.getDownloadFilter = function() {
-                return "some_column >= '2013-10-07T13:00:00Z' AND some_column <= '2013-10-08T13:00:00Z'";
-            };
-
-            var MockField = function() {
-                this.setValue = jasmine.createSpy();
-            };
-
-            filterPanel.fromDate = new MockField();
-            filterPanel.toDate = new MockField();
-
-            filterPanel._setExistingFilters();
-
-            expect(filterPanel.fromDate.setValue).toHaveBeenCalledWith(new Date("Tue Oct 08 2013 00:00:00 GMT+1100 (EST)"));
-            expect(filterPanel.toDate.setValue).toHaveBeenCalledWith(new Date("Wed Oct 09 2013 00:00:00 GMT+1100 (EST)"));
-        });
-    });
-
     function _mockFilterFields(filterPanel) {
         Ext.each(['fromDate', 'toDate'], function(property, index, all) {
             this[property] = {
