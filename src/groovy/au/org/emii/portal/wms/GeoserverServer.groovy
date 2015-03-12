@@ -13,10 +13,10 @@ import au.org.emii.portal.proxying.ExternalRequest
 import groovy.xml.MarkupBuilder
 
 class GeoserverServer extends WmsServer {
-    def dynamicFilters
+    def filterSource
 
-    GeoserverServer(dynamicFilters) {
-        this.dynamicFilters = dynamicFilters
+    GeoserverServer(filterSource) {
+        this.filterSource = filterSource
     }
 
     def getStyles(server, layer) {
@@ -48,16 +48,23 @@ class GeoserverServer extends WmsServer {
     }
 
     def _getFiltersXml(server, layer) {
-        if (dynamicFilters) {
-            //return _getFiltersXmlFromGeoserver(server, layer)
-            return _getFiltersXmlFromFile(server, layer)
-        }
-        else {
-            return _getFiltersXmlFromDatabase(server, layer)
+
+        switch (filterSource) {
+            case 'database':
+                return _getFiltersXmlFromDatabase(server, layer)
+
+            case 'geoserver':
+                return _getFiltersXmlFromGeoserver(server, layer)
+
+            case 'file':
+                return _getFiltersXmlFromFile(layer)
+
+            default :
+                throw new Exception("Unsupported filter source: '$filterSource'")
         }
     }
 
-    def _getFiltersXmlFromFile(server, layer) {
+    def _getFiltersXmlFromFile(layer) {
         def workspaceName = getLayerWorkspace(layer)
         def layerName = getLayerName(layer)
         def inputFile = new File("filters/${workspaceName}/${layerName}/filters.xml")
@@ -111,16 +118,23 @@ class GeoserverServer extends WmsServer {
     }
 
     def _getFilterValuesXml(server, layer, filter) {
-        if (dynamicFilters) {
-            // return _getFilterValuesXmlFromGeoserver(server, layer, filter)
-            return _getFilterValuesXmlFromFile(server, layer, filter)
-        }
-        else {
-            return _getFilterValuesXmlFromDatabase(server, layer, filter)
+
+        switch (filterSource) {
+            case 'database':
+                return _getFilterValuesXmlFromDatabase(server, layer, filter)
+
+            case 'geoserver':
+                return _getFilterValuesXmlFromGeoserver(server, layer, filter)
+
+            case 'file':
+                return _getFilterValuesXmlFromFile(layer, filter)
+
+            default :
+                throw new Exception("Unsupported filter source: '$filterSource'")
         }
     }
 
-    def _getFilterValuesXmlFromFile(server, layer, filter) {
+    def _getFilterValuesXmlFromFile(layer, filter) {
         def workspaceName = getLayerWorkspace(layer)
         def layerName = getLayerName(layer)
         def inputFile = new File("filters/${workspaceName}/${layerName}/${filter}.xml")
@@ -148,14 +162,9 @@ class GeoserverServer extends WmsServer {
 
         builder.'uniqueValues' {
             filter.possibleValues.each {
-
                 'value' it
             }
         }
-
-        println "-----------------------------------------------"
-        println "xmlOutput = $xmlOutput"
-        println "-----------------------------------------------"
 
         return xmlOutput.toString()
     }
