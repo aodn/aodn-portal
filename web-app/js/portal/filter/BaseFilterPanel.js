@@ -33,6 +33,25 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
         Portal.filter.BaseFilterPanel.superclass.initComponent.call(this);
     },
 
+    setLayerAndFilter: function(layer, filter) {
+        this.filter = filter;
+        this.layer = layer;
+        this._createField();
+        this._setExistingFilters();
+    },
+
+    isVisualised: function() {
+        return this.filter.getVisualised();
+    },
+
+    hasValue: function() {
+        return this.layer.filterData != undefined;
+    },
+
+    _fireAddEvent: function() {
+        this.fireEvent('addFilter', this);
+    },
+
     /**
        You must implement this method in subclass.
 
@@ -42,19 +61,8 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     _createField: function() {
     },
 
-    setLayerAndFilter: function(layer, filter) {
-        this.filter = filter;
-        this.layer = layer;
-        this._createField();
-        this._setExistingFilters();
-    },
-
     getFilterData: function() {
         throw "subclasses must override this function";
-    },
-
-    isVisualised: function() {
-        return this.filter.getVisualised();
     },
 
     /**
@@ -64,14 +72,6 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
        In this method, implement actions like clearing a textfield, reset values.
     **/
     handleRemoveFilter: function() {
-    },
-
-    hasValue: function() {
-        return this.layer.filterData != undefined;
-    },
-
-    _fireAddEvent: function() {
-        this.fireEvent('addFilter', this);
     },
 
     _setExistingFilters: function() {
