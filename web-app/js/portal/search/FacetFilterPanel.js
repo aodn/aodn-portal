@@ -127,7 +127,9 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
 
     _addDrilldownFilters: function() {
         Ext.each(this._getDrilldownPanels(), function(drilldownPanel) {
-            this.searcher.addDrilldownFilter(drilldownPanel.getDrilldownPath());
+            if (drilldownPanel.hasDrilldown()) {
+                this.searcher.addDrilldownFilter(drilldownPanel.getDrilldownPath());
+            }
         }, this);
     },
 
