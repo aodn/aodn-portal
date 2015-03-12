@@ -128,7 +128,7 @@ openId {
 }
 
 featureToggles {
-    dynamicGeoserverFilters = false
+    filterSource = 'database' // Todo - DN: This can go back to being a boolean when we've removed loading filters from the DB
 }
 
 // Google Analytics
