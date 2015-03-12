@@ -54,6 +54,34 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         );
     },
 
+    getFilterData: function() {
+
+        return {
+            name: this.filter.getName(),
+            visualised: this.isVisualised(),
+            cql: this.getCQL(),
+            humanValue: this._getHumanValue()
+        }
+    },
+
+    handleRemoveFilter: function() {
+        this.combo.clearValue();
+    },
+
+    _setExistingFilters: function() {
+        this.re = new RegExp(this.filter.getName() + " LIKE '(.*?)'");
+
+        var m = this.re.exec(this.layer.getDownloadFilter());
+
+        if (m != null && m.length == 2) {
+            this.combo.setValue(m[1]);
+        }
+    },
+
+    needsFilterRange: function() {
+        return true;
+    },
+
     validateValue: function(value) {
 
         if (value != "") {
@@ -80,16 +108,6 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         return undefined;
     },
 
-    getFilterData: function() {
-
-        return {
-            name: this.filter.getName(),
-            visualised: this.isVisualised(),
-            cql: this.getCQL(),
-            humanValue: this._getHumanValue()
-        }
-    },
-
     _getHumanValue: function() {
         var componentValue = this._escapeSingleQuotes(this.combo.getValue());
         if (componentValue != "") {
@@ -110,24 +128,6 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             trackFiltersUsage('filtersTrackingComboAction', val, this.layer.name);
         }
         this._fireAddEvent();
-    },
-
-    handleRemoveFilter: function() {
-        this.combo.clearValue();
-    },
-
-    _setExistingFilters: function() {
-        this.re = new RegExp(this.filter.getName() + " LIKE '(.*?)'");
-
-        var m = this.re.exec(this.layer.getDownloadFilter());
-
-        if (m != null && m.length == 2) {
-            this.combo.setValue(m[1]);
-        }
-    },
-
-    needsFilterRange: function() {
-        return true;
     },
 
     setFilterRange: function(range) {
