@@ -53,11 +53,6 @@ describe("Portal.filter.BooleanFilterPanel", function() {
         });
     });
 
-    it('_setExistingFilters should not set checked for empty CQL filter', function() {
-        booleanFilter._setExistingFilters();
-        expect(booleanFilter.checkbox.setValue).not.toHaveBeenCalled();
-    });
-
     it('tracking on booleanFilter click', function() {
         booleanFilter._buttonChecked();
         expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Boolean", "testLabel=false", "test layer");

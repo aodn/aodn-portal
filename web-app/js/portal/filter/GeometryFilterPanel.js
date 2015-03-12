@@ -73,10 +73,6 @@ Portal.filter.GeometryFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingValueCleared'));
     },
 
-    _setExistingFilters: function() {
-        // Never restored from an existing filter
-    },
-
     needsFilterRange: function() {
         return false;
     },

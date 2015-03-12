@@ -37,7 +37,6 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
         this.filter = filter;
         this.layer = layer;
         this._createField();
-        this._setExistingFilters();
     },
 
     isVisualised: function() {
@@ -72,9 +71,6 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
        In this method, implement actions like clearing a textfield, reset values.
     **/
     handleRemoveFilter: function() {
-    },
-
-    _setExistingFilters: function() {
     },
 
     needsFilterRange: function() {

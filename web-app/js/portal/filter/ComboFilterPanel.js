@@ -68,16 +68,6 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.combo.clearValue();
     },
 
-    _setExistingFilters: function() {
-        this.re = new RegExp(this.filter.getName() + " LIKE '(.*?)'");
-
-        var m = this.re.exec(this.layer.getDownloadFilter());
-
-        if (m != null && m.length == 2) {
-            this.combo.setValue(m[1]);
-        }
-    },
-
     needsFilterRange: function() {
         return true;
     },
