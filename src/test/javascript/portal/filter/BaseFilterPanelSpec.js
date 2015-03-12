@@ -67,6 +67,8 @@ describe("Portal.filter.BaseFilterPanel", function() {
 
         var buildFilterWithVisualised = function(isVisualised) {
 
+            spyOn(Portal.filter.BaseFilterPanel.prototype, '_createField');
+
             return new Portal.filter.BaseFilterPanel({
                 layer: {},
                 filter: {
