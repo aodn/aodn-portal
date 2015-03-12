@@ -36,11 +36,6 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.add(this.checkbox);
     },
 
-    getFilterName: function() {
-        // No titles for booleans
-        return null;
-    },
-
     _formatBoxLabel: function() {
         return this.filter.getDisplayLabel();
     },
@@ -63,7 +58,7 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     _getCQLHumanValue: function() {
         if (this.checkbox.getValue()) {
-            return this.getFilterNameAsTitleCase() + " = true";
+            return this.filter.getDisplayLabel() + " = true";
         }
         else {
             return undefined;

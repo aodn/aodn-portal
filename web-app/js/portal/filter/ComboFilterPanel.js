@@ -18,6 +18,10 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _createField: function() {
+        this.add(new Ext.form.Label({
+            html: "<label>" + this.filter.getDisplayLabel() + "</label>"
+        }));
+
         this.combo = new Ext.form.ComboBox({
             disabled: true,
             triggerAction: 'all',
@@ -40,8 +44,8 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
                 valid: this._onSelected
             }
         });
-
         this.add(this.combo);
+
         this.add(
             new Ext.Spacer({
                 cls: 'block',
