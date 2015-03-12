@@ -52,33 +52,31 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     /**
-       You must implement this method in subclass.
-
        This method generates all the component fields required for this filter to work, e.g. textfields, buttons, etc.
        Note that the "x" button is created in the filterGroupPanel. See also handleRemoveFilter.
     **/
     _createField: function() {
+        throw "Subclasses must implement the _createField function";
     },
 
     getFilterData: function() {
-        throw "subclasses must override this function";
+        throw "Subclasses must implement the getFilterData function";
     },
 
     /**
-       You must implement this method in subclass.
-
        This is called whenever the "x" button next to a field has been clicked, i.e. clearing/removing a filter.
        In this method, implement actions like clearing a textfield, reset values.
     **/
     handleRemoveFilter: function() {
+        throw "Subclasses must implement the handleRemoveFilter function";
     },
 
     needsFilterRange: function() {
-        throw "must implement this function";
+        throw "Subclasses must implement the needsFilterRange function";
     },
 
     setFilterRange: function() {
-        throw "must override this function if needs filterRange returns true";
+        throw "Subclasses must implement the setFilterRange function if needsFilterRange() returns true";
     }
 });
 
