@@ -51,16 +51,6 @@ Portal.filter.BooleanFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.checkbox.setValue(false);
     },
 
-    _setExistingFilters: function() {
-        this.re = new RegExp(this.filter.getName() + " = (.*?)( |$)");
-
-        var m = this.re.exec(this.layer.getDownloadFilter());
-
-        if (m && m[1] && m[1] === "true") {
-            this.checkbox.setValue(true);
-        }
-    },
-
     needsFilterRange: function() {
         return false;
     },

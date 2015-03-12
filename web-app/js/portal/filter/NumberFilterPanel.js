@@ -104,37 +104,6 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.secondField.setVisible(false);
     },
 
-    _setExistingFilters: function() {
-
-        var name = this.filter.name;
-        var num = "([+-]?\\d+(\\.\\d+)?)";
-
-        this.re = new RegExp(name + " ((>|>=|=|<>|<|<=) " + num + "|BETWEEN " + num + " AND " + num + ")");
-
-        var matches = this.re.exec(this.layer.getDownloadFilter());
-
-        if (matches != null && matches.length == 9) {
-
-            var singleValOperator = matches[2];
-            var singleValValue = matches[3];
-            var betweenValue1 = matches[5];
-            var betweenValue2 = matches[7];
-
-            if (singleValOperator != null && singleValValue != null) {
-
-                this.operators.setValue(singleValOperator);
-                this.firstField.setValue(singleValValue);
-            }
-            else if (betweenValue1 != null && betweenValue2 != null) {
-
-                this.operators.setValue('BETWEEN');
-                this.firstField.setValue(betweenValue1);
-                this.secondField.setValue(betweenValue2);
-                this.secondField.setVisible(true);
-            }
-        }
-    },
-
     needsFilterRange: function() {
         return false
     },

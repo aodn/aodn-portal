@@ -59,32 +59,6 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.toDate.setMinValue(new Date(0));
     },
 
-    _setExistingFilters: function() {
-        var beforePattern = this.filter.name + " <= '(.*?)'( |$)";
-        var afterPattern = this.filter.name + " >= '(.*?)'( |$)";
-
-        var betweenRe = new RegExp(afterPattern + "AND " + beforePattern);
-        var beforeRe = new RegExp(beforePattern);
-        var afterRe = new RegExp(afterPattern);
-
-        var m = beforeRe.exec(this.layer.getDownloadFilter());
-        var m2 = afterRe.exec(this.layer.getDownloadFilter());
-        var between = betweenRe.exec(this.layer.getDownloadFilter());
-
-        if (between != null && between.length == 5) {
-            this.fromDate.setValue(this.TIME_UTIL._parseIso8601Date(between[1]));
-            this.toDate.setValue(this.TIME_UTIL._parseIso8601Date(between[3]));
-        }
-        else {
-            if (m != null && m.length == 3) {
-                this.fromDate.setValue(this.TIME_UTIL._parseIso8601Date(m[1]));
-            }
-            else if (m2 != null && m2.length == 3) {
-                this.fromDate.setValue(this.TIME_UTIL._parseIso8601Date(m2[1]));
-            }
-        }
-    },
-
     needsFilterRange: function() {
         return false;
     },
