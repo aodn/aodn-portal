@@ -214,7 +214,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         var removeFilterSpy = jasmine.createSpy('handleRemoveFilter');
 
-        var _mockFilterPanel = function(name) {
+        var _mockFilterPanel = function() {
 
             return {
                 handleRemoveFilter: removeFilterSpy
@@ -278,6 +278,44 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
                 expect(filterGroupPanel._getVisualisationCQLFilters(filterDescriptorData)).toEqual('pardon my French');
             });
+        });
+    });
+
+    describe('_organiseFilterPanels', function() {
+
+        var filterPanels;
+        var numGroupsExpected = 3;
+        var numComponentsPerGroup = 2;
+
+        beforeEach(function() {
+            spyOn(Portal.filter.NumberFilterPanel.prototype, '_setExistingFilters');
+            spyOn(Portal.filter.NumberFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.DateFilterPanel.prototype, '_setExistingFilters');
+            spyOn(Portal.filter.DateFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ComboFilterPanel.prototype, '_setExistingFilters');
+            spyOn(Portal.filter.ComboFilterPanel.prototype, '_createField');
+
+            filterPanels = [
+                new Portal.filter.DateFilterPanel(),
+                new Portal.filter.ComboFilterPanel(),
+                new Portal.filter.ComboFilterPanel(),
+                new Portal.filter.NumberFilterPanel(),
+                new Portal.filter.NumberFilterPanel()
+            ];
+
+            spyOn(filterGroupPanel, '_createGroupContainer').andCallThrough();
+            spyOn(filterGroupPanel, '_createFilterGroupHeading').andCallThrough();
+            spyOn(filterGroupPanel, '_createVerticalSpacer');
+            spyOn(filterGroupPanel, 'add');
+
+            filterGroupPanel._organiseFilterPanels(filterPanels);
+        });
+
+        it('creates a new groups as required', function() {
+
+            expect(filterGroupPanel._createFilterGroupHeading.callCount).toBe(numGroupsExpected);
+            expect(filterGroupPanel._createVerticalSpacer.callCount).toBe(numGroupsExpected);
+            expect(filterGroupPanel.add.callCount).toBe(numGroupsExpected * numComponentsPerGroup);
         });
     });
 });

@@ -45,12 +45,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         })
     },
 
-    _createFilterLabel: function(labelText) {
-        return new Ext.form.Label({
-            html: "<label>" + labelText + "</label>"
-        });
-    },
-
     _createFilterGroupHeading: function(headerText) {
         return new Ext.Container({
             html: "<h4>" + headerText + "</h4>"
@@ -117,6 +111,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
     _filtersLoaded: function(filters) {
 
         var filterPanels = [];
+        var filterService  = new Portal.filter.FilterService();
 
         Ext.each(filters, function(filter) {
 
@@ -126,8 +121,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
             if (filterPanel.needsFilterRange()) {
 
-                var filterService  = new Portal.filter.FilterService();
-
                 filterService.loadFilterRange(filter.getName(), this.layer, function(filterRange) {
                     this._filterRangeLoaded(filterRange, filterPanel)
                 }, this);
@@ -136,6 +129,8 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         }, this);
 
         this.filterPanels = this._sortPanels(filterPanels);
+
+        this._organiseFilterPanels(filterPanels);
 
         if (this.filterPanels.length > 0) {
             this._updateAndShow();
@@ -201,46 +196,46 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _createFilterPanel: function(filter) {
 
-        var layer  = this.layer;
         var newFilterPanel = Portal.filter.BaseFilterPanel.newFilterPanelFor({
             filter: filter,
-            layer: layer
+            layer: this.layer
         });
 
-        if (newFilterPanel) {
-            this.relayEvents(newFilterPanel, ['addFilter']);
-            this._createNewGroupContainer(filter, newFilterPanel);
+        this.relayEvents(newFilterPanel, ['addFilter']);
 
-             this.currentGroupContainer.add(newFilterPanel);
-
-            return newFilterPanel;
-        }
+        return newFilterPanel;
     },
 
-    _createNewGroupContainer: function(filter, filterPanel) {
+    _organiseFilterPanels: function(panels) {
 
-        if (filterPanel.typeLabel != this.currentFilterTypeLabel) {
-            var heading = this._createFilterGroupHeading(filterPanel.typeLabel);
+        var currentType;
+        var currentContainer;
 
-            this.currentFilterTypeLabel = filterPanel.typeLabel;
+        Ext.each(panels, function(panel) {
 
-            this.currentGroupContainer = this._createGroupContainer();
-            this.currentGroupContainer.add(heading);
-            this.add(this.currentGroupContainer);
-        }
-        else {
-            // add spacer if filter type has changed
-            this._addFilterTypeSpacer(filter);
-        }
+            if (panel.constructor != currentType) {
 
-        this.currentFilterType = filter.getType();
+                currentType = panel.constructor;
+
+                currentContainer = this._includeNewGroupContainer(panel);
+            }
+
+            currentContainer.add(panel);
+        }, this);
     },
 
-    _addFilterTypeSpacer: function(filter) {
+    _includeNewGroupContainer: function(panel) {
 
-        if (this.currentFilterType != filter.getType()) {
-            this.currentGroupContainer.add(this._createVerticalSpacer(15));
-        }
+        var groupContainer = this._createGroupContainer();
+        this.add(groupContainer);
+
+        var heading = this._createFilterGroupHeading(panel.typeLabel);
+        groupContainer.add(heading);
+
+        var spacer = this._createVerticalSpacer(15);
+        this.add(spacer);
+
+        return groupContainer;
     },
 
     _updateAndShow: function() {
@@ -266,11 +261,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         if (this._isDisplayed()) {
             this.doLayout();
         }
-    },
-
-    _hide: function(hideFunction, hideFunctionTarget) {
-
-        hideFunction.call(hideFunctionTarget, this);
     },
 
     _updateLayerFilters: function() {
