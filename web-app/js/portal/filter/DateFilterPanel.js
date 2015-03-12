@@ -34,7 +34,6 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.add(this.fromDate);
         this._addVerticalSpacer(5);
         this.add(this.toDate);
-        this._addVerticalSpacer(15);
 
         if (this.filter.values != undefined) {
             this._setMinMax(this.fromDate, this.filter.values);
