@@ -141,9 +141,6 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         this.combo.clearValue();
         this.combo.getStore().loadData(data);
-    },
-
-    enableFilterPanel: function() {
         this.combo.enable();
     },
 
