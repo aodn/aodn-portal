@@ -284,7 +284,8 @@ describe("Portal.filter.FilterGroupPanel", function() {
     describe('_organiseFilterPanels', function() {
 
         var filterPanels;
-        var numGroupsExpected = 3;
+        var numGroups = 3;
+        var numHeadings = numGroups - 1; // Number filters won't have a heading
         var numComponentsPerGroup = 2;
 
         beforeEach(function() {
@@ -292,13 +293,13 @@ describe("Portal.filter.FilterGroupPanel", function() {
             spyOn(Portal.filter.NumberFilterPanel.prototype, '_createField');
             spyOn(Portal.filter.DateFilterPanel.prototype, '_setExistingFilters');
             spyOn(Portal.filter.DateFilterPanel.prototype, '_createField');
-            spyOn(Portal.filter.ComboFilterPanel.prototype, '_setExistingFilters');
-            spyOn(Portal.filter.ComboFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.BooleanFilterPanel.prototype, '_setExistingFilters');
+            spyOn(Portal.filter.BooleanFilterPanel.prototype, '_createField');
 
             filterPanels = [
                 new Portal.filter.DateFilterPanel(),
-                new Portal.filter.ComboFilterPanel(),
-                new Portal.filter.ComboFilterPanel(),
+                new Portal.filter.BooleanFilterPanel(),
+                new Portal.filter.BooleanFilterPanel(),
                 new Portal.filter.NumberFilterPanel(),
                 new Portal.filter.NumberFilterPanel()
             ];
@@ -313,9 +314,9 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         it('creates a new groups as required', function() {
 
-            expect(filterGroupPanel._createFilterGroupHeading.callCount).toBe(numGroupsExpected);
-            expect(filterGroupPanel._createVerticalSpacer.callCount).toBe(numGroupsExpected);
-            expect(filterGroupPanel.add.callCount).toBe(numGroupsExpected * numComponentsPerGroup);
+            expect(filterGroupPanel._createFilterGroupHeading.callCount).toBe(numHeadings);
+            expect(filterGroupPanel._createVerticalSpacer.callCount).toBe(numGroups);
+            expect(filterGroupPanel.add.callCount).toBe(numGroups * numComponentsPerGroup);
         });
     });
 });

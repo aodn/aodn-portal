@@ -229,8 +229,10 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         var groupContainer = this._createGroupContainer();
         this.add(groupContainer);
 
-        var heading = this._createFilterGroupHeading(panel.typeLabel);
-        groupContainer.add(heading);
+        if (panel.typeLabel != '') {
+            var heading = this._createFilterGroupHeading(panel.typeLabel);
+            groupContainer.add(heading);
+        }
 
         var spacer = this._createVerticalSpacer(15);
         this.add(spacer);
