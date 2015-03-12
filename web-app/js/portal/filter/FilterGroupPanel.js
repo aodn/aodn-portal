@@ -142,7 +142,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _filterRangeLoaded: function(filterRange, filterPanel) {
 
-        filterPanel.enableFilterPanel();
         filterPanel.setFilterRange(filterRange);
     },
 

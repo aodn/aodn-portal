@@ -18,7 +18,7 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
         var config = Ext.apply({
             typeLabel: '',
             listeners: {
-                beforeremove: function(panel, component) {
+                beforeremove: function() {
                     this.removeAll(true);
                 }
             }
@@ -28,7 +28,7 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
         this.setLayerAndFilter(cfg.layer, cfg.filter);
     },
 
-    initComponent: function(cfg) {
+    initComponent: function() {
         this.addEvents('addFilter');
         Portal.filter.BaseFilterPanel.superclass.initComponent.call(this);
     },
@@ -79,10 +79,6 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
 
     needsFilterRange: function() {
         throw "must implement this function";
-    },
-
-    enableFilterPanel: function() {
-        throw "must implement this function if needs filterRange returns true";
     },
 
     setFilterRange: function() {
