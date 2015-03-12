@@ -63,11 +63,6 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         });
     },
 
-    getFilterName: function() {
-        // No titles for DateFilter
-        return null;
-    },
-
     _setMinMax: function(resettableDate, vals) {
         resettableDate.setMinValue(this.TIME_UTIL._parseIso8601Date(vals[0]));
 

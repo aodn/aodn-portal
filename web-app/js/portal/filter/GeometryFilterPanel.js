@@ -55,10 +55,6 @@ Portal.filter.GeometryFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         return this.geometry != undefined;
     },
 
-    getFilterName: function() {
-        return undefined;
-    },
-
     setLayerAndFilter: function(layer, filter) {
         Portal.filter.GeometryFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
         if (layer.map.spatialConstraintControl) {

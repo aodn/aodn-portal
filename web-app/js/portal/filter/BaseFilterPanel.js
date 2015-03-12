@@ -50,16 +50,8 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
         this._setExistingFilters();
     },
 
-    getFilterNameAsTitleCase: function() {
-        return this.filter.getDisplayLabel();
-    },
-
     getFilterData: function() {
         throw "subclasses must override this function";
-    },
-
-    getFilterName: function() {
-        return this.filter.getName();
     },
 
     isVisualised: function() {

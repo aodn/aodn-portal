@@ -24,6 +24,9 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _createField: function() {
+        var label = new Ext.form.Label({
+            html: "<label>" + this.filter.getDisplayLabel() + "</label>"
+        });
 
         this.operators = new Ext.form.ComboBox({
             triggerAction: 'all',
@@ -76,6 +79,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             }
         });
 
+        this.add(label);
         this.add(this.operators);
         this.add(this.firstField);
         this.add(this.secondField);

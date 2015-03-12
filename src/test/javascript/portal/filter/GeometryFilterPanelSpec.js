@@ -29,14 +29,6 @@ describe("Portal.filter.GeometryFilterPanel", function() {
         spyOn(window, 'trackUsage');
     });
 
-    it('filter name should be undefined', function() {
-        filterPanel.filter = {
-            getName: function() { return 'this name should be ignored' }
-        };
-
-        expect(filterPanel.getFilterName()).toEqual(undefined);
-    });
-
     it("isVisualised() should return false", function() {
         expect(filterPanel.isVisualised()).toBe(false);
     });
