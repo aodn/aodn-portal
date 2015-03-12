@@ -107,13 +107,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         return active;
     },
 
-    _addLabelToFilterPanel: function(filter) {
-
-        var labelText = filter.getDisplayLabel();
-        var label = this._createFilterLabel(labelText);
-        this.currentGroupContainer.add(label);
-    },
-
     _initWithLayer: function() {
 
         var filterService = new Portal.filter.FilterService();
@@ -218,10 +211,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
             this.relayEvents(newFilterPanel, ['addFilter']);
             this._createNewGroupContainer(filter, newFilterPanel);
 
-            if (newFilterPanel.getFilterName()) {
-                this._addLabelToFilterPanel(filter);
-            }
-            this.currentGroupContainer.add(newFilterPanel);
+             this.currentGroupContainer.add(newFilterPanel);
 
             return newFilterPanel;
         }

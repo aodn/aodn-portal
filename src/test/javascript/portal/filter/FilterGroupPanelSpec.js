@@ -81,6 +81,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             spyOn(Portal.filter.BooleanFilterPanel.prototype, '_createField');
             spyOn(Portal.filter.BooleanFilterPanel.prototype, '_setExistingFilters');
             spyOn(Portal.filter.NumberFilterPanel.prototype, '_setExistingFilters');
+            spyOn(Portal.filter.NumberFilterPanel.prototype, 'setLayerAndFilter');
             spyOn(Portal.filter.GeometryFilterPanel.prototype, '_createField');
             spyOn(Portal.filter.GeometryFilterPanel.prototype, 'setLayerAndFilter');
             spyOn(Portal.filter.DateFilterPanel.prototype, '_setExistingFilters');
