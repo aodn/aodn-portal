@@ -642,10 +642,11 @@ class LayerController {
     }
 
     def getStylesAsJSON = {
-        if (hostVerifier.allowedHost(params.server)) {
-            def server = params.server
-            def layer = params.layer
-            def serverObject = _getServerClass(params.serverType)
+
+        def (server, layer, serverType) = parseParams(params)
+
+        if (hostVerifier.allowedHost(server)) {
+            def serverObject = _getServerClass(serverType)
 
             render text: serverObject.getStyles(server, layer) as JSON
         }
@@ -655,11 +656,11 @@ class LayerController {
     }
 
     def getFilterValuesAsJSON = {
-        if (hostVerifier.allowedHost(params.server)) {
-            def server = params.server
-            def layer = params.layer
-            def filter = params.filter
-            def serverObject = _getServerClass(params.serverType)
+
+        def (server, layer, serverType, filter) = parseParams(params)
+
+        if (hostVerifier.allowedHost(server)) {
+            def serverObject = _getServerClass(serverType)
 
             render text: serverObject.getFilterValues(server, layer, filter) as JSON
         }
@@ -669,16 +670,22 @@ class LayerController {
     }
 
     def getFiltersAsJSON = {
-        if (hostVerifier.allowedHost(params.server)) {
-            def server = params.server
-            def layer = params.layer
-            def serverObject = _getServerClass(params.serverType)
+
+        def (server, layer, serverType) = parseParams(params)
+
+        if (hostVerifier.allowedHost(server)) {
+            def serverObject = _getServerClass(serverType)
 
             render text: serverObject.getFilters(server, layer) as JSON
         }
         else {
             render text: "Host '$params.server' not allowed"
         }
+    }
+
+    def parseParams(params) {
+
+        [params.server, params.layer, params.serverType, params.filter]
     }
 
     def editFilters = {
