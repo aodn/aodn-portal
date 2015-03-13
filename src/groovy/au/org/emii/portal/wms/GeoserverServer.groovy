@@ -36,7 +36,9 @@ class GeoserverServer extends WmsServer {
                     label: filter.label.text(),
                     type: filter.type.text(),
                     name: filter.name.text(),
-                    visualised: Boolean.valueOf(filter.visualised.text())
+                    visualised: Boolean.valueOf(filter.visualised.text()),
+                    wmsStartDateName: filter.wmsStartDateName.text(),
+                    wmsEndDateName: filter.wmsEndDateName.text()
                 ])
             }
         }
@@ -95,6 +97,8 @@ class GeoserverServer extends WmsServer {
                     'name' currentFilter.name
                     'type' currentFilter.type
                     'visualised' !currentFilter.downloadOnly
+                    'wmsStartDateName' currentFilter.wmsStartDateName
+                    'wmsEndDateName' currentFilter.wmsEndDateName
                 }
             }
         }
