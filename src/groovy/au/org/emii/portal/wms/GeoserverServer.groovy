@@ -152,8 +152,6 @@ class GeoserverServer extends WmsServer {
 
     def _getFilterValuesXmlFromDatabase(serverAddress, fullLayerName, filterName) {
 
-        println "filterName = $filterName"
-
         def filters = _filtersForLayer(serverAddress, fullLayerName)
         def filter = filters.find{ it.name == filterName }
 
