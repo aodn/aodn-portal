@@ -661,8 +661,6 @@ class LayerController {
             def filter = params.filter
             def serverObject = _getServerClass(params.serverType)
 
-            Thread.sleep(2000 + new Random().nextInt(3000));
-
             render text: serverObject.getFilterValues(server, layer, filter) as JSON
         }
         else {
