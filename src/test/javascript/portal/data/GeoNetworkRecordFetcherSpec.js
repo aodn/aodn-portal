@@ -47,8 +47,10 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
         };
         var record = {};
         spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'loadData');
+        spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'getCount').andReturn(1);
         spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'getAt').andReturn(record);
         spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'add');
+
         spyOn(Ext.Ajax, 'request').andCallFake(
             function(params) {
                 params.success.call(fetcher, response);
