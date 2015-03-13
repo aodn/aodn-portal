@@ -15,6 +15,8 @@ Portal.filter.Filter = Ext.extend(Object, {
         this.displayLabel = filterDetail.label;
         this.type = filterDetail.type;
         this.visualised = filterDetail.visualised;
+        this.wmsStartDateName = filterDetail.wmsStartDateName;
+        this.wmsEndDateName = filterDetail.wmsEndDateName;
     },
 
     setValue: function(value) {
@@ -45,5 +47,15 @@ Portal.filter.Filter = Ext.extend(Object, {
     getVisualised: function() {
 
         return this.visualised;
+    },
+
+    getWmsStartDateName: function() {
+
+        return this.wmsStartDateName;
+    },
+
+    getWmsEndDateName: function() {
+
+        return this.wmsEndDateName;
     }
 });

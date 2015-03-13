@@ -169,7 +169,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         return cql;
     },
 
-    _getValidName: function(filterName,wmsAttribName) {
+    _getValidName: function(filterName, wmsAttribName) {
 
         if (filterName) {
             return filterName;
@@ -185,7 +185,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         var name = "";
 
         if (this._isFromFieldUsed()) {
-            name = this._getValidName(filterName,this.filter.wmsEndDateName);
+            name = this._getValidName(filterName, this.filter.wmsEndDateName);
             cql = String.format("{0} >= '{1}'", name , this._getDateString(this.fromDate));
         }
 
@@ -194,7 +194,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
 
         if (this._isToFieldUsed()) {
-            name = this._getValidName(filterName,this.filter.wmsStartDateName);
+            name = this._getValidName(filterName, this.filter.wmsStartDateName);
             cql += String.format("{0} <= '{1}'", name, this._getDateString(this.toDate));
         }
 

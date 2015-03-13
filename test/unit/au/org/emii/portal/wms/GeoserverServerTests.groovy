@@ -28,6 +28,8 @@ class GeoserverServerTests extends GrailsUnitTestCase {
     <name>TIME</name>
     <type>DateRange</type>
     <visualised>true</visualised>
+    <wmsStartDateName>time_start</wmsStartDateName>
+    <wmsEndDateName>time_end</wmsEndDateName>
   </filter>
   <filter>
     <label>deployment_code</label>
@@ -98,19 +100,25 @@ class GeoserverServerTests extends GrailsUnitTestCase {
                 label: "Date (UTC)",
                 type: "DateRange",
                 name: "TIME",
-                visualised: true
+                visualised: true,
+                wmsStartDateName: 'time_start',
+                wmsEndDateName: 'time_end'
             ],
             [
                 label: "deployment_code",
                 type: "String",
                 name: "deployment_code",
-                visualised: true
+                visualised: true,
+                wmsStartDateName: '',
+                wmsEndDateName: ''
             ],
             [
                 label: "geom",
                 type: "BoundingBox",
                 name: "geom",
-                visualised: true
+                visualised: true,
+                wmsStartDateName: '',
+                wmsEndDateName: ''
             ]
         ]
 
