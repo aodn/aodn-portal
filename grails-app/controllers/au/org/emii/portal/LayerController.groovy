@@ -648,10 +648,10 @@ class LayerController {
         if (hostVerifier.allowedHost(server)) {
             def serverObject = _getServerClass(serverType)
 
-            render text: serverObject.getStyles(server, layer) as JSON
+            render serverObject.getStyles(server, layer) as JSON
         }
         else {
-            render text: "Host '$params.server' not allowed"
+            render text: "Host '$params.server' not allowed", status: 502
         }
     }
 
@@ -662,10 +662,10 @@ class LayerController {
         if (hostVerifier.allowedHost(server)) {
             def serverObject = _getServerClass(serverType)
 
-            render text: serverObject.getFilterValues(server, layer, filter) as JSON
+            render serverObject.getFilterValues(server, layer, filter) as JSON
         }
         else {
-            render text: "Host '$params.server' not allowed"
+            render text: "Host '$params.server' not allowed", status: 502
         }
     }
 
@@ -676,10 +676,10 @@ class LayerController {
         if (hostVerifier.allowedHost(server)) {
             def serverObject = _getServerClass(serverType)
 
-            render text: serverObject.getFilters(server, layer) as JSON
+            render serverObject.getFilters(server, layer) as JSON
         }
         else {
-            render text: "Host '$params.server' not allowed"
+            render text: "Host '$params.server' not allowed", status: 502
         }
     }
 
