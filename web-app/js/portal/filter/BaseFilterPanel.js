@@ -18,7 +18,7 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
         var config = Ext.apply({
             typeLabel: '',
             listeners: {
-                beforeremove: function(panel, component) {
+                beforeremove: function() {
                     this.removeAll(true);
                 }
             }
@@ -28,42 +28,19 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
         this.setLayerAndFilter(cfg.layer, cfg.filter);
     },
 
-    initComponent: function(cfg) {
+    initComponent: function() {
         this.addEvents('addFilter');
         Portal.filter.BaseFilterPanel.superclass.initComponent.call(this);
-    },
-
-    /**
-       You must implement this method in subclass.
-
-       This method generates all the component fields required for this filter to work, e.g. textfields, buttons, etc.
-       Note that the "x" button is created in the filterGroupPanel. See also handleRemoveFilter.
-    **/
-    _createField: function() {
     },
 
     setLayerAndFilter: function(layer, filter) {
         this.filter = filter;
         this.layer = layer;
         this._createField();
-        this._setExistingFilters();
-    },
-
-    getFilterData: function() {
-        throw "subclasses must override this function";
     },
 
     isVisualised: function() {
         return this.filter.getVisualised();
-    },
-
-    /**
-       You must implement this method in subclass.
-
-       This is called whenever the "x" button next to a field has been clicked, i.e. clearing/removing a filter.
-       In this method, implement actions like clearing a textfield, reset values.
-    **/
-    handleRemoveFilter: function() {
     },
 
     hasValue: function() {
@@ -74,19 +51,32 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
         this.fireEvent('addFilter', this);
     },
 
-    _setExistingFilters: function() {
+    /**
+       This method generates all the component fields required for this filter to work, e.g. textfields, buttons, etc.
+       Note that the "x" button is created in the filterGroupPanel. See also handleRemoveFilter.
+    **/
+    _createField: function() {
+        throw "Subclasses must implement the _createField function";
+    },
+
+    getFilterData: function() {
+        throw "Subclasses must implement the getFilterData function";
+    },
+
+    /**
+       This is called whenever the "x" button next to a field has been clicked, i.e. clearing/removing a filter.
+       In this method, implement actions like clearing a textfield, reset values.
+    **/
+    handleRemoveFilter: function() {
+        throw "Subclasses must implement the handleRemoveFilter function";
     },
 
     needsFilterRange: function() {
-        throw "must implement this function";
-    },
-
-    enableFilterPanel: function() {
-        throw "must implement this function if needs filterRange returns true";
+        throw "Subclasses must implement the needsFilterRange function";
     },
 
     setFilterRange: function() {
-        throw "must override this function if needs filterRange returns true";
+        throw "Subclasses must implement the setFilterRange function if needsFilterRange() returns true";
     }
 });
 

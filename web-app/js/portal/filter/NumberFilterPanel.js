@@ -87,6 +87,27 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         // Idea: show max/min values from this.filter.possibleValues
     },
 
+    getFilterData: function() {
+
+        return {
+            name: this.filter.name,
+            visualised: this.isVisualised(),
+            cql: this.getCQL(),
+            humanValue: this._getCQLHumanValue()
+        }
+    },
+
+    handleRemoveFilter: function() {
+        this.operators.clearValue();
+        this.firstField.reset();
+        this.secondField.reset();
+        this.secondField.setVisible(false);
+    },
+
+    needsFilterRange: function() {
+        return false
+    },
+
     getCQL: function() {
 
         if (this.firstField.getValue()) {
@@ -117,16 +138,6 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         }
 
         return undefined;
-    },
-
-    getFilterData: function() {
-
-        return {
-            name: this.filter.name,
-            visualised: this.isVisualised(),
-            cql: this.getCQL(),
-            humanValue: this._getCQLHumanValue()
-        }
     },
 
     _onSpecialKeyPressed: function(field, e) {
@@ -199,43 +210,5 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     _operatorIsNone: function() {
         return this.operators.getValue() == "0";
-    },
-
-    handleRemoveFilter: function() {
-        this.operators.clearValue();
-        this.firstField.reset();
-        this.secondField.reset();
-        this.secondField.setVisible(false);
-    },
-
-    _setExistingFilters: function() {
-
-        var name = this.filter.name;
-        var num = "([+-]?\\d+(\\.\\d+)?)";
-
-        this.re = new RegExp(name + " ((>|>=|=|<>|<|<=) " + num + "|BETWEEN " + num + " AND " + num + ")");
-
-        var matches = this.re.exec(this.layer.getDownloadFilter());
-
-        if (matches != null && matches.length == 9) {
-
-            var singleValOperator = matches[2];
-            var singleValValue = matches[3];
-            var betweenValue1 = matches[5];
-            var betweenValue2 = matches[7];
-
-            if (singleValOperator != null && singleValValue != null) {
-
-                this.operators.setValue(singleValOperator);
-                this.firstField.setValue(singleValValue);
-            }
-            else if (betweenValue1 != null && betweenValue2 != null) {
-
-                this.operators.setValue('BETWEEN');
-                this.firstField.setValue(betweenValue1);
-                this.secondField.setValue(betweenValue2);
-                this.secondField.setVisible(true);
-            }
-        }
     }
 });

@@ -29,6 +29,21 @@ Portal.filter.GeometryFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         });
     },
 
+    setLayerAndFilter: function(layer, filter) {
+        Portal.filter.GeometryFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
+        if (layer.map.spatialConstraintControl) {
+            this._updateWithGeometry(layer.map.spatialConstraintControl.getConstraint());
+        }
+    },
+
+    isVisualised: function() {
+        return false;
+    },
+
+    hasValue: function() {
+        return this.geometry != undefined;
+    },
+
     _createField: function() {
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.layer.map,
@@ -37,8 +52,15 @@ Portal.filter.GeometryFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         this.add(this.spatialSubsetControlsPanel);
     },
 
-    isVisualised: function() {
-        return false;
+    getFilterData: function() {
+
+        return {
+            name: this.filter.getName(),
+            visualised: this.isVisualised(),
+            cql: this.getCQL(),
+            humanValue: this._getCQLHumanValue(),
+            type: "geom"
+        }
     },
 
     handleRemoveFilter: function() {
@@ -51,24 +73,13 @@ Portal.filter.GeometryFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingValueCleared'));
     },
 
-    hasValue: function() {
-        return this.geometry != undefined;
-    },
-
-    setLayerAndFilter: function(layer, filter) {
-        Portal.filter.GeometryFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
-        if (layer.map.spatialConstraintControl) {
-            this._updateWithGeometry(layer.map.spatialConstraintControl.getConstraint());
-        }
+    needsFilterRange: function() {
+        return false;
     },
 
     _updateWithGeometry: function(geometry) {
         this.geometry = geometry;
         this._fireAddEvent();
-    },
-
-    _setExistingFilters: function() {
-        // Never restored from an existing filter
     },
 
     getCQL: function() {
@@ -96,20 +107,5 @@ Portal.filter.GeometryFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     isRealPolygon: function() {
         return (this.map.getSpatialConstraintType() == "polygon");
-    },
-
-    needsFilterRange: function() {
-        return false;
-    },
-
-    getFilterData: function() {
-
-        return {
-            name: this.filter.getName(),
-            visualised: this.isVisualised(),
-            cql: this.getCQL(),
-            humanValue: this._getCQLHumanValue(),
-            type: "geom"
-        }
     }
 });
