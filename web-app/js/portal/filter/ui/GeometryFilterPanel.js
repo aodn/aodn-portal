@@ -5,9 +5,9 @@
  *
  */
 
-Ext.namespace('Portal.filter');
+Ext.namespace('Portal.filter.ui');
 
-Portal.filter.GeometryFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
+Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
 
     constructor: function(cfg) {
 
@@ -15,7 +15,7 @@ Portal.filter.GeometryFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             typeLabel: OpenLayers.i18n('spatialExtentHeading')
         }, cfg);
 
-        Portal.filter.GeometryFilterPanel.superclass.constructor.call(this, config);
+        Portal.filter.ui.GeometryFilterPanel.superclass.constructor.call(this, config);
 
         this.map = cfg.layer.map;
         this.map.events.on({
@@ -30,7 +30,7 @@ Portal.filter.GeometryFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     setLayerAndFilter: function(layer, filter) {
-        Portal.filter.GeometryFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
+        Portal.filter.ui.GeometryFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
         if (layer.map.spatialConstraintControl) {
             this._updateWithGeometry(layer.map.spatialConstraintControl.getConstraint());
         }

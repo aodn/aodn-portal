@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.filter.BooleanFilterPanel", function() {
+describe("Portal.filter.ui.BooleanFilterPanel", function() {
 
     var booleanFilter;
 
@@ -14,11 +14,11 @@ describe("Portal.filter.BooleanFilterPanel", function() {
             this.setValue = jasmine.createSpy();
         };
 
-        Portal.filter.BooleanFilterPanel.prototype._createField = function() {
+        Portal.filter.ui.BooleanFilterPanel.prototype._createField = function() {
             this.checkbox = new MockButton();
         };
 
-        booleanFilter = new Portal.filter.BooleanFilterPanel({
+        booleanFilter = new Portal.filter.ui.BooleanFilterPanel({
             filter: {
                 getName: function() { return 'test' },
                 getDisplayLabel: function() { return 'testLabel' }

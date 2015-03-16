@@ -6,11 +6,11 @@
  *
  */
 
-describe("Portal.filter.BaseFilterPanel", function() {
+describe("Portal.filter.ui.BaseFilterPanel", function() {
 
     describe("newFilterPanelFor()", function() {
 
-        var newFilterPanelFor = Portal.filter.BaseFilterPanel.newFilterPanelFor;
+        var newFilterPanelFor = Portal.filter.ui.BaseFilterPanel.newFilterPanelFor;
 
         it("should return EmptyFilterPanel", function() {
             expectNewFilterPanelForString('EmptyFilterPanel', '');
@@ -38,7 +38,7 @@ describe("Portal.filter.BaseFilterPanel", function() {
 
         var expectNewFilterPanelForString = function(filterPanelType, filterTypeAsString) {
 
-            var constructorSpy = spyOn(Portal.filter, filterPanelType);
+            var constructorSpy = spyOn(Portal.filter.ui, filterPanelType);
 
             newFilterPanelFor({
                 layer: {},
@@ -56,9 +56,9 @@ describe("Portal.filter.BaseFilterPanel", function() {
 
         var buildFilterWithVisualised = function(isVisualised) {
 
-            spyOn(Portal.filter.BaseFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.BaseFilterPanel.prototype, '_createField');
 
-            return new Portal.filter.BaseFilterPanel({
+            return new Portal.filter.ui.BaseFilterPanel({
                 layer: {},
                 filter: {
                     getVisualised: function() { return isVisualised }

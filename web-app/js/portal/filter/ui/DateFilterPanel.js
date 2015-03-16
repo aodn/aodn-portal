@@ -5,9 +5,9 @@
  *
  */
 
-Ext.namespace('Portal.filter');
+Ext.namespace('Portal.filter.ui');
 
-Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
+Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
 
     constructor: function(cfg) {
         var config = Ext.apply({
@@ -24,7 +24,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         // Divide time zone offset by 60 to get total hours
         this.timeZoneCorrect = (new Date().getTimezoneOffset()) / -60;
 
-        Portal.filter.DateFilterPanel.superclass.constructor.call(this, config);
+        Portal.filter.ui.DateFilterPanel.superclass.constructor.call(this, config);
     },
 
     _createField: function() {
@@ -73,7 +73,7 @@ Portal.filter.DateFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _createResettableDate: function(name, fieldLabel, emptyText) {
-        return new Portal.filter.ResettableDate({
+        return new Portal.filter.ui.ResettableDate({
             name: name,
             fieldLabel: fieldLabel,
             emptyText: emptyText,

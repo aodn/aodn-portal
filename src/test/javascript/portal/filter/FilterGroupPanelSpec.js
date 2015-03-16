@@ -5,7 +5,7 @@
  *
  */
 
-describe("Portal.filter.FilterGroupPanel", function() {
+describe("Portal.filter.ui.FilterGroupPanel", function() {
 
     var filterGroupPanel;
     var layer;
@@ -19,7 +19,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
         layer.getDownloadLayer = function() { return "downloadLayer"; };
         layer.isKnownToThePortal = function() { return true; };
 
-        filterGroupPanel = new Portal.filter.FilterGroupPanel({
+        filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
             layer: layer
         });
     });
@@ -48,7 +48,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
                 }
             };
 
-            filterGroupPanel = new Portal.filter.FilterGroupPanel(cfg);
+            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel(cfg);
 
             spyOn(filterGroupPanel, '_updateAndShow');
             spyOn(filterGroupPanel, '_sortPanels').andReturn([{}]);
@@ -78,24 +78,24 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         it('sorts panels in expected order', function() {
 
-            spyOn(Portal.filter.BooleanFilterPanel.prototype, '_createField');
-            spyOn(Portal.filter.NumberFilterPanel.prototype, 'setLayerAndFilter');
-            spyOn(Portal.filter.GeometryFilterPanel.prototype, '_createField');
-            spyOn(Portal.filter.GeometryFilterPanel.prototype, 'setLayerAndFilter');
-            spyOn(Portal.filter.DateFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.BooleanFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.NumberFilterPanel.prototype, 'setLayerAndFilter');
+            spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, 'setLayerAndFilter');
+            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createField');
 
-            var booleanPanelA = new Portal.filter.BooleanFilterPanel({
+            var booleanPanelA = new Portal.filter.ui.BooleanFilterPanel({
                 filter: { getDisplayLabel: function() { return 'A' } }
             });
-            var booleanPanelB = new Portal.filter.BooleanFilterPanel({
+            var booleanPanelB = new Portal.filter.ui.BooleanFilterPanel({
                 filter: { getDisplayLabel: function() { return 'B' } }
             });
-            var numberPanel =  new Portal.filter.NumberFilterPanel();
-            var geometryPanel = new Portal.filter.GeometryFilterPanel({
+            var numberPanel =  new Portal.filter.ui.NumberFilterPanel();
+            var geometryPanel = new Portal.filter.ui.GeometryFilterPanel({
                 layer: { map: getMockMap() }
             });
-            var datePanel = new Portal.filter.DateFilterPanel();
-            var comboPanel = new Portal.filter.ComboFilterPanel();
+            var datePanel = new Portal.filter.ui.DateFilterPanel();
+            var comboPanel = new Portal.filter.ui.ComboFilterPanel();
 
             var panels = [
                 booleanPanelB,
@@ -115,7 +115,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
                 comboPanel
             ];
 
-            filterGroupPanel = new Portal.filter.FilterGroupPanel(cfg);
+            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel(cfg);
 
             expect(filterGroupPanel._sortPanels(panels)).toEqual(expectedPanelOrder);
         });
@@ -130,7 +130,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             layer.isKnownToThePortal = function() { return true };
             filterGroupPanel._isLayerActive = function() {return true};
 
-            filterGroupPanel = new Portal.filter.FilterGroupPanel({
+            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
                 layer: layer
             });
 
@@ -169,7 +169,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             };
             filterGroupPanel._isLayerActive = function() {return true};
 
-            filterGroupPanel = new Portal.filter.FilterGroupPanel({
+            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
                 layer: layer
             });
 
@@ -285,16 +285,16 @@ describe("Portal.filter.FilterGroupPanel", function() {
         var numComponentsPerGroup = 2;
 
         beforeEach(function() {
-            spyOn(Portal.filter.NumberFilterPanel.prototype, '_createField');
-            spyOn(Portal.filter.DateFilterPanel.prototype, '_createField');
-            spyOn(Portal.filter.BooleanFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.NumberFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.BooleanFilterPanel.prototype, '_createField');
 
             filterPanels = [
-                new Portal.filter.DateFilterPanel(),
-                new Portal.filter.BooleanFilterPanel(),
-                new Portal.filter.BooleanFilterPanel(),
-                new Portal.filter.NumberFilterPanel(),
-                new Portal.filter.NumberFilterPanel()
+                new Portal.filter.ui.DateFilterPanel(),
+                new Portal.filter.ui.BooleanFilterPanel(),
+                new Portal.filter.ui.BooleanFilterPanel(),
+                new Portal.filter.ui.NumberFilterPanel(),
+                new Portal.filter.ui.NumberFilterPanel()
             ];
 
             spyOn(filterGroupPanel, '_createGroupContainer').andCallThrough();

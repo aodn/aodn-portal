@@ -4,9 +4,9 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext.namespace('Portal.filter');
+Ext.namespace('Portal.filter.ui');
 
-Portal.filter.ResettableDate = Ext.extend(Ext.Container, {
+Portal.filter.ui.ResettableDate = Ext.extend(Ext.Container, {
     ELEMENT_HEIGHT: 25,
 
     constructor: function(cfg) {
@@ -36,7 +36,7 @@ Portal.filter.ResettableDate = Ext.extend(Ext.Container, {
             ]
         }, cfg);
 
-        Portal.filter.ResettableDate.superclass.constructor.call(this, config);
+        Portal.filter.ui.ResettableDate.superclass.constructor.call(this, config);
 
         this.addEvents('changed');
     },

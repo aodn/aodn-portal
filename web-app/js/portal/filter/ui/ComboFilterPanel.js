@@ -5,16 +5,16 @@
  *
  */
 
-Ext.namespace('Portal.filter');
+Ext.namespace('Portal.filter.ui');
 
-Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
+Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
 
     constructor: function(cfg) {
         var config = Ext.apply({
             autoDestroy: true
         }, cfg);
 
-        Portal.filter.ComboFilterPanel.superclass.constructor.call(this, config);
+        Portal.filter.ui.ComboFilterPanel.superclass.constructor.call(this, config);
     },
 
     _createField: function() {
