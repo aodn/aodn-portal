@@ -157,6 +157,14 @@ def write_filters(filters_dir, filters, opts)
           xml.visualised           !filter['downloadOnly']
           xml.excludedFromDownload false
 
+          if filter['wmsStartDateName']
+            xml.wmsStartDateName filter['wmsStartDateName']
+          end
+
+          if filter['wmsEndDateName']
+            xml.wmsEndDateName filter['wmsEndDateName']
+          end
+
           # Output values to a separate file
           write_filter_values(filters_dir, filter['name'], filter['possibleValues'])
         }
