@@ -1236,11 +1236,6 @@ div.allwhite {
     width: 780px;
 }
 
-.resultsRowHeaderTitle h3 {
-    font-weight: normal;
-    font-style: italic;
-}
-
 .resultsRowHeaderTitle * {
     margin: 2px 0;
     display: inline-block;
