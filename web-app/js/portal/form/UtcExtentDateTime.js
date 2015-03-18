@@ -21,11 +21,16 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         });
 
         this._preventStoreChangesBeingIgnored();
+
         this.tf.on('select', function(field, record, index) {
             this.onBlur(field);
         }, this);
 
         this.df.on('select', function(field, record, index) {
+            this.onBlur(field);
+        }, this);
+
+        this.df.on('blur', function(field, e) {
             this.onBlur(field);
         }, this);
     },
