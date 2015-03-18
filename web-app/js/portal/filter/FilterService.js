@@ -65,16 +65,23 @@ Portal.filter.FilterService = Ext.extend(Object, {
         Ext.Ajax.request({
             url: this.GET_FILTER_VALUES,
             params: params,
-            scope: this,
+            callbackFunction: onLoadedCallback,
+            callbackScope: callbackScope,
+            success: this._filterRangeLoaded,
             failure: function() {
                 log.error('failed to load filter range for filter: ' + JSON.stringify(params));
             },
-            success: function(resp, opts) {
-                var filterRange = Ext.util.JSON.decode(resp.responseText);
-
-                onLoadedCallback.call(callbackScope, filterRange);
-            }
+            scope: this
         });
+    },
+
+    _filterRangeLoaded: function(resp, opts) {
+
+        var callbackFunction = opts.callbackFunction;
+        var callbackScope = opts.callbackScope;
+        var filterRange = Ext.util.JSON.decode(resp.responseText);
+
+        callbackFunction.call(callbackScope, filterRange);
     },
 
     _filterLayerName: function(layer) {
