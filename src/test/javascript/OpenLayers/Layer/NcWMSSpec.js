@@ -99,19 +99,11 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
     describe("loadTimeSeriesForDay", function() {
         it("when already loaded", function() {
-            var functionCalled = false;
             spyOn(cachedLayer, '_timeSeriesLoadedForDate').andCallFake(function() { functionCalled = true });
             cachedLayer.temporalExtent.parse(['2001-07-02T00:00:00']);
 
             cachedLayer.loadTimeSeriesForDay(moment.utc('2001-07-02T00:00:00Z'));
-
-            waitsFor(function() {
-                return functionCalled;
-            }, "_timeSeriesDatesLoaded not called", 1000);
-
-            runs(function() {
-                expect(cachedLayer._timeSeriesLoadedForDate).toHaveBeenCalled();
-            });
+            expect(cachedLayer._timeSeriesLoadedForDate).toHaveBeenCalled();
         });
 
         it("when not loaded", function() {

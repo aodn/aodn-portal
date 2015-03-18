@@ -13,7 +13,6 @@ describe("Portal.cart.DownloadPanel", function() {
         downloadPanel = new Portal.cart.DownloadPanel({
             downloadPanelBody: new Portal.cart.DownloadPanelBody()
         });
-
         spyOn(downloadPanel.downloadPanelBody, 'generateBodyContent');
     });
 
