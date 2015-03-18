@@ -15,7 +15,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
         this.GET_FILTER_VALUES = "layer/getFilterValuesAsJSON";
     },
 
-    loadFilters: function(layer, onLoadedCallback, callbackScope) {
+    loadFilters: function(layer, successCallback, callbackScope) {
 
         var params = {
             server: layer.server.uri,
@@ -28,7 +28,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
             scope: this,
             success: this._filtersLoaded,
             failure: this._handleFilterLoadFailure,
-            callbackFunction: onLoadedCallback,
+            successCallback: successCallback,
             callbackScope: callbackScope,
             layer: layer
         });
@@ -36,7 +36,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
     _filtersLoaded: function(response, opts) {
 
-        var callbackFunction = opts.callbackFunction;
+        var callbackFunction = opts.successCallback;
         var callbackScope = opts.callbackScope;
         var layer = opts.layer;
         var filterDetails = Ext.util.JSON.decode(response.responseText);
@@ -57,7 +57,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
         log.error('failed to load filters: ' + JSON.stringify(opts.params));
     },
 
-    loadFilterRange: function(filterId, layer, onLoadedCallback, callbackScope) {
+    loadFilterRange: function(filterId, layer, successCallback, callbackScope) {
 
         var params = {
             filter: filterId,
@@ -68,7 +68,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
         Ext.Ajax.request({
             url: this.GET_FILTER_VALUES,
             params: params,
-            callbackFunction: onLoadedCallback,
+            successCallback: successCallback,
             callbackScope: callbackScope,
             success: this._filterRangeLoaded,
             failure: this._handleFilterRangeLoadFailure,
@@ -78,7 +78,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
     _filterRangeLoaded: function(resp, opts) {
 
-        var callbackFunction = opts.callbackFunction;
+        var callbackFunction = opts.successCallback;
         var callbackScope = opts.callbackScope;
         var filterRange = Ext.util.JSON.decode(resp.responseText);
 
