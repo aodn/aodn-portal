@@ -63,7 +63,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
         callbackFunction.call(callbackScope);
     },
 
-    loadFilterRange: function(filterId, layer, successCallback, callbackScope) {
+    loadFilterRange: function(filterId, layer, successCallback, failureCallback, callbackScope) {
 
         var params = {
             filter: filterId,
@@ -75,6 +75,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
             url: this.GET_FILTER_VALUES,
             params: params,
             successCallback: successCallback,
+            failureCallback: failureCallback,
             callbackScope: callbackScope,
             success: this._filterRangeLoaded,
             failure: this._handleFilterRangeLoadFailure,
@@ -93,7 +94,12 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
     _handleFilterRangeLoadFailure: function(resp, opts) {
 
+        var callbackFunction = opts.failureCallback;
+        var callbackScope = opts.callbackScope;
+
         log.error('failed to load filter range for filter: ' + JSON.stringify(opts.params));
+
+        callbackFunction.call(callbackScope);
     },
 
     _filterLayerName: function(layer) {

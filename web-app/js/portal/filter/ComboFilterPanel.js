@@ -46,6 +46,8 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         });
         this.add(this.combo);
 
+        this._setComboMessage('loadingMessage');
+
         this.add(
             new Ext.Spacer({
                 cls: 'block',
@@ -87,7 +89,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     getCQL: function() {
-        if (this.combo.getValue()) {
+        if (!this.combo.disabled && this.combo.getValue()) {
             return String.format(
                 "{0} LIKE '{1}'",
                 this.filter.getName(),
@@ -121,12 +123,30 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     setFilterRange: function(range) {
+
+        if (range.length) {
+            this._loadDataIntoComboBox(range);
+        }
+        else {
+            this._setComboMessage('subsetNoOptionsText');
+        }
+    },
+
+    _setComboMessage: function(messageKey) {
+
+        this.combo.clearValue();
+        this.combo.setValue(OpenLayers.i18n(messageKey));
+        this.combo.disable();
+    },
+
+    _loadDataIntoComboBox: function(values) {
+
         var data = [];
         var clearFilter = [OpenLayers.i18n('clearFilterOption')];
         data.push(clearFilter);
 
-        for (var i = 0; i < range.length; i++) {
-            data.push([range[i]]);
+        for (var i = 0; i < values.length; i++) {
+            data.push([values[i]]);
         }
 
         this.combo.clearValue();

@@ -65,6 +65,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     subsetParametersText: 'subset parameters',
     subsetParametersErrorText: 'Filtering of this collection is not possible at this time.',
     subsetEmptyFiltersText: 'Filtering of this collection is not available at this time.',
+    subsetNoOptionsText: 'No options available',
 
     // map.js
     imageScaledDown: 'This image has been scaled down.',
