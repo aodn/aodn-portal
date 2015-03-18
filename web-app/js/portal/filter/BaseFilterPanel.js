@@ -126,7 +126,8 @@ Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
     }
     else {
         //Filter hasn't been defined
-        log.error("Could not create filter panel for type'" + type + "'");
+        log.error("Could not find correct filter panel class for type'" + type + "'");
+        newFilterPanel = new Portal.filter.EmptyFilterPanel(cfg);
     }
 
     return newFilterPanel;

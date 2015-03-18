@@ -105,6 +105,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'GeometryFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'BooleanFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'NumberFilterPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'EmptyFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'FilterGroupPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'UtcExtentDateTime.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'PolygonTypeComboBox.js')}"></script>
