@@ -72,8 +72,7 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint
 };
 
 OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function() {
-    // Should usually be 'text/html'
-    return this.server.infoFormat;
+    return 'text/html';
 };
 
 // formatFeatureInfoHtml may be overriden by sub classes (like NcWMS)
@@ -133,10 +132,6 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
-OpenLayers.Layer.WMS.prototype.isKnownToThePortal = function() {
-    return (this.grailsLayerId) ? true : false;
-};
-
 OpenLayers.Layer.WMS.prototype.getCqlFilter = function() {
     if (this.params["CQL_FILTER"]) {
         return this.params["CQL_FILTER"];
@@ -183,7 +178,7 @@ OpenLayers.Layer.WMS.prototype.getMapLayerFilters = function(includeGeomFilter) 
 
         var filterCQL = data.cql;
 
-        if (!data.downloadOnly || (includeGeomFilter && data.type == "geom")) {
+        if (data.visualised || (includeGeomFilter && data.type == "geom")) {
             if (data.visualisationCql != undefined) {
                 filterCQL = data.visualisationCql;
             }

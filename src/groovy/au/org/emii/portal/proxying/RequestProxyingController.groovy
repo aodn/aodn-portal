@@ -27,7 +27,7 @@ abstract class RequestProxyingController {
         if (!url) {
             render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: 400
         }
-        else if (!hostVerifier.allowedHost(request, url)) {
+        else if (!hostVerifier.allowedHost(url)) {
             log.info "Proxy: The url $url was not allowed"
             render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: 400
         }

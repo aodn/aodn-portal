@@ -20,8 +20,8 @@ describe("Portal.filter.BooleanFilterPanel", function() {
 
         booleanFilter = new Portal.filter.BooleanFilterPanel({
             filter: {
-                name: 'test',
-                label: 'testLabel'
+                getName: function() { return 'test' },
+                getDisplayLabel: function() { return 'testLabel' }
             },
             layer: {
                 name: 'test layer',
@@ -49,19 +49,12 @@ describe("Portal.filter.BooleanFilterPanel", function() {
 
         it('human readable cql', function() {
             booleanFilter.checkbox.getValue = function() { return true; };
-            expect(booleanFilter._getCQLHumanValue()).toEqual("Test = true");
+            expect(booleanFilter._getCQLHumanValue()).toEqual("testLabel = true");
         });
-
-    });
-
-    it('_setExistingFilters should not set checked for empty CQL filter', function() {
-        booleanFilter._setExistingFilters();
-        expect(booleanFilter.checkbox.setValue).not.toHaveBeenCalled();
     });
 
     it('tracking on booleanFilter click', function() {
         booleanFilter._buttonChecked();
         expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Boolean", "testLabel=false", "test layer");
     });
-
 });

@@ -11,19 +11,14 @@ describe("Portal.filter.BaseFilterPanel", function() {
     describe("newFilterPanelFor()", function() {
 
         var newFilterPanelFor = Portal.filter.BaseFilterPanel.newFilterPanelFor;
-        var filter;
-        var panel;
-
-        beforeEach(function() {
-
-            filter = {};
-        });
 
         it("should return undefined", function() {
 
-            panel = newFilterPanelFor({
+            var panel = newFilterPanelFor({
                 layer: {},
-                filter: filter
+                filter: {
+                    getType: function() { return '' }
+                }
             });
 
             expect(panel).toBeUndefined();
@@ -45,8 +40,8 @@ describe("Portal.filter.BaseFilterPanel", function() {
             expectNewFilterPanelForString('BooleanFilterPanel', 'Boolean');
         });
 
-        it("should create BoundingBoxFilterPanel", function() {
-            expectNewFilterPanelForString('BoundingBoxFilterPanel', 'BoundingBox');
+        it("should create GeometryFilterPanel", function() {
+            expectNewFilterPanelForString('GeometryFilterPanel', 'BoundingBox');
         });
 
         it("should create NumberFilterPanel", function() {
@@ -54,40 +49,44 @@ describe("Portal.filter.BaseFilterPanel", function() {
         });
 
         var expectNewFilterPanelForString = function(filterPanelType, filterTypeAsString) {
-            filter.type = filterTypeAsString;
+
             var constructorSpy = spyOn(Portal.filter, filterPanelType);
+
             newFilterPanelFor({
                 layer: {},
-                filter: filter
+                filter: {
+                    getType: function() { return filterTypeAsString }
+                }
             });
+
             expect(constructorSpy).toHaveBeenCalled();
         };
     });
 
-    describe("isDownloadOnly()", function() {
-        var buildFilter = function(filterConfig) {
-            var baseFilter = new Portal.filter.BaseFilterPanel({
-                layer: {},
-                filter: filterConfig
-            });
+    describe("isVisualised()", function() {
 
-            return baseFilter;
-        }
+        var buildFilterWithVisualised = function(isVisualised) {
+
+            spyOn(Portal.filter.BaseFilterPanel.prototype, '_createField');
+
+            return new Portal.filter.BaseFilterPanel({
+                layer: {},
+                filter: {
+                    getVisualised: function() { return isVisualised }
+                }
+            });
+        };
 
         it("should return true when the filter is for downloads only", function() {
-            var baseFilter = buildFilter({
-                downloadOnly: true
-            });
+            var baseFilter = buildFilterWithVisualised(true);
 
-            expect(baseFilter.isDownloadOnly()).toBe(true);
+            expect(baseFilter.isVisualised()).toBe(true);
         });
 
         it("should return false when the filter is not only for downloads", function() {
-            var baseFilter = buildFilter({
-                downloadOnly: false
-            });
+            var baseFilter = buildFilterWithVisualised(false);
 
-            expect(baseFilter.isDownloadOnly()).toBe(false);
+            expect(baseFilter.isVisualised()).toBe(false);
         });
     });
 });

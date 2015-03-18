@@ -4,13 +4,19 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
+
 describe("Portal.filter.FilterGroupPanel", function() {
 
     var filterGroupPanel;
     var layer;
+    var cfg;
+    var filterPanel;
+    var filters;
 
     beforeEach(function() {
         layer = new OpenLayers.Layer.WMS();
+        layer.server = { uri: "uri" };
+        layer.getDownloadLayer = function() { return "downloadLayer"; };
         layer.isKnownToThePortal = function() { return true; };
 
         filterGroupPanel = new Portal.filter.FilterGroupPanel({
@@ -18,33 +24,48 @@ describe("Portal.filter.FilterGroupPanel", function() {
         });
     });
 
-    describe('responds to expected methods', function() {
-        it('has a _clearFilters method', function() {
-            expect(filterGroupPanel._clearFilters).toBeDefined();
-        });
-    });
-
-    describe('_showHideFilters', function() {
+    describe('_filtersLoaded', function() {
 
         beforeEach(function() {
-            layer = {};
-            layer.filters = "[{}]";
+            layer = {
+                server: {
+                    uri: {}
+                },
+                filters: [{
+                    getType: function() {
+                        return Boolean;
+                    }
+                }]
+            };
 
-            filterGroupPanel = new Portal.filter.FilterGroupPanel({
+            cfg = {
                 layer: layer
-            });
+            };
 
-            spyOn(filterGroupPanel, '_createFilterPanel');
+            filterPanel = {
+                needsFilterRange: function() {
+                    return false;
+                }
+            };
+
+            filterGroupPanel = new Portal.filter.FilterGroupPanel(cfg);
+
             spyOn(filterGroupPanel, '_updateAndShow');
-            spyOn(filterGroupPanel, '_filtersSort').andReturn(layer);
+            spyOn(filterGroupPanel, '_sortPanels').andReturn([{}]);
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
+            spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
 
-            filterGroupPanel._showHideFilters();
+            filterGroupPanel._filtersLoaded(layer.filters);
         });
 
         it('creates a filter panel', function() {
 
             expect(filterGroupPanel._createFilterPanel).toHaveBeenCalled();
+        });
+
+        it('sorts the filters according to sort order', function() {
+
+            expect(filterGroupPanel._sortPanels).toHaveBeenCalled();
         });
 
         it('calls _updateAndShow', function() {
@@ -54,34 +75,49 @@ describe("Portal.filter.FilterGroupPanel", function() {
     });
 
     describe('filter sorting', function() {
-        var expectedReturn;
 
-        beforeEach(function() {
-            layer = {};
-            layer.filters = [
-                {type: 'Boolean', label: 'A'},
-                {type: 'Date', label: 'B'},
-                {type: 'DateRange', label: 'Z'},
-                {type: 'Boolean', label: 'E'},
-                {type: 'BoundingBox', label: 'C'},
-                {type: 'String', label: 'D'}
-            ];
-            expectedReturn = [
-                {type : 'BoundingBox', sortOrder : 5, label: 'C'},
-                {type : 'Date', sortOrder : 4, label: 'B'},
-                {type : 'DateRange', sortOrder : 3, label: 'Z'},
-                {type : 'Boolean', sortOrder : 2, label: 'A'},
-                {type : 'Boolean', sortOrder : 2, label: 'E'},
-                {type : 'String', sortOrder : 0, label: 'D'}
-            ];
+        it('sorts panels in expected order', function() {
 
-            filterGroupPanel = new Portal.filter.FilterGroupPanel({
-                layer: layer
+            spyOn(Portal.filter.BooleanFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.NumberFilterPanel.prototype, 'setLayerAndFilter');
+            spyOn(Portal.filter.GeometryFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.GeometryFilterPanel.prototype, 'setLayerAndFilter');
+            spyOn(Portal.filter.DateFilterPanel.prototype, '_createField');
+
+            var booleanPanelA = new Portal.filter.BooleanFilterPanel({
+                filter: { getDisplayLabel: function() { return 'A' } }
             });
-        });
+            var booleanPanelB = new Portal.filter.BooleanFilterPanel({
+                filter: { getDisplayLabel: function() { return 'B' } }
+            });
+            var numberPanel =  new Portal.filter.NumberFilterPanel();
+            var geometryPanel = new Portal.filter.GeometryFilterPanel({
+                layer: { map: getMockMap() }
+            });
+            var datePanel = new Portal.filter.DateFilterPanel();
+            var comboPanel = new Portal.filter.ComboFilterPanel();
 
-        it('sorts by specified order', function() {
-            expect(filterGroupPanel._filtersSort(layer.filters)).toEqual(expectedReturn);
+            var panels = [
+                booleanPanelB,
+                comboPanel,
+                datePanel,
+                booleanPanelA,
+                geometryPanel,
+                numberPanel
+            ];
+
+            var expectedPanelOrder = [
+                geometryPanel,
+                datePanel,
+                booleanPanelA,
+                booleanPanelB,
+                numberPanel,
+                comboPanel
+            ];
+
+            filterGroupPanel = new Portal.filter.FilterGroupPanel(cfg);
+
+            expect(filterGroupPanel._sortPanels(panels)).toEqual(expectedPanelOrder);
         });
     });
 
@@ -89,7 +125,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         beforeEach(function() {
             layer = {
-                grailsLayerId: 1499409
+                server: { uri: "uri" }
             };
             layer.isKnownToThePortal = function() { return true };
             filterGroupPanel._isLayerActive = function() {return true};
@@ -97,78 +133,76 @@ describe("Portal.filter.FilterGroupPanel", function() {
             filterGroupPanel = new Portal.filter.FilterGroupPanel({
                 layer: layer
             });
-            filterGroupPanel.layerIsBeingHandled = false;
 
-            spyOn(filterGroupPanel, '_createFilterPanel');
+            filters = ["Boolean"];
+
+            filterPanel = {
+                needsFilterRange: function() {
+                    return false;
+                }
+            };
+
             spyOn(filterGroupPanel, '_clearFilters');
             spyOn(filterGroupPanel, '_updateLayerFilters');
-            spyOn(filterGroupPanel, 'addErrorMessage');
+            spyOn(filterGroupPanel, '_addErrorMessage');
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
+            spyOn(filterGroupPanel, '_sortPanels').andReturn([{}]);
+            spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
         });
-
 
         it('calls the _clearFilters method', function() {
 
-            spyOn(Ext.Ajax, 'request').andCallFake(
-                function(params) {
-                    params.success.call(params.scope, { responseText: '[{"label":"data_centre","type":"String","name":"data_centre","possibleValues":["ifremer","aoml","csio","kordi","jma","kma","jamstec","incois","bodc","csiro"],"layerId":1499409,"enabled":true}]' });
-                }
-            );
-
-            filterGroupPanel._initWithLayer();
+            filterGroupPanel._filtersLoaded(filters);
 
             expect(filterGroupPanel._createFilterPanel).toHaveBeenCalled();
             filterGroupPanel.clearFiltersButton.fireEvent('click');
             expect(filterGroupPanel._clearFilters).toHaveBeenCalled();
             expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
         });
-
-        it('calls the addErrorMessage function when layer is unknown', function() {
-
-            layer.grailsLayerId = undefined;
-            layer.isKnownToThePortal = function(){return false};
-
-            filterGroupPanel._initWithLayer();
-
-            expect(filterGroupPanel.addErrorMessage).toHaveBeenCalled();
-        });
     });
 
-    describe('the _showHideFilters function', function() {
+    describe('the _filtersLoaded function', function() {
 
         beforeEach(function() {
             layer = {
-                grailsLayerId: 1499409
+                server: { uri: "uri" }
             };
-            layer.isKnownToThePortal = function(){return true};
             filterGroupPanel._isLayerActive = function() {return true};
 
             filterGroupPanel = new Portal.filter.FilterGroupPanel({
                 layer: layer
             });
 
+            filterPanel = {
+                needsFilterRange: function() {
+                    return false;
+                }
+            };
+
             spyOn(filterGroupPanel, '_updateLayerFilters');
-            spyOn(filterGroupPanel, 'addErrorMessage');
+            spyOn(filterGroupPanel, '_addErrorMessage');
+            spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
         });
 
-
-        it('calls the addErrorMessage function when filters set but has no filters configured', function() {
+        it('calls the _addErrorMessage function when filters set but has no filters configured', function() {
 
             layer.filters = [];
 
-            filterGroupPanel._showHideFilters();
+            filterGroupPanel._filtersLoaded(layer.filters);
 
-            expect(filterGroupPanel.addErrorMessage).toHaveBeenCalled();
+            expect(filterGroupPanel._addErrorMessage).toHaveBeenCalled();
         });
 
-        it('addErrorMessage function not called when filters are configured', function() {
+        it('_addErrorMessage function not called when filters are configured', function() {
 
-            layer.filters = ["asda","asdasd"];
+            layer.filters = ["Boolean", "Combo"];
 
-            filterGroupPanel._showHideFilters();
+            spyOn(filterGroupPanel, '_sortPanels').andReturn([{},{}]);
 
-            expect(filterGroupPanel.addErrorMessage).not.toHaveBeenCalled();
+            filterGroupPanel._filtersLoaded(layer.filters);
+
+            expect(filterGroupPanel._addErrorMessage).not.toHaveBeenCalled();
         });
     });
 
@@ -176,7 +210,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         var removeFilterSpy = jasmine.createSpy('handleRemoveFilter');
 
-        var _mockFilter = function(name) {
+        var _mockFilterPanel = function() {
 
             return {
                 handleRemoveFilter: removeFilterSpy
@@ -185,10 +219,10 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         it('clears all filters', function() {
 
-            filterGroupPanel.filters = [
-                _mockFilter('oxygen_sensor'),
-                _mockFilter('data_centre'),
-                _mockFilter('pi')
+            filterGroupPanel.filterPanels = [
+                _mockFilterPanel('oxygen_sensor'),
+                _mockFilterPanel('data_centre'),
+                _mockFilterPanel('pi')
             ];
 
             spyOn(filterGroupPanel, '_updateLayerFilters');
@@ -232,16 +266,50 @@ describe("Portal.filter.FilterGroupPanel", function() {
                     label: 'some label',
                     cql: "pardon my French",
                     type: 'Boolean',
-                    downloadOnly: false
+                    visualised: true
                 }
-
             });
 
             it('calls getVisualisationCQL when options.downloadOnly is false', function() {
 
                 expect(filterGroupPanel._getVisualisationCQLFilters(filterDescriptorData)).toEqual('pardon my French');
             });
+        });
+    });
 
+    describe('_organiseFilterPanels', function() {
+
+        var filterPanels;
+        var numGroups = 3;
+        var numHeadings = numGroups - 1; // Number filters won't have a heading
+        var numComponentsPerGroup = 2;
+
+        beforeEach(function() {
+            spyOn(Portal.filter.NumberFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.DateFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.BooleanFilterPanel.prototype, '_createField');
+
+            filterPanels = [
+                new Portal.filter.DateFilterPanel(),
+                new Portal.filter.BooleanFilterPanel(),
+                new Portal.filter.BooleanFilterPanel(),
+                new Portal.filter.NumberFilterPanel(),
+                new Portal.filter.NumberFilterPanel()
+            ];
+
+            spyOn(filterGroupPanel, '_createGroupContainer').andCallThrough();
+            spyOn(filterGroupPanel, '_createFilterGroupHeading').andCallThrough();
+            spyOn(filterGroupPanel, '_createVerticalSpacer');
+            spyOn(filterGroupPanel, 'add');
+
+            filterGroupPanel._organiseFilterPanels(filterPanels);
+        });
+
+        it('creates a new groups as required', function() {
+
+            expect(filterGroupPanel._createFilterGroupHeading.callCount).toBe(numHeadings);
+            expect(filterGroupPanel._createVerticalSpacer.callCount).toBe(numGroups);
+            expect(filterGroupPanel.add.callCount).toBe(numGroups * numComponentsPerGroup);
         });
     });
 });

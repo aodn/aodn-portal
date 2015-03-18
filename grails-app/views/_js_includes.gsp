@@ -67,7 +67,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'EmptyCollectionsStatusPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/config', file: 'PortalConfigLoader.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'LayerStore.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'MenuTreeLoader.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'SuggestionStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/data', file: 'LinkStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/data', file: 'GeoNetworkSearchResponseLoader.js')}"></script>
@@ -84,8 +83,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'DateSelectionPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'GeoSelectionPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'MetadataExtent.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'ServerNodeLayerDescriptorStore.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'MenuItemToNodeBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'ActiveLayersTreeNodeUI.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'ActiveLayersPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'FormUtil.js')}"></script>
@@ -99,12 +96,14 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SpatialConstraintDisplayPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SpatialSubsetControlsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'TimeComboBox.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'Filter.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'FilterService.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'BaseFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'ComboFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'ConfigPage.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'ResettableDate.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'DateFilterPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'BoundingBoxFilterPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'GeometryFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'BooleanFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'NumberFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'FilterGroupPanel.js')}"></script>

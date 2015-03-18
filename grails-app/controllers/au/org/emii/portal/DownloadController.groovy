@@ -55,7 +55,7 @@ class DownloadController extends RequestProxyingController {
 
         def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$fieldName")
 
-        if (!hostVerifier.allowedHost(request, url)) {
+        if (!hostVerifier.allowedHost(url)) {
             render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: 400
             return
         }
@@ -97,7 +97,7 @@ class DownloadController extends RequestProxyingController {
         def sizeFieldName = grailsApplication.config.indexedFile.fileSizeColumnName
         def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$urlFieldName,$sizeFieldName")
 
-        if (!hostVerifier.allowedHost(request, url)) {
+        if (!hostVerifier.allowedHost(url)) {
 
             log.error "Host for address '$url' not allowed"
             render SIZE_ESTIMATE_ERROR

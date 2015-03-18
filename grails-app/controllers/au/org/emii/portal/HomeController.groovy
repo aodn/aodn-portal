@@ -15,7 +15,7 @@ class HomeController {
     def portalInstance
     def portalBranding
 
-    static final def CONFIG_KEYS_TO_IGNORE = [  "aodaacAggregator", "log4j" ]
+    static final def CONFIG_KEYS_TO_IGNORE = [  "aodaacAggregator", "log4j", "beans" ]
 
     def index = { // This is the main portal entry
 

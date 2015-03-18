@@ -55,25 +55,33 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         return "undefined";
     },
 
+    _getLayerWorkspace: function(layerName) {
+        var workspace = null;
+        if (layerName.indexOf(":") != -1) {
+            workspace = layerName.split(":")[0];
+        }
+        return workspace;
+    },
+
     /**
      * Refactor.
      */
     _setDomainLayerProperties: function(openLayer) {
-        openLayer.grailsLayerId = this.id;
         openLayer.server = this.server;
+        openLayer.wmsName = this.name;
 
         //injecting credentials for authenticated WMSes.  Openlayer doesn't
         //provide a way to add header information to a WMS request
         openLayer.cql = this.cql;
         this._setOpenLayerBounds(openLayer);
+        this._setDownloadLayers(openLayer);
         openLayer.cache = this.cache;
         openLayer.projection = this.projection;
         openLayer.blacklist = this.blacklist;
         openLayer.abstractTrimmed = this.abstractTrimmed;
-        openLayer.parentLayerId = this._getParentId();
-        openLayer.parentLayerName = this._getParentName();
         openLayer.dimensions = this.dimensions;
         openLayer.layerHierarchyPath = this.layerHierarchyPath;
+        openLayer.params.QUERYABLE = true;
 
         if (this.viewParams) {
             openLayer.zoomOverride = {
@@ -84,14 +92,32 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         }
     },
 
-    _setOpenLayerBounds: function(openLayer) {
-        if (this.bboxMinX && this.bboxMinY && this.bboxMaxX && this.bboxMaxY) {
-            openLayer.bboxMinX = this.bboxMinX;
-            openLayer.bboxMinY = this.bboxMinY;
-            openLayer.bboxMaxX = this.bboxMaxX;
-            openLayer.bboxMaxY = this.bboxMaxY;
+    _setDownloadLayers: function(openLayer) {
+        var downloadLayers = [];
+
+        if (this.geonetworkRecord && this.geonetworkRecord.data && this.geonetworkRecord.data.dataDownloadHandlers) {
+            var dataDownloadHandlers = this.geonetworkRecord.data.dataDownloadHandlers;
+            for (var i = 0; i < dataDownloadHandlers.length; ++i) {
+                var downloadLayer = dataDownloadHandlers[i].onlineResource.name;
+
+                // If layer has no workspace defined, assume it is in the same
+                // workspace as the WMS layer
+                if (! this._getLayerWorkspace(downloadLayer) &&
+                    this._getLayerWorkspace(openLayer.wmsName)) {
+                    downloadLayer = this._getLayerWorkspace(openLayer.wmsName) + ":" + downloadLayer;
+                }
+
+                if (-1 ==  $.inArray(downloadLayer, downloadLayers)) {
+                    downloadLayers.push(downloadLayer);
+                }
+            }
         }
-        else if (this.geonetworkRecord
+        openLayer.downloadLayers = downloadLayers;
+        openLayer.getDownloadLayer = function() { return this.downloadLayers[0]; }
+    },
+
+    _setOpenLayerBounds: function(openLayer) {
+        if (this.geonetworkRecord
             && this.geonetworkRecord.data
             && this.geonetworkRecord.data.bbox
             && this.geonetworkRecord.data.bbox.geometries) {

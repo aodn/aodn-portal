@@ -28,7 +28,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
     </head>
 
     <body>
-        <g:render template="/header/mainPortalHeader" model="['showLinks': false, 'configInstance': cfg, 'portalBranding': portalBranding]"></g:render>
+        <g:render template="/header/mainPortalHeader" model="['showLinks': false, 'portalBranding': portalBranding]"></g:render>
 
         <div>
             <div class="landingContainer">

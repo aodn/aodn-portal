@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.filter');
 
-Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
+Portal.filter.GeometryFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
     constructor: function(cfg) {
 
@@ -15,7 +15,7 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
             typeLabel: OpenLayers.i18n('spatialExtentHeading')
         }, cfg);
 
-        Portal.filter.BoundingBoxFilterPanel.superclass.constructor.call(this, config);
+        Portal.filter.GeometryFilterPanel.superclass.constructor.call(this, config);
 
         this.map = cfg.layer.map;
         this.map.events.on({
@@ -29,6 +29,21 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
         });
     },
 
+    setLayerAndFilter: function(layer, filter) {
+        Portal.filter.GeometryFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
+        if (layer.map.spatialConstraintControl) {
+            this._updateWithGeometry(layer.map.spatialConstraintControl.getConstraint());
+        }
+    },
+
+    isVisualised: function() {
+        return false;
+    },
+
+    hasValue: function() {
+        return this.geometry != undefined;
+    },
+
     _createField: function() {
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.layer.map,
@@ -37,8 +52,15 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
         this.add(this.spatialSubsetControlsPanel);
     },
 
-    isDownloadOnly: function() {
-        return true;
+    getFilterData: function() {
+
+        return {
+            name: this.filter.getName(),
+            visualised: this.isVisualised(),
+            cql: this.getCQL(),
+            humanValue: this._getCQLHumanValue(),
+            type: "geom"
+        }
     },
 
     handleRemoveFilter: function() {
@@ -51,28 +73,13 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
         trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingValueCleared'));
     },
 
-    hasValue: function() {
-        return this.geometry != undefined;
-    },
-
-    getFilterName: function() {
-        return undefined;
-    },
-
-    setLayerAndFilter: function(layer, filter) {
-        Portal.filter.BoundingBoxFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
-        if (layer.map.spatialConstraintControl) {
-            this._updateWithGeometry(layer.map.spatialConstraintControl.getConstraint());
-        }
+    needsFilterRange: function() {
+        return false;
     },
 
     _updateWithGeometry: function(geometry) {
         this.geometry = geometry;
         this._fireAddEvent();
-    },
-
-    _setExistingFilters: function() {
-        // Never restored from an existing filter
     },
 
     getCQL: function() {
@@ -83,7 +90,7 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
         return String.format(
             "INTERSECTS({0},{1})",
-            this.filter.name,
+            this.filter.getName(),
             this.geometry.toWkt()
         );
     },
@@ -100,16 +107,5 @@ Portal.filter.BoundingBoxFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel,
 
     isRealPolygon: function() {
         return (this.map.getSpatialConstraintType() == "polygon");
-    },
-
-    getFilterData: function() {
-
-        return {
-            name: this.filter.name,
-            downloadOnly: this.isDownloadOnly(),
-            cql: this.getCQL(),
-            humanValue: this._getCQLHumanValue(),
-            type: "geom"
-        }
     }
 });

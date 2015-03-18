@@ -18,7 +18,12 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
     },
 
     _createField: function() {
+        this.add(new Ext.form.Label({
+            html: "<label>" + this.filter.getDisplayLabel() + "</label>"
+        }));
+
         this.combo = new Ext.form.ComboBox({
+            disabled: true,
             triggerAction: 'all',
             mode: 'local',
             typeAhead: true,
@@ -39,25 +44,32 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
                 valid: this._onSelected
             }
         });
-
         this.add(this.combo);
+
         this.add(
             new Ext.Spacer({
                 cls: 'block',
                 height: 5
             })
         );
+    },
 
-        var data = [];
-        var clearFilter = [OpenLayers.i18n('clearFilterOption')];
-        data.push(clearFilter);
+    getFilterData: function() {
 
-        for (var i = 0; i < this.filter.possibleValues.length; i++) {
-            data.push([this.filter.possibleValues[i]]);
+        return {
+            name: this.filter.getName(),
+            visualised: this.isVisualised(),
+            cql: this.getCQL(),
+            humanValue: this._getHumanValue()
         }
+    },
 
+    handleRemoveFilter: function() {
         this.combo.clearValue();
-        this.combo.getStore().loadData(data);
+    },
+
+    needsFilterRange: function() {
+        return true;
     },
 
     validateValue: function(value) {
@@ -78,7 +90,7 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         if (this.combo.getValue()) {
             return String.format(
                 "{0} LIKE '{1}'",
-                this.filter.name,
+                this.filter.getName(),
                 this._escapeSingleQuotes(this.combo.getValue())
             );
         }
@@ -86,25 +98,14 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
         return undefined;
     },
 
-    getFilterData: function() {
-
-        return {
-            name: this.filter.name,
-            downloadOnly: this.isDownloadOnly(),
-            cql: this.getCQL(),
-            humanValue: this._getHumanValue()
-        }
-    },
-
     _getHumanValue: function() {
         var componentValue = this._escapeSingleQuotes(this.combo.getValue());
         if (componentValue != "") {
-            return this.getFilterNameAsTitleCase() + " like \"" + componentValue + "\""
+            return this.filter.getDisplayLabel() + " like \"" + componentValue + "\""
         }
         else {
             return ""
         }
-
     },
 
     _onSelected: function() {
@@ -113,24 +114,24 @@ Portal.filter.ComboFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             this.combo.clearValue();
         }
         else if (this.combo.getValue() != "") {
-            var val = this.filter.label + "=" + this.combo.getValue();
+            var val = this.filter.getDisplayLabel() + "=" + this.combo.getValue();
             trackFiltersUsage('filtersTrackingComboAction', val, this.layer.name);
         }
         this._fireAddEvent();
     },
 
-    handleRemoveFilter: function() {
-        this.combo.clearValue();
-    },
+    setFilterRange: function(range) {
+        var data = [];
+        var clearFilter = [OpenLayers.i18n('clearFilterOption')];
+        data.push(clearFilter);
 
-    _setExistingFilters: function() {
-        this.re = new RegExp(this.filter.name + " LIKE '(.*?)'");
-
-        var m = this.re.exec(this.layer.getDownloadFilter());
-
-        if (m != null && m.length == 2) {
-            this.combo.setValue(m[1]);
+        for (var i = 0; i < range.length; i++) {
+            data.push([range[i]]);
         }
+
+        this.combo.clearValue();
+        this.combo.getStore().loadData(data);
+        this.combo.enable();
     },
 
     _escapeSingleQuotes: function(text) {
