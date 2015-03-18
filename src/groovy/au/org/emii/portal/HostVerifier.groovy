@@ -37,8 +37,8 @@ class HostVerifier {
         }
     }
 
-    def extractHost(url) {
-        return url.toURL().host
+    def extractHost(address) {
+        return address.toURL().host
     }
 
     def initializeAllowedHostsIfNeeded() {
