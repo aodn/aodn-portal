@@ -56,13 +56,13 @@ Portal.filter.ui.BooleanFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPane
     },
 
     _formatBoxLabel: function() {
-        return this.filter.getDisplayLabel();
+        return this.filter.getLabel();
     },
 
     _buttonChecked: function() {
         this._fireAddEvent();
 
-        var val = this.filter.getDisplayLabel() + "=" + this.checkbox.getValue();
+        var val = this.filter.getLabel() + "=" + this.checkbox.getValue();
         trackFiltersUsage('filtersTrackingBooleanAction', val, this.layer.name);
     },
 
@@ -77,7 +77,7 @@ Portal.filter.ui.BooleanFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPane
 
     _getCQLHumanValue: function() {
         if (this.checkbox.getValue()) {
-            return this.filter.getDisplayLabel() + " = true";
+            return this.filter.getLabel() + " = true";
         }
         else {
             return undefined;

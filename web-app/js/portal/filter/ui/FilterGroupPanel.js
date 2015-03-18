@@ -172,8 +172,8 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
             var comparisonResult = _this._compareElements(typeOrder(firstPanel), typeOrder(secondPanel));
 
             if (comparisonResult == 0) {
-                var firstFilterName = firstPanel.filter.getDisplayLabel();
-                var secondFilterName = secondPanel.filter.getDisplayLabel();
+                var firstFilterName = firstPanel.filter.getLabel();
+                var secondFilterName = secondPanel.filter.getLabel();
                 comparisonResult = _this._compareElements(secondFilterName, firstFilterName);
             }
 

@@ -20,7 +20,7 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
         filterPanel = new Portal.filter.ui.ComboFilterPanel({
             filter: {
                 getName: function() { return 'test' },
-                getDisplayLabel: function() { return 'testLabel' }
+                getLabel: function() { return 'testLabel' }
             },
             layer: {
                 name: 'test layer',
