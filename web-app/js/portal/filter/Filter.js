@@ -9,14 +9,11 @@ Ext.namespace('Portal.filter');
 
 Portal.filter.Filter = Ext.extend(Object, {
 
-    constructor: function(filterDetail) {
+    constructor: function(cfg) {
 
-        this.name = filterDetail.name;
-        this.displayLabel = filterDetail.label;
-        this.type = filterDetail.type;
-        this.visualised = filterDetail.visualised;
-        this.wmsStartDateName = filterDetail.wmsStartDateName;
-        this.wmsEndDateName = filterDetail.wmsEndDateName;
+        Ext.apply(this, cfg);
+
+        Portal.filter.Filter.superclass.constructor.call(this, cfg);
     },
 
     setValue: function(value) {
@@ -34,9 +31,9 @@ Portal.filter.Filter = Ext.extend(Object, {
         return this.name;
     },
 
-    getDisplayLabel: function() {
+    getLabel: function() {
 
-        return this.displayLabel;
+        return this.label;
     },
 
     getType: function() {
@@ -57,5 +54,35 @@ Portal.filter.Filter = Ext.extend(Object, {
     getWmsEndDateName: function() {
 
         return this.wmsEndDateName;
+    },
+
+    getDataLayerCql: function() {
+
+        return this._getCql();
+    },
+
+    getMapLayerCql: function() {
+
+        return this._getCql();
+    },
+
+    getSupportedGeoserverTypes: function() {
+
+        throw 'Subclasses must implement the getSupportedGeoserverTypes function'
+    },
+
+    getUiComponentConstructor: function() {
+
+        throw 'Subclasses must implement the getUiComponentConstructor function'
+    },
+
+    getHumanReadableForm: function() {
+
+        throw 'Subclasses must implement the getHumanReadableForm function'
+    },
+
+    _getCql: function() {
+
+        throw 'Subclasses must implement the _getCql function OR must override both getDataLayerCql and getMapLayerCql'
     }
 });

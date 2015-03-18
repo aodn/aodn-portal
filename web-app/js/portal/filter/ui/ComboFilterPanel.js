@@ -19,7 +19,7 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
 
     _createField: function() {
         this.add(new Ext.form.Label({
-            html: "<label>" + this.filter.getDisplayLabel() + "</label>"
+            html: "<label>" + this.filter.getLabel() + "</label>"
         }));
 
         this.combo = new Ext.form.ComboBox({
@@ -103,7 +103,7 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
     _getHumanValue: function() {
         var componentValue = this._escapeSingleQuotes(this.combo.getValue());
         if (componentValue != "") {
-            return this.filter.getDisplayLabel() + " like \"" + componentValue + "\""
+            return this.filter.getLabel() + " like \"" + componentValue + "\""
         }
         else {
             return ""
@@ -116,7 +116,7 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
             this.combo.clearValue();
         }
         else if (this.combo.getValue() != "") {
-            var val = this.filter.getDisplayLabel() + "=" + this.combo.getValue();
+            var val = this.filter.getLabel() + "=" + this.combo.getValue();
             trackFiltersUsage('filtersTrackingComboAction', val, this.layer.name);
         }
         this._fireAddEvent();

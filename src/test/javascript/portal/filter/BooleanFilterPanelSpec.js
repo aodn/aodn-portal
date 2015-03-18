@@ -21,7 +21,7 @@ describe("Portal.filter.ui.BooleanFilterPanel", function() {
         booleanFilter = new Portal.filter.ui.BooleanFilterPanel({
             filter: {
                 getName: function() { return 'test' },
-                getDisplayLabel: function() { return 'testLabel' }
+                getLabel: function() { return 'testLabel' }
             },
             layer: {
                 name: 'test layer',

@@ -85,10 +85,10 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createField');
 
             var booleanPanelA = new Portal.filter.ui.BooleanFilterPanel({
-                filter: { getDisplayLabel: function() { return 'A' } }
+                filter: { getLabel: function() { return 'A' } }
             });
             var booleanPanelB = new Portal.filter.ui.BooleanFilterPanel({
-                filter: { getDisplayLabel: function() { return 'B' } }
+                filter: { getLabel: function() { return 'B' } }
             });
             var numberPanel =  new Portal.filter.ui.NumberFilterPanel();
             var geometryPanel = new Portal.filter.ui.GeometryFilterPanel({
