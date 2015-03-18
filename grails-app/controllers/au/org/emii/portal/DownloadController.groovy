@@ -13,6 +13,7 @@ import au.org.emii.portal.proxying.RequestProxyingController
 import org.apache.catalina.connector.ClientAbortException
 
 import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilename
+import static au.org.emii.portal.HttpUtils.Status.*
 
 class DownloadController extends RequestProxyingController {
 
@@ -28,7 +29,7 @@ class DownloadController extends RequestProxyingController {
         def (fieldName, urlSubstitutions) = _loadCommonFields(params)
 
         if (!fieldName) {
-            render text: 'urlFieldName was not provided', status: 400
+            render text: 'urlFieldName was not provided', status: HTTP_400_BAD_REQUEST
             return
         }
 
@@ -49,14 +50,14 @@ class DownloadController extends RequestProxyingController {
         def (fieldName, urlSubstitutions) = _loadCommonFields(params)
 
         if (!fieldName) {
-            render text: 'urlFieldName was not provided', status: 400
+            render text: 'urlFieldName was not provided', status: HTTP_400_BAD_REQUEST
             return
         }
 
         def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$fieldName")
 
         if (!hostVerifier.allowedHost(url)) {
-            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: 400
+            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: HTTP_400_BAD_REQUEST
             return
         }
 

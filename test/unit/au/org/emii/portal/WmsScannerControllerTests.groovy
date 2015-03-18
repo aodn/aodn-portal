@@ -13,6 +13,8 @@ import org.apache.shiro.SecurityUtils
 import org.apache.shiro.subject.Subject
 import org.apache.shiro.util.ThreadContext
 
+import static au.org.emii.portal.HttpUtils.Status.*
+
 class WmsScannerControllerTests extends ControllerUnitTestCase {
 
     def sampleScanJobList = ["Scan Job 1", "Scan Job 2"]
@@ -304,7 +306,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
             return [openConnection: {
                 return [connect: {},
                     content: [text: responseText],
-                    responseCode: 200
+                    responseCode: HTTP_200_OK
                 ]
             }]
         }
@@ -321,7 +323,7 @@ class WmsScannerControllerTests extends ControllerUnitTestCase {
             return [openConnection: {
                 return [connect: { throw new Exception("Test Exception") },
                     errorStream: errorStream,
-                    responseCode: 500
+                    responseCode: HTTP_500_INTERNAL_SERVER_ERROR
                 ]
             }
             ]

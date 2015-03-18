@@ -21,15 +21,11 @@ import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
 import grails.converters.JSON
 
+import static au.org.emii.portal.HttpUtils.Status.*
+
 class LayerController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
-    static final HTTP_200_OK = 200
-    static final HTTP_401_UNAUTHORISED = 401
-    static final HTTP_404_NOT_FOUND = 404
-    static final HTTP_500_INTERNAL_SERVER_ERROR = 500
-    static final HTTP_502_BAD_GATEWAY = 502
 
     def layerService
     def dataSource
