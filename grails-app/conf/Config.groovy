@@ -311,8 +311,9 @@ portal {
 // MARVL project integration
 marvl {
     urlList {
-        prefixToRemove = "/mnt/imos-t3/"
-        newUrlBase = "http://data.aodn.org.au/"
+        substitutions = [
+            '/mnt/imos-t3/': 'http://data.aodn.org.au/'
+        ]
     }
 }
 
