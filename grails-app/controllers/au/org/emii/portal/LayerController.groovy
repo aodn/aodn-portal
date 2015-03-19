@@ -395,7 +395,8 @@ class LayerController {
 
     def getMetadataAbstract = {
 
-        def responseText
+        def response = "Error processing request"
+        def status
 
         if (params.uuid != null) {
 
@@ -410,24 +411,21 @@ class LayerController {
 
                     def abstractText = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text())
 
-                    responseText = abstractText
+                    response = abstractText
+                    status = 200
                 }
             }
             catch (SAXException e) {
-                log.warn("Error getting metadata abstract, params: ${params}", e)
-                responseText = "<BR>The metadata record is not available at this time."
+                //Generic server error
+                status = 500
             }
             catch (FileNotFoundException e) {
-                log.warn("Error getting metadata abstract, params: ${params}", e)
-                responseText = "<BR>The metadata record is not available at this time."
+                //File not found error
+                status = 404
             }
         }
 
-        if (!responseText) {
-            responseText = "<br>This data collection has no link to a metadata record"
-        }
-
-        render text: responseText, contentType: "text/html", encoding: "UTF-8"
+        render status: status, text: response
     }
 
     void _validateCredentialsAndAuthenticate(def params) {

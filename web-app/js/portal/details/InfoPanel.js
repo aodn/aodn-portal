@@ -34,18 +34,25 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
             url: metadataUrl,
             scope: this,
             success: function(resp, options) {
-
                 this._constructInfoTabHtml(resp.responseText, this.layer.parentGeoNetworkRecord.data.onlineResources);
             },
             failure: function(resp) {
-                this.update("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>", false);
+                log.error("Error receiving metadata abstract for record with uuid " + this.layer.metadataUuid);
+                this._constructInfoTabHtml(null, this.layer.parentGeoNetworkRecord.data.onlineResources);
             }
         });
     },
 
-    _constructInfoTabHtml: function(abstract, linkObjects) {
+    _constructInfoTabHtml: function(responseText, linkObjects) {
 
-        var html = this._getAbstractHtmlHeader(abstract);
+        var html;
+
+        if (responseText) {
+            html = this._getHtmlHeader(responseText);
+        }
+        else {
+            html = this._getHtmlHeader("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>");
+        }
 
         Ext.each(linkObjects, function(linkObject) {
             var onlineResource;
@@ -73,7 +80,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
         this.update(html, false);
     },
 
-    _getAbstractHtmlHeader: function(abstract) {
-        return String.format('<!DOCTYPE html>\n<h4>Abstract</h4>{0}<BR><h4>Online Resources</h4>\n<ul>\n', abstract);
+    _getHtmlHeader: function(responseText) {
+        return String.format('<!DOCTYPE html>\n<h4>Abstract</h4>{0}<BR><h4>Online Resources</h4>\n<ul>\n', responseText);
     }
 });

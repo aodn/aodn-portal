@@ -27,11 +27,18 @@ describe("Portal.details.InfoPanel", function() {
     });
 
     describe('_constructInfoTabHtml', function() {
+        it('generates an error response if response text is null', function() {
+            mockInfoPanel._constructInfoTabHtml(null, mockLinkObjects);
+
+            expect(mockInfoPanel.update.callCount).toBe(1);
+            expect(mockInfoPanel.html).toEqual(mockInfoPanel._getHtmlHeader("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>") + '<li><a  href=/ target="_blank"><i>Unnamed Resource</i></a></li>\n</ul>');
+        })
+
         it('generates an internal link with with unnamed resource if href and title are empty', function() {
             mockInfoPanel._constructInfoTabHtml(mockAbstract, mockLinkObjects);
 
             expect(mockInfoPanel.update.callCount).toBe(1);
-            expect(mockInfoPanel.html).toEqual(mockInfoPanel._getAbstractHtmlHeader(mockAbstract) + '<li><a  href=/ target="_blank"><i>Unnamed Resource</i></a></li>\n</ul>');
+            expect(mockInfoPanel.html).toEqual(mockInfoPanel._getHtmlHeader(mockAbstract) + '<li><a  href=/ target="_blank"><i>Unnamed Resource</i></a></li>\n</ul>');
         });
 
         it('generates an external link with unnamed resource if href is not empty and title is empty', function() {
@@ -39,7 +46,7 @@ describe("Portal.details.InfoPanel", function() {
             mockInfoPanel._constructInfoTabHtml(mockAbstract, mockLinkObjects);
 
             expect(mockInfoPanel.update.callCount).toBe(1);
-            expect(mockInfoPanel.html).toEqual(mockInfoPanel._getAbstractHtmlHeader(mockAbstract) + '<li><a class=\"external\" href=https://something.somewhere.com target="_blank"><i>Unnamed Resource</i></a></li>\n</ul>');
+            expect(mockInfoPanel.html).toEqual(mockInfoPanel._getHtmlHeader(mockAbstract) + '<li><a class=\"external\" href=https://something.somewhere.com target="_blank"><i>Unnamed Resource</i></a></li>\n</ul>');
         });
 
         it('generates an external link with the link title if both are non-empty', function() {
@@ -48,7 +55,7 @@ describe("Portal.details.InfoPanel", function() {
             mockInfoPanel._constructInfoTabHtml(mockAbstract, mockLinkObjects);
 
             expect(mockInfoPanel.update.callCount).toBe(1);
-            expect(mockInfoPanel.html).toEqual(mockInfoPanel._getAbstractHtmlHeader(mockAbstract) + '<li><a class=\"external\" href=https://something.somewhere.com target="_blank">Zelda</a></li>\n</ul>');
+            expect(mockInfoPanel.html).toEqual(mockInfoPanel._getHtmlHeader(mockAbstract) + '<li><a class=\"external\" href=https://something.somewhere.com target="_blank">Zelda</a></li>\n</ul>');
         });
     });
 });
