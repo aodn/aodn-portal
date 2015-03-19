@@ -200,6 +200,7 @@ def defaultInstanceName = "IMOS"
 
 portal {
     siteHeader = "Open Access to Ocean Data"
+    motdUrl = "https://static.emii.org.au/motd"
 
     logo = "images/${defaultInstanceName}_logo.png"
     header {
