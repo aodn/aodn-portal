@@ -18,8 +18,6 @@ import static au.org.emii.portal.HttpUtils.Status.*
 
 class LayerController {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
     def grailsApplication
     def hostVerifier
 

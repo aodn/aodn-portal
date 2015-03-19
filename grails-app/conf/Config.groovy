@@ -86,7 +86,7 @@ downloadAuth {
 }
 
 featureToggles {
-    dynamicFilters = false
+    dynamicFilters = true
 }
 
 // Google Analytics
@@ -293,11 +293,7 @@ log4j = {
 
     warn    'org.mortbay.log'
 
-    info    'grails.app.tagLib.au.org.emii.portal.UserTagLib',
-        'grails.app.controller.au.org.emii.portal.LayerController',
-        'grails.app.controller.au.org.emii.portal.AuthController',
-        'grails.app.service.au.org.emii.portal.LayerService',
-        'au.org.emii.portal.display.MenuJsonCache',
+    info    'grails.app.controller.au.org.emii.portal.LayerController',
         'grails.app.controller'
 
     debug   'grails.app.job',

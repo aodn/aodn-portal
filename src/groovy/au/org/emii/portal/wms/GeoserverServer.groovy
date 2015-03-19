@@ -114,14 +114,6 @@ class GeoserverServer extends WmsServer {
         return outputStream.toString("utf-8")
     }
 
-    def _filtersForLayer(serverAddress, fullLayerName) {
-        def server = Server.findByUri(serverAddress)
-        def layerName = getLayerName(fullLayerName)
-        def layer = Layer.findByNameAndServer(layerName, server)
-
-        return layer.filters.asList().findAll{ it.enabled }
-    }
-
     static String getLayerWorkspace(fullLayerName) {
         if (fullLayerName.contains(":")) {
             return fullLayerName.split(":")[0]
