@@ -47,7 +47,7 @@ class GogoduckService extends AsyncDownloadService {
         def jobParameters = JSON.parse(jobParametersAsString)
 
         if (jobParameters?.subsetDescriptor?.temporalExtent?.end) {
-            def endTime = 
+            def endTime =
                 jobParameters.subsetDescriptor.temporalExtent.end.replace('Z', '999Z')
             jobParameters.subsetDescriptor.temporalExtent.end = endTime
 

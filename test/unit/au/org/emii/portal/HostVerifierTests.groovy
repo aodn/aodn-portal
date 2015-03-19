@@ -28,7 +28,7 @@ class HostVerifierTests extends GrailsUnitTestCase {
 
         _addConfig(
             mockConfig,
-            ["config", "knownServers"], 
+            ["config", "knownServers"],
             [
                 [ uri: 'http://geoserver.emii.org.au' ],
                 [ uri: 'http://geoserver.imos.org.au' ]

@@ -96,31 +96,31 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
             && this.toDate.getActiveError() == ''
             && this.toDate.getValue() != '';
     },
-    
+
     _onUpdate:function () {
         this._setMinMax();
-        
+
         if (this.isValid()) {
             this.fireEvent('valid');
         } else {
             this.fireEvent('invalid');
         }
     },
-    
+
     _setMinMax: function () {
         if (Ext.isDefined(this._updatingMinMax)) {
             return;
         }
-        
+
         this._updatingMinMax = true;
-        
+
         this.toDate.setMinValue(this.fromDate.getValue());
         this.toDate.validate();
         this.fromDate.setMaxValue(this.toDate.getValue());
         this.fromDate.validate();
-        
+
         delete this._updatingMinMax;
-        
+
     }
 });
 
