@@ -32,6 +32,23 @@ Portal.data.GeoNetworkRecord = function() {
         }
     };
 
+    var onlineResourcesField = {
+        name: 'onlineResources',
+        convert: function(v, record) {
+
+            var allLinks = convertXmlToLinks(v, record);
+            var onlineResources = [];
+
+            Ext.each(allLinks, function(linkToCheck) {
+                if (isOnlineResource(linkToCheck.protocol)) {
+                    onlineResources.push(linkToCheck);
+                }
+            });
+
+            return onlineResources;
+        }
+    };
+
     var bboxField = {
         name: 'bbox',
         convert: function(v, record) {
@@ -146,6 +163,17 @@ Portal.data.GeoNetworkRecord = function() {
         return (protocols.indexOf(protocol) >= 0);
     }
 
+    function isOnlineResource(protocol) {
+
+        var allowedOnlineResources = [];
+
+        Ext.each(Portal.app.appConfig.portal.onlineResourceLinks, function(protocol) {
+            allowedOnlineResources.push(protocol.trim());
+        });
+
+        return (allowedOnlineResources.indexOf(protocol) >= 0);
+    }
+
     var constructor = Ext.data.Record.create([
         'title',
         'abstract',
@@ -158,6 +186,7 @@ Portal.data.GeoNetworkRecord = function() {
         { name: 'temporalExtentEnd', mapping: 'tempExtentEnd' },
         linksField,
         linkedFilesField,
+        onlineResourcesField,
         pointOfTruthLinkField,
         dataDownloadHandlersField,
         'source',

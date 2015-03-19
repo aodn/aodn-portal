@@ -394,9 +394,10 @@ class LayerController {
         }
     }
 
-    def getFormattedMetadata = {
+    def getMetadataAbstract = {
 
-        def responseText
+        def response = "Error processing request"
+        def status
 
         if (params.uuid != null) {
 
@@ -409,53 +410,23 @@ class LayerController {
                     def xml = new XmlSlurper().parseText(metadataText)
                     //TODO: Validate schema before proceeding
 
-                    //Extract Abstract and resource links
                     def abstractText = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text())
-                    def onlineResourcesList = xml.distributionInfo.MD_Distribution.transferOptions.MD_DigitalTransferOptions.onLine.list()
 
-                    def html = "<!DOCTYPE html>\n"
-                    html += "<h4>Abstract</h4>${abstractText}<BR><h4>Online Resources</h4>\n"
-
-                    html += "<ul>\n"
-                    onlineResourcesList.each {
-                        if (!it.CI_OnlineResource.protocol.text().startsWith("OGC:WMS")) {
-                            def linkText = HtmlUtils.htmlEscape(it.CI_OnlineResource.description.CharacterString.text())
-                            def linkProtocol = HtmlUtils.htmlEscape(it.CI_OnlineResource.protocol.CharacterString.text())
-                            def linkUrl = it.CI_OnlineResource.linkage.URL.text()
-                            def linkExternal = ""
-                            if (linkUrl && linkUrl[0] != "/") {
-                                linkExternal = "class=\"external\""
-                            }
-                            // Overcome the case where the URL is valid but has no description
-                            if (!linkText) {
-                                linkText = "<i>Unnamed Resource</i>"
-                            }
-
-                            if (!linkProtocol.startsWith("IMOS:AGGREGATION")) {
-                                html += """<li><a ${linkExternal} href="${linkUrl}" target="_blank">${linkText}</a></li>\n"""
-                            }
-                        }
-                    }
-                    html += "</ul>"
-
-                    responseText = html
+                    response = abstractText
+                    status = 200
                 }
             }
             catch (SAXException e) {
-                log.warn("Error getting formatted metadata, params: ${params}", e)
-                responseText = "<BR>The metadata record is not available at this time."
+                //Generic server error
+                status = 500
             }
             catch (FileNotFoundException e) {
-                log.warn("Error getting formatted metadata, params: ${params}", e)
-                responseText = "<BR>The metadata record is not available at this time."
+                //File not found error
+                status = 404
             }
         }
 
-        if (!responseText) {
-            responseText = "<br>This data collection has no link to a metadata record"
-        }
-
-        render text: responseText, contentType: "text/html", encoding: "UTF-8"
+        render status: status, text: response
     }
 
     void _validateCredentialsAndAuthenticate(def params) {

@@ -300,6 +300,15 @@ portal {
         "WWW:LINK-1.0-http--downloaddata"
     ]
 
+    onlineResourceLinks = [
+        "WWW:LINK-1.0-http--metadata-URL",
+        "WWW:DOWNLOAD-1.0-http--downloadother",
+        "WWW:LINK-1.0-http--link",
+        "WWW:DOWNLOAD-1.0-http--download",
+        "WWW:DOWNLOAD-1.0-http--downloaddata",
+        "WWW:LINK-1.0-http--downloaddata"
+    ]
+
     metadataLayerProtocols = [
         "OGC:WMS-1.1.1-http-get-map",
         "OGC:WMS-1.3.0-http-get-map"
