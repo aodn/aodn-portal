@@ -12,12 +12,11 @@ class MarvlController extends DownloadController {
         }
 
         def propertyName = params.propertyName
-        def prefixToRemove = grailsApplication.config.marvl.urlList.prefixToRemove
-        def newUrlBase = grailsApplication.config.marvl.urlList.newUrlBase
+        def substitutions = grailsApplication.config.marvl.urlList.substitutions
 
         _performProxying(
             requestSingleFieldParamProcessor(propertyName),
-            urlListStreamProcessor(propertyName, prefixToRemove, newUrlBase)
+            urlListStreamProcessor(propertyName, substitutions)
         )
     }
 }
