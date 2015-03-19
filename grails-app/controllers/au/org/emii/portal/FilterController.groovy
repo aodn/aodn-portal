@@ -9,6 +9,9 @@ package au.org.emii.portal
 
 import grails.converters.JSON
 
+import static au.org.emii.portal.HttpUtils.Status.HTTP_500_INTERNAL_SERVER_ERROR
+import static au.org.emii.portal.HttpUtils.Status.getHTTP_400_BAD_REQUEST
+
 class FilterController {
 
     def index = {
@@ -143,7 +146,7 @@ class FilterController {
         }
         else {
             log.info "Credentials incorrect"
-            render text: "Credentials incorrect", status: 500
+            render text: "Credentials incorrect", status: HTTP_500_INTERNAL_SERVER_ERROR
         }
     }
 

@@ -2,6 +2,8 @@ package au.org.emii.portal
 
 import grails.test.*
 
+import static au.org.emii.portal.HttpUtils.Status.*
+
 class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
     def downloadAuthService
@@ -42,7 +44,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
         controller.index()
 
-        assertEquals 500, controller.renderArgs.status
+        assertEquals HTTP_500_INTERNAL_SERVER_ERROR, controller.renderArgs.status
     }
 
     void testParametersPassedToAggregatorService() {
@@ -84,7 +86,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
         controller.index()
 
-        assertEquals 500, controller.renderArgs.status
+        assertEquals HTTP_500_INTERNAL_SERVER_ERROR, controller.renderArgs.status
     }
 
     void testGogoduckJobSuccess() {
@@ -101,7 +103,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
         controller.index()
 
-        assertEquals 500, controller.renderArgs.status
+        assertEquals HTTP_500_INTERNAL_SERVER_ERROR, controller.renderArgs.status
     }
 
     void testNoSuchAggregator() {
@@ -109,7 +111,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
         controller.index()
 
-        assertEquals 500, controller.renderArgs.status
+        assertEquals HTTP_500_INTERNAL_SERVER_ERROR, controller.renderArgs.status
     }
 
 }

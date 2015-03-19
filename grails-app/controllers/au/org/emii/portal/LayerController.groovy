@@ -21,6 +21,8 @@ import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
 import grails.converters.JSON
 
+import static au.org.emii.portal.HttpUtils.Status.*
+
 class LayerController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -164,7 +166,7 @@ class LayerController {
             def queryString = request.queryString ? "?$request.queryString" : ""
             def msg = "Layer with id '$params.layerId' does not exist. URL was: $request.forwardURI$queryString"
             log.info msg
-            render text: msg, contentType: "text/html", encoding: "UTF-8", status: 500
+            render text: msg, contentType: "text/html", encoding: "UTF-8", status: HTTP_500_INTERNAL_SERVER_ERROR
         }
     }
 
@@ -219,8 +221,7 @@ class LayerController {
             _renderLayer(layerInstances[0])
         }
         else {
-            response.status = 404
-            render text: "Layer '${namespace}:${localName}' does not exist"
+            render text: "Layer '${namespace}:${localName}' does not exist", status: HTTP_404_NOT_FOUND
         }
     }
 
@@ -343,7 +344,7 @@ class LayerController {
 
             log.debug "Possible problem with '${ params.password }'"
 
-            render status: 401, text: "Credentials missing or incorrect"
+            render text: "Credentials missing or incorrect", status: HTTP_401_UNAUTHORISED
             return
         }
 
@@ -381,7 +382,7 @@ class LayerController {
                 log.debug "saveOrUpdate() on '$server' took ${new Date() - startTime}"
             }
 
-            render status: 200, text: "Complete (saved)"
+            render text: "Complete (saved)", status: HTTP_200_OK
 
             _recache(server)
         }
@@ -389,7 +390,7 @@ class LayerController {
 
             log.info "Error processing layer/saveOrUpdate request", e
 
-            render status: 500, text: "Error processing request: $e"
+            render text: "Error processing request: $e", status: HTTP_500_INTERNAL_SERVER_ERROR
         }
     }
 
@@ -514,7 +515,7 @@ class LayerController {
         }
         else {
 
-            render text: "Could not find Server with params: $params", status: 500
+            render text: "Could not find Server with params: $params", status: HTTP_500_INTERNAL_SERVER_ERROR
         }
     }
 
@@ -642,43 +643,50 @@ class LayerController {
     }
 
     def getStylesAsJSON = {
-        if (hostVerifier.allowedHost(params.server)) {
-            def server = params.server
-            def layer = params.layer
-            def serverObject = _getServerClass(params.serverType)
 
-            render text: serverObject.getStyles(server, layer) as JSON
+        def (server, layer, serverType) = parseParams(params)
+
+        if (hostVerifier.allowedHost(server)) {
+            def serverObject = _getServerClass(serverType)
+
+            render serverObject.getStyles(server, layer) as JSON
         }
         else {
-            render text: "Host '$params.server' not allowed"
+            render text: "Host '$params.server' not allowed", status: HTTP_502_BAD_GATEWAY
         }
     }
 
     def getFilterValuesAsJSON = {
-        if (hostVerifier.allowedHost(params.server)) {
-            def server = params.server
-            def layer = params.layer
-            def filter = params.filter
-            def serverObject = _getServerClass(params.serverType)
 
-            render text: serverObject.getFilterValues(server, layer, filter) as JSON
+        def (server, layer, serverType, filter) = parseParams(params)
+
+        if (hostVerifier.allowedHost(server)) {
+            def serverObject = _getServerClass(serverType)
+
+            render serverObject.getFilterValues(server, layer, filter) as JSON
         }
         else {
-            render text: "Host '$params.server' not allowed"
+            render text: "Host '$params.server' not allowed", status: HTTP_502_BAD_GATEWAY
         }
     }
 
     def getFiltersAsJSON = {
-        if (hostVerifier.allowedHost(params.server)) {
-            def server = params.server
-            def layer = params.layer
-            def serverObject = _getServerClass(params.serverType)
 
-            render text: serverObject.getFilters(server, layer) as JSON
+        def (server, layer, serverType) = parseParams(params)
+
+        if (hostVerifier.allowedHost(server)) {
+            def serverObject = _getServerClass(serverType)
+
+            render serverObject.getFilters(server, layer) as JSON
         }
         else {
-            render text: "Host '$params.server' not allowed"
+            render text: "Host '$params.server' not allowed", status: HTTP_502_BAD_GATEWAY
         }
+    }
+
+    def parseParams(params) {
+
+        [params.server, params.layer, params.serverType, params.filter]
     }
 
     def editFilters = {

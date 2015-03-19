@@ -11,6 +11,8 @@ import au.org.emii.portal.config.JsonMarshallingRegistrar
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONObject
 
+import static au.org.emii.portal.HttpUtils.Status.*
+
 class SnapshotController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -84,7 +86,7 @@ class SnapshotController {
                     render(view: "create", model: [snapshotInstance: snapshotInstance])
                 }
                 json {
-                    render text: snapshotInstance.errors as JSON, status: 400, contentType: "application/json", encoding: "UTF-8"
+                    render text: snapshotInstance.errors as JSON, status: HTTP_400_BAD_REQUEST, contentType: "application/json", encoding: "UTF-8"
                 }
             }
         }
@@ -98,7 +100,7 @@ class SnapshotController {
 
             if (params.type == 'JSON') {
 
-                render text: flash.message, status: 404
+                render text: flash.message, status: HTTP_404_NOT_FOUND
             }
             else {
 
@@ -166,7 +168,7 @@ class SnapshotController {
 
                 if (params.type == 'JSON') {
 
-                    render text: flash.message, status: 200
+                    render text: flash.message, status: HTTP_200_OK
                 }
                 else {
 
@@ -178,7 +180,7 @@ class SnapshotController {
 
                 if (params.type == 'JSON') {
 
-                    render text: flash.message, status: 500
+                    render text: flash.message, status: HTTP_500_INTERNAL_SERVER_ERROR
                 }
                 else {
 
@@ -191,7 +193,7 @@ class SnapshotController {
 
             if (params.type == 'JSON') {
 
-                render text: flash.message, status: 404
+                render text: flash.message, status: HTTP_404_NOT_FOUND
             }
             else {
 

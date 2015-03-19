@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import static au.org.emii.portal.HttpUtils.Status.*
+
 class AsyncDownloadController {
 
     def gogoduckService
@@ -46,7 +48,7 @@ class AsyncDownloadController {
         }
         catch (Exception e) {
             log.error "Problem registering new aggregator job with type '$aggregatorServiceString' and parameters: '$params'", e
-            render text: 'Problem registering new aggregator job', status: 500
+            render text: 'Problem registering new aggregator job', status: HTTP_500_INTERNAL_SERVER_ERROR
         }
     }
 }

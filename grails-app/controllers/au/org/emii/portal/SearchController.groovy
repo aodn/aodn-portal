@@ -9,6 +9,8 @@ package au.org.emii.portal
 
 import grails.converters.JSON
 
+import static au.org.emii.portal.HttpUtils.Status.getHTTP_400_BAD_REQUEST
+
 class SearchController {
 
     static allowedMethods = [save: "POST", delete: "POST"]
@@ -38,7 +40,7 @@ class SearchController {
             render searchInstance as JSON
         }
         else {
-            render text: searchInstance.errors as JSON, status: 400, contentType: "application/json", encoding: "UTF-8"
+            render text: searchInstance.errors as JSON, status: HTTP_400_BAD_REQUEST, contentType: "application/json", encoding: "UTF-8"
         }
     }
 
@@ -46,7 +48,7 @@ class SearchController {
 
         def searchInstance = Search.get(params.id)
         if (!searchInstance) {
-            render text: "${message(code: 'default.not.found.message', args: [message(code: 'search.label', default: 'Search'), params.id])}" as JSON, status: 400
+            render text: "${message(code: 'default.not.found.message', args: [message(code: 'search.label', default: 'Search'), params.id])}" as JSON, status: HTTP_400_BAD_REQUEST
             redirect(action: "list")
         }
         else {

@@ -2,6 +2,8 @@ package au.org.emii.portal
 
 import grails.test.ControllerUnitTestCase
 
+import static au.org.emii.portal.HttpUtils.Status.*
+
 class WfsScannerControllerTests extends ControllerUnitTestCase {
     def sampleScanJobList = ["Scan Job 1", "Scan Job 2"]
 
@@ -67,7 +69,7 @@ class WfsScannerControllerTests extends ControllerUnitTestCase {
             return [openConnection: {
                 return [connect: {},
                     content: [text: responseText],
-                    responseCode: 200
+                    responseCode: HTTP_200_OK
                 ]
             }]
         }
@@ -84,7 +86,7 @@ class WfsScannerControllerTests extends ControllerUnitTestCase {
             return [openConnection: {
                 return [connect: { throw new Exception("Test Exception") },
                     errorStream: errorStream,
-                    responseCode: 500
+                    responseCode: HTTP_500_INTERNAL_SERVER_ERROR
                 ]
             }]
         }
