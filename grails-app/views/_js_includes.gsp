@@ -148,7 +148,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecordFetcher.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecordStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'ActiveGeoNetworkRecordStore.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'UrlUpdater.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'EmptyDropZonePlaceholder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/mainMap', file: 'map.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'GeoExt.ux.BaseLayerCombobox.js')}"></script>

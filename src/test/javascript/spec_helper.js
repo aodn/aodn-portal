@@ -18,8 +18,6 @@ Ext.Ajax.request = function(options) {
 // Ref: http://stackoverflow.com/questions/11942085/is-there-a-way-to-add-a-jasmine-matcher-to-the-whole-environment
 beforeEach(function() {
 
-    mockWindowHistoryPushState();
-
     setupTestConfigAndStubs();
     this.addMatchers({
         toBeSame: function(expected) {
@@ -177,12 +175,4 @@ var textToXML = function(text) {
     }
     catch (e) {
     }
-};
-
-var mockWindowHistoryPushState = function() {
-    // This only exists in HTML5 - which is not the case when jasmine tests are run as part of "mvn test".
-    if (!window.history.pushState) {
-        window.history.pushState = noOp;
-    }
-    spyOn(window.history, 'pushState');
 };
