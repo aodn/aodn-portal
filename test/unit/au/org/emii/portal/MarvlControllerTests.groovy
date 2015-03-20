@@ -14,8 +14,9 @@ class MarvlControllerTests extends ControllerUnitTestCase {
             config: new ConfigSlurper().parse("""
                 marvl {
                     urlList {
-                        prefixToRemove = "/mnt/files/"
-                        newUrlBase = "http://data.aodn.org.au/"
+                        substitutions = [
+                            '/mnt/files/': 'http://data.imos.org.au/'
+                        ]
                     }
                 }"""
             )
@@ -32,26 +33,37 @@ class MarvlControllerTests extends ControllerUnitTestCase {
             return testParamProcessor
         }
 
-        def testStreamProcessor = new Object()
-        controller.metaClass.urlListStreamProcessor = { propertyName, prefixToRemove, newUrlBase ->
-            assertEquals "the_property", propertyName
-            assertEquals "/mnt/files/", prefixToRemove
-            assertEquals "http://data.aodn.org.au/", newUrlBase
-            return testStreamProcessor
-        }
-
         def performProxyingCalledCount = 0
         controller._performProxying = { paramProcessor, streamProcessor ->
 
             performProxyingCalledCount++
 
             assertEquals testParamProcessor, paramProcessor
-            assertEquals testStreamProcessor, streamProcessor
+            _verifyStreamProcessor(streamProcessor)
         }
 
         controller.urlListForFeatureRequest()
 
         assertEquals 1, performProxyingCalledCount
+    }
+
+    void _verifyStreamProcessor(processor) {
+
+        def input = """\
+            FID,the_property
+            aatams_sattag_nrt_wfs.331443,/mnt/files/IMOS/Q9900542.nc
+        """
+
+        def expectedOutput = """\
+http://data.imos.org.au/IMOS/Q9900542.nc\n\
+"""
+
+        def inputStream = new ByteArrayInputStream(input.bytes)
+        def outputStream = new ByteArrayOutputStream()
+
+        processor(inputStream, outputStream)
+
+        assertEquals expectedOutput, outputStream.toString("UTF-8")
     }
 
     void testUrlListForFeatureRequestPropertyNameMissing() {
