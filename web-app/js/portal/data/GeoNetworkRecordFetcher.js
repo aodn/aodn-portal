@@ -34,13 +34,10 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
             // Is there a more direct way to easily get a GeoNetworkRecord from XML?
             var store = new Portal.data.GeoNetworkRecordStore();
             store.loadData(response.responseXML);
+            var record = store.getAt(0);
 
-            if (store.getCount() > 0) {
-                var record = store.getAt(0);
-
-                Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
-                Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
-            }
+            Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
+            Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
         });
     },
 

@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2012 IMOS
  *
@@ -14,7 +15,6 @@ describe("Portal.ui.MainPanel", function() {
 
     beforeEach(function() {
 
-        Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
         spyOn(Portal.ui.MainToolbar.prototype, "_registerEvents").andCallFake(function() {});
 
         Portal.app.appConfig.portal = {footer: {}};

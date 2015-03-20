@@ -18,9 +18,5 @@ Portal.data.GeoNetworkRecordStore = Ext.extend(Ext.data.XmlStore, {
         };
 
         Portal.data.GeoNetworkRecordStore.superclass.constructor.call(this, config);
-    },
-
-    getUuids: function() {
-        return this.collect('uuid');
     }
 });
