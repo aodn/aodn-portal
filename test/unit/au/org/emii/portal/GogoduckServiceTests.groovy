@@ -32,10 +32,10 @@ class GogoduckServiceTests extends GrailsUnitTestCase {
         ]
 
         service.metaClass._gogoduckConnection = { -> testConnection }
-        service.metaClass._roundUpEndTime = { 
-            params -> 
-            roundUpEndTimeCount++ 
-       
+        service.metaClass._roundUpEndTime = {
+            params ->
+            roundUpEndTimeCount++
+
             params
         }
 
@@ -79,7 +79,7 @@ class GogoduckServiceTests extends GrailsUnitTestCase {
         def alteredJobParams = service._roundUpEndTime(jobParams)
 
         assertTrue alteredJobParams.contains("2009-12-25T23:04:36.923999Z")
-        
+
         // Unchanged.
         assertTrue alteredJobParams.contains("2009-01-01T00:00:00.000Z")
     }

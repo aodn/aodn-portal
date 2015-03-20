@@ -3,8 +3,8 @@ AODN Open Geospatial Portal
 
 [![Build Status](https://travis-ci.org/aodn/aodn-portal.png?branch=master)](https://travis-ci.org/aodn/aodn-portal)
 
-The AODN open geospatial portal is a [Grails](http://grails.org/) application for finding, visualising, and downloading geospatial data. 
-The application integrates with the [GeoNetwork](http://geonetwork-opensource.org/) metadata catalog and [OGC Web Map Services](http://www.opengeospatial.org/standards/wms). 
+The AODN open geospatial portal is a [Grails](http://grails.org/) application for finding, visualising, and downloading geospatial data.
+The application integrates with the [GeoNetwork](http://geonetwork-opensource.org/) metadata catalog and [OGC Web Map Services](http://www.opengeospatial.org/standards/wms).
 
 You can view the portal in action at the following locations;
 
@@ -25,7 +25,6 @@ Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_h
 * Save and share data visualisations.
 * Subset and aggregate multiple datasets into a single file for download.
 * Filter data before download.
-* OpenID authentication.
 * Advanced spatial search that ensures results have features in the region of interest.  Not just a bounding box intersection.
 
 ## Quick Navigation
@@ -91,7 +90,6 @@ Portal has a few collaborating applications that you may also want to deploy
 
 * [GeoNetwork](http://geonetwork-opensource.org/)
 * [Geoserver](http://geoserver.org/)
-* [An OpenID provider](http://openid.net/)
 
 If you want to mimic the AODN portal searching capabilities then you should consider deploying an instance of
 [spatial search](https://github.com/aodn/spatial-search) note that spatial search has a dependency on a specific

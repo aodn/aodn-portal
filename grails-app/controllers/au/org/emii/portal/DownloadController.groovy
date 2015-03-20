@@ -251,10 +251,13 @@ class DownloadController extends RequestProxyingController {
         }
     }
 
-    def _loadCommonFields(params) {
+    def _getServer(host) {
+        return grailsApplication.config.knownServers.find { it.uri.toURL().host == host }
+    }
 
+    def _loadCommonFields(params) {
         def url = params.url.toURL()
-        def server = Server.findByUriLike("%${url.host}%")
+        def server = _getServer(url.host)
 
         return [
             params.remove('urlFieldName'),

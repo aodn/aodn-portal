@@ -157,7 +157,7 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
     _hasSelectableDrilldown: function(node) {
         if (this.searcher.hasDrilldown(node.getHierarchy('value'))) {
             return false;
-        } 
+        }
 
         if (!node.hasChildNodes()) {
             return true;

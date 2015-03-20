@@ -61,39 +61,10 @@ grails.spring.bean.packages = []
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
 
-// Database migration.
-grails.plugin.databasemigration.updateOnStart = true
-grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
-
 // Portal help site
 help {
     url = "http://help.aodn.org.au"
     downloadDatasetUrl = "${help.url}/?q=node/6"
-}
-
-// AODAAC Aggregator
-aodaacAggregator {
-    url = "http://aodaac.aodn.org.au"
-    environment = "prod"
-    allowApiCalls = true
-    apiCallsConnectTimeout = 1000
-    apiCallsReadTimeout = 2000
-    idleJobTimeout = 1 // In hours
-    errorLookup = [
-        /.*java\.lang\.Exception: requested ~ [0-9]+ bytes; limit = [0-9]+/: {
-
-            errorMessage ->
-
-            def numBytes = (errorMessage =~ /[0-9]+/)
-            assert(numBytes.count == 2): "Expecting 2 numerical values in error string: " + errorMessage
-            def actualBytes = Long.valueOf(numBytes[0])
-            def limitBytes = Long.valueOf(numBytes[1])
-
-            def amountOver = Math.round(actualBytes/limitBytes)
-
-            return "The requested job will have too much data. You have requested roughly ${amountOver} times the maximum output size."
-        }
-    ]
 }
 
 // Depth service
@@ -114,21 +85,8 @@ downloadAuth {
     maxAggregatedDownloadsPeriodMinutes = 10
 }
 
-// OpenID
-openId {
-    // openID provider details to support login popup etc
-    providers = [
-        [name: "Google", iconHref: "images/openid_icons/Google.png", providerHref: "https://www.google.com/accounts/o8/id"],
-        [name: "Yahoo",  iconHref: "images/openid_icons/Yahoo.png",  providerHref: "https://me.yahoo.com/"]
-        // Add your own providers here ...
-    ]
-
-    // Enable user to supply their their own OpenId url via textfield in popup list
-    enableUserSuppliedProvider = true
-}
-
 featureToggles {
-    filterSource = 'database' // Todo - DN: This can go back to being a boolean when we've removed loading filters from the DB
+    dynamicFilters = true
 }
 
 // Google Analytics
@@ -144,39 +102,21 @@ environments {
 
         // URLs
         grails.serverURL = env['WMS_HOST_URL'] ?: "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
-        wmsScanner.url = env['WMS_SCANNER_URL'] ?: "http://localhost:8100/WmsScannerGrails/"
-        wfsScanner.url = env['WFS_SCANNER_URL'] ?: "http://localhost:8200/wfsScanner"
         gogoduck.url = env['GOGODUCK_URL'] ?: "http://localhost:8300/go-go-duck"
         geonetwork.url = env['GEONETWORK_URL'] ?: "https://catalogue-123.aodn.org.au/geonetwork"
-
-        grails.mail.disabled = true
     }
 
     test {
 
         // URLs
         grails.serverURL = "http://localhost:8080/$appName"
-
-        grails.mail.disabled = true
-        grails.plugin.databasemigration.updateOnStart = false
-        aodaacAggregator.allowApiCalls = false
     }
 
     production {
 
         // URLs
         grails.serverURL = "http://myaodn.example.com"
-        wmsScanner.url = "http://wmsscannerpublic.aodn.org.au/wmsscanner/"
-        wfsScanner.url = "http://wfsscannerpublic.aodn.org.au/wfsscanner"
         geonetwork.url = "http://catalogue-123.aodn.org.au/geonetwork"
-
-        grails {
-            mail {
-                host = "localhost"
-                port = 25
-                props = ["mail.smtp.auth": "false"]
-            }
-        }
     }
 }
 
@@ -260,6 +200,7 @@ def defaultInstanceName = "IMOS"
 
 portal {
     siteHeader = "Open Access to Ocean Data"
+    motdUrl = "https://static.emii.org.au/motd"
 
     logo = "images/${defaultInstanceName}_logo.png"
     header {
@@ -279,11 +220,6 @@ portal {
         <a title="Integrated Marine Observing System" target="_blank" href="http://www.imos.org.au">IMOS</a>  <b>|</b>
         <a title="Australian Ocean Data Network" target="_blank" href="http://imos.org.au/aodn.html">AODN</a>
         """
-
-    // Change authentication emails for IMOS
-    systemEmail {
-        fromAddress = "info@example.com"
-    }
 
     initialBbox = "110,-50,160,-3"
     autoZoom = false
@@ -354,24 +290,15 @@ log4j = {
         'org.codehaus.groovy.grails.plugins', // plugins
         'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
         'org.springframework',
-        'org.hibernate',
-        'net.sf.ehcache.hibernate',
         'org.grails.plugin.resource.ResourceMeta'
 
     warn    'org.mortbay.log'
 
-    info    'grails.app.tagLib.au.org.emii.portal.UserTagLib',
-        'grails.app.filters.shiro.SecurityFilters',
-        'grails.app.controller.au.org.emii.portal.LayerController',
-        'grails.app.controller.au.org.emii.portal.AuthController',
-        'grails.app.service.au.org.emii.portal.LayerService',
-        'au.org.emii.portal.display.MenuJsonCache',
-        'org.apache.shiro',
+    info    'grails.app.controller.au.org.emii.portal.LayerController',
         'grails.app.controller'
 
     debug   'grails.app.job',
         'grails.app.tagLib',
-        'grails.app.service.au.org.emii.portal.AodaacAggregatorService',
         'grails.app.controller.au.org.emii.portal.SystemController',
         'grails.app.domain',
         'grails.app.realms'

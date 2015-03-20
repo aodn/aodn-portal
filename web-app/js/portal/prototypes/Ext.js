@@ -26,13 +26,13 @@ Ext.tree.TreeNode.prototype.clone = function(recursive) {
     var clone = new Ext.tree.TreeNode();
     Ext.applyIf(clone.attributes, this.attributes);
     clone.setText(this.text);
-    
+
     if (recursive) {
         this.eachChild(function(childNode) {
             clone.appendChild((childNode.clone(true)));
         });
     }
-    
+
     return clone;
 };
 

@@ -42,7 +42,7 @@ Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     hasDrilldown: function() {
-        return this._selectedNodeValueHierarchy  
+        return this._selectedNodeValueHierarchy
             && this._selectedNodeValueHierarchy != this.root.toValueHierarchy();
     },
 
@@ -182,6 +182,6 @@ Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
 
     _hasPreviouslyBeenSelected: function(node) {
         var drilldown = node.getHierarchy('value');
-        return this.searcher.hasDrilldown(drilldown); 
+        return this.searcher.hasDrilldown(drilldown);
     }
 });
