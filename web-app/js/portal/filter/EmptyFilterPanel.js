@@ -20,7 +20,7 @@ Portal.filter.EmptyFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
 
         return {
             visualised: false
-        }
+        };
     },
 
     handleRemoveFilter: function() {},

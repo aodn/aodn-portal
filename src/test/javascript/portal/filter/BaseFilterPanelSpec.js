@@ -47,7 +47,8 @@ describe("Portal.filter.BaseFilterPanel", function() {
             newFilterPanelFor({
                 layer: {},
                 filter: {
-                    getType: function() { return filterTypeAsString }
+                    getType: function() { return filterTypeAsString },
+                    getName: function() { return 'filter name' }
                 }
             });
 
