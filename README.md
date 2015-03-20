@@ -20,11 +20,9 @@ Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_h
 ## Features
 
 * Faceted search for easy navigation of datasets.
-* Animation controls such as pause, fast-forward, etc.
 * Configurable themes and splash page.
-* Save and share data visualisations.
-* Subset and aggregate multiple datasets into a single file for download.
 * Filter data before download.
+* Subset and aggregate multiple datasets into a single file for download.
 * Advanced spatial search that ensures results have features in the region of interest.  Not just a bounding box intersection.
 
 ## Quick Navigation
@@ -71,17 +69,14 @@ descriptive enough to get you up and running however you can always shoot questi
 Certain config items can be overridden by setting environment variables appropriately when running in development mode, e.g.:
 
 ```
-$ WFS_SCANNER_URL="http://10.11.12.13/wfsscanner" grails run-app
+$ GOGODUCK_URL="http://10.11.12.13/gogoduck" grails run-app
 ```
 
 The full list of overridable configuration items is:
 
-* DATA_SOURCE_URL
-* DATA_SOURCE_USERNAME
-* DATA_SOURCE_PASSWORD
-* WMS_SCANNER_URL
-* WFS_SCANNER_URL
+* WMS_HOST_URL
 * GOGODUCK_URL
+* GEONETWORK_URL
 * LOG4J_CONVERSION_PATTERN
 
 ### Collaborating Applications
@@ -91,13 +86,6 @@ Portal has a few collaborating applications that you may also want to deploy
 * [GeoNetwork](http://geonetwork-opensource.org/)
 * [Geoserver](http://geoserver.org/)
 
-If you want to mimic the AODN portal searching capabilities then you should consider deploying an instance of
-[spatial search](https://github.com/aodn/spatial-search) note that spatial search has a dependency on a specific
-minimum version of GeoNetwork. If you cannot deploy at least that version then you should consider not using spatial
-search for performance reasons and using GeoNetwork directly for spatial extent searching. Note that at time of writing
-this means that your results may not be as fine grained as available via spatial search.
-
 ## Getting Started (How Do I Drive This Thing?)
 
 Read the [Getting Started guide](https://github.com/aodn/aodn-portal/wiki/Getting-Started) on the wiki
-
