@@ -86,6 +86,8 @@ downloadAuth {
 }
 
 featureToggles {
+    // someFeature = <boolean>
+    chatOnFailedSearch = true
     dynamicFilters = true
 }
 

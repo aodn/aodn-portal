@@ -7,6 +7,21 @@
 
 Ext.namespace('Portal.ui');
 
+window.onbeforeunload = function() {
+
+    if (   Portal.config.isFeatureToggleEnabled('chatOnFailedSearch')
+        && (Portal.ui.MainPanel.maxStepReached < TAB_INDEX_VISUALISE)) {
+        // Replace this with a better UI...
+        return String.format(
+            "It looks like you didn't find what you were looking for. Want to chat - go to this link: {0}",
+            'http://webchat.freenode.net?channels=%23imos&uio=d4'
+        );
+    }
+    else {
+        return undefined;
+    }
+};
+
 Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     constructor: function(cfg) {
 

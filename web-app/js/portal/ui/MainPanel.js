@@ -60,6 +60,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     setActiveTab: function(tabIndex) {
+        Portal.ui.MainPanel.maxStepReached = Math.max(tabIndex, Portal.ui.MainPanel.maxStepReached);
         this.layout.setActiveTab(tabIndex);
     },
 
@@ -85,3 +86,5 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         }
     }
 });
+
+Portal.ui.MainPanel.maxStepReached = TAB_INDEX_SEARCH;
