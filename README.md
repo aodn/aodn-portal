@@ -6,11 +6,7 @@ AODN Open Geospatial Portal
 The AODN open geospatial portal is a [Grails](http://grails.org/) application for finding, visualising, and downloading geospatial data.
 The application integrates with the [GeoNetwork](http://geonetwork-opensource.org/) metadata catalog and [OGC Web Map Services](http://www.opengeospatial.org/standards/wms).
 
-You can view the portal in action at the following locations;
-
-* [IMOS](http://imos.aodn.org.au) the [Integrated Marine Observation Systems](http://www.imos.org.au) portal (always runs the latest version of the code)
-* [AODN](http://portal.aodn.org.au) the [Australian Ocean Data Network](http://imos.org.au/aodn.html) portal
-* [WAODN](http://wa.aodn.org.au) a Western Australia-focused portal
+You can view the portal in action at [IMOS](http://imos.aodn.org.au), which always runs the latest version of the code.
 
 The IMOS Portal publishes the [IMOS data collection](https://imos.aodn.org.au/data_collections.html).
 
