@@ -106,11 +106,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
         var filterLayer = layer.wmsName;
 
-        // Todo - DN: The filterSource and shouldUseDownloadLayerIfPossible variables will be redundant when we go stateless and can be removed
-        var filterSource = Portal.app.appConfig.featureToggles.filterSource;
-        var shouldUseDownloadLayerIfPossible = filterSource !== 'database';
-
-        if (shouldUseDownloadLayerIfPossible && layer.getDownloadLayer) {
+        if (layer.getDownloadLayer) {
             filterLayer = layer.getDownloadLayer();
         }
 
