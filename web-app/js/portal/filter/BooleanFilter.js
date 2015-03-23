@@ -14,7 +14,7 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.Filter, {
         return ['boolean'];
     },
 
-    getUiComponentConstructor: function() {
+    getUiComponentClass: function() {
 
         return Portal.filter.ui.BooleanFilterPanel;
     }

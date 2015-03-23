@@ -14,7 +14,7 @@ Portal.filter.GeometryFilter = Ext.extend(Portal.filter.Filter, {
         return ['pointpropertytype', 'geometrypropertytype', 'multilinepropertytype', 'surfacepropertytype', 'curvepropertytype'];
     },
 
-    getUiComponentConstructor: function() {
+    getUiComponentClass: function() {
 
         return Portal.filter.ui.GeometryFilterPanel;
     }

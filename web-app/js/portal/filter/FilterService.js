@@ -45,7 +45,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
         Ext.each(filterDetails, function(filterDetail) {
 
-            var filterConstructor = Portal.filter.Filter.constructorFor(filterDetail);
+            var filterConstructor = Portal.filter.Filter.classFor(filterDetail);
 
             if (filterConstructor) {
 

@@ -14,7 +14,7 @@ Portal.filter.StringFilter = Ext.extend(Portal.filter.Filter, {
         return ['string'];
     },
 
-    getUiComponentConstructor: function() {
+    getUiComponentClass: function() {
 
         return Portal.filter.ui.ComboFilterPanel;
     }

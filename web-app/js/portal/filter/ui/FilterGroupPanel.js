@@ -203,8 +203,8 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _createFilterPanel: function(filter) {
 
-        var filterClass = Portal.filter.Filter.constructorFor(filter);
-        var uiElementClass = filterClass.prototype.getUiComponentConstructor();
+        var filterClass = Portal.filter.Filter.classFor(filter);
+        var uiElementClass = filterClass.prototype.getUiComponentClass();
         var newFilterPanel = new uiElementClass({
             filter: filter,
             layer: this.layer

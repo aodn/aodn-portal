@@ -14,7 +14,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
         return ['double', 'float', 'integer', 'int', 'long', 'short', 'decimal'];
     },
 
-    getUiComponentConstructor: function() {
+    getUiComponentClass: function() {
 
         return Portal.filter.ui.NumberFilterPanel;
     }
