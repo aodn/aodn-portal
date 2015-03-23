@@ -12,5 +12,10 @@ Portal.filter.StringFilter = Ext.extend(Portal.filter.Filter, {
     getSupportedGeoserverTypes: function() {
 
         return ['string'];
+    },
+
+    getUiComponentConstructor: function() {
+
+        return Portal.filter.ui.ComboFilterPanel;
     }
 });
