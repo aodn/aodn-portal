@@ -72,7 +72,7 @@ class LayerController {
         }
     }
 
-    def getStylesAsJSON = {
+    def getStyles = {
         def (server, layer, serverType) = parseParams(params)
 
         if (hostVerifier.allowedHost(server)) {
@@ -86,7 +86,7 @@ class LayerController {
         }
     }
 
-    def getFilterValuesAsJSON = {
+    def getFilterValues = {
         def (server, layer, serverType, filter) = parseParams(params)
 
         if (hostVerifier.allowedHost(server)) {
@@ -99,7 +99,7 @@ class LayerController {
         }
     }
 
-    def getFiltersAsJSON = {
+    def getFilters = {
         def (server, layer, serverType) = parseParams(params)
 
         if (hostVerifier.allowedHost(server)) {
