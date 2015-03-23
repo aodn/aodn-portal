@@ -40,9 +40,6 @@ class GeoserverServer extends WmsServer {
                 ])
             }
         }
-        catch (org.xml.sax.SAXParseException e) {
-            log.error "Cannot parse XML filters for server '${server}', layer '${layer}'"
-        }
         catch (e) {
             log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
         }
@@ -83,9 +80,6 @@ class GeoserverServer extends WmsServer {
             def xml = new XmlSlurper().parseText(_getFilterValuesXml(server, layer, filter))
 
             values = xml.value.collect { it.text() }
-        }
-        catch (org.xml.sax.SAXParseException e) {
-            log.error "Cannot parse XML filter values for server '${server}', layer '${layer}', filter '${filter}'"
         }
         catch (e) {
             log.error "Unable to parse filters values for server '${server}', layer '${layer}', filter '${filter}'", e
