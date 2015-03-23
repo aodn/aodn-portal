@@ -68,7 +68,7 @@ class LayerController {
             return new NcwmsServer()
         }
         else {
-            return new GeoserverServer(grailsApplication.config.featureToggles.dynamicFilters)
+            return new GeoserverServer(grailsApplication.config.filtering.filePath)
         }
     }
 
