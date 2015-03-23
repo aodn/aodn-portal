@@ -42,6 +42,6 @@ class HomeController {
     }
 
     def css = {
-        render text: portalBranding.css
+        render text: portalBranding.css, contentType: "text/css"
     }
 }
