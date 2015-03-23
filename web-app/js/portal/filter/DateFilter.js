@@ -14,7 +14,7 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
         return ['date', 'datetime'];
     },
 
-    getUiComponentConstructor: function() {
+    getUiComponentClass: function() {
 
         return Portal.filter.ui.DateFilterPanel;
     }

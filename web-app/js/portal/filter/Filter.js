@@ -71,9 +71,9 @@ Portal.filter.Filter = Ext.extend(Object, {
         throw 'Subclasses must implement the getSupportedGeoserverTypes function'
     },
 
-    getUiComponentConstructor: function() {
+    getUiComponentClass: function() {
 
-        throw 'Subclasses must implement the getUiComponentConstructor function'
+        throw 'Subclasses must implement the getUiComponentClass function'
     },
 
     getHumanReadableForm: function() {
@@ -87,7 +87,7 @@ Portal.filter.Filter = Ext.extend(Object, {
     }
 });
 
-Portal.filter.Filter.constructorFor = function(filterConfig) {
+Portal.filter.Filter.classFor = function(filterConfig) {
 
     var filterConstructors = [
         Portal.filter.BooleanFilter,
