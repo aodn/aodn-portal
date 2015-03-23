@@ -30,7 +30,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     wmsLayerProblem: "There is a problem with the availability of this collection",
     pickAStyle : ' ** Pick a style ** ',
     noActiveCollectionSelected: "No data collections selected",
-    dataCollectionsTitle: "Data Collections",
+    dataCollectionsTitle: "Subsetting data collection:",
     noCollectionSelectedHelp: "Please return and search for data collections.",
 
     // Geographic Bounds
