@@ -18,6 +18,9 @@ class GeoserverServerTests extends GrailsUnitTestCase {
 
     protected void setUp() {
         super.setUp()
+
+        mockLogging(GeoserverServer)
+
         geoserverServer = new GeoserverServer(true)
 
         validGeoserverResponse =
