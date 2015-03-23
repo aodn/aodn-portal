@@ -44,8 +44,6 @@ grails.views.gsp.encoding = "UTF-8"
 grails.converters.encoding = "UTF-8"
 // enable Sitemesh preprocessing of GSP pages
 grails.views.gsp.sitemesh.preprocess = true
-// scaffolding templates configuration
-grails.scaffolding.templates.domainSuffix = 'Instance'
 
 // Set to false to use the new Grails 1.2 JSONBuilder in the render method
 grails.json.legacy.builder = false
@@ -289,7 +287,6 @@ log4j = {
         'org.codehaus.groovy.grails.web.mapping', // URL mapping
         'org.codehaus.groovy.grails.commons', // core / classloading
         'org.codehaus.groovy.grails.plugins', // plugins
-        'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
         'org.springframework',
         'org.grails.plugin.resource.ResourceMeta'
 
@@ -300,9 +297,7 @@ log4j = {
 
     debug   'grails.app.job',
         'grails.app.tagLib',
-        'grails.app.controller.au.org.emii.portal.SystemController',
-        'grails.app.domain',
-        'grails.app.realms'
+        'grails.app.controller.au.org.emii.portal.SystemController'
 }
 
 /**
