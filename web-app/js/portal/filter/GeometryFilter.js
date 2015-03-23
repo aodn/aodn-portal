@@ -8,4 +8,9 @@
 Ext.namespace('Portal.filter');
 
 Portal.filter.GeometryFilter = Ext.extend(Portal.filter.Filter, {
+
+    getSupportedGeoserverTypes: function() {
+
+        return ['pointpropertytype', 'geometrypropertytype', 'multilinepropertytype', 'surfacepropertytype', 'curvepropertytype'];
+    }
 });
