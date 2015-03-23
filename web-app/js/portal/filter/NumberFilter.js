@@ -12,5 +12,10 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
     getSupportedGeoserverTypes: function() {
 
         return ['double', 'float', 'integer', 'int', 'long', 'short', 'decimal'];
+    },
+
+    getUiComponentConstructor: function() {
+
+        return Portal.filter.ui.NumberFilterPanel;
     }
 });

@@ -12,5 +12,10 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
     getSupportedGeoserverTypes: function() {
 
         return ['date', 'datetime'];
+    },
+
+    getUiComponentConstructor: function() {
+
+        return Portal.filter.ui.DateFilterPanel;
     }
 });

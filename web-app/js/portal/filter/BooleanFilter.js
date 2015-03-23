@@ -12,5 +12,10 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.Filter, {
     getSupportedGeoserverTypes: function() {
 
         return ['boolean'];
+    },
+
+    getUiComponentConstructor: function() {
+
+        return Portal.filter.ui.BooleanFilterPanel;
     }
 });
