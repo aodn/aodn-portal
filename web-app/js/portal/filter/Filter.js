@@ -86,3 +86,31 @@ Portal.filter.Filter = Ext.extend(Object, {
         throw 'Subclasses must implement the _getCql function OR must override both getDataLayerCql and getMapLayerCql'
     }
 });
+
+Portal.filter.Filter.constructorFor = function(filterConfig) {
+
+    var filterConstructors = [
+        Portal.filter.BooleanFilter,
+        Portal.filter.DateFilter,
+        Portal.filter.GeometryFilter,
+        Portal.filter.NumberFilter,
+        Portal.filter.StringFilter
+    ];
+
+    var filterType = filterConfig.type;
+    var matchingConstructor;
+
+    Ext.each(filterConstructors, function(currentConstructor) {
+
+        var supportedTypes = currentConstructor.prototype.getSupportedGeoserverTypes();
+
+        if (supportedTypes.indexOf(filterType) > -1) {
+
+            matchingConstructor = currentConstructor;
+
+            return false;
+        }
+    });
+
+    return matchingConstructor;
+};

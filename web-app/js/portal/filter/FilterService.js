@@ -45,9 +45,14 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
         Ext.each(filterDetails, function(filterDetail) {
 
-            var newFilterObject = new Portal.filter.Filter(filterDetail, layer);
+            var filterConstructor = Portal.filter.Filter.constructorFor(filterDetail);
 
-            filterObjects.push(newFilterObject);
+            if (filterConstructor) {
+
+                var newFilterObject = new filterConstructor(filterDetail, layer);
+
+                filterObjects.push(newFilterObject);
+            }
         });
 
         callbackFunction.call(callbackScope, filterObjects);

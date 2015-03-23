@@ -8,4 +8,9 @@
 Ext.namespace('Portal.filter');
 
 Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
+
+    getSupportedGeoserverTypes: function() {
+
+        return ['double', 'float', 'integer', 'int', 'long', 'short', 'decimal'];
+    }
 });
