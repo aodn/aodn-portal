@@ -53,6 +53,9 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
                 filterObjects.push(newFilterObject);
             }
+            else {
+                log.error("Can't create Filter for layer '" + layer.wmsName + "' from data: " + JSON.stringify(filterDetail));
+            }
         });
 
         callbackFunction.call(callbackScope, filterObjects);
