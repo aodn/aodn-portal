@@ -28,7 +28,7 @@ class LayerController {
     def getMetadataAbstract = {
 
         def response = "Error processing request"
-        def status
+        def status = HTTP_500_INTERNAL_SERVER_ERROR
 
         if (params.uuid != null) {
 
@@ -44,16 +44,14 @@ class LayerController {
                     def abstractText = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text())
 
                     response = abstractText
-                    status = 200
+                    status = HTTP_200_OK
                 }
             }
             catch (SAXException e) {
-                //Generic server error
-                status = 500
+                status = HTTP_500_INTERNAL_SERVER_ERROR
             }
             catch (FileNotFoundException e) {
-                //File not found error
-                status = 404
+                status = HTTP_404_NOT_FOUND
             }
         }
 
