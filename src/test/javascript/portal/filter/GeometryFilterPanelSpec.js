@@ -5,7 +5,7 @@
  *
  */
 
-describe("Portal.filter.GeometryFilterPanel", function() {
+describe("Portal.filter.ui.GeometryFilterPanel", function() {
 
     var filterPanel;
     var map;
@@ -15,9 +15,9 @@ describe("Portal.filter.GeometryFilterPanel", function() {
         map.navigationControl = {};
         map.navigationControl.deactivate = function() { return null };
 
-        spyOn(Portal.filter.GeometryFilterPanel.prototype, 'setLayerAndFilter');
-        spyOn(Portal.filter.GeometryFilterPanel.prototype, '_updateWithGeometry');
-        filterPanel = new Portal.filter.GeometryFilterPanel({
+        spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, 'setLayerAndFilter');
+        spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, '_updateWithGeometry');
+        filterPanel = new Portal.filter.ui.GeometryFilterPanel({
             layer: {
                 map: map
             },

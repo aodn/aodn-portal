@@ -5,9 +5,9 @@
  *
  */
 
-Ext.namespace('Portal.filter');
+Ext.namespace('Portal.filter.ui');
 
-Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
+Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     constructor: function(cfg) {
 
         this.layer = cfg.layer;
@@ -20,14 +20,14 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
             ]
         }, cfg);
 
-        Portal.filter.FilterGroupPanel.superclass.constructor.call(this, config);
+        Portal.filter.ui.FilterGroupPanel.superclass.constructor.call(this, config);
     },
 
     initComponent: function() {
         this.AND_QUERY = " AND ";
         this.on('addFilter', this._handleAddFilter);
 
-        Portal.filter.FilterGroupPanel.superclass.initComponent.call(this);
+        Portal.filter.ui.FilterGroupPanel.superclass.initComponent.call(this);
 
         this._initWithLayer();
     },
@@ -156,11 +156,11 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
     _sortPanels: function(panels) {
 
         var panelOrder = [
-            Portal.filter.GeometryFilterPanel,
-            Portal.filter.DateFilterPanel,
-            Portal.filter.BooleanFilterPanel,
-            Portal.filter.NumberFilterPanel,
-            Portal.filter.ComboFilterPanel
+            Portal.filter.ui.GeometryFilterPanel,
+            Portal.filter.ui.DateFilterPanel,
+            Portal.filter.ui.BooleanFilterPanel,
+            Portal.filter.ui.NumberFilterPanel,
+            Portal.filter.ui.ComboFilterPanel
         ];
 
         var typeOrder = function (panel) {
@@ -203,7 +203,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _createFilterPanel: function(filter) {
 
-        var newFilterPanel = Portal.filter.BaseFilterPanel.newFilterPanelFor({
+        var newFilterPanel = Portal.filter.ui.BaseFilterPanel.newFilterPanelFor({
             filter: filter,
             layer: this.layer
         });

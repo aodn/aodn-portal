@@ -4,13 +4,13 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.filter.NumberFilterPanel", function() {
+describe("Portal.filter.ui.NumberFilterPanel", function() {
 
     var numberFilter;
 
     beforeEach(function() {
 
-        Portal.filter.NumberFilterPanel.prototype._createField = function() {
+        Portal.filter.ui.NumberFilterPanel.prototype._createField = function() {
             this.firstField = {
                 getValue: function() {
                     return false;
@@ -29,7 +29,7 @@ describe("Portal.filter.NumberFilterPanel", function() {
             };
         };
 
-        numberFilter = new Portal.filter.NumberFilterPanel({
+        numberFilter = new Portal.filter.ui.NumberFilterPanel({
             filter: {
                 name: 'test',
                 label: 'testLabel'

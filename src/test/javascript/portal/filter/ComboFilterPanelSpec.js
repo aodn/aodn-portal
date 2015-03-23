@@ -4,20 +4,20 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.filter.ComboFilterPanel", function() {
+describe("Portal.filter.ui.ComboFilterPanel", function() {
 
     var filterPanel;
 
     // Test set-up
     beforeEach(function() {
 
-        Portal.filter.ComboFilterPanel.prototype._createField = function() {
+        Portal.filter.ui.ComboFilterPanel.prototype._createField = function() {
             this.combo = {
                 setValue: jasmine.createSpy()
             };
         };
 
-        filterPanel = new Portal.filter.ComboFilterPanel({
+        filterPanel = new Portal.filter.ui.ComboFilterPanel({
             filter: {
                 getName: function() { return 'test' },
                 getDisplayLabel: function() { return 'testLabel' }

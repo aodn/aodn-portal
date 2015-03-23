@@ -4,17 +4,17 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.filter.DateFilterPanel", function() {
+describe("Portal.filter.ui.DateFilterPanel", function() {
 
     var filterPanel;
     var component;
 
     beforeEach(function() {
-        Portal.filter.DateFilterPanel.prototype._createField = function() {};
+        Portal.filter.ui.DateFilterPanel.prototype._createField = function() {};
 
-        Portal.filter.DateFilterPanel.prototype._getDateString = function() {};
+        Portal.filter.ui.DateFilterPanel.prototype._getDateString = function() {};
 
-        filterPanel = new Portal.filter.DateFilterPanel({
+        filterPanel = new Portal.filter.ui.DateFilterPanel({
             filter: {
                 name: 'some_column',
                 wmsStartDateName: "aWmsStartDateName",

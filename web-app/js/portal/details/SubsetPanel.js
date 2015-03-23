@@ -23,7 +23,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Container, {
             items.push(ncwmsPanel);
         }
         else {
-            var filterGroupPanel = new Portal.filter.FilterGroupPanel({
+            var filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
                 layer: cfg.layer
             });
 

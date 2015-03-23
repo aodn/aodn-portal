@@ -5,13 +5,13 @@
  *
  */
 
-Ext.namespace('Portal.filter');
+Ext.namespace('Portal.filter.ui');
 
-Portal.filter.EmptyFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
+Portal.filter.ui.EmptyFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
 
     constructor: function(cfg) {
 
-        Portal.filter.EmptyFilterPanel.superclass.constructor.call(this, cfg);
+        Portal.filter.ui.EmptyFilterPanel.superclass.constructor.call(this, cfg);
     },
 
     _createField: function() {},

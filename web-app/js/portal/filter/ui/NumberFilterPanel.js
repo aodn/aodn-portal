@@ -5,9 +5,9 @@
  *
  */
 
-Ext.namespace('Portal.filter');
+Ext.namespace('Portal.filter.ui');
 
-Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
+Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
 
     constructor: function(cfg) {
 
@@ -20,7 +20,7 @@ Portal.filter.NumberFilterPanel = Ext.extend(Portal.filter.BaseFilterPanel, {
             autoDestroy: true
         }, cfg);
 
-        Portal.filter.NumberFilterPanel.superclass.constructor.call(this, config);
+        Portal.filter.ui.NumberFilterPanel.superclass.constructor.call(this, config);
     },
 
     _createField: function() {

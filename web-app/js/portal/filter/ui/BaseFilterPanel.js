@@ -5,12 +5,12 @@
  *
  */
 
-Ext.namespace('Portal.filter');
+Ext.namespace('Portal.filter.ui');
 
 /**
    This is the base type of all filters for geoserver layers.
 **/
-Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
+Portal.filter.ui.BaseFilterPanel = Ext.extend(Ext.Panel, {
 
     MAX_COMPONENT_WIDTH: 300,
 
@@ -24,13 +24,13 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
             }
         }, cfg);
 
-        Portal.filter.BaseFilterPanel.superclass.constructor.call(this, config);
+        Portal.filter.ui.BaseFilterPanel.superclass.constructor.call(this, config);
         this.setLayerAndFilter(cfg.layer, cfg.filter);
     },
 
     initComponent: function() {
         this.addEvents('addFilter');
-        Portal.filter.BaseFilterPanel.superclass.initComponent.call(this);
+        Portal.filter.ui.BaseFilterPanel.superclass.initComponent.call(this);
     },
 
     setLayerAndFilter: function(layer, filter) {
@@ -80,7 +80,7 @@ Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
     }
 });
 
-Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
+Portal.filter.ui.BaseFilterPanel.newFilterPanelFor = function(cfg) {
 
     var type = cfg.filter.getType().toLowerCase();
 
@@ -97,23 +97,23 @@ Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
     var newFilterPanel;
 
     if (typeMatches('string')) {
-        newFilterPanel = new Portal.filter.ComboFilterPanel(cfg);
+        newFilterPanel = new Portal.filter.ui.ComboFilterPanel(cfg);
     }
     else if (typeMatches('boolean')) {
-        newFilterPanel = new Portal.filter.BooleanFilterPanel(cfg);
+        newFilterPanel = new Portal.filter.ui.BooleanFilterPanel(cfg);
     }
     else if (typeMatches(['date', 'datetime'])) {
-        newFilterPanel = new Portal.filter.DateFilterPanel(cfg);
+        newFilterPanel = new Portal.filter.ui.DateFilterPanel(cfg);
     }
     else if (typeMatches(['double', 'float', 'integer', 'int', 'long', 'short', 'decimal'])) {
-        newFilterPanel = new Portal.filter.NumberFilterPanel(cfg);
+        newFilterPanel = new Portal.filter.ui.NumberFilterPanel(cfg);
     }
     else if (typeMatches(['pointpropertytype', 'geometrypropertytype', 'multilinepropertytype', 'surfacepropertytype', 'curvepropertytype'])) {
-        newFilterPanel = new Portal.filter.GeometryFilterPanel(cfg);
+        newFilterPanel = new Portal.filter.ui.GeometryFilterPanel(cfg);
     }
     else {
         log.error("Unhandled filter type '" + type + "' for filter '" + cfg.filter.getName() + "' on layer '" + cfg.layer.wmsName + "'");
-        newFilterPanel = new Portal.filter.EmptyFilterPanel(cfg);
+        newFilterPanel = new Portal.filter.ui.EmptyFilterPanel(cfg);
     }
 
     return newFilterPanel;
