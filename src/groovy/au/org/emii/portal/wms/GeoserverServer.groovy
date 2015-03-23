@@ -8,13 +8,12 @@
 package au.org.emii.portal.wms
 
 import au.org.emii.portal.proxying.ExternalRequest
-import groovy.xml.MarkupBuilder
 
 class GeoserverServer extends WmsServer {
-    def dynamicFilters
+    def filePath
 
-    GeoserverServer(dynamicFilters) {
-        this.dynamicFilters = dynamicFilters
+    GeoserverServer(filePath) {
+        this.filePath = filePath
     }
 
     def getStyles(server, layer) {
@@ -49,18 +48,18 @@ class GeoserverServer extends WmsServer {
 
     def _getFiltersXml(server, layer) {
 
-        if (dynamicFilters) {
-            return _getFiltersXmlFromGeoserver(server, layer)
+        if (filePath) {
+            return _getFiltersXmlFromFile(layer)
         }
         else {
-            return _getFiltersXmlFromFile(layer)
+            return _getFiltersXmlFromGeoserver(server, layer)
         }
     }
 
     def _getFiltersXmlFromFile(layer) {
         def workspaceName = getLayerWorkspace(layer)
         def layerName = getLayerName(layer)
-        def inputFile = new File("filters/${workspaceName}/${layerName}/filters.xml")
+        def inputFile = new File("$filePath/${workspaceName}/${layerName}/filters.xml")
         return inputFile.text
     }
 
@@ -90,18 +89,18 @@ class GeoserverServer extends WmsServer {
 
     def _getFilterValuesXml(server, layer, filter) {
 
-        if (dynamicFilters) {
-            return _getFilterValuesXmlFromGeoserver(server, layer, filter)
+        if (filePath) {
+            return _getFilterValuesXmlFromFile(layer, filter)
         }
         else {
-            return _getFilterValuesXmlFromFile(layer, filter)
+            return _getFilterValuesXmlFromGeoserver(server, layer, filter)
         }
     }
 
     def _getFilterValuesXmlFromFile(layer, filter) {
         def workspaceName = getLayerWorkspace(layer)
         def layerName = getLayerName(layer)
-        def inputFile = new File("filters/${workspaceName}/${layerName}/${filter}.xml")
+        def inputFile = new File("$filePath/${workspaceName}/${layerName}/${filter}.xml")
         return inputFile.text
     }
 

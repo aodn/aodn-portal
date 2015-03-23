@@ -84,7 +84,7 @@ downloadAuth {
 }
 
 featureToggles {
-    dynamicFilters = true
+    // someFeature = <boolean>
 }
 
 // Google Analytics
@@ -92,6 +92,10 @@ googleAnalytics.trackingId = null
 
 // set per-environment serverURL stem for creating absolute links
 def env = System.getenv()
+
+filtering {
+    filePath = env['FILTERS_PATH']
+}
 
 environments {
 
