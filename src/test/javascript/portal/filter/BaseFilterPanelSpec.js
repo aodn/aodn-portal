@@ -12,16 +12,8 @@ describe("Portal.filter.BaseFilterPanel", function() {
 
         var newFilterPanelFor = Portal.filter.BaseFilterPanel.newFilterPanelFor;
 
-        it("should return undefined", function() {
-
-            var panel = newFilterPanelFor({
-                layer: {},
-                filter: {
-                    getType: function() { return '' }
-                }
-            });
-
-            expect(panel).toBeUndefined();
+        it("should return EmptyFilterPanel", function() {
+            expectNewFilterPanelForString('EmptyFilterPanel', '');
         });
 
         it("should create ComboFilterPanel", function() {
@@ -55,7 +47,8 @@ describe("Portal.filter.BaseFilterPanel", function() {
             newFilterPanelFor({
                 layer: {},
                 filter: {
-                    getType: function() { return filterTypeAsString }
+                    getType: function() { return filterTypeAsString },
+                    getName: function() { return 'filter name' }
                 }
             });
 

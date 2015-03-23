@@ -125,8 +125,8 @@ Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
         newFilterPanel = new Portal.filter.GeometryFilterPanel(cfg);
     }
     else {
-        //Filter hasn't been defined
-        log.error("Could not create filter panel for type'" + type + "'");
+        log.error("Unhandled filter type '" + type + "' for filter '" + cfg.filter.getName() + "' on layer '" + cfg.layer.wmsName + "'");
+        newFilterPanel = new Portal.filter.EmptyFilterPanel(cfg);
     }
 
     return newFilterPanel;

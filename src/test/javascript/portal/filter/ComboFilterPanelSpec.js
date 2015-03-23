@@ -47,8 +47,9 @@ describe("Portal.filter.ComboFilterPanel", function() {
                 getName: function() { return "vessel_name" }
             };
 
-            filterPanel.combo = {};
-            filterPanel.combo.getValue = function() { return "L'Astrolabe"; };
+            filterPanel.combo = {
+                getValue: function() { return "L'Astrolabe" }
+            };
 
             expect(filterPanel.getCQL()).toEqual("vessel_name LIKE 'L''Astrolabe'");
         });
