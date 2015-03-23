@@ -9,7 +9,6 @@ package au.org.emii.portal
 
 import grails.converters.JSON
 import grails.test.ControllerUnitTestCase
-import org.codehaus.groovy.grails.web.json.JSONElement
 
 class LayerControllerTests extends ControllerUnitTestCase {
 
@@ -39,7 +38,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
             return []
         }
 
-        this.controller.getFiltersAsJSON()
+        this.controller.getFilters()
 
         // Restore original wms.GeoserverServer class
         wms.GeoserverServer.metaClass = null
@@ -58,7 +57,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
             return []
         }
 
-        this.controller.getFiltersAsJSON()
+        this.controller.getFilters()
 
         // Restore original wms.NcwmsServer class
         wms.NcwmsServer.metaClass = null
@@ -77,7 +76,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
             return []
         }
 
-        this.controller.getStylesAsJSON()
+        this.controller.getStyles()
 
         // Restore original wms.NcwmsServer class
         wms.NcwmsServer.metaClass = null

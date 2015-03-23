@@ -306,7 +306,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     _getFiltersUrl: function() {
         return String.format(
-            "layer/getFiltersAsJSON?serverType=ncwms&server={0}&layer={1}",
+            "layer/getFilters?serverType=ncwms&server={0}&layer={1}",
             encodeURIComponent(this.url),
             this.params.LAYERS
         );
@@ -314,7 +314,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     _getStylesUrl: function() {
         return String.format(
-            "layer/getStylesAsJSON?serverType=ncwms&server={0}&layer={1}",
+            "layer/getStyles?serverType=ncwms&server={0}&layer={1}",
             encodeURIComponent(this.url),
             this.params.LAYERS
         );
@@ -322,7 +322,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     _getTimeSeriesUrl: function(date) {
         return String.format(
-            "layer/getFilterValuesAsJSON?serverType=ncwms&server={0}&layer={1}&filter={2}",
+            "layer/getFilterValues?serverType=ncwms&server={0}&layer={1}&filter={2}",
             encodeURIComponent(this.url),
             this.params.LAYERS,
             date.clone().startOf('day').toISOString()
