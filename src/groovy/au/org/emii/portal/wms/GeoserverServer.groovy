@@ -49,27 +49,11 @@ class GeoserverServer extends WmsServer {
     def _getFiltersXml(server, layer) {
 
         if (filePath) {
-            return _getFiltersXmlFromFile(layer)
+            _loadFile(layer, "filters.xml")
         }
         else {
-            return _getFiltersXmlFromGeoserver(server, layer)
+            _loadUrl(getFiltersUrl(server, layer))
         }
-    }
-
-    def _getFiltersXmlFromFile(layer) {
-        def workspaceName = getLayerWorkspace(layer)
-        def layerName = getLayerName(layer)
-        def inputFile = new File("$filePath/${workspaceName}/${layerName}/filters.xml")
-        return inputFile.text
-    }
-
-    def _getFiltersXmlFromGeoserver(server, layer) {
-        def filtersUrl = getFiltersUrl(server, layer)
-        def outputStream = new ByteArrayOutputStream()
-        def request = new ExternalRequest(outputStream, filtersUrl.toURL())
-
-        request.executeRequest()
-        return outputStream.toString("utf-8")
     }
 
     def getFilterValues(server, layer, filter) {
@@ -90,24 +74,23 @@ class GeoserverServer extends WmsServer {
     def _getFilterValuesXml(server, layer, filter) {
 
         if (filePath) {
-            return _getFilterValuesXmlFromFile(layer, filter)
+            _loadFile(layer, "${filter}.xml")
         }
         else {
-            return _getFilterValuesXmlFromGeoserver(server, layer, filter)
+            _loadUrl(getFilterValuesUrl(server, layer, filter))
         }
     }
 
-    def _getFilterValuesXmlFromFile(layer, filter) {
+    def _loadFile(layer, filename) {
         def workspaceName = getLayerWorkspace(layer)
         def layerName = getLayerName(layer)
-        def inputFile = new File("$filePath/${workspaceName}/${layerName}/${filter}.xml")
+        def inputFile = new File("$filePath/${workspaceName}/${layerName}/${filename}")
         return inputFile.text
     }
 
-    def _getFilterValuesXmlFromGeoserver(server, layer, filter) {
-        def filtersUrl = getFilterValuesUrl(server, layer, filter)
+    static def _loadUrl(address) {
         def outputStream = new ByteArrayOutputStream()
-        def request = new ExternalRequest(outputStream, filtersUrl.toURL())
+        def request = new ExternalRequest(outputStream, address.toURL())
 
         request.executeRequest()
         return outputStream.toString("utf-8")
