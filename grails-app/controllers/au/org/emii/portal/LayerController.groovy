@@ -28,7 +28,7 @@ class LayerController {
     def getMetadataAbstract = {
 
         def response = "Error processing request"
-        def status
+        def status = HTTP_500_INTERNAL_SERVER_ERROR
 
         if (params.uuid != null) {
 
