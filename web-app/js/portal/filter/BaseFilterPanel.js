@@ -84,19 +84,6 @@ Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
 
     var type = cfg.filter.getType().toLowerCase();
 
-    // Todo - DN: Remove when loading filters from DBis removed
-    // Portal types --> GeoServer types (temporary)
-    if (type == "daterange") {
-        type = 'datetime'
-    }
-    else if (type === "boundingbox") {
-        type = 'geometrypropertytype'
-    }
-    else if (type === "number") {
-        type = 'decimal'
-    }
-    // Todo - DN: End of temp code
-
     var typeMatches = function(toMatch) {
         var anyMatch = false;
 

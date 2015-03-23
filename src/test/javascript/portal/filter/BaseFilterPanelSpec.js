@@ -24,20 +24,16 @@ describe("Portal.filter.BaseFilterPanel", function() {
             expectNewFilterPanelForString('DateFilterPanel', 'Date');
         });
 
-        it("should create DateFilterPanel", function() {
-            expectNewFilterPanelForString('DateFilterPanel', 'DateRange');
-        });
-
         it("should create BooleanFilterPanel", function() {
             expectNewFilterPanelForString('BooleanFilterPanel', 'Boolean');
         });
 
         it("should create GeometryFilterPanel", function() {
-            expectNewFilterPanelForString('GeometryFilterPanel', 'BoundingBox');
+            expectNewFilterPanelForString('GeometryFilterPanel', 'geometrypropertytype');
         });
 
         it("should create NumberFilterPanel", function() {
-            expectNewFilterPanelForString('NumberFilterPanel', 'Number');
+            expectNewFilterPanelForString('NumberFilterPanel', 'decimal');
         });
 
         var expectNewFilterPanelForString = function(filterPanelType, filterTypeAsString) {
