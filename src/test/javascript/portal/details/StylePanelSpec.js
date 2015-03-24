@@ -43,20 +43,15 @@ describe("Portal.details.StylePanel", function() {
             expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual(null);
         });
 
-        it("should remove version prefix (before '-')", function() {
+        it("should include version if present", function() {
 
             var layer = {
                 params: {},
                 url: "",
-                server: {type: "WMS-1.1.0"}
+                server: {wmsVersion: '1.1.0'}
             };
             var urlString = stylePanel.buildGetLegend(layer, null, null, false);
             expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("1.1.0");
-
-            // Check ncWMS
-            layer.server.type = "NCWMS-1.1.1";
-            urlString = stylePanel.buildGetLegend(layer, null, null, false);
-            expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("1.1.1");
         });
 
         it("should include style in url if style is not empty", function() {

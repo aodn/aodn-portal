@@ -39,7 +39,6 @@ describe("Portal.common.LayerDescriptor", function() {
                 "isBaseLayer": true,
                 "server": {
                     "opacity": 100,
-                    "type": "WMS-1.1.1",
                     "uri": "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi"
                 }
             });
@@ -79,7 +78,6 @@ describe("Portal.common.LayerDescriptor", function() {
         var layerDesc = new Portal.common.LayerDescriptor({
             "isBaseLayer": true,
             "server": {
-                "type": "WMS-1.1.1",
                 "uri": "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi"
             }
         });

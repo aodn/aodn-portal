@@ -257,9 +257,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
              +  "&LAYER=" + layer.params.LAYERS
              +  "&FORMAT=" + layer.params.FORMAT;
 
-        if (layer && layer.server && layer.server.type) {
-            var version = layer.server.type.split('-')[1];
-            opts += "&VERSION=" + version;
+        if (layer && layer.server && layer.server.wmsVersion) {
+            opts += "&VERSION=" + layer.server.wmsVersion;
         }
 
         // strip off leading '&'

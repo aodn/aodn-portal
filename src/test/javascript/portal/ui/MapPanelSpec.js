@@ -64,7 +64,9 @@ describe("Portal.ui.MapPanel", function() {
     describe('zoom to layer tests', function() {
 
         var openLayer = new OpenLayers.Layer.WMS();
-        openLayer.server = { type: "WMS-1.1.0" };
+        openLayer.server = {
+            wmsVersion: '1.1.0'
+        };
 
         beforeEach(function() {
             spyOn(mapPanel, 'zoomTo');

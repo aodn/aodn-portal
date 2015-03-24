@@ -14,7 +14,6 @@ describe("Portal.data.LayerStore", function() {
     var layerDescriptor = new Portal.common.LayerDescriptor({
         title : 'test',
         server: {
-            type: "WMS-1.1.1",
             uri: "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi"
         }
     });
@@ -22,7 +21,6 @@ describe("Portal.data.LayerStore", function() {
     var layerLink = {
         title: "imos:detection_count_per_station_mv",
         server: {
-            type: "WMS-1.1.1",
             uri: "http://geoserver.imos.org.au/geoserver/wms"
         },
         name: "imos:detection_count_per_station_mv",
@@ -66,7 +64,6 @@ describe("Portal.data.LayerStore", function() {
                 layerLink = {
                     title: "imos:detection_count_per_station_mv",
                     server: {
-                        type: "WMS-1.1.1",
                         uri: "http://geoserver.imos.org.au/geoserver/wms"
                     },
                     name: "imos:detection_count_per_station_mv",
