@@ -297,6 +297,7 @@ log4j = {
     warn    'org.mortbay.log'
 
     info    'grails.app.controller.au.org.emii.portal.LayerController',
+        'grails.app.tagLib.au.org.emii.portal.MessageOfTheDayTagLib',
         'grails.app.controller'
 
     debug   'grails.app.job',
