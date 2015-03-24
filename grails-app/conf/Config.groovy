@@ -127,7 +127,7 @@ geonetwork.searchPath = 'xml.search.imos'
 // Server configuration
 baselayerServer = [
     uri: "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms",
-    type: "WMS-1.1.1"
+    wmsVersion: '1.1.1'
 ]
 
 // This array should be populated from chef config
