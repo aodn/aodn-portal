@@ -27,7 +27,7 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
         Portal.filter.ui.DateFilterPanel.superclass.constructor.call(this, config);
     },
 
-    _createField: function() {
+    _createControls: function() {
         this.fromDate = this._createResettableDate('fromDate', OpenLayers.i18n('fromDateLabel'), OpenLayers.i18n('fromDateEmptyText'));
         this.toDate = this._createResettableDate('toDate', OpenLayers.i18n('toDateLabel'), OpenLayers.i18n('toDateEmptyText'));
 

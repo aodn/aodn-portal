@@ -12,7 +12,7 @@ describe("Portal.filter.ui.BaseFilterPanel", function() {
 
         var buildFilterWithVisualised = function(isVisualised) {
 
-            spyOn(Portal.filter.ui.BaseFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.BaseFilterPanel.prototype, '_createControls');
 
             return new Portal.filter.ui.BaseFilterPanel({
                 layer: {},

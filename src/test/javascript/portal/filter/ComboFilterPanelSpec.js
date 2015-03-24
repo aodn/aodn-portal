@@ -11,7 +11,7 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
     // Test set-up
     beforeEach(function() {
 
-        Portal.filter.ui.ComboFilterPanel.prototype._createField = function() {
+        Portal.filter.ui.ComboFilterPanel.prototype._createControls = function() {
             this.combo = {
                 setValue: jasmine.createSpy()
             };

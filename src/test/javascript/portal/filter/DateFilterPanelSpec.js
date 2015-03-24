@@ -10,7 +10,7 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
     var component;
 
     beforeEach(function() {
-        Portal.filter.ui.DateFilterPanel.prototype._createField = noOp;
+        Portal.filter.ui.DateFilterPanel.prototype._createControls = noOp;
 
         Portal.filter.ui.DateFilterPanel.prototype._getDateString = noOp;
 

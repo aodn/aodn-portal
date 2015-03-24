@@ -10,7 +10,7 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
 
     beforeEach(function() {
 
-        Portal.filter.ui.NumberFilterPanel.prototype._createField = function() {
+        Portal.filter.ui.NumberFilterPanel.prototype._createControls = function() {
             this.firstField = {
                 getValue: function() {
                     return false;
@@ -51,7 +51,7 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
 
     describe('_updateFilter', function() {
         beforeEach(function() {
-            numberFilter._createField();
+            numberFilter._createControls();
             numberFilter.firstField.getValue = function() { return 5 };
             numberFilter.operators = {
                 lastSelectionText: 'less than'

@@ -44,7 +44,7 @@ Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPan
         return this.geometry != undefined;
     },
 
-    _createField: function() {
+    _createControls: function() {
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.layer.map,
             hideLabel: true
