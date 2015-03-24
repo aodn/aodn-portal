@@ -14,6 +14,9 @@ Ext.namespace('Portal.common');
  */
 Portal.common.LayerDescriptor = Ext.extend(Object, {
 
+    WFS_PROTOCOL: 'OGC:WFS-1.0.0-http-get-capabilities',
+    WMS_PROTOCOL: 'OGC:WMS-1.1.1-http-get-map',
+
     geonetworkRecord: null,
 
     constructor: function(cfg, geonetworkRecord, openLayerClass) {
@@ -74,7 +77,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         //provide a way to add header information to a WMS request
         openLayer.cql = this.cql;
         this._setOpenLayerBounds(openLayer);
-        this._setDownloadLayers(openLayer);
+        this._initialiseDownloadLayer(openLayer);
         openLayer.cache = this.cache;
         openLayer.projection = this.projection;
         openLayer.blacklist = this.blacklist;
@@ -92,28 +95,44 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         }
     },
 
-    _setDownloadLayers: function(openLayer) {
-        var downloadLayers = [];
+    _initialiseDownloadLayer: function(openLayer) {
 
-        if (this.geonetworkRecord && this.geonetworkRecord.data && this.geonetworkRecord.data.dataDownloadHandlers) {
-            var dataDownloadHandlers = this.geonetworkRecord.data.dataDownloadHandlers;
-            for (var i = 0; i < dataDownloadHandlers.length; ++i) {
-                var downloadLayer = dataDownloadHandlers[i].onlineResource.name;
+        if (this.geonetworkRecord && this.geonetworkRecord.data) {
+            var links = this.geonetworkRecord.data.links;
 
-                // If layer has no workspace defined, assume it is in the same
-                // workspace as the WMS layer
-                if (! this._getLayerWorkspace(downloadLayer) &&
-                    this._getLayerWorkspace(openLayer.wmsName)) {
-                    downloadLayer = this._getLayerWorkspace(openLayer.wmsName) + ":" + downloadLayer;
+            var downloadLayerName = this._findFirst(links, this.WFS_PROTOCOL);
+
+            if (!downloadLayerName) {
+                downloadLayerName = this._findFirst(links, this.WMS_PROTOCOL);
+            }
+
+            if (downloadLayerName) {
+                // If layer has no workspace defined, assume it is in the same workspace as the WMS layer
+                if (!this._getLayerWorkspace(downloadLayerName) && this._getLayerWorkspace(openLayer.wmsName)) {
+
+                    downloadLayerName = this._getLayerWorkspace(openLayer.wmsName) + ":" + downloadLayerName;
                 }
 
-                if (-1 ==  $.inArray(downloadLayer, downloadLayers)) {
-                    downloadLayers.push(downloadLayer);
-                }
+                openLayer.getDownloadLayer = function() { return downloadLayerName };
             }
         }
-        openLayer.downloadLayers = downloadLayers;
-        openLayer.getDownloadLayer = function() { return this.downloadLayers[0]; }
+    },
+
+    _findFirst: function(links, protocol) {
+
+        var layerName = null;
+
+        Ext.each(links, function(link) {
+
+            if (link.protocol == protocol) {
+
+                layerName = link.name;
+
+                return false;
+            }
+        });
+
+        return layerName;
     },
 
     _setOpenLayerBounds: function(openLayer) {
