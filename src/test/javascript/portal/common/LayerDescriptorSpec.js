@@ -38,7 +38,6 @@ describe("Portal.common.LayerDescriptor", function() {
             layerDesc = new Portal.common.LayerDescriptor({
                 "isBaseLayer": true,
                 "server": {
-                    "opacity": 100,
                     "uri": "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi"
                 }
             });

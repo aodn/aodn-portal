@@ -20,7 +20,7 @@ Portal.ui.openlayers.LayerOptions = Ext.extend(Object, {
 
         var defaultOptions = {
             wrapDateLine: true,
-            opacity: this._getServerOpacity(layerDescriptor.server),
+            opacity: 1.0,
             version: layerDescriptor.server.wmsVersion,
             transitionEffect: 'resize',
             isBaseLayer: layerDescriptor.isBaseLayer,
@@ -31,10 +31,5 @@ Portal.ui.openlayers.LayerOptions = Ext.extend(Object, {
 
         Ext.apply(this, defaultOptions);
         Ext.apply(this, overrides);
-    },
-
-    _getServerOpacity: function(server) {
-        var opacity = server.opacity ? server.opacity : 100;
-        return Math.round((opacity / 100)*10)/10;
     }
 });
