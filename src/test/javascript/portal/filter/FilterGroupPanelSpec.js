@@ -78,11 +78,11 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
         it('sorts panels in expected order', function() {
 
-            spyOn(Portal.filter.ui.BooleanFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.BooleanFilterPanel.prototype, '_createControls');
             spyOn(Portal.filter.ui.NumberFilterPanel.prototype, 'setLayerAndFilter');
-            spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, '_createControls');
             spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, 'setLayerAndFilter');
-            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createControls');
 
             var booleanPanelA = new Portal.filter.ui.BooleanFilterPanel({
                 filter: { getLabel: function() { return 'A' } }
@@ -285,9 +285,9 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
         var numComponentsPerGroup = 2;
 
         beforeEach(function() {
-            spyOn(Portal.filter.ui.NumberFilterPanel.prototype, '_createField');
-            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createField');
-            spyOn(Portal.filter.ui.BooleanFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.NumberFilterPanel.prototype, '_createControls');
+            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createControls');
+            spyOn(Portal.filter.ui.BooleanFilterPanel.prototype, '_createControls');
 
             filterPanels = [
                 new Portal.filter.ui.DateFilterPanel(),

@@ -14,7 +14,7 @@ Portal.filter.ui.EmptyFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
         Portal.filter.ui.EmptyFilterPanel.superclass.constructor.call(this, cfg);
     },
 
-    _createField: function() {},
+    _createControls: function() {},
 
     getFilterData: function() {
 

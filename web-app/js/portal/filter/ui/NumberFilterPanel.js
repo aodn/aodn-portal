@@ -23,7 +23,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         Portal.filter.ui.NumberFilterPanel.superclass.constructor.call(this, config);
     },
 
-    _createField: function() {
+    _createControls: function() {
         var label = new Ext.form.Label({
             html: "<label>" + this.filter.getLabel() + "</label>"
         });

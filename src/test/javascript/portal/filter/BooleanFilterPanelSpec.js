@@ -14,7 +14,7 @@ describe("Portal.filter.ui.BooleanFilterPanel", function() {
             this.setValue = jasmine.createSpy();
         };
 
-        Portal.filter.ui.BooleanFilterPanel.prototype._createField = function() {
+        Portal.filter.ui.BooleanFilterPanel.prototype._createControls = function() {
             this.checkbox = new MockButton();
         };
 

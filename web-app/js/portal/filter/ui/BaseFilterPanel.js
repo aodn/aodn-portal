@@ -36,7 +36,7 @@ Portal.filter.ui.BaseFilterPanel = Ext.extend(Ext.Panel, {
     setLayerAndFilter: function(layer, filter) {
         this.filter = filter;
         this.layer = layer;
-        this._createField();
+        this._createControls();
     },
 
     isVisualised: function() {
@@ -51,22 +51,14 @@ Portal.filter.ui.BaseFilterPanel = Ext.extend(Ext.Panel, {
         this.fireEvent('addFilter', this);
     },
 
-    /**
-       This method generates all the component fields required for this filter to work, e.g. textfields, buttons, etc.
-       Note that the "x" button is created in the filterGroupPanel. See also handleRemoveFilter.
-    **/
-    _createField: function() {
-        throw "Subclasses must implement the _createField function";
+    _createControls: function() {
+        throw "Subclasses must implement the _createControls function";
     },
 
     getFilterData: function() {
         throw "Subclasses must implement the getFilterData function";
     },
 
-    /**
-       This is called whenever the "x" button next to a field has been clicked, i.e. clearing/removing a filter.
-       In this method, implement actions like clearing a textfield, reset values.
-    **/
     handleRemoveFilter: function() {
         throw "Subclasses must implement the handleRemoveFilter function";
     },
