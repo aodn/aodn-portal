@@ -144,7 +144,7 @@ def convert_filter_type(filter_type, filter_name)
   return return_filter_type
 end
 
-def write_filters(filters_dir, filters, opts)
+def write_filters(map_filters_dir, data_filters_dir, filters, opts)
   builder = Nokogiri::XML::Builder.new do |xml|
     xml.filters {
       filters.each do |filter|
@@ -166,13 +166,13 @@ def write_filters(filters_dir, filters, opts)
           end
 
           # Output values to a separate file
-          write_filter_values(filters_dir, filter['name'], filter['possibleValues'])
+          write_filter_values(map_filters_dir, filter['name'], filter['possibleValues'])
         }
       end
     }
   end
 
-  layer_xml_path = File.join(filters_dir, "filters.xml")
+  layer_xml_path = File.join(data_filters_dir, "filters.xml")
   $logger.info "Dumping filters XML to '#{layer_xml_path}'"
   $logger.info "------------------------------------------"
   file = File.open(layer_xml_path, "w")
@@ -209,11 +209,13 @@ def get_filters_main(opts)
     layer_id = get_layer_id(opts[:portal], opts[:geoserver], wms_layer)
     if layer_id
       if output_dir
-        filters_dir = get_layer_directory(output_dir, wfs_layer)
-        FileUtils.mkdir_p filters_dir
+        map_filters_dir = get_layer_directory(output_dir, wms_layer)
+        data_filters_dir = get_layer_directory(output_dir, wfs_layer)
+        FileUtils.mkdir_p map_filters_dir
+        FileUtils.mkdir_p data_filters_dir
 
         filters = get_filters(opts[:portal], layer_id)
-        write_filters(filters_dir, filters, opts)
+        write_filters(map_filters_dir, data_filters_dir, filters, opts)
       end
     else
       $logger.error "Could not get ID of layer '#{wms_layer}'"
@@ -230,9 +232,9 @@ opts = Trollop::options do
 
     Examples:
         Get filters from catalogue-123.aodn.org.au and imos.aodn.org.au:
-           get_filters.rb -u https://catalogue-123.aodn.org.au/geonetwork
-             -g http://geoserver-123.aodn.org.au/geoserver/wms
-             -p https://imos.aodn.org.au/imos123
+           get_filters.rb -u https://catalogue-123.aodn.org.au/geonetwork \\
+             -g http://geoserver-123.aodn.org.au/geoserver/wms \\
+             -p https://imos.aodn.org.au/imos123 \\
              -d filters
 
     Options:
