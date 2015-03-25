@@ -87,16 +87,6 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         // Idea: show max/min values from this.filter.possibleValues
     },
 
-    getFilterData: function() {
-
-        return {
-            name: this.filter.name,
-            visualised: this.isVisualised(),
-            cql: this.getCQL(),
-            humanValue: this._getCQLHumanValue()
-        }
-    },
-
     handleRemoveFilter: function() {
         this.operators.clearValue();
         this.firstField.reset();

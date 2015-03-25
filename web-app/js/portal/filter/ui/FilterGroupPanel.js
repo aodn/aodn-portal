@@ -287,7 +287,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         Ext.each(this.filterPanels, function(filter) {
             if (filter.hasValue()) {
-                activeFilters.push(filter.getFilterData());
+                activeFilters.push('What to push now?');
             }
         });
 

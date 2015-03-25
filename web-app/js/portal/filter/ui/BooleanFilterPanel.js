@@ -37,16 +37,6 @@ Portal.filter.ui.BooleanFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPane
         this.add(this.checkbox);
     },
 
-    getFilterData: function() {
-
-        return {
-            name: this.filter.getName(),
-            visualised: this.isVisualised(),
-            cql: this.getCQL(),
-            humanValue: this._getCQLHumanValue()
-        }
-    },
-
     handleRemoveFilter: function() {
         this.checkbox.setValue(false);
     },

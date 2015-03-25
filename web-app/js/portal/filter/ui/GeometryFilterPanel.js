@@ -36,31 +36,12 @@ Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPan
         }
     },
 
-    isVisualised: function() {
-        return false;
-    },
-
-    hasValue: function() {
-        return this.geometry != undefined;
-    },
-
     _createControls: function() {
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.layer.map,
             hideLabel: true
         });
         this.add(this.spatialSubsetControlsPanel);
-    },
-
-    getFilterData: function() {
-
-        return {
-            name: this.filter.getName(),
-            visualised: this.isVisualised(),
-            cql: this.getCQL(),
-            humanValue: this._getCQLHumanValue(),
-            type: "geom"
-        }
     },
 
     handleRemoveFilter: function() {
