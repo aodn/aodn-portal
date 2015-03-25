@@ -191,7 +191,7 @@ OpenLayers.Layer.WMS.prototype.getMapLayerFilters = function(includeGeomFilter) 
     return filters.join(" AND ");
 };
 
-OpenLayers.Layer.WMS.prototype.getDownloadFilterDescriptions = function() {
+OpenLayers.Layer.WMS.prototype.getHumanReadableFilterDescriptions = function() {
 
     var filters = [];
 
