@@ -81,7 +81,7 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
             testCollection = {
                 wmsLayer: {
-                    getMapLayerFilters: function() { return 'the_cql' },
+                    getVisualisationCql: function() { return 'the_cql' },
                     _buildGetFeatureRequestUrl: buildUrlSpy
                 }
             };
@@ -110,7 +110,7 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
                 wmsLayer: {
                     getDownloadFilter: function() { return 'the_cql' },
                     _buildGetFeatureRequestUrl: function() { return 'the_url' },
-                    getMapLayerFilters: function() { return 'the_Vis_Cql' }
+                    getVisualisationCql: function() { return 'the_Vis_Cql' }
                 }
             };
         });

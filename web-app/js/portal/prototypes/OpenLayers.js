@@ -132,16 +132,20 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
+OpenLayers.Layer.WMS.prototype.updateCqlFilter = function() {
+
+    params['CQL_FILTER'] = this.getVisualisationCql(false);
+};
+
 OpenLayers.Layer.WMS.prototype.getCqlFilter = function() {
-    if (this.params["CQL_FILTER"]) {
-        return this.params["CQL_FILTER"];
-    }
-    else {
-        return "";
-    }
+
+    throw 'getCqlFilter';
 };
 
 OpenLayers.Layer.WMS.prototype.setCqlFilter = function(cqlFilter) {
+
+    throw 'setCqlFilter';
+
     if (cqlFilter == this.getCqlFilter()) {
         return;
     }
@@ -161,8 +165,10 @@ OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
 
     var filters = [];
 
-    Ext.each(this.filterData, function(data) {
-        if (data.cql){
+    Ext.each(this.filters, function(filter) {
+
+        if (filter.hasValue()) {
+
             filters.push(data.cql);
         }
     });
@@ -170,20 +176,28 @@ OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
     return filters.join(" AND ");
 };
 
-OpenLayers.Layer.WMS.prototype.getMapLayerFilters = function(includeGeomFilter) {
+OpenLayers.Layer.WMS.prototype.getVisualisationCql = function(includeGeomFilter) {
+
+    console.log('What to do with includeGeomFilter:' + includeGeomFilter + "?");
 
     var filters = [];
 
-    Ext.each(this.filterData, function(data) {
+    Ext.each(this.filters, function(filter) {
 
-        var filterCQL = data.cql;
+        console.log(filter.getName() + filter.hasValue());
 
-        if (data.visualised || (includeGeomFilter && data.type == "geom")) {
-            if (data.visualisationCql != undefined) {
-                filterCQL = data.visualisationCql;
-            }
-            if (filterCQL) {
-                filters.push(filterCQL);
+        var isGeom = filter.constructor == Portal.filter.GeometryFilter;
+
+        if (filter.isVisualised() || (includeGeomFilter && isGeom)) {
+
+            // Visualisation preferred over data CQL - why don't we know??
+
+            if (filter.hasValue()) {
+
+                var mapCql = filter.getMapLayerCql();
+                var dataCql = filter.getDataLayerCql();
+
+                filters.push(dataCql ? dataCql : mapCql);
             }
         }
     });
@@ -195,9 +209,11 @@ OpenLayers.Layer.WMS.prototype.getHumanReadableFilterDescriptions = function() {
 
     var filters = [];
 
-    Ext.each(this.filterData, function(data) {
-        if (data.humanValue && data.humanValue != "") {
-            filters.push(data.humanValue);
+    Ext.each(this.filters, function(filter) {
+
+        if (filter.hasValue()) {
+
+            filters.push(filter.getHumanReadableForm());
         }
     });
 
