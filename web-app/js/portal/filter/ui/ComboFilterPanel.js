@@ -56,16 +56,6 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
         );
     },
 
-    getFilterData: function() {
-
-        return {
-            name: this.filter.getName(),
-            visualised: this.isVisualised(),
-            cql: this.getCQL(),
-            humanValue: this._getHumanValue()
-        }
-    },
-
     handleRemoveFilter: function() {
         this.combo.clearValue();
     },

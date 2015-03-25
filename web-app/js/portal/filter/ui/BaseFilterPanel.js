@@ -39,24 +39,12 @@ Portal.filter.ui.BaseFilterPanel = Ext.extend(Ext.Panel, {
         this._createControls();
     },
 
-    isVisualised: function() {
-        return this.filter.getVisualised();
-    },
-
-    hasValue: function() {
-        return this.layer.filterData != undefined;
-    },
-
     _fireAddEvent: function() {
         this.fireEvent('addFilter', this);
     },
 
     _createControls: function() {
         throw "Subclasses must implement the _createControls function";
-    },
-
-    getFilterData: function() {
-        throw "Subclasses must implement the getFilterData function";
     },
 
     handleRemoveFilter: function() {

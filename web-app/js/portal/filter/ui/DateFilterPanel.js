@@ -41,17 +41,6 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
         }
     },
 
-    getFilterData: function() {
-        return {
-            name: this.filter.name,
-            visualised: true,
-            visualisationCql: this._getCQL(),
-            cql: this._getCQL(this.filter.name),
-            humanValue: this._getCQLHumanValue()
-        }
-    },
-
-
     handleRemoveFilter: function() {
         this.toDate.reset();
         this.fromDate.reset();

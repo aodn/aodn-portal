@@ -29,10 +29,6 @@ describe("Portal.filter.ui.GeometryFilterPanel", function() {
         spyOn(window, 'trackUsage');
     });
 
-    it("isVisualised() should return false", function() {
-        expect(filterPanel.isVisualised()).toBe(false);
-    });
-
     describe('map', function() {
 
         it("subscribes to 'spatialconstraintadded' event", function() {
@@ -73,28 +69,5 @@ describe("Portal.filter.ui.GeometryFilterPanel", function() {
             filterPanel.geometry = undefined;
             expect(filterPanel.getCQL()).toEqual(undefined);
         });
-    });
-
-    describe('is a real polygon', function() {
-
-        it('returns true when a polygon', function() {
-            filterPanel.map.updateSpatialConstraintStyle("polygon");
-            expect(filterPanel.isRealPolygon()).toEqual(true);
-        });
-
-        it('returns false when not a polygon', function() {
-            filterPanel.map.updateSpatialConstraintStyle("bogus");
-            expect(filterPanel.isRealPolygon()).toEqual(false);
-        });
-    });
-
-    it("hasValue() is true if spatial constraint set", function() {
-        filterPanel.geometry = "something";
-        expect(filterPanel.hasValue()).toBe(true);
-    });
-
-    it("hasValue() is false if spatial constraint unset", function() {
-        filterPanel.geometry = undefined;
-        expect(filterPanel.hasValue()).toBe(false);
     });
 });
