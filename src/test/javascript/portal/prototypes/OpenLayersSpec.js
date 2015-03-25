@@ -211,7 +211,7 @@ describe('OpenLayers', function() {
             it('returns text if there is a cql filter applied', function() {
                 openLayer.params = {CQL_FILTER: "test='filter'"};
 
-                var filterString = openLayer.getDownloadFilterDescriptions();
+                var filterString = openLayer.getHumanReadableFilterDescriptions();
                 expect(filterString.indexOf(OpenLayers.i18n('noFilterLabel'))).toEqual(-1);
             });
         });

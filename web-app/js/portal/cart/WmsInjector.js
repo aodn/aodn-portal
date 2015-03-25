@@ -11,7 +11,7 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _getDataFilterEntry: function(collection) {
 
-        var descriptions = collection.wmsLayer.getDownloadFilterDescriptions();
+        var descriptions = collection.wmsLayer.getHumanReadableFilterDescriptions();
 
         return descriptions.length > 0 ? descriptions.join("<br />") : OpenLayers.i18n('emptyDownloadPlaceholder');
     }
