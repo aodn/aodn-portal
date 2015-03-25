@@ -201,7 +201,7 @@ OpenLayers.Layer.WMS.prototype.getDownloadFilterDescriptions = function() {
         }
     });
 
-    return filters.join("<br/> ");
+    return filters;
 };
 
 OpenLayers.Layer.WMS.prototype.hasBoundingBox = function() {

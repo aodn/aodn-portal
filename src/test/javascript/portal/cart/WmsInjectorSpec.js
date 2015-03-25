@@ -11,7 +11,7 @@ describe('Portal.cart.WmsInjector', function() {
     var collectionWithFilters = {
         wmsLayer: {
             getDownloadFilterDescriptions: function() {
-                return "Human readable filters"
+                return ["Human", "readable", "filters"]
             }
         }
     };
@@ -34,7 +34,7 @@ describe('Portal.cart.WmsInjector', function() {
 
             var entry = injector._getDataFilterEntry(collectionWithFilters);
 
-            expect(entry).toBe("Human readable filters");
+            expect(entry).toBe("Human<br />readable<br />filters");
         });
 
         it('includes placeholder when no text returned', function() {
