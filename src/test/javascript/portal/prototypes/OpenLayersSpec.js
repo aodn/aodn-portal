@@ -216,7 +216,7 @@ describe('OpenLayers', function() {
             });
         });
 
-        describe('getMapLayerFilters filter information', function() {
+        describe('getVisualisationCql filter information', function() {
 
             it('returns text if there is a cql filters', function() {
                 openLayer.filterData = [{
@@ -224,32 +224,34 @@ describe('OpenLayers', function() {
                     enabled: true,
                     visualised: true }];
 
-                var filterString = openLayer.getMapLayerFilters();
+                var filterString = openLayer.getVisualisationCql();
                 expect(filterString).toContain("rararrr");
             });
 
             it('returns text if the cql filter is a geom when function is called with correct flag', function() {
-                openLayer.filterData = [{
+                openLayer.filters = [{
                     cql: "rararrr",
                     enabled: true,
                     type: "geom",
                     visualised: false}];
 
-                var filterString = openLayer.getMapLayerFilters();
+                var filterString = openLayer.getVisualisationCql();
                 expect(filterString).not.toContain("rararrr");
-                var filterString = openLayer.getMapLayerFilters(true);
+
+                filterString = openLayer.getVisualisationCql(true);
                 expect(filterString).toContain("rararrr");
             });
 
             it('returns nothing if the cql filter is download only', function() {
-                openLayer.filterData = [{
+                openLayer.filters = [{
                     cql: "rararrr",
                     enabled: true,
                     visualised: false}];
 
-                var filterString = openLayer.getMapLayerFilters();
+                var filterString = openLayer.getVisualisationCql();
                 expect(filterString).not.toContain("rararrr");
-                var filterString = openLayer.getMapLayerFilters(true);
+
+                filterString = openLayer.getVisualisationCql(true);
                 expect(filterString).not.toContain("rararrr");
             });
         });

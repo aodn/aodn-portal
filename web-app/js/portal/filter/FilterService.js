@@ -58,6 +58,8 @@ Portal.filter.FilterService = Ext.extend(Object, {
             }
         });
 
+        layer.filters = filterObjects;
+
         callbackFunction.call(callbackScope, filterObjects);
     },
 
