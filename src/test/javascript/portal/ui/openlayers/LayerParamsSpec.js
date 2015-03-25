@@ -14,7 +14,7 @@ describe("Portal.ui.openlayers.LayerParams", function() {
         name: 'argo',
         namespace: 'imos',
         server : {
-            type : "WMS-1.1.1"
+            wmsVersion : "1.1.1"
         }
     };
 
@@ -44,29 +44,6 @@ describe("Portal.ui.openlayers.LayerParams", function() {
             expect(layerParams._getServerImageFormat(server)).toEqual('image/jpeg');
         });
 
-    });
-
-    describe('getWmsVersionString', function() {
-        it('returns the string undefined', function() {
-            var server = {
-                type : 'lkajsdjalkdjas'
-            };
-            expect(layerParams._getWmsVersionString(server)).toEqual('undefined');
-        });
-
-        it('returns the string "1.1.0"', function() {
-            var server = {
-                type : 'WMSajkshdkahsd1.1.0asjkhdjkashsdkja'
-            };
-            expect(layerParams._getWmsVersionString(server)).toEqual('1.1.0');
-        });
-
-        it('returns the string "1.1.0"', function() {
-            var server = {
-                type : 'WMSajkshdkahsd1.1.0asjkhdjkashsdkja'
-            };
-            expect(layerParams._getWmsVersionString(server)).toEqual('1.1.0');
-        });
     });
 
     describe('getOpenLayerParams', function() {

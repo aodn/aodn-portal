@@ -125,7 +125,7 @@ OpenLayers.Layer.WMS.prototype._getBoundingBox = function() {
 };
 
 OpenLayers.Layer.WMS.prototype._is130 = function() {
-    return this.server.type.contains("1.3.0") && !this.isNcwms();
+    return this.server.wmsVersion === '1.3.0' && !this.isNcwms();
 };
 
 OpenLayers.Layer.WMS.prototype.isNcwms = function() {

@@ -14,7 +14,6 @@ describe("Portal.data.LayerStore", function() {
     var layerDescriptor = new Portal.common.LayerDescriptor({
         title : 'test',
         server: {
-            type: "WMS-1.1.1",
             uri: "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi"
         }
     });
@@ -22,7 +21,6 @@ describe("Portal.data.LayerStore", function() {
     var layerLink = {
         title: "imos:detection_count_per_station_mv",
         server: {
-            type: "WMS-1.1.1",
             uri: "http://geoserver.imos.org.au/geoserver/wms"
         },
         name: "imos:detection_count_per_station_mv",
@@ -62,21 +60,21 @@ describe("Portal.data.LayerStore", function() {
     describe('addUsingLayerLink', function() {
         describe('blocked server', function() {
             beforeEach(function() {
-                spyOn(layerStore, '_serverUnrecognized').andCallFake(function() {});
+                spyOn(layerStore, '_serverUnrecognized');
                 layerLink = {
                     title: "imos:detection_count_per_station_mv",
                     server: {
-                        type: "WMS-1.1.1",
                         uri: "http://geoserver.imos.org.au/geoserver/wms"
                     },
                     name: "imos:detection_count_per_station_mv",
                     protocol: "OGC:WMS-1.1.1-http-get-map"
                 };
-                geonetworkRecord = {id: "blagh"};
-                layerRecordCallback = function(){};
             });
 
             it('empty response', function() {
+                var geonetworkRecord = {id: "blagh"};
+                var layerRecordCallback = noOp;
+
                 spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
                     options.success.call(layerStore, { responseText: Ext.util.JSON.encode({}) });
                 });
@@ -332,7 +330,7 @@ describe("Portal.data.LayerStore", function() {
         beforeEach(function() {
             layer = createOpenLayer("somelayer");
             layer.options.isBaseLayer = false;
-            baseLayerRecord = layerStore._addLayer(layer);
+            layerStore._addLayer(layer);
         });
 
         it('sets loading=true on loadstart', function() {

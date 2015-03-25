@@ -20,8 +20,8 @@ Portal.ui.openlayers.LayerOptions = Ext.extend(Object, {
 
         var defaultOptions = {
             wrapDateLine: true,
-            opacity: this._getServerOpacity(layerDescriptor.server),
-            version: this._getWmsVersionString(layerDescriptor.server),
+            opacity: 1.0,
+            version: layerDescriptor.server.wmsVersion,
             transitionEffect: 'resize',
             isBaseLayer: layerDescriptor.isBaseLayer,
             buffer: 1,
@@ -31,21 +31,5 @@ Portal.ui.openlayers.LayerOptions = Ext.extend(Object, {
 
         Ext.apply(this, defaultOptions);
         Ext.apply(this, overrides);
-    },
-
-    _getServerOpacity: function(server) {
-        var opacity = server.opacity ? server.opacity : 100;
-        return Math.round((opacity / 100)*10)/10;
-    },
-
-    _getWmsVersionString: function(server) {
-        // list needs to match Server.groovy
-        var versionList = ["1.0.0","1.0.7","1.1.0","1.1.1","1.3.0"];
-        for(var i = 0; i < versionList.length; i++) {
-            if (server.type.indexOf(versionList[i]) != -1) {
-                return versionList[i];
-            }
-        }
-        return "undefined";
     }
 });
