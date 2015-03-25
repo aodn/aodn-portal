@@ -330,11 +330,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         trackUsage(OpenLayers.i18n('layerSelectionTrackingCategory'), OpenLayers.i18n('layerSelectionTrackingAction'), record.data.title);
 
         if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
-            log.info(
-                "Selected collection: " + JSON.stringify({
-                    'title': record.data.title
-                })
-            );
+
             Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
         }
         Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);

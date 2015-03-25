@@ -136,7 +136,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'TimeRangeLabel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'SearchBodyPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'SearchPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/service', file: 'SearchRequestLogger.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/service', file: 'CatalogSearcher.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'SearchFiltersPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'FacetDrilldownPanel.js')}"></script>
