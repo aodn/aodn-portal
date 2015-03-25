@@ -14,14 +14,6 @@ Portal.cart.Downloader = Ext.extend(Object, {
 
         var downloadUrl = generateUrlCallback.call(generateUrlCallbackScope, collection, params);
 
-        log.info(
-            "Downloading collection: " + JSON.stringify({
-                'title': collection.title,
-                'download URL': downloadUrl,
-                'params': params
-            })
-        );
-
         if (params.asyncDownload) {
             this._downloadAsynchronously(collection, downloadUrl, params);
         }

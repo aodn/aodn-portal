@@ -313,28 +313,8 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         return cql.join(this.AND_QUERY);
     },
 
-    _logFilterRequest: function() {
-        var layer = this.layer;
-        var filterData = layer.filterData;
-
-        var jsonStringifyObject = {};
-        jsonStringifyObject['title'] = layer.name;
-        jsonStringifyObject['filters'] = {};
-
-        filterData.forEach(function(filter) {
-            if (filter.cql) {
-                jsonStringifyObject['filters'][filter.name] = filter.cql;
-            }
-        });
-
-        log.info(
-            "Filtering collection: " + JSON.stringify(jsonStringifyObject)
-        );
-    },
-
     _handleAddFilter: function(aFilter) {
         this._updateLayerFilters();
-        this._logFilterRequest(aFilter.filter);
     },
 
     _clearFilters: function() {

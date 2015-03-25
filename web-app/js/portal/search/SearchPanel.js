@@ -23,10 +23,6 @@ Portal.search.SearchPanel = Ext.extend(Ext.Panel, {
             }
         });
 
-        new Portal.service.SearchRequestLogger({
-            searcher: this.searcher
-        });
-
         this.resultsStore = new Portal.data.GeoNetworkRecordStore();
         this.classificationStore = new Portal.data.TermClassificationStore();
 
