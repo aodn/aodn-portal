@@ -254,29 +254,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
         });
     });
 
-    describe('visualise cql', function() {
-        describe('_getVisualisationCQLFilters', function() {
-
-            var filterDescriptorData;
-
-            beforeEach(function() {
-
-                filterDescriptorData =  {
-                    name: 'test',
-                    label: 'some label',
-                    cql: "pardon my French",
-                    type: 'Boolean',
-                    visualised: true
-                }
-            });
-
-            it('calls getVisualisationCQL when options.downloadOnly is false', function() {
-
-                expect(filterGroupPanel._getVisualisationCQLFilters(filterDescriptorData)).toEqual('pardon my French');
-            });
-        });
-    });
-
     describe('_organiseFilterPanels', function() {
 
         var filterPanels;
