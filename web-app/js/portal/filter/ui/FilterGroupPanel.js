@@ -24,7 +24,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     initComponent: function() {
-        this.AND_QUERY = " AND ";
         this.on('addFilter', this._handleAddFilter);
 
         Portal.filter.ui.FilterGroupPanel.superclass.initComponent.call(this);
@@ -277,42 +276,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     _updateLayerFilters: function() {
         if (this._isLayerActive(this.layer)) {
 
-            this.layer.filterData = this._getActiveFilterData();
-            this.layer.setCqlFilter(this._getVisualisationCQLFilters(this.layer.filterData));
         }
-    },
-
-    _getActiveFilterData: function() {
-        var activeFilters = [];
-
-        Ext.each(this.filterPanels, function(filter) {
-            if (filter.hasValue()) {
-                activeFilters.push('What to push now?');
-            }
-        });
-
-        return activeFilters;
-    },
-
-    _getVisualisationCQLFilters: function(layerFilterData) {
-        var cql = [];
-        Ext.each(layerFilterData, function(data) {
-
-            var filterCQL = data.cql;
-
-            if (data.visualised) {
-
-                if (data.visualisationCql != undefined) {
-                    filterCQL = data.visualisationCql;
-                }
-
-                if (filterCQL) {
-                    cql.push(filterCQL);
-                }
-            }
-        });
-
-        return cql.join(this.AND_QUERY);
     },
 
     _handleAddFilter: function(aFilter) {
@@ -320,8 +284,8 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     _clearFilters: function() {
-        Ext.each(this.filterPanels, function(filter) {
-            filter.handleRemoveFilter();
+        Ext.each(this.filterPanels, function(panel) {
+            panel.handleRemoveFilter();
         });
         this._updateLayerFilters();
     },
