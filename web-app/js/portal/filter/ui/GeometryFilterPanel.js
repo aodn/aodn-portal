@@ -31,8 +31,10 @@ Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPan
 
     setLayerAndFilter: function(layer, filter) {
         Portal.filter.ui.GeometryFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
+
         if (layer.map.spatialConstraintControl) {
             this._updateWithGeometry(layer.map.spatialConstraintControl.getConstraint());
+            filter.map = layer.map;
         }
     },
 
@@ -59,34 +61,9 @@ Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPan
     },
 
     _updateWithGeometry: function(geometry) {
-        this.geometry = geometry;
+
+        this.filter.setValue(geometry);
+
         this._fireAddEvent();
-    },
-
-    getCQL: function() {
-
-        if (!this.geometry) {
-            return undefined;
-        }
-
-        return String.format(
-            "INTERSECTS({0},{1})",
-            this.filter.getName(),
-            this.geometry.toWkt()
-        );
-    },
-
-    _getCQLHumanValue: function() {
-        if (this.geometry) {
-            var explanation = (this.isRealPolygon()) ? OpenLayers.i18n("maxExtentOfPolygon") : OpenLayers.i18n("boundingBoxDescription");
-            return String.format('{0}:&nbsp;  {1}', explanation, this.geometry.getBounds());
-        }
-        else {
-            return "";
-        }
-    },
-
-    isRealPolygon: function() {
-        return (this.map.getSpatialConstraintType() == "polygon");
     }
 });
