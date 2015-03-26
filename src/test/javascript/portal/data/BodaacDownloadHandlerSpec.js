@@ -108,7 +108,7 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
             testCollection = {
                 wmsLayer: {
-                    getDownloadFilter: function() { return 'the_cql' },
+                    getDownloadCql: function() { return 'the_cql' },
                     _buildGetFeatureRequestUrl: function() { return 'the_url' },
                     getVisualisationCql: function() { return 'the_Vis_Cql' }
                 }

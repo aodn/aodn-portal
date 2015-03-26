@@ -36,7 +36,7 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
             },
             layer: {
                 name: 'test layer',
-                getDownloadFilter: function() {
+                getDownloadCql: function() {
                     return '';
                 }
             }

@@ -22,7 +22,7 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
             },
             layer: {
                 name: 'layerName',
-                getDownloadFilter: function() {
+                getDownloadCql: function() {
                     return '';
                 }
             },

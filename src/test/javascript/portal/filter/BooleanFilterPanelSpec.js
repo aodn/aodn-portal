@@ -25,7 +25,7 @@ describe("Portal.filter.ui.BooleanFilterPanel", function() {
             },
             layer: {
                 name: 'test layer',
-                getDownloadFilter: function() { return ""; }
+                getDownloadCql: function() { return ""; }
             }
         });
 

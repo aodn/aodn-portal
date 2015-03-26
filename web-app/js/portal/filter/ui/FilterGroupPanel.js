@@ -276,10 +276,11 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     _updateLayerFilters: function() {
         if (this._isLayerActive(this.layer)) {
 
+            this.layer.updateCqlFilter();
         }
     },
 
-    _handleAddFilter: function(aFilter) {
+    _handleAddFilter: function() {
         this._updateLayerFilters();
     },
 

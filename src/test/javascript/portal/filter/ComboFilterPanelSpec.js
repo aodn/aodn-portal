@@ -24,7 +24,7 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
             },
             layer: {
                 name: 'test layer',
-                getDownloadFilter: function() { return ""; }
+                getDownloadCql: function() { return ""; }
             }
         });
     });
