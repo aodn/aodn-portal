@@ -109,7 +109,7 @@ describe('OpenLayers', function() {
             it('calls _buildGetFeatureRequestUrl correctly', function() {
 
                 spyOn(openLayer, '_buildGetFeatureRequestUrl');
-                spyOn(openLayer, 'getDownloadFilter').andReturn('download filters');
+                spyOn(openLayer, 'getDownloadCql').andReturn('download filters');
 
                 openLayer.getFeatureRequestUrl('wms_uri', 'layerName', 'csv');
 
@@ -211,7 +211,7 @@ describe('OpenLayers', function() {
             it('returns text if there is a cql filter applied', function() {
                 openLayer.params = {CQL_FILTER: "test='filter'"};
 
-                var filterString = openLayer.getHumanReadableFilterDescriptions();
+                var filterString = openLayer.getFilterDescriptions();
                 expect(filterString.indexOf(OpenLayers.i18n('noFilterLabel'))).toEqual(-1);
             });
         });

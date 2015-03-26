@@ -86,7 +86,7 @@ OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(serverUrl, layerN
         serverUrl,
         layerName,
         outputFormat,
-        this.getDownloadFilter()
+        this.getDownloadCql()
     );
 };
 
@@ -134,7 +134,7 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
 
 OpenLayers.Layer.WMS.prototype.updateCqlFilter = function() {
 
-    params['CQL_FILTER'] = this.getVisualisationCql(false);
+    this.params['CQL_FILTER'] = this.getVisualisationCql(false);
 };
 
 OpenLayers.Layer.WMS.prototype.getCqlFilter = function() {
@@ -161,7 +161,7 @@ OpenLayers.Layer.WMS.prototype.setCqlFilter = function(cqlFilter) {
     }
 };
 
-OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
+OpenLayers.Layer.WMS.prototype.getDownloadCql = function() {
 
     var filters = [];
 
@@ -202,10 +202,10 @@ OpenLayers.Layer.WMS.prototype.getVisualisationCql = function(includeGeomFilter)
         }
     });
 
-    return filters.join(" AND ");
+    return filters.length > 0 ? filters.join(" AND ") : null;
 };
 
-OpenLayers.Layer.WMS.prototype.getHumanReadableFilterDescriptions = function() {
+OpenLayers.Layer.WMS.prototype.getFilterDescriptions = function() {
 
     var filters = [];
 
