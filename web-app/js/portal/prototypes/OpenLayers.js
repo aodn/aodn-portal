@@ -134,75 +134,72 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
 
 OpenLayers.Layer.WMS.prototype.updateCqlFilter = function() {
 
-    this.params['CQL_FILTER'] = this.getVisualisationCql(false);
-};
+    var newValue = this.getMapLayerCql();
+    var existingValue = this.params['CQL_FILTER'];
 
-OpenLayers.Layer.WMS.prototype.getCqlFilter = function() {
+    if (newValue != existingValue) {
 
-    throw 'getCqlFilter';
-};
-
-OpenLayers.Layer.WMS.prototype.setCqlFilter = function(cqlFilter) {
-
-    throw 'setCqlFilter';
-
-    if (cqlFilter == this.getCqlFilter()) {
-        return;
-    }
-
-    if (cqlFilter) {
-        this.mergeNewParams({
-            CQL_FILTER: cqlFilter
-        });
-    }
-    else {
-        delete this.params["CQL_FILTER"];
+        this.params['CQL_FILTER'] = newValue;
         this.redraw();
     }
 };
 
 OpenLayers.Layer.WMS.prototype.getDownloadCql = function() {
 
-    var filters = [];
+    var cqlParts = [];
 
     Ext.each(this.filters, function(filter) {
 
         if (filter.hasValue()) {
 
-            filters.push(data.cql);
+            cqlParts.push(filter.getDataLayerCql());
         }
     });
 
-    return filters.join(" AND ");
+    return this.joinCql(cqlParts);
 };
 
-OpenLayers.Layer.WMS.prototype.getVisualisationCql = function(includeGeomFilter) {
+OpenLayers.Layer.WMS.prototype.getMapLayerCql = function() {
 
-    console.log('What to do with includeGeomFilter:' + includeGeomFilter + "?");
-
-    var filters = [];
+    var cqlParts = [];
 
     Ext.each(this.filters, function(filter) {
 
-        console.log(filter.getName() + filter.hasValue());
+        if (filter.hasValue()) {
 
-        var isGeom = filter.constructor == Portal.filter.GeometryFilter;
+            var isGeom = (filter.constructor == Portal.filter.GeometryFilter);
 
-        if (filter.isVisualised() || (includeGeomFilter && isGeom)) {
+            if (filter.isVisualised() && !isGeom) {
 
-            // Visualisation preferred over data CQL - why don't we know??
-
-            if (filter.hasValue()) {
-
-                var mapCql = filter.getMapLayerCql();
-                var dataCql = filter.getDataLayerCql();
-
-                filters.push(dataCql ? dataCql : mapCql);
+                cqlParts.push(filter.getMapLayerCql());
             }
         }
     });
 
-    return filters.length > 0 ? filters.join(" AND ") : null;
+    return this.joinCql(cqlParts);
+};
+
+OpenLayers.Layer.WMS.prototype.getBodaacCql = function() {
+
+    var cqlParts = [];
+
+    Ext.each(this.filters, function(filter) {
+
+        if (filter.isVisualised()) {
+
+            if (filter.hasValue()) {
+
+                cqlParts.push(filter.getMapLayerCql());
+            }
+        }
+    });
+
+    return this.joinCql(cqlParts);
+};
+
+OpenLayers.Layer.WMS.prototype.joinCql = function(parts) {
+
+    return parts.length > 0 ? parts.join(" AND ") : null;
 };
 
 OpenLayers.Layer.WMS.prototype.getFilterDescriptions = function() {
