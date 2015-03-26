@@ -58,6 +58,8 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
 
     handleRemoveFilter: function() {
         this.combo.clearValue();
+
+        this.filter.clearValue();
     },
 
     needsFilterRange: function() {

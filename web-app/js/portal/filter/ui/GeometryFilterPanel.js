@@ -52,6 +52,8 @@ Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPan
             this.map.spatialConstraintControl.clear();
         }
 
+        this.filter.clearValue();
+
         this.map.events.triggerEvent('spatialconstraintcleared');
         trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingValueCleared'));
     },
