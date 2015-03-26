@@ -118,12 +118,10 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
                 secondField: this.secondField.getValue()
             });
 
-            var val = this._getTrackUsageLabel();
-
             this._fireAddEvent();
 
             if (!this._operatorIsBetween() || this._hasSecondValue()) {
-                trackFiltersUsage('filtersTrackingNumberAction', val, this.layer.name);
+                trackFiltersUsage('filtersTrackingNumberAction', this._getTrackUsageLabel(), this.layer.name);
             }
         }
     },
