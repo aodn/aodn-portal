@@ -8,7 +8,7 @@ The AODN open geospatial portal is a [Grails](http://grails.org/) application fo
 The application is a unified front end to other servers: 
 
 * [GeoNetwork](http://geonetwork-opensource.org/) metadata catalog
-* [GeoServer](http://geoserver.org/) data server (which serves WMS and WFS).
+* [GeoServer](http://geoserver.org/) data server (WMS and WFS).
 * [ncWMS](http://www.resc.rdg.ac.uk/trac/ncWMS/) web map server
 * [GoGoDuck](https://github.com/aodn/go-go-duck) netCDF subsetting and aggregation service
 
@@ -51,10 +51,22 @@ we are in the process of removing that dependency, [you can help with that too](
 
 #### Can I Get A Pre-Built War?
 
-Yes, you can download it [here](https://jenkins.aodn.org.au/job/Portal%20-%203.x%20Prod/).
+Yes, you can download it from our [Jenkins server](https://jenkins.aodn.org.au/job/Portal%20-%203.x%20Prod/).
 
-You can also write to us, info at emii dot org dot au to discuss the best way of getting portal and keeping your
-version up to date.
+The portal has been tested with Tomcat.  All you need to do is deploy the war and add a configuration file that tells the portal:
+
+* Where to find goenetwork
+* Your CSS for branding and styling
+
+## Adding the configuration file
+
+First tell tomcat where to find the configuration file by setting an environment context variable named aodn.configuration. 
+
+You can do this by adding a file called <context>.xml in the ```$CATALINA_BASE/conf/[enginename]/[hostname]/``` directory. Where context matches the context of the deployed war (eg. "aodn-portal-3.42.1-production.xml").  set the variable by including it as follows: 
+
+```<Environment name="aodn.configuration" value="<path to file>/Portal.groovy" type="java.lang.String" override="true"/>```
+
+
 
 ## Configuring Portal
 
