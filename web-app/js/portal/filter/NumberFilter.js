@@ -17,5 +17,46 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
     getUiComponentClass: function() {
 
         return Portal.filter.ui.NumberFilterPanel;
+    },
+
+    getHumanReadableForm: function() {
+
+        return this._getCql(this.getLabel());
+    },
+
+    _getCql: function(alternateLabel) {
+
+        var cql = String.format(
+            '{0} {1} {2}',
+            alternateLabel ? alternateLabel : this.getName(),
+            this._getOperator(),
+            this._getFirstField()
+        );
+
+        if (this._getSecondField()) {
+
+            cql = String.format(
+                '{0} AND {1}',
+                cql,
+                this._getSecondField()
+            );
+        }
+
+        return cql;
+    },
+
+    _getFirstField: function() {
+
+        return this.getValue().firstField;
+    },
+
+    _getOperator: function() {
+
+        return this.getValue().operator;
+    },
+
+    _getSecondField: function() {
+
+        return this.getValue().secondField;
     }
 });

@@ -98,38 +98,6 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         return false
     },
 
-    getCQL: function() {
-
-        if (this.firstField.getValue()) {
-            var cql = this.filter.getName() + " " + this.operators.getValue() + " " + this.firstField.getValue();
-
-            if (this._operatorIsBetween()) {
-
-                cql += " AND " + this.secondField.getValue();
-            }
-
-            return cql;
-        }
-
-        return undefined;
-    },
-
-    _getCQLHumanValue: function() {
-
-        if (this.firstField.getValue()) {
-            var cql = this.filter + " " + this.operators.getValue() + " " + this.firstField.getValue();
-
-            if (this._operatorIsBetween()) {
-
-                cql += " AND " + this.secondField.getValue();
-            }
-
-            return cql;
-        }
-
-        return undefined;
-    },
-
     _onSpecialKeyPressed: function(field, e) {
 
         if (e.getKey() == e.ENTER) {
@@ -138,9 +106,15 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         }
     },
 
-    _updateFilter: function(combo, record, index) {
+    _updateFilter: function() {
 
         if (this.firstField.validate() && this.secondField.validate()) {
+
+            this.filter.setValue({
+                firstField: this.firstField.getValue(),
+                operator: this.operators.getValue(),
+                secondField: this.secondField.getValue()
+            });
 
             var val = this._getTrackUsageLabel();
 
@@ -170,7 +144,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         return !(this.secondField.getValue() == null || this.secondField.getValue() == "");
     },
 
-    _onOperationSelected: function(combo, record, index) {
+    _onOperationSelected: function() {
         var shouldUpdate;
         var useSecondField = this._operatorIsBetween();
         var noneSelected = this._operatorIsNone();
@@ -186,11 +160,9 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
             // clear the filter if "none" is selected
             if (noneSelected) {
                 this.handleRemoveFilter();
-                this._fireAddEvent();
             }
-            else {
-                this._fireAddEvent();
-            }
+
+            this._updateFilter();
         }
     },
 
