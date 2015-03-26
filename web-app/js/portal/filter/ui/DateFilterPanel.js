@@ -38,10 +38,11 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
     },
 
     handleRemoveFilter: function() {
-        this.toDate.reset();
         this.fromDate.reset();
-
+        this.toDate.reset();
         this.toDate.setMinValue(new Date(0));
+
+        this.filter.clearValue();
     },
 
     needsFilterRange: function() {

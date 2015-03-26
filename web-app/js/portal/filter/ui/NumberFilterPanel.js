@@ -92,6 +92,8 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         this.firstField.reset();
         this.secondField.reset();
         this.secondField.setVisible(false);
+
+        this.filter.clearValue();
     },
 
     needsFilterRange: function() {

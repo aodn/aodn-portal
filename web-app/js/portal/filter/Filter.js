@@ -31,6 +31,11 @@ Portal.filter.Filter = Ext.extend(Object, {
         return !!this.value;
     },
 
+    clearValue: function() {
+
+        this.value = null;
+    },
+
     getName: function() {
 
         return this.name;
