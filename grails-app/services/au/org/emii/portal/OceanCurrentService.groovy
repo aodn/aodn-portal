@@ -13,7 +13,6 @@ import org.apache.commons.io.IOUtils
 class OceanCurrentService {
 
     def grailsApplication
-    def portalInstance
 
     def getRandomDetails() {
 
@@ -23,21 +22,6 @@ class OceanCurrentService {
         def parentPage = ""
         def baseURL = "http://oceancurrent.imos.org.au/"
         def fileAddress = baseURL + "sitemap/updating.txt"
-        def cfgInstanceName = portalInstance.code()
-
-        def waodn = [
-            'NWS/latest.gif',
-            'Ningaloo/latest.gif',
-            'Perth/latest.gif',
-            'CLeeu/latest.gif',
-            'DonPer/latest.gif',
-            'AlbEsp/latest.gif',
-            'sst_anom/latest.gif',
-            'sst_n/latest.gif',
-            'sst_s/latest.gif',
-            'uv/latest.gif',
-            'profiles/map/latest.gif'
-        ]
 
         try {
             def con = fileAddress.toURL().openConnection()
@@ -47,11 +31,6 @@ class OceanCurrentService {
 
             def data = IOUtils.toString( con.inputStream, "UTF-8" )
             data = data.split("\n").toList()
-
-            // Special case for West Australian portal
-            if (cfgInstanceName == 'waodn') {
-                data.retainAll(waodn)
-            }
 
             if (data.size() > 0) {
                 int lineCount = 0;
@@ -65,7 +44,7 @@ class OceanCurrentService {
                         imageURL = baseURL + it
                         acron = it.minus("/latest.gif")
                         speil = "Latest graph for " + acron
-                        parentPage = "/latest.html?region=" + cfgInstanceName
+                        parentPage = "/latest.html?region=IMOS"
                     }
                     num++
                 }

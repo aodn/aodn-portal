@@ -12,7 +12,6 @@ import grails.converters.JSON
 class HomeController {
 
     def grailsApplication
-    def portalInstance
     def portalBranding
 
     static final def CONFIG_KEYS_TO_IGNORE = [ "log4j", "beans" ]
