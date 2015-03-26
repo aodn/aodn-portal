@@ -216,7 +216,7 @@ describe('OpenLayers', function() {
             });
         });
 
-        describe('getVisualisationCql filter information', function() {
+        describe('getBodaacCql filter information', function() {
 
             it('returns text if there is a cql filters', function() {
                 openLayer.filterData = [{
@@ -224,7 +224,7 @@ describe('OpenLayers', function() {
                     enabled: true,
                     visualised: true }];
 
-                var filterString = openLayer.getVisualisationCql();
+                var filterString = openLayer.getBodaacCql();
                 expect(filterString).toContain("rararrr");
             });
 
@@ -235,10 +235,10 @@ describe('OpenLayers', function() {
                     type: "geom",
                     visualised: false}];
 
-                var filterString = openLayer.getVisualisationCql();
+                var filterString = openLayer.getBodaacCql();
                 expect(filterString).not.toContain("rararrr");
 
-                filterString = openLayer.getVisualisationCql(true);
+                filterString = openLayer.getBodaacCql(true);
                 expect(filterString).toContain("rararrr");
             });
 
@@ -248,10 +248,10 @@ describe('OpenLayers', function() {
                     enabled: true,
                     visualised: false}];
 
-                var filterString = openLayer.getVisualisationCql();
+                var filterString = openLayer.getBodaacCql();
                 expect(filterString).not.toContain("rararrr");
 
-                filterString = openLayer.getVisualisationCql(true);
+                filterString = openLayer.getBodaacCql(true);
                 expect(filterString).not.toContain("rararrr");
             });
         });
