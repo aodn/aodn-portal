@@ -50,27 +50,11 @@ Portal.filter.ui.BooleanFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPane
     },
 
     _buttonChecked: function() {
+        this.filter.setValue(this.checkbox.getValue());
+
         this._fireAddEvent();
 
         var val = this.filter.getLabel() + "=" + this.checkbox.getValue();
         trackFiltersUsage('filtersTrackingBooleanAction', val, this.layer.name);
-    },
-
-    getCQL: function() {
-        if (this.checkbox.getValue()) {
-            return this.filter.getName() + " = true";
-        }
-        else {
-            return undefined;
-        }
-    },
-
-    _getCQLHumanValue: function() {
-        if (this.checkbox.getValue()) {
-            return this.filter.getLabel() + " = true";
-        }
-        else {
-            return undefined;
-        }
     }
 });

@@ -17,5 +17,21 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.Filter, {
     getUiComponentClass: function() {
 
         return Portal.filter.ui.BooleanFilterPanel;
+    },
+
+    getHumanReadableForm: function() {
+
+        return String.format(
+            '{0} = true',
+            this.getLabel()
+        );
+    },
+
+    _getCql: function() {
+
+        return String.format(
+            '{0} = true',
+            this.getName()
+        );
     }
 });
