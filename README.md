@@ -60,20 +60,15 @@ The portal has been tested with Tomcat.  All you need to do is deploy the war an
 
 ## Adding the configuration file
 
-First tell tomcat where to find the configuration file by setting an environment context variable named aodn.configuration. 
+First tell tomcat where to find the configuration file by setting an environment context variable named ```aodn.configuration```. 
 
-You can do this by adding a file called <context>.xml in the ```$CATALINA_BASE/conf/[enginename]/[hostname]/``` directory. Where context matches the context of the deployed war (eg. "aodn-portal-3.42.1-production.xml").  set the variable by including it as follows: 
+You can do this by adding a file called &lt;context&gt;.xml in the ```$CATALINA_BASE/conf/[enginename]/[hostname]/``` directory. Where &lt;context&gt; matches the context of the deployed war (eg. "aodn-portal-3.42.1-production.xml").  set the variable by including it as follows: 
 
 ```<Environment name="aodn.configuration" value="<path to file>/Portal.groovy" type="java.lang.String" override="true"/>```
 
+Then add a file called ```potal.groovy```
 
-
-## Configuring Portal
-
-You can fork portal and have your configuration included in your code base however portal offers the ability to specify
-your configuration externally via an environment context variable named ```aodn.configuration``` you can clone an
-example [AODN config here](https://github.com/aodn/aodn-portal-config) and modify as required. The example should be
-descriptive enough to get you up and running however you can always shoot questions at us via our contact email.
+You can clone an example [here](https://github.com/aodn/aodn-portal-config) and modify as required. 
 
 ### Overriding config when developing
 
