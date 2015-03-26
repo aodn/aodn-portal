@@ -15,6 +15,7 @@ plugins
 \#*\#
 .\#*
 *.swp
+grails-app/conf/Config.local.groovy
 
 # Include code style settings for IntelliJ IDEA projects
 .idea/*

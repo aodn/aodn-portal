@@ -10,6 +10,8 @@ import javax.naming.InitialContext
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 
+grails.config.locations = []
+
 // grails.config.locations = [ "classpath:${appName}-config.properties",
 //                             "classpath:${appName}-config.groovy",
 //                             "file:${userHome}/.grails/${appName}-config.properties",
@@ -100,6 +102,7 @@ filtering {
 environments {
 
     development {
+        grails.config.locations << "file:grails-app/conf/Config.local.groovy"
         grails.resources.debug = true
 
         // URLs
