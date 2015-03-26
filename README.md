@@ -4,11 +4,15 @@ AODN Open Geospatial Portal
 [![Build Status](https://travis-ci.org/aodn/aodn-portal.png?branch=master)](https://travis-ci.org/aodn/aodn-portal)
 
 The AODN open geospatial portal is a [Grails](http://grails.org/) application for finding, visualising, and downloading geospatial data.
-The application integrates with the [GeoNetwork](http://geonetwork-opensource.org/) metadata catalog and [OGC Web Map Services](http://www.opengeospatial.org/standards/wms).
+
+The application is a unified front end to other servers: 
+
+* [GeoNetwork](http://geonetwork-opensource.org/) metadata catalog
+* [GeoServer](http://geoserver.org/) data server (which serves WMS and WFS).
+* [ncWMS](http://www.resc.rdg.ac.uk/trac/ncWMS/) web map server
+* [GoGoDuck](https://github.com/aodn/go-go-duck) netCDF subsetting and aggregation service
 
 You can view the portal in action at [IMOS](http://imos.aodn.org.au), which always runs the latest version of the code.
-
-The IMOS Portal publishes the [IMOS data collection](https://imos.aodn.org.au/data_collections.html).
 
 ## Contact
 Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_help/?q=forum).
@@ -18,8 +22,7 @@ Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_h
 * Faceted search for easy navigation of datasets.
 * Configurable themes and splash page.
 * Filter data before download.
-* Subset and aggregate multiple datasets into a single file for download.
-* Advanced spatial search that ensures results have features in the region of interest.  Not just a bounding box intersection.
+* Download data from a variety of web services
 
 ## Quick Navigation
 
@@ -85,3 +88,7 @@ Portal has a few collaborating applications that you may also want to deploy
 ## Getting Started (How Do I Drive This Thing?)
 
 Read the [Getting Started guide](https://github.com/aodn/aodn-portal/wiki/Getting-Started) on the wiki
+
+
+The IMOS Portal is used to publish the [IMOS data collection](https://imos.aodn.org.au/data_collections.html).
+
