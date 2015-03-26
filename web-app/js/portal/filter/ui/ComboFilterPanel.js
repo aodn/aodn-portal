@@ -78,28 +78,6 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
         return true;
     },
 
-    getCQL: function() {
-        if (!this.combo.disabled && this.combo.getValue()) {
-            return String.format(
-                "{0} LIKE '{1}'",
-                this.filter.getName(),
-                this._escapeSingleQuotes(this.combo.getValue())
-            );
-        }
-
-        return undefined;
-    },
-
-    _getHumanValue: function() {
-        var componentValue = this._escapeSingleQuotes(this.combo.getValue());
-        if (componentValue != "") {
-            return this.filter.getLabel() + " like \"" + componentValue + "\""
-        }
-        else {
-            return ""
-        }
-    },
-
     _onSelected: function() {
 
         if (this.combo.getValue() == OpenLayers.i18n('clearFilterOption')) {
@@ -109,6 +87,11 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
             var val = this.filter.getLabel() + "=" + this.combo.getValue();
             trackFiltersUsage('filtersTrackingComboAction', val, this.layer.name);
         }
+
+        if (!this.combo.disabled) {
+            this.filter.setValue(this.combo.getValue());
+        }
+
         this._fireAddEvent();
     },
 
@@ -142,9 +125,5 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
         this.combo.clearValue();
         this.combo.getStore().loadData(data);
         this.combo.enable();
-    },
-
-    _escapeSingleQuotes: function(text) {
-        return text.replace(/'/g, "''");
     }
 });
