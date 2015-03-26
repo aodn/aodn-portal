@@ -19,34 +19,16 @@ Portal.filter.GeometryFilter = Ext.extend(Portal.filter.Filter, {
         return Portal.filter.ui.GeometryFilterPanel;
     },
 
-    /*
-     getCQL: function() {
+    getHumanReadableForm: function() {
 
-     if (!this.geometry) {
-     return undefined;
-     }
+        var explanation = this._isRealPolygon() ? OpenLayers.i18n("maxExtentOfPolygon") : OpenLayers.i18n("boundingBoxDescription");
 
-     return String.format(
-     "INTERSECTS({0},{1})",
-     this.filter.getName(),
-     this.geometry.toWkt()
-     );
-     },
-
-     _getCQLHumanValue: function() {
-     if (this.geometry) {
-     var explanation = (this.isRealPolygon()) ? OpenLayers.i18n("maxExtentOfPolygon") : OpenLayers.i18n("boundingBoxDescription");
-     return String.format('{0}:&nbsp;  {1}', explanation, this.geometry.getBounds());
-     }
-     else {
-     return "";
-     }
-     },
-
-     isRealPolygon: function() {
-     return (this.map.getSpatialConstraintType() == "polygon");
-     }
-     */
+        return String.format(
+            '{0}: {1}',
+            explanation,
+            this.getValue().getBounds()
+        );
+    },
 
     _getCql: function() {
 
@@ -55,5 +37,10 @@ Portal.filter.GeometryFilter = Ext.extend(Portal.filter.Filter, {
             this.getName(),
             this.getValue().toWkt()
         );
+    },
+
+    _isRealPolygon: function() {
+
+        return this.map.getSpatialConstraintType() == "polygon";
     }
 });
