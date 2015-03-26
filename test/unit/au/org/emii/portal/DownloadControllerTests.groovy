@@ -12,18 +12,13 @@ import grails.test.ControllerUnitTestCase
 import static au.org.emii.portal.DownloadController.SIZE_ESTIMATE_ERROR
 import static au.org.emii.portal.HttpUtils.Status.*
 
-class DownloadControllerTests extends ControllerUnitTestCase {
+@TestFor(DownloadController)
+class DownloadControllerTests {
 
-    def controller
     def testServer
 
-    protected void setUp() {
-        super.setUp()
-
-        mockLogging DownloadController
-
-        controller = new DownloadController()
-        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
+    void setUp() {
+        controller.grailsApplication.config.indexedFile.fileSizeColumnName = "size"
 
         DownloadController.metaClass.static._getServer = { testServer }
 
@@ -31,17 +26,13 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         _setHostShouldBeValid(true)
     }
 
-    protected void tearDown() {
-        super.tearDown()
-    }
-
     void testUrlListForLayerNoUrlFieldName() {
 
-        mockParams.urlFieldName = null
+        controller.params.urlFieldName = null
 
         controller.urlListForLayer()
 
-        assertEquals "urlFieldName was not provided", mockResponse.contentAsString
+        assertEquals "urlFieldName was not provided", response.contentAsString
     }
 
     void testUrlListForLayer() {
@@ -83,7 +74,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         }
         controller.downloadPythonSnippet()
 
-        assertEquals("text/plain", mockResponse.contentType)
+        assertEquals("text/plain", response.contentType)
         assertEquals("pythonSnippet.py", renderParams.template)
         assertEquals([ collectionUrl: "http://someurl" ], renderParams.model)
     }
@@ -97,7 +88,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.downloadNetCdfFilesForLayer()
 
-        assertEquals 'An error occurred before downloading could begin', mockResponse.contentAsString
+        assertEquals 'An error occurred before downloading could begin', response.contentAsString
     }
 
     void testDownloadNetCdfFilesForLayerInvalidHost() {
@@ -106,13 +97,12 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.downloadNetCdfFilesForLayer()
 
-        assertEquals "Host for address 'http://www.example.com/?PROPERTYNAME=relativeFilePath' not allowed", mockResponse.contentAsString
-        assertEquals HTTP_403_FORBIDDEN, controller.renderArgs.status
+        assertEquals HTTP_403_FORBIDDEN, response.status
     }
 
     void testDownloadNetCdfFilesForLayer() {
 
-        mockParams.downloadFilename = 'somedata.txt'
+        controller.params.downloadFilename = 'somedata.txt'
 
         def archiveGenerated = false
         controller.metaClass.urlListStreamProcessor = { fieldName, urlSubstitutions ->
@@ -129,7 +119,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         controller.bulkDownloadService = [
             generateArchiveOfFiles: { urlList, outputStream, locale ->
                 assertEquals(["url1", "url2"], urlList)
-                assertEquals mockResponse.outputStream, outputStream
+                assertEquals response.outputStream, outputStream
                 archiveGenerated = true
             }
         ]
@@ -141,11 +131,11 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testEstimateSizeForLayerNoUrlFieldName() {
 
-        mockParams.urlFieldName = null
+        controller.params.urlFieldName = null
 
         controller.estimateSizeForLayer()
 
-        assertEquals SIZE_ESTIMATE_ERROR, mockResponse.contentAsString
+        assertEquals SIZE_ESTIMATE_ERROR, response.contentAsString
     }
 
     void testEstimateSizeForLayerInvalidHost() {
@@ -154,12 +144,12 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.estimateSizeForLayer()
 
-        assertEquals SIZE_ESTIMATE_ERROR, mockResponse.contentAsString
+        assertEquals SIZE_ESTIMATE_ERROR, response.contentAsString
     }
 
     void testEstimateSizeForLayerNoUrlColumnSpecified() {
 
-        mockParams.urlFieldName = null
+        controller.params.urlFieldName = null
 
         def testStreamProcessor = new Object()
         controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->
@@ -170,7 +160,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.estimateSizeForLayer()
 
-        assertEquals SIZE_ESTIMATE_ERROR, mockResponse.contentAsString
+        assertEquals SIZE_ESTIMATE_ERROR, response.contentAsString
     }
 
     void testEstimateSizeForLayerNoProblems() {
@@ -188,7 +178,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.estimateSizeForLayer()
 
-        assertEquals "the output", mockResponse.contentAsString
+        assertEquals "the output", response.contentAsString
     }
 
     void testEstimateSizeForLayerWitExternalRequestException() {
@@ -201,7 +191,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.estimateSizeForLayer()
 
-        assertEquals SIZE_ESTIMATE_ERROR, mockResponse.contentAsString
+        assertEquals SIZE_ESTIMATE_ERROR, response.contentAsString
     }
 
     void testRequestSingleFieldParamProcessor() {
@@ -285,8 +275,8 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
 
         controller.grailsApplication.config.knownServers = [ testServer ]
 
-        mockParams.url = 'http://www.example.com/'
-        mockParams.urlFieldName = 'relativeFilePath'
+        controller.params.url = 'http://www.example.com/'
+        controller.params.urlFieldName = 'relativeFilePath'
     }
 
     void _setHostShouldBeValid(valid) {

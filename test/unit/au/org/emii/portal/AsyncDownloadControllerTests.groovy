@@ -19,7 +19,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
         controller.downloadAuthService = downloadAuthService.createMock()
 
         gogoduckService = mockFor(GogoduckService)
-        gogoduckService.demand.static.registerJob { params -> return "gogoduck_rendered_text" }
+        gogoduckService.demand.registerJob { params -> return "gogoduck_rendered_text" }
         controller.gogoduckService = gogoduckService.createMock()
     }
 
