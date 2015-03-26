@@ -32,6 +32,7 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
+        mavenRepo "https://repo.grails.org/grails/plugins"
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
@@ -44,8 +45,11 @@ grails.project.dependency.resolution = {
     // Allow grails commands to be run as usual, see: http://grails.org/doc/latest/guide/conf.html#mavenIntegration
     pom true
     plugins {
-        test ":build-test-data:1.1.2"
-        compile ":simple-captcha:0.7.1"
+        compile ":simple-captcha:1.0.0"
+        compile ":code-coverage:1.2.4"
+        compile ":csv:0.3.1"
+        compile ":simple-captcha:1.0.0"
+        build ":tomcat:$grailsVersion"
     }
 }
 
