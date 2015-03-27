@@ -33,7 +33,7 @@ class DownloadController extends RequestProxyingController {
             return
         }
 
-        _performProxying(
+        _performProxyingIfAllowed(
             requestSingleFieldParamProcessor(fieldName),
             urlListStreamProcessor(fieldName, urlSubstitutions)
         )
