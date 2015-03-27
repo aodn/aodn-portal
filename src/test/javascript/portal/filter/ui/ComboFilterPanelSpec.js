@@ -56,15 +56,37 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
     });
 
     describe('onSelected', function() {
-        it('tracks usage using google analytics', function() {
+
+        beforeEach(function() {
             spyOn(window, 'trackUsage');
-            filterPanel.combo.getValue = function() {
-                return "value";
+            filterPanel.filter.setValue = jasmine.createSpy('setValue');
+            filterPanel.combo = {
+                getValue: function() { return "value" },
+                disabled: false
             };
+        });
+
+        it('tracks usage using google analytics', function() {
 
             filterPanel._onSelected();
 
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "testLabel=value", "test layer");
+        });
+
+        it('sets value if combo is enabled', function() {
+
+            filterPanel._onSelected();
+
+            expect(filterPanel.filter.setValue).toHaveBeenCalledWith("value");
+        });
+
+        it('no value set for disabled combo box', function() {
+
+            filterPanel.combo.disabled = true;
+
+            filterPanel._onSelected();
+
+            expect(filterPanel.filter.setValue).not.toHaveBeenCalled();
         });
     });
 });
