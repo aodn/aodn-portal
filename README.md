@@ -24,11 +24,6 @@ Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_h
 * Download data from a variety of web services
 * Easy 1-2-3 workflow
 
-## Quick Navigation
-* [Get Portal](#getting-your-hands-on-portal)
-* [Configuration](#configuring-portal)
-* [How Do I Drive This Thing?](#getting-started-how-do-i-drive-this-thing)
-
 ## Getting Your Hands on Portal
 * [Building From Source](#building-from-source)
 * [Can I Get A Pre-Built War?](#can-i-get-a-pre-built-war)
