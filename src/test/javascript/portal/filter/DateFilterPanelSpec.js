@@ -10,9 +10,9 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
     var component;
 
     beforeEach(function() {
-        Portal.filter.ui.DateFilterPanel.prototype._createField = function() {};
+        Portal.filter.ui.DateFilterPanel.prototype._createField = noOp;
 
-        Portal.filter.ui.DateFilterPanel.prototype._getDateString = function() {};
+        Portal.filter.ui.DateFilterPanel.prototype._getDateString = noOp;
 
         filterPanel = new Portal.filter.ui.DateFilterPanel({
             filter: {
@@ -45,7 +45,6 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
             // uses time zone so cant test for equality in Travis
             expect(filterPanel._getDateHumanString(filterPanel.combo)).toNotEqual(undefined);
         });
-
     });
 
     describe('handleRemoveFilter', function() {
@@ -81,9 +80,9 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
         });
 
         it('fires events when required fields are set', function() {
-            component._dateField.getValue = function() { return '12-02-1990'};
-            filterPanel._applyDateFilterPanel(component);
-            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Date", "atestname reset 12-02-1990", "layerName");
+            component._dateField.getValue = function() { return '12-02-1990' };
+            filterPanel._applyDateFilter(component);
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Date", "atestname user set 12-02-1990", "layerName");
             expect(filterPanel._fireAddEvent).toHaveBeenCalled();
         });
     });
@@ -128,15 +127,15 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
 
         var setTestValue = function(resettableDate, value) {
             spyOn(resettableDate, 'getValue').andReturn(value);
-            spyOn(resettableDate, 'hasValue').andReturn(true);
         };
     });
 
     function _mockFilterFields(filterPanel) {
-        Ext.each(['fromDate', 'toDate'], function(property, index, all) {
+        Ext.each(['fromDate', 'toDate'], function(property) {
             this[property] = {
                 getValue: noOp,
-                hasValue: noOp,
+                setMinValue: noOp,
+                setMaxValue: noOp,
                 applyDefaultValueLimits: noOp
             }
         }, filterPanel);

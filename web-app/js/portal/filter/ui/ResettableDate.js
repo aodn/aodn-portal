@@ -42,7 +42,9 @@ Portal.filter.ui.ResettableDate = Ext.extend(Ext.Container, {
     },
 
     getValue: function() {
-        return this._dateField.getValue();
+
+        var value = this._dateField.getValue();
+        return value == '' ? null : value;
     },
 
     setValue: function(value) {
@@ -57,20 +59,16 @@ Portal.filter.ui.ResettableDate = Ext.extend(Ext.Container, {
     },
 
     setMinValue: function(value) {
-        return this._dateField.setMinValue(value);
+        this._dateField.setMinValue(value ? value : new Date(0));
     },
 
     setMaxValue: function(value) {
-        return this._dateField.setMaxValue(value);
+        this._dateField.setMaxValue(value ? value : new Date());
     },
 
     applyDefaultValueLimits: function() {
-        this.setMinValue(new Date(0));
-        this.setMaxValue(new Date());
-    },
-
-    hasValue: function() {
-        return this._dateField.getValue() != '';
+        this.setMinValue();
+        this.setMaxValue();
     },
 
     _createDateField: function(cfg) {
