@@ -158,13 +158,63 @@ describe('OpenLayers', function() {
             });
         });
 
-        describe('Human readable wms specific filter information', function() {
+        describe('various CQL forms', function() {
 
-            it('returns text if there is a cql filter applied', function() {
-                openLayer.params = {CQL_FILTER: "test='filter'"};
+            beforeEach(function() {
 
-                var filterString = openLayer.getFilterDescriptions();
-                expect(filterString.indexOf(OpenLayers.i18n('noFilterLabel'))).toEqual(-1);
+                openLayer.filters = [
+                    {
+                        constructor: Portal.filter.GeometryFilter,
+                        isVisualised: function() { return true },
+                        hasValue: function() { return true },
+                        getDataLayerCql: function() { return 'data1' },
+                        getMapLayerCql: function() { return 'map1' },
+                        getHumanReadableForm: function() { return 'one' }
+                    },
+                    {
+                        isVisualised: function() { return false }, // Not visualised
+                        hasValue: function() { return true },
+                        getDataLayerCql: function() { return 'data2' },
+                        getMapLayerCql: function() { return 'map2' },
+                        getHumanReadableForm: function() { return 'two' }
+                    },
+                    {
+                        isVisualised: function() { return true },
+                        hasValue: function() { return false }, // No value
+                        getDataLayerCql: function() { return 'data3' },
+                        getMapLayerCql: function() { return 'map3' },
+                        getHumanReadableForm: function() { return 'three' }
+                    },
+                    {
+                        isVisualised: function() { return true },
+                        hasValue: function() { return true },
+                        getDataLayerCql: function() { return 'data4' },
+                        getMapLayerCql: function() { return 'map4' },
+                        getHumanReadableForm: function() { return 'four' }
+                    }
+                ];
+            });
+
+            it('getDownloadCql', function() {
+
+                expect(openLayer.getDownloadCql()).toBe('data1 AND data2 AND data4');
+            });
+
+            it('getMapLayerCql', function() {
+
+                expect(openLayer.getMapLayerCql()).toBe('map4');
+            });
+
+            it('getBodaacCql', function() {
+
+                expect(openLayer.getBodaacCql()).toBe('map1 AND map4');
+            });
+
+            it('getFilterDescriptions includes all relevant parts', function() {
+
+                expect(openLayer.getFilterDescriptions()).toEqual(
+                    ['one', 'two', 'four']
+                );
             });
         });
     });
