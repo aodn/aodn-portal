@@ -79,7 +79,7 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
             emptyText: emptyText,
             listeners: {
                 scope: this,
-                change: this._applyDateFilterPanel
+                change: this._applyDateFilter
             }
         });
     },
@@ -118,28 +118,18 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
         return moment(date).format(OpenLayers.i18n('dateTimeDisplayFormat'));
     },
 
-    _applyDateFilterPanel: function(component) {
+    _applyDateFilter: function(component) {
 
-        var usageLabel = OpenLayers.i18n('trackingDefaultValueReset');
-        if (this.fromDate.hasValue()) {
-            this.toDate.setMinValue(this.fromDate.getValue());
-            usageLabel = OpenLayers.i18n('trackingUserSet');
-        }
-        else {
-            this.toDate.applyDefaultValueLimits();
-        }
+        var changedField = component._dateField;
 
-        if (this.toDate.hasValue()) {
-            this.fromDate.setMaxValue(this.toDate.getValue());
-            usageLabel = OpenLayers.i18n('trackingUserSet');
-        }
-        else {
-            this.fromDate.applyDefaultValueLimits();
-        }
+        this.toDate.setMinValue(this.fromDate.getValue());
+        this.fromDate.setMaxValue(this.toDate.getValue());
 
-        var val = component._dateField.name + " " + usageLabel + " " + component._dateField.getValue();
-        trackFiltersUsage('filtersTrackingDateAction', val, this.layer.name);
         this._fireAddEvent();
+
+        var usageLabelKey = changedField.getValue() ? 'trackingUserSet' : 'trackingDefaultValueReset';
+        var val = changedField.name + " " + OpenLayers.i18n(usageLabelKey) + " " + changedField.getValue();
+        trackFiltersUsage('filtersTrackingDateAction', val, this.layer.name);
     },
 
     _isFromFieldUsed: function() {
