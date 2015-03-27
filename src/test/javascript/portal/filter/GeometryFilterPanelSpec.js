@@ -22,7 +22,9 @@ describe("Portal.filter.ui.GeometryFilterPanel", function() {
                 map: map
             },
             filter: {
-                getName: function() { return 'geom_filter' }
+                getName: function() { return 'geom_filter' },
+                setValue: noOp,
+                clearValue: noOp
             }
         });
 
@@ -55,19 +57,6 @@ describe("Portal.filter.ui.GeometryFilterPanel", function() {
             expect(map.spatialConstraintControl.clear).toHaveBeenCalled();
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Spatial Constraint", "cleared", undefined);
             expect(filterPanel._updateWithGeometry).toHaveBeenCalledWith();
-        });
-    });
-
-    describe('getCQL', function () {
-
-        it('calls correct method for polygon geometry type', function () {
-            filterPanel.geometry = { toWkt: function() { return "[WKT]" } };
-            expect(filterPanel.getCQL()).toBe('INTERSECTS(geom_filter,[WKT])');
-        });
-
-        it('returns empty string when geometry is falsy', function() {
-            filterPanel.geometry = undefined;
-            expect(filterPanel.getCQL()).toEqual(undefined);
         });
     });
 });

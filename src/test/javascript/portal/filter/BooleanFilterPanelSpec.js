@@ -21,7 +21,8 @@ describe("Portal.filter.ui.BooleanFilterPanel", function() {
         booleanFilter = new Portal.filter.ui.BooleanFilterPanel({
             filter: {
                 getName: function() { return 'test' },
-                getLabel: function() { return 'testLabel' }
+                getLabel: function() { return 'testLabel' },
+                setValue: noOp
             },
             layer: {
                 name: 'test layer',
@@ -30,27 +31,6 @@ describe("Portal.filter.ui.BooleanFilterPanel", function() {
         });
 
         spyOn(window, 'trackUsage');
-    });
-
-    describe('getCQL', function() {
-        it('should initially return ""', function() {
-            expect(booleanFilter.getCQL()).toEqual(undefined);
-        });
-
-        it('should return true values if checkbox selected', function() {
-            booleanFilter.checkbox.getValue = function() { return true; };
-            expect(booleanFilter.getCQL()).toEqual("test = true");
-        });
-
-        it('should return false values if checkbox not selected', function() {
-            booleanFilter.checkbox.getValue = function() { return false; };
-            expect(booleanFilter.getCQL()).toEqual(undefined);
-        });
-
-        it('human readable cql', function() {
-            booleanFilter.checkbox.getValue = function() { return true; };
-            expect(booleanFilter._getCQLHumanValue()).toEqual("testLabel = true");
-        });
     });
 
     it('tracking on booleanFilter click', function() {
