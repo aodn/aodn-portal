@@ -20,38 +20,13 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
         filterPanel = new Portal.filter.ui.ComboFilterPanel({
             filter: {
                 getName: function() { return 'test' },
-                getLabel: function() { return 'testLabel' }
+                getLabel: function() { return 'testLabel' },
+                setValue: noOp
             },
             layer: {
                 name: 'test layer',
                 getDownloadCql: function() { return ""; }
             }
-        });
-    });
-
-    it('_escapeSingleQuotes should replace single quotes with two single quotes', function() {
-        var result = filterPanel._escapeSingleQuotes("L'Astrolabe");
-
-        expect(result).toEqual("L''Astrolabe");
-    });
-
-    it('_escapeSingleQuotes should handle multiple single quotes', function() {
-        var result = filterPanel._escapeSingleQuotes("L''Astro'labe");
-
-        expect(result).toEqual("L''''Astro''labe");
-    });
-
-    describe('getCQL', function() {
-        it('should create the cql filter replacing single quotes in the filter value with two single quotes', function() {
-            filterPanel.filter = {
-                getName: function() { return "vessel_name" }
-            };
-
-            filterPanel.combo = {
-                getValue: function() { return "L'Astrolabe" }
-            };
-
-            expect(filterPanel.getCQL()).toEqual("vessel_name LIKE 'L''Astrolabe'");
         });
     });
 

@@ -56,54 +56,6 @@ describe('OpenLayers', function() {
             });
         });
 
-        describe("getCqlFilter", function() {
-            it("Returns filter if defined", function() {
-                openLayer.params = {CQL_FILTER: "test='filter'"};
-
-                expect(openLayer.getCqlFilter()).toEqual("test='filter'");
-            });
-
-            it("Returns empty string if cql filter not defined", function() {
-                openLayer.params = {};
-
-                expect(openLayer.getCqlFilter()).toEqual('');
-            });
-        });
-
-        describe("setCqlFilter", function() {
-            it("calls mergeParams for a new filter", function() {
-                spyOn(openLayer, "mergeNewParams");
-
-                openLayer.params = {CQL_FILTER: "test='filter'"};
-
-                openLayer.setCqlFilter("attribute='anotherfilter'");
-
-                expect(openLayer.mergeNewParams).toHaveBeenCalledWith({
-                    CQL_FILTER: "attribute='anotherfilter'"
-                });
-            });
-
-            it("does nothing if new filter equals old filter", function() {
-                spyOn(openLayer, "mergeNewParams");
-
-                openLayer.params = {CQL_FILTER: "test='filter'"};
-
-                openLayer.setCqlFilter("test='filter'");
-
-                expect(openLayer.mergeNewParams).not.toHaveBeenCalled();
-            });
-
-            it("deletes filter and redraws if filter is empty", function() {
-                spyOn(openLayer, "redraw");
-
-                openLayer.params = {CQL_FILTER: "test='filter'"};
-
-                openLayer.setCqlFilter("");
-
-                expect(openLayer.redraw).toHaveBeenCalled();
-            });
-        });
-
         describe('getFeatureRequestUrl', function() {
 
             it('calls _buildGetFeatureRequestUrl correctly', function() {
@@ -213,46 +165,6 @@ describe('OpenLayers', function() {
 
                 var filterString = openLayer.getFilterDescriptions();
                 expect(filterString.indexOf(OpenLayers.i18n('noFilterLabel'))).toEqual(-1);
-            });
-        });
-
-        describe('getBodaacCql filter information', function() {
-
-            it('returns text if there is a cql filters', function() {
-                openLayer.filterData = [{
-                    cql: "rararrr",
-                    enabled: true,
-                    visualised: true }];
-
-                var filterString = openLayer.getBodaacCql();
-                expect(filterString).toContain("rararrr");
-            });
-
-            it('returns text if the cql filter is a geom when function is called with correct flag', function() {
-                openLayer.filters = [{
-                    cql: "rararrr",
-                    enabled: true,
-                    type: "geom",
-                    visualised: false}];
-
-                var filterString = openLayer.getBodaacCql();
-                expect(filterString).not.toContain("rararrr");
-
-                filterString = openLayer.getBodaacCql(true);
-                expect(filterString).toContain("rararrr");
-            });
-
-            it('returns nothing if the cql filter is download only', function() {
-                openLayer.filters = [{
-                    cql: "rararrr",
-                    enabled: true,
-                    visualised: false}];
-
-                var filterString = openLayer.getBodaacCql();
-                expect(filterString).not.toContain("rararrr");
-
-                filterString = openLayer.getBodaacCql(true);
-                expect(filterString).not.toContain("rararrr");
             });
         });
     });

@@ -19,6 +19,9 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
                     return true;
                 }
             };
+            this.operators = {
+                getValue: noOp
+            };
             this.secondField = {
                 getValue: function() {
                     return false;
@@ -32,20 +35,12 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
         numberFilter = new Portal.filter.ui.NumberFilterPanel({
             filter: {
                 name: 'test',
-                label: 'testLabel'
+                label: 'testLabel',
+                setValue: noOp
             },
             layer: {
-                name: 'test layer',
-                getDownloadCql: function() {
-                    return '';
-                }
+                name: 'test layer'
             }
-        });
-    });
-
-    describe('constructor', function() {
-        it('should set CQL to ""', function() {
-            expect(numberFilter.getCQL()).toEqual(undefined);
         });
     });
 
@@ -54,14 +49,15 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
             numberFilter._createControls();
             numberFilter.firstField.getValue = function() { return 5 };
             numberFilter.operators = {
-                lastSelectionText: 'less than'
+                lastSelectionText: 'less than',
+                getValue: noOp
             };
         });
 
         it('sends correct tracking data  when operator is not between', function() {
             spyOn(window, 'trackUsage');
 
-            numberFilter._operatorIsBetween = function() {return false};
+            numberFilter._operatorIsBetween = function() { return false };
             numberFilter._updateFilter();
 
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Number", "testLabel less than 5", "test layer");
@@ -70,7 +66,7 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
         it('sends correct tracking data when operator is between', function() {
             spyOn(window, 'trackUsage');
 
-            numberFilter._operatorIsBetween = function() {return true};
+            numberFilter._operatorIsBetween = function() { return true };
             numberFilter.operators.lastSelectionText = 'between';
             numberFilter.secondField.getValue = function() { return 6 };
             numberFilter._updateFilter();
