@@ -60,9 +60,9 @@ The portal has been tested with Tomcat.  All you need to do is deploy the war an
 
 ## Adding the configuration file
 
-First tell tomcat where to find the configuration file by setting an environment context variable named ```aodn.configuration```. 
+First define the location of the configuration file by setting an environment context variable named ```aodn.configuration```. 
 
-You can do this by adding a file called &lt;context&gt;.xml in the ```$CATALINA_BASE/conf/[enginename]/[hostname]/``` directory. Where &lt;context&gt; matches the context of the deployed war (eg. "aodn-portal-3.42.1-production.xml").  set the variable by including it as follows: 
+One way to do this is by adding a file called &lt;context&gt;.xml in the ```$CATALINA_BASE/conf/[enginename]/[hostname]/``` directory. Where &lt;context&gt; matches the context of the deployed war (eg. "aodn-portal-3.42.1-production.xml").  set the variable by including it as follows: 
 
 ```<Environment name="aodn.configuration" value="<path to file>/Portal.groovy" type="java.lang.String" override="true"/>```
 
