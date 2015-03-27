@@ -97,6 +97,11 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SpatialSubsetControlsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'TimeComboBox.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'Filter.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'BooleanFilter.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'DateFilter.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'GeometryFilter.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'NumberFilter.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'StringFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'FilterService.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'BaseFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'ComboFilterPanel.js')}"></script>
@@ -105,7 +110,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'GeometryFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'BooleanFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'NumberFilterPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'EmptyFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'FilterGroupPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'UtcExtentDateTime.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'PolygonTypeComboBox.js')}"></script>

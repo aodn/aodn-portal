@@ -24,7 +24,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     initComponent: function() {
-        this.AND_QUERY = " AND ";
         this.on('addFilter', this._handleAddFilter);
 
         Portal.filter.ui.FilterGroupPanel.superclass.initComponent.call(this);
@@ -172,8 +171,8 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
             var comparisonResult = _this._compareElements(typeOrder(firstPanel), typeOrder(secondPanel));
 
             if (comparisonResult == 0) {
-                var firstFilterName = firstPanel.filter.getDisplayLabel();
-                var secondFilterName = secondPanel.filter.getDisplayLabel();
+                var firstFilterName = firstPanel.filter.getLabel();
+                var secondFilterName = secondPanel.filter.getLabel();
                 comparisonResult = _this._compareElements(secondFilterName, firstFilterName);
             }
 
@@ -203,7 +202,9 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _createFilterPanel: function(filter) {
 
-        var newFilterPanel = Portal.filter.ui.BaseFilterPanel.newFilterPanelFor({
+        var filterClass = Portal.filter.Filter.classFor(filter);
+        var uiElementClass = filterClass.prototype.getUiComponentClass();
+        var newFilterPanel = new uiElementClass({
             filter: filter,
             layer: this.layer
         });
@@ -275,51 +276,17 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     _updateLayerFilters: function() {
         if (this._isLayerActive(this.layer)) {
 
-            this.layer.filterData = this._getActiveFilterData();
-            this.layer.setCqlFilter(this._getVisualisationCQLFilters(this.layer.filterData));
+            this.layer.updateCqlFilter();
         }
     },
 
-    _getActiveFilterData: function() {
-        var activeFilters = [];
-
-        Ext.each(this.filterPanels, function(filter) {
-            if (filter.hasValue()) {
-                activeFilters.push(filter.getFilterData());
-            }
-        });
-
-        return activeFilters;
-    },
-
-    _getVisualisationCQLFilters: function(layerFilterData) {
-        var cql = [];
-        Ext.each(layerFilterData, function(data) {
-
-            var filterCQL = data.cql;
-
-            if (data.visualised) {
-
-                if (data.visualisationCql != undefined) {
-                    filterCQL = data.visualisationCql;
-                }
-
-                if (filterCQL) {
-                    cql.push(filterCQL);
-                }
-            }
-        });
-
-        return cql.join(this.AND_QUERY);
-    },
-
-    _handleAddFilter: function(aFilter) {
+    _handleAddFilter: function() {
         this._updateLayerFilters();
     },
 
     _clearFilters: function() {
-        Ext.each(this.filterPanels, function(filter) {
-            filter.handleRemoveFilter();
+        Ext.each(this.filterPanels, function(panel) {
+            panel.handleRemoveFilter();
         });
         this._updateLayerFilters();
     },

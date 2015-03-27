@@ -86,7 +86,7 @@ OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(serverUrl, layerN
         serverUrl,
         layerName,
         outputFormat,
-        this.getDownloadFilter()
+        this.getDownloadCql()
     );
 };
 
@@ -132,76 +132,89 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
-OpenLayers.Layer.WMS.prototype.getCqlFilter = function() {
-    if (this.params["CQL_FILTER"]) {
-        return this.params["CQL_FILTER"];
-    }
-    else {
-        return "";
-    }
-};
+OpenLayers.Layer.WMS.prototype.updateCqlFilter = function() {
 
-OpenLayers.Layer.WMS.prototype.setCqlFilter = function(cqlFilter) {
-    if (cqlFilter == this.getCqlFilter()) {
-        return;
-    }
+    var newValue = this.getMapLayerCql();
+    var existingValue = this.params['CQL_FILTER'];
 
-    if (cqlFilter) {
-        this.mergeNewParams({
-            CQL_FILTER: cqlFilter
-        });
-    }
-    else {
-        delete this.params["CQL_FILTER"];
+    if (newValue != existingValue) {
+
+        this.params['CQL_FILTER'] = newValue;
         this.redraw();
     }
 };
 
-OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
+OpenLayers.Layer.WMS.prototype.getDownloadCql = function() {
 
-    var filters = [];
+    var cqlParts = [];
 
-    Ext.each(this.filterData, function(data) {
-        if (data.cql){
-            filters.push(data.cql);
+    Ext.each(this.filters, function(filter) {
+
+        if (filter.hasValue()) {
+
+            cqlParts.push(filter.getDataLayerCql());
         }
     });
 
-    return filters.join(" AND ");
+    return this.joinCql(cqlParts);
 };
 
-OpenLayers.Layer.WMS.prototype.getMapLayerFilters = function(includeGeomFilter) {
+OpenLayers.Layer.WMS.prototype.getMapLayerCql = function() {
 
-    var filters = [];
+    var cqlParts = [];
 
-    Ext.each(this.filterData, function(data) {
+    Ext.each(this.filters, function(filter) {
 
-        var filterCQL = data.cql;
+        if (filter.hasValue()) {
 
-        if (data.visualised || (includeGeomFilter && data.type == "geom")) {
-            if (data.visualisationCql != undefined) {
-                filterCQL = data.visualisationCql;
-            }
-            if (filterCQL) {
-                filters.push(filterCQL);
+            var isGeom = (filter.constructor == Portal.filter.GeometryFilter);
+
+            if (filter.isVisualised() && !isGeom) {
+
+                cqlParts.push(filter.getMapLayerCql());
             }
         }
     });
 
-    return filters.join(" AND ");
+    return this.joinCql(cqlParts);
 };
 
-OpenLayers.Layer.WMS.prototype.getDownloadFilterDescriptions = function() {
+OpenLayers.Layer.WMS.prototype.getBodaacCql = function() {
 
-    var filters = [];
+    var cqlParts = [];
 
-    Ext.each(this.filterData, function(data) {
-        if (data.humanValue && data.humanValue != "") {
-            filters.push(data.humanValue);
+    Ext.each(this.filters, function(filter) {
+
+        if (filter.isVisualised()) {
+
+            if (filter.hasValue()) {
+
+                cqlParts.push(filter.getMapLayerCql());
+            }
         }
     });
 
-    return filters.join("<br/> ");
+    return this.joinCql(cqlParts);
+};
+
+OpenLayers.Layer.WMS.prototype.joinCql = function(parts) {
+
+    return parts.length > 0 ? parts.join(" AND ") : null;
+};
+
+OpenLayers.Layer.WMS.prototype.getFilterDescriptions = function() {
+
+    var filters = [];
+
+    Ext.each(this.filters, function(filter) {
+
+        if (filter.hasValue()) {
+
+            filters.push(filter.getHumanReadableForm());
+        }
+    });
+
+    return filters;
 };
 
 OpenLayers.Layer.WMS.prototype.hasBoundingBox = function() {

@@ -22,7 +22,7 @@ Portal.filter.ui.BooleanFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPane
         Portal.filter.ui.BooleanFilterPanel.superclass.constructor.call(this, config);
     },
 
-    _createField: function() {
+    _createControls: function() {
         this.checkbox = new Ext.form.Checkbox({
             name: this.filter.getName(),
             value: true,
@@ -37,18 +37,10 @@ Portal.filter.ui.BooleanFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPane
         this.add(this.checkbox);
     },
 
-    getFilterData: function() {
-
-        return {
-            name: this.filter.getName(),
-            visualised: this.isVisualised(),
-            cql: this.getCQL(),
-            humanValue: this._getCQLHumanValue()
-        }
-    },
-
     handleRemoveFilter: function() {
         this.checkbox.setValue(false);
+
+        this.filter.clearValue();
     },
 
     needsFilterRange: function() {
@@ -56,31 +48,15 @@ Portal.filter.ui.BooleanFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPane
     },
 
     _formatBoxLabel: function() {
-        return this.filter.getDisplayLabel();
+        return this.filter.getLabel();
     },
 
     _buttonChecked: function() {
+        this.filter.setValue(this.checkbox.getValue());
+
         this._fireAddEvent();
 
-        var val = this.filter.getDisplayLabel() + "=" + this.checkbox.getValue();
+        var val = this.filter.getLabel() + "=" + this.checkbox.getValue();
         trackFiltersUsage('filtersTrackingBooleanAction', val, this.layer.name);
-    },
-
-    getCQL: function() {
-        if (this.checkbox.getValue()) {
-            return this.filter.getName() + " = true";
-        }
-        else {
-            return undefined;
-        }
-    },
-
-    _getCQLHumanValue: function() {
-        if (this.checkbox.getValue()) {
-            return this.filter.getDisplayLabel() + " = true";
-        }
-        else {
-            return undefined;
-        }
     }
 });

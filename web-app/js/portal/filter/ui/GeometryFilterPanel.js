@@ -31,20 +31,14 @@ Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPan
 
     setLayerAndFilter: function(layer, filter) {
         Portal.filter.ui.GeometryFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
+
         if (layer.map.spatialConstraintControl) {
             this._updateWithGeometry(layer.map.spatialConstraintControl.getConstraint());
+            filter.map = layer.map;
         }
     },
 
-    isVisualised: function() {
-        return false;
-    },
-
-    hasValue: function() {
-        return this.geometry != undefined;
-    },
-
-    _createField: function() {
+    _createControls: function() {
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.layer.map,
             hideLabel: true
@@ -52,24 +46,15 @@ Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPan
         this.add(this.spatialSubsetControlsPanel);
     },
 
-    getFilterData: function() {
-
-        return {
-            name: this.filter.getName(),
-            visualised: this.isVisualised(),
-            cql: this.getCQL(),
-            humanValue: this._getCQLHumanValue(),
-            type: "geom"
-        }
-    },
-
     handleRemoveFilter: function() {
 
         if (this.map.spatialConstraintControl) {
             this.map.spatialConstraintControl.clear();
         }
-
         this.map.events.triggerEvent('spatialconstraintcleared');
+
+        this.filter.clearValue();
+
         trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingValueCleared'));
     },
 
@@ -78,34 +63,9 @@ Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPan
     },
 
     _updateWithGeometry: function(geometry) {
-        this.geometry = geometry;
+
+        this.filter.setValue(geometry);
+
         this._fireAddEvent();
-    },
-
-    getCQL: function() {
-
-        if (!this.geometry) {
-            return undefined;
-        }
-
-        return String.format(
-            "INTERSECTS({0},{1})",
-            this.filter.getName(),
-            this.geometry.toWkt()
-        );
-    },
-
-    _getCQLHumanValue: function() {
-        if (this.geometry) {
-            var explanation = (this.isRealPolygon()) ? OpenLayers.i18n("maxExtentOfPolygon") : OpenLayers.i18n("boundingBoxDescription");
-            return String.format('{0}:&nbsp;  {1}', explanation, this.geometry.getBounds());
-        }
-        else {
-            return "";
-        }
-    },
-
-    isRealPolygon: function() {
-        return (this.map.getSpatialConstraintType() == "polygon");
     }
 });

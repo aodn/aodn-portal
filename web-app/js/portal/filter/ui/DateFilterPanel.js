@@ -20,14 +20,10 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
             }
         }, cfg);
 
-        this.TIME_UTIL = new Portal.utils.TimeUtil();
-        // Divide time zone offset by 60 to get total hours
-        this.timeZoneCorrect = (new Date().getTimezoneOffset()) / -60;
-
         Portal.filter.ui.DateFilterPanel.superclass.constructor.call(this, config);
     },
 
-    _createField: function() {
+    _createControls: function() {
         this.fromDate = this._createResettableDate('fromDate', OpenLayers.i18n('fromDateLabel'), OpenLayers.i18n('fromDateEmptyText'));
         this.toDate = this._createResettableDate('toDate', OpenLayers.i18n('toDateLabel'), OpenLayers.i18n('toDateEmptyText'));
 
@@ -41,22 +37,12 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
         }
     },
 
-    getFilterData: function() {
-        return {
-            name: this.filter.name,
-            visualised: true,
-            visualisationCql: this._getCQL(),
-            cql: this._getCQL(this.filter.name),
-            humanValue: this._getCQLHumanValue()
-        }
-    },
-
-
     handleRemoveFilter: function() {
-        this.toDate.reset();
         this.fromDate.reset();
-
+        this.toDate.reset();
         this.toDate.setMinValue(new Date(0));
+
+        this.filter.clearValue();
     },
 
     needsFilterRange: function() {
@@ -92,32 +78,6 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
         }
     },
 
-    _getDateString: function(combo) {
-
-        var newDate = combo.getValue();
-        if (newDate) {
-            newDate.setHours(this.timeZoneCorrect);
-            return this.TIME_UTIL._toUtcIso8601DateString(newDate);
-        }
-
-        return '';
-    },
-
-    _getDateHumanString: function(combo) {
-
-        var newDate = combo.getValue();
-        if (newDate) {
-            newDate.setHours(this.timeZoneCorrect);
-            return this._formatHumanDate(newDate);
-        }
-
-        return '';
-    },
-
-    _formatHumanDate: function(date) {
-        return moment(date).format(OpenLayers.i18n('dateTimeDisplayFormat'));
-    },
-
     _applyDateFilter: function(component) {
 
         var changedField = component._dateField;
@@ -125,69 +85,15 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
         this.toDate.setMinValue(this.fromDate.getValue());
         this.fromDate.setMaxValue(this.toDate.getValue());
 
-        this._fireAddEvent();
-
         var usageLabelKey = changedField.getValue() ? 'trackingUserSet' : 'trackingDefaultValueReset';
         var val = changedField.name + " " + OpenLayers.i18n(usageLabelKey) + " " + changedField.getValue();
         trackFiltersUsage('filtersTrackingDateAction', val, this.layer.name);
-    },
 
-    _isFromFieldUsed: function() {
-        return this.fromDate.getValue();
-    },
+        this.filter.setValue({
+            fromDate: this.fromDate.getValue(),
+            toDate: this.toDate.getValue()
+        });
 
-    _isToFieldUsed: function() {
-        return this.toDate.getValue();
-    },
-
-    _getCQLHumanValue: function() {
-
-        var cql = '';
-
-        if (this._isFromFieldUsed()) {
-            cql = String.format("{0} >= {1}", "End Date", this._getDateHumanString(this.fromDate));
-        }
-
-        if (this._isFromFieldUsed() && this._isToFieldUsed()) {
-            cql += ' and ';
-        }
-
-        if (this._isToFieldUsed()) {
-            cql += String.format("{0} <= {1}", "Start Date", this._getDateHumanString(this.toDate));
-        }
-
-        return cql;
-    },
-
-    _getValidName: function(filterName, wmsAttribName) {
-
-        if (filterName) {
-            return filterName;
-        }
-        else {
-            return (wmsAttribName) ? wmsAttribName : this.filter.name
-        }
-    },
-
-    _getCQL: function(filterName) {
-
-        var cql = '';
-        var name = "";
-
-        if (this._isFromFieldUsed()) {
-            name = this._getValidName(filterName, this.filter.wmsEndDateName);
-            cql = String.format("{0} >= '{1}'", name , this._getDateString(this.fromDate));
-        }
-
-        if (this._isFromFieldUsed() && this._isToFieldUsed()) {
-            cql += ' AND ';
-        }
-
-        if (this._isToFieldUsed()) {
-            name = this._getValidName(filterName, this.filter.wmsStartDateName);
-            cql += String.format("{0} <= '{1}'", name, this._getDateString(this.toDate));
-        }
-
-        return cql;
+        this._fireAddEvent();
     }
 });
