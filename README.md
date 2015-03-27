@@ -48,13 +48,12 @@ The AODN portal has been tested with Tomcat.  All you need to do is deploy the w
 * Your CSS for branding and styling
 * Trusted servers
 
-Define the location of the configuration file by setting an environment context variable named ```aodn.configuration```. 
+Define the location of the configuration file by setting an environment context variable named ```aodn.configuration```
 
-One way to do this is by adding a file called &lt;context&gt;.xml in the ```$CATALINA_BASE/conf/[enginename]/[hostname]/``` directory. Where &lt;context&gt; matches the context of the deployed war (eg. "aodn-portal-3.42.1-production.xml").  set the variable by including it as follows: 
-
+One way to do this is by adding a file called &lt;context&gt;.xml in the ```$CATALINA_BASE/conf/[enginename]/[hostname]/``` directory. Where &lt;context&gt; matches the context of the deployed war (eg. "aodn-portal-3.42.1-production.xml").  Set the variable by adding the following line to the file: 
 ```<Environment name="aodn.configuration" value="<path to file>/Portal.groovy" type="java.lang.String" override="true"/>```
 
-Then add a file called ```potal.groovy```
+Then add the file called ```potal.groovy```
 
 You can clone an example [here](https://github.com/aodn/aodn-portal-config) and modify as required. 
 
