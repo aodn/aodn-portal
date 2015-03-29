@@ -9,9 +9,13 @@ Ext.namespace('Portal.filter');
 
 Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
 
-    // Divide time zone offset by 60 to get total hours
-    TIMEZONE_CORRECTION: (new Date().getTimezoneOffset()) / -60,
-    TIME_UTIL: new Portal.utils.TimeUtil(),
+    constructor: function(cfg) {
+
+        this.timezoneCorrection = (new Date().getTimezoneOffset()) / -60; // Divide time zone offset by 60 to get total hours
+        this.timeUtil = new Portal.utils.TimeUtil();
+
+        Portal.filter.DateFilter.superclass.constructor.call(this, cfg);
+    },
 
     getSupportedGeoserverTypes: function() {
 
@@ -99,8 +103,8 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
     _getDateString: function(newDate) {
 
         if (newDate) {
-            newDate.setHours(this.TIMEZONE_CORRECTION);
-            return this.TIME_UTIL._toUtcIso8601DateString(newDate);
+            newDate.setHours(this.timezoneCorrection);
+            return this.timeUtil._toUtcIso8601DateString(newDate);
         }
 
         return '';
@@ -109,7 +113,7 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
     _getDateHumanString: function(newDate) {
 
         if (newDate) {
-            newDate.setHours(this.TIMEZONE_CORRECTION);
+            newDate.setHours(this.timezoneCorrection);
             return this._formatHumanDate(newDate);
         }
 

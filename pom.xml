@@ -411,7 +411,6 @@
                         <include>portal/ui/MainPanel.js</include>
                         <include>portal/utils/moment.min.js</include>
                         <include>portal/utils/Proxy.js</include>
-                        <include>portal/utils/TimeUtil.js</include>
                         <include>portal/cart/DownloadHandler.js</include>
                         <include>portal/filter/Filter.js</include>
                         <include>portal/**/*.js</include>
