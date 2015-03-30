@@ -78,22 +78,22 @@ Portal.filter.Filter = Ext.extend(Object, {
 
     getSupportedGeoserverTypes: function() {
 
-        throw 'Subclasses must implement the getSupportedGeoserverTypes function'
+        throw 'Subclasses must implement the getSupportedGeoserverTypes function';
     },
 
     getUiComponentClass: function() {
 
-        throw 'Subclasses must implement the getUiComponentClass function'
+        throw 'Subclasses must implement the getUiComponentClass function';
     },
 
     getHumanReadableForm: function() {
 
-        throw 'Subclasses must implement the getHumanReadableForm function'
+        throw 'Subclasses must implement the getHumanReadableForm function';
     },
 
     _getCql: function() {
 
-        throw 'Subclasses must implement the _getCql function OR must override both getDataLayerCql and getMapLayerCql'
+        throw 'Subclasses must implement the _getCql function OR must override both getDataLayerCql and getMapLayerCql';
     }
 });
 
