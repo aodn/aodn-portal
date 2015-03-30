@@ -19,11 +19,16 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
         return Portal.filter.ui.NumberFilterPanel;
     },
 
+    getCql: function() {
+
+        return this._getCql();
+    },
+
     _getCql: function(alternateLabel) {
 
         var cql = String.format(
             '{0} {1} {2}',
-            alternateLabel ? alternateLabel : this.getName(),
+            alternateLabel || this.getName(),
             this._getOperator(),
             this._getFirstField()
         );

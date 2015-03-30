@@ -13,7 +13,14 @@ Portal.filter.combiner.DataDownloadCqlBuilder = Ext.extend(Portal.filter.combine
 
         var cqlParts = this._collect(this._filtersWithValues(), function(filter) {
 
-            return filter.getDataLayerCql();
+            var isDateFilter = (filter.constructor == Portal.filter.DateFilter);
+
+            if (isDateFilter) {
+
+                return filter.getDateDataCql();
+            }
+
+            return filter.getCql();
         });
 
         return this._joinCql(cqlParts);

@@ -23,7 +23,7 @@ Portal.filter.combiner.MapCqlBuilder = Ext.extend(Portal.filter.combiner.FilterC
 
         var cqlParts = this._collect(this._appropriateFilters(), function(filter) {
 
-            return filter.getMapLayerCql();
+            return filter.getCql();
         });
 
         return this._joinCql(cqlParts);

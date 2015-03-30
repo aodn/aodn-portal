@@ -66,16 +66,6 @@ Portal.filter.Filter = Ext.extend(Object, {
         return this.wmsEndDateName;
     },
 
-    getDataLayerCql: function() {
-
-        return this._getCql();
-    },
-
-    getMapLayerCql: function() {
-
-        return this._getCql();
-    },
-
     getSupportedGeoserverTypes: function() {
 
         throw 'Subclasses must implement the getSupportedGeoserverTypes function';
@@ -86,9 +76,9 @@ Portal.filter.Filter = Ext.extend(Object, {
         throw 'Subclasses must implement the getUiComponentClass function';
     },
 
-    _getCql: function() {
+    getCql: function() {
 
-        throw 'Subclasses must implement the _getCql function OR must override both getDataLayerCql and getMapLayerCql';
+        throw 'Subclasses must implement the getCql function';
     },
 
     getHumanReadableForm: function() {

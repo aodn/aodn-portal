@@ -19,7 +19,7 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.Filter, {
         return Portal.filter.ui.BooleanFilterPanel;
     },
 
-    _getCql: function() {
+    getCql: function() {
 
         return String.format(
             '{0} = true',

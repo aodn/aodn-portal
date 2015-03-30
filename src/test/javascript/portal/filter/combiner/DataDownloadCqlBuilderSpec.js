@@ -18,22 +18,22 @@ describe("Portal.filter.combiner.DataDownloadCqlBuilder", function() {
                     constructor: Portal.filter.GeometryFilter, // Is Geometry filter
                     isVisualised: function() { return true },
                     hasValue: function() { return true },
-                    getDataLayerCql: function() { return 'data1' }
+                    getCql: function() { return 'cql1' }
                 },
                 {
                     isVisualised: function() { return false }, // Not visualised
                     hasValue: function() { return true },
-                    getDataLayerCql: function() { return 'data2' }
+                    getCql: function() { return 'cql2' }
                 },
                 {
                     isVisualised: function() { return true },
                     hasValue: function() { return false }, // No value
-                    getDataLayerCql: function() { return 'data3' }
+                    getCql: function() { return 'cql3' }
                 },
                 {
                     isVisualised: function() { return true },
                     hasValue: function() { return true },
-                    getDataLayerCql: function() { return 'data4' }
+                    getCql: function() { return 'cql4' }
                 }
             ]
         };
@@ -47,7 +47,7 @@ describe("Portal.filter.combiner.DataDownloadCqlBuilder", function() {
 
         it('returns correct CQL', function() {
 
-            expect(builder.buildCql()).toBe('data1 AND data2 AND data4');
+            expect(builder.buildCql()).toBe('cql1 AND cql2 AND cql4');
         });
     });
 });

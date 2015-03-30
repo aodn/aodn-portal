@@ -27,15 +27,32 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
         return Portal.filter.ui.DateFilterPanel;
     },
 
-    _getCql: function(startColumnName, endColumnName) {
+    getCql: function() {
 
+        return this._getCql(true);
+    },
+
+    getDateDataCql: function() {
+
+        return this._getCql(false);
+    },
+
+    _getCql: function(useTimeRangeColumnNames) {
+
+        var startColumnName;
+        var endColumnName;
         var cql = '';
+
+        if (useTimeRangeColumnNames) {
+            startColumnName = this.getWmsStartDateName();
+            endColumnName = this.getWmsEndDateName();
+        }
 
         if (this._getFromDate()) {
 
             cql = String.format(
                 "{0} >= '{1}'",
-                endColumnName ? endColumnName : this.getName(),
+                endColumnName || this.getName(),
                 this._getDateString(this._getFromDate())
             );
         }
@@ -48,7 +65,7 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
 
             cql += String.format(
                 "{0} <= '{1}'",
-                startColumnName ? startColumnName : this.getName(),
+                startColumnName || this.getName(),
                 this._getDateString(this._getToDate())
             );
         }
@@ -73,16 +90,6 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
         }
 
         return cql;
-    },
-
-    getDataLayerCql: function() {
-
-        return this._getCql();
-    },
-
-    getMapLayerCql: function() {
-
-        return this._getCql(this.getWmsStartDateName(), this.getWmsEndDateName());
     },
 
     hasValue: function() {

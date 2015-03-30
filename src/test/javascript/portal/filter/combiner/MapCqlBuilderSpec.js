@@ -18,27 +18,27 @@ describe("Portal.filter.combiner.MapCqlBuilder", function() {
                     constructor: Portal.filter.GeometryFilter, // Is Geometry filter
                     isVisualised: function() { return true },
                     hasValue: function() { return true },
-                    getMapLayerCql: function() { return 'map1' }
+                    getCql: function() { return 'cql1' }
                 },
                 {
                     isVisualised: function() { return false }, // Not visualised
                     hasValue: function() { return true },
-                    getMapLayerCql: function() { return 'map2' }
+                    getCql: function() { return 'cql2' }
                 },
                 {
                     isVisualised: function() { return true },
                     hasValue: function() { return false }, // No value
-                    getMapLayerCql: function() { return 'map3' }
+                    getCql: function() { return 'cql3' }
                 },
                 {
                     isVisualised: function() { return true },
                     hasValue: function() { return true },
-                    getMapLayerCql: function() { return 'map4' }
+                    getCql: function() { return 'cql4' }
                 },
                 {
                     isVisualised: function() { return true },
                     hasValue: function() { return true },
-                    getMapLayerCql: function() { return 'map5' }
+                    getCql: function() { return 'cql5' }
                 }
             ]
         };
@@ -52,7 +52,7 @@ describe("Portal.filter.combiner.MapCqlBuilder", function() {
 
         it('returns correct CQL', function() {
 
-            expect(builder.buildCql()).toBe('map4 AND map5');
+            expect(builder.buildCql()).toBe('cql4 AND cql5');
         });
     });
 });
