@@ -22,18 +22,18 @@ Portal.cart.Downloader = Ext.extend(Object, {
         }
     },
 
-    _downloadSynchronously: function(collection, downloadUrl, params) {
-        log.debug('downloading synchronously', downloadUrl);
+    _downloadSynchronously: function(collection, url, params) {
+        log.debug('downloading synchronously ' + url);
 
-        var proxyUrl = this._constructProxyUrl(collection, downloadUrl, params);
-        this._openDownload(proxyUrl);
+        var proxyUrl = this._constructProxyUrl(collection, url, params);
+        this._requestDownload(url, proxyUrl);
     },
 
-    _constructProxyUrl: function(collection, downloadUrl, params) {
+    _constructProxyUrl: function(collection, url, params) {
 
         var filename = this._constructFilename(collection, params);
         var encodedFilename = encodeURIComponent(this._sanitiseFilename(filename));
-        var encodedDownloadUrl = encodeURIComponent(downloadUrl);
+        var encodedDownloadUrl = encodeURIComponent(url);
         var additionalQueryString = this._additionalQueryStringFrom(params.downloadControllerArgs);
 
         return String.format('download?url={0}&downloadFilename={1}{2}', encodedDownloadUrl, encodedFilename, additionalQueryString);
@@ -59,16 +59,20 @@ Portal.cart.Downloader = Ext.extend(Object, {
         return queryString;
     },
 
-    _openDownload: function(proxyUrl) {
-        log.debug('Downloading using URL: ' + proxyUrl);
+    _requestDownload: function(url, proxyUrl) {
+        log.debug('Downloading synchronously using request: ' + url);
 
-        // Download function shamelessly stolen from:
-        // http://stackoverflow.com/a/12671023/1920729
-        if ($downloaderLink && $downloaderLink.length > 0) {
-            $downloaderLink.attr('src', proxyUrl);
-        } else {
-            $downloaderLink = $('<iframe>', { id:'downloaderLink', src:proxyUrl }).hide().appendTo('body');
-        }
+        this.proxyUrl = proxyUrl;
+
+        Ext.Ajax.request({
+            url: 'download/validateRequest',
+            params: {
+                url: url
+            },
+            scope: this,
+            success: this._onDownloadRequestSuccess,
+            failure: this._onDownloadRequestFailure
+        });
     },
 
     _downloadAsynchronously: function(collection, downloadUrl, params) {
@@ -82,6 +86,25 @@ Portal.cart.Downloader = Ext.extend(Object, {
             success: this._onAsyncDownloadRequestSuccess,
             failure: this._onAsyncDownloadRequestFailure
         });
+    },
+
+    _onDownloadRequestSuccess: function(response, request) {
+
+        var url = request.scope.proxyUrl;
+
+        if ($downloaderLink && $downloaderLink.length > 0) {
+            $downloaderLink.attr('src', url);
+        } else {
+            $downloaderLink = $('<iframe>', { id:'downloaderLink', src: url }).hide().appendTo('body');
+        }
+    },
+
+    _onDownloadRequestFailure: function(resp) {
+        log.error("Synchronous download request has failed with the following error " + resp.responseText);
+        Ext.Msg.alert(
+            OpenLayers.i18n('errorDialogTitle'),
+            OpenLayers.i18n('downloadErrorText')
+        )
     },
 
     _onAsyncDownloadRequestSuccess: function() {
