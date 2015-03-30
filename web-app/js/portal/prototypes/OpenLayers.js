@@ -82,11 +82,15 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function(resp, options) {
 
 OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(serverUrl, layerName, outputFormat) {
 
+    var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
+        layer: this
+    });
+
     return this._buildGetFeatureRequestUrl(
         serverUrl,
         layerName,
         outputFormat,
-        this.getDownloadCql()
+        builder.buildCql()
     );
 };
 
@@ -146,26 +150,6 @@ OpenLayers.Layer.WMS.prototype.updateCqlFilter = function() {
         this.params['CQL_FILTER'] = newValue;
         this.redraw();
     }
-};
-
-OpenLayers.Layer.WMS.prototype.getDownloadCql = function() {
-
-    var cqlParts = [];
-
-    Ext.each(this.filters, function(filter) {
-
-        if (filter.hasValue()) {
-
-            cqlParts.push(filter.getDataLayerCql());
-        }
-    });
-
-    return this.joinCql(cqlParts);
-};
-
-OpenLayers.Layer.WMS.prototype.joinCql = function(parts) {
-
-    return parts.length > 0 ? parts.join(" AND ") : null;
 };
 
 OpenLayers.Layer.WMS.prototype.getFilterDescriptions = function() {

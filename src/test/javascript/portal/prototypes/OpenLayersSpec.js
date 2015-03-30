@@ -61,7 +61,9 @@ describe('OpenLayers', function() {
             it('calls _buildGetFeatureRequestUrl correctly', function() {
 
                 spyOn(openLayer, '_buildGetFeatureRequestUrl');
-                spyOn(openLayer, 'getDownloadCql').andReturn('download filters');
+                spyOn(Portal.filter.combiner, 'DataDownloadCqlBuilder').andReturn({
+                    buildCql: function() { return 'download filters' }
+                });
 
                 openLayer.getFeatureRequestUrl('wms_uri', 'layerName', 'csv');
 
@@ -193,11 +195,6 @@ describe('OpenLayers', function() {
                         getHumanReadableForm: function() { return 'four' }
                     }
                 ];
-            });
-
-            it('getDownloadCql', function() {
-
-                expect(openLayer.getDownloadCql()).toBe('data1 AND data2 AND data4');
             });
 
             it('getFilterDescriptions includes all relevant parts', function() {
