@@ -152,21 +152,6 @@ OpenLayers.Layer.WMS.prototype.updateCqlFilter = function() {
     }
 };
 
-OpenLayers.Layer.WMS.prototype.getFilterDescriptions = function() {
-
-    var filters = [];
-
-    Ext.each(this.filters, function(filter) {
-
-        if (filter.hasValue()) {
-
-            filters.push(filter.getHumanReadableForm());
-        }
-    });
-
-    return filters;
-};
-
 OpenLayers.Layer.WMS.prototype.hasBoundingBox = function() {
     return !Ext.isEmpty(this.bboxMinX) && !Ext.isEmpty(this.bboxMinY) && !Ext.isEmpty(this.bboxMaxX) && !Ext.isEmpty(this.bboxMaxY);
 };

@@ -159,51 +159,6 @@ describe('OpenLayers', function() {
                 });
             });
         });
-
-        describe('various CQL forms', function() {
-
-            beforeEach(function() {
-
-                openLayer.filters = [
-                    {
-                        constructor: Portal.filter.GeometryFilter,
-                        isVisualised: function() { return true },
-                        hasValue: function() { return true },
-                        getDataLayerCql: function() { return 'data1' },
-                        getMapLayerCql: function() { return 'map1' },
-                        getHumanReadableForm: function() { return 'one' }
-                    },
-                    {
-                        isVisualised: function() { return false }, // Not visualised
-                        hasValue: function() { return true },
-                        getDataLayerCql: function() { return 'data2' },
-                        getMapLayerCql: function() { return 'map2' },
-                        getHumanReadableForm: function() { return 'two' }
-                    },
-                    {
-                        isVisualised: function() { return true },
-                        hasValue: function() { return false }, // No value
-                        getDataLayerCql: function() { return 'data3' },
-                        getMapLayerCql: function() { return 'map3' },
-                        getHumanReadableForm: function() { return 'three' }
-                    },
-                    {
-                        isVisualised: function() { return true },
-                        hasValue: function() { return true },
-                        getDataLayerCql: function() { return 'data4' },
-                        getMapLayerCql: function() { return 'map4' },
-                        getHumanReadableForm: function() { return 'four' }
-                    }
-                ];
-            });
-
-            it('getFilterDescriptions includes all relevant parts', function() {
-
-                expect(openLayer.getFilterDescriptions()).toEqual(
-                    ['one', 'two', 'four']
-                );
-            });
-        });
     });
 
     describe('Geometry', function() {
