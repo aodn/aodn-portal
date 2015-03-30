@@ -48,8 +48,7 @@ grails.project.dependency.resolution = {
         compile ":simple-captcha:1.0.0"
         compile ":code-coverage:1.2.4"
         compile ":csv:0.3.1"
-        compile ":simple-captcha:1.0.0"
-        build ":tomcat:$grailsVersion"
+        build ":tomcat:7.0.54"
     }
 }
 

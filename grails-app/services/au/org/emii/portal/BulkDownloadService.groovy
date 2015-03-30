@@ -8,7 +8,6 @@
 package au.org.emii.portal
 
 import groovy.time.TimeCategory
-import org.apache.commons.io.IOUtils
 
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
