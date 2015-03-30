@@ -134,7 +134,11 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
 
 OpenLayers.Layer.WMS.prototype.updateCqlFilter = function() {
 
-    var newValue = this.getMapLayerCql();
+    var builder = new Portal.filter.combiner.MapCqlBuilder({
+        layer: this
+    });
+
+    var newValue = builder.buildCql();
     var existingValue = this.params['CQL_FILTER'];
 
     if (newValue != existingValue) {
@@ -153,26 +157,6 @@ OpenLayers.Layer.WMS.prototype.getDownloadCql = function() {
         if (filter.hasValue()) {
 
             cqlParts.push(filter.getDataLayerCql());
-        }
-    });
-
-    return this.joinCql(cqlParts);
-};
-
-OpenLayers.Layer.WMS.prototype.getMapLayerCql = function() {
-
-    var cqlParts = [];
-
-    Ext.each(this.filters, function(filter) {
-
-        if (filter.hasValue()) {
-
-            var isGeom = (filter.constructor == Portal.filter.GeometryFilter);
-
-            if (filter.isVisualised() && !isGeom) {
-
-                cqlParts.push(filter.getMapLayerCql());
-            }
         }
     });
 

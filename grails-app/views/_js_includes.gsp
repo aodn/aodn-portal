@@ -113,6 +113,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'FilterGroupPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'BaseFilterCombiner.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'FilterCqlBuilder.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'MapCqlBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'UtcExtentDateTime.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'PolygonTypeComboBox.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NCWMSColourScalePanel.js')}"></script>
