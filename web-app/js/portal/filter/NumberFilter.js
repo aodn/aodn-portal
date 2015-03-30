@@ -24,6 +24,11 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
         return this._getCql();
     },
 
+    getHumanReadableForm: function() {
+
+        return this._getCql(this.getLabel());
+    },
+
     _getCql: function(alternateLabel) {
 
         var cql = String.format(
@@ -43,11 +48,6 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
         }
 
         return cql;
-    },
-
-    getHumanReadableForm: function() {
-
-        return this._getCql(this.getLabel());
     },
 
     _getFirstField: function() {
