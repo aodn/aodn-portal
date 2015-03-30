@@ -108,6 +108,24 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         assertEquals "Host for address 'http://www.example.com/?PROPERTYNAME=relativeFilePath' not allowed", mockResponse.contentAsString
     }
 
+    void testValidateRequestInvalidHost() {
+
+        _setHostShouldBeValid(false)
+
+        controller.validateRequest()
+
+        assertEquals "Host for address 'http://www.example.com/' not allowed", mockResponse.contentAsString
+    }
+
+    void testValidateRequestValidHost() {
+
+        _setHostShouldBeValid(true)
+
+        controller.validateRequest()
+
+        assertEquals "http://www.example.com/", mockResponse.contentAsString
+    }
+
     void testDownloadNetCdfFilesForLayer() {
 
         mockParams.downloadFilename = 'somedata.txt'
