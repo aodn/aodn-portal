@@ -200,11 +200,6 @@ describe('OpenLayers', function() {
                 expect(openLayer.getDownloadCql()).toBe('data1 AND data2 AND data4');
             });
 
-            it('getBodaacCql', function() {
-
-                expect(openLayer.getBodaacCql()).toBe('map1 AND map4');
-            });
-
             it('getFilterDescriptions includes all relevant parts', function() {
 
                 expect(openLayer.getFilterDescriptions()).toEqual(

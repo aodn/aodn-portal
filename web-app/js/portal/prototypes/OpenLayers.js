@@ -163,24 +163,6 @@ OpenLayers.Layer.WMS.prototype.getDownloadCql = function() {
     return this.joinCql(cqlParts);
 };
 
-OpenLayers.Layer.WMS.prototype.getBodaacCql = function() {
-
-    var cqlParts = [];
-
-    Ext.each(this.filters, function(filter) {
-
-        if (filter.isVisualised()) {
-
-            if (filter.hasValue()) {
-
-                cqlParts.push(filter.getMapLayerCql());
-            }
-        }
-    });
-
-    return this.joinCql(cqlParts);
-};
-
 OpenLayers.Layer.WMS.prototype.joinCql = function(parts) {
 
     return parts.length > 0 ? parts.join(" AND ") : null;
