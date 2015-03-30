@@ -19,6 +19,15 @@ Portal.filter.GeometryFilter = Ext.extend(Portal.filter.Filter, {
         return Portal.filter.ui.GeometryFilterPanel;
     },
 
+    _getCql: function() {
+
+        return String.format(
+            "INTERSECTS({0},{1})",
+            this.getName(),
+            this.getValue().toWkt()
+        );
+    },
+    
     getHumanReadableForm: function() {
 
         var explanation = this._isRealPolygon() ? OpenLayers.i18n("maxExtentOfPolygon") : OpenLayers.i18n("boundingBoxDescription");
@@ -27,15 +36,6 @@ Portal.filter.GeometryFilter = Ext.extend(Portal.filter.Filter, {
             '{0}: {1}',
             explanation,
             this.getValue().getBounds()
-        );
-    },
-
-    _getCql: function() {
-
-        return String.format(
-            "INTERSECTS({0},{1})",
-            this.getName(),
-            this.getValue().toWkt()
         );
     },
 

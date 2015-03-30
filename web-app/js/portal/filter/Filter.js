@@ -86,14 +86,14 @@ Portal.filter.Filter = Ext.extend(Object, {
         throw 'Subclasses must implement the getUiComponentClass function';
     },
 
-    getHumanReadableForm: function() {
-
-        throw 'Subclasses must implement the getHumanReadableForm function';
-    },
-
     _getCql: function() {
 
         throw 'Subclasses must implement the _getCql function OR must override both getDataLayerCql and getMapLayerCql';
+    },
+
+    getHumanReadableForm: function() {
+
+        throw 'Subclasses must implement the getHumanReadableForm function';
     }
 });
 

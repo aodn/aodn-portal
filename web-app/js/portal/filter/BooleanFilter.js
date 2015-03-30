@@ -19,19 +19,19 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.Filter, {
         return Portal.filter.ui.BooleanFilterPanel;
     },
 
-    getHumanReadableForm: function() {
-
-        return String.format(
-            '{0} = true',
-            this.getLabel()
-        );
-    },
-
     _getCql: function() {
 
         return String.format(
             '{0} = true',
             this.getName()
+        );
+    },
+
+    getHumanReadableForm: function() {
+
+        return String.format(
+            '{0} = true',
+            this.getLabel()
         );
     }
 });

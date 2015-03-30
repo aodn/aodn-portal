@@ -27,35 +27,6 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
         return Portal.filter.ui.DateFilterPanel;
     },
 
-    getHumanReadableForm: function() {
-
-        var cql = '';
-
-        if (this._getFromDate()) {
-            cql = String.format("{0} >= {1}", "End Date", this._getDateHumanString(this._getFromDate()));
-        }
-
-        if (this._getFromDate() && this._getToDate()) {
-            cql += ' and ';
-        }
-
-        if (this._getToDate()) {
-            cql += String.format("{0} <= {1}", "Start Date", this._getDateHumanString(this._getToDate()));
-        }
-
-        return cql;
-    },
-
-    getDataLayerCql: function() {
-
-        return this._getCql();
-    },
-
-    getMapLayerCql: function() {
-
-        return this._getCql(this.getWmsStartDateName(), this.getWmsEndDateName());
-    },
-
     _getCql: function(startColumnName, endColumnName) {
 
         var cql = '';
@@ -83,6 +54,35 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
         }
 
         return cql;
+    },
+
+    getHumanReadableForm: function() {
+
+        var cql = '';
+
+        if (this._getFromDate()) {
+            cql = String.format("{0} >= {1}", "End Date", this._getDateHumanString(this._getFromDate()));
+        }
+
+        if (this._getFromDate() && this._getToDate()) {
+            cql += ' and ';
+        }
+
+        if (this._getToDate()) {
+            cql += String.format("{0} <= {1}", "Start Date", this._getDateHumanString(this._getToDate()));
+        }
+
+        return cql;
+    },
+
+    getDataLayerCql: function() {
+
+        return this._getCql();
+    },
+
+    getMapLayerCql: function() {
+
+        return this._getCql(this.getWmsStartDateName(), this.getWmsEndDateName());
     },
 
     hasValue: function() {
