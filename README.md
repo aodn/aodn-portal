@@ -64,19 +64,6 @@ Read the [Getting Started guide](https://github.com/aodn/aodn-portal/wiki/Gettin
 We welcome contributions so please feel free to fork the project, address any issues or add features and submit
 a pull request.
 
-## Overriding config when developing
-Certain config items can be overridden by setting environment variables appropriately when running in development mode, e.g.:
-
-```
-$ GOGODUCK_URL="http://10.11.12.13/gogoduck" grails run-app
-```
-
-The full list of overridable configuration items is:
-
-* WMS_HOST_URL
-* GOGODUCK_URL
-* GEONETWORK_URL
-* LOG4J_CONVERSION_PATTERN
-
+--
 The IMOS Portal is used to publish the [IMOS data collection](https://imos.aodn.org.au/data_collections.html).
 
