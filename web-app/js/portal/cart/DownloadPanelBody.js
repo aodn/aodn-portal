@@ -126,6 +126,6 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
             );
         };
 
-        this.confirmationWindow.showIfNeeded(params);
+        this.confirmationWindow.show(params);
     }
 });
