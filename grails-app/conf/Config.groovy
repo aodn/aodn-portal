@@ -92,13 +92,6 @@ featureToggles {
 // Google Analytics
 googleAnalytics.trackingId = null
 
-// set per-environment serverURL stem for creating absolute links
-def env = System.getenv()
-
-filtering {
-    filePath = env['FILTERS_PATH']
-}
-
 environments {
 
     development {
@@ -106,9 +99,10 @@ environments {
         grails.resources.debug = true
 
         // URLs
-        grails.serverURL = env['WMS_HOST_URL'] ?: "http://${java.net.InetAddress.getLocalHost().getHostAddress()}:8080/$appName"
-        gogoduck.url = env['GOGODUCK_URL'] ?: "http://localhost:8300/go-go-duck"
-        geonetwork.url = env['GEONETWORK_URL'] ?: "https://catalogue-123.aodn.org.au/geonetwork"
+        def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
+        grails.serverURL = "http://${localhostAddress}:8080/$appName"
+        gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
+        geonetwork.url = "https://catalogue-123.aodn.org.au/geonetwork"
     }
 
     test {
@@ -275,7 +269,7 @@ indexedFile.fileSizeColumnName = "size"
 org.apache.log4j.Logger.rootLogger.removeAllAppenders()
 
 // log4j configuration
-def log4jConversionPattern = env['LOG4J_CONVERSION_PATTERN'] ?: "%-5p %d [%-12t] %c %X{username}- %m%n"
+def log4jConversionPattern = "%-5p %d [%-12t] %c %X{username}- %m%n"
 
 log4j = {
 
