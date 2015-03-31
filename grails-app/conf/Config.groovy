@@ -67,6 +67,8 @@ help {
     downloadDatasetUrl = "${help.url}/?q=node/6"
 }
 
+oceanCurrent.url = "http://oceancurrent.aodn.org.au"
+
 // Depth service
 depthService.url = "https://depthservice.aodn.org.au/depth"
 
