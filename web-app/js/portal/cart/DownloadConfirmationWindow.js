@@ -108,18 +108,13 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         }
     },
 
-    showIfNeeded: function(params) {
+    show: function(params) {
         this._showEmailPanelIfNeeded(params);
 
         this.params = params;
         this.onAcceptCallback = params.onAccept;
 
-        if (!this.hasBeenShown || params.collectEmailAddress) {
-            this.show();
-        }
-        else {
-            this.onAccept();
-        }
+        Portal.cart.DownloadConfirmationWindow.superclass.show.call(this);
     },
 
     _showEmailPanelIfNeeded: function(params) {
@@ -146,8 +141,6 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
             }
             this.onAcceptCallback(this.params);
         }
-
-        this.hasBeenShown = true;
     },
 
     onCancel: function() {
