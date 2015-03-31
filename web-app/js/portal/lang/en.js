@@ -148,8 +148,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
        If an agreement is included with data in the cart then by using those data you are accepting the terms of that \
        agreement.</p> \
     <h3>Any questions?</h3> \
-    <p>Please visit the <a href=\"${downloadDatasetHelpUrl}\">Download a Dataset</a> \
-       page of the <a href=\"${helpUrl}\">Portal Help</a> forum where you can find \
+    <p>Please visit the <a class='external' target='_blank' href=\"${downloadDatasetHelpUrl}\">Download a Dataset</a> \
+       page of the <a class='external' target='_blank' href=\"${helpUrl}\">Portal Help</a> forum where you can find \
        more information.</p> \
     <br /> \
     <p class=\"small\"><i>You accept all risks and responsibility for losses, damages, costs and other consequences \
