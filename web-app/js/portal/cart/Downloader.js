@@ -104,7 +104,7 @@ Portal.cart.Downloader = Ext.extend(Object, {
         Ext.Msg.alert(
             OpenLayers.i18n('errorDialogTitle'),
             OpenLayers.i18n('downloadErrorText')
-        )
+        );
     },
 
     _onAsyncDownloadRequestSuccess: function() {

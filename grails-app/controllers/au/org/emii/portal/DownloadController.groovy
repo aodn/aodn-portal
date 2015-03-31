@@ -99,7 +99,7 @@ class DownloadController extends RequestProxyingController {
         if (!hostVerifier.allowedHost(url)) {
 
             log.error "Host for address '$url' not allowed"
-            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: HTTP_400_BAD_REQUEST
+            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: HTTP_403_FORBIDDEN
         }
         else {
             render text: url, contentType: "text/html", encoding: "UTF-8", status: HTTP_200_OK
