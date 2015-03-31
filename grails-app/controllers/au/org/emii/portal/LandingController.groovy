@@ -2,8 +2,6 @@ package au.org.emii.portal
 
 class LandingController {
 
-    def oceanCurrentService
-    def portalInstance
     def portalBranding
 
     def index = {
@@ -13,9 +11,8 @@ class LandingController {
         }
         else {
             render(
-                view: portalInstance.name() + "index",
+                view: "index",
                 model:[
-                    oceanCurrent: oceanCurrentService.getRandomDetails(),
                     resourceVersionNumber: grailsApplication.metadata.'app.version',
                     portalBranding: portalBranding
                 ]
