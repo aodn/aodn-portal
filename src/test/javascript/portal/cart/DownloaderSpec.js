@@ -56,6 +56,7 @@ describe("Portal.cart.Downloader", function() {
         var onRequestedSpy = jasmine.createSpy('onRequested');
 
         beforeEach(function() {
+            $.removeCookie(String.format("downloadToken{0}", downloadToken));
             spyOn(downloader, 'fireEvent');
             downloader._constructFilename = function() { return 'download.csv'; }
             downloader._openDownload = noOp;
@@ -74,12 +75,30 @@ describe("Portal.cart.Downloader", function() {
 
             // simulate the server having returned a response, which includes a cookie.
             $.cookie(String.format("downloadToken{0}", downloadToken), downloadToken);
-            jasmine.Clock.tick(Portal.cart.Downloader.DOWNLOAD_CHECK_INTERVAL_MS * 2);
+            jasmine.Clock.tick(Portal.cart.Downloader.DOWNLOAD_CHECK_INTERVAL_MS + 1);
 
             expect(downloader.fireEvent).toHaveBeenCalledWith('downloadstarted', downloadToken);
         });
 
-        // TODO: fail after duration expires.
+        it("fires 'downloadfailed' event", function() {
+
+            var startTime;
+
+            runs(function() {
+                Portal.app.appConfig.download.clientDownloadStartTimeoutMs = 100;
+                Ext.TaskMgr.stopAll();
+                downloader._startDownloadCheckTask(downloadToken);
+                startTime = new Date().getTime();
+            });
+
+            waitsFor(function() {
+                return (new Date().getTime() - startTime) > Portal.app.appConfig.download.clientDownloadStartTimeoutMs;
+            }, "timeout should elapse", Portal.app.appConfig.download.clientDownloadStartTimeoutMs * 2);
+
+            runs(function() {
+                expect(downloader.fireEvent).toHaveBeenCalledWith('downloadfailed', downloadToken);
+            });
+        });
     });
 
     describe('downloadAsynchronously', function() {

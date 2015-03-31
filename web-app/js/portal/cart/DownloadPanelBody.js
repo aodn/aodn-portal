@@ -121,6 +121,7 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
                 listeners: {
                     'downloadrequested': function() { log.debug('Download requested'); },
                     'downloadstarted': function() { log.debug('Download started'); },
+                    'downloadfailed': function() { log.debug('Download failed'); },
                 }
             });
 

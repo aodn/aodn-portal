@@ -12,7 +12,7 @@ var $downloaderLink;
 Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
 
     constructor: function(config) {
-        this.addEvents('downloadrequested', 'downloadstarted');
+        this.addEvents('downloadrequested', 'downloadstarted', 'downloadfailed');
 
         Ext.apply(this, config);
 
@@ -57,10 +57,15 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     _startDownloadCheckTask: function(downloadToken) {
         var self = this;
 
+        var onDurationExceeded = function() {
+            self.fireEvent('downloadfailed', downloadToken);
+        };
+
         var downloadCheckTask = {
             run: function() {
                 var cookieValue = $.cookie(String.format("downloadToken{0}", downloadToken));
                 if (cookieValue == downloadToken) {
+                    downloadCheckTask.onStop = null;
                     Ext.TaskMgr.stop(downloadCheckTask);
                     self.fireEvent('downloadstarted', downloadToken);
                 }
@@ -69,7 +74,8 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
                 }
             },
             interval: Portal.cart.Downloader.DOWNLOAD_CHECK_INTERVAL_MS,
-            duration: Portal.app.appConfig.download.clientDownloadStartTimeoutMs
+            duration: Portal.app.appConfig.download.clientDownloadStartTimeoutMs,
+            onStop: onDurationExceeded
         };
 
         Ext.TaskMgr.start(downloadCheckTask);
