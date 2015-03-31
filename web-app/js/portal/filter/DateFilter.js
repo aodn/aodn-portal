@@ -92,11 +92,6 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
         return cql;
     },
 
-    hasValue: function() {
-
-        return this.getValue() && (this._getFromDate() || this._getToDate());
-    },
-
     _getFromDate: function() {
 
         return this.getValue().fromDate;
