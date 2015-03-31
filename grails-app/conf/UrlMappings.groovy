@@ -16,9 +16,7 @@ class UrlMappings {
             }
         }
 
-        "/" {
-            controller = (Environment.current == Environment.DEVELOPMENT) ? "home" : "landing"
-        }
+        "/" { controller = "landing" }
 
         "500"(view:'/error')
 
