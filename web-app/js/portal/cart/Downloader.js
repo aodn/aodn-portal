@@ -9,7 +9,16 @@ Ext.namespace('Portal.cart');
 
 var $downloaderLink;
 
-Portal.cart.Downloader = Ext.extend(Object, {
+Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
+
+    constructor: function(config) {
+        this.addEvents('downloadrequested', 'downloadstarted');
+
+        Ext.apply(this, config);
+
+        Portal.cart.Downloader.superclass.constructor.call(this, config);
+    },
+
     download: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
 
         var downloadUrl = generateUrlCallback.call(generateUrlCallbackScope, collection, params);
@@ -33,18 +42,53 @@ Portal.cart.Downloader = Ext.extend(Object, {
     _downloadSynchronously: function(collection, downloadUrl, params) {
         log.debug('downloading synchronously', downloadUrl);
 
-        var proxyUrl = this._constructProxyUrl(collection, downloadUrl, params);
+        var downloadToken = this._newDownloadToken();
+        var proxyUrl = this._constructProxyUrl(collection, downloadUrl, downloadToken, params);
+
+        this._startDownloadCheckTask(downloadToken);
         this._openDownload(proxyUrl);
+        this.fireEvent('downloadrequested', downloadToken);
     },
 
-    _constructProxyUrl: function(collection, downloadUrl, params) {
+    _newDownloadToken: function() {
+        return new Date().getTime();
+    },
+
+    _startDownloadCheckTask: function(downloadToken) {
+        var self = this;
+
+        var downloadCheckTask = {
+            run: function() {
+                var cookieValue = $.cookie(String.format("downloadToken{0}", downloadToken));
+                if (cookieValue == downloadToken) {
+                    Ext.TaskMgr.stop(downloadCheckTask);
+                    self.fireEvent('downloadstarted', downloadToken);
+                }
+                else {
+                    log.debug('Waiting for download to start...', downloadToken);
+                }
+            },
+            interval: Portal.cart.Downloader.DOWNLOAD_CHECK_INTERVAL_MS,
+            duration: Portal.app.appConfig.download.clientDownloadStartTimeoutMs
+        };
+
+        Ext.TaskMgr.start(downloadCheckTask);
+    },
+
+    _constructProxyUrl: function(collection, downloadUrl, downloadToken, params) {
 
         var filename = this._constructFilename(collection, params);
         var encodedFilename = encodeURIComponent(this._sanitiseFilename(filename));
         var encodedDownloadUrl = encodeURIComponent(downloadUrl);
         var additionalQueryString = this._additionalQueryStringFrom(params.downloadControllerArgs);
 
-        return String.format('download?url={0}&downloadFilename={1}{2}', encodedDownloadUrl, encodedFilename, additionalQueryString);
+        return String.format(
+            'download?url={0}&downloadFilename={1}&downloadToken={2}{3}',
+            encodedDownloadUrl,
+            encodedFilename,
+            downloadToken,
+            additionalQueryString
+        );
     },
 
     _constructFilename: function(collection, params) {
@@ -74,8 +118,9 @@ Portal.cart.Downloader = Ext.extend(Object, {
         // http://stackoverflow.com/a/12671023/1920729
         if ($downloaderLink && $downloaderLink.length > 0) {
             $downloaderLink.attr('src', proxyUrl);
-        } else {
-            $downloaderLink = $('<iframe>', { id:'downloaderLink', src:proxyUrl }).hide().appendTo('body');
+        }
+        else {
+            $downloaderLink = $('<iframe>', { id: 'downloaderLink', src: proxyUrl }).hide().appendTo('body');
         }
     },
 
@@ -110,3 +155,5 @@ Portal.cart.Downloader = Ext.extend(Object, {
         return str.replace(/:/g, "#").replace(/[/\\ ]/g, "_");
     }
 });
+
+Portal.cart.Downloader.DOWNLOAD_CHECK_INTERVAL_MS = 1000;

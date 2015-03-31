@@ -13,10 +13,14 @@ describe("Portal.cart.Downloader", function() {
     var collection;
     var params;
 
+    var downloadToken;
+
     beforeEach(function() {
         downloader = new Portal.cart.Downloader();
         wfsDownloadUrl = 'http://download';
         generateUrlCallback = jasmine.createSpy('generateUrl').andReturn(wfsDownloadUrl);
+        downloadToken = 1234;
+        downloader._newDownloadToken = function() { return downloadToken; }
 
         collection = {};
         params = {};
@@ -46,6 +50,36 @@ describe("Portal.cart.Downloader", function() {
             expect(downloader._downloadSynchronously).not.toHaveBeenCalled();
             expect(downloader._downloadAsynchronously).toHaveBeenCalledWith(collection, wfsDownloadUrl, params);
         });
+    });
+
+    describe('status', function() {
+        var onRequestedSpy = jasmine.createSpy('onRequested');
+
+        beforeEach(function() {
+            spyOn(downloader, 'fireEvent');
+            downloader._constructFilename = function() { return 'download.csv'; }
+            downloader._openDownload = noOp;
+        });
+
+        it("fires 'downloadrequested' event", function() {
+            downloader._startDownloadCheckTask = noOp;
+            downloader.download(collection, this, generateUrlCallback, params);
+            expect(downloader.fireEvent).toHaveBeenCalledWith('downloadrequested', downloadToken);
+        });
+
+        it("fires 'downloadstarted' event", function() {
+            Ext.TaskMgr.stopAll();
+            jasmine.Clock.useMock();
+            downloader._startDownloadCheckTask(downloadToken);
+
+            // simulate the server having returned a response, which includes a cookie.
+            $.cookie(String.format("downloadToken{0}", downloadToken), downloadToken);
+            jasmine.Clock.tick(Portal.cart.Downloader.DOWNLOAD_CHECK_INTERVAL_MS * 2);
+
+            expect(downloader.fireEvent).toHaveBeenCalledWith('downloadstarted', downloadToken);
+        });
+
+        // TODO: fail after duration expires.
     });
 
     describe('downloadAsynchronously', function() {
@@ -78,7 +112,7 @@ describe("Portal.cart.Downloader", function() {
 
         it('constructs download url', function() {
             downloader._downloadSynchronously(collection, wfsDownloadUrl, params);
-            expect(downloader._constructProxyUrl).toHaveBeenCalledWith(collection, wfsDownloadUrl, params);
+            expect(downloader._constructProxyUrl).toHaveBeenCalledWith(collection, wfsDownloadUrl, downloadToken, params);
         });
 
         it('opens download', function() {
@@ -94,14 +128,22 @@ describe("Portal.cart.Downloader", function() {
             spyOn(downloader, '_sanitiseFilename').andReturn(theFilename);
             spyOn(downloader, '_constructFilename').andReturn(theFilename);
 
-            var expectedProxyUrl = "download?url=http%3A%2F%2Fdownload&downloadFilename=file%20name&fieldName=the%20field";
+            var expectedProxyUrl =
+                String.format(
+                    "download?url={0}&downloadFilename={1}&downloadToken={2}&fieldName={3}",
+                    'http%3A%2F%2Fdownload',
+                    'file%20name',
+                    downloadToken,
+                    'the%20field'
+                );
+
             var params = {
                 downloadControllerArgs: {
                     fieldName: 'the field'
                 }
             };
 
-            expect(downloader._constructProxyUrl(collection, wfsDownloadUrl, params)).toBe(expectedProxyUrl);
+            expect(downloader._constructProxyUrl(collection, wfsDownloadUrl, downloadToken, params)).toBe(expectedProxyUrl);
             expect(downloader._sanitiseFilename).toHaveBeenCalledWith(theFilename);
         });
     });
