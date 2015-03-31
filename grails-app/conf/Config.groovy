@@ -195,11 +195,13 @@ baselayers = [
     ]
 ]
 
+def defaultInstanceName = "IMOS"
+
 portal {
     siteHeader = "Open Access to Ocean Data"
     motdUrl = "https://static.emii.org.au/motd"
 
-    logo = "images/IMOS_logo.png"
+    logo = "images/${defaultInstanceName}_logo.png"
     header {
         externalLinks = [
             [
@@ -304,6 +306,13 @@ log4j = {
  * Instance specific customisation, clearly stolen from:
  * http://phatness.com/2010/03/how-to-externalize-your-grails-configuration/
  *
+ * To use set for a specific instance, either set the environment variable "INSTANCE_NAME", or add this in the grails
+ * commandline like so:
+ *
+ * grails -DINSTANCE_NAME=WA run-app
+ *
+ * Instance specific config files are located in $project_home/instances/
+ *
  * Any configuration found in these instance specific file will OVERRIDE values set in Config.groovy and
  * application.properties.
  *
@@ -318,7 +327,14 @@ try {
     grails.config.locations << "file:${configurationPath}"
 
     println "Loading external config from '$configurationPath'..."
+
+    def startupConfig = new ConfigSlurper(grailsSettings.grailsEnv).parse(new File(configurationPath).toURI().toURL())
+    System.setProperty("INSTANCE_NAME", startupConfig.portal.instance.name ?: defaultInstanceName)
 }
 catch (e) {
+
     println "Not loading external config"
+
+    portal.instance.name = defaultInstanceName
+    System.setProperty "INSTANCE_NAME", portal.instance.name
 }
