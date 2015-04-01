@@ -30,11 +30,13 @@ Portal.filter.GeometryFilter = Ext.extend(Portal.filter.Filter, {
 
     getHumanReadableForm: function() {
 
-        var explanation = this._isRealPolygon() ? OpenLayers.i18n("maxExtentOfPolygon") : OpenLayers.i18n("boundingBoxDescription");
+        var label = OpenLayers.i18n("spatialExtentHeading");
+        var note = this._isRealPolygon() ? OpenLayers.i18n("spatialExtentPolygonNote") : "";
 
         return String.format(
-            '{0}: {1}',
-            explanation,
+            '{0}: {1}{2}',
+            label,
+            note,
             this.getValue().getBounds()
         );
     },

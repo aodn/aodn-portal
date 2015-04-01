@@ -41,7 +41,7 @@ describe('Portal.cart.NcwmsInjector', function() {
         it('indicates bounds properly created', function() {
 
             var entry = injector._getDataFilterEntry(geoNetworkRecord);
-            expect(entry).toContain(OpenLayers.i18n("boundingBoxDescriptionNcWms"));
+            expect(entry).toContain(OpenLayers.i18n("spatialExtentHeading"));
         });
 
         it('indicates temporal range', function() {

@@ -83,9 +83,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     mapTabTitle: 'Map',
 
     // Search form
-    boundingBoxDescription: 'Bounding Box',
-    boundingBoxDescriptionNcWms: 'Bounding Area',
-    maxExtentOfPolygon: "Max extent of polygon",
     northBL: 'N',
     eastBL: 'E',
     westBL: 'W',
@@ -193,6 +190,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     temporalExtentHeading: 'Temporal Extent',
     generalFilterHeading: 'Filters',
     currentDateTimeLabel: 'Displaying',
+    spatialExtentPolygonNote: 'Polygon with max extent ',
 
     emptyDownloadPlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",
 
