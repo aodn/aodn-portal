@@ -30,7 +30,7 @@ describe("Portal.filter.BooleanFilter", function() {
 
         it('returns correct description', function() {
 
-            expect(filter.getHumanReadableForm()).toBe('The thing = true');
+            expect(filter.getHumanReadableForm()).toBe('The thing: true');
         });
     });
 });

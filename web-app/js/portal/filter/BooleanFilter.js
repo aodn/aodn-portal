@@ -21,19 +21,17 @@ Portal.filter.BooleanFilter = Ext.extend(Portal.filter.Filter, {
 
     getCql: function() {
 
-        return this._getCql(this.getName());
+        return String.format(
+            '{0} = true',
+            this.getName()
+        );
     },
 
     getHumanReadableForm: function() {
 
-        return this._getCql(this.getLabel());
-    },
-
-    _getCql: function(fieldName) {
-
         return String.format(
-            '{0} = true',
-            fieldName
+            '{0}: true',
+            this.getLabel()
         );
     }
 });
