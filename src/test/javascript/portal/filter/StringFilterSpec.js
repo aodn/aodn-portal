@@ -30,7 +30,7 @@ describe("Portal.filter.StringFilter", function() {
 
         it('returns correct description', function() {
 
-            expect(filter.getHumanReadableForm()).toBe("Boat name like L'astrolabe");
+            expect(filter.getHumanReadableForm()).toBe("Boat name: L'astrolabe");
         });
     });
 });
