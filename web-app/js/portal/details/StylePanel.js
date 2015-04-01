@@ -117,7 +117,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             lazyRender: true,
             mode: 'local',
             store: valueStore,
-            emptyText: OpenLayers.i18n('pickAStyle'),
             valueField: 'styleName',
             displayField: 'styleName',
             tpl: tpl,

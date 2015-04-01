@@ -14,8 +14,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     navigationButtonSelect: "Select <div class=doubleArrow>&gt;&gt;</div>",
     navigationButtonDownload: "Download <div class=doubleArrow>&gt;&gt;</div>",
 
-    footerText: "<b>Disclaimer:</b> You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it.",
-
     stepHeader: '<span class="stepTitle">Step ${stepNumber}:</span> ${stepDescription}',
     step1Description: 'Select a Data Collection',
     step2Description: 'Create a Subset',
@@ -28,7 +26,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // DetailsPanel.js
     opacity: "Opacity",
     wmsLayerProblem: "There is a problem with the availability of this collection",
-    pickAStyle : ' ** Pick a style ** ',
     noActiveCollectionSelected: "No data collections selected",
     dataCollectionsTitle: "Subsetting data collection:",
     noCollectionSelectedHelp: "Please return and search for data collections.",
@@ -48,14 +45,9 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadAsCsvLabel: 'CSV',
     downloadAsSubsettedNetCdfLabel: 'NetCDF',
     downloadAsAllSourceNetCdfLabel: 'Un-subsetted NetCDFs',
-    downloadAsHdfLabel: 'HDF',
-    downloadAsAsciiLabel: 'ASCII text',
     downloadAsUrlsLabel: 'List of URLs',
     downloadAsPythonSnippetLabel: 'Python',
-    parametersLabel: 'Parameters:',
-    parameterAreaLabel: 'Area',
     parameterDateLabel: 'Date range',
-    parameterTimeLabel: 'Time-of-day range',
     metadataLinkText: 'View metadata record',
     emailAddressPlaceholder: 'Your email address',
     emailAddressValidationError: 'Enter a valid email address',
@@ -63,7 +55,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // WFS Filters Panel
     subsetParametersText: 'subset parameters',
-    subsetParametersErrorText: 'Filtering of this collection is not possible at this time.',
     subsetEmptyFiltersText: 'Filtering of this collection is not available at this time.',
     subsetNoOptionsText: 'No options available',
 
@@ -73,9 +64,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // DateSelectionPanel.js
     min: 'Min',
     max: 'Max',
-
-    // LayerGridPanel.js
-    dragLayersOrServers: 'Drag layers or Servers to the menu tree',
 
     // MapOptions
     panControl: 'Pan/Zoom Control',
@@ -88,21 +76,11 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     selectMapTimePeriod: 'Move Time on Map',
     errorSelectMapTimePeriod: "End of the Collections available dates",
 
-    // Search results
-    addToMap: "Add '${layerDesc}' to portal",
-
     // tab titles
     subsetPanelTitle: 'Subset',
     stylePanelTitle: 'Layer',
     infoTabTitle: 'Info',
     mapTabTitle: 'Map',
-
-    // Refine search panel
-    filterNames: {
-        keywords: 'Keywords',
-        organizationNames: 'Organisations',
-        dataParameters: 'Data Parameters'
-    },
 
     // Search form
     boundingBoxDescription: 'Bounding Box',
@@ -122,7 +100,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     emptySpatialBL: 'enter',
     goButton: 'Go',
     clearButton: 'Clear',
-    fullTextSearch: 'What are you looking for?',
 
     // FacetedSearchResultsDataView.js
     searchPlatformText: ' ',
@@ -172,9 +149,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // Faceted layer search
     searchTabTitle: 'Search',
-    themeFilter: 'Theme',
-    locationFilter: 'Location',
-    methodFilter: 'Collection method',
     organisationFilter: 'Organisation',
     platformFilter: 'Platform',
     parameterFilter: 'Measured parameter',
@@ -192,7 +166,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     clearAllButtonLabel: 'Clear and Reset',
     clearAllButtonTooltip: 'Remove all data collections from the Subset and Download pages, reset the map location and zoom level',
     removeButtonTooltip: 'Remove this data collection from the Subset and Download pages, the collection can be re-added from the search.',
-
 
     // FilterGroupPanel.js
     clearFilterButtonLabel: 'Clear subset',
