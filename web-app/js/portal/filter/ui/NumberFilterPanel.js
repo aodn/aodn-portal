@@ -23,9 +23,9 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         Portal.filter.ui.NumberFilterPanel.superclass.constructor.call(this, config);
     },
 
-    _createField: function() {
+    _createControls: function() {
         var label = new Ext.form.Label({
-            html: "<label>" + this.filter.getDisplayLabel() + "</label>"
+            html: "<label>" + this.filter.getLabel() + "</label>"
         });
 
         this.operators = new Ext.form.ComboBox({
@@ -87,57 +87,17 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         // Idea: show max/min values from this.filter.possibleValues
     },
 
-    getFilterData: function() {
-
-        return {
-            name: this.filter.name,
-            visualised: this.isVisualised(),
-            cql: this.getCQL(),
-            humanValue: this._getCQLHumanValue()
-        }
-    },
-
     handleRemoveFilter: function() {
         this.operators.clearValue();
         this.firstField.reset();
         this.secondField.reset();
         this.secondField.setVisible(false);
+
+        this.filter.clearValue();
     },
 
     needsFilterRange: function() {
         return false
-    },
-
-    getCQL: function() {
-
-        if (this.firstField.getValue()) {
-            var cql = this.filter.getName() + " " + this.operators.getValue() + " " + this.firstField.getValue();
-
-            if (this._operatorIsBetween()) {
-
-                cql += " AND " + this.secondField.getValue();
-            }
-
-            return cql;
-        }
-
-        return undefined;
-    },
-
-    _getCQLHumanValue: function() {
-
-        if (this.firstField.getValue()) {
-            var cql = this.filter + " " + this.operators.getValue() + " " + this.firstField.getValue();
-
-            if (this._operatorIsBetween()) {
-
-                cql += " AND " + this.secondField.getValue();
-            }
-
-            return cql;
-        }
-
-        return undefined;
     },
 
     _onSpecialKeyPressed: function(field, e) {
@@ -148,16 +108,20 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         }
     },
 
-    _updateFilter: function(combo, record, index) {
+    _updateFilter: function() {
 
         if (this.firstField.validate() && this.secondField.validate()) {
 
-            var val = this._getTrackUsageLabel();
+            this.filter.setValue({
+                firstField: this.firstField.getValue(),
+                operator: this.operators.getValue(),
+                secondField: this.secondField.getValue()
+            });
 
             this._fireAddEvent();
 
             if (!this._operatorIsBetween() || this._hasSecondValue()) {
-                trackFiltersUsage('filtersTrackingNumberAction', val, this.layer.name);
+                trackFiltersUsage('filtersTrackingNumberAction', this._getTrackUsageLabel(), this.layer.name);
             }
         }
     },
@@ -180,7 +144,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         return !(this.secondField.getValue() == null || this.secondField.getValue() == "");
     },
 
-    _onOperationSelected: function(combo, record, index) {
+    _onOperationSelected: function() {
         var shouldUpdate;
         var useSecondField = this._operatorIsBetween();
         var noneSelected = this._operatorIsNone();
@@ -196,11 +160,9 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
             // clear the filter if "none" is selected
             if (noneSelected) {
                 this.handleRemoveFilter();
-                this._fireAddEvent();
             }
-            else {
-                this._fireAddEvent();
-            }
+
+            this._updateFilter();
         }
     },
 

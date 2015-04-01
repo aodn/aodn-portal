@@ -4,6 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
+
 describe("Portal.filter.ui.ComboFilterPanel", function() {
 
     var filterPanel;
@@ -11,7 +12,7 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
     // Test set-up
     beforeEach(function() {
 
-        Portal.filter.ui.ComboFilterPanel.prototype._createField = function() {
+        Portal.filter.ui.ComboFilterPanel.prototype._createControls = function() {
             this.combo = {
                 setValue: jasmine.createSpy()
             };
@@ -20,38 +21,13 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
         filterPanel = new Portal.filter.ui.ComboFilterPanel({
             filter: {
                 getName: function() { return 'test' },
-                getDisplayLabel: function() { return 'testLabel' }
+                getLabel: function() { return 'testLabel' },
+                setValue: noOp
             },
             layer: {
                 name: 'test layer',
-                getDownloadFilter: function() { return ""; }
+                getDownloadCql: function() { return ""; }
             }
-        });
-    });
-
-    it('_escapeSingleQuotes should replace single quotes with two single quotes', function() {
-        var result = filterPanel._escapeSingleQuotes("L'Astrolabe");
-
-        expect(result).toEqual("L''Astrolabe");
-    });
-
-    it('_escapeSingleQuotes should handle multiple single quotes', function() {
-        var result = filterPanel._escapeSingleQuotes("L''Astro'labe");
-
-        expect(result).toEqual("L''''Astro''labe");
-    });
-
-    describe('getCQL', function() {
-        it('should create the cql filter replacing single quotes in the filter value with two single quotes', function() {
-            filterPanel.filter = {
-                getName: function() { return "vessel_name" }
-            };
-
-            filterPanel.combo = {
-                getValue: function() { return "L'Astrolabe" }
-            };
-
-            expect(filterPanel.getCQL()).toEqual("vessel_name LIKE 'L''Astrolabe'");
         });
     });
 
@@ -80,15 +56,37 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
     });
 
     describe('onSelected', function() {
-        it('tracks usage using google analytics', function() {
+
+        beforeEach(function() {
             spyOn(window, 'trackUsage');
-            filterPanel.combo.getValue = function() {
-                return "value";
+            filterPanel.filter.setValue = jasmine.createSpy('setValue');
+            filterPanel.combo = {
+                getValue: function() { return "value" },
+                disabled: false
             };
+        });
+
+        it('tracks usage using google analytics', function() {
 
             filterPanel._onSelected();
 
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "testLabel=value", "test layer");
+        });
+
+        it('sets value if combo is enabled', function() {
+
+            filterPanel._onSelected();
+
+            expect(filterPanel.filter.setValue).toHaveBeenCalledWith("value");
+        });
+
+        it('no value set for disabled combo box', function() {
+
+            filterPanel.combo.disabled = true;
+
+            filterPanel._onSelected();
+
+            expect(filterPanel.filter.setValue).not.toHaveBeenCalled();
         });
     });
 });

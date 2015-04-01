@@ -25,6 +25,7 @@ function trackFacetUsage(action, label) {
 }
 
 function trackFiltersUsage(actionKey, label, collection) {
+
     trackUsage(
         OpenLayers.i18n('filtersTrackingCategory'),
         OpenLayers.i18n(actionKey),

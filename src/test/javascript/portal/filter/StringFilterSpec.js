@@ -1,0 +1,36 @@
+/*
+ * Copyright 2015 IMOS
+ *
+ * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ *
+ */
+
+describe("Portal.filter.StringFilter", function() {
+
+    var filter;
+
+    beforeEach(function() {
+
+        filter = new Portal.filter.StringFilter({
+            name: 'column_name',
+            label: 'Boat name',
+            value: "L'astrolabe"
+        });
+    });
+
+    describe('getCql', function() {
+
+        it('returns correct cql', function() {
+
+            expect(filter.getCql()).toBe("column_name LIKE 'L''astrolabe'");
+        });
+    });
+
+    describe('getHumanReadableForm', function() {
+
+        it('returns correct description', function() {
+
+            expect(filter.getHumanReadableForm()).toBe("Boat name like L'astrolabe");
+        });
+    });
+});

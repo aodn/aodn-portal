@@ -82,11 +82,15 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function(resp, options) {
 
 OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(serverUrl, layerName, outputFormat) {
 
+    var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
+        layer: this
+    });
+
     return this._buildGetFeatureRequestUrl(
         serverUrl,
         layerName,
         outputFormat,
-        this.getDownloadFilter()
+        builder.buildCql()
     );
 };
 
@@ -132,76 +136,20 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
-OpenLayers.Layer.WMS.prototype.getCqlFilter = function() {
-    if (this.params["CQL_FILTER"]) {
-        return this.params["CQL_FILTER"];
-    }
-    else {
-        return "";
-    }
-};
+OpenLayers.Layer.WMS.prototype.updateCqlFilter = function() {
 
-OpenLayers.Layer.WMS.prototype.setCqlFilter = function(cqlFilter) {
-    if (cqlFilter == this.getCqlFilter()) {
-        return;
-    }
+    var builder = new Portal.filter.combiner.MapCqlBuilder({
+        layer: this
+    });
 
-    if (cqlFilter) {
-        this.mergeNewParams({
-            CQL_FILTER: cqlFilter
-        });
-    }
-    else {
-        delete this.params["CQL_FILTER"];
+    var newValue = builder.buildCql();
+    var existingValue = this.params['CQL_FILTER'];
+
+    if (newValue != existingValue) {
+
+        this.params['CQL_FILTER'] = newValue;
         this.redraw();
     }
-};
-
-OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
-
-    var filters = [];
-
-    Ext.each(this.filterData, function(data) {
-        if (data.cql){
-            filters.push(data.cql);
-        }
-    });
-
-    return filters.join(" AND ");
-};
-
-OpenLayers.Layer.WMS.prototype.getMapLayerFilters = function(includeGeomFilter) {
-
-    var filters = [];
-
-    Ext.each(this.filterData, function(data) {
-
-        var filterCQL = data.cql;
-
-        if (data.visualised || (includeGeomFilter && data.type == "geom")) {
-            if (data.visualisationCql != undefined) {
-                filterCQL = data.visualisationCql;
-            }
-            if (filterCQL) {
-                filters.push(filterCQL);
-            }
-        }
-    });
-
-    return filters.join(" AND ");
-};
-
-OpenLayers.Layer.WMS.prototype.getDownloadFilterDescriptions = function() {
-
-    var filters = [];
-
-    Ext.each(this.filterData, function(data) {
-        if (data.humanValue && data.humanValue != "") {
-            filters.push(data.humanValue);
-        }
-    });
-
-    return filters.join("<br/> ");
 };
 
 OpenLayers.Layer.WMS.prototype.hasBoundingBox = function() {

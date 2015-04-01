@@ -45,10 +45,20 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
         Ext.each(filterDetails, function(filterDetail) {
 
-            var newFilterObject = new Portal.filter.Filter(filterDetail, layer);
+            var filterConstructor = Portal.filter.Filter.classFor(filterDetail);
 
-            filterObjects.push(newFilterObject);
+            if (filterConstructor) {
+
+                var newFilterObject = new filterConstructor(filterDetail, layer);
+
+                filterObjects.push(newFilterObject);
+            }
+            else {
+                log.error("Can't create Filter for layer '" + layer.wmsName + "' from data: " + JSON.stringify(filterDetail));
+            }
         });
+
+        layer.filters = filterObjects;
 
         callbackFunction.call(callbackScope, filterObjects);
     },

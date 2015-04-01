@@ -74,12 +74,15 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return function(collection) {
 
             var wmsLayer = collection.wmsLayer;
+            var builder = new Portal.filter.combiner.BodaacCqlBuilder({
+                layer: wmsLayer
+            });
 
             return wmsLayer._buildGetFeatureRequestUrl(
                 _this._resourceHref(),
                 _this._layerName(),
                 OpenLayers.Layer.DOWNLOAD_FORMAT_CSV,
-                wmsLayer.getMapLayerFilters(true)
+                builder.buildCql()
             );
         };
     },

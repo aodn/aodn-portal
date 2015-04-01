@@ -11,8 +11,12 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _getDataFilterEntry: function(collection) {
 
-        var layerValues = collection.wmsLayer.getDownloadFilterDescriptions();
+        var describer = new Portal.filter.combiner.HumanReadableFilterDescriber({
+            layer: collection.wmsLayer
+        });
 
-        return (layerValues != "") ? layerValues : OpenLayers.i18n('emptyDownloadPlaceholder');
+        var description = describer.buildDescription('<br />');
+
+        return description ? description : OpenLayers.i18n('emptyDownloadPlaceholder');
     }
 });

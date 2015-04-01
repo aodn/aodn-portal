@@ -78,17 +78,17 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
         it('sorts panels in expected order', function() {
 
-            spyOn(Portal.filter.ui.BooleanFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.BooleanFilterPanel.prototype, '_createControls');
             spyOn(Portal.filter.ui.NumberFilterPanel.prototype, 'setLayerAndFilter');
-            spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, '_createControls');
             spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, 'setLayerAndFilter');
-            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createControls');
 
             var booleanPanelA = new Portal.filter.ui.BooleanFilterPanel({
-                filter: { getDisplayLabel: function() { return 'A' } }
+                filter: { getLabel: function() { return 'A' } }
             });
             var booleanPanelB = new Portal.filter.ui.BooleanFilterPanel({
-                filter: { getDisplayLabel: function() { return 'B' } }
+                filter: { getLabel: function() { return 'B' } }
             });
             var numberPanel =  new Portal.filter.ui.NumberFilterPanel();
             var geometryPanel = new Portal.filter.ui.GeometryFilterPanel({
@@ -254,29 +254,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
         });
     });
 
-    describe('visualise cql', function() {
-        describe('_getVisualisationCQLFilters', function() {
-
-            var filterDescriptorData;
-
-            beforeEach(function() {
-
-                filterDescriptorData =  {
-                    name: 'test',
-                    label: 'some label',
-                    cql: "pardon my French",
-                    type: 'Boolean',
-                    visualised: true
-                }
-            });
-
-            it('calls getVisualisationCQL when options.downloadOnly is false', function() {
-
-                expect(filterGroupPanel._getVisualisationCQLFilters(filterDescriptorData)).toEqual('pardon my French');
-            });
-        });
-    });
-
     describe('_organiseFilterPanels', function() {
 
         var filterPanels;
@@ -285,9 +262,9 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
         var numComponentsPerGroup = 2;
 
         beforeEach(function() {
-            spyOn(Portal.filter.ui.NumberFilterPanel.prototype, '_createField');
-            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createField');
-            spyOn(Portal.filter.ui.BooleanFilterPanel.prototype, '_createField');
+            spyOn(Portal.filter.ui.NumberFilterPanel.prototype, '_createControls');
+            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createControls');
+            spyOn(Portal.filter.ui.BooleanFilterPanel.prototype, '_createControls');
 
             filterPanels = [
                 new Portal.filter.ui.DateFilterPanel(),

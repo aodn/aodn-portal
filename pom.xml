@@ -412,6 +412,9 @@
                         <include>portal/utils/moment.min.js</include>
                         <include>portal/utils/Proxy.js</include>
                         <include>portal/cart/DownloadHandler.js</include>
+                        <include>portal/filter/Filter.js</include>
+                        <include>portal/filter/combiner/BaseFilterCombiner.js</include>
+                        <include>portal/filter/combiner/FilterCqlBuilder.js</include>
                         <include>portal/**/*.js</include>
                     </sourceIncludes>
                     <sourceExcludes>
