@@ -21,6 +21,7 @@ class BulkDownloadService {
     static final def INDEX_FILENAME = 1
     static final def INDEX_EXTENSION = 2
     static final def FILENAME_TO_USE_WHEN_UNKNOWN = 'file'
+    static final def BUFFER_SIZE = 1024 * 4
 
     def report
     def uniqueFilenameGenerator
@@ -83,7 +84,7 @@ class BulkDownloadService {
 
             zipStream.putNextEntry new ZipEntry(filenameToUse)
 
-            def bytesCopied = IOUtils.copy(streamFromUrl, zipStream)
+            def bytesCopied = copy(streamFromUrl, zipStream, BUFFER_SIZE)
 
             log.debug "Added $bytesCopied Bytes"
 
@@ -143,5 +144,14 @@ class BulkDownloadService {
         zipStream.putNextEntry reportEntry
         zipStream.write bytes, 0, bytes.length
         zipStream.closeEntry()
+    }
+
+    public static void copy(final InputStream input, final OutputStream output, final int bufferSize) throws IOException
+    {
+        final byte[] buffer = new byte[bufferSize];
+        int bytesRead = 0;
+        while(-1 != (bytesRead = input.read(buffer))) {
+            output.write(buffer, 0, bytesRead);
+        }
     }
 }
