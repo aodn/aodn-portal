@@ -41,7 +41,8 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
             displayField: 'text',
             listeners: {
                 scope: this,
-                valid: this._onSelected
+                select: this._onChangeEvent,
+                change: this._onChangeEvent
             }
         });
         this.add(this.combo);
@@ -68,6 +69,7 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
 
     handleRemoveFilter: function() {
         this.combo.clearValue();
+        this.previousValue = "";
     },
 
     needsFilterRange: function() {
@@ -110,15 +112,23 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
         }
     },
 
-    _onSelected: function() {
+    _onChangeEvent: function() {
+        if (this.combo.getValue() != this.previousValue) {
+            this._onActualChange();
+            this.previousValue = this.combo.getValue();
+        }
+    },
 
+    _onActualChange: function() {
         if (this.combo.getValue() == OpenLayers.i18n('clearFilterOption')) {
             this.combo.clearValue();
         }
-        else if (this.combo.getValue() != "") {
+
+        if (this.combo.getValue() != "") {
             var val = this.filter.getDisplayLabel() + "=" + this.combo.getValue();
             trackFiltersUsage('filtersTrackingComboAction', val, this.layer.name);
         }
+
         this._fireAddEvent();
     },
 
