@@ -79,14 +79,14 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
         });
     });
 
-    describe('onSelected', function() {
+    describe('onActualChange', function() {
         it('tracks usage using google analytics', function() {
             spyOn(window, 'trackUsage');
             filterPanel.combo.getValue = function() {
                 return "value";
             };
 
-            filterPanel._onSelected();
+            filterPanel._onActualChange();
 
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "testLabel=value", "test layer");
         });
