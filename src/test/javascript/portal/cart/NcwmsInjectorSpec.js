@@ -12,6 +12,8 @@ describe('Portal.cart.NcwmsInjector', function() {
     var startDate;
     var endDate;
 
+    var dateLabel = OpenLayers.i18n('temporalExtentHeading');
+
     beforeEach(function() {
         injector = new Portal.cart.NcwmsInjector();
         startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
@@ -49,10 +51,12 @@ describe('Portal.cart.NcwmsInjector', function() {
             geoNetworkRecord.ncwmsParams.dateRangeEnd = moment.utc(Date.UTC(2014, 11, 21, 10, 30, 30, 500));
 
             var entry = injector._getDataFilterEntry(geoNetworkRecord);
-            expect(entry).toContain(OpenLayers.i18n('parameterDateLabel'));
+            expect(entry).toContain(dateLabel);
 
-            entry = injector._formatHumanDateInfo('parameterDateLabel', 'startdate', 'enddate');
+            entry = injector._formatHumanDateInfo('temporalExtentHeading', 'startdate', 'enddate');
+            expect(entry).toContain(dateLabel);
             expect(entry).toContain('startdate');
+            expect(entry).toContain('enddate');
         });
     });
 

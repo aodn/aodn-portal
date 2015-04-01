@@ -32,7 +32,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         if (params.dateRangeStart != undefined) {
             var startDateString = this._formatDate(params.dateRangeStart);
             var endDateString = this._formatDate(params.dateRangeEnd);
-            dateString = this._formatHumanDateInfo('parameterDateLabel', startDateString, endDateString);
+            dateString = this._formatHumanDateInfo('temporalExtentHeading', startDateString, endDateString);
         }
 
         if (areaString == "" && dateString == "") {
