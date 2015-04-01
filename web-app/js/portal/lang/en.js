@@ -151,7 +151,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     searchTabTitle: 'Search',
     organisationFilter: 'Organisation',
     platformFilter: 'Platform',
-    parameterFilter: 'Measured parameter',
+    parameterFilter: 'Parameter',
     dateFilter: 'Date (UTC)',
     geoFilter: "Geographic Boundary",
     facetedSearchNewSearchButton: 'Start new search',
