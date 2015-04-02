@@ -43,7 +43,7 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives human readble form', function() {
 
-            expect(filter.getHumanReadableForm()).toBe(dateLabel + ": >= 1999/Jan/01-11:00-UTC");
+            expect(filter.getHumanReadableForm()).toBe(dateLabel + ": after 1999/Jan/01-11:00-UTC");
         });
     });
 
@@ -68,7 +68,7 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives human readble form', function() {
 
-            expect(filter.getHumanReadableForm()).toBe(dateLabel + ": <= 2006/Jun/06-11:00-UTC");
+            expect(filter.getHumanReadableForm()).toBe(dateLabel + ": before 2006/Jun/06-11:00-UTC");
         });
     });
 
@@ -94,7 +94,7 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives human readble form', function() {
 
-            expect(filter.getHumanReadableForm()).toBe(dateLabel + ": >= 1999/Jan/01-11:00-UTC and <= 2006/Jun/06-11:00-UTC");
+            expect(filter.getHumanReadableForm()).toBe(dateLabel + ": 1999/Jan/01-11:00-UTC to 2006/Jun/06-11:00-UTC");
         });
     });
 
@@ -124,7 +124,7 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives human readble form', function() {
 
-            expect(filter.getHumanReadableForm()).toBe(dateLabel + ": >= 1999/Jan/01-11:00-UTC and <= 2006/Jun/06-11:00-UTC");
+            expect(filter.getHumanReadableForm()).toBe(dateLabel + ": 1999/Jan/01-11:00-UTC to 2006/Jun/06-11:00-UTC");
         });
     });
 });

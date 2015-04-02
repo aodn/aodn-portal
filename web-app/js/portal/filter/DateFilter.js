@@ -75,21 +75,27 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
 
     getHumanReadableForm: function() {
 
-        var description = OpenLayers.i18n('temporalExtentHeading') + ': ';
-
-        if (this._getFromDate()) {
-            description += String.format(">= {0}", this._getDateHumanString(this._getFromDate()));
-        }
+        var formatKey;
 
         if (this._getFromDate() && this._getToDate()) {
-            description += ' and ';
+
+            formatKey = 'dateFilterBetweenFormat';
+        }
+        else if (this._getFromDate()) {
+
+            formatKey = 'dateFilterAfterFormat';
+        }
+        else {
+
+            formatKey = 'dateFilterBeforeFormat';
         }
 
-        if (this._getToDate()) {
-            description += String.format("<= {0}", this._getDateHumanString(this._getToDate()));
-        }
-
-        return description;
+        return String.format(
+            OpenLayers.i18n(formatKey),
+            OpenLayers.i18n('temporalExtentHeading'),
+            this._getDateHumanString(this._getFromDate()),
+            this._getDateHumanString(this._getToDate())
+        );
     },
 
     _getFromDate: function() {

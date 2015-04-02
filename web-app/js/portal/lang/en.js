@@ -192,6 +192,10 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     currentDateTimeLabel: 'Displaying',
     spatialExtentPolygonNote: 'Polygon with max extent ',
 
+    dateFilterBeforeFormat: '{0}: before {2}',
+    dateFilterAfterFormat: '{0}: after {1}',
+    dateFilterBetweenFormat: '{0}: {1} to {2}',
+
     emptyDownloadPlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",
 
     // FeatureInfoPopup.js
