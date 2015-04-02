@@ -26,10 +26,7 @@ describe("Portal.filter.DateFilter", function() {
 
         beforeEach(function() {
 
-            filter = new Portal.filter.DateFilter({
-                name: 'column_name',
-                value: {}
-            });
+            filter.setValue({});
         });
 
         describe('hasValue', function() {
@@ -123,7 +120,6 @@ describe("Portal.filter.DateFilter", function() {
 
             filter.wmsStartDateName = 'range_start_column_name';
             filter.wmsEndDateName = 'range_end_column_name';
-
             filter.setValue({
                 fromDate: exampleFromDate,
                 toDate: exampleToDate
