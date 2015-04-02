@@ -17,6 +17,11 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
         Portal.filter.DateFilter.superclass.constructor.call(this, cfg);
     },
 
+    hasValue: function() {
+
+        return this.getValue() && (this._getFromDate() || this._getToDate());
+    },
+
     getSupportedGeoserverTypes: function() {
 
         return ['date', 'datetime'];

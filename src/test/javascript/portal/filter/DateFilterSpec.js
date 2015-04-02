@@ -22,6 +22,25 @@ describe("Portal.filter.DateFilter", function() {
         filter._getDateHumanString = function(d) { return d[1] };
     });
 
+    describe('no dates (but not-null value)', function() {
+
+        beforeEach(function() {
+
+            filter = new Portal.filter.DateFilter({
+                name: 'column_name',
+                value: {}
+            });
+        });
+
+        describe('hasValue', function() {
+
+            it('returns false', function() {
+
+                expect(filter.hasValue()).not.toBeTruthy();
+            });
+        });
+    });
+
     describe('only start date', function() {
 
         beforeEach(function() {

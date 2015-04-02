@@ -17,6 +17,22 @@ describe("Portal.filter.NumberFilter", function() {
         });
     });
 
+    describe('empty value entered', function() {
+
+        beforeEach(function() {
+
+            filter.setValue({});
+        });
+
+        describe('hasValue', function() {
+
+            it('returns false', function() {
+
+                expect(filter.hasValue()).not.toBeTruthy();
+            });
+        });
+    });
+
     describe('one value entered', function() {
 
         beforeEach(function() {

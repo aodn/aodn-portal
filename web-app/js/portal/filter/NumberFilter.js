@@ -24,6 +24,11 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
         return this._getCql();
     },
 
+    hasValue: function() {
+
+        return this.getValue() && (this._getFirstField() || this._getSecondField());
+    },
+
     getHumanReadableForm: function() {
 
         return this._getCql(this.getLabel());
