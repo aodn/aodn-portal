@@ -36,19 +36,8 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
             editable: false,
             fieldLabel: "Value",
             store: new Ext.data.ArrayStore({
-                fields: [
-                    'display', 'value'
-                ],
-                data: [
-                    ['none', '0'],
-                    ['greater than', '>'],
-                    ['greater than or equal to', '>='],
-                    ['equal to', '='],
-                    ['not equal to', '<>'],
-                    ['less than', '<'],
-                    ['less than or equal to', '<='],
-                    ['between', 'BETWEEN']
-                ]
+                fields: OpenLayers.i18n('numberFilterOptionsFields'),
+                data: OpenLayers.i18n('numberFilterDropdownOptions')
             }),
             valueField: 'value',
             displayField: 'display',

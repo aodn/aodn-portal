@@ -196,6 +196,20 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateFilterAfterFormat: '{0}: after {1}',
     dateFilterBetweenFormat: '{0}: {1} to {2}',
 
+    numberFilterOptionsFields: [
+         'display',                   'value'
+    ],
+    numberFilterDropdownOptions: [
+        ['none',                      '0'], // This option is in the dropdown to clear the number filter
+        ['greater than',              '>'],
+        ['greater than or equal to', '>='],
+        ['equal to',                  '='],
+        ['not equal to',             '<>'],
+        ['less than',                 '<'],
+        ['less than or equal to',    '<='],
+        ['between',                  'BETWEEN']
+    ],
+
     emptyDownloadPlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",
 
     // FeatureInfoPopup.js
