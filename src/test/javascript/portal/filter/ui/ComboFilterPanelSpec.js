@@ -55,7 +55,7 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
         });
     });
 
-    describe('onSelected', function() {
+    describe('onChange', function() {
 
         beforeEach(function() {
             spyOn(window, 'trackUsage');
@@ -68,25 +68,9 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
 
         it('tracks usage using google analytics', function() {
 
-            filterPanel._onSelected();
+            filterPanel._onChange();
 
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "testLabel=value", "test layer");
-        });
-
-        it('sets value if combo is enabled', function() {
-
-            filterPanel._onSelected();
-
-            expect(filterPanel.filter.setValue).toHaveBeenCalledWith("value");
-        });
-
-        it('no value set for disabled combo box', function() {
-
-            filterPanel.combo.disabled = true;
-
-            filterPanel._onSelected();
-
-            expect(filterPanel.filter.setValue).not.toHaveBeenCalled();
         });
     });
 });
