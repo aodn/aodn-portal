@@ -14,15 +14,19 @@ describe("Portal.filter.DateFilter", function() {
 
     var filter;
 
+    beforeEach(function() {
+
+        filter = new Portal.filter.DateFilter({
+            name: 'column_name'
+        });
+    });
+
     describe('only start date', function() {
 
         beforeEach(function() {
 
-            filter = new Portal.filter.DateFilter({
-                name: 'column_name',
-                value: {
-                    fromDate: newDate('01/01/1999 12:00')
-                }
+            filter.setValue({
+                fromDate: newDate('01/01/1999 12:00')
             });
         });
 
@@ -46,11 +50,8 @@ describe("Portal.filter.DateFilter", function() {
 
         beforeEach(function() {
 
-            filter = new Portal.filter.DateFilter({
-                name: 'column_name',
-                value: {
-                    toDate: newDate('06/06/2006 12:00')
-                }
+            filter.setValue({
+                toDate: newDate('06/06/2006 12:00')
             });
         });
 
@@ -74,12 +75,9 @@ describe("Portal.filter.DateFilter", function() {
 
         beforeEach(function() {
 
-            filter = new Portal.filter.DateFilter({
-                name: 'column_name',
-                value: {
-                    fromDate: newDate('01/01/1999 12:00'),
-                    toDate: newDate('06/06/2006 12:00')
-                }
+            filter.setValue({
+                fromDate: newDate('01/01/1999 12:00'),
+                toDate: newDate('06/06/2006 12:00')
             });
         });
 
@@ -103,14 +101,12 @@ describe("Portal.filter.DateFilter", function() {
 
         beforeEach(function() {
 
-            filter = new Portal.filter.DateFilter({
-                name: 'column_name',
-                wmsStartDateName: 'range_start_column_name',
-                wmsEndDateName: 'range_end_column_name',
-                value: {
-                    fromDate: newDate('01/01/1999 12:00'),
-                    toDate: newDate('06/06/2006 12:00')
-                }
+            filter.wmsStartDateName = 'range_start_column_name';
+            filter.wmsEndDateName = 'range_end_column_name';
+
+            filter.setValue({
+                fromDate: newDate('01/01/1999 12:00'),
+                toDate: newDate('06/06/2006 12:00')
             });
         });
 
