@@ -41,7 +41,8 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
             displayField: 'text',
             listeners: {
                 scope: this,
-                valid: this._onSelected
+                select: this._onChangeEvent,
+                change: this._onChangeEvent
             }
         });
         this.add(this.combo);
@@ -80,19 +81,24 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
         return true;
     },
 
-    _onSelected: function() {
+    _onChangeEvent: function() {
+        if (this.combo.getValue() != this.filter.getValue()) {
+            this._onChange();
+        }
+    },
+
+    _onChange: function() {
 
         if (this.combo.getValue() == OpenLayers.i18n('clearFilterOption')) {
             this.combo.clearValue();
         }
-        else if (this.combo.getValue() != "") {
+
+        if (this.combo.getValue() != "") {
             var val = this.filter.getLabel() + "=" + this.combo.getValue();
             trackFiltersUsage('filtersTrackingComboAction', val, this.layer.name);
         }
 
-        if (!this.combo.disabled) {
-            this.filter.setValue(this.combo.getValue());
-        }
+        this.filter.setValue(this.combo.getValue());
 
         this._fireAddEvent();
     },
