@@ -15,7 +15,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     PENDING_EVENT_ATTR: 'PENDING_EVENT',
 
     constructor: function(cfg) {
-
         this.layer = cfg.layer;
 
         var config = Ext.apply({
@@ -36,10 +35,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _initWithLayer: function() {
-
         this.geoNetworkRecord = this.layer.parentGeoNetworkRecord;
 
-        this._clearDateTimeFields();
+        this._disableDateTimeFields();
         this._attachTemporalEvents();
         this._attachSpatialEvents();
         this._removeLoadingInfo();
@@ -55,7 +53,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _addClearButton: function() {
-
         this.add(
             new Ext.Button({
                 cls: "x-btn-text-icon clearFiltersButton",
@@ -70,14 +67,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     resetConstraints: function() {
-
-        this._clearDateTimeFields();
-        this._layerTemporalExtentLoad();
+        this._resetExtent(this.layer.getTemporalExtentMin(), this.layer.getTemporalExtentMax());
         this._clearSpatialControls();
     },
 
     _clearSpatialControls: function() {
-
         if (this.map.spatialConstraintControl) {
             this.map.spatialConstraintControl.clear();
         }
@@ -98,7 +92,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _addSpatialConstraintDisplayPanel: function() {
-
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: this.map
         });
@@ -342,12 +335,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _applyFilterValuesFromMap: function() {
-
         this._applyFilterValuesToCollection(this.layer, this.map.getConstraint());
     },
 
     _applyFilterValuesToCollection: function(layer, geometry) {
-
         var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
 
@@ -359,9 +350,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _addDateTimeFilterToLayer: function() {
-
         if (this.layer) {
-
             var params = {};
 
             var start = moment(this.startDateTimePicker.getValue());
@@ -383,6 +372,18 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             'temporalextentloaded': this._layerTemporalExtentLoad,
             scope: this
         });
+    },
+
+    _resetExtent: function(extentMin, extentMax) {
+        this._initializeDateTimePicker(this.startDateTimePicker, extentMin);
+        this._initializeDateTimePicker(this.endDateTimePicker, extentMax);
+
+        var extent = this.layer.getTemporalExtent();
+        this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.startDateTimePicker.initvalue, false);
+        this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.endDateTimePicker.initvalue, true);
+        this._updateTimeRangeLabel();
+
+        this._setLayerSubsetExtent();
     },
 
     _initializeDateTimePicker: function(dateTimePicker, defaultValue) {
@@ -409,17 +410,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             this._goToPreviousTimeSlice();
         }
         else {
-            // Initialize/modify pickers
-            this._initializeDateTimePicker(this.startDateTimePicker, this.layer.getSubsetExtentMin());
-            this._initializeDateTimePicker(this.endDateTimePicker, this.layer.getSubsetExtentMax());
-
-            var extent = this.layer.getTemporalExtent();
-            this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.startDateTimePicker.initvalue, false);
-            this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.endDateTimePicker.initvalue, true);
-            this._updateTimeRangeLabel();
-
-            this._setLayerSubsetExtent();
-
+            this._resetExtent(this.layer.getSubsetExtentMin(), this.layer.getSubsetExtentMax());
             this._applyFilterValuesFromMap();
         }
     },
@@ -454,15 +445,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    _clearDateTimeFields: function() {
-        this._resetAndDisableDateTimePicker(this.startDateTimePicker);
-        this._resetAndDisableDateTimePicker(this.endDateTimePicker);
+    _disableDateTimeFields: function() {
+        this.startDateTimePicker.disable();
+        this.endDateTimePicker.disable();
         this._updateTimeRangeLabelLoading();
-    },
-
-    _resetAndDisableDateTimePicker: function(picker) {
-        picker.reset();
-        picker.disable();
     },
 
     _setLayerSubsetExtent: function() {
