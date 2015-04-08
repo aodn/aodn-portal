@@ -7,8 +7,6 @@
 
 Ext.namespace('Portal.cart');
 
-var $downloaderLink;
-
 Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
 
     constructor: function(config) {
@@ -44,41 +42,31 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
 
         var downloadToken = this._newDownloadToken();
         var proxyUrl = this._constructProxyUrl(collection, downloadUrl, downloadToken, params);
+        var self = this;
 
-        this._startDownloadCheckTask(downloadToken);
-        this._openDownload(proxyUrl);
-        this.fireEvent('downloadrequested', downloadToken);
+        $.fileDownload(proxyUrl, {
+            prepareCallback: function(downloadUrl) { self._onPrepare(downloadUrl); },
+            successCallback: function(downloadUrl) { self._onSuccess(downloadUrl); },
+            failCallback: function(msg, downloadUrl) { self._onFailure(downloadUrl, msg); },
+            cookieName: String.format("downloadToken{0}", downloadToken),
+            cookieValue: downloadToken
+        });
+    },
+
+    _onPrepare: function(downloadUrl) {
+        this.fireEvent('downloadrequested', downloadUrl);
+    },
+
+    _onSuccess: function(downloadUrl) {
+        this.fireEvent('downloadstarted', downloadUrl);
+    },
+
+    _onFailure: function(downloadUrl, msg) {
+        this.fireEvent('downloadfailed', downloadUrl, msg);
     },
 
     _newDownloadToken: function() {
         return new Date().getTime();
-    },
-
-    _startDownloadCheckTask: function(downloadToken) {
-        var self = this;
-
-        var onDurationExceeded = function() {
-            self.fireEvent('downloadfailed', downloadToken);
-        };
-
-        var downloadCheckTask = {
-            run: function() {
-                var cookieValue = $.cookie(String.format("downloadToken{0}", downloadToken));
-                if (cookieValue == downloadToken) {
-                    downloadCheckTask.onStop = null;
-                    Ext.TaskMgr.stop(downloadCheckTask);
-                    self.fireEvent('downloadstarted', downloadToken);
-                }
-                else {
-                    log.debug('Waiting for download to start...', downloadToken);
-                }
-            },
-            interval: Portal.cart.Downloader.DOWNLOAD_CHECK_INTERVAL_MS,
-            duration: Portal.app.appConfig.download.clientDownloadStartTimeoutMs,
-            onStop: onDurationExceeded
-        };
-
-        Ext.TaskMgr.start(downloadCheckTask);
     },
 
     _constructProxyUrl: function(collection, downloadUrl, downloadToken, params) {
@@ -117,19 +105,6 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
         return queryString;
     },
 
-    _openDownload: function(proxyUrl) {
-        log.debug('Downloading using URL: ' + proxyUrl);
-
-        // Download function shamelessly stolen from:
-        // http://stackoverflow.com/a/12671023/1920729
-        if ($downloaderLink && $downloaderLink.length > 0) {
-            $downloaderLink.attr('src', proxyUrl);
-        }
-        else {
-            $downloaderLink = $('<iframe>', { id: 'downloaderLink', src: proxyUrl }).hide().appendTo('body');
-        }
-    },
-
     _downloadAsynchronously: function(collection, downloadUrl, params) {
         log.debug('downloading asynchronously', downloadUrl);
 
@@ -161,5 +136,3 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
         return str.replace(/:/g, "#").replace(/[/\\ ]/g, "_");
     }
 });
-
-Portal.cart.Downloader.DOWNLOAD_CHECK_INTERVAL_MS = 1000;

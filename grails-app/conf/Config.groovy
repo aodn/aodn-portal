@@ -83,11 +83,6 @@ downloadAuth {
     maxAggregatedDownloadsPeriodMinutes = 10
 }
 
-download {
-    // Give downloads this amount of time to start before firing a 'failure' event.
-    clientDownloadStartTimeoutMs = 60 * 1000
-}
-
 featureToggles {
     // someFeature = <boolean>
 }

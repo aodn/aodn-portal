@@ -89,7 +89,6 @@ var setupTestConfigAndStubs = function() {
     // Declare namespaces
     Ext.namespace('Portal.app.config');
     Ext.namespace('Portal.app.appConfig');
-    Ext.namespace('Portal.app.appConfig.download');
     Ext.namespace('Portal.app.appConfig.geonetwork');
     Ext.namespace('Portal.app.appConfig.help');
     Ext.namespace('Portal.app.appConfig.featureToggles');

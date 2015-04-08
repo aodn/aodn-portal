@@ -175,7 +175,7 @@ describe("Portal.cart.DownloadPanelBody", function() {
             var callbackScope = downloadPanelBody;
             var callback = noOp;
             var testKey = "downloadAsCsvLabel";
-            Portal.cart.Downloader.prototype._openDownload = noOp;
+            $.fileDownload = noOp;
 
             spyOn(downloadPanelBody.confirmationWindow, 'showIfNeeded');
             spyOn(window, 'trackUsage');
