@@ -57,7 +57,7 @@ describe("Portal.filter.NumberFilter", function() {
 
             it('returns description', function() {
 
-                expect(filter.getHumanReadableForm()).toBe('Important number >= 5');
+                expect(filter.getHumanReadableForm()).toBe('Important number: >= 5');
             });
         });
     });
@@ -87,7 +87,7 @@ describe("Portal.filter.NumberFilter", function() {
 
             it('returns description', function() {
 
-                expect(filter.getHumanReadableForm()).toBe('Important number between 5 AND 99');
+                expect(filter.getHumanReadableForm()).toBe('Important number: between 5 AND 99');
             });
         });
     });

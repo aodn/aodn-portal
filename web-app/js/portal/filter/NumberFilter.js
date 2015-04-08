@@ -48,7 +48,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
         );
 
         return String.format(
-            '{0} {1}',
+            '{0}: {1}',
             this.getLabel(),
             cql
         );
