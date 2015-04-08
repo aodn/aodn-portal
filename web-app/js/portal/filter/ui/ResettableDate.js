@@ -87,6 +87,13 @@ Portal.filter.ui.ResettableDate = Ext.extend(Ext.Container, {
     },
 
     _onChange: function() {
-        this.fireEvent('change', this);
+        if (this._getValueAsTime() != this._previousTime) {
+            this.fireEvent('change', this);
+            this._previousTime = this._getValueAsTime();
+        }
+    },
+
+    _getValueAsTime: function() {
+        return this.getValue() ? this.getValue().getTime() : null;
     }
 });
