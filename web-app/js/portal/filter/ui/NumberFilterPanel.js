@@ -134,20 +134,18 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
     },
 
     _onOperationSelected: function() {
-        var shouldUpdate;
         var useSecondField = this._operatorIsBetween();
-        var noneSelected = this._operatorIsNone();
+        var clearSelected = this._operatorIsClear();
         var hasFirstValue = this._hasFirstValue();
         var hasSecondValue = this._hasSecondValue();
 
         this.secondField.setVisible(useSecondField);
 
-        shouldUpdate = useSecondField ? hasFirstValue && hasSecondValue : hasFirstValue;
+        var shouldUpdate = useSecondField ? hasFirstValue && hasSecondValue : hasFirstValue;
 
-        // Only change map if first value has a value
         if (shouldUpdate) {
-            // clear the filter if "none" is selected
-            if (noneSelected) {
+
+            if (clearSelected) {
                 this.handleRemoveFilter();
             }
 
@@ -159,7 +157,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         return this.operators.getValue() == "BETWEEN";
     },
 
-    _operatorIsNone: function() {
+    _operatorIsClear: function() {
         return this.operators.getValue() == "0";
     }
 });
