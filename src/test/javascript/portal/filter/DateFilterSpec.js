@@ -11,6 +11,7 @@ describe("Portal.filter.DateFilter", function() {
     var dateLabel = OpenLayers.i18n('temporalExtentHeading');
     var exampleFromDate = ['1999-01-01T00:00:00Z', '1999/Jan/01-11:00-UTC'];
     var exampleToDate = ['2006-06-06T01:00:00Z', '2006/Jun/06-11:00-UTC'];
+    var errorCode = 'NOT SET';
 
     beforeEach(function() {
 
@@ -18,8 +19,8 @@ describe("Portal.filter.DateFilter", function() {
             name: 'column_name'
         });
 
-        filter._getDateString = function(d) { return d[0] };
-        filter._getDateHumanString = function(d) { return d[1] };
+        filter._getDateString = function(d) { return d ? d[0] : errorCode };
+        filter._getDateHumanString = function(d) { return d ? d[1] : errorCode };
     });
 
     describe('no dates (but not-null value)', function() {
