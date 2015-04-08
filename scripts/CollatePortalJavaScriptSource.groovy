@@ -6,7 +6,7 @@
  *
  */
 
-includeTargets << grailsScript("Init")
+includeTargets << grailsScript("_GrailsInit")
 
 target(main: "Collates all the custom portal JS code into a single portal-all.js file") {
     collatePortalJavaScriptFiles()
@@ -14,7 +14,7 @@ target(main: "Collates all the custom portal JS code into a single portal-all.js
 
 target(collatePortalJavaScriptFiles: "Collates all the custom portal JS code into a single portal-all.js file") {
 
-    def resultFile = new File(_buildPath([stagingDir, 'js', 'portal-all.js']))
+    def resultFile = new File(_buildPath([buildSettings.projectWarExplodedDir, 'js', 'portal-all.js']))
     println "[collateportaljavascriptfiles] Collating to ${resultFile.absolutePath}"
 
     if (resultFile.exists()) {
@@ -25,7 +25,7 @@ target(collatePortalJavaScriptFiles: "Collates all the custom portal JS code int
         println "[collateportaljavascriptfiles] Collated file deleted"
     }
 
-    def portalJsFiles = getPortalJsFiles(stagingDir)
+    def portalJsFiles = getPortalJsFiles(buildSettings.projectWarExplodedDir)
 
     if (portalJsFiles.isEmpty()) {
         throw new Exception("No Javascript files to collate.")
@@ -33,7 +33,7 @@ target(collatePortalJavaScriptFiles: "Collates all the custom portal JS code int
 
     portalJsFiles.each { filename ->
         println "[collateportaljavascriptfiles] Appending $filename"
-        resultFile << new File(_buildPath([stagingDir, filename])).text
+        resultFile << new File(_buildPath([buildSettings.projectWarExplodedDir, filename])).text
         resultFile << System.properties["line.separator"]
     }
 }
