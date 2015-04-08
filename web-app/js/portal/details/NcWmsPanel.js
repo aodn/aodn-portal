@@ -410,8 +410,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
         else {
             // Initialize/modify pickers
-            this._initializeDateTimePicker(this.startDateTimePicker, this.layer.getSubsetExtentMin());
-            this._initializeDateTimePicker(this.endDateTimePicker, this.layer.getSubsetExtentMax());
+            this._initializeDateTimePicker(this.startDateTimePicker, this.layer.getTemporalExtentMin());
+            this._initializeDateTimePicker(this.endDateTimePicker, this.layer.getTemporalExtentMax());
 
             var extent = this.layer.getTemporalExtent();
             this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.startDateTimePicker.initvalue, false);
