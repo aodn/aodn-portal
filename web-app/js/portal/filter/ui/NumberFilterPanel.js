@@ -103,7 +103,9 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
 
             this.filter.setValue({
                 firstField: this.firstField.getValue(),
-                operator: this.operators.getValue(),
+                operator: {
+                    cql: this.operators.getValue()
+                },
                 secondField: this.secondField.getValue()
             });
 

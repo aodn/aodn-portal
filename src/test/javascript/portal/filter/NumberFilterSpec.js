@@ -39,7 +39,9 @@ describe("Portal.filter.NumberFilter", function() {
 
             filter.setValue({
                 firstField: 5,
-                operator: '>='
+                operator: {
+                    cql: '>='
+                }
             });
         });
 
@@ -66,7 +68,9 @@ describe("Portal.filter.NumberFilter", function() {
 
             filter.setValue({
                 firstField: 5,
-                operator: 'between',
+                operator: {
+                    cql: 'between'
+                },
                 secondField: 99
             });
         });

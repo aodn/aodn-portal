@@ -24,7 +24,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
         var cql = String.format(
             '{0} {1} {2}',
             this.getName(),
-            this._getOperatorObject(),
+            this._getOperatorObject().cql,
             this._getFirstField()
         );
 
@@ -50,7 +50,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
         var cql = String.format(
             '{0} {1} {2}',
             this.getLabel(),
-            this._getOperatorObject(),
+            this._getOperatorObject().cql,
             this._getFirstField()
         );
 
