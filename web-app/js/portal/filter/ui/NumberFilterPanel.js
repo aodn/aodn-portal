@@ -9,6 +9,9 @@ Ext.namespace('Portal.filter.ui');
 
 Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
 
+    OPERATOR_CLEAR: 'CLR',
+    OPERATOR_BETWEEN: 'BTWN',
+
     constructor: function(cfg) {
 
         var config = Ext.apply({
@@ -39,8 +42,8 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
                 fields: OpenLayers.i18n('numberFilterOptionsFields'),
                 data: OpenLayers.i18n('numberFilterDropdownOptions')
             }),
-            valueField: 'value',
-            displayField: 'display',
+            valueField: 'code',
+            displayField: 'text',
             listeners:{
                 scope: this,
                 select: this._onOperationSelected
@@ -103,9 +106,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
 
             this.filter.setValue({
                 firstField: this.firstField.getValue(),
-                operator: {
-                    cql: this.operators.getValue()
-                },
+                operator: this._getSelectedOperatorObject(),
                 secondField: this.secondField.getValue()
             });
 
@@ -156,10 +157,19 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
     },
 
     _operatorIsBetween: function() {
-        return this.operators.getValue() == "BETWEEN";
+        return this.operators.getValue() == this.OPERATOR_BETWEEN;
     },
 
     _operatorIsClear: function() {
-        return this.operators.getValue() == "0";
+        return this.operators.getValue() == this.OPERATOR_CLEAR;
+    },
+
+    _getSelectedOperatorObject: function() {
+
+        var store = this.operators.getStore();
+        var selectedValue = this.operators.getValue();
+        var index = store.find('code', selectedValue);
+        var record = store.getAt(index);
+        return record.data;
     }
 });

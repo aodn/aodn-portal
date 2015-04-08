@@ -197,17 +197,17 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateFilterBetweenFormat: '{0}: {1} to {2}',
 
     numberFilterOptionsFields: [
-         'display',                   'value'
+         'code', 'text',                     'cql',                 'symbol'
     ],
     numberFilterDropdownOptions: [
-        ['none',                      '0'], // This option is in the dropdown to clear the number filter
-        ['greater than',              '>'],
-        ['greater than or equal to', '>='],
-        ['equal to',                  '='],
-        ['not equal to',             '<>'],
-        ['less than',                 '<'],
-        ['less than or equal to',    '<='],
-        ['between',                  'BETWEEN']
+        ['CLR',  'none'], // This option is in the dropdown to clear the number filter
+        ['GT',   'greater than',             '> {0}',               '>' ],
+        ['GTE',  'greater than or equal to', '>= {0}',              '>='],
+        ['EQ',   'equal to',                 '= {0}',               '=' ],
+        ['NEQ',  'not equal to',             '<> {0}',              '≠' ],
+        ['LT',   'less than',                '< {0}',               '<' ],
+        ['LTE',  'less than or equal to',    '<= {0}',              '<='],
+        ['BTWN', 'between (inclusive)',      'BETWEEN {0} AND {1}', '–' ]
     ],
 
     emptyDownloadPlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",

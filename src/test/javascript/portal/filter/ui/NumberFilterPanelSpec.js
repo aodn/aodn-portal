@@ -53,6 +53,8 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
                 lastSelectionText: 'less than',
                 getValue: noOp
             };
+
+            spyOn(numberFilter, '_getSelectedOperatorObject');
         });
 
         it('sends correct tracking data  when operator is not between', function() {

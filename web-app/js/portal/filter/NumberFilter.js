@@ -22,22 +22,16 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
     getCql: function() {
 
         var cql = String.format(
-            '{0} {1} {2}',
-            this.getName(),
             this._getOperatorObject().cql,
-            this._getFirstField()
+            this._getFirstField(),
+            this._getSecondField()
         );
 
-        if (this._getSecondField()) {
-
-            cql = String.format(
-                '{0} AND {1}',
-                cql,
-                this._getSecondField()
-            );
-        }
-
-        return cql;
+        return String.format(
+            '{0} {1}',
+            this.getName(),
+            cql
+        );
     },
 
     hasValue: function() {
@@ -48,22 +42,16 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
     getHumanReadableForm: function() {
 
         var cql = String.format(
-            '{0} {1} {2}',
-            this.getLabel(),
             this._getOperatorObject().cql,
-            this._getFirstField()
+            this._getFirstField(),
+            this._getSecondField()
         );
 
-        if (this._getSecondField()) {
-
-            cql = String.format(
-                '{0} AND {1}',
-                cql,
-                this._getSecondField()
-            );
-        }
-
-        return cql;
+        return String.format(
+            '{0} {1}',
+            this.getLabel(),
+            cql
+        );
     },
 
     _getFirstField: function() {
