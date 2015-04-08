@@ -7,6 +7,8 @@
 
 package au.org.emii.portal.proxying
 
+import javax.servlet.http.Cookie
+
 import static au.org.emii.portal.HttpUtils.Status.*
 import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilename
 
@@ -16,10 +18,10 @@ abstract class RequestProxyingController {
 
     def index = {
 
-        _performProxying()
+        _performProxyingIfAllowed()
     }
 
-    def _performProxying = { paramProcessor = null, streamProcessor = null ->
+    def _performProxyingIfAllowed = { paramProcessor = null, streamProcessor = null ->
 
         log.debug "proxying url: ${params.url}"
 
@@ -33,15 +35,30 @@ abstract class RequestProxyingController {
             render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: HTTP_400_BAD_REQUEST
         }
         else {
-            def processedParams = paramProcessor ? paramProcessor(params) : params
-
-            // Use download filename if provided
-            _setDownloadFilename(response, params)
-
-            // Make request
-            def proxiedRequest = new ProxiedRequest(request, response, processedParams)
-            proxiedRequest.proxy(streamProcessor)
+            _performProxying(paramProcessor, streamProcessor)
         }
+    }
+
+    def _performProxying = { paramProcessor = null, streamProcessor = null ->
+        _addDownloadTokenCookie()
+        _setDownloadFilename(response, params)
+        _makeRequest(request, response, params, paramProcessor, streamProcessor)
+    }
+
+    def _addDownloadTokenCookie = {
+        if (params.downloadToken) {
+            response.addCookie(_newDownloadTokenCookie(params.downloadToken))
+        }
+    }
+
+    def _newDownloadTokenCookie = { downloadToken ->
+        new Cookie("downloadToken${downloadToken}", downloadToken)
+    }
+
+    def _makeRequest = { request, response, params, paramProcessor, streamProcessor ->
+        def processedParams = paramProcessor ? paramProcessor(params) : params
+        def proxiedRequest = new ProxiedRequest(request, response, processedParams)
+        proxiedRequest.proxy(streamProcessor)
     }
 
     def _setDownloadFilename(response, params) {

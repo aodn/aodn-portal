@@ -33,13 +33,14 @@ class DownloadController extends RequestProxyingController {
             return
         }
 
-        _performProxying(
+        _performProxyingIfAllowed(
             requestSingleFieldParamProcessor(fieldName),
             urlListStreamProcessor(fieldName, urlSubstitutions)
         )
     }
 
     def downloadPythonSnippet = {
+        _addDownloadTokenCookie()
         response.setContentType("text/plain")
         response.setHeader('Content-Disposition', "Attachment;Filename=\"${params.downloadFilename}\"")
         response.outputStream << g.render(template: "pythonSnippet.py", model: [ collectionUrl: params.url])
@@ -76,6 +77,7 @@ class DownloadController extends RequestProxyingController {
         def urls = new String(resultStream.toByteArray(), 'UTF-8').split()
 
         def downloadFilename = params.remove('downloadFilename')
+        _addDownloadTokenCookie()
         response.setHeader("Content-disposition", buildAttachmentHeaderValueWithFilename(downloadFilename))
 
         try {

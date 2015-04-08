@@ -7,11 +7,13 @@
 --%>
 
 <!-- First import JQUERY -->
-<script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery-1.4.1.min.js')}"></script>
+<script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery-1.6.min.js')}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/portal', file: 'jquery.js')}"></script>
 <!-- Import extra pluggins-->
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery-autocomplete1.1.js')}"></script>
+<script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.fileDownload.js')}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.rotate.1-1.js')}"></script>
+<script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.cookie.js')}"></script>
 
 <script type="text/javascript" src="${resource(dir: 'js/log4javascript-1.4.6', file: 'log4javascript_uncompressed.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Logging.js')}"></script>

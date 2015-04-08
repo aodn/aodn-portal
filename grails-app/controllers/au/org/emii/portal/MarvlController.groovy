@@ -14,7 +14,7 @@ class MarvlController extends DownloadController {
         def propertyName = params.propertyName
         def substitutions = grailsApplication.config.marvl.urlList.substitutions
 
-        _performProxying(
+        _performProxyingIfAllowed(
             requestSingleFieldParamProcessor(propertyName),
             urlListStreamProcessor(propertyName, substitutions)
         )
