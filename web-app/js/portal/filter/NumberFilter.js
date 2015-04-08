@@ -41,16 +41,20 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
 
     getHumanReadableForm: function() {
 
-        var cql = String.format(
-            this._getOperatorObject().cql,
-            this._getFirstField(),
-            this._getSecondField()
+        var firstOperand = this._getSecondField() ? this._getFirstField() : '';
+        var secondOperand = this._getSecondField() ? this._getSecondField() : this._getFirstField();
+
+        var value = String.format(
+            '{0} {1} {2}',
+            firstOperand,
+            this._generateOperatorHtml(),
+            secondOperand
         );
 
         return String.format(
             '{0}: {1}',
             this.getLabel(),
-            cql
+            value
         );
     },
 
@@ -67,5 +71,15 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
     _getSecondField: function() {
 
         return this.getValue().secondField;
+    },
+
+    _generateOperatorHtml: function() {
+
+        var operator = this._getOperatorObject();
+        return String.format(
+            '<abbr title="{0}">{1}</abbr>',
+            operator.text,
+            operator.symbol
+        );
     }
 });
