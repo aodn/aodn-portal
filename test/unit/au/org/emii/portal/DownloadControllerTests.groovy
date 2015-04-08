@@ -10,6 +10,7 @@ package au.org.emii.portal
 import grails.test.ControllerUnitTestCase
 
 import static au.org.emii.portal.DownloadController.SIZE_ESTIMATE_ERROR
+import static au.org.emii.portal.HttpUtils.Status.*
 
 class DownloadControllerTests extends ControllerUnitTestCase {
 
@@ -106,6 +107,26 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         controller.downloadNetCdfFilesForLayer()
 
         assertEquals "Host for address 'http://www.example.com/?PROPERTYNAME=relativeFilePath' not allowed", mockResponse.contentAsString
+    }
+
+    void testValidateRequestInvalidHost() {
+
+        _setHostShouldBeValid(false)
+
+        controller.validateRequest()
+
+        assertEquals "Host for address 'http://www.example.com/' not allowed", mockResponse.contentAsString
+        assertEquals HTTP_403_FORBIDDEN, controller.renderArgs.status
+    }
+
+    void testValidateRequestValidHost() {
+
+        _setHostShouldBeValid(true)
+
+        controller.validateRequest()
+
+        assertEquals "http://www.example.com/", mockResponse.contentAsString
+        assertEquals HTTP_200_OK, controller.renderArgs.status
     }
 
     void testDownloadNetCdfFilesForLayer() {

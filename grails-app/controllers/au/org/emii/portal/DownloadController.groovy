@@ -92,6 +92,21 @@ class DownloadController extends RequestProxyingController {
         }
     }
 
+    def validateRequest = {
+
+        def url = params.url
+
+        if (!hostVerifier.allowedHost(url)) {
+
+            log.error "Host for address '$url' not allowed"
+            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: HTTP_403_FORBIDDEN
+        }
+        else {
+            render text: url, contentType: "text/html", encoding: "UTF-8", status: HTTP_200_OK
+        }
+        return
+    }
+
     def estimateSizeForLayer = {
 
         def urlFieldName = params.urlFieldName

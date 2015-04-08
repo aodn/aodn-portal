@@ -7,7 +7,7 @@
 describe("Portal.cart.Downloader", function() {
 
     var downloader;
-    var wfsDownloadUrl;
+    var url;
     var generateUrlCallback;
 
     var collection;
@@ -15,8 +15,8 @@ describe("Portal.cart.Downloader", function() {
 
     beforeEach(function() {
         downloader = new Portal.cart.Downloader();
-        wfsDownloadUrl = 'http://download';
-        generateUrlCallback = jasmine.createSpy('generateUrl').andReturn(wfsDownloadUrl);
+        url = 'http://download';
+        generateUrlCallback = jasmine.createSpy('generateUrl').andReturn(url);
 
         collection = {};
         params = {};
@@ -36,15 +36,15 @@ describe("Portal.cart.Downloader", function() {
 
         it('calls downloadSynchronously for synchronous download', function() {
             downloader.download(collection, this, generateUrlCallback, params);
-            expect(downloader._downloadSynchronously).toHaveBeenCalledWith(collection, wfsDownloadUrl, params);
+            expect(downloader._downloadSynchronously).toHaveBeenCalledWith(collection, url, params);
             expect(downloader._downloadAsynchronously).not.toHaveBeenCalled();
         });
 
-        it('calls downloadSynchronously for synchronous download', function() {
+        it('calls downloadAsynchronously for asynchronous download', function() {
             params.asyncDownload = true;
             downloader.download(collection, this, generateUrlCallback, params);
             expect(downloader._downloadSynchronously).not.toHaveBeenCalled();
-            expect(downloader._downloadAsynchronously).toHaveBeenCalledWith(collection, wfsDownloadUrl, params);
+            expect(downloader._downloadAsynchronously).toHaveBeenCalledWith(collection, url, params);
         });
     });
 
@@ -73,17 +73,38 @@ describe("Portal.cart.Downloader", function() {
             downloadUrl = "http://downloadurl";
 
             spyOn(downloader, '_constructProxyUrl').andReturn(downloadUrl);
-            spyOn(downloader, '_openDownload');
+            spyOn(downloader, '_requestDownload');
         });
 
         it('constructs download url', function() {
-            downloader._downloadSynchronously(collection, wfsDownloadUrl, params);
-            expect(downloader._constructProxyUrl).toHaveBeenCalledWith(collection, wfsDownloadUrl, params);
+            downloader._downloadSynchronously(collection, url, params);
+            expect(downloader._constructProxyUrl).toHaveBeenCalledWith(collection, url, params);
         });
 
-        it('opens download', function() {
-            downloader._downloadSynchronously(wfsDownloadUrl, params);
-            expect(downloader._openDownload).toHaveBeenCalledWith(downloadUrl);
+        it('requests a download', function() {
+            downloader._downloadSynchronously(collection, url, params);
+            expect(downloader._requestDownload).toHaveBeenCalledWith(url, downloadUrl);
+        });
+    });
+
+    describe('requestDownload', function() {
+        it('makes ajax request', function() {
+            var url = "http://downloadurl";
+            var downloadUrl = "download@" + url;
+
+            spyOn(Ext.Ajax, 'request');
+
+            downloader._requestDownload(url, downloadUrl);
+
+            expect(Ext.Ajax.request).toHaveBeenCalledWith({
+                url: 'download/validateRequest',
+                params: {
+                    url: url
+                },
+                scope: downloader,
+                success: downloader._onDownloadRequestSuccess,
+                failure: downloader._onDownloadRequestFailure
+            });
         });
     });
 
@@ -101,7 +122,7 @@ describe("Portal.cart.Downloader", function() {
                 }
             };
 
-            expect(downloader._constructProxyUrl(collection, wfsDownloadUrl, params)).toBe(expectedProxyUrl);
+            expect(downloader._constructProxyUrl(collection, url, params)).toBe(expectedProxyUrl);
             expect(downloader._sanitiseFilename).toHaveBeenCalledWith(theFilename);
         });
     });
