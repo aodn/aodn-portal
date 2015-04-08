@@ -7,22 +7,26 @@
 
 describe("Portal.filter.DateFilter", function() {
 
-    var newDate = function(s) {
-
-        return moment(s, "DD/MM/YYYY HH:mm").toDate();
-    };
-
     var filter;
+    var exampleFromDate = ['1999-01-01T00:00:00Z', '1999/Jan/01-11:00-UTC'];
+    var exampleToDate = ['2006-06-06T01:00:00Z', '2006/Jun/06-11:00-UTC'];
+
+    beforeEach(function() {
+
+        filter = new Portal.filter.DateFilter({
+            name: 'column_name'
+        });
+
+        filter._getDateString = function(d) { return d[0] };
+        filter._getDateHumanString = function(d) { return d[1] };
+    });
 
     describe('only start date', function() {
 
         beforeEach(function() {
 
-            filter = new Portal.filter.DateFilter({
-                name: 'column_name',
-                value: {
-                    fromDate: newDate('01/01/1999 12:00')
-                }
+            filter.setValue({
+                fromDate: exampleFromDate
             });
         });
 
@@ -46,11 +50,8 @@ describe("Portal.filter.DateFilter", function() {
 
         beforeEach(function() {
 
-            filter = new Portal.filter.DateFilter({
-                name: 'column_name',
-                value: {
-                    toDate: newDate('06/06/2006 12:00')
-                }
+            filter.setValue({
+                toDate: exampleToDate
             });
         });
 
@@ -74,12 +75,9 @@ describe("Portal.filter.DateFilter", function() {
 
         beforeEach(function() {
 
-            filter = new Portal.filter.DateFilter({
-                name: 'column_name',
-                value: {
-                    fromDate: newDate('01/01/1999 12:00'),
-                    toDate: newDate('06/06/2006 12:00')
-                }
+            filter.setValue({
+                fromDate: exampleFromDate,
+                toDate: exampleToDate
             });
         });
 
@@ -103,14 +101,12 @@ describe("Portal.filter.DateFilter", function() {
 
         beforeEach(function() {
 
-            filter = new Portal.filter.DateFilter({
-                name: 'column_name',
-                wmsStartDateName: 'range_start_column_name',
-                wmsEndDateName: 'range_end_column_name',
-                value: {
-                    fromDate: newDate('01/01/1999 12:00'),
-                    toDate: newDate('06/06/2006 12:00')
-                }
+            filter.wmsStartDateName = 'range_start_column_name';
+            filter.wmsEndDateName = 'range_end_column_name';
+
+            filter.setValue({
+                fromDate: exampleFromDate,
+                toDate: exampleToDate
             });
         });
 
