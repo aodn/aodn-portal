@@ -217,8 +217,8 @@ describe('Portal.details.NcWmsPanel', function() {
                 return this.temporalExtent;
             },
             setSubsetExtentView: function() {},
-            getSubsetExtentMin: function() { return extent.min(); },
-            getSubsetExtentMax: function() { return extent.max(); }
+            getTemporalExtentMin: function() { return extent.min(); },
+            getTemporalExtentMax: function() { return extent.max(); }
         };
     }
 });
