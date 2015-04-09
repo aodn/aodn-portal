@@ -25,23 +25,15 @@ Portal.filter.combiner.BaseFilterCombiner = Ext.extend(Object, {
 
         var hasValue = function(filter) { return filter.hasValue() };
 
-        return this._matchingFilters(this._allFilters(), hasValue);
+        return this._allFilters().filter(hasValue);
     },
 
     _visualisedFiltersWithValues: function() {
 
         var isVisualised = function(filter) { return filter.isVisualised() };
 
-        return this._matchingFilters(this._filtersWithValues(), isVisualised);
+        return this._filtersWithValues().filter(isVisualised);
     },
-
-    _matchingFilters: function(filters, matcher) {
-
-        return this._collect(filters, function(filter) {
-
-            return matcher(filter) ? filter : null;
-        });
-     },
 
     _collect: function(filters, fn) {
 
