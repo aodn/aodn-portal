@@ -32,7 +32,7 @@ abstract class RequestProxyingController {
         }
         else if (!hostVerifier.allowedHost(url)) {
             log.info "Proxy: The url $url was not allowed"
-            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: HTTP_400_BAD_REQUEST
+            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: HTTP_403_FORBIDDEN
         }
         else {
             _performProxying(paramProcessor, streamProcessor)
