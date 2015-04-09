@@ -27,9 +27,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
     },
 
     _createControls: function() {
-        var label = new Ext.form.Label({
-            html: "<label>" + this.filter.getLabel() + "</label>"
-        });
+        this._addLabel();
 
         this.operators = new Ext.form.ComboBox({
             triggerAction: 'all',

@@ -57,5 +57,11 @@ Portal.filter.ui.BaseFilterPanel = Ext.extend(Ext.Panel, {
 
     _fireAddEvent: function() {
         this.fireEvent('addFilter', this);
+    },
+
+    _addLabel: function() {
+        this.add(new Ext.form.Label({
+            html: "<label>" + this.filter.getLabel() + "</label>"
+        }));
     }
 });
