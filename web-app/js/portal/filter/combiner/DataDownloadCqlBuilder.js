@@ -11,7 +11,7 @@ Portal.filter.combiner.DataDownloadCqlBuilder = Ext.extend(Portal.filter.combine
 
     buildCql: function() {
 
-        var cqlParts = this._collect(this._filtersWithValues(), function(filter) {
+        var cqlParts = this._filtersWithValues().map(function(filter) {
 
             var isDateFilter = (filter.constructor == Portal.filter.DateFilter);
 
