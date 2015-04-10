@@ -5,7 +5,7 @@ AODN Open Geospatial Portal
 
 The AODN open geospatial portal is a [Grails](http://grails.org/) application for discovering, subsetting, and downloading geospatial data.
 
-The application is a unified front end to other servers: 
+The application is a stateless front end to other servers: 
 
 * [GeoNetwork](http://geonetwork-opensource.org/) metadata catalog
 * [GeoServer](http://geoserver.org/) data server (WMS and WFS).
