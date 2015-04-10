@@ -3,7 +3,7 @@ AODN Open Geospatial Portal
 
 [![Build Status](https://travis-ci.org/aodn/aodn-portal.png?branch=master)](https://travis-ci.org/aodn/aodn-portal)
 
-The AODN open geospatial portal is a [Grails](http://grails.org/) application for finding, visualising, and downloading geospatial data.
+The AODN open geospatial portal is a [Grails](http://grails.org/) application for discovering, subsetting, and downloading geospatial data.
 
 The application is a unified front end to other servers: 
 
@@ -18,11 +18,11 @@ You can view the portal in action at [IMOS](http://imos.aodn.org.au), which alwa
 Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_help/?q=forum).
 
 ## Features
+* Easy 1-2-3 workflow (1.Search, 2.Subset, 3.Download)
 * Faceted search for easy navigation of datasets.
+* Visualisation of subsetting via WMS.
+* Download data from a variety of web services (eg. WFS)
 * Configurable themes and splash page.
-* Filter data before download.
-* Download data from a variety of web services
-* Easy 1-2-3 workflow
 
 ## Getting Your Hands on Portal
 * [Building From Source](#building-from-source)
