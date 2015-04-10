@@ -58,7 +58,7 @@ class DownloadController extends RequestProxyingController {
         def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$fieldName")
 
         if (!hostVerifier.allowedHost(url)) {
-            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: HTTP_400_BAD_REQUEST
+            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: HTTP_403_FORBIDDEN
             return
         }
 

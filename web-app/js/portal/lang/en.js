@@ -135,6 +135,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadConfirmationDownloadText: 'I understand, download',
     downloadConfirmationCancelText: 'Cancel',
     challengeInstructions: 'Type the characters you see in the image above',
+    downloadErrorText: 'There is a problem with the availability of your selected data download.',
 
     // mainMapPanel
     layerExistsTitle: 'Add data collection',
