@@ -56,6 +56,11 @@ Portal.filter.Filter = Ext.extend(Object, {
         return this.visualised;
     },
 
+    isPrimary: function() {
+
+        return this.primaryFilter;
+    },
+
     getWmsStartDateName: function() {
 
         return this.wmsStartDateName;

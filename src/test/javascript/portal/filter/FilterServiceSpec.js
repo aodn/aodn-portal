@@ -115,6 +115,41 @@ describe("Portal.filter.FilterService", function() {
         });
     });
 
+    describe('_determinePrimaryFilters', function() {
+
+        it('marks single time filter as primary', function() {
+
+            var testFilters = [
+                new Portal.filter.NumberFilter(),
+                new Portal.filter.DateFilter(),
+                new Portal.filter.BooleanFilter()
+            ];
+
+            service._determinePrimaryFilters(testFilters);
+
+            expect(testFilters[0].isPrimary()).not.toBeTruthy();
+            expect(testFilters[1].isPrimary()).toBeTruthy();
+            expect(testFilters[2].isPrimary()).not.toBeTruthy();
+        });
+
+        it('leaves multiple date filters unchanged', function() {
+
+            var testFilters = [
+                new Portal.filter.NumberFilter(),
+                new Portal.filter.DateFilter(),
+                new Portal.filter.BooleanFilter(),
+                new Portal.filter.DateFilter()
+            ];
+
+            service._determinePrimaryFilters(testFilters);
+
+            expect(testFilters[0].isPrimary()).not.toBeTruthy();
+            expect(testFilters[1].isPrimary()).not.toBeTruthy();
+            expect(testFilters[2].isPrimary()).not.toBeTruthy();
+            expect(testFilters[3].isPrimary()).not.toBeTruthy();
+        });
+    });
+
     var spyOnAjaxAndReturn = function(responseText, status) {
         spyOn(Ext.Ajax, 'request').andCallFake(function(opts) {
 
