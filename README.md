@@ -19,10 +19,10 @@ Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_h
 
 ## Features
 * Easy 1-2-3 workflow (1.Search, 2.Subset, 3.Download)
-* Faceted search for easy navigation of datasets.
-* Visualisation of subsetting via WMS.
+* Faceted search for easy discovery of data collections
+* Visualise subsetting results before download via WMS
 * Download data from a variety of web services (eg. WFS)
-* Configurable themes and splash page.
+* Configurable themes and splash page
 
 ## Getting Your Hands on Portal
 * [Building From Source](#building-from-source)
