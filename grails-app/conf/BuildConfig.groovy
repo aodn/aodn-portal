@@ -13,10 +13,8 @@ grails.project.war.file = "target/${appName}-${appVersion}-${grails.util.Environ
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
-        // uncomment to disable ehcache
-        // excludes 'ehcache'
         excludes "xml-apis"
-        excludes("catalina")
+        excludes "catalina"
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
@@ -24,19 +22,11 @@ grails.project.dependency.resolution = {
         grailsHome()
         grailsCentral()
 
-        // uncomment the below to enable remote dependency resolution
-        // from public Maven repositories
         mavenLocal()
         mavenCentral()
-        //mavenRepo "http://snapshots.repository.codehaus.org"
-        //mavenRepo "http://repository.codehaus.org"
-        //mavenRepo "http://download.java.net/maven/2/"
-        //mavenRepo "http://repository.jboss.com/maven2/"
         mavenRepo "https://repo.grails.org/grails/plugins"
     }
     dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-
         compile('org.codehaus.groovy.modules.http-builder:http-builder:0.7') {
             excludes "commons-logging", "xml-apis", "groovy"
         }
@@ -66,5 +56,5 @@ grails.war.resources = { stagingDir ->
     // The jars are being inserted by the hudson/tomcat build process, and
     // are causing errors on startup for the app on tomcat6.
     delete(file:"${stagingDir}/WEB-INF/lib/commons-collections-3.1.jar")
-    delete(file:"${stagingDir}/WEB-INF/lib/slf4j-api-1.5.2.jar")
+    delete(file:"${stagingDir}/WEB-INF/lib/slf4j-api-1.5.8.jar")
 }
