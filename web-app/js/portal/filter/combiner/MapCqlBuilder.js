@@ -11,7 +11,7 @@ Portal.filter.combiner.MapCqlBuilder = Ext.extend(Portal.filter.combiner.FilterC
 
     _appropriateFilters: function() {
 
-        return this._matchingFilters(this._visualisedFiltersWithValues(), function(filter) {
+        return this._visualisedFiltersWithValues().filter(function(filter) {
 
             var isGeomemtryFilter = (filter.constructor == Portal.filter.GeometryFilter);
 
@@ -21,7 +21,7 @@ Portal.filter.combiner.MapCqlBuilder = Ext.extend(Portal.filter.combiner.FilterC
 
     buildCql: function() {
 
-        var cqlParts = this._collect(this._appropriateFilters(), function(filter) {
+        var cqlParts = this._appropriateFilters().map(function(filter) {
 
             return filter.getCql();
         });

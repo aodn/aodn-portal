@@ -11,7 +11,7 @@ Portal.filter.combiner.HumanReadableFilterDescriber = Ext.extend(Portal.filter.c
 
     buildDescription: function(joiner) {
 
-        var filterDescriptions = this._collect(this._filtersWithValues(), function(filter) {
+        var filterDescriptions = this._filtersWithValues().map(function(filter) {
 
             return filter.getHumanReadableForm();
         });
