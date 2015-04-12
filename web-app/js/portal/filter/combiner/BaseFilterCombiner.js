@@ -18,7 +18,7 @@ Portal.filter.combiner.BaseFilterCombiner = Ext.extend(Object, {
 
     _allFilters: function() {
 
-        return this.layer.filters;
+        return this.layer.filters || [];
     },
 
     _filtersWithValues: function() {
