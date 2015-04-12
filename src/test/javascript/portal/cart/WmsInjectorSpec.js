@@ -18,9 +18,7 @@ describe('Portal.cart.WmsInjector', function() {
         }
     };
     var collectionWithNoFilters = {
-        wmsLayer: {
-            filters: []
-        }
+        wmsLayer: {}
     };
 
     beforeEach(function() {

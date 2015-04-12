@@ -111,8 +111,7 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
             testCollection = {
                 wmsLayer: {
-                    _buildGetFeatureRequestUrl: function() { return 'the_url' },
-                    filters: []
+                    _buildGetFeatureRequestUrl: function() { return 'the_url' }
                 }
             };
         });
