@@ -18,9 +18,7 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
     },
 
     _createControls: function() {
-        this.add(new Ext.form.Label({
-            html: "<label>" + this.filter.getLabel() + "</label>"
-        }));
+        this._addLabel();
 
         this.combo = new Ext.form.ComboBox({
             disabled: true,

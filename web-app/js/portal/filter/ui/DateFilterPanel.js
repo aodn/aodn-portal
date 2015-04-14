@@ -27,9 +27,15 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
         this.fromDate = this._createResettableDate('fromDate', OpenLayers.i18n('fromDateLabel'), OpenLayers.i18n('fromDateEmptyText'));
         this.toDate = this._createResettableDate('toDate', OpenLayers.i18n('toDateLabel'), OpenLayers.i18n('toDateEmptyText'));
 
+        if (this._shouldIncludeLabel()) {
+            this._addLabel();
+            this._addVerticalSpacer(5);
+        }
+
         this.add(this.fromDate);
         this._addVerticalSpacer(5);
         this.add(this.toDate);
+        this._addVerticalSpacer(15);
 
         if (this.filter.values != undefined) {
             this._setMinMax(this.fromDate, this.filter.values);
@@ -56,6 +62,11 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
                 height: sizeInPixels
             })
         );
+    },
+
+    _shouldIncludeLabel: function() {
+
+        return !this.filter.isPrimary();
     },
 
     _createResettableDate: function(name, fieldLabel, emptyText) {

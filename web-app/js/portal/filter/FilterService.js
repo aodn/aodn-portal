@@ -58,6 +58,8 @@ Portal.filter.FilterService = Ext.extend(Object, {
             }
         });
 
+        this._determinePrimaryFilters(filterObjects);
+
         layer.filters = filterObjects;
 
         callbackFunction.call(callbackScope, filterObjects);
@@ -121,5 +123,18 @@ Portal.filter.FilterService = Ext.extend(Object, {
         }
 
         return filterLayer;
+    },
+
+    _determinePrimaryFilters: function(filters) {
+
+        var dateFilters = filters.filter(function(filter) {
+
+            return filter.constructor == Portal.filter.DateFilter;
+        });
+
+        if (dateFilters.length == 1) {
+
+            dateFilters[0].primaryFilter = true;
+        }
     }
 });

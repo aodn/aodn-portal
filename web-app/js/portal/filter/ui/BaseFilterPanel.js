@@ -39,10 +39,6 @@ Portal.filter.ui.BaseFilterPanel = Ext.extend(Ext.Panel, {
         this._createControls();
     },
 
-    _fireAddEvent: function() {
-        this.fireEvent('addFilter', this);
-    },
-
     _createControls: function() {
         throw "Subclasses must implement the _createControls function";
     },
@@ -57,5 +53,15 @@ Portal.filter.ui.BaseFilterPanel = Ext.extend(Ext.Panel, {
 
     setFilterRange: function() {
         throw "Subclasses must implement the setFilterRange function if needsFilterRange() returns true";
+    },
+
+    _fireAddEvent: function() {
+        this.fireEvent('addFilter', this);
+    },
+
+    _addLabel: function() {
+        this.add(new Ext.form.Label({
+            html: "<label>" + this.filter.getLabel() + "</label>"
+        }));
     }
 });
