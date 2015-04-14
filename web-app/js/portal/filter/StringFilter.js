@@ -31,7 +31,7 @@ Portal.filter.StringFilter = Ext.extend(Portal.filter.Filter, {
     getHumanReadableForm: function() {
 
         return String.format(
-            '{0} like {1}',
+            '{0}: {1}',
             this.getLabel(),
             this.getValue()
         );

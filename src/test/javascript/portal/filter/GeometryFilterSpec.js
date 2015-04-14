@@ -8,7 +8,6 @@
 describe("Portal.filter.GeometryFilter", function() {
 
     var filter;
-    var map;
 
     describe('polygon drawn', function() {
 
@@ -38,7 +37,11 @@ describe("Portal.filter.GeometryFilter", function() {
 
             it('returns a description', function() {
 
-                expect(filter.getHumanReadableForm()).toBe('Max extent of polygon: bounds');
+                var humanReadableForm = filter.getHumanReadableForm();
+
+                expect(humanReadableForm).toContain(OpenLayers.i18n("spatialExtentHeading"));
+                expect(humanReadableForm).toContain(OpenLayers.i18n("spatialExtentPolygonNote"));
+                expect(humanReadableForm).toContain('bounds');
             });
         });
     });
@@ -71,7 +74,10 @@ describe("Portal.filter.GeometryFilter", function() {
 
             it('returns a description', function() {
 
-                expect(filter.getHumanReadableForm()).toBe('Bounding Box: bounds');
+                var humanReadableForm = filter.getHumanReadableForm();
+
+                expect(humanReadableForm).toContain(OpenLayers.i18n("spatialExtentHeading"));
+                expect(humanReadableForm).toContain('bounds');
             });
         });
     });

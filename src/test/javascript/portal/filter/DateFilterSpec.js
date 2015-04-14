@@ -8,8 +8,10 @@
 describe("Portal.filter.DateFilter", function() {
 
     var filter;
+    var dateLabel = OpenLayers.i18n('temporalExtentHeading');
     var exampleFromDate = ['1999-01-01T00:00:00Z', '1999/Jan/01-11:00-UTC'];
     var exampleToDate = ['2006-06-06T01:00:00Z', '2006/Jun/06-11:00-UTC'];
+    var errorCode = 'NOT SET';
 
     beforeEach(function() {
 
@@ -17,8 +19,24 @@ describe("Portal.filter.DateFilter", function() {
             name: 'column_name'
         });
 
-        filter._getDateString = function(d) { return d[0] };
-        filter._getDateHumanString = function(d) { return d[1] };
+        filter._getDateString = function(d) { return d ? d[0] : errorCode };
+        filter._getDateHumanString = function(d) { return d ? d[1] : errorCode };
+    });
+
+    describe('no dates (but not-null value)', function() {
+
+        beforeEach(function() {
+
+            filter.setValue({});
+        });
+
+        describe('hasValue', function() {
+
+            it('returns false', function() {
+
+                expect(filter.hasValue()).not.toBeTruthy();
+            });
+        });
     });
 
     describe('only start date', function() {
@@ -42,7 +60,7 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives human readble form', function() {
 
-            expect(filter.getHumanReadableForm()).toBe("End Date >= 1999/Jan/01-11:00-UTC");
+            expect(filter.getHumanReadableForm()).toBe(dateLabel + ": after 1999/Jan/01-11:00-UTC");
         });
     });
 
@@ -67,7 +85,7 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives human readble form', function() {
 
-            expect(filter.getHumanReadableForm()).toBe("Start Date <= 2006/Jun/06-11:00-UTC");
+            expect(filter.getHumanReadableForm()).toBe(dateLabel + ": before 2006/Jun/06-11:00-UTC");
         });
     });
 
@@ -93,7 +111,7 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives human readble form', function() {
 
-            expect(filter.getHumanReadableForm()).toBe("End Date >= 1999/Jan/01-11:00-UTC and Start Date <= 2006/Jun/06-11:00-UTC");
+            expect(filter.getHumanReadableForm()).toBe(dateLabel + ": 1999/Jan/01-11:00-UTC to 2006/Jun/06-11:00-UTC");
         });
     });
 
@@ -103,7 +121,6 @@ describe("Portal.filter.DateFilter", function() {
 
             filter.wmsStartDateName = 'range_start_column_name';
             filter.wmsEndDateName = 'range_end_column_name';
-
             filter.setValue({
                 fromDate: exampleFromDate,
                 toDate: exampleToDate
@@ -123,7 +140,7 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives human readble form', function() {
 
-            expect(filter.getHumanReadableForm()).toBe("End Date >= 1999/Jan/01-11:00-UTC and Start Date <= 2006/Jun/06-11:00-UTC");
+            expect(filter.getHumanReadableForm()).toBe(dateLabel + ": 1999/Jan/01-11:00-UTC to 2006/Jun/06-11:00-UTC");
         });
     });
 });

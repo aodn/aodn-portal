@@ -15,6 +15,23 @@ describe("Portal.filter.NumberFilter", function() {
             name: 'column_name',
             label: 'Important number'
         });
+        filter._generateOperatorHtml = function() { return 'html' };
+    });
+
+    describe('empty value entered', function() {
+
+        beforeEach(function() {
+
+            filter.setValue({});
+        });
+
+        describe('hasValue', function() {
+
+            it('returns false', function() {
+
+                expect(filter.hasValue()).not.toBeTruthy();
+            });
+        });
     });
 
     describe('one value entered', function() {
@@ -23,7 +40,9 @@ describe("Portal.filter.NumberFilter", function() {
 
             filter.setValue({
                 firstField: 5,
-                operator: '>='
+                operator: {
+                    cql: '>= {0}'
+                }
             });
         });
 
@@ -39,7 +58,7 @@ describe("Portal.filter.NumberFilter", function() {
 
             it('returns description', function() {
 
-                expect(filter.getHumanReadableForm()).toBe('Important number >= 5');
+                expect(filter.getHumanReadableForm()).toBe('Important number:  html 5');
             });
         });
     });
@@ -50,7 +69,9 @@ describe("Portal.filter.NumberFilter", function() {
 
             filter.setValue({
                 firstField: 5,
-                operator: 'between',
+                operator: {
+                    cql: 'between {0} AND {1}'
+                },
                 secondField: 99
             });
         });
@@ -67,8 +88,28 @@ describe("Portal.filter.NumberFilter", function() {
 
             it('returns description', function() {
 
-                expect(filter.getHumanReadableForm()).toBe('Important number between 5 AND 99');
+                expect(filter.getHumanReadableForm()).toBe('Important number: 5 html 99');
             });
+        });
+    });
+
+    describe('_generateOperatorHtml', function() {
+
+        it('contains required information', function() {
+
+            var operator = {
+                text: 'less than',
+                symbol: '<'
+            };
+
+            filter = new Portal.filter.NumberFilter({
+                value: { operator: operator }
+            });
+
+            var html = filter._generateOperatorHtml(operator);
+
+            expect(html).toContain(operator.text);
+            expect(html).toContain(operator.symbol);
         });
     });
 });

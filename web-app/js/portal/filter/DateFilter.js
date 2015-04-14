@@ -17,6 +17,11 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
         Portal.filter.DateFilter.superclass.constructor.call(this, cfg);
     },
 
+    hasValue: function() {
+
+        return this.getValue() && (this._getFromDate() || this._getToDate());
+    },
+
     getSupportedGeoserverTypes: function() {
 
         return ['date', 'datetime'];
@@ -75,21 +80,27 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
 
     getHumanReadableForm: function() {
 
-        var cql = '';
-
-        if (this._getFromDate()) {
-            cql = String.format("{0} >= {1}", "End Date", this._getDateHumanString(this._getFromDate()));
-        }
+        var formatKey;
 
         if (this._getFromDate() && this._getToDate()) {
-            cql += ' and ';
+
+            formatKey = 'dateFilterBetweenFormat';
+        }
+        else if (this._getFromDate()) {
+
+            formatKey = 'dateFilterAfterFormat';
+        }
+        else {
+
+            formatKey = 'dateFilterBeforeFormat';
         }
 
-        if (this._getToDate()) {
-            cql += String.format("{0} <= {1}", "Start Date", this._getDateHumanString(this._getToDate()));
-        }
-
-        return cql;
+        return String.format(
+            OpenLayers.i18n(formatKey),
+            OpenLayers.i18n('temporalExtentHeading'),
+            this._getDateHumanString(this._getFromDate()),
+            this._getDateHumanString(this._getToDate())
+        );
     },
 
     _getFromDate: function() {

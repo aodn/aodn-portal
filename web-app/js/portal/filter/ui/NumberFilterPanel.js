@@ -9,6 +9,9 @@ Ext.namespace('Portal.filter.ui');
 
 Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
 
+    OPERATOR_CLEAR: 'CLR',
+    OPERATOR_BETWEEN: 'BTWN',
+
     constructor: function(cfg) {
 
         var config = Ext.apply({
@@ -36,22 +39,11 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
             editable: false,
             fieldLabel: "Value",
             store: new Ext.data.ArrayStore({
-                fields: [
-                    'display', 'value'
-                ],
-                data: [
-                    ['none', '0'],
-                    ['greater than', '>'],
-                    ['greater than or equal to', '>='],
-                    ['equal to', '='],
-                    ['not equal to', '<>'],
-                    ['less than', '<'],
-                    ['less than or equal to', '<='],
-                    ['between', 'BETWEEN']
-                ]
+                fields: OpenLayers.i18n('numberFilterOptionsFields'),
+                data: OpenLayers.i18n('numberFilterDropdownOptions')
             }),
-            valueField: 'value',
-            displayField: 'display',
+            valueField: 'code',
+            displayField: 'text',
             listeners:{
                 scope: this,
                 select: this._onOperationSelected
@@ -114,7 +106,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
 
             this.filter.setValue({
                 firstField: this.firstField.getValue(),
-                operator: this.operators.getValue(),
+                operator: this._getSelectedOperatorObject(),
                 secondField: this.secondField.getValue()
             });
 
@@ -145,20 +137,18 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
     },
 
     _onOperationSelected: function() {
-        var shouldUpdate;
         var useSecondField = this._operatorIsBetween();
-        var noneSelected = this._operatorIsNone();
+        var clearSelected = this._operatorIsClear();
         var hasFirstValue = this._hasFirstValue();
         var hasSecondValue = this._hasSecondValue();
 
         this.secondField.setVisible(useSecondField);
 
-        shouldUpdate = useSecondField ? hasFirstValue && hasSecondValue : hasFirstValue;
+        var shouldUpdate = useSecondField ? hasFirstValue && hasSecondValue : hasFirstValue;
 
-        // Only change map if first value has a value
         if (shouldUpdate) {
-            // clear the filter if "none" is selected
-            if (noneSelected) {
+
+            if (clearSelected) {
                 this.handleRemoveFilter();
             }
 
@@ -167,10 +157,19 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
     },
 
     _operatorIsBetween: function() {
-        return this.operators.getValue() == "BETWEEN";
+        return this.operators.getValue() == this.OPERATOR_BETWEEN;
     },
 
-    _operatorIsNone: function() {
-        return this.operators.getValue() == "0";
+    _operatorIsClear: function() {
+        return this.operators.getValue() == this.OPERATOR_CLEAR;
+    },
+
+    _getSelectedOperatorObject: function() {
+
+        var store = this.operators.getStore();
+        var selectedValue = this.operators.getValue();
+        var index = store.find('code', selectedValue);
+        var record = store.getAt(index);
+        return record.data;
     }
 });

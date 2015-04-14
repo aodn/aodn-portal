@@ -21,33 +21,41 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
 
     getCql: function() {
 
-        return this._getCql();
+        var cql = String.format(
+            this._getOperatorObject().cql,
+            this._getFirstField(),
+            this._getSecondField()
+        );
+
+        return String.format(
+            '{0} {1}',
+            this.getName(),
+            cql
+        );
+    },
+
+    hasValue: function() {
+
+        return this.getValue() && (this._getFirstField() || this._getSecondField());
     },
 
     getHumanReadableForm: function() {
 
-        return this._getCql(this.getLabel());
-    },
+        var firstOperand = this._getSecondField() ? this._getFirstField() : '';
+        var secondOperand = this._getSecondField() ? this._getSecondField() : this._getFirstField();
 
-    _getCql: function(alternateLabel) {
-
-        var cql = String.format(
+        var value = String.format(
             '{0} {1} {2}',
-            alternateLabel || this.getName(),
-            this._getOperator(),
-            this._getFirstField()
+            firstOperand,
+            this._generateOperatorHtml(),
+            secondOperand
         );
 
-        if (this._getSecondField()) {
-
-            cql = String.format(
-                '{0} AND {1}',
-                cql,
-                this._getSecondField()
-            );
-        }
-
-        return cql;
+        return String.format(
+            '{0}: {1}',
+            this.getLabel(),
+            value
+        );
     },
 
     _getFirstField: function() {
@@ -55,7 +63,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
         return this.getValue().firstField;
     },
 
-    _getOperator: function() {
+    _getOperatorObject: function() {
 
         return this.getValue().operator;
     },
@@ -63,5 +71,15 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
     _getSecondField: function() {
 
         return this.getValue().secondField;
+    },
+
+    _generateOperatorHtml: function() {
+
+        var operator = this._getOperatorObject();
+        return String.format(
+            '<abbr title="{0}">{1}</abbr>',
+            operator.text,
+            operator.symbol
+        );
     }
 });

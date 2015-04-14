@@ -83,9 +83,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     mapTabTitle: 'Map',
 
     // Search form
-    boundingBoxDescription: 'Bounding Box',
-    boundingBoxDescriptionNcWms: 'Bounding Area',
-    maxExtentOfPolygon: "Max extent of polygon",
     northBL: 'N',
     eastBL: 'E',
     westBL: 'W',
@@ -193,6 +190,25 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     temporalExtentHeading: 'Temporal Extent',
     generalFilterHeading: 'Filters',
     currentDateTimeLabel: 'Displaying',
+    spatialExtentPolygonNote: 'Polygon with max extent ',
+
+    dateFilterBeforeFormat: '{0}: before {2}',
+    dateFilterAfterFormat: '{0}: after {1}',
+    dateFilterBetweenFormat: '{0}: {1} to {2}',
+
+    numberFilterOptionsFields: [
+         'code', 'text',                     'cql',                 'symbol'
+    ],
+    numberFilterDropdownOptions: [
+        ['CLR',  'none'], // This option is in the dropdown to clear the number filter
+        ['GT',   'greater than',             '> {0}',               '>' ],
+        ['GTE',  'greater than or equal to', '>= {0}',              '>='],
+        ['EQ',   'equal to',                 '= {0}',               '=' ],
+        ['NEQ',  'not equal to',             '<> {0}',              '≠' ],
+        ['LT',   'less than',                '< {0}',               '<' ],
+        ['LTE',  'less than or equal to',    '<= {0}',              '<='],
+        ['BTWN', 'between (inclusive)',      'BETWEEN {0} AND {1}', '–' ]
+    ],
 
     emptyDownloadPlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",
 
