@@ -31,11 +31,9 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 server: {
                     uri: {}
                 },
-                filters: [{
-                    getType: function() {
-                        return Boolean;
-                    }
-                }]
+                filters: [
+                    { /* some filter */ }
+                ]
             };
 
             cfg = {
