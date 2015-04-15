@@ -61,7 +61,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         }
 
         def performProxyingCalledCount = 0
-        controller._performProxyingIfAllowed = { paramProcessor, streamProcessor ->
+        controller._performProxyingIfAllowed = { paramProcessor, streamProcessor, fieldName ->
             performProxyingCalledCount++
 
             assertEquals testParamProcessor, paramProcessor
