@@ -46,11 +46,6 @@ Portal.filter.Filter = Ext.extend(Object, {
         return this.label;
     },
 
-    getType: function() {
-
-        return this.type;
-    },
-
     isVisualised: function() {
 
         return this.visualised;
