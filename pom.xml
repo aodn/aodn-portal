@@ -214,7 +214,7 @@
             <groupId>org.grails.plugins</groupId>
             <artifactId>code-coverage</artifactId>
             <version>1.2.4</version>
-            <scope>compile</scope>
+            <scope>test</scope>
             <type>zip</type>
         </dependency>
 
