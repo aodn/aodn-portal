@@ -218,6 +218,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         var currentType;
         var currentContainer;
+        var currentContainerLabel;
 
         Ext.each(panels, function(panel) {
 
@@ -226,30 +227,32 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
                 currentType = panel.constructor;
 
                 currentContainer = this._includeNewGroupContainer(panel);
+
+                var newContainerLabel = this._typeLabelForPanel(panel);
+                if (currentContainerLabel != newContainerLabel) {
+
+                    this._addLabelToContainer(newContainerLabel, currentContainer);
+                    currentContainerLabel = newContainerLabel;
+                }
+
+                this.add( this._createVerticalSpacer(15));
             }
 
             currentContainer.add(panel);
         }, this);
     },
 
-    _includeNewGroupContainer: function(panel) {
+    _includeNewGroupContainer: function() {
 
         var groupContainer = this._createGroupContainer();
         this.add(groupContainer);
-
-        if (panel.typeLabel != '') {
-            this._addLabelToContainer(this._typeLabelForPanel(panel), groupContainer);
-        }
-
-        var spacer = this._createVerticalSpacer(15);
-        this.add(spacer);
 
         return groupContainer;
     },
 
     _typeLabelForPanel: function(panel) {
 
-        return panel.typeLabel;
+        return panel.typeLabel == '' ? OpenLayers.i18n('generalFilterHeading') : panel.typeLabel;
      },
 
     _addLabelToContainer: function(label, container) {

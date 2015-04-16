@@ -266,8 +266,8 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
             filterPanels = [
                 new Portal.filter.ui.DateFilterPanel(),
-                new Portal.filter.ui.BooleanFilterPanel(),
-                new Portal.filter.ui.BooleanFilterPanel(),
+                new Portal.filter.ui.ComboFilterPanel(),
+                new Portal.filter.ui.ComboFilterPanel(),
                 new Portal.filter.ui.NumberFilterPanel(),
                 new Portal.filter.ui.NumberFilterPanel()
             ];
