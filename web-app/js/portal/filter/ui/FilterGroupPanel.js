@@ -238,14 +238,24 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         this.add(groupContainer);
 
         if (panel.typeLabel != '') {
-            var heading = this._createFilterGroupHeading(panel.typeLabel);
-            groupContainer.add(heading);
+            this._addLabelToContainer(this._typeLabelForPanel(panel), groupContainer);
         }
 
         var spacer = this._createVerticalSpacer(15);
         this.add(spacer);
 
         return groupContainer;
+    },
+
+    _typeLabelForPanel: function(panel) {
+
+        return panel.typeLabel;
+     },
+
+    _addLabelToContainer: function(label, container) {
+
+        var heading = this._createFilterGroupHeading(label);
+        container.add(heading);
     },
 
     _updateAndShow: function() {
