@@ -31,12 +31,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         this._initWithLayer();
     },
 
-    _createGroupContainer: function() {
-        return new Ext.Container({
-            cls: 'filterGroupContainer'
-        })
-    },
-
     _createVerticalSpacer: function(sizeInPixels) {
         return new Ext.Spacer({
             cls: 'block',
@@ -216,38 +210,26 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _organiseFilterPanels: function(panels) {
 
+        var currentLabel;
         var currentType;
-        var currentContainer;
-        var currentContainerLabel;
 
         Ext.each(panels, function(panel) {
 
-            if (panel.constructor != currentType) {
+            var newLabel = this._typeLabelForPanel(panel);
+            var newType = panel.constructor;
 
-                currentType = panel.constructor;
-
-                currentContainer = this._includeNewGroupContainer(panel);
-
-                var newContainerLabel = this._typeLabelForPanel(panel);
-                if (currentContainerLabel != newContainerLabel) {
-
-                    this._addLabelToContainer(newContainerLabel, currentContainer);
-                    currentContainerLabel = newContainerLabel;
-                }
-
-                this.add( this._createVerticalSpacer(15));
+            if (newLabel != currentLabel) {
+                this._addLabelToContainer(newLabel, this);
+            }
+            else if (newType != currentType) {
+                this.add(this._createVerticalSpacer(15));
             }
 
-            currentContainer.add(panel);
+            this.add(panel);
+
+            currentLabel = newLabel;
+            currentType = newType;
         }, this);
-    },
-
-    _includeNewGroupContainer: function() {
-
-        var groupContainer = this._createGroupContainer();
-        this.add(groupContainer);
-
-        return groupContainer;
     },
 
     _typeLabelForPanel: function(panel) {
@@ -257,8 +239,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _addLabelToContainer: function(label, container) {
 
-        var heading = this._createFilterGroupHeading(label);
-        container.add(heading);
+        container.add(this._createFilterGroupHeading(label));
     },
 
     _updateAndShow: function() {
