@@ -69,7 +69,6 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
             }
         });
 
-        this.add(label);
         this.add(this.operators);
         this.add(this.firstField);
         this.add(this.secondField);
