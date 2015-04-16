@@ -119,18 +119,18 @@ Portal.cart.DownloadPanelBody = Ext.extend(Ext.Panel, {
         params.onAccept = function(callbackParams) {
             var downloader = new Portal.cart.Downloader({
                 listeners: {
-                    'downloadrequested': function(downloadUrl) {
-                        log.debug('Download requested', downloadUrl);
+                    'downloadrequested': function(downloadUrl, collection) {
+                        log.debug('Download requested', downloadUrl, collection);
                     },
-                    'downloadstarted': function(downloadUrl) {
-                        log.debug('Download started', downloadUrl);
+                    'downloadstarted': function(downloadUrl, collection) {
+                        log.debug('Download started', downloadUrl, collection);
                     },
-                    'downloadfailed': function(downloadUrl, msg) {
+                    'downloadfailed': function(downloadUrl, collection, msg) {
                         Ext.Msg.alert(
                             OpenLayers.i18n('errorDialogTitle'),
                             OpenLayers.i18n('downloadErrorText')
                         );
-                        log.error('Download failed', downloadUrl, msg);
+                        log.error('Download failed', downloadUrl, collection, msg);
                     }
                 }
             });
