@@ -87,16 +87,15 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
 
     describe('addRecordFromSuperUuid', function () {
         var record;
-        var mockRecordStore;
 
         beforeEach(function() {
             record = {
                 data: {
                     title: "Argo Australia Profiles"
                 },
-                get: function() { noOp() },
-                join: function() { noOp() },
-                hasWmsLink: function() { noOp() }
+                get: noOp,
+                join: noOp,
+                hasWmsLink: noOp
             };
 
             facetedSearchDataView.decodeSuperUuid = function() {
@@ -126,7 +125,6 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
                 return params;
             };
         });
-
 
         it('with some parameters', function() {
             params = ['temp', 'salinity'];
