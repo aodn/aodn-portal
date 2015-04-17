@@ -83,10 +83,14 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         var that = this;
         var selector = '#' + this.getUniqueId(storeRowIndex, uuid);
-        jQuery(selector).live("click", that, function() {
+        jQuery(selector).live("click", that, function(clickEvent) {
+
+            var multiSelect = clickEvent.ctrlKey;
             var superUuid = jQuery(this).attr('id').replace(this.MAP_ID_PREFIX, '');
-            that.addRecordFromSuperUuid(superUuid);
+            that.addRecordFromSuperUuid(superUuid, multiSelect);
+
             jQuery(this).addClass("x-item-disabled");
+
             return false;
         });
     },
@@ -316,14 +320,16 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return chunks.join("-");
     },
 
-    _viewButtonOnClick: function(btn) {
+    _viewButtonOnClick: function(btn, clickEvent) {
+
+        var multiSelect = clickEvent.ctrlKey;
+        var superUuid = btn.container.id.replace("fsSearchAddBtn", '');
+        this.addRecordFromSuperUuid(superUuid, multiSelect);
 
         btn.addClass("x-btn-selected");
-        var superUuid = btn.container.id.replace("fsSearchAddBtn", '');
-        this.addRecordFromSuperUuid(superUuid);
     },
 
-    addRecordFromSuperUuid: function(superUuid) {
+    addRecordFromSuperUuid: function(superUuid, multiSelect) {
         var uuid = this.decodeSuperUuid(superUuid);
         var record = this._getRecordFromUuid(uuid);
 
@@ -333,7 +339,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
             Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
         }
-        Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
+
+        if (!multiSelect) {
+            Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
+        }
     }
 });
 

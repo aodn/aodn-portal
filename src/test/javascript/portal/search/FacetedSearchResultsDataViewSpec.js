@@ -105,12 +105,27 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             facetedSearchDataView._getRecordFromUuid = function() {
                 return record;
             };
+
+            spyOn(window, 'trackUsage');
+            spyOn(Ext.MsgBus, 'publish');
         });
 
         it('sends correct tracking data', function() {
-            spyOn(window, 'trackUsage');
-            facetedSearchDataView.addRecordFromSuperUuid("my super uuid");
+
+            facetedSearchDataView.addRecordFromSuperUuid("my super uuid", false);
             expect(window.trackUsage).toHaveBeenCalledWith("Collection", "select", "Argo Australia Profiles");
+        });
+
+        it('sends view event for normal select', function() {
+
+            facetedSearchDataView.addRecordFromSuperUuid("my super uuid", false);
+            expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
+        });
+
+        it('does not send view event when multi selecting', function() {
+
+            facetedSearchDataView.addRecordFromSuperUuid("my super uuid", true);
+            expect(Ext.MsgBus.publish).not.toHaveBeenCalled();
         });
     });
 
