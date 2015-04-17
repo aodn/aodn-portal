@@ -44,10 +44,15 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, this._onViewGeoNetworkRecord, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, this._onGeoNetworkRecordAdded, this);
     },
 
     _onViewGeoNetworkRecord: function() {
         this.setActiveTab(TAB_INDEX_VISUALISE);
+    },
+
+    _onGeoNetworkRecordAdded: function() {
+        this._highlightActiveTab();
     },
 
     afterRender: function() {
