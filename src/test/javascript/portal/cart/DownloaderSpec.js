@@ -175,14 +175,16 @@ describe("Portal.cart.Downloader", function() {
 
         describe('synchronous download', function() {
             it('fires appropriate download events', function() {
-                downloader._onPrepare(downloadUrl);
-                expect(downloader.fireEvent).toHaveBeenCalledWith('downloadrequested', downloadUrl);
+                var collection = {};
 
-                downloader._onSuccess(downloadUrl);
-                expect(downloader.fireEvent).toHaveBeenCalledWith('downloadstarted', downloadUrl);
+                downloader._onPrepare(downloadUrl, collection);
+                expect(downloader.fireEvent).toHaveBeenCalledWith('downloadrequested', downloadUrl, collection);
 
-                downloader._onFailure(downloadUrl, 'error');
-                expect(downloader.fireEvent).toHaveBeenCalledWith('downloadfailed', downloadUrl, 'error');
+                downloader._onSuccess(downloadUrl, collection);
+                expect(downloader.fireEvent).toHaveBeenCalledWith('downloadstarted', downloadUrl, collection);
+
+                downloader._onFailure(downloadUrl, collection, 'error');
+                expect(downloader.fireEvent).toHaveBeenCalledWith('downloadfailed', downloadUrl, collection, 'error');
             });
         });
     })

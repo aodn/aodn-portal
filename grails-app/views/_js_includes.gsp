@@ -164,7 +164,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'LayerOpacitySliderFixed.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadPanelItemTemplate.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'Downloader.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadPanelBody.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadEmailPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadChallengePanel.js')}"></script>
