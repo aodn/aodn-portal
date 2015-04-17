@@ -40,7 +40,28 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         Ext.apply(this, config);
         Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);
 
+        this.downloader = this._initDownloader();
         this._registerEvents();
+    },
+
+    _initDownloader: function() {
+        return new Portal.cart.Downloader({
+            listeners: {
+                'downloadrequested': function(downloadUrl, collection) {
+                    log.debug('Download requested', downloadUrl, collection);
+                },
+                'downloadstarted': function(downloadUrl, collection) {
+                    log.debug('Download started', downloadUrl, collection);
+                },
+                'downloadfailed': function(downloadUrl, collection, msg) {
+                    Ext.Msg.alert(
+                        OpenLayers.i18n('errorDialogTitle'),
+                        OpenLayers.i18n('downloadErrorText')
+                    );
+                    log.error('Download failed', downloadUrl, collection, msg);
+                }
+            }
+        });
     },
 
     _registerEvents: function() {
@@ -140,26 +161,10 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
     confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params, textKey) {
 
-        params.onAccept = function(callbackParams) {
-            var downloader = new Portal.cart.Downloader({
-                listeners: {
-                    'downloadrequested': function(downloadUrl, collection) {
-                        log.debug('Download requested', downloadUrl, collection);
-                    },
-                    'downloadstarted': function(downloadUrl, collection) {
-                        log.debug('Download started', downloadUrl, collection);
-                    },
-                    'downloadfailed': function(downloadUrl, collection, msg) {
-                        Ext.Msg.alert(
-                            OpenLayers.i18n('errorDialogTitle'),
-                            OpenLayers.i18n('downloadErrorText')
-                        );
-                        log.error('Download failed', downloadUrl, collection, msg);
-                    }
-                }
-            });
+        var self = this;
 
-            downloader.download(collection, generateUrlCallbackScope, generateUrlCallback, callbackParams);
+        params.onAccept = function(callbackParams) {
+            self.downloader.download(collection, generateUrlCallbackScope, generateUrlCallback, callbackParams);
             trackUsage(
                 OpenLayers.i18n('downloadTrackingCategory'),
                 OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(textKey),
