@@ -34,7 +34,6 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
             ]
         };
 
-
         Ext.apply(this, config);
 
         Portal.search.FacetedSearchResultsPanel.superclass.initComponent.apply(this, arguments);
@@ -45,20 +44,6 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
         this._subscribeToActiveGeoNetworkRecordStoreEvents();
     },
-
-
-    _viewButtonOnClick: function(btn) {
-
-        btn.addClass("x-btn-selected");
-        var uuid = btn.container.id.replace("fsSearchAddBtn",'');
-        var record = this._getRecordFromUuid(uuid);
-
-        if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
-            Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
-        }
-        Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
-    },
-
 
     _subscribeToActiveGeoNetworkRecordStoreEvents: function() {
         Ext.each([PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED], function(eventName) {
@@ -71,8 +56,6 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
     _refreshView: function() {
         this.dataView.refresh();
-        // todo set the scroll back to top
-        //this.dataView.setPosition({ x: 0, y: 0 });
     },
 
     _onStoreLoad: function() {
