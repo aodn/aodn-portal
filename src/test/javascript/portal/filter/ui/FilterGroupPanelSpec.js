@@ -255,9 +255,10 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
     describe('_organiseFilterPanels', function() {
 
         var filterPanels;
-        var numGroups = 3;
-        var numHeadings = numGroups - 1; // Number filters won't have a heading
-        var numComponentsPerGroup = 2;
+        var numPanels;
+        var numDifferentTypes = 3;
+        var numHeadings = numDifferentTypes - 1; // Number filters won't have a heading
+        var numVerticalSpacers = numDifferentTypes - numHeadings; // No spacer for item after heading
 
         beforeEach(function() {
             spyOn(Portal.filter.ui.NumberFilterPanel.prototype, '_createControls');
@@ -266,13 +267,14 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
             filterPanels = [
                 new Portal.filter.ui.DateFilterPanel(),
-                new Portal.filter.ui.BooleanFilterPanel(),
-                new Portal.filter.ui.BooleanFilterPanel(),
+                new Portal.filter.ui.ComboFilterPanel(),
+                new Portal.filter.ui.ComboFilterPanel(),
                 new Portal.filter.ui.NumberFilterPanel(),
                 new Portal.filter.ui.NumberFilterPanel()
             ];
 
-            spyOn(filterGroupPanel, '_createGroupContainer').andCallThrough();
+            numPanels = filterPanels.length;
+
             spyOn(filterGroupPanel, '_createFilterGroupHeading').andCallThrough();
             spyOn(filterGroupPanel, '_createVerticalSpacer');
             spyOn(filterGroupPanel, 'add');
@@ -280,11 +282,11 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             filterGroupPanel._organiseFilterPanels(filterPanels);
         });
 
-        it('creates a new groups as required', function() {
+        it('creates groups as required', function() {
 
             expect(filterGroupPanel._createFilterGroupHeading.callCount).toBe(numHeadings);
-            expect(filterGroupPanel._createVerticalSpacer.callCount).toBe(numGroups);
-            expect(filterGroupPanel.add.callCount).toBe(numGroups * numComponentsPerGroup);
+            expect(filterGroupPanel._createVerticalSpacer.callCount).toBe(numVerticalSpacers);
+            expect(filterGroupPanel.add.callCount).toBe(numPanels + numVerticalSpacers + numHeadings);
         });
     });
 });

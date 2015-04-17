@@ -11,7 +11,6 @@ Portal.filter.ui.BooleanFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPane
 
     constructor: function(cfg) {
         var config = Ext.apply({
-            typeLabel: OpenLayers.i18n('generalFilterHeading'),
             layout: 'menu',
             layoutConfig: {
                 align: 'centre'

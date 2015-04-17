@@ -31,12 +31,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         this._initWithLayer();
     },
 
-    _createGroupContainer: function() {
-        return new Ext.Container({
-            cls: 'filterGroupContainer'
-        })
-    },
-
     _createVerticalSpacer: function(sizeInPixels) {
         return new Ext.Spacer({
             cls: 'block',
@@ -216,36 +210,36 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _organiseFilterPanels: function(panels) {
 
+        var currentLabel;
         var currentType;
-        var currentContainer;
 
         Ext.each(panels, function(panel) {
 
-            if (panel.constructor != currentType) {
+            var newLabel = this._typeLabelForPanel(panel);
+            var newType = panel.constructor;
 
-                currentType = panel.constructor;
-
-                currentContainer = this._includeNewGroupContainer(panel);
+            if (newLabel != currentLabel) {
+                this._addLabelToContainer(newLabel, this);
+            }
+            else if (newType != currentType) {
+                this.add(this._createVerticalSpacer(15));
             }
 
-            currentContainer.add(panel);
+            this.add(panel);
+
+            currentLabel = newLabel;
+            currentType = newType;
         }, this);
     },
 
-    _includeNewGroupContainer: function(panel) {
+    _typeLabelForPanel: function(panel) {
 
-        var groupContainer = this._createGroupContainer();
-        this.add(groupContainer);
+        return panel.typeLabel == '' ? OpenLayers.i18n('generalFilterHeading') : panel.typeLabel;
+     },
 
-        if (panel.typeLabel != '') {
-            var heading = this._createFilterGroupHeading(panel.typeLabel);
-            groupContainer.add(heading);
-        }
+    _addLabelToContainer: function(label, container) {
 
-        var spacer = this._createVerticalSpacer(15);
-        this.add(spacer);
-
-        return groupContainer;
+        container.add(this._createFilterGroupHeading(label));
     },
 
     _updateAndShow: function() {
