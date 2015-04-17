@@ -132,7 +132,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         });
     });
 
-    describe('create Button', function() {
+    describe('create download button', function() {
 
         beforeEach(function() {
             spyOn(Ext, 'get').andReturn({});
@@ -152,6 +152,54 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             mockDataInjection.menuItems = ['menu item 1'];
 
             tpl._createDownloadButton(mockDataInjection);
+            expect(Ext.Button).toHaveBeenCalled();
+        });
+    });
+
+    describe('download button', function() {
+
+        beforeEach(function() {
+            spyOn(tpl._createDownloadButton, 'defer');
+            spyOn(tpl._createDownloadingLabel, 'defer');
+        });
+
+        it('creates download pop menu button if no download requested', function() {
+            expectDownloadButton(null);
+        });
+
+        it('creates download pop menu button if download started', function() {
+            expectDownloadButton('started');
+        });
+
+        it('creates download pop menu button if download failed', function() {
+            expectDownloadButton('failed');
+        });
+
+        it('creates downloading label if download requested', function() {
+            expectDownloadingLabel('requested');
+        });
+
+        var expectDownloadButton = function(status) {
+            mockDataInjection.downloadStatus = status;
+            tpl._downloadButton(mockDataInjection);
+            expect(tpl._createDownloadButton.defer).toHaveBeenCalled();
+            expect(tpl._createDownloadingLabel.defer).not.toHaveBeenCalled();
+        };
+
+        var expectDownloadingLabel = function(status) {
+            mockDataInjection.downloadStatus = status
+            tpl._downloadButton(mockDataInjection);
+            expect(tpl._createDownloadButton.defer).not.toHaveBeenCalled();
+            expect(tpl._createDownloadingLabel.defer).toHaveBeenCalled();
+        }
+    });
+
+    describe('_createDownloadingLabel', function() {
+        it('creates disabled button with msg', function() {
+            spyOn(Ext, 'Button');
+            spyOn(Ext, 'fly').andReturn({update: noOp});
+
+            tpl._createDownloadingLabel(mockDataInjection);
             expect(Ext.Button).toHaveBeenCalled();
         });
     });

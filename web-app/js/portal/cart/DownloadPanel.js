@@ -48,18 +48,15 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         return new Portal.cart.Downloader({
             listeners: {
                 'downloadrequested': function(downloadUrl, collection) {
-                    log.debug('Download requested', downloadUrl, collection);
+                    this.onDownloadRequested(downloadUrl, collection);
                 },
                 'downloadstarted': function(downloadUrl, collection) {
-                    log.debug('Download started', downloadUrl, collection);
+                    this.onDownloadStarted(downloadUrl, collection);
                 },
                 'downloadfailed': function(downloadUrl, collection, msg) {
-                    Ext.Msg.alert(
-                        OpenLayers.i18n('errorDialogTitle'),
-                        OpenLayers.i18n('downloadErrorText')
-                    );
-                    log.error('Download failed', downloadUrl, collection, msg);
-                }
+                    this.onDownloadFailed(downloadUrl, collection, msg);
+                },
+                scope: this
             }
         });
     },
@@ -69,6 +66,25 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, function() { this.generateContent() }, this);
         Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_MODIFIED, function() { this.generateContent() }, this);
         Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED, function() { this.generateContent() }, this);
+    },
+
+    onDownloadRequested: function(downloadUrl, collection) {
+        log.debug('Download requested', downloadUrl, collection);
+        this.generateContent();
+    },
+
+    onDownloadStarted: function(downloadUrl, collection) {
+        log.debug('Download started', downloadUrl, collection);
+        this.generateContent();
+    },
+
+    onDownloadFailed: function(downloadUrl, collection, msg) {
+        Ext.Msg.alert(
+            OpenLayers.i18n('errorDialogTitle'),
+            OpenLayers.i18n('downloadErrorText')
+        );
+        log.error('Download failed', downloadUrl, collection, msg);
+        this.generateContent();
     },
 
     generateContent: function() {

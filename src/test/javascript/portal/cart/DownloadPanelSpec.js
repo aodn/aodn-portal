@@ -19,27 +19,59 @@ describe("Portal.cart.DownloadPanel", function() {
         downloadPanel.destroy();
     });
 
-    describe('initComponent()', function() {
+    describe('event handlers', function() {
         it('listens for beforeshow event', function() {
             downloadPanel.fireEvent('beforeshow');
 
             expect(downloadPanel.generateContent).toHaveBeenCalled();
         });
 
-        it('listens for ACTIVE_GEONETWORK_RECORD_ADDED event', function() {
-            Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
+        describe('active geonetwork record events', function() {
+            it('listens for ACTIVE_GEONETWORK_RECORD_ADDED event', function() {
+                Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
 
-            expect(downloadPanel.generateContent).toHaveBeenCalled();
+                expect(downloadPanel.generateContent).toHaveBeenCalled();
+            });
+
+            it('listens for ACTIVE_GEONETWORK_RECORD_REMOVED event', function() {
+                Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED);
+
+                expect(downloadPanel.generateContent).toHaveBeenCalled();
+            });
+
+            it('store is the ActiveGeoNetworkRecordStore singleton instance', function() {
+                expect(downloadPanel.store).toBe(Portal.data.ActiveGeoNetworkRecordStore.instance());
+            });
         });
 
-        it('listens for ACTIVE_GEONETWORK_RECORD_REMOVED event', function() {
-            Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED);
+        describe('downloader event listeners', function() {
 
-            expect(downloadPanel.generateContent).toHaveBeenCalled();
-        });
+            var collection;
 
-        it('store is the ActiveGeoNetworkRecordStore singleton instance', function() {
-            expect(downloadPanel.store).toBe(Portal.data.ActiveGeoNetworkRecordStore.instance());
+            beforeEach(function() {
+                collection = {};
+                spyOn(downloadPanel, 'onDownloadRequested').andCallThrough();
+                spyOn(downloadPanel, 'onDownloadStarted').andCallThrough();
+                spyOn(downloadPanel, 'onDownloadFailed').andCallThrough();
+            });
+
+            it('listens for downloadrequested', function() {
+                downloadPanel.downloader.fireEvent('downloadrequested', 'url', collection);
+                expect(downloadPanel.onDownloadRequested).toHaveBeenCalledWith('url', collection);
+                expect(downloadPanel.generateContent).toHaveBeenCalled();
+            });
+
+            it('listens for downloadstarted', function() {
+                downloadPanel.downloader.fireEvent('downloadstarted', 'url', collection);
+                expect(downloadPanel.onDownloadStarted).toHaveBeenCalledWith('url', collection);
+                expect(downloadPanel.generateContent).toHaveBeenCalled();
+            });
+
+            it('listens for downloadfailed', function() {
+                downloadPanel.downloader.fireEvent('downloadfailed', 'url', collection, 'msg');
+                expect(downloadPanel.onDownloadFailed).toHaveBeenCalledWith('url', collection, 'msg');
+                expect(downloadPanel.generateContent).toHaveBeenCalled();
+            });
         });
     });
 

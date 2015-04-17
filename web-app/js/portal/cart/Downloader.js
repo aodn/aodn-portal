@@ -46,14 +46,17 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     },
 
     _onPrepare: function(downloadUrl, collection) {
+        collection.downloadStatus = 'requested';
         this.fireEvent('downloadrequested', downloadUrl, collection);
     },
 
     _onSuccess: function(downloadUrl, collection) {
+        collection.downloadStatus = 'started';
         this.fireEvent('downloadstarted', downloadUrl, collection);
     },
 
     _onFailure: function(downloadUrl, collection, msg) {
+        collection.downloadStatus = 'failed';
         this.fireEvent('downloadfailed', downloadUrl, collection, msg);
     },
 

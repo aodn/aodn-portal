@@ -86,8 +86,31 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _downloadButton: function(collection) {
-        this._createDownloadButton.defer(1, this, [collection]);
+
+        if (collection.downloadStatus == 'requested') {
+            this._createDownloadingLabel.defer(1, this, [collection]);
+        }
+        else {
+            this._createDownloadButton.defer(1, this, [collection]);
+        }
+
         return '';
+    },
+
+    // It's *actually* a button, but we're using it as a label here...
+    _createDownloadingLabel: function(collection) {
+        var elementId = this._getButtonId(collection, 'downloadButtonId');
+
+        Ext.fly(elementId).update("");
+
+        new Ext.Button({
+            text: OpenLayers.i18n('downloadStatusRequested'),
+            icon: 'images/spinner_orange_background.gif',
+            cls: 'navigationButton',
+            scope: this,
+            disabled: true,
+            renderTo: elementId
+        });
     },
 
     _createDownloadButton: function(collection) {
