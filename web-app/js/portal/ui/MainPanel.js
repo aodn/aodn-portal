@@ -52,7 +52,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
     afterRender: function() {
         Portal.ui.MainPanel.superclass.afterRender.call(this);
-        this._highlightActiveTab();
+        this._highlightActiveTab(true);
     },
 
     getActiveTab: function() {
@@ -67,17 +67,19 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         this.layout.setActiveTab(TAB_INDEX_DOWNLOAD);
     },
 
-    _highlightActiveTab: function() {
+    _highlightActiveTab: function(initialLoad) {
 
         // Ensure tab selectors reflect actual tab selected
         var tabIndex = this.items.indexOf(this.getActiveTab());
 
         // clean slate
         jQuery('[id^=viewPortTab]').removeClass('viewPortTabActive').removeClass('viewPortTabActiveLast');
+
         // a collection was added
-        if (tabIndex > 0) {
+        if (!initialLoad) {
             jQuery('[id^=viewPortTab]').removeClass('viewPortTabDisabled');
         }
+
         // all tabs up until the selected tab highlighted
         for (var i = 0; i <= tabIndex; i++) {
             var newClasses = (i == tabIndex) ? 'viewPortTabActive viewPortTabActiveLast' : 'viewPortTabActive';
