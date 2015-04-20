@@ -53,7 +53,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                     return "";
                 },
                 encode: function(values) {
-                    return this.superEncodeUuid(values.storeRowIndex, values.uuid);
+                    return this.superEncodeUuid(values.uuid);
                 },
                 getStatusClasses: function(values) {
                     return (this.isRecActive(values.uuid)) ? "x-item-disabled" : "";
@@ -223,7 +223,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             tooltip = OpenLayers.i18n('addDataCollectionMsg');
         }
 
-        var buttonElementId = this.ADD_BUTTON_PREFIX + this.superEncodeUuid(storeRowIndex, uuid);
+        var buttonElementId = this.ADD_BUTTON_PREFIX + this.superEncodeUuid(uuid);
 
         if (Ext.get(buttonElementId)) {
             new Ext.Button({
@@ -294,17 +294,16 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     getUniqueId: function(storeRowIndex, uuid) {
-        return  this.MAP_ID_PREFIX + this.superEncodeUuid(storeRowIndex, uuid);
+        return this.MAP_ID_PREFIX + this.superEncodeUuid(uuid);
     },
 
-    // uuid alone is unique unless search results have duplicates
-    superEncodeUuid: function(storeRowIndex, uuid) {
-        return "-" + storeRowIndex + "-" + uuid;
+    superEncodeUuid: function(uuid) {
+        return "-" + uuid;
     },
 
     decodeSuperUuid: function(encodedUuid) {
         var chunks = encodedUuid.split("-");
-        chunks.splice(0, 2);
+        chunks.splice(0, 1);
         return chunks.join("-");
     },
 
