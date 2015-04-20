@@ -15,6 +15,12 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
+        this.logger = log4javascript.getLogger('Portal.ui.MainPanel');
+        this.logger.setLevel(log4javascript.Level.INFO);
+
+        log.debug('root Hello world!');  // This will be logged...
+        this.logger.debug('MainPanel Hello world!');  // ... but this will not.
+
         Ext.apply(this, cfg);
 
         this.addEvents('tabchange');
