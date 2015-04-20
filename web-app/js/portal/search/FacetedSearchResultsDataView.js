@@ -13,6 +13,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     MINIMAP_WIDTH: 160, // 16:9 ratio http://size43.com/jqueryVideoTool.html
     MINIMAP_PADDING: 4,
     MAP_ID_PREFIX: "facetedSearchMap",
+    ADD_BUTTON_PREFIX: "fsSearchAddBtn",
 
     DATE_FACET_INPUT_FORMAT: 'YYYY-MM-DDtHH:mm:ss:SSSz',
 
@@ -27,7 +28,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '        <div class="resultsRowHeaderTitle">',
             '            <h3>{[values.title]}</h3>',
             '        </div>',
-            '        <div class="facetedSearchBtn" id="fsSearchAddBtn{[this.encode(values)]}">',
+            '        <div class="facetedSearchBtn" id="{[this.ADD_BUTTON_PREFIX]}{[this.encode(values)]}">',
             '            {[this.getButton(values)]}',
             '        </div>',
             '    </div>',
@@ -222,7 +223,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             tooltip = OpenLayers.i18n('addDataCollectionMsg');
         }
 
-        var buttonElementId = "fsSearchAddBtn" + this.superEncodeUuid(storeRowIndex, uuid);
+        var buttonElementId = this.ADD_BUTTON_PREFIX + this.superEncodeUuid(storeRowIndex, uuid);
 
         if (Ext.get(buttonElementId)) {
             new Ext.Button({
@@ -310,7 +311,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _viewButtonOnClick: function(btn, clickEvent) {
 
         var multiSelect = clickEvent.ctrlKey;
-        var superUuid = btn.container.id.replace("fsSearchAddBtn", '');
+        var superUuid = btn.container.id.replace(this.ADD_BUTTON_PREFIX, '');
         this.addRecordFromSuperUuid(superUuid, multiSelect);
 
         btn.addClass("x-btn-selected");
