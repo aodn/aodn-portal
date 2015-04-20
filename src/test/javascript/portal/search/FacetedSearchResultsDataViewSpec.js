@@ -21,13 +21,6 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
         );
     });
 
-    describe ('TPL parameters', function() {
-        it('has TPL parameters set', function() {
-            expect(facetedSearchDataView.resultBodyHeight).not.toBeNull();
-            expect(facetedSearchDataView.textBodyLeftMargin).not.toBeNull();
-        });
-    });
-
     describe ('encoding and decoding', function() {
         it('encodes correctly', function() {
             expect(facetedSearchDataView.superEncodeUuid(0,"1231-456-789")).toBe("-0-1231-456-789");

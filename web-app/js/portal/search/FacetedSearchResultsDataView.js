@@ -20,9 +20,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         this.rowId = 0;
 
-        this.setTplSizeVariables();
-
-        var tpl = new Ext.XTemplate(
+        this.tpl = new Ext.XTemplate(
             '<tpl for=".">',
             '<div class="resultsHeaderBackground">',
             '    <div class="x-panel-header">',
@@ -65,18 +63,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             }
         );
 
-        var config = {
-            store: this.store,
-            tpl: tpl
-        };
-
-        Ext.apply(this, config);
         Portal.search.FacetedSearchResultsDataView.superclass.initComponent.apply(this, arguments);
-    },
-
-    setTplSizeVariables: function() {
-        this.resultBodyHeight = this.MINIMAP_HEIGHT + (2 * this.MINIMAP_PADDING) + 2;
-        this.textBodyLeftMargin = this.MINIMAP_WIDTH + (2 * this.MINIMAP_PADDING);
     },
 
     addMinimapLink: function(storeRowIndex, uuid) {
