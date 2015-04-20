@@ -19,8 +19,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     initComponent: function() {
 
-        this.rowId = 0;
-
         this.tpl = new Ext.XTemplate(
             '<tpl for=".">',
             '<div class="resultsHeaderBackground">',
@@ -49,7 +47,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             this,
             {
                 getButton: function(values) {
-                    this.createButton.defer(1, this, [values.uuid, values.storeRowIndex]);
+                    this.createButton.defer(1, this, [values.uuid]);
                     return "";
                 },
                 getStatusClasses: function(values) {
@@ -64,7 +62,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         Portal.search.FacetedSearchResultsDataView.superclass.initComponent.apply(this, arguments);
     },
 
-    addMinimapLink: function(storeRowIndex, uuid) {
+    addMinimapLink: function(uuid) {
 
         var that = this;
         var selector = '#' + this.mapElementId(uuid);
@@ -78,23 +76,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
             return false;
         });
-    },
-
-    collectData: function(records, startIndex) {
-        var r = [];
-
-        for (var i = 0; i < records.length; i++) {
-            var newRecord = this.prepareData(records[i].data, startIndex + i, records[i]);
-            newRecord = this._addStoreRowCount(newRecord);
-            r[r.length] = newRecord;
-        }
-        return r;
-    },
-
-    _addStoreRowCount: function(record) {
-        record['storeRowIndex'] = this.rowId;
-        this.rowId++;
-        return record;
     },
 
     getParametersAsHtml: function(values) {
@@ -209,7 +190,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return moment(dateString, this.DATE_FACET_INPUT_FORMAT);
     },
 
-    createButton: function(uuid, storeRowIndex) {
+    createButton: function(uuid) {
         var cls = "";
         var tooltip = OpenLayers.i18n('collectionExistsMsg');
 
@@ -268,7 +249,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var miniMap = new Portal.search.FacetedSearchResultsMiniMap(values);
         miniMap.addLayersAndRender();
 
-        this.addMinimapLink(values.storeRowIndex, values.uuid);
+        this.addMinimapLink(values.uuid);
 
         // Must return something, otherwise 'undefined' is rendered in the mini map div in some browsers,
         // e.g. firefox (but not chrome).
