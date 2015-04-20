@@ -48,7 +48,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
             }
         });
 
-        this.firstField = new Ext.form.TextField({
+        this.firstField = new Ext.form.NumberField({
             name: 'from',
             width: 146,
             listeners: {
@@ -58,7 +58,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
             }
         });
 
-        this.secondField = new Ext.form.TextField({
+        this.secondField = new Ext.form.NumberField({
             name: 'to',
             width: 146,
             hidden: true,
@@ -73,7 +73,6 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         this.add(this.firstField);
         this.add(this.secondField);
 
-        // Idea: show max/min values from this.filter.possibleValues
     },
 
     handleRemoveFilter: function() {
@@ -86,7 +85,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
     },
 
     needsFilterRange: function() {
-        return false
+        return false;
     },
 
     _onSpecialKeyPressed: function(field, e) {
@@ -97,21 +96,28 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         }
     },
 
+    _shouldUpdate: function () {
+        return (!this._operatorIsBetween() || this._operatorIsBetween() &&
+            (this._hasSecondValue() && this._hasFirstValue()) );
+    },
+
     _updateFilter: function() {
 
-        if (this.firstField.validate() && this.secondField.validate()) {
+        // Fixes #1696
+        if (!this._shouldUpdate()) {
+            return;
+        }
 
-            this.filter.setValue({
-                firstField: this.firstField.getValue(),
-                operator: this._getSelectedOperatorObject(),
-                secondField: this.secondField.getValue()
-            });
+        this.filter.setValue({
+            firstField: this.firstField.getValue(),
+            operator: this._getSelectedOperatorObject(),
+            secondField: this.secondField.getValue()
+        });
 
-            this._fireAddEvent();
+        this._fireAddEvent();
 
-            if (!this._operatorIsBetween() || this._hasSecondValue()) {
-                trackFiltersUsage('filtersTrackingNumberAction', this._getTrackUsageLabel(), this.layer.name);
-            }
+        if (this._hasFirstValue()) {
+            trackFiltersUsage('filtersTrackingNumberAction', this._getTrackUsageLabel(), this.layer.name);
         }
     },
 
@@ -134,31 +140,22 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
     },
 
     _onOperationSelected: function() {
-        var useSecondField = this._operatorIsBetween();
-        var clearSelected = this._operatorIsClear();
-        var hasFirstValue = this._hasFirstValue();
-        var hasSecondValue = this._hasSecondValue();
+        
+        this.secondField.setVisible(this._operatorIsBetween());
 
-        this.secondField.setVisible(useSecondField);
-
-        var shouldUpdate = useSecondField ? hasFirstValue && hasSecondValue : hasFirstValue;
-
-        if (shouldUpdate) {
-
-            if (clearSelected) {
-                this.handleRemoveFilter();
-            }
-
-            this._updateFilter();
+        this._updateFilter();
+        
+        if (this._operatorIsClear()) {
+            this.handleRemoveFilter();
         }
     },
 
     _operatorIsBetween: function() {
-        return this.operators.getValue() == this.OPERATOR_BETWEEN;
+        return this._getSelectedOperatorObject().code == this.OPERATOR_BETWEEN;
     },
 
     _operatorIsClear: function() {
-        return this.operators.getValue() == this.OPERATOR_CLEAR;
+        return this._getSelectedOperatorObject().code == this.OPERATOR_CLEAR;
     },
 
     _getSelectedOperatorObject: function() {

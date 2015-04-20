@@ -75,6 +75,36 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
             numberFilter._updateFilter();
 
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Number", "testLabel between 5 and 6", "test layer");
-        })
+        });
+
+        it('no update when operator is between and some values are empty', function() {
+            spyOn(numberFilter.filter, 'setValue');
+
+            numberFilter._operatorIsBetween = function() { return true };
+            numberFilter.operators.lastSelectionText = 'between';
+
+            numberFilter._updateFilter();
+            expect(numberFilter.filter.setValue).not.toHaveBeenCalled();
+
+            numberFilter.firstField.getValue = function() { return false };
+            numberFilter.secondField.getValue = function() { return 6 };
+            numberFilter._updateFilter();
+
+            expect(numberFilter.filter.setValue).not.toHaveBeenCalled();
+        });
+
+        it('updates when operator is between and both values are valid', function() {
+            spyOn(numberFilter.filter, 'setValue');
+
+            numberFilter._operatorIsBetween = function() { return true };
+            numberFilter.operators.lastSelectionText = 'between';
+
+            numberFilter.firstField.getValue = function() { return 30000 }; // no sanity checking yet
+            numberFilter.secondField.getValue = function() { return 6 };
+            numberFilter._updateFilter();
+
+            expect(numberFilter.filter.setValue).toHaveBeenCalled();
+        });
+
     });
 });
