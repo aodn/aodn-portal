@@ -307,6 +307,10 @@ ul.x-tab-strip-top {
     background-color: #FFBA66;
 }
 
+.navigationButtonActive.x-btn {
+    background-color: #89C8EE;
+}
+
 .navigationButton .x-btn-text {
     color: #212121;
     font-weight: bold;
