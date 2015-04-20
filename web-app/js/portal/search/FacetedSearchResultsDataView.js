@@ -69,7 +69,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         jQuery(selector).live("click", that, function(clickEvent) {
 
             var multiSelect = clickEvent.ctrlKey;
-            var superUuid = jQuery(this).attr('id').replace(this.MAP_ID_PREFIX, '');
+            var superUuid = this.uuidFromElementId(jQuery(this).attr('id'));
             that.addRecordFromSuperUuid(superUuid, multiSelect);
 
             jQuery(this).addClass("x-item-disabled");
@@ -292,14 +292,13 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _viewButtonOnClick: function(btn, clickEvent) {
 
         var multiSelect = clickEvent.ctrlKey;
-        var superUuid = btn.container.id.replace(this.ADD_BUTTON_PREFIX, '');
+        var superUuid = this.uuidFromElementId(btn.container.id);
         this.addRecordFromSuperUuid(superUuid, multiSelect);
 
         btn.addClass("x-btn-selected");
     },
 
-    addRecordFromSuperUuid: function(superUuid, multiSelect) {
-        var uuid = this.uuidFromElementId(superUuid);
+    addRecordFromSuperUuid: function(uuid, multiSelect) {
         var record = this._getRecordFromUuid(uuid);
 
         trackUsage(OpenLayers.i18n('layerSelectionTrackingCategory'), OpenLayers.i18n('layerSelectionTrackingAction'), record.data.title);
