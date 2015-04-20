@@ -301,8 +301,8 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return "-" + uuid;
     },
 
-    decodeSuperUuid: function(encodedUuid) {
-        var chunks = encodedUuid.split("-");
+    uuidFromElementId: function(elementId) {
+        var chunks = elementId.split("-");
         chunks.splice(0, 1);
         return chunks.join("-");
     },
@@ -317,7 +317,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     addRecordFromSuperUuid: function(superUuid, multiSelect) {
-        var uuid = this.decodeSuperUuid(superUuid);
+        var uuid = this.uuidFromElementId(superUuid);
         var record = this._getRecordFromUuid(uuid);
 
         trackUsage(OpenLayers.i18n('layerSelectionTrackingCategory'), OpenLayers.i18n('layerSelectionTrackingAction'), record.data.title);

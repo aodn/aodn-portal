@@ -27,7 +27,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             expect(facetedSearchDataView.getUniqueId(0,"1231-456-789")).toBe(facetedSearchDataView.MAP_ID_PREFIX + "-0-1231-456-789");
         });
         it('decodes correctly', function() {
-            expect(facetedSearchDataView.decodeSuperUuid("-0-1231-456-789")).toBe("1231-456-789");
+            expect(facetedSearchDataView.uuidFromElementId("-0-1231-456-789")).toBe("1231-456-789");
         });
     });
 
@@ -91,7 +91,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
                 hasWmsLink: noOp
             };
 
-            facetedSearchDataView.decodeSuperUuid = function() {
+            facetedSearchDataView.uuidFromElementId = function() {
                 return "my uuid";
             };
 
