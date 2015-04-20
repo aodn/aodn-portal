@@ -328,7 +328,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         }
 
         if (!multiSelect) {
-            Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
+            Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_DATA_COLLECTION, record);
         }
     }
 });

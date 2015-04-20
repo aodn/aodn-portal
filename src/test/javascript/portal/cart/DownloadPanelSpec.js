@@ -27,14 +27,14 @@ describe("Portal.cart.DownloadPanel", function() {
         });
 
         describe('active geonetwork record events', function() {
-            it('listens for ACTIVE_GEONETWORK_RECORD_ADDED event', function() {
-                Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
+            it('listens for DATA_COLLECTION_ADDED event', function() {
+                Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
 
                 expect(downloadPanel.generateContent).toHaveBeenCalled();
             });
 
-            it('listens for ACTIVE_GEONETWORK_RECORD_REMOVED event', function() {
-                Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED);
+            it('listens for DATA_COLLECTION_REMOVED event', function() {
+                Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
 
                 expect(downloadPanel.generateContent).toHaveBeenCalled();
             });

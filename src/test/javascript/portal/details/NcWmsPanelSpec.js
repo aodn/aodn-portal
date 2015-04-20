@@ -71,10 +71,10 @@ describe('Portal.details.NcWmsPanel', function() {
             expect(ncwmsPanel.geoNetworkRecord.updateNcwmsParams).toHaveBeenCalled();
         });
 
-        it('calls ACTIVE_GEONETWORK_RECORD_MODIFIED when the record changes', function() {
+        it('calls DATA_COLLECTION_MODIFIED when the record changes', function() {
             spyOn(Ext.MsgBus, 'publish');
             ncwmsPanel._applyFilterValuesToCollection();
-            expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_MODIFIED);
+            expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED);
             delete ncwmsPanel.geoNetworkRecord;
         });
 

@@ -50,7 +50,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this.onBaseLayerChanged(message);
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, function() {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() {
             this._maximiseMapActionsControl();
         }, this);
 

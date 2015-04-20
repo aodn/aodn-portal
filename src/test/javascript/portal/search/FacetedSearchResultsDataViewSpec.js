@@ -112,7 +112,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
         it('sends view event for normal select', function() {
 
             facetedSearchDataView.addRecordFromSuperUuid("my super uuid", false);
-            expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
+            expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.VIEW_DATA_COLLECTION, record);
         });
 
         it('does not send view event when multi selecting', function() {
