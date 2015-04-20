@@ -53,7 +53,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                     return "";
                 },
                 encode: function(values) {
-                    return this.superEncodeUuid(values.uuid);
+                    return this.elementIdFromUuid('', values.uuid);
                 },
                 getStatusClasses: function(values) {
                     return (this.isRecActive(values.uuid)) ? "x-item-disabled" : "";
@@ -223,7 +223,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             tooltip = OpenLayers.i18n('addDataCollectionMsg');
         }
 
-        var buttonElementId = this.ADD_BUTTON_PREFIX + this.superEncodeUuid(uuid);
+        var buttonElementId = this.elementIdFromUuid(this.ADD_BUTTON_PREFIX, uuid);
 
         if (Ext.get(buttonElementId)) {
             new Ext.Button({
@@ -294,11 +294,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     getUniqueId: function(storeRowIndex, uuid) {
-        return this.MAP_ID_PREFIX + this.superEncodeUuid(uuid);
+        return this.elementIdFromUuid(this.MAP_ID_PREFIX, uuid);
     },
 
-    superEncodeUuid: function(uuid) {
-        return "-" + uuid;
+    elementIdFromUuid: function(prefix, uuid) {
+        return String.format('{0}-{1}', prefix, uuid);
     },
 
     uuidFromElementId: function(elementId) {
