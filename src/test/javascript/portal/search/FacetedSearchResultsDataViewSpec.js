@@ -23,11 +23,11 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
 
     describe ('encoding and decoding', function() {
         it('encodes correctly', function() {
-            expect(facetedSearchDataView.superEncodeUuid(0,"1231-456-789")).toBe("-0-1231-456-789");
-            expect(facetedSearchDataView.getUniqueId(0,"1231-456-789")).toBe(facetedSearchDataView.MAP_ID_PREFIX + "-0-1231-456-789");
+            expect(facetedSearchDataView.elementIdFromUuid('prefix', "1231-456-789")).toBe("prefix-1231-456-789");
+            expect(facetedSearchDataView.mapElementId("1231-456-789")).toBe(facetedSearchDataView.MAP_ID_PREFIX + "-1231-456-789");
         });
         it('decodes correctly', function() {
-            expect(facetedSearchDataView.uuidFromElementId("-0-1231-456-789")).toBe("1231-456-789");
+            expect(facetedSearchDataView.uuidFromElementId(facetedSearchDataView.MAP_ID_PREFIX + "-1231-456-789")).toBe("1231-456-789");
         });
     });
 

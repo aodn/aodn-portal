@@ -28,14 +28,14 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '        <div class="resultsRowHeaderTitle">',
             '            <h3>{[values.title]}</h3>',
             '        </div>',
-            '        <div class="facetedSearchBtn" id="{[this.ADD_BUTTON_PREFIX]}{[this.encode(values)]}">',
+            '        <div class="facetedSearchBtn" id="{[this.buttonElementId(values.uuid)]}">',
             '            {[this.getButton(values)]}',
             '        </div>',
             '    </div>',
             '    <div class="x-panel-body facetedSearchResultBody">',
             '         <div class="x-panel miniMap {[this.getStatusClasses(values)]}" title="{[this.getMiniMapLinkTitle(values)]}"',
             '            style="height:{[this.MINIMAP_HEIGHT]}px;width:{[this.MINIMAP_WIDTH]}px;margin:{[this.MINIMAP_PADDING]}px! important"',
-            '            id="{[this.MAP_ID_PREFIX]}{[this.encode(values)]}">',
+            '            id="{[this.mapElementId(values.uuid)]}">',
             '            {[this.getMiniMap(values)]}',
             '        </div>' +
             '        <div class="x-panel resultsTextBody {[this.getStatusClasses(values)]}">',
@@ -52,9 +52,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                     this.createButton.defer(1, this, [values.uuid, values.storeRowIndex]);
                     return "";
                 },
-                encode: function(values) {
-                    return this.elementIdFromUuid('', values.uuid);
-                },
                 getStatusClasses: function(values) {
                     return (this.isRecActive(values.uuid)) ? "x-item-disabled" : "";
                 },
@@ -70,7 +67,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     addMinimapLink: function(storeRowIndex, uuid) {
 
         var that = this;
-        var selector = '#' + this.getUniqueId(storeRowIndex, uuid);
+        var selector = '#' + this.mapElementId(uuid);
         jQuery(selector).live("click", that, function(clickEvent) {
 
             var multiSelect = clickEvent.ctrlKey;
@@ -223,7 +220,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             tooltip = OpenLayers.i18n('addDataCollectionMsg');
         }
 
-        var buttonElementId = this.elementIdFromUuid(this.ADD_BUTTON_PREFIX, uuid);
+        var buttonElementId = this.buttonElementId(uuid);
 
         if (Ext.get(buttonElementId)) {
             new Ext.Button({
@@ -266,7 +263,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     getMiniMap: function(values) {
 
-        values.mapContainerId = this.getUniqueId(values.storeRowIndex, values.uuid);
+        values.mapContainerId = this.mapElementId(values.uuid);
 
         var miniMap = new Portal.search.FacetedSearchResultsMiniMap(values);
         miniMap.addLayersAndRender();
@@ -293,8 +290,12 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return record;
     },
 
-    getUniqueId: function(storeRowIndex, uuid) {
+    mapElementId: function(uuid) {
         return this.elementIdFromUuid(this.MAP_ID_PREFIX, uuid);
+    },
+
+    buttonElementId: function(uuid) {
+        return this.elementIdFromUuid(this.ADD_BUTTON_PREFIX, uuid);
     },
 
     elementIdFromUuid: function(prefix, uuid) {

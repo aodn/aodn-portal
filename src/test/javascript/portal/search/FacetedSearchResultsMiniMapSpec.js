@@ -9,7 +9,7 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
     var bbox;
     var uuid = 1234;
     var storeRowIndex = 0;
-    var mapContainerId = "aUniqueIdCreatedBy-FacetedSearchResultsDataView-getUniqueId";
+    var mapContainerId = "aUniqueIdCreatedBy-FacetedSearchResultsDataView-mapElementId";
 
     beforeEach(function() {
         bbox = new Portal.search.MetadataExtent();
