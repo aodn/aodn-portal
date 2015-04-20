@@ -37,7 +37,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '            style="height:{[this.MINIMAP_HEIGHT]}px;width:{[this.MINIMAP_WIDTH]}px;margin:{[this.MINIMAP_PADDING]}px! important"',
             '            id="{[this.mapElementId(values.uuid)]}">',
             '            {[this.getMiniMap(values)]}',
-            '        </div>' +
+            '        </div>',
             '        <div class="x-panel resultsTextBody {[this.getStatusClasses(values)]}">',
             '            <h5 class="floatRight"><i>{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
             '            </i></h5>',
@@ -125,12 +125,12 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var broader = [];
         Ext.each(values.parameter, function(param) {
             var broaderTerms = this.classificationStore.getBroaderTerms(param, 2, 'Measured parameter');
-            if(broaderTerms.length > 0) {
+            if (broaderTerms.length > 0) {
                 broader = broader.concat(broaderTerms);
             }
         }, this);
         broader = broader.sort();
-        return broader.filter( function(item, pos) {
+        return broader.filter(function(item, pos) {
             return !pos || item != broader[pos - 1];
         });
     },
@@ -151,14 +151,14 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
 
         var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform');
-        if(broader.length > 0) {
+        if (broader.length > 0) {
             broader = broader.sort();
             broader = broader.filter( function(item, pos) {
                 return !pos || item != broader[pos - 1];
             });
             return template.apply({
                 "label": label,
-                "value": broader.join( ', ')
+                "value": broader.join(', ')
             });
         }
         return "";
@@ -260,7 +260,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     isRecActive: function(uuid) {
         var record = this._getRecordFromUuid(uuid);
-        return (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record))
+        return Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record);
     },
 
     _getRecordFromUuid: function(uuid) {
