@@ -14,6 +14,8 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     MINIMAP_PADDING: 4,
     MAP_ID_PREFIX: "facetedSearchMap",
     ADD_BUTTON_PREFIX: "fsSearchAddBtn",
+    CSS_CLASS_ITEM_DISABLED: 'x-item-disabled',
+    CSS_CLASS_BUTTON_SELECTED: 'x-btn-selected',
 
     DATE_FACET_INPUT_FORMAT: 'YYYY-MM-DDtHH:mm:ss:SSSz',
 
@@ -51,7 +53,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                     return "";
                 },
                 getStatusClasses: function(values) {
-                    return (this.isRecActive(values.uuid)) ? "x-item-disabled" : "";
+                    return (this.isRecActive(values.uuid)) ? this.CSS_CLASS_ITEM_DISABLED : "";
                 },
                 getMiniMapLinkTitle: function(values) {
                     return (this.isRecActive(values.uuid)) ? OpenLayers.i18n('collectionExistsMsg') : OpenLayers.i18n("addDataCollectionMsg");
@@ -72,7 +74,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             var uuid = this.uuidFromElementId(jQuery(this).attr('id'));
             that.addRecordWithUuid(uuid, multiSelect);
 
-            jQuery(this).addClass("x-item-disabled");
+            jQuery(this).addClass(this.CSS_CLASS_ITEM_DISABLED);
 
             return false;
         });
@@ -195,7 +197,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var tooltip = OpenLayers.i18n('collectionExistsMsg');
 
         if (this.isRecActive(uuid)) {
-            cls = "x-btn-selected";
+            cls = this.CSS_CLASS_BUTTON_SELECTED;
         }
         else {
             tooltip = OpenLayers.i18n('addDataCollectionMsg');
@@ -295,7 +297,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var uuid = this.uuidFromElementId(btn.container.id);
         this.addRecordWithUuid(uuid, multiSelect);
 
-        btn.addClass("x-btn-selected");
+        btn.addClass(this.CSS_CLASS_BUTTON_SELECTED);
     },
 
     addRecordWithUuid: function(uuid, multiSelect) {
