@@ -24,6 +24,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Container, {
         }
         else {
             var filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
+                map: cfg.map,
                 layer: cfg.layer
             });
 

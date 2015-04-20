@@ -9,6 +9,13 @@ Ext.namespace('Portal.details');
 
 Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
 
+    constructor: function(cfg) {
+
+        this.map = cfg.map;
+
+        Portal.details.SpatialSubsetControlsPanel.superclass.constructor.call(this, cfg);
+    },
+
     initComponent: function() {
         Portal.details.SpatialSubsetControlsPanel.superclass.initComponent.call(this);
         this._addLabel(OpenLayers.i18n('spatialExtentHeading'));

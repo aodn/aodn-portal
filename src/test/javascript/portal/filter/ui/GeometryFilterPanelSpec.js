@@ -18,9 +18,7 @@ describe("Portal.filter.ui.GeometryFilterPanel", function() {
         spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, 'setLayerAndFilter');
         spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, '_updateWithGeometry');
         filterPanel = new Portal.filter.ui.GeometryFilterPanel({
-            layer: {
-                map: map
-            },
+            map: map,
             filter: {
                 getName: function() { return 'geom_filter' },
                 setValue: noOp,
