@@ -618,8 +618,8 @@ table.featureInfo caption {
     filter: alpha(opacity=0); /* IE6/IE7 */
 }
 
-div.olMap.miniMap{
-    border: 1px solid #ccc;
+div.olMap.miniMap {
+    border: 1px solid #ccc !important;
 }
 
 div.olMap.miniMap:hover:not(.x-item-disabled) {
