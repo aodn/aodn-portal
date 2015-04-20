@@ -37,24 +37,27 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
         var self = this;
 
         $.fileDownload(proxyUrl, {
-            prepareCallback: function(downloadUrl) { self._onPrepare(downloadUrl); },
-            successCallback: function(downloadUrl) { self._onSuccess(downloadUrl); },
-            failCallback: function(msg, downloadUrl) { self._onFailure(downloadUrl, msg); },
+            prepareCallback: function(downloadUrl) { self._onPrepare(downloadUrl, collection); },
+            successCallback: function(downloadUrl) { self._onSuccess(downloadUrl, collection); },
+            failCallback: function(msg, downloadUrl) { self._onFailure(downloadUrl, collection, msg); },
             cookieName: String.format("downloadToken{0}", downloadToken),
             cookieValue: downloadToken
         });
     },
 
-    _onPrepare: function(downloadUrl) {
-        this.fireEvent('downloadrequested', downloadUrl);
+    _onPrepare: function(downloadUrl, collection) {
+        collection.downloadStatus = 'requested';
+        this.fireEvent('downloadrequested', downloadUrl, collection);
     },
 
-    _onSuccess: function(downloadUrl) {
-        this.fireEvent('downloadstarted', downloadUrl);
+    _onSuccess: function(downloadUrl, collection) {
+        collection.downloadStatus = 'started';
+        this.fireEvent('downloadstarted', downloadUrl, collection);
     },
 
-    _onFailure: function(downloadUrl, msg) {
-        this.fireEvent('downloadfailed', downloadUrl, msg);
+    _onFailure: function(downloadUrl, collection, msg) {
+        collection.downloadStatus = 'failed';
+        this.fireEvent('downloadfailed', downloadUrl, collection, msg);
     },
 
     _newDownloadToken: function() {

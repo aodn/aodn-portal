@@ -232,6 +232,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     emptyPolygonHelperText: "Click points on the map to create your polygon.",
 
+    downloadStatusRequested: "Downloading...",
+
     // WfsDataRowTemplate
     fileSizeIconMarkup: '<img src="images/error.png">',
     estimatedDlMessage: "The download size is ",

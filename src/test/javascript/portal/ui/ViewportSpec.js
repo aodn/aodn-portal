@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -28,7 +27,6 @@ describe("Portal.ui.Viewport", function() {
         spyOn(Portal.ui, 'VisualisePanel');
         spyOn(Portal.search, 'SearchPanel');
         spyOn(Portal.cart, 'DownloadPanel');
-        spyOn(Portal.cart, 'DownloadPanelBody');
 
         viewport = new Portal.ui.Viewport({appConfig: mockConfig});
     });
@@ -46,7 +44,6 @@ describe("Portal.ui.Viewport", function() {
         expect(Portal.ui.VisualisePanel).toHaveBeenCalled();
         expect(Portal.search.SearchPanel).toHaveBeenCalled();
         expect(Portal.cart.DownloadPanel).toHaveBeenCalled();
-        expect(Portal.cart.DownloadPanelBody).toHaveBeenCalled();
     });
 
     it("calls mainPanel.setActiveTab when setActiveTab called", function() {
