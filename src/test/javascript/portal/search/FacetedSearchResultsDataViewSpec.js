@@ -78,7 +78,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
         });
     });
 
-    describe('addRecordFromSuperUuid', function () {
+    describe('addRecordWithUuid', function () {
         var record;
 
         beforeEach(function() {
@@ -105,19 +105,19 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
 
         it('sends correct tracking data', function() {
 
-            facetedSearchDataView.addRecordFromSuperUuid("my super uuid", false);
+            facetedSearchDataView.addRecordWithUuid("my super uuid", false);
             expect(window.trackUsage).toHaveBeenCalledWith("Collection", "select", "Argo Australia Profiles");
         });
 
         it('sends view event for normal select', function() {
 
-            facetedSearchDataView.addRecordFromSuperUuid("my super uuid", false);
+            facetedSearchDataView.addRecordWithUuid("my super uuid", false);
             expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.VIEW_DATA_COLLECTION, record);
         });
 
         it('does not send view event when multi selecting', function() {
 
-            facetedSearchDataView.addRecordFromSuperUuid("my super uuid", true);
+            facetedSearchDataView.addRecordWithUuid("my super uuid", true);
             expect(Ext.MsgBus.publish).not.toHaveBeenCalled();
         });
     });
