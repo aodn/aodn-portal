@@ -17,7 +17,7 @@ Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPan
 
         Portal.filter.ui.GeometryFilterPanel.superclass.constructor.call(this, config);
 
-        this.map = cfg.layer.map;
+        this.map = cfg.map;
         this.map.events.on({
             scope: this,
             'spatialconstraintadded': function(geometry) {
@@ -32,15 +32,15 @@ Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPan
     setLayerAndFilter: function(layer, filter) {
         Portal.filter.ui.GeometryFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
 
-        if (layer.map.spatialConstraintControl) {
-            this._updateWithGeometry(layer.map.spatialConstraintControl.getConstraint());
-            filter.map = layer.map;
+        if (this.map.spatialConstraintControl) {
+            this._updateWithGeometry(this.map.spatialConstraintControl.getConstraint());
+            filter.map = this.map;
         }
     },
 
     _createControls: function() {
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
-            map: this.layer.map,
+            map: this.map,
             hideLabel: true
         });
         this.add(this.spatialSubsetControlsPanel);

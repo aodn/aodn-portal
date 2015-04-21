@@ -10,30 +10,16 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
 
-        this.layer = cfg.layer;
-
-        var items = [];
-
-        if (this.layer.isNcwms()) {
-            var ncwmsPanel = new Portal.details.NcWmsPanel({
-                map: cfg.map,
-                layer: cfg.layer
-            });
-
-            items.push(ncwmsPanel);
-        }
-        else {
-            var filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
-                layer: cfg.layer
-            });
-
-            items.push(filterGroupPanel);
-        }
+        var panelType = cfg.layer.isNcwms() ? Portal.details.NcWmsPanel : Portal.filter.ui.FilterGroupPanel;
+        var newPanel = new panelType({
+            map: cfg.map,
+            layer: cfg.layer
+        });
 
         var config = Ext.apply({
             title: OpenLayers.i18n('subsetPanelTitle'),
             hideMode: 'offsets', // fixes #1278
-            items: items
+            items: [newPanel]
         }, cfg);
 
         Portal.details.SubsetPanel.superclass.constructor.call(this, config);

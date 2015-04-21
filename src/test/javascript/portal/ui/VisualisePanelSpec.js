@@ -64,7 +64,7 @@ describe('Portal.ui.VisualisePanel', function() {
     describe('record added', function() {
         it('expands details panel', function() {
             spyOn(visualisePanel.detailsPanel, 'expand');
-            Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
+            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
             expect(visualisePanel.detailsPanel.expand).toHaveBeenCalled();
         });
     });

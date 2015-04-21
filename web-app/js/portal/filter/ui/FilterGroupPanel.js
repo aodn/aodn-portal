@@ -11,6 +11,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     constructor: function(cfg) {
 
         this.layer = cfg.layer;
+        this.map = cfg.map;
         this.loadingMessage = this._createLoadingMessageContainer();
         var config = Ext.apply({
             autoDestroy: true,
@@ -200,7 +201,8 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         var uiElementClass = filterClass.prototype.getUiComponentClass();
         var newFilterPanel = new uiElementClass({
             filter: filter,
-            layer: this.layer
+            layer: this.layer,
+            map: this.map
         });
 
         this.relayEvents(newFilterPanel, ['addFilter']);

@@ -17,20 +17,20 @@ describe("Portal.ui.DownloadCartWidget", function() {
         expect(downloadCartWidget.downloadCartSize).not.toBeNull();
     });
 
-    it('listens for ACTIVE_GEONETWORK_RECORD_ADDED event', function() {
+    it('listens for DATA_COLLECTION_ADDED event', function() {
         spyOn(downloadCartWidget, 'updateDownloadCartSize');
-        Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
         expect(downloadCartWidget.updateDownloadCartSize).toHaveBeenCalled();
 
     });
 
     it('one record is added', function() {
-        Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
         expect(downloadCartWidget.getCollectionCounterAsString()).toEqual("1");
     });
 
     it('it clears', function() {
-        Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
         Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
         expect(downloadCartWidget.getCollectionCounterAsString()).toEqual("0");
     });

@@ -18,6 +18,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
         layer.server = { uri: "uri" };
         layer.getDownloadLayer = function() { return "downloadLayer"; };
         layer.isKnownToThePortal = function() { return true; };
+        layer.map = getMockMap();
 
         filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
             layer: layer
@@ -90,7 +91,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             });
             var numberPanel =  new Portal.filter.ui.NumberFilterPanel();
             var geometryPanel = new Portal.filter.ui.GeometryFilterPanel({
-                layer: { map: getMockMap() }
+                map: getMockMap()
             });
             var datePanel = new Portal.filter.ui.DateFilterPanel();
             var comboPanel = new Portal.filter.ui.ComboFilterPanel();
