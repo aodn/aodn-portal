@@ -55,7 +55,7 @@ One way to do this is by adding a file called &lt;context&gt;.xml in the ```$CAT
 
 Then add the file called ```portal.groovy```
 
-You can clone an example [here](https://github.com/aodn/aodn-portal-config) and modify as required. 
+You can clone an example [here](https://github.com/aodn/aodn-portal/blob/master/grails-app/conf/Config.groovy) and modify as required. 
 
 ## Getting Started (How Do I Drive This Thing?)
 Read the [Getting Started guide](https://github.com/aodn/aodn-portal/wiki/Getting-Started) on the wiki
