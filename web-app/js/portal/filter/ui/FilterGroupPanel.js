@@ -51,7 +51,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
             items: [
                 this._createVerticalSpacer(10),
                 {
-                    html: OpenLayers.i18n('loadingSpinner', {resource: OpenLayers.i18n('subsetParametersText')})
+                    html: OpenLayers.i18n('loadingMessage', {resource: OpenLayers.i18n('subsetParametersText')})
                 }
             ]
         });

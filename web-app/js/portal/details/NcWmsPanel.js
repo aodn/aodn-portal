@@ -91,7 +91,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _addLoadingInfo: function() {
-        this.loadingInfo = this._newHtmlElement(OpenLayers.i18n('loadingSpinner', {resource: ""}));
+        this.loadingInfo = this._newHtmlElement(OpenLayers.i18n('loadingMessage', {resource: ""}));
         this.add(this.loadingInfo);
     },
 

@@ -113,14 +113,13 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _showError: function() {
-        this._setSpinnerText( OpenLayers.i18n('facetedSearchUnavailable') );
+        this._setSpinnerText(OpenLayers.i18n('facetedSearchUnavailable'));
     },
 
     _buildToolBar: function() {
         return new Ext.Toolbar({
             cls: 'search-filters-toolbar',
             border: false,
-            height: 28,
             frame: false,
             items: [this._buildSpinner(), '->', this._buildNewSearchButton()]
         });
@@ -128,7 +127,8 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _buildSpinner: function() {
         this.spinner = new Ext.Panel({
-            html: OpenLayers.i18n('loadingSpinner', {'resource':'search terms'}),
+            html: this._makeSpinnerText(OpenLayers.i18n('loadingMessage', {'resource':'search terms'})),
+            cls: 'search-filters-toolbar-title',
             hidden: false
         });
 
@@ -147,8 +147,12 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _setSpinnerText: function( newText ) {
-        this.spinner.update( newText);
+        this.spinner.update(this._makeSpinnerText(newText));
         this.spinner.show();
+    },
+
+    _makeSpinnerText: function( text ) {
+        return '<span class=\"fa fa-spin fa-spinner \"></span> ' + text;
     },
 
     _hideSpinnerText: function( ) {
@@ -172,7 +176,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _setNewSearchButtonVisibility: function() {
-        this._setSpinnerText(OpenLayers.i18n('loadingSpinner',{'resource':'Collections'}));
+        this._setSpinnerText(OpenLayers.i18n('loadingMessage',{'resource':'Collections'}));
         this.newSearchButton.setVisible( this.searcher.hasFilters() );
     },
 
