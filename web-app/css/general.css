@@ -56,10 +56,6 @@ input[type="checkbox"], input[type="radio"] {
     border: 0;
 }
 
-input.readonlyInput {
-    border: none;
-}
-
 .x-splitbar-v {
     background-color: #fafafa;
 }
@@ -68,35 +64,10 @@ input.readonlyInput {
     border-radius: 6px;
 }
 
-.imageLabel {
-    margin: 2px;
-    margin-left: 13px;
-    font-size: 10px;
-}
-
-.searchInput {
-    display: block;
-    height: 27px;
-    padding: 15px;
-    font-size: 14px;
-    color: inherit;
-    border-color: #777777;
-}
-
-.searchInput.x-form-empty-field {
-    color: #15428B;
-    font-size: inherit;
-    font-weight: bold;
-}
-
 .faceted-search-results {
     box-shadow: inset 6px 1px 10px 2px #eee;
     border-radius: 3px;
     padding: 10px 6px;
-}
-
-#activeTreePanel input {
-    margin: 0;
 }
 
 a {
@@ -155,29 +126,8 @@ hr {
     font-style: italic;
 }
 
-.homePanelWidget {
-    margin-right: 10px;
-    padding-right: 20px;
-}
-
 .buttonPad {
     padding: 2px 2px 5px 0
-}
-
-.arrowUp {
-    background: url("../images/arrowUp.png") no-repeat left top transparent;
-}
-
-.arrowDown {
-    background: url("../images/arrowDown.png") no-repeat left top transparent;
-}
-
-.arrowUpWhite {
-    background: url("../images/arrowUpWhite.png") no-repeat left top transparent;
-}
-
-.arrowDownWhite {
-    background: url("../images/arrowDownWhite.png") no-repeat left top transparent;
 }
 
 .leftMenus {
@@ -226,29 +176,6 @@ hr {
     top: 12px;
 }
 
-#loginPopup {
-    background-color: #ffffff;
-    border: 1px solid silver;
-    border-radius: 6px;
-    padding: 6px;
-    position: absolute;
-    right: 10px;
-    top: 25px;
-}
-
-.searchField {
-    padding: 3px 5px 3px 5px;
-}
-
-.searchFieldSelectors {
-    margin: 3px 0;
-    background-color: #fafafa;
-}
-
-.noborder {
-    border: none ! important;
-}
-
 /*
     map while loading
 */
@@ -278,36 +205,8 @@ hr {
     cursor: crosshair;
 }
 
-#centerTabPanel {
-    border: 0 solid white;
-}
-
-#loader {
-    background-color: #0B5584;
-    background-color: rgba(11, 85, 132, 0.5);
-    border: 0;
-    border-radius: 6px;
-    margin-bottom: 3px;
-    margin-right: 3px;
-    width: 220px;
-    box-shadow: -5px 5px 25px rgba(24, 57, 78, 0.3), 0 0 1px rgba(24, 57, 78, 0.2) inset
-}
-
-#loader span {
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
-    text-shadow: 2px 1px 3px #18394E;
-    white-space: nowrap;
-    line-height: 75px;
-}
-
 .nowrap {
     white-space: nowrap;
-}
-
-.mapFooter {
-    background: url("../images/shadowLight.png") repeat-x scroll left top white;
 }
 
 /* animation buttons */
@@ -343,10 +242,6 @@ hr {
 .x-btn.clearFiltersButton {
     float: right;
     margin-right: 17px;
-}
-
-.logoSpacer {
-    margin: 2px;
 }
 
 .italic {
@@ -417,10 +312,6 @@ Site navigation
     border-radius: 8px 0 0 8px;
 }
 
-.community {
-    padding: 10px 0;
-}
-
 .motd {
     border-radius: 6px;
     background-color: white;
@@ -433,10 +324,6 @@ Site navigation
 /* Our own style is applied to the message of the day dialog (see above). */
 .motd div[class^='x-window'] {
     background-image: none;
-}
-
-#mainMapCentrePanel {
-    background-color: #8AA8C4;
 }
 
 a[rel="external"], a.external {
@@ -453,44 +340,6 @@ a[rel="external"], a.external {
 
 a:hover.mainlinks {
     color: black;
-}
-
-.noBackgroundImage * {
-    background-image: none ! important;
-}
-
-/* login register forgotten password */
-.auth table {
-    border: 0;
-    border-spacing: 4px;
-}
-
-.authentication-formLinks {
-    position: absolute;
-    top: 150px;
-    left: 30px;
-    font-size: 14px;
-}
-
-.authentication-form-floated {
-    position: absolute;
-    top: 150px;
-    left: 210px;
-}
-
-.authentication-form h2 {
-    padding-bottom: 0.8em;
-}
-
-.authentication-form label {
-    font-weight: bold;
-    font-size: 13px;
-}
-
-.authentication-form .authentication-hints {
-    font-size: 0.9em;
-    font-style: italic;
-    padding: 10px 5px;
 }
 
 /* MESSAGES AND ERRORS */
@@ -541,7 +390,7 @@ a:hover.mainlinks {
 }
 
 /*
-Geoserver default tables
+Geoserver default tables in external GFI
 */
 table.featureInfo, table.featureInfo td, table.featureInfo th {
     border: 1px solid #ddd;
@@ -572,23 +421,6 @@ table.featureInfo caption {
     font-weight: bold;
     text-transform: uppercase;
     padding: .2em .2em;
-}
-
-#mapdiv {
-    position: absolute;
-    z-index: 1;
-    height: 100%;
-    width: 100%;
-}
-
-.leftdrop {
-    background-image: url(../images/leftshadow.png);
-    background-position: left top;
-    background-repeat: repeat-y;
-    z-index: 101;
-    width: 10px;
-    height: 100%;
-    position: absolute;
 }
 
 #mapscale {
@@ -648,15 +480,6 @@ div.olMap.x-item-disabled * {
     filter: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' height='0'><filter id='greyscale'><feColorMatrix type='saturate' values='0.8' /></filter></svg>#greyscale");
 }
 
-/* map toolbar */
-.expandUpLink {
-    background: url('../images/mini-up.png') center 2px no-repeat;
-}
-
-.expandDownLink {
-    background: url('../images/mini-down.png') center 2px no-repeat;
-}
-
 #maptools .x-panel-body {
     border-radius: 5px;
 }
@@ -667,22 +490,6 @@ div.olMap.x-item-disabled * {
     left: 0;
     z-index: 900 ! important;
     border-radius: 0;
-}
-
-.animationControlsPanel {
-    width: 450px;
-    padding: 2px 6px 0px 6px;
-    margins: 2px;
-}
-
-.animationSubPanel label,
-.animationSubPanel button {
-    color: white;
-    font-weight: bold;
-}
-
-.animationSubPanel .x-btn-over button {
-    color: black;
 }
 
 .fullTransparency {
@@ -712,21 +519,6 @@ div.olMap.x-item-disabled * {
     background-color: #F4F4F4;
     padding: 4px;
     width: 97%;
-}
-
-.feature {
-    padding: 8px 5px;
-}
-
-.nofeature {
-    margin: 2px 0 5px 0;
-    padding: 5px;
-    width: 100%;
-    background-color: #fafafa;
-}
-
-.feature ul li {
-    margin-left: 1em;
 }
 
 .featureinfocontent .info {
@@ -801,10 +593,6 @@ p.important {
 
 .extAjaxLoading div {
     background-color: #ffffff ! important;
-}
-
-.fb-like-box, .fb_iframe_widget {
-    background-color: #ffffff;
 }
 
 .x-panel-header {
@@ -971,10 +759,6 @@ div.olControlScaleLineTop, div.olControlScaleLineBottom {
     display: block;
 }
 
-#mapActionsWindow.x-window {
-    box-shadow: none;
-}
-
 .ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover, .ygtvfocus {
     background-color: transparent;
 }
@@ -1026,49 +810,9 @@ JQUERY AUTO COMPLETE
     padding-left: 0 ! important;
 }
 
-#detailsPanel {
-    z-index: 1200 !important
-}
-
-.emptyActiveLayerTreePanelText {
-    margin: 10px;
-    font-weight: normal;
-    font-style: italic;
-}
-
-#menuHeaderTail {
-    background: url(../images/menuHeader.png) 0 -13px repeat-x;
-}
-
-.layer_blacklisted {
-    background-color: #333333;
-}
-
-.layer_inactive a span {
-    color: #888;
-}
-
-#national_tidal_centre_list li {
-    padding-left: 2em;
-}
-
-#welcome {
-    font-size: 1.2em;
-}
-
-#welcome ul {
-    padding: 0 0 10px 10px;
-    margin: 0 0 10px 10px;
-    list-style-type: disc;
-}
-
 .clear {
     clear: both;
     height: 1px;
-}
-
-.top_padded {
-    padding-top: 1.3em;
 }
 
 .wrapping-wrapped-field {
@@ -1127,19 +871,6 @@ div.allwhite {
     padding: 7px 0;
 }
 
-.p-selected-view {
-    margin: 5px;
-}
-
-.p-selection-wrap * {
-    vertical-align: middle;
-}
-
-.p-selection-wrap input {
-    margin-bottom: 2px;
-    margin-right: 5px;
-}
-
 .filter-selection-panel-header {
     padding-left: 3px;
 }
@@ -1168,24 +899,8 @@ div.allwhite {
     margin: 5px;
 }
 
-.faceted-search-disclaimer {
-    border: 1px solid #ffcc55;
-}
-
-.faceted-search-disclaimer .x-panel-body {
-    padding: 2px 2px 2px 4px;
-    background-color: #fffacd;
-}
-
 .downloadPanelResultsWrapper {
     margin-bottom: 15px;
-}
-
-.resultsRowBackground {
-    background-color: #eeeeee;
-    border-left: 1px solid #CCCCCC;
-    margin-top: 4px;
-    padding: 3px 10px;
 }
 
 .resultsHeaderBackground {
@@ -1284,14 +999,6 @@ div:not(.x-tree-selected) * {
     border: none;
 }
 
-.delayedDownloadForm {
-    padding: 10px 10px 2px 10px;
-}
-
-.downloadEstimateLabel {
-    padding: 10px 10px 2px 10px;
-}
-
 /* Bug #9 - show blank tiles on image load error. */
 .olImageLoadError {
     display: none;
@@ -1310,26 +1017,12 @@ div:not(.x-tree-selected) * {
     border-width: 2px;
 }
 
-.WAMiniLogo {
-    vertical-align: middle;
-    margin-bottom: 6px;
-}
-
 .search-filters-toolbar {
     margin: 5px;
 }
 
 .search-filters-toolbar-title * {
     font-size: 13px! important;
-}
-
-.collectionTitle {
-    font-weight: bold;
-    font-style: italic;
-}
-
-.viewPortTabExtras {
-    margin-left: 20px;
 }
 
 #downLoadCartWidget {
@@ -1396,10 +1089,6 @@ div:not(.x-tree-selected) * {
     background-color: #fcfcfc;
     border: 1px solid #ccc;
     border-radius: 3px;
-}
-
-.smallFieldLabel label {
-    width: 50px;
 }
 
 .x-tree-node-el {
