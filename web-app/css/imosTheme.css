@@ -76,10 +76,6 @@ h2 {
     margin-left: 35px;
 }
 
-.logoSpacer {
-    margin: 0;
-}
-
 .buildInfo {
     color: #999999;
     font-size: 10px;
@@ -107,7 +103,6 @@ h2 {
 h1, h2, h3, h4,
 .x-panel-header,
 .x-window-header-text,
-#rightHomePanel h3,
 .search-filter-panel .filter-selection-panel-header-selected {
     color: #4D5B63;
 }
@@ -206,17 +201,6 @@ input, select, textarea {
     /*box-shadow: 2px 2px 3px 0 #EEEEEE;*/
 }
 
-#mapActionsWindow.x-window {
-    background-color: #fafafa;
-}
-
-#mainHomePanel h1 {
-    margin: 10px 0 20px 0;
-}
-
-#rightHomePanel {
-    background-color: white;
-}
 
 .mainToolBar {
     box-shadow: 0 -15px 15px -15px #ccc;
@@ -231,24 +215,12 @@ input, select, textarea {
     font-size: 10px;
 }
 
-.footerText p {
-    margin-bottom: 15px !important;
-}
-
-.footerText p:first-child {
-    margin-left: 210px;
-}
-
 .footer .x-box-inner {
     overflow: visible;
 }
 
 .footer a:hover {
     text-decoration: underline;
-}
-
-#loginPopup a {
-    color: #1b7399;
 }
 
 .x-toolbar {
@@ -356,10 +328,6 @@ ul.x-tab-strip-top {
     background: url(../images/IMOS/viewPortTabActiveLast.png) right 0 center no-repeat;
 }
 
-.animationSubPanel .x-btn, .animationSubPanel.x-btn {
-    background-color: inherit;
-}
-
 .x-btn-tl, .x-btn-tr, .x-btn-tc, .x-btn-ml, .x-btn-mr, .x-btn-mc, .x-btn-bl, .x-btn-br, .x-btn-bc {
     background: none;
 }
@@ -371,18 +339,6 @@ ul.x-tab-strip-top {
 
 .steps .x-panel-header-text {
     font-size: 20px;
-}
-
-.collectionTitle {
-    color: #B4B4B4
-}
-
-#mapActions {
-    background: none repeat scroll 0 0 rgba(62, 93, 118, 0.22);
-}
-
-.treeResetContainer label {
-    color: #333333;
 }
 
 .hightlightInputbox {
