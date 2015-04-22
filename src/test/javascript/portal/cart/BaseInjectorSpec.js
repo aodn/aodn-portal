@@ -85,7 +85,7 @@ describe('Portal.cart.BaseInjector', function() {
 
             expect(markup).toContain(geoNetworkRecord.uuid);
             expect(markup).toContain(OpenLayers.i18n("estimatedDlLoadingMessage"));
-            expect(markup).toContain(OpenLayers.i18n("estimatedDlLoadingSpinner"));
+            expect(markup).toContain(OpenLayers.i18n("faSpinner"));
         });
     });
 });

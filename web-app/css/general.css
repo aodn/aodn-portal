@@ -495,6 +495,14 @@ a:hover.mainlinks {
 
 /* MESSAGES AND ERRORS */
 
+.error {
+    color: #aa6708;
+}
+
+.fa-warning {
+    color: #aa6708;
+}
+
 .errors, .message {
     font-size: 0.9em;
     line-height: 2;
@@ -614,7 +622,7 @@ table.featureInfo caption {
     z-index: 3;
     font-family: Arial;
     font-size: smaller;
-    border-radius: 5 ! important;
+    border-radius: 5px ! important;
     border-width: 1px 1px 0 0;
     background-color: #3c668d;
     opacity: 0.0;
@@ -637,7 +645,6 @@ div.olMap.x-item-disabled * {
     -o-filter: grayscale(40%);
     -ms-filter: grayscale(40%);
     filter: grayscale(40%);
-    /*filter: gray;*/
     filter: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' height='0'><filter id='greyscale'><feColorMatrix type='saturate' values='0.8' /></filter></svg>#greyscale");
 }
 
@@ -731,6 +738,7 @@ div.olMap.x-item-disabled * {
 
 .featureinfocontent .error {
     padding: 5px;
+    color: inherit;
     margin: 4px;
     border: 1px solid #ACAC0C;
     background: #FCFCCF;
@@ -1014,10 +1022,6 @@ JQUERY AUTO COMPLETE
     overflow: hidden;
 }
 
-.ac_loading {
-    background: white url('../images/spinner.gif') right center no-repeat;
-}
-
 .smallIndentInputBox {
     padding-left: 0 ! important;
 }
@@ -1173,14 +1177,6 @@ div.allwhite {
     background-color: #fffacd;
 }
 
-.remove-layer-button, .zoom-to-layer-button, .layer-loading-button, .layer-loaded-button, .layer-error-button {
-    width: 12px;
-    height: 19px;
-    vertical-align: top;
-    margin: 1px;
-    border: 0;
-}
-
 .downloadPanelResultsWrapper {
     margin-bottom: 15px;
 }
@@ -1245,27 +1241,9 @@ div.allwhite {
     display: inline-block;
 }
 
-.remove-layer-button {
-    background: url(../images/document-close-3.png) center no-repeat transparent;
-}
-
-.zoom-to-layer-button {
-    background: url(../images/zoom_to_layer2.png) center no-repeat transparent;
-}
-
-.layer-loading-button {
-    visibility: visible;
-    background: url('../images/spinner_12x12.gif') center no-repeat transparent;
-}
-
 .layer-loaded-button {
     visibility: hidden;
-    width: 0;
-}
-
-.layer-error-button {
-    visibility: visible;
-    background: url('../images/software-update-urgent-2.png') center no-repeat transparent;
+    width: 0! important;
 }
 
 .overflow-y {
@@ -1337,14 +1315,12 @@ div:not(.x-tree-selected) * {
     margin-bottom: 6px;
 }
 
-.search-filters-toolbar.x-toolbar {
-    background-color: inherit;
-    border-width: 0;
+.search-filters-toolbar {
+    margin: 5px;
 }
 
-.search-filters-toolbar .x-panel-header-text {
-    font-size: 14px;
-    font-weight: bold;
+.search-filters-toolbar-title * {
+    font-size: 13px! important;
 }
 
 .collectionTitle {
@@ -1451,4 +1427,5 @@ div.tool-plus-disabled {
 /* font Awesome icons */
 .fa {
     opacity: 0.8;
+    font-family: FontAwesome! important;
 }

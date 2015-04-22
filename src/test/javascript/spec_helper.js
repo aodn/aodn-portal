@@ -98,7 +98,7 @@ var setupTestConfigAndStubs = function() {
     Portal.app.config.defaultDatelineZoomBbox = '90, 90, -90, -90';
 
     // Stop 404s.
-    OpenLayers.Lang.en.loadingSpinner = '';
+    OpenLayers.Lang.en.loadingMessage = '';
 
     log.removeAllAppenders();
 };

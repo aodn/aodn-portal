@@ -15,7 +15,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
         var config = Ext.apply({
             title: OpenLayers.i18n('infoTabTitle'),
-            html: OpenLayers.i18n('loadingSpinner', {resource: " collection information"}),
+            html: OpenLayers.i18n('loadingMessage', {resource: " collection information"}),
             listeners: {
                 scope: this,
                 render: this._initWithLayer

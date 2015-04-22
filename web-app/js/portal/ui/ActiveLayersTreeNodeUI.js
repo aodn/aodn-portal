@@ -45,13 +45,13 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
                     },
                     {
                         tooltip: OpenLayers.i18n('removeDataCollection'),
-                        cls: 'remove-layer-button',
+                        cls: 'fa-remove',
                         clickHandler: this.removeLayer,
                         name: 'remove'
                     },
                     {
                         tooltip: OpenLayers.i18n('zoomToDataCollection'),
-                        cls: 'zoom-to-layer-button',
+                        cls: 'fa-search',
                         clickHandler: this.zoomToLayer,
                         name: 'zoom'
                     }
@@ -59,7 +59,7 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
                 function(item) {
                     var button = Ext.DomHelper.insertBefore(
                         cb,
-                            "<input type='button' class='" + item.cls + "' title='" + item.tooltip + "'/>"
+                            "<span class='fa fa-fw " + item.cls + "' ></span>"
                     );
                     that.buttons[item.name] = button;
 
@@ -98,18 +98,18 @@ Portal.ui.ActiveLayersTreeNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI, {
 
     layerLoadingStart: function() {
         this.statusIndicator().
-            addClass("layer-loading-button").
-            removeClass("layer-error-button").
+            addClass("fa-spin fa-spinner").
+            removeClass("fa-warning").
             removeClass("layer-loaded-button");
     },
 
     layerLoadingEnd: function(loadedWithErrors) {
         var statusButton = this.statusIndicator();
 
-        statusButton.removeClass("layer-loading-button");
+        statusButton.removeClass("fa-spin fa-spinner");
 
         if (loadedWithErrors) {
-            statusButton.addClass("layer-error-button");
+            statusButton.addClass("fa-warning");
         }
         else {
             statusButton.addClass("layer-loaded-button");

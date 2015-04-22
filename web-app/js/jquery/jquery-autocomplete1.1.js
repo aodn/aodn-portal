@@ -388,7 +388,7 @@ $.Autocompleter = function(input, options) {
 $.Autocompleter.defaults = {
         inputClass: "ac_input",
         resultsClass: "ac_results",
-        loadingClass: "ac_loading",
+        loadingClass: "fa fa-spin fa-spinner",
         minChars: 1,
         delay: 400,
         matchCase: false,

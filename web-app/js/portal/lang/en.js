@@ -21,7 +21,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     maskText: "Searching ... ",
     pleasePickCondensed: '**pick**',
-    loadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />&nbsp;<i>Loading ${resource}\u2025</i>',
+    loadingMessage: '&nbsp;<i>Loading ${resource}\u2025</i>',
 
     // DetailsPanel.js
     opacity: "Opacity",
@@ -235,12 +235,13 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadStatusRequested: "Downloading...",
 
     // WfsDataRowTemplate
-    fileSizeIconMarkup: '<img src="images/error.png">',
+    faError: '<span class=\"fa fa-fw fa-warning error \"></span>',
+
     estimatedDlMessage: "The download size is ",
     estimatedDlFailedMsg: "The download size is unknown.",
     estimatedNoDataMsg: "No data available. <i>(Try changing filters)</i>",
     estimatedDlLoadingMessage: "Estimating download size...",
-    estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />',
+    faSpinner: '<span class=\"fa fa-spin fa-spinner \"></span>',
     estimatedDlTimeoutMsg: "The download size is too large to estimate.",
     transAbortMsg: "transaction aborted",
 
