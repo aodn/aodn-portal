@@ -2,16 +2,12 @@ package au.org.emii.portal
 
 import grails.test.ControllerUnitTestCase
 
-class MarvlControllerTests extends ControllerUnitTestCase {
+@TestFor(MarvlController)
+class MarvlControllerTests {
 
-    def controller
-
-    protected void setUp() {
-        super.setUp()
-
-        controller = new MarvlController()
-        controller.grailsApplication = [
-            config: new ConfigSlurper().parse("""
+    void setUp() {
+        controller.grailsApplication.config =
+            new ConfigSlurper().parse("""
                 marvl {
                     urlList {
                         substitutions = [
@@ -20,12 +16,11 @@ class MarvlControllerTests extends ControllerUnitTestCase {
                     }
                 }"""
             )
-        ]
     }
 
     void testUrlListForFeatureRequest() {
 
-        mockParams.propertyName = "the_property"
+        controller.params.propertyName = "the_property"
 
         def testParamProcessor = new Object()
         controller.metaClass.requestSingleFieldParamProcessor = { fieldName ->
@@ -70,6 +65,6 @@ http://data.imos.org.au/IMOS/Q9900542.nc\n\
 
         controller.urlListForFeatureRequest()
 
-        assertEquals "No propertyName provided", mockResponse.contentAsString
+        assertEquals "No propertyName provided", response.contentAsString
     }
 }
