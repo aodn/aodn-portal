@@ -34,3 +34,11 @@ function trackFiltersUsage(actionKey, label, collection) {
     );
 }
 
+function trackDownloadUsage(action, collection, downloadParams) {
+    trackUsage(
+        OpenLayers.i18n('downloadTrackingCategory'),
+        action,
+        collection,
+        downloadParams
+    );
+}

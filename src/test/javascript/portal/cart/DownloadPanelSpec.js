@@ -239,7 +239,7 @@ describe("Portal.cart.DownloadPanel", function() {
 
             downloadPanel.confirmDownload(testCollection, callbackScope, callback, testParams, testKey);
             testParams.onAccept(testParams);
-            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(testKey), testCollection.title);
+            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(testKey), testCollection.title, undefined);
         });
     });
 

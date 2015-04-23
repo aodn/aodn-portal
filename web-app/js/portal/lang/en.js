@@ -286,6 +286,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     trackingTypedBboxLabel: 'typedBbox',
     facetTrackingCategory: "Facets",
     goButtonTrackingLabel: "Go",
+    gogoduckTrackingLabel: "GoGoDuck",
 
     shareButton: "New portal with only this collection"
 });
