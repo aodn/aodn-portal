@@ -47,7 +47,7 @@ Grails tooling directly to build our artifacts. We have a dependency on Maven to
 we are in the process of removing that dependency, [you can help with that too](https://github.com/jkburges/grails-javascript-phantomjs "Grails JavaScript PhantomJS")
 
 ## Can I Get A Pre-Built War?
-Yes, you can download it from our [Jenkins server](https://jenkins.aodn.org.au/job/Portal%20-%203.x%20Prod/).
+Yes, you can download it from our [Jenkins server](https://jenkins.aodn.org.au/job/portal_4_prod/).
 
 ## Installation
 The AODN portal has been tested with Tomcat.  All you need to do is deploy the war and add a configuration file that tells the portal:
