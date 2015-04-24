@@ -113,10 +113,18 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
         });
     },
 
-    _onAsyncDownloadRequestSuccess: function() {
+    _onAsyncDownloadRequestSuccess: function(response) {
+        var serviceMessage = "";
+        if (this.params.serviceResponseHandler) {
+            serviceMessage = this.params.serviceResponseHandler(response.responseText);
+        }
+
         Ext.Msg.alert(
             OpenLayers.i18n('asyncDownloadPanelTitle'),
-            OpenLayers.i18n('asyncDownloadSuccessMsg', { email: this.params.emailAddress })
+            OpenLayers.i18n('asyncDownloadSuccessMsg', {
+                email: this.params.emailAddress,
+                serviceMessage: serviceMessage
+            })
         );
     },
 

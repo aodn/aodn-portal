@@ -68,6 +68,21 @@ describe("Portal.cart.Downloader", function() {
                 failure: downloader._onAsyncDownloadRequestFailure
             });
         });
+
+        describe('_onAsyncDownloadRequestSuccess', function() {
+            it('calls serviceResponseHandler', function() {
+                var response = { responseText: "responseText" };
+                var scope = {
+                    params: {
+                        emailAddress: "emailAddress",
+                        serviceResponseHandler: jasmine.createSpy()
+                    }
+                };
+                downloader._onAsyncDownloadRequestSuccess.apply(scope, [response]);
+
+                expect(scope.params.serviceResponseHandler).toHaveBeenCalledWith(response.responseText);
+            });
+        });
     });
 
     describe('downloadSynchronously', function() {
