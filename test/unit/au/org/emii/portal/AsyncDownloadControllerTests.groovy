@@ -64,7 +64,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
         controller.index()
 
         assertEquals 1, createJobCalledTimes
-        assertEquals "gogoduck: gogoduck_rendered_text", mockResponse.contentAsString
+        assertEquals "gogoduck_rendered_text", mockResponse.contentAsString
     }
 
     void testGogoduckJobSuccess() {
@@ -72,7 +72,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
         controller.index()
 
-        assertEquals "gogoduck: gogoduck_rendered_text", mockResponse.contentAsString
+        assertEquals "gogoduck_rendered_text", mockResponse.contentAsString
     }
 
     void testGogoduckJobFailure() {

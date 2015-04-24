@@ -3,6 +3,7 @@ package au.org.emii.portal
 import grails.converters.JSON
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.HttpResponseException
+import org.apache.http.util.EntityUtils
 
 class GogoduckService extends AsyncDownloadService {
 
@@ -18,15 +19,16 @@ class GogoduckService extends AsyncDownloadService {
             throw new Exception("No parameters passed to gogoduckService")
         }
 
-        _gogoduckConnection().post(
-            [
-                body: _roundUpEndTime(jobParameters),
-                requestContentType: groovyx.net.http.ContentType.JSON
-            ],
-            successHandler
-        )
+        def responseText
 
-        return "GogoDuck job registered"
+        _gogoduckConnection().post([
+            body: _roundUpEndTime(jobParameters),
+            requestContentType: groovyx.net.http.ContentType.JSON
+            ]) { response ->
+                responseText = EntityUtils.toString(response.getEntity());
+            }
+
+        return responseText
     }
 
     def _gogoduckConnection() {
@@ -34,10 +36,6 @@ class GogoduckService extends AsyncDownloadService {
         def registerJobUrl = "${grailsApplication.config.gogoduck.url}/job/"
 
         return new HTTPBuilder(registerJobUrl)
-    }
-
-    def successHandler = { response, reader ->
-        log.debug "GoGoDuck response: ${response.statusLine}"
     }
 
     // This is to compensate for a lack of precision in the timestamps that NcWMS publishes
