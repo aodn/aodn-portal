@@ -16,7 +16,9 @@ describe("Portal.filter.DateFilter", function() {
     beforeEach(function() {
 
         filter = new Portal.filter.DateFilter({
-            name: 'column_name'
+            name: 'column_name',
+            label: 'Nice name',
+            primaryFilter: true
         });
 
         filter._getDateString = function(d) { return d ? d[0] : errorCode };
@@ -141,6 +143,22 @@ describe("Portal.filter.DateFilter", function() {
         it('gives human readble form', function() {
 
             expect(filter.getHumanReadableForm()).toBe(dateLabel + ": 1999/Jan/01-11:00-UTC to 2006/Jun/06-11:00-UTC");
+        });
+    });
+
+    describe('non-primary time filter', function() {
+
+        beforeEach(function() {
+
+            filter.primaryFilter = false;
+            filter.setValue({
+                fromDate: exampleFromDate
+            });
+        });
+
+        it('gives human readble form', function() {
+
+            expect(filter.getHumanReadableForm()).toBe(dateLabel + " (Nice name): after 1999/Jan/01-11:00-UTC");
         });
     });
 });

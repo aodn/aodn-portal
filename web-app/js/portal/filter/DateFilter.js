@@ -95,9 +95,16 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
             formatKey = 'dateFilterBeforeFormat';
         }
 
+        var label = OpenLayers.i18n('temporalExtentHeading');
+
+        if (!this.isPrimary()) {
+
+            label += ' (' + this.getLabel() + ')';
+        }
+
         return String.format(
             OpenLayers.i18n(formatKey),
-            OpenLayers.i18n('temporalExtentHeading'),
+            label,
             this._getDateHumanString(this._getFromDate()),
             this._getDateHumanString(this._getToDate())
         );
