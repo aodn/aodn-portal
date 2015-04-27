@@ -50,11 +50,11 @@ Portal.ui.NavigableCardLayout = Ext.extend(Ext.layout.CardLayout, {
     },
 
     getNextNavigationLabel: function() {
-        return this._getNeighbouringNavigationLabel(1, OpenLayers.i18n('navigationButtonNext'));
+        return this._getNeighbouringNavigationLabel(1, OpenLayers.i18n('navigationButtonNext', {label: "Next"}));
     },
 
     getPrevNavigationLabel: function() {
-        return this._getNeighbouringNavigationLabel(-1, OpenLayers.i18n('navigationButtonPrevious'));
+        return this._getNeighbouringNavigationLabel(-1, OpenLayers.i18n('navigationButtonPrevious',{label: "Previous"}));
     },
 
     _getNeighbouringNavigationLabel: function(relativeIndex, defaultLabel) {

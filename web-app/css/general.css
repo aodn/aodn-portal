@@ -239,6 +239,13 @@ hr {
     clear: both;
 }
 
+.x-btn {
+    padding: 0 6px;
+    background-color: #EEEEEE;
+    border-radius: 6px;
+    margin-right: 3px;
+}
+
 .x-btn.clearFiltersButton {
     float: right;
     margin-right: 17px;
@@ -606,6 +613,8 @@ p.important {
     font-size: 12px;
 }
 
+.x-btn-over:not(.navigationButton),
+.x-btn-over:not(.navigationButton) *,
 ul.x-tab-strip-top li:hover * {
     background-color: #AAA;
     color: white;
@@ -932,7 +941,7 @@ div.allwhite {
 }
 
 .resultsRowHeaderTitle.downloads {
-    width: 780px;
+    width: 770px;
 }
 
 .resultsRowHeaderTitle * {
@@ -948,12 +957,8 @@ div.allwhite {
     vertical-align: middle;
 }
 
-.navigationButton button:hover {
-    color: gray;
-}
-
-.navigationButton .doubleArrow {
-    display: inline-block;
+.navigationButton * :hover {
+    color: black;
 }
 
 .layer-loaded-button {
@@ -1042,12 +1047,6 @@ div:not(.x-tree-selected) * {
     vertical-align: bottom;
 }
 
-.cartLogo {
-    height: 26px;
-    width: 30px;
-    background: url("../images/cart.png") no-repeat left top transparent;
-}
-
 #downloadCartSize {
     font-weight: bold;
 }
@@ -1117,4 +1116,9 @@ div.tool-plus-disabled {
 .fa {
     opacity: 0.8;
     font-family: FontAwesome! important;
+}
+
+.fa-lg.fa-angle-double-right,
+.fa-lg.fa-angle-double-left {
+    vertical-align: -5%;
 }

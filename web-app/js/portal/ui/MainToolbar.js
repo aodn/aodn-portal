@@ -15,7 +15,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
 
         this.prevButton = new Ext.Button({
             cls: "navigationButton backwardsButton",
-            text: OpenLayers.i18n('navigationButtonPrevious'),
+            text: OpenLayers.i18n('navigationButtonPrevious',{label: "Previous"}),
             width: 100,
             hidden: true
         });
@@ -28,7 +28,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
         this.nextButton = new Ext.Button({
             cls: "navigationButton forwardsButton",
             width: 100,
-            text: OpenLayers.i18n('navigationButtonNext'),
+            text: OpenLayers.i18n('navigationButtonNext', {label: "Next"}),
             hidden: true
         });
         this.nextButton.on('click', function() {

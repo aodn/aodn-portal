@@ -87,12 +87,12 @@ describe('Portal.ui.NavigableCardLayout', function() {
     describe('navigation labels', function() {
         describe('get next label', function() {
             it("returns 'next' as default", function() {
-                expect(layout.getNextNavigationLabel()).toBe(OpenLayers.i18n('navigationButtonNext'));
+                expect(layout.getNextNavigationLabel()).toBe(OpenLayers.i18n('navigationButtonNext', {label: "Next"}));
             });
 
             it("returns 'next' if there is no next tab", function() {
                 layout.setActiveItem(TAB_INDEX_DOWNLOAD);
-                expect(layout.getNextNavigationLabel()).toBe(OpenLayers.i18n('navigationButtonNext'));
+                expect(layout.getNextNavigationLabel()).toBe(OpenLayers.i18n('navigationButtonNext', {label: "Next"}));
             });
 
             it('returns custom label if next panel has one', function() {
@@ -105,12 +105,12 @@ describe('Portal.ui.NavigableCardLayout', function() {
 
         describe('get prev label', function() {
             it("returns 'prev' as default", function() {
-                expect(layout.getPrevNavigationLabel()).toBe(OpenLayers.i18n('navigationButtonPrevious'));
+                expect(layout.getPrevNavigationLabel()).toBe(OpenLayers.i18n('navigationButtonPrevious', {label: "Previous"}));
             });
 
             it("returns 'prev' if there is no prev tab", function() {
                 layout.setActiveItem(TAB_INDEX_SEARCH);
-                expect(layout.getPrevNavigationLabel()).toBe(OpenLayers.i18n('navigationButtonPrevious'));
+                expect(layout.getPrevNavigationLabel()).toBe(OpenLayers.i18n('navigationButtonPrevious', {label: "Previous"}));
             });
 
             it('returns custom label if prev panel has one', function() {

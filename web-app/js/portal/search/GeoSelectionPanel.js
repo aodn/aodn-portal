@@ -33,30 +33,37 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
         this.facetMap = new Portal.search.FacetMapPanel({
             initialBbox: Portal.app.appConfig.portal.initialBbox,
             mainMap: cfg.mapPanel,
-            height: 250,
-            width: 250
+            height: 280,
+            width: 300
         });
 
         var config = Ext.apply({
             layout:'form',
             cls:'search-filter-panel filter-selection-panel',
+            defaults: {
+                style: {
+                    margin: '2px'
+                }
+            },
             items:[
                 this.facetMap,
+                new Ext.Spacer({
+                    height: 4
+                }),
                 new Ext.Container({
                     layout: 'hbox',
-                    defaults: {
-                        style: {
-                            padding: '2px'
-                        }
-                    },
-                    items: [  this.goButton = new Ext.Button({
-                        text:OpenLayers.i18n("goButton"),
-                        width:65
-                    }),
+
+                    items: [
+                        this.goButton = new Ext.Button({
+                            text:OpenLayers.i18n("goButton")
+                        }),
+                        new Ext.Spacer({
+                            width: 4
+                        }),
                         this.clearButton = new Ext.Button({
-                            text:OpenLayers.i18n("clearButton"),
-                            width:65
-                        })]
+                            text:OpenLayers.i18n("clearButton")
+                        })
+                    ]
                 })
             ]
         }, cfg, defaults);
