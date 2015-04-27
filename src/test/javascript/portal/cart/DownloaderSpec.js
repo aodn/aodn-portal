@@ -63,7 +63,8 @@ describe("Portal.cart.Downloader", function() {
 
             expect(Ext.Ajax.request).toHaveBeenCalledWith({
                 url: wfsDownloadUrl,
-                scope: { params: params },
+                scope: downloader,
+                params: params,
                 success: downloader._onAsyncDownloadRequestSuccess,
                 failure: downloader._onAsyncDownloadRequestFailure
             });
@@ -72,15 +73,19 @@ describe("Portal.cart.Downloader", function() {
         describe('_onAsyncDownloadRequestSuccess', function() {
             it('calls serviceResponseHandler', function() {
                 var response = { responseText: "responseText" };
-                var scope = {
+                var options = {
                     params: {
                         emailAddress: "emailAddress",
                         serviceResponseHandler: jasmine.createSpy()
                     }
                 };
-                downloader._onAsyncDownloadRequestSuccess.apply(scope, [response]);
+                downloader._onAsyncDownloadRequestSuccess(response, options);
 
-                expect(scope.params.serviceResponseHandler).toHaveBeenCalledWith(response.responseText);
+                expect(options.params.serviceResponseHandler).toHaveBeenCalledWith(response.responseText);
+            });
+
+            it('return empty string if serviceResponseHandler is undefined', function() {
+                expect(downloader._getServiceMessage(undefined, "response")).toEqual("");
             });
         });
     });
