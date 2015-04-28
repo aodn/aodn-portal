@@ -103,21 +103,21 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     _downloadAsynchronously: function(collection, downloadUrl, params) {
         log.debug('downloading asynchronously', downloadUrl);
 
+        this.params = params;
         Ext.Ajax.request({
             url: downloadUrl,
             scope: this,
-            params: params,
             success: this._onAsyncDownloadRequestSuccess,
             failure: this._onAsyncDownloadRequestFailure
         });
     },
 
-    _onAsyncDownloadRequestSuccess: function(response, options) {
+    _onAsyncDownloadRequestSuccess: function(response) {
         Ext.Msg.alert(
             OpenLayers.i18n('asyncDownloadPanelTitle'),
             OpenLayers.i18n('asyncDownloadSuccessMsg', {
-                email: options.params.emailAddress,
-                serviceMessage: this._getServiceMessage(options.params.serviceResponseHandler, response.responseText)
+                email: this.params.emailAddress,
+                serviceMessage: this._getServiceMessage(this.params.serviceResponseHandler, response.responseText)
             })
         );
     },
