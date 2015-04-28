@@ -23,11 +23,10 @@ class GogoduckServiceTests extends GrailsUnitTestCase {
         def testParams = [jobParameters: "{gogoduck_json}"]
         def testSuccessHandler = new Object()
         def testConnection = [
-            post: { params, successHandler ->
+            post: { params, handler ->
 
                 postCallCount++
                 assertEquals "{gogoduck_json}", params.body
-                assertEquals testSuccessHandler, successHandler
             }
         ]
 
@@ -38,8 +37,6 @@ class GogoduckServiceTests extends GrailsUnitTestCase {
 
             params
         }
-
-        service.successHandler = testSuccessHandler
 
         service.registerJob(testParams)
 
@@ -66,11 +63,6 @@ class GogoduckServiceTests extends GrailsUnitTestCase {
 
         assertNotNull connection
         assertEquals 'GOGODUCK_URL/job/', connection.uri.toString()
-    }
-
-    void testSuccessHandler() {
-
-        assertNotNull service.successHandler
     }
 
     void testRoundUpEndTime() {

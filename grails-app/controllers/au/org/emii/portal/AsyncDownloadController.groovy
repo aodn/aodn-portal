@@ -41,7 +41,7 @@ class AsyncDownloadController {
             // Add accounting for that IP address
             downloadAuthService.registerDownloadForAddress(ipAddress, aggregatorServiceString)
 
-            render "$aggregatorServiceString: $renderText"
+            render renderText
         }
         catch (Exception e) {
             log.error "Problem registering new aggregator job with type '$aggregatorServiceString' and parameters: '$params'", e

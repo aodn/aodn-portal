@@ -17,6 +17,23 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
         });
     });
 
+    describe('serviceResponseHandler', function() {
+        it('invalid json', function() {
+            var json = "HERE BE INAVLID JSON";
+            expect(handler.serviceResponseHandler(json)).toEqual("");
+        });
+
+        it('no url', function() {
+            var json = "{}";
+            expect(handler.serviceResponseHandler(json)).toEqual("");
+        });
+
+        it('valid url', function() {
+            var json = '{ "url": "http://gogoduck.aodn.org.au" }';
+            expect(handler.serviceResponseHandler(json)).toMatch("href='http://gogoduck.aodn.org.au'");
+        });
+    });
+
     describe('getDownloadOptions', function() {
 
         it('has one valid option', function() {
