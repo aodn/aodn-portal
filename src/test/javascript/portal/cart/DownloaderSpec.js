@@ -55,18 +55,22 @@ describe("Portal.cart.Downloader", function() {
     describe('downloadAsynchronously', function() {
         it('makes ajax request', function() {
             var wfsDownloadUrl = 'http://someurl';
-            var params = { emailAddress: 'tommy@was.here' };
+            var params = {};
 
             spyOn(Ext.Ajax, 'request');
 
             downloader._downloadAsynchronously(collection, wfsDownloadUrl, params);
 
-            expect(Ext.Ajax.request).toHaveBeenCalledWith({
-                url: wfsDownloadUrl,
-                scope: downloader,
-                success: downloader._onAsyncDownloadRequestSuccess,
-                failure: downloader._onAsyncDownloadRequestFailure
-            });
+            expect(Ext.Ajax.request).toHaveBeenCalled();
+            var requestArgs = Ext.Ajax.request.calls[0].args[0];
+
+            expect(requestArgs.url).toEqual(wfsDownloadUrl);
+            expect(requestArgs.scope).toEqual(downloader);
+            expect(requestArgs.failure).toEqual(downloader._onAsyncDownloadRequestFailure);
+
+            spyOn(downloader, '_onAsyncDownloadRequestSuccess');
+            requestArgs.success.call(downloader, "response");
+            expect(downloader._onAsyncDownloadRequestSuccess).toHaveBeenCalledWith("response", params);
         });
 
         describe('_onAsyncDownloadRequestSuccess', function() {
@@ -76,10 +80,9 @@ describe("Portal.cart.Downloader", function() {
                     emailAddress: "emailAddress",
                     serviceResponseHandler: jasmine.createSpy()
                 };
-                downloader.params = params;
-                downloader._onAsyncDownloadRequestSuccess(response);
+                downloader._onAsyncDownloadRequestSuccess(response, params);
 
-                expect(downloader.params.serviceResponseHandler).toHaveBeenCalledWith(response.responseText);
+                expect(params.serviceResponseHandler).toHaveBeenCalledWith(response.responseText);
             });
 
             it('return empty string if serviceResponseHandler is undefined', function() {
