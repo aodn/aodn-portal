@@ -5,19 +5,19 @@
  *
  */
 
+var BASE_URL = "${grailsApplication.config.grails.serverURL}";;
+
 // Track slow-running specs
 jasmine.slow.enable(500);
 
 Ext.MessageBox.alert = function () {
 };
-
 //overwrite Ext.Ajax.request so it doesn't try to make requests.
 Ext.Ajax.request = function(options) {
 };
 
 // Ref: http://stackoverflow.com/questions/11942085/is-there-a-way-to-add-a-jasmine-matcher-to-the-whole-environment
 beforeEach(function() {
-
     setupTestConfigAndStubs();
     this.addMatchers({
         toBeSame: function(expected) {

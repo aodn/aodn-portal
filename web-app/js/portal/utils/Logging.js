@@ -7,5 +7,5 @@
 
 var log = log4javascript.getLogger();
 
-var ajaxAppender = new log4javascript.AjaxAppender('system/clientLog');
+var ajaxAppender = new log4javascript.AjaxAppender(BASE_URL + '/system/clientLog');
 log.addAppender(ajaxAppender);

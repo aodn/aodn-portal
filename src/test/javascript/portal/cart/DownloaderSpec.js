@@ -123,7 +123,7 @@ describe("Portal.cart.Downloader", function() {
 
             var expectedProxyUrl =
                 String.format(
-                    "download?url={0}&downloadFilename={1}&downloadToken={2}&fieldName={3}",
+                    BASE_URL + "/download?url={0}&downloadFilename={1}&downloadToken={2}&fieldName={3}",
                     'http%3A%2F%2Fdownload',
                     'file%20name',
                     downloadToken,

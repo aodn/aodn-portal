@@ -33,7 +33,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
         <div>
             <div class="landingContainer">
                 <div id="landingLeft">
-                    <img class="roundedImages" src="images/IMOS/landing/leftLandingBling.jpg" />
+                    <g:img uri="${resource(file: "images/IMOS/landing/leftLandingBling.jpg")}" class="roundedImages" />
                 </div>
 
                 <div id="landingCentre">
@@ -51,7 +51,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
                     <div class="landingBling">
                         <a href="${resource(dir: 'home')}" title="Click here to search for and download Ocean Data">
-                            <img class="roundedImages" alt="Image link to search for and download Ocean Data" src="images/IMOS/landing/landingBling.png" width="610" />
+                            <g:img uri="${resource(file: "images/IMOS/landing/landingBling.png")}" class="roundedImages" alt="Image link to search for and download Ocean Data" width="610" />
                         </a>
                     </div>
 

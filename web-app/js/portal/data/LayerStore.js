@@ -33,7 +33,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         var serverUri = layerLink.server.uri;
 
         Ext.Ajax.request({
-            url: 'server/getInfo?' + Ext.urlEncode({server: serverUri}),
+            url: BASE_URL + '/server/getInfo?' + Ext.urlEncode({server: serverUri}),
             scope: this,
             success: function(resp) {
                 try {
@@ -220,7 +220,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     _initBaseLayers: function() {
         // TODO: shouldn't these be set properly in the server in the first place?
-        this._initWithLayersFromServer('layer/configuredBaselayers', {
+        this._initWithLayersFromServer(BASE_URL + '/layer/configuredBaselayers', {
             isBaseLayer: true,
             queryable: false
         }, function() {

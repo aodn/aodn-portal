@@ -51,7 +51,7 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
         this._hideChallenge();
 
         Ext.Ajax.request({
-            url: 'downloadAuth',
+            url: BASE_URL + '/downloadAuth',
             scope: this,
             success: function(resp) {
                 this._configureChallengeHtmlElements(resp);

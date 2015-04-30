@@ -248,7 +248,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         this.clearFiltersButton = new Ext.Button({
             cls: "x-btn-text-icon clearFiltersButton",
-            icon: "images/go-back-icon.png",
+            icon: BASE_URL + "/images/go-back-icon.png",
             text: OpenLayers.i18n('clearFilterButtonLabel'),
             listeners: {
                 scope: this,

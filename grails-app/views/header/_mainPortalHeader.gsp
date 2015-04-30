@@ -9,8 +9,8 @@
 <div id="header">
 
     <div id="logoContainer">
-        <a href="landing"><img src="${portalBranding.logoImage}" alt="logo" id="logo" />
-        </a>
+        <g:link controller="landing"><g:img uri="${resource(base: portalBranding.brandingBase, file: portalBranding.logoImage)}" alt="logo" id="logo" />
+        </g:link>
     </div>
     <div id="landingHeaderContainer" class="headerHeightOverlord">
         <h1 id="headerTitle">${portalBranding.siteHeader}</h1>

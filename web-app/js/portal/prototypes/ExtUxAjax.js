@@ -9,7 +9,7 @@ Ext.namespace('Ext.ux');
 
 Ext.ux.Ajax = Ext.Ajax;
 
-Ext.ux.Ajax.proxyUrl = 'proxy?url=';
+Ext.ux.Ajax.proxyUrl = BASE_URL + '/proxy?url=';
 
 Ext.ux.Ajax.setContentType = function(params, contentType) {
     if (!params.headers) {

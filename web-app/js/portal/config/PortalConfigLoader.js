@@ -27,7 +27,7 @@ Portal.config.PortalConfigLoader = Ext.extend(Object, {
 
     loadAppConfig: function() {
         Ext.Ajax.request({
-            url: 'home/config',
+            url: BASE_URL + '/home/config',
             scope: this,
             success: this._configLoadSuccess,
             failure: this._configLoadFailure

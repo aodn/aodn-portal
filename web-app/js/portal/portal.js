@@ -10,7 +10,7 @@ var progressCount = 0;
 
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider()); // Used by aggregate download
 Ext.Updater.defaults.showLoadIndicator = false; // stop loader inside autoLoad'ed components
-Ext.BLANK_IMAGE_URL = 'img/blank.gif';
+Ext.BLANK_IMAGE_URL = BASE_URL + '/img/blank.gif';
 Ext.QuickTips.init();
 
 //--------------------------------------------------------------------------------------------
