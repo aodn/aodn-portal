@@ -6,6 +6,12 @@
 
 --%>
 
+
+<base href="${grailsApplication.config.grails.serverURL}" >
+<script>
+    var BASE_URL = "${grailsApplication.config.grails.serverURL}";
+</script>
+
 <!-- First import JQUERY -->
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery-1.6.min.js')}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/portal', file: 'jquery.js')}"></script>

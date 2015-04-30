@@ -72,7 +72,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
         var additionalQueryString = this._additionalQueryStringFrom(params.downloadControllerArgs);
 
         return String.format(
-            'download?url={0}&downloadFilename={1}&downloadToken={2}{3}',
+            BASE_URL + '/download?url={0}&downloadFilename={1}&downloadToken={2}{3}',
             encodedDownloadUrl,
             encodedFilename,
             downloadToken,

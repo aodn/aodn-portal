@@ -9,7 +9,7 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
-    ASYNC_DOWNLOAD_URL: 'asyncDownload?aggregatorService=gogoduck&',
+    ASYNC_DOWNLOAD_URL: BASE_URL + '/asyncDownload?aggregatorService=gogoduck&',
 
     getDownloadOptions: function() {
 

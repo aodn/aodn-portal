@@ -66,15 +66,15 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
 
         it("_getFiltersUrl ", function() {
-            expect(cachedLayer._getFiltersUrl()).toBe('layer/getFilters?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer');
+            expect(cachedLayer._getFiltersUrl()).toBe(BASE_URL + '/layer/getFilters?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer');
         });
 
         it("_getStylesUrl ", function() {
-            expect(cachedLayer._getStylesUrl()).toBe('layer/getStyles?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer');
+            expect(cachedLayer._getStylesUrl()).toBe(BASE_URL + '/layer/getStyles?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer');
         });
 
         it("_getTimeSeriesUrl ", function() {
-            expect(cachedLayer._getTimeSeriesUrl(moment.utc('2011-07-02T01:32:45Z'))).toBe('layer/getFilterValues?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer&filter=2011-07-02T00:00:00.000Z');
+            expect(cachedLayer._getTimeSeriesUrl(moment.utc('2011-07-02T01:32:45Z'))).toBe(BASE_URL + '/layer/getFilterValues?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer&filter=2011-07-02T00:00:00.000Z');
         });
     });
 
@@ -82,7 +82,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
         it("returns correct url", function() {
             cachedLayer.url = "encoded url prefix";
             cachedLayer.params.LAYERS = "test_layer";
-            expect(cachedLayer._getTimeSeriesUrl(moment.utc('2011-07-02T01:32:45Z'))).toBe('layer/getFilterValues?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer&filter=2011-07-02T00:00:00.000Z');
+            expect(cachedLayer._getTimeSeriesUrl(moment.utc('2011-07-02T01:32:45Z'))).toBe(BASE_URL + '/layer/getFilterValues?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer&filter=2011-07-02T00:00:00.000Z');
         });
     });
 

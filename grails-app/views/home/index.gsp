@@ -18,7 +18,6 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
         <buildInfo:comment />
 
-        <!--link rel="stylesheet" media="print" type="text/css"  href="${resource(dir: 'css', file: 'mapprint.css')}" /-->
         <link rel="stylesheet" type="text/css" href="${resource(dir: 'js', file: 'GeoExt1.1/resources/css/geoext-all.css')}" />
         <!-- User extensions -->
         <link rel="stylesheet" type="text/css" href="${resource(dir: 'js', file: 'ext-ux/SuperBoxSelect/superboxselect.css')}" />
@@ -27,7 +26,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
         <g:render template="/js_includes"></g:render>
         <g:render template="/public_theme_includes"></g:render>
 
-        <script type="text/javascript">
+        <script>
 
             // Supporting only Firefox and Chrome users
             Ext.onReady(Portal.app.browserCheck);

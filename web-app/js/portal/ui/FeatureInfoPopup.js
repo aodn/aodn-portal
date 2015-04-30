@@ -91,7 +91,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
         Ext.Ajax.request({
             scope: this,
-            url: 'depth',
+            url: BASE_URL + 'depth',
             params: {
                 lat: this.location.lat,
                 lon: this.location.lon

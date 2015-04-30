@@ -11,8 +11,8 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
     constructor: function() {
 
-        this.GET_FILTER = "layer/getFilters";
-        this.GET_FILTER_VALUES = "layer/getFilterValues";
+        this.GET_FILTER = BASE_URL + "/layer/getFilters";
+        this.GET_FILTER_VALUES = BASE_URL + "/layer/getFilterValues";
     },
 
     loadFilters: function(layer, successCallback, failureCallback, callbackScope) {

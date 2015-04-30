@@ -23,7 +23,6 @@ class PortalBranding {
     def returnBrandedUrlIfValid(urlSuffix, alternativeValue, returnUrlContent = false) {
         def url = "${grailsApplication.config.portal.brandingBase}/${urlSuffix}"
         def returnValue = alternativeValue
-
         if (grailsApplication.config.portal.brandingBase) {
             def contentOfUrl = fetchUrl(url)
 
@@ -38,6 +37,10 @@ class PortalBranding {
         }
 
         return returnValue
+    }
+
+    def getBrandingBase() {
+        return grailsApplication.config.portal.brandingBase
     }
 
     def getLandingPage() {

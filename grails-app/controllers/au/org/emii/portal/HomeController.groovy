@@ -24,7 +24,6 @@ class HomeController {
     }
 
     def config = {
-
         // Workaround a problem converting to JSON (trying to convert the filtered
         // items results in an exception - the keys defined in CONFIG_KEYS_TO_IGNORE
         // contain closures, which don't play well when with JSON converters.

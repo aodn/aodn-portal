@@ -27,7 +27,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
     _initWithLayer: function() {
 
-        var metadataUrl = 'layer/getMetadataAbstract?uuid=' +
+        var metadataUrl = BASE_URL + '/layer/getMetadataAbstract?uuid=' +
             encodeURIComponent(this.layer.metadataUuid);
 
         Ext.Ajax.request({
