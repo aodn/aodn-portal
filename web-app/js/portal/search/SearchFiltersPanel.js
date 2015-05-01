@@ -13,6 +13,14 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
         this._initFacetFilters(config);
 
+        this._buildFilter(Portal.search.FreeTextSearchPanel, 'freetextFilter', {
+            title: OpenLayers.i18n('freetextFilter'),
+            hierarchical: false,
+            searcher: config.searcher,
+            listeners: {
+            }
+        });
+
         this._buildFilter(Portal.search.DateSelectionPanel, 'dateFilter', {
             title: OpenLayers.i18n('dateFilter'),
             hierarchical: false,
