@@ -124,8 +124,13 @@ environments {
 geonetwork.searchPath = 'xml.search.imos'
 
 // Server configuration
-baselayerServer = [
+imosStaticGeoserver = [
     uri: "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms",
+    wmsVersion: '1.1.1'
+]
+
+osgeoGeoserver = [
+    uri: "http://maps.opengeo.org/geowebcache/service/wms",
     wmsVersion: '1.1.1'
 ]
 
@@ -179,7 +184,7 @@ knownServers = [
 minimap {
     baselayer {
         name = "baselayer"
-        url = baselayerServer.uri
+        url = imosStaticGeoserver.uri
         params = [layers: 'default_bathy']
     }
 }
@@ -188,12 +193,17 @@ baselayers = [
     [
         name: "default_bathy",
         title: "Bathymetry Baselayer",
-        server: baselayerServer
+        server: imosStaticGeoserver
     ],
     [
         name: "default_basemap_simple",
         title: "Simple Baselayer",
-        server: baselayerServer
+        server: imosStaticGeoserver
+    ],
+    [
+        name: "bluemarble",
+        title: "Blue Marble Baselayer",
+        server: osgeoGeoserver
     ]
 ]
 
