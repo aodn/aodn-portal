@@ -25,10 +25,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     pendingRequests: null,
 
     initialize: function(name, url, params, options) {
-
-        this.EVENT_TYPES.push('temporalextentloaded');
-        this.EVENT_TYPES.push('stylesloaded');
-
         this.temporalExtent = new Portal.visualise.animations.TemporalExtent();
 
         this.pendingRequests = new Portal.utils.Set();
