@@ -134,6 +134,11 @@ describe('OpenLayers', function() {
             describe('uses featureInfoFormat format', function() {
                 beforeEach(function() {
                     openLayer.setMap(new OpenLayers.Map());
+                    openLayer.map.getProjectionObject = function() {
+                        return {
+                            getCode: function() {}
+                        };
+                    };
                     openLayer._getBoundingBox = noOp;
                     openLayer.server = {
                         infoFormat: 'text/html'
@@ -142,7 +147,7 @@ describe('OpenLayers', function() {
 
                 it('when format not already specified', function() {
                     openLayer.mergeNewParams({
-                        format: undefined  // note that OpenLayers sets the default format to 'image/jpeg' in this case...
+                        format: undefined // note that OpenLayers sets the default format to 'image/jpeg' in this case...
                     });
 
                     expect(openLayer.getFeatureInfoRequestString()).toHaveParameterWithValue('FORMAT', 'text/html');

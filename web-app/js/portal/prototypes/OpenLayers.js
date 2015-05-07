@@ -159,7 +159,9 @@ OpenLayers.Layer.WMS.prototype.hasBoundingBox = function() {
 OpenLayers.Handler.Drag.prototype.mousedown = function(evt) {
     var propagate = true;
     this.dragging = false;
-    if (this.checkModifiers(evt) && OpenLayers.Event.isLeftClick(evt)) {
+    if (this.checkModifiers(evt) &&
+           (OpenLayers.Event.isLeftClick(evt) ||
+            OpenLayers.Event.isSingleTouch(evt))) {
         this.started = true;
         this.start = evt.xy;
         this.last = evt.xy;
@@ -171,17 +173,17 @@ OpenLayers.Handler.Drag.prototype.mousedown = function(evt) {
 
         // Leaving this commented out code here so that one can see what's different to the original function.
         // This fixes bugs related to combo boxes not closing when the map is clicked (because the event never
-        // propagates to other elements, i.e. the comboboxes).
-//        OpenLayers.Event.stop(evt);
+        // propagates to other elements, i.e. the comboboxes). DF: fixed for OpenLayers 2.13.1 as well
+        // OpenLayers.Event.preventDefault(evt);
 
-        if (!this.oldOnselectstart) {
-            this.oldOnselectstart = (document.onselectstart) ? document.onselectstart : OpenLayers.Function.True;
+        if(!this.oldOnselectstart) {
+            this.oldOnselectstart = document.onselectstart ?
+                document.onselectstart : OpenLayers.Function.True;
         }
         document.onselectstart = OpenLayers.Function.False;
 
         propagate = !this.stopDown;
-    }
-    else {
+    } else {
         this.started = false;
         this.start = null;
         this.last = null;
