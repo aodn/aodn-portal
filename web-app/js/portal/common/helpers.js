@@ -305,12 +305,3 @@ Date.prototype.setISO8601 = function (string) {
     time = (Number(date) + (offset * 60 * 1000));
     this.setTime(Number(time));
 };
-
-// IE 8 throws errors with console not existing
-// Console will exist when using developer tools
-if (typeof console === "undefined" || typeof console.log === "undefined") {
-    console = {};
-    console.log = function(msg) {
-        //alert(msg);
-    };
-}
