@@ -76,7 +76,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
      * Create a new map, from using the options specified by 'this'.
      */
     newMap: function () {
-        this.restrictedExtent = new OpenLayers.Bounds.fromArray([null, -90, null, 90]);
+        this.restrictedExtent = new OpenLayers.Bounds.fromArray([-720, -90, 720, 90]);
         return new OpenLayers.SpatialConstraintMap(this);
     }
 });
