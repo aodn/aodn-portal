@@ -146,9 +146,9 @@ OpenLayers.Layer.WMS.prototype.updateCqlFilter = function() {
     var existingValue = this.params['CQL_FILTER'];
 
     if (newValue != existingValue) {
-
-        this.params['CQL_FILTER'] = newValue;
-        this.redraw();
+        this.mergeNewParams({
+            CQL_FILTER: newValue
+        });
     }
 };
 
