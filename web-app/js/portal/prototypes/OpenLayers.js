@@ -5,6 +5,32 @@
  *
  */
 
+// Override some OpenLayers default images
+OpenLayers.Util.__getImageLocation = OpenLayers.Util.getImageLocation;
+OpenLayers.Util.getImageLocation = function(image) {
+    var overrideImages = [
+        "east-mini.png",
+        "layer-switcher-maximize.png",
+        "north-mini.png",
+        "panning-hand-off.png",
+        "panning-hand-on.png",
+        "slider.png",
+        "south-mini.png",
+        "west-mini.png",
+        "zoom-minus-mini.png",
+        "zoom-plus-mini.png",
+        "zoom-world-mini.png",
+        "zoombar.png"
+    ];
+
+    if (overrideImages.indexOf(image) != -1) {
+        return getPortalBase() + "/images/openlayers/" + image;
+    }
+    else {
+        return OpenLayers.Util.__getImageLocation(image);
+    }
+}
+
 OpenLayers.Layer.DOWNLOAD_FORMAT_CSV = 'csv';
 
 OpenLayers.Layer.prototype.isOverlay = function() {

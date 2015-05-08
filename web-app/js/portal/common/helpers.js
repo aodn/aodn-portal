@@ -305,3 +305,10 @@ Date.prototype.setISO8601 = function (string) {
     time = (Number(date) + (offset * 60 * 1000));
     this.setTime(Number(time));
 };
+
+function getPortalBase(pathname) {
+    if (!pathname) {
+        pathname = window.location.pathname;
+    }
+    return pathname.replace(/\/home$/, "");
+}
