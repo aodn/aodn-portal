@@ -8,6 +8,12 @@
 // Track slow-running specs
 jasmine.slow.enable(500);
 
+// Mock a console (if not running in browser)
+if (typeof console === "undefined" || typeof console.log === "undefined") {
+    console = {};
+    console.log = function(msg) {};
+}
+
 Ext.MessageBox.alert = function () {
 };
 
