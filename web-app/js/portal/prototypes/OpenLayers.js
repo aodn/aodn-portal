@@ -20,7 +20,8 @@ OpenLayers.Util.getImageLocation = function(image) {
         "zoom-minus-mini.png",
         "zoom-plus-mini.png",
         "zoom-world-mini.png",
-        "zoombar.png"
+        "zoombar.png",
+        "zoom-panel.png"
     ];
 
     if (overrideImages.indexOf(image) != -1) {
