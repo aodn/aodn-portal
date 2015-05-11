@@ -23,9 +23,9 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
             cfg.separator = "|";
 
         var defaults = {
-            collapsible:true,
-            collapsed:true,
-            titleCollapse:true
+            collapsible: true,
+            collapsed: true,
+            titleCollapse: true
         };
 
         Ext.apply(this, cfg, defaults);
@@ -38,8 +38,8 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
         });
 
         var config = Ext.apply({
-            layout:'form',
-            cls:'search-filter-panel filter-selection-panel',
+            layout: 'form',
+            cls: 'search-filter-panel filter-selection-panel',
             defaults: {
                 style: {
                     margin: '2px'
@@ -52,7 +52,6 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
                 }),
                 new Ext.Container({
                     layout: 'hbox',
-
                     items: [
                         this.goButton = new Ext.Button({
                             text:OpenLayers.i18n("goButton")
