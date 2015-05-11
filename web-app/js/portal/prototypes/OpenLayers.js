@@ -254,8 +254,18 @@ OpenLayers.Tile.Image.prototype.positionImage = function() {
     }
 };
 
+OpenLayers.Tile.Image.prototype.__setImgSrc = OpenLayers.Tile.Image.prototype.setImgSrc;
 OpenLayers.Tile.Image.prototype.setImgSrc = function(url) {
-    if (!Portal.utils.Browser.imgSrcReload && url == this.imgDiv.src) {
+    // Do not modify behaviour for baselayers, it breaks them!
+    if (this.layer.isBaseLayer) {
+        return this.__setImgSrc(url);
+    }
+
+    if (!url) {
+        return;
+    }
+
+    if (url && url == this.imgDiv.src) {
         // force reload to generate events expected by openlayers
         this.imgDiv.src = "about:blank";
     }
