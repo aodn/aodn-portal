@@ -58,8 +58,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this.add(
             new Ext.Button({
-                cls: "x-btn-text-icon clearFiltersButton",
-                icon: "images/go-back-icon.png",
+                cls: "clearFiltersButton",
                 text: OpenLayers.i18n('clearFilterButtonLabel'),
                 listeners: {
                     scope: this,

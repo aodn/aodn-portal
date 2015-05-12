@@ -124,7 +124,6 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
             new Ext.Button({
                 text: OpenLayers.i18n('downloadButtonLabel'),
-                icon: 'images/down.png',
                 cls: 'navigationButton',
                 scope: this,
                 renderTo: elementId,

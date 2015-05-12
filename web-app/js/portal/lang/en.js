@@ -9,10 +9,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     unsupportedWarningMessage: "Your browser or device is unsupported and may not work with this site. \nPlease use Chrome or Firefox on a later generation Windows PC, Linux or Macbook/iMac for the best experience.",
 
-    navigationButtonNext: "Next <div class=doubleArrow>&gt;&gt;</div>",
-    navigationButtonPrevious: "<div class=doubleArrow>&lt;&lt;</div> Previous",
-    navigationButtonSelect: "Select <div class=doubleArrow>&gt;&gt;</div>",
-    navigationButtonDownload: "Download <div class=doubleArrow>&gt;&gt;</div>",
+    navigationButtonNext: '${label} <span class="fa fa-lg fa-angle-double-right"></span>',
+    navigationButtonPrevious: '<span class="fa fa-lg fa-angle-double-left"></span> ${label}',
 
     stepHeader: '<span class="stepTitle">Step ${stepNumber}:</span> ${stepDescription}',
     step1Description: 'Select a Data Collection',
@@ -41,7 +39,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // Download Step
     noDataMessage: 'No direct access to data available currently.',
-    downloadButtonLabel: 'Download as\u2026',
+    downloadButtonLabel: '<span class="fa fa-lg fa-fw fa-download"></span> Download as\u2026 ',
     downloadAsCsvLabel: 'CSV',
     downloadAsSubsettedNetCdfLabel: 'NetCDF',
     downloadAsAllSourceNetCdfLabel: 'Un-subsetted NetCDFs',
@@ -112,7 +110,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadButtonId: 'download-button-${id}',
     removeButtonId: 'remove-button-${id}',
 
-    removeButton: 'Remove',
+    removeButton: '<span class="fa fa-fw fa-remove"></span> Remove',
+    carticon: '<span class="fa fa-2x fa-shopping-cart "></span> ',
 
     // Download View
     downloadConfirmationWindowTitle: 'Data Download',
@@ -161,12 +160,12 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     autozoom: 'Auto zoom to data collection extent',
     hideDetailsPanel: 'Hide data collection details',
-    clearAllButtonLabel: 'Clear and Reset',
+    clearAllButtonLabel: '<span class="fa fa-fw fa-undo"></span> Clear and Reset',
     clearAllButtonTooltip: 'Remove all data collections from the Subset and Download pages, reset the map location and zoom level',
     removeButtonTooltip: 'Remove this data collection from the Subset and Download pages, the collection can be re-added from the search.',
 
     // FilterGroupPanel.js
-    clearFilterButtonLabel: 'Clear subset',
+    clearFilterButtonLabel: '<span class="fa fa-fw fa-undo"></span> Clear subset',
 
     // ComboFilterPanel.js
     clearFilterOption: 'All',

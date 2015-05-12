@@ -80,8 +80,8 @@ Portal.ui.DownloadCartWidget = Ext.extend(Ext.Panel, {
         this.collectionCounter = 0;
 
         this.counterIcon = new Ext.Container({
-            cls: 'cartLogo',
-            html: '&nbsp;'
+            cls: 'carticon',
+            html: OpenLayers.i18n('carticon')
         });
 
         this.downloadCartSize = new Ext.Container({

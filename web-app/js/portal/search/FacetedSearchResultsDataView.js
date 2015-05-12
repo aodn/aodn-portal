@@ -207,7 +207,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         if (Ext.get(buttonElementId)) {
             new Ext.Button({
-                text: OpenLayers.i18n('navigationButtonSelect'),
+                text: OpenLayers.i18n('navigationButtonNext', {label: "Select"}),
                 tooltip: tooltip,
                 tooltipType: "title",
                 cls: "navigationButton forwardsButton listButtonWrapper " + cls,

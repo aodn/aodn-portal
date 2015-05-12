@@ -96,10 +96,6 @@ h2 {
     font-family: arial, verdana, sans-serif;
 }
 
-.x-btn, .x-btn button {
-    font: 11px arial, verdana, sans-serif;
-}
-
 h1, h2, h3, h4,
 .x-panel-header,
 .x-window-header-text,
@@ -201,7 +197,6 @@ input, select, textarea {
     /*box-shadow: 2px 2px 3px 0 #EEEEEE;*/
 }
 
-
 .mainToolBar {
     box-shadow: 0 -15px 15px -15px #ccc;
 }
@@ -253,14 +248,12 @@ ul.x-tab-strip-top {
     height: 10px;
 }
 
-.x-btn {
-    padding: 0 6px;
+.x-btn, .x-btn button {
+    font: 11px arial, verdana, sans-serif;
 }
 
-.x-btn{
-    background-color: #D9D9D9;
-    border-radius: 6px;
-    margin-right: 3px;
+.x-btn-tl, .x-btn-tr, .x-btn-tc, .x-btn-ml, .x-btn-mr, .x-btn-mc, .x-btn-bl, .x-btn-br, .x-btn-bc {
+    background: none;
 }
 
 #downLoadCartWidget {
@@ -288,17 +281,25 @@ ul.x-tab-strip-top {
     width: 0;
 }
 
-.navigationButton.x-btn {
+.x-btn.navigationButton {
     background-color: #FFBA66;
 }
 
-.navigationButtonActive.x-btn {
+.x-btn.navigationButtonActive {
     background-color: #89C8EE;
 }
 
-.navigationButton .x-btn-text {
-    color: #212121;
+.x-btn.navigationButton *{
+    color: #2C2A25;
     font-weight: bold;
+}
+
+.x-btn.navigationButton.x-btn-over:not(.x-btn-selected) {
+    background: #F9A840;
+}
+
+.x-btn.navigationButton.x-btn-over:not(.x-btn-selected)  *{
+    color: white;
 }
 
 .x-btn-selected {
@@ -326,10 +327,6 @@ ul.x-tab-strip-top {
 
 .viewPortTabActiveLast {
     background: url(../images/IMOS/viewPortTabActiveLast.png) right 0 center no-repeat;
-}
-
-.x-btn-tl, .x-btn-tr, .x-btn-tc, .x-btn-ml, .x-btn-mr, .x-btn-mc, .x-btn-bl, .x-btn-br, .x-btn-bc {
-    background: none;
 }
 
 .steps .stepTitle {
