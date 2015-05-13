@@ -222,38 +222,6 @@ OpenLayers.Layer.WMS.prototype.hasImgLoadErrors = function() {
     return Ext.DomQuery.jsSelect('img.olImageLoadError', this.div).length > 0;
 };
 
-/**
- * Issue 925 - Overrride openlayers positionImage to workaround issue with Firefox 27
- * and 28 where images aren't reloaded if the src property is set to the same value
- *
- * Method: positionImage
- * Using the properties currenty set on the layer, position the tile correctly.
- * This method is used both by the async and non-async versions of the Tile.Image
- * code.
- */
-OpenLayers.Tile.Image.prototype.positionImage = function() {
-    // if the this layer doesn't exist at the point the image is
-    // returned, do not attempt to use it for size computation
-    if (this.layer === null) {
-        return;
-    }
-    // position the frame
-    OpenLayers.Util.modifyDOMElement(this.frame,
-        null, this.position, this.size);
-
-    var imageSize = this.layer.getImageSize(this.bounds);
-    if (this.layerAlphaHack) {
-        OpenLayers.Util.modifyAlphaImageDiv(this.imgDiv,
-            null, null, imageSize, this.url);
-    }
-    else {
-        OpenLayers.Util.modifyDOMElement(this.imgDiv,
-            null, null, imageSize);
-        // Make sure image load events are generated as required by OpenLayers
-        this.setImgSrc(this.url);
-    }
-};
-
 OpenLayers.Tile.Image.prototype.__setImgSrc = OpenLayers.Tile.Image.prototype.setImgSrc;
 OpenLayers.Tile.Image.prototype.setImgSrc = function(url) {
     // Do not modify behaviour for baselayers, it breaks them!
