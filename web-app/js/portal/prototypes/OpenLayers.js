@@ -30,7 +30,7 @@ OpenLayers.Util.getImageLocation = function(image) {
     else {
         return OpenLayers.Util.__getImageLocation(image);
     }
-}
+};
 
 OpenLayers.Layer.DOWNLOAD_FORMAT_CSV = 'csv';
 
@@ -250,6 +250,11 @@ OpenLayers.Geometry.prototype.isBox = function() {
 };
 
 OpenLayers.Geometry.prototype.toWkt = function() {
-    var wktFormatter = new OpenLayers.Format.WKT();
+    var wktFormatter = new OpenLayers.Format.WKTNormalised();
     return wktFormatter.write({ geometry: this });
+};
+
+OpenLayers.Geometry.prototype.crossesDateLine = function() {
+    var bounds = this.getBounds();
+    return (normaliseLongitude(bounds.left) > normaliseLongitude(bounds.right));
 };

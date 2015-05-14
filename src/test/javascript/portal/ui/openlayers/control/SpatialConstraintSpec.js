@@ -38,7 +38,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
                 initialConstraint: constraint
             });
 
-            expect(spatialConstraint.getConstraint()).toEqual(constraint);
+            expect(spatialConstraint.getConstraint().toString()).toEqual(wktPolygon);
         });
     });
 
@@ -90,7 +90,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             var feature = new OpenLayers.Feature.Vector(geometry);
             spatialConstraint.layer.events.triggerEvent('sketchcomplete', { feature: feature });
 
-            expect(eventSpy).toHaveBeenCalledWith(geometry);
+            expect(eventSpy).toHaveBeenCalled();
         });
 
         it('clears existing constraint on layer sketchcomplete where viewport area is above minimum', function() {
@@ -124,6 +124,31 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             var feature = new OpenLayers.Feature.Vector(geometry);
             spatialConstraint.layer.events.triggerEvent('sketchcomplete', { feature: feature });
             expect(spatialConstraint.clear).not.toHaveBeenCalled();
+        });
+
+        it("getNormalizedGeometry fixes Geometries with longitudes > 180 ", function() {
+
+            var geometry = OpenLayers.Geometry.fromWKT('POLYGON((192.2 2, -178 4, 1 2))');
+            var normalisedGeometry = spatialConstraint.getNormalizedGeometry(geometry);
+
+            expect(normalisedGeometry.getBounds().toString()).toEqual('-178,2,1,4');
+        });
+
+
+        it("getNormalizedGeometry leaves alone Geometries with longitudes < 180 not crossing ante meridian ", function() {
+
+            var geometry = OpenLayers.Geometry.fromWKT('POLYGON((92.2 2, 178 4, 92.5 2))');
+            var normalisedGeometry = spatialConstraint.getNormalizedGeometry(geometry);
+
+            expect(normalisedGeometry.getBounds().toString()).toEqual('92.2,2,178,4');
+        });
+
+        it("getNormalizedGeometry fix Geometries with both longitudes > 180 not crossing ante meridian ", function() {
+
+            var geometry = OpenLayers.Geometry.fromWKT('POLYGON((292.2 2, 278 4, 292.5 2))');
+            var normalisedGeometry = spatialConstraint.getNormalizedGeometry(geometry);
+
+            expect(normalisedGeometry.getBounds().toString()).toEqual('-82,2,-67.5,4');
         });
     });
 
@@ -230,14 +255,20 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             spatialConstraint.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
 
             expect(spatialConstraint.hasConstraint()).toBe(true);
-            expect(spatialConstraint.getConstraint()).toBe(geometry);
+            expect(spatialConstraint.getConstraint().toString()).toEqual(wktPolygon);
+        });
+
+        it('getConstraint not return an un-normalised geometry', function() {
+            var geometry = OpenLayers.Geometry.fromWKT('POLYGON((250 2, 3 4, 1 2))');
+            spatialConstraint.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
+            expect(spatialConstraint.getConstraint().toString()).toEqual('POLYGON((-110 2,3 4,1 2,-110 2))');
         });
 
         it('as WKT', function() {
             var geometry = constructGeometry();
             spatialConstraint.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
 
-            expect(spatialConstraint.getConstraintAsWKT()).toBe('POLYGON((1 2,3 4,1 2))');
+            expect(spatialConstraint.getConstraintAsWKT()).toBe(wktPolygon);
         });
     });
 
@@ -264,11 +295,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         it('fires off an analytics report', function() {
             var testEvent = {
                 feature: {
-                    geometry: {
-                        getArea: function() {
-                            return true;
-                        }
-                    }
+                    geometry: constructGeometry()
                 }
             };
             spatialConstraint._getPercentOfViewportArea = function() {

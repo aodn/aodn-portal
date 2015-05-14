@@ -54,6 +54,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'portal.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'ObjectFactory.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'PortalEvents.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'WKTNormalised.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'Array.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'Ext.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'ExtUxAjax.js')}"></script>
