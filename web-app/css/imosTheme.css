@@ -148,7 +148,7 @@ h1, h2, h3, h4,
     text-shadow: none;
 }
 
-.mainlinks {
+#toplinks a:not(:first-child) {
     border-left: 1px solid #9DAAB1;
 }
 
