@@ -10,7 +10,10 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
     initComponent: function(cfg) {
 
-        this.bodyContent = new Ext.Panel();
+        this.bodyContent = new Ext.Panel({
+            cls: 'downloadPanelItem',
+            width: 1024
+        });
         this.initButtonPanel();
 
         this.emptyMessage = new Portal.common.EmptyCollectionStatusPanel({
@@ -20,13 +23,15 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             autoScroll: true,
-            boxMinWidth: 800,
-            boxMaxWidth: 1024,
             title: OpenLayers.i18n('stepHeader', { stepNumber: 3, stepDescription: OpenLayers.i18n('step3Description')}),
             headerCfg: {
                 cls: 'steps'
             },
+            bodyCfg: {
+                cls: 'downloadPanelBody'
+            },
             items: [
+                new Ext.Spacer({height: 10}),
                 this.buttonPanel,
                 new Ext.Spacer({height: 10}),
                 this.emptyMessage,
@@ -132,8 +137,8 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
     initButtonPanel: function () {
         this.buttonPanel = new Ext.Panel({
-            border: true,
-            flex: 1,
+            cls: 'downloadPanelItem',
+            width: 1024,
             items: [
                 {
                     xtype: 'button',
