@@ -94,7 +94,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     getConstraint: function() {
         if (this.hasConstraint()) {
-            return this._getFeature().geometry;
+            return this.getNormalizedGeometry(this._getFeature().geometry);
         }
     },
 
@@ -138,21 +138,27 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _getFeature: function() {
+        // contains geometry that is not normalised
         return this.layer.features[0];
     },
 
     _onSketchComplete: function(event) {
 
-        var area = event.feature.geometry.getArea();
+        var geom = event.feature.geometry;
+        var area = geom.getArea();
 
-        if (this._getPercentOfViewportArea(area) > this.MIN_AREA_PERCENT){
+        if (this._getPercentOfViewportArea(area) > this.MIN_AREA_PERCENT && !geom.crossesDateLine()){
             this.clear();
-            this.events.triggerEvent('spatialconstraintadded', event.feature.geometry);
+            this.events.triggerEvent('spatialconstraintadded', this.getNormalizedGeometry(event.feature.geometry));
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingSpatialConstraintSketched'));
         }
         else {
             return false; // will stop the sketch feature from being added to the layer.
         }
+    },
+
+    getNormalizedGeometry: function(geometry) {
+        return new OpenLayers.Geometry.fromWKT(geometry.toWkt());
     },
 
     _getPercentOfViewportArea: function(spatialExtentArea) {

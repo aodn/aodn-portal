@@ -311,4 +311,8 @@ function getPortalBase(pathname) {
         pathname = window.location.pathname;
     }
     return pathname.replace(/\/home$/, "");
-}
+};
+
+function normaliseLongitude(longitude) {
+    return (longitude + 540) % 360 - 180;
+};

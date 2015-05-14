@@ -313,6 +313,7 @@
                         <include>GeoExt1.1/script/GeoExt.js</include>
                         <include>ext-ux/**/*.js</include>
                         <include>log4javascript-1.4.6/log4javascript_uncompressed.js</include>
+                        <include>portal/WKTNormalised.js</include>
                         <include>portal/prototypes/OpenLayers.js</include>
                         <include>portal/ui/openlayers/control/SpatialConstraint.js</include>
                         <include>portal/lang/en.js</include>
