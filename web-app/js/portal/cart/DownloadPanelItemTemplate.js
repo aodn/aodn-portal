@@ -25,7 +25,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             '  </div>',
             '  <div style="overflow:hidden;">',
             '    <div class="floatLeft dataFilterEntry">',
-            '      <div class="resultsTextBody">',
+            '      <div>',
             '        {[this._getDataFilterEntry(values)]}',
             '      </div>',
             '      <div>',

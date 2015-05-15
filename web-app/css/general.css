@@ -64,10 +64,15 @@ input[type="checkbox"], input[type="radio"] {
     border-radius: 6px;
 }
 
-.faceted-search-results {
-    box-shadow: inset 6px 1px 10px 2px #eee;
+.faceted-search-results,
+.downLoadPanelBody {
+    box-shadow: inset 1px 1px 6px 1px  #eee;
     border-radius: 3px;
     padding: 10px 6px;
+}
+
+.downloadPanelItem {
+    margin-left: 12px;
 }
 
 a {
