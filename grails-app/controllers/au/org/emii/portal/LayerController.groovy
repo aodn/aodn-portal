@@ -9,8 +9,6 @@ package au.org.emii.portal
 
 import au.org.emii.portal.wms.NcwmsServer
 import au.org.emii.portal.wms.GeoserverServer
-import org.springframework.web.util.HtmlUtils
-import org.xml.sax.SAXException
 
 import grails.converters.JSON
 
@@ -34,24 +32,24 @@ class LayerController {
 
             try {
                 def con = new URL(_getMetadataUrl(params.uuid)).openConnection()
+                def reader = new InputStreamReader(con.content)
                 def metadataText = con.content.text
 
                 if (_isXmlContent(con.contentType)) {
 
                     def xml = new XmlSlurper().parseText(metadataText)
                     //TODO: Validate schema before proceeding
-
-                    def abstractText = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text())
+                    def abstractText = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text(), reader.getEncoding())
 
                     response = abstractText
                     status = HTTP_200_OK
                 }
             }
-            catch (SAXException e) {
-                status = HTTP_500_INTERNAL_SERVER_ERROR
-            }
             catch (FileNotFoundException e) {
                 status = HTTP_404_NOT_FOUND
+            }
+            catch (Exception e) {
+                status = HTTP_500_INTERNAL_SERVER_ERROR
             }
         }
 
