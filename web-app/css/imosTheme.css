@@ -127,6 +127,7 @@ h1, h2, h3, h4,
     text-shadow: 1px 1px 8px #333;
     font-size: 46px;
     padding: 45px 0 6px 20px;
+    margin: 0;
 }
 
 #toplinks {
@@ -206,6 +207,9 @@ input, select, textarea {
     font-size: 12px ! important;
 }
 
+.footer {
+    background-color: whitesmoke;
+}
 .footer p {
     font-size: 10px;
 }
