@@ -9,6 +9,35 @@ describe("Portal.search.SearchFiltersPanel", function() {
     var searchFiltersPanel;
 
     beforeEach(function() {
+        Portal.search.SearchFiltersPanel.prototype._getEnabledFacets = function() {
+            return [
+                {
+                    name: 'parameterFilter',
+                    key: 'Measured parameter',
+                    hierarchical: true
+                },
+                {
+                    name: 'organisationFilter',
+                    key: 'Organisation',
+                    collapsedByDefault: true,
+                    hierarchical: true
+                },
+                {
+                    name: 'platformFilter',
+                    key: 'Platform',
+                    hierarchical: true
+                },
+                {
+                    classId: "Portal.search.DateSelectionPanel",
+                    name: "dateFilter"
+                },
+                {
+                    classId: "Portal.search.GeoSelectionPanel",
+                    name: "geoFilter"
+                }
+            ];
+        }
+
         searchFiltersPanel = new Portal.search.SearchFiltersPanel(_mockConfig());
         spyOn(searchFiltersPanel, '_setSpinnerText');
     });

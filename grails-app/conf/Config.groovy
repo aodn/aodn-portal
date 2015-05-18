@@ -91,6 +91,25 @@ featureToggles {
     // someFeature = <boolean>
 }
 
+enabledFacets = [
+    [
+        name: 'parameterFilter',
+        key: 'Measured parameter',
+        hierarchical: true
+    ],
+    [
+        name: 'organisationFilter',
+        key: 'Organisation',
+        collapsedByDefault: true,
+        hierarchical: true
+    ],
+    [
+        name: 'platformFilter',
+        key: 'Platform',
+        hierarchical: true
+    ]
+]
+
 // Google Analytics
 googleAnalytics.trackingId = null
 

@@ -13,27 +13,6 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
         this._initFacetFilters(config);
 
-        this._buildFilter(Portal.search.DateSelectionPanel, 'dateFilter', {
-            title: OpenLayers.i18n('dateFilter'),
-            hierarchical: false,
-            searcher: config.searcher,
-            listeners: {
-                expand: this._onExpand,
-                scope: this
-            }
-        });
-
-        this._buildFilter(Portal.search.GeoSelectionPanel, 'geoFilter', {
-            title: OpenLayers.i18n('geoFilter'),
-            hierarchical: false,
-            searcher: config.searcher,
-            mapPanel: config.mapPanel,
-            listeners: {
-                expand: this._onExpand,
-                scope: this
-            }
-        });
-
         config = Ext.apply({
             stateful: false,
             autoScroll: true,
@@ -63,53 +42,41 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         Portal.search.SearchFiltersPanel.superclass.initComponent.apply(this);
     },
 
+    _getEnabledFacets: function() {
+        var enabledFacets = Portal.app.appConfig.enabledFacets;
+
+        enabledFacets.push({ classId: "Portal.search.DateSelectionPanel", name: "dateFilter" });
+        enabledFacets.push({ classId: "Portal.search.GeoSelectionPanel", name: "geoFilter" });
+
+        return enabledFacets;
+    },
+
     _initFacetFilters: function(config) {
+        var enabledFacets = this._getEnabledFacets();
 
-        // TODO: add these dynamically.
-        this._buildFilter(
-            Portal.search.FacetFilterPanel,
-            'parameterFilter',
-            {
-                facetName: "Measured parameter",
-                title: OpenLayers.i18n('parameterFilter'),
-                searcher: config.searcher,
-                collapsedByDefault: false,
-                listeners: {
-                    expand: this._onExpand,
-                    scope: this
-                }
-            }
-        );
+        for (var i = 0; i < enabledFacets.length; i++) {
+            var facet = enabledFacets[i];
 
-        this._buildFilter(
-            Portal.search.FacetFilterPanel,
-            'organisationFilter',
-            {
-                facetName: "Organisation",
-                title: OpenLayers.i18n('organisationFilter'),
-                searcher: config.searcher,
-                collapsedByDefault: true,
-                listeners: {
-                    expand: this._onExpand,
-                    scope: this
-                }
-            }
-        );
+            var facetClass = facet.classId ? eval(facet.classId) : Portal.search.FacetFilterPanel;
+            var collapsedByDefault = facet.collapsedByDefault ? true : false;
+            var hierarchical = facet.hierarchical ? true : false;
 
-        this._buildFilter(
-            Portal.search.FacetFilterPanel,
-            'platformFilter',
-            {
-                facetName: "Platform",
-                title: OpenLayers.i18n('platformFilter'),
-                searcher: config.searcher,
-                collapsedByDefault: false,
-                listeners: {
-                    expand: this._onExpand,
-                    scope: this
+            this._buildFilter(
+                facetClass,
+                facet.name,
+                {
+                    facetName: facet.key,
+                    title: OpenLayers.i18n(facet.name),
+                    collapsedByDefault: collapsedByDefault,
+                    searcher: config.searcher,
+                    mapPanel: config.mapPanel,
+                    listeners: {
+                        expand: this._onExpand,
+                        scope: this
+                    }
                 }
-            }
-        );
+            );
+        }
     },
 
     _showError: function() {
