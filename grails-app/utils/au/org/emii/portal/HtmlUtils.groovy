@@ -2,17 +2,25 @@
  * Copyright 2015 IMOS
  *
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ * This file HtmlUtils.groovy is licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package au.org.emii.portal
 
-import org.spockframework.util.Assert
-
 final class HtmlUtils {
 
     /**
-     * Taken from Spring source code
+     * Sourced from the source code of the Spring Framework, licensed under the Apache License, Version 2.0
      * https://github.com/spring-projects/spring-framework/blob/bccd59e6c8845c6521d3b325bea89bcbcbe4d833/spring-web/src/main/java/org/springframework/web/util/HtmlUtils.java#L82
      */
 
@@ -34,10 +42,11 @@ final class HtmlUtils {
      */
     public static String htmlEscape(String input, String encoding) {
         def characterEntityReferences = new HtmlCharacterEntityReferences();
-        Assert.notNull(encoding, "Encoding is required");
-        if (input == null) {
+
+        if (input == null || encoding == null) {
             return null;
         }
+
         StringBuilder escaped = new StringBuilder(input.length() * 2);
         for (int i = 0; i < input.length(); i++) {
             char character = input.charAt(i);
