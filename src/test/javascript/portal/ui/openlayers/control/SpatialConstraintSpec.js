@@ -116,16 +116,6 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(eventSpy).not.toHaveBeenCalled();
         });
 
-        it('does not clear constraint where viewport area is below minimum', function() {
-            spatialConstraint._getPercentOfViewportArea = function() {return 0.0001};
-
-            spyOn(spatialConstraint, 'clear');
-            var geometry = constructGeometry();
-            var feature = new OpenLayers.Feature.Vector(geometry);
-            spatialConstraint.layer.events.triggerEvent('sketchcomplete', { feature: feature });
-            expect(spatialConstraint.clear).not.toHaveBeenCalled();
-        });
-
         it("getNormalizedGeometry fixes Geometries with longitudes > 180 ", function() {
 
             var geometry = OpenLayers.Geometry.fromWKT('POLYGON((192.2 2, -178 4, 1 2))');
@@ -288,6 +278,52 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             var viewportArea = 8;
 
             expect(typeof spatialConstraint._getPercentOfViewportArea(viewportArea)).toEqual("number");
+        });
+    });
+
+    describe('_checkSketch', function() {
+        var feature;
+        beforeEach(function() {
+            feature = {
+                geometry: {
+                    crossesDateLine: function() { return true; }
+                }
+            };
+        });
+
+        it('checks geometry and ante-merdian crossing', function() {
+            spyOn(feature.geometry, 'crossesDateLine').andReturn(false);
+            spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(true);
+
+            spatialConstraint._checkSketch(feature);
+
+            expect(spatialConstraint.isGeometryLargeEnough).toHaveBeenCalled();
+            expect(feature.geometry.crossesDateLine).toHaveBeenCalled();
+        })
+
+        it('returns true if geometry is big enough and does not cross ante-meridian', function() {
+            spyOn(feature.geometry, 'crossesDateLine').andReturn(false);
+            spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(true);
+
+            expect(spatialConstraint._checkSketch(feature)).toEqual(true);
+        });
+
+        it('returns false if geometry is too small, shows error', function() {
+            spyOn(feature.geometry, 'crossesDateLine').andReturn(false);
+            spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(false);
+            spyOn(spatialConstraint, '_showAnteMeridianError');
+
+            expect(spatialConstraint._checkSketch(feature)).toEqual(false);
+            expect(spatialConstraint._showAnteMeridianError).toHaveBeenCalled();
+        });
+
+        it('returns false if crosses ante-meridian, shows error', function() {
+            spyOn(feature.geometry, 'crossesDateLine').andReturn(true);
+            spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(false);
+            spyOn(spatialConstraint, '_showAnteMeridianError');
+
+            expect(spatialConstraint._checkSketch(feature)).toEqual(false);
+            expect(spatialConstraint._showAnteMeridianError).toHaveBeenCalled();
         });
     });
 
