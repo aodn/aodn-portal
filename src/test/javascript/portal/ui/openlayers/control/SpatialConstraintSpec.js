@@ -116,16 +116,6 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(eventSpy).not.toHaveBeenCalled();
         });
 
-        it('does not clear constraint where viewport area is below minimum', function() {
-            spatialConstraint._getPercentOfViewportArea = function() {return 0.0001};
-
-            spyOn(spatialConstraint, 'clear');
-            var geometry = constructGeometry();
-            var feature = new OpenLayers.Feature.Vector(geometry);
-            spatialConstraint.layer.events.triggerEvent('sketchcomplete', { feature: feature });
-            expect(spatialConstraint.clear).not.toHaveBeenCalled();
-        });
-
         it("getNormalizedGeometry fixes Geometries with longitudes > 180 ", function() {
 
             var geometry = OpenLayers.Geometry.fromWKT('POLYGON((192.2 2, -178 4, 1 2))');
