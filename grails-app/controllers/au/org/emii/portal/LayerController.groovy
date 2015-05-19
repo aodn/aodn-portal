@@ -32,14 +32,13 @@ class LayerController {
 
             try {
                 def con = new URL(_getMetadataUrl(params.uuid)).openConnection()
-                def reader = new InputStreamReader(con.content)
                 def metadataText = con.content.text
 
                 if (_isXmlContent(con.contentType)) {
 
                     def xml = new XmlSlurper().parseText(metadataText)
                     //TODO: Validate schema before proceeding
-                    def abstractText = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text(), reader.getEncoding())
+                    def abstractText = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text(), _extractCharsetType(con.contentType))
 
                     response = abstractText
                     status = HTTP_200_OK
@@ -116,5 +115,15 @@ class LayerController {
 
     def _isXmlContent(contentType) {
         return contentType.find(/(text|application)\/xml/)
+    }
+
+    def _extractCharsetType(contentType) {
+        def returnedCharset
+        contentType.split(';').each { token ->
+            if (token.contains('charset=')) {
+                returnedCharset = token.split('=')[1]
+            }
+        }
+        return returnedCharset
     }
 }
