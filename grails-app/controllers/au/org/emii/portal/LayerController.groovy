@@ -38,7 +38,7 @@ class LayerController {
 
                     def xml = new XmlSlurper().parseText(metadataText)
                     //TODO: Validate schema before proceeding
-                    def abstractText = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text(), _contentTypeCharset(con.contentType))
+                    def abstractText = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text(), _extractCharsetType(con.contentType))
 
                     response = abstractText
                     status = HTTP_200_OK
@@ -117,8 +117,13 @@ class LayerController {
         return contentType.find(/(text|application)\/xml/)
     }
 
-    def _contentTypeCharset(contentType) {
-        def stringComponents = contentType.split("=")
-        return stringComponents[1]
+    def _extractCharsetType(contentType) {
+        def returnedCharset
+        contentType.split(';').each { token ->
+            if (token.contains('charset=')) {
+                returnedCharset = token.split('=')[1]
+            }
+        }
+        return returnedCharset
     }
 }

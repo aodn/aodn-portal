@@ -107,6 +107,21 @@ class LayerControllerTests extends ControllerUnitTestCase {
         }
     }
 
+    void testExtractCharsetWithNoFollowingStatement() {
+        def testHeader = "application/xml;charset=UTF-8"
+        assertEquals("UTF-8", controller._extractCharsetType(testHeader))
+    }
+
+    void testExtractCharsetWithFollowingStatement() {
+        def testHeader = "application/xml;charset=UTF-8;value=somethingextra"
+        assertEquals("UTF-8", controller._extractCharsetType(testHeader))
+    }
+
+    void testExtractCharsetWithNoPrefixStatement() {
+        def testHeader = "charset=UTF-8;value=somethingextra"
+        assertEquals("UTF-8", controller._extractCharsetType(testHeader))
+    }
+
     void testConfiguredBaselayers() {
         def baselayerConfig = [
             [name: 'layer one'],
