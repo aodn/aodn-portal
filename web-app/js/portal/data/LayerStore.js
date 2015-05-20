@@ -79,25 +79,20 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         log.error("Server '" + serverUri + "' is blocked!!");
     },
 
-    _addUsingLayerLinkDefault: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback) {
-        var serverUri = layerLink.server.uri;
+    _addUsingLayerLinkDefault: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
+        var layerDescriptor = new Portal.common.LayerDescriptor(layerLink, geonetworkRecord, OpenLayers.Layer.WMS);
+        layerDescriptor.title = layerDisplayName;
+        layerDescriptor.cql = layerLink.cql;
+        this._copyCsvDownloadFormatFromConfig(layerDescriptor, serverInfo);
+        this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
+    },
 
-        Ext.Ajax.request({
-            url: 'layer/findLayerAsJson?' + Ext.urlEncode({serverUri: serverUri, name: layerLink.name}),
-            scope: this,
-            success: function(resp) {
-                var layerDescriptor = new Portal.common.LayerDescriptor(resp.responseText, geonetworkRecord, OpenLayers.Layer.WMS);
-                if (layerDescriptor) {
-                    // Override layer name with GeoNetwork layer name
-                    layerDescriptor.title = layerDisplayName;
-                    layerDescriptor.cql = layerLink.cql;
-                    this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
-                }
-            },
-            failure: function(resp) {
-                this.addUsingDescriptor(new Portal.common.LayerDescriptor(layerLink), layerRecordCallback);
-            }
-        });
+    // Note: this function can hopefully go away after 'no-db' is merged... i.e. when all server config
+    // is coming from Config.groovy, rather than from the 'server' table.
+    _copyCsvDownloadFormatFromConfig: function(layerDescriptor, serverInfo) {
+        if (serverInfo && layerDescriptor && layerDescriptor.server) {
+            layerDescriptor.server.csvDownloadFormat = serverInfo.csvDownloadFormat;
+        }
     },
 
     _addUsingLayerLinkNcwms: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {

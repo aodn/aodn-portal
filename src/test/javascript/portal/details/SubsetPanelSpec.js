@@ -33,7 +33,7 @@ describe("Portal.details.SubsetPanel", function() {
             expect(subsetPanel.title).toEqual("<h4>the title</h4>");
         });
 
-        it('initialises aodaacPanel for NcWMS layer', function() {
+        it('initialises ncwmsPanel for NcWMS layer', function() {
 
             var childPanel = subsetPanel.items.itemAt(0);
 

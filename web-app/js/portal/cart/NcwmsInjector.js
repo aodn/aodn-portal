@@ -26,13 +26,13 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             );
             var bbox = Portal.utils.geo.bboxAsStringToBounds(bboxString);
             // differs from WMS layers. It will always be a bbox even when a polygon was used by the user
-            areaString = String.format('{0}:&nbsp;  {1}<br>', OpenLayers.i18n("boundingBoxDescriptionNcWms"), bbox.toString());
+            areaString = String.format('{0}:&nbsp;{1}<br>', OpenLayers.i18n("spatialExtentHeading"), bbox.toString());
         }
 
         if (params.dateRangeStart != undefined) {
             var startDateString = this._formatDate(params.dateRangeStart);
             var endDateString = this._formatDate(params.dateRangeEnd);
-            dateString = this._formatHumanDateInfo('parameterDateLabel', startDateString, endDateString);
+            dateString = this._formatHumanDateInfo('temporalExtentHeading', startDateString, endDateString);
         }
 
         if (areaString == "" && dateString == "") {
@@ -43,7 +43,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     },
 
     _formatHumanDateInfo: function(labelKey, value1, value2) {
-        return String.format('{0}:&nbsp;  {1} to {2}<br>', OpenLayers.i18n(labelKey), value1, value2);
+        return String.format('{0}:&nbsp;{1} to {2}<br>', OpenLayers.i18n(labelKey), value1, value2);
     },
 
     _formatDate: function(date) {

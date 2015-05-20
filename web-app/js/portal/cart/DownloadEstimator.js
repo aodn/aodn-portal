@@ -102,7 +102,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
             downloadMessage = OpenLayers.i18n("estimatedDlMessage");
             fileSizeEstimate = this._humanReadableFileSize(estimateInBytes);
         }
-        var fileSizeImage = (estimateInBytes >= this.HALF_GB_IN_BYTES) ? OpenLayers.i18n("fileSizeIconMarkup") : "";
+        var fileSizeImage = (estimateInBytes >= this.HALF_GB_IN_BYTES) ? OpenLayers.i18n("faError") : "";
 
         return String.format(html, downloadMessage, fileSizeEstimate, fileSizeImage);
     },
@@ -136,7 +136,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     _generateTimeoutHtmlString: function() {
         var html = '<div>{0} {1}</div>' + '<div class="clear"></div>';
         var downloadTimeoutMessage = OpenLayers.i18n("estimatedDlTimeoutMsg");
-        var fileSizeImage = OpenLayers.i18n("fileSizeIconMarkup");
+        var fileSizeImage = OpenLayers.i18n("faError");
 
         return String.format(html, downloadTimeoutMessage, fileSizeImage);
     }

@@ -13,21 +13,12 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         this.layer = cfg.layer;
         this.loadingMessage = this.createLoadingMessageContainer();
         var config = Ext.apply({
+            autoDestroy: true,
+            cls: 'filterGroupPanel',
             items: [
                 this.loadingMessage
             ]
         }, cfg);
-
-        this.map = cfg.map;
-        this.map.events.on({
-            scope: this,
-            'spatialconstraintadded': function(geometry) {
-                this._updateWithGeometry(geometry);
-            },
-            'spatialconstraintcleared': function() {
-                this._updateWithGeometry();
-            }
-        });
 
         this.GET_FILTER = "layer/getFiltersAsJSON";
         this.filters = [];
@@ -139,7 +130,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
                     success: function(resp, opts) {
                         this.layer.filters = Ext.util.JSON.decode(resp.responseText);
                         this._showHideFilters();
-                        this.layer.geometryFilterName = this.getGeometryFilterName();
                         this.layerIsBeingHandled = false;
                     }
                 });
@@ -179,7 +169,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
     _filtersSort: function(filters) {
 
         // override server order by adding the type in topFilters
-        var topFilters = ['String', 'Number', 'Boolean', 'DateRange', 'Date']; // add in reverse order
+        var topFilters = ['String', 'Number', 'Boolean', 'DateRange', 'Date', 'BoundingBox']; // add in reverse order
 
         Ext.each(
             filters,
@@ -247,7 +237,7 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         if (filterPanel.typeLabel != this.currentFilterTypeLabel) {
             var label = new Ext.Container({
-                html: "<h4 class=\"filterPanelHeader\">" + filterPanel.typeLabel + "</h4>"
+                html: "<h4>" + filterPanel.typeLabel + "</h4>"
             });
 
             this.currentFilterTypeLabel = filterPanel.typeLabel;
@@ -318,10 +308,6 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
                 activeFilters.push(filter.getFilterData());
             }
         });
-
-        if (this.hasGeometryValue()) {
-            activeFilters.push(this.getGeometryFilterData());
-        }
 
         return activeFilters;
     },
@@ -395,61 +381,5 @@ Portal.filter.FilterGroupPanel = Ext.extend(Ext.Container, {
         });
         
         return !foundHiddenParent;
-    },
-
-    hasGeometryValue: function() {
-        return this.geometry != undefined;
-    },
-
-    _updateWithGeometry: function(geometry) {
-        this.geometry = geometry;
-        this._updateLayerFilters();
-    },
-
-    getGeometryFilterName: function() {
-        var name = "";
-        Ext.each(this.layer.filters, function(filter) {
-            if (filter.type == "BoundingBox") {
-                name = filter.name;
-            }
-        });
-        return name;
-    },
-
-    getGeometryCQL: function() {
-
-        if (!this.geometry) {
-            return undefined;
-        }
-
-        return String.format(
-            "INTERSECTS({0},{1})",
-            this.layer.geometryFilterName,
-            this.geometry.toWkt()
-        );
-    },
-
-    _getGeometryCQLHumanValue: function() {
-        if (this.geometry) {
-            var explanation = (this.isRealPolygon()) ? OpenLayers.i18n("maxExtentOfPolygon") : OpenLayers.i18n("boundingBoxDescription");
-            return String.format('{0}:&nbsp;  {1}', explanation, this.geometry.getBounds());
-        }
-        else {
-            return "";
-        }
-    },
-
-    getGeometryFilterData: function() {
-        return {
-            name: this.layer.geometryFilterName,
-            downloadOnly: true,
-            cql: this.getGeometryCQL(),
-            humanValue: this._getGeometryCQLHumanValue(),
-            type: "geom"
-        }
-    },
-
-    isRealPolygon: function() {
-        return (this.map.getSpatialConstraintType() == "polygon");
     }
 });

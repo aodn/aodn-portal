@@ -21,11 +21,16 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         });
 
         this._preventStoreChangesBeingIgnored();
+
         this.tf.on('select', function(field, record, index) {
             this.onBlur(field);
         }, this);
 
         this.df.on('select', function(field, record, index) {
+            this.onBlur(field);
+        }, this);
+
+        this.df.on('blur', function(field, e) {
             this.onBlur(field);
         }, this);
     },
@@ -34,7 +39,10 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         this.extent = extent;
         this.df.setMinValue(this.getLocalDateFromUtcMoment(extent.min(), true));
         this.df.setMaxValue(this.getLocalDateFromUtcMoment(extent.max(), true));
-        this.df.setDisabledDates(extent.getMissingDays());
+
+        if (extent.getMissingDays().length > 0) {
+            this.df.setDisabledDates(extent.getMissingDays());
+        }
 
         this._setTimeValues(extent.min(), this.extent);
     },

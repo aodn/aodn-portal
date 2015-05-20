@@ -13,6 +13,7 @@ import au.org.emii.portal.proxying.RequestProxyingController
 import org.apache.catalina.connector.ClientAbortException
 
 import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilename
+import static au.org.emii.portal.HttpUtils.Status.*
 
 class DownloadController extends RequestProxyingController {
 
@@ -25,20 +26,22 @@ class DownloadController extends RequestProxyingController {
 
     def urlListForLayer = {
 
-        def (fieldName, prefixToRemove, newUrlBase) = _loadCommonFields(params)
+        def (fieldName, urlSubstitutions) = _loadCommonFields(params)
 
         if (!fieldName) {
-            render text: 'urlFieldName was not provided', status: 400
+            render text: 'urlFieldName was not provided', status: HTTP_400_BAD_REQUEST
             return
         }
 
-        _performProxying(
+        _performProxyingIfAllowed(
             requestSingleFieldParamProcessor(fieldName),
-            urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase)
+            urlListStreamProcessor(fieldName, urlSubstitutions),
+            fieldName
         )
     }
 
     def downloadPythonSnippet = {
+        _addDownloadTokenCookie()
         response.setContentType("text/plain")
         response.setHeader('Content-Disposition', "Attachment;Filename=\"${params.downloadFilename}\"")
         response.outputStream << g.render(template: "pythonSnippet.py", model: [ collectionUrl: params.url])
@@ -46,22 +49,22 @@ class DownloadController extends RequestProxyingController {
 
     def downloadNetCdfFilesForLayer = {
 
-        def (fieldName, prefixToRemove, newUrlBase) = _loadCommonFields(params)
+        def (fieldName, urlSubstitutions) = _loadCommonFields(params)
 
         if (!fieldName) {
-            render text: 'urlFieldName was not provided', status: 400
+            render text: 'urlFieldName was not provided', status: HTTP_400_BAD_REQUEST
             return
         }
 
         def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$fieldName")
 
-        if (!hostVerifier.allowedHost(request, url)) {
-            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: 400
+        if (!hostVerifier.allowedHost(url)) {
+            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: HTTP_403_FORBIDDEN
             return
         }
 
         def resultStream = new ByteArrayOutputStream()
-        def streamProcessor = urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase)
+        def streamProcessor = urlListStreamProcessor(fieldName, urlSubstitutions)
 
         try {
             _executeExternalRequest url, streamProcessor, resultStream
@@ -75,6 +78,7 @@ class DownloadController extends RequestProxyingController {
         def urls = new String(resultStream.toByteArray(), 'UTF-8').split()
 
         def downloadFilename = params.remove('downloadFilename')
+        _addDownloadTokenCookie()
         response.setHeader("Content-disposition", buildAttachmentHeaderValueWithFilename(downloadFilename))
 
         try {
@@ -97,7 +101,7 @@ class DownloadController extends RequestProxyingController {
         def sizeFieldName = grailsApplication.config.indexedFile.fileSizeColumnName
         def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$urlFieldName,$sizeFieldName")
 
-        if (!hostVerifier.allowedHost(request, url)) {
+        if (!hostVerifier.allowedHost(url)) {
 
             log.error "Host for address '$url' not allowed"
             render SIZE_ESTIMATE_ERROR
@@ -145,7 +149,7 @@ class DownloadController extends RequestProxyingController {
         }
     }
 
-    def urlListStreamProcessor(fieldName, prefixToRemove, newUrlBase) {
+    def urlListStreamProcessor(fieldName, urlSubstitutions) {
 
         return { inputStream, outputStream ->
 
@@ -174,10 +178,14 @@ class DownloadController extends RequestProxyingController {
                 if (fieldIndex < currentRow.length) {
 
                     def rowValue = currentRow[fieldIndex].trim()
-                    rowValue = rowValue.replace(prefixToRemove, newUrlBase)
+                    urlSubstitutions.each {
+                        search, replace ->
+
+                        rowValue = rowValue.replaceAll(search, replace)
+                    }
 
                     if (rowValue && includedUrls.add(rowValue)) {
-                        outputWriter.print "$rowValue\n"
+                        outputWriter.println rowValue
                     }
                 }
             }
@@ -246,15 +254,17 @@ class DownloadController extends RequestProxyingController {
         }
     }
 
-    def _loadCommonFields(params) {
+    def _getServer(host) {
+        return grailsApplication.config.knownServers.find { it.uri.toURL().host == host }
+    }
 
+    def _loadCommonFields(params) {
         def url = params.url.toURL()
-        def server = Server.findByUriLike("%${url.host}%")
+        def server = _getServer(url.host)
 
         return [
             params.remove('urlFieldName'),
-            server?.urlListDownloadPrefixToRemove ?: "",
-            server?.urlListDownloadPrefixToSubstitue ?: ""
+            server?.urlListDownloadSubstitutions ?: ""
         ]
     }
 }

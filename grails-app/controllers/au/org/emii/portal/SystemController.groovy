@@ -10,6 +10,8 @@ package au.org.emii.portal
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import static au.org.emii.portal.HttpUtils.Status.*
+
 class SystemController {
 
     static final Logger clientLogger = LoggerFactory.getLogger('client-log')
@@ -31,7 +33,7 @@ class SystemController {
 
     def clientLog = {
         clientLogger."${params.level.toLowerCase()}"("session ID: ${clientLogId}, message: ${params.message}");
-        render status: 200, text: "Log posted"
+        render status: HTTP_200_OK, text: "Log posted"
     }
 
     def getClientLogId() {

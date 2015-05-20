@@ -13,32 +13,31 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     MINIMAP_WIDTH: 160, // 16:9 ratio http://size43.com/jqueryVideoTool.html
     MINIMAP_PADDING: 4,
     MAP_ID_PREFIX: "facetedSearchMap",
+    ADD_BUTTON_PREFIX: "fsSearchAddBtn",
+    CSS_CLASS_ITEM_DISABLED: 'x-item-disabled',
+    CSS_CLASS_BUTTON_SELECTED: 'x-btn-selected',
 
     DATE_FACET_INPUT_FORMAT: 'YYYY-MM-DDtHH:mm:ss:SSSz',
 
     initComponent: function() {
 
-        this.rowId = 0;
-
-        this.setTplSizeVariables();
-
-        var tpl = new Ext.XTemplate(
+        this.tpl = new Ext.XTemplate(
             '<tpl for=".">',
             '<div class="resultsHeaderBackground">',
             '    <div class="x-panel-header">',
             '        <div class="resultsRowHeaderTitle">',
             '            <h3>{[values.title]}</h3>',
             '        </div>',
-            '        <div class="facetedSearchBtn" id="fsSearchAddBtn{[this.encode(values)]}">',
+            '        <div class="facetedSearchBtn" id="{[this.buttonElementId(values.uuid)]}">',
             '            {[this.getButton(values)]}',
             '        </div>',
             '    </div>',
             '    <div class="x-panel-body facetedSearchResultBody">',
             '         <div class="x-panel miniMap {[this.getStatusClasses(values)]}" title="{[this.getMiniMapLinkTitle(values)]}"',
             '            style="height:{[this.MINIMAP_HEIGHT]}px;width:{[this.MINIMAP_WIDTH]}px;margin:{[this.MINIMAP_PADDING]}px! important"',
-            '            id="{[this.MAP_ID_PREFIX]}{[this.encode(values)]}">',
+            '            id="{[this.mapElementId(values.uuid)]}">',
             '            {[this.getMiniMap(values)]}',
-            '        </div>' +
+            '        </div>',
             '        <div class="x-panel resultsTextBody {[this.getStatusClasses(values)]}">',
             '            <h5 class="floatRight"><i>{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
             '            </i></h5>',
@@ -50,14 +49,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             this,
             {
                 getButton: function(values) {
-                    this.createButton.defer(1, this, [values.uuid, values.storeRowIndex]);
+                    this.createButton.defer(1, this, [values.uuid]);
                     return "";
                 },
-                encode: function(values) {
-                    return this.superEncodeUuid(values.storeRowIndex, values.uuid);
-                },
                 getStatusClasses: function(values) {
-                    return (this.isRecActive(values.uuid)) ? "x-item-disabled" : "";
+                    return (this.isRecActive(values.uuid)) ? this.CSS_CLASS_ITEM_DISABLED : "";
                 },
                 getMiniMapLinkTitle: function(values) {
                     return (this.isRecActive(values.uuid)) ? OpenLayers.i18n('collectionExistsMsg') : OpenLayers.i18n("addDataCollectionMsg");
@@ -65,47 +61,23 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             }
         );
 
-        var config = {
-            store: this.store,
-            tpl: tpl
-        };
-
-        Ext.apply(this, config);
         Portal.search.FacetedSearchResultsDataView.superclass.initComponent.apply(this, arguments);
     },
 
-    setTplSizeVariables: function() {
-        this.resultBodyHeight = this.MINIMAP_HEIGHT + (2 * this.MINIMAP_PADDING) + 2;
-        this.textBodyLeftMargin = this.MINIMAP_WIDTH + (2 * this.MINIMAP_PADDING);
-    },
-
-    addMinimapLink: function(storeRowIndex, uuid) {
+    addMinimapLink: function(uuid) {
 
         var that = this;
-        var selector = '#' + this.getUniqueId(storeRowIndex, uuid);
-        jQuery(selector).live("click", that, function() {
-            var superUuid = jQuery(this).attr('id').replace(this.MAP_ID_PREFIX, '');
-            that.addRecordFromSuperUuid(superUuid);
-            jQuery(this).addClass("x-item-disabled");
+        var selector = '#' + this.mapElementId(uuid);
+        jQuery(selector).live("click", that, function(clickEvent) {
+
+            var multiSelect = clickEvent.ctrlKey;
+            var uuid = this.uuidFromElementId(jQuery(this).attr('id'));
+            that.addRecordWithUuid(uuid, multiSelect);
+
+            jQuery(this).addClass(this.CSS_CLASS_ITEM_DISABLED);
+
             return false;
         });
-    },
-
-    collectData: function(records, startIndex) {
-        var r = [];
-
-        for (var i = 0; i < records.length; i++) {
-            var newRecord = this.prepareData(records[i].data, startIndex + i, records[i]);
-            newRecord = this._addStoreRowCount(newRecord);
-            r[r.length] = newRecord;
-        }
-        return r;
-    },
-
-    _addStoreRowCount: function(record) {
-        record['storeRowIndex'] = this.rowId;
-        this.rowId++;
-        return record;
     },
 
     getParametersAsHtml: function(values) {
@@ -132,24 +104,35 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         if (values.parameter) {
             return template.apply({
                 "label": label,
-                "value": this.getMeasuredParameters(values)
+                "value": this._getMeasuredParametersText(values)
             });
         }
         return "";
     },
 
-    getMeasuredParameters: function(values) {
+    _getMeasuredParametersText: function(values) {
+        var params = this._getMeasuredParameters(values);
+
+        if (params.length > 0) {
+            return params.join(', ');
+        }
+        else {
+            return OpenLayers.i18n('noParametersForCollection');
+        }
+    },
+
+    _getMeasuredParameters: function(values) {
         var broader = [];
         Ext.each(values.parameter, function(param) {
             var broaderTerms = this.classificationStore.getBroaderTerms(param, 2, 'Measured parameter');
-            if(broaderTerms.length > 0) {
+            if (broaderTerms.length > 0) {
                 broader = broader.concat(broaderTerms);
             }
         }, this);
         broader = broader.sort();
-        return broader.filter( function(item, pos) {
+        return broader.filter(function(item, pos) {
             return !pos || item != broader[pos - 1];
-        }).join( ', ');
+        });
     },
 
     _getOrganisationAsHtml: function(template, organisation) {
@@ -168,14 +151,14 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
 
         var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform');
-        if(broader.length > 0) {
+        if (broader.length > 0) {
             broader = broader.sort();
             broader = broader.filter( function(item, pos) {
                 return !pos || item != broader[pos - 1];
             });
             return template.apply({
                 "label": label,
-                "value": broader.join( ', ')
+                "value": broader.join(', ')
             });
         }
         return "";
@@ -209,22 +192,22 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return moment(dateString, this.DATE_FACET_INPUT_FORMAT);
     },
 
-    createButton: function(uuid, storeRowIndex) {
+    createButton: function(uuid) {
         var cls = "";
         var tooltip = OpenLayers.i18n('collectionExistsMsg');
 
         if (this.isRecActive(uuid)) {
-            cls = "x-btn-selected";
+            cls = this.CSS_CLASS_BUTTON_SELECTED;
         }
         else {
             tooltip = OpenLayers.i18n('addDataCollectionMsg');
         }
 
-        var buttonElementId = "fsSearchAddBtn" + this.superEncodeUuid(storeRowIndex, uuid);
+        var buttonElementId = this.buttonElementId(uuid);
 
         if (Ext.get(buttonElementId)) {
             new Ext.Button({
-                text: OpenLayers.i18n('navigationButtonSelect'),
+                text: OpenLayers.i18n('navigationButtonNext', {label: "Select"}),
                 tooltip: tooltip,
                 tooltipType: "title",
                 cls: "navigationButton forwardsButton listButtonWrapper " + cls,
@@ -263,12 +246,12 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     getMiniMap: function(values) {
 
-        values.mapContainerId = this.getUniqueId(values.storeRowIndex, values.uuid);
+        values.mapContainerId = this.mapElementId(values.uuid);
 
         var miniMap = new Portal.search.FacetedSearchResultsMiniMap(values);
         miniMap.addLayersAndRender();
 
-        this.addMinimapLink(values.storeRowIndex, values.uuid);
+        this.addMinimapLink(values.uuid);
 
         // Must return something, otherwise 'undefined' is rendered in the mini map div in some browsers,
         // e.g. firefox (but not chrome).
@@ -277,7 +260,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     isRecActive: function(uuid) {
         var record = this._getRecordFromUuid(uuid);
-        return (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record))
+        return Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record);
     },
 
     _getRecordFromUuid: function(uuid) {
@@ -290,43 +273,46 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return record;
     },
 
-    getUniqueId: function(storeRowIndex, uuid) {
-        return  this.MAP_ID_PREFIX + this.superEncodeUuid(storeRowIndex, uuid);
+    mapElementId: function(uuid) {
+        return this.elementIdFromUuid(this.MAP_ID_PREFIX, uuid);
     },
 
-    // uuid alone is unique unless search results have duplicates
-    superEncodeUuid: function(storeRowIndex, uuid) {
-        return "-" + storeRowIndex + "-" + uuid;
+    buttonElementId: function(uuid) {
+        return this.elementIdFromUuid(this.ADD_BUTTON_PREFIX, uuid);
     },
 
-    decodeSuperUuid: function(encodedUuid) {
-        var chunks = encodedUuid.split("-");
-        chunks.splice(0, 2);
+    elementIdFromUuid: function(prefix, uuid) {
+        return String.format('{0}-{1}', prefix, uuid);
+    },
+
+    uuidFromElementId: function(elementId) {
+        var chunks = elementId.split("-");
+        chunks.splice(0, 1);
         return chunks.join("-");
     },
 
-    _viewButtonOnClick: function(btn) {
+    _viewButtonOnClick: function(btn, clickEvent) {
 
-        btn.addClass("x-btn-selected");
-        var superUuid = btn.container.id.replace("fsSearchAddBtn", '');
-        this.addRecordFromSuperUuid(superUuid);
+        var multiSelect = clickEvent.ctrlKey;
+        var uuid = this.uuidFromElementId(btn.container.id);
+        this.addRecordWithUuid(uuid, multiSelect);
+
+        btn.addClass(this.CSS_CLASS_BUTTON_SELECTED);
     },
 
-    addRecordFromSuperUuid: function(superUuid) {
-        var uuid = this.decodeSuperUuid(superUuid);
+    addRecordWithUuid: function(uuid, multiSelect) {
         var record = this._getRecordFromUuid(uuid);
 
         trackUsage(OpenLayers.i18n('layerSelectionTrackingCategory'), OpenLayers.i18n('layerSelectionTrackingAction'), record.data.title);
 
         if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
-            log.info(
-                "Selected collection: " + JSON.stringify({
-                    'title': record.data.title
-                })
-            );
+
             Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
         }
-        Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
+
+        if (!multiSelect) {
+            Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_DATA_COLLECTION, record);
+        }
     }
 });
 

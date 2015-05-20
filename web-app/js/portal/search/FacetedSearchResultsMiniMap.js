@@ -50,7 +50,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
                 );
             }
             else {
-                this.zoomToExtent(new OpenLayers.Bounds.fromString(Portal.app.config.defaultDatelineZoomBbox));
+                this.zoomToExtent(new OpenLayers.Bounds.fromString(Portal.app.appConfig.portal.defaultDatelineZoomBbox));
             }
         }
     },

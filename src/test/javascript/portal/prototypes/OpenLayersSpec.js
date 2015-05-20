@@ -46,61 +46,13 @@ describe('OpenLayers', function() {
         describe("_is130", function() {
             it("returns false for ncwms", function() {
                 openLayer.isNcwms = function() { return true };
-                openLayer.server = {type: "NCWMS 1.3.0"};
+                openLayer.server = {wmsVersion: '1.3.0'};
                 expect(openLayer._is130()).toBeFalsy();
             });
 
             it("returns true for 1.3.0 when not NCWMS", function() {
-                openLayer.server = {type: "WMS 1.3.0"};
+                openLayer.server = {wmsVersion: '1.3.0'};
                 expect(openLayer._is130()).toBeTruthy();
-            });
-        });
-
-        describe("getCqlFilter", function() {
-            it("Returns filter if defined", function() {
-                openLayer.params = {CQL_FILTER: "test='filter'"};
-
-                expect(openLayer.getCqlFilter()).toEqual("test='filter'");
-            });
-
-            it("Returns empty string if cql filter not defined", function() {
-                openLayer.params = {};
-
-                expect(openLayer.getCqlFilter()).toEqual('');
-            });
-        });
-
-        describe("setCqlFilter", function() {
-            it("calls mergeParams for a new filter", function() {
-                spyOn(openLayer, "mergeNewParams");
-
-                openLayer.params = {CQL_FILTER: "test='filter'"};
-
-                openLayer.setCqlFilter("attribute='anotherfilter'");
-
-                expect(openLayer.mergeNewParams).toHaveBeenCalledWith({
-                    CQL_FILTER: "attribute='anotherfilter'"
-                });
-            });
-
-            it("does nothing if new filter equals old filter", function() {
-                spyOn(openLayer, "mergeNewParams");
-
-                openLayer.params = {CQL_FILTER: "test='filter'"};
-
-                openLayer.setCqlFilter("test='filter'");
-
-                expect(openLayer.mergeNewParams).not.toHaveBeenCalled();
-            });
-
-            it("deletes filter and redraws if filter is empty", function() {
-                spyOn(openLayer, "redraw");
-
-                openLayer.params = {CQL_FILTER: "test='filter'"};
-
-                openLayer.setCqlFilter("");
-
-                expect(openLayer.redraw).toHaveBeenCalled();
             });
         });
 
@@ -109,7 +61,9 @@ describe('OpenLayers', function() {
             it('calls _buildGetFeatureRequestUrl correctly', function() {
 
                 spyOn(openLayer, '_buildGetFeatureRequestUrl');
-                spyOn(openLayer, 'getDownloadFilter').andReturn('download filters');
+                spyOn(Portal.filter.combiner, 'DataDownloadCqlBuilder').andReturn({
+                    buildCql: function() { return 'download filters' }
+                });
 
                 openLayer.getFeatureRequestUrl('wms_uri', 'layerName', 'csv');
 
@@ -162,25 +116,16 @@ describe('OpenLayers', function() {
                 expect(getFeatureUrl).toBe(expectedUrl);
             });
 
-            it('calls _getServerSupportedOutputFormat', function() {
-                spyOn(openLayer, '_getServerSupportedOutputFormat');
-                openLayer._buildGetFeatureRequestUrl('wfs_url', 'type_name', 'csv');
-                expect(openLayer._getServerSupportedOutputFormat).toHaveBeenCalledWith('csv');
-            });
+            describe('getCsvDownloadFormat', function() {
 
-            describe('_getServerSupportedOutputFormat', function() {
-                it("returns 'csv-with-metadata-header' if server does support CSV metadata header", function() {
-                    openLayer.server.supportsCsvMetadataHeaderOutputFormat = true;
-                    expect(openLayer._getServerSupportedOutputFormat('csv-with-metadata-header')).toBe('csv-with-metadata-header');
+                it("returns configured CSV output format for server", function() {
+                    openLayer.server.csvDownloadFormat = 'csv-rulz-man';
+                    expect(openLayer.getCsvDownloadFormat()).toBe('csv-rulz-man');
                 });
 
-                it("returns 'csv' if server does not support CSV metadata header", function() {
-                    openLayer.server.supportsCsvMetadataHeaderOutputFormat = false;
-                    expect(openLayer._getServerSupportedOutputFormat('csv-with-metadata-header')).toBe('csv');
-                });
-
-                it("returns given outputFormat for formats other than 'csv-with-metadata-header'", function() {
-                    expect(openLayer._getServerSupportedOutputFormat('xyz')).toBe('xyz');
+                it("returns 'csv' by default", function() {
+                    openLayer.server.csvDownloadFormat = null;
+                    expect(openLayer.getCsvDownloadFormat()).toBe('csv');
                 });
             });
         });
@@ -189,6 +134,11 @@ describe('OpenLayers', function() {
             describe('uses featureInfoFormat format', function() {
                 beforeEach(function() {
                     openLayer.setMap(new OpenLayers.Map());
+                    openLayer.map.getProjectionObject = function() {
+                        return {
+                            getCode: function() {}
+                        };
+                    };
                     openLayer._getBoundingBox = noOp;
                     openLayer.server = {
                         infoFormat: 'text/html'
@@ -197,7 +147,7 @@ describe('OpenLayers', function() {
 
                 it('when format not already specified', function() {
                     openLayer.mergeNewParams({
-                        format: undefined  // note that OpenLayers sets the default format to 'image/jpeg' in this case...
+                        format: undefined // note that OpenLayers sets the default format to 'image/jpeg' in this case...
                     });
 
                     expect(openLayer.getFeatureInfoRequestString()).toHaveParameterWithValue('FORMAT', 'text/html');
@@ -212,53 +162,6 @@ describe('OpenLayers', function() {
                     expect(openLayer.getFeatureInfoRequestString()).toHaveParameterWithValue('FORMAT', 'text/html');
                     expect(openLayer.getFeatureInfoRequestString()).not.toHaveParameterWithValue('FORMAT', 'image/png');
                 });
-            });
-        });
-
-        describe('Human readable wms specific filter information', function() {
-
-            it('returns text if there is a cql filter applied', function() {
-                openLayer.params = {CQL_FILTER: "test='filter'"};
-
-                var filterString = openLayer.getDownloadFilterDescriptions();
-                expect(filterString.indexOf(OpenLayers.i18n('noFilterLabel'))).toEqual(-1);
-            });
-        });
-
-        describe('getMapLayerFilters filter information', function() {
-
-            it('returns text if there is a cql filters', function() {
-                openLayer.filterData = [{
-                    cql: "rararrr",
-                    enabled: true}];
-
-                var filterString = openLayer.getMapLayerFilters();
-                expect(filterString).toContain("rararrr");
-            });
-
-            it('returns text if the cql filter is a geom when function is called with correct flag', function() {
-                openLayer.filterData = [{
-                    cql: "rararrr",
-                    enabled: true,
-                    type: "geom",
-                    downloadOnly: true}];
-
-                var filterString = openLayer.getMapLayerFilters();
-                expect(filterString).not.toContain("rararrr");
-                var filterString = openLayer.getMapLayerFilters(true);
-                expect(filterString).toContain("rararrr");
-            });
-
-            it('returns nothing if the cql filter is download only', function() {
-                openLayer.filterData = [{
-                    cql: "rararrr",
-                    enabled: true,
-                    downloadOnly: true}];
-
-                var filterString = openLayer.getMapLayerFilters();
-                expect(filterString).not.toContain("rararrr");
-                var filterString = openLayer.getMapLayerFilters(true);
-                expect(filterString).not.toContain("rararrr");
             });
         });
     });

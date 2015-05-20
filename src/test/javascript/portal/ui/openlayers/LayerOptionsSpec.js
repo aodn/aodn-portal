@@ -14,7 +14,7 @@ describe("Portal.ui.openlayers.LayerOptions", function() {
         isBaseLayer : true,
         projection : null,
         server : {
-            type : "WMS-1.1.1"
+            wmsVersion : "1.1.1"
         }
     };
 

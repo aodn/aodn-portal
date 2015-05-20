@@ -142,6 +142,30 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         return idx >= 0;
     },
 
+    filterCount: function() {
+        return this.searchFilters.getCount();
+    },
+
+    hasDrilldown: function(categories) {
+        var drilldownFilter = this._toDrilldownFilter(categories);
+
+        drilldownFilterIndex = this.searchFilters.findBy(function (record) {
+            return record.get('name') == this.DRILLDOWN_PARAMETER_NAME && record.get('value') == drilldownFilter;
+        }, this);
+
+        return drilldownFilterIndex >= 0;
+    },
+
+    _toDrilldownFilter: function(categories) {
+        var encodedCategories = [];
+
+        Ext.each(categories, function(category) {
+            encodedCategories.push(encodeURIComponent(category));
+        });
+
+        return encodedCategories.join('/');
+    },
+
     _onSuccessfulSearch: function(page, caller, node, response) {
         this.fireEvent('searchcomplete', response.responseXML, page);
     },

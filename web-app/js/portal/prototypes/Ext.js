@@ -15,7 +15,7 @@ Ext.tree.TreeNode.prototype.toValueHierarchy = function() {
             values.push(encodeURIComponent(p.attributes.value));
         }
         p = p.parentNode;
-    } while (p)
+    } while (p);
 
     return values.reverse().filter(function(n) {
         return n;
@@ -26,13 +26,24 @@ Ext.tree.TreeNode.prototype.clone = function(recursive) {
     var clone = new Ext.tree.TreeNode();
     Ext.applyIf(clone.attributes, this.attributes);
     clone.setText(this.text);
-    
+
     if (recursive) {
         this.eachChild(function(childNode) {
             clone.appendChild((childNode.clone(true)));
         });
     }
-    
-    return clone;
-}
 
+    return clone;
+};
+
+Ext.tree.TreeNode.prototype.getHierarchy = function(attribute) {
+    var values = [];
+    var currentNode = this;
+    do {
+        if (currentNode.attributes[attribute]) {
+            values.unshift(currentNode.attributes[attribute]);
+        }
+        currentNode = currentNode.parentNode;
+    } while (currentNode);
+    return values;
+};

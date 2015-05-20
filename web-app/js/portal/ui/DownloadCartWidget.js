@@ -35,12 +35,12 @@ Portal.ui.DownloadCartWidget = Ext.extend(Ext.Panel, {
 
         Portal.ui.DownloadCartWidget.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, function() {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() {
             this.collectionCounter ++;
             this.updateDownloadCartSize();
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED, function() {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, function() {
             this.collectionCounter --;
             this.updateDownloadCartSize();
         }, this);
@@ -80,8 +80,8 @@ Portal.ui.DownloadCartWidget = Ext.extend(Ext.Panel, {
         this.collectionCounter = 0;
 
         this.counterIcon = new Ext.Container({
-            cls: 'cartLogo',
-            html: '&nbsp;'
+            cls: 'carticon',
+            html: OpenLayers.i18n('carticon')
         });
 
         this.downloadCartSize = new Ext.Container({

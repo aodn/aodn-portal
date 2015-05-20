@@ -22,7 +22,8 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
                     asyncDownload: true,
-                    collectEmailAddress: true
+                    collectEmailAddress: true,
+                    serviceResponseHandler: this.serviceResponseHandler
                 }
             });
         }
@@ -33,6 +34,26 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
     _hasRequiredInfo: function() {
 
         return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty();
+    },
+
+    serviceResponseHandler: function(response) {
+        var msg = "";
+
+        if (response) {
+            try {
+                var responseJson = JSON.parse(response);
+                if (responseJson['url']) {
+                    msg = OpenLayers.i18n('gogoduckServiceMsg', {
+                        url: responseJson['url']
+                    });
+                }
+            }
+            catch (e) {
+                log.error(String.format("Could not parse Gogoduck response: '{0}'", response));
+            }
+        }
+
+        return msg;
     },
 
     _getUrlGeneratorFunction: function() {
@@ -76,8 +97,24 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
             }
         };
 
+        this._trackUsage(layerName, args.subsetDescriptor);
+
         var paramsAsJson = Ext.util.JSON.encode(args);
 
         return String.format(this.ASYNC_DOWNLOAD_URL + 'jobParameters={0}', encodeURIComponent(paramsAsJson));
+    },
+
+    _trackUsage: function(layerName, subsetDescriptor) {
+        trackDownloadUsage(
+            OpenLayers.i18n('gogoduckTrackingLabel'),
+            layerName,
+            String.format("TIME:{0},{1} LAT:{2},{3} LON:{4},{5}",
+                subsetDescriptor.temporalExtent.start,
+                subsetDescriptor.temporalExtent.end,
+                subsetDescriptor.spatialExtent.south,
+                subsetDescriptor.spatialExtent.north,
+                subsetDescriptor.spatialExtent.west,
+                subsetDescriptor.spatialExtent.east)
+        );
     }
 });

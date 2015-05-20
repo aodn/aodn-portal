@@ -16,7 +16,6 @@ describe("Portal.ui.FeatureInfoPopup", function()
     beforeEach(function() {
         map = new OpenLayers.Map();
         server = {
-            type: "NCWMS-1.3.0",
             uri: "http://geoserver.imos.org.au/geoserver/wms"
         };
 

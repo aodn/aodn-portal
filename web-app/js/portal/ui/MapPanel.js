@@ -14,8 +14,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     constructor: function (cfg) {
 
-        this.appConfig = Portal.app.config;
-        var portalConfig = Portal.app.appConfig.portal;
+        this.appConfig = Portal.app.appConfig;
+        var portalConfig = this.appConfig.portal;
 
         var config = Ext.apply({
             stateful: false,
@@ -50,7 +50,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this.onBaseLayerChanged(message);
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, function() {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() {
             this._maximiseMapActionsControl();
         }, this);
 
@@ -83,7 +83,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     autoZoomCheckboxHandler: function (box, checked) {
-        Portal.app.config.autoZoom = checked;
+        Portal.app.appConfig.portal.autoZoom = checked;
         this.autoZoom = checked;
     },
 
@@ -99,23 +99,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     _closeFeatureInfoPopup: function () {
-        try {
-            if (this.featureInfoPopup) {
-                this.featureInfoPopup.close();
-            }
-        }
-        catch (e) {
-            /**
-             * Explicitly ignoring exception
-             *
-             * https://github.com/aodn/aodn-portal/issues/175
-             *
-             * This appears to have existed forever in IE, it basically comes down to Shadow.realign in Ext where the
-             * height value is determined as -1 which is invalid. At no point do we set the height to -1 so I assume that
-             * IE does this when the FeatureInfoPopup is hidden from view or something else crazy. I _hope_ that the popup
-             * is still destroyed effectively, it all seems to still work. I'm happy for someone else to find a better
-             * solution, I take no pride in this fix whatsoever.
-             */
+        if (this.featureInfoPopup) {
+            this.featureInfoPopup.close();
         }
     },
 

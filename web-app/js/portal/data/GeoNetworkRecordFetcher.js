@@ -37,7 +37,7 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
             var record = store.getAt(0);
 
             Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
-            Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_GEONETWORK_RECORD, record);
+            Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_DATA_COLLECTION, record);
         });
     },
 

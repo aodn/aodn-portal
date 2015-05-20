@@ -8,6 +8,12 @@
 // Track slow-running specs
 jasmine.slow.enable(500);
 
+// Mock a console (if not running in browser)
+if (typeof console === "undefined" || typeof console.log === "undefined") {
+    console = {};
+    console.log = function(msg) {};
+}
+
 Ext.MessageBox.alert = function () {
 };
 
@@ -98,7 +104,7 @@ var setupTestConfigAndStubs = function() {
     Portal.app.config.defaultDatelineZoomBbox = '90, 90, -90, -90';
 
     // Stop 404s.
-    OpenLayers.Lang.en.loadingSpinner = '';
+    OpenLayers.Lang.en.loadingMessage = '';
 
     log.removeAllAppenders();
 };
@@ -112,9 +118,14 @@ var mockLayoutForMainPanel = function(mainPanel) {
     };
 };
 
-var mockMap = function() {
+var getMockMap = function() {
     return {
-        events: { register: function(event, scope, fn) {}}
+        events: {
+            register: jasmine.createSpy(),
+            on: jasmine.createSpy()
+        },
+        setSpatialConstraintStyle: jasmine.createSpy(),
+        getSpatialConstraintType: jasmine.createSpy()
     };
 };
 
@@ -133,8 +144,9 @@ var mockAjaxXmlResponse = function(responseContent) {
 // An empty function to pass as a parameter
 var noOp = function() {};
 
+var wktPolygon = 'POLYGON((1 2,3 4,1 2))';
 var constructGeometry = function() {
-    return OpenLayers.Geometry.fromWKT('POLYGON((1 2, 3 4, 1 2))');
+    return OpenLayers.Geometry.fromWKT(wktPolygon);
 };
 
 //

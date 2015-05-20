@@ -64,7 +64,9 @@ describe("Portal.ui.MapPanel", function() {
     describe('zoom to layer tests', function() {
 
         var openLayer = new OpenLayers.Layer.WMS();
-        openLayer.server = { type: "WMS-1.1.0" };
+        openLayer.server = {
+            wmsVersion: '1.1.0'
+        };
 
         beforeEach(function() {
             spyOn(mapPanel, 'zoomTo');
@@ -129,7 +131,7 @@ describe("Portal.ui.MapPanel", function() {
     describe('geonetwork record added event', function() {
         it('maximises map actions control on active geonetork record added event', function() {
             spyOn(mapPanel, '_maximiseMapActionsControl');
-            Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED);
+            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
             expect(mapPanel._maximiseMapActionsControl).toHaveBeenCalled();
         });
     });

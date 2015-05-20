@@ -10,17 +10,15 @@ describe('Portal.cart.WmsInjector', function() {
     var injector;
     var collectionWithFilters = {
         wmsLayer: {
-            getDownloadFilterDescriptions: function() {
-                return "Human readable filters"
-            }
+            filters: [
+                fakeFilter('Human'),
+                fakeFilter('readable'),
+                fakeFilter('description')
+            ]
         }
     };
     var collectionWithNoFilters = {
-        wmsLayer: {
-            getDownloadFilterDescriptions: function() {
-                return "";
-            }
-        }
+        wmsLayer: {}
     };
 
     beforeEach(function() {
@@ -34,7 +32,7 @@ describe('Portal.cart.WmsInjector', function() {
 
             var entry = injector._getDataFilterEntry(collectionWithFilters);
 
-            expect(entry).toBe("Human readable filters");
+            expect(entry).toBe("Human<br />readable<br />description");
         });
 
         it('includes placeholder when no text returned', function() {
@@ -44,4 +42,12 @@ describe('Portal.cart.WmsInjector', function() {
             expect(entry).toContain(OpenLayers.i18n('emptyDownloadPlaceholder'));
         });
     });
+
+    function fakeFilter(s) {
+
+        return {
+            getHumanReadableForm: function() { return s },
+            hasValue: function() { return true }
+        };
+    }
 });

@@ -306,11 +306,13 @@ Date.prototype.setISO8601 = function (string) {
     this.setTime(Number(time));
 };
 
-// IE 8 throws errors with console not existing
-// Console will exist when using developer tools
-if (typeof console === "undefined" || typeof console.log === "undefined") {
-    console = {};
-    console.log = function(msg) {
-        //alert(msg);
-    };
-}
+function getPortalBase(pathname) {
+    if (!pathname) {
+        pathname = window.location.pathname;
+    }
+    return pathname.replace(/\/home$/, "");
+};
+
+function normaliseLongitude(longitude) {
+    return (longitude + 540) % 360 - 180;
+};

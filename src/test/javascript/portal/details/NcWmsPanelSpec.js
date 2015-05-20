@@ -59,9 +59,15 @@ describe('Portal.details.NcWmsPanel', function() {
             _applyCommonSpies();
         });
 
-        it('updates the NcWMS panel object when the layer changes', function() {
+        it('updates the record when panel is created', function() {
             ncwmsPanel._initWithLayer();
             expect(ncwmsPanel.geoNetworkRecord.updateNcwmsParams).toHaveBeenCalled();
+        });
+
+        it('calls DATA_COLLECTION_MODIFIED when the record changes', function() {
+            spyOn(Ext.MsgBus, 'publish');
+            ncwmsPanel._applyFilterValuesToCollection();
+            expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED);
             delete ncwmsPanel.geoNetworkRecord;
         });
 
@@ -78,9 +84,9 @@ describe('Portal.details.NcWmsPanel', function() {
         });
 
         it('clears the date and time pickers when the layer is updating', function() {
-            spyOn(ncwmsPanel, '_clearDateTimeFields');
+            spyOn(ncwmsPanel, '_disableDateTimeFields');
             ncwmsPanel._initWithLayer();
-            expect(ncwmsPanel._clearDateTimeFields).toHaveBeenCalled();
+            expect(ncwmsPanel._disableDateTimeFields).toHaveBeenCalled();
             delete ncwmsPanel.geoNetworkRecord;
         });
     });
@@ -95,23 +101,14 @@ describe('Portal.details.NcWmsPanel', function() {
         });
     });
 
-    describe('clearing the date and time pickers', function() {
-        it('resets the start picker', function() {
-            spyOn(ncwmsPanel.startDateTimePicker, 'reset');
-            ncwmsPanel.resetConstraints();
-            expect(ncwmsPanel.startDateTimePicker.reset).toHaveBeenCalled();
-        });
+    describe('reset button', function() {
+        it('resets the temporal extent', function() {
+            layer.getTemporalExtentMin = function() { return "ExtentMin"; };
+            layer.getTemporalExtentMax = function() { return "ExtentMax"; };
 
-        it('resets the end picker', function() {
-            spyOn(ncwmsPanel.endDateTimePicker, 'reset');
+            spyOn(ncwmsPanel, '_resetExtent');
             ncwmsPanel.resetConstraints();
-            expect(ncwmsPanel.endDateTimePicker.reset).toHaveBeenCalled();
-        });
-
-        it('updates the time range label', function() {
-            spyOn(ncwmsPanel, '_updateTimeRangeLabelLoading');
-            ncwmsPanel.resetConstraints();
-            expect(ncwmsPanel._updateTimeRangeLabelLoading).toHaveBeenCalledWith();
+            expect(ncwmsPanel._resetExtent).toHaveBeenCalledWith("ExtentMin", "ExtentMax");
         });
 
     });

@@ -8,7 +8,7 @@
 Ext.namespace('Portal.filter');
 
 /**
-   This is the base type of non Geometry filters for geoserver layers.
+   This is the base type of all filters for geoserver layers.
 **/
 Portal.filter.BaseFilterPanel = Ext.extend(Ext.Panel, {
 
@@ -102,6 +102,9 @@ Portal.filter.BaseFilterPanel.newFilterPanelFor = function(cfg) {
     }
     else if (cfg.filter.type === "Boolean") {
         newFilterPanel = new Portal.filter.BooleanFilterPanel(cfg);
+    }
+    else if (cfg.filter.type === "BoundingBox") {
+        newFilterPanel = new Portal.filter.BoundingBoxFilterPanel(cfg);
     }
     else if (cfg.filter.type === "Number") {
         newFilterPanel = new Portal.filter.NumberFilterPanel(cfg);

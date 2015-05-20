@@ -10,8 +10,12 @@ body, html, td, p {
     font-size: 12px;
 }
 
-h1, h2, h3 {
+h1, h2 {
     white-space: nowrap;
+}
+
+h3 {
+    white-space: pre-wrap;
 }
 
 h1 {
@@ -52,10 +56,6 @@ input[type="checkbox"], input[type="radio"] {
     border: 0;
 }
 
-input.readonlyInput {
-    border: none;
-}
-
 .x-splitbar-v {
     background-color: #fafafa;
 }
@@ -64,35 +64,15 @@ input.readonlyInput {
     border-radius: 6px;
 }
 
-.imageLabel {
-    margin: 2px;
-    margin-left: 13px;
-    font-size: 10px;
-}
-
-.searchInput {
-    display: block;
-    height: 27px;
-    padding: 15px;
-    font-size: 14px;
-    color: inherit;
-    border-color: #777777;
-}
-
-.searchInput.x-form-empty-field {
-    color: #15428B;
-    font-size: inherit;
-    font-weight: bold;
-}
-
-.faceted-search-results {
-    box-shadow: inset 6px 1px 10px 2px #eee;
+.faceted-search-results,
+.downLoadPanelBody {
+    box-shadow: inset 1px 1px 6px 1px  #eee;
     border-radius: 3px;
     padding: 10px 6px;
 }
 
-#activeTreePanel input {
-    margin: 0;
+.downloadPanelItem {
+    margin-left: 12px;
 }
 
 a {
@@ -149,11 +129,6 @@ hr {
 
 .italic {
     font-style: italic;
-}
-
-.homePanelWidget {
-    margin-right: 10px;
-    padding-right: 20px;
 }
 
 .buttonPad {
@@ -222,29 +197,6 @@ hr {
     top: 12px;
 }
 
-#loginPopup {
-    background-color: #ffffff;
-    border: 1px solid silver;
-    border-radius: 6px;
-    padding: 6px;
-    position: absolute;
-    right: 10px;
-    top: 25px;
-}
-
-.searchField {
-    padding: 3px 5px 3px 5px;
-}
-
-.searchFieldSelectors {
-    margin: 3px 0;
-    background-color: #fafafa;
-}
-
-.noborder {
-    border: none ! important;
-}
-
 /*
     map while loading
 */
@@ -274,65 +226,21 @@ hr {
     cursor: crosshair;
 }
 
-#centerTabPanel {
-    border: 0 solid white;
-}
-
-#loader {
-    background-color: #0B5584;
-    background-color: rgba(11, 85, 132, 0.5);
-    border: 0;
-    border-radius: 6px;
-    margin-bottom: 3px;
-    margin-right: 3px;
-    width: 220px;
-    box-shadow: -5px 5px 25px rgba(24, 57, 78, 0.3), 0 0 1px rgba(24, 57, 78, 0.2) inset
-}
-
-#loader span {
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
-    text-shadow: 2px 1px 3px #18394E;
-    white-space: nowrap;
-    line-height: 75px;
-}
-
 .nowrap {
     white-space: nowrap;
 }
 
-.mapFooter {
-    background: url("../images/shadowLight.png") repeat-x scroll left top white;
-}
-
 /* animation buttons */
 .nextButton {
-    background: url("../images/animation/fastForward.png") no-repeat left top transparent;
+    background: url("../images/arrowNext.png") no-repeat left top transparent;
 }
 
 .previousButton {
-    background: url("../images/animation/rewind.png") no-repeat left top transparent;
-}
-
-.pauseButton {
-    background: url("../images/animation/pause.png") no-repeat left top transparent;
-}
-
-.playButton {
-    background: url("../images/animation/play.png") no-repeat left top transparent;
-}
-
-.stopButton {
-    background: url("../images/animation/stop.png") no-repeat left top transparent;
+    background: url("../images/arrowPrev.png") no-repeat left top transparent;
 }
 
 .listButtonWrapper {
     margin-top: 1px;
-}
-
-.downloadButton {
-    background: url("../images/animation/download.png") no-repeat left top transparent;
 }
 
 .removeButton {
@@ -352,13 +260,16 @@ hr {
     clear: both;
 }
 
+.x-btn {
+    padding: 0 6px;
+    background-color: #EEEEEE;
+    border-radius: 6px;
+    margin-right: 3px;
+}
+
 .x-btn.clearFiltersButton {
     float: right;
     margin-right: 17px;
-}
-
-.logoSpacer {
-    margin: 2px;
 }
 
 .italic {
@@ -429,10 +340,6 @@ Site navigation
     border-radius: 8px 0 0 8px;
 }
 
-.community {
-    padding: 10px 0;
-}
-
 .motd {
     border-radius: 6px;
     background-color: white;
@@ -445,10 +352,6 @@ Site navigation
 /* Our own style is applied to the message of the day dialog (see above). */
 .motd div[class^='x-window'] {
     background-image: none;
-}
-
-#mainMapCentrePanel {
-    background-color: #8AA8C4;
 }
 
 a[rel="external"], a.external {
@@ -467,45 +370,15 @@ a:hover.mainlinks {
     color: black;
 }
 
-.noBackgroundImage * {
-    background-image: none ! important;
-}
-
-/* login register forgotten password */
-.auth table {
-    border: 0;
-    border-spacing: 4px;
-}
-
-.authentication-formLinks {
-    position: absolute;
-    top: 150px;
-    left: 30px;
-    font-size: 14px;
-}
-
-.authentication-form-floated {
-    position: absolute;
-    top: 150px;
-    left: 210px;
-}
-
-.authentication-form h2 {
-    padding-bottom: 0.8em;
-}
-
-.authentication-form label {
-    font-weight: bold;
-    font-size: 13px;
-}
-
-.authentication-form .authentication-hints {
-    font-size: 0.9em;
-    font-style: italic;
-    padding: 10px 5px;
-}
-
 /* MESSAGES AND ERRORS */
+
+.error {
+    color: #aa6708;
+}
+
+.fa-warning {
+    color: #aa6708;
+}
 
 .errors, .message {
     font-size: 0.9em;
@@ -545,7 +418,7 @@ a:hover.mainlinks {
 }
 
 /*
-Geoserver default tables
+Geoserver default tables in external GFI
 */
 table.featureInfo, table.featureInfo td, table.featureInfo th {
     border: 1px solid #ddd;
@@ -576,23 +449,6 @@ table.featureInfo caption {
     font-weight: bold;
     text-transform: uppercase;
     padding: .2em .2em;
-}
-
-#mapdiv {
-    position: absolute;
-    z-index: 1;
-    height: 100%;
-    width: 100%;
-}
-
-.leftdrop {
-    background-image: url(../images/leftshadow.png);
-    background-position: left top;
-    background-repeat: repeat-y;
-    z-index: 101;
-    width: 10px;
-    height: 100%;
-    position: absolute;
 }
 
 #mapscale {
@@ -634,8 +490,8 @@ table.featureInfo caption {
     filter: alpha(opacity=0); /* IE6/IE7 */
 }
 
-div.olMap.miniMap{
-    border: 1px solid #ccc;
+div.olMap.miniMap {
+    border: 1px solid #ccc !important;
 }
 
 div.olMap.miniMap:hover:not(.x-item-disabled) {
@@ -649,17 +505,7 @@ div.olMap.x-item-disabled * {
     -o-filter: grayscale(40%);
     -ms-filter: grayscale(40%);
     filter: grayscale(40%);
-    /*filter: gray;*/
     filter: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' height='0'><filter id='greyscale'><feColorMatrix type='saturate' values='0.8' /></filter></svg>#greyscale");
-}
-
-/* map toolbar */
-.expandUpLink {
-    background: url('../images/mini-up.png') center 2px no-repeat;
-}
-
-.expandDownLink {
-    background: url('../images/mini-down.png') center 2px no-repeat;
 }
 
 #maptools .x-panel-body {
@@ -672,22 +518,6 @@ div.olMap.x-item-disabled * {
     left: 0;
     z-index: 900 ! important;
     border-radius: 0;
-}
-
-.animationControlsPanel {
-    width: 450px;
-    padding: 2px 6px 0px 6px;
-    margins: 2px;
-}
-
-.animationSubPanel label,
-.animationSubPanel button {
-    color: white;
-    font-weight: bold;
-}
-
-.animationSubPanel .x-btn-over button {
-    color: black;
 }
 
 .fullTransparency {
@@ -719,21 +549,6 @@ div.olMap.x-item-disabled * {
     width: 97%;
 }
 
-.feature {
-    padding: 8px 5px;
-}
-
-.nofeature {
-    margin: 2px 0 5px 0;
-    padding: 5px;
-    width: 100%;
-    background-color: #fafafa;
-}
-
-.feature ul li {
-    margin-left: 1em;
-}
-
 .featureinfocontent .info {
     padding: 5px;
     margin: 4px;
@@ -743,6 +558,7 @@ div.olMap.x-item-disabled * {
 
 .featureinfocontent .error {
     padding: 5px;
+    color: inherit;
     margin: 4px;
     border: 1px solid #ACAC0C;
     background: #FCFCCF;
@@ -807,10 +623,6 @@ p.important {
     background-color: #ffffff ! important;
 }
 
-.fb-like-box, .fb_iframe_widget {
-    background-color: #ffffff;
-}
-
 .x-panel-header {
     background-image: none;
     background-color: inherit;
@@ -822,6 +634,8 @@ p.important {
     font-size: 12px;
 }
 
+.x-btn-over:not(.navigationButton),
+.x-btn-over:not(.navigationButton) *,
 ul.x-tab-strip-top li:hover * {
     background-color: #AAA;
     color: white;
@@ -888,7 +702,6 @@ div.olMap .olControlDragPanActive.olDragDown {
 
 .olControlPanel {
     margin-left: 5px;
-    /*width: 62px;*/
     top: 230px;
 }
 
@@ -953,14 +766,6 @@ div.olControlScaleLineTop, div.olControlScaleLineBottom {
     font-weight: bold;
 }
 
-.olControlEditingToolbar, .olControlEditingToolbarItemInactive {
-    width: 50px;
-}
-
-.olControlEditingToolbar div {
-    float: left;
-}
-
 .olControlDrawFeatureActive .olControlDrawFeature {
     position: absolute;
     float: left;
@@ -969,14 +774,37 @@ div.olControlScaleLineTop, div.olControlScaleLineBottom {
     margin-top: 280px;
     margin-left: 3px;
     height: 22px;
-    background-image: url("../images/draw.png?");
+    background-image: url("../images/openlayers/draw.png");
     background-position: 12px 1px;
     background-repeat: no-repeat;
     display: block;
 }
 
-#mapActionsWindow.x-window {
-    box-shadow: none;
+.olControlZoomPanel {
+    left: 8px! important;
+    top: 8px! important;
+}
+
+.olControlZoomPanel div.olControlZoomInItemInactive {
+    background: url("../images/openlayers/zoom-plus-mini.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+
+.olControlZoomPanel div.olControlZoomOutItemInactive {
+    background: url("../images/openlayers/zoom-minus-mini.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    top: 20px! important;
+}
+
+.olControlZoomPanel div.olControlZoomToMaxExtentItemInactive {
+    width: 0;
+}
+
+div.olControlZoomInItemInactive,
+div.olControlZoomOutItemInactive {
+    display: block;
+    height: 22px;
+    margin: 2px;
+    padding: 0 4px;
+    width: 15px;
 }
 
 .ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover, .ygtvfocus {
@@ -1026,57 +854,13 @@ JQUERY AUTO COMPLETE
     overflow: hidden;
 }
 
-.ac_loading {
-    background: white url('../images/spinner.gif') right center no-repeat;
-}
-
 .smallIndentInputBox {
     padding-left: 0 ! important;
-}
-
-#detailsPanel {
-    z-index: 1200 !important
-}
-
-.emptyActiveLayerTreePanelText {
-    margin: 10px;
-    font-weight: normal;
-    font-style: italic;
-}
-
-#menuHeaderTail {
-    background: url(../images/menuHeader.png) 0 -13px repeat-x;
-}
-
-.layer_blacklisted {
-    background-color: #333333;
-}
-
-.layer_inactive a span {
-    color: #888;
-}
-
-#national_tidal_centre_list li {
-    padding-left: 2em;
-}
-
-#welcome {
-    font-size: 1.2em;
-}
-
-#welcome ul {
-    padding: 0 0 10px 10px;
-    margin: 0 0 10px 10px;
-    list-style-type: disc;
 }
 
 .clear {
     clear: both;
     height: 1px;
-}
-
-.top_padded {
-    padding-top: 1.3em;
 }
 
 .wrapping-wrapped-field {
@@ -1135,19 +919,6 @@ div.allwhite {
     padding: 7px 0;
 }
 
-.p-selected-view {
-    margin: 5px;
-}
-
-.p-selection-wrap * {
-    vertical-align: middle;
-}
-
-.p-selection-wrap input {
-    margin-bottom: 2px;
-    margin-right: 5px;
-}
-
 .filter-selection-panel-header {
     padding-left: 3px;
 }
@@ -1174,23 +945,6 @@ div.allwhite {
 
 .resultsTextBody h5 {
     margin: 5px;
-}
-
-.faceted-search-disclaimer {
-    border: 1px solid #ffcc55;
-}
-
-.faceted-search-disclaimer .x-panel-body {
-    padding: 2px 2px 2px 4px;
-    background-color: #fffacd;
-}
-
-.remove-layer-button, .zoom-to-layer-button, .layer-loading-button, .layer-loaded-button, .layer-error-button {
-    width: 12px;
-    height: 19px;
-    vertical-align: top;
-    margin: 1px;
-    border: 0;
 }
 
 .downloadPanelResultsWrapper {
@@ -1250,17 +1004,13 @@ div.allwhite {
     margin-right: 5px;
 }
 
-.faceted-search-results .resultsRowHeaderTitle {
-    width: 620px;
+.resultsRowHeaderTitle.downloads {
+    width: 770px;
 }
 
 .faceted-search-results .resultsRowHeaderTitle * {
     margin: 2px 0;
     display: inline-block;
-}
-
-.downloadPanelResultsTitle {
-    margin-bottom: 6px;
 }
 
 .downloadPanelResultsWrapper.dataFilterEntry {
@@ -1271,35 +1021,13 @@ div.allwhite {
     vertical-align: middle;
 }
 
-.navigationButton button:hover {
-    color: gray;
-}
-
-.navigationButton .doubleArrow {
-    display: inline-block;
-}
-
-.remove-layer-button {
-    background: url(../images/document-close-3.png) center no-repeat transparent;
-}
-
-.zoom-to-layer-button {
-    background: url(../images/zoom_to_layer2.png) center no-repeat transparent;
-}
-
-.layer-loading-button {
-    visibility: visible;
-    background: url('../images/spinner_12x12.gif') center no-repeat transparent;
+.navigationButton * :hover {
+    color: black;
 }
 
 .layer-loaded-button {
     visibility: hidden;
-    width: 0;
-}
-
-.layer-error-button {
-    visibility: visible;
-    background: url('../images/software-update-urgent-2.png') center no-repeat transparent;
+    width: 0! important;
 }
 
 .overflow-y {
@@ -1340,14 +1068,6 @@ div:not(.x-tree-selected) * {
     border: none;
 }
 
-.delayedDownloadForm {
-    padding: 10px 10px 2px 10px;
-}
-
-.downloadEstimateLabel {
-    padding: 10px 10px 2px 10px;
-}
-
 /* Bug #9 - show blank tiles on image load error. */
 .olImageLoadError {
     display: none;
@@ -1366,28 +1086,12 @@ div:not(.x-tree-selected) * {
     border-width: 2px;
 }
 
-.WAMiniLogo {
-    vertical-align: middle;
-    margin-bottom: 6px;
+.search-filters-toolbar {
+    margin: 5px;
 }
 
-.search-filters-toolbar.x-toolbar {
-    background-color: inherit;
-    border-width: 0;
-}
-
-.search-filters-toolbar .x-panel-header-text {
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.collectionTitle {
-    font-weight: bold;
-    font-style: italic;
-}
-
-.viewPortTabExtras {
-    margin-left: 20px;
+.search-filters-toolbar-title * {
+    font-size: 13px! important;
 }
 
 #downLoadCartWidget {
@@ -1407,31 +1111,8 @@ div:not(.x-tree-selected) * {
     vertical-align: bottom;
 }
 
-.cartLogo {
-    height: 26px;
-    width: 30px;
-    background: url("../images/cart.png") no-repeat left top transparent;
-}
-
 #downloadCartSize {
     font-weight: bold;
-}
-
-#downLoadCartWidget:before, #downLoadCartWidget:after {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: #FFBA66 transparent transparent #FFBA66;
-    border-image: none;
-    border-style: solid;
-    border-width: 6px;
-    content: " ";
-    height: 0;
-    left: 18px;
-    position: absolute;
-    top: 34px;
-    width: 0;
 }
 
 #downLoadCartWidget a {
@@ -1473,18 +1154,38 @@ div:not(.x-tree-selected) * {
     border-radius: 3px;
 }
 
-.smallFieldLabel label {
-    width: 50px;
-}
-
 .x-tree-node-el {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
+div.drilldown-separator {
+    margin: 10px 0 5px 0;
+    height: 1px;
+    background: #ccc;
+    line-height: 1px;
+}
+
+div.hierarchicalTree:first-child div.drilldown-separator {
+    height: 0;
+    margin: 0;
+}
+
+div.tool-plus-disabled {
+    opacity: 0.5;
+    background-position:0 -240px;
+}
+
 /* font Awesome icons */
 .fa {
     opacity: 0.8;
+    font-family: FontAwesome! important;
+}
+
+
+.fa-lg.fa-angle-double-right,
+.fa-lg.fa-angle-double-left {
+    vertical-align: -5%;
 }
 
 #visualisePanel div:not(.detailsPanelAccordion) h4 {

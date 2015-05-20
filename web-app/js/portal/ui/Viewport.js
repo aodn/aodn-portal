@@ -33,9 +33,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
                 new Portal.ui.VisualisePanel({
                     mapPanel: mapPanel
                 }),
-                new Portal.cart.DownloadPanel({
-                    downloadPanelBody: new Portal.cart.DownloadPanelBody()
-                })
+                new Portal.cart.DownloadPanel()
             ]
         });
 

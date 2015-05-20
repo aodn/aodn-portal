@@ -23,23 +23,20 @@ class GogoduckServiceTests extends GrailsUnitTestCase {
         def testParams = [jobParameters: "{gogoduck_json}"]
         def testSuccessHandler = new Object()
         def testConnection = [
-            post: { params, successHandler ->
+            post: { params, handler ->
 
                 postCallCount++
                 assertEquals "{gogoduck_json}", params.body
-                assertEquals testSuccessHandler, successHandler
             }
         ]
 
         service.metaClass._gogoduckConnection = { -> testConnection }
-        service.metaClass._roundUpEndTime = { 
-            params -> 
-            roundUpEndTimeCount++ 
-       
+        service.metaClass._roundUpEndTime = {
+            params ->
+            roundUpEndTimeCount++
+
             params
         }
-
-        service.successHandler = testSuccessHandler
 
         service.registerJob(testParams)
 
@@ -68,18 +65,13 @@ class GogoduckServiceTests extends GrailsUnitTestCase {
         assertEquals 'GOGODUCK_URL/job/', connection.uri.toString()
     }
 
-    void testSuccessHandler() {
-
-        assertNotNull service.successHandler
-    }
-
     void testRoundUpEndTime() {
         def jobParams = '''{"layerName":"cars_australia_weekly","emailAddress":"jkburges@gmail.com","geoserver":"http://gogoduck.aodn.org.au/gogoduck","subsetDescriptor":{"temporalExtent":{"start":"2009-01-01T00:00:00.000Z","end":"2009-12-25T23:04:36.923Z"},"spatialExtent":{"north":90,"south":-90,"east":180,"west":-180}}}'''
 
         def alteredJobParams = service._roundUpEndTime(jobParams)
 
         assertTrue alteredJobParams.contains("2009-12-25T23:04:36.923999Z")
-        
+
         // Unchanged.
         assertTrue alteredJobParams.contains("2009-01-01T00:00:00.000Z")
     }

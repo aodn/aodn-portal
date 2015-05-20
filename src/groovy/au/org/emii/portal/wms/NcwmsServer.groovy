@@ -38,10 +38,9 @@ class NcwmsServer extends WmsServer {
     }
 
     def getFilterValues(server, layer, filter) {
-        return []
-    }
+        // Assume for NcWMS only date can be the filter request
+        def date = filter
 
-    def getTimeSeries(server, layer, date) {
         def urlFilterValues = String.format('%1$s?layerName=%2$s&REQUEST=GetMetadata&item=timesteps&day=%3$s', server, layer, date)
         def json = JSON.parse(getUrlContent(urlFilterValues))
 
@@ -52,9 +51,9 @@ class NcwmsServer extends WmsServer {
 
     private parseDatesWithData(datesWithData) {
         def datesWithDataFormatted = []
-        datesWithData.each() { year, months ->
-            months.each() { month, days ->
-                days.each() { day ->
+        datesWithData.each { year, months ->
+            months.each { month, days ->
+                days.each { day ->
                     // Month is zero based, so lets handle this
                     def formattedDate = String.format("%02d-%02d-%02dT00:00:00Z", year.toInteger(), month.toInteger() + 1, day.toInteger())
                     datesWithDataFormatted.push(formattedDate)
@@ -70,7 +69,7 @@ class NcwmsServer extends WmsServer {
         Date day = format.parse(date)
 
         def timeStepsFormatted = []
-        timeSteps.each() { timestep ->
+        timeSteps.each { timestep ->
             def formattedTimeStep = String.format('%sT%s', day.format("yyyy-MM-dd"), timestep)
             timeStepsFormatted.push(formattedTimeStep)
         }

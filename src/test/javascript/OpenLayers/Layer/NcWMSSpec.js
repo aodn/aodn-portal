@@ -66,15 +66,15 @@ describe("OpenLayers.Layer.NcWMS", function() {
         });
 
         it("_getFiltersUrl ", function() {
-            expect(cachedLayer._getFiltersUrl()).toBe('layer/getFiltersAsJSON?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer');
+            expect(cachedLayer._getFiltersUrl()).toBe('layer/getFilters?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer');
         });
 
         it("_getStylesUrl ", function() {
-            expect(cachedLayer._getStylesUrl()).toBe('layer/getStylesAsJSON?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer');
+            expect(cachedLayer._getStylesUrl()).toBe('layer/getStyles?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer');
         });
 
         it("_getTimeSeriesUrl ", function() {
-            expect(cachedLayer._getTimeSeriesUrl(moment.utc('2011-07-02T01:32:45Z'))).toBe('layer/getFilterValuesAsJSON?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer&filter=2011-07-02T00:00:00.000Z');
+            expect(cachedLayer._getTimeSeriesUrl(moment.utc('2011-07-02T01:32:45Z'))).toBe('layer/getFilterValues?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer&filter=2011-07-02T00:00:00.000Z');
         });
     });
 
@@ -82,7 +82,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
         it("returns correct url", function() {
             cachedLayer.url = "encoded url prefix";
             cachedLayer.params.LAYERS = "test_layer";
-            expect(cachedLayer._getTimeSeriesUrl(moment.utc('2011-07-02T01:32:45Z'))).toBe('layer/getFilterValuesAsJSON?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer&filter=2011-07-02T00:00:00.000Z');
+            expect(cachedLayer._getTimeSeriesUrl(moment.utc('2011-07-02T01:32:45Z'))).toBe('layer/getFilterValues?serverType=ncwms&server=encoded%20url%20prefix&layer=test_layer&filter=2011-07-02T00:00:00.000Z');
         });
     });
 
@@ -99,19 +99,11 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
     describe("loadTimeSeriesForDay", function() {
         it("when already loaded", function() {
-            var functionCalled = false;
             spyOn(cachedLayer, '_timeSeriesLoadedForDate').andCallFake(function() { functionCalled = true });
             cachedLayer.temporalExtent.parse(['2001-07-02T00:00:00']);
 
             cachedLayer.loadTimeSeriesForDay(moment.utc('2001-07-02T00:00:00Z'));
-
-            waitsFor(function() {
-                return functionCalled;
-            }, "_timeSeriesDatesLoaded not called", 1000);
-
-            runs(function() {
-                expect(cachedLayer._timeSeriesLoadedForDate).toHaveBeenCalled();
-            });
+            expect(cachedLayer._timeSeriesLoadedForDate).toHaveBeenCalled();
         });
 
         it("when not loaded", function() {
@@ -156,12 +148,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
             spyOn(cachedLayer.temporalExtent, 'getFirstDay').andCallFake(function() {});
             spyOn(cachedLayer.temporalExtent, 'getLastDay').andCallFake(function() {});
             spyOn(cachedLayer, 'loadTimeSeriesForDay').andCallFake(function() {});
-        });
-
-        it('calls addDays', function() {
-            spyOn(cachedLayer.temporalExtent, 'addDays');
-            cachedLayer._timeSeriesDatesLoaded(sampleJson);
-            expect(cachedLayer.temporalExtent.addDays).toHaveBeenCalled();
         });
 
         it('loads first day', function() {
@@ -213,8 +199,8 @@ describe("OpenLayers.Layer.NcWMS", function() {
         var datesWithData = null;
 
         spyOn(cachedLayer, '_timeSeriesDatesLoaded').andCallFake(
-            function(_datesWithData) {
-                datesWithData = _datesWithData;
+            function() {
+                datesWithData = cachedLayer.temporalExtent.getDays();
             }
         );
 

@@ -9,63 +9,30 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
     var confirmationWindow;
     var downloadUrl = 'the download url';
     var downloadFilename = "imos:argo profiles";
+    var superclass;
 
     beforeEach(function() {
 
         confirmationWindow = new Portal.cart.DownloadConfirmationWindow();
+        superclass = Portal.cart.DownloadConfirmationWindow.superclass;
 
-        spyOn(confirmationWindow, 'show');
-        spyOn(confirmationWindow, 'hide');
+        spyOn(superclass, "show");
+        spyOn(superclass, "hide");
     });
 
     describe('shouldDownload', function() {
     });
 
-    describe('showIfNeeded', function() {
+    describe('show', function() {
 
         beforeEach(function() {
 
-            confirmationWindow.showIfNeeded(downloadUrl, downloadFilename);
+            confirmationWindow.show(downloadUrl, downloadFilename);
         });
 
-        it('shows window if not shown', function() {
+        it('shows window', function() {
 
-            expect(confirmationWindow.show).toHaveBeenCalled();
-        });
-
-        it('shows window if not accepted', function() {
-
-            confirmationWindow.onCancel();
-
-            confirmationWindow.showIfNeeded(downloadUrl, downloadFilename);
-
-            expect(confirmationWindow.show).toHaveBeenCalled();
-        });
-
-        it('does not show if it has been accepted and no email required', function() {
-
-            confirmationWindow.show.reset();
-            confirmationWindow.onAccept();
-
-            spyOn(confirmationWindow, 'onAccept');
-
-            confirmationWindow.showIfNeeded({ collectEmailAddress: false });
-
-            expect(confirmationWindow.onAccept).toHaveBeenCalled();
-            expect(confirmationWindow.show).not.toHaveBeenCalled();
-        });
-
-        it('does show if it has been accepted and email required', function() {
-
-            confirmationWindow.show.reset();
-            confirmationWindow.onAccept();
-
-            spyOn(confirmationWindow, 'onAccept');
-
-            confirmationWindow.showIfNeeded({ collectEmailAddress: true });
-
-            expect(confirmationWindow.onAccept).not.toHaveBeenCalled();
-            expect(confirmationWindow.show).toHaveBeenCalled();
+            expect(superclass.show).toHaveBeenCalled();
         });
 
         describe('email & challenge address panel', function() {
@@ -79,7 +46,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
             });
 
             it('shows when required', function() {
-                confirmationWindow.showIfNeeded({ collectEmailAddress: true });
+                confirmationWindow.show({ collectEmailAddress: true });
                 expect(confirmationWindow.downloadEmailPanel.show).toHaveBeenCalled();
                 expect(confirmationWindow.downloadEmailPanel.hide).not.toHaveBeenCalled();
 
@@ -88,7 +55,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
             });
 
             it('hides when required', function() {
-                confirmationWindow.showIfNeeded({ collectEmailAddress: false });
+                confirmationWindow.show({ collectEmailAddress: false });
                 expect(confirmationWindow.downloadEmailPanel.show).not.toHaveBeenCalled();
                 expect(confirmationWindow.downloadEmailPanel.hide).toHaveBeenCalled();
 
@@ -132,7 +99,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
 
         afterEach(function() {
 
-            confirmationWindow.show.reset();
+            confirmationWindow.close();
         });
     });
 
@@ -142,7 +109,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
 
             confirmationWindow.onAccept();
 
-            expect(confirmationWindow.hide).toHaveBeenCalled();
+            expect(superclass.hide).toHaveBeenCalled();
         });
 
         it('calls back onAccept when accepted', function() {
@@ -167,7 +134,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
 
         it('hides window', function() {
 
-            expect(confirmationWindow.hide).toHaveBeenCalled();
+            expect(superclass.hide).toHaveBeenCalled();
         });
     });
 });

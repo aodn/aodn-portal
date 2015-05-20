@@ -8,7 +8,7 @@
  */
 
 
-includeTargets << grailsScript("Init")
+includeTargets << grailsScript("_GrailsInit")
 
 target(main: "Includes build info in war") {
     includeBuildInfoInWar()
@@ -34,13 +34,13 @@ target(includeBuildInfoInWar: "Includes build info in war") {
 
     def buildDate = new Date()
 
-    ant.propertyfile(file:"${stagingDir}/WEB-INF/classes/application.properties") {
+    ant.propertyfile(file:"${buildSettings.projectWarExplodedDir}/WEB-INF/classes/application.properties") {
         entry(key:'app.build.number', value: buildNumber)        
         entry(key:'app.build.date', value: buildDate)        
         entry(key:'app.build.scmRevision', value: scmRevision)        
     }
 
-    ant.manifest(file: "${stagingDir}/META-INF/MANIFEST.MF", mode: "update") {
+    ant.manifest(file: "${buildSettings.projectWarExplodedDir}/META-INF/MANIFEST.MF", mode: "update") {
         attribute(name: "Build-Time", value: buildDate)        
         section(name: "Grails Application") {       
             attribute(name: "Implementation-Build-Number", value: buildNumber)

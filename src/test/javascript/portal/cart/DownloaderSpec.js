@@ -13,10 +13,14 @@ describe("Portal.cart.Downloader", function() {
     var collection;
     var params;
 
+    var downloadToken;
+
     beforeEach(function() {
         downloader = new Portal.cart.Downloader();
         wfsDownloadUrl = 'http://download';
         generateUrlCallback = jasmine.createSpy('generateUrl').andReturn(wfsDownloadUrl);
+        downloadToken = 1234;
+        downloader._newDownloadToken = function() { return downloadToken; }
 
         collection = {};
         params = {};
@@ -51,17 +55,38 @@ describe("Portal.cart.Downloader", function() {
     describe('downloadAsynchronously', function() {
         it('makes ajax request', function() {
             var wfsDownloadUrl = 'http://someurl';
-            var params = { emailAddress: 'tommy@was.here' };
+            var params = {};
 
             spyOn(Ext.Ajax, 'request');
 
             downloader._downloadAsynchronously(collection, wfsDownloadUrl, params);
 
-            expect(Ext.Ajax.request).toHaveBeenCalledWith({
-                url: wfsDownloadUrl,
-                scope: { params: params },
-                success: downloader._onAsyncDownloadRequestSuccess,
-                failure: downloader._onAsyncDownloadRequestFailure
+            expect(Ext.Ajax.request).toHaveBeenCalled();
+            var requestArgs = Ext.Ajax.request.calls[0].args[0];
+
+            expect(requestArgs.url).toEqual(wfsDownloadUrl);
+            expect(requestArgs.scope).toEqual(downloader);
+            expect(requestArgs.failure).toEqual(downloader._onAsyncDownloadRequestFailure);
+
+            spyOn(downloader, '_onAsyncDownloadRequestSuccess');
+            requestArgs.success.call(downloader, "response");
+            expect(downloader._onAsyncDownloadRequestSuccess).toHaveBeenCalledWith("response", params);
+        });
+
+        describe('_onAsyncDownloadRequestSuccess', function() {
+            it('calls serviceResponseHandler', function() {
+                var response = { responseText: "responseText" };
+                params = {
+                    emailAddress: "emailAddress",
+                    serviceResponseHandler: jasmine.createSpy()
+                };
+                downloader._onAsyncDownloadRequestSuccess(response, params);
+
+                expect(params.serviceResponseHandler).toHaveBeenCalledWith(response.responseText);
+            });
+
+            it('return empty string if serviceResponseHandler is undefined', function() {
+                expect(downloader._getServiceMessage(undefined, "response")).toEqual("");
             });
         });
     });
@@ -73,17 +98,22 @@ describe("Portal.cart.Downloader", function() {
             downloadUrl = "http://downloadurl";
 
             spyOn(downloader, '_constructProxyUrl').andReturn(downloadUrl);
-            spyOn(downloader, '_openDownload');
+            spyOn($, 'fileDownload');
         });
 
         it('constructs download url', function() {
             downloader._downloadSynchronously(collection, wfsDownloadUrl, params);
-            expect(downloader._constructProxyUrl).toHaveBeenCalledWith(collection, wfsDownloadUrl, params);
+            expect(downloader._constructProxyUrl).toHaveBeenCalledWith(collection, wfsDownloadUrl, downloadToken, params);
         });
 
-        it('opens download', function() {
+        it('delegates to jquery.fileDownload', function() {
             downloader._downloadSynchronously(wfsDownloadUrl, params);
-            expect(downloader._openDownload).toHaveBeenCalledWith(downloadUrl);
+            expect($.fileDownload).toHaveBeenCalled();
+            expect($.fileDownload.calls[0].args[0]).toBe(downloadUrl);
+
+            var fileDownloadOptions = $.fileDownload.calls[0].args[1];
+            expect(fileDownloadOptions.cookieName).toBe(String.format("downloadToken{0}", downloadToken));
+            expect(fileDownloadOptions.cookieValue).toBe(downloadToken);
         });
     });
 
@@ -94,14 +124,22 @@ describe("Portal.cart.Downloader", function() {
             spyOn(downloader, '_sanitiseFilename').andReturn(theFilename);
             spyOn(downloader, '_constructFilename').andReturn(theFilename);
 
-            var expectedProxyUrl = "download?url=http%3A%2F%2Fdownload&downloadFilename=file%20name&fieldName=the%20field";
+            var expectedProxyUrl =
+                String.format(
+                    "download?url={0}&downloadFilename={1}&downloadToken={2}&fieldName={3}",
+                    'http%3A%2F%2Fdownload',
+                    'file%20name',
+                    downloadToken,
+                    'the%20field'
+                );
+
             var params = {
                 downloadControllerArgs: {
                     fieldName: 'the field'
                 }
             };
 
-            expect(downloader._constructProxyUrl(collection, wfsDownloadUrl, params)).toBe(expectedProxyUrl);
+            expect(downloader._constructProxyUrl(collection, wfsDownloadUrl, downloadToken, params)).toBe(expectedProxyUrl);
             expect(downloader._sanitiseFilename).toHaveBeenCalledWith(theFilename);
         });
     });
@@ -149,4 +187,37 @@ describe("Portal.cart.Downloader", function() {
             expect(downloader._sanitiseFilename(sanitiserInput)).toBe(expectedOutput);
         });
     });
+
+    describe('events', function() {
+        var downloadUrl = 'some download url';
+        beforeEach(function() {
+            spyOn(downloader, 'fireEvent');
+        });
+
+        describe('synchronous download', function() {
+            var collection;
+
+            beforeEach(function() {
+                collection = {};
+            });
+
+            it('fires downloadrequested', function() {
+                downloader._onPrepare(downloadUrl, collection);
+                expect(collection.downloadStatus).toBe('requested');
+                expect(downloader.fireEvent).toHaveBeenCalledWith('downloadrequested', downloadUrl, collection);
+            });
+
+            it('fires downloadstarted', function() {
+                downloader._onSuccess(downloadUrl, collection);
+                expect(collection.downloadStatus).toBe('started');
+                expect(downloader.fireEvent).toHaveBeenCalledWith('downloadstarted', downloadUrl, collection);
+            });
+
+            it('fires downloadfailed', function() {
+                downloader._onFailure(downloadUrl, collection, 'error');
+                expect(collection.downloadStatus).toBe('failed');
+                expect(downloader.fireEvent).toHaveBeenCalledWith('downloadfailed', downloadUrl, collection, 'error');
+            });
+        });
+    })
 });

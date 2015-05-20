@@ -14,6 +14,9 @@ Ext.namespace('Portal.common');
  */
 Portal.common.LayerDescriptor = Ext.extend(Object, {
 
+    WFS_PROTOCOL: 'OGC:WFS-1.0.0-http-get-capabilities',
+    WMS_PROTOCOL: 'OGC:WMS-1.1.1-http-get-map',
+
     geonetworkRecord: null,
 
     constructor: function(cfg, geonetworkRecord, openLayerClass) {
@@ -44,36 +47,33 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         return openLayer;
     },
 
-    _getWmsVersionString: function(server) {
-        // list needs to match Server.groovy
-        var versionList = ["1.0.0","1.0.7","1.1.0","1.1.1","1.3.0"];
-        for(var i = 0; i < versionList.length; i++) {
-            if (server.type.indexOf(versionList[i]) != -1) {
-                return versionList[i];
-            }
+    _getLayerWorkspace: function(layerName) {
+        var workspace = null;
+        if (layerName.indexOf(":") != -1) {
+            workspace = layerName.split(":")[0];
         }
-        return "undefined";
+        return workspace;
     },
 
     /**
      * Refactor.
      */
     _setDomainLayerProperties: function(openLayer) {
-        openLayer.grailsLayerId = this.id;
         openLayer.server = this.server;
+        openLayer.wmsName = this.name;
 
         //injecting credentials for authenticated WMSes.  Openlayer doesn't
         //provide a way to add header information to a WMS request
         openLayer.cql = this.cql;
         this._setOpenLayerBounds(openLayer);
+        this._initialiseDownloadLayer(openLayer);
         openLayer.cache = this.cache;
         openLayer.projection = this.projection;
         openLayer.blacklist = this.blacklist;
         openLayer.abstractTrimmed = this.abstractTrimmed;
-        openLayer.parentLayerId = this._getParentId();
-        openLayer.parentLayerName = this._getParentName();
         openLayer.dimensions = this.dimensions;
         openLayer.layerHierarchyPath = this.layerHierarchyPath;
+        openLayer.params.QUERYABLE = true;
 
         if (this.viewParams) {
             openLayer.zoomOverride = {
@@ -84,14 +84,48 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         }
     },
 
-    _setOpenLayerBounds: function(openLayer) {
-        if (this.bboxMinX && this.bboxMinY && this.bboxMaxX && this.bboxMaxY) {
-            openLayer.bboxMinX = this.bboxMinX;
-            openLayer.bboxMinY = this.bboxMinY;
-            openLayer.bboxMaxX = this.bboxMaxX;
-            openLayer.bboxMaxY = this.bboxMaxY;
+    _initialiseDownloadLayer: function(openLayer) {
+
+        if (this.geonetworkRecord && this.geonetworkRecord.data) {
+            var links = this.geonetworkRecord.data.links;
+
+            var downloadLayerName = this._findFirst(links, this.WFS_PROTOCOL);
+
+            if (!downloadLayerName) {
+                downloadLayerName = this._findFirst(links, this.WMS_PROTOCOL);
+            }
+
+            if (downloadLayerName) {
+                // If layer has no workspace defined, assume it is in the same workspace as the WMS layer
+                if (!this._getLayerWorkspace(downloadLayerName) && this._getLayerWorkspace(openLayer.wmsName)) {
+
+                    downloadLayerName = this._getLayerWorkspace(openLayer.wmsName) + ":" + downloadLayerName;
+                }
+
+                openLayer.getDownloadLayer = function() { return downloadLayerName };
+            }
         }
-        else if (this.geonetworkRecord
+    },
+
+    _findFirst: function(links, protocol) {
+
+        var layerName = null;
+
+        Ext.each(links, function(link) {
+
+            if (link.protocol == protocol) {
+
+                layerName = link.name;
+
+                return false;
+            }
+        });
+
+        return layerName;
+    },
+
+    _setOpenLayerBounds: function(openLayer) {
+        if (this.geonetworkRecord
             && this.geonetworkRecord.data
             && this.geonetworkRecord.data.bbox
             && this.geonetworkRecord.data.bbox.geometries) {

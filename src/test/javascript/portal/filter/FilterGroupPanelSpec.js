@@ -8,24 +8,13 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
     var filterGroupPanel;
     var layer;
-    var map;
 
     beforeEach(function() {
         layer = new OpenLayers.Layer.WMS();
         layer.isKnownToThePortal = function() { return true; };
-        layer.geometryFilterName = "GEOMTREE";
-        map = new OpenLayers.SpatialConstraintMap();
-        map.navigationControl = {};
-        map.spatialConstraintControl = {};
-        map.spatialConstraintControl.clear = noOp();
-        map.spatialConstraintControl.getConstraint = function() {return null};
-        map.spatialConstraintControl.isModified = function() {return null};
-        map.spatialConstraintControl.removeFromMap = function() {return null};
-        map.navigationControl.deactivate = function() {return null};
 
         filterGroupPanel = new Portal.filter.FilterGroupPanel({
-            layer: layer,
-            map: map
+            layer: layer
         });
     });
 
@@ -42,8 +31,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             layer.filters = "[{}]";
 
             filterGroupPanel = new Portal.filter.FilterGroupPanel({
-                layer: layer,
-                map: map
+                layer: layer
             });
 
             spyOn(filterGroupPanel, '_createFilterPanel');
@@ -75,9 +63,11 @@ describe("Portal.filter.FilterGroupPanel", function() {
                 {type: 'Date', label: 'B'},
                 {type: 'DateRange', label: 'Z'},
                 {type: 'Boolean', label: 'E'},
+                {type: 'BoundingBox', label: 'C'},
                 {type: 'String', label: 'D'}
             ];
             expectedReturn = [
+                {type : 'BoundingBox', sortOrder : 5, label: 'C'},
                 {type : 'Date', sortOrder : 4, label: 'B'},
                 {type : 'DateRange', sortOrder : 3, label: 'Z'},
                 {type : 'Boolean', sortOrder : 2, label: 'A'},
@@ -86,8 +76,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             ];
 
             filterGroupPanel = new Portal.filter.FilterGroupPanel({
-                layer: layer,
-                map: map
+                layer: layer
             });
         });
 
@@ -106,8 +95,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             filterGroupPanel._isLayerActive = function() {return true};
 
             filterGroupPanel = new Portal.filter.FilterGroupPanel({
-                layer: layer,
-                map: map
+                layer: layer
             });
             filterGroupPanel.layerIsBeingHandled = false;
 
@@ -156,8 +144,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
             filterGroupPanel._isLayerActive = function() {return true};
 
             filterGroupPanel = new Portal.filter.FilterGroupPanel({
-                layer: layer,
-                map: map
+                layer: layer
             });
 
             spyOn(filterGroupPanel, '_updateLayerFilters');
@@ -189,7 +176,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
 
         var removeFilterSpy = jasmine.createSpy('handleRemoveFilter');
 
-        var _mockFilter = function() {
+        var _mockFilter = function(name) {
 
             return {
                 handleRemoveFilter: removeFilterSpy
@@ -247,6 +234,7 @@ describe("Portal.filter.FilterGroupPanel", function() {
                     type: 'Boolean',
                     downloadOnly: false
                 }
+
             });
 
             it('calls getVisualisationCQL when options.downloadOnly is false', function() {
@@ -255,61 +243,5 @@ describe("Portal.filter.FilterGroupPanel", function() {
             });
 
         });
-    });
-
-    describe('map', function() {
-
-        it("subscribes to 'spatialconstraintadded' event", function() {
-
-            var geometry = {};
-
-            spyOn(filterGroupPanel, '_updateWithGeometry');
-            map.events.triggerEvent('spatialconstraintadded', geometry);
-
-            expect(filterGroupPanel._updateWithGeometry).toHaveBeenCalledWith(geometry);
-        });
-
-        it("subscribes to 'spatialconstraintcleared' event", function() {
-
-            spyOn(filterGroupPanel, '_updateWithGeometry');
-            map.events.triggerEvent('spatialconstraintcleared');
-            expect(filterGroupPanel._updateWithGeometry).toHaveBeenCalledWith();
-        });
-    });
-
-    describe('getCQL', function() {
-
-        it('calls correct method for polygon geometry type', function() {
-            filterGroupPanel.geometry = {toWkt: function() { return "[WKT]" }};
-            expect(filterGroupPanel.getGeometryCQL()).toBe('INTERSECTS(GEOMTREE,[WKT])');
-        });
-
-        it('returns empty string when geometry is falsy', function() {
-            filterGroupPanel.geometry = undefined;
-            expect(filterGroupPanel.getGeometryCQL()).toEqual(undefined);
-        });
-    });
-
-    describe('is a real polygon', function() {
-
-        it('returns true when a polygon', function() {
-            filterGroupPanel.map.updateSpatialConstraintStyle("polygon");
-            expect(filterGroupPanel.isRealPolygon()).toEqual(true);
-        });
-
-        it('returns false when not a polygon', function() {
-            filterGroupPanel.map.updateSpatialConstraintStyle("bogus");
-            expect(filterGroupPanel.isRealPolygon()).toEqual(false);
-        });
-    });
-
-    it("hasValue() is true if spatial constraint set", function() {
-        filterGroupPanel.geometry = "something";
-        expect(filterGroupPanel.hasGeometryValue()).toBe(true);
-    });
-
-    it("hasValue() is false if spatial constraint unset", function() {
-        filterGroupPanel.geometry = undefined;
-        expect(filterGroupPanel.hasGeometryValue()).toBe(false);
     });
 });

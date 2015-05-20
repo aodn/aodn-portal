@@ -58,13 +58,13 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     _recordLoaded: function(geoNetworkRecord) {
         geoNetworkRecord.loaded = true;
-        Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_ADDED, geoNetworkRecord);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED, geoNetworkRecord);
     },
 
     _onRemove: function(store, record) {
         this._removeRecordAttributes(record);
         this._removeFromLayerStore(record);
-        Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED, record);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, record);
     },
 
     _removeFromLayerStore: function(record) {
@@ -105,7 +105,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     removeAll: function(store) {
         Portal.data.ActiveGeoNetworkRecordStore.superclass.removeAll.call(this);
-        Ext.MsgBus.publish(PORTAL_EVENTS.ACTIVE_GEONETWORK_RECORD_REMOVED);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
         Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
     },
 

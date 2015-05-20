@@ -1,15 +1,14 @@
 package au.org.emii.portal
 
+import static au.org.emii.portal.HttpUtils.Status.*
+
 class AsyncDownloadController {
 
     def gogoduckService
-    def aodaacAggregatorService
     def downloadAuthService
 
     AsyncDownloadService getAggregatorService(aggregatorService) {
         switch (aggregatorService) {
-            case "aodaac":
-                return aodaacAggregatorService
             case "gogoduck":
                 return gogoduckService
             default:
@@ -42,11 +41,11 @@ class AsyncDownloadController {
             // Add accounting for that IP address
             downloadAuthService.registerDownloadForAddress(ipAddress, aggregatorServiceString)
 
-            render "$aggregatorServiceString: $renderText"
+            render renderText
         }
         catch (Exception e) {
             log.error "Problem registering new aggregator job with type '$aggregatorServiceString' and parameters: '$params'", e
-            render text: 'Problem registering new aggregator job', status: 500
+            render text: 'Problem registering new aggregator job', status: HTTP_500_INTERNAL_SERVER_ERROR
         }
     }
 }

@@ -25,10 +25,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     pendingRequests: null,
 
     initialize: function(name, url, params, options) {
-
-        this.EVENT_TYPES.push('temporalextentloaded');
-        this.EVENT_TYPES.push('stylesloaded');
-
         this.temporalExtent = new Portal.visualise.animations.TemporalExtent();
 
         this.pendingRequests = new Portal.utils.Set();
@@ -102,9 +98,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         });
     },
 
-    _timeSeriesDatesLoaded: function(datesWithData) {
-        this.temporalExtent.addDays(datesWithData);
-
+    _timeSeriesDatesLoaded: function() {
         this.loadTimeSeriesForDay(this.temporalExtent.getFirstDay());
         this.loadTimeSeriesForDay(this.temporalExtent.getLastDay());
     },
@@ -160,9 +154,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     loadTimeSeriesForDay: function(date) {
         if (this.getTimeSeriesForDay(date)) {
-            // Give UI precedence by using delayed function call (setTimeout)
-            var that = this;
-            setTimeout(function() { that._timeSeriesLoadedForDate(); }, 10);
+            this._timeSeriesLoadedForDate();
         }
         else {
             this._fetchTimeSeriesForDay(date);
@@ -269,8 +261,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _parseDatesWithDataAsync: function(response) {
-        var datesWithDataArray = [];
-
         // Assume only one filter which is the one we're after
         var dateFilter = response[0];
         var datesToProcess = dateFilter['possibleValues'];
@@ -281,13 +271,16 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var that = this;
         (function() {
             var chunkEnd = idx + chunkSize;
+            var datesWithDataArray = [];
             for (; idx < datesToProcess.length && idx < chunkEnd; ++idx) {
                 datesWithDataArray.push(new moment.utc(datesToProcess[idx]));
             }
 
+            that.temporalExtent.addDays(datesWithDataArray);
+
             if (idx >= datesToProcess.length) {
                 // We're done, stop processing
-                that._timeSeriesDatesLoaded(datesWithDataArray);
+                that._timeSeriesDatesLoaded();
             }
             else {
                 setTimeout(arguments.callee, 0);
@@ -309,7 +302,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     _getFiltersUrl: function() {
         return String.format(
-            "layer/getFiltersAsJSON?serverType=ncwms&server={0}&layer={1}",
+            "layer/getFilters?serverType=ncwms&server={0}&layer={1}",
             encodeURIComponent(this.url),
             this.params.LAYERS
         );
@@ -317,7 +310,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     _getStylesUrl: function() {
         return String.format(
-            "layer/getStylesAsJSON?serverType=ncwms&server={0}&layer={1}",
+            "layer/getStyles?serverType=ncwms&server={0}&layer={1}",
             encodeURIComponent(this.url),
             this.params.LAYERS
         );
@@ -325,7 +318,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     _getTimeSeriesUrl: function(date) {
         return String.format(
-            "layer/getFilterValuesAsJSON?serverType=ncwms&server={0}&layer={1}&filter={2}",
+            "layer/getFilterValues?serverType=ncwms&server={0}&layer={1}&filter={2}",
             encodeURIComponent(this.url),
             this.params.LAYERS,
             date.clone().startOf('day').toISOString()

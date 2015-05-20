@@ -1,50 +1,52 @@
+/*
+* Copyright 2012 IMOS
+*
+* The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+*
+*/
+
 package au.org.emii.portal
 
-import grails.test.TagLibUnitTestCase
-import org.codehaus.groovy.grails.plugins.codecs.JavaScriptCodec
+import grails.test.GrailsUnitTestCase
 
-class MessageOfTheDayTagLibTests extends TagLibUnitTestCase {
+class MessageOfTheDayTagLibTests extends GrailsUnitTestCase {
 
-    def testMotd = [
-        motdTitle: 'The " <u>Title</u>',
-        motd: 'The <b>body</b>, yo " > '
-    ]
+    def messageOfTheDayTagLib
 
-    void setUp() {
-
+    protected void setUp() {
         super.setUp()
 
-        loadCodec JavaScriptCodec
-
-        Config.metaClass.static.activeInstance = { ->
-            [motd: testMotd] as Config
-        }
+        messageOfTheDayTagLib = new MessageOfTheDayTagLib()
+        messageOfTheDayTagLib.grailsApplication = new ConfigObject()
     }
 
-    void tearDown() {
+    void testMotdMapEmpty() {
+        def motd
 
-        Config.metaClass = null
+        motd = messageOfTheDayTagLib.toMotdMap("")
+        assertEquals null, motd
 
-        super.tearDown()
+        motd = messageOfTheDayTagLib.toMotdMap(null)
+        assertEquals null, motd
     }
 
-    void testMotdPopupNoCurrentMotd() {
-
-        Config.metaClass.hasCurrentMotd = { -> false }
-
-        tagLib.motdPopup([/* no attributes */]){ /* no body */ }
-
-        assertEquals "", tagLib.out.toString()
+    void testMotdMapValid() {
+        def motdRaw = "this is a title\nthis is the message\nand another line"
+        def motd = messageOfTheDayTagLib.toMotdMap(motdRaw)
+        assertEquals "this is a title", motd.title
+        assertEquals "this is the message\nand another line", motd.msg
     }
 
-    void testMotdPopupContentUsedAndEncoded() {
+    void testMotdMapOneLiner() {
+        def motdRaw = "title is also a message\n"
+        def motd = messageOfTheDayTagLib.toMotdMap(motdRaw)
+        assertEquals "title is also a message\n", motd.title
+        assertEquals "title is also a message\n", motd.msg
 
-        Config.metaClass.hasCurrentMotd = { -> true }
-
-        tagLib.motdPopup([/* no attributes */]){ /* no body */ }
-
-        def result =  tagLib.out.toString()
-        assertTrue result.indexOf('<h2>The \\" <u>Title<\\/u></h2>') > -1
-        assertTrue result.indexOf('The <b>body<\\/b>, yo \\" > ') > -1
+        // And with no new line
+        motdRaw = "title is also a message"
+        motd = messageOfTheDayTagLib.toMotdMap(motdRaw)
+        assertEquals "title is also a message", motd.title
+        assertEquals "title is also a message", motd.msg
     }
 }

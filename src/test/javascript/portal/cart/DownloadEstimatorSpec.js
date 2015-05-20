@@ -60,19 +60,19 @@ describe('Portal.cart.DownloadEstimator', function() {
 
         it('_generateTimeoutHtmlString formats correctly', function() {
             var mockHtml = estimator._generateTimeoutHtmlString();
-            expect(mockHtml).toEqual('<div>' + OpenLayers.i18n('estimatedDlTimeoutMsg') + ' <img src="images/error.png"></div><div class="clear"></div>')
+            expect(mockHtml).toEqual('<div>' + OpenLayers.i18n('estimatedDlTimeoutMsg') + " " + OpenLayers.i18n('faError') + '</div><div class="clear"></div>')
         });
 
         it('_generateEstHtmlString formats correctly when size is greater than 1024MB', function() {
             mockEstimate = 1153433600;
             var mockHtml = estimator._generateEstHtmlString(mockEstimate);
-            expect(mockHtml).toEqual('<div>' + OpenLayers.i18n('estimatedDlMessage') + ' 1.1GB <img src="images/error.png"></div><div class="clear"></div>');
+            expect(mockHtml).toEqual('<div>' + OpenLayers.i18n('estimatedDlMessage') + ' 1.1GB ' + OpenLayers.i18n('faError') + '</div><div class="clear"></div>');
         });
 
         it('_generateEstHtmlString formats correctly when size is greater than 512MB and less than 1024MB', function() {
             mockEstimate = 629145600;
             var mockHtml = estimator._generateEstHtmlString(mockEstimate);
-            expect(mockHtml).toEqual('<div>' + OpenLayers.i18n('estimatedDlMessage') + ' 600.0MB <img src="images/error.png"></div><div class="clear"></div>');
+            expect(mockHtml).toEqual('<div>' + OpenLayers.i18n('estimatedDlMessage') + ' 600.0MB ' + OpenLayers.i18n('faError') + '</div><div class="clear"></div>');
         });
 
         it('_generateEstHtmlString formats correctly when size is less than 512', function() {

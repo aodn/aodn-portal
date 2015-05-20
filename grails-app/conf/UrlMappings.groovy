@@ -16,12 +16,7 @@ class UrlMappings {
             }
         }
 
-        "/" {
-            controller = (Environment.current == Environment.DEVELOPMENT) ? "home" : "landing"
-        }
-
-        "/admin"{ controller="config"  }
-        "/administration"{ controller="config"  }
+        "/" { controller = "landing" }
 
         "500"(view:'/error')
 

@@ -5,8 +5,34 @@
  *
  */
 
+// Override some OpenLayers default images
+OpenLayers.Util.__getImageLocation = OpenLayers.Util.getImageLocation;
+OpenLayers.Util.getImageLocation = function(image) {
+    var overrideImages = [
+        "east-mini.png",
+        "layer-switcher-maximize.png",
+        "north-mini.png",
+        "panning-hand-off.png",
+        "panning-hand-on.png",
+        "slider.png",
+        "south-mini.png",
+        "west-mini.png",
+        "zoom-minus-mini.png",
+        "zoom-plus-mini.png",
+        "zoom-world-mini.png",
+        "zoombar.png",
+        "zoom-panel.png"
+    ];
+
+    if (overrideImages.indexOf(image) != -1) {
+        return getPortalBase() + "/images/openlayers/" + image;
+    }
+    else {
+        return OpenLayers.Util.__getImageLocation(image);
+    }
+};
+
 OpenLayers.Layer.DOWNLOAD_FORMAT_CSV = 'csv';
-OpenLayers.Layer.DOWNLOAD_FORMAT_CSV_WITH_METADATA = 'csv-with-metadata-header';
 
 OpenLayers.Layer.prototype.isOverlay = function() {
     return !this.isBaseLayer;
@@ -73,8 +99,7 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint
 };
 
 OpenLayers.Layer.WMS.prototype.getFeatureInfoFormat = function() {
-    // Should usually be 'text/html'
-    return this.server.infoFormat;
+    return 'text/html';
 };
 
 // formatFeatureInfoHtml may be overriden by sub classes (like NcWMS)
@@ -84,11 +109,15 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function(resp, options) {
 
 OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(serverUrl, layerName, outputFormat) {
 
+    var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
+        layer: this
+    });
+
     return this._buildGetFeatureRequestUrl(
         serverUrl,
         layerName,
         outputFormat,
-        this.getDownloadFilter()
+        builder.buildCql()
     );
 };
 
@@ -98,7 +127,7 @@ OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl = function(baseUrl, la
     wfsUrl += (wfsUrl.indexOf('?') !== -1) ? "&" : "?";
     wfsUrl += 'typeName=' + layerName;
     wfsUrl += '&SERVICE=WFS';
-    wfsUrl += '&outputFormat=' + this._getServerSupportedOutputFormat(outputFormat);
+    wfsUrl += '&outputFormat=' + outputFormat;
     wfsUrl += '&REQUEST=GetFeature';
     wfsUrl += '&VERSION=1.0.0';
 
@@ -109,19 +138,13 @@ OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl = function(baseUrl, la
     return wfsUrl;
 };
 
-OpenLayers.Layer.WMS.prototype._getServerSupportedOutputFormat = function(outputFormat) {
+OpenLayers.Layer.WMS.prototype.getCsvDownloadFormat = function() {
 
-    // No special handling for formats other than 'csv'.
-    if (outputFormat != OpenLayers.Layer.DOWNLOAD_FORMAT_CSV_WITH_METADATA) {
-        return outputFormat;
+    if (this.server.csvDownloadFormat) {
+        return this.server.csvDownloadFormat;
     }
-    // Request to have metadata inserted, if it's available.
-    else if (this.server.supportsCsvMetadataHeaderOutputFormat) {
-        return OpenLayers.Layer.DOWNLOAD_FORMAT_CSV_WITH_METADATA;
-    }
-    else {
-        return OpenLayers.Layer.DOWNLOAD_FORMAT_CSV;
-    }
+
+    return OpenLayers.Layer.DOWNLOAD_FORMAT_CSV;
 };
 
 OpenLayers.Layer.WMS.prototype._getBoundingBox = function() {
@@ -133,87 +156,27 @@ OpenLayers.Layer.WMS.prototype._getBoundingBox = function() {
 };
 
 OpenLayers.Layer.WMS.prototype._is130 = function() {
-    return this.server.type.contains("1.3.0") && !this.isNcwms();
+    return this.server.wmsVersion === '1.3.0' && !this.isNcwms();
 };
 
 OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
-OpenLayers.Layer.WMS.prototype.isKnownToThePortal = function() {
-    return (this.grailsLayerId) ? true : false;
-};
+OpenLayers.Layer.WMS.prototype.updateCqlFilter = function() {
 
-OpenLayers.Layer.WMS.prototype.getCqlFilter = function() {
-    if (this.params["CQL_FILTER"]) {
-        return this.params["CQL_FILTER"];
-    }
-    else {
-        return "";
-    }
-};
+    var builder = new Portal.filter.combiner.MapCqlBuilder({
+        layer: this
+    });
 
-OpenLayers.Layer.WMS.prototype.setCqlFilter = function(cqlFilter) {
-    if (cqlFilter == this.getCqlFilter()) {
-        return;
-    }
+    var newValue = builder.buildCql();
+    var existingValue = this.params['CQL_FILTER'];
 
-    if (cqlFilter) {
+    if (newValue != existingValue) {
         this.mergeNewParams({
-            CQL_FILTER: cqlFilter
+            CQL_FILTER: newValue
         });
     }
-    else {
-        delete this.params["CQL_FILTER"];
-        this.redraw();
-    }
-};
-
-OpenLayers.Layer.WMS.prototype.getDownloadFilter = function() {
-
-    var filters = [];
-
-    Ext.each(this.filterData, function(data) {
-        if (data.cql){
-            filters.push(data.cql);
-        }
-    });
-
-    return filters.join(" AND ");
-};
-
-OpenLayers.Layer.WMS.prototype.getMapLayerFilters = function(includeGeomFilter) {
-
-    var filters = [];
-
-    Ext.each(this.filterData, function(data) {
-
-        var filterCQL = data.cql;
-
-        if (!data.downloadOnly || (includeGeomFilter && data.type == "geom")) {
-            if (data.visualisationCql != undefined) {
-                filterCQL = data.visualisationCql;
-            }
-            if (filterCQL) {
-                filters.push(filterCQL);
-            }
-        }
-    });
-
-    return filters.join(" AND ");
-};
-
-OpenLayers.Layer.WMS.prototype.getDownloadFilterDescriptions = function() {
-
-    var filters = [];
-
-    Ext.each(this.filterData, function(data) {
-        if (data.humanValue && data.humanValue != "") {
-            filters.push(data.humanValue);
-        }
-    });
-
-    return filters.join("<br/> ");
 };
 
 OpenLayers.Layer.WMS.prototype.hasBoundingBox = function() {
@@ -223,7 +186,9 @@ OpenLayers.Layer.WMS.prototype.hasBoundingBox = function() {
 OpenLayers.Handler.Drag.prototype.mousedown = function(evt) {
     var propagate = true;
     this.dragging = false;
-    if (this.checkModifiers(evt) && OpenLayers.Event.isLeftClick(evt)) {
+    if (this.checkModifiers(evt) &&
+           (OpenLayers.Event.isLeftClick(evt) ||
+            OpenLayers.Event.isSingleTouch(evt))) {
         this.started = true;
         this.start = evt.xy;
         this.last = evt.xy;
@@ -235,17 +200,17 @@ OpenLayers.Handler.Drag.prototype.mousedown = function(evt) {
 
         // Leaving this commented out code here so that one can see what's different to the original function.
         // This fixes bugs related to combo boxes not closing when the map is clicked (because the event never
-        // propagates to other elements, i.e. the comboboxes).
-//        OpenLayers.Event.stop(evt);
+        // propagates to other elements, i.e. the comboboxes). DF: fixed for OpenLayers 2.13.1 as well
+        // OpenLayers.Event.preventDefault(evt);
 
-        if (!this.oldOnselectstart) {
-            this.oldOnselectstart = (document.onselectstart) ? document.onselectstart : OpenLayers.Function.True;
+        if(!this.oldOnselectstart) {
+            this.oldOnselectstart = document.onselectstart ?
+                document.onselectstart : OpenLayers.Function.True;
         }
         document.onselectstart = OpenLayers.Function.False;
 
         propagate = !this.stopDown;
-    }
-    else {
+    } else {
         this.started = false;
         this.start = null;
         this.last = null;
@@ -257,170 +222,18 @@ OpenLayers.Layer.WMS.prototype.hasImgLoadErrors = function() {
     return Ext.DomQuery.jsSelect('img.olImageLoadError', this.div).length > 0;
 };
 
-// See git issue 595. In IE8, the layer onload event was not being triggered as
-// it was in other browsers when there is an error loading a tile image.  This
-// is due to the img element error handlers (onImageLoadError and onerror)
-// being executed in random order in IE8 rather than the FIFO order expected by
-// OpenLayers (see the first paragraph of the Remarks section in documentation
-// of attachEvent at
-// http://msdn.microsoft.com/en-us/library/ie/ms536343(v=vs.85).aspx
-// and comments in the onerror handler below re expectation by OpenLayers that the
-// onImageLoadError has already been run before the onerror handler)
-//
-// Override the initImgDiv method ensuring the onerror handler is run after the
-// onImageLoadError has been processed as is required for the correct operation
-// of these handlers.
-//
-// The code below is copied directly from the OpenLayers implementation of
-// OpenLayers.Tile.Image.prototype.initImgDiv replacing the final statement
-// with one which ensures the onerror handler is called after the onImageLoadError
-// in IE8
-//
-// Modified code has been marked with a comment below
-
-OpenLayers.Tile.Image.prototype.initImgDiv = function() {
-    var offset = this.layer.imageOffset;
-    var size = this.layer.getImageSize(this.bounds);
-
-    if (this.layerAlphaHack) {
-        this.imgDiv = OpenLayers.Util.createAlphaImageDiv(null,
-            offset,
-            size,
-            null,
-            "relative",
-            null,
-            null,
-            null,
-            true);
-    }
-    else {
-        this.imgDiv = OpenLayers.Util.createImage(null,
-            offset,
-            size,
-            null,
-            "relative",
-            null,
-            null,
-            true);
+OpenLayers.Tile.Image.prototype.__setImgSrc = OpenLayers.Tile.Image.prototype.setImgSrc;
+OpenLayers.Tile.Image.prototype.setImgSrc = function(url) {
+    // Do not modify behaviour for baselayers, it breaks them!
+    if (this.layer.isBaseLayer) {
+        return this.__setImgSrc(url);
     }
 
-    this.imgDiv.className = 'olTileImage';
-
-    /* checkImgURL used to be used to called as a work around, but it
-     ended up hiding problems instead of solving them and broke things
-     like relative URLs. See discussion on the dev list:
-     http://openlayers.org/pipermail/dev/2007-January/000205.html
-
-     OpenLayers.Event.observe( this.imgDiv, "load",
-     OpenLayers.Function.bind(this.checkImgURL, this) );
-     */
-    this.frame.style.zIndex = this.isBackBuffer ? 0 : 1;
-    this.frame.appendChild(this.imgDiv);
-    this.layer.div.appendChild(this.frame);
-
-    if (this.layer.opacity != null) {
-
-        OpenLayers.Util.modifyDOMElement(this.imgDiv, null, null, null,
-            null, null, null,
-            this.layer.opacity);
-    }
-
-    // we need this reference to check back the viewRequestID
-    this.imgDiv.map = this.layer.map;
-
-    //bind a listener to the onload of the image div so that we
-    // can register when a tile has finished loading.
-    var onload = function() {
-
-        //normally isLoading should always be true here but there are some
-        // right funky conditions where loading and then reloading a tile
-        // with the same url *really*fast*. this check prevents sending
-        // a 'loadend' if the msg has already been sent
-        //
-        if (this.isLoading) {
-            this.isLoading = false;
-            this.events.triggerEvent("loadend");
-        }
-    };
-
-    if (this.layerAlphaHack) {
-        OpenLayers.Event.observe(this.imgDiv.childNodes[0], 'load',
-            OpenLayers.Function.bind(onload, this));
-    }
-    else {
-        OpenLayers.Event.observe(this.imgDiv, 'load',
-            OpenLayers.Function.bind(onload, this));
-    }
-
-    // Bind a listener to the onerror of the image div so that we
-    // can registere when a tile has finished loading with errors.
-    var onerror = function() {
-
-        // If we have gone through all image reload attempts, it is time
-        // to realize that we are done with this image. Since
-        // OpenLayers.Util.onImageLoadError already has taken care about
-        // the error, we can continue as if the image was loaded
-        // successfully.
-        if (this.imgDiv._attempts > OpenLayers.IMAGE_RELOAD_ATTEMPTS) {
-            onload.call(this);
-        }
-    };
-
-    // ===================================================================
-    // The following code has been modified from the OpenLayers version
-    // of this method
-    //====================================================================
-
-    // In IE8 guarantee onerror runs after onImageLoadError by running it
-    // in a timer
-
-    if (Ext.isIE8) {
-        var that = this;
-
-        OpenLayers.Event.observe(this.imgDiv, "error", function() {
-            onerror.defer(1, that)
-        });
-    }
-    else {
-        OpenLayers.Event.observe(this.imgDiv, "error",
-            OpenLayers.Function.bind(onerror, this));
-    }
-};
-
-/**
- * Issue 925 - Overrride openlayers positionImage to workaround issue with Firefox 27
- * and 28 where images aren't reloaded if the src property is set to the same value
- *
- * Method: positionImage
- * Using the properties currenty set on the layer, position the tile correctly.
- * This method is used both by the async and non-async versions of the Tile.Image
- * code.
- */
-OpenLayers.Tile.Image.prototype.positionImage = function() {
-    // if the this layer doesn't exist at the point the image is
-    // returned, do not attempt to use it for size computation
-    if (this.layer === null) {
+    if (!url) {
         return;
     }
-    // position the frame
-    OpenLayers.Util.modifyDOMElement(this.frame,
-        null, this.position, this.size);
 
-    var imageSize = this.layer.getImageSize(this.bounds);
-    if (this.layerAlphaHack) {
-        OpenLayers.Util.modifyAlphaImageDiv(this.imgDiv,
-            null, null, imageSize, this.url);
-    }
-    else {
-        OpenLayers.Util.modifyDOMElement(this.imgDiv,
-            null, null, imageSize);
-        // Make sure image load events are generated as required by OpenLayers
-        this.setImgSrc(this.url);
-    }
-};
-
-OpenLayers.Tile.Image.prototype.setImgSrc = function(url) {
-    if (!Portal.utils.Browser.imgSrcReload && url == this.imgDiv.src) {
+    if (url && url == this.imgDiv.src) {
         // force reload to generate events expected by openlayers
         this.imgDiv.src = "about:blank";
     }
@@ -437,10 +250,11 @@ OpenLayers.Geometry.prototype.isBox = function() {
 };
 
 OpenLayers.Geometry.prototype.toWkt = function() {
-    var wktFormatter = new OpenLayers.Format.WKT();
+    var wktFormatter = new OpenLayers.Format.WKTNormalised();
     return wktFormatter.write({ geometry: this });
 };
 
-OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintadded');
-OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstraintcleared');
-OpenLayers.Map.prototype.EVENT_TYPES.push('spatialconstrainttypechanged');
+OpenLayers.Geometry.prototype.crossesDateLine = function() {
+    var bounds = this.getBounds();
+    return (normaliseLongitude(bounds.left) > normaliseLongitude(bounds.right));
+};

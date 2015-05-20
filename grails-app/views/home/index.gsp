@@ -28,6 +28,11 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
         <g:render template="/public_theme_includes"></g:render>
 
         <script type="text/javascript">
+            // Fixes #1723, redirect 'home/' to 'home'
+            if (window.location.href.match(/\/home\/$/)) {
+                var homeWithoutTrailingSlash = window.location.href.substring(0, window.location.href.length - 1);
+                window.location.replace(homeWithoutTrailingSlash);
+            }
 
             // Supporting only Firefox and Chrome users
             Ext.onReady(Portal.app.browserCheck);
@@ -39,15 +44,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
     </head>
 
     <body>
-
         <g:render template="/header/mainPortalHeader" model="['showLinks': true, 'configInstance': configInstance]"></g:render>
-
-        <%-- Display message from Grails app --%>
-        <g:if test="${flash.openIdMessage}">
-            <script type="text/javascript">
-                Ext.Msg.alert("Message", "${flash.openIdMessage.encodeAsHTML()}");
-            </script>
-        </g:if>
 
         <g:render template="/google_analytics"></g:render>
     </body>

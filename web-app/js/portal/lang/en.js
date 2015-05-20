@@ -5,16 +5,12 @@
  *
  */
 
-OpenLayers.Util.extend(OpenLayers.Lang.en, {
+OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     unsupportedWarningMessage: "Your browser or device is unsupported and may not work with this site. \nPlease use Chrome or Firefox on a later generation Windows PC, Linux or Macbook/iMac for the best experience.",
 
-    navigationButtonNext: "Next <div class=doubleArrow>&gt;&gt;</div>",
-    navigationButtonPrevious: "<div class=doubleArrow>&lt;&lt;</div> Previous",
-    navigationButtonSelect: "Select <div class=doubleArrow>&gt;&gt;</div>",
-    navigationButtonDownload: "Download <div class=doubleArrow>&gt;&gt;</div>",
-
-    footerText: "<b>Disclaimer:</b> You accept all risks and responsibility for losses, damages, costs and other consequences resulting directly or indirectly from using this site and any information or material available from it.",
+    navigationButtonNext: '${label} <span class="fa fa-lg fa-angle-double-right"></span>',
+    navigationButtonPrevious: '<span class="fa fa-lg fa-angle-double-left"></span> ${label}',
 
     stepHeader: '<span class="stepTitle">Step ${stepNumber}:</span> ${stepDescription}',
     step1Description: 'Select a Data Collection',
@@ -23,14 +19,13 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     maskText: "Searching ... ",
     pleasePickCondensed: '**pick**',
-    loadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />&nbsp;<i>Loading ${resource}\u2025</i>',
+    loadingMessage: '&nbsp;<i>Loading ${resource}\u2025</i>',
 
     // DetailsPanel.js
     opacity: "Opacity",
     wmsLayerProblem: "There is a problem with the availability of this collection",
-    pickAStyle : ' ** Pick a style ** ',
     noActiveCollectionSelected: "No data collections selected",
-    dataCollectionsTitle: "Data Collections",
+    dataCollectionsTitle: "Subsetting data collection:",
     noCollectionSelectedHelp: "Please return and search for data collections.",
 
     // Geographic Bounds
@@ -44,18 +39,13 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // Download Step
     noDataMessage: 'No direct access to data available currently.',
-    downloadButtonLabel: 'Download as\u2026',
+    downloadButtonLabel: '<span class="fa fa-lg fa-fw fa-download"></span> Download as\u2026 ',
     downloadAsCsvLabel: 'CSV',
     downloadAsSubsettedNetCdfLabel: 'NetCDF',
     downloadAsAllSourceNetCdfLabel: 'Un-subsetted NetCDFs',
-    downloadAsHdfLabel: 'HDF',
-    downloadAsAsciiLabel: 'ASCII text',
     downloadAsUrlsLabel: 'List of URLs',
     downloadAsPythonSnippetLabel: 'Python',
-    parametersLabel: 'Parameters:',
-    parameterAreaLabel: 'Area',
     parameterDateLabel: 'Date range',
-    parameterTimeLabel: 'Time-of-day range',
     metadataLinkText: 'View metadata record',
     emailAddressPlaceholder: 'Your email address',
     emailAddressValidationError: 'Enter a valid email address',
@@ -63,8 +53,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // WFS Filters Panel
     subsetParametersText: 'subset parameters',
-    subsetParametersErrorText: 'Filtering of this collection is not possible at this time.',
     subsetEmptyFiltersText: 'Filtering of this collection is not available at this time.',
+    subsetNoOptionsText: 'No options available',
 
     // map.js
     imageScaledDown: 'This image has been scaled down.',
@@ -72,9 +62,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // DateSelectionPanel.js
     min: 'Min',
     max: 'Max',
-
-    // LayerGridPanel.js
-    dragLayersOrServers: 'Drag layers or Servers to the menu tree',
 
     // MapOptions
     panControl: 'Pan/Zoom Control',
@@ -87,26 +74,13 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     selectMapTimePeriod: 'Move Time on Map',
     errorSelectMapTimePeriod: "End of the Collections available dates",
 
-    // Search results
-    addToMap: "Add '${layerDesc}' to portal",
-
     // tab titles
     subsetPanelTitle: 'Subset',
     stylePanelTitle: 'Layer',
     infoTabTitle: 'Info',
     mapTabTitle: 'Map',
 
-    // Refine search panel
-    filterNames: {
-        keywords: 'Keywords',
-        organizationNames: 'Organisations',
-        dataParameters: 'Data Parameters'
-    },
-
     // Search form
-    boundingBoxDescription: 'Bounding Box',
-    boundingBoxDescriptionNcWms: 'Bounding Area',
-    maxExtentOfPolygon: "Max extent of polygon",
     northBL: 'N',
     eastBL: 'E',
     westBL: 'W',
@@ -121,7 +95,6 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     emptySpatialBL: 'enter',
     goButton: 'Go',
     clearButton: 'Clear',
-    fullTextSearch: 'What are you looking for?',
 
     // FacetedSearchResultsDataView.js
     searchPlatformText: ' ',
@@ -137,7 +110,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadButtonId: 'download-button-${id}',
     removeButtonId: 'remove-button-${id}',
 
-    removeButton: 'Remove',
+    removeButton: '<span class="fa fa-fw fa-remove"></span> Remove',
+    carticon: '<span class="fa fa-2x fa-shopping-cart "></span> ',
 
     // Download View
     downloadConfirmationWindowTitle: 'Data Download',
@@ -147,8 +121,8 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
        If an agreement is included with data in the cart then by using those data you are accepting the terms of that \
        agreement.</p> \
     <h3>Any questions?</h3> \
-    <p>Please visit the <a href=\"${downloadDatasetHelpUrl}\">Download a Dataset</a> \
-       page of the <a href=\"${helpUrl}\">Portal Help</a> forum where you can find \
+    <p>Please visit the <a class='external' target='_blank' href=\"${downloadDatasetHelpUrl}\">Download a Dataset</a> \
+       page of the <a class='external' target='_blank' href=\"${helpUrl}\">Portal Help</a> forum where you can find \
        more information.</p> \
     <br /> \
     <p class=\"small\"><i>You accept all risks and responsibility for losses, damages, costs and other consequences \
@@ -157,6 +131,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadConfirmationDownloadText: 'I understand, download',
     downloadConfirmationCancelText: 'Cancel',
     challengeInstructions: 'Type the characters you see in the image above',
+    downloadErrorText: 'There is a problem with the availability of your selected data download.',
 
     // mainMapPanel
     layerExistsTitle: 'Add data collection',
@@ -171,29 +146,27 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // Faceted layer search
     searchTabTitle: 'Search',
-    themeFilter: 'Theme',
-    locationFilter: 'Location',
-    methodFilter: 'Collection method',
     organisationFilter: 'Organisation',
     platformFilter: 'Platform',
-    parameterFilter: 'Measured parameter',
+    parameterFilter: 'Parameter',
+    freetextFilter: 'Text Search',
     dateFilter: 'Date (UTC)',
     geoFilter: "Geographic Boundary",
     facetedSearchNewSearchButton: 'Start new search',
     facetedSearchUnavailable: 'Search is currently unavailable.',
     facetedSearchResetting: 'Resetting search',
+    noParametersForCollection: 'No parameters',
 
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
 
     autozoom: 'Auto zoom to data collection extent',
     hideDetailsPanel: 'Hide data collection details',
-    clearAllButtonLabel: 'Clear and Reset',
+    clearAllButtonLabel: '<span class="fa fa-fw fa-undo"></span> Clear and Reset',
     clearAllButtonTooltip: 'Remove all data collections from the Subset and Download pages, reset the map location and zoom level',
     removeButtonTooltip: 'Remove this data collection from the Subset and Download pages, the collection can be re-added from the search.',
 
-
     // FilterGroupPanel.js
-    clearFilterButtonLabel: 'Clear subset',
+    clearFilterButtonLabel: '<span class="fa fa-fw fa-undo"></span> Clear subset',
 
     // ComboFilterPanel.js
     clearFilterOption: 'All',
@@ -205,16 +178,38 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     toDateEmptyText: 'Max',
     resetActionText: 'reset',
 
+    // FacetFilterPanel
+    addAnother: 'Add another filter',
 
     // Async Downloads
     asyncDownloadPanelTitle: 'Subset',
-    asyncDownloadSuccessMsg: 'Your subsetting job has been created. Processing commenced.<br /><br />When the job is complete we will send an email to <i>${email}</i> with download instructions.<br /><br />NB. Subsetting jobs can vary considerably in how long they take, from minutes to hours. Both the number of source files and the selected area can affect how long a job takes to run.',
+    asyncDownloadSuccessMsg: 'Your subsetting job has been created. Processing commenced.<br /><br />When the job is complete we will send an email to <i>${email}</i> with download instructions.<br /><br />${serviceMessage}NB. Subsetting jobs can vary considerably in how long they take, from minutes to hours. Both the number of source files and the selected area can affect how long a job takes to run.',
     asyncDownloadErrorMsg: 'Unable to create subsetting job. Please re-check the parameters you provided and try again.',
+    gogoduckServiceMsg: "<a class='external' target='_blank' href='${url}'>Follow the progress of your job</a><br /><br />",
 
     spatialExtentHeading: 'Global Spatial Extent',
     temporalExtentHeading: 'Temporal Extent',
     generalFilterHeading: 'Filters',
     currentDateTimeLabel: 'Displaying',
+    spatialExtentPolygonNote: 'Polygon with max extent ',
+
+    dateFilterBeforeFormat: '{0}: before {2}',
+    dateFilterAfterFormat: '{0}: after {1}',
+    dateFilterBetweenFormat: '{0}: {1} to {2}',
+
+    numberFilterOptionsFields: [
+         'code', 'text',                     'cql',                 'symbol'
+    ],
+    numberFilterDropdownOptions: [
+        ['CLR',  'none'], // This option is in the dropdown to clear the number filter
+        ['GT',   'greater than',             '> {0}',               '>' ],
+        ['GTE',  'greater than or equal to', '>= {0}',              '>='],
+        ['EQ',   'equal to',                 '= {0}',               '=' ],
+        ['NEQ',  'not equal to',             '<> {0}',              '≠' ],
+        ['LT',   'less than',                '< {0}',               '<' ],
+        ['LTE',  'less than or equal to',    '<= {0}',              '<='],
+        ['BTWN', 'between (inclusive)',      'BETWEEN {0} AND {1}', '–' ]
+    ],
 
     emptyDownloadPlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",
 
@@ -238,13 +233,16 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     emptyPolygonHelperText: "Click points on the map to create your polygon.",
 
+    downloadStatusRequested: "Downloading...",
+
     // WfsDataRowTemplate
-    fileSizeIconMarkup: '<img src="images/error.png">',
+    faError: '<span class=\"fa fa-fw fa-warning error \"></span>',
+
     estimatedDlMessage: "The download size is ",
     estimatedDlFailedMsg: "The download size is unknown.",
     estimatedNoDataMsg: "No data available. <i>(Try changing filters)</i>",
     estimatedDlLoadingMessage: "Estimating download size...",
-    estimatedDlLoadingSpinner: '<img src=\"images/spinner.gif\" style=\"vertical-align: middle;\" alt=\"Loading...\" />',
+    faSpinner: '<span class=\"fa fa-spin fa-spinner \"></span>',
     estimatedDlTimeoutMsg: "The download size is too large to estimate.",
     transAbortMsg: "transaction aborted",
 
@@ -289,6 +287,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.en, {
     trackingTypedBboxLabel: 'typedBbox',
     facetTrackingCategory: "Facets",
     goButtonTrackingLabel: "Go",
+    gogoduckTrackingLabel: "GoGoDuck",
 
     shareButton: "New portal with only this collection"
 });

@@ -3,48 +3,41 @@ AODN Open Geospatial Portal
 
 [![Build Status](https://travis-ci.org/aodn/aodn-portal.png?branch=master)](https://travis-ci.org/aodn/aodn-portal)
 
-The AODN open geospatial portal is a [Grails](http://grails.org/) application for finding, visualising, and downloading geospatial data. 
-The application integrates with the [GeoNetwork](http://geonetwork-opensource.org/) metadata catalog and [OGC Web Map Services](http://www.opengeospatial.org/standards/wms). 
+The AODN open geospatial portal is a [Grails](http://grails.org/) application for discovering, subsetting, and downloading geospatial data.
 
-You can view the portal in action at the following locations;
+The application is a stateless front end to other servers: 
 
-* [IMOS](http://imos.aodn.org.au) the [Integrated Marine Observation Systems](http://www.imos.org.au) portal (always runs the latest version of the code)
-* [AODN](http://portal.aodn.org.au) the [Australian Ocean Data Network](http://imos.org.au/aodn.html) portal
-* [WAODN](http://wa.aodn.org.au) a Western Australia-focused portal
+* [GeoNetwork](http://geonetwork-opensource.org/) metadata catalog
+* [GeoServer](http://geoserver.org/) data server (WMS and WFS).
+* [ncWMS](http://www.resc.rdg.ac.uk/trac/ncWMS/) web map server
+* [GoGoDuck](https://github.com/aodn/go-go-duck) netCDF subsetting and aggregation service
 
-The IMOS Portal publishes the [IMOS data collection](https://imos.aodn.org.au/data_collections.html).
+You can view the portal in action at [IMOS](http://imos.aodn.org.au), which always runs the latest version of the code.
 
 ## Contact
 Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_help/?q=forum).
 
 ## Features
+* Easy 1-2-3 workflow (1.Search, 2.Subset, 3.Download)
+* Faceted search for easy discovery of data collections
+* Visualise subsetting results before download via WMS
+* Download data from a variety of web services (eg. WFS)
+* Configurable themes and splash page
 
-* Faceted search for easy navigation of datasets.
-* Animation controls such as pause, fast-forward, etc.
-* Configurable themes and splash page.
-* Save and share data visualisations.
-* Subset and aggregate multiple datasets into a single file for download.
-* Filter data before download.
-* OpenID authentication.
-* Advanced spatial search that ensures results have features in the region of interest.  Not just a bounding box intersection.
-
-## Quick Navigation
-
-* [Get Portal](#getting-your-hands-on-portal)
-* [Configuration](#configuring-portal)
-* [How Do I Drive This Thing?](#getting-started-how-do-i-drive-this-thing)
-
-### Getting Your Hands on Portal
-
-Firstly we welcome contributions so please feel free to fork the project, address any issues or add features and submit
-a pull request.
-
+## Getting Your Hands on Portal
 * [Building From Source](#building-from-source)
 * [Can I Get A Pre-Built War?](#can-i-get-a-pre-built-war)
+* [Installation](#installation)
 
-#### Building From Source
+## Building From Source
+If you want to build from source you will need to have [Grails](http://grails.org/) 2.4.4 installed on your build machine.
 
-If you want to build from source you will need to have [Grails](http://grails.org/) installed on your build machine.
+The recommended way of installing grails is by using [gvm](http://gvmtool.net/):
+```
+$ curl -s get.gvmtool.net | bash
+$ source $HOME/.gvm/bin/gvm-init.sh
+$ gvm use grails 2.4.4
+```
 
 Once you have the source it should be as simple as ```$ grails war``` in the root folder where you have checked out portal
 then deploy the war to your application server.
@@ -53,53 +46,31 @@ Feel free to ignore the pom.xml, this is an old artifact from when we used Maven
 Grails tooling directly to build our artifacts. We have a dependency on Maven to launch our [Jasmine](http://pivotal.github.com/jasmine/ "Jasmine BDD"),
 we are in the process of removing that dependency, [you can help with that too](https://github.com/jkburges/grails-javascript-phantomjs "Grails JavaScript PhantomJS")
 
-#### Can I Get A Pre-Built War?
+## Can I Get A Pre-Built War?
+Yes, you can download it from our [Jenkins server](https://jenkins.aodn.org.au/job/portal_4_prod/).
 
-Yes, you can download it [here](http://binary.aodn.org.au/).
+## Installation
+The AODN portal has been tested with Tomcat.  All you need to do is deploy the war and add a configuration file that tells the portal:
+* Where to find goenetwork
+* Your CSS for branding and styling
+* Trusted servers
 
-You can also write to us, info at emii dot org dot au to discuss the best way of getting portal and keeping your
-version up to date.
+Define the location of the configuration file by setting an environment context variable named ```aodn.configuration```
 
-## Configuring Portal
+One way to do this is by adding a file called &lt;context&gt;.xml in the ```$CATALINA_BASE/conf/[enginename]/[hostname]/``` directory. Where &lt;context&gt; matches the context of the deployed war (eg. "aodn-portal-3.42.1-production.xml").  Set the variable by adding the following line to the file: 
+```<Environment name="aodn.configuration" value="<path to file>/Portal.groovy" type="java.lang.String" override="true"/>```
 
-You can fork portal and have your configuration included in your code base however portal offers the ability to specify
-your configuration externally via an environment context variable named ```aodn.configuration``` you can clone an
-example [AODN config here](https://github.com/aodn/aodn-portal-config) and modify as required. The example should be
-descriptive enough to get you up and running however you can always shoot questions at us via our contact email.
+Then add the file called ```portal.groovy```
 
-### Overriding config when developing
-
-Certain config items can be overridden by setting environment variables appropriately when running in development mode, e.g.:
-
-```
-$ WFS_SCANNER_URL="http://10.11.12.13/wfsscanner" grails run-app
-```
-
-The full list of overridable configuration items is:
-
-* DATA_SOURCE_URL
-* DATA_SOURCE_USERNAME
-* DATA_SOURCE_PASSWORD
-* WMS_SCANNER_URL
-* WFS_SCANNER_URL
-* GOGODUCK_URL
-* LOG4J_CONVERSION_PATTERN
-
-### Collaborating Applications
-
-Portal has a few collaborating applications that you may also want to deploy
-
-* [GeoNetwork](http://geonetwork-opensource.org/)
-* [Geoserver](http://geoserver.org/)
-* [An OpenID provider](http://openid.net/)
-
-If you want to mimic the AODN portal searching capabilities then you should consider deploying an instance of
-[spatial search](https://github.com/aodn/spatial-search) note that spatial search has a dependency on a specific
-minimum version of GeoNetwork. If you cannot deploy at least that version then you should consider not using spatial
-search for performance reasons and using GeoNetwork directly for spatial extent searching. Note that at time of writing
-this means that your results may not be as fine grained as available via spatial search.
+You can clone an example [here](https://github.com/aodn/aodn-portal/blob/master/grails-app/conf/Config.groovy) and modify as required. 
 
 ## Getting Started (How Do I Drive This Thing?)
-
 Read the [Getting Started guide](https://github.com/aodn/aodn-portal/wiki/Getting-Started) on the wiki
+
+## Contributing
+We welcome contributions so please feel free to fork the project, address any issues or add features and submit
+a pull request.
+
+--
+The IMOS Portal is used to publish the [IMOS data collection](https://imos.aodn.org.au/data_collections.html).
 

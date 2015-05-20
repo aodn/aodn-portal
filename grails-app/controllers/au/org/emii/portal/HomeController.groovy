@@ -12,21 +12,12 @@ import grails.converters.JSON
 class HomeController {
 
     def grailsApplication
-    def portalInstance
     def portalBranding
 
-    static final def CONFIG_KEYS_TO_IGNORE = [  "aodaacAggregator", "log4j" ]
+    static final def CONFIG_KEYS_TO_IGNORE = [ "log4j", "beans" ]
 
     def index = { // This is the main portal entry
-
-        // Intercept OpenID verification calls
-        if (params["openid.return_to"]) {
-
-            forward controller: "auth", action: "verifyResponse"
-        }
-
         [
-            configInstance: Config.activeInstance(),
             resourceVersionNumber: grailsApplication.metadata.'app.version',
             portalBranding: portalBranding
         ]
@@ -38,9 +29,7 @@ class HomeController {
         // items results in an exception - the keys defined in CONFIG_KEYS_TO_IGNORE
         // contain closures, which don't play well when with JSON converters.
         def filteredConfig = grailsApplication.config.findAll {
-
             k, v ->
-
             !CONFIG_KEYS_TO_IGNORE.contains(k)
         }
 
@@ -52,6 +41,6 @@ class HomeController {
     }
 
     def css = {
-        render text: portalBranding.css
+        render text: portalBranding.css, contentType: "text/css"
     }
 }

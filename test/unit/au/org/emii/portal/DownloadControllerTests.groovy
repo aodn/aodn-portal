@@ -10,39 +10,29 @@ package au.org.emii.portal
 import grails.test.ControllerUnitTestCase
 
 import static au.org.emii.portal.DownloadController.SIZE_ESTIMATE_ERROR
+import static au.org.emii.portal.HttpUtils.Status.*
 
-class DownloadControllerTests extends ControllerUnitTestCase {
+@TestFor(DownloadController)
+class DownloadControllerTests {
 
-    def controller
     def testServer
 
-    protected void setUp() {
-        super.setUp()
+    void setUp() {
+        controller.grailsApplication.config.indexedFile.fileSizeColumnName = "size"
 
-        mockLogging DownloadController
-
-        controller = new DownloadController()
-        controller.grailsApplication = [config: [indexedFile: [fileSizeColumnName: "size"]]]
-
-        Server.metaClass.static.findByUriLike = { testServer }
+        DownloadController.metaClass.static._getServer = { testServer }
 
         _setUpExampleObjects()
         _setHostShouldBeValid(true)
     }
 
-    protected void tearDown() {
-        super.tearDown()
-
-        Server.metaClass = null
-    }
-
     void testUrlListForLayerNoUrlFieldName() {
 
-        mockParams.urlFieldName = null
+        controller.params.urlFieldName = null
 
         controller.urlListForLayer()
 
-        assertEquals "urlFieldName was not provided", mockResponse.contentAsString
+        assertEquals "urlFieldName was not provided", response.contentAsString
     }
 
     void testUrlListForLayer() {
@@ -54,16 +44,15 @@ class DownloadControllerTests extends ControllerUnitTestCase {
         }
 
         def testStreamProcessor = new Object()
-        controller.metaClass.urlListStreamProcessor = { fieldName, prefixToRemove, newUrlBase ->
+        controller.metaClass.urlListStreamProcessor = { fieldName, urlSubstitutions ->
             assertEquals 'relativeFilePath', fieldName
-            assertEquals testServer.urlListDownloadPrefixToRemove, prefixToRemove
-            assertEquals testServer.urlListDownloadPrefixToSubstitue, newUrlBase
+            assertEquals testServer.urlListDownloadSubstitutions, urlSubstitutions
 
             return testStreamProcessor
         }
 
         def performProxyingCalledCount = 0
-        controller._performProxying = { paramProcessor, streamProcessor ->
+        controller._performProxyingIfAllowed = { paramProcessor, streamProcessor, fieldName ->
             performProxyingCalledCount++
 
             assertEquals testParamProcessor, paramProcessor
@@ -81,12 +70,11 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.g.metaClass.render = {
             Map theRenderParams ->
-            renderParams = theRenderParams
+                renderParams = theRenderParams
         }
         controller.downloadPythonSnippet()
-        
 
-        assertEquals("text/plain", mockResponse.contentType)
+        assertEquals("text/plain", response.contentType)
         assertEquals("pythonSnippet.py", renderParams.template)
         assertEquals([ collectionUrl: "http://someurl" ], renderParams.model)
     }
@@ -100,7 +88,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.downloadNetCdfFilesForLayer()
 
-        assertEquals 'An error occurred before downloading could begin', mockResponse.contentAsString
+        assertEquals 'An error occurred before downloading could begin', response.contentAsString
     }
 
     void testDownloadNetCdfFilesForLayerInvalidHost() {
@@ -109,30 +97,29 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.downloadNetCdfFilesForLayer()
 
-        assertEquals "Host for address 'http://www.example.com/?PROPERTYNAME=relativeFilePath' not allowed", mockResponse.contentAsString
+        assertEquals HTTP_403_FORBIDDEN, response.status
     }
 
     void testDownloadNetCdfFilesForLayer() {
 
-        mockParams.downloadFilename = 'somedata.txt'
+        controller.params.downloadFilename = 'somedata.txt'
 
         def archiveGenerated = false
-        controller.metaClass.urlListStreamProcessor = { fieldName, prefixToRemove, newUrlBase ->
+        controller.metaClass.urlListStreamProcessor = { fieldName, urlSubstitutions ->
             assertEquals 'relativeFilePath', fieldName
-            assertEquals testServer.urlListDownloadPrefixToRemove, prefixToRemove
-            assertEquals testServer.urlListDownloadPrefixToSubstitue, newUrlBase
+            assertEquals testServer.urlListDownloadSubstitutions, urlSubstitutions
 
-            { inputStream, outputStream ->
-                outputStream << """\
+                { inputStream, outputStream ->
+                    outputStream << """\
                     url1
                     url2
                 """
-            }
+                }
         }
         controller.bulkDownloadService = [
             generateArchiveOfFiles: { urlList, outputStream, locale ->
                 assertEquals(["url1", "url2"], urlList)
-                assertEquals mockResponse.outputStream, outputStream
+                assertEquals response.outputStream, outputStream
                 archiveGenerated = true
             }
         ]
@@ -144,11 +131,11 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
     void testEstimateSizeForLayerNoUrlFieldName() {
 
-        mockParams.urlFieldName = null
+        controller.params.urlFieldName = null
 
         controller.estimateSizeForLayer()
 
-        assertEquals SIZE_ESTIMATE_ERROR, mockResponse.contentAsString
+        assertEquals SIZE_ESTIMATE_ERROR, response.contentAsString
     }
 
     void testEstimateSizeForLayerInvalidHost() {
@@ -157,12 +144,12 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.estimateSizeForLayer()
 
-        assertEquals SIZE_ESTIMATE_ERROR, mockResponse.contentAsString
+        assertEquals SIZE_ESTIMATE_ERROR, response.contentAsString
     }
 
     void testEstimateSizeForLayerNoUrlColumnSpecified() {
 
-        mockParams.urlFieldName = null
+        controller.params.urlFieldName = null
 
         def testStreamProcessor = new Object()
         controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->
@@ -173,7 +160,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.estimateSizeForLayer()
 
-        assertEquals SIZE_ESTIMATE_ERROR, mockResponse.contentAsString
+        assertEquals SIZE_ESTIMATE_ERROR, response.contentAsString
     }
 
     void testEstimateSizeForLayerNoProblems() {
@@ -191,7 +178,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.estimateSizeForLayer()
 
-        assertEquals "the output", mockResponse.contentAsString
+        assertEquals "the output", response.contentAsString
     }
 
     void testEstimateSizeForLayerWitExternalRequestException() {
@@ -204,7 +191,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
 
         controller.estimateSizeForLayer()
 
-        assertEquals SIZE_ESTIMATE_ERROR, mockResponse.contentAsString
+        assertEquals SIZE_ESTIMATE_ERROR, response.contentAsString
     }
 
     void testRequestSingleFieldParamProcessor() {
@@ -227,6 +214,7 @@ class DownloadControllerTests extends ControllerUnitTestCase {
             aatams_sattag_nrt_wfs.331442,/mnt/imos-t4/IMOS/Q9900541.nc
             aatams_sattag_nrt_wfs.331443,/mnt/imos-t4/IMOS/Q9900542.nc
             aatams_sattag_nrt_wfs.331445,/mnt/imos-t4/IMOS/Q9900543.nc
+            some_cool_data,/some_path/foo/123.nc
 
         """
 
@@ -235,12 +223,19 @@ http://data.imos.org.au/IMOS/Q9900542.nc\n\
 http://data.imos.org.au/IMOS/Q9900543.nc\n\
 http://data.imos.org.au/IMOS/Q9900540.nc\n\
 http://data.imos.org.au/IMOS/Q9900541.nc\n\
+/some_path/bar/123.nc\n\
 """
 
         def inputStream = new ByteArrayInputStream(input.bytes)
         def outputStream = new ByteArrayOutputStream()
 
-        def sp = controller.urlListStreamProcessor('relativeFilePath', '/mnt/imos-t4/', 'http://data.imos.org.au/')
+        def sp = controller.urlListStreamProcessor(
+            'relativeFilePath',
+            [
+                '/mnt/imos-t4/': 'http://data.imos.org.au/',
+                'foo': 'bar'
+            ]
+        )
         sp(inputStream, outputStream)
 
         def output = outputStream.toString("UTF-8")
@@ -270,18 +265,22 @@ http://data.imos.org.au/IMOS/Q9900541.nc\n\
     }
 
     void _setUpExampleObjects() {
+        testServer = [
+            name: 'My Server',
+            uri: "http://www.google.com/",
+            urlListDownloadSubstitutions: [
+                '/mnt/imos-t4': 'http://data.aodn.org.au'
+            ]
+        ]
 
-        testServer = new Server(name: 'My Server', uri: "http://www.google.com/", urlListDownloadPrefixToRemove: "/mnt/imos-t4", urlListDownloadPrefixToSubstitue: "http://data.imos.org.au")
+        controller.grailsApplication.config.knownServers = [ testServer ]
 
-        mockDomain Server, [testServer]
-
-        mockParams.url = 'http://www.example.com/'
-        mockParams.urlFieldName = 'relativeFilePath'
+        controller.params.url = 'http://www.example.com/'
+        controller.params.urlFieldName = 'relativeFilePath'
     }
 
     void _setHostShouldBeValid(valid) {
-
-        controller.hostVerifier = [allowedHost: { r, u -> valid }]
+        controller.hostVerifier = [allowedHost: { u -> valid }]
     }
 
     static void assertCorrectProcessing(streamProcessor, input, expectedOutput) {

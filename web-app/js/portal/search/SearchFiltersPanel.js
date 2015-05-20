@@ -13,27 +13,6 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
         this._initFacetFilters(config);
 
-        this._buildFilter(Portal.search.DateSelectionPanel, 'dateFilter', {
-            title: OpenLayers.i18n('dateFilter'),
-            hierarchical: false,
-            searcher: config.searcher,
-            listeners: {
-                expand: this._onExpand,
-                scope: this
-            }
-        });
-
-        this._buildFilter(Portal.search.GeoSelectionPanel, 'geoFilter', {
-            title: OpenLayers.i18n('geoFilter'),
-            hierarchical: false,
-            searcher: config.searcher,
-            mapPanel: config.mapPanel,
-            listeners: {
-                expand: this._onExpand,
-                scope: this
-            }
-        });
-
         config = Ext.apply({
             stateful: false,
             autoScroll: true,
@@ -63,64 +42,51 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         Portal.search.SearchFiltersPanel.superclass.initComponent.apply(this);
     },
 
+    _getEnabledFacets: function() {
+        var enabledFacets = Portal.app.appConfig.enabledFacets;
+
+        enabledFacets.push({ classId: "Portal.search.DateSelectionPanel", name: "dateFilter" });
+        enabledFacets.push({ classId: "Portal.search.GeoSelectionPanel", name: "geoFilter" });
+
+        return enabledFacets;
+    },
+
     _initFacetFilters: function(config) {
+        var enabledFacets = this._getEnabledFacets();
 
-        // TODO: add these dynamically.
-        this._buildFilter(
-            Portal.search.FacetFilterPanel,
-            'parameterFilter',
-            {
-                facetName: "Measured parameter",
-                title: OpenLayers.i18n('parameterFilter'),
-                searcher: config.searcher,
-                collapsedByDefault: false,
-                listeners: {
-                    expand: this._onExpand,
-                    scope: this
-                }
-            }
-        );
+        for (var i = 0; i < enabledFacets.length; i++) {
+            var facet = enabledFacets[i];
 
-        this._buildFilter(
-            Portal.search.FacetFilterPanel,
-            'organisationFilter',
-            {
-                facetName: "Organisation",
-                title: OpenLayers.i18n('organisationFilter'),
-                searcher: config.searcher,
-                collapsedByDefault: true,
-                listeners: {
-                    expand: this._onExpand,
-                    scope: this
-                }
-            }
-        );
+            var facetClass = facet.classId ? eval(facet.classId) : Portal.search.FacetFilterPanel;
+            var collapsedByDefault = facet.collapsedByDefault ? true : false;
+            var hierarchical = facet.hierarchical ? true : false;
 
-        this._buildFilter(
-            Portal.search.FacetFilterPanel,
-            'platformFilter',
-            {
-                facetName: "Platform",
-                title: OpenLayers.i18n('platformFilter'),
-                searcher: config.searcher,
-                collapsedByDefault: false,
-                listeners: {
-                    expand: this._onExpand,
-                    scope: this
+            this._buildFilter(
+                facetClass,
+                facet.name,
+                {
+                    facetName: facet.key,
+                    title: OpenLayers.i18n(facet.name),
+                    collapsedByDefault: collapsedByDefault,
+                    searcher: config.searcher,
+                    mapPanel: config.mapPanel,
+                    listeners: {
+                        expand: this._onExpand,
+                        scope: this
+                    }
                 }
-            }
-        );
+            );
+        }
     },
 
     _showError: function() {
-        this._setSpinnerText( OpenLayers.i18n('facetedSearchUnavailable') );
+        this._setSpinnerText(OpenLayers.i18n('facetedSearchUnavailable'));
     },
 
     _buildToolBar: function() {
         return new Ext.Toolbar({
             cls: 'search-filters-toolbar',
             border: false,
-            height: 28,
             frame: false,
             items: [this._buildSpinner(), '->', this._buildNewSearchButton()]
         });
@@ -128,7 +94,8 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _buildSpinner: function() {
         this.spinner = new Ext.Panel({
-            html: OpenLayers.i18n('loadingSpinner', {'resource':'search terms'}),
+            html: this._makeSpinnerText(OpenLayers.i18n('loadingMessage', {'resource':'search terms'})),
+            cls: 'search-filters-toolbar-title',
             hidden: false
         });
 
@@ -147,8 +114,12 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _setSpinnerText: function( newText ) {
-        this.spinner.update( newText);
+        this.spinner.update(this._makeSpinnerText(newText));
         this.spinner.show();
+    },
+
+    _makeSpinnerText: function( text ) {
+        return '<span class=\"fa fa-spin fa-spinner \"></span> ' + text;
     },
 
     _hideSpinnerText: function( ) {
@@ -172,7 +143,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _setNewSearchButtonVisibility: function() {
-        this._setSpinnerText(OpenLayers.i18n('loadingSpinner',{'resource':'Collections'}));
+        this._setSpinnerText(OpenLayers.i18n('loadingMessage',{'resource':'Collections'}));
         this.newSearchButton.setVisible( this.searcher.hasFilters() );
     },
 

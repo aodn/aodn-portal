@@ -37,7 +37,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this.geoNetworkRecord = this.layer.parentGeoNetworkRecord;
 
-        this._clearDateTimeFields();
+        this._disableDateTimeFields();
         this._attachTemporalEvents();
         this._attachSpatialEvents();
         this._removeLoadingInfo();
@@ -49,8 +49,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this.add(
             new Ext.Button({
-                cls: "x-btn-text-icon clearFiltersButton",
-                icon: "images/go-back-icon.png",
+                cls: "clearFiltersButton",
                 text: OpenLayers.i18n('clearFilterButtonLabel'),
                 listeners: {
                     scope: this,
@@ -61,9 +60,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     resetConstraints: function() {
-
-        this._clearDateTimeFields();
-        this._layerTemporalExtentLoad();
+        this._resetExtent(this.layer.getTemporalExtentMin(), this.layer.getTemporalExtentMax());
+        this._clearSpatialControls();
     },
 
     _removeLoadingInfo: function() {
@@ -73,7 +71,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _addLoadingInfo: function() {
-        this.loadingInfo = this._newHtmlElement(OpenLayers.i18n('loadingSpinner', {resource: ""}));
+        this.loadingInfo = this._newHtmlElement(OpenLayers.i18n('loadingMessage', {resource: ""}));
         this.add(this.loadingInfo);
     },
 
@@ -327,6 +325,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             this._addDateTimeFilterToLayer();
             console.log("update spatial geom");
             this.geoNetworkRecord.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
+            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED);
         }
     },
 
@@ -357,6 +356,18 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         });
     },
 
+    _resetExtent: function(extentMin, extentMax) {
+        this._initializeDateTimePicker(this.startDateTimePicker, extentMin);
+        this._initializeDateTimePicker(this.endDateTimePicker, extentMax);
+
+        var extent = this.layer.getTemporalExtent();
+        this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.startDateTimePicker.initvalue, false);
+        this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.endDateTimePicker.initvalue, true);
+        this._updateTimeRangeLabel();
+
+        this._setLayerSubsetExtent();
+    },
+
     _initializeDateTimePicker: function(dateTimePicker, defaultValue) {
         if (this._getAttachedSelectedDate(dateTimePicker)) {
             var selectedDate = this._getAttachedSelectedDate(dateTimePicker).clone();
@@ -381,17 +392,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             this._goToPreviousTimeSlice();
         }
         else {
-            // Initialize/modify pickers
-            this._initializeDateTimePicker(this.startDateTimePicker, this.layer.getSubsetExtentMin());
-            this._initializeDateTimePicker(this.endDateTimePicker, this.layer.getSubsetExtentMax());
-
-            var extent = this.layer.getTemporalExtent();
-            this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.startDateTimePicker.initvalue, false);
-            this._setDateTimePickerExtent(this.endDateTimePicker, extent, this.endDateTimePicker.initvalue, true);
-            this._updateTimeRangeLabel();
-
-            this._setLayerSubsetExtent();
-
+            this._resetExtent(this.layer.getSubsetExtentMin(), this.layer.getSubsetExtentMax());
             this._applyFilterValuesFromMap();
         }
     },
@@ -426,15 +427,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    _clearDateTimeFields: function() {
-        this._resetAndDisableDateTimePicker(this.startDateTimePicker);
-        this._resetAndDisableDateTimePicker(this.endDateTimePicker);
+    _disableDateTimeFields: function() {
+        this.startDateTimePicker.disable();
+        this.endDateTimePicker.disable();
         this._updateTimeRangeLabelLoading();
-    },
-
-    _resetAndDisableDateTimePicker: function(picker) {
-        picker.reset();
-        picker.disable();
     },
 
     _setLayerSubsetExtent: function() {

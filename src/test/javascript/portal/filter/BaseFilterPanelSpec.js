@@ -45,6 +45,10 @@ describe("Portal.filter.BaseFilterPanel", function() {
             expectNewFilterPanelForString('BooleanFilterPanel', 'Boolean');
         });
 
+        it("should create BoundingBoxFilterPanel", function() {
+            expectNewFilterPanelForString('BoundingBoxFilterPanel', 'BoundingBox');
+        });
+
         it("should create NumberFilterPanel", function() {
             expectNewFilterPanelForString('NumberFilterPanel', 'Number');
         });
@@ -68,7 +72,7 @@ describe("Portal.filter.BaseFilterPanel", function() {
             });
 
             return baseFilter;
-        };
+        }
 
         it("should return true when the filter is for downloads only", function() {
             var baseFilter = buildFilter({
