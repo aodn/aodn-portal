@@ -91,6 +91,30 @@ featureToggles {
     // someFeature = <boolean>
 }
 
+enabledFacets = [
+    [
+        name: 'parameterFilter',
+        key: 'Measured parameter',
+        hierarchical: true
+    ],
+    [
+        name: 'organisationFilter',
+        key: 'Organisation',
+        collapsedByDefault: true,
+        hierarchical: true
+    ],
+    [
+        name: 'platformFilter',
+        key: 'Platform',
+        hierarchical: true
+    ],
+    /*[
+        classId: 'Portal.search.FreeTextSearchPanel',
+        name: 'freetextFilter',
+        key: 'freetextFilter'
+    ]*/
+]
+
 // Google Analytics
 googleAnalytics.trackingId = null
 
