@@ -107,7 +107,12 @@ enabledFacets = [
         name: 'platformFilter',
         key: 'Platform',
         hierarchical: true
-    ]
+    ],
+    /*[
+        classId: 'Portal.search.FreeTextSearchPanel',
+        name: 'freetextFilter',
+        key: 'freetextFilter'
+    ]*/
 ]
 
 // Google Analytics
