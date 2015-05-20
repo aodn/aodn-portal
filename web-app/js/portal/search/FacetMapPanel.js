@@ -53,7 +53,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
                 this.geoFacetMapToolbar
             ],
             resolutions: this.RESOLUTIONS,
-            restrictedExtent: new OpenLayers.Bounds.fromArray([null, -90, null, 90])
+            restrictedExtent: new OpenLayers.Bounds.fromArray([-360, -90, 360, 90])
         });
     },
 

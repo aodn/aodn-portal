@@ -8,6 +8,12 @@
 // Track slow-running specs
 jasmine.slow.enable(500);
 
+// Mock a console (if not running in browser)
+if (typeof console === "undefined" || typeof console.log === "undefined") {
+    console = {};
+    console.log = function(msg) {};
+}
+
 Ext.MessageBox.alert = function () {
 };
 
@@ -138,8 +144,9 @@ var mockAjaxXmlResponse = function(responseContent) {
 // An empty function to pass as a parameter
 var noOp = function() {};
 
+var wktPolygon = 'POLYGON((1 2,3 4,1 2))';
 var constructGeometry = function() {
-    return OpenLayers.Geometry.fromWKT('POLYGON((1 2, 3 4, 1 2))');
+    return OpenLayers.Geometry.fromWKT(wktPolygon);
 };
 
 //

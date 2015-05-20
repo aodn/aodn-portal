@@ -308,10 +308,12 @@
                         <include>ext-3.3.1/adapter/ext/ext-base-debug.js</include>
                         <include>ext-3.3.1/ext-all-debug-w-comments.js</include>
                         <include>js/portal/common/GeoExt.ux.BaseLayerCombobox.js</include>
-                        <include>OpenLayers-2.10/OpenLayers.js</include>
+                        <include>OpenLayers-2.13.1/OpenLayers.js</include>
+                        <include>OpenLayers-2.13.1/lib/deprecated.js</include>
                         <include>GeoExt1.1/script/GeoExt.js</include>
                         <include>ext-ux/**/*.js</include>
                         <include>log4javascript-1.4.6/log4javascript_uncompressed.js</include>
+                        <include>portal/WKTNormalised.js</include>
                         <include>portal/prototypes/OpenLayers.js</include>
                         <include>portal/ui/openlayers/control/SpatialConstraint.js</include>
                         <include>portal/lang/en.js</include>

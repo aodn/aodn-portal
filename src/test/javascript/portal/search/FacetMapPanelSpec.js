@@ -17,6 +17,7 @@ describe("Portal.search.FacetMapPanel", function() {
     describe('synching map mouse position', function() {
         it('calls map.updateSize on map mouse move event', function() {
             spyOn(facetMapPanel.map, 'updateSize');
+            OpenLayers.Layer.prototype.getLonLatFromViewPortPx = function(px) { return { lon: 1, lat: 2 } };
             facetMapPanel.map.events.triggerEvent('mousemove');
             expect(facetMapPanel.map.updateSize).toHaveBeenCalled();
         });

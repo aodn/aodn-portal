@@ -686,7 +686,6 @@ div.olMap .olControlDragPanActive.olDragDown {
 
 .olControlPanel {
     margin-left: 5px;
-    /*width: 62px;*/
     top: 230px;
 }
 
@@ -751,14 +750,6 @@ div.olControlScaleLineTop, div.olControlScaleLineBottom {
     font-weight: bold;
 }
 
-.olControlEditingToolbar, .olControlEditingToolbarItemInactive {
-    width: 50px;
-}
-
-.olControlEditingToolbar div {
-    float: left;
-}
-
 .olControlDrawFeatureActive .olControlDrawFeature {
     position: absolute;
     float: left;
@@ -767,10 +758,37 @@ div.olControlScaleLineTop, div.olControlScaleLineBottom {
     margin-top: 280px;
     margin-left: 3px;
     height: 22px;
-    background-image: url("../images/draw.png?");
+    background-image: url("../images/openlayers/draw.png");
     background-position: 12px 1px;
     background-repeat: no-repeat;
     display: block;
+}
+
+.olControlZoomPanel {
+    left: 8px! important;
+    top: 8px! important;
+}
+
+.olControlZoomPanel div.olControlZoomInItemInactive {
+    background: url("../images/openlayers/zoom-plus-mini.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+
+.olControlZoomPanel div.olControlZoomOutItemInactive {
+    background: url("../images/openlayers/zoom-minus-mini.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    top: 20px! important;
+}
+
+.olControlZoomPanel div.olControlZoomToMaxExtentItemInactive {
+    width: 0;
+}
+
+div.olControlZoomInItemInactive,
+div.olControlZoomOutItemInactive {
+    display: block;
+    height: 22px;
+    margin: 2px;
+    padding: 0 4px;
+    width: 15px;
 }
 
 .ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover, .ygtvfocus {

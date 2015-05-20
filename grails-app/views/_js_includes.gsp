@@ -24,14 +24,16 @@
 <g:if env="development">
     <script src="${resource(dir: 'js/ext-3.3.1/adapter/ext', file: 'ext-base-debug.js')}" type="text/javascript"></script>
     <script src="${resource(dir: 'js/ext-3.3.1', file: 'ext-all-debug.js')}" type="text/javascript"></script>
-    <script src="${resource(dir: 'js/OpenLayers-2.10', file: 'OpenLayers.js')}" type="text/javascript"></script>
+    <script src="${resource(dir: 'js/OpenLayers-2.13.1', file: 'OpenLayers.js')}" type="text/javascript"></script>
+    <script src="${resource(dir: 'js/OpenLayers-2.13.1/lib', file: 'deprecated.js')}" type="text/javascript"></script>
     <!--- GeoExt (Has to be after Openlayers and ExJS) -->
     <script src="${resource(dir: 'js/GeoExt1.1/lib', file: 'GeoExt.js')}" type="text/javascript"></script>
 </g:if>
 <g:else>
     <script src="${resource(dir: 'js/ext-3.3.1/adapter/ext', file: 'ext-base.js')}" type="text/javascript"></script>
     <script src="${resource(dir: 'js/ext-3.3.1', file: 'ext-all.js')}" type="text/javascript"></script>
-    <script src="${resource(dir: 'js/OpenLayers-2.10', file: 'OpenLayers.js')}" type="text/javascript"></script>
+    <script src="${resource(dir: 'js/OpenLayers-2.13.1', file: 'OpenLayers.js')}" type="text/javascript"></script>
+    <script src="${resource(dir: 'js/OpenLayers-2.13.1/lib', file: 'deprecated.js')}" type="text/javascript"></script>
     <!--- GeoExt (Has to be after Openlayers and ExJS) -->
     <script src="${resource(dir: 'js/GeoExt1.1/script', file: 'GeoExt.js')}" type="text/javascript"></script>
 </g:else>
@@ -46,13 +48,13 @@
 <g:if env="development">
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/control', file: 'SpatialConstraint.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils/geo', file: 'GeoUtil.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Browser.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Image.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Proxy.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Set.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'portal.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'ObjectFactory.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'PortalEvents.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'WKTNormalised.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'Array.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'Ext.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'ExtUxAjax.js')}"></script>
@@ -133,7 +135,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'LayerOptions.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'LayerParams.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'MapOptions.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'TemporalMap.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'SpatialConstraintMap.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/layer', file: 'NcWMS.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MapPanel.js')}"></script>
