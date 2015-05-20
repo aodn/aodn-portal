@@ -316,3 +316,8 @@ function getPortalBase(pathname) {
 function normaliseLongitude(longitude) {
     return (longitude + 540) % 360 - 180;
 };
+
+// Remove all child nodes of HTML elements from the DOM
+function clearContents(jQuerySelector) {
+    jQuery(jQuerySelector).empty();
+}
