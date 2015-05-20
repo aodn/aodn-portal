@@ -205,6 +205,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         var buttonElementId = this.buttonElementId(uuid);
 
+        // remove any existing content fixes #1757
+        clearContents("#" + buttonElementId);
+
         if (Ext.get(buttonElementId)) {
             new Ext.Button({
                 text: OpenLayers.i18n('navigationButtonNext', {label: "Select"}),
@@ -247,6 +250,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     getMiniMap: function(values) {
 
         values.mapContainerId = this.mapElementId(values.uuid);
+
+        // remove any existing content fixes #1757
+        clearContents(values.mapContainerId);
 
         var miniMap = new Portal.search.FacetedSearchResultsMiniMap(values);
         miniMap.addLayersAndRender();

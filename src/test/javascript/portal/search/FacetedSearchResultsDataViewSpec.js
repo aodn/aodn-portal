@@ -109,6 +109,13 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             expect(window.trackUsage).toHaveBeenCalledWith("Collection", "select", "Argo Australia Profiles");
         });
 
+        it('clears possible contents of buttons/maps', function() {
+
+            spyOn(window, 'clearContents');
+            facetedSearchDataView.createButton("my super uuid");
+            expect(clearContents).toHaveBeenCalled();
+        });
+
         it('sends view event for normal select', function() {
 
             facetedSearchDataView.addRecordWithUuid("my super uuid", false);
