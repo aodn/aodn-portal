@@ -11,6 +11,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
 
     OPERATOR_CLEAR: 'CLR',
     OPERATOR_BETWEEN: 'BTWN',
+    OPERATOR_EMPTY: '',
 
     constructor: function(cfg) {
 
@@ -33,6 +34,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
             triggerAction: 'all',
             mode: 'local',
             emptyText : OpenLayers.i18n("pleasePickCondensed"),
+            blankText: OpenLayers.i18n("pleasePickNumberOperator"),
             width: 165,
             editable: false,
             fieldLabel: "Value",
@@ -51,6 +53,9 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         this.firstField = new Ext.form.NumberField({
             name: 'from',
             width: 146,
+            allowNegative: true,
+            allowBlank: false,
+            blankText: OpenLayers.i18n("pleasePickNumberField"),
             listeners: {
                 scope: this,
                 blur: this._updateFilter,
@@ -60,8 +65,11 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
 
         this.secondField = new Ext.form.NumberField({
             name: 'to',
-            width: 146,
             hidden: true,
+            width: 146,
+            allowNegative: true,
+            allowBlank: false,
+            blankText: OpenLayers.i18n("pleasePickNumberField"),
             listeners: {
                 scope: this,
                 blur: this._updateFilter,
@@ -82,6 +90,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         this.secondField.setVisible(false);
 
         this.filter.clearValue();
+        this._fireAddEvent();
     },
 
     needsFilterRange: function() {
@@ -91,14 +100,44 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
     _onSpecialKeyPressed: function(field, e) {
 
         if (e.getKey() == e.ENTER) {
-
             this._updateFilter();
         }
     },
 
-    _shouldUpdate: function () {
-        return (!this._operatorIsBetween() || this._operatorIsBetween() &&
-            (this._hasSecondValue() && this._hasFirstValue()) );
+    _shouldUpdate: function() {
+
+        if (this._operatorIsNotSet()) {
+            this.operators.markInvalid(OpenLayers.i18n("pleasePickNumberOperator"));
+            return;
+        }
+        else {
+            return this._setGetFieldsStatus();
+        }
+    },
+
+    _setGetFieldsStatus: function() {
+
+        var validates = true;
+        this.firstField.clearInvalid();
+        this.secondField.clearInvalid();
+
+        // both values set and operator is between
+        if (this._operatorIsBetween()) {
+
+            if (!this.firstField.validateValue() || !this.secondField.validateValue()) {
+                validates = false;
+            }
+
+            if (parseInt(this.firstField.value) >= parseInt(this.secondField.value)) {
+                validates = false;
+                this.firstField.markInvalid(OpenLayers.i18n('numberFilterError'));
+                this.secondField.markInvalid(OpenLayers.i18n('numberFilterError'));
+            }
+        }
+        else if(!this._operatorIsBetween()) {
+            this.firstField.validateValue();
+        }
+        return validates;
     },
 
     _updateFilter: function() {
@@ -116,7 +155,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
 
         this._fireAddEvent();
 
-        if (this._hasFirstValue()) {
+        if (this.firstField.getValue()) {
             trackFiltersUsage('filtersTrackingNumberAction', this._getTrackUsageLabel(), this.layer.name);
         }
     },
@@ -131,20 +170,12 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         return label;
     },
 
-    _hasFirstValue: function() {
-        return !(this.firstField.getValue() == null || this.firstField.getValue() == "");
-    },
-
-    _hasSecondValue: function() {
-        return !(this.secondField.getValue() == null || this.secondField.getValue() == "");
-    },
-
     _onOperationSelected: function() {
-        
+
         this.secondField.setVisible(this._operatorIsBetween());
 
         this._updateFilter();
-        
+
         if (this._operatorIsClear()) {
             this.handleRemoveFilter();
         }
@@ -156,6 +187,10 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
 
     _operatorIsClear: function() {
         return this._getSelectedOperatorObject().code == this.OPERATOR_CLEAR;
+    },
+
+    _operatorIsNotSet: function() {
+        return this.operators.getValue() == this.OPERATOR_EMPTY;
     },
 
     _getSelectedOperatorObject: function() {

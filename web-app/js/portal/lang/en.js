@@ -19,6 +19,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     maskText: "Searching ... ",
     pleasePickCondensed: '**pick**',
+    pleasePickNumberOperator: 'Please pick a condition operator to filter on',
+    pleasePickNumberField: 'Please enter a number to filter on, according to your operator',
     loadingMessage: '&nbsp;<i>Loading ${resource}\u2025</i>',
 
     // DetailsPanel.js
@@ -210,6 +212,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
         ['LTE',  'less than or equal to',    '<= {0}',              '<='],
         ['BTWN', 'between (inclusive)',      'BETWEEN {0} AND {1}', '–' ]
     ],
+
+    numberFilterError: 'Start value must be less the end value',
 
     emptyDownloadPlaceholder: "The full data collection will be downloaded. Consider filtering the collection.",
 

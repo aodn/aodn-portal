@@ -49,9 +49,14 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
         beforeEach(function() {
             numberFilter._createControls();
             numberFilter.firstField.getValue = function() { return 5 };
+            numberFilter.firstField.clearInvalid = function() {};
+            numberFilter.secondField.clearInvalid = function() {};
+            numberFilter.firstField.validateValue = function() {return true};
+            numberFilter.secondField.validateValue = function() {return true};
             numberFilter.operators = {
                 lastSelectionText: 'less than',
-                getValue: noOp
+                getValue: noOp,
+                markInvalid: noOp
             };
 
             spyOn(numberFilter, '_getSelectedOperatorObject');
@@ -77,11 +82,51 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Number", "testLabel between 5 and 6", "test layer");
         });
 
+        it('no update when operator is not set', function() {
+            spyOn(numberFilter.filter, 'setValue');
+
+            numberFilter._operatorIsNotSet = function() { return true };
+            numberFilter.operators.lastSelectionText = '';
+
+            numberFilter._updateFilter();
+            expect(numberFilter.filter.setValue).not.toHaveBeenCalled();
+
+            numberFilter.firstField.getValue = function() { return 4 };
+            numberFilter.secondField.getValue = function() { return 6 };
+            numberFilter._updateFilter();
+            expect(numberFilter.filter.setValue).not.toHaveBeenCalled();
+        });
+
+        it('no trackusage when firstField is not set on updateFilter', function() {
+            spyOn(window, 'trackUsage');
+
+            numberFilter._operatorIsNotSet = function() { return false };
+            numberFilter._shouldUpdate = function() { return true };
+
+            numberFilter.firstField.getValue = function() { return undefined };
+            numberFilter._updateFilter();
+            expect(window.trackUsage).not.toHaveBeenCalled();
+        });
+
+        it('trackusage is called when firstField is set on updateFilter', function() {
+            spyOn(window, 'trackUsage');
+
+            numberFilter._operatorIsNotSet = function() { return false };
+            numberFilter._operatorIsBetween = function() { return false };
+            numberFilter._shouldUpdate = function() { return true };
+
+            numberFilter.firstField.getValue = function() { return "45" };
+            numberFilter._updateFilter();
+            expect(window.trackUsage).toHaveBeenCalledWith( 'Filters', 'Number', 'testLabel less than 45', 'test layer' );
+        });
+
         it('no update when operator is between and some values are empty', function() {
             spyOn(numberFilter.filter, 'setValue');
 
             numberFilter._operatorIsBetween = function() { return true };
             numberFilter.operators.lastSelectionText = 'between';
+
+            numberFilter.firstField.validateValue = function() {return false};
 
             numberFilter._updateFilter();
             expect(numberFilter.filter.setValue).not.toHaveBeenCalled();
@@ -104,6 +149,20 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
             numberFilter._updateFilter();
 
             expect(numberFilter.filter.setValue).toHaveBeenCalled();
+        });
+
+
+        it('updates when operator is set to none / cleared ', function() {
+            spyOn(numberFilter, '_fireAddEvent');
+
+            numberFilter.operators.clearValue = function() { noOp };
+            numberFilter.firstField.reset = function() { noOp };
+            numberFilter.secondField.reset = function() { noOp };
+            numberFilter.secondField.setVisible = function() { noOp };
+            numberFilter.filter.clearValue = function() { noOp };
+
+            numberFilter.handleRemoveFilter();
+            expect(numberFilter._fireAddEvent).toHaveBeenCalled();
         });
 
     });
