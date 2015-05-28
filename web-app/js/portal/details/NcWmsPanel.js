@@ -29,9 +29,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         Portal.details.NcWmsPanel.superclass.initComponent.call(this);
 
         this._addLoadingInfo();
-        this._addSpatialConstraintDisplayPanel();
         this._addTemporalControls();
-
         this._initWithLayer();
     },
 
@@ -45,13 +43,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this._removeLoadingInfo();
         this._applyFilterValuesFromMap();
         this._addClearButton();
-    },
-
-    _getASpacer: function(sizeInPixels) {
-        return new Ext.Spacer({
-            cls:'block',
-            height: sizeInPixels
-        })
     },
 
     _addClearButton: function() {
@@ -70,17 +61,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     resetConstraints: function() {
         this._resetExtent(this.layer.getTemporalExtentMin(), this.layer.getTemporalExtentMax());
-        this._clearSpatialControls();
-    },
-
-    _clearSpatialControls: function() {
-
-        if (this.map.spatialConstraintControl) {
-            this.map.spatialConstraintControl.clear();
-        }
-
-        this.map.events.triggerEvent('spatialconstraintcleared');
-        trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingValueCleared'));
     },
 
     _removeLoadingInfo: function() {
@@ -92,14 +72,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     _addLoadingInfo: function() {
         this.loadingInfo = this._newHtmlElement(OpenLayers.i18n('loadingMessage', {resource: ""}));
         this.add(this.loadingInfo);
-    },
-
-    _addSpatialConstraintDisplayPanel: function() {
-
-        this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
-            map: this.map
-        });
-        this.add(this.spatialSubsetControlsPanel);
     },
 
     _attachSpatialEvents: function() {

@@ -18,7 +18,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     _getHtmlContent: function() {
         return [
             '<div class="downloadPanelResultsWrapper">',
-            '  <div class="x-panel-header resultsHeaderBackground">',
+            '  <div class="x-panel-header downloadPanelResultsTitle">',
             '    <div class="downloads resultsRowHeaderTitle"><h3>{[this._getRecordTitle(values)]}</h3></div>',
             '    <div class="floatRight listButtonWrapper" id="{[this._getButtonId(values,\'downloadButtonId\')]}">{[this._downloadButton(values)]}</div>',
             '    <div class="floatRight listButtonWrapper removeButton" id="{[this._getButtonId(values,\'removeButtonId\')]}">{[this._createRemoveButtonAfterPageLoad(values)]}</div>',

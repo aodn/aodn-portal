@@ -79,8 +79,8 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
             spyOn(Portal.filter.ui.BooleanFilterPanel.prototype, '_createControls');
             spyOn(Portal.filter.ui.NumberFilterPanel.prototype, 'setLayerAndFilter');
-            spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, '_createControls');
-            spyOn(Portal.filter.ui.GeometryFilterPanel.prototype, 'setLayerAndFilter');
+            spyOn(Portal.filter.ui.GeometryFilterService.prototype, '_createControls');
+            spyOn(Portal.filter.ui.GeometryFilterService.prototype, 'setLayerAndFilter');
             spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createControls');
 
             var booleanPanelA = new Portal.filter.ui.BooleanFilterPanel({
@@ -90,7 +90,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 filter: { getLabel: function() { return 'B' } }
             });
             var numberPanel =  new Portal.filter.ui.NumberFilterPanel();
-            var geometryPanel = new Portal.filter.ui.GeometryFilterPanel({
+            var geometryPanel = new Portal.filter.ui.GeometryFilterService({
                 map: getMockMap()
             });
             var datePanel = new Portal.filter.ui.DateFilterPanel();
@@ -258,8 +258,8 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
         var filterPanels;
         var numPanels;
         var numDifferentTypes = 3;
-        var numHeadings = numDifferentTypes - 1; // Number filters won't have a heading
-        var numVerticalSpacers = numDifferentTypes - numHeadings; // No spacer for item after heading
+        var numHeadings = 2; // Only Date has a non default typeLabel "Date + default = 2"
+        var numVerticalSpacers = 1;
 
         beforeEach(function() {
             spyOn(Portal.filter.ui.NumberFilterPanel.prototype, '_createControls');
@@ -268,8 +268,10 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
             filterPanels = [
                 new Portal.filter.ui.DateFilterPanel(),
+                // first default heading will appear
                 new Portal.filter.ui.ComboFilterPanel(),
                 new Portal.filter.ui.ComboFilterPanel(),
+                // spacer will appear
                 new Portal.filter.ui.NumberFilterPanel(),
                 new Portal.filter.ui.NumberFilterPanel()
             ];

@@ -202,7 +202,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         var geometry = event.feature.geometry;
 
         if (this._checkSketch(event.feature)){
-            var normalisedGeometry = this.getNormalizedGeometry(geometry)
+            var normalisedGeometry = this.getNormalizedGeometry(geometry);
             this.events.triggerEvent('spatialconstraintadded', normalisedGeometry);
             this.oldGeometry = normalisedGeometry;
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingSpatialConstraintSketched'));

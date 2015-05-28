@@ -7,42 +7,35 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.DetailsPanelTab = Ext.extend(Ext.TabPanel, {
+Portal.details.SubsetItemsTabPanel = Ext.extend(Ext.TabPanel, {
 
     constructor: function (cfg) {
-        var childPanelConfig =  { map: cfg.map, layer: cfg.layer, mapPanel: cfg.mapPanel };
+        var childPanelConfig =  { map: cfg.map, layer: cfg.layer };
 
         this.subsetPanel = new Portal.details.SubsetPanel(childPanelConfig);
         this.infoPanel = new Portal.details.InfoPanel(childPanelConfig);
         this.stylePanel = new Portal.details.StylePanel(childPanelConfig);
-        this.mapOptionsPanel = new Portal.ui.MapOptionsPanel(childPanelConfig);
+        //this.mapOptionsPanel = new Portal.ui.MapOptionsPanel(childPanelConfig + mappanel);
 
         var config = Ext.apply({
-            autoHeight: true,
-            defaults: {
-                style: {padding:'10px 25px 10px 10px'},
-                autoHeight: true
-            },
-            border: false,
             activeTab: 0,
             items: [
                 this.subsetPanel,
                 this.infoPanel,
-                this.stylePanel,
-                this.mapOptionsPanel
+                this.stylePanel
             ],
             listeners: {
                 beforetabchange: this._doTracking
             }
         }, cfg);
 
-        Portal.details.DetailsPanelTab.superclass.constructor.call(this, config);
+        Portal.details.SubsetItemsTabPanel.superclass.constructor.call(this, config);
     },
 
     _doTracking: function(tabPanel, newTab, oldTab){
         if(oldTab) {
-            trackUsage(OpenLayers.i18n('detailsTrackingCategory'),
-                OpenLayers.i18n('detailsTabsTrackingAction'),
+            trackUsage(OpenLayers.i18n('subsetItemsTrackingCategory'),
+                OpenLayers.i18n('subsetItemsTabsTrackingAction'),
                 newTab.title,
                 this.layer.name
             );
