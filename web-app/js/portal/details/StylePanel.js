@@ -35,10 +35,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             ctCls: 'legendImage'
         });
 
-        this.label = new Ext.form.Label({
-            html: "<h4>" + OpenLayers.i18n('layerOptionsTitle') + "</h4>"
-        });
-
         //create an opacity slider
         //usability bug #624 where the opacity slider thumb sits at the minimum slider value instead of the maximum one
         this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
@@ -70,7 +66,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
         //add the opacity slider container, style combo picker and colour scale panel to the Styles panel
         this.items = [
-            this.label,
+            this._makeSpacer(),
             this.opacitySliderContainer,
             this.styleCombo,
             this._makeSpacer(),

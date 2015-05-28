@@ -1,0 +1,91 @@
+/*
+ * Copyright 2013 IMOS
+ *
+ * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ *
+ */
+describe("Portal.details.SubsettingPanel", function() {
+
+    var subsettingPanel;
+
+    beforeEach(function() {
+        subsettingPanel = new Portal.details.SubsettingPanel({
+            map: new OpenLayers.SpatialConstraintMap(),
+            layer: new OpenLayers.Layer.WMS()
+        });
+    });
+
+    afterEach(function() {
+        subsettingPanel.destroy();
+    });
+
+    describe('selected collection changed', function() {
+        describe('selected collection', function() {
+            var layer;
+
+            beforeEach(function() {
+                layer = {};
+
+                spyOn(subsettingPanel, '_addFolderForLayer');
+                spyOn(subsettingPanel, '_activateFolderForLayer');
+            });
+
+            it('activates existing SubsetPanelAccordion for previously selected layer', function() {
+                spyOn(subsettingPanel, '_folderExistsForLayer').andReturn(true);
+
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
+
+                expect(subsettingPanel._addFolderForLayer).not.toHaveBeenCalled();
+                expect(subsettingPanel._activateFolderForLayer).toHaveBeenCalledWith(layer);
+            });
+
+            it('creates new SubsetPanelAccordion and activates for new layer', function() {
+                spyOn(subsettingPanel, '_folderExistsForLayer').andReturn(false);
+
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
+
+                expect(subsettingPanel._addFolderForLayer).toHaveBeenCalledWith(layer);
+                expect(subsettingPanel._activateFolderForLayer).toHaveBeenCalledWith(layer);
+            });
+
+            it('removes SubsetPanelAccordion for removed layer', function() {
+                spyOn(subsettingPanel, '_folderExistsForLayer').andReturn(true);
+                spyOn(subsettingPanel, '_removeFolderForLayer');
+
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);
+
+                expect(subsettingPanel._removeFolderForLayer).toHaveBeenCalledWith(layer);
+            });
+
+            it('sets empty text', function() {
+                spyOn(subsettingPanel, '_folderExistsForLayer').andReturn(true);
+                spyOn(subsettingPanel, 'checkState');
+
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);
+
+                expect(subsettingPanel.checkState).toHaveBeenCalled();
+            });
+        });
+
+        describe('no selected layer', function() {
+            beforeEach(function() {
+                Ext.MsgBus.publish('selectedLayerChanged');
+            });
+
+            it("set title to 'no selected layer'", function() {
+                subsettingPanel.title = 'something';
+                expect(subsettingPanel.title).toBe('something');
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
+                expect(subsettingPanel.title).toBe('something');
+            });
+        });
+    });
+
+    describe('step title', function() {
+        it('is correct', function() {
+
+            var expectedTitle = OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description') });
+            expect(subsettingPanel.title).toEqual(expectedTitle);
+        });
+    });
+});

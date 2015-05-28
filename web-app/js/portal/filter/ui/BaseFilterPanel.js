@@ -16,7 +16,7 @@ Portal.filter.ui.BaseFilterPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
         var config = Ext.apply({
-            typeLabel: '',
+            typeLabel: OpenLayers.i18n('generalFilterHeading'),
             listeners: {
                 beforeremove: function() {
                     this.removeAll(true);

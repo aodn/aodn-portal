@@ -154,12 +154,11 @@ describe("Portal.cart.DownloadPanel", function() {
 
             downloadPanel.generateBodyContent();
 
-            // Order of items is reversed!!
             expect(downloadPanel._applyTemplate.callCount).toBe(4);
-            expect(downloadPanel._applyTemplate.argsForCall[3][1].uuid).toBe(testCollection1.uuid);
-            expect(downloadPanel._applyTemplate.argsForCall[2][1].uuid).toBe(testCollection2.uuid);
-            expect(downloadPanel._applyTemplate.argsForCall[1][1].uuid).toBe(testCollection3.uuid);
-            expect(downloadPanel._applyTemplate.argsForCall[0][1].uuid).toBe(testCollection4.uuid);
+            expect(downloadPanel._applyTemplate.argsForCall[3][1].uuid).toBe(testCollection4.uuid);
+            expect(downloadPanel._applyTemplate.argsForCall[2][1].uuid).toBe(testCollection3.uuid);
+            expect(downloadPanel._applyTemplate.argsForCall[1][1].uuid).toBe(testCollection2.uuid);
+            expect(downloadPanel._applyTemplate.argsForCall[0][1].uuid).toBe(testCollection1.uuid);
         });
 
         it('calls update', function() {

@@ -11,22 +11,20 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        this.map = cfg.map;
+        var config = Ext.apply({
+            cls: "spatialSubsetControl"
+        }, cfg);
 
-        Portal.details.SpatialSubsetControlsPanel.superclass.constructor.call(this, cfg);
-    },
+        Portal.details.SpatialSubsetControlsPanel.superclass.constructor.call(this, config);
 
-    initComponent: function() {
-        Portal.details.SpatialSubsetControlsPanel.superclass.initComponent.call(this);
-        this._addLabel(OpenLayers.i18n('spatialExtentHeading'));
         this._addPickerPanel();
-        this._addVerticalSpacer();
         this._addSpatialConstraintDisplayPanel();
     },
 
     _addPickerPanel: function() {
 
         this.polygonTypeCombo = new Portal.form.PolygonTypeComboBox({
+            width: 125,
             map: this.map
         });
 
@@ -40,43 +38,52 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingValueCleared'));
         }, this);
 
-        var spacer = new Ext.Spacer({
-            width: 10
-        });
-
         var pickerPanel = new Ext.Panel({
-            layout: 'hbox',
+            width: 135,
+            cls: "floatLeft",
             items: [
+                this._addLabel(OpenLayers.i18n('spatialExtentHeading')),
+                this._addVerticalSpacer(10),
                 this.polygonTypeCombo,
-                spacer,
+                this._addVerticalSpacer(5),
                 resetLink
             ]
         });
 
         this.add(pickerPanel);
-
     },
 
     _addSpatialConstraintDisplayPanel: function() {
         this.spatialConstraintDisplayPanel = new Portal.details.SpatialConstraintDisplayPanel({
             map: this.map,
-            width: this.width
+            cls: "floatLeft",
+            unstyled: true,
+            width: 160
         });
         this.add(this.spatialConstraintDisplayPanel);
     },
 
-    _addVerticalSpacer: function() {
-        this.add(new Ext.Spacer({ height: 5 }));
+    _addVerticalSpacer: function(height) {
+        return new Ext.Spacer({ height: height });
     },
 
     _addLabel: function(labelText) {
 
-        if (!this.hideLabel){
+        if (!this.hideLabel) {
             var label = new Ext.form.Label({
-                html: "<h4>" + labelText + "</h4>"
+                html: "<h3>" + labelText + "</h3>"
             });
-
-            this.add(label);
+            return label;
         }
+    },
+
+    handleRemoveFilter: function() {
+
+        if (this.map.spatialConstraintControl) {
+            this.map.spatialConstraintControl.clear();
+        }
+
+        this.map.events.triggerEvent('spatialconstraintcleared');
+        trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingValueCleared'));
     }
 });

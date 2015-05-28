@@ -16,7 +16,7 @@ Portal.filter.GeometryFilter = Ext.extend(Portal.filter.Filter, {
 
     getUiComponentClass: function() {
 
-        return Portal.filter.ui.GeometryFilterPanel;
+        return Portal.filter.ui.GeometryFilterService;
     },
 
     getCql: function() {
