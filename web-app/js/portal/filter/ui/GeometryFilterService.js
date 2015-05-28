@@ -7,15 +7,13 @@
 
 Ext.namespace('Portal.filter.ui');
 
-Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
+Portal.filter.ui.GeometryFilterService = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
 
     constructor: function(cfg) {
 
         var config = Ext.apply({
-            typeLabel: OpenLayers.i18n('spatialExtentHeading')
+            typeLabel: undefined
         }, cfg);
-
-        Portal.filter.ui.GeometryFilterPanel.superclass.constructor.call(this, config);
 
         this.map = cfg.map;
         this.map.events.on({
@@ -27,10 +25,12 @@ Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPan
                 this._updateWithGeometry();
             }
         });
+        Portal.filter.ui.GeometryFilterService.superclass.constructor.call(this, config);
+
     },
 
     setLayerAndFilter: function(layer, filter) {
-        Portal.filter.ui.GeometryFilterPanel.superclass.setLayerAndFilter.apply(this, arguments);
+        Portal.filter.ui.GeometryFilterService.superclass.setLayerAndFilter.apply(this, arguments);
 
         if (this.map.spatialConstraintControl) {
             this._updateWithGeometry(this.map.spatialConstraintControl.getConstraint());
@@ -39,11 +39,7 @@ Portal.filter.ui.GeometryFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPan
     },
 
     _createControls: function() {
-        this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
-            map: this.map,
-            hideLabel: true
-        });
-        this.add(this.spatialSubsetControlsPanel);
+        // Not a physical panel, Using a global Geometry filter
     },
 
     handleRemoveFilter: function() {

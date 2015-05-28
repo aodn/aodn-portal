@@ -14,7 +14,7 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
         this.mapPanel = cfg.mapPanel;
         this.mapPanel.region = 'center';
 
-        this.detailsPanel = new Portal.details.DetailsPanel({
+        this.detailsPanel = new Portal.details.SubsettingPanel({
             region: 'west',
             collapsible: true,
             collapsed: false,

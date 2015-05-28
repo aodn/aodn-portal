@@ -112,10 +112,10 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'ComboFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'ResettableDate.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'DateFilterPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'GeometryFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'BooleanFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'NumberFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'FilterGroupPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'GeometryFilterService.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'BaseFilterCombiner.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'FilterCqlBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'MapCqlBuilder.js')}"></script>
@@ -126,12 +126,13 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'PolygonTypeComboBox.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NCWMSColourScalePanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'StylePanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DetailsPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsettingPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NcWmsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanelAccordion.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DataCollectionSelectorPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'InfoPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetItemsTabPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'ClickControl.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'LayerOptions.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'LayerParams.js')}"></script>

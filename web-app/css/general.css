@@ -135,22 +135,6 @@ hr {
     padding: 2px 2px 5px 0
 }
 
-.arrowUp {
-    background: url("../images/arrowUp.png") no-repeat left top transparent;
-}
-
-.arrowDown {
-    background: url("../images/arrowDown.png") no-repeat left top transparent;
-}
-
-.arrowUpWhite {
-    background: url("../images/arrowUpWhite.png") no-repeat left top transparent;
-}
-
-.arrowDownWhite {
-    background: url("../images/arrowDownWhite.png") no-repeat left top transparent;
-}
-
 .leftMenus {
     background-color: white;
     border-radius: 12px 12px 12px 12px;
@@ -384,6 +368,7 @@ a:hover.mainlinks {
     font-size: 0.9em;
     line-height: 2;
     padding: 0.5em;
+    border-radius: 5px;
 }
 
 .message {
@@ -391,6 +376,7 @@ a:hover.mainlinks {
     border: 1px solid #b2d1ff;
     color: #006dba;
     box-shadow: 0 0 0.25em #b2d1ff;
+
 }
 
 .errors {
@@ -632,13 +618,6 @@ p.important {
 
 .x-tree-node a span, .x-dd-drag-ghost a span {
     font-size: 12px;
-}
-
-.x-btn-over:not(.navigationButton),
-.x-btn-over:not(.navigationButton) *,
-ul.x-tab-strip-top li:hover * {
-    background-color: #AAA;
-    color: white;
 }
 
 .addServerStatusPanel .x-panel-header {
@@ -911,10 +890,6 @@ div.allwhite {
     padding: 10px 5px;
 }
 
-.filter-selection-panel .x-panel-header:hover {
-    background-color: #eeeeee;
-}
-
 .filterGroupPanel h4 {
     padding: 7px 0;
 }
@@ -976,39 +951,63 @@ div.allwhite {
     margin-right: 10px;
 }
 
+.x-tab-strip-top .x-tab-right,
+.x-tab-strip-top .x-tab-left,
+.x-tab-strip-top .x-tab-strip-inner,
 .resultsRowHeaderTitle,
-.downloadPanelResultsTitle,
-.detailsPanelAccordion .x-panel-header {
-    background-color: #E8E8E8;
-    border-radius: 3px 0 0 3px;
+.subsetPanelAccordion .x-panel-header,
+.filter-selection-panel .x-panel-header {
+    background-color: #EBEBEB;
 }
 
-.detailsPanelAccordion .x-panel-header {
-    margin: 5px 5px 0 0;
+
+.resultsRowHeaderTitle:hover,
+.subsetPanelAccordion .x-panel-header:hover,
+.filter-selection-panel .x-panel-header:hover,
+.x-btn-over:not(.navigationButton),
+.x-btn-over:not(.navigationButton) *,
+ul.x-tab-strip-top li:hover * {
+    background-color: #DCDCDC;
+}
+
+.x-tab-strip-active span.x-tab-strip-text {
+    color: #4d5b63;
+}
+
+.resultsRowHeaderTitle,
+.subsetPanelAccordion .x-panel-header {
     border-radius: 3px;
+}
+
+.subsetPanelAccordion .x-panel-header {
+    margin: 5px 5px 0 0;
     padding: 2px 5px;
 }
 
-.detailsPanelAccordion .x-panel-collapsed * {
+.subsetPanelAccordion .x-panel-collapsed * {
     font-weight: normal;
 }
 
-.detailsPanelAccordion .x-tool {
+.subsetPanelAccordion .x-tool {
     margin-top: 3px;
+}
+
+.downloadPanelResultsTitle {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .resultsRowHeaderTitle {
     float: left;
-    margin-top: 1px;
-    padding: 1px 10px 2px 5px;
-    margin-right: 5px;
+    margin: 1px 15px 0 0;
+    padding: 3px 10px 2px 5px;
 }
 
-.resultsRowHeaderTitle.downloads {
-    width: 770px;
+.resultsRowHeaderTitle {
+    width: 760px;
 }
 
-.faceted-search-results .resultsRowHeaderTitle * {
+.resultsRowHeaderTitle * {
     margin: 2px 0;
     display: inline-block;
 }
@@ -1127,7 +1126,6 @@ div:not(.x-tree-selected) * {
 }
 
 .resetText {
-    color: #666;
     position: relative;
     top: 3px;
     font-style: italic;
@@ -1193,8 +1191,5 @@ div.tool-plus-disabled {
 }
 
 .spatialSubsetControl {
-    margin-right: 5px;
-    padding: 20px;
-    border-radius: 3px;
     background-color: #f5f5f5;
 }

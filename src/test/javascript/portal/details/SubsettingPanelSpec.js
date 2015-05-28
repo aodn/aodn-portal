@@ -4,19 +4,19 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.details.DetailsPanel", function() {
+describe("Portal.details.SubsettingPanel", function() {
 
-    var detailsPanel;
+    var subsettingPanel;
 
     beforeEach(function() {
-        detailsPanel = new Portal.details.DetailsPanel({
+        subsettingPanel = new Portal.details.SubsettingPanel({
             map: new OpenLayers.SpatialConstraintMap(),
             layer: new OpenLayers.Layer.WMS()
         });
     });
 
     afterEach(function() {
-        detailsPanel.destroy();
+        subsettingPanel.destroy();
     });
 
     describe('selected collection changed', function() {
@@ -26,35 +26,44 @@ describe("Portal.details.DetailsPanel", function() {
             beforeEach(function() {
                 layer = {};
 
-                spyOn(detailsPanel, '_addTabForLayer');
-                spyOn(detailsPanel, '_activateTabForLayer');
+                spyOn(subsettingPanel, '_addFolderForLayer');
+                spyOn(subsettingPanel, '_activateFolderForLayer');
             });
 
             it('activates existing SubsetPanelAccordion for previously selected layer', function() {
-                spyOn(detailsPanel, '_tabExistsForLayer').andReturn(true);
+                spyOn(subsettingPanel, '_folderExistsForLayer').andReturn(true);
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
 
-                expect(detailsPanel._addTabForLayer).not.toHaveBeenCalled();
-                expect(detailsPanel._activateTabForLayer).toHaveBeenCalledWith(layer);
+                expect(subsettingPanel._addFolderForLayer).not.toHaveBeenCalled();
+                expect(subsettingPanel._activateFolderForLayer).toHaveBeenCalledWith(layer);
             });
 
             it('creates new SubsetPanelAccordion and activates for new layer', function() {
-                spyOn(detailsPanel, '_tabExistsForLayer').andReturn(false);
+                spyOn(subsettingPanel, '_folderExistsForLayer').andReturn(false);
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
 
-                expect(detailsPanel._addTabForLayer).toHaveBeenCalledWith(layer);
-                expect(detailsPanel._activateTabForLayer).toHaveBeenCalledWith(layer);
+                expect(subsettingPanel._addFolderForLayer).toHaveBeenCalledWith(layer);
+                expect(subsettingPanel._activateFolderForLayer).toHaveBeenCalledWith(layer);
             });
 
             it('removes SubsetPanelAccordion for removed layer', function() {
-                spyOn(detailsPanel, '_tabExistsForLayer').andReturn(true);
-                spyOn(detailsPanel, '_removeTabForLayer');
+                spyOn(subsettingPanel, '_folderExistsForLayer').andReturn(true);
+                spyOn(subsettingPanel, '_removeFolderForLayer');
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);
 
-                expect(detailsPanel._removeTabForLayer).toHaveBeenCalledWith(layer);
+                expect(subsettingPanel._removeFolderForLayer).toHaveBeenCalledWith(layer);
+            });
+
+            it('sets empty text', function() {
+                spyOn(subsettingPanel, '_folderExistsForLayer').andReturn(true);
+                spyOn(subsettingPanel, 'checkState');
+
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);
+
+                expect(subsettingPanel.checkState).toHaveBeenCalled();
             });
         });
 
@@ -64,10 +73,10 @@ describe("Portal.details.DetailsPanel", function() {
             });
 
             it("set title to 'no selected layer'", function() {
-                detailsPanel.title = 'something';
-                expect(detailsPanel.title).toBe('something');
+                subsettingPanel.title = 'something';
+                expect(subsettingPanel.title).toBe('something');
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
-                expect(detailsPanel.title).toBe('something');
+                expect(subsettingPanel.title).toBe('something');
             });
         });
     });
@@ -76,7 +85,7 @@ describe("Portal.details.DetailsPanel", function() {
         it('is correct', function() {
 
             var expectedTitle = OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description') });
-            expect(detailsPanel.title).toEqual(expectedTitle);
+            expect(subsettingPanel.title).toEqual(expectedTitle);
         });
     });
 });

@@ -11,28 +11,17 @@ Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
 
     constructor: function (cfg) {
 
-        //var childPanelConfig =  { map: cfg.map, layer: cfg.layer, mapPanel: cfg.mapPanel };
-
-        //this.infoPanel = new Portal.details.InfoPanel(childPanelConfig);
-        //this.stylePanel = new Portal.details.StylePanel(childPanelConfig);
-        //this.mapOptionsPanel = new Portal.ui.MapOptionsPanel(childPanelConfig);
-
         var config = Ext.apply({
-            defaults: {
-                // applied to each contained panel
-                bodyStyle: 'padding:15px',
-                layout:'fit'
-            },
-            cls: 'detailsPanelAccordion',
+            cls: 'subsetPanelAccordion',
             layout:'accordion',
             autoScroll: true,
             layoutConfig: {
-                // layout-specific configs go here
-                animate: true
+                animate: true,
+                collapseFirst: true,
+                fill: true
             },
-            closable:true,
             listeners: {
-                beforeAdd : this.collapseAll,
+                beforeAdd: this.collapseAll,
                 beforetabchange: this._doTracking
             }
         }, cfg);
@@ -48,8 +37,8 @@ Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
 
     _doTracking: function(tabPanel, newTab, oldTab) {
         if (oldTab) {
-            trackUsage(OpenLayers.i18n('detailsTrackingCategory'),
-                OpenLayers.i18n('detailsTabsTrackingAction'),
+            trackUsage(OpenLayers.i18n('subsetItemsTrackingCategory'),
+                OpenLayers.i18n('subsetItemsTabsTrackingAction'),
                 newTab.title,
                 this.layer.name
             );

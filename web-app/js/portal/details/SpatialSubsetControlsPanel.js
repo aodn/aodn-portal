@@ -43,6 +43,7 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
             cls: "floatLeft",
             items: [
                 this._addLabel(OpenLayers.i18n('spatialExtentHeading')),
+                this._addVerticalSpacer(10),
                 this.polygonTypeCombo,
                 this._addVerticalSpacer(5),
                 resetLink
@@ -70,7 +71,7 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
 
         if (!this.hideLabel) {
             var label = new Ext.form.Label({
-                html: "<h4>" + labelText + "</h4>"
+                html: "<h3>" + labelText + "</h3>"
             });
             return label;
         }

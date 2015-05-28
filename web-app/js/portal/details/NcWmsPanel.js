@@ -61,7 +61,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     resetConstraints: function() {
         this._resetExtent(this.layer.getTemporalExtentMin(), this.layer.getTemporalExtentMax());
-        this._clearSpatialControls();
     },
 
     _removeLoadingInfo: function() {
@@ -323,7 +322,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         if (this.geoNetworkRecord) {
             this._addDateTimeFilterToLayer();
-            console.log("update spatial geom");
             this.geoNetworkRecord.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
             Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED);
         }

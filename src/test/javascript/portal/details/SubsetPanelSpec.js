@@ -30,7 +30,7 @@ describe("Portal.details.SubsetPanel", function() {
     describe('initialisation', function() {
 
         it('sets title', function() {
-            expect(subsetPanel.title).toEqual("<h4>the title</h4>");
+            expect(subsetPanel.title).toEqual(OpenLayers.i18n('subsetPanelTitle'));
         });
 
         it('initialises ncwmsPanel for NcWMS layer', function() {

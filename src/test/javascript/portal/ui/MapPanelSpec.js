@@ -42,7 +42,7 @@ describe("Portal.ui.MapPanel", function() {
         });
 
         it('does not clear the spatial constraint when there are layers', function() {
-            spyOn(Portal.details.DetailsPanel.prototype, 'updateDetailsPanel');
+            spyOn(Portal.details.SubsettingPanel.prototype, 'updateSubsetPanelAccordionItem');
 
             spyOn(mapPanel.map, 'updateSpatialConstraintStyle');
             Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, {

@@ -21,7 +21,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pleasePickCondensed: '**pick**',
     loadingMessage: '&nbsp;<i>Loading ${resource}\u2025</i>',
 
-    // DetailsPanel.js
+    // SubsettingPanel.js
     opacity: "Opacity",
     wmsLayerProblem: "There is a problem with the availability of this collection",
     noActiveCollectionSelected: "No data collections selected",
@@ -66,8 +66,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // MapOptions
     panControl: 'Pan/Zoom Control',
     mapGlobalOptionsTitle: "Global Map Options",
-
-    layerOptionsTitle: "Layer Options",
 
     // Animation Panel
     selectTimePeriod: 'Select ${direction} Time Period',
@@ -221,7 +219,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     depthLabel: 'Depth:',
     elevationLabel: 'Elevation:',
 
-    // ActiveLayersTreeNodeUI.js
     removeDataCollection: 'Remove data collection',
     zoomToDataCollection: 'Zoom to data collection',
 
@@ -267,8 +264,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerSelectionTrackingCategory: "Collection",
     layerSelectionTrackingAction: "select",
     filtersTrackingCategory: "Filters",
-    detailsTrackingCategory: "Details",
-    detailsTabsTrackingAction: "Tabs",
+    subsetItemsTrackingCategory: "Details",
+    subsetItemsTabsTrackingAction: "Tabs",
     filtersTrackingBooleanAction: "Boolean",
     filtersTrackingComboAction: 'Combo',
     filtersTrackingDateAction: 'Date',
