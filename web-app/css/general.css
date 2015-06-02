@@ -702,14 +702,17 @@ div.olControlMousePosition {
     color: #253745;
 }
 
-.olControlLayerSwitcher {
+.olControlLayerSwitcher  {
+    width: 23em! important;
     border-radius: 6px 0 0 6px;
     font-size: smaller ! important;
     font-weight: normal ! important;
-    color: inherit! important;
+    background-color: #34546E !important;
 }
 
 .olControlLayerSwitcher .layersDiv, .olControlLayerSwitcher > div > span {
+    margin: 10px;
+    color: white;
     background-color: #34546E !important;
 }
 

@@ -36,6 +36,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         this.controls = [
             new OpenLayers.Control.Attribution(),
             new OpenLayers.Control.PanZoomBar(),
+            new OpenLayers.Control.LayerSwitcher({'ascending':false}),
             new OpenLayers.Control.MousePosition(),
             new OpenLayers.Control.ScaleLine(),
             new OpenLayers.Control.OverviewMap({
