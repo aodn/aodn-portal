@@ -376,7 +376,6 @@ a:hover.mainlinks {
     border: 1px solid #b2d1ff;
     color: #006dba;
     box-shadow: 0 0 0.25em #b2d1ff;
-
 }
 
 .errors {
@@ -1183,9 +1182,8 @@ div.tool-plus-disabled {
     font-family: FontAwesome! important;
 }
 
-
-.fa-lg.fa-angle-double-right,
-.fa-lg.fa-angle-double-left {
+.fa-lg.fa-angle-right,
+.fa-lg.fa-angle-left {
     vertical-align: -5%;
 }
 
