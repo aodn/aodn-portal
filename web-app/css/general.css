@@ -1141,7 +1141,7 @@ div.tool-plus-disabled {
     font-family: FontAwesome! important;
 }
 
-.fa-lg.fa-angle-double-right,
-.fa-lg.fa-angle-double-left {
+.fa-lg.fa-angle-right,
+.fa-lg.fa-angle-left {
     vertical-align: -5%;
 }
