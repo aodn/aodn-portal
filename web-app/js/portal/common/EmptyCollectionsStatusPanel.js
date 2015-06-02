@@ -27,7 +27,9 @@ Portal.common.EmptyCollectionStatusPanel = Ext.extend(Ext.Container, {
     },
 
     toString: function() {
-        return OpenLayers.i18n('noActiveCollectionSelected') + "<br/><i><small>" + OpenLayers.i18n('noCollectionSelectedHelp') + "</small></i>"
+        return "<div class=\"message\" >" +
+            OpenLayers.i18n('noActiveCollectionSelected') +
+            "<p>" + OpenLayers.i18n('noCollectionSelectedHelp') +
+            "</p></div>"
     }
-
 });

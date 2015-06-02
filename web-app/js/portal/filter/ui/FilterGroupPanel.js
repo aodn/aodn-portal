@@ -150,7 +150,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     _sortPanels: function(panels) {
 
         var panelOrder = [
-            Portal.filter.ui.GeometryFilterPanel,
+            Portal.filter.ui.GeometryFilterService,
             Portal.filter.ui.DateFilterPanel,
             Portal.filter.ui.BooleanFilterPanel,
             Portal.filter.ui.NumberFilterPanel,
@@ -220,11 +220,13 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
             var newLabel = this._typeLabelForPanel(panel);
             var newType = panel.constructor;
 
-            if (newLabel != currentLabel) {
-                this._addLabelToContainer(newLabel, this);
-            }
-            else if (newType != currentType) {
-                this.add(this._createVerticalSpacer(15));
+            if (newLabel) {
+                if (newLabel != currentLabel) {
+                    this._addLabelToContainer(newLabel, this);
+                }
+                else if (newType != currentType) {
+                    this.add(this._createVerticalSpacer(15));
+                }
             }
 
             this.add(panel);
@@ -235,8 +237,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     _typeLabelForPanel: function(panel) {
-
-        return panel.typeLabel == '' ? OpenLayers.i18n('generalFilterHeading') : panel.typeLabel;
+        return panel.typeLabel;
      },
 
     _addLabelToContainer: function(label, container) {

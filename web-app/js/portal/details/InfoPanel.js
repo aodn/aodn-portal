@@ -16,9 +16,11 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
         var config = Ext.apply({
             title: OpenLayers.i18n('infoTabTitle'),
             html: OpenLayers.i18n('loadingMessage', {resource: " collection information"}),
+            autoHeight: true,
+            style: {padding: '10px 25px 10px 10px'},
             listeners: {
                 scope: this,
-                render: this._initWithLayer
+                afterrender: this._initWithLayer
             }
         }, cfg);
 
@@ -77,7 +79,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
         html += '</ul>';
 
-        this.update(html, false);
+        this.update(html);
     },
 
     _getHtmlHeader: function(responseText) {
