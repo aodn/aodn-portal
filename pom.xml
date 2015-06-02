@@ -212,14 +212,6 @@
 
         <dependency>
             <groupId>org.grails.plugins</groupId>
-            <artifactId>code-coverage</artifactId>
-            <version>1.2.4</version>
-            <scope>test</scope>
-            <type>zip</type>
-        </dependency>
-
-        <dependency>
-            <groupId>org.grails.plugins</groupId>
             <artifactId>tomcat</artifactId>
             <version>7.0.54</version>
             <scope>provided</scope>
