@@ -32,7 +32,7 @@ describe("Portal.details.InfoPanel", function() {
 
             expect(mockInfoPanel.update.callCount).toBe(1);
             expect(mockInfoPanel.html).toEqual(mockInfoPanel._getHtmlHeader("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>") + '<li><a  href=/ target="_blank"><i>Unnamed Resource</i></a></li>\n</ul>');
-        })
+        });
 
         it('generates an internal link with with unnamed resource if href and title are empty', function() {
             mockInfoPanel._constructInfoTabHtml(mockAbstract, mockLinkObjects);

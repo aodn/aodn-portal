@@ -232,18 +232,6 @@ ul.x-tab-strip-top {
     border: none;
 }
 
-.x-tab-strip-top .x-tab-right, .x-tab-strip-top .x-tab-left, .x-tab-strip-top .x-tab-strip-inner {
-    background-color: #D7D7D7;
-}
-
-.x-tab-strip-active span.x-tab-strip-text {
-    color: black;
-}
-
-.x-tab-strip-active .x-tab-right, .x-tab-strip-active .x-tab-left, .x-tab-strip-active .x-tab-strip-inner {
-    background-color: #C6C6C6;
-}
-
 .clear {
     height: 10px;
 }
@@ -341,3 +329,13 @@ ul.x-tab-strip-top {
 .hightlightInputbox {
     border-color: #AEAEAE;
 }
+
+.spatialSubsetControl {
+    border: solid 1px #e8e8e8;
+    margin-right: 5px;
+    padding: 18px;
+    border-radius: 6px;
+}
+
+
+

@@ -17,8 +17,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         this.initButtonPanel();
 
         this.emptyMessage = new Portal.common.EmptyCollectionStatusPanel({
-            hidden: true,
-            height: 35
+            hidden: true
         });
 
         var config = Ext.apply({
@@ -102,8 +101,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         var tpl = new Portal.cart.DownloadPanelItemTemplate(this);
         var html = '';
 
-        // Reverse the order of items, last item added will be displayed first
-        Ext.each(this.store.getLoadedRecords().reverse(), function(item) {
+        Ext.each(this.store.getLoadedRecords(), function(item) {
             var collection = item.data;
 
             html += this._generateBodyContentForCollection(tpl, collection, html);
