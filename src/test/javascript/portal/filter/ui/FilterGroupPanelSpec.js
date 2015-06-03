@@ -206,22 +206,28 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
     });
 
     describe('_clearFilters method', function() {
+        var removeFilterSpy;
 
-        var removeFilterSpy = jasmine.createSpy('handleRemoveFilter');
+        beforeEach(function() {
+            removeFilterSpy = jasmine.createSpy('handleRemoveFilter');
+        });
 
-        var _mockFilterPanel = function() {
+        var _mockFilterPanel = function(filterType, removeSpy) {
 
             return {
-                handleRemoveFilter: removeFilterSpy
+                handleRemoveFilter: removeSpy ? removeSpy : noOp,
+                filter: {
+                    type: filterType
+                }
             }
         };
 
-        it('clears all filters', function() {
+        it('clears all non-global filters', function() {
 
             filterGroupPanel.filterPanels = [
-                _mockFilterPanel('oxygen_sensor'),
-                _mockFilterPanel('data_centre'),
-                _mockFilterPanel('pi')
+                _mockFilterPanel('datetime', removeFilterSpy),
+                _mockFilterPanel('boolean', removeFilterSpy),
+                _mockFilterPanel('string', removeFilterSpy)
             ];
 
             spyOn(filterGroupPanel, '_updateLayerFilters');
@@ -229,6 +235,26 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             filterGroupPanel._clearFilters();
 
             expect(removeFilterSpy.callCount).toBe(3);
+            expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
+        });
+
+
+        it('does not clear the global spatial extent', function() {
+            filterGroupPanel.filterPanels = [
+                _mockFilterPanel('geometrypropertytype'),
+                _mockFilterPanel('datetime'),
+                _mockFilterPanel('boolean'),
+                _mockFilterPanel('string')
+            ];
+
+            var geomFilter = filterGroupPanel.filterPanels[0];
+
+            spyOn(filterGroupPanel, '_updateLayerFilters');
+            spyOn(geomFilter, 'handleRemoveFilter');
+
+            filterGroupPanel._clearFilters();
+
+            expect(geomFilter.handleRemoveFilter).not.toHaveBeenCalled();
             expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
         });
     });

@@ -281,10 +281,17 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     _clearFilters: function() {
+        var that = this;
         Ext.each(this.filterPanels, function(panel) {
-            panel.handleRemoveFilter();
+            if (!that._isGlobalFilterPanel(panel)) {
+                panel.handleRemoveFilter();
+            }
         });
         this._updateLayerFilters();
+    },
+
+    _isGlobalFilterPanel: function(panel) {
+        return panel.filter.type == "geometrypropertytype";
     },
 
     _isDisplayed: function() {
