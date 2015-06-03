@@ -22,8 +22,34 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 
     <style>
 
+    .headerHeightOverlord {
+        height: auto;
+    }
     #header {
-        position: fixed;
+        padding: 10px 20px;
+    }
+
+    @media (max-width: 992px) {
+        #landingHeaderContainer {
+            margin-left: 290px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        #header {
+            padding: 5px;
+        }
+        #landingHeaderContainer {
+            margin-left: 200px;
+        }
+    }
+
+    #logo {
+        margin: inherit;
+    }
+    h1 {
+        font-family: impact, sans-serif;
+        text-shadow: 1px 1px 8px #333;
     }
 
     h1 {
@@ -110,7 +136,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
     #information {
         background: url(http://felipeyjoana.smugmug.com/Public-Gallery/i-dZGrDBs/0/XL/_5082210-XL.jpg) no-repeat center center fixed;
         display: table;
-        height: 400px;
+        height: 700px;
         position: relative;
         width: 100%;
         -webkit-background-size: cover;
@@ -119,8 +145,11 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
         background-size: cover;
     }
 
-    #information .panel {
-        opacity: 0.85;
+    #information .information-panel {
+        background-color: white;
+        box-shadow: inset 29px 10px 139px 0px rgba(50, 50, 50, 0.5);
+        border-radius: 9px;
+        opacity: 0.95;
     }
 
     .pad-section img {
@@ -135,8 +164,9 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
 </head>
 
 <body>
+<nav class="">
 <g:render template="/header/mainPortalHeader" model="['showLinks': false, 'portalBranding': portalBranding]"></g:render>
-
+</nav>
 
 <!-- first section - Home -->
 <div id="home" class="home">
@@ -161,7 +191,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
                 <a title="Ocean Current page" href="http://oceancurrent.aodn.org.au" target="_blank">
                     <i class="glyphicon glyphicon-globe"></i>
                 </a>
-                <h4>Ocean Current</h4>
+                <h3>Ocean Current</h3>
 
                 <p>To view the latest state of Australian oceans and coastal seas,
                 go to our <a class="external" title="Ocean Current page" href="http://oceancurrent.aodn.org.au" target="_blank"><nobr>Ocean Current</nobr>
@@ -173,7 +203,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
                 <a target="_blank" title="AODN Ocean Data Portal" href="http://portal.aodn.org.au/aodn">
                     <i class="glyphicon glyphicon-folder-open"></i>
                 </a>
-                <h4>AODN portal</h4>
+                <h3>AODN portal</h3>
 
                 <p>The <a target="_blank" class="external" title="AODN Ocean Data Portal" href="http://portal.aodn.org.au/aodn">AODN Ocean Data Portal</a> has access to the complete IMOS metadata catalog and <a target="_blank" class="external" href="https://imos.aodn.org.au/data_collections.html">all available ocean data</a>. The AODN includes data from the six Commonwealth Agencies with responsibilities in the Australian marine jurisdiction (AAD, AIMS, BOM, CSIRO, GA and RAN).
                 </p>
@@ -182,7 +212,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
         </div>
     </div>
 </div>
-
+%{--
 <div id="about" class="pad-section">
     <div class="container">
         <div class="row">
@@ -197,17 +227,17 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
             </div>
         </div>
     </div>
-</div>
+</div>--}%
 
 <div id="information" class="pad-section">
-    <div class="container panel">
+    <div class="container information-panel">
         <div class="row">
             <div class="col-sm-6">
                 <div class="">
                     <div class="panel-body lead">
                         <div class="bigtext">"All IMOS data is freely and openly available for the benefit of Australian marine and climate science as a whole." &nbsp;<a href="${resource(
                             dir: 'home'
-                        )}"><small>Start searching here...</small></a></div>
+                        )}"></div>
 
                         <div class="landingSuLeft">
                             <a href="http://www.utas.edu.au/" title="UTAS home page" target="_blank"><img src="https://static.emii.org.au/images/logo/utas/UTAS_MONO_190w.png" alt="UTAS logo" />
@@ -240,7 +270,7 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
                         with the Australian marine & climate science community.
                         </p>
 
-                        ${portalBranding.footerContent}
+                        <p>${portalBranding.footerContent}</p>
 
                         <div class="buildInfo"><buildInfo:summary /></div>
                     </div>
