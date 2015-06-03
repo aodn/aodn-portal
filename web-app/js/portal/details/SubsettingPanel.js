@@ -50,65 +50,64 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(eventName, openlayer) {
             this._removeFolderForLayer(openlayer);
         }, this);
+
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function(eventName, record) {
+            this.reGenerateContent(record);
+        }, this);
+    },
+
+    reGenerateContent: function(record) {
+
+        var that = this;
+        that.subsetPanelAccordion.removeAll(true);
+        Portal.data.ActiveGeoNetworkRecordStore.instance().each(function(f){
+            that._addItemForLayer(f.data.wmsLayer);
+        });
+
+        var selectedLayer = record.layerRecord.data.layer;
+        setTimeout(function() {
+            // required and cool
+            that._activateItemForLayer(selectedLayer);
+        }, 500);
     },
 
     updateSubsetPanelAccordionItem: function(layer) {
         if (layer) {
-            if (!this._folderExistsForLayer(layer)) {
-                this._addFolderForLayer(layer);
+            if (!this._itemExistsForLayer(layer)) {
+                this._addItemForLayer(layer);
             }
-            this._activateFolderForLayer(layer);
+            this._activateItemForLayer(layer);
         }
     },
 
-    _folderExistsForLayer: function(layer) {
-        return (this.subsetPanelAccordion.items.item(this._getFolderIdForLayer(layer)) != undefined) ;
+    _itemExistsForLayer: function(layer) {
+        return (this.subsetPanelAccordion.items.item(this._getItemIdForLayer(layer)) != undefined) ;
     },
 
-    _addFolderForLayer: function(layer) {
+    _addItemForLayer: function(layer) {
 
-        var folderForLayer = new Portal.details.SubsetItemsTabPanel( {
+        var layerContainer = new Portal.details.SubsetItemsWrapperPanel({
             map: this.map,
-            layer: layer
+            layer: layer,
+            layerItemId: this._getItemIdForLayer(layer)
         });
 
-        // tabpanel wont sit in an accordion layout
-        var folderForLayerContainer = new Ext.Panel({
-            id: this._getFolderIdForLayer(layer),
-            title: '<h4>' + layer.name + '</h4>',
-            autoHeight: true,
-            defaults: {
-                style: {padding:'10px'},
-                autoHeight: true
-            },
-            items: [folderForLayer],
-            tools: [{
-                id: 'delete',
-                handler: this._layerDelete,
-                scope: this,
-                title: OpenLayers.i18n('removeDataCollection')
-            }]
-        });
-
-        this.subsetPanelAccordion.add(folderForLayerContainer);
+        this.subsetPanelAccordion.add(layerContainer);
+        this.subsetPanelAccordion.doLayout();
         this.emptyTextPanel.hide();
     },
 
-    _layerDelete: function(event, toolEl, panel) {
+    _activateItemForLayer: function(layer) {
 
-        var collectionId = panel.items.items[0].layer.parentGeoNetworkRecord.data.uuid;
-        var record = Portal.data.ActiveGeoNetworkRecordStore.instance().getRecordFromUuid(collectionId);
-        Portal.data.ActiveGeoNetworkRecordStore.instance().remove(record);
-    },
-
-    _activateFolderForLayer: function(layer) {
-        this.subsetPanelAccordion.layout.setActiveItem(this._getFolderIdForLayer(layer));
-        this.subsetPanelAccordion.doLayout();
+        if (this._itemExistsForLayer(layer)) {
+            this.subsetPanelAccordion.layout.setActiveItem(this._getItemIdForLayer(layer));
+            this.subsetPanelAccordion.items.item(this._getItemIdForLayer(layer)).expand();
+        }
     },
 
     _removeFolderForLayer: function(layer) {
-        if (this._folderExistsForLayer(layer)) {
-            this.subsetPanelAccordion.remove(this._getFolderIdForLayer(layer));
+        if (this._itemExistsForLayer(layer)) {
+            this.subsetPanelAccordion.remove(this._getItemIdForLayer(layer));
         }
         this.checkState();
     },
@@ -119,7 +118,7 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _getFolderIdForLayer: function(layer) {
+    _getItemIdForLayer: function(layer) {
         return layer.id + '_subsettingPanel';
     }
 });
