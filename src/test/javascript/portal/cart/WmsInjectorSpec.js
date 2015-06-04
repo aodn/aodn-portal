@@ -47,7 +47,8 @@ describe('Portal.cart.WmsInjector', function() {
 
         return {
             getHumanReadableForm: function() { return s },
-            hasValue: function() { return true }
+            hasValue: function() { return true },
+            getLabel: function() { return "a label" }
         };
     }
 });
