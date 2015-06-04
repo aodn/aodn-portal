@@ -106,6 +106,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         var filterPanels = [];
         var filterService  = new Portal.filter.FilterService();
+        this._sortFilters(filters);
 
         Ext.each(filters, function(filter) {
 
@@ -130,7 +131,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         }, this);
 
-        this.filterPanels = this._sortPanels(filterPanels);
+        this.filterPanels = filterPanels;
 
         this._organiseFilterPanels(filterPanels);
 
@@ -147,52 +148,33 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         this._addErrorMessage(OpenLayers.i18n('subsetEmptyFiltersText'));
     },
 
-    _sortPanels: function(panels) {
+    _sortFilters: function(filters) {
 
         var panelOrder = [
-            Portal.filter.ui.GeometryFilterService,
-            Portal.filter.ui.DateFilterPanel,
-            Portal.filter.ui.BooleanFilterPanel,
-            Portal.filter.ui.NumberFilterPanel,
-            Portal.filter.ui.ComboFilterPanel
+            Portal.filter.GeometryFilter,
+            Portal.filter.DateFilter,
+            Portal.filter.BooleanFilter,
+            Portal.filter.NumberFilter,
+            Portal.filter.StringFilter
         ];
 
-        var typeOrder = function (panel) {
-            return panelOrder.indexOf(panel.constructor) * -1;
+        var typeOrder = function (filter) {
+            return panelOrder.indexOf(filter.constructor);
         };
 
         var _this = this;
-        panels.sort(function(firstPanel, secondPanel) {
-            var comparisonResult = _this._compareElements(typeOrder(firstPanel), typeOrder(secondPanel));
-
-            if (comparisonResult == 0) {
-                var firstFilterName = firstPanel.filter.getLabel();
-                var secondFilterName = secondPanel.filter.getLabel();
-                comparisonResult = _this._compareElements(secondFilterName, firstFilterName);
-            }
-
-            return comparisonResult;
+        filters.sort(function(firstFilter, secondFilter) {
+            return _this._numericalCompare(typeOrder(firstFilter), typeOrder(secondFilter)) ||
+                   _this._stringCompare(firstFilter.getLabel(), secondFilter.getLabel());
         });
-
-        return panels;
     },
 
-    _compareElements: function(first, second) {
-        var result;
+    _numericalCompare: function(first, second) {
+        return first - second;
+    },
 
-        if (first > second) {
-            result = -1;
-        }
-        else {
-            if (first < second) {
-                result = 1;
-            }
-            else {
-                result = 0;
-            }
-        }
-
-        return result;
+    _stringCompare: function(first, second) {
+        return (first == second) ? 0 : (first > second ? 1 : -1);
     },
 
     _createFilterPanel: function(filter) {
