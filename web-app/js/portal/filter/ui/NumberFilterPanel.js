@@ -81,6 +81,20 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         this.add(this.firstField);
         this.add(this.secondField);
 
+        this._setState();
+
+    },
+
+    _setState: function() {
+        var values = this.filter.value;
+        if (values) {
+            this.operators.setValue(values.operator.code);
+            this.firstField.setValue(values.firstField);
+            if (values.secondField) {
+                this.secondField.setValue(values.secondField);
+                this.secondField.show();
+            }
+        }
     },
 
     handleRemoveFilter: function() {

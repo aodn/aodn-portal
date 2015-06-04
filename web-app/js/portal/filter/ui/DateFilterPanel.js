@@ -20,6 +20,7 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
             }
         }, cfg);
 
+        this.timeUtil = new Portal.utils.TimeUtil();
         Portal.filter.ui.DateFilterPanel.superclass.constructor.call(this, config);
     },
 
@@ -36,13 +37,14 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
         this._addVerticalSpacer(5);
         this.add(this.toDate);
 
-        if (this.filter.values != undefined) {
-            this._setMinMax(this.fromDate, this.filter.values);
-            this._setMinMax(this.toDate, this.filter.values);
+        if (this.filter.value) {
+            this._setValue(this.fromDate, this.filter.value.fromDate);
+            this._setValue(this.toDate, this.filter.value.toDate);
         }
     },
 
     handleRemoveFilter: function() {
+
         this.fromDate.reset();
         this.toDate.reset();
         this.toDate.setMinValue(new Date(0));
@@ -80,16 +82,22 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
         });
     },
 
+    // todo
     _setMinMax: function(resettableDate, vals) {
-        resettableDate.setMinValue(this.TIME_UTIL._parseIso8601Date(vals[0]));
+        resettableDate.setMinValue(this.timeUtil._parseIso8601Date(vals[0]));
 
         if (vals.length == 2) {
-            resettableDate.setMaxValue(this.TIME_UTIL._parseIso8601Date(vals[1]));
+            resettableDate.setMaxValue(this.timeUtil._parseIso8601Date(vals[1]));
+        }
+    },
+
+    _setValue: function(resettableDate, value) {
+        if (value) {
+            resettableDate.setValue(value);
         }
     },
 
     _applyDateFilter: function(component) {
-
         var changedField = component._dateField;
 
         this.toDate.setMinValue(this.fromDate.getValue());
@@ -103,7 +111,6 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
             fromDate: this.fromDate.getValue(),
             toDate: this.toDate.getValue()
         });
-
         this._fireAddEvent();
     }
 });

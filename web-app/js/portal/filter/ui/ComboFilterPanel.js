@@ -45,7 +45,7 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
         });
         this.add(this.combo);
 
-        this._setComboMessage('loadingMessage');
+        (this.filter.value) ? this.combo.setValue(this.filter.value) : this._setComboMessage('loadingMessage');
 
         this.add(
             new Ext.Spacer({
@@ -128,8 +128,8 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
             data.push([values[i]]);
         }
 
-        this.combo.clearValue();
         this.combo.getStore().loadData(data);
+        (this.filter.value) ? this.combo.setValue(this.filter.value) : this.combo.clearValue();
         this.combo.enable();
     }
 });
