@@ -26,30 +26,30 @@ describe("Portal.details.SubsettingPanel", function() {
             beforeEach(function() {
                 layer = {};
 
-                spyOn(subsettingPanel, '_addFolderForLayer');
-                spyOn(subsettingPanel, '_activateFolderForLayer');
+                spyOn(subsettingPanel, '_addItemForLayer');
+                spyOn(subsettingPanel, '_activateItemForLayer');
             });
 
             it('activates existing SubsetPanelAccordion for previously selected layer', function() {
-                spyOn(subsettingPanel, '_folderExistsForLayer').andReturn(true);
+                spyOn(subsettingPanel, '_itemExistsForLayer').andReturn(true);
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
 
-                expect(subsettingPanel._addFolderForLayer).not.toHaveBeenCalled();
-                expect(subsettingPanel._activateFolderForLayer).toHaveBeenCalledWith(layer);
+                expect(subsettingPanel._addItemForLayer).not.toHaveBeenCalled();
+                expect(subsettingPanel._activateItemForLayer).toHaveBeenCalledWith(layer);
             });
 
             it('creates new SubsetPanelAccordion and activates for new layer', function() {
-                spyOn(subsettingPanel, '_folderExistsForLayer').andReturn(false);
+                spyOn(subsettingPanel, '_itemExistsForLayer').andReturn(false);
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
 
-                expect(subsettingPanel._addFolderForLayer).toHaveBeenCalledWith(layer);
-                expect(subsettingPanel._activateFolderForLayer).toHaveBeenCalledWith(layer);
+                expect(subsettingPanel._addItemForLayer).toHaveBeenCalledWith(layer);
+                expect(subsettingPanel._activateItemForLayer).toHaveBeenCalledWith(layer);
             });
 
             it('removes SubsetPanelAccordion for removed layer', function() {
-                spyOn(subsettingPanel, '_folderExistsForLayer').andReturn(true);
+                spyOn(subsettingPanel, '_itemExistsForLayer').andReturn(true);
                 spyOn(subsettingPanel, '_removeFolderForLayer');
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);
@@ -58,7 +58,7 @@ describe("Portal.details.SubsettingPanel", function() {
             });
 
             it('sets empty text', function() {
-                spyOn(subsettingPanel, '_folderExistsForLayer').andReturn(true);
+                spyOn(subsettingPanel, '_itemExistsForLayer').andReturn(true);
                 spyOn(subsettingPanel, 'checkState');
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);

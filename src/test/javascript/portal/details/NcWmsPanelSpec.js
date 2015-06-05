@@ -64,13 +64,6 @@ describe('Portal.details.NcWmsPanel', function() {
             expect(ncwmsPanel.geoNetworkRecord.updateNcwmsParams).toHaveBeenCalled();
         });
 
-        it('calls DATA_COLLECTION_MODIFIED when the record changes', function() {
-            spyOn(Ext.MsgBus, 'publish');
-            ncwmsPanel._applyFilterValuesToCollection();
-            expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED);
-            delete ncwmsPanel.geoNetworkRecord;
-        });
-
         it('updates the date when the start date changes via edit', function() {
             ncwmsPanel._addTemporalControls();
             ncwmsPanel.startDateTimePicker.fireEvent('change', ncwmsPanel.startDateTimePicker);

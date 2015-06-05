@@ -17,7 +17,7 @@ Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
             autoScroll: true,
             layoutConfig: {
                 animate: true,
-                collapseFirst: true,
+                hideCollapseTool: true,
                 fill: true
             },
             listeners: {
