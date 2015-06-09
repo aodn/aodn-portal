@@ -36,7 +36,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
 
     hasValue: function() {
 
-        return this.getValue() && (this._getFirstField() || this._getSecondField());
+        return this.getValue() && (this._getFirstField() || this._getFirstField() === 0);
     },
 
     getHumanReadableForm: function() {

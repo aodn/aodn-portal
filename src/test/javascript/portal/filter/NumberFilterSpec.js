@@ -63,6 +63,24 @@ describe("Portal.filter.NumberFilter", function() {
         });
     });
 
+    describe('first field is 0', function() {
+
+        beforeEach(function() {
+
+            filter.setValue({
+                firstField: 0
+            });
+        });
+
+        describe('hasValue', function() {
+
+            it('returns true', function() {
+
+                expect(filter.hasValue()).toBeTruthy();
+            });
+        });
+    });
+
     describe('two values entered', function() {
 
         beforeEach(function() {
