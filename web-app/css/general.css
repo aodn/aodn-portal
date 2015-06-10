@@ -1003,9 +1003,10 @@ ul.x-tab-strip-top li:hover * {
     float: left;
     margin: 1px 15px 0 0;
     padding: 3px 10px 2px 5px;
+    width: 720px;
 }
 
-.resultsRowHeaderTitle {
+.resultsRowHeaderTitle.downloads {
     width: 760px;
 }
 
