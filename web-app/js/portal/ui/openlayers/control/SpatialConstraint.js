@@ -163,12 +163,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     _checkSketch: function(feature) {
         var geometry = feature.geometry;
 
-        if (this.isGeometryLargeEnough(geometry) && !geometry.crossesDateLine()) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return this.isGeometryLargeEnough(geometry) && !geometry.crossesDateLine();
     },
 
     _showSpatialExtentError: function(geometry) {
