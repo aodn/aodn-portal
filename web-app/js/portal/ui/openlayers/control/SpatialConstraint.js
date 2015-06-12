@@ -13,7 +13,7 @@ Portal.ui.openlayers.SpatialConstraintType = {
 
 Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.DrawFeature, {
 
-    ANTE_MERIDIAN_ERROR_TIMEOUT: 1200,
+    SPATIAL_EXTENT_ERROR_TIMEOUT: 1200,
     MIN_AREA_PERCENT: 0.01,
     errorStyle: {
         fillOpacity: 0.3,
@@ -167,12 +167,12 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             return true;
         }
         else {
-            this._showAnteMeridianError();
+            this._showSpatialExtentError();
             return false;
         }
     },
 
-    _showAnteMeridianError: function() {
+    _showSpatialExtentError: function() {
         // Reset to previous geom after a short time
         var that = this;
 
@@ -185,7 +185,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             else {
                 that.map.events.triggerEvent('spatialconstraintcleared');
             }
-        }, this.ANTE_MERIDIAN_ERROR_TIMEOUT);
+        }, this.SPATIAL_EXTENT_ERROR_TIMEOUT);
     },
 
     addAnteMeridian: function() {
