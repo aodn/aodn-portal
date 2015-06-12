@@ -104,6 +104,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
         it('does not fire spatialconstraintadded where viewport area is below minimum', function() {
             spatialConstraint._getPercentOfViewportArea = function() {return 0.0001};
+            spatialConstraint.map = { events: { triggerEvent: noOp } };
             var eventSpy = jasmine.createSpy('spatialconstraintadded');
             spatialConstraint.events.on({
                 'spatialconstraintadded': eventSpy
