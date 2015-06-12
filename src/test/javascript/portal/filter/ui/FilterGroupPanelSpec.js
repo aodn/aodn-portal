@@ -31,10 +31,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             layer = {
                 server: {
                     uri: {}
-                },
-                filters: [
-                    { /* some filter */ }
-                ]
+                }
             };
 
             cfg = {
@@ -54,22 +51,17 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
 
-            filterGroupPanel._filtersLoaded(layer.filters);
         });
 
-        it('creates a filter panel', function() {
-
-            expect(filterGroupPanel._createFilterPanel).toHaveBeenCalled();
+        it('no filter panel created as filters are empty', function() {
+            filterGroupPanel._filtersLoaded(layer.filters);
+            expect(filterGroupPanel._createFilterPanel).not.toHaveBeenCalled();
         });
 
         it('sorts the filters according to sort order', function() {
-
+            var filters = {};
+            filterGroupPanel._filtersLoaded(filters);
             expect(filterGroupPanel._sortFilters).toHaveBeenCalled();
-        });
-
-        it('calls _updateAndShow', function() {
-
-            expect(filterGroupPanel._updateAndShow).toHaveBeenCalled();
         });
     });
 

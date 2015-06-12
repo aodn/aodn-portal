@@ -24,7 +24,7 @@ Portal.filter.ui.BooleanFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPane
     _createControls: function() {
         this.checkbox = new Ext.form.Checkbox({
             name: this.filter.getName(),
-            value: true,
+            checked: this.filter.getValue(),
             labelStyle: "inheritFont",
             boxLabel: this._formatBoxLabel(),
             listeners: {
@@ -32,7 +32,6 @@ Portal.filter.ui.BooleanFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPane
                 check: this._buttonChecked
             }
         });
-
         this.add(this.checkbox);
     },
 

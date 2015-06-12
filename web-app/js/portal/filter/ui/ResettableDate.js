@@ -38,8 +38,6 @@ Portal.filter.ui.ResettableDate = Ext.extend(Ext.Container, {
         }, cfg);
 
         Portal.filter.ui.ResettableDate.superclass.constructor.call(this, config);
-
-        this.addEvents('changed');
     },
 
     getValue: function() {

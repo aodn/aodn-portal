@@ -39,10 +39,16 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this._disableDateTimeFields();
         this._attachTemporalEvents();
+
+        if (this.layer.temporalextentloaded) {
+            this._layerTemporalExtentLoad();
+        }
+
         this._attachSpatialEvents();
         this._removeLoadingInfo();
         this._applyFilterValuesFromMap();
         this._addClearButton();
+
     },
 
     _addClearButton: function() {
@@ -142,10 +148,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.previousFrameButton = new Ext.Button({
             iconCls: 'previousButton',
             cls: "",
-            margins: { top: 0, right: 5, bottom: 0, left: 0 },
+            margins: {top: 0, right: 5, bottom: 0, left: 0},
             listeners: {
                 scope: this,
-                'click': function () {
+                'click': function() {
                     this._loadPreviousTimeSlice();
                 }
             },
@@ -155,10 +161,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.nextFrameButton = new Ext.Button({
             iconCls: 'nextButton',
             cls: "",
-            margins: { top: 0, right: 5, bottom: 0, left: 0 },
+            margins: {top: 0, right: 5, bottom: 0, left: 0},
             listeners: {
                 scope: this,
-                'click': function () {
+                'click': function() {
                     this._loadNextTimeSlice();
                 }
             },
@@ -226,7 +232,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _newSectionSpacer: function(height) {
-        return new Ext.Spacer({ height: height });
+        return new Ext.Spacer({height: height});
     },
 
     _attachSelectedDateToPicker: function(datePicker, dateMoment) {
@@ -323,7 +329,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if (this.geoNetworkRecord) {
             this._addDateTimeFilterToLayer();
             this.geoNetworkRecord.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
-            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED);
+            // todo cant have this for accordion
+            //Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED);
         }
     },
 
@@ -381,6 +388,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _layerTemporalExtentLoad: function() {
+
+        this.layer.temporalextentloaded = true;
         if ('next' == this._getPendingEvent()) {
             this._removePendingEvent();
             this._goToNextTimeSlice();

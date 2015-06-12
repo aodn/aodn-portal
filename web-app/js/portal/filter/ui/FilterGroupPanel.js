@@ -97,9 +97,13 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _initWithLayer: function() {
 
-        var filterService = new Portal.filter.FilterService();
-
-        filterService.loadFilters(this.layer, this._filtersLoaded, this._handleFilterLoadFailure, this);
+        if (this.layer.filters) {
+            this._filtersLoaded(this.layer.filters);
+        }
+        else {
+            var filterService = new Portal.filter.FilterService();
+            filterService.loadFilters(this.layer, this._filtersLoaded, this._handleFilterLoadFailure, this);
+        }
     },
 
     _filtersLoaded: function(filters) {
