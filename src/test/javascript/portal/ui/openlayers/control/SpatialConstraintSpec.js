@@ -308,22 +308,18 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(spatialConstraint._checkSketch(feature)).toEqual(true);
         });
 
-        it('returns false if geometry is too small, shows error', function() {
+        it('returns false if geometry is too small', function() {
             spyOn(feature.geometry, 'crossesDateLine').andReturn(false);
             spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(false);
-            spyOn(spatialConstraint, '_showSpatialExtentError');
 
             expect(spatialConstraint._checkSketch(feature)).toEqual(false);
-            expect(spatialConstraint._showSpatialExtentError).toHaveBeenCalled();
         });
 
-        it('returns false if crosses antimeridian, shows error', function() {
+        it('returns false if crosses antimeridian', function() {
             spyOn(feature.geometry, 'crossesDateLine').andReturn(true);
             spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(false);
-            spyOn(spatialConstraint, '_showSpatialExtentError');
 
             expect(spatialConstraint._checkSketch(feature)).toEqual(false);
-            expect(spatialConstraint._showSpatialExtentError).toHaveBeenCalled();
         });
     });
 

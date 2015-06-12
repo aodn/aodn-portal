@@ -167,12 +167,17 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             return true;
         }
         else {
-            this._showSpatialExtentError();
             return false;
         }
     },
 
-    _showSpatialExtentError: function() {
+    _showSpatialExtentError: function(geometry) {
+        this.layer.style = this.errorStyle;
+
+        if (this.isGeometryLargeEnough(geometry)) {
+            this.addAntimeridian();
+        }
+
         // Reset to previous geom after a short time
         var that = this;
 
@@ -208,10 +213,8 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingSpatialConstraintSketched'));
         }
         else {
-            this.layer.style = this.errorStyle;
-            if (this.isGeometryLargeEnough(geometry)) {
-                this.addAntimeridian();
-            }
+            this._showSpatialExtentError(geometry);
+
             return true; // Let the features to be added to the layer
         }
     },
