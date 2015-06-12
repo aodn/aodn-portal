@@ -142,7 +142,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     _setDrawingLayersToTop: function() {
         // Set drawing layer and polygon layer to be on top of any layer in
         // terms of Z index
-        maxZIndexForOverlay = OpenLayers.Map.prototype.Z_INDEX_BASE['Feature'] - 1;
+        var maxZIndexForOverlay = OpenLayers.Map.prototype.Z_INDEX_BASE['Feature'] - 1;
 
         if (this.handler && this.handler.layer) {
             this.handler.layer.setZIndex(maxZIndexForOverlay - 1);
@@ -193,7 +193,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             new OpenLayers.Geometry.Point(180, -90),
             new OpenLayers.Geometry.Point(180, 90)
         ]);
-        var meridianLineFeature = new OpenLayers.Feature.Vector(meridianLine, null, this.errorStyle );
+        var meridianLineFeature = new OpenLayers.Feature.Vector(meridianLine, null, this.errorStyle);
         this.layer.addFeatures([meridianLineFeature]);
     },
 
@@ -201,7 +201,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         this.clear();
         var geometry = event.feature.geometry;
 
-        if (this._checkSketch(event.feature)){
+        if (this._checkSketch(event.feature)) {
             var normalisedGeometry = this.getNormalizedGeometry(geometry);
             this.events.triggerEvent('spatialconstraintadded', normalisedGeometry);
             this.oldGeometry = normalisedGeometry;

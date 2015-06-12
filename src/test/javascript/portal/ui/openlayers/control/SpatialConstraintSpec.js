@@ -22,7 +22,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
                 expect(spatialConstraint.handler).toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
                 expect(spatialConstraint.handlerOptions.sides).toBe(4);
                 expect(spatialConstraint.handlerOptions.irregular).toBe(true);
-           });
+            });
         });
 
         it('override handler', function() {
@@ -124,7 +124,6 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
             expect(normalisedGeometry.getBounds().toString()).toEqual('-178,2,1,4');
         });
-
 
         it("getNormalizedGeometry leaves alone Geometries with longitudes < 180 not crossing ante meridian ", function() {
 
@@ -300,7 +299,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
             expect(spatialConstraint.isGeometryLargeEnough).toHaveBeenCalled();
             expect(feature.geometry.crossesDateLine).toHaveBeenCalled();
-        })
+        });
 
         it('returns true if geometry is big enough and does not cross ante-meridian', function() {
             spyOn(feature.geometry, 'crossesDateLine').andReturn(false);
