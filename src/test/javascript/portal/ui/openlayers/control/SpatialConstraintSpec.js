@@ -44,14 +44,14 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
     describe('user', function() {
 
-        it("fires 'spatialconstraintadded' on redraw", function() {
+        it("fires 'spatialconstraintadded' on setGeometry", function() {
             var eventSpy = jasmine.createSpy('spatialconstraintadded');
             spatialConstraint.events.on({
                 'spatialconstraintadded': eventSpy
             });
 
             var geometry = constructGeometry();
-            var feature = spatialConstraint.redraw(geometry);
+            var feature = spatialConstraint.setGeometry(geometry);
 
             expect(eventSpy).toHaveBeenCalledWith(geometry);
         });

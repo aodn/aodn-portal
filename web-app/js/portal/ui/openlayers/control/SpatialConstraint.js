@@ -92,9 +92,12 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     redraw: function(geometry) {
-        this.oldGeometry = geometry;
         this.clear();
         this.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
+    },
+
+    setGeometry: function(geometry) {
+        this.oldGeometry = geometry;
         this.events.triggerEvent('spatialconstraintadded', geometry);
     },
 
@@ -179,7 +182,6 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
         setTimeout(function() {
             if (that.oldGeometry) {
-                that.events.triggerEvent('spatialconstraintadded', that.oldGeometry);
                 that.layer.style = OpenLayers.Feature.Vector.style['default'];
                 that.redraw(that.oldGeometry);
             }
@@ -204,8 +206,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
         if (this._checkSketch(event.feature)) {
             var normalisedGeometry = this.getNormalizedGeometry(geometry);
-            this.events.triggerEvent('spatialconstraintadded', normalisedGeometry);
-            this.oldGeometry = normalisedGeometry;
+            this.setGeometry(normalisedGeometry);
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingSpatialConstraintSketched'));
         }
         else {
