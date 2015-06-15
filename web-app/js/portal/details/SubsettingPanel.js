@@ -50,65 +50,76 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(eventName, openlayer) {
             this._removeFolderForLayer(openlayer);
         }, this);
+
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function(eventName, message) {
+            this._updateItemOrder(message);
+        }, this);
     },
+
 
     updateSubsetPanelAccordionItem: function(layer) {
         if (layer) {
-            if (!this._folderExistsForLayer(layer)) {
-                this._addFolderForLayer(layer);
+            if (!this._itemExistsForLayer(layer)) {
+                this._addItemForLayer(layer);
             }
-            this._activateFolderForLayer(layer);
+            this._activateItemForLayer(layer);
         }
     },
 
-    _folderExistsForLayer: function(layer) {
-        return (this.subsetPanelAccordion.items.item(this._getFolderIdForLayer(layer)) != undefined) ;
+    _itemExistsForLayer: function(layer) {
+        return (this.subsetPanelAccordion.items.item(this._getItemIdForLayer(layer)) != undefined) ;
     },
 
-    _addFolderForLayer: function(layer) {
+    _addItemForLayer: function(layer) {
 
-        var folderForLayer = new Portal.details.SubsetItemsTabPanel( {
+        var layerContainer = new Portal.details.SubsetItemsWrapperPanel({
             map: this.map,
-            layer: layer
+            layer: layer,
+            layerItemId: this._getItemIdForLayer(layer)
         });
 
-        // tabpanel wont sit in an accordion layout
-        var folderForLayerContainer = new Ext.Panel({
-            id: this._getFolderIdForLayer(layer),
-            title: '<h4>' + layer.name + '</h4>',
-            autoHeight: true,
-            defaults: {
-                style: {padding:'10px'},
-                autoHeight: true
-            },
-            items: [folderForLayer],
-            tools: [{
-                id: 'delete',
-                handler: this._layerDelete,
-                scope: this,
-                title: OpenLayers.i18n('removeDataCollection')
-            }]
-        });
-
-        this.subsetPanelAccordion.add(folderForLayerContainer);
+        this.subsetPanelAccordion.add(layerContainer);
+        this.subsetPanelAccordion.doLayout();
         this.emptyTextPanel.hide();
     },
 
-    _layerDelete: function(event, toolEl, panel) {
+    _activateItemForLayer: function(layer) {
 
-        var collectionId = panel.items.items[0].layer.parentGeoNetworkRecord.data.uuid;
-        var record = Portal.data.ActiveGeoNetworkRecordStore.instance().getRecordFromUuid(collectionId);
-        Portal.data.ActiveGeoNetworkRecordStore.instance().remove(record);
+        if (this._itemExistsForLayer(layer)) {
+            this.subsetPanelAccordion.layout.setActiveItem(this._getItemIdForLayer(layer));
+            this.subsetPanelAccordion.items.item(this._getItemIdForLayer(layer)).expand();
+        }
     },
 
-    _activateFolderForLayer: function(layer) {
-        this.subsetPanelAccordion.layout.setActiveItem(this._getFolderIdForLayer(layer));
-        this.subsetPanelAccordion.doLayout();
+    _updateItemOrder: function(message) {
+
+        var movingItemIndex = this.subsetPanelAccordion.items.keys.indexOf(this._getItemIdForLayer(message.layer));
+        var newIndex = message.direction + movingItemIndex;
+
+        var itemToMove = this.subsetPanelAccordion.getComponent(movingItemIndex);
+        this.subsetPanelAccordion.remove(itemToMove, false);
+        this.subsetPanelAccordion.insert(newIndex, itemToMove);
+        this.subsetPanelAccordion.layout.setActiveItem(this._getItemIdForLayer(message.layer));
+
+        // Do the actual DOM maniplulation with jQuery. Extjs3.4 wont/cant
+        var siblings = jQuery('#' + itemToMove.id).parent().children();
+        var targetSibling = siblings.eq(newIndex);
+        var movingSibling = siblings.eq(movingItemIndex);
+
+        movingSibling.fadeOut(300, function() {
+            if (message.direction > 0) {
+                targetSibling.after(movingSibling);
+            }
+            else {
+                targetSibling.before(movingSibling);
+            }
+            movingSibling.fadeIn(50);
+        });
     },
 
     _removeFolderForLayer: function(layer) {
-        if (this._folderExistsForLayer(layer)) {
-            this.subsetPanelAccordion.remove(this._getFolderIdForLayer(layer));
+        if (this._itemExistsForLayer(layer)) {
+            this.subsetPanelAccordion.remove(this._getItemIdForLayer(layer));
         }
         this.checkState();
     },
@@ -119,7 +130,7 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    _getFolderIdForLayer: function(layer) {
+    _getItemIdForLayer: function(layer) {
         return layer.id + '_subsettingPanel';
     }
 });

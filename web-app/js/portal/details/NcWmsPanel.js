@@ -323,7 +323,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if (this.geoNetworkRecord) {
             this._addDateTimeFilterToLayer();
             this.geoNetworkRecord.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
-            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED);
         }
     },
 

@@ -16,34 +16,19 @@ Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
             layout: 'accordion',
             autoScroll: true,
             layoutConfig: {
-                animate: true,
-                collapseFirst: true,
-                fill: true
+                hideCollapseTool: true
             },
             listeners: {
-                beforeAdd: this.collapseAll,
-                beforetabchange: this._doTracking
+                beforeAdd: this.collapseAll
             }
         }, cfg);
 
         Portal.details.SubsetPanelAccordion.superclass.constructor.call(this, config);
     },
 
-    collapseAll: function(accordion, newItem, index) {
+    collapseAll: function() {
         this.items.each(function(f) {
             f.collapse();
         });
-    },
-
-    _doTracking: function(tabPanel, newTab, oldTab) {
-        if (oldTab) {
-            trackUsage(OpenLayers.i18n('subsetItemsTrackingCategory'),
-                OpenLayers.i18n('subsetItemsTabsTrackingAction'),
-                newTab.title,
-                this.layer.name
-            );
-        }
-        return true;
     }
-
 });
