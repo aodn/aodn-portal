@@ -18,9 +18,6 @@ describe("Portal.search.SearchBodyPanel", function() {
     });
 
     describe('initialisation', function() {
-        it('sets fit layout', function() {
-            expect(searchBodyPanel.layout).toBe('fit');
-        });
 
         it('initialises results grid', function() {
             var searchResultsPanel = searchBodyPanel.searchResultsPanel;

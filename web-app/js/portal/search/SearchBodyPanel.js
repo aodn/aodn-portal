@@ -13,8 +13,6 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
 
     constructor: function (cfg) {
 
-        this.resultGridSize = 10;
-
         this.resultsStore = cfg.resultsStore;
         this.searcher = cfg.searcher;
 
@@ -25,7 +23,8 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
         });
 
         var config = Ext.apply({
-            layout: 'fit',
+            autoScroll: true,
+            bodyCssClass: "faceted-search-results",
             activeItem: this.searchResultsPanel,
             items: [this.searchResultsPanel]
         }, cfg);

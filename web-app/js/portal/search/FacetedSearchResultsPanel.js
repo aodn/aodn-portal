@@ -25,10 +25,9 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
         var config = {
             title: false,
-            autoScroll: true,
-            bodyCssClass: "faceted-search-results",
             buttonAlign: 'left',
             fbar: this.pagingBar,
+            width: 840,
             items: [
                 this.dataView
             ]
