@@ -17,9 +17,9 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         this.events.register(
             'spatialconstraintusermodded',
             this,
-            function(obj) {
-                this.spatialConstraintControl.setGeometry(obj);
-                this.spatialConstraintControl.redraw(obj);
+            function(geometry) {
+                this.spatialConstraintControl.setGeometry(geometry);
+                this.spatialConstraintControl.redraw(geometry);
             }
         );
 
