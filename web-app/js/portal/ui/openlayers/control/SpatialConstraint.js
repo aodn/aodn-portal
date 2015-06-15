@@ -131,15 +131,15 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         });
     },
 
-    _layerAdded: function(addLayerEvent) {
+    _layerAdded: function() {
         this._setDrawingLayersToTop();
     },
 
-    _layerChanged: function(layer, property) {
+    _layerChanged: function() {
         this._setDrawingLayersToTop();
     },
 
-    _layerRemoved: function(layer) {
+    _layerRemoved: function() {
         this._setDrawingLayersToTop();
     },
 

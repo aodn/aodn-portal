@@ -27,7 +27,7 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
 
 
         it("subscribes to 'spatialconstrainttypechanged' event", function() {
-            var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
+            Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
             spyOn(displayPanel, '_showCard');
 
             map.events.triggerEvent('spatialconstrainttypechanged',"Some Type");
@@ -35,7 +35,7 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
         });
 
         it("subscribes to 'spatialconstraintadded' event", function() {
-            var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
+            Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
             spyOn(displayPanel.polygonDisplayPanel, 'setGeometry');
             var geometry = constructGeometry();
 
@@ -45,7 +45,7 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
         });
 
         it("subscribes to 'spatialconstraintcleared' event", function() {
-            var spatialConstraintControl = Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
+            Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
             spyOn(displayPanel, '_showCard');
 
             map.events.triggerEvent('spatialconstraintcleared');

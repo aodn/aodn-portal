@@ -46,7 +46,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
         this.addEvents('polygonadded');
     },
 
-    _initMap: function(mapConfig) {
+    _initMap: function() {
         this.map = new OpenLayers.Map({
             controls: [
                 new OpenLayers.Control.ZoomPanel(),

@@ -51,7 +51,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             });
 
             var geometry = constructGeometry();
-            var feature = spatialConstraint.setGeometry(geometry);
+            spatialConstraint.setGeometry(geometry);
 
             expect(eventSpy).toHaveBeenCalledWith(geometry);
         });
