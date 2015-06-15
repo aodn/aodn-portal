@@ -324,20 +324,63 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
     });
 
     describe('onSketchComplete', function() {
-        it('fires off an analytics report', function() {
-            var testEvent = {
-                feature: {
-                    geometry: constructGeometry()
-                }
-            };
-            spatialConstraint._getPercentOfViewportArea = function() {
-                return 0.02;
-            };
+
+        var testEvent;
+        var testGeometry;
+        var normalisedGeometry;
+        var returnValue;
+
+        beforeEach(function() {
+            testGeometry = constructGeometry();
+            normalisedGeometry = spatialConstraint.getNormalizedGeometry(testGeometry);
+            testEvent = { feature: { geometry: testGeometry } };
 
             spyOn(window, 'trackUsage');
-            spatialConstraint._onSketchComplete(testEvent);
-            expect(window.trackUsage).toHaveBeenCalledWith('Filters', 'Spatial Constraint', 'sketched', undefined);
+        });
 
-        })
+        describe('with valid geometry', function() {
+
+            beforeEach(function() {
+                spyOn(spatialConstraint, '_checkSketch').andReturn(true);
+                spyOn(spatialConstraint, 'getNormalizedGeometry').andReturn(normalisedGeometry);
+                spyOn(spatialConstraint, 'setGeometry');
+
+                returnValue = spatialConstraint._onSketchComplete(testEvent);
+            });
+
+            it('normalises and sets the geometry', function() {
+                expect(spatialConstraint.setGeometry).toHaveBeenCalledWith(normalisedGeometry);
+            });
+
+            it('fires off an analytics report', function() {
+                expect(window.trackUsage).toHaveBeenCalledWith('Filters', 'Spatial Constraint', 'sketched', undefined);
+            });
+
+            it('returns falsey', function() {
+                expect(returnValue).not.toBeTruthy();
+            });
+        });
+
+        describe('with invalid geometry', function() {
+
+            beforeEach(function() {
+                spyOn(spatialConstraint, '_checkSketch').andReturn(false);
+                spyOn(spatialConstraint, '_showSpatialExtentError');
+
+                returnVal = spatialConstraint._onSketchComplete(testEvent);
+            });
+
+            it('shows the error indicator', function() {
+                expect(spatialConstraint._showSpatialExtentError).toHaveBeenCalledWith(testGeometry);
+            });
+
+            it('does not track a usage event', function() {
+                expect(window.trackUsage).not.toHaveBeenCalled();
+            });
+
+            it('returns true', function() {
+                expect(returnVal).toBe(true);
+            });
+        });
     });
 });

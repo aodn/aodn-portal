@@ -92,6 +92,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     redraw: function(geometry) {
+        this.oldGeometry = geometry;
         this.clear();
         this.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
         this.events.triggerEvent('spatialconstraintadded', geometry);
