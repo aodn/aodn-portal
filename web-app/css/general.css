@@ -47,10 +47,6 @@ h6 {
     margin: 2px 0;
 }
 
-body {
-    min-width: 1020px;
-}
-
 input[type="checkbox"], input[type="radio"] {
     background: transparent;
     border: 0;
@@ -150,7 +146,6 @@ hr {
 }
 
 .landingContainer {
-    width: 950px;
     padding-top: 12px;
 }
 
@@ -272,6 +267,8 @@ Site navigation
     width: 100%;
     border: 2px solid #6b6b6b;
     vertical-align: middle;
+
+    min-width: 920px;
 }
 
 #viewPortLinks a {
@@ -950,7 +947,7 @@ div.allwhite {
 
 .facetedSearchBtn {
     float: left;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .x-tab-strip-top .x-tab-right,
@@ -1003,9 +1000,10 @@ ul.x-tab-strip-top li:hover * {
     float: left;
     margin: 1px 15px 0 0;
     padding: 3px 10px 2px 5px;
+    width: 700px;
 }
 
-.resultsRowHeaderTitle {
+.resultsRowHeaderTitle.downloads {
     width: 760px;
 }
 
