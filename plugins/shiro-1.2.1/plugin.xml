@@ -1,0 +1,31 @@
+<plugin name='shiro' version='1.2.1' grailsVersion='1.2 &gt; *'>
+  <author>Peter Ledbrook</author>
+  <authorEmail>peter@cacoethes.co.uk</authorEmail>
+  <title>Apache Shiro Integration for Grails</title>
+  <description>Enables Grails applications to take advantage of the Apache Shiro security layer, adding easy authentication and access control via roles and permissions.
+</description>
+  <documentation>http://grails.org/plugin/shiro</documentation>
+  <type>ShiroGrailsPlugin</type>
+  <resources>
+    <resource>org.apache.shiro.grails.ShiroFilters</resource>
+    <resource>org.apache.shiro.grails.ShiroAnnotationHandlerService</resource>
+    <resource>org.apache.shiro.grails.ShiroSecurityService</resource>
+    <resource>org.apache.shiro.grails.ShiroTagLib</resource>
+  </resources>
+  <repositories>
+    <repository name='grailsCentral' url='http://grails.org/plugins' />
+    <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
+  </repositories>
+  <dependencies>
+    <compile>
+      <dependency group='org.apache.shiro' name='shiro-quartz' version='1.2.2' />
+      <dependency group='org.apache.shiro' name='shiro-web' version='1.2.2' />
+      <dependency group='org.apache.shiro' name='shiro-spring' version='1.2.2' />
+      <dependency group='org.apache.shiro' name='shiro-ehcache' version='1.2.2' />
+      <dependency group='org.apache.shiro' name='shiro-core' version='1.2.2' />
+    </compile>
+  </dependencies>
+  <plugins />
+  <runtimePluginRequirements />
+  <behavior />
+</plugin>

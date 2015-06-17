@@ -1,0 +1,21 @@
+<plugin name='plugin-config' version='0.1.5' grailsVersion='1.2.0 &gt; *'>
+  <author>Daniel Henrique Alves Lima</author>
+  <authorEmail>email_daniel_h@yahoo.com.br</authorEmail>
+  <title>Grails Plugin Config Plugin</title>
+  <description>\
+Plugin to simplify plugin configuration tasks.
+</description>
+  <documentation>http://grails.org/plugin/plugin-config</documentation>
+  <resources>
+    <resource>BuildConfig</resource>
+    <resource>Config</resource>
+    <resource>DataSource</resource>
+    <resource>FiltersDefaultConfig</resource>
+    <resource>PluginConfigDefaultConfig</resource>
+    <resource>UrlMappings</resource>
+  </resources>
+  <dependencies>
+    <plugin name='core' version='* &gt; 1.0' />
+  </dependencies>
+  <behavior />
+</plugin>
