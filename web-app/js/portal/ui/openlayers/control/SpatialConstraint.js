@@ -177,18 +177,21 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             this.addAntimeridian();
         }
 
-        // Reset to previous geom after a short time
-        var that = this;
+        setTimeout(
+            this._resetSpatialExtentError,
+            this.SPATIAL_EXTENT_ERROR_TIMEOUT,
+            this
+        );
+    },
 
-        setTimeout(function() {
-            if (that.oldGeometry) {
-                that.layer.style = OpenLayers.Feature.Vector.style['default'];
-                that.redraw(that.oldGeometry);
-            }
-            else {
-                that.map.events.triggerEvent('spatialconstraintcleared');
-            }
-        }, this.SPATIAL_EXTENT_ERROR_TIMEOUT);
+    _resetSpatialExtentError: function(that) {
+        if (that.oldGeometry) {
+            that.layer.style = OpenLayers.Feature.Vector.style['default'];
+            that.redraw(that.oldGeometry);
+        }
+        else {
+            that.map.events.triggerEvent('spatialconstraintcleared');
+        }
     },
 
     addAntimeridian: function() {

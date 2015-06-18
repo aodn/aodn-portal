@@ -323,6 +323,85 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         });
     });
 
+    describe('_resetSpatialExtentError', function() {
+
+        describe ('restoring previous geometry after timeout', function() {
+
+            beforeEach(function() {
+                spyOn(spatialConstraint, 'redraw');
+                spatialConstraint.oldGeometry = {};
+                spatialConstraint.layer = {};
+
+                spatialConstraint._resetSpatialExtentError(spatialConstraint);
+            });
+
+            it('layer style to be reset', function() {
+                expect(spatialConstraint.layer.style).toBe( OpenLayers.Feature.Vector.style['default']);
+            });
+
+            it('redraw is called', function() {
+                expect(spatialConstraint.redraw).toHaveBeenCalled();
+            });
+        });
+
+        describe('no previous geometry to restore after timeout', function() {
+            beforeEach(function() {
+                spatialConstraint.map = { events: {
+                    triggerEvent: jasmine.createSpy('triggerEvent')
+                }};
+
+                spatialConstraint._resetSpatialExtentError(spatialConstraint);
+            });
+
+            it('triggers cleared event', function() {
+                expect(spatialConstraint.map.events.triggerEvent).toHaveBeenCalledWith('spatialconstraintcleared');
+            });
+        });
+    });
+
+    describe('_showSpatialExtentError', function() {
+
+        var testLayer = {};
+
+        beforeEach(function() {
+            spyOn(spatialConstraint, 'addAntimeridian');
+            spatialConstraint.layer = testLayer;
+            spatialConstraint.map = { events: {
+                triggerEvent: jasmine.createSpy('triggerEvent')
+            }};
+        });
+
+        describe('geometry is not large enough', function() {
+
+            beforeEach(function() {
+                spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(false);
+
+                spatialConstraint._showSpatialExtentError();
+            });
+
+            it ('adds antimeridian indicator', function() {
+                expect(spatialConstraint.addAntimeridian).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('geometry is large enough', function() {
+
+            beforeEach(function() {
+                spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(true);
+
+                spatialConstraint._showSpatialExtentError();
+            });
+
+            it('does not add antimeridian indicator', function() {
+                expect(spatialConstraint.addAntimeridian).toHaveBeenCalled();
+            });
+
+            it('sets the error style', function() {
+                expect(testLayer.style).toBe(spatialConstraint.errorStyle);
+            });
+        });
+    });
+
     describe('onSketchComplete', function() {
 
         var testEvent;
