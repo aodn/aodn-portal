@@ -125,7 +125,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(normalisedGeometry.getBounds().toString()).toEqual('-178,2,1,4');
         });
 
-        it("getNormalizedGeometry leaves alone Geometries with longitudes < 180 not crossing ante meridian ", function() {
+        it("getNormalizedGeometry leaves alone Geometries with longitudes < 180 not crossing antimeridian ", function() {
 
             var geometry = OpenLayers.Geometry.fromWKT('POLYGON((92.2 2, 178 4, 92.5 2))');
             var normalisedGeometry = spatialConstraint.getNormalizedGeometry(geometry);
@@ -133,7 +133,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(normalisedGeometry.getBounds().toString()).toEqual('92.2,2,178,4');
         });
 
-        it("getNormalizedGeometry fix Geometries with both longitudes > 180 not crossing ante meridian ", function() {
+        it("getNormalizedGeometry fix Geometries with both longitudes > 180 not crossing antimeridian ", function() {
 
             var geometry = OpenLayers.Geometry.fromWKT('POLYGON((292.2 2, 278 4, 292.5 2))');
             var normalisedGeometry = spatialConstraint.getNormalizedGeometry(geometry);
@@ -291,7 +291,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             };
         });
 
-        it('checks geometry and ante-merdian crossing', function() {
+        it('checks geometry and antimerdian crossing', function() {
             spyOn(feature.geometry, 'crossesDateLine').andReturn(false);
             spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(true);
 
@@ -301,7 +301,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(feature.geometry.crossesDateLine).toHaveBeenCalled();
         });
 
-        it('returns true if geometry is big enough and does not cross ante-meridian', function() {
+        it('returns true if geometry is big enough and does not cross antimeridian', function() {
             spyOn(feature.geometry, 'crossesDateLine').andReturn(false);
             spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(true);
 
@@ -317,7 +317,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(spatialConstraint._showSpatialExtentError).toHaveBeenCalled();
         });
 
-        it('returns false if crosses ante-meridian, shows error', function() {
+        it('returns false if crosses antimeridian, shows error', function() {
             spyOn(feature.geometry, 'crossesDateLine').andReturn(true);
             spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(false);
             spyOn(spatialConstraint, '_showSpatialExtentError');

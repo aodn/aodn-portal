@@ -188,7 +188,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         }, this.SPATIAL_EXTENT_ERROR_TIMEOUT);
     },
 
-    addAnteMeridian: function() {
+    addAntimeridian: function() {
         var meridianLine = new OpenLayers.Geometry.LineString([
             new OpenLayers.Geometry.Point(180, -90),
             new OpenLayers.Geometry.Point(180, 90)
@@ -210,7 +210,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         else {
             this.layer.style = this.errorStyle;
             if (this.isGeometryLargeEnough(geometry)) {
-                this.addAnteMeridian();
+                this.addAntimeridian();
             }
             return true; // Let the features to be added to the layer
         }
