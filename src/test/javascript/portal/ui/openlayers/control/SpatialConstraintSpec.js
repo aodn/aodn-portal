@@ -286,37 +286,37 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         beforeEach(function() {
             feature = {
                 geometry: {
-                    crossesDateLine: function() { return true; }
+                    crossesAntimeridian: function() { return true; }
                 }
             };
         });
 
         it('checks geometry and antimerdian crossing', function() {
-            spyOn(feature.geometry, 'crossesDateLine').andReturn(false);
+            spyOn(feature.geometry, 'crossesAntimeridian').andReturn(false);
             spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(true);
 
             spatialConstraint._checkSketch(feature);
 
             expect(spatialConstraint.isGeometryLargeEnough).toHaveBeenCalled();
-            expect(feature.geometry.crossesDateLine).toHaveBeenCalled();
+            expect(feature.geometry.crossesAntimeridian).toHaveBeenCalled();
         });
 
         it('returns true if geometry is big enough and does not cross antimeridian', function() {
-            spyOn(feature.geometry, 'crossesDateLine').andReturn(false);
+            spyOn(feature.geometry, 'crossesAntimeridian').andReturn(false);
             spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(true);
 
             expect(spatialConstraint._checkSketch(feature)).toEqual(true);
         });
 
         it('returns false if geometry is too small', function() {
-            spyOn(feature.geometry, 'crossesDateLine').andReturn(false);
+            spyOn(feature.geometry, 'crossesAntimeridian').andReturn(false);
             spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(false);
 
             expect(spatialConstraint._checkSketch(feature)).toEqual(false);
         });
 
         it('returns false if crosses antimeridian', function() {
-            spyOn(feature.geometry, 'crossesDateLine').andReturn(true);
+            spyOn(feature.geometry, 'crossesAntimeridian').andReturn(true);
             spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(false);
 
             expect(spatialConstraint._checkSketch(feature)).toEqual(false);
@@ -372,7 +372,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             }};
 
             testGeometry = {
-                crossesDateLine: function() { return false }
+                crossesAntimeridian: function() { return false }
             };
 
             spatialConstraint._showSpatialExtentError(testGeometry);
@@ -389,7 +389,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         describe('geometry crosses date line', function() {
 
             beforeEach(function() {
-                testGeometry.crossesDateLine = function() { return true };
+                testGeometry.crossesAntimeridian = function() { return true };
 
                 spatialConstraint._showSpatialExtentError(testGeometry);
             });

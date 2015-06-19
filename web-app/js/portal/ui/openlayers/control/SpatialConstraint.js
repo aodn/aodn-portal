@@ -167,13 +167,13 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     _checkSketch: function(feature) {
         var geometry = feature.geometry;
 
-        return this.isGeometryLargeEnough(geometry) && !geometry.crossesDateLine();
+        return this.isGeometryLargeEnough(geometry) && !geometry.crossesAntimeridian();
     },
 
     _showSpatialExtentError: function(geometry) {
         this.layer.style = this.errorStyle;
 
-        if (geometry.crossesDateLine()) {
+        if (geometry.crossesAntimeridian()) {
             this.addAntimeridian();
         }
 
