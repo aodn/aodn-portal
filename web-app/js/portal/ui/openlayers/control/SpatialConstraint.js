@@ -173,7 +173,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     _showSpatialExtentError: function(geometry) {
         this.layer.style = this.errorStyle;
 
-        if (this.isGeometryLargeEnough(geometry)) {
+        if (geometry.crossesDateLine()) {
             this.addAntimeridian();
         }
 

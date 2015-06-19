@@ -362,6 +362,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
     describe('_showSpatialExtentError', function() {
 
         var testLayer = {};
+        var testGeometry;
 
         beforeEach(function() {
             spyOn(spatialConstraint, 'addAntimeridian');
@@ -369,35 +370,32 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             spatialConstraint.map = { events: {
                 triggerEvent: jasmine.createSpy('triggerEvent')
             }};
+
+            testGeometry = {
+                crossesDateLine: function() { return false }
+            };
+
+            spatialConstraint._showSpatialExtentError(testGeometry);
         });
 
-        describe('geometry is not large enough', function() {
+        it('does not add antimeridian indicator', function() {
+            expect(spatialConstraint.addAntimeridian).not.toHaveBeenCalled();
+        });
+
+        it('sets the error style', function() {
+            expect(testLayer.style).toBe(spatialConstraint.errorStyle);
+        });
+
+        describe('geometry crosses date line', function() {
 
             beforeEach(function() {
-                spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(false);
+                testGeometry.crossesDateLine = function() { return true };
 
-                spatialConstraint._showSpatialExtentError();
+                spatialConstraint._showSpatialExtentError(testGeometry);
             });
 
             it ('adds antimeridian indicator', function() {
-                expect(spatialConstraint.addAntimeridian).not.toHaveBeenCalled();
-            });
-        });
-
-        describe('geometry is large enough', function() {
-
-            beforeEach(function() {
-                spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(true);
-
-                spatialConstraint._showSpatialExtentError();
-            });
-
-            it('does not add antimeridian indicator', function() {
                 expect(spatialConstraint.addAntimeridian).toHaveBeenCalled();
-            });
-
-            it('sets the error style', function() {
-                expect(testLayer.style).toBe(spatialConstraint.errorStyle);
             });
         });
     });
