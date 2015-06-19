@@ -7,9 +7,17 @@
 describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
     var spatialConstraint;
+    var map;
 
     beforeEach(function() {
-        spatialConstraint = new Portal.ui.openlayers.control.SpatialConstraint();
+
+        map = new OpenLayers.SpatialConstraintMap();
+
+        spatialConstraint = new Portal.ui.openlayers.control.SpatialConstraint({
+            validator: new Portal.filter.validation.SpatialConstraintValidator({
+                map: map
+            })
+        });
     });
 
     describe('constructor', function() {
@@ -22,7 +30,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
                 expect(spatialConstraint.handler).toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
                 expect(spatialConstraint.handlerOptions.sides).toBe(4);
                 expect(spatialConstraint.handlerOptions.irregular).toBe(true);
-           });
+            });
         });
 
         it('override handler', function() {
@@ -44,14 +52,14 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
     describe('user', function() {
 
-        it("fires 'spatialconstraintadded' on redraw", function() {
+        it("fires 'spatialconstraintadded' on setGeometry", function() {
             var eventSpy = jasmine.createSpy('spatialconstraintadded');
             spatialConstraint.events.on({
                 'spatialconstraintadded': eventSpy
             });
 
             var geometry = constructGeometry();
-            var feature = spatialConstraint.redraw(geometry);
+            spatialConstraint.setGeometry(geometry);
 
             expect(eventSpy).toHaveBeenCalledWith(geometry);
         });
@@ -61,7 +69,6 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             spyOn(spatialConstraint, 'redraw');
 
             var geometry = constructGeometry();
-            var map = new OpenLayers.SpatialConstraintMap();
             map.spatialConstraintControl = spatialConstraint;
             map.events.triggerEvent('spatialconstraintusermodded', geometry);
 
@@ -72,7 +79,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
     describe('layer', function() {
 
         beforeEach(function() {
-            spatialConstraint._getPercentOfViewportArea = function() {return 50};
+            spatialConstraint._checkSketch = function() { return true };
         });
 
         it('intialises layer', function() {
@@ -80,7 +87,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(spatialConstraint.layer.displayInLayerSwitcher).toBeFalsy();
         });
 
-        it("fires 'spatialconstraintadded' on layer sketchcomplete where viewport area is above minimum", function() {
+        it("fires 'spatialconstraintadded' on layer sketchcomplete where geometry is valid", function() {
             var eventSpy = jasmine.createSpy('spatialconstraintadded');
             spatialConstraint.events.on({
                 'spatialconstraintadded': eventSpy
@@ -93,7 +100,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(eventSpy).toHaveBeenCalled();
         });
 
-        it('clears existing constraint on layer sketchcomplete where viewport area is above minimum', function() {
+        it('clears existing constraint on layer sketchcomplete where geometry is valid', function() {
             spyOn(spatialConstraint, 'clear');
 
             var geometry = constructGeometry();
@@ -102,8 +109,8 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(spatialConstraint.clear).toHaveBeenCalled();
         });
 
-        it('does not fire spatialconstraintadded where viewport area is below minimum', function() {
-            spatialConstraint._getPercentOfViewportArea = function() {return 0.0001};
+        it('does not fire spatialconstraintadded where geometry is invalid', function() {
+            spatialConstraint._checkSketch = function() { return false };
             spatialConstraint.map = { events: { triggerEvent: noOp } };
             var eventSpy = jasmine.createSpy('spatialconstraintadded');
             spatialConstraint.events.on({
@@ -125,8 +132,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(normalisedGeometry.getBounds().toString()).toEqual('-178,2,1,4');
         });
 
-
-        it("getNormalizedGeometry leaves alone Geometries with longitudes < 180 not crossing ante meridian ", function() {
+        it("getNormalizedGeometry leaves alone Geometries with longitudes < 180 not crossing antimeridian ", function() {
 
             var geometry = OpenLayers.Geometry.fromWKT('POLYGON((92.2 2, 178 4, 92.5 2))');
             var normalisedGeometry = spatialConstraint.getNormalizedGeometry(geometry);
@@ -134,7 +140,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(normalisedGeometry.getBounds().toString()).toEqual('92.2,2,178,4');
         });
 
-        it("getNormalizedGeometry fix Geometries with both longitudes > 180 not crossing ante meridian ", function() {
+        it("getNormalizedGeometry fix Geometries with both longitudes > 180 not crossing antimeridian ", function() {
 
             var geometry = OpenLayers.Geometry.fromWKT('POLYGON((292.2 2, 278 4, 292.5 2))');
             var normalisedGeometry = spatialConstraint.getNormalizedGeometry(geometry);
@@ -263,86 +269,185 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         });
     });
 
-    describe('getPercentOfViewportArea', function() {
-        beforeEach(function() {
-            spatialConstraint._getMapArea = function() { return 113 };
-        });
 
-        it('returns the correct percentage of viewport area', function() {
-            var viewportArea = 8;
-            var expectedSolution = 7.079646017699115;
-
-            expect(spatialConstraint._getPercentOfViewportArea(viewportArea)).toBe(expectedSolution);
-        });
-
-        it('returns a number', function() {
-            var viewportArea = 8;
-
-            expect(typeof spatialConstraint._getPercentOfViewportArea(viewportArea)).toEqual("number");
-        });
-    });
 
     describe('_checkSketch', function() {
-        var feature;
+
+        var geometry;
+
         beforeEach(function() {
-            feature = {
-                geometry: {
-                    crossesDateLine: function() { return true; }
-                }
+            geometry = {
+                    crossesAntimeridian: noOp
             };
         });
 
-        it('checks geometry and ante-merdian crossing', function() {
-            spyOn(feature.geometry, 'crossesDateLine').andReturn(false);
-            spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(true);
+        it('checks geometry and antimerdian crossing', function() {
+            spyOn(geometry, 'crossesAntimeridian').andReturn(false);
+            spyOn(spatialConstraint.validator, '_isLargeEnough').andReturn(true);
 
-            spatialConstraint._checkSketch(feature);
+            spatialConstraint._checkSketch(geometry);
 
-            expect(spatialConstraint.isGeometryLargeEnough).toHaveBeenCalled();
-            expect(feature.geometry.crossesDateLine).toHaveBeenCalled();
-        })
-
-        it('returns true if geometry is big enough and does not cross ante-meridian', function() {
-            spyOn(feature.geometry, 'crossesDateLine').andReturn(false);
-            spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(true);
-
-            expect(spatialConstraint._checkSketch(feature)).toEqual(true);
+            expect(spatialConstraint.validator._isLargeEnough).toHaveBeenCalled();
+            expect(geometry.crossesAntimeridian).toHaveBeenCalled();
         });
 
-        it('returns false if geometry is too small, shows error', function() {
-            spyOn(feature.geometry, 'crossesDateLine').andReturn(false);
-            spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(false);
-            spyOn(spatialConstraint, '_showAnteMeridianError');
+        it('returns true if geometry is big enough and does not cross antimeridian', function() {
+            spyOn(geometry, 'crossesAntimeridian').andReturn(false);
+            spyOn(spatialConstraint.validator, '_isLargeEnough').andReturn(true);
 
-            expect(spatialConstraint._checkSketch(feature)).toEqual(false);
-            expect(spatialConstraint._showAnteMeridianError).toHaveBeenCalled();
+            expect(spatialConstraint._checkSketch(geometry)).toEqual(true);
         });
 
-        it('returns false if crosses ante-meridian, shows error', function() {
-            spyOn(feature.geometry, 'crossesDateLine').andReturn(true);
-            spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(false);
-            spyOn(spatialConstraint, '_showAnteMeridianError');
+        it('returns false if geometry is too small', function() {
+            spyOn(geometry, 'crossesAntimeridian').andReturn(false);
+            spyOn(spatialConstraint.validator, '_isLargeEnough').andReturn(false);
 
-            expect(spatialConstraint._checkSketch(feature)).toEqual(false);
-            expect(spatialConstraint._showAnteMeridianError).toHaveBeenCalled();
+            expect(spatialConstraint._checkSketch(geometry)).toEqual(false);
+        });
+
+        it('returns false if crosses antimeridian', function() {
+            spyOn(geometry, 'crossesAntimeridian').andReturn(true);
+            spyOn(spatialConstraint.validator, '_isLargeEnough').andReturn(false);
+
+            expect(spatialConstraint._checkSketch(geometry)).toEqual(false);
+        });
+    });
+
+    describe('_resetSpatialExtentError', function() {
+
+        describe ('restoring previous geometry after timeout', function() {
+
+            beforeEach(function() {
+                spyOn(spatialConstraint, 'redraw');
+                spatialConstraint.oldGeometry = {};
+                spatialConstraint.layer = {};
+
+                spatialConstraint._resetSpatialExtentError(spatialConstraint);
+            });
+
+            it('layer style to be reset', function() {
+                expect(spatialConstraint.layer.style).toBe( OpenLayers.Feature.Vector.style['default']);
+            });
+
+            it('redraw is called', function() {
+                expect(spatialConstraint.redraw).toHaveBeenCalled();
+            });
+        });
+
+        describe('no previous geometry to restore after timeout', function() {
+            beforeEach(function() {
+                spatialConstraint.map = { events: {
+                    triggerEvent: jasmine.createSpy('triggerEvent')
+                }};
+
+                spatialConstraint._resetSpatialExtentError(spatialConstraint);
+            });
+
+            it('triggers cleared event', function() {
+                expect(spatialConstraint.map.events.triggerEvent).toHaveBeenCalledWith('spatialconstraintcleared');
+            });
+        });
+    });
+
+    describe('_showSpatialExtentError', function() {
+
+        var testLayer = {};
+        var testGeometry;
+
+        beforeEach(function() {
+            spyOn(spatialConstraint, 'addAntimeridian');
+            spatialConstraint.layer = testLayer;
+            spatialConstraint.map = { events: {
+                triggerEvent: jasmine.createSpy('triggerEvent')
+            }};
+
+            testGeometry = {
+                crossesAntimeridian: function() { return false }
+            };
+
+            spatialConstraint._showSpatialExtentError(testGeometry);
+        });
+
+        it('does not add antimeridian indicator', function() {
+            expect(spatialConstraint.addAntimeridian).not.toHaveBeenCalled();
+        });
+
+        it('sets the error style', function() {
+            expect(testLayer.style).toBe(spatialConstraint.errorStyle);
+        });
+
+        describe('geometry crosses date line', function() {
+
+            beforeEach(function() {
+                testGeometry.crossesAntimeridian = function() { return true };
+
+                spatialConstraint._showSpatialExtentError(testGeometry);
+            });
+
+            it ('adds antimeridian indicator', function() {
+                expect(spatialConstraint.addAntimeridian).toHaveBeenCalled();
+            });
         });
     });
 
     describe('onSketchComplete', function() {
-        it('fires off an analytics report', function() {
-            var testEvent = {
-                feature: {
-                    geometry: constructGeometry()
-                }
-            };
-            spatialConstraint._getPercentOfViewportArea = function() {
-                return 0.02;
-            };
+
+        var testEvent;
+        var testGeometry;
+        var normalisedGeometry;
+        var returnValue;
+
+        beforeEach(function() {
+            testGeometry = constructGeometry();
+            normalisedGeometry = spatialConstraint.getNormalizedGeometry(testGeometry);
+            testEvent = { feature: { geometry: testGeometry } };
 
             spyOn(window, 'trackUsage');
-            spatialConstraint._onSketchComplete(testEvent);
-            expect(window.trackUsage).toHaveBeenCalledWith('Filters', 'Spatial Constraint', 'sketched', undefined);
+        });
 
-        })
+        describe('with valid geometry', function() {
+
+            beforeEach(function() {
+                spyOn(spatialConstraint, '_checkSketch').andReturn(true);
+                spyOn(spatialConstraint, 'getNormalizedGeometry').andReturn(normalisedGeometry);
+                spyOn(spatialConstraint, 'setGeometry');
+
+                returnValue = spatialConstraint._onSketchComplete(testEvent);
+            });
+
+            it('normalises and sets the geometry', function() {
+                expect(spatialConstraint.setGeometry).toHaveBeenCalledWith(normalisedGeometry);
+            });
+
+            it('fires off an analytics report', function() {
+                expect(window.trackUsage).toHaveBeenCalledWith('Filters', 'Spatial Constraint', 'sketched', undefined);
+            });
+
+            it('returns falsey', function() {
+                expect(returnValue).not.toBeTruthy();
+            });
+        });
+
+        describe('with invalid geometry', function() {
+
+            beforeEach(function() {
+                spyOn(spatialConstraint, '_checkSketch').andReturn(false);
+                spyOn(spatialConstraint, '_showSpatialExtentError');
+
+                returnVal = spatialConstraint._onSketchComplete(testEvent);
+            });
+
+            it('shows the error indicator', function() {
+                expect(spatialConstraint._showSpatialExtentError).toHaveBeenCalledWith(testGeometry);
+            });
+
+            it('does not track a usage event', function() {
+                expect(window.trackUsage).not.toHaveBeenCalled();
+            });
+
+            it('returns true', function() {
+                expect(returnVal).toBe(true);
+            });
+        });
     });
 });

@@ -13,8 +13,8 @@ Portal.ui.openlayers.SpatialConstraintType = {
 
 Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.DrawFeature, {
 
-    ANTE_MERIDIAN_ERROR_TIMEOUT: 1200,
-    MIN_AREA_PERCENT: 0.01,
+    SPATIAL_EXTENT_ERROR_TIMEOUT: 1200,
+
     errorStyle: {
         fillOpacity: 0.3,
         strokeOpacity: 0.5,
@@ -94,6 +94,10 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     redraw: function(geometry) {
         this.clear();
         this.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
+    },
+
+    setGeometry: function(geometry) {
+        this.oldGeometry = geometry;
         this.events.triggerEvent('spatialconstraintadded', geometry);
     },
 
@@ -127,22 +131,22 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         });
     },
 
-    _layerAdded: function(addLayerEvent) {
+    _layerAdded: function() {
         this._setDrawingLayersToTop();
     },
 
-    _layerChanged: function(layer, property) {
+    _layerChanged: function() {
         this._setDrawingLayersToTop();
     },
 
-    _layerRemoved: function(layer) {
+    _layerRemoved: function() {
         this._setDrawingLayersToTop();
     },
 
     _setDrawingLayersToTop: function() {
         // Set drawing layer and polygon layer to be on top of any layer in
         // terms of Z index
-        maxZIndexForOverlay = OpenLayers.Map.prototype.Z_INDEX_BASE['Feature'] - 1;
+        var maxZIndexForOverlay = OpenLayers.Map.prototype.Z_INDEX_BASE['Feature'] - 1;
 
         if (this.handler && this.handler.layer) {
             this.handler.layer.setZIndex(maxZIndexForOverlay - 1);
@@ -155,45 +159,40 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         return this.layer.features[0];
     },
 
-    isGeometryLargeEnough: function(geometry) {
-        var area = geometry.getArea();
-        return this._getPercentOfViewportArea(area) > this.MIN_AREA_PERCENT;
+    _checkSketch: function(geometry) {
+        return this.validator.isValid(geometry);
     },
 
-    _checkSketch: function(feature) {
-        var geometry = feature.geometry;
+    _showSpatialExtentError: function(geometry) {
+        this.layer.style = this.errorStyle;
 
-        if (this.isGeometryLargeEnough(geometry) && !geometry.crossesDateLine()) {
-            return true;
+        if (geometry.crossesAntimeridian()) {
+            this.addAntimeridian();
+        }
+
+        setTimeout(
+            this._resetSpatialExtentError,
+            this.SPATIAL_EXTENT_ERROR_TIMEOUT,
+            this
+        );
+    },
+
+    _resetSpatialExtentError: function(that) {
+        if (that.oldGeometry) {
+            that.layer.style = OpenLayers.Feature.Vector.style['default'];
+            that.redraw(that.oldGeometry);
         }
         else {
-            this._showAnteMeridianError();
-            return false;
+            that.map.events.triggerEvent('spatialconstraintcleared');
         }
     },
 
-    _showAnteMeridianError: function() {
-        // Reset to previous geom after a short time
-        var that = this;
-
-        setTimeout(function() {
-            if (that.oldGeometry) {
-                that.events.triggerEvent('spatialconstraintadded', that.oldGeometry);
-                that.layer.style = OpenLayers.Feature.Vector.style['default'];
-                that.redraw(that.oldGeometry);
-            }
-            else {
-                that.map.events.triggerEvent('spatialconstraintcleared');
-            }
-        }, this.ANTE_MERIDIAN_ERROR_TIMEOUT);
-    },
-
-    addAnteMeridian: function() {
+    addAntimeridian: function() {
         var meridianLine = new OpenLayers.Geometry.LineString([
             new OpenLayers.Geometry.Point(180, -90),
             new OpenLayers.Geometry.Point(180, 90)
         ]);
-        var meridianLineFeature = new OpenLayers.Feature.Vector(meridianLine, null, this.errorStyle );
+        var meridianLineFeature = new OpenLayers.Feature.Vector(meridianLine, null, this.errorStyle);
         this.layer.addFeatures([meridianLineFeature]);
     },
 
@@ -201,39 +200,30 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         this.clear();
         var geometry = event.feature.geometry;
 
-        if (this._checkSketch(event.feature)){
+        if (this._checkSketch(geometry)) {
             var normalisedGeometry = this.getNormalizedGeometry(geometry);
-            this.events.triggerEvent('spatialconstraintadded', normalisedGeometry);
-            this.oldGeometry = normalisedGeometry;
+            this.setGeometry(normalisedGeometry);
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingSpatialConstraintSketched'));
         }
         else {
-            this.layer.style = this.errorStyle;
-            if (this.isGeometryLargeEnough(geometry)) {
-                this.addAnteMeridian();
-            }
+            this._showSpatialExtentError(geometry);
+
             return true; // Let the features to be added to the layer
         }
     },
 
     getNormalizedGeometry: function(geometry) {
         return new OpenLayers.Geometry.fromWKT(geometry.toWkt());
-    },
-
-    _getPercentOfViewportArea: function(spatialExtentArea) {
-        var mapArea = this._getMapArea();
-        return (spatialExtentArea / parseFloat(mapArea)) * 100;
-    },
-
-    _getMapArea: function() {
-        return this.map.getExtent().toGeometry().getArea();
     }
 });
 
 Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map, handler) {
     map.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
         handler: handler,
-        'displayClass': 'none'
+        'displayClass': 'none',
+        validator: new Portal.filter.validation.SpatialConstraintValidator({
+            map: map
+        })
     });
 
     map.addControl(map.spatialConstraintControl);

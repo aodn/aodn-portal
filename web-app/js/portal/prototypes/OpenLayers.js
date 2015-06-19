@@ -254,7 +254,7 @@ OpenLayers.Geometry.prototype.toWkt = function() {
     return wktFormatter.write({ geometry: this });
 };
 
-OpenLayers.Geometry.prototype.crossesDateLine = function() {
+OpenLayers.Geometry.prototype.crossesAntimeridian = function() {
     var bounds = this.getBounds();
     return (normaliseLongitude(bounds.left) > normaliseLongitude(bounds.right));
 };
