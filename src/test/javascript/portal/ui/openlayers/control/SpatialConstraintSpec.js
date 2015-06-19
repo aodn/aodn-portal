@@ -7,9 +7,17 @@
 describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
     var spatialConstraint;
+    var map;
 
     beforeEach(function() {
-        spatialConstraint = new Portal.ui.openlayers.control.SpatialConstraint();
+
+        map = new OpenLayers.SpatialConstraintMap();
+
+        spatialConstraint = new Portal.ui.openlayers.control.SpatialConstraint({
+            validator: new Portal.filter.validation.SpatialConstraintValidator({
+                map: map
+            })
+        });
     });
 
     describe('constructor', function() {
@@ -61,7 +69,6 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             spyOn(spatialConstraint, 'redraw');
 
             var geometry = constructGeometry();
-            var map = new OpenLayers.SpatialConstraintMap();
             map.spatialConstraintControl = spatialConstraint;
             map.events.triggerEvent('spatialconstraintusermodded', geometry);
 
@@ -72,7 +79,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
     describe('layer', function() {
 
         beforeEach(function() {
-            spatialConstraint._getPercentOfViewportArea = function() {return 50};
+            spatialConstraint._checkSketch = function() { return true };
         });
 
         it('intialises layer', function() {
@@ -80,7 +87,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(spatialConstraint.layer.displayInLayerSwitcher).toBeFalsy();
         });
 
-        it("fires 'spatialconstraintadded' on layer sketchcomplete where viewport area is above minimum", function() {
+        it("fires 'spatialconstraintadded' on layer sketchcomplete where geometry is valid", function() {
             var eventSpy = jasmine.createSpy('spatialconstraintadded');
             spatialConstraint.events.on({
                 'spatialconstraintadded': eventSpy
@@ -93,7 +100,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(eventSpy).toHaveBeenCalled();
         });
 
-        it('clears existing constraint on layer sketchcomplete where viewport area is above minimum', function() {
+        it('clears existing constraint on layer sketchcomplete where geometry is valid', function() {
             spyOn(spatialConstraint, 'clear');
 
             var geometry = constructGeometry();
@@ -102,8 +109,8 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(spatialConstraint.clear).toHaveBeenCalled();
         });
 
-        it('does not fire spatialconstraintadded where viewport area is below minimum', function() {
-            spatialConstraint._getPercentOfViewportArea = function() {return 0.0001};
+        it('does not fire spatialconstraintadded where geometry is invalid', function() {
+            spatialConstraint._checkSketch = function() { return false };
             spatialConstraint.map = { events: { triggerEvent: noOp } };
             var eventSpy = jasmine.createSpy('spatialconstraintadded');
             spatialConstraint.events.on({
@@ -262,64 +269,47 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         });
     });
 
-    describe('getPercentOfViewportArea', function() {
-        beforeEach(function() {
-            spatialConstraint._getMapArea = function() { return 113 };
-        });
 
-        it('returns the correct percentage of viewport area', function() {
-            var viewportArea = 8;
-            var expectedSolution = 7.079646017699115;
-
-            expect(spatialConstraint._getPercentOfViewportArea(viewportArea)).toBe(expectedSolution);
-        });
-
-        it('returns a number', function() {
-            var viewportArea = 8;
-
-            expect(typeof spatialConstraint._getPercentOfViewportArea(viewportArea)).toEqual("number");
-        });
-    });
 
     describe('_checkSketch', function() {
-        var feature;
+
+        var geometry;
+
         beforeEach(function() {
-            feature = {
-                geometry: {
-                    crossesAntimeridian: function() { return true; }
-                }
+            geometry = {
+                    crossesAntimeridian: noOp
             };
         });
 
         it('checks geometry and antimerdian crossing', function() {
-            spyOn(feature.geometry, 'crossesAntimeridian').andReturn(false);
-            spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(true);
+            spyOn(geometry, 'crossesAntimeridian').andReturn(false);
+            spyOn(spatialConstraint.validator, '_isLargeEnough').andReturn(true);
 
-            spatialConstraint._checkSketch(feature);
+            spatialConstraint._checkSketch(geometry);
 
-            expect(spatialConstraint.isGeometryLargeEnough).toHaveBeenCalled();
-            expect(feature.geometry.crossesAntimeridian).toHaveBeenCalled();
+            expect(spatialConstraint.validator._isLargeEnough).toHaveBeenCalled();
+            expect(geometry.crossesAntimeridian).toHaveBeenCalled();
         });
 
         it('returns true if geometry is big enough and does not cross antimeridian', function() {
-            spyOn(feature.geometry, 'crossesAntimeridian').andReturn(false);
-            spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(true);
+            spyOn(geometry, 'crossesAntimeridian').andReturn(false);
+            spyOn(spatialConstraint.validator, '_isLargeEnough').andReturn(true);
 
-            expect(spatialConstraint._checkSketch(feature)).toEqual(true);
+            expect(spatialConstraint._checkSketch(geometry)).toEqual(true);
         });
 
         it('returns false if geometry is too small', function() {
-            spyOn(feature.geometry, 'crossesAntimeridian').andReturn(false);
-            spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(false);
+            spyOn(geometry, 'crossesAntimeridian').andReturn(false);
+            spyOn(spatialConstraint.validator, '_isLargeEnough').andReturn(false);
 
-            expect(spatialConstraint._checkSketch(feature)).toEqual(false);
+            expect(spatialConstraint._checkSketch(geometry)).toEqual(false);
         });
 
         it('returns false if crosses antimeridian', function() {
-            spyOn(feature.geometry, 'crossesAntimeridian').andReturn(true);
-            spyOn(spatialConstraint, 'isGeometryLargeEnough').andReturn(false);
+            spyOn(geometry, 'crossesAntimeridian').andReturn(true);
+            spyOn(spatialConstraint.validator, '_isLargeEnough').andReturn(false);
 
-            expect(spatialConstraint._checkSketch(feature)).toEqual(false);
+            expect(spatialConstraint._checkSketch(geometry)).toEqual(false);
         });
     });
 

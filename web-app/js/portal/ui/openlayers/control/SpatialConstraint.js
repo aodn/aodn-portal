@@ -14,7 +14,7 @@ Portal.ui.openlayers.SpatialConstraintType = {
 Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.DrawFeature, {
 
     SPATIAL_EXTENT_ERROR_TIMEOUT: 1200,
-    MIN_AREA_PERCENT: 0.01,
+
     errorStyle: {
         fillOpacity: 0.3,
         strokeOpacity: 0.5,
@@ -159,15 +159,8 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         return this.layer.features[0];
     },
 
-    isGeometryLargeEnough: function(geometry) {
-        var area = geometry.getArea();
-        return this._getPercentOfViewportArea(area) > this.MIN_AREA_PERCENT;
-    },
-
-    _checkSketch: function(feature) {
-        var geometry = feature.geometry;
-
-        return this.isGeometryLargeEnough(geometry) && !geometry.crossesAntimeridian();
+    _checkSketch: function(geometry) {
+        return this.validator.isValid(geometry);
     },
 
     _showSpatialExtentError: function(geometry) {
@@ -207,7 +200,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         this.clear();
         var geometry = event.feature.geometry;
 
-        if (this._checkSketch(event.feature)) {
+        if (this._checkSketch(geometry)) {
             var normalisedGeometry = this.getNormalizedGeometry(geometry);
             this.setGeometry(normalisedGeometry);
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingSpatialConstraintSketched'));
@@ -221,22 +214,16 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     getNormalizedGeometry: function(geometry) {
         return new OpenLayers.Geometry.fromWKT(geometry.toWkt());
-    },
-
-    _getPercentOfViewportArea: function(spatialExtentArea) {
-        var mapArea = this._getMapArea();
-        return (spatialExtentArea / parseFloat(mapArea)) * 100;
-    },
-
-    _getMapArea: function() {
-        return this.map.getExtent().toGeometry().getArea();
     }
 });
 
 Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map, handler) {
     map.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
         handler: handler,
-        'displayClass': 'none'
+        'displayClass': 'none',
+        validator: new Portal.filter.validation.SpatialConstraintValidator({
+            map: map
+        })
     });
 
     map.addControl(map.spatialConstraintControl);
