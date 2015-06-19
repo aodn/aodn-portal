@@ -25,8 +25,8 @@ Portal.filter.ui.GeometryFilterService = Ext.extend(Portal.filter.ui.BaseFilterP
                 this._updateWithGeometry();
             }
         });
-        Portal.filter.ui.GeometryFilterService.superclass.constructor.call(this, config);
 
+        Portal.filter.ui.GeometryFilterService.superclass.constructor.call(this, config);
     },
 
     setLayerAndFilter: function(layer, filter) {
