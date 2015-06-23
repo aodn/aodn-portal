@@ -1,0 +1,30 @@
+<plugin name='build-test-data' version='1.1.2' grailsVersion='1.2.0 &gt; *'>
+  <author>Ted Naleid and Joe Hoover</author>
+  <authorEmail>contact@naleid.com</authorEmail>
+  <title>Build Test Data Plugin</title>
+  <description>\
+Enables the easy creation of test data by automatic inspection of constraints.  Any properties that are required have
+their constraints examined and a value is automatically provided for them.
+
+It is intended to be used in integration tests to enable the test creator to specify the values that are under test, but
+so that they can ignore the other values not under test and not need to worry about creating dummy data that is not
+pertinent.
+</description>
+  <documentation>http://bitbucket.org/tednaleid/grails-test-data/wiki/Home</documentation>
+  <type>BuildTestDataGrailsPlugin</type>
+  <resources>
+    <resource>TestDataConfigTemplate</resource>
+    <resource>grails.buildtestdata.BuildTestDataService</resource>
+  </resources>
+  <repositories>
+    <repository name='grailsCentral' url='http://plugins.grails.org' />
+    <repository name='http://repo.grails.org/grails/plugins' url='http://repo.grails.org/grails/plugins/' />
+    <repository name='http://repo.grails.org/grails/core' url='http://repo.grails.org/grails/core/' />
+    <repository name='grailsCore' url='http://svn.codehaus.org/grails/trunk/grails-plugins' />
+    <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
+  </repositories>
+  <dependencies />
+  <plugins />
+  <runtimePluginRequirements />
+  <behavior />
+</plugin>
