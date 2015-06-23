@@ -243,7 +243,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                         Ext.apply(layerDescriptor, configOverrides);
                         this.addUsingDescriptor(layerDescriptor);
                     },
-
                     this
                 );
 

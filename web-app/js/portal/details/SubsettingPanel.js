@@ -11,9 +11,6 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
 
     constructor : function(cfg) {
 
-        this.map = cfg.map;
-        this.mapPanel = cfg.mapPanel;
-
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: cfg.map,
             hideLabel: false
@@ -56,7 +53,6 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
         }, this);
     },
 
-
     updateSubsetPanelAccordionItem: function(layer) {
         if (layer) {
             if (!this._itemExistsForLayer(layer)) {
@@ -67,7 +63,7 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
     },
 
     _itemExistsForLayer: function(layer) {
-        return (this.subsetPanelAccordion.items.item(this._getItemIdForLayer(layer)) != undefined) ;
+        return (this.subsetPanelAccordion.items.item(this._getItemIdForLayer(layer)) != undefined);
     },
 
     _addItemForLayer: function(layer) {
