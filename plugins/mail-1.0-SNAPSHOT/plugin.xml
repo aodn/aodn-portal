@@ -1,0 +1,31 @@
+<plugin name='mail' version='1.0-SNAPSHOT' grailsVersion='1.3 &gt; *'>
+  <author>Grails Plugin Collective</author>
+  <authorEmail>grails.plugin.collective@gmail.com</authorEmail>
+  <title>Provides Mail support to a running Grails application</title>
+  <description>This plug-in provides a MailService class as well as configuring the necessary beans within
+the Spring ApplicationContext.
+
+It also adds a "sendMail" method to all controller classes. A typical example usage is:
+
+sendMail {
+    to "fred@g2one.com","ginger@g2one.com"
+    from "john@g2one.com"
+    cc "marge@g2one.com", "ed@g2one.com"
+    bcc "joe@g2one.com"
+    subject "Hello John"
+    text "this is some text"
+}
+
+</description>
+  <documentation>http://plugin.grails.org/mail</documentation>
+  <resources>
+    <resource>BuildConfig</resource>
+    <resource>Config</resource>
+    <resource>DataSource</resource>
+    <resource>UrlMappings</resource>
+    <resource>grails.plugin.mail.MailService</resource>
+    <resource>grails.plugin.mail.PlainTextMailTagLib</resource>
+  </resources>
+  <dependencies />
+  <behavior />
+</plugin>
