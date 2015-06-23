@@ -47,10 +47,6 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(eventName, openlayer) {
             this._removeFolderForLayer(openlayer);
         }, this);
-
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function(eventName, message) {
-            this._updateItemOrder(message);
-        }, this);
     },
 
     updateSubsetPanelAccordionItem: function(layer) {
@@ -85,32 +81,6 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
             this.subsetPanelAccordion.layout.setActiveItem(this._getItemIdForLayer(layer));
             this.subsetPanelAccordion.items.item(this._getItemIdForLayer(layer)).expand();
         }
-    },
-
-    _updateItemOrder: function(message) {
-
-        var movingItemIndex = this.subsetPanelAccordion.items.keys.indexOf(this._getItemIdForLayer(message.layer));
-        var newIndex = message.direction + movingItemIndex;
-
-        var itemToMove = this.subsetPanelAccordion.getComponent(movingItemIndex);
-        this.subsetPanelAccordion.remove(itemToMove, false);
-        this.subsetPanelAccordion.insert(newIndex, itemToMove);
-        this.subsetPanelAccordion.layout.setActiveItem(this._getItemIdForLayer(message.layer));
-
-        // Do the actual DOM maniplulation with jQuery. Extjs3.4 wont/cant
-        var siblings = jQuery('#' + itemToMove.id).parent().children();
-        var targetSibling = siblings.eq(newIndex);
-        var movingSibling = siblings.eq(movingItemIndex);
-
-        movingSibling.fadeOut(300, function() {
-            if (message.direction > 0) {
-                targetSibling.after(movingSibling);
-            }
-            else {
-                targetSibling.before(movingSibling);
-            }
-            movingSibling.fadeIn(50);
-        });
     },
 
     _removeFolderForLayer: function(layer) {

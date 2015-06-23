@@ -139,29 +139,6 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
             if (record.loaded) { loadedRecords.push(record); }
         });
         return loadedRecords;
-    },
-
-    changeItemOrder: function(record, direction) {
-        var mapping = this.buildMapping(record, direction);
-        if (mapping) {
-            this.data.reorder(mapping);
-
-            var message = {
-                "layer": record.layerRecord.data.layer,
-                "direction": direction
-            };
-            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, message);
-        }
-    },
-
-    buildMapping: function(record, direction) {
-        var currentIndex = this.indexOf(record);
-        var obj = new Object();
-
-        if (this.data.items[currentIndex + direction]) {
-            obj[currentIndex]  = currentIndex + direction;
-            return obj;
-        }
     }
 });
 
