@@ -26,7 +26,8 @@ Portal.ui.openlayers.LayerOptions = Ext.extend(Object, {
             isBaseLayer: layerDescriptor.isBaseLayer,
             buffer: 1,
             gutter: gutterSize,
-            projection: new OpenLayers.Projection(layerDescriptor.projection)
+            projection: new OpenLayers.Projection(layerDescriptor.projection),
+            displayInLayerSwitcher: (layerDescriptor.isBaseLayer === true)
         };
 
         Ext.apply(this, defaultOptions);
