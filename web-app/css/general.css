@@ -996,8 +996,14 @@ ul.x-tab-strip-top li:hover * {
     font-weight: normal;
 }
 
-.subsetPanelAccordion .x-tool {
+.x-tool-awesome {
+    cursor: pointer;
     margin-top: 3px;
+    float: right;
+    height: 15px;
+    margin-left: 2px;
+    overflow: hidden;
+    width: 15px;
 }
 
 .downloadPanelResultsTitle {

@@ -19,6 +19,8 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
             }
         });
 
+        this.createTools();
+
         var config = Ext.apply({
             id: cfg.layerItemId,
             cls: 'subsetPanelAccordionItem',
@@ -29,33 +31,56 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
                 autoHeight: true
             },
             items: [tabPanelForLayer],
+            toolTemplate: new Ext.Template('<div class="x-tool-awesome fa fa-fw {styles}" title="{title}"></div>'),
             tools: [
-                {
-                    id: 'up',
-                    qtip: 'move up',
-                    scope: this,
-                    handler: function(event, toolEl, panel) {
-                        this._changeLayerOrder(-1);
-                    }
-                },
-                {
-                    id: 'down',
-                    qtip: 'move down',
-                    scope: this,
-                    handler: function(event, toolEl, panel) {
-                        this._changeLayerOrder(1);
-                    }
-                },
-                {
-                    id: 'delete',
-                    handler: this._layerDelete,
-                    qtip: OpenLayers.i18n('removeDataCollection'),
-                    scope: this
-                }
+                this.errorToolItem,
+                this.spinnerToolItem,
+                this.deleteToolItem
             ]
         }, cfg);
 
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_END, function(e, openLayer) {
+            this.handleLayerLoadingEnd(openLayer);
+        }, this);
+
+
         Portal.details.SubsetItemsWrapperPanel.superclass.constructor.call(this, config);
+    },
+
+    handleLayerLoadingEnd: function(openLayer) {
+        if (openLayer == this.layer) {
+            this.tools.spinnerToolItem.hide();
+            if (openLayer.hasImgLoadErrors()) {
+                this.showError();
+            }
+        }
+    },
+
+    showError: function() {
+        this.tools.errorToolItem.show();
+
+    },
+
+    createTools: function() {
+
+        this.errorToolItem = {
+            id: 'errorToolItem',
+            styles: 'error fa-exclamation-triangle',
+            hidden: true,
+            title: OpenLayers.i18n('layerProblem')
+        };
+        this.spinnerToolItem = {
+            id: 'spinnerToolItem',
+            styles: 'fa-spin fa-spinner',
+            title: OpenLayers.i18n('loadingMessage')
+        };
+        this.deleteToolItem = {
+            id: 'deleteToolItem',
+            styles: 'fa-close',
+            handler: this._layerDelete,
+            title: OpenLayers.i18n('removeDataCollection'),
+            scope: this
+        };
     },
 
     _changeLayerOrder: function(direction) {

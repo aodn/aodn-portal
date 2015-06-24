@@ -25,7 +25,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // SubsettingPanel.js
     opacity: "Opacity",
-    wmsLayerProblem: "There is a problem with the availability of this collection",
+    layerProblem: "There is a problem with the availability of this collection",
     noActiveCollectionSelected: "No data collections selected",
     dataCollectionsTitle: "Subsetting data collection:",
     noCollectionSelectedHelp: "Please return and search for data collections.",
