@@ -88,8 +88,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'DateSelectionPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'GeoSelectionPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'MetadataExtent.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'ActiveLayersTreeNodeUI.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'ActiveLayersPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'FormUtil.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'StopWatch.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'TimeUtil.js')}"></script>
@@ -100,7 +98,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'PolygonDisplayPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SpatialConstraintDisplayPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SpatialSubsetControlsPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'TimeComboBox.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'Filter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'BooleanFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'DateFilter.js')}"></script>
@@ -141,7 +138,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'SpatialConstraintMap.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/layer', file: 'NcWMS.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MapPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MapOptionsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'VisualisePanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MainToolbar.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'NavigableCardLayout.js')}"></script>
