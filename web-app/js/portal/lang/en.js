@@ -160,7 +160,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
 
     autozoom: 'Auto zoom to data collection extent',
-    hideDetailsPanel: 'Hide data collection details',
+    showMapLayer: 'Shown on map',
     clearAllButtonLabel: '<span class="fa fa-fw fa-undo"></span> Clear and Reset',
     clearAllButtonTooltip: 'Remove all data collections from the Subset and Download pages, reset the map location and zoom level',
     removeButtonTooltip: 'Remove this data collection from the Subset and Download pages, the collection can be re-added from the search.',
@@ -224,7 +224,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     elevationLabel: 'Elevation:',
 
     removeDataCollection: 'Remove data collection',
-    zoomToDataCollection: 'Zoom to data collection',
+    zoomToDataCollection: '<span class=\"fa fa-fw fa-search\"></span> Zoom to collection',
 
     // PolygonTypeComboBox
     comboBoxTypeLabels: [

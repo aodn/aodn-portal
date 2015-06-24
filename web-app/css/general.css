@@ -240,6 +240,14 @@ hr {
     clear: both;
 }
 
+div.x-hyperlink {
+    margin: 5px 0;
+}
+
+div.x-hyperlink a{
+    color: inherit;
+}
+
 .x-btn {
     padding: 0 6px;
     background-color: #EEEEEE;

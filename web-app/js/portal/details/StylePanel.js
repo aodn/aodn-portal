@@ -59,6 +59,24 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             items: [this.opacitySlider]
         });
 
+        this.layerVisibilityCheckbox = new Ext.form.Checkbox({
+            value: true,
+            boxLabel: OpenLayers.i18n('showMapLayer'),
+            checked: true,
+            listeners: {
+                scope: this,
+                check: this._visibilityButtonChecked
+            }
+        });
+
+        this.zoomToLayer = new Ext.ux.Hyperlink({
+            text: OpenLayers.i18n('zoomToDataCollection'),
+            listeners: {
+                scope: this,
+                click: this._zoomToLayer
+            }
+        });
+
         this.ncwmsColourScalePanel = new Portal.details.NCWMSColourScalePanel();
         this.ncwmsColourScalePanel.on('colourScaleUpdated', this.refreshLegend, this);
 
@@ -68,8 +86,10 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         this.items = [
             this._makeSpacer(),
             this.opacitySliderContainer,
-            this.styleCombo,
+            this.layerVisibilityCheckbox,
+            this.zoomToLayer,
             this._makeSpacer(),
+            this.styleCombo,
             this.ncwmsColourScalePanel,
             {
                 xtype: "panel",
@@ -282,5 +302,14 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         }
 
         return undefined;
+    },
+
+    _visibilityButtonChecked: function(obj, val) {
+        var layer = this.map.getLayersBy("id", this.layer.id)[0];
+        layer.setVisibility(val);
+    },
+
+    _zoomToLayer: function() {
+        this.map.mapPanel.zoomToLayer(this.layer);
     }
 });
