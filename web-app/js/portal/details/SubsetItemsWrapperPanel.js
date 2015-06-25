@@ -58,7 +58,6 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
 
     showError: function() {
         this.tools.errorToolItem.show();
-
     },
 
     createTools: function() {
@@ -81,12 +80,6 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
             title: OpenLayers.i18n('removeDataCollection'),
             scope: this
         };
-    },
-
-    _changeLayerOrder: function(direction) {
-        var collectionId = this.layer.parentGeoNetworkRecord.data.uuid;
-        var record = Portal.data.ActiveGeoNetworkRecordStore.instance().getRecordFromUuid(collectionId);
-        Portal.data.ActiveGeoNetworkRecordStore.instance().changeItemOrder(record, direction);
     },
 
     _layerDelete: function(event, toolEl, panel) {

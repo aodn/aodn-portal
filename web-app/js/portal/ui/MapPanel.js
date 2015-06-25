@@ -50,20 +50,10 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this.onBaseLayerChanged(message);
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() {
-            this._maximiseMapActionsControl();
-        }, this);
-
         Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function () {
             this.reset();
             this._closeFeatureInfoPopup();
         }, this);
-    },
-
-    _maximiseMapActionsControl: function() {
-        if (this.mapOptions.mapActionsControl) {
-            this.mapOptions.mapActionsControl.maximizeControl();
-        }
     },
 
     onSelectedLayerChanged: function (openLayer) {
@@ -80,11 +70,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     afterRender: function () {
         Portal.ui.MapPanel.superclass.afterRender.call(this);
         this.mapOptions.afterRender(this);
-    },
-
-    autoZoomCheckboxHandler: function (box, checked) {
-        Portal.app.appConfig.portal.autoZoom = checked;
-        this.autoZoom = checked;
     },
 
     reset: function () {
@@ -134,10 +119,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.mapOptions = new Portal.ui.openlayers.MapOptions(this.appConfig, this);
         this.map = this.mapOptions.newMap();
         this.map.setDefaultSpatialConstraintType(this.defaultSpatialConstraintType);
-    },
-
-    getServer: function (item) {
-        return item.server;
     },
 
     _autoZoomToLayer: function(openLayer) {

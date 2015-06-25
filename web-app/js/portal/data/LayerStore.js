@@ -216,6 +216,33 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function(subject, openLayer) {
             this.removeAll();
         }, this);
+
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, this._selectedLayerChanged, this);
+    },
+
+    _selectedLayerChanged: function(eventName, openLayer) {
+
+        if (openLayer) {
+            var recordIndex = this.findBy(this._layerMatcher(openLayer));
+
+            if (recordIndex >= 0) {
+                this._moveLayerToTop(recordIndex);
+            }
+        }
+    },
+
+    _layerMatcher: function(openLayer) {
+
+        return function(record) {
+            return record.data.layer.id == openLayer.id;
+        };
+    },
+
+    _moveLayerToTop: function(recordIndex) {
+
+        var record = this.getAt(recordIndex);
+        this.remove(record);
+        this.add(record);
     },
 
     _initBaseLayers: function() {
@@ -243,7 +270,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                         Ext.apply(layerDescriptor, configOverrides);
                         this.addUsingDescriptor(layerDescriptor);
                     },
-
                     this
                 );
 

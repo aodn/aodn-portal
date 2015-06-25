@@ -11,9 +11,6 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
 
     constructor : function(cfg) {
 
-        this.map = cfg.map;
-        this.mapPanel = cfg.mapPanel;
-
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: cfg.map,
             hideLabel: false
@@ -50,12 +47,7 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(eventName, openlayer) {
             this._removeFolderForLayer(openlayer);
         }, this);
-
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function(eventName, message) {
-            this._updateItemOrder(message);
-        }, this);
     },
-
 
     updateSubsetPanelAccordionItem: function(layer) {
         if (layer) {
@@ -67,7 +59,7 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
     },
 
     _itemExistsForLayer: function(layer) {
-        return (this.subsetPanelAccordion.items.item(this._getItemIdForLayer(layer)) != undefined) ;
+        return (this.subsetPanelAccordion.items.item(this._getItemIdForLayer(layer)) != undefined);
     },
 
     _addItemForLayer: function(layer) {
@@ -75,12 +67,22 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
         var layerContainer = new Portal.details.SubsetItemsWrapperPanel({
             map: this.map,
             layer: layer,
-            layerItemId: this._getItemIdForLayer(layer)
+            layerItemId: this._getItemIdForLayer(layer),
+            listeners: {
+                expand: this._fireSelectedLayerChangedEvent(layer),
+                scope: this
+            }
         });
 
         this.subsetPanelAccordion.add(layerContainer);
         this.subsetPanelAccordion.doLayout();
         this.emptyTextPanel.hide();
+    },
+
+    _fireSelectedLayerChangedEvent: function(layer) {
+        return function() {
+            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
+        }
     },
 
     _activateItemForLayer: function(layer) {
@@ -89,32 +91,6 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
             this.subsetPanelAccordion.layout.setActiveItem(this._getItemIdForLayer(layer));
             this.subsetPanelAccordion.items.item(this._getItemIdForLayer(layer)).expand();
         }
-    },
-
-    _updateItemOrder: function(message) {
-
-        var movingItemIndex = this.subsetPanelAccordion.items.keys.indexOf(this._getItemIdForLayer(message.layer));
-        var newIndex = message.direction + movingItemIndex;
-
-        var itemToMove = this.subsetPanelAccordion.getComponent(movingItemIndex);
-        this.subsetPanelAccordion.remove(itemToMove, false);
-        this.subsetPanelAccordion.insert(newIndex, itemToMove);
-        this.subsetPanelAccordion.layout.setActiveItem(this._getItemIdForLayer(message.layer));
-
-        // Do the actual DOM maniplulation with jQuery. Extjs3.4 wont/cant
-        var siblings = jQuery('#' + itemToMove.id).parent().children();
-        var targetSibling = siblings.eq(newIndex);
-        var movingSibling = siblings.eq(movingItemIndex);
-
-        movingSibling.fadeOut(300, function() {
-            if (message.direction > 0) {
-                targetSibling.after(movingSibling);
-            }
-            else {
-                targetSibling.before(movingSibling);
-            }
-            movingSibling.fadeIn(50);
-        });
     },
 
     _removeFolderForLayer: function(layer) {

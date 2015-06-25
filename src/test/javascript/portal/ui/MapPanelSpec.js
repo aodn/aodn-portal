@@ -128,14 +128,6 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
 
-    describe('geonetwork record added event', function() {
-        it('maximises map actions control on active geonetork record added event', function() {
-            spyOn(mapPanel, '_maximiseMapActionsControl');
-            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
-            expect(mapPanel._maximiseMapActionsControl).toHaveBeenCalled();
-        });
-    });
-
     describe('removeAllLayers event', function() {
 
         it('should call _closeFeatureInfoPopup()', function() {

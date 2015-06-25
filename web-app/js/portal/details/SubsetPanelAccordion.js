@@ -17,18 +17,9 @@ Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
             autoScroll: true,
             layoutConfig: {
                 hideCollapseTool: true
-            },
-            listeners: {
-                beforeAdd: this.collapseAll
             }
         }, cfg);
 
         Portal.details.SubsetPanelAccordion.superclass.constructor.call(this, config);
-    },
-
-    collapseAll: function() {
-        this.items.each(function(f) {
-            f.collapse();
-        });
     }
 });

@@ -343,4 +343,45 @@ describe("Portal.data.LayerStore", function() {
             expect(layer.loading).toEqual(false);
         });
     });
+
+    describe('_selectedLayerChanged', function() {
+
+        beforeEach(function() {
+            layerStore._addLayer(layerWithId(1));
+            layerStore._addLayer(layerWithId(2));
+            layerStore._addLayer(layerWithId(3));
+        });
+
+        it('moves selected layer to the top', function() {
+
+            layerStore._selectedLayerChanged('', layerWithId(2));
+
+            expect(layerStore.data.length).toBe(3);
+            expect(layerIds(layerStore)).toEqual([1, 3, 2]); // The end of the array represents the top of the layer stack
+        });
+
+        it('handles layers that are not found', function() {
+
+            layerStore._selectedLayerChanged('', layerWithId(4));
+
+            expect(layerStore.data.length).toBe(3);
+            expect(layerIds(layerStore)).toEqual([1, 2, 3]);
+        });
+
+        function layerWithId(id) {
+            var layer = createOpenLayer('' + id);
+            layer.id = id;
+            return layer;
+        }
+
+        function layerIds(layerStore) {
+            var ids = [];
+
+            Ext.each(layerStore.data.items, function(record) {
+                ids.push(record.data.layer.id);
+            });
+
+            return ids;
+        }
+    });
 });
