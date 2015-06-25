@@ -161,12 +161,13 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     autozoom: 'Auto zoom to data collection extent',
     showMapLayer: 'Shown on map',
-    clearAllButtonLabel: '<span class="fa fa-fw fa-undo"></span> Clear and Reset',
     clearAllButtonTooltip: 'Remove all data collections from the Subset and Download pages, reset the map location and zoom level',
     removeButtonTooltip: 'Remove this data collection from the Subset and Download pages, the collection can be re-added from the search.',
 
-    // FilterGroupPanel.js
-    clearFilterButtonLabel: '<span class="fa fa-fw fa-undo"></span> Clear subset',
+    clearLinkLabel: '<span class=\"fa fa-undo\"></span> ${text}',
+    clearAndResetLabel: 'Clear and Reset',
+    resetLabel: 'Reset',
+    clearSubsetLabel: 'Clear Subset',
 
     // ComboFilterPanel.js
     clearFilterOption: 'All',
@@ -176,7 +177,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     fromDateEmptyText: 'Min',
     toDateLabel: 'To',
     toDateEmptyText: 'Max',
-    resetActionText: 'reset',
 
     // FacetFilterPanel
     addAnother: 'Add another filter - where possible',

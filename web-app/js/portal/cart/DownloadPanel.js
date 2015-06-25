@@ -134,23 +134,25 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     },
 
     initButtonPanel: function () {
+
+         this.resetLink = new Ext.ux.Hyperlink({
+            text: OpenLayers.i18n("clearLinkLabel", {text: OpenLayers.i18n('clearAndResetLabel')}) ,
+            tooltip: OpenLayers.i18n("clearAllButtonTooltip"),
+            cls: "clearFiltersLink buttonPad"
+        });
+        this.resetLink.on('click', function() {
+            this._clearAllAndReset();
+        }, this);
+
         this.buttonPanel = new Ext.Panel({
             cls: 'downloadPanelItem',
             width: 1024,
-            items: [
-                {
-                    xtype: 'button',
-                    text: OpenLayers.i18n("clearAllButtonLabel") ,
-                    tooltip: OpenLayers.i18n("clearAllButtonTooltip"),
-                    cls: "floatRight buttonPad",
-                    scope: this,
-                    handler: this._clearAllAndReset
-                }
-            ]
+            items: [this.resetLink]
         });
     },
 
     _clearAllAndReset: function () {
+
         Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
         setViewPortTab(0);
     },

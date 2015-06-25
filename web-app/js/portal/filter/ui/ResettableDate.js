@@ -19,8 +19,8 @@ Portal.filter.ui.ResettableDate = Ext.extend(Ext.Container, {
         });
 
         this._resetLink = new Ext.ux.Hyperlink({
-            text: OpenLayers.i18n('resetActionText'),
-            anchorCls: 'resetText'
+            text: OpenLayers.i18n('clearLinkLabel', {text: OpenLayers.i18n('resetLabel')}),
+            iconCls: 'small resetText'
         });
 
         this._resetLink.on('click', function() {

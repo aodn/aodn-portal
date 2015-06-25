@@ -116,7 +116,7 @@ hr {
 }
 
 .small {
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
 
 .bold {
@@ -255,7 +255,7 @@ div.x-hyperlink a{
     margin-right: 3px;
 }
 
-.x-btn.clearFiltersButton {
+.clearFiltersLink {
     float: right;
     margin-right: 17px;
 }
@@ -1137,7 +1137,7 @@ div:not(.x-tree-selected) * {
 
 .resetText {
     position: relative;
-    top: 3px;
+    display: block;
     font-style: italic;
 }
 .x-menu-list-item {
