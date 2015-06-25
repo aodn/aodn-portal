@@ -102,11 +102,11 @@ hr {
 }
 
 .floatLeft {
-    float: left;
+    float: left! important;
 }
 
 .floatRight {
-    float: right;
+    float: right! important;
 }
 
 .floatFullHeight::after {
@@ -882,20 +882,16 @@ div.allwhite {
     height: inherit;
 }
 
-.search-filter-panel .x-panel-header {
-    height: 12px;
-    font-size: 13px;
-    padding: 5px 2px 5px 2px;
-}
-
-.filter-selection-panel {
-    margin-bottom: 3px;
-}
-
 .filter-selection-panel .x-panel-header {
     border-radius: 4px 4px 0 4px;
     background-color: #e8e8e8;
-    padding: 10px 5px;
+}
+
+.search-filter-panel .x-panel-header,
+.filter-selection-panel .x-panel-header,
+.subsetPanelAccordion .x-panel-header {
+    margin: 5px 5px 0 0;
+    padding: 10px;
 }
 
 .filterGroupPanel h4 {
@@ -988,8 +984,7 @@ ul.x-tab-strip-top li:hover * {
 }
 
 .subsetPanelAccordion .x-panel-header {
-    margin: 5px 5px 0 0;
-    padding: 2px 5px;
+    padding: 5px 8px;
 }
 
 .subsetPanelAccordion .x-panel-collapsed * {

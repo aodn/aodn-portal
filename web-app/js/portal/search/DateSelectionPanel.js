@@ -51,7 +51,8 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
                             width: 65
                         })]
                 })
-            ]
+            ],
+            toolTemplate: new Ext.Template('')
         }, cfg, defaults);
 
         Portal.search.DateSelectionPanel.superclass.constructor.call(this, config);
