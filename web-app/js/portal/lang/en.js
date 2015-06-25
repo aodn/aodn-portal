@@ -25,7 +25,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // SubsettingPanel.js
     opacity: "Opacity",
-    wmsLayerProblem: "There is a problem with the availability of this collection",
+    layerProblem: "There is a problem with the availability of this collection",
     noActiveCollectionSelected: "No data collections selected",
     dataCollectionsTitle: "Subsetting data collection:",
     noCollectionSelectedHelp: "Please return and search for data collections.",
@@ -152,7 +152,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     freetextFilter: 'Text Search',
     dateFilter: 'Date (UTC)',
     geoFilter: "Geographic Boundary",
-    facetedSearchNewSearchButton: 'Start new search',
+    facetedSearchNewSearchButton: 'New search',
     facetedSearchUnavailable: 'Search is currently unavailable.',
     facetedSearchResetting: 'Resetting search',
     noParametersForCollection: 'No parameters',
@@ -179,7 +179,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     resetActionText: 'reset',
 
     // FacetFilterPanel
-    addAnother: 'Add another filter',
+    addAnother: 'Add another filter - where possible',
 
     // Async Downloads
     asyncDownloadPanelTitle: 'Subset',
@@ -187,7 +187,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     asyncDownloadErrorMsg: 'Unable to create subsetting job. Please re-check the parameters you provided and try again.',
     gogoduckServiceMsg: "<a class='external' target='_blank' href='${url}'>Follow the progress of your job</a><br /><br />",
 
-    spatialExtentHeading: 'Global Spatial Extent',
+    spatialExtentHeading: 'Spatial Subset',
     temporalExtentHeading: 'Temporal Extent',
     generalFilterHeading: 'Filters',
     currentDateTimeLabel: 'Displaying',

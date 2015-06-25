@@ -23,9 +23,6 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
             cfg.separator = "|";
 
         var defaults = {
-            collapsible: true,
-            collapsed: true,
-            titleCollapse: true
         };
 
         Ext.apply(this, cfg, defaults);
@@ -45,6 +42,10 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
                     margin: '2px'
                 }
             },
+            collapsible: true,
+            collapsed: true,
+            titleCollapse: true,
+            toolTemplate: new Ext.Template(''),
             items:[
                 this.facetMap,
                 new Ext.Spacer({

@@ -17,19 +17,26 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
         this.searcher = cfg.searcher;
 
         Ext.apply(cfg, {
-            title: '<span class="filter-selection-panel-header">' + cfg.title + '</span>', // todo create en.js entry so its reusable
+            title: cfg.title,
             containerScroll: true,
             autoScroll: true,
             collapsible: true,
             collapseFirst: false,
+            titleCollapse: true,
             collapsed: cfg.collapsedByDefault,
             cls: "search-filter-panel filter-selection-panel",
-            toolTemplate: new Ext.Template('<div class="x-tool x-tool-{id}" title="{title}">&#160;</div>'),
+            toolTemplate: new Ext.Template('<div class="x-tool-awesome fa fa-fw {styles}" title="{label}"></div>'),
             tools: [{
                 id: 'plus',
+                styles: 'fa-chain',
                 handler: this._onAdd,
                 scope: this,
-                title: OpenLayers.i18n('addAnother')
+                hidden: true,
+                label: OpenLayers.i18n('addAnother')
+            },
+            {
+                id: 'toggle',
+                hidden: true
             }]
         });
 
@@ -60,6 +67,8 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
 
     _registerHandlers: function() {
         this.on('afterlayout', this._setAddButtonAvailability, this);
+        this.on('expand', this._setAddButtonAvailability, this);
+        this.on('collapse', this._setAddButtonAvailability, this);
         this.mon(this.searcher, 'searchcomplete', this._setAddButtonAvailability, this);
     },
 
@@ -103,12 +112,12 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
             return;
         }
 
-        if (this._hasEmptyDrilldownPanel() || this._noDrilldownsAvailable()) {
+        if (this._hasEmptyDrilldownPanel() || this._noDrilldownsAvailable() || this.collapsed) {
             this.tools.plus.disabled = true;
-            this.tools.plus.addClass('tool-plus-disabled');
+            this.tools.plus.hide();
         } else {
             this.tools.plus.disabled = false;
-            this.tools.plus.removeClass('tool-plus-disabled');
+            this.tools.plus.show();
         }
     },
 
