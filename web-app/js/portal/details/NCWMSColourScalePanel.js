@@ -39,6 +39,9 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
         });
 
         this.items = [
+            new Ext.Spacer({
+                height: 10
+            }),
             this.colourScaleHeader,
             this.colourScaleMax,
             this.colourScaleMin,
