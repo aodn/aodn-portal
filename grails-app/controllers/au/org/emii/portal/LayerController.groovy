@@ -21,7 +21,14 @@ class LayerController {
     def hostVerifier
 
     def configuredBaselayers = {
-        render grailsApplication.config.baselayers as JSON
+        def baseLayerConfig = grailsApplication.config.baselayers
+
+        baseLayerConfig.each {
+            it.isBaseLayer = true
+            it.queryable = false
+        }
+
+        render baseLayerConfig as JSON
     }
 
     def getMetadataAbstract = {
