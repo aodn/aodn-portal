@@ -29,7 +29,8 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
         });
 
         var resetLink = new Ext.ux.Hyperlink({
-            text: OpenLayers.i18n('resetActionText'),
+            text: OpenLayers.i18n('clearLinkLabel', {text: OpenLayers.i18n('resetLabel')}),
+            cls: 'small',
             anchorCls: 'resetText'
         });
 

@@ -166,7 +166,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             filterGroupPanel._filtersLoaded(filters);
 
             expect(filterGroupPanel._createFilterPanel).toHaveBeenCalled();
-            filterGroupPanel.clearFiltersButton.fireEvent('click');
+            filterGroupPanel.resetLink.fireEvent('click');
             expect(filterGroupPanel._clearFilters).toHaveBeenCalled();
             expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
         });

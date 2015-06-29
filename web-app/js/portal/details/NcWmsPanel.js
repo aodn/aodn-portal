@@ -46,17 +46,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _addClearButton: function() {
-
-        this.add(
-            new Ext.Button({
-                cls: "clearFiltersButton",
-                text: OpenLayers.i18n('clearFilterButtonLabel'),
-                listeners: {
-                    scope: this,
-                    click: this.resetConstraints
-                }
-            })
-        );
+        this.resetLink = new Ext.ux.Hyperlink({
+            cls: 'resetText clearFiltersLink small',
+            text: OpenLayers.i18n('clearLinkLabel', {text: OpenLayers.i18n('clearSubsetLabel')})
+        });
+        this.resetLink.on('click', function() {
+            this.resetConstraints();
+        }, this);
+        this.add(this.resetLink);
     },
 
     resetConstraints: function() {

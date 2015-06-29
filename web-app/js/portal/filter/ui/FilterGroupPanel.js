@@ -229,21 +229,20 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _updateAndShow: function() {
 
-        this.clearFiltersButton = new Ext.Button({
-            cls: "clearFiltersButton",
-            text: OpenLayers.i18n('clearFilterButtonLabel'),
-            listeners: {
-                scope: this,
-                click: this._clearFilters
-            }
+        this.resetLink = new Ext.ux.Hyperlink({
+            cls: 'resetText clearFiltersLink small',
+            text: OpenLayers.i18n('clearLinkLabel', {text: OpenLayers.i18n('clearSubsetLabel')})
         });
+        this.resetLink.on('click', function() {
+            this._clearFilters();
+        }, this);
 
         this.loadingMessage.hide();
 
         this._updateLayerFilters();
 
         this.add(this._createVerticalSpacer(15));
-        this.add(this.clearFiltersButton);
+        this.add(this.resetLink);
         this.add(this._createVerticalSpacer(25));
 
         this.doLayout();
@@ -272,17 +271,5 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _isGlobalFilterPanel: function(panel) {
         return panel.filter.type == "geometrypropertytype";
-    },
-
-    _isDisplayed: function() {
-        var foundHiddenParent = false;
-
-        this.bubble(function() {
-            if (this.isVisible && !this.isVisible()) {
-                foundHiddenParent = true;
-            }
-        });
-
-        return !foundHiddenParent;
     }
 });
