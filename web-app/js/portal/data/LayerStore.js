@@ -83,16 +83,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         var layerDescriptor = new Portal.common.LayerDescriptor(layerLink, geonetworkRecord, OpenLayers.Layer.WMS);
         layerDescriptor.title = layerDisplayName;
         layerDescriptor.cql = layerLink.cql;
-        this._copyCsvDownloadFormatFromConfig(layerDescriptor, serverInfo);
         this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
-    },
-
-    // Note: this function can hopefully go away after 'no-db' is merged... i.e. when all server config
-    // is coming from Config.groovy, rather than from the 'server' table.
-    _copyCsvDownloadFormatFromConfig: function(layerDescriptor, serverInfo) {
-        if (serverInfo && layerDescriptor && layerDescriptor.server) {
-            layerDescriptor.server.csvDownloadFormat = serverInfo.csvDownloadFormat;
-        }
     },
 
     _addUsingLayerLinkNcwms: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
