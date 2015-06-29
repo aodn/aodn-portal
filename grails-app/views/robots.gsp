@@ -1,4 +1,3 @@
-
 <%--
 
  Copyright 2012 IMOS
@@ -7,5 +6,7 @@
 
 --%>
 
-<%@ page contentType="text/plain;charset=UTF-8" %>User-agent: *
-Disallow: /
+<%@ page contentType="text/plain;charset=UTF-8" %>
+User-agent: *
+Allow: /
+Sitemap: https://imos.aodn.org.au/sitemap.xml
