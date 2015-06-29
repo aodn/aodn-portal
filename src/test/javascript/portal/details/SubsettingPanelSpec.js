@@ -36,7 +36,6 @@ describe("Portal.details.SubsettingPanel", function() {
                 Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
 
                 expect(subsettingPanel._addItemForLayer).not.toHaveBeenCalled();
-                expect(subsettingPanel._activateItemForLayer).toHaveBeenCalledWith(layer);
             });
 
             it('creates new SubsetPanelAccordion and activates for new layer', function() {
