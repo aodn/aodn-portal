@@ -53,8 +53,8 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
         if (layer) {
             if (!this._itemExistsForLayer(layer)) {
                 this._addItemForLayer(layer);
+                this._activateItemForLayer(layer);
             }
-            this._activateItemForLayer(layer);
         }
     },
 

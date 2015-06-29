@@ -987,6 +987,11 @@ ul.x-tab-strip-top li:hover * {
     padding: 5px 8px;
 }
 
+.subsetPanelAccordionItem:not(.x-panel-collapsed) .x-panel-header {
+    cursor: default !important;
+    background-color: #DCDCDC;
+}
+
 .subsetPanelAccordion .x-panel-collapsed * {
     font-weight: normal;
 }
