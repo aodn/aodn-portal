@@ -237,33 +237,19 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _initBaseLayers: function() {
-        this._initWithLayersFromServer('layer/configuredBaselayers', {
-        }, function() {
-            Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
-        });
-    },
 
-    _initWithLayersFromServer: function(url, configOverrides, successCallback) {
         Ext.Ajax.request({
-            url: url,
+            url: 'layer/configuredBaselayers',
             scope: this,
-            success: function(resp, opts) {
-
+            success: function(resp) {
                 var layerDescriptorsAsText = Ext.util.JSON.decode(resp.responseText);
-                Ext.each(
-                    layerDescriptorsAsText,
-                    function(layerDescriptorAsText, index, all) {
 
-                        var layerDescriptor = new Portal.common.LayerDescriptor(layerDescriptorAsText);
-                        Ext.apply(layerDescriptor, configOverrides);
-                        this.addUsingDescriptor(layerDescriptor);
-                    },
-                    this
-                );
+                Ext.each(layerDescriptorsAsText, function(layerDescriptorAsText) {
+                    var layerDescriptor = new Portal.common.LayerDescriptor(layerDescriptorAsText);
+                    this.addUsingDescriptor(layerDescriptor);
+                }, this);
 
-                if (successCallback) {
-                    successCallback();
-                }
+                Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
             }
         });
     }
