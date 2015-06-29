@@ -83,16 +83,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         var layerDescriptor = new Portal.common.LayerDescriptor(layerLink, geonetworkRecord, OpenLayers.Layer.WMS);
         layerDescriptor.title = layerDisplayName;
         layerDescriptor.cql = layerLink.cql;
-        this._copyCsvDownloadFormatFromConfig(layerDescriptor, serverInfo);
         this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
-    },
-
-    // Note: this function can hopefully go away after 'no-db' is merged... i.e. when all server config
-    // is coming from Config.groovy, rather than from the 'server' table.
-    _copyCsvDownloadFormatFromConfig: function(layerDescriptor, serverInfo) {
-        if (serverInfo && layerDescriptor && layerDescriptor.server) {
-            layerDescriptor.server.csvDownloadFormat = serverInfo.csvDownloadFormat;
-        }
     },
 
     _addUsingLayerLinkNcwms: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
@@ -246,36 +237,19 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _initBaseLayers: function() {
-        // TODO: shouldn't these be set properly in the server in the first place?
-        this._initWithLayersFromServer('layer/configuredBaselayers', {
-            isBaseLayer: true,
-            queryable: false
-        }, function() {
-            Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
-        });
-    },
 
-    _initWithLayersFromServer: function(url, configOverrides, successCallback) {
         Ext.Ajax.request({
-            url: url,
+            url: 'layer/configuredBaselayers',
             scope: this,
-            success: function(resp, opts) {
-
+            success: function(resp) {
                 var layerDescriptorsAsText = Ext.util.JSON.decode(resp.responseText);
-                Ext.each(
-                    layerDescriptorsAsText,
-                    function(layerDescriptorAsText, index, all) {
 
-                        var layerDescriptor = new Portal.common.LayerDescriptor(layerDescriptorAsText);
-                        Ext.apply(layerDescriptor, configOverrides);
-                        this.addUsingDescriptor(layerDescriptor);
-                    },
-                    this
-                );
+                Ext.each(layerDescriptorsAsText, function(layerDescriptorAsText) {
+                    var layerDescriptor = new Portal.common.LayerDescriptor(layerDescriptorAsText);
+                    this.addUsingDescriptor(layerDescriptor);
+                }, this);
 
-                if (successCallback) {
-                    successCallback();
-                }
+                Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
             }
         });
     }
