@@ -38,4 +38,4 @@ Ext.ux.NonCollapsingAccordionLayout = Ext.extend( Ext.layout.Accordion, {
         if( panel == this.currentlyExpandedPanel ) return false;
     }
 });
-Ext.Container.LAYOUTS[ 'nonCollapsingAccordion' ] = Ext.ux.NonCollapsingAccordionLayout;
+Ext.Container.LAYOUTS[ 'noncollapsingaccordion' ] = Ext.ux.NonCollapsingAccordionLayout;
