@@ -36,7 +36,7 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
                 params.success.call();
             }
         );
-        successCallback = jasmine.createSpy('onSuccess');
+        var successCallback = jasmine.createSpy('onSuccess');
         fetcher.get(uuid, successCallback);
         expect(successCallback).toHaveBeenCalled();
     });
@@ -57,5 +57,31 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
 
         fetcher.load(uuid);
         expect(Portal.data.ActiveGeoNetworkRecordStore.instance().add).toHaveBeenCalledWith(record);
+    });
+
+    describe('getUuidsFromUrl', function() {
+
+        var baseUrl = 'http://imos.aodn.org.au/portal/';
+        var testCases = [
+            [baseUrl + '', []],
+            [baseUrl + '?', []],
+            [baseUrl + '?val=something', []],
+            [baseUrl + '?uuid=uuid1', 'uuid1'],
+            [baseUrl + '?uuid=uuid1&val=something', 'uuid1'],
+            [baseUrl + '?uuid=uuid1&uuid=uuid2', 'uuid1']
+        ];
+
+        it('returns correct values for various inputs', function() {
+
+            Ext.each(testCases, function(testValues) {
+                var testUrl = testValues[0];
+                var expectedOutput = testValues[1];
+                fetcher._getUrl = function() { return testUrl };
+
+                var actualOutput = fetcher.getUuidsFromUrl();
+
+                expect(actualOutput).toEqual(expectedOutput);
+            });
+        });
     });
 });

@@ -42,8 +42,13 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
     },
 
     getUuidsFromUrl: function() {
-        var getParams = document.URL.split("?");
+        var getParams = this._getUrl().split("?");
         var params = Ext.urlDecode(getParams[1]);
+
+       // Only support one UUID in a URL at most (for now)
+        if (Array.isArray(params.uuid)) {
+            params.uuid = params.uuid[0];
+        }
 
         return params.uuid || [];
     },
@@ -57,5 +62,9 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
         Ext.each(this.getUuidsFromUrl(), function(aUuid) {
             this.load(aUuid);
         }, this);
+    },
+
+    _getUrl: function() {
+        return document.URL;
     }
 });
