@@ -13,7 +13,7 @@ Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             cls: 'subsetPanelAccordion',
-            layout: 'nonCollapsingAccordion',
+            layout: 'noncollapsingaccordion',
             autoScroll: true,
             layoutConfig: {
                 animate: true,
