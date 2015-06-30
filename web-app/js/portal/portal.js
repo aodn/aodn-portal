@@ -58,18 +58,38 @@ Portal.app = {
         Ext.Ajax.on('requestcomplete', this.ajaxComplete, this);
         Ext.Ajax.on('requestexception', this.ajaxComplete, this);
 
-        // Load configs
-        new Portal.config.PortalConfigLoader().load(this, this.afterConfigLoad, this.configLoadFailed);
+        // Load config
+        Ext.Ajax.request({
+            url: 'home/config',
+            scope: this,
+            success: this.afterConfigLoad,
+            failure: this.configLoadFailed
+        });
     },
 
-    afterConfigLoad: function() {
+    afterConfigLoad: function(resp) {
+
+        var configJson = resp.responseText;
+
+        try {
+            this.appConfig = Ext.util.JSON.decode(configJson);
+        }
+        catch (e) {
+            log.error('Unable to load config. Invalid response: ' + configJson);
+            this._displayPortalLoadError();
+        }
 
         viewport = new Portal.ui.Viewport({
             appConfig: Portal.app.appConfig
         });
     },
 
-    configLoadFailed: function() {
+    configLoadFailed: function(resp) {
+        log.error("Unable to load '" + resp.responseText + "' (status: " + resp.status + ")" );
+        this._displayPortalLoadError();
+    },
+
+    _displayPortalLoadError: function() {
         Ext.MessageBox.alert('Error', 'There was a problem loading the Portal.<br>Refreshing the page may resolve the problem.');
     },
 

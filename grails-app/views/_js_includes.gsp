@@ -69,7 +69,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'MapPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'Controller.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'EmptyCollectionsStatusPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/config', file: 'PortalConfigLoader.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'LayerStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'SuggestionStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/data', file: 'LinkStore.js')}"></script>
