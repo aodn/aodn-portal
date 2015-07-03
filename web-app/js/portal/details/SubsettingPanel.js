@@ -67,29 +67,17 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
         var layerContainer = new Portal.details.SubsetItemsWrapperPanel({
             map: this.map,
             layer: layer,
-            layerItemId: this._getItemIdForLayer(layer),
-            listeners: {
-                expand: this._fireSelectedLayerChangedEvent(layer),
-                scope: this
-            }
+            layerItemId: this._getItemIdForLayer(layer)
         });
 
         this.subsetPanelAccordion.add(layerContainer);
-        this.subsetPanelAccordion.doLayout();
         this.emptyTextPanel.hide();
-    },
-
-    _fireSelectedLayerChangedEvent: function(layer) {
-        return function() {
-            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
-        }
+        this.subsetPanelAccordion.doLayout();
     },
 
     _activateItemForLayer: function(layer) {
-
         if (this._itemExistsForLayer(layer)) {
             this.subsetPanelAccordion.layout.setActiveItem(this._getItemIdForLayer(layer));
-            this.subsetPanelAccordion.items.item(this._getItemIdForLayer(layer)).expand();
         }
     },
 
