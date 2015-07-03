@@ -24,33 +24,18 @@ Ext.ux.NonCollapsingAccordionLayout = Ext.extend( Ext.layout.Accordion, {
         // Setup event listeners for beforeexpand and beforecollapse to run the functionality
         c.on( 'beforeexpand', this.beforeExpandPanel, this );
         c.on( 'beforecollapse', this.beforeCollapsePanel, this );
-        c.on( 'destroy', this.onDestroy, this );
     },
 
-    beforeExpandPanel : function(panel) {
+    beforeExpandPanel : function( panel ) {
         var panelToCollapse = this.currentlyExpandedPanel;  // A holder for the previously selected panel
         this.currentlyExpandedPanel = panel;                // Set the new panel as the currently expanded one
         panelToCollapse.collapse();                         // Collapse the previously selected panel
         return true;
     },
 
-    beforeCollapsePanel : function(panel) {
+    beforeCollapsePanel : function( panel ) {
         // Cancel the collapse if the panel to collapse is the currently expanded panel
         if( panel == this.currentlyExpandedPanel ) return false;
-    },
-
-    onDestroy: function(panel) {
-        if( panel == this.currentlyExpandedPanel ) {
-            var lastItem = this.container.items.length - 1;
-            if (lastItem > -1) {
-                this.currentlyExpandedPanel = this.container.items.items[lastItem];
-                this.currentlyExpandedPanel.expand();
-            }
-            else {
-                this.currentlyExpandedPanel = null;
-            }
-        }
     }
-
 });
 Ext.Container.LAYOUTS[ 'noncollapsingaccordion' ] = Ext.ux.NonCollapsingAccordionLayout;
