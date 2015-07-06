@@ -237,7 +237,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 OpenLayers.i18n('metadataTrackingStep1Action'),
                 cleanStringForFunctionParameter(values.title));
 
-            html = String.format('<a href="{0}" target="_blank" class="nowrap" title="{1}" {2} >{3}</a>',
+            html = String.format('<a href="{0}" target="_blank" class="nowrap " title="{1}" {2} >{3}</a>',
                 values.pointOfTruthLink.href,
                 values.pointOfTruthLink.title,
                 trackUsageText,

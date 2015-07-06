@@ -242,6 +242,7 @@ hr {
 
 div.x-hyperlink {
     margin: 5px 0;
+    font-style: italic;
 }
 
 div.x-hyperlink a{
@@ -1100,10 +1101,6 @@ div:not(.x-tree-selected) * {
     border-width: 2px;
 }
 
-.search-filters-toolbar {
-    margin: 5px;
-}
-
 .search-filters-toolbar-title * {
     font-size: 13px! important;
 }
@@ -1143,7 +1140,6 @@ div:not(.x-tree-selected) * {
 .resetText {
     position: relative;
     display: block;
-    font-style: italic;
 }
 .x-menu-list-item {
     font: inherit;

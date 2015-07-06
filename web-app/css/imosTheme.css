@@ -62,7 +62,7 @@ h2 {
     font-weight: bold;
     padding: 34px 18px;
     text-decoration: none;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 0 rgba(205, 205, 205, 0.5);
     vertical-align: middle;
     white-space: nowrap;
 }
@@ -219,7 +219,7 @@ input, select, textarea {
 }
 
 .x-toolbar {
-    padding-top: 10px;
+    padding-top: 10px ! important;
     border: none;
     background: none;
 }
