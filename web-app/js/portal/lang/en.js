@@ -102,7 +102,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     searchDateText: ' ',
     searchParametersText: ' ',
     temporalExtentDateFormat: 'YYYY',
-    metadataLink: '<span class="fa fa-fw fa-remove"></span> more...',
+    metadataLink: 'more',
 
     // errors
     errorDialogTitle: 'Error',
