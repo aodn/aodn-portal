@@ -258,3 +258,26 @@ OpenLayers.Geometry.prototype.crossesAntimeridian = function() {
     var bounds = this.getBounds();
     return (normaliseLongitude(bounds.left) > normaliseLongitude(bounds.right));
 };
+
+// Workaround OpenLayers issue destroying a layer that's loading by destroying only after its loaded
+// refer https://github.com/openlayers/openlayers/issues/1332
+
+OpenLayers.Layer.prototype.destroyWhenLoaded = function() {
+    if (this.loading) {
+        this._deferDestroyIfNotAlreadyDeferred();
+    } else {
+        this.destroy();
+    }
+};
+
+OpenLayers.Layer.prototype._deferDestroyIfNotAlreadyDeferred = function() {
+    if (this.destroyDeferred) {
+        return;
+    }
+
+    this.events.register('loadend', this, function() {
+        this.destroy();
+    });
+
+    this.destroyDeferred = true;
+};
