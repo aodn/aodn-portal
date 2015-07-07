@@ -16,7 +16,7 @@ jQuery( window ).load(function() {
         });
 
     // getFeatureInfo popup links without internal javascript calls
-    jQuery('.featureinfocontent a').not("['onclick','onClick']").live('hover',
+    jQuery('.featureinfocontent a').not(['onclick','onClick']).live('hover',
         function(){
             jQuery(this).attr('target', '_blank').addClass('external');
         });

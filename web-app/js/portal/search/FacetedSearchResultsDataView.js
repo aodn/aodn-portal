@@ -39,8 +39,8 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '            {[this.getMiniMap(values)]}',
             '        </div>',
             '        <div class="x-panel resultsTextBody {[this.getStatusClasses(values)]}">',
-            '            <h5 class="floatRight"><i>{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
-            '            </i></h5>',
+            '            <span class="floatRight x-hyperlink small">{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
+            '            </span>',
             '            {[this.getParametersAsHtml(values)]}',
             '        </div>',
             '    </div>',
@@ -237,7 +237,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 OpenLayers.i18n('metadataTrackingStep1Action'),
                 cleanStringForFunctionParameter(values.title));
 
-            html = String.format('<a href="{0}" target="_blank" class="nowrap" title="{1}" {2} >{3}</a>',
+            html = String.format('<a href="{0}" class="external" target="_blank" class="nowrap " title="{1}" {2} >{3}</a>',
                 values.pointOfTruthLink.href,
                 values.pointOfTruthLink.title,
                 trackUsageText,

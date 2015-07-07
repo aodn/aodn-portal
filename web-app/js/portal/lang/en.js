@@ -102,7 +102,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     searchDateText: ' ',
     searchParametersText: ' ',
     temporalExtentDateFormat: 'YYYY',
-    metadataLink: 'continue reading',
+    metadataLink: 'more',
 
     // errors
     errorDialogTitle: 'Error',
@@ -152,9 +152,9 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     freetextFilter: 'Text Search',
     dateFilter: 'Date (UTC)',
     geoFilter: "Geographic Boundary",
-    facetedSearchNewSearchButton: 'New search',
+    facetedSearchNewSearchButton: 'New Search',
     facetedSearchUnavailable: 'Search is currently unavailable.',
-    facetedSearchResetting: 'Resetting search',
+    facetedSearchResetting: 'Resetting Search',
     noParametersForCollection: 'No parameters',
 
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},

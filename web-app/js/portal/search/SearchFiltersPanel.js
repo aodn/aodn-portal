@@ -103,12 +103,15 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _buildNewSearchButton: function() {
-        this.newSearchButton = new Ext.Button({
-            text: OpenLayers.i18n('facetedSearchNewSearchButton'),
+
+        this.newSearchButton = new Ext.ux.Hyperlink({
+            cls: 'resetText small',
+            text: OpenLayers.i18n('clearLinkLabel', {text: OpenLayers.i18n('facetedSearchNewSearchButton')}),
             hidden: true
         });
-
-        this.newSearchButton.on( 'click', this._onNewSearchClicked, this );
+        this.newSearchButton.on('click', function() {
+            this._onNewSearchClicked();
+        }, this);
 
         return this.newSearchButton;
     },

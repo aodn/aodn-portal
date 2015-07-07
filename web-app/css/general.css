@@ -72,7 +72,7 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 a {
-    color: #333333;
+    color: inherit;
 }
 
 a:hover {
@@ -240,8 +240,13 @@ hr {
     clear: both;
 }
 
-div.x-hyperlink {
-    margin: 5px 0;
+div.x-hyperlink,
+span.x-hyperlink {
+    font-style: italic;
+}
+
+div.x-hyperlink{
+     margin: 5px 0;
 }
 
 div.x-hyperlink a{
@@ -344,10 +349,18 @@ Site navigation
     background-image: none;
 }
 
-a[rel="external"], a.external {
-    padding-right: 15px;
-    background: url(../images/extlink.gif) no-repeat 100% 50%;
-    zoom: 1;
+/* emulate Bootstrap 'fa fa-fw fa-external' in single class */
+a[rel="external"]:after,
+a.external:after {
+    display: inline-block;
+    font: 90% FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(2px, 1px);
+    width: 1.28571429em;
+    text-align: center;
+    content: " \f08e";
 }
 
 .mainlinks {
@@ -919,7 +932,7 @@ div.allwhite {
 
 .resultsTextBody {
     margin: 5px;
-    width: 560px;
+    width: 540px;
 }
 
 .resultsTextBody h5 {
@@ -1100,10 +1113,6 @@ div:not(.x-tree-selected) * {
     border-width: 2px;
 }
 
-.search-filters-toolbar {
-    margin: 5px;
-}
-
 .search-filters-toolbar-title * {
     font-size: 13px! important;
 }
@@ -1143,7 +1152,6 @@ div:not(.x-tree-selected) * {
 .resetText {
     position: relative;
     display: block;
-    font-style: italic;
 }
 .x-menu-list-item {
     font: inherit;
