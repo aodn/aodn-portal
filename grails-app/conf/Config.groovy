@@ -238,8 +238,8 @@ portal {
 
     footerContent =
         """
-        <a title="Data usage acknowledgement" target="_blank" class="external" href="${help.url}"/help/?q=node/81">Acknowledgement</a> <b>|</b>
-        <a title="Disclaimer information" target="_blank" class="external" href="${help.url}"/help/?q=node/80">Disclaimer</a> <b>|</b>
+        <a title="Data usage acknowledgement" target="_blank" class="external" href="${help.url}/help/?q=node/81">Acknowledgement</a> <b>|</b>
+        <a title="Disclaimer information" target="_blank" class="external" href="${help.url}/help/?q=node/80">Disclaimer</a> <b>|</b>
         <a title="Integrated Marine Observing System" target="_blank" class="external" href="http://www.imos.org.au">IMOS</a> <b>|</b>
         <a title="Australian Ocean Data Network" target="_blank" class="external" href="http://imos.org.au/aodn.html">AODN</a>
         """
