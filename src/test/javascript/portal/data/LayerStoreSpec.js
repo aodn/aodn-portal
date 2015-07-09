@@ -203,7 +203,6 @@ describe("Portal.data.LayerStore", function() {
                 spyOn(Ext.MsgBus, 'publish');
                 openLayer = createOpenLayer();
                 layerStore._addLayer(openLayer);
-                openLayer.loading = false;
             });
 
             it('one less layer in store', function() {
@@ -320,27 +319,6 @@ describe("Portal.data.LayerStore", function() {
 
         it('getDefaultBaseLayer', function() {
             expect(layerStore.getDefaultBaseLayer()).toBe(baseLayerRecord);
-        });
-    });
-
-    describe('loading attribute', function() {
-
-        var layer;
-
-        beforeEach(function() {
-            layer = createOpenLayer("somelayer");
-            layer.options.isBaseLayer = false;
-            layerStore._addLayer(layer);
-        });
-
-        it('sets loading=true on loadstart', function() {
-            layer.events.triggerEvent("loadstart");
-            expect(layer.loading).toEqual(true);
-        });
-
-        it('sets loading=false on loadend', function() {
-            layer.events.triggerEvent("loadend");
-            expect(layer.loading).toEqual(false);
         });
     });
 

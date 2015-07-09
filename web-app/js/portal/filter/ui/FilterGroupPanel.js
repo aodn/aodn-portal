@@ -99,11 +99,15 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         var filterService = new Portal.filter.FilterService();
 
-        filterService.loadFilters(this.layer, this._filtersLoaded, this._handleFilterLoadFailure, this);
+        filterService.loadFilters(
+            this.layer,
+            this.createSafeCallback(this._filtersLoaded),
+            this.createSafeCallback(this._handleFilterLoadFailure),
+            this
+        );
     },
 
     _filtersLoaded: function(filters) {
-
         var filterPanels = [];
         var filterService  = new Portal.filter.FilterService();
         this._sortFilters(filters);
@@ -119,12 +123,12 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
                 filterService.loadFilterRange(
                     filter.getName(),
                     this.layer,
-                    function(filterRange) {
+                    this.createSafeCallback(function(filterRange) {
                         filterPanel.setFilterRange(filterRange);
-                    },
-                    function() {
+                    }),
+                    this.createSafeCallback(function() {
                         filterPanel.setFilterRange([]);
-                    },
+                    }),
                     this
                 );
             }

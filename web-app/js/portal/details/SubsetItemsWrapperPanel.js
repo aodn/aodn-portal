@@ -39,15 +39,18 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
             ]
         }, cfg);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_END, function(e, openLayer) {
-            this.handleLayerLoadingEnd(openLayer);
-        }, this);
-
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_END, this.handleLayerLoadingEnd, this);
 
         Portal.details.SubsetItemsWrapperPanel.superclass.constructor.call(this, config);
     },
 
-    handleLayerLoadingEnd: function(openLayer) {
+    destroy: function() {
+        Ext.MsgBus.unsubscribe(PORTAL_EVENTS.LAYER_LOADING_END, this.handleLayerLoadingEnd, this);
+
+        this.superclass().destroy.call(this);
+    },
+
+    handleLayerLoadingEnd: function(e, openLayer) {
         if (openLayer == this.layer) {
             this.tools.spinnerToolItem.hide();
             if (openLayer.hasImgLoadErrors()) {

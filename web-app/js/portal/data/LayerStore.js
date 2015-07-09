@@ -130,8 +130,8 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     removeUsingOpenLayer: function(openLayer) {
         var layerRecordToRemove = this.getByLayer(openLayer);
-        openLayer.destroy();
         this.remove(layerRecordToRemove);
+        openLayer.destroyWhenLoaded();
         Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
     },
 
@@ -153,16 +153,11 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                 }
             }
 
-            openLayer.loading = true;
-
             openLayer.events.register('loadstart', this, function() {
-
-                openLayer.loading = true;
-
                 Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_START, openLayer);
             });
+
             openLayer.events.register('loadend', this, function() {
-                openLayer.loading = false;
                 Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_END, openLayer);
             });
 
