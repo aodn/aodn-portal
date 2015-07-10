@@ -5,12 +5,10 @@
  *
  */
 
-Ext.namespace('Portal.details');
-
-Portal.details.InfoPanel = Ext.extend(Ext.Container, {
+Ext4.define('Portal.details.InfoPanel', {
+    extend: 'Ext4.Component',
 
     constructor: function(cfg) {
-
         this.layer = cfg.layer;
 
         var config = Ext.apply({
@@ -32,15 +30,16 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
         var metadataUrl = 'layer/getMetadataAbstract?uuid=' +
             encodeURIComponent(this.layer.metadataUuid);
 
+        var self = this;
+
         Ext.Ajax.request({
             url: metadataUrl,
-            scope: this,
             success: function(resp, options) {
-                this._constructInfoTabHtml(resp.responseText, this.layer.parentGeoNetworkRecord.data.onlineResources);
+                self._constructInfoTabHtml(resp.responseText, self.layer.parentGeoNetworkRecord.data.onlineResources);
             },
             failure: function(resp) {
-                log.error("Error receiving metadata abstract for record with uuid " + this.layer.metadataUuid);
-                this._constructInfoTabHtml(null, this.layer.parentGeoNetworkRecord.data.onlineResources);
+                log.error("Error receiving metadata abstract for record with uuid " + self.layer.metadataUuid);
+                self._constructInfoTabHtml(null, self.layer.parentGeoNetworkRecord.data.onlineResources);
             }
         });
     },
