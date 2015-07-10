@@ -115,6 +115,9 @@ function setViewPortTab(tabIndex) {
 //and Ext.form.MessageTargets.side are saying "field.el.dom" is undefined.
 Ext.onReady(function() {
 
+    // See: http://stackoverflow.com/questions/5715626/ext-loader-not-enabled-missing-required
+    Ext4.Loader.setConfig({enabled:true});
+
     Ext.apply(Ext.form.MessageTargets.qtip, {
         clear: function(field) {
             field.el.removeClass(field.invalidClass);

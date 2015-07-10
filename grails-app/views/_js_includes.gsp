@@ -48,6 +48,7 @@
 <g:if env="development">
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/control', file: 'SpatialConstraint.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils/geo', file: 'GeoUtil.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Ext4To3Wrapper.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Image.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Proxy.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Set.js')}"></script>
@@ -127,6 +128,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsettingPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NcWmsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanelAccordion.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SimplePanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'InfoPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetItemsTabPanel.js')}"></script>
