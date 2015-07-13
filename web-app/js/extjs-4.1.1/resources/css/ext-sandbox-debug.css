@@ -284,16 +284,17 @@ input, textarea, select {
 /* line 138, ../themes/stylesheets/ext4/default/core/_reset.scss */
 .x4-border-box,
 .x4-border-box * {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -webkit-box-sizing: border-box; }
+  /* box-sizing: border-box; */
+  /* -moz-box-sizing: border-box; */
+  /* -ms-box-sizing: border-box; */
+  /* -webkit-box-sizing: border-box; */
+}
 
 /* line 1, ../themes/stylesheets/ext4/default/core/_core.scss */
 .x4-body {
   color: black;
   font-size: 12px;
-  font-family: tahoma, arial, verdana, sans-serif; }
+  /* font-family: tahoma, arial, verdana, sans-serif; */ }
 
 /* line 7, ../themes/stylesheets/ext4/default/core/_core.scss */
 .x4-rtl {
