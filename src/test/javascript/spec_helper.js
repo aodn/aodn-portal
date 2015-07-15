@@ -21,6 +21,16 @@ Ext.MessageBox.alert = function () {
 Ext4.Ajax.request = function(options) {
 };
 
+Ext4.Loader.setConfig({
+    enabled: true,
+    disableCaching: true,
+    paths: {
+        "Ext.ux": "js/ext-ux",
+        "Portal": "js/portal"
+    }
+});
+
+
 // Ref: http://stackoverflow.com/questions/11942085/is-there-a-way-to-add-a-jasmine-matcher-to-the-whole-environment
 beforeEach(function() {
 

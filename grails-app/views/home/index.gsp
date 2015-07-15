@@ -24,10 +24,6 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
         <link rel="stylesheet" type="text/css" href="${resource(dir: 'js', file: 'ext-ux/SuperBoxSelect/superboxselect.css')}" />
         <link rel="stylesheet" type="text/css" href="${resource(dir: 'js', file: 'ext-ux/Hyperlink/hyperlink.css')}" />
 
-        <!-- Ext JS 4 -->
-        <link rel="stylesheet" type="text/css" href="js/extjs-4.1.1/resources/css/ext-sandbox-debug.css">
-        <script type="text/javascript" src="js/extjs-4.1.1/builds/ext-all-sandbox-debug.js"></script>
-
         <g:render template="/js_includes"></g:render>
         <g:render template="/public_theme_includes"></g:render>
 

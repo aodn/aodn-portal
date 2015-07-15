@@ -38,6 +38,21 @@
     <script src="${resource(dir: 'js/GeoExt1.1/script', file: 'GeoExt.js')}" type="text/javascript"></script>
 </g:else>
 
+<!-- Ext JS 4 -->
+<link rel="stylesheet" type="text/css" href="js/extjs-4.1.1/resources/css/ext-sandbox-debug.css">
+<script type="text/javascript" src="js/extjs-4.1.1/builds/ext-all-sandbox-debug.js"></script>
+
+<script type="text/javascript">
+    Ext4.Loader.setConfig({
+        enabled: true,
+        disableCaching: true,
+        paths: {
+            "Ext.ux": "js/ext-ux",
+            "Portal": "js/portal"
+        }
+    });
+</script>
+
 <script src="${resource(dir: 'js/ext-ux/form', file: 'DateTime.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js/ext-ux/SuperBoxSelect', file: 'SuperBoxSelect.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js/ext-ux', file: 'ScrollTo.js')}" type="text/javascript"></script>
