@@ -72,7 +72,7 @@ Portal.app = {
         var configJson = resp.responseText;
 
         try {
-            this.appConfig = Ext.util.JSON.decode(configJson);
+            this.appConfig = Ext4.JSON.decode(configJson);
         }
         catch (e) {
             log.error('Unable to load config. Invalid response: ' + configJson);

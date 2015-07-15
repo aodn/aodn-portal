@@ -157,5 +157,5 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
 var jsonFromUrl = function(url, urlStart) {
 
     var jobParameters = url.substring(urlStart.length);
-    return Ext.util.JSON.decode(decodeURIComponent(jobParameters));
+    return Ext4.JSON.decode(decodeURIComponent(jobParameters));
 };

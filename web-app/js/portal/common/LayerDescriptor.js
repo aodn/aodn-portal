@@ -20,7 +20,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
 
     constructor: function(cfg, title, geonetworkRecord, openLayerClass) {
         if (typeof cfg == "string") {
-            cfg = Ext.util.JSON.decode(cfg);
+            cfg = Ext4.JSON.decode(cfg);
         }
 
         if (!openLayerClass) {
