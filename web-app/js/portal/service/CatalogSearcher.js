@@ -57,7 +57,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         var searchResponseLoader = this._newSearchResponseLoader({
             requestMethod: 'GET',
             preloadChildren: true,
-            url: Ext.ux.Ajax.constructProxyUrl(requestUrl),
+            url: Ext4.ux.Ajax.constructProxyUrl(requestUrl),
             listeners: {
                 scope: this,
                 load: this._onSuccessfulSearch.bind(this, page),

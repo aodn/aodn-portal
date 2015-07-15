@@ -150,13 +150,13 @@ describe("Portal.data.LayerStore", function() {
 
         beforeEach(function() {
 
-            spyOn(Ext.Ajax, 'request');
+            spyOn(Ext4.Ajax, 'request');
         });
 
         it('base layers', function() {
             layerStore._initBaseLayers();
 
-            var ajaxParams = Ext.Ajax.request.mostRecentCall.args[0];
+            var ajaxParams = Ext4.Ajax.request.mostRecentCall.args[0];
             expect(ajaxParams.url).toBe('layer/configuredBaselayers');
         });
     });

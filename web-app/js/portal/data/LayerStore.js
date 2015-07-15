@@ -189,7 +189,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     _initBaseLayers: function() {
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: 'layer/configuredBaselayers',
             scope: this,
             success: function(resp) {

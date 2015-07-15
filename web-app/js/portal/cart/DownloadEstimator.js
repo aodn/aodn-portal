@@ -28,7 +28,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
 
     _getDownloadEstimate: function(collection, callback) {
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: 'download/estimateSizeForLayer',
             timeout: 30000,
             scope: this,

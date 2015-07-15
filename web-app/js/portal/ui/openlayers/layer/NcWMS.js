@@ -39,7 +39,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _setExtraLayerInfoFromNcwms: function() {
-        Ext.Ajax.proxyRequestJSON({
+        Ext4.Ajax.proxyRequestJSON({
             scope: this,
             url: this._getExtraLayerInfoFromNcwms(),
             success: function(resp, options) {
@@ -61,7 +61,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     _loadTimeSeriesDates: function() {
         var url = this._getFiltersUrl();
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             scope: this,
             url: url,
             success: function(resp, options) {
@@ -81,7 +81,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     _loadStyles: function() {
         var url = this._getStylesUrl();
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             scope: this,
             url: url,
             success: function(resp, options) {
@@ -178,7 +178,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var url = this._getTimeSeriesUrl(date);
         this.pendingRequests.add(url);
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             scope: this,
             url: url,
             success: function(resp, options) {

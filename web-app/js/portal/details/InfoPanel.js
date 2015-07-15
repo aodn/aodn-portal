@@ -32,7 +32,7 @@ Ext4.define('Portal.details.InfoPanel', {
 
         var self = this;
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: metadataUrl,
             success: function(resp, options) {
                 self._constructInfoTabHtml(resp.responseText, self.layer.parentGeoNetworkRecord.data.onlineResources);

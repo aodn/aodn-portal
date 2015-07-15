@@ -45,21 +45,21 @@ Portal.app = {
 
     init: function() {
         // Set open layers proxyhost
-        OpenLayers.ProxyHost = Ext.ux.Ajax.proxyUrl;
+        OpenLayers.ProxyHost = Ext4.ux.Ajax.proxyUrl;
 
         // Global Ajax events can be handled on every request!
-        Ext.Ajax.on('beforerequest', function() {
+        Ext4.Ajax.on('beforerequest', function() {
             if (progressCount == 0) {
                 this.ajaxAction('show');
             }
             progressCount++;
         }, this);
 
-        Ext.Ajax.on('requestcomplete', this.ajaxComplete, this);
-        Ext.Ajax.on('requestexception', this.ajaxComplete, this);
+        Ext4.Ajax.on('requestcomplete', this.ajaxComplete, this);
+        Ext4.Ajax.on('requestexception', this.ajaxComplete, this);
 
         // Load config
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: 'home/config',
             scope: this,
             success: this.afterConfigLoad,

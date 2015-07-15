@@ -34,7 +34,7 @@ Portal.ui.search.data.GeoNetworkSearchResponseLoader = Ext.extend(Ext.ux.tree.Xm
 
         Portal.ui.search.data.GeoNetworkSearchResponseLoader.superclass.requestData.call(this, node, callback, scope);
 
-        // Restore ajaxDefaultHeaders for Ext.Ajax
+        // Restore ajaxDefaultHeaders for Ext4.Ajax
         Ext.Ajax.defaultHeaders = ajaxDefaultHeaders;
     }
 });

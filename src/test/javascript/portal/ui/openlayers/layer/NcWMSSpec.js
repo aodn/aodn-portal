@@ -61,13 +61,13 @@ describe('Portal.ui.openlayers.layer.NcWMS', function() {
 
         it('_setExtraLayerInfoFromNcwms calls URL', function() {
             spyOn(OpenLayers.Layer.NcWMS.prototype, '_getExtraLayerInfoFromNcwms').andReturn('mockedMetadataUrl');
-            spyOn(Ext.ux.Ajax, 'proxyRequest');
+            spyOn(Ext4.ux.Ajax, 'proxyRequest');
 
             var ncwmsLayer = mockNcwmsLayer();
 
             expect(ncwmsLayer._getExtraLayerInfoFromNcwms).toHaveBeenCalled();
 
-            var ajaxParams = Ext.ux.Ajax.proxyRequest.mostRecentCall.args[0];
+            var ajaxParams = Ext4.ux.Ajax.proxyRequest.mostRecentCall.args[0];
             expect(ajaxParams.url).toBe("mockedMetadataUrl");
         });
     });
