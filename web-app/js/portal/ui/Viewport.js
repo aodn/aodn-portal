@@ -67,7 +67,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
                     console.log('Component has only 1 child', typeof(container), container.id, 'layout', container.layout);
                 }
 
-                Ext.each(container.items.items, function(item) {
+                Ext4.each(container.items.items, function(item) {
                     countChildItems(item);
                 }, this);
             }

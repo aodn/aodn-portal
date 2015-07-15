@@ -45,7 +45,7 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
     },
 
     _subscribeToActiveGeoNetworkRecordStoreEvents: function() {
-        Ext.each([PORTAL_EVENTS.DATA_COLLECTION_ADDED, PORTAL_EVENTS.DATA_COLLECTION_REMOVED], function(eventName) {
+        Ext4.each([PORTAL_EVENTS.DATA_COLLECTION_ADDED, PORTAL_EVENTS.DATA_COLLECTION_REMOVED], function(eventName) {
 
             Ext.MsgBus.subscribe(eventName, function() {
                 this._refreshView();

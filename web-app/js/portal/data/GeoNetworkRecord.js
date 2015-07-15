@@ -22,7 +22,7 @@ Portal.data.GeoNetworkRecord = function() {
             var allLinks = convertXmlToLinks(v, record);
             var linkedFiles = [];
 
-            Ext.each(allLinks, function(linkToCheck) {
+            Ext4.each(allLinks, function(linkToCheck) {
                 if (isLinkedFileProtocol(linkToCheck.protocol)) {
                     linkedFiles.push(linkToCheck);
                 }
@@ -39,7 +39,7 @@ Portal.data.GeoNetworkRecord = function() {
             var allLinks = convertXmlToLinks(v, record);
             var onlineResources = [];
 
-            Ext.each(allLinks, function(linkToCheck) {
+            Ext4.each(allLinks, function(linkToCheck) {
                 if (isOnlineResource(linkToCheck.protocol)) {
                     onlineResources.push(linkToCheck);
                 }
@@ -54,11 +54,11 @@ Portal.data.GeoNetworkRecord = function() {
         convert: function(v, record) {
             var metaDataExtent = new Portal.search.MetadataExtent();
 
-            Ext.each(Ext.DomQuery.jsSelect('geoBox', record), function(geoBox) {
+            Ext4.each(Ext.DomQuery.jsSelect('geoBox', record), function(geoBox) {
                 metaDataExtent.addBBox(geoBox.firstChild.nodeValue);
             }, this.scope);
 
-            Ext.each(Ext.DomQuery.jsSelect('geoPolygon', record), function(geoPolygon) {
+            Ext4.each(Ext.DomQuery.jsSelect('geoPolygon', record), function(geoPolygon) {
                 metaDataExtent.addPolygon(geoPolygon.firstChild.nodeValue);
             }, this.scope);
 
@@ -81,7 +81,7 @@ Portal.data.GeoNetworkRecord = function() {
             var allLinks = convertXmlToLinks(v, record);
             var pointOfTruthLink = undefined;
 
-            Ext.each(allLinks, function(linkToCheck) {
+            Ext4.each(allLinks, function(linkToCheck) {
                 if (linkToCheck.protocol == PROTOCOL_WWW_METADATA_LINK) {
 
                     pointOfTruthLink = linkToCheck;
@@ -108,11 +108,11 @@ Portal.data.GeoNetworkRecord = function() {
 
             var applicableDownloadOptions = [];
 
-            Ext.each(allLinks, function(link) {
+            Ext4.each(allLinks, function(link) {
                 var constructors = protocolHandlerConstructors[link.protocol];
 
                 if (constructors) {
-                    Ext.each(constructors, function(constructor) {
+                    Ext4.each(constructors, function(constructor) {
                         applicableDownloadOptions.push(
                             new constructor(link)
                         );
@@ -136,7 +136,7 @@ Portal.data.GeoNetworkRecord = function() {
         var linkElems = Ext.DomQuery.jsSelect('link', record);
         var links = [];
 
-        Ext.each(linkElems, function(link) {
+        Ext4.each(linkElems, function(link) {
             var linkValue = link.firstChild ? link.firstChild.nodeValue : null;
             var elements = linkValue.split('|');
             links.push({
@@ -155,7 +155,7 @@ Portal.data.GeoNetworkRecord = function() {
 
         var protocols = [];
 
-        Ext.each(Portal.app.appConfig.portal.downloadCartDownloadableProtocols, function(protocol) {
+        Ext4.each(Portal.app.appConfig.portal.downloadCartDownloadableProtocols, function(protocol) {
             protocols.push(protocol.trim());
         });
 
@@ -166,7 +166,7 @@ Portal.data.GeoNetworkRecord = function() {
 
         var allowedOnlineResources = [];
 
-        Ext.each(Portal.app.appConfig.portal.onlineResourceLinks, function(protocol) {
+        Ext4.each(Portal.app.appConfig.portal.onlineResourceLinks, function(protocol) {
             allowedOnlineResources.push(protocol.trim());
         });
 
@@ -221,7 +221,7 @@ Portal.data.GeoNetworkRecord = function() {
     prototype.convertedData = function() {
         var convertedData = {};
 
-        Ext.each(Object.keys(this.data),
+        Ext4.each(Object.keys(this.data),
             function(key) {
                 convertedData[key] = this.data[key];
             },

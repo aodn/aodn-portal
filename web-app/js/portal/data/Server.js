@@ -23,7 +23,7 @@ Portal.data.Server = {
     _getConfig: function(uri) {
         var serverInfo;
 
-        Ext.each(Portal.app.appConfig.knownServers, function(server) {
+        Ext4.each(Portal.app.appConfig.knownServers, function(server) {
             if (server.uri == uri) {
                 serverInfo = server;
                 return false;

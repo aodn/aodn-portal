@@ -88,7 +88,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
                 it('does nothing if email address panel is hidden', function() {
                     confirmationWindow.downloadEmailPanel.isVisible = function() { return false };
 
-                    Ext.each(['valid', 'invalid'], function(event) {
+                    Ext4.each(['valid', 'invalid'], function(event) {
                         confirmationWindow.downloadEmailPanel.fireEvent(event);
                         expect(downloadButton.enable).not.toHaveBeenCalled();
                         expect(downloadButton.disable).not.toHaveBeenCalled();

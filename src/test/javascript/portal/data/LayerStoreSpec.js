@@ -323,7 +323,7 @@ describe("Portal.data.LayerStore", function() {
         function layerIds(layerStore) {
             var ids = [];
 
-            Ext.each(layerStore.data.items, function(record) {
+            Ext4.each(layerStore.data.items, function(record) {
                 ids.push(record.data.layer.id);
             });
 

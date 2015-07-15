@@ -149,7 +149,7 @@ Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
     _hideSiblings: function(nodes) {
         var that = this;
 
-        Ext.each(nodes, function(node) {
+        Ext4.each(nodes, function(node) {
             if (node.attributes.checked) {
                 that._hidePreviousSiblings(node);
                 that._hideNextSiblings(node);
@@ -159,13 +159,13 @@ Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     _expand: function(nodes) {
-        Ext.each(nodes, function(node) {
+        Ext4.each(nodes, function(node) {
             node.expand();
         });
     },
 
     _removeCount: function(nodes) {
-        Ext.each(nodes, function(node) {
+        Ext4.each(nodes, function(node) {
             if (node.hasChildNodes()){
                 node.setText(node.attributes.value);
             }

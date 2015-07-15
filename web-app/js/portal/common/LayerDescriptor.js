@@ -116,7 +116,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
 
         var layerName = null;
 
-        Ext.each(links, function(link) {
+        Ext4.each(links, function(link) {
 
             if (link.protocol == protocol) {
 

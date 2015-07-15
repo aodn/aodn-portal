@@ -29,7 +29,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
     _onAdd: function(store, geoNetworkRecords) {
         var thisStore = this;
 
-        Ext.each(geoNetworkRecords, function(geoNetworkRecord) {
+        Ext4.each(geoNetworkRecords, function(geoNetworkRecord) {
             if (geoNetworkRecord.hasWmsLink()) {
 
                 this.layerStore.addUsingLayerLink(
@@ -74,7 +74,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
     },
 
     _onClear: function(store, records) {
-        Ext.each(records, function(record) {
+        Ext4.each(records, function(record) {
             store._removeRecordAttributes(record);
             store._removeFromLayerStore(record);
         });
@@ -112,7 +112,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
     getItemsEncodedAsJson: function() {
         var items = [];
 
-        Ext.each(this.data.items, function(item) {
+        Ext4.each(this.data.items, function(item) {
             items.push(item.convertedData());
         });
 
