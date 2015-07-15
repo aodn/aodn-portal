@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.data');
+Ext4.namespace('Portal.data');
 
 /**
  * Contains the set of currently "active" layers in the application,

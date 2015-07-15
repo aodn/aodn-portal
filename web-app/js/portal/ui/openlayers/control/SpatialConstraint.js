@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext.namespace('Portal.ui.openlayers.control');
+Ext4.namespace('Portal.ui.openlayers.control');
 
 Portal.ui.openlayers.SpatialConstraintType = {
     POLYGON: 'polygon',

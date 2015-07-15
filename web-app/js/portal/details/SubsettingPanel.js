@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.details');
+Ext4.namespace('Portal.details');
 
 Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
 

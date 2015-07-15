@@ -7,7 +7,7 @@
 
 // Ext.tree.TreeNode additions
 
-Ext.namespace('Ext.tree');
+Ext4.namespace('Ext.tree');
 
 Ext.tree.TreeNode.prototype.toValueHierarchy = function() {
     var values = [];

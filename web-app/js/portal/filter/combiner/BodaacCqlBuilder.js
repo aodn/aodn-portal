@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.filter.combiner');
+Ext4.namespace('Portal.filter.combiner');
 
 Portal.filter.combiner.BodaacCqlBuilder = Ext.extend(Portal.filter.combiner.FilterCqlBuilder, {
 

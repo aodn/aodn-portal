@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Ext.ux');
+Ext4.namespace('Ext.ux');
 
 Ext.ux.Ajax = Ext.Ajax;
 

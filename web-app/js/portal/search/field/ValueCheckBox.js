@@ -6,7 +6,7 @@
  *
  */
 
-Ext.namespace('Portal.search.field');
+Ext4.namespace('Portal.search.field');
 
 Portal.search.field.ValueCheckBox = Ext.extend(Ext.form.Checkbox, {
 

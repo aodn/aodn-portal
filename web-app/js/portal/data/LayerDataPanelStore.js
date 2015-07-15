@@ -6,7 +6,7 @@
  *
  */
 
-Ext.namespace('Portal.data');
+Ext4.namespace('Portal.data');
 
 Portal.data.LayerDataPanelStore = Ext.extend(Ext.data.JsonStore, {
 

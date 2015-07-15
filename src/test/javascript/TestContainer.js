@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.test');
+Ext4.namespace('Portal.test');
 
 Portal.test.TestContainer = Ext.extend(Ext.Container, {
 

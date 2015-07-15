@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.filter.ui');
+Ext4.namespace('Portal.filter.ui');
 
 Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     constructor: function(cfg) {

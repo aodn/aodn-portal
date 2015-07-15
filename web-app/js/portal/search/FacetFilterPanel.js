@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.search');
+Ext4.namespace('Portal.search');
 
 Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
 

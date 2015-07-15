@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.visualise.animations');
+Ext4.namespace('Portal.visualise.animations');
 
 /* This class is managing a temporal extent. The way we manage the temporal
  * extent is by having a hash (this.extent) which will hold dates as keys. Each

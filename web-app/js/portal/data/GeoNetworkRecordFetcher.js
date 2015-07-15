@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.data');
+Ext4.namespace('Portal.data');
 
 Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
 
