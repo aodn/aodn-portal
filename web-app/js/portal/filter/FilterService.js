@@ -40,7 +40,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
         var callbackFunction = opts.successCallback;
         var callbackScope = opts.callbackScope;
         var layer = opts.layer;
-        var filterDetails = Ext.util.JSON.decode(response.responseText);
+        var filterDetails = Ext4.JSON.decode(response.responseText);
         var filterObjects = [];
 
         Ext.each(filterDetails, function(filterDetail) {
@@ -99,7 +99,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
         var callbackFunction = opts.successCallback;
         var callbackScope = opts.callbackScope;
-        var filterRange = Ext.util.JSON.decode(resp.responseText);
+        var filterRange = Ext4.JSON.decode(resp.responseText);
 
         callbackFunction.call(callbackScope, filterRange);
     },

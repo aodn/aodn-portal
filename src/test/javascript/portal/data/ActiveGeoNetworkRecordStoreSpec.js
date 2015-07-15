@@ -285,7 +285,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 addTestRecordsToStore();
 
                 // Decode again as comparing strings would be too brittle.
-                itemsDecoded = Ext.util.JSON.decode(activeRecordStore.getItemsEncodedAsJson());
+                itemsDecoded = Ext4.JSON.decode(activeRecordStore.getItemsEncodedAsJson());
             });
 
             it('item per record', function() {
