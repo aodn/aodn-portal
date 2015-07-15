@@ -123,7 +123,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     _getMeasuredParameters: function(values) {
         var broader = [];
-        Ext.each(values.parameter, function(param) {
+        Ext4.each(values.parameter, function(param) {
             var broaderTerms = this.classificationStore.getBroaderTerms(param, 2, 'Measured parameter');
             if (broaderTerms.length > 0) {
                 broader = broader.concat(broaderTerms);

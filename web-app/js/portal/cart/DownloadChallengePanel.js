@@ -63,14 +63,14 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
     },
 
     _showChallenge: function(html) {
-        Ext.each(this.items.items, function(component) { component.show(); });
+        Ext4.each(this.items.items, function(component) { component.show(); });
 
         $("#challenge").html(html);
         this.challenged = true;
     },
 
     _hideChallenge: function() {
-        Ext.each(this.items.items, function(component) { component.hide(); });
+        Ext4.each(this.items.items, function(component) { component.hide(); });
 
         $("#challenge").html("");
         this.challenged = false;

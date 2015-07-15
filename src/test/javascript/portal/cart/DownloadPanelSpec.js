@@ -109,7 +109,7 @@ describe("Portal.cart.DownloadPanel", function() {
             var downloadPanel = new Portal.cart.DownloadPanel();
 
             var items = [];
-            Ext.each(collections, function(collection) {
+            Ext4.each(collections, function(collection) {
                 items.push({
                     data: collection,
                     loaded: true

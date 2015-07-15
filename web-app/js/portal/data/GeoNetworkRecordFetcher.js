@@ -59,7 +59,7 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
 
     _loadCollectionsFromUrl: function() {
 
-        Ext.each(this.getUuidsFromUrl(), function(aUuid) {
+        Ext4.each(this.getUuidsFromUrl(), function(aUuid) {
             this.load(aUuid);
         }, this);
     },

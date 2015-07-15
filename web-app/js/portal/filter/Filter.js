@@ -100,7 +100,7 @@ Portal.filter.Filter.classFor = function(filterConfig) {
     var filterType = filterConfig.type;
     var matchingConstructor;
 
-    Ext.each(filterConstructors, function(currentConstructor) {
+    Ext4.each(filterConstructors, function(currentConstructor) {
 
         var supportedTypes = currentConstructor.prototype.getSupportedGeoserverTypes();
 

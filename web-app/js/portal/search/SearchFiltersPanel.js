@@ -132,7 +132,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     _onNewSearchClicked: function() {
         this._setSpinnerText(OpenLayers.i18n('facetedSearchResetting'));
 
-        Ext.each(this.filters, function(filter, index, all) {
+        Ext4.each(this.filters, function(filter, index, all) {
             filter.removeAnyFilters();
         });
 
@@ -177,7 +177,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _monitor: function(object, events, scope) {
-        Ext.each(events, function(event, index, all) {
+        Ext4.each(events, function(event, index, all) {
             this.mon(object, event.event, event.callback, scope);
         }, this);
     },

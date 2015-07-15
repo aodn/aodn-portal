@@ -43,7 +43,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
         var filterDetails = Ext4.JSON.decode(response.responseText);
         var filterObjects = [];
 
-        Ext.each(filterDetails, function(filterDetail) {
+        Ext4.each(filterDetails, function(filterDetail) {
 
             var filterConstructor = Portal.filter.Filter.classFor(filterDetail);
 

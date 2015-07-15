@@ -55,7 +55,7 @@ Ext4.define('Portal.details.InfoPanel', {
             html = this._getHtmlHeader("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>");
         }
 
-        Ext.each(linkObjects, function(linkObject) {
+        Ext4.each(linkObjects, function(linkObject) {
             var onlineResource;
             var linkExternal = "";
             var linkText = "";

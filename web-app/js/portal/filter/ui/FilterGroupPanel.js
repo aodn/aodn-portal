@@ -112,7 +112,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         var filterService  = new Portal.filter.FilterService();
         this._sortFilters(filters);
 
-        Ext.each(filters, function(filter) {
+        Ext4.each(filters, function(filter) {
 
             var filterPanel = this._createFilterPanel(filter);
 
@@ -201,7 +201,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         var currentLabel;
         var currentType;
 
-        Ext.each(panels, function(panel) {
+        Ext4.each(panels, function(panel) {
 
             var newLabel = this._typeLabelForPanel(panel);
             var newType = panel.constructor;
@@ -265,7 +265,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
     _clearFilters: function() {
         var that = this;
-        Ext.each(this.filterPanels, function(panel) {
+        Ext4.each(this.filterPanels, function(panel) {
             if (!that._isGlobalFilterPanel(panel)) {
                 panel.handleRemoveFilter();
             }

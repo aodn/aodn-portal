@@ -183,7 +183,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         var html = "";
         var htmlBreak = '<br>';
 
-        Ext.each(
+        Ext4.each(
             links,
             function(link) {
                 html += this._getSingleFileEntry(link);

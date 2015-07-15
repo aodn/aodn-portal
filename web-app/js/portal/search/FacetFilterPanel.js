@@ -124,7 +124,7 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
     _hasEmptyDrilldownPanel: function() {
         var result = false;
 
-        Ext.each(this._getDrilldownPanels(), function(drilldownPanel) {
+        Ext4.each(this._getDrilldownPanels(), function(drilldownPanel) {
             if (drilldownPanel.hasNoDrilldown()) {
                 result = true;
                 return false;
@@ -135,7 +135,7 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     _addDrilldownFilters: function() {
-        Ext.each(this._getDrilldownPanels(), function(drilldownPanel) {
+        Ext4.each(this._getDrilldownPanels(), function(drilldownPanel) {
             if (drilldownPanel.hasDrilldown()) {
                 this.searcher.addDrilldownFilter(drilldownPanel.getDrilldownPath());
             }

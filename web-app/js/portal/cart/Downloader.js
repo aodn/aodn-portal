@@ -89,7 +89,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
         var queryString = '';
 
         if (args) {
-            Ext.each(Object.keys(args), function(key) {
+            Ext4.each(Object.keys(args), function(key) {
 
                 var value = encodeURIComponent(args[key]);
 
