@@ -103,7 +103,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     _downloadAsynchronously: function(collection, downloadUrl, params) {
         log.debug('downloading asynchronously', downloadUrl);
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: downloadUrl,
             scope: this,
             success: function(response) {

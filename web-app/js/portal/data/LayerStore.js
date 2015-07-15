@@ -32,7 +32,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     addUsingLayerLink: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback) {
         var serverUri = layerLink.server.uri;
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: 'server/getInfo?' + Ext4.urlEncode({server: serverUri}),
             scope: this,
             success: function(resp) {
@@ -233,7 +233,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     _initBaseLayers: function() {
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: 'layer/configuredBaselayers',
             scope: this,
             success: function(resp) {

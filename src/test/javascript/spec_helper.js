@@ -17,8 +17,8 @@ if (typeof console === "undefined" || typeof console.log === "undefined") {
 Ext.MessageBox.alert = function () {
 };
 
-//overwrite Ext.Ajax.request so it doesn't try to make requests.
-Ext.Ajax.request = function(options) {
+// Overwrite Ext4.Ajax.request so it doesn't try to make requests.
+Ext4.Ajax.request = function(options) {
 };
 
 // Ref: http://stackoverflow.com/questions/11942085/is-there-a-way-to-add-a-jasmine-matcher-to-the-whole-environment
@@ -130,6 +130,7 @@ var getMockMap = function() {
 };
 
 var mockAjaxXmlResponse = function(responseContent) {
+    // This has to be mocked for Ext3
     spyOn(Ext.Ajax, 'request').andCallFake(function(opts) {
 
         var response = {

@@ -151,7 +151,7 @@ describe("Portal.filter.FilterService", function() {
     });
 
     var spyOnAjaxAndReturn = function(responseText, status) {
-        spyOn(Ext.Ajax, 'request').andCallFake(function(opts) {
+        spyOn(Ext4.Ajax, 'request').andCallFake(function(opts) {
 
             var response = {
                 responseText: responseText,

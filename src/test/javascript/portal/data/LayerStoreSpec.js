@@ -75,7 +75,7 @@ describe("Portal.data.LayerStore", function() {
                 var geonetworkRecord = {id: "blagh"};
                 var layerRecordCallback = noOp;
 
-                spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
+                spyOn(Ext4.Ajax, 'request').andCallFake(function(options) {
                     options.success.call(layerStore, { responseText: Ext4.JSON.encode({}) });
                 });
 
@@ -87,7 +87,7 @@ describe("Portal.data.LayerStore", function() {
             });
 
             it('failure', function() {
-                spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
+                spyOn(Ext4.Ajax, 'request').andCallFake(function(options) {
                     options.failure.call(layerStore, { responseText: Ext4.JSON.encode({}) });
                 });
                 layerStore.addUsingLayerLink("layerName", layerLink);
@@ -97,7 +97,7 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('GeoServer', function() {
-            spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
+            spyOn(Ext4.Ajax, 'request').andCallFake(function(options) {
                 options.success.call(layerStore, { responseText: Ext4.JSON.encode({ type: 'GeoServer' }) });
             });
             spyOn(layerStore, '_addUsingLayerLinkDefault').andCallFake(function() {});
@@ -108,7 +108,7 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('ncwms', function() {
-            spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
+            spyOn(Ext4.Ajax, 'request').andCallFake(function(options) {
                 options.success.call(layerStore, { responseText: Ext4.JSON.encode({ type: 'ncwms' }) });
             });
             spyOn(layerStore, '_addUsingLayerLinkNcwms').andCallFake(function() {});
@@ -127,7 +127,7 @@ describe("Portal.data.LayerStore", function() {
 
             it('callback', function() {
                 var callback = jasmine.createSpy('callback');
-                spyOn(Ext.Ajax, 'request').andCallFake(function(params) {
+                spyOn(Ext4.Ajax, 'request').andCallFake(function(params) {
                     layerStore.failure = params.failure;
                     layerStore.failure();  // This is the easiest way to mock things (rather than calling success).
                 });
@@ -182,13 +182,13 @@ describe("Portal.data.LayerStore", function() {
 
         beforeEach(function() {
 
-            spyOn(Ext.Ajax, 'request');
+            spyOn(Ext4.Ajax, 'request');
         });
 
         it('base layers', function() {
             layerStore._initBaseLayers();
 
-            var ajaxParams = Ext.Ajax.request.mostRecentCall.args[0];
+            var ajaxParams = Ext4.Ajax.request.mostRecentCall.args[0];
             expect(ajaxParams.url).toBe('layer/configuredBaselayers');
         });
     });

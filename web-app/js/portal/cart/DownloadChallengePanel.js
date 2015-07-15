@@ -50,7 +50,7 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
     _getChallenge: function() {
         this._hideChallenge();
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: 'downloadAuth',
             scope: this,
             success: function(resp) {
