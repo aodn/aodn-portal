@@ -33,7 +33,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         var serverUri = layerLink.server.uri;
 
         Ext.Ajax.request({
-            url: 'server/getInfo?' + Ext.urlEncode({server: serverUri}),
+            url: 'server/getInfo?' + Ext4.urlEncode({server: serverUri}),
             scope: this,
             success: function(resp) {
                 try {
