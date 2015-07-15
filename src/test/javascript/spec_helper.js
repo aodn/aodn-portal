@@ -93,12 +93,12 @@ beforeEach(function() {
 
 var setupTestConfigAndStubs = function() {
     // Declare namespaces
-    Ext.namespace('Portal.app.config');
-    Ext.namespace('Portal.app.appConfig');
-    Ext.namespace('Portal.app.appConfig.geonetwork');
-    Ext.namespace('Portal.app.appConfig.help');
-    Ext.namespace('Portal.app.appConfig.featureToggles');
-    Ext.namespace('Portal.app.appConfig.portal');
+    Ext4.namespace('Portal.app.config');
+    Ext4.namespace('Portal.app.appConfig');
+    Ext4.namespace('Portal.app.appConfig.geonetwork');
+    Ext4.namespace('Portal.app.appConfig.help');
+    Ext4.namespace('Portal.app.appConfig.featureToggles');
+    Ext4.namespace('Portal.app.appConfig.portal');
 
     Portal.app.appConfig.portal.metadataLayerProtocols = [ "OGC:WMS-1.1.1-http-get-map", "OGC:WMS-1.3.0-http-get-map" ];
     Portal.app.config.defaultDatelineZoomBbox = '90, 90, -90, -90';

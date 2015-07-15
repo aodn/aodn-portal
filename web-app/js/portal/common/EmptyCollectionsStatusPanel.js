@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.common');
+Ext4.namespace('Portal.common');
 
 Portal.common.EmptyCollectionStatusPanel = Ext.extend(Ext.Container, {
 

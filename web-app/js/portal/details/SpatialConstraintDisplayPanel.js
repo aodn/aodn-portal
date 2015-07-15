@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.details');
+Ext4.namespace('Portal.details');
 
 Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {

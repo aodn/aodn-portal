@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.ui');
+Ext4.namespace('Portal.ui');
 
 Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     constructor: function(cfg) {

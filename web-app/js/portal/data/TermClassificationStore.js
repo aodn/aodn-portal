@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.data');
+Ext4.namespace('Portal.data');
 
 Portal.data.TermClassificationStore = Ext.extend(Ext.data.XmlStore, {
 

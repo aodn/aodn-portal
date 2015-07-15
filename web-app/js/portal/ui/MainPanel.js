@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.ui');
+Ext4.namespace('Portal.ui');
 
 TAB_INDEX_SEARCH = 0;
 TAB_INDEX_VISUALISE = 1;

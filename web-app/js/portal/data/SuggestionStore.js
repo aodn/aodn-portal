@@ -6,7 +6,7 @@
  *
  */
 
-Ext.namespace('Portal.data.SuggestionStore');
+Ext4.namespace('Portal.data.SuggestionStore');
 
 Portal.data.SuggestionStore = Ext.extend(Ext.data.XmlStore, {
     constructor : function(cfg) {

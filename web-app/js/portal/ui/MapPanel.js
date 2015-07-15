@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.ui');
+Ext4.namespace('Portal.ui');
 
 Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     loadSpinner: null,

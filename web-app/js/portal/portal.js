@@ -14,7 +14,7 @@ Ext.BLANK_IMAGE_URL = 'img/blank.gif';
 Ext.QuickTips.init();
 
 //--------------------------------------------------------------------------------------------
-Ext.ns('Portal');
+Ext4.namespace('Portal');
 
 Portal.app = {
 

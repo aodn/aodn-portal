@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.filter.validation');
+Ext4.namespace('Portal.filter.validation');
 
 Portal.filter.validation.SpatialConstraintValidator = Ext.extend(Object, {
 

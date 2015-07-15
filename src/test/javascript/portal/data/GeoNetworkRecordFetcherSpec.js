@@ -13,7 +13,7 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
     beforeEach(function() {
         catalogUrl = 'http://geonetwork123';
 
-        Ext.namespace('Portal.app.appConfig.geonetwork');
+        Ext4.namespace('Portal.app.appConfig.geonetwork');
         Portal.app.appConfig.geonetwork.url = catalogUrl;
         fetcher = new Portal.data.GeoNetworkRecordFetcher();
         uuid = '1234';

@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext.namespace('Portal.search');
+Ext4.namespace('Portal.search');
 
 // TODO: note that this panel is probably redundant now that it has only one child - we can just use
 // FacetedSearchResultsGrid where this panel is used - however, waiting for Phil's latest changes

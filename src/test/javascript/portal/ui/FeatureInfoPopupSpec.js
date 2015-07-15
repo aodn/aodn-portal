@@ -132,7 +132,7 @@ describe("Portal.ui.FeatureInfoPopup", function()
             featureInfoPopup._clickPoint = function() { return {}; };
             spyOn(layer, 'getFeatureInfoRequestString');
 
-            Ext.namespace('Portal.app.appConfig.portal');
+            Ext4.namespace('Portal.app.appConfig.portal');
             Portal.app.appConfig.portal.mapGetFeatureInfoBuffer = 10;
 
             featureInfoPopup._getLayerFeatureInfoRequestString(layer);

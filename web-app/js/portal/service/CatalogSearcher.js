@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.service');
+Ext4.namespace('Portal.service');
 
 Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     DRILLDOWN_PARAMETER_NAME: "facet.q",
