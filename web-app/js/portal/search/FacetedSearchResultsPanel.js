@@ -27,7 +27,7 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
             title: false,
             buttonAlign: 'left',
             fbar: this.pagingBar,
-            width: 840,
+            width: 860,
             items: [
                 this.dataView
             ]
