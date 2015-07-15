@@ -7,8 +7,8 @@
 
 describe("Portal.ui.MapPanel", function() {
 
-    Ext.Ajax.request.isSpy = false;
-    spyOn(Ext.Ajax, 'request').andReturn('');
+    Ext4.Ajax.request.isSpy = false;
+    spyOn(Ext4.Ajax, 'request').andReturn('');
 
     var appConfig = {
         initialBbox : '130,-60,160,-20',
@@ -166,5 +166,5 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
 
-    Ext.Ajax.request.isSpy = false;
+    Ext4.Ajax.request.isSpy = false;
 });

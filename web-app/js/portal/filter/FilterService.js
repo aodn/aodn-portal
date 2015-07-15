@@ -22,7 +22,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
             layer:  this._filterLayerName(layer)
         };
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: this.GET_FILTER,
             params: params,
             scope: this,
@@ -83,7 +83,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
             layer: layer.wmsName
         };
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: this.GET_FILTER_VALUES,
             params: params,
             successCallback: successCallback,

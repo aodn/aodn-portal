@@ -35,10 +35,10 @@ describe("Portal.search.data.GeoNetworkSearchResponseLoader", function() {
 
     describe('requestData', function() {
         it('sets defaultHeaders to application/xml', function() {
-            Ext.Ajax.defaultHeaders = "originalHeaders";
+            Ext4.Ajax.defaultHeaders = "originalHeaders";
 
-            spyOn(Ext.Ajax, 'request').andCallFake(function() {
-                expect(Ext.Ajax.defaultHeaders).toEqual({ 'Content-Type': 'application/xml' });
+            spyOn(Ext4.Ajax, 'request').andCallFake(function() {
+                expect(Ext4.Ajax.defaultHeaders).toEqual({ 'Content-Type': 'application/xml' });
             });
 
             treeLoader = new Portal.ui.search.data.GeoNetworkSearchResponseLoader({
@@ -47,7 +47,7 @@ describe("Portal.search.data.GeoNetworkSearchResponseLoader", function() {
 
             treeLoader.requestData();
 
-            expect(Ext.Ajax.defaultHeaders).toEqual("originalHeaders");
+            expect(Ext4.Ajax.defaultHeaders).toEqual("originalHeaders");
         });
     });
 

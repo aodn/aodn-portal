@@ -110,7 +110,7 @@ describe('Portal.service.CatalogSearcher', function() {
                 return "proxy: " + url;
             };
 
-            spyOn(Ext.ux.Ajax, 'constructProxyUrl').andCallFake(proxy);
+            spyOn(Ext4.ux.Ajax, 'constructProxyUrl').andCallFake(proxy);
 
             var page = {from: 1, to: 10};
             searcher._search(page);

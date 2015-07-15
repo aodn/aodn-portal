@@ -89,7 +89,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
     _handleDepthService: function() {
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             scope: this,
             url: 'depth',
             params: {
@@ -134,7 +134,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
         var extraLayerInfo = layer.extraLayerInfo ? layer.extraLayerInfo : {};
 
-        Ext.ux.Ajax.proxyRequestXML({
+        Ext4.ux.Ajax.proxyRequestXML({
             scope: this,
             url: this._getLayerFeatureInfoRequestString(layer),
             extraParams: {
