@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -58,63 +57,27 @@ describe("Portal.data.LayerStore", function() {
     });
 
     describe('addUsingLayerLink', function() {
-        describe('blocked server', function() {
-            beforeEach(function() {
-                spyOn(layerStore, '_serverUnrecognized');
-                layerLink = {
-                    title: "imos:detection_count_per_station_mv",
-                    server: {
-                        uri: "http://geoserver.imos.org.au/geoserver/wms"
-                    },
-                    name: "imos:detection_count_per_station_mv",
-                    protocol: "OGC:WMS-1.1.1-http-get-map"
-                };
-            });
+        it('Unknown', function() {
+            spyOn(Portal.data.Server, 'getInfo').andReturn(undefined);
+            spyOn(layerStore, '_serverUnrecognized');
 
-            it('empty response', function() {
-                var geonetworkRecord = {id: "blagh"};
-                var layerRecordCallback = noOp;
-
-                spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
-                    options.success.call(layerStore, { responseText: Ext.util.JSON.encode({}) });
-                });
-
-                layerStore.addUsingLayerLink("layerName", layerLink, geonetworkRecord, layerRecordCallback);
-
-                expect(layerStore._serverUnrecognized).toHaveBeenCalled();
-                expect(layerStore.geonetworkRecord).toEqual(undefined);
-                expect(layerStore.layerRecordCallback).toEqual(undefined);
-            });
-
-            it('failure', function() {
-                spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
-                    options.failure.call(layerStore, { responseText: Ext.util.JSON.encode({}) });
-                });
-                layerStore.addUsingLayerLink("layerName", layerLink);
-
-                expect(layerStore._serverUnrecognized).toHaveBeenCalled();
-            });
+            layerStore.addUsingLayerLink("layerName", layerLink);
+            expect(layerStore._serverUnrecognized).toHaveBeenCalledWith('layerName', layerLink);
         });
 
         it('GeoServer', function() {
-            spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
-                options.success.call(layerStore, { responseText: Ext.util.JSON.encode({ type: 'GeoServer' }) });
-            });
-            spyOn(layerStore, '_addUsingLayerLinkDefault').andCallFake(function() {});
+            spyOn(Portal.data.Server, 'getInfo').andReturn({ type: 'GeoServer' });
+            spyOn(layerStore, '_addUsingLayerLinkDefault');
 
             layerStore.addUsingLayerLink("layerName", layerLink);
-
             expect(layerStore._addUsingLayerLinkDefault).toHaveBeenCalled();
         });
 
         it('ncwms', function() {
-            spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
-                options.success.call(layerStore, { responseText: Ext.util.JSON.encode({ type: 'ncwms' }) });
-            });
-            spyOn(layerStore, '_addUsingLayerLinkNcwms').andCallFake(function() {});
+            spyOn(Portal.data.Server, 'getInfo').andReturn({ type: 'ncwms' });
+            spyOn(layerStore, '_addUsingLayerLinkNcwms');
 
             layerStore.addUsingLayerLink("layerName", layerLink);
-
             expect(layerStore._addUsingLayerLinkNcwms).toHaveBeenCalled();
         });
     });

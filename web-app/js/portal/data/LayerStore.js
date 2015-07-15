@@ -31,40 +31,14 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     addUsingLayerLink: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback) {
         var serverUri = layerLink.server.uri;
+        var serverInfo = Portal.data.Server.getInfo(serverUri);
 
-        Ext.Ajax.request({
-            url: 'server/getInfo?' + Ext.urlEncode({server: serverUri}),
-            scope: this,
-            success: function(resp) {
-                try {
-                    var serverInfo = Ext.util.JSON.decode(resp.responseText);
-                    this._serverInfoLoaded(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
-                }
-                catch (e) {
-                    log.error("Failed parsing information for server '" + serverUri + "', response : '" + resp.responseText + "'");
-                }
-            },
-            failure: function(resp) {
-                log.error("Failed getting information for server '" + serverUri + "'");
-                this._serverUnrecognized(layerDisplayName, layerLink);
-            }
-        });
-    },
-
-    _serverInfoLoaded: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
-        if ($.isEmptyObject(serverInfo)) {
-
+        if (!serverInfo) {
             this._serverUnrecognized(layerDisplayName, layerLink);
-
-            // break this layer as the server is unrecognised
-            // openLayers needs the minimum to attempt loading #1476
-            layerLink.server = {
-                uri: this.BLOCKED,
-                type: this.BLOCKED
-            };
-            layerRecordCallback = undefined;
-            geonetworkRecord = undefined;
+            return;
         }
+
+        layerLink.server = serverInfo;
 
         if (serverInfo.type && serverInfo.type.toLowerCase() == 'ncwms') {
             this._addUsingLayerLinkNcwms(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
@@ -77,6 +51,13 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     _serverUnrecognized: function(layerDisplayName, layerLink) {
         var serverUri = layerLink.server.uri;
         log.error("Server '" + serverUri + "' is blocked!!");
+
+        // break this layer as the server is unrecognised
+        // openLayers needs the minimum to attempt loading #1476
+        layerLink.server = {
+            uri: this.BLOCKED,
+            type: this.BLOCKED
+        };
     },
 
     _addUsingLayerLinkDefault: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
@@ -112,14 +93,14 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     getBaseLayers: function() {
         return this._getLayers(function(record) {
             return record.getLayer().options && record.getLayer().options.isBaseLayer;
-        })
+        });
     },
 
     getOverlayLayers: function() {
         return this._getLayers(function(record) {
             var layer = record.getLayer();
             return layer.options && !layer.options.isBaseLayer && !(layer instanceof OpenLayers.Layer.Vector);
-        })
+        });
     },
 
     _getLayers: function(predicate) {
