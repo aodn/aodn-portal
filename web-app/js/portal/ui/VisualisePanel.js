@@ -25,7 +25,7 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
             mapPanel: this.mapPanel
         });
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             layout: 'border',
             id: 'visualisePanel',
             stateful: false,

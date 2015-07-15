@@ -118,7 +118,7 @@ Ext.onReady(function() {
     // See: http://stackoverflow.com/questions/5715626/ext-loader-not-enabled-missing-required
     Ext4.Loader.setConfig({enabled:true});
 
-    Ext.apply(Ext.form.MessageTargets.qtip, {
+    Ext4.apply(Ext.form.MessageTargets.qtip, {
         clear: function(field) {
             field.el.removeClass(field.invalidClass);
             // fix
@@ -129,7 +129,7 @@ Ext.onReady(function() {
         }
     });
 
-    Ext.apply(Ext.form.MessageTargets.side, {
+    Ext4.apply(Ext.form.MessageTargets.side, {
         clear: function(field) {
             field.el.removeClass(field.invalidClass);
             // fix

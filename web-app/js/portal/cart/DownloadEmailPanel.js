@@ -48,7 +48,7 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
             }
         };
 
-        Ext.apply(this, config);
+        Ext4.apply(this, config);
 
         Portal.cart.DownloadEmailPanel.superclass.initComponent.call(this, arguments);
     },

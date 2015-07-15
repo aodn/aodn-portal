@@ -12,7 +12,7 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
     constructor : function(cfg) {
         cfg = cfg || {};
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             root : 'links',
             fields : [ {
                 name : 'url',

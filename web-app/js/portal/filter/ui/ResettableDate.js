@@ -27,7 +27,7 @@ Portal.filter.ui.ResettableDate = Ext.extend(Ext.Container, {
             this.reset();
         }, this);
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             layout: 'hbox',
             fieldLabel: cfg.fieldLabel,
             items: [

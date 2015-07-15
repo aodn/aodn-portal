@@ -13,7 +13,7 @@ Portal.search.SearchPanel = Ext.extend(Ext.Panel, {
 
         var defaults = {};
 
-        Ext.apply(this, cfg || {}, defaults);
+        Ext4.apply(this, cfg || {}, defaults);
 
         this.searcher = new Portal.service.CatalogSearcher({
             catalogUrl: Portal.app.appConfig.geonetwork.url,
@@ -45,7 +45,7 @@ Portal.search.SearchPanel = Ext.extend(Ext.Panel, {
             searcher: this.searcher
         });
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             itemId: 'searchPanel',
             layout: 'border',
             split: false,

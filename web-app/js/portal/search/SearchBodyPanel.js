@@ -22,7 +22,7 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
             classificationStore: cfg.classificationStore
         });
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             autoScroll: true,
             bodyCssClass: "faceted-search-results",
             activeItem: this.searchResultsPanel,

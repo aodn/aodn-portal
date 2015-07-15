@@ -12,7 +12,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     constructor: function(config) {
 
-        Ext.apply(this, config);
+        Ext4.apply(this, config);
         Portal.data.ActiveGeoNetworkRecordStore.superclass.constructor.call(this);
 
         this.on('add', this._onAdd, this);

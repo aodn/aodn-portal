@@ -12,7 +12,7 @@ Portal.test.TestContainer = Ext.extend(Ext.Container, {
     constructor: function(cfg) {
         cfg = cfg || {};
 
-        Ext.apply(cfg, {
+        Ext4.apply(cfg, {
             renderTo: this._createContainerDiv()
         });
 

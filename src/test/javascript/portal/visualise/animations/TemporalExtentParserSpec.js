@@ -144,7 +144,7 @@ describe("Portal.visualise.animations.TemporalExtentParser", function() {
     });
 
     function _initPeriod(defaults) {
-        return Ext.apply(_emptyPeriod(), defaults);
+        return Ext4.apply(_emptyPeriod(), defaults);
     }
 
     function _emptyPeriod() {

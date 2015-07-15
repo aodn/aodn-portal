@@ -13,7 +13,7 @@ Portal.ui.DownloadCartWidget = Ext.extend(Ext.Panel, {
 
         this.buildComponents();
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             id: "downLoadCartWidget",
             hidden: true,
             defaults: {
