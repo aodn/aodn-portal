@@ -76,7 +76,7 @@ describe("Portal.data.LayerStore", function() {
                 var layerRecordCallback = noOp;
 
                 spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
-                    options.success.call(layerStore, { responseText: Ext.util.JSON.encode({}) });
+                    options.success.call(layerStore, { responseText: Ext4.JSON.encode({}) });
                 });
 
                 layerStore.addUsingLayerLink("layerName", layerLink, geonetworkRecord, layerRecordCallback);
@@ -88,7 +88,7 @@ describe("Portal.data.LayerStore", function() {
 
             it('failure', function() {
                 spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
-                    options.failure.call(layerStore, { responseText: Ext.util.JSON.encode({}) });
+                    options.failure.call(layerStore, { responseText: Ext4.JSON.encode({}) });
                 });
                 layerStore.addUsingLayerLink("layerName", layerLink);
 
@@ -98,7 +98,7 @@ describe("Portal.data.LayerStore", function() {
 
         it('GeoServer', function() {
             spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
-                options.success.call(layerStore, { responseText: Ext.util.JSON.encode({ type: 'GeoServer' }) });
+                options.success.call(layerStore, { responseText: Ext4.JSON.encode({ type: 'GeoServer' }) });
             });
             spyOn(layerStore, '_addUsingLayerLinkDefault').andCallFake(function() {});
 
@@ -109,7 +109,7 @@ describe("Portal.data.LayerStore", function() {
 
         it('ncwms', function() {
             spyOn(Ext.Ajax, 'request').andCallFake(function(options) {
-                options.success.call(layerStore, { responseText: Ext.util.JSON.encode({ type: 'ncwms' }) });
+                options.success.call(layerStore, { responseText: Ext4.JSON.encode({ type: 'ncwms' }) });
             });
             spyOn(layerStore, '_addUsingLayerLinkNcwms').andCallFake(function() {});
 

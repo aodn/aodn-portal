@@ -44,7 +44,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             url: this._getExtraLayerInfoFromNcwms(),
             success: function(resp, options) {
                 try {
-                    this.extraLayerInfo = Ext.util.JSON.decode(resp.responseText);
+                    this.extraLayerInfo = Ext4.JSON.decode(resp.responseText);
                     // This means we are "GFI ready"
                     this.params.QUERYABLE = true;
                 }
@@ -66,7 +66,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             url: url,
             success: function(resp, options) {
                 try {
-                    this._parseDatesWithDataAsync(Ext.util.JSON.decode(resp.responseText));
+                    this._parseDatesWithDataAsync(Ext4.JSON.decode(resp.responseText));
                 }
                 catch (e) {
                     log.error("Could not parse filters for NcWMS layer '" + this.params.LAYERS + "'");
@@ -86,7 +86,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             url: url,
             success: function(resp, options) {
                 try {
-                    this._stylesLoaded(Ext.util.JSON.decode(resp.responseText));
+                    this._stylesLoaded(Ext4.JSON.decode(resp.responseText));
                 }
                 catch (e) {
                     log.error("Could not parse styles for NcWMS layer '" + this.params.LAYERS + "'");
@@ -183,7 +183,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             url: url,
             success: function(resp, options) {
                 try {
-                    var dateArray = Ext.util.JSON.decode(resp.responseText);
+                    var dateArray = Ext4.JSON.decode(resp.responseText);
                     Ext.each(dateArray, function(date) {
                         this.temporalExtent.add(date);
                     }, this);
