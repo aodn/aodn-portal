@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext.namespace('Portal.cart');
+Ext4.namespace('Portal.cart');
 
 Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
 

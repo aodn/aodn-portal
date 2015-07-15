@@ -1,4 +1,4 @@
-Ext.namespace('Portal.visualise.animations');
+Ext4.namespace('Portal.visualise.animations');
 
 Portal.visualise.animations.TemporalExtentParser = Ext.extend(Object, {
 

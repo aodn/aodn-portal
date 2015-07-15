@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext.namespace('Portal.data');
+Ext4.namespace('Portal.data');
 
 Portal.data.TermClassification = function() {
 

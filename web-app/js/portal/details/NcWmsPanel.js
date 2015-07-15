@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.details');
+Ext4.namespace('Portal.details');
 
 Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 

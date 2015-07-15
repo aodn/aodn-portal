@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.filter');
+Ext4.namespace('Portal.filter');
 
 Portal.filter.Filter = Ext.extend(Object, {
 

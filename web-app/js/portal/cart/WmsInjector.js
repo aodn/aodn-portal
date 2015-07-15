@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.cart');
+Ext4.namespace('Portal.cart');
 
 Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 

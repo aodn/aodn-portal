@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.data');
+Ext4.namespace('Portal.data');
 
 /*
  * Creates a field object with a convert function that returns all matching

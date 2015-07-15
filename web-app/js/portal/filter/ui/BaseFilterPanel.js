@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.filter.ui');
+Ext4.namespace('Portal.filter.ui');
 
 /**
    This is the base type of all filters for geoserver layers.

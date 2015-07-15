@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.common');
+Ext4.namespace('Portal.common');
 
 /**
  * Layer descriptor constructs OpenLayers WMS object with parameters from

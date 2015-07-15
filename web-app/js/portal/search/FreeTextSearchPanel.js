@@ -6,7 +6,7 @@
  *
  */
 
-Ext.namespace('Portal.search');
+Ext4.namespace('Portal.search');
 
 Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
 

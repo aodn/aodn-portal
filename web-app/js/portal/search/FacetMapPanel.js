@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.search');
+Ext4.namespace('Portal.search');
 
 Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
 

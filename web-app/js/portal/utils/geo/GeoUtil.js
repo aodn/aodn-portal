@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.utils.geo');
+Ext4.namespace('Portal.utils.geo');
 
 Portal.utils.geo.bboxAsStringToBounds = function(bboxAsString) {
 

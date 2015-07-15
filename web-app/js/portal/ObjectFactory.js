@@ -1,4 +1,4 @@
-Ext.namespace('Portal');
+Ext4.namespace('Portal');
 
 Portal.ObjectFactory = Ext.extend(Object, {
 

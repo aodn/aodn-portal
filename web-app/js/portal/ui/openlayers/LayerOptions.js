@@ -6,7 +6,7 @@
  *
  */
 
-Ext.namespace('Portal.ui.openlayer');
+Ext4.namespace('Portal.ui.openlayer');
 
 Portal.ui.openlayers.LayerOptions = Ext.extend(Object, {
 
