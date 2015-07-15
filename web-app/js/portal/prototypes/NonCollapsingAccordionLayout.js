@@ -13,7 +13,6 @@ Ext.ux.NonCollapsingAccordionLayout = Ext.extend( Ext.layout.Accordion, {
     // A reference to the currently expanded panel that I can change without altering the this.activeItem object
     currentlyExpandedPanel : null,
 
-
     renderItem : function( c ) {
         // Call super.renderItem
         Ext.ux.NonCollapsingAccordionLayout.superclass.renderItem.apply( this, arguments );
@@ -30,7 +29,16 @@ Ext.ux.NonCollapsingAccordionLayout = Ext.extend( Ext.layout.Accordion, {
     beforeExpandPanel : function(panel) {
         var panelToCollapse = this.currentlyExpandedPanel;  // A holder for the previously selected panel
         this.currentlyExpandedPanel = panel;                // Set the new panel as the currently expanded one
-        panelToCollapse.collapse();                         // Collapse the previously selected panel
+
+        if (panelToCollapse.collapsed) {
+            // fixes #1823
+            setTimeout(function() {
+                panelToCollapse.collapse();
+            }, 400 );
+        }
+        else {
+            panelToCollapse.collapse();                     // Collapse the previously selected panel
+        }
         return true;
     },
 
