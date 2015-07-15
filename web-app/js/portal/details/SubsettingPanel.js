@@ -40,11 +40,11 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
 
         Portal.details.SubsettingPanel.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(eventName, openlayer) {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(eventName, openlayer) {
             this.updateSubsetPanelAccordionItem(openlayer);
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(eventName, openlayer) {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(eventName, openlayer) {
             this._removeFolderForLayer(openlayer);
         }, this);
     },
@@ -70,7 +70,7 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
             layerItemId: this._getItemIdForLayer(layer),
             listeners: {
                 expand: function (panel) {
-                    Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, panel.layer);
+                    Ext4.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, panel.layer);
                 }
             }
         });

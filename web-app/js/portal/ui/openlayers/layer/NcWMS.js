@@ -29,7 +29,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         this.pendingRequests = new Portal.utils.Set();
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, this._propagateDelete, this);
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, this._propagateDelete, this);
 
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, [name, url, params, options]);
 

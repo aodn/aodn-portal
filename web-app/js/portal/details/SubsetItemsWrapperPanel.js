@@ -39,13 +39,13 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
             ]
         }, cfg);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_END, this.handleLayerLoadingEnd, this);
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_END, this.handleLayerLoadingEnd, this);
 
         Portal.details.SubsetItemsWrapperPanel.superclass.constructor.call(this, config);
     },
 
     destroy: function() {
-        Ext.MsgBus.unsubscribe(PORTAL_EVENTS.LAYER_LOADING_END, this.handleLayerLoadingEnd, this);
+        Ext4.MsgBus.unsubscribe(PORTAL_EVENTS.LAYER_LOADING_END, this.handleLayerLoadingEnd, this);
 
         this.superclass().destroy.call(this);
     },

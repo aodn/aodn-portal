@@ -35,17 +35,17 @@ Portal.ui.DownloadCartWidget = Ext.extend(Ext.Panel, {
 
         Portal.ui.DownloadCartWidget.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() {
             this.collectionCounter ++;
             this.updateDownloadCartSize();
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, function() {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, function() {
             this.collectionCounter --;
             this.updateDownloadCartSize();
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
             this.collectionCounter = 0;
             this.updateDownloadCartSize();
         }, this);

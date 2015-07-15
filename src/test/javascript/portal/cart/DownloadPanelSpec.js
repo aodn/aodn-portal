@@ -28,13 +28,13 @@ describe("Portal.cart.DownloadPanel", function() {
 
         describe('active geonetwork record events', function() {
             it('listens for DATA_COLLECTION_ADDED event', function() {
-                Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
+                Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
 
                 expect(downloadPanel.generateContent).toHaveBeenCalled();
             });
 
             it('listens for DATA_COLLECTION_REMOVED event', function() {
-                Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
+                Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
 
                 expect(downloadPanel.generateContent).toHaveBeenCalled();
             });

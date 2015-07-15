@@ -59,7 +59,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         // not an actual OpenLayers.Control.
         this.mapPanel = mapPanel;
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function(eventName, message) {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function(eventName, message) {
             var map = this.mapPanel.map;
             var theLayer = map.getLayersByName(message.layer.name)[0];
             if (theLayer) {

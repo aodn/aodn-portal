@@ -33,7 +33,7 @@ describe("Portal.details.SubsettingPanel", function() {
             it('activates existing SubsetPanelAccordion for previously selected layer', function() {
                 spyOn(subsettingPanel, '_itemExistsForLayer').andReturn(true);
 
-                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
+                Ext4.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
 
                 expect(subsettingPanel._addItemForLayer).not.toHaveBeenCalled();
             });
@@ -41,7 +41,7 @@ describe("Portal.details.SubsettingPanel", function() {
             it('creates new SubsetPanelAccordion and activates for new layer', function() {
                 spyOn(subsettingPanel, '_itemExistsForLayer').andReturn(false);
 
-                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
+                Ext4.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
 
                 expect(subsettingPanel._addItemForLayer).toHaveBeenCalledWith(layer);
                 expect(subsettingPanel._activateItemForLayer).toHaveBeenCalledWith(layer);
@@ -51,7 +51,7 @@ describe("Portal.details.SubsettingPanel", function() {
                 spyOn(subsettingPanel, '_itemExistsForLayer').andReturn(true);
                 spyOn(subsettingPanel, '_removeFolderForLayer');
 
-                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);
+                Ext4.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);
 
                 expect(subsettingPanel._removeFolderForLayer).toHaveBeenCalledWith(layer);
             });
@@ -60,7 +60,7 @@ describe("Portal.details.SubsettingPanel", function() {
                 spyOn(subsettingPanel, '_itemExistsForLayer').andReturn(true);
                 spyOn(subsettingPanel, 'checkState');
 
-                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);
+                Ext4.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);
 
                 expect(subsettingPanel.checkState).toHaveBeenCalled();
             });
@@ -68,13 +68,13 @@ describe("Portal.details.SubsettingPanel", function() {
 
         describe('no selected layer', function() {
             beforeEach(function() {
-                Ext.MsgBus.publish('selectedLayerChanged');
+                Ext4.MsgBus.publish('selectedLayerChanged');
             });
 
             it("set title to 'no selected layer'", function() {
                 subsettingPanel.title = 'something';
                 expect(subsettingPanel.title).toBe('something');
-                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
+                Ext4.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
                 expect(subsettingPanel.title).toBe('something');
             });
         });

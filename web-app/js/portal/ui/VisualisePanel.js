@@ -39,7 +39,7 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
 
         this.on('beforehide', function() { this.onBeforeHide() }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() {
             this.detailsPanel.expand();
         }, this);
     },

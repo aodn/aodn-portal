@@ -42,15 +42,15 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             });
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (subject, message) {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_CHANGED, function(subject, message) {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_CHANGED, function(subject, message) {
             this.onBaseLayerChanged(message);
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function () {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.RESET, function () {
             this.reset();
             this._closeFeatureInfoPopup();
         }, this);
@@ -104,8 +104,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
         else {
             var mapPanel = this;
-            Ext.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER, function() {
-                Ext.MsgBus.unsubscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
+            Ext4.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER, function() {
+                Ext4.MsgBus.unsubscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
                 Portal.common.MapPanel.superclass.renderMap.call(mapPanel);
             });
         }

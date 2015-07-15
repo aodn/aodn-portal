@@ -81,7 +81,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
     _registerEvents: function() {
         this.mainPanel.on('tabchange', this._renderNavigationButtons, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(subject, openLayer) {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(subject, openLayer) {
             this._renderNavigationButtons(this.mainPanel);
         }, this);
     },
