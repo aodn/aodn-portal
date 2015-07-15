@@ -11,7 +11,7 @@ Portal.filter.ui.GeometryFilterService = Ext.extend(Portal.filter.ui.BaseFilterP
 
     constructor: function(cfg) {
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             typeLabel: undefined
         }, cfg);
 

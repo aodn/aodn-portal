@@ -20,7 +20,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             hidden: true
         });
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             autoScroll: true,
             title: OpenLayers.i18n('stepHeader', { stepNumber: 3, stepDescription: OpenLayers.i18n('step3Description')}),
             headerCfg: {
@@ -41,7 +41,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         this.store = Portal.data.ActiveGeoNetworkRecordStore.instance();
         this.confirmationWindow = new Portal.cart.DownloadConfirmationWindow();
 
-        Ext.apply(this, config);
+        Ext4.apply(this, config);
         Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);
 
         this.downloader = this._initDownloader();

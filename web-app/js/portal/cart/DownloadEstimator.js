@@ -13,7 +13,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     EST_FAIL_CODE: -1,
 
     constructor: function(cfg) {
-        Ext.apply(
+        Ext4.apply(
             this,
             cfg,
             { initTimestampString: new Date().getTime().toString() }

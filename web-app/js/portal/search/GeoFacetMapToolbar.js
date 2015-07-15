@@ -17,7 +17,7 @@ Portal.search.GeoFacetMapToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {
      */
     initialize: function(options) {
 
-        options = Ext.apply({
+        options = Ext4.apply({
             displayClass: 'olControlEditingToolbar'
         }, options);
 

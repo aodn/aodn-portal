@@ -13,7 +13,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
 
     constructor: function (cfg) {
 
-        var config = Ext.apply({}, cfg);
+        var config = Ext4.apply({}, cfg);
         Portal.details.NCWMSColourScalePanel.superclass.constructor.call(this, config);
     },
 

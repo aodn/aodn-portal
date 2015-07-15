@@ -22,7 +22,7 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
             hidden: true
         });
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             autoScroll: true,
             title: OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description')}),
             headerCfg: {

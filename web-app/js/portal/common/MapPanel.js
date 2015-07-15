@@ -15,7 +15,7 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
     constructor: function(cfg) {
         var defaultZoom = this.getMapDefaultZoom(cfg.initialBbox);
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             extent: defaultZoom,
             stateful: false
         }, cfg);

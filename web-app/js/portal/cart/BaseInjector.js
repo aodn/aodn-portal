@@ -9,7 +9,7 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.BaseInjector = Ext.extend(Object, {
     constructor: function(config) {
-        Portal.cart.BaseInjector.superclass.constructor.call(this, Ext.apply(this, config));
+        Portal.cart.BaseInjector.superclass.constructor.call(this, Ext4.apply(this, config));
     },
 
     getInjectionJson: function(collection) {

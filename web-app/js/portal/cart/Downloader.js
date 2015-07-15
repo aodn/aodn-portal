@@ -12,7 +12,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     constructor: function(config) {
         this.addEvents('downloadrequested', 'downloadstarted', 'downloadfailed');
 
-        Ext.apply(this, config);
+        Ext4.apply(this, config);
 
         Portal.cart.Downloader.superclass.constructor.call(this, config);
     },

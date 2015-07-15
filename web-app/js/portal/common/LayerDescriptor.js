@@ -31,7 +31,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         this.openLayerClass = openLayerClass;
         this.geonetworkRecord = geonetworkRecord;
 
-        Ext.apply(this, cfg);
+        Ext4.apply(this, cfg);
 
         if (title) {
             this.title = title;

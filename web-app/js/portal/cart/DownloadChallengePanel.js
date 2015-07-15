@@ -40,7 +40,7 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
             }
         };
 
-        Ext.apply(this, config);
+        Ext4.apply(this, config);
 
         Portal.cart.DownloadChallengePanel.superclass.initComponent.call(this, arguments);
 

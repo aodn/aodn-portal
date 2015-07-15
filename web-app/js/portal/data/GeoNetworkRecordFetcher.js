@@ -10,7 +10,7 @@ Ext.namespace('Portal.data');
 Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
 
     constructor: function(config) {
-        Ext.apply(this, config);
+        Ext4.apply(this, config);
 
         Portal.data.GeoNetworkRecordFetcher.superclass.constructor.call(this, config);
 

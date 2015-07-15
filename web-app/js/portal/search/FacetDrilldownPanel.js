@@ -11,7 +11,7 @@ Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
     constructor: function(cfg) {
         cfg = cfg || {};
 
-        Ext.apply(cfg, {
+        Ext4.apply(cfg, {
             animate: false,
             singleExpand: true,
             rootVisible: false,

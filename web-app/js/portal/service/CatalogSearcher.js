@@ -25,12 +25,12 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
             fields: ['name', 'value']
         });
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             searchFilters: searchFilters
         }, cfg, defaults);
 
         // Not done in Observable's constructor for some reason
-        Ext.apply(this, config);
+        Ext4.apply(this, config);
 
         Portal.service.CatalogSearcher.superclass.constructor.call(this, config);
 
@@ -214,10 +214,10 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
     _getParams: function(page) {
         //--- Add search defaults (e.g. map layers only)
-        var params = Ext.apply({}, this.defaultParams);
+        var params = Ext4.apply({}, this.defaultParams);
 
         //--- Add paging params
-        Ext.apply(params, page);
+        Ext4.apply(params, page);
 
         //--- Add current search filters
         this.searchFilters.each(function(rec) {
@@ -239,7 +239,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         });
 
         //--- Add required base parameters (e.g. fast=index)
-        Ext.apply(params, this.baseParams);
+        Ext4.apply(params, this.baseParams);
 
         return params;
     }
