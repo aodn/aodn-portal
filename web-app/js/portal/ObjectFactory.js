@@ -1,6 +1,6 @@
 Ext4.namespace('Portal');
 
-Portal.ObjectFactory = Ext.extend(Object, {
+Ext4.define('Portal.ObjectFactory', { extend: 'Object',
 
     getInstance: function(constructor) {
         // http://stackoverflow.com/questions/3362471/how-can-i-call-a-javascript-constructor-using-call-or-apply

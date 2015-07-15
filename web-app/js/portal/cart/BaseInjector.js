@@ -7,7 +7,7 @@
 
 Ext4.namespace('Portal.cart');
 
-Portal.cart.BaseInjector = Ext.extend(Object, {
+Ext4.define('Portal.cart.BaseInjector', { extend: 'Object',
     constructor: function(config) {
         Portal.cart.BaseInjector.superclass.constructor.call(this, Ext4.apply(this, config));
     },
@@ -54,8 +54,8 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
     _hideButton: function(uuid) {
 
         var elementId = OpenLayers.i18n('downloadButtonId', {id: uuid});
-        if (Ext.get(elementId)) {
-            Ext.fly(elementId).update("");
+        if (Ext4.get(elementId)) {
+            Ext4.fly(elementId).update("");
         }
     },
 
