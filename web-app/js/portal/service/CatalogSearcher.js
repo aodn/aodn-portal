@@ -180,7 +180,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         var searchUrl = this.catalogUrl + '/srv/eng/' + this.serviceUrl;
 
-        return searchUrl  + '?' + Ext.urlEncode(params);
+        return searchUrl  + '?' + Ext4.urlEncode(params);
     },
 
     // This function will get only the deepest facets a user has searched for.
