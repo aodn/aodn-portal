@@ -15,13 +15,13 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        Ext.apply(this, cfg);
+        Ext4.apply(this, cfg);
 
         this.addEvents('tabchange');
 
         var fetcher = new Portal.data.GeoNetworkRecordFetcher();
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             activeItem: fetcher.hasUuidsInUrl() ? TAB_INDEX_VISUALISE : TAB_INDEX_SEARCH,
             margins: {
                 left: 10,

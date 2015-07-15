@@ -15,7 +15,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
 
         var layerStore = new Portal.data.LayerStore();
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             layers: layerStore
         }, cfg);
 

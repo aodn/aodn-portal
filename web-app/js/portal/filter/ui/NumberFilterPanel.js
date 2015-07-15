@@ -15,7 +15,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
 
     constructor: function(cfg) {
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             layout: 'menu',
             layoutConfig: {
                 padding: '5',

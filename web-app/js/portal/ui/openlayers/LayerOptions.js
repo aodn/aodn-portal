@@ -30,7 +30,7 @@ Portal.ui.openlayers.LayerOptions = Ext.extend(Object, {
             displayInLayerSwitcher: (layerDescriptor.isBaseLayer === true)
         };
 
-        Ext.apply(this, defaultOptions);
-        Ext.apply(this, overrides);
+        Ext4.apply(this, defaultOptions);
+        Ext4.apply(this, overrides);
     }
 });

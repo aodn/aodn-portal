@@ -13,7 +13,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         this.layer = cfg.layer;
         this.map = cfg.map;
         this.loadingMessage = this._createLoadingMessageContainer();
-        var config = Ext.apply({
+        var config = Ext4.apply({
             autoDestroy: true,
             cls: 'filterGroupPanel',
             items: [

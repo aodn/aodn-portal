@@ -16,7 +16,7 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
         this.facetName = cfg.facetName;
         this.searcher = cfg.searcher;
 
-        Ext.apply(cfg, {
+        Ext4.apply(cfg, {
             title: cfg.title,
             containerScroll: true,
             autoScroll: true,

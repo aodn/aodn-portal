@@ -17,7 +17,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.appConfig = Portal.app.appConfig;
         var portalConfig = this.appConfig.portal;
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             stateful: false,
             forceLayout: true,   // Makes the map appear (almost) instantly when user clicks the 'map' button.
             split: true,

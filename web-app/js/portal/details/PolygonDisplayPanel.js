@@ -17,7 +17,7 @@ Portal.details.PolygonDisplayPanel = Ext.extend(Ext.grid.GridPanel, {
             ]
         });
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             disableSelection: true,
             hideHeaders: true,
             store: this.verticesStore,

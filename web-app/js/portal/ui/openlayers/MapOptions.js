@@ -10,7 +10,7 @@ Ext.namespace('Portal.ui');
 Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
 
     constructor: function (cfg, mapPanel) {
-        var config = Ext.apply({}, cfg);
+        var config = Ext4.apply({}, cfg);
         Portal.ui.openlayers.MapOptions.superclass.constructor.call(this, config);
 
         Ext.QuickTips.init();

@@ -15,7 +15,7 @@ Portal.filter.ui.BaseFilterPanel = Ext.extend(Ext.Panel, {
     MAX_COMPONENT_WIDTH: 300,
 
     constructor: function(cfg) {
-        var config = Ext.apply({
+        var config = Ext4.apply({
             typeLabel: OpenLayers.i18n('generalFilterHeading'),
             listeners: {
                 beforeremove: function() {

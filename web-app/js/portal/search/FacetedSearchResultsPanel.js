@@ -33,7 +33,7 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
             ]
         };
 
-        Ext.apply(this, config);
+        Ext4.apply(this, config);
 
         Portal.search.FacetedSearchResultsPanel.superclass.initComponent.apply(this, arguments);
 

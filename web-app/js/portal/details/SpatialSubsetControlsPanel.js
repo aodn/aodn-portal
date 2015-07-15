@@ -11,7 +11,7 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             cls: "spatialSubsetControl"
         }, cfg);
 

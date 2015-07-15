@@ -11,7 +11,7 @@ Ext4.define('Portal.details.InfoPanel', {
     constructor: function(cfg) {
         this.layer = cfg.layer;
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             title: OpenLayers.i18n('infoTabTitle'),
             html: OpenLayers.i18n('loadingMessage', {resource: " collection information"}),
             autoHeight: true,

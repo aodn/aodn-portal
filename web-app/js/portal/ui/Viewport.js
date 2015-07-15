@@ -39,7 +39,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
         this.downloadCartWidget = new Portal.ui.DownloadCartWidget({});
 
-        var config = Ext.apply(
+        var config = Ext4.apply(
             {
                 layout: 'border',
                 boxMinWidth: 1050,

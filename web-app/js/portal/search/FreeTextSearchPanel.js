@@ -23,9 +23,9 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
             titleCollapse: true
         };
 
-        Ext.apply(this, cfg, defaults);
+        Ext4.apply(this, cfg, defaults);
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             layout: 'form',
             cls: 'search-filter-panel filter-selection-panel',
             items: [{

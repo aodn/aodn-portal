@@ -13,7 +13,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
         this._initFacetFilters(config);
 
-        config = Ext.apply({
+        config = Ext4.apply({
             stateful: false,
             autoScroll: true,
             padding: 3,
@@ -169,7 +169,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             this.filterFactory = new Portal.ObjectFactory();
         }
 
-        var facetFilter = this.filterFactory.getInstance(constructor, Ext.apply({}, config));
+        var facetFilter = this.filterFactory.getInstance(constructor, Ext4.apply({}, config));
 
         this.filters.push(facetFilter);
         this[name] = facetFilter;

@@ -21,7 +21,7 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
 
         this.createTools();
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             id: cfg.layerItemId,
             cls: 'subsetPanelAccordionItem',
             title: '<h4>' + cfg.layer.name + '</h4>',

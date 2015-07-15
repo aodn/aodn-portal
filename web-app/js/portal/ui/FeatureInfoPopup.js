@@ -14,7 +14,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         this.numResultQueries = 0;
         this.numGoodResults = 0;
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             title: OpenLayers.i18n('searchingTitle'),
             width: Portal.app.appConfig.portal.popupWidth,
             height: 80, // set height later when there are results
