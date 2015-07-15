@@ -41,7 +41,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
 
         var handlerToEstimateWith;
 
-        Ext.each(collection.dataDownloadHandlers, function(handler) {
+        Ext4.each(collection.dataDownloadHandlers, function(handler) {
 
             if (handler.canEstimateDownloadSize()) {
                 handlerToEstimateWith = handler;

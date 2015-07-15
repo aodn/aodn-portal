@@ -110,7 +110,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
         var queryableVisibleLayersCount = 0;
 
-        Ext.each(wmsLayers, function(layer, index, all) {
+        Ext4.each(wmsLayers, function(layer, index, all) {
             if (layer.params.QUERYABLE == true && layer.getVisibility()) {
 
                 queryableVisibleLayersCount++;
@@ -182,7 +182,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
         var allLayers = this.map.getLayersByClass("OpenLayers.Layer.WMS");
         allLayers.concat(this.map.getLayersByClass("OpenLayers.Layer.Image"));
-        Ext.each(allLayers, function(layer, index, all) {
+        Ext4.each(allLayers, function(layer, index, all) {
             if (!layer.isBaseLayer) {
                 if (layer.isAnimated) {
                     var rootLayer = rootLayers[layer.params.LAYERS];

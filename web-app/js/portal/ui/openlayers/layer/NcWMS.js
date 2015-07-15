@@ -108,9 +108,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         var includesVectorStyle = false;
 
-        Ext.each(response.palettes.sort(), function(palette) {
+        Ext4.each(response.palettes.sort(), function(palette) {
 
-            Ext.each(response.styles.sort(), function(style) {
+            Ext4.each(response.styles.sort(), function(style) {
 
                 if (style == 'vector') {
                     includesVectorStyle = true;
@@ -184,7 +184,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             success: function(resp, options) {
                 try {
                     var dateArray = Ext4.JSON.decode(resp.responseText);
-                    Ext.each(dateArray, function(date) {
+                    Ext4.each(dateArray, function(date) {
                         this.temporalExtent.add(date);
                     }, this);
                     this.pendingRequests.remove(url);

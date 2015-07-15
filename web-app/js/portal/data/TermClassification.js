@@ -11,7 +11,7 @@ Portal.data.TermClassification = function() {
     function extractCategories(record, depth, result) {
         var broader = record.attributes['value'].value;
 
-        Ext.each(record.children, function(n) {
+        Ext4.each(record.children, function(n) {
             var name = n.attributes['value'].value;
 
             if (!result[name]) {

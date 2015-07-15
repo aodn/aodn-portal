@@ -73,7 +73,7 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
 
         it('returns correct values for various inputs', function() {
 
-            Ext.each(testCases, function(testValues) {
+            Ext4.each(testCases, function(testValues) {
                 var testUrl = testValues[0];
                 var expectedOutput = testValues[1];
                 fetcher._getUrl = function() { return testUrl };

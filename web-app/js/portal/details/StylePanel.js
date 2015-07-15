@@ -185,7 +185,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
     _processStyleData: function(layer) {
         var data = [];
 
-        Ext.each(layer.styles, function(style) {
+        Ext4.each(layer.styles, function(style) {
 
             var palette = style.palette;
             var styleName = style.name + '/' + palette;

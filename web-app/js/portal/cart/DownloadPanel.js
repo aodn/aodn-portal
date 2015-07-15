@@ -101,7 +101,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         var tpl = new Portal.cart.DownloadPanelItemTemplate(this);
         var html = '';
 
-        Ext.each(this.store.getLoadedRecords(), function(item) {
+        Ext4.each(this.store.getLoadedRecords(), function(item) {
             var collection = item.data;
 
             html += this._generateBodyContentForCollection(tpl, collection, html);
@@ -163,9 +163,9 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             processedValues.menuItems = [];
         }
 
-        Ext.each(collection.dataDownloadHandlers, function(handler) {
+        Ext4.each(collection.dataDownloadHandlers, function(handler) {
 
-            Ext.each(handler.getDownloadOptions(), function(downloadOption) {
+            Ext4.each(handler.getDownloadOptions(), function(downloadOption) {
 
                 var newMenuItem = {
                     text: OpenLayers.i18n(downloadOption.textKey),

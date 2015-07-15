@@ -55,7 +55,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
             return;
         }
 
-        Ext.each(days, function(day, index) {
+        Ext4.each(days, function(day, index) {
             // Create the day
             this._createDay(day);
 
@@ -339,7 +339,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
 
         while (this._equalToOrBefore(iter, endDate)) {
             if (this.getDay(iter)) {
-                Ext.each(this.getDay(iter), function(date, index) {
+                Ext4.each(this.getDay(iter), function(date, index) {
                     flatExtent.push(date.clone());
                 }, this);
             }

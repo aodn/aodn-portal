@@ -159,7 +159,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     _toDrilldownFilter: function(categories) {
         var encodedCategories = [];
 
-        Ext.each(categories, function(category) {
+        Ext4.each(categories, function(category) {
             encodedCategories.push(encodeURIComponent(category));
         });
 
