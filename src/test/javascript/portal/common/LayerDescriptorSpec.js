@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -19,15 +18,17 @@ describe("Portal.common.LayerDescriptor", function() {
 
     it('from javascript object', function() {
         var layerDescAsDecodedJSON = {
-            name : 'satellite',
-            server : {
-                uri : 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi'
-            }
+            name: 'satellite',
+            server: {
+                uri: 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi'
+            },
+            cql: 'attr=123'
         };
 
         var layerDesc = new Portal.common.LayerDescriptor(layerDescAsDecodedJSON);
         expect(layerDesc.name).toBe('satellite');
         expect(layerDesc.server.uri).toBe('http://tilecache.emii.org.au/cgi-bin/tilecache.cgi');
+        expect(layerDesc.cql).toBe('attr=123');
     });
 
     describe('toOpenLayer', function() {
@@ -112,6 +113,7 @@ describe("Portal.common.LayerDescriptor", function() {
                 {
                     bboxMinX: 1
                 },
+                'title',
                 {}
             );
 
@@ -119,11 +121,15 @@ describe("Portal.common.LayerDescriptor", function() {
         });
 
         it('from geonetwork record if not available in class', function() {
-            var layerDescriptor = new Portal.common.LayerDescriptor({}, {
-                data: {
-                    bboxMinX: 1
+            var layerDescriptor = new Portal.common.LayerDescriptor(
+                {},
+                'title',
+                {
+                    data: {
+                        bboxMinX: 1
+                    }
                 }
-            });
+            );
 
             expect(layerDescriptor._getAttribute('bboxMinX')).toEqual(1);
         });
@@ -159,7 +165,7 @@ describe("Portal.common.LayerDescriptor", function() {
                 }
             };
 
-            var layerDescriptor = new Portal.common.LayerDescriptor({}, geonetworkRecord);
+            var layerDescriptor = new Portal.common.LayerDescriptor({}, 'title', geonetworkRecord);
 
             layerDescriptor._setOpenLayerBounds(openLayer);
 
