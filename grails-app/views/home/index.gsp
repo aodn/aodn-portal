@@ -28,11 +28,14 @@ The AODN/IMOS Portal is distributed under the terms of the GNU General Public Li
         <g:render template="/public_theme_includes"></g:render>
 
         <script type="text/javascript">
-            // Fixes #1723, redirect 'home/' to 'home'
-            if (window.location.href.match(/\/home\/$/)) {
-                var homeWithoutTrailingSlash = window.location.href.substring(0, window.location.href.length - 1);
-                window.location.replace(homeWithoutTrailingSlash);
-            }
+
+            (function () {
+                // Fixes #1723, redirect 'home/' to 'home'
+                if (window.location.href.match(/\/home\/$/)) {
+                    var homeWithoutTrailingSlash = window.location.href.substring(0, window.location.href.length - 1);
+                    window.location.replace(homeWithoutTrailingSlash);
+                }
+            }());
 
             // Supporting only Firefox and Chrome users
             Ext.onReady(Portal.app.browserCheck);

@@ -149,7 +149,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     hasDrilldown: function(categories) {
         var drilldownFilter = this._toDrilldownFilter(categories);
 
-        drilldownFilterIndex = this.searchFilters.findBy(function (record) {
+        var drilldownFilterIndex = this.searchFilters.findBy(function (record) {
             return record.get('name') == this.DRILLDOWN_PARAMETER_NAME && record.get('value') == drilldownFilter;
         }, this);
 
