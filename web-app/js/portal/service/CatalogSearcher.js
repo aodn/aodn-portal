@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.service');
+Ext4.namespace('Portal.service');
 
 Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     DRILLDOWN_PARAMETER_NAME: "facet.q",
@@ -25,12 +25,12 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
             fields: ['name', 'value']
         });
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             searchFilters: searchFilters
         }, cfg, defaults);
 
         // Not done in Observable's constructor for some reason
-        Ext.apply(this, config);
+        Ext4.apply(this, config);
 
         Portal.service.CatalogSearcher.superclass.constructor.call(this, config);
 
@@ -57,7 +57,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         var searchResponseLoader = this._newSearchResponseLoader({
             requestMethod: 'GET',
             preloadChildren: true,
-            url: Ext.ux.Ajax.constructProxyUrl(requestUrl),
+            url: Ext4.ux.Ajax.constructProxyUrl(requestUrl),
             listeners: {
                 scope: this,
                 load: this._onSuccessfulSearch.bind(this, page),
@@ -159,7 +159,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     _toDrilldownFilter: function(categories) {
         var encodedCategories = [];
 
-        Ext.each(categories, function(category) {
+        Ext4.each(categories, function(category) {
             encodedCategories.push(encodeURIComponent(category));
         });
 
@@ -180,7 +180,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         var searchUrl = this.catalogUrl + '/srv/eng/' + this.serviceUrl;
 
-        return searchUrl  + '?' + Ext.urlEncode(params);
+        return searchUrl  + '?' + Ext4.urlEncode(params);
     },
 
     // This function will get only the deepest facets a user has searched for.
@@ -214,10 +214,10 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
     _getParams: function(page) {
         //--- Add search defaults (e.g. map layers only)
-        var params = Ext.apply({}, this.defaultParams);
+        var params = Ext4.apply({}, this.defaultParams);
 
         //--- Add paging params
-        Ext.apply(params, page);
+        Ext4.apply(params, page);
 
         //--- Add current search filters
         this.searchFilters.each(function(rec) {
@@ -239,7 +239,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         });
 
         //--- Add required base parameters (e.g. fast=index)
-        Ext.apply(params, this.baseParams);
+        Ext4.apply(params, this.baseParams);
 
         return params;
     }

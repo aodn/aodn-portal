@@ -78,7 +78,7 @@ describe('Portal.service.CatalogSearcher', function() {
 
                 var drilldownParam = searcher._getParams()[searcher.DRILLDOWN_PARAMETER_NAME];
                 expect(drilldownParam).toEqual('Platform/Mooring');
-                expect(Ext.urlEncode(searcher._getParams())).toBe('facet.q=Platform%2FMooring');
+                expect(Ext4.urlEncode(searcher._getParams())).toBe('facet.q=Platform%2FMooring');
             });
 
             it('adds multiple drilldown values to drilldown parameter', function() {
@@ -87,14 +87,14 @@ describe('Portal.service.CatalogSearcher', function() {
 
                 var drilldownParam = searcher._getParams()[searcher.DRILLDOWN_PARAMETER_NAME];
                 expect(drilldownParam).toEqual(['Platform/Mooring', 'Platform/Ship/Aurora Australis']);
-                expect(Ext.urlEncode(searcher._getParams())).toBe('facet.q=Platform%2FMooring&facet.q=Platform%2FShip%2FAurora%20Australis');
+                expect(Ext4.urlEncode(searcher._getParams())).toBe('facet.q=Platform%2FMooring&facet.q=Platform%2FShip%2FAurora%20Australis');
             });
 
             it('adds non drilldown value to its own parameter', function() {
                 searcher.addFilter("geometry", "some_geometry", false);
 
                 expect(searcher._getParams()['geometry']).toEqual("some_geometry");
-                expect(Ext.urlEncode(searcher._getParams())).toBe('geometry=some_geometry');
+                expect(Ext4.urlEncode(searcher._getParams())).toBe('geometry=some_geometry');
             });
         });
 
@@ -110,7 +110,7 @@ describe('Portal.service.CatalogSearcher', function() {
                 return "proxy: " + url;
             };
 
-            spyOn(Ext.ux.Ajax, 'constructProxyUrl').andCallFake(proxy);
+            spyOn(Ext4.ux.Ajax, 'constructProxyUrl').andCallFake(proxy);
 
             var page = {from: 1, to: 10};
             searcher._search(page);

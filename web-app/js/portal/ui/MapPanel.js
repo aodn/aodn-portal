@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.ui');
+Ext4.namespace('Portal.ui');
 
 Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     loadSpinner: null,
@@ -17,7 +17,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.appConfig = Portal.app.appConfig;
         var portalConfig = this.appConfig.portal;
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             stateful: false,
             forceLayout: true,   // Makes the map appear (almost) instantly when user clicks the 'map' button.
             split: true,
@@ -42,15 +42,15 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             });
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (subject, message) {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function (subject, message) {
             this.onSelectedLayerChanged(message);
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_CHANGED, function(subject, message) {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_CHANGED, function(subject, message) {
             this.onBaseLayerChanged(message);
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function () {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.RESET, function () {
             this.reset();
             this._closeFeatureInfoPopup();
         }, this);
@@ -104,8 +104,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
         else {
             var mapPanel = this;
-            Ext.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER, function() {
-                Ext.MsgBus.unsubscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
+            Ext4.MsgBus.subscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER, function() {
+                Ext4.MsgBus.unsubscribe(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
                 Portal.common.MapPanel.superclass.renderMap.call(mapPanel);
             });
         }

@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext.namespace('Portal.details');
+Ext4.namespace('Portal.details');
 
 Portal.details.PolygonDisplayPanel = Ext.extend(Ext.grid.GridPanel, {
 
@@ -17,7 +17,7 @@ Portal.details.PolygonDisplayPanel = Ext.extend(Ext.grid.GridPanel, {
             ]
         });
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             disableSelection: true,
             hideHeaders: true,
             store: this.verticesStore,

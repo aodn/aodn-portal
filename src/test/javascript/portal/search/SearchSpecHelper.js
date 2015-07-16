@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.search.SearchSpecHelper');
+Ext4.namespace('Portal.search.SearchSpecHelper');
 
 Portal.search.SearchSpecHelper.mockSearchResponse = function(searcher, response) {
     var loader = new Ext.tree.TreeLoader({

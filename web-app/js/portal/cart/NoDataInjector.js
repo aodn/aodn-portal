@@ -5,12 +5,12 @@
  *
  */
 
-Ext.namespace('Portal.cart');
+Ext4.namespace('Portal.cart');
 
-Portal.cart.NoDataInjector = Ext.extend(Portal.cart.BaseInjector, {
+Ext4.define('Portal.cart.NoDataInjector', { extend: 'Portal.cart.BaseInjector',
 
     constructor: function(config) {
-        Portal.cart.NoDataInjector.superclass.constructor.call(this, Ext.apply(this, config));
+        Portal.cart.NoDataInjector.superclass.constructor.call(this, Ext4.apply(this, config));
     },
 
     _getDataFilterEntry: function() {

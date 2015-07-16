@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext.namespace('Portal.cart');
+Ext4.namespace('Portal.cart');
 
 Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
@@ -20,7 +20,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             hidden: true
         });
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             autoScroll: true,
             title: OpenLayers.i18n('stepHeader', { stepNumber: 3, stepDescription: OpenLayers.i18n('step3Description')}),
             headerCfg: {
@@ -41,7 +41,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         this.store = Portal.data.ActiveGeoNetworkRecordStore.instance();
         this.confirmationWindow = new Portal.cart.DownloadConfirmationWindow();
 
-        Ext.apply(this, config);
+        Ext4.apply(this, config);
         Portal.cart.DownloadPanel.superclass.initComponent.call(this, arguments);
 
         this.downloader = this._initDownloader();
@@ -67,9 +67,9 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
     _registerEvents: function() {
         this.on('beforeshow', function() { this.generateContent() }, this);
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() { this.generateContent() }, this);
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function() { this.generateContent() }, this);
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, function() { this.generateContent() }, this);
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() { this.generateContent() }, this);
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function() { this.generateContent() }, this);
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, function() { this.generateContent() }, this);
     },
 
     onDownloadRequested: function(downloadUrl, collection) {
@@ -101,7 +101,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         var tpl = new Portal.cart.DownloadPanelItemTemplate(this);
         var html = '';
 
-        Ext.each(this.store.getLoadedRecords(), function(item) {
+        Ext4.each(this.store.getLoadedRecords(), function(item) {
             var collection = item.data;
 
             html += this._generateBodyContentForCollection(tpl, collection, html);
@@ -163,9 +163,9 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             processedValues.menuItems = [];
         }
 
-        Ext.each(collection.dataDownloadHandlers, function(handler) {
+        Ext4.each(collection.dataDownloadHandlers, function(handler) {
 
-            Ext.each(handler.getDownloadOptions(), function(downloadOption) {
+            Ext4.each(handler.getDownloadOptions(), function(downloadOption) {
 
                 var newMenuItem = {
                     text: OpenLayers.i18n(downloadOption.textKey),

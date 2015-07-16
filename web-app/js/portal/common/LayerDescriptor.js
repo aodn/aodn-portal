@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.common');
+Ext4.namespace('Portal.common');
 
 /**
  * Layer descriptor constructs OpenLayers WMS object with parameters from
@@ -20,7 +20,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
 
     constructor: function(cfg, title, geonetworkRecord, openLayerClass) {
         if (typeof cfg == "string") {
-            cfg = Ext.util.JSON.decode(cfg);
+            cfg = Ext4.JSON.decode(cfg);
         }
 
         if (!openLayerClass) {
@@ -31,7 +31,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         this.openLayerClass = openLayerClass;
         this.geonetworkRecord = geonetworkRecord;
 
-        Ext.apply(this, cfg);
+        Ext4.apply(this, cfg);
 
         if (title) {
             this.title = title;
@@ -116,7 +116,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
 
         var layerName = null;
 
-        Ext.each(links, function(link) {
+        Ext4.each(links, function(link) {
 
             if (link.protocol == protocol) {
 

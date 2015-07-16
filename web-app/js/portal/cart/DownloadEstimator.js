@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.cart');
+Ext4.namespace('Portal.cart');
 
 Portal.cart.DownloadEstimator = Ext.extend(Object, {
 
@@ -13,7 +13,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     EST_FAIL_CODE: -1,
 
     constructor: function(cfg) {
-        Ext.apply(
+        Ext4.apply(
             this,
             cfg,
             { initTimestampString: new Date().getTime().toString() }
@@ -28,7 +28,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
 
     _getDownloadEstimate: function(collection, callback) {
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: 'download/estimateSizeForLayer',
             timeout: 30000,
             scope: this,

@@ -38,6 +38,21 @@
     <script src="${resource(dir: 'js/GeoExt1.1/script', file: 'GeoExt.js')}" type="text/javascript"></script>
 </g:else>
 
+<!-- Ext JS 4 -->
+<link rel="stylesheet" type="text/css" href="js/extjs-4.1.1/resources/css/ext-sandbox-debug.css">
+<script type="text/javascript" src="js/extjs-4.1.1/builds/ext-all-sandbox-debug.js"></script>
+
+<script type="text/javascript">
+    Ext4.Loader.setConfig({
+        enabled: true,
+        disableCaching: true,
+        paths: {
+            "Ext.ux": "js/ext-ux",
+            "Portal": "js/portal"
+        }
+    });
+</script>
+
 <script src="${resource(dir: 'js/ext-ux/form', file: 'DateTime.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js/ext-ux/SuperBoxSelect', file: 'SuperBoxSelect.js')}" type="text/javascript"></script>
 <script src="${resource(dir: 'js/ext-ux', file: 'ScrollTo.js')}" type="text/javascript"></script>
@@ -48,6 +63,7 @@
 <g:if env="development">
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/control', file: 'SpatialConstraint.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils/geo', file: 'GeoUtil.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Ext4To3Wrapper.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Image.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Proxy.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Set.js')}"></script>

@@ -6,12 +6,12 @@
  *
  */
 
-Ext.namespace('Portal.data');
+Ext4.namespace('Portal.data');
 
 Portal.data.LayerDataPanelStore = Ext.extend(Ext.data.JsonStore, {
 
     constructor: function(cfg) {
-        var config = Ext.apply({
+        var config = Ext4.apply({
             autoLoad: true,
             root: 'data',
             fields: ['id', 'title', 'name', 'server', 'isBaseLayer'],

@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.details');
+Ext4.namespace('Portal.details');
 
 Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
 
@@ -22,7 +22,7 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
             hidden: true
         });
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             autoScroll: true,
             title: OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description')}),
             headerCfg: {
@@ -40,11 +40,11 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
 
         Portal.details.SubsettingPanel.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(eventName, openlayer) {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(eventName, openlayer) {
             this.updateSubsetPanelAccordionItem(openlayer);
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(eventName, openlayer) {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(eventName, openlayer) {
             this._removeFolderForLayer(openlayer);
         }, this);
     },
@@ -70,7 +70,7 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
             layerItemId: this._getItemIdForLayer(layer),
             listeners: {
                 expand: function (panel) {
-                    Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, panel.layer);
+                    Ext4.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, panel.layer);
                 }
             }
         });

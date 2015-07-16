@@ -172,3 +172,4 @@ Ext.ux.util.MessageBus = function(){
  * Shorthand for {@link Ext.ux.util.MessageBus}
  */
 Ext.MsgBus = Ext.ux.util.MessageBus;
+Ext4.MsgBus = Ext.ux.util.MessageBus;

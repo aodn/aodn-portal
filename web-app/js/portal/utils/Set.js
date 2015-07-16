@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.utils');
+Ext4.namespace('Portal.utils');
 
 // An inefficient and naive implementation for a set using an array
 Portal.utils.Set = Ext.extend(Object, {

@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.search');
+Ext4.namespace('Portal.search');
 
 Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
@@ -13,7 +13,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
         this._initFacetFilters(config);
 
-        config = Ext.apply({
+        config = Ext4.apply({
             stateful: false,
             autoScroll: true,
             padding: 3,
@@ -132,7 +132,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     _onNewSearchClicked: function() {
         this._setSpinnerText(OpenLayers.i18n('facetedSearchResetting'));
 
-        Ext.each(this.filters, function(filter, index, all) {
+        Ext4.each(this.filters, function(filter, index, all) {
             filter.removeAnyFilters();
         });
 
@@ -169,7 +169,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             this.filterFactory = new Portal.ObjectFactory();
         }
 
-        var facetFilter = this.filterFactory.getInstance(constructor, Ext.apply({}, config));
+        var facetFilter = this.filterFactory.getInstance(constructor, Ext4.apply({}, config));
 
         this.filters.push(facetFilter);
         this[name] = facetFilter;
@@ -177,7 +177,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _monitor: function(object, events, scope) {
-        Ext.each(events, function(event, index, all) {
+        Ext4.each(events, function(event, index, all) {
             this.mon(object, event.event, event.callback, scope);
         }, this);
     },

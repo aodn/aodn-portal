@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.cart');
+Ext4.namespace('Portal.cart');
 
 Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
@@ -58,7 +58,7 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
         this.downloadChallengePanel = new Portal.cart.DownloadChallengePanel({});
 
-        Ext.apply(this, {
+        Ext4.apply(this, {
             title:OpenLayers.i18n('downloadConfirmationWindowTitle'),
             modal: true,
             padding: 15,

@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.search');
+Ext4.namespace('Portal.search');
 
 Portal.search.MetadataExtent = Ext.extend(Object, {
 
@@ -50,7 +50,7 @@ Portal.search.MetadataExtent = Ext.extend(Object, {
 
     _vectorFeatures: function() {
         var features = [];
-        Ext.each(this.geometries, function(geometry, index, all) {
+        Ext4.each(this.geometries, function(geometry, index, all) {
             features.push(new OpenLayers.Feature.Vector(geometry));
         }, this);
 

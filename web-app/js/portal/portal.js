@@ -14,7 +14,7 @@ Ext.BLANK_IMAGE_URL = 'img/blank.gif';
 Ext.QuickTips.init();
 
 //--------------------------------------------------------------------------------------------
-Ext.ns('Portal');
+Ext4.namespace('Portal');
 
 Portal.app = {
 
@@ -45,21 +45,21 @@ Portal.app = {
 
     init: function() {
         // Set open layers proxyhost
-        OpenLayers.ProxyHost = Ext.ux.Ajax.proxyUrl;
+        OpenLayers.ProxyHost = Ext4.ux.Ajax.proxyUrl;
 
         // Global Ajax events can be handled on every request!
-        Ext.Ajax.on('beforerequest', function() {
+        Ext4.Ajax.on('beforerequest', function() {
             if (progressCount == 0) {
                 this.ajaxAction('show');
             }
             progressCount++;
         }, this);
 
-        Ext.Ajax.on('requestcomplete', this.ajaxComplete, this);
-        Ext.Ajax.on('requestexception', this.ajaxComplete, this);
+        Ext4.Ajax.on('requestcomplete', this.ajaxComplete, this);
+        Ext4.Ajax.on('requestexception', this.ajaxComplete, this);
 
         // Load config
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: 'home/config',
             scope: this,
             success: this.afterConfigLoad,
@@ -72,7 +72,7 @@ Portal.app = {
         var configJson = resp.responseText;
 
         try {
-            this.appConfig = Ext.util.JSON.decode(configJson);
+            this.appConfig = Ext4.JSON.decode(configJson);
         }
         catch (e) {
             log.error('Unable to load config. Invalid response: ' + configJson);
@@ -115,7 +115,10 @@ function setViewPortTab(tabIndex) {
 //and Ext.form.MessageTargets.side are saying "field.el.dom" is undefined.
 Ext.onReady(function() {
 
-    Ext.apply(Ext.form.MessageTargets.qtip, {
+    // See: http://stackoverflow.com/questions/5715626/ext-loader-not-enabled-missing-required
+    Ext4.Loader.setConfig({enabled:true});
+
+    Ext4.apply(Ext.form.MessageTargets.qtip, {
         clear: function(field) {
             field.el.removeClass(field.invalidClass);
             // fix
@@ -126,7 +129,7 @@ Ext.onReady(function() {
         }
     });
 
-    Ext.apply(Ext.form.MessageTargets.side, {
+    Ext4.apply(Ext.form.MessageTargets.side, {
         clear: function(field) {
             field.el.removeClass(field.invalidClass);
             // fix

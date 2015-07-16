@@ -10,7 +10,7 @@ describe('Portal.data.Server', function() {
         var server1Info;
 
         beforeEach(function() {
-            Ext.namespace('Portal.app.appConfig');
+            Ext4.namespace('Portal.app.appConfig');
 
             server1Info = {
                 uri: 'http://server1',

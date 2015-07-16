@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.ui');
+Ext4.namespace('Portal.ui');
 
 Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
@@ -14,7 +14,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         this.numResultQueries = 0;
         this.numGoodResults = 0;
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             title: OpenLayers.i18n('searchingTitle'),
             width: Portal.app.appConfig.portal.popupWidth,
             height: 80, // set height later when there are results
@@ -31,7 +31,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         this.on('maximize', this._onMaximizeRestore, this);
         this.on('restore', this._onMaximizeRestore, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
             this.close();
         }, this);
     },
@@ -89,7 +89,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
     _handleDepthService: function() {
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             scope: this,
             url: 'depth',
             params: {
@@ -110,7 +110,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
         var queryableVisibleLayersCount = 0;
 
-        Ext.each(wmsLayers, function(layer, index, all) {
+        Ext4.each(wmsLayers, function(layer, index, all) {
             if (layer.params.QUERYABLE == true && layer.getVisibility()) {
 
                 queryableVisibleLayersCount++;
@@ -134,7 +134,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
         var extraLayerInfo = layer.extraLayerInfo ? layer.extraLayerInfo : {};
 
-        Ext.ux.Ajax.proxyRequestXML({
+        Ext4.ux.Ajax.proxyRequestXML({
             scope: this,
             url: this._getLayerFeatureInfoRequestString(layer),
             extraParams: {
@@ -182,7 +182,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
         var allLayers = this.map.getLayersByClass("OpenLayers.Layer.WMS");
         allLayers.concat(this.map.getLayersByClass("OpenLayers.Layer.Image"));
-        Ext.each(allLayers, function(layer, index, all) {
+        Ext4.each(allLayers, function(layer, index, all) {
             if (!layer.isBaseLayer) {
                 if (layer.isAnimated) {
                     var rootLayer = rootLayers[layer.params.LAYERS];

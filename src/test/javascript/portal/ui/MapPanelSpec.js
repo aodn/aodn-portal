@@ -7,8 +7,8 @@
 
 describe("Portal.ui.MapPanel", function() {
 
-    Ext.Ajax.request.isSpy = false;
-    spyOn(Ext.Ajax, 'request').andReturn('');
+    Ext4.Ajax.request.isSpy = false;
+    spyOn(Ext4.Ajax, 'request').andReturn('');
 
     var appConfig = {
         initialBbox : '130,-60,160,-20',
@@ -30,14 +30,14 @@ describe("Portal.ui.MapPanel", function() {
             spyOn(mapPanel, 'zoomToLayer');
 
             mapPanel.autoZoom = true;
-            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
+            Ext4.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
 
             expect(mapPanel.zoomToLayer).toHaveBeenCalled();
         });
 
         it('clears the spatial constraint when there are no layers left', function() {
             spyOn(mapPanel.map, 'resetSpatialConstraint');
-            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
+            Ext4.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
             expect(mapPanel.map.resetSpatialConstraint).toHaveBeenCalled();
         });
 
@@ -45,7 +45,7 @@ describe("Portal.ui.MapPanel", function() {
             spyOn(Portal.details.SubsettingPanel.prototype, 'updateSubsetPanelAccordionItem');
 
             spyOn(mapPanel.map, 'updateSpatialConstraintStyle');
-            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, {
+            Ext4.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, {
                 hasBoundingBox: noOp
             });
             expect(mapPanel.map.updateSpatialConstraintStyle).not.toHaveBeenCalled();
@@ -55,7 +55,7 @@ describe("Portal.ui.MapPanel", function() {
             spyOn(mapPanel, 'onBaseLayerChanged');
 
             var baseLayerRecord = { layer: "asdf" };
-            Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_CHANGED, baseLayerRecord);
+            Ext4.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_CHANGED, baseLayerRecord);
 
             expect(mapPanel.onBaseLayerChanged).toHaveBeenCalledWith(baseLayerRecord);
         });
@@ -110,20 +110,20 @@ describe("Portal.ui.MapPanel", function() {
         it('should call reset()', function() {
 
             spyOn(mapPanel, 'reset');
-            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
+            Ext4.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel.reset).toHaveBeenCalled();
         });
 
         it('should call _closeFeatureInfoPopup()', function() {
 
             spyOn(mapPanel, '_closeFeatureInfoPopup');
-            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
+            Ext4.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
         });
 
         it('should call resetSpatialConstraint', function() {
             spyOn(mapPanel.map, 'resetSpatialConstraint');
-            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
+            Ext4.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel.map.resetSpatialConstraint).toHaveBeenCalled();
         });
     });
@@ -133,13 +133,13 @@ describe("Portal.ui.MapPanel", function() {
         it('should call _closeFeatureInfoPopup()', function() {
 
             spyOn(mapPanel, '_closeFeatureInfoPopup');
-            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
+            Ext4.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel._closeFeatureInfoPopup).toHaveBeenCalled();
         });
 
         it('should call resetSpatialConstraint', function() {
             spyOn(mapPanel.map, 'resetSpatialConstraint');
-            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
+            Ext4.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel.map.resetSpatialConstraint).toHaveBeenCalled();
         });
     });
@@ -166,5 +166,5 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
 
-    Ext.Ajax.request.isSpy = false;
+    Ext4.Ajax.request.isSpy = false;
 });

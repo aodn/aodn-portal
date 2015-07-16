@@ -5,12 +5,12 @@
  *
  */
 
-Ext.namespace('Portal.form');
+Ext4.namespace('Portal.form');
 
 Portal.form.PolygonTypeComboBox = Ext.extend(Ext.form.ComboBox, {
 
     constructor: function(cfg) {
-        var config = Ext.apply({
+        var config = Ext4.apply({
             store: new Ext.data.JsonStore({
                 fields: ['value', 'label'],
                 data: OpenLayers.i18n('comboBoxTypeLabels')

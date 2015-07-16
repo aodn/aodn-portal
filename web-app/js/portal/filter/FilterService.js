@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.filter');
+Ext4.namespace('Portal.filter');
 
 Portal.filter.FilterService = Ext.extend(Object, {
 
@@ -22,7 +22,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
             layer:  this._filterLayerName(layer)
         };
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: this.GET_FILTER,
             params: params,
             scope: this,
@@ -40,10 +40,10 @@ Portal.filter.FilterService = Ext.extend(Object, {
         var callbackFunction = opts.successCallback;
         var callbackScope = opts.callbackScope;
         var layer = opts.layer;
-        var filterDetails = Ext.util.JSON.decode(response.responseText);
+        var filterDetails = Ext4.JSON.decode(response.responseText);
         var filterObjects = [];
 
-        Ext.each(filterDetails, function(filterDetail) {
+        Ext4.each(filterDetails, function(filterDetail) {
 
             var filterConstructor = Portal.filter.Filter.classFor(filterDetail);
 
@@ -83,7 +83,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
             layer: layer.wmsName
         };
 
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: this.GET_FILTER_VALUES,
             params: params,
             successCallback: successCallback,
@@ -99,7 +99,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
         var callbackFunction = opts.successCallback;
         var callbackScope = opts.callbackScope;
-        var filterRange = Ext.util.JSON.decode(resp.responseText);
+        var filterRange = Ext4.JSON.decode(resp.responseText);
 
         callbackFunction.call(callbackScope, filterRange);
     },

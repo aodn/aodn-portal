@@ -6,7 +6,7 @@
  *
  */
 
-Ext.namespace('Portal.ui.openlayer');
+Ext4.namespace('Portal.ui.openlayer');
 
 Portal.ui.openlayers.LayerParams = Ext.extend(Object, {
 
@@ -34,8 +34,8 @@ Portal.ui.openlayers.LayerParams = Ext.extend(Object, {
             exceptions: 'application/vnd.ogc.se_xml'   // Don't display stack traces on the map!
         };
 
-        Ext.apply(this, defaultParams);
-        Ext.apply(this, overrides);
+        Ext4.apply(this, defaultParams);
+        Ext4.apply(this, overrides);
     },
 
     _getServerImageFormat: function (server) {

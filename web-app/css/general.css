@@ -956,7 +956,7 @@ div.allwhite {
 }
 
 .resultsHeaderBackground .x-panel-header {
-    padding: 0 5px;
+    padding: 5px;
 }
 
 .downloadEmailPanel {
@@ -1026,17 +1026,17 @@ ul.x-tab-strip-top li:hover * {
 
 .resultsRowHeaderTitle {
     float: left;
-    margin: 1px 15px 0 0;
-    padding: 3px 10px 2px 5px;
+    margin-right: 15px;
+    padding: 3px 10px 1px 5px;
     width: 700px;
 }
 
 .resultsRowHeaderTitle.downloads {
-    width: 760px;
+    width: 790px;
 }
 
-.resultsRowHeaderTitle * {
-    margin: 2px 0;
+.resultsRowHeaderTitle h3 {
+    margin: 3px 2px;
     display: inline-block;
 }
 

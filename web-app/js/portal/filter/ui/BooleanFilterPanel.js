@@ -5,12 +5,12 @@
  *
  */
 
-Ext.namespace('Portal.filter.ui');
+Ext4.namespace('Portal.filter.ui');
 
 Portal.filter.ui.BooleanFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
 
     constructor: function(cfg) {
-        var config = Ext.apply({
+        var config = Ext4.apply({
             layout: 'menu',
             layoutConfig: {
                 align: 'centre'

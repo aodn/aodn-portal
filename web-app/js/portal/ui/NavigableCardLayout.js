@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.ui');
+Ext4.namespace('Portal.ui');
 
 Portal.ui.NavigableCardLayout = Ext.extend(Ext.layout.CardLayout, {
     hasNextTab: function() {

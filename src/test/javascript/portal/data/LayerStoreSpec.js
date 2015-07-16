@@ -137,12 +137,12 @@ describe("Portal.data.LayerStore", function() {
 
             var openLayer = createOpenLayer();
             openLayer.options.isBaseLayer = true;
-            spyOn(Ext.MsgBus, 'publish').andCallThrough();
+            spyOn(Ext4.MsgBus, 'publish').andCallThrough();
 
             expect(layerStore.getCount()).toBe(0);
             layerStore._addLayer(openLayer);
             expect(layerStore.getCount()).toBe(1);
-            expect(Ext.MsgBus.publish).not.toHaveBeenCalledWith(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
+            expect(Ext4.MsgBus.publish).not.toHaveBeenCalledWith(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
         });
     });
 
@@ -150,13 +150,13 @@ describe("Portal.data.LayerStore", function() {
 
         beforeEach(function() {
 
-            spyOn(Ext.Ajax, 'request');
+            spyOn(Ext4.Ajax, 'request');
         });
 
         it('base layers', function() {
             layerStore._initBaseLayers();
 
-            var ajaxParams = Ext.Ajax.request.mostRecentCall.args[0];
+            var ajaxParams = Ext4.Ajax.request.mostRecentCall.args[0];
             expect(ajaxParams.url).toBe('layer/configuredBaselayers');
         });
     });
@@ -168,7 +168,7 @@ describe("Portal.data.LayerStore", function() {
             var openLayer;
 
             beforeEach(function() {
-                spyOn(Ext.MsgBus, 'publish');
+                spyOn(Ext4.MsgBus, 'publish');
                 openLayer = createOpenLayer();
                 layerStore._addLayer(openLayer);
             });
@@ -181,7 +181,7 @@ describe("Portal.data.LayerStore", function() {
 
             it('layerRemoved event published', function() {
                 layerStore.removeUsingOpenLayer(openLayer);
-                expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
+                expect(Ext4.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
             });
         });
 
@@ -279,10 +279,10 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('selectDefaultBaseLayer', function() {
-            spyOn(Ext.MsgBus, 'publish');
+            spyOn(Ext4.MsgBus, 'publish');
 
             layerStore.selectDefaultBaseLayer();
-            expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.BASE_LAYER_CHANGED, baseLayer);
+            expect(Ext4.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.BASE_LAYER_CHANGED, baseLayer);
         });
 
         it('getDefaultBaseLayer', function() {
@@ -323,7 +323,7 @@ describe("Portal.data.LayerStore", function() {
         function layerIds(layerStore) {
             var ids = [];
 
-            Ext.each(layerStore.data.items, function(record) {
+            Ext4.each(layerStore.data.items, function(record) {
                 ids.push(record.data.layer.id);
             });
 

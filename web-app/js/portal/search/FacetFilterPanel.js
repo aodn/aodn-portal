@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.search');
+Ext4.namespace('Portal.search');
 
 Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
 
@@ -16,7 +16,7 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
         this.facetName = cfg.facetName;
         this.searcher = cfg.searcher;
 
-        Ext.apply(cfg, {
+        Ext4.apply(cfg, {
             title: cfg.title,
             containerScroll: true,
             autoScroll: true,
@@ -124,7 +124,7 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
     _hasEmptyDrilldownPanel: function() {
         var result = false;
 
-        Ext.each(this._getDrilldownPanels(), function(drilldownPanel) {
+        Ext4.each(this._getDrilldownPanels(), function(drilldownPanel) {
             if (drilldownPanel.hasNoDrilldown()) {
                 result = true;
                 return false;
@@ -135,7 +135,7 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
     },
 
     _addDrilldownFilters: function() {
-        Ext.each(this._getDrilldownPanels(), function(drilldownPanel) {
+        Ext4.each(this._getDrilldownPanels(), function(drilldownPanel) {
             if (drilldownPanel.hasDrilldown()) {
                 this.searcher.addDrilldownFilter(drilldownPanel.getDrilldownPath());
             }

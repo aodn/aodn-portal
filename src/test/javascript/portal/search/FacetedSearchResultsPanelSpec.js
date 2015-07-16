@@ -38,13 +38,13 @@ describe("Portal.search.FacetedSearchResultsPanel", function() {
     describe('active geo network record store events', function() {
         it('refreshes view on record added', function() {
             spyOn(resultsPanel, '_refreshView');
-            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
+            Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
             expect(resultsPanel._refreshView).toHaveBeenCalled();
         });
 
         it('refreshes view on record removed', function() {
             spyOn(resultsPanel, '_refreshView');
-            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
+            Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
             expect(resultsPanel._refreshView).toHaveBeenCalled();
         });
     });

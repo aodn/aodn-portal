@@ -5,14 +5,14 @@
  *
  */
 
-Ext.namespace('Portal.details');
+Ext4.namespace('Portal.details');
 
 Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
         this.layer = cfg.layer;
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             title: OpenLayers.i18n('stylePanelTitle')
         }, cfg);
 
@@ -59,13 +59,15 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             items: [this.opacitySlider]
         });
 
-        this.layerVisibilityCheckbox = new Ext.form.Checkbox({
+        this.layerVisibilityCheckbox = new Ext4.createWrapped('Ext.form.Checkbox', {
             value: true,
             boxLabel: OpenLayers.i18n('showMapLayer'),
             checked: true,
             listeners: {
                 scope: this,
-                check: this._visibilityButtonChecked
+                change: {
+                    fn: this._visibilityCheckboxChanged
+                }
             }
         });
 
@@ -106,7 +108,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
     _makeSpacer: function() {
         return new Ext.Spacer({
             height: 10
-        })
+        });
     },
 
     makeCombo: function() {
@@ -183,7 +185,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
     _processStyleData: function(layer) {
         var data = [];
 
-        Ext.each(layer.styles, function(style) {
+        Ext4.each(layer.styles, function(style) {
 
             var palette = style.palette;
             var styleName = style.name + '/' + palette;
@@ -304,9 +306,9 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         return undefined;
     },
 
-    _visibilityButtonChecked: function(obj, val) {
+    _visibilityCheckboxChanged: function(obj, visible) {
         var layer = this.map.getLayersBy("id", this.layer.id)[0];
-        layer.setVisibility(val);
+        layer.setVisibility(visible);
     },
 
     _zoomToLayer: function() {

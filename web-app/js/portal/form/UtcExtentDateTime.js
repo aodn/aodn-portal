@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.form');
+Ext4.namespace('Portal.form');
 
 Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
@@ -222,7 +222,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
     _extentToStore: function(extent) {
         var data = new Array();
-        Ext.each(extent.getExtentAsArray(), function(momentDate, index, all) {
+        Ext4.each(extent.getExtentAsArray(), function(momentDate, index, all) {
             data.push({
                 timeValue: this.getLocalDateFromUtcValues(momentDate.toDate()),
                 displayTime: momentDate.format(OpenLayers.i18n('timeDisplayFormat'))

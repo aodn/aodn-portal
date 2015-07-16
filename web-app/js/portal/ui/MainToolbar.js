@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.ui');
+Ext4.namespace('Portal.ui');
 
 Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
 
@@ -37,7 +37,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
             }
         }, this);
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             height: 35,
             items: [
                 this.prevButton,
@@ -66,7 +66,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
     },
 
     _getMainToolBarLinksHtml: function() {
-        Ext.Ajax.request({
+        Ext4.Ajax.request({
             url: 'home/footerContent',
             scope: this,
             success: function(resp) {
@@ -81,7 +81,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
     _registerEvents: function() {
         this.mainPanel.on('tabchange', this._renderNavigationButtons, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(subject, openLayer) {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(subject, openLayer) {
             this._renderNavigationButtons(this.mainPanel);
         }, this);
     },

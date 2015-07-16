@@ -13,25 +13,25 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
     beforeEach(function() {
         catalogUrl = 'http://geonetwork123';
 
-        Ext.namespace('Portal.app.appConfig.geonetwork');
+        Ext4.namespace('Portal.app.appConfig.geonetwork');
         Portal.app.appConfig.geonetwork.url = catalogUrl;
         fetcher = new Portal.data.GeoNetworkRecordFetcher();
         uuid = '1234';
     });
 
     it('makes ajax request to catalogue', function() {
-        spyOn(Ext.Ajax, 'request');
+        spyOn(Ext4.Ajax, 'request');
 
         fetcher.get(uuid);
 
-        expect(Ext.Ajax.request).toHaveBeenCalledWith({
+        expect(Ext4.Ajax.request).toHaveBeenCalledWith({
             url: 'proxy?url=http%3A%2F%2Fgeonetwork123%2Fsrv%2Feng%2Fxml.search.summary%3Fuuid%3D1234%26fast%3Dindex',
             headers : { 'Content-Type': 'application/xml' }
         });
     });
 
     it('calls success listener on success', function() {
-        spyOn(Ext.Ajax, 'request').andCallFake(
+        spyOn(Ext4.Ajax, 'request').andCallFake(
             function(params) {
                 params.success.call();
             }
@@ -49,7 +49,7 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
         spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'loadData');
         spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'getAt').andReturn(record);
         spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'add');
-        spyOn(Ext.Ajax, 'request').andCallFake(
+        spyOn(Ext4.Ajax, 'request').andCallFake(
             function(params) {
                 params.success.call(fetcher, response);
             }
@@ -73,7 +73,7 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
 
         it('returns correct values for various inputs', function() {
 
-            Ext.each(testCases, function(testValues) {
+            Ext4.each(testCases, function(testValues) {
                 var testUrl = testValues[0];
                 var expectedOutput = testValues[1];
                 fetcher._getUrl = function() { return testUrl };

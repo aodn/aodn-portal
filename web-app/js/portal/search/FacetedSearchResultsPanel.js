@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.search');
+Ext4.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
@@ -27,13 +27,13 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
             title: false,
             buttonAlign: 'left',
             fbar: this.pagingBar,
-            width: 840,
+            width: 860,
             items: [
                 this.dataView
             ]
         };
 
-        Ext.apply(this, config);
+        Ext4.apply(this, config);
 
         Portal.search.FacetedSearchResultsPanel.superclass.initComponent.apply(this, arguments);
 
@@ -45,9 +45,9 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
     },
 
     _subscribeToActiveGeoNetworkRecordStoreEvents: function() {
-        Ext.each([PORTAL_EVENTS.DATA_COLLECTION_ADDED, PORTAL_EVENTS.DATA_COLLECTION_REMOVED], function(eventName) {
+        Ext4.each([PORTAL_EVENTS.DATA_COLLECTION_ADDED, PORTAL_EVENTS.DATA_COLLECTION_REMOVED], function(eventName) {
 
-            Ext.MsgBus.subscribe(eventName, function() {
+            Ext4.MsgBus.subscribe(eventName, function() {
                 this._refreshView();
             }, this);
         }, this);

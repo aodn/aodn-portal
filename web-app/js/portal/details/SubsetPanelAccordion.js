@@ -5,13 +5,13 @@
  *
  */
 
-Ext.namespace('Portal.details');
+Ext4.namespace('Portal.details');
 
 Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             cls: 'subsetPanelAccordion',
             layout: 'noncollapsingaccordion',
             autoScroll: true,

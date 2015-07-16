@@ -5,12 +5,12 @@
  *
  */
 
-Ext.namespace('Portal.data');
+Ext4.namespace('Portal.data');
 
 Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
 
     constructor: function(config) {
-        Ext.apply(this, config);
+        Ext4.apply(this, config);
 
         Portal.data.GeoNetworkRecordFetcher.superclass.constructor.call(this, config);
 
@@ -23,8 +23,8 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
             fast: 'index'
         };
 
-        Ext.ux.Ajax.proxyRequestXML({
-            url: Portal.app.appConfig.geonetwork.url + '/srv/eng/xml.search.summary?' + Ext.urlEncode(params),
+        Ext4.ux.Ajax.proxyRequestXML({
+            url: Portal.app.appConfig.geonetwork.url + '/srv/eng/xml.search.summary?' + Ext4.urlEncode(params),
             success: successCallback
         });
     },
@@ -37,7 +37,7 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
             var record = store.getAt(0);
 
             Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
-            Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_DATA_COLLECTION, record);
+            Ext4.MsgBus.publish(PORTAL_EVENTS.VIEW_DATA_COLLECTION, record);
         });
     },
 
@@ -59,7 +59,7 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
 
     _loadCollectionsFromUrl: function() {
 
-        Ext.each(this.getUuidsFromUrl(), function(aUuid) {
+        Ext4.each(this.getUuidsFromUrl(), function(aUuid) {
             this.load(aUuid);
         }, this);
     },

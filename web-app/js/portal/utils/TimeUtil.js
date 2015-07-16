@@ -6,7 +6,7 @@
  *
  */
 
-Ext.namespace('Portal.utils');
+Ext4.namespace('Portal.utils');
 
 Portal.utils.TimeUtil = Ext.extend(Object, {
     constructor:function(config) {

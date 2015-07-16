@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.ui');
+Ext4.namespace('Portal.ui');
 
 TAB_INDEX_SEARCH = 0;
 TAB_INDEX_VISUALISE = 1;
@@ -15,13 +15,13 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        Ext.apply(this, cfg);
+        Ext4.apply(this, cfg);
 
         this.addEvents('tabchange');
 
         var fetcher = new Portal.data.GeoNetworkRecordFetcher();
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             activeItem: fetcher.hasUuidsInUrl() ? TAB_INDEX_VISUALISE : TAB_INDEX_SEARCH,
             margins: {
                 left: 10,
@@ -43,8 +43,8 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.VIEW_DATA_COLLECTION, this._onViewGeoNetworkRecord, this);
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, this._onGeoNetworkRecordAdded, this);
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.VIEW_DATA_COLLECTION, this._onViewGeoNetworkRecord, this);
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, this._onGeoNetworkRecordAdded, this);
     },
 
     _onViewGeoNetworkRecord: function() {

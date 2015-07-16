@@ -57,12 +57,12 @@ describe("Portal.cart.Downloader", function() {
             var wfsDownloadUrl = 'http://someurl';
             var params = {};
 
-            spyOn(Ext.Ajax, 'request');
+            spyOn(Ext4.Ajax, 'request');
 
             downloader._downloadAsynchronously(collection, wfsDownloadUrl, params);
 
-            expect(Ext.Ajax.request).toHaveBeenCalled();
-            var requestArgs = Ext.Ajax.request.calls[0].args[0];
+            expect(Ext4.Ajax.request).toHaveBeenCalled();
+            var requestArgs = Ext4.Ajax.request.calls[0].args[0];
 
             expect(requestArgs.url).toEqual(wfsDownloadUrl);
             expect(requestArgs.scope).toEqual(downloader);

@@ -5,7 +5,7 @@
  *
  */
 
-Ext.namespace('Portal.ui');
+Ext4.namespace('Portal.ui');
 
 Portal.ui.DownloadCartWidget = Ext.extend(Ext.Panel, {
 
@@ -13,7 +13,7 @@ Portal.ui.DownloadCartWidget = Ext.extend(Ext.Panel, {
 
         this.buildComponents();
 
-        var config = Ext.apply({
+        var config = Ext4.apply({
             id: "downLoadCartWidget",
             hidden: true,
             defaults: {
@@ -35,17 +35,17 @@ Portal.ui.DownloadCartWidget = Ext.extend(Ext.Panel, {
 
         Portal.ui.DownloadCartWidget.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() {
             this.collectionCounter ++;
             this.updateDownloadCartSize();
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, function() {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, function() {
             this.collectionCounter --;
             this.updateDownloadCartSize();
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
+        Ext4.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
             this.collectionCounter = 0;
             this.updateDownloadCartSize();
         }, this);

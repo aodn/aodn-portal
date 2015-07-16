@@ -5,13 +5,13 @@
  *
  */
 
-Ext.namespace('Ext.ux');
+Ext4.namespace('Ext4.ux');
 
-Ext.ux.Ajax = Ext.Ajax;
+Ext4.ux.Ajax = Ext4.Ajax;
 
-Ext.ux.Ajax.proxyUrl = 'proxy?url=';
+Ext4.ux.Ajax.proxyUrl = 'proxy?url=';
 
-Ext.ux.Ajax.setContentType = function(params, contentType) {
+Ext4.ux.Ajax.setContentType = function(params, contentType) {
     if (!params.headers) {
         params.headers = {};
     }
@@ -19,21 +19,21 @@ Ext.ux.Ajax.setContentType = function(params, contentType) {
     return params;
 };
 
-Ext.ux.Ajax.proxyRequest = function(params) {
-    params.url = Ext.ux.Ajax.constructProxyUrl(params.url);
-    Ext.Ajax.request(params);
+Ext4.ux.Ajax.proxyRequest = function(params) {
+    params.url = Ext4.ux.Ajax.constructProxyUrl(params.url);
+    Ext4.Ajax.request(params);
 };
 
-Ext.ux.Ajax.proxyRequestXML = function(params) {
-    params = Ext.ux.Ajax.setContentType(params, 'application/xml');
-    Ext.ux.Ajax.proxyRequest(params);
+Ext4.ux.Ajax.proxyRequestXML = function(params) {
+    params = Ext4.ux.Ajax.setContentType(params, 'application/xml');
+    Ext4.ux.Ajax.proxyRequest(params);
 };
 
-Ext.ux.Ajax.proxyRequestJSON = function(params) {
-    params = Ext.ux.Ajax.setContentType(params, 'application/json');
-    Ext.ux.Ajax.proxyRequest(params);
+Ext4.ux.Ajax.proxyRequestJSON = function(params) {
+    params = Ext4.ux.Ajax.setContentType(params, 'application/json');
+    Ext4.ux.Ajax.proxyRequest(params);
 };
 
-Ext.ux.Ajax.constructProxyUrl = function(url) {
-    return Ext.ux.Ajax.proxyUrl + encodeURIComponent(url);
+Ext4.ux.Ajax.constructProxyUrl = function(url) {
+    return Ext4.ux.Ajax.proxyUrl + encodeURIComponent(url);
 };
