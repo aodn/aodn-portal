@@ -16,8 +16,6 @@ Ext.namespace('Portal.data');
  */
 Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
-    BLOCKED: "BLOCKED",
-
     constructor: function(cfg) {
         Portal.data.LayerStore.superclass.constructor.call(this, cfg);
 
@@ -34,11 +32,11 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         if (layerLink.server == Portal.data.Server.UNKNOWN) {
             layerRecordCallback = undefined;
             geonetworkRecord = undefined;
-            this._serverUnrecognized(layerLink);
+            this._serverUnrecognized(serverUri);
         }
 
         var layerDescriptor = new Portal.common.LayerDescriptor(
-            layerLink, layerDisplayName, geonetworkRecord, serverInfo.getType()
+            layerLink, layerDisplayName, geonetworkRecord, serverInfo.getLayerType()
         );
         this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
     },
@@ -47,8 +45,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         return this._addLayer(layerDescriptor.toOpenLayer(), layerRecordCallback);
     },
 
-    _serverUnrecognized: function(layerLink) {
-        var serverUri = layerLink.server.uri;
+    _serverUnrecognized: function(serverUri) {
         log.error("Server '" + serverUri + "' is blocked!!");
     },
 

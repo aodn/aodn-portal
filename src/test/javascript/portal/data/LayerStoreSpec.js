@@ -64,8 +64,9 @@ describe("Portal.data.LayerStore", function() {
             spyOn(layerStore, '_serverUnrecognized');
             spyOn(layerStore, 'addUsingDescriptor');
 
+            var origServerUri = layerLink.server.uri;
             layerStore.addUsingLayerLink("layerName", layerLink, {}, layerRecordCallback);
-            expect(layerStore._serverUnrecognized).toHaveBeenCalledWith(layerLink);
+            expect(layerStore._serverUnrecognized).toHaveBeenCalledWith(origServerUri);
             expect(layerStore.addUsingDescriptor).toHaveBeenCalledWith(
                 jasmine.any(Portal.common.LayerDescriptor),
                 undefined
@@ -73,7 +74,7 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('GeoServer', function() {
-            spyOn(Portal.data.Server, 'getInfo').andReturn({ getType: function() { return 'type'; } });
+            spyOn(Portal.data.Server, 'getInfo').andReturn({ getLayerType: function() { return 'type'; } });
             spyOn(layerStore, 'addUsingDescriptor');
 
             layerStore.addUsingLayerLink("layerName", layerLink, {}, layerRecordCallback);

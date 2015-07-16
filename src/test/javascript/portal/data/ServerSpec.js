@@ -37,9 +37,9 @@ describe('Portal.data.Server', function() {
         });
 
         it('returns appropriate OpenLayers type', function() {
-            expect(Portal.data.Server.getInfo('http://server1').getType()).toBe(OpenLayers.Layer.WMS);
-            expect(Portal.data.Server.getInfo('http://server2').getType()).toBe(OpenLayers.Layer.NcWMS);
-            expect(Portal.data.Server.getInfo('http://unknown').getType()).toBe(OpenLayers.Layer.WMS);
+            expect(Portal.data.Server.getInfo('http://server1').getLayerType()).toBe(OpenLayers.Layer.WMS);
+            expect(Portal.data.Server.getInfo('http://server2').getLayerType()).toBe(OpenLayers.Layer.NcWMS);
+            expect(Portal.data.Server.getInfo('http://unknown').getLayerType()).toBe(OpenLayers.Layer.WMS);
         });
     });
 });
