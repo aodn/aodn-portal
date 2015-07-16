@@ -13,23 +13,33 @@ describe('Portal.data.Server', function() {
             Ext.namespace('Portal.app.appConfig');
 
             server1Info = {
-                uri: 'http://server1'
+                uri: 'http://server1',
+                type: 'GeoServer'
+            };
+            server2Info = {
+                uri: 'http://server2',
+                type: 'NcWMS'
             };
 
             Portal.app.appConfig.knownServers = [
                 server1Info,
-                {
-                    uri: 'http://server2'
-                }
+                server2Info
             ];
         });
 
         it('returns info for known server', function() {
             expect(Portal.data.Server.getInfo('http://server1')).toBe(server1Info);
+            expect(Portal.data.Server.getInfo('http://server2')).toBe(server2Info);
         });
 
         it('returns undefined for unknown server', function() {
-            expect(Portal.data.Server.getInfo('http://xyz')).toBe(undefined);
+            expect(Portal.data.Server.getInfo('http://unknown')).toBe(Portal.data.Server.UNKNOWN);
+        });
+
+        it('returns appropriate OpenLayers type', function() {
+            expect(Portal.data.Server.getInfo('http://server1').getType()).toBe(OpenLayers.Layer.WMS);
+            expect(Portal.data.Server.getInfo('http://server2').getType()).toBe(OpenLayers.Layer.NcWMS);
+            expect(Portal.data.Server.getInfo('http://unknown').getType()).toBe(OpenLayers.Layer.WMS);
         });
     });
 });

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -19,7 +18,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
 
     geonetworkRecord: null,
 
-    constructor: function(cfg, geonetworkRecord, openLayerClass) {
+    constructor: function(cfg, title, geonetworkRecord, openLayerClass) {
         if (typeof cfg == "string") {
             cfg = Ext.util.JSON.decode(cfg);
         }
@@ -33,6 +32,12 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         this.geonetworkRecord = geonetworkRecord;
 
         Ext.apply(this, cfg);
+
+        if (title) {
+            this.title = title;
+        }
+
+        this.cql = cfg.cql;
     },
 
     toOpenLayer: function(optionOverrides, paramOverrides) {

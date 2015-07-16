@@ -25,53 +25,31 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         this._initBaseLayers();
     },
 
-    addUsingDescriptor: function(layerDescriptor, layerRecordCallback) {
-        return this._addLayer(layerDescriptor.toOpenLayer(), layerRecordCallback);
-    },
-
     addUsingLayerLink: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback) {
         var serverUri = layerLink.server.uri;
         var serverInfo = Portal.data.Server.getInfo(serverUri);
 
-        if (!serverInfo) {
-            this._serverUnrecognized(layerDisplayName, layerLink);
-            return;
-        }
-
         layerLink.server = serverInfo;
 
-        if (serverInfo.type && serverInfo.type.toLowerCase() == 'ncwms') {
-            this._addUsingLayerLinkNcwms(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
+        if (layerLink.server == Portal.data.Server.UNKNOWN) {
+            layerRecordCallback = undefined;
+            geonetworkRecord = undefined;
+            this._serverUnrecognized(layerLink);
         }
-        else {
-            this._addUsingLayerLinkDefault(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo);
-        }
+
+        var layerDescriptor = new Portal.common.LayerDescriptor(
+            layerLink, layerDisplayName, geonetworkRecord, serverInfo.getType()
+        );
+        this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
     },
 
-    _serverUnrecognized: function(layerDisplayName, layerLink) {
+    addUsingDescriptor: function(layerDescriptor, layerRecordCallback) {
+        return this._addLayer(layerDescriptor.toOpenLayer(), layerRecordCallback);
+    },
+
+    _serverUnrecognized: function(layerLink) {
         var serverUri = layerLink.server.uri;
         log.error("Server '" + serverUri + "' is blocked!!");
-
-        // break this layer as the server is unrecognised
-        // openLayers needs the minimum to attempt loading #1476
-        layerLink.server = {
-            uri: this.BLOCKED,
-            type: this.BLOCKED
-        };
-    },
-
-    _addUsingLayerLinkDefault: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
-        var layerDescriptor = new Portal.common.LayerDescriptor(layerLink, geonetworkRecord, OpenLayers.Layer.WMS);
-        layerDescriptor.title = layerDisplayName;
-        layerDescriptor.cql = layerLink.cql;
-        this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
-    },
-
-    _addUsingLayerLinkNcwms: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback, serverInfo) {
-        var layerDescriptor = new Portal.common.LayerDescriptor(layerLink, geonetworkRecord, OpenLayers.Layer.NcWMS);
-        layerDescriptor.title = layerDisplayName;
-        layerDescriptor.cql = layerLink.cql;
-        this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
     },
 
     removeAll: function() {

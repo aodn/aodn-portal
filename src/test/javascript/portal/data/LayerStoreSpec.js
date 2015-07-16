@@ -57,45 +57,49 @@ describe("Portal.data.LayerStore", function() {
     });
 
     describe('addUsingLayerLink', function() {
-        it('Unknown', function() {
-            spyOn(Portal.data.Server, 'getInfo').andReturn(undefined);
-            spyOn(layerStore, '_serverUnrecognized');
+        var layerDescriptor = {};
+        var layerRecordCallback = {};
 
-            layerStore.addUsingLayerLink("layerName", layerLink);
-            expect(layerStore._serverUnrecognized).toHaveBeenCalledWith('layerName', layerLink);
+        it('Unknown', function() {
+            spyOn(layerStore, '_serverUnrecognized');
+            spyOn(layerStore, 'addUsingDescriptor');
+
+            layerStore.addUsingLayerLink("layerName", layerLink, {}, layerRecordCallback);
+            expect(layerStore._serverUnrecognized).toHaveBeenCalledWith(layerLink);
+            expect(layerStore.addUsingDescriptor).toHaveBeenCalledWith(
+                jasmine.any(Portal.common.LayerDescriptor),
+                undefined
+            );
         });
 
         it('GeoServer', function() {
-            spyOn(Portal.data.Server, 'getInfo').andReturn({ type: 'GeoServer' });
-            spyOn(layerStore, '_addUsingLayerLinkDefault');
+            spyOn(Portal.data.Server, 'getInfo').andReturn({ getType: function() { return 'type'; } });
+            spyOn(layerStore, 'addUsingDescriptor');
 
-            layerStore.addUsingLayerLink("layerName", layerLink);
-            expect(layerStore._addUsingLayerLinkDefault).toHaveBeenCalled();
-        });
-
-        it('ncwms', function() {
-            spyOn(Portal.data.Server, 'getInfo').andReturn({ type: 'ncwms' });
-            spyOn(layerStore, '_addUsingLayerLinkNcwms');
-
-            layerStore.addUsingLayerLink("layerName", layerLink);
-            expect(layerStore._addUsingLayerLinkNcwms).toHaveBeenCalled();
+            layerStore.addUsingLayerLink("layerName", layerLink, {}, layerRecordCallback);
+            expect(layerStore.addUsingDescriptor).toHaveBeenCalledWith(
+                jasmine.any(Portal.common.LayerDescriptor),
+                layerRecordCallback
+            );
         });
     });
 
-    describe('_addUsingLayerLinkDefault', function() {
+    describe('addUsingDescriptor', function() {
         describe('layer record callback', function() {
+            var layerDescriptor;
+
+            beforeEach(function() {
+                layerDescriptor = new Portal.common.LayerDescriptor(layerLink, {}, OpenLayers.Layer.WMS);
+            });
+
             it('no callback', function() {
-                layerStore._addUsingLayerLinkDefault("layerName", layerLink);
+                layerStore.addUsingDescriptor(layerDescriptor);
             });
 
             it('callback', function() {
                 var callback = jasmine.createSpy('callback');
-                spyOn(Ext.Ajax, 'request').andCallFake(function(params) {
-                    layerStore.failure = params.failure;
-                    layerStore.failure();  // This is the easiest way to mock things (rather than calling success).
-                });
 
-                layerStore._addUsingLayerLinkDefault("layerName", layerLink, {}, callback);
+                layerStore.addUsingDescriptor(layerDescriptor, callback);
                 expect(callback).toHaveBeenCalled();
                 expect(callback.mostRecentCall.args[0]).toBeInstanceOf(GeoExt.data.LayerRecord);
             });

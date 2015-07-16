@@ -8,7 +8,19 @@
 Ext.namespace('Portal.data');
 
 Portal.data.Server = {
+    UNKNOWN: {
+        uri: 'BLOCKED',
+        type: 'BLOCKED'
+    },
+
     getInfo: function(uri) {
+        var serverInfo = this._getConfig(uri);
+        serverInfo.getType = this._getType;
+
+        return serverInfo;
+    },
+
+    _getConfig: function(uri) {
         var serverInfo;
 
         Ext.each(Portal.app.appConfig.knownServers, function(server) {
@@ -21,6 +33,18 @@ Portal.data.Server = {
             }
         });
 
+        if (!serverInfo) {
+            serverInfo = this.UNKNOWN;
+        }
+
         return serverInfo;
+    },
+
+    _getType: function(serverInfo) {
+        if (this.type.toLowerCase() == 'ncwms') {
+            return OpenLayers.Layer.NcWMS;
+        }
+
+        return OpenLayers.Layer.WMS;
     }
 };
