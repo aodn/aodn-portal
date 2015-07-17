@@ -29,8 +29,8 @@ Ext.ux.NonCollapsingAccordionLayout = Ext.extend(Ext.layout.Accordion, {
     },
 
     beforeExpandPanel: function(panel) {
-        var panelToCollapse = this.currentlyExpandedPanel;  // A holder for the previously selected panel
-        this.currentlyExpandedPanel = panel;                // Set the new panel as the currently expanded one
+        var panelToCollapse = this.currentlyExpandedPanel;
+        this.currentlyExpandedPanel = panel;
 
         if (panelToCollapse.collapsed) {
             // fixes #1823
@@ -39,7 +39,7 @@ Ext.ux.NonCollapsingAccordionLayout = Ext.extend(Ext.layout.Accordion, {
             }, 400);
         }
         else {
-            panelToCollapse.collapse();                     // Collapse the previously selected panel
+            panelToCollapse.collapse();
         }
         return true;
     },
