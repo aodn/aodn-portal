@@ -197,7 +197,6 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
 
             describe('on clear', function() {
 
-
                 it('all layers removed from LayerStore', function() {
                     spyOn(Ext.MsgBus, 'publish');
 
@@ -353,42 +352,6 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 expect(activeRecordStore.getRecordFromUuid('1111')).toBe(record);
             });
         });
-
-        describe('record attributes', function() {
-            var record;
-            var uuid = "29841123988481203";
-
-
-            beforeEach(function() {
-                spyOn(Ext.MsgBus, 'publish');
-                record = new Portal.data.GeoNetworkRecord({
-                    uuid: uuid
-                });
-                activeRecordStore.add(record);
-            });
-
-            it('get record by uuid', function() {
-                expect(activeRecordStore._recordExists(uuid)).toBeTruthy();
-            });
-
-            it('add record attribute', function() {
-                activeRecordStore.addRecordAttribute(uuid, "key", "value");
-                expect(activeRecordStore.getRecordAttribute(uuid, "key")).toBe("value");
-            });
-
-            it('attributes removed on record removal', function() {
-                activeRecordStore.addRecordAttribute(uuid, "key", "value");
-                activeRecordStore.removeAll();
-                expect(activeRecordStore.getRecordAttribute(uuid, "key")).toBeFalsy();
-            });
-
-            it('attributes removed on record re-add', function() {
-                activeRecordStore.addRecordAttribute(uuid, "key", "value");
-                activeRecordStore.removeAll();
-                activeRecordStore.add(record);
-                expect(activeRecordStore.getRecordAttribute(uuid, "key")).toBeFalsy();
-            });
-        });
     });
 
     describe('Adding layer from Geoserver Feature Info response', function() {
@@ -401,7 +364,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
         var layerStore;
 
         beforeEach(function() {
-            layerStore = Portal.data.ActiveGeoNetworkRecordStore.instance().layerStore
+            layerStore = Portal.data.ActiveGeoNetworkRecordStore.instance().layerStore;
 
             spyOn(Ext.MsgBus, 'publish');
             spyOn(layerStore, 'addUsingDescriptor').andCallThrough();
