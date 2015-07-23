@@ -128,7 +128,7 @@ environments {
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
         grails.serverURL = "http://${localhostAddress}:8080/$appName"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
-        geonetwork.url = "https://catalogue-123.aodn.org.au/geonetwork"
+        geonetwork.url = "http://catalogue-rc.aodn.org.au/geonetwork"
     }
 
     test {
@@ -170,7 +170,7 @@ knownServers = [
         urlListDownloadPrefixToSubstitue: ''
     ]*/
     [
-        uri: 'http://geoserver-123.aodn.org.au/geoserver/wms',
+        uri: 'http://geoserver-rc.aodn.org.au/geoserver/wms',
         wmsVersion: '1.1.1',
         type: 'GeoServer',
         csvDownloadFormat: 'csv-with-metadata-header',
