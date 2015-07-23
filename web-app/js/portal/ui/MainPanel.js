@@ -19,7 +19,9 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         this.addEvents('tabchange');
 
-        var fetcher = new Portal.data.GeoNetworkRecordFetcher();
+        var fetcher = new Portal.data.GeoNetworkRecordFetcher({
+            dataCollectionStore: this.dataCollectionStore
+        });
 
         var config = Ext.apply({
             activeItem: fetcher.hasUuidsInUrl() ? TAB_INDEX_VISUALISE : TAB_INDEX_SEARCH,
@@ -34,7 +36,8 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             }),
             items: this.panels,
             bbar: new Portal.ui.MainToolbar({
-                mainPanel: this
+                mainPanel: this,
+                dataCollectionStore: this.dataCollectionStore
             }),
             bbarCfg: {
                 cls: 'mainToolBar'

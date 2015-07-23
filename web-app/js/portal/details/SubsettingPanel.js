@@ -9,7 +9,7 @@ Ext.namespace('Portal.details');
 
 Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
 
-    constructor : function(cfg) {
+    constructor: function(cfg) {
 
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: cfg.map,
@@ -67,6 +67,7 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
         var layerContainer = new Portal.details.SubsetItemsWrapperPanel({
             map: this.map,
             layer: layer,
+            dataCollectionStore: this.dataCollectionStore,
             layerItemId: this._getItemIdForLayer(layer),
             listeners: {
                 expand: function (panel) {

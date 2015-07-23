@@ -20,7 +20,7 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
     },
 
     removeAll: function() {
-        Portal.data.ActiveGeoNetworkRecordStore.superclass.removeAll.call(this); // Todo - DN: Not this?
+        Portal.data.DataCollectionStore.superclass.removeAll.call(this);
         Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
         Ext4.MsgBus.publish(PORTAL_EVENTS.RESET);
     },
@@ -44,9 +44,9 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
     },
 
     isRecordActive: function(recordToCheck) { // Todo - DN: When is this used?
-        return Portal.data.ActiveGeoNetworkRecordStore.instance().findBy(function(record) {
-                return record.get('uuid') == recordToCheck.get('uuid');
-            }) != -1;
+        return this.findBy(function(record) {
+            return record.get('uuid') == recordToCheck.get('uuid');
+        }) != -1;
     },
 
     _onAdd: function(store, geoNetworkRecords) {

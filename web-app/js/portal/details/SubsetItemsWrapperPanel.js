@@ -21,7 +21,6 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
 
         cfg.layer.events.register('loadend', this, function() {
             this._onLayerLoadEnd();
-        });
 
         cfg.layer.events.register('tileerror', this, function() {
             this._onLayerLoadError();
@@ -74,6 +73,7 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
         return new Portal.details.SubsetItemsTabPanel({
             map: cfg.map,
             layer: cfg.layer,
+            dataCollectionStore: cfg.dataCollectionStore,
             listeners: {
                 beforeTabChange: this._doTracking
             }
@@ -106,8 +106,8 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
     _layerDelete: function(event, toolEl, panel) {
 
         var collectionId = this.layer.parentGeoNetworkRecord.data.uuid;
-        var record = Portal.data.ActiveGeoNetworkRecordStore.instance().getRecordFromUuid(collectionId);
-        Portal.data.ActiveGeoNetworkRecordStore.instance().remove(record);
+        var record = this.dataCollectionStore.getRecordFromUuid(collectionId);
+        this.dataCollectionStore.remove(record);
     },
 
     _doTracking: function(panel, newTab, currentTab) {
