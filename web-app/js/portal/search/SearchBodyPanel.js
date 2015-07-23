@@ -20,6 +20,7 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
             searchResultsPanel: this,
             searcher: this.searcher,
             store: this.resultsStore,
+            dataCollectionStore: cfg.dataCollectionStore,
             classificationStore: cfg.classificationStore
         });
 

@@ -102,9 +102,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             if (layerRecordCallback) {
                 layerRecordCallback(layerRecord);
             }
+
             // has the parentGeoNetworkRecord overlay layer been deleted
             if (layerRecord.parentGeoNetworkRecord) {
-                if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(layerRecord.parentGeoNetworkRecord)) {
+                if (!Portal.getDataCollectionStore().isRecordActive(layerRecord.parentGeoNetworkRecord)) { // Todo - DN: I don't think layer store should worry about this. Should be handled by Data Collection Store
                     return;
                 }
             }

@@ -10,11 +10,9 @@ describe("Portal.search.FacetedSearchResultsPanel", function() {
     var resultsPanel;
     var searcher;
     var store;
-    var testTarget;
-    var testLayerLink;
 
     beforeEach(function() {
-        Portal.search.FacetedSearchResultsPanel.prototype._refreshView = function() {}
+        Portal.search.FacetedSearchResultsPanel.prototype._refreshView = function() {};
 
         searcher = {
             pageSize: 999
@@ -23,10 +21,9 @@ describe("Portal.search.FacetedSearchResultsPanel", function() {
         store = new Portal.data.GeoNetworkRecordStore();
         resultsPanel = new Portal.search.FacetedSearchResultsPanel({
             searcher: searcher,
-            store: store
+            store: store,
+            dataCollectionStore: {}
         });
-
-        spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'add');
     });
 
     describe('paging control' , function() {

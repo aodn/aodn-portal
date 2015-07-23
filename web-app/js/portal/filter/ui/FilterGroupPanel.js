@@ -90,7 +90,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         var active = false;
 
         if (layer.parentGeoNetworkRecord != undefined) {
-            active = (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(layer.parentGeoNetworkRecord));
+            active = (this.dataCollectionStore.isRecordActive(layer.parentGeoNetworkRecord));
         }
         return active;
     },

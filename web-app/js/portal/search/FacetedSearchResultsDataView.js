@@ -266,7 +266,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     isRecActive: function(uuid) {
         var record = this._getRecordFromUuid(uuid);
-        return Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record);
+        return this.dataCollectionStore.isRecordActive(record);
     },
 
     _getRecordFromUuid: function(uuid) {
@@ -311,9 +311,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         trackUsage(OpenLayers.i18n('layerSelectionTrackingCategory'), OpenLayers.i18n('layerSelectionTrackingAction'), record.data.title);
 
-        if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
+        if (!this.dataCollectionStore.isRecordActive(record)) {
 
-            Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
+            this.dataCollectionStore.add(record);
         }
 
         if (!multiSelect) {

@@ -10,7 +10,9 @@ describe("Portal.cart.DownloadPanel", function() {
     var downloadPanel;
 
     beforeEach(function() {
-        downloadPanel = new Portal.cart.DownloadPanel();
+        downloadPanel = new Portal.cart.DownloadPanel({
+            dataCollectionStore: { removeAll: jasmine.createSpy('removeAll') }
+        });
         spyOn(downloadPanel, 'generateContent');
         spyOn(downloadPanel, '_generateBodyContentForCollection');
     });
@@ -37,10 +39,6 @@ describe("Portal.cart.DownloadPanel", function() {
                 Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
 
                 expect(downloadPanel.generateContent).toHaveBeenCalled();
-            });
-
-            it('store is the ActiveGeoNetworkRecordStore singleton instance', function() {
-                expect(downloadPanel.store).toBe(Portal.data.ActiveGeoNetworkRecordStore.instance());
             });
         });
 
@@ -84,10 +82,9 @@ describe("Portal.cart.DownloadPanel", function() {
 
     describe('clear all', function() {
         it('calls to active geo network record store remove all', function() {
-            spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'removeAll');
             window.setViewPortTab = jasmine.createSpy();
             downloadPanel._clearAllAndReset();
-            expect(Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll).toHaveBeenCalled();
+            expect(downloadPanel.dataCollectionStore.removeAll).toHaveBeenCalled();
         });
     });
 
@@ -106,7 +103,9 @@ describe("Portal.cart.DownloadPanel", function() {
         var testCollection4;
 
         var makeTestDownloadPanel = function(collections) {
-            var downloadPanel = new Portal.cart.DownloadPanel();
+            var downloadPanel = new Portal.cart.DownloadPanel({
+                dataCollectionStore: new Portal.data.DataCollectionStore()
+            });
 
             var items = [];
             Ext.each(collections, function(collection) {
@@ -116,7 +115,7 @@ describe("Portal.cart.DownloadPanel", function() {
                 });
             });
 
-            downloadPanel.store.data.items = items;
+            downloadPanel.dataCollectionStore.data.items = items;
 
             spyOn(downloadPanel.bodyContent, 'update');
             spyOn(downloadPanel, '_applyTemplate');

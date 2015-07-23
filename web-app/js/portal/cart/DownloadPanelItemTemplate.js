@@ -174,8 +174,8 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     _removeButtonOnClick: function(button) {
         var collectionId = this.getIdFromButtonContainerId(button, "removeButtonId");
-        var record = Portal.data.ActiveGeoNetworkRecordStore.instance().getRecordFromUuid(collectionId);
-        Portal.data.ActiveGeoNetworkRecordStore.instance().remove(record);
+        var record = this.dataCollectionStore.getRecordFromUuid(collectionId);
+        this.dataCollectionStore.remove(record);
     },
 
     _getFileListEntries: function(values) {

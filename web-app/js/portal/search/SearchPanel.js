@@ -41,6 +41,7 @@ Portal.search.SearchPanel = Ext.extend(Ext.Panel, {
             region: 'center',
             unstyled: true,
             resultsStore: this.resultsStore,
+            dataCollectionStore: this.dataCollectionStore,
             classificationStore: this.classificationStore,
             searcher: this.searcher
         });

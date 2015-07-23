@@ -38,7 +38,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             ]
         }, cfg);
 
-        this.store = Portal.data.ActiveGeoNetworkRecordStore.instance();
         this.confirmationWindow = new Portal.cart.DownloadConfirmationWindow();
 
         Ext.apply(this, config);
@@ -98,10 +97,10 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     },
 
     generateBodyContent: function() {
-        var tpl = new Portal.cart.DownloadPanelItemTemplate(this);
+        var tpl = new Portal.cart.DownloadPanelItemTemplate(this); // Todo - + dataCollectionStore
         var html = '';
 
-        Ext.each(this.store.getLoadedRecords(), function(item) {
+        Ext.each(this.dataCollectionStore.getLoadedRecords(), function(item) {
             var collection = item.data;
 
             html += this._generateBodyContentForCollection(tpl, collection, html);
@@ -133,7 +132,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         return tpl.apply(values);
     },
 
-    initButtonPanel: function () {
+    initButtonPanel: function() {
 
          this.resetLink = new Ext.ux.Hyperlink({
             text: OpenLayers.i18n("clearLinkLabel", {text: OpenLayers.i18n('clearAndResetLabel')}) ,
@@ -151,9 +150,9 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    _clearAllAndReset: function () {
+    _clearAllAndReset: function() {
 
-        Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
+        this.dataCollectionStore.removeAll();
         setViewPortTab(0);
     },
 
