@@ -92,16 +92,6 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
         Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
     },
 
-    getItemsEncodedAsJson: function() {
-        var items = [];
-
-        Ext.each(this.data.items, function(item) {
-            items.push(item.convertedData());
-        });
-
-        return Ext.JSON.encode(items);
-    },
-
     getLoadedRecords: function() {
         var loadedRecords = [];
         this.each(function(record) {
