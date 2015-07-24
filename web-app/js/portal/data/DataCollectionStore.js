@@ -53,8 +53,14 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
         console.log('_onAdd');
 
         var _this = this;
+        console.log('geoNetworkRecords');
+        console.warn(geoNetworkRecords);
 
         Ext4.each(geoNetworkRecords, function(geoNetworkRecord) {
+
+            console.log('geoNetworkRecord');
+            console.warn(geoNetworkRecord);
+
             if (geoNetworkRecord.hasWmsLink()) {
 
                 this.layerStore.addUsingLayerLink(
