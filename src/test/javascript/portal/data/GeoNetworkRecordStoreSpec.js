@@ -86,10 +86,6 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
             });
         });
 
-        it('source', function() {
-            expect(geoNetworkRecordStore.getAt(0).get('source')).toEqual('987654321');
-        });
-
         describe('bbox', function() {
             it('west', function() {
                 expect(geoNetworkRecordStore.getAt(0).get('bbox').getBounds().left).toBe(-80);

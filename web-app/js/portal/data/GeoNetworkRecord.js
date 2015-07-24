@@ -66,14 +66,6 @@ Portal.data.GeoNetworkRecord = function() {
         }
     };
 
-    var popularity = {
-        name: 'popularity',
-        convert: function(v, record) {
-            var popularity = Ext.DomQuery.jsSelect('popularity', record);
-            return parseInt(popularity[0].childNodes[0].nodeValue);
-        }
-    };
-
     var pointOfTruthLinkField = {
         name: 'pointOfTruthLink',
         convert: function(v, record) {
@@ -176,7 +168,6 @@ Portal.data.GeoNetworkRecord = function() {
     var constructor = Ext.data.Record.create([
         'title',
         'abstract',
-        popularity,
         { name: 'uuid', mapping: '*/uuid' },
         parameterField,
         'platform',
@@ -188,7 +179,6 @@ Portal.data.GeoNetworkRecord = function() {
         onlineResourcesField,
         pointOfTruthLinkField,
         dataDownloadHandlersField,
-        'source',
         bboxField,
         'wmsLayer',
         'ncwmsParams'
