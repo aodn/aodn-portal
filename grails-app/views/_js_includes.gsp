@@ -161,6 +161,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'TermClassificationStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecordFetcher.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecordStore.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'DataCollection.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'DataCollectionStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/mainMap', file: 'map.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'GeoExt.ux.BaseLayerCombobox.js')}"></script>

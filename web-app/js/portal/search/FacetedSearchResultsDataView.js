@@ -313,7 +313,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         if (!this.dataCollectionStore.isRecordActive(record)) {
 
-            this.dataCollectionStore.add(record);
+            this.dataCollectionStore.add(
+                Portal.data.DataCollection.fromMetadataRecord(record)
+            );
         }
 
         if (!multiSelect) {
