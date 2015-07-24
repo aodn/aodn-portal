@@ -96,7 +96,6 @@ describe("Portal.cart.DownloadPanel", function() {
 
     describe('generateBodyContent', function() {
 
-        var mockTemplate;
         var testCollection1;
         var testCollection2;
         var testCollection3;
