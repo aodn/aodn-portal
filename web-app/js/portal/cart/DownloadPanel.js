@@ -105,7 +105,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         Ext.each(this.dataCollectionStore.getLoadedRecords(), function(item) {
             var collection = item.data;
 
-            html += this._generateBodyContentForCollection(tpl, collection, html);
+            html += this._generateBodyContentForCollection(tpl, collection);
         }, this);
 
         if (!html) {
@@ -121,7 +121,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         this.bodyContent.update(html);
     },
 
-    _generateBodyContentForCollection: function(tpl, collection, html) {
+    _generateBodyContentForCollection: function(tpl, collection) {
         var service = new Portal.cart.InsertionService(this);
         var processedValues = service.insertionValues(collection);
 
