@@ -218,19 +218,6 @@ Portal.data.GeoNetworkRecord = function() {
         return this.getFirstWmsLink() != undefined;
     };
 
-    prototype.convertedData = function() {
-        var convertedData = {};
-
-        Ext.each(Object.keys(this.data),
-            function(key) {
-                convertedData[key] = this.data[key];
-            },
-            this
-        );
-
-        return convertedData;
-    };
-
     prototype.updateNcwmsParams = function(dateRangeStart, dateRangeEnd, geometry) {
 
         var params = {};
