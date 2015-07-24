@@ -97,7 +97,9 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     },
 
     generateBodyContent: function() {
-        var tpl = new Portal.cart.DownloadPanelItemTemplate(this); // Todo - + dataCollectionStore
+        var tpl = new Portal.cart.DownloadPanelItemTemplate({
+            dataCollectionStore: this.dataCollectionStore
+        });
         var html = '';
 
         Ext.each(this.dataCollectionStore.getLoadedRecords(), function(item) {
