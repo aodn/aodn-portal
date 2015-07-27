@@ -45,8 +45,8 @@ Portal.data.DataCollection = function() {
         }
     ]);
 
-    constructor.hasWmsLink = function() {
-        console.warn('hasWmsLink');
+    constructor.prototype.asdf = function() {
+        console.warn('asdf');
         console.log('arguments');
         console.log(arguments);
         console.log('this');
@@ -61,6 +61,8 @@ Portal.data.DataCollection.fromMetadataRecord = function(metadataRecord) {
     console.log('Portal.data.DataCollection.fromMetadataRecord()');
 
     return new Portal.data.DataCollection({
-        metadataRecord: metadataRecord
+        "metadataRecord": metadataRecord,
+        "mapLayers": [metadataRecord.getFirstWmsLink()],
+        "somethingElse": {}
     });
 };
