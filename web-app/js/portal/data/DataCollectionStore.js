@@ -77,7 +77,10 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
                     dataCollection.get('title'),
                     dataCollection.getDefaultWmsLayerLink(),
                     dataCollection.metadata,
-                    function() {
+                    function(layerRecord) {
+
+                        layerRecord.get('layer').dataCollection = dataCollection; // Todo - DN: Can we get away without this?
+
                         _this._recordLoaded(dataCollection);
                     }
                 );
