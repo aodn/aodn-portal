@@ -90,7 +90,16 @@ describe("Portal.data.LayerStore", function() {
             var layerDescriptor;
 
             beforeEach(function() {
-                layerDescriptor = new Portal.common.LayerDescriptor(layerLink, {}, OpenLayers.Layer.WMS);
+
+                var dataCollection = {
+                    getMetadataRecord: function() { return {
+                        data: { bbox: {
+                            getBounds: function() { return {};}
+                        }}
+                    }}
+                };
+
+                layerDescriptor = new Portal.common.LayerDescriptor(layerLink, 'title', dataCollection, OpenLayers.Layer.WMS);
             });
 
             it('no callback', function() {

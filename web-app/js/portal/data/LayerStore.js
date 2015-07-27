@@ -23,7 +23,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         this._initBaseLayers();
     },
 
-    addUsingLayerLink: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback) {
+    addUsingLayerLink: function(layerDisplayName, layerLink, dataCollection, layerRecordCallback) {
         var serverUri = layerLink.server.uri;
         var serverInfo = Portal.data.Server.getInfo(serverUri);
 
@@ -31,12 +31,12 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
         if (layerLink.server == Portal.data.Server.UNKNOWN) {
             layerRecordCallback = undefined;
-            geonetworkRecord = undefined;
+            dataCollection = undefined;
             this._serverUnrecognized(serverUri);
         }
 
         var layerDescriptor = new Portal.common.LayerDescriptor(
-            layerLink, layerDisplayName, geonetworkRecord, serverInfo.getLayerType()
+            layerLink, layerDisplayName, dataCollection, serverInfo.getLayerType()
         );
         this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
     },
