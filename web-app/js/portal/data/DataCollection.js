@@ -20,37 +20,39 @@ Portal.data.DataCollection = function() {
 
     var constructor = Ext.data.Record.create([
         'uuid',
-        'title',
-        'metadataRecord',
-        {
-            name: 'mapLayers',
-            convert: function() {
-                console.log('mapLayers.convert()');
-                console.log(arguments);
-            }
-        },
-        {
-            name: 'dowloadHandlers',
-            convert: function() {
-                console.log('dowloadHandlers.convert()');
-                console.log(arguments);
-            }
-        },
-        {
-            name: 'collectionState',
-            convert: function() {
-                console.log('collectionState.convert()');
-                console.log(arguments);
-            }
-        }
+        'title'
     ]);
 
-    constructor.prototype.asdf = function() {
-        console.warn('asdf');
-        console.log('arguments');
-        console.log(arguments);
-        console.log('this');
-        console.log(this);
+    constructor.prototype.getMetadataRecord = function() {
+        return this.data.metadataRecord;
+    };
+
+    constructor.prototype.getDefaultWmsLayerLink = function() {
+
+        var layers = this.getWmsLayerLinks();
+
+        if (layers.length == 0) {
+            return null;
+        }
+
+        var tmp = new Portal.search.data.LinkStore(); // Todo - DN: Do this better (extract where?)
+        return tmp._convertLink(layers[0]);
+    };
+
+    constructor.prototype.getWmsLayerLinks = function() {
+        return this.getFilteredLinks(['OGC:WMS-1.1.1-http-get-map']);
+    };
+
+    constructor.prototype.getFilteredLinks = function(protocols) {
+
+        var links = this.getMetadataRecord().get('links');
+        var linkStore = new Portal.search.data.LinkStore({
+            data: { links: links }
+        });
+
+        linkStore.filterByProtocols(protocols);
+
+        return linkStore.getRange(); // Get all records
     };
 
     return constructor;
@@ -61,8 +63,7 @@ Portal.data.DataCollection.fromMetadataRecord = function(metadataRecord) {
     console.log('Portal.data.DataCollection.fromMetadataRecord()');
 
     return new Portal.data.DataCollection({
-        "metadataRecord": metadataRecord,
-        "mapLayers": [metadataRecord.getFirstWmsLink()],
-        "somethingElse": {}
+        "title": 'My Data Collection',
+        "metadataRecord": metadataRecord
     });
 };

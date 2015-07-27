@@ -74,7 +74,7 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
                 console.log(_this);
 
                 this.layerStore.addUsingLayerLink(
-                    dataCollection.getTitle(),
+                    dataCollection.get('title'),
                     dataCollection.getDefaultWmsLayerLink(),
                     dataCollection.metadata,
                     function() {
