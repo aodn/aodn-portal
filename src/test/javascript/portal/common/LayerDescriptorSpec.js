@@ -185,7 +185,11 @@ describe("Portal.common.LayerDescriptor", function() {
                 wmsName: 'aodn:other_layer'
             };
             descriptor = new Portal.common.LayerDescriptor({
-                geonetworkRecord: { data: {} }
+                dataCollection: {
+                    getMetadataRecord: function() {
+                        return {data: {}};
+                    }
+                }
             });
         });
 

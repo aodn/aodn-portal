@@ -64,7 +64,7 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
                 this.layerStore.addUsingLayerLink(
                     dataCollection.get('title'),
                     dataCollection.getDefaultWmsLayerLink(),
-                    dataCollection.metadata,
+                    dataCollection,
                     function(layerRecord) {
 
                         layerRecord.get('layer').dataCollection = dataCollection; // Todo - DN: Can we get away without this?
@@ -79,25 +79,26 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
         }, this);
     },
 
-    _onRemove: function(store, record) {
-        this._removeFromLayerStore(record);
-        Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, record);
+    _onRemove: function(store, dataCollection) {
+        this._removeFromLayerStore(dataCollection);
+        Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, dataCollection);
     },
 
-    _onClear: function(store, records) {
-        Ext4.each(records, function(record) {
-            store._removeFromLayerStore(record);
+    _onClear: function(store, dataCollections) {
+        Ext4.each(dataCollections, function(dataCollection) {
+            store._removeFromLayerStore(dataCollection);
         });
     },
 
-    _recordLoaded: function(geoNetworkRecord) {
-        geoNetworkRecord.loaded = true;
-        Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED, geoNetworkRecord);
+    _recordLoaded: function(dataCollection) {
+        dataCollection.loaded = true;
+        Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED, dataCollection);
     },
 
-    _removeFromLayerStore: function(record) {
-        if (record.layerRecord) {
-            this.layerStore.removeUsingOpenLayer(record.layerRecord.get('layer'));
+    _removeFromLayerStore: function(dataCollection) {
+
+        if (dataCollection.layerRecord) { // Todo - DN: Need to update here (remove current layer for that data collection)
+            this.layerStore.removeUsingOpenLayer(dataCollection.layerRecord.get('layer'));
         }
     }
 });

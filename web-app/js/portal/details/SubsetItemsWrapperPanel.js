@@ -103,11 +103,9 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
         };
     },
 
-    _layerDelete: function(event, toolEl, panel) {
+    _layerDelete: function() {
 
-        var collectionId = this.layer.parentGeoNetworkRecord.data.uuid;
-        var record = this.dataCollectionStore.getRecordFromUuid(collectionId);
-        this.dataCollectionStore.remove(record);
+        this.dataCollectionStore.remove(this.layer.dataCollection);
     },
 
     _doTracking: function(panel, newTab, currentTab) {

@@ -16,9 +16,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     WFS_PROTOCOL: 'OGC:WFS-1.0.0-http-get-capabilities',
     WMS_PROTOCOL: 'OGC:WMS-1.1.1-http-get-map',
 
-    geonetworkRecord: null,
-
-    constructor: function(cfg, title, geonetworkRecord, openLayerClass) {
+    constructor: function(cfg, title, dataCollection, openLayerClass) { // Todo - DN: Could we tidy this up so it just takes a config object?
         if (typeof cfg == "string") {
             cfg = Ext.util.JSON.decode(cfg);
         }
@@ -29,7 +27,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         }
 
         this.openLayerClass = openLayerClass;
-        this.geonetworkRecord = geonetworkRecord;
+        this.dataCollection = dataCollection;
 
         Ext.apply(this, cfg);
 
@@ -37,7 +35,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
             this.title = title;
         }
 
-        this.cql = cfg.cql;
+        this.cql = cfg.cql; // Todo - DN: Can this go? (I hope so)
     },
 
     toOpenLayer: function(optionOverrides, paramOverrides) {
@@ -91,8 +89,8 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
 
     _initialiseDownloadLayer: function(openLayer) {
 
-        if (this.geonetworkRecord && this.geonetworkRecord.data) {
-            var links = this.geonetworkRecord.data.links;
+        if (this.dataCollection) {
+            var links = this.dataCollection.getMetadataRecord().data.links;
 
             var downloadLayerName = this._findFirst(links, this.WFS_PROTOCOL);
 
@@ -130,7 +128,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     },
 
     _setOpenLayerBounds: function(openLayer) {
-        if (this.geonetworkRecord
+        if (this.geonetworkRecord // Todo - DN: Change here (geonetworkRecord -> dataCollection)
             && this.geonetworkRecord.data
             && this.geonetworkRecord.data.bbox
             && this.geonetworkRecord.data.bbox.geometries) {
@@ -142,11 +140,11 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         }
     },
 
-    _getAttribute: function(attribute) {
+    _getAttribute: function(attribute) { // Todo - DN: Used even?
         if (this[attribute]) {
             return this[attribute];
         }
-        else if (this.geonetworkRecord && this.geonetworkRecord.data && this.geonetworkRecord.data[attribute]) {
+        else if (this.geonetworkRecord && this.geonetworkRecord.data && this.geonetworkRecord.data[attribute]) { // Todo - DN: Change here?
             return this.geonetworkRecord.data[attribute];
         }
         else {
