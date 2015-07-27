@@ -50,6 +50,11 @@ Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {
             return undefined;
         }
 
+        return this._convertLink(linkRec);
+    },
+
+    _convertLink: function(linkRec) {
+
         return {
             title : linkRec.get('title'),
             server : {
