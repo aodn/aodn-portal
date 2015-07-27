@@ -83,30 +83,6 @@ class LayerControllerTests extends ControllerUnitTestCase {
         assertTrue methodCalled
     }
 
-    void testApplicationXmlIsXmlContent() {
-        if (!controller._isXmlContent("application/xml")) {
-            fail()
-        }
-    }
-
-    void testTextXmlIsXmlContent() {
-        if (!controller._isXmlContent("text/xml")) {
-            fail()
-        }
-    }
-
-    void testTextPlainIsNotXmlContent() {
-        if (controller._isXmlContent("text/plain")) {
-            fail()
-        }
-    }
-
-    void testTextHtmlIsNotXmlContent() {
-        if (controller._isXmlContent("text/html")) {
-            fail()
-        }
-    }
-
     void testConfiguredBaselayers() {
         def baselayerConfig = [
             [name: 'layer one'],
@@ -122,14 +98,5 @@ class LayerControllerTests extends ControllerUnitTestCase {
         controller.configuredBaselayers()
 
         assertEquals(String.valueOf(baselayerConfig as JSON), mockResponse.contentAsString)
-    }
-
-    void testMetadataUrlConstruction() {
-        controller.grailsApplication.config.geonetwork.url = "http://geonetwork.com"
-
-        def uuid = "some_uuid"
-        def url = controller._getMetadataUrl(uuid)
-
-        assertEquals(url, "http://geonetwork.com/srv/eng/xml_iso19139.mcp?styleSheet=xml_iso19139.mcp.xsl&uuid=some_uuid")
     }
 }
