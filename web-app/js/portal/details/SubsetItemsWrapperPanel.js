@@ -11,15 +11,21 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        var tabPanelForLayer = new Portal.details.SubsetItemsTabPanel({
-            map: cfg.map,
-            layer: cfg.layer,
-            listeners: {
-                beforeTabChange: this._doTracking
-            }
+        var tabPanelForLayer = this._initSubsetItemsTabPanel(cfg);
+
+        this.createTools(cfg.layer);
+
+        cfg.layer.events.register('loadstart', this, function() {
+            this._onLayerLoadStart();
         });
 
-        this.createTools();
+        cfg.layer.events.register('loadend', this, function() {
+            this._onLayerLoadEnd();
+        });
+
+        cfg.layer.events.register('tileerror', this, function() {
+            this._onLayerLoadError();
+        });
 
         var config = Ext.apply({
             id: cfg.layerItemId,
@@ -39,31 +45,42 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
             ]
         }, cfg);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_END, this.handleLayerLoadingEnd, this);
-
         Portal.details.SubsetItemsWrapperPanel.superclass.constructor.call(this, config);
     },
 
-    destroy: function() {
-        Ext.MsgBus.unsubscribe(PORTAL_EVENTS.LAYER_LOADING_END, this.handleLayerLoadingEnd, this);
-
-        this.superclass().destroy.call(this);
+    _onLayerLoadStart: function() {
+        this._indicateLayerLoading(true);
+        this._indicateLayerError(false);
     },
 
-    handleLayerLoadingEnd: function(e, openLayer) {
-        if (openLayer == this.layer) {
-            this.tools.spinnerToolItem.hide();
-            if (openLayer.hasImgLoadErrors()) {
-                this.showError();
+    _onLayerLoadEnd: function() {
+        this._indicateLayerLoading(false);
+    },
+
+    _onLayerLoadError: function() {
+        this._indicateLayerLoading(false);
+        this._indicateLayerError(true);
+    },
+
+    _indicateLayerError: function(show) {
+        show ? this.tools.errorToolItem.show() : this.tools.errorToolItem.hide();
+    },
+
+    _indicateLayerLoading: function(loading) {
+        loading ? this.tools.spinnerToolItem.show() : this.tools.spinnerToolItem.hide();
+    },
+
+    _initSubsetItemsTabPanel: function(cfg) {
+        return new Portal.details.SubsetItemsTabPanel({
+            map: cfg.map,
+            layer: cfg.layer,
+            listeners: {
+                beforeTabChange: this._doTracking
             }
-        }
+        });
     },
 
-    showError: function() {
-        this.tools.errorToolItem.show();
-    },
-
-    createTools: function() {
+    createTools: function(layer) {
 
         this.errorToolItem = {
             id: 'errorToolItem',
@@ -74,6 +91,7 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
         this.spinnerToolItem = {
             id: 'spinnerToolItem',
             styles: 'fa-spin fa-spinner',
+            hidden: !layer.loading,
             title: OpenLayers.i18n('loadingMessage')
         };
         this.deleteToolItem = {
