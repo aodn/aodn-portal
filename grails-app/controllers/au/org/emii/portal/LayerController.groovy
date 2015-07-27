@@ -9,7 +9,6 @@ package au.org.emii.portal
 
 import au.org.emii.portal.wms.NcwmsServer
 import au.org.emii.portal.wms.GeoserverServer
-import org.springframework.web.util.HtmlUtils
 
 import grails.converters.JSON
 
@@ -29,30 +28,6 @@ class LayerController {
         }
 
         render baseLayerConfig as JSON
-    }
-
-    def getMetadataAbstract = {
-
-        def response = "Error processing request"
-        def status = HTTP_500_INTERNAL_SERVER_ERROR
-
-        if (params.uuid != null) {
-            try {
-                def xml = new XmlSlurper().parse(_getMetadataUrl(params.uuid))
-                response = HtmlUtils.htmlEscape(xml.identificationInfo.MD_DataIdentification.abstract.CharacterString.text())
-                status = HTTP_200_OK
-            }
-            catch (Exception e) {
-                status = HTTP_500_INTERNAL_SERVER_ERROR
-            }
-        }
-
-        render status: status, text: response
-    }
-
-    def _getMetadataUrl(uuid) {
-        return grailsApplication.config.geonetwork.url +
-            "/srv/eng/xml_iso19139.mcp?styleSheet=xml_iso19139.mcp.xsl&uuid=" + uuid
     }
 
     def _getServerClass(serverType) {
@@ -106,9 +81,5 @@ class LayerController {
 
     def parseParams(params) {
         [params.server, params.layer, params.serverType, params.filter]
-    }
-
-    def _isXmlContent(contentType) {
-        return contentType.find(/(text|application)\/xml/)
     }
 }
