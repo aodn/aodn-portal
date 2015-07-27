@@ -60,8 +60,6 @@ Portal.data.DataCollection = function() {
 
 Portal.data.DataCollection.fromMetadataRecord = function(metadataRecord) {
 
-    console.log('Portal.data.DataCollection.fromMetadataRecord()');
-
     return new Portal.data.DataCollection({
         "title": 'My Data Collection',
         "metadataRecord": metadataRecord

@@ -50,11 +50,8 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
     },
 
     _onAdd: function(store, dataCollections) {
-        console.log('_onAdd');
 
         var _this = this;
-        console.log('dataCollections');
-        console.warn(dataCollections);
 
         if (dataCollections.length != 1) {
             alert('dataCollections (' + dataCollections.length + ')');
@@ -62,16 +59,7 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
 
         Ext4.each(dataCollections, function(dataCollection) {
 
-            console.log('dataCollection');
-            console.log(dataCollection);
-
             if (dataCollection.getDefaultWmsLayerLink()) {
-
-                console.log('dataCollection.getWmsLayers()');
-                console.log(dataCollection.getWmsLayers());
-
-                console.log('_this`');
-                console.log(_this);
 
                 this.layerStore.addUsingLayerLink(
                     dataCollection.get('title'),
@@ -92,15 +80,11 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
     },
 
     _onRemove: function(store, record) {
-        console.log('_onRemove');
-
         this._removeFromLayerStore(record);
         Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, record);
     },
 
     _onClear: function(store, records) {
-        console.log('_onClear');
-
         Ext4.each(records, function(record) {
             store._removeFromLayerStore(record);
         });
