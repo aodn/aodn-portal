@@ -49,40 +49,41 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
         }) != -1;
     },
 
-    _onAdd: function(store, geoNetworkRecords) {
+    _onAdd: function(store, dataCollections) {
         console.log('_onAdd');
 
         var _this = this;
-        console.log('geoNetworkRecords');
-        console.warn(geoNetworkRecords);
+        console.log('dataCollections');
+        console.warn(dataCollections);
 
-        Ext4.each(geoNetworkRecords, function(geoNetworkRecord) {
+        if (dataCollections.length != 1) {
+            alert('dataCollections (' + dataCollections.length + ')');
+        }
 
-            console.log('geoNetworkRecord');
-            console.warn(geoNetworkRecord);
+        Ext4.each(dataCollections, function(dataCollection) {
 
-            if (geoNetworkRecord.hasWmsLink()) {
+            console.log('dataCollection');
+            console.log(dataCollection);
+
+            if (dataCollection.getDefaultWmsLayerLink()) {
+
+                console.log('dataCollection.getWmsLayers()');
+                console.log(dataCollection.getWmsLayers());
+
+                console.log('_this`');
+                console.log(_this);
 
                 this.layerStore.addUsingLayerLink(
-                    geoNetworkRecord.data.title,
-                    geoNetworkRecord.getFirstWmsLink(),
-                    geoNetworkRecord,
-                    function(layerRecord) {
-                        var wmsLayer = layerRecord.get('layer');
-
-                        geoNetworkRecord.layerRecord = layerRecord;
-                        geoNetworkRecord.data['wmsLayer'] = wmsLayer;
-                        layerRecord.parentGeoNetworkRecord = geoNetworkRecord;
-                        wmsLayer.parentGeoNetworkRecord = geoNetworkRecord;
-                        // Make it easier to access geonetwork UUID of this layer
-                        wmsLayer.metadataUuid = geoNetworkRecord.data.uuid;
-
-                        _this._recordLoaded(geoNetworkRecord);
+                    dataCollection.getTitle(),
+                    dataCollection.getDefaultWmsLayerLink(),
+                    dataCollection.metadata,
+                    function() {
+                        _this._recordLoaded(dataCollection);
                     }
                 );
             }
             else {
-                _this._recordLoaded(geoNetworkRecord);
+                _this._recordLoaded(dataCollection);
             }
         }, this);
     },
