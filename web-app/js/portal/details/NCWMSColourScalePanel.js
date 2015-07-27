@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.details');
+Ext.namespace('Portal.details');
 
 Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
 
@@ -13,7 +13,7 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
 
     constructor: function (cfg) {
 
-        var config = Ext4.apply({}, cfg);
+        var config = Ext.apply({}, cfg);
         Portal.details.NCWMSColourScalePanel.superclass.constructor.call(this, config);
     },
 

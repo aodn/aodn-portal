@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.details');
+Ext.namespace('Portal.details');
 
 Portal.details.SubsetItemsTabPanel = Ext.extend(Ext.TabPanel, {
 
@@ -13,10 +13,10 @@ Portal.details.SubsetItemsTabPanel = Ext.extend(Ext.TabPanel, {
         var childPanelConfig =  { map: cfg.map, layer: cfg.layer };
 
         this.subsetPanel = new Portal.details.SubsetPanel(childPanelConfig);
-        this.infoPanel = Ext4.createWrapped('Portal.details.InfoPanel', childPanelConfig);
+        this.infoPanel = new Portal.details.InfoPanel(childPanelConfig);
         this.stylePanel = new Portal.details.StylePanel(childPanelConfig);
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             activeTab: 0,
             items: [
                 this.subsetPanel,

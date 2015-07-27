@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.data');
+Ext.namespace('Portal.data');
 
 /**
  * Contains the set of currently "active" layers in the application,
@@ -51,14 +51,14 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     removeAll: function() {
         this.remove(this.getOverlayLayers().getRange());
-        Ext4.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
+        Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
         this.selectDefaultBaseLayer();
     },
 
     selectDefaultBaseLayer: function() {
         var defaultBaseLayer = this.getDefaultBaseLayer();
         var openLayer = defaultBaseLayer ? defaultBaseLayer.data.layer : null;
-        Ext4.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_CHANGED, openLayer);
+        Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_CHANGED, openLayer);
     },
 
     getDefaultBaseLayer: function() {
@@ -88,7 +88,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         var layerRecordToRemove = this.getByLayer(openLayer);
         this.remove(layerRecordToRemove);
         openLayer.destroyWhenLoaded();
-        Ext4.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
+        Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
     },
 
     _addLayer: function(openLayer, layerRecordCallback) {
@@ -110,18 +110,18 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             }
 
             openLayer.events.register('loadstart', this, function() {
-                Ext4.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_START, openLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_START, openLayer);
             });
 
             openLayer.events.register('loadend', this, function() {
-                Ext4.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_END, openLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_LOADING_END, openLayer);
             });
 
             this.add(layerRecord);
 
             // Only want to be notified of changes if not a base layer
             if (!openLayer.options.isBaseLayer) {
-                Ext4.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
+                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
             }
 
             return layerRecord;
@@ -155,11 +155,11 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     _registerMessageListeners: function() {
 
-        Ext4.MsgBus.subscribe(PORTAL_EVENTS.RESET, function(subject, openLayer) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function(subject, openLayer) {
             this.removeAll();
         }, this);
 
-        Ext4.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, this._selectedLayerChanged, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, this._selectedLayerChanged, this);
     },
 
     _selectedLayerChanged: function(eventName, openLayer) {
@@ -189,18 +189,18 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     _initBaseLayers: function() {
 
-        Ext4.Ajax.request({
+        Ext.Ajax.request({
             url: 'layer/configuredBaselayers',
             scope: this,
             success: function(resp) {
-                var layerDescriptorsAsText = Ext4.JSON.decode(resp.responseText);
+                var layerDescriptorsAsText = Ext.util.JSON.decode(resp.responseText);
 
-                Ext4.each(layerDescriptorsAsText, function(layerDescriptorAsText) {
+                Ext.each(layerDescriptorsAsText, function(layerDescriptorAsText) {
                     var layerDescriptor = new Portal.common.LayerDescriptor(layerDescriptorAsText);
                     this.addUsingDescriptor(layerDescriptor);
                 }, this);
 
-                Ext4.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
+                Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
             }
         });
     }

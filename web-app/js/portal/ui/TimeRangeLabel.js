@@ -5,12 +5,12 @@
  *
  */
 
-Ext4.namespace('Portal.ui');
+Ext.namespace('Portal.ui');
 
 Portal.ui.TimeRangeLabel = Ext.extend(Ext.form.Label, {
 
     constructor: function(cfg) {
-        var config = Ext4.apply({
+        var config = Ext.apply({
             html: this._loadingMessage()
         }, cfg);
 

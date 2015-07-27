@@ -5,13 +5,13 @@
  *
  */
 
-Ext4.namespace('Portal.filter');
+Ext.namespace('Portal.filter');
 
 Portal.filter.Filter = Ext.extend(Object, {
 
     constructor: function(cfg) {
 
-        Ext4.apply(this, cfg);
+        Ext.apply(this, cfg);
 
         Portal.filter.Filter.superclass.constructor.call(this, cfg);
     },
@@ -100,7 +100,7 @@ Portal.filter.Filter.classFor = function(filterConfig) {
     var filterType = filterConfig.type;
     var matchingConstructor;
 
-    Ext4.each(filterConstructors, function(currentConstructor) {
+    Ext.each(filterConstructors, function(currentConstructor) {
 
         var supportedTypes = currentConstructor.prototype.getSupportedGeoserverTypes();
 

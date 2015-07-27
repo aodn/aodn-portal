@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext4.namespace('Portal.utils.FormUtil');
+Ext.namespace('Portal.utils.FormUtil');
 
 /**
  * Adapted from: http://stackoverflow.com/a/133997/627806

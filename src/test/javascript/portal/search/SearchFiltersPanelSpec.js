@@ -51,7 +51,7 @@ describe("Portal.search.SearchFiltersPanel", function() {
             Portal.search.GeoSelectionPanel
         ];
 
-        Ext4.each(expectedItemTypes, function(expectedType, index) {
+        Ext.each(expectedItemTypes, function(expectedType, index) {
             expect(searchFiltersPanel.items.itemAt(index)).toBeInstanceOf(expectedType);
         });
     });

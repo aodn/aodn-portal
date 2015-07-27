@@ -20,6 +20,3 @@ grails-app/conf/Config.local.groovy
 # Include code style settings for IntelliJ IDEA projects
 .idea/*
 !.idea/codeStyleSettings.xml
-
-# Avoid accidentally checking in uneeded extjs 4 files.
-web-app/js/extjs-4.1.1

@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.cart');
+Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadHandler = Ext.extend(Object, {
 

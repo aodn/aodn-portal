@@ -5,14 +5,14 @@
  *
  */
 
-Ext4.namespace('Portal.test');
+Ext.namespace('Portal.test');
 
 Portal.test.TestContainer = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
         cfg = cfg || {};
 
-        Ext4.apply(cfg, {
+        Ext.apply(cfg, {
             renderTo: this._createContainerDiv()
         });
 

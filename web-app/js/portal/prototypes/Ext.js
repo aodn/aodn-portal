@@ -7,7 +7,7 @@
 
 // Ext.tree.TreeNode additions
 
-Ext4.namespace('Ext.tree');
+Ext.namespace('Ext.tree');
 
 Ext.tree.TreeNode.prototype.toValueHierarchy = function() {
     var values = [];
@@ -26,7 +26,7 @@ Ext.tree.TreeNode.prototype.toValueHierarchy = function() {
 
 Ext.tree.TreeNode.prototype.clone = function(recursive) {
     var clone = new Ext.tree.TreeNode();
-    Ext4.applyIf(clone.attributes, this.attributes);
+    Ext.applyIf(clone.attributes, this.attributes);
     clone.setText(this.text);
 
     if (recursive) {

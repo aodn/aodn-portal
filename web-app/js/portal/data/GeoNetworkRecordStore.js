@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.data');
+Ext.namespace('Portal.data');
 
 Portal.data.GeoNetworkRecordStore = Ext.extend(Ext.data.XmlStore, {
 

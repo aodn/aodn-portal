@@ -100,7 +100,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             };
 
             spyOn(window, 'trackUsage');
-            spyOn(Ext4.MsgBus, 'publish');
+            spyOn(Ext.MsgBus, 'publish');
         });
 
         it('sends correct tracking data', function() {
@@ -119,13 +119,13 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
         it('sends view event for normal select', function() {
 
             facetedSearchDataView.addRecordWithUuid("my super uuid", false);
-            expect(Ext4.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.VIEW_DATA_COLLECTION, record);
+            expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.VIEW_DATA_COLLECTION, record);
         });
 
         it('does not send view event when multi selecting', function() {
 
             facetedSearchDataView.addRecordWithUuid("my super uuid", true);
-            expect(Ext4.MsgBus.publish).not.toHaveBeenCalled();
+            expect(Ext.MsgBus.publish).not.toHaveBeenCalled();
         });
     });
 

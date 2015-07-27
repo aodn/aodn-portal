@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext4.namespace('Portal.search');
+Ext.namespace('Portal.search');
 
 // TODO: note that this panel is probably redundant now that it has only one child - we can just use
 // FacetedSearchResultsGrid where this panel is used - however, waiting for Phil's latest changes
@@ -22,7 +22,7 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
             classificationStore: cfg.classificationStore
         });
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             autoScroll: true,
             bodyCssClass: "faceted-search-results",
             activeItem: this.searchResultsPanel,

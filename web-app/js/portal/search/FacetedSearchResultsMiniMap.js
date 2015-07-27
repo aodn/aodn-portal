@@ -4,14 +4,14 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext4.namespace('Portal.search');
+Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
 
     EPSG_4326_PROJECTION: new OpenLayers.Projection("EPSG:4326"),
 
     constructor: function(values) {
-        Ext4.apply(this, {
+        Ext.apply(this, {
             controls: [],
             metadataExtent: values.bbox,
             mapContainerId: values.mapContainerId

@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.filter.ui');
+Ext.namespace('Portal.filter.ui');
 
 Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
 
@@ -15,7 +15,7 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
 
     constructor: function(cfg) {
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             layout: 'menu',
             layoutConfig: {
                 padding: '5',

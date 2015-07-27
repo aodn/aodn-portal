@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.utils');
+Ext.namespace('Portal.utils');
 
 Portal.utils.StopWatch = Ext.extend(Ext.util.Observable, {
 

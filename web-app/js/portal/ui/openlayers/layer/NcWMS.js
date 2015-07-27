@@ -29,7 +29,7 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         this.pendingRequests = new Portal.utils.Set();
 
-        Ext4.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, this._propagateDelete, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, this._propagateDelete, this);
 
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, [name, url, params, options]);
 
@@ -39,12 +39,12 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _setExtraLayerInfoFromNcwms: function() {
-        Ext4.Ajax.proxyRequestJSON({
+        Ext.Ajax.proxyRequestJSON({
             scope: this,
             url: this._getExtraLayerInfoFromNcwms(),
             success: function(resp, options) {
                 try {
-                    this.extraLayerInfo = Ext4.JSON.decode(resp.responseText);
+                    this.extraLayerInfo = Ext.util.JSON.decode(resp.responseText);
                     // This means we are "GFI ready"
                     this.params.QUERYABLE = true;
                 }
@@ -61,12 +61,12 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     _loadTimeSeriesDates: function() {
         var url = this._getFiltersUrl();
 
-        Ext4.Ajax.request({
+        Ext.Ajax.request({
             scope: this,
             url: url,
             success: function(resp, options) {
                 try {
-                    this._parseDatesWithDataAsync(Ext4.JSON.decode(resp.responseText));
+                    this._parseDatesWithDataAsync(Ext.util.JSON.decode(resp.responseText));
                 }
                 catch (e) {
                     log.error("Could not parse filters for NcWMS layer '" + this.params.LAYERS + "'");
@@ -81,12 +81,12 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     _loadStyles: function() {
         var url = this._getStylesUrl();
 
-        Ext4.Ajax.request({
+        Ext.Ajax.request({
             scope: this,
             url: url,
             success: function(resp, options) {
                 try {
-                    this._stylesLoaded(Ext4.JSON.decode(resp.responseText));
+                    this._stylesLoaded(Ext.util.JSON.decode(resp.responseText));
                 }
                 catch (e) {
                     log.error("Could not parse styles for NcWMS layer '" + this.params.LAYERS + "'");
@@ -108,9 +108,9 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         var includesVectorStyle = false;
 
-        Ext4.each(response.palettes.sort(), function(palette) {
+        Ext.each(response.palettes.sort(), function(palette) {
 
-            Ext4.each(response.styles.sort(), function(style) {
+            Ext.each(response.styles.sort(), function(style) {
 
                 if (style == 'vector') {
                     includesVectorStyle = true;
@@ -178,13 +178,13 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var url = this._getTimeSeriesUrl(date);
         this.pendingRequests.add(url);
 
-        Ext4.Ajax.request({
+        Ext.Ajax.request({
             scope: this,
             url: url,
             success: function(resp, options) {
                 try {
-                    var dateArray = Ext4.JSON.decode(resp.responseText);
-                    Ext4.each(dateArray, function(date) {
+                    var dateArray = Ext.util.JSON.decode(resp.responseText);
+                    Ext.each(dateArray, function(date) {
                         this.temporalExtent.add(date);
                     }, this);
                     this.pendingRequests.remove(url);

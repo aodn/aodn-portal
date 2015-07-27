@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.cart');
+Ext.namespace('Portal.cart');
 
 Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
@@ -99,7 +99,7 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         this._trackUsage(layerName, args.subsetDescriptor);
 
-        var paramsAsJson = Ext4.JSON.encode(args);
+        var paramsAsJson = Ext.util.JSON.encode(args);
 
         return String.format(this.ASYNC_DOWNLOAD_URL + 'jobParameters={0}', encodeURIComponent(paramsAsJson));
     },

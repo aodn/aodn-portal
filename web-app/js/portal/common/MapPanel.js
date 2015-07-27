@@ -6,7 +6,7 @@
  *
  */
 
-Ext4.namespace('Portal.common');
+Ext.namespace('Portal.common');
 
 /* Code common to main map and minimap */
 
@@ -15,7 +15,7 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
     constructor: function(cfg) {
         var defaultZoom = this.getMapDefaultZoom(cfg.initialBbox);
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             extent: defaultZoom,
             stateful: false
         }, cfg);

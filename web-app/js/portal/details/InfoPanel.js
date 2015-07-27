@@ -5,13 +5,15 @@
  *
  */
 
-Ext4.define('Portal.details.InfoPanel', {
-    extend: 'Ext4.Component',
+Ext.namespace('Portal.details');
+
+Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
+
         this.layer = cfg.layer;
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             title: OpenLayers.i18n('infoTabTitle'),
             html: OpenLayers.i18n('loadingMessage', {resource: " collection information"}),
             autoHeight: true,
@@ -30,16 +32,15 @@ Ext4.define('Portal.details.InfoPanel', {
         var metadataUrl = 'layer/getMetadataAbstract?uuid=' +
             encodeURIComponent(this.layer.metadataUuid);
 
-        var self = this;
-
-        Ext4.Ajax.request({
+        Ext.Ajax.request({
             url: metadataUrl,
+            scope: this,
             success: function(resp, options) {
-                self._constructInfoTabHtml(resp.responseText, self.layer.parentGeoNetworkRecord.data.onlineResources);
+                this._constructInfoTabHtml(resp.responseText, this.layer.parentGeoNetworkRecord.data.onlineResources);
             },
             failure: function(resp) {
-                log.error("Error receiving metadata abstract for record with uuid " + self.layer.metadataUuid);
-                self._constructInfoTabHtml(null, self.layer.parentGeoNetworkRecord.data.onlineResources);
+                log.error("Error receiving metadata abstract for record with uuid " + this.layer.metadataUuid);
+                this._constructInfoTabHtml(null, this.layer.parentGeoNetworkRecord.data.onlineResources);
             }
         });
     },
@@ -55,7 +56,7 @@ Ext4.define('Portal.details.InfoPanel', {
             html = this._getHtmlHeader("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>");
         }
 
-        Ext4.each(linkObjects, function(linkObject) {
+        Ext.each(linkObjects, function(linkObject) {
             var onlineResource;
             var linkExternal = "";
             var linkText = "";

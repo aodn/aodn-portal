@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext4.namespace('Portal.utils.Image');
+Ext.namespace('Portal.utils.Image');
 
 Portal.utils.Image.resizeWhenLoadedAfterDelay = function(selector, delayMs) {
     $(selector).load(function() {

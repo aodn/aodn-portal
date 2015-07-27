@@ -194,7 +194,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
     it('async parses dates from NcWMS GetMetadata JSON', function() {
         var ncwmsFiltersJson = '[{"label":"Time","type":"TimeSeries","name":"timesteps","possibleValues":["2010-02-23T00:00:00Z","2010-03-10T00:00:00Z","2010-03-11T00:00:00Z","2010-03-12T00:00:00Z","2010-03-13T00:00:00Z"]}]';
-        var ncwmsFilters = Ext4.JSON.decode(ncwmsFiltersJson);
+        var ncwmsFilters = Ext.util.JSON.decode(ncwmsFiltersJson);
 
         var datesWithData = null;
 

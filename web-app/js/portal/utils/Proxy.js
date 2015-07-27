@@ -5,8 +5,8 @@
  *
  */
 
-Ext4.namespace('Portal.utils');
-Ext4.namespace('Portal.utils.Proxy');
+Ext.namespace('Portal.utils');
+Ext.namespace('Portal.utils.Proxy');
 
 Portal.utils.Proxy.proxyURL = "proxy?url=";
 

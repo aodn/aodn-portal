@@ -86,7 +86,7 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint
     };
 
     if (clickPoint) {
-        baseFeatureInfoParams = Ext4.apply(baseFeatureInfoParams, {
+        baseFeatureInfoParams = Ext.apply(baseFeatureInfoParams, {
             X: clickPoint.x,
             Y: clickPoint.y,
             I: clickPoint.x,
@@ -94,7 +94,7 @@ OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString = function(clickPoint
         });
     }
 
-    baseFeatureInfoParams = Ext4.apply(baseFeatureInfoParams, overrideParams);
+    baseFeatureInfoParams = Ext.apply(baseFeatureInfoParams, overrideParams);
     return this.getFullRequestString(baseFeatureInfoParams);
 };
 

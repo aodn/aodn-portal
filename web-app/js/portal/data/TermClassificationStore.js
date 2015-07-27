@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.data');
+Ext.namespace('Portal.data');
 
 Portal.data.TermClassificationStore = Ext.extend(Ext.data.XmlStore, {
 
@@ -25,7 +25,7 @@ Portal.data.TermClassificationStore = Ext.extend(Ext.data.XmlStore, {
         function searchBroaderTerms(term, depth, categories) {
             var foundTerms = [];
             if(categories[term]) {
-                Ext4.each(categories[term], function(item) {
+                Ext.each(categories[term], function(item) {
                     if(item.depth == depth) {
                         foundTerms.push(item.broader);
                     }
@@ -37,7 +37,7 @@ Portal.data.TermClassificationStore = Ext.extend(Ext.data.XmlStore, {
             return foundTerms;
         };
 
-        Ext4.each(this.data.items, function( dimension) {
+        Ext.each(this.data.items, function( dimension) {
             if(dimensionName in dimension.data.categories) {
                 found = searchBroaderTerms( term, depth, dimension.data.categories );
             }

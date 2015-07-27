@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext4.namespace('Portal.details');
+Ext.namespace('Portal.details');
 
 Portal.details.SubsetPanel = Ext.extend(Ext.Container, {
 
@@ -16,7 +16,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Container, {
             layer: cfg.layer
         });
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             title: OpenLayers.i18n('subsetPanelTitle'),
             items: [newPanel]
         }, cfg);

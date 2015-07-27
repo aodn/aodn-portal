@@ -6,7 +6,7 @@
  *
  */
 
-Ext4.namespace('Portal.common');
+Ext.namespace('Portal.common');
 
 // Common code for controllers
 

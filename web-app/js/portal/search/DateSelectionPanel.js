@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext4.namespace('Portal.search');
+Ext.namespace('Portal.search');
 
 Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
     padding: 5,
@@ -25,9 +25,9 @@ Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {
             titleCollapse: true
         };
 
-        Ext4.apply(this, cfg, defaults);
+        Ext.apply(this, cfg, defaults);
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             layout: 'form',
             cls: 'search-filter-panel filter-selection-panel',
             items: [

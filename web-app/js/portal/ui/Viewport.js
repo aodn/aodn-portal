@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.ui');
+Ext.namespace('Portal.ui');
 
 Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     constructor: function(cfg) {
@@ -39,7 +39,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
         this.downloadCartWidget = new Portal.ui.DownloadCartWidget({});
 
-        var config = Ext4.apply(
+        var config = Ext.apply(
             {
                 layout: 'border',
                 boxMinWidth: 1050,
@@ -67,7 +67,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
                     console.log('Component has only 1 child', typeof(container), container.id, 'layout', container.layout);
                 }
 
-                Ext4.each(container.items.items, function(item) {
+                Ext.each(container.items.items, function(item) {
                     countChildItems(item);
                 }, this);
             }

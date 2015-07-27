@@ -5,13 +5,13 @@
  *
  */
 
-Ext4.namespace('Portal.filter.ui');
+Ext.namespace('Portal.filter.ui');
 
 Portal.filter.ui.GeometryFilterService = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
 
     constructor: function(cfg) {
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             typeLabel: undefined
         }, cfg);
 

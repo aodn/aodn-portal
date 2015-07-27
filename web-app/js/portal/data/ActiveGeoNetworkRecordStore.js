@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext4.namespace('Portal.data');
+Ext.namespace('Portal.data');
 
 Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecordStore, {
 
@@ -12,7 +12,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     constructor: function(config) {
 
-        Ext4.apply(this, config);
+        Ext.apply(this, config);
         Portal.data.ActiveGeoNetworkRecordStore.superclass.constructor.call(this);
 
         this.on('add', this._onAdd, this);
@@ -29,7 +29,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
     _onAdd: function(store, geoNetworkRecords) {
         var thisStore = this;
 
-        Ext4.each(geoNetworkRecords, function(geoNetworkRecord) {
+        Ext.each(geoNetworkRecords, function(geoNetworkRecord) {
             if (geoNetworkRecord.hasWmsLink()) {
 
                 this.layerStore.addUsingLayerLink(
@@ -58,13 +58,13 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     _recordLoaded: function(geoNetworkRecord) {
         geoNetworkRecord.loaded = true;
-        Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED, geoNetworkRecord);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED, geoNetworkRecord);
     },
 
     _onRemove: function(store, record) {
         this._removeRecordAttributes(record);
         this._removeFromLayerStore(record);
-        Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, record);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, record);
     },
 
     _removeFromLayerStore: function(record) {
@@ -74,7 +74,7 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
     },
 
     _onClear: function(store, records) {
-        Ext4.each(records, function(record) {
+        Ext.each(records, function(record) {
             store._removeRecordAttributes(record);
             store._removeFromLayerStore(record);
         });
@@ -105,18 +105,18 @@ Portal.data.ActiveGeoNetworkRecordStore = Ext.extend(Portal.data.GeoNetworkRecor
 
     removeAll: function(store) {
         Portal.data.ActiveGeoNetworkRecordStore.superclass.removeAll.call(this);
-        Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
-        Ext4.MsgBus.publish(PORTAL_EVENTS.RESET);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
+        Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
     },
 
     getItemsEncodedAsJson: function() {
         var items = [];
 
-        Ext4.each(this.data.items, function(item) {
+        Ext.each(this.data.items, function(item) {
             items.push(item.convertedData());
         });
 
-        return Ext4.JSON.encode(items);
+        return Ext.util.JSON.encode(items);
     },
 
     addRecordAttribute: function(uuid, key, value) {

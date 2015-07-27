@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.details');
+Ext.namespace('Portal.details');
 
 Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
@@ -18,7 +18,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this.layer = cfg.layer;
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             cls: 'filterGroupPanel'
         }, cfg);
 
