@@ -74,7 +74,7 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('GeoServer', function() {
-            spyOn(Portal.data.Server, 'getInfo').andReturn({ getLayerType: function() { return 'type'; } });
+            spyOn(Portal.data.Server, 'getInfo').andReturn({ getLayerType: returns('type') });
             spyOn(layerStore, 'addUsingDescriptor');
 
             layerStore.addUsingLayerLink("layerName", layerLink, {}, layerRecordCallback);

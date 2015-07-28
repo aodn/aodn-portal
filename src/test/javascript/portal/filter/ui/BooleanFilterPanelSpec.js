@@ -11,7 +11,7 @@ describe("Portal.filter.ui.BooleanFilterPanel", function() {
 
     beforeEach(function() {
         var MockButton = function() {
-            this.getValue = function() { return false; };
+            this.getValue = returns(false);
             this.setValue = jasmine.createSpy();
         };
 
@@ -21,13 +21,13 @@ describe("Portal.filter.ui.BooleanFilterPanel", function() {
 
         booleanFilter = new Portal.filter.ui.BooleanFilterPanel({
             filter: {
-                getName: function() { return 'test' },
-                getLabel: function() { return 'testLabel' },
+                getName: returns('test'),
+                getLabel: returns('testLabel'),
                 setValue: noOp
             },
             layer: {
                 name: 'test layer',
-                getDownloadCql: function() { return ""; }
+                getDownloadCql: returns("")
             }
         });
 

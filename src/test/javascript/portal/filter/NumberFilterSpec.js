@@ -15,7 +15,7 @@ describe("Portal.filter.NumberFilter", function() {
             name: 'column_name',
             label: 'Important number'
         });
-        filter._generateOperatorHtml = function() { return 'html' };
+        filter._generateOperatorHtml = returns('html');
     });
 
     describe('empty value entered', function() {

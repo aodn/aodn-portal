@@ -36,7 +36,7 @@ describe("Portal.search.SearchBodyPanel", function() {
         describe('onResultsStoreLoad', function() {
             it('displays alert when store is empty', function() {
                 spyOn(searchBodyPanel, '_displayNoResultsAlert');
-                searchBodyPanel.resultsStore.getTotalCount = function() { return 0; };
+                searchBodyPanel.resultsStore.getTotalCount = returns(0);
                 searchBodyPanel._onResultsStoreLoad();
                 expect(searchBodyPanel._displayNoResultsAlert).toHaveBeenCalled();
             });

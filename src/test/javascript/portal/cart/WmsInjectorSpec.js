@@ -46,8 +46,8 @@ describe('Portal.cart.WmsInjector', function() {
     function fakeFilter(s) {
 
         return {
-            getHumanReadableForm: function() { return s },
-            hasValue: function() { return true }
+            getHumanReadableForm: returns(s),
+            hasValue: returns(true)
         };
     }
 });

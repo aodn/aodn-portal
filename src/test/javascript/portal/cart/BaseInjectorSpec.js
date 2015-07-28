@@ -62,7 +62,7 @@ describe('Portal.cart.BaseInjector', function() {
 
     describe('getDataMarkup', function() {
         beforeEach(function() {
-            injector._shouldEstimateSize = function() { return true; }
+            injector._shouldEstimateSize = returns(true)
         });
 
         it('returns the failed message if it can not calculate an estimate', function() {
@@ -77,8 +77,8 @@ describe('Portal.cart.BaseInjector', function() {
             var sizeEstimateParams = {};
 
             geoNetworkRecord.dataDownloadHandlers.push({
-                canEstimateDownloadSize: function() { return true },
-                getDownloadEstimateParams: function() { return sizeEstimateParams }
+                canEstimateDownloadSize: returns(true),
+                getDownloadEstimateParams: returns(sizeEstimateParams)
             });
 
             var markup = injector._getDataMarkup(geoNetworkRecord);

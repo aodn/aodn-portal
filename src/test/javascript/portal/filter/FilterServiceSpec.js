@@ -104,7 +104,7 @@ describe("Portal.filter.FilterService", function() {
 
         it('should use download layer if present', function() {
 
-            layer.getDownloadLayer = function() { return 'wfsName'; };
+            layer.getDownloadLayer = returns('wfsName');
 
             expect(service._filterLayerName(layer)).toBe('wfsName');
         });

@@ -79,7 +79,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
     describe('layer', function() {
 
         beforeEach(function() {
-            spatialConstraint._checkSketch = function() { return true };
+            spatialConstraint._checkSketch = returns(true);
         });
 
         it('intialises layer', function() {
@@ -110,7 +110,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         });
 
         it('does not fire spatialconstraintadded where geometry is invalid', function() {
-            spatialConstraint._checkSketch = function() { return false };
+            spatialConstraint._checkSketch = returns(false);
             spatialConstraint.map = { events: { triggerEvent: noOp } };
             var eventSpy = jasmine.createSpy('spatialconstraintadded');
             spatialConstraint.events.on({
@@ -277,7 +277,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
         beforeEach(function() {
             geometry = {
-                    crossesAntimeridian: noOp
+                crossesAntimeridian: noOp
             };
         });
 
@@ -362,7 +362,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             }};
 
             testGeometry = {
-                crossesAntimeridian: function() { return false }
+                crossesAntimeridian: returns(false)
             };
 
             spatialConstraint._showSpatialExtentError(testGeometry);
@@ -379,7 +379,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         describe('geometry crosses date line', function() {
 
             beforeEach(function() {
-                testGeometry.crossesAntimeridian = function() { return true };
+                testGeometry.crossesAntimeridian = returns(true);
 
                 spatialConstraint._showSpatialExtentError(testGeometry);
             });
