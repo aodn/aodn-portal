@@ -143,19 +143,17 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
             expect(numberFilter.filter.setValue).toHaveBeenCalled();
         });
 
-
         it('updates when operator is set to none / cleared ', function() {
             spyOn(numberFilter, '_fireAddEvent');
 
-            numberFilter.operators.clearValue = function() { noOp };
-            numberFilter.firstField.reset = function() { noOp };
-            numberFilter.secondField.reset = function() { noOp };
-            numberFilter.secondField.setVisible = function() { noOp };
-            numberFilter.filter.clearValue = function() { noOp };
+            numberFilter.operators.clearValue = noOp;
+            numberFilter.firstField.reset = noOp;
+            numberFilter.secondField.reset = noOp;
+            numberFilter.secondField.setVisible = noOp;
+            numberFilter.filter.clearValue = noOp;
 
             numberFilter.handleRemoveFilter();
             expect(numberFilter._fireAddEvent).toHaveBeenCalled();
         });
-
     });
 });

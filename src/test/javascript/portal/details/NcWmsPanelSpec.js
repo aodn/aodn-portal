@@ -34,7 +34,7 @@ describe('Portal.details.NcWmsPanel', function() {
             layer: layer
         });
 
-        ncwmsPanel._setBounds =  noOp;
+        ncwmsPanel._setBounds = noOp;
         ncwmsPanel._removeLoadingInfo = noOp;
         ncwmsPanel.selectedLayer = layer;
 

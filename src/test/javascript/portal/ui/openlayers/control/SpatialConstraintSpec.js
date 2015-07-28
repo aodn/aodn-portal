@@ -277,7 +277,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
         beforeEach(function() {
             geometry = {
-                    crossesAntimeridian: noOp
+                crossesAntimeridian: noOp
             };
         });
 
