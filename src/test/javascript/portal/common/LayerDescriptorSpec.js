@@ -107,49 +107,6 @@ describe("Portal.common.LayerDescriptor", function() {
         });
     });
 
-    describe('_getAttribute', function() {
-        it('from class if available', function() {
-            var layerDescriptor = new Portal.common.LayerDescriptor(
-                {
-                    bboxMinX: 1
-                },
-                'title',
-                {}
-            );
-
-            expect(layerDescriptor._getAttribute('bboxMinX')).toEqual(1);
-        });
-
-        it('from geonetwork record if not available in class', function() {
-            var layerDescriptor = new Portal.common.LayerDescriptor(
-                {},
-                'title',
-                {
-                    data: {
-                        bboxMinX: 1
-                    }
-                }
-            );
-
-            expect(layerDescriptor._getAttribute('bboxMinX')).toEqual(1);
-        });
-
-        it('from class if available also in geonetwork record', function() {
-            var layerDescriptor = new Portal.common.LayerDescriptor(
-                {
-                    bboxMinX: 2
-                },
-                {
-                    data: {
-                        bboxMinX: 1
-                    }
-                }
-            );
-
-            expect(layerDescriptor._getAttribute('bboxMinX')).toEqual(2);
-        });
-    });
-
     describe('_setOpenLayerBounds', function() {
         it('from geonetwork', function() {
             var openLayer = {};
