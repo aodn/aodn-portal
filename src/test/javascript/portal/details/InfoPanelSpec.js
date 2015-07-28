@@ -8,27 +8,29 @@
 describe("Portal.details.InfoPanel", function() {
 
     var mockInfoPanel;
-    var mockLinkObjects;
 
     beforeEach(function() {
 
+        var mockLinkRecords = [{
+            data: {
+                href: "http://www.google.com",
+                title: ""
+            }
+        }, {
+            data: {
+                href: "http://imos.aodn.org.au",
+                title: "Portal"
+            }
+        }];
+
         mockInfoPanel = new Portal.details.InfoPanel({
             layer: { dataCollection: {
-                get: function() { return {
-                    get: function() {
-                        return "Abstract & information";
-                    }
-                }}
+                get: returns({
+                    get: returns("Abstract & information")
+                }),
+                getPageLinks: returns(mockLinkRecords)
             }}
         });
-
-        mockLinkObjects = [{
-            href: "http://www.google.com",
-            title: ""
-        }, {
-            href: "http://imos.aodn.org.au",
-            title: "Portal"
-        }];
     });
 
     describe('_constructInfoTabHtml', function() {
