@@ -181,7 +181,7 @@ Portal.data.GeoNetworkRecord = function() {
         dataDownloadHandlersField,
         bboxField,
         'wmsLayer',
-        'ncwmsParams'
+        'ncwmsParams' // Todo - DN: This needs to go
     ]);
 
     var prototype = constructor.prototype;
@@ -208,7 +208,7 @@ Portal.data.GeoNetworkRecord = function() {
         return this.getFirstWmsLink() != undefined;
     };
 
-    prototype.updateNcwmsParams = function(dateRangeStart, dateRangeEnd, geometry) {
+    prototype.updateNcwmsParams = function(dateRangeStart, dateRangeEnd, geometry) { // Todo - DN: This needs to go
 
         var params = {};
 
