@@ -40,10 +40,39 @@ Portal.data.DataCollection = function() {
     };
 
     constructor.prototype.getWmsLayerLinks = function() {
-        return this.getFilteredLinks(['OGC:WMS-1.1.1-http-get-map']);
+        return this._getFilteredLinks([
+            'OGC:WMS-1.1.1-http-get-map',
+            'OGC:WMS-1.3.0-http-get-map'
+        ]);
     };
 
-    constructor.prototype.getFilteredLinks = function(protocols) {
+    constructor.prototype.getWfsLayerLinks = function() {
+        return this._getFilteredLinks([
+            'OGC:WFS-1.0.0-http-get-capabilities'
+        ]);
+    };
+
+    constructor.prototype.getDataFileLinks = function() {
+        return this._getFilteredLinks([
+            'WWW:DOWNLOAD-1.0-http--download',
+            'WWW:DOWNLOAD-1.0-http--downloaddata',
+            'WWW:DOWNLOAD-1.0-http--downloadother',
+            'WWW:LINK-1.0-http--downloaddata'
+        ]);
+    };
+
+    constructor.prototype.getPageLinks = function() {
+        return this._getFilteredLinks([
+            'WWW:LINK-1.0-http--metadata-URL',
+            'WWW:LINK-1.0-http--link',
+            'WWW:LINK-1.0-http--downloaddata',
+            'WWW:DOWNLOAD-1.0-http--download',
+            'WWW:DOWNLOAD-1.0-http--downloaddata',
+            'WWW:DOWNLOAD-1.0-http--downloadother' // Todo - DN: Should these lists of protocols be defined somewhere? config? (I don't think they've even been configured any differently)
+        ]);
+    };
+
+    constructor.prototype._getFilteredLinks = function(protocols) {
 
         var links = this.getMetadataRecord().get('links');
         var linkStore = new Portal.search.data.LinkStore({
