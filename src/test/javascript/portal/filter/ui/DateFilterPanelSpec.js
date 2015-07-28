@@ -76,7 +76,7 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
     });
 
     function _mockFilterFields(filterPanel) {
-        Ext4.each(['fromDate', 'toDate'], function(property) {
+        Ext.each(['fromDate', 'toDate'], function(property) {
             this[property] = {
                 getValue: noOp,
                 setMinValue: noOp,

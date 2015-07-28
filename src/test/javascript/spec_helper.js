@@ -17,19 +17,9 @@ if (typeof console === "undefined" || typeof console.log === "undefined") {
 Ext.MessageBox.alert = function () {
 };
 
-// Overwrite Ext4.Ajax.request so it doesn't try to make requests.
-Ext4.Ajax.request = function(options) {
+//overwrite Ext.Ajax.request so it doesn't try to make requests.
+Ext.Ajax.request = function(options) {
 };
-
-Ext4.Loader.setConfig({
-    enabled: true,
-    disableCaching: true,
-    paths: {
-        "Ext.ux": "js/ext-ux",
-        "Portal": "js/portal"
-    }
-});
-
 
 // Ref: http://stackoverflow.com/questions/11942085/is-there-a-way-to-add-a-jasmine-matcher-to-the-whole-environment
 beforeEach(function() {
@@ -103,12 +93,12 @@ beforeEach(function() {
 
 var setupTestConfigAndStubs = function() {
     // Declare namespaces
-    Ext4.namespace('Portal.app.config');
-    Ext4.namespace('Portal.app.appConfig');
-    Ext4.namespace('Portal.app.appConfig.geonetwork');
-    Ext4.namespace('Portal.app.appConfig.help');
-    Ext4.namespace('Portal.app.appConfig.featureToggles');
-    Ext4.namespace('Portal.app.appConfig.portal');
+    Ext.namespace('Portal.app.config');
+    Ext.namespace('Portal.app.appConfig');
+    Ext.namespace('Portal.app.appConfig.geonetwork');
+    Ext.namespace('Portal.app.appConfig.help');
+    Ext.namespace('Portal.app.appConfig.featureToggles');
+    Ext.namespace('Portal.app.appConfig.portal');
 
     Portal.app.appConfig.portal.metadataLayerProtocols = [ "OGC:WMS-1.1.1-http-get-map", "OGC:WMS-1.3.0-http-get-map" ];
     Portal.app.config.defaultDatelineZoomBbox = '90, 90, -90, -90';
@@ -140,7 +130,6 @@ var getMockMap = function() {
 };
 
 var mockAjaxXmlResponse = function(responseContent) {
-    // This has to be mocked for Ext3
     spyOn(Ext.Ajax, 'request').andCallFake(function(opts) {
 
         var response = {

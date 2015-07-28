@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.filter.ui');
+Ext.namespace('Portal.filter.ui');
 
 /**
    This is the base type of all filters for geoserver layers.
@@ -15,7 +15,7 @@ Portal.filter.ui.BaseFilterPanel = Ext.extend(Ext.Panel, {
     MAX_COMPONENT_WIDTH: 300,
 
     constructor: function(cfg) {
-        var config = Ext4.apply({
+        var config = Ext.apply({
             typeLabel: OpenLayers.i18n('generalFilterHeading'),
             listeners: {
                 beforeremove: function() {

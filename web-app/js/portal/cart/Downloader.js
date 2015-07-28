@@ -5,14 +5,14 @@
  *
  */
 
-Ext4.namespace('Portal.cart');
+Ext.namespace('Portal.cart');
 
 Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
 
     constructor: function(config) {
         this.addEvents('downloadrequested', 'downloadstarted', 'downloadfailed');
 
-        Ext4.apply(this, config);
+        Ext.apply(this, config);
 
         Portal.cart.Downloader.superclass.constructor.call(this, config);
     },
@@ -89,7 +89,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
         var queryString = '';
 
         if (args) {
-            Ext4.each(Object.keys(args), function(key) {
+            Ext.each(Object.keys(args), function(key) {
 
                 var value = encodeURIComponent(args[key]);
 
@@ -103,7 +103,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     _downloadAsynchronously: function(collection, downloadUrl, params) {
         log.debug('downloading asynchronously', downloadUrl);
 
-        Ext4.Ajax.request({
+        Ext.Ajax.request({
             url: downloadUrl,
             scope: this,
             success: function(response) {

@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.search');
+Ext.namespace('Portal.search');
 
 Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
 
@@ -15,7 +15,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
 
         var layerStore = new Portal.data.LayerStore();
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             layers: layerStore
         }, cfg);
 

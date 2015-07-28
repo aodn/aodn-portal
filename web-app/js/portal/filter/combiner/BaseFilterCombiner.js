@@ -5,13 +5,13 @@
  *
  */
 
-Ext4.namespace('Portal.filter.combiner');
+Ext.namespace('Portal.filter.combiner');
 
 Portal.filter.combiner.BaseFilterCombiner = Ext.extend(Object, {
 
     constructor: function(cfg) {
 
-        Ext4.apply(this, cfg);
+        Ext.apply(this, cfg);
 
         Portal.filter.combiner.BaseFilterCombiner.superclass.constructor.call(this, cfg);
     },

@@ -5,12 +5,12 @@
  *
  */
 
-Ext4.namespace('Portal.filter.ui');
+Ext.namespace('Portal.filter.ui');
 
 Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
 
     constructor: function(cfg) {
-        var config = Ext4.apply({
+        var config = Ext.apply({
             layout: 'form',
             labelSeparator: '',
             typeLabel: OpenLayers.i18n('temporalExtentHeading'),

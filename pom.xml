@@ -299,7 +299,6 @@
                         <include>jquery/jquery.cookie.js</include>
                         <include>ext-3.3.1/adapter/ext/ext-base-debug.js</include>
                         <include>ext-3.3.1/ext-all-debug-w-comments.js</include>
-                        <include>extjs-4.1.1/builds/ext-all-sandbox-debug.js</include>
                         <include>js/portal/common/GeoExt.ux.BaseLayerCombobox.js</include>
                         <include>OpenLayers-2.13.1/OpenLayers.js</include>
                         <include>OpenLayers-2.13.1/lib/deprecated.js</include>

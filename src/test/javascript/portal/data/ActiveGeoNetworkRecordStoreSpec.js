@@ -60,7 +60,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
             var myRecord;
 
             beforeEach(function() {
-                spyOn(Ext4.MsgBus, 'publish');
+                spyOn(Ext.MsgBus, 'publish');
                 myRecord = new Portal.data.GeoNetworkRecord({
                     title: 'my record'
                 });
@@ -69,14 +69,14 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
             describe('when adding/removing records', function() {
                 it('geonetwork added message is fired', function() {
                     activeRecordStore.add(myRecord);
-                    expect(Ext4.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.DATA_COLLECTION_ADDED, myRecord);
+                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.DATA_COLLECTION_ADDED, myRecord);
                 });
 
                 it('geonetwork removed message is fired', function() {
                     activeRecordStore.add(myRecord);
 
                     activeRecordStore.remove(myRecord);
-                    expect(Ext4.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, myRecord);
+                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, myRecord);
                 });
             });
         });
@@ -199,7 +199,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
 
 
                 it('all layers removed from LayerStore', function() {
-                    spyOn(Ext4.MsgBus, 'publish');
+                    spyOn(Ext.MsgBus, 'publish');
 
                     var layerRecord = new GeoExt.data.LayerRecord({
                         layer: layer,
@@ -232,15 +232,15 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 });
 
                 it('published activegeonetworkrecordremoved', function() {
-                    spyOn(Ext4.MsgBus, 'publish');
+                    spyOn(Ext.MsgBus, 'publish');
                     activeRecordStore.removeAll();
-                    expect(Ext4.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
+                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
                 });
 
                 it('publishes reset', function() {
-                    spyOn(Ext4.MsgBus, 'publish');
+                    spyOn(Ext.MsgBus, 'publish');
                     activeRecordStore.removeAll();
-                    expect(Ext4.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.RESET);
+                    expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.RESET);
                 });
             });
         });
@@ -285,7 +285,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
                 addTestRecordsToStore();
 
                 // Decode again as comparing strings would be too brittle.
-                itemsDecoded = Ext4.JSON.decode(activeRecordStore.getItemsEncodedAsJson());
+                itemsDecoded = Ext.util.JSON.decode(activeRecordStore.getItemsEncodedAsJson());
             });
 
             it('item per record', function() {
@@ -360,7 +360,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
 
 
             beforeEach(function() {
-                spyOn(Ext4.MsgBus, 'publish');
+                spyOn(Ext.MsgBus, 'publish');
                 record = new Portal.data.GeoNetworkRecord({
                     uuid: uuid
                 });
@@ -403,7 +403,7 @@ describe("Portal.data.ActiveGeoNetworkRecordStore", function() {
         beforeEach(function() {
             layerStore = Portal.data.ActiveGeoNetworkRecordStore.instance().layerStore
 
-            spyOn(Ext4.MsgBus, 'publish');
+            spyOn(Ext.MsgBus, 'publish');
             spyOn(layerStore, 'addUsingDescriptor').andCallThrough();
         });
 

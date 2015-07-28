@@ -4,18 +4,18 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Ext4.ux.Ajax", function() {
+describe("Ext.ux.Ajax", function() {
     describe('proxyRequest', function() {
-        it('forwards proxied and encoded URL to Ext4.Ajax.request', function() {
-            spyOn(Ext4.Ajax, 'request');
+        it('forwards proxied and encoded URL to Ext.Ajax.request', function() {
+            spyOn(Ext.Ajax, 'request');
             var url = 'http://someotherurl';
 
-            Ext4.ux.Ajax.proxyRequest({
+            Ext.ux.Ajax.proxyRequest({
                 url: url
             });
 
-            expect(Ext4.Ajax.request).toHaveBeenCalledWith({
-                url: Ext4.ux.Ajax.proxyUrl + 'http%3A%2F%2Fsomeotherurl'
+            expect(Ext.Ajax.request).toHaveBeenCalledWith({
+                url: Ext.ux.Ajax.proxyUrl + 'http%3A%2F%2Fsomeotherurl'
             });
         });
     });
@@ -28,7 +28,7 @@ describe("Ext4.ux.Ajax", function() {
                         'Content-Type': 'content-type'
                     }
                 };
-                expect(Ext4.ux.Ajax.setContentType({}, 'content-type')).toEqual(expectedParams);
+                expect(Ext.ux.Ajax.setContentType({}, 'content-type')).toEqual(expectedParams);
             });
 
             it('existing headers', function() {
@@ -44,32 +44,32 @@ describe("Ext4.ux.Ajax", function() {
                         'Content-Type': 'content-type'
                     }
                 };
-                expect(Ext4.ux.Ajax.setContentType(params, 'content-type')).toEqual(expectedParams);
+                expect(Ext.ux.Ajax.setContentType(params, 'content-type')).toEqual(expectedParams);
             });
         });
     });
 
     describe('proxyRequestXML', function() {
         it('adds Content-Type application/xml', function() {
-            spyOn(Ext4.ux.Ajax, 'setContentType');
-            spyOn(Ext4.ux.Ajax, 'proxyRequest').andCallFake(function() {});
+            spyOn(Ext.ux.Ajax, 'setContentType');
+            spyOn(Ext.ux.Ajax, 'proxyRequest').andCallFake(function() {});
 
-            Ext4.ux.Ajax.proxyRequestXML({});
+            Ext.ux.Ajax.proxyRequestXML({});
 
-            expect(Ext4.ux.Ajax.setContentType).toHaveBeenCalledWith({}, 'application/xml');
-            expect(Ext4.ux.Ajax.proxyRequest).toHaveBeenCalled();
+            expect(Ext.ux.Ajax.setContentType).toHaveBeenCalledWith({}, 'application/xml');
+            expect(Ext.ux.Ajax.proxyRequest).toHaveBeenCalled();
         });
     });
 
     describe('proxyRequestJSON', function() {
         it('adds Content-Type application/json', function() {
-            spyOn(Ext4.ux.Ajax, 'setContentType');
-            spyOn(Ext4.ux.Ajax, 'proxyRequest').andCallFake(function() {});
+            spyOn(Ext.ux.Ajax, 'setContentType');
+            spyOn(Ext.ux.Ajax, 'proxyRequest').andCallFake(function() {});
 
-            Ext4.ux.Ajax.proxyRequestJSON({});
+            Ext.ux.Ajax.proxyRequestJSON({});
 
-            expect(Ext4.ux.Ajax.setContentType).toHaveBeenCalledWith({}, 'application/json');
-            expect(Ext4.ux.Ajax.proxyRequest).toHaveBeenCalled();
+            expect(Ext.ux.Ajax.setContentType).toHaveBeenCalledWith({}, 'application/json');
+            expect(Ext.ux.Ajax.proxyRequest).toHaveBeenCalled();
         });
     });
 });

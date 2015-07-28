@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.filter');
+Ext.namespace('Portal.filter');
 
 Portal.filter.BooleanFilter = Ext.extend(Portal.filter.Filter, {
 

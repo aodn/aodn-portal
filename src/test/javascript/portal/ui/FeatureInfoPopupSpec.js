@@ -90,7 +90,7 @@ describe("Portal.ui.FeatureInfoPopup", function()
    it('on reset', function() {
 
         spyOn(Portal.ui.FeatureInfoPopup.prototype, 'close');
-        Ext4.MsgBus.publish(PORTAL_EVENTS.RESET);
+        Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
         expect(Portal.ui.FeatureInfoPopup.prototype.close).toHaveBeenCalled();
    });
 
@@ -132,7 +132,7 @@ describe("Portal.ui.FeatureInfoPopup", function()
             featureInfoPopup._clickPoint = function() { return {}; };
             spyOn(layer, 'getFeatureInfoRequestString');
 
-            Ext4.namespace('Portal.app.appConfig.portal');
+            Ext.namespace('Portal.app.appConfig.portal');
             Portal.app.appConfig.portal.mapGetFeatureInfoBuffer = 10;
 
             featureInfoPopup._getLayerFeatureInfoRequestString(layer);

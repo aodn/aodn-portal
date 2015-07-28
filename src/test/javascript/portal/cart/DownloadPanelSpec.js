@@ -28,13 +28,13 @@ describe("Portal.cart.DownloadPanel", function() {
 
         describe('active geonetwork record events', function() {
             it('listens for DATA_COLLECTION_ADDED event', function() {
-                Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
+                Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
 
                 expect(downloadPanel.generateContent).toHaveBeenCalled();
             });
 
             it('listens for DATA_COLLECTION_REMOVED event', function() {
-                Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
+                Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
 
                 expect(downloadPanel.generateContent).toHaveBeenCalled();
             });
@@ -109,7 +109,7 @@ describe("Portal.cart.DownloadPanel", function() {
             var downloadPanel = new Portal.cart.DownloadPanel();
 
             var items = [];
-            Ext4.each(collections, function(collection) {
+            Ext.each(collections, function(collection) {
                 items.push({
                     data: collection,
                     loaded: true

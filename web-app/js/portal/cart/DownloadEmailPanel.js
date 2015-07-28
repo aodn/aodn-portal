@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext4.namespace('Portal.cart');
+Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
 
@@ -48,7 +48,7 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
             }
         };
 
-        Ext4.apply(this, config);
+        Ext.apply(this, config);
 
         Portal.cart.DownloadEmailPanel.superclass.initComponent.call(this, arguments);
     },

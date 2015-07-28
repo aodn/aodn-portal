@@ -5,24 +5,24 @@
  *
  */
 
-Ext4.namespace('Portal.common');
+Ext.namespace('Portal.common');
 
 Portal.common.EmptyCollectionStatusPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
 
-        Ext4.apply(this, cfg);
+        Ext.apply(this, cfg);
         Portal.common.EmptyCollectionStatusPanel.superclass.constructor.call(this, arguments);
     },
 
     initComponent: function(cfg) {
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             html: this.toString(),
             cls: 'x-panel-header'
         }, cfg);
 
-        Ext4.apply(this, config);
+        Ext.apply(this, config);
         Portal.common.EmptyCollectionStatusPanel.superclass.initComponent.apply(this, arguments);
     },
 

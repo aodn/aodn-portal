@@ -133,7 +133,7 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
 
                 // This is a bit of an indirect way of checking the download handler type,
                 // since it doesn't seem possible to do it directly.
-                Ext4.each(downloadHandlers, function(downloadHandler) {
+                Ext.each(downloadHandlers, function(downloadHandler) {
                     downloadHandler.getDownloadOptions();
                 });
 

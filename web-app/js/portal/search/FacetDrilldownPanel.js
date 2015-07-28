@@ -5,13 +5,13 @@
  *
  */
 
-Ext4.namespace('Portal.search');
+Ext.namespace('Portal.search');
 
 Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
     constructor: function(cfg) {
         cfg = cfg || {};
 
-        Ext4.apply(cfg, {
+        Ext.apply(cfg, {
             animate: false,
             singleExpand: true,
             rootVisible: false,
@@ -149,7 +149,7 @@ Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
     _hideSiblings: function(nodes) {
         var that = this;
 
-        Ext4.each(nodes, function(node) {
+        Ext.each(nodes, function(node) {
             if (node.attributes.checked) {
                 that._hidePreviousSiblings(node);
                 that._hideNextSiblings(node);
@@ -159,13 +159,13 @@ Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
     },
 
     _expand: function(nodes) {
-        Ext4.each(nodes, function(node) {
+        Ext.each(nodes, function(node) {
             node.expand();
         });
     },
 
     _removeCount: function(nodes) {
-        Ext4.each(nodes, function(node) {
+        Ext.each(nodes, function(node) {
             if (node.hasChildNodes()){
                 node.setText(node.attributes.value);
             }

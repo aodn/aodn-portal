@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext4.namespace('Portal.search');
+Ext.namespace('Portal.search');
 
 Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
     padding:5,
@@ -25,7 +25,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
         var defaults = {
         };
 
-        Ext4.apply(this, cfg, defaults);
+        Ext.apply(this, cfg, defaults);
 
         this.facetMap = new Portal.search.FacetMapPanel({
             initialBbox: Portal.app.appConfig.portal.initialBbox,
@@ -34,7 +34,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
             width: 300
         });
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             layout: 'form',
             cls: 'search-filter-panel filter-selection-panel',
             defaults: {

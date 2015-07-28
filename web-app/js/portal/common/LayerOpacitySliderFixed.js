@@ -6,7 +6,7 @@
  *
  */
 
-Ext4.namespace('Portal.common');
+Ext.namespace('Portal.common');
 
 /* Code common to main map and minimap */
 

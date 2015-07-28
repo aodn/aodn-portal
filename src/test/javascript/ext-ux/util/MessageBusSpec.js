@@ -18,11 +18,11 @@ describe("Ext.ux.util.MessageBus", function() {
 
     it("alias", function() {
         var listenerCalled = false;
-        Ext4.MsgBus.subscribe("subject", function () {
+        Ext.MsgBus.subscribe("subject", function () {
             listenerCalled = true;
         }, this);
 
-        Ext4.MsgBus.publish("subject");
+        Ext.MsgBus.publish("subject");
 
         expect(listenerCalled).toEqual(true);
     });

@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext4.namespace('Portal.search');
+Ext.namespace('Portal.search');
 
 Portal.search.GeoFacetMapToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {
 
@@ -17,7 +17,7 @@ Portal.search.GeoFacetMapToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {
      */
     initialize: function(options) {
 
-        options = Ext4.apply({
+        options = Ext.apply({
             displayClass: 'olControlEditingToolbar'
         }, options);
 

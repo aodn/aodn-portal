@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext4.namespace('Portal.cart');
+Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
 
@@ -40,7 +40,7 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
             }
         };
 
-        Ext4.apply(this, config);
+        Ext.apply(this, config);
 
         Portal.cart.DownloadChallengePanel.superclass.initComponent.call(this, arguments);
 
@@ -50,7 +50,7 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
     _getChallenge: function() {
         this._hideChallenge();
 
-        Ext4.Ajax.request({
+        Ext.Ajax.request({
             url: 'downloadAuth',
             scope: this,
             success: function(resp) {
@@ -63,14 +63,14 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
     },
 
     _showChallenge: function(html) {
-        Ext4.each(this.items.items, function(component) { component.show(); });
+        Ext.each(this.items.items, function(component) { component.show(); });
 
         $("#challenge").html(html);
         this.challenged = true;
     },
 
     _hideChallenge: function() {
-        Ext4.each(this.items.items, function(component) { component.hide(); });
+        Ext.each(this.items.items, function(component) { component.hide(); });
 
         $("#challenge").html("");
         this.challenged = false;

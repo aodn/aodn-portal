@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext4.namespace('Portal.details');
+Ext.namespace('Portal.details');
 
 Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
     TABLE_WIDTH: 165,
@@ -14,7 +14,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
 
         this.map = cfg.map;
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             cls: "bboxExtentPicker",
             items: [
                 this._buildBoundingBox(cfg)

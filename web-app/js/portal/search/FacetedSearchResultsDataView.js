@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.search');
+Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
@@ -123,7 +123,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     _getMeasuredParameters: function(values) {
         var broader = [];
-        Ext4.each(values.parameter, function(param) {
+        Ext.each(values.parameter, function(param) {
             var broaderTerms = this.classificationStore.getBroaderTerms(param, 2, 'Measured parameter');
             if (broaderTerms.length > 0) {
                 broader = broader.concat(broaderTerms);
@@ -317,7 +317,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         }
 
         if (!multiSelect) {
-            Ext4.MsgBus.publish(PORTAL_EVENTS.VIEW_DATA_COLLECTION, record);
+            Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_DATA_COLLECTION, record);
         }
     }
 });

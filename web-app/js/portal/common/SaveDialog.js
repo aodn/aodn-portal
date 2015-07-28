@@ -6,7 +6,7 @@
  *
  */
 
-Ext4.namespace('Portal.common');
+Ext.namespace('Portal.common');
 
 Portal.common.SaveDialog = Ext.extend(Ext.Window, {
 
@@ -14,7 +14,7 @@ Portal.common.SaveDialog = Ext.extend(Ext.Window, {
     failedSaveErrMsg: OpenLayers.i18n('errorDialogTitle'),
 
     initComponent: function() {
-        Ext4.apply(this, {
+        Ext.apply(this, {
             modal: true,
             layout: 'fit',
             items: {

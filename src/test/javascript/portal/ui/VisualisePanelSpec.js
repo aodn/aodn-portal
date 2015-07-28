@@ -64,7 +64,7 @@ describe('Portal.ui.VisualisePanel', function() {
     describe('record added', function() {
         it('expands details panel', function() {
             spyOn(visualisePanel.detailsPanel, 'expand');
-            Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
+            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
             expect(visualisePanel.detailsPanel.expand).toHaveBeenCalled();
         });
     });

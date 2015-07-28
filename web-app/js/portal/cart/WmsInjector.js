@@ -5,9 +5,9 @@
  *
  */
 
-Ext4.namespace('Portal.cart');
+Ext.namespace('Portal.cart');
 
-Ext4.define('Portal.cart.WmsInjector', { extend: 'Portal.cart.BaseInjector',
+Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _getDataFilterEntry: function(collection) {
 

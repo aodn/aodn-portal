@@ -5,12 +5,12 @@
  *
  */
 
-Ext4.namespace('Portal.ui');
+Ext.namespace('Portal.ui');
 
 Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
 
     constructor: function (cfg, mapPanel) {
-        var config = Ext4.apply({}, cfg);
+        var config = Ext.apply({}, cfg);
         Portal.ui.openlayers.MapOptions.superclass.constructor.call(this, config);
 
         Ext.QuickTips.init();
@@ -59,7 +59,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         // not an actual OpenLayers.Control.
         this.mapPanel = mapPanel;
 
-        Ext4.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function(eventName, message) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function(eventName, message) {
             var map = this.mapPanel.map;
             var theLayer = map.getLayersByName(message.layer.name)[0];
             if (theLayer) {

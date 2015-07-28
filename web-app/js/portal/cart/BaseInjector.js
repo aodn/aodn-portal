@@ -5,11 +5,11 @@
  *
  */
 
-Ext4.namespace('Portal.cart');
+Ext.namespace('Portal.cart');
 
-Ext4.define('Portal.cart.BaseInjector', { extend: 'Object',
+Portal.cart.BaseInjector = Ext.extend(Object, {
     constructor: function(config) {
-        Portal.cart.BaseInjector.superclass.constructor.call(this, Ext4.apply(this, config));
+        Portal.cart.BaseInjector.superclass.constructor.call(this, Ext.apply(this, config));
     },
 
     getInjectionJson: function(collection) {
@@ -41,7 +41,7 @@ Ext4.define('Portal.cart.BaseInjector', { extend: 'Object',
 
         var handlerToEstimateWith;
 
-        Ext4.each(collection.dataDownloadHandlers, function(handler) {
+        Ext.each(collection.dataDownloadHandlers, function(handler) {
 
             if (handler.canEstimateDownloadSize()) {
                 handlerToEstimateWith = handler;
@@ -54,8 +54,8 @@ Ext4.define('Portal.cart.BaseInjector', { extend: 'Object',
     _hideButton: function(uuid) {
 
         var elementId = OpenLayers.i18n('downloadButtonId', {id: uuid});
-        if (Ext4.get(elementId)) {
-            Ext4.fly(elementId).update("");
+        if (Ext.get(elementId)) {
+            Ext.fly(elementId).update("");
         }
     },
 

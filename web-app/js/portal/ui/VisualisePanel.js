@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.ui');
+Ext.namespace('Portal.ui');
 
 Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
 
@@ -25,7 +25,7 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
             mapPanel: this.mapPanel
         });
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             layout: 'border',
             id: 'visualisePanel',
             stateful: false,
@@ -39,7 +39,7 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
 
         this.on('beforehide', function() { this.onBeforeHide() }, this);
 
-        Ext4.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() {
             this.detailsPanel.expand();
         }, this);
     },

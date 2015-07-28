@@ -5,14 +5,14 @@
  *
  */
 
-Ext4.namespace('Portal.filter.validation');
+Ext.namespace('Portal.filter.validation');
 
 Portal.filter.validation.SpatialConstraintValidator = Ext.extend(Object, {
 
     MIN_AREA_PERCENT: 0.01,
 
     constructor: function(cfg) {
-        Ext4.apply(this, cfg);
+        Ext.apply(this, cfg);
 
         Portal.filter.validation.SpatialConstraintValidator.superclass.constructor.call(this, cfg);
     },

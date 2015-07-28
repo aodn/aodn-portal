@@ -6,7 +6,7 @@
  *
  */
 
-Ext4.namespace('Portal.common');
+Ext.namespace('Portal.common');
 
 Portal.common.ImageButton = Ext.extend(Ext.Button, {
     initComponent: function() {

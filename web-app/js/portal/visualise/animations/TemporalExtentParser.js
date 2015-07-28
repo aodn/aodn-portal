@@ -1,4 +1,4 @@
-Ext4.namespace('Portal.visualise.animations');
+Ext.namespace('Portal.visualise.animations');
 
 Portal.visualise.animations.TemporalExtentParser = Ext.extend(Object, {
 
@@ -109,7 +109,7 @@ Portal.visualise.animations.TemporalExtentParser = Ext.extend(Object, {
     },
 
     _parseDateTimeDurationComponent: function(component, componentParts, valueFn) {
-        Ext4.each(component, function(character, index, all) {
+        Ext.each(component, function(character, index, all) {
             componentParts = this._splitDurationOn(componentParts, character, index, valueFn);
         }, this);
     },
@@ -125,7 +125,7 @@ Portal.visualise.animations.TemporalExtentParser = Ext.extend(Object, {
 
     _initDuration: function(keys) {
         var duration = {};
-        Ext4.each(keys, function(key, index, all) {
+        Ext.each(keys, function(key, index, all) {
             duration[key] = null;
         }, this);
 

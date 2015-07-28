@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.details');
+Ext.namespace('Portal.details');
 
 Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
@@ -24,7 +24,7 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
             setGeometry: function() {}
         });
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             layout: new Ext.layout.CardLayout(),
             activeItem: this.boxDisplayPanel,
             layoutOnCardChange: true, // required for boxDisplayPanel

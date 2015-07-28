@@ -5,7 +5,7 @@
  *
  */
 
-Ext4.namespace('Portal.details');
+Ext.namespace('Portal.details');
 
 Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
 
@@ -21,7 +21,7 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
 
         this.createTools();
 
-        var config = Ext4.apply({
+        var config = Ext.apply({
             id: cfg.layerItemId,
             cls: 'subsetPanelAccordionItem',
             title: '<h4>' + cfg.layer.name + '</h4>',
@@ -39,13 +39,13 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
             ]
         }, cfg);
 
-        Ext4.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_END, this.handleLayerLoadingEnd, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_LOADING_END, this.handleLayerLoadingEnd, this);
 
         Portal.details.SubsetItemsWrapperPanel.superclass.constructor.call(this, config);
     },
 
     destroy: function() {
-        Ext4.MsgBus.unsubscribe(PORTAL_EVENTS.LAYER_LOADING_END, this.handleLayerLoadingEnd, this);
+        Ext.MsgBus.unsubscribe(PORTAL_EVENTS.LAYER_LOADING_END, this.handleLayerLoadingEnd, this);
 
         this.superclass().destroy.call(this);
     },
