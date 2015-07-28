@@ -218,10 +218,6 @@ OpenLayers.Handler.Drag.prototype.mousedown = function(evt) {
     return propagate;
 };
 
-OpenLayers.Layer.WMS.prototype.hasImgLoadErrors = function() {
-    return Ext.DomQuery.jsSelect('img.olImageLoadError', this.div).length > 0;
-};
-
 OpenLayers.Tile.Image.prototype.__setImgSrc = OpenLayers.Tile.Image.prototype.setImgSrc;
 OpenLayers.Tile.Image.prototype.setImgSrc = function(url) {
     // Do not modify behaviour for baselayers, it breaks them!
