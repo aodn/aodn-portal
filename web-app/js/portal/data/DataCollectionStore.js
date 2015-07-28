@@ -5,13 +5,13 @@
  *
  */
 
-Ext4.namespace('Portal.data');
+Ext.namespace('Portal.data');
 
 Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
 
     constructor: function(config) {
 
-        Ext4.apply(this, config);
+        Ext.apply(this, config);
         Portal.data.DataCollectionStore.superclass.constructor.call(this);
 
         this.on('add', this._onAdd, this);
@@ -21,8 +21,8 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
 
     removeAll: function() {
         Portal.data.DataCollectionStore.superclass.removeAll.call(this);
-        Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
-        Ext4.MsgBus.publish(PORTAL_EVENTS.RESET);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
+        Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
     },
 
     getRecordFromUuid: function(uuid) {
@@ -57,7 +57,7 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
             alert('dataCollections (' + dataCollections.length + ')');
         }
 
-        Ext4.each(dataCollections, function(dataCollection) {
+        Ext.each(dataCollections, function(dataCollection) {
 
             if (dataCollection.getDefaultWmsLayerLink()) {
 
@@ -81,18 +81,18 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
 
     _onRemove: function(store, dataCollection) {
         this._removeFromLayerStore(dataCollection);
-        Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, dataCollection);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, dataCollection);
     },
 
     _onClear: function(store, dataCollections) {
-        Ext4.each(dataCollections, function(dataCollection) {
+        Ext.each(dataCollections, function(dataCollection) {
             store._removeFromLayerStore(dataCollection);
         });
     },
 
     _recordLoaded: function(dataCollection) {
         dataCollection.loaded = true;
-        Ext4.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED, dataCollection);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED, dataCollection);
     },
 
     _removeFromLayerStore: function(dataCollection) {

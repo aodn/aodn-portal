@@ -12,7 +12,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
         var templateLines = this._getHtmlContent();
 
-        Ext4.apply(this, cfg);
+        Ext.apply(this, cfg);
 
         Portal.cart.DownloadPanelItemTemplate.superclass.constructor.call(this, templateLines);
     },
