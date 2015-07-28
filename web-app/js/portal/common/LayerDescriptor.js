@@ -18,7 +18,8 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
 
     constructor: function(cfg, title, dataCollection, openLayerClass) { // Todo - DN: Could we tidy this up so it just takes a config object?
         if (typeof cfg == "string") {
-            cfg = Ext.util.JSON.decode(cfg);
+            console.warn('Config was String'); // Todo - DN: Ever seen this?
+            cfg = Ext.JSON.decode(cfg);
         }
 
         if (!openLayerClass) {
