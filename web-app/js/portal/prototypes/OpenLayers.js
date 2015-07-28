@@ -218,25 +218,6 @@ OpenLayers.Handler.Drag.prototype.mousedown = function(evt) {
     return propagate;
 };
 
-OpenLayers.Tile.Image.prototype.__setImgSrc = OpenLayers.Tile.Image.prototype.setImgSrc;
-OpenLayers.Tile.Image.prototype.setImgSrc = function(url) {
-    // Do not modify behaviour for baselayers, it breaks them!
-    if (this.layer.isBaseLayer) {
-        return this.__setImgSrc(url);
-    }
-
-    if (!url) {
-        return;
-    }
-
-    if (url && url == this.imgDiv.src) {
-        // force reload to generate events expected by openlayers
-        this.imgDiv.src = "about:blank";
-    }
-
-    this.imgDiv.src = url;
-};
-
 OpenLayers.Geometry.prototype.isBox = function() {
     var boundsAsGeom = this.getBounds().toGeometry();
 
