@@ -16,12 +16,12 @@ describe("Portal.filter.GeometryFilter", function() {
             filter = new Portal.filter.GeometryFilter({
                 name: 'column_name',
                 value: {
-                    toWkt: function() { return 'WKT' },
-                    getBounds: function() { return 'bounds' }
+                    toWkt: returns('WKT'),
+                    getBounds: returns('bounds')
                 }
             });
             filter.map = {
-                getSpatialConstraintType: function() { return 'polygon' }
+                getSpatialConstraintType: returns('polygon')
             };
         });
 
@@ -53,12 +53,12 @@ describe("Portal.filter.GeometryFilter", function() {
             filter = new Portal.filter.GeometryFilter({
                 name: 'column_name',
                 value: {
-                    toWkt: function() { return 'WKT' },
-                    getBounds: function() { return 'bounds' }
+                    toWkt: returns('WKT'),
+                    getBounds: returns('bounds')
                 }
             });
             filter.map = {
-                getSpatialConstraintType: function() { return 'box' }
+                getSpatialConstraintType: returns('box')
             };
         });
 

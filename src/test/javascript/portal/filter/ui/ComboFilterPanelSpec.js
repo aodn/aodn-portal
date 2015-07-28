@@ -20,13 +20,13 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
 
         filterPanel = new Portal.filter.ui.ComboFilterPanel({
             filter: {
-                getName: function() { return 'test' },
-                getLabel: function() { return 'testLabel' },
+                getName: returns('test'),
+                getLabel: returns('testLabel'),
                 setValue: noOp
             },
             layer: {
                 name: 'test layer',
-                getDownloadCql: function() { return ""; }
+                getDownloadCql: returns("")
             }
         });
     });
@@ -35,20 +35,20 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
 
         beforeEach(function() {
             filterPanel.combo = {};
-            filterPanel.getRawValue = function() { return "L'Astrolabe"; };
+            filterPanel.getRawValue = returns("L'Astrolabe");
             filterPanel.markInvalid = noOp;
         });
 
         it('should return true when in the store', function() {
 
-            filterPanel.findRecord = function() { return true; };
+            filterPanel.findRecord = returns(true);
             expect(filterPanel.validateValue()).toEqual(true);
         });
 
         it('should mark combo invalid when not in the store', function() {
 
             spyOn(filterPanel, 'markInvalid');
-            filterPanel.findRecord = function() { return undefined; };
+            filterPanel.findRecord = returns(undefined);
             filterPanel.validateValue("anything");
             expect(filterPanel.markInvalid).toHaveBeenCalled();
             expect(filterPanel.validateValue()).toEqual(false);
@@ -61,7 +61,7 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
             spyOn(window, 'trackUsage');
             filterPanel.filter.setValue = jasmine.createSpy('setValue');
             filterPanel.combo = {
-                getValue: function() { return "value" },
+                getValue: returns("value"),
                 disabled: false
             };
         });

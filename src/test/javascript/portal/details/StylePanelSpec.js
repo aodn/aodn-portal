@@ -112,7 +112,7 @@ describe("Portal.details.StylePanel", function() {
             };
 
             var layer = {
-                isNcwms: function() {return true},
+                isNcwms: returns(true),
                 styles: [
                     {name: 'style1', palette: 'palette1'},
                     {name: 'style1', palette: 'palette2'},
@@ -155,7 +155,7 @@ describe("Portal.details.StylePanel", function() {
 
         it('does not load combo box data if 1 style or fewer', function() {
 
-            stylePanel._processStyleData = function() { return ['style1'] };
+            stylePanel._processStyleData = returns(['style1']);
 
             stylePanel._stylesLoaded();
 
@@ -168,7 +168,7 @@ describe("Portal.details.StylePanel", function() {
         it('loads combo box data if more than 1 style to choose from', function() {
 
             var styles = ['style1', 'style2'];
-            stylePanel._processStyleData = function() { return styles };
+            stylePanel._processStyleData = returns(styles);
 
             stylePanel._stylesLoaded();
 
@@ -181,8 +181,8 @@ describe("Portal.details.StylePanel", function() {
 
     describe("_getPalette(layer)", function() {
 
-        var ncWmsLayer = {isNcwms: function() {return true}};
-        var otherLayer = {isNcwms: function() {return false}};
+        var ncWmsLayer = {isNcwms: returns(true)};
+        var otherLayer = {isNcwms: returns(false)};
 
         it("Returns palette when the style is in the form style/palette", function() {
 

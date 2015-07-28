@@ -45,7 +45,7 @@ describe('OpenLayers', function() {
 
         describe("_is130", function() {
             it("returns false for ncwms", function() {
-                openLayer.isNcwms = function() { return true };
+                openLayer.isNcwms = returns(true);
                 openLayer.server = {wmsVersion: '1.3.0'};
                 expect(openLayer._is130()).toBeFalsy();
             });

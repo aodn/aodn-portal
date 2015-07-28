@@ -68,7 +68,7 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
 
             it('shows box display panel when constraint is box', function() {
                 var geometry = {
-                    isBox: function() { return true; }
+                    isBox: returns(true)
                 };
 
                 spyOn(displayPanel, '_showCard');
@@ -80,7 +80,7 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
 
             it('shows polygon display panel when constraint is polygon', function() {
                 var geometry = {
-                    isBox: function() { return false; }
+                    isBox: returns(false)
                 };
 
                 spyOn(displayPanel, '_showCard');

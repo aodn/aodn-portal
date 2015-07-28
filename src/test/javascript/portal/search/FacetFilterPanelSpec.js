@@ -99,12 +99,8 @@ describe("Portal.search.FacetFilterPanel", function() {
     describe('_addDrilldownFilters', function() {
         beforeEach(function() {
             mockDrilldownPanel = {
-                hasDrilldown: function() {
-                    return false;
-                },
-                getDrilldownPath: function() {
-                    return 'a shrubbery';
-                }
+                hasDrilldown: returns(false),
+                getDrilldownPath: returns('a shrubbery')
             };
 
             spyOn(filterPanel, '_getDrilldownPanels').andReturn(mockDrilldownPanel);
@@ -117,9 +113,7 @@ describe("Portal.search.FacetFilterPanel", function() {
         });
 
         it('adds a filter if the panel has a drilldown', function() {
-            mockDrilldownPanel.hasDrilldown = function() {
-                return true;
-            };
+            mockDrilldownPanel.hasDrilldown = returns(true);
 
             filterPanel._addDrilldownFilters();
             expect(searcher.addDrilldownFilter).toHaveBeenCalled();

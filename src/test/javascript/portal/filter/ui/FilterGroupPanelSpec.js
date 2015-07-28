@@ -16,8 +16,8 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
     beforeEach(function() {
         layer = new OpenLayers.Layer.WMS();
         layer.server = { uri: "uri" };
-        layer.getDownloadLayer = function() { return "downloadLayer"; };
-        layer.isKnownToThePortal = function() { return true; };
+        layer.getDownloadLayer = returns("downloadLayer");
+        layer.isKnownToThePortal = returns(true);
         layer.map = getMockMap();
 
         filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
@@ -42,9 +42,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             };
 
             filterPanel = {
-                needsFilterRange: function() {
-                    return false;
-                }
+                needsFilterRange: returns(false)
             };
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel(cfg);
@@ -81,38 +79,38 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 filters: [
                     {
                         constructor: Portal.filter.BooleanFilter,
-                        isVisualised: function() { return true },
-                        hasValue: function() { return true },
-                        getLabel: function() { return "kappa" },
-                        getHumanReadableForm: function() { return 'four' }
+                        isVisualised: returns(true),
+                        hasValue: returns(true),
+                        getLabel: returns("kappa"),
+                        getHumanReadableForm: returns('four')
                     },
                     {
                         constructor: Portal.filter.BooleanFilter,
-                        isVisualised: function() { return false },
-                        hasValue: function() { return true },
-                        getLabel: function() { return "gamma" },
-                        getHumanReadableForm: function() { return 'two' }
+                        isVisualised: returns(false),
+                        hasValue: returns(true),
+                        getLabel: returns("gamma"),
+                        getHumanReadableForm: returns('two')
                     },
                     {
                         constructor: Portal.filter.StringFilter,
-                        isVisualised: function() { return true },
-                        hasValue: function() { return false },
-                        getLabel: function() { return "beta" },
-                        getHumanReadableForm: function() { return 'three' }
+                        isVisualised: returns(true),
+                        hasValue: returns(false),
+                        getLabel: returns("beta"),
+                        getHumanReadableForm: returns('three')
                     },
                     {
                         constructor: Portal.filter.StringFilter,
-                        isVisualised: function() { return true },
-                        hasValue: function() { return true },
-                        getLabel: function() { return "omega" },
-                        getHumanReadableForm: function() { return 'five' }
+                        isVisualised: returns(true),
+                        hasValue: returns(true),
+                        getLabel: returns("omega"),
+                        getHumanReadableForm: returns('five')
                     },
                     {
                         constructor: Portal.filter.GeometryFilter,
-                        isVisualised: function() { return true },
-                        hasValue: function() { return true },
-                        getLabel: function() { return "alpha" },
-                        getHumanReadableForm: function() { return 'one' }
+                        isVisualised: returns(true),
+                        hasValue: returns(true),
+                        getLabel: returns("alpha"),
+                        getHumanReadableForm: returns('one')
                     }
                 ]
             };
@@ -138,8 +136,8 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             layer = {
                 server: { uri: "uri" }
             };
-            layer.isKnownToThePortal = function() { return true };
-            filterGroupPanel._isLayerActive = function() {return true};
+            layer.isKnownToThePortal = returns(true);
+            filterGroupPanel._isLayerActive = returns(true);
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
                 layer: layer
@@ -148,9 +146,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             filters = ["Boolean"];
 
             filterPanel = {
-                needsFilterRange: function() {
-                    return false;
-                }
+                needsFilterRange: returns(false)
             };
 
             spyOn(filterGroupPanel, '_clearFilters');
@@ -178,16 +174,14 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             layer = {
                 server: { uri: "uri" }
             };
-            filterGroupPanel._isLayerActive = function() {return true};
+            filterGroupPanel._isLayerActive = returns(true);
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
                 layer: layer
             });
 
             filterPanel = {
-                needsFilterRange: function() {
-                    return false;
-                }
+                needsFilterRange: returns(false)
             };
 
             spyOn(filterGroupPanel, '_updateLayerFilters');
