@@ -16,24 +16,24 @@ describe("Portal.filter.combiner.HumanReadableFilterDescriber", function() {
             filters: [
                 {
                     constructor: Portal.filter.GeometryFilter, // Is Geometry filter
-                    isVisualised: function() { return true },
-                    hasValue: function() { return true },
-                    getHumanReadableForm: function() { return 'one' }
+                    isVisualised: returns(true),
+                    hasValue: returns(true),
+                    getHumanReadableForm: returns('one')
                 },
                 {
-                    isVisualised: function() { return false }, // Not visualised
-                    hasValue: function() { return true },
-                    getHumanReadableForm: function() { return 'two' }
+                    isVisualised: returns(false), // Not visualised
+                    hasValue: returns(true),
+                    getHumanReadableForm: returns('two')
                 },
                 {
-                    isVisualised: function() { return true },
-                    hasValue: function() { return false }, // No value
-                    getHumanReadableForm: function() { return 'three' }
+                    isVisualised: returns(true),
+                    hasValue: returns(false), // No value
+                    getHumanReadableForm: returns('three')
                 },
                 {
-                    isVisualised: function() { return true },
-                    hasValue: function() { return true },
-                    getHumanReadableForm: function() { return 'four' }
+                    isVisualised: returns(true),
+                    hasValue: returns(true),
+                    getHumanReadableForm: returns('four')
                 }
             ]
         };

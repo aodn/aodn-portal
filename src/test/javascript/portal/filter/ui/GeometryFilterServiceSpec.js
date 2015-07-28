@@ -13,14 +13,14 @@ describe("Portal.filter.GeometryFilterService", function() {
     beforeEach(function() {
         map = new OpenLayers.SpatialConstraintMap();
         map.navigationControl = {};
-        map.navigationControl.deactivate = function() { return null };
+        map.navigationControl.deactivate = returns(null);
 
         spyOn(Portal.filter.ui.GeometryFilterService.prototype, 'setLayerAndFilter');
         spyOn(Portal.filter.ui.GeometryFilterService.prototype, '_updateWithGeometry');
         filterPanel = new Portal.filter.ui.GeometryFilterService({
             map: map,
             filter: {
-                getName: function() { return 'geom_filter' },
+                getName: returns('geom_filter'),
                 setValue: noOp,
                 clearValue: noOp
             }

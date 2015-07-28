@@ -91,13 +91,9 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
                 hasWmsLink: noOp
             };
 
-            facetedSearchDataView.uuidFromElementId = function() {
-                return "my uuid";
-            };
+            facetedSearchDataView.uuidFromElementId = returns("my uuid");
 
-            facetedSearchDataView._getRecordFromUuid = function() {
-                return record;
-            };
+            facetedSearchDataView._getRecordFromUuid = returns(record);
 
             spyOn(window, 'trackUsage');
             spyOn(Ext4.MsgBus, 'publish');
@@ -131,22 +127,15 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
 
     describe('_getMeasuredParametersAsCommaSeparatedString', function() {
 
-        var params;
-
-        beforeEach(function() {
-            params = [];
-
-            facetedSearchDataView._getMeasuredParameters = function() {
-                return params;
-            };
-        });
-
         it('with some parameters', function() {
-            params = ['temp', 'salinity'];
+            facetedSearchDataView._getMeasuredParameters = returns(['temp', 'salinity']);
+
             expect(facetedSearchDataView._getMeasuredParametersText()).toEqual('temp, salinity');
         });
 
         it('with no parameters', function() {
+            facetedSearchDataView._getMeasuredParameters = returns([]);
+
             expect(facetedSearchDataView._getMeasuredParametersText()).toEqual('No parameters');
         });
     });

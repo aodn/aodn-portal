@@ -74,19 +74,19 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
                 });
 
                 it('disables download button when email address is invalid', function() {
-                    confirmationWindow.downloadEmailPanel.isVisible = function() { return true };
+                    confirmationWindow.downloadEmailPanel.isVisible = returns(true);
                     confirmationWindow.downloadEmailPanel.fireEvent('invalid');
                     expect(downloadButton.disable).toHaveBeenCalled();
                 });
 
                 it('enables download button when email address is valid', function() {
-                    confirmationWindow.downloadEmailPanel.isVisible = function() { return true };
+                    confirmationWindow.downloadEmailPanel.isVisible = returns(true);
                     confirmationWindow.downloadEmailPanel.fireEvent('valid');
                     expect(downloadButton.enable).toHaveBeenCalled();
                 });
 
                 it('does nothing if email address panel is hidden', function() {
-                    confirmationWindow.downloadEmailPanel.isVisible = function() { return false };
+                    confirmationWindow.downloadEmailPanel.isVisible = returns(false);
 
                     Ext4.each(['valid', 'invalid'], function(event) {
                         confirmationWindow.downloadEmailPanel.fireEvent(event);

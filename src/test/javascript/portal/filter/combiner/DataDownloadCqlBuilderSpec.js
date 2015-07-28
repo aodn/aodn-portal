@@ -16,24 +16,24 @@ describe("Portal.filter.combiner.DataDownloadCqlBuilder", function() {
             filters: [
                 {
                     constructor: Portal.filter.GeometryFilter, // Is Geometry filter
-                    isVisualised: function() { return true },
-                    hasValue: function() { return true },
-                    getCql: function() { return 'cql1' }
+                    isVisualised: returns(true),
+                    hasValue: returns(true),
+                    getCql: returns('cql1')
                 },
                 {
-                    isVisualised: function() { return false }, // Not visualised
-                    hasValue: function() { return true },
-                    getCql: function() { return 'cql2' }
+                    isVisualised: returns(false), // Not visualised
+                    hasValue: returns(true),
+                    getCql: returns('cql2')
                 },
                 {
-                    isVisualised: function() { return true },
-                    hasValue: function() { return false }, // No value
-                    getCql: function() { return 'cql3' }
+                    isVisualised: returns(true),
+                    hasValue: returns(false), // No value
+                    getCql: returns('cql3')
                 },
                 {
-                    isVisualised: function() { return true },
-                    hasValue: function() { return true },
-                    getCql: function() { return 'cql4' }
+                    isVisualised: returns(true),
+                    hasValue: returns(true),
+                    getCql: returns('cql4')
                 }
             ]
         };

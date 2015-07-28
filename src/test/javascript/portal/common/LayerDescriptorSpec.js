@@ -158,9 +158,7 @@ describe("Portal.common.LayerDescriptor", function() {
                 data: {
                     bbox: {
                         geometries: [],
-                        getBounds: function() {
-                            return new OpenLayers.Bounds(1,2,3,4);
-                        }
+                        getBounds: returns(new OpenLayers.Bounds(1,2,3,4))
                     }
                 }
             };
