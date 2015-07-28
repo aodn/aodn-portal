@@ -57839,7 +57839,9 @@ var swfobject = function() {
             } 
         }
     };
-}();
+};// DF: Fix https://github.com/aodn/aodn-portal/issues/1839 by not calling this
+// function (swfobject), we never use flash anyway
+
 /**
  * @class Ext.FlashComponent
  * @extends Ext.BoxComponent
