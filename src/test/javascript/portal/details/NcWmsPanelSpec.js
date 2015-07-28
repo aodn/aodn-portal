@@ -23,8 +23,8 @@ describe('Portal.details.NcWmsPanel', function() {
         spyOn(Portal.ui.TimeRangeLabel.prototype, 'update');
 
         layer = _mockLayer();
-        layer.getMissingDays =  function() { return [] };
-        layer.isNcwms = function() { return true };
+        layer.getMissingDays = returns([]);
+        layer.isNcwms = returns(true);
         layer.events = { on: noOp };
         layer.processTemporalExtent = noOp;
         layer.map = map;
@@ -96,8 +96,8 @@ describe('Portal.details.NcWmsPanel', function() {
 
     describe('reset button', function() {
         it('resets the temporal extent', function() {
-            layer.getTemporalExtentMin = function() { return "ExtentMin"; };
-            layer.getTemporalExtentMax = function() { return "ExtentMax"; };
+            layer.getTemporalExtentMin = returns("ExtentMin");
+            layer.getTemporalExtentMax = returns("ExtentMax");
 
             spyOn(ncwmsPanel, '_resetExtent');
             ncwmsPanel.resetConstraints();
@@ -194,8 +194,8 @@ describe('Portal.details.NcWmsPanel', function() {
                 return this.temporalExtent;
             },
             setSubsetExtentView: function() {},
-            getSubsetExtentMin: function() { return extent.min(); },
-            getSubsetExtentMax: function() { return extent.max(); }
+            getSubsetExtentMin: returns(extent.min()),
+            getSubsetExtentMax: returns(extent.max())
         };
     }
 });

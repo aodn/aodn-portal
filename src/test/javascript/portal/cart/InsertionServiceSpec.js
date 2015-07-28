@@ -17,7 +17,7 @@ describe('Portal.cart.InsertionService', function() {
             title: 'the title',
             uuid: '42',
             wmsLayer: {
-                isNcwms: function() {return false}
+                isNcwms: returns(false)
             },
             aggregator: { childAggregators: [] }
         };
@@ -100,7 +100,7 @@ describe('Portal.cart.InsertionService', function() {
     }
 
     function getNcwmsRecord() {
-        geoNetworkRecord.wmsLayer.isNcwms = function() {return true};
+        geoNetworkRecord.wmsLayer.isNcwms = returns(true);
 
         geoNetworkRecord.dataDownloadHandlers = [{}];
 

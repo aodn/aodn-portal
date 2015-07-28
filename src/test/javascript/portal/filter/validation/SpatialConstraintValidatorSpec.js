@@ -15,7 +15,7 @@ describe("Portal.filter.validation.SpatialConstraintValidator", function() {
 
     describe('getPercentOfViewportArea', function() {
         beforeEach(function() {
-            validator._getMapArea = function() { return 113 };
+            validator._getMapArea = returns(113);
         });
 
         it('returns the correct percentage of viewport area', function() {

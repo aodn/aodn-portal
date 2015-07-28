@@ -30,7 +30,7 @@ describe("Portal.ui.FeatureInfoPopup", function()
                 server: server
             }
         );
-        layer.isNcwms = function() { return true; }
+        layer.isNcwms = returns(true);
 
         map.addLayer(layer);
         featureInfoPopup = new Portal.ui.FeatureInfoPopup({map: map, appConfig: {}});
@@ -129,7 +129,7 @@ describe("Portal.ui.FeatureInfoPopup", function()
 
     describe('_getLayerFeatureInfoRequestString', function() {
         it('sets clickPoint and BUFFER param', function() {
-            featureInfoPopup._clickPoint = function() { return {}; };
+            featureInfoPopup._clickPoint = returns({});
             spyOn(layer, 'getFeatureInfoRequestString');
 
             Ext.namespace('Portal.app.appConfig.portal');

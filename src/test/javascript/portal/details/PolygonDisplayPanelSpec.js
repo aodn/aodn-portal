@@ -29,9 +29,7 @@ describe('Portal.details.PolygonDisplayPanel', function() {
         it('calls load data', function() {
             var vertices = ['1 1', '2 2'];
             var geometry = {
-                getVertices: function() {
-                    return vertices;
-                }
+                getVertices: returns(vertices)
             };
 
             spyOn(polyDisplayPanel.verticesStore, 'loadData');

@@ -20,7 +20,7 @@ describe("Portal.cart.Downloader", function() {
         wfsDownloadUrl = 'http://download';
         generateUrlCallback = jasmine.createSpy('generateUrl').andReturn(wfsDownloadUrl);
         downloadToken = 1234;
-        downloader._newDownloadToken = function() { return downloadToken; }
+        downloader._newDownloadToken = returns(downloadToken);
 
         collection = {};
         params = {};

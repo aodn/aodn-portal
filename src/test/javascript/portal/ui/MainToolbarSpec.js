@@ -32,8 +32,8 @@ describe("Portal.ui.MainToolbar", function() {
 
         describe('to first tab', function() {
             beforeEach(function() {
-                mainPanel.layout.hasPrevTab = function() { return false };
-                mainPanel.layout.hasNextTab = function() { return true };
+                mainPanel.layout.hasPrevTab = returns(false);
+                mainPanel.layout.hasNextTab = returns(true);
             });
 
             it('hides prev button', function() {
@@ -55,8 +55,8 @@ describe("Portal.ui.MainToolbar", function() {
 
         describe('to middle tab', function() {
             beforeEach(function() {
-                mainPanel.layout.hasPrevTab = function() { return true };
-                mainPanel.layout.hasNextTab = function() { return true };
+                mainPanel.layout.hasPrevTab = returns(true);
+                mainPanel.layout.hasNextTab = returns(true);
             });
 
             it('shows prev button', function() {
@@ -78,8 +78,8 @@ describe("Portal.ui.MainToolbar", function() {
 
         describe('to last tab', function() {
             beforeEach(function() {
-                mainPanel.layout.hasPrevTab = function() { return true };
-                mainPanel.layout.hasNextTab = function() { return false };
+                mainPanel.layout.hasPrevTab = returns(true);
+                mainPanel.layout.hasNextTab = returns(false);
                 mainPanel.fireEvent('tabchange', mainPanel);
             });
 
