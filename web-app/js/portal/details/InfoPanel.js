@@ -46,7 +46,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
         var linkHtml = "";
 
-        Ext4.each(linkObjects, function(linkObject) {
+        Ext.each(linkObjects, function(linkObject) {
             var linkText;
 
             if (linkObject.title == "") {
