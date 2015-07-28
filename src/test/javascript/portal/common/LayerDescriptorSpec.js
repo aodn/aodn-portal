@@ -108,19 +108,19 @@ describe("Portal.common.LayerDescriptor", function() {
     });
 
     describe('_setOpenLayerBounds', function() {
-        it('from geonetwork', function() {
+        it('from dataCollection', function() {
             var openLayer = {};
 
-            var geonetworkRecord = {
-                data: {
-                    bbox: {
+            var dataCollection = {
+                getMetadataRecord: returns({
+                    data: { bbox: {
                         geometries: [],
                         getBounds: returns(new OpenLayers.Bounds(1,2,3,4))
-                    }
-                }
+                    }}
+                })
             };
 
-            var layerDescriptor = new Portal.common.LayerDescriptor({}, 'title', geonetworkRecord);
+            var layerDescriptor = new Portal.common.LayerDescriptor({}, 'title', dataCollection);
 
             layerDescriptor._setOpenLayerBounds(openLayer);
 
