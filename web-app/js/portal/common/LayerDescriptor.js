@@ -141,18 +141,6 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         }
     },
 
-    _getAttribute: function(attribute) { // Todo - DN: Used even?
-        if (this[attribute]) {
-            return this[attribute];
-        }
-        else if (this.geonetworkRecord && this.geonetworkRecord.data && this.geonetworkRecord.data[attribute]) { // Todo - DN: Change here?
-            return this.geonetworkRecord.data[attribute];
-        }
-        else {
-            return undefined
-        }
-    },
-
     _getParent: function() {
         return this.parent;
     },
