@@ -129,11 +129,11 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     },
 
     _setOpenLayerBounds: function(openLayer) {
-        if (this.geonetworkRecord // Todo - DN: Change here (geonetworkRecord -> dataCollection)
-            && this.geonetworkRecord.data
-            && this.geonetworkRecord.data.bbox
-            && this.geonetworkRecord.data.bbox.geometries) {
-            var bounds = this.geonetworkRecord.data.bbox.getBounds();
+
+        if (this.dataCollection) {
+            var metadataRecord = this.dataCollection.getMetadataRecord();
+            var bounds = metadataRecord.data.bbox.getBounds();
+
             openLayer.bboxMinX = bounds.left;
             openLayer.bboxMinY = bounds.bottom;
             openLayer.bboxMaxX = bounds.right;
