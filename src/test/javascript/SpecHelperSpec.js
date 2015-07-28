@@ -67,4 +67,21 @@ describe('Custom matchers', function () {
             expect([]).not.toBeNonEmptyString();
         });
     });
+
+    describe('returns()', function() {
+
+        it('returns the value it was created with', function() {
+
+            var testObj = {};
+            var returnNumber = returns(64);
+            var returnBool = returns(false);
+            var returnObject = returns(testObj);
+            var returnsUndefined = returns(undefined);
+
+            expect(returnNumber()).toBe(64);
+            expect(returnBool()).toBe(false);
+            expect(returnObject()).toBe(testObj);
+            expect(returnsUndefined()).toBe(undefined);
+        });
+    });
 });

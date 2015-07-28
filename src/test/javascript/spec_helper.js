@@ -144,6 +144,12 @@ var mockAjaxXmlResponse = function(responseContent) {
 // An empty function to pass as a parameter
 var noOp = function() {};
 
+var returns = function(val) {
+    return function() {
+        return val;
+    }
+};
+
 var wktPolygon = 'POLYGON((1 2,3 4,1 2))';
 var constructGeometry = function() {
     return OpenLayers.Geometry.fromWKT(wktPolygon);
