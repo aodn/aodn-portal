@@ -27,36 +27,35 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
         var rawAbstract = this.layer.dataCollection.get('metadataRecord').get('abstract');
         var abstract = Ext.util.Format.htmlEncode(rawAbstract);
-        var linkObjects = [{
-            href: 'http://www.google.com/'
-        }]; // Todo - DN: this.layer.dataCollection.getLinkedPages();
+        var linkRecords = this.layer.dataCollection.getPageLinks();
 
         return String.format(
-            '<!DOCTYPE html>\n' +
             '<h4>Abstract</h4>\n' + // Todo - DN: i18n
             '{0}' +
             '<h4>Online Resources</h4>\n' + // Todo - DN: i18n
             '<ul>\n{1}</ul>',
             abstract,
-            this._getHtmlForLinks(linkObjects)
+            this._getHtmlForLinks(linkRecords)
         );
     },
 
-    _getHtmlForLinks: function(linkObjects) {
+    _getHtmlForLinks: function(linkRecords) {
 
         var linkHtml = "";
 
-        Ext.each(linkObjects, function(linkObject) {
+        Ext.each(linkRecords, function(linkRecord) {
+
+            var link = linkRecord.data;
             var linkText;
 
-            if (linkObject.title == "") {
+            if (link.title == "") {
                 linkText = '<i>Unnamed Resource</i>'; // Todo - DN: i18n
             }
             else {
-                linkText = linkObject.title;
+                linkText = link.title;
             }
 
-            linkHtml += String.format('<li><a class="external" href="{0}" target="_blank">{2}</a></li>\n', linkObject.href, linkText);
+            linkHtml += String.format('<li><a class="external" href="{0}" target="_blank">{1}</a></li>\n', link.url, linkText);
         });
 
         return linkHtml;
