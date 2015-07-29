@@ -28,7 +28,7 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
     getRecordFromUuid: function(uuid) {
         var record = undefined;
         this.each(function(rec) {
-            if (rec.data.uuid == uuid) {
+            if (rec.getUuid() == uuid) {
                 record = rec;
             }
         });
@@ -50,7 +50,6 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
     },
 
     _onAdd: function(store, dataCollections) {
-
         var _this = this;
 
         if (dataCollections.length != 1) {
@@ -68,6 +67,11 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
                     function(layerRecord) {
 
                         layerRecord.get('layer').dataCollection = dataCollection; // Todo - DN: Can we get away without this?
+                        // TODO: this is just to make it easier to convert many UI components to take a
+                        // DataCollection, rather than a OpenLayer.
+                        dataCollection.getSelectedLayer = function() {
+                            return layerRecord.get('layer');
+                        };
 
                         _this._recordLoaded(dataCollection);
                     }
@@ -96,9 +100,6 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
     },
 
     _removeFromLayerStore: function(dataCollection) {
-
-        if (dataCollection.layerRecord) { // Todo - DN: Need to update here (remove current layer for that data collection)
-            this.layerStore.removeUsingOpenLayer(dataCollection.layerRecord.get('layer'));
-        }
+        this.layerStore.removeUsingOpenLayer(dataCollection.getSelectedLayer());
     }
 });

@@ -7,84 +7,52 @@
 describe("Portal.details.SubsettingPanel", function() {
 
     var subsettingPanel;
+    var dataCollection;
+    var dataCollectionStore;
 
     beforeEach(function() {
+        spyOn(Portal.details.SubsettingPanel.prototype, '_newSubsetPanelAccordion').andReturn(new Ext.Panel());
+
+        dataCollectionStore = {
+            getCount: noOp
+        };
+
+        dataCollection = {
+            getSelectedLayer: noOp
+        };
+
         subsettingPanel = new Portal.details.SubsettingPanel({
             map: new OpenLayers.SpatialConstraintMap(),
-            layer: new OpenLayers.Layer.WMS()
+            dataCollectionStore: dataCollectionStore
         });
+
+        spyOn(subsettingPanel, '_setEmptyNotificationVisible');
     });
 
-    afterEach(function() {
-        subsettingPanel.destroy();
+    it('hides notification on collection added', function() {
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED, dataCollection);
+        expect(subsettingPanel._setEmptyNotificationVisible).toHaveBeenCalledWith(false);
     });
 
-    describe('selected collection changed', function() {
-        describe('selected collection', function() {
-            var layer;
+    it('shows notification on collection removed if no collections', function() {
+        dataCollectionStore.getCount = returns(1);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, dataCollection);
+        expect(subsettingPanel._setEmptyNotificationVisible).toHaveBeenCalledWith(false);
 
-            beforeEach(function() {
-                layer = {};
-
-                spyOn(subsettingPanel, '_addItemForLayer');
-                spyOn(subsettingPanel, '_activateItemForLayer');
-            });
-
-            it('activates existing SubsetPanelAccordion for previously selected layer', function() {
-                spyOn(subsettingPanel, '_itemExistsForLayer').andReturn(true);
-
-                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
-
-                expect(subsettingPanel._addItemForLayer).not.toHaveBeenCalled();
-            });
-
-            it('creates new SubsetPanelAccordion and activates for new layer', function() {
-                spyOn(subsettingPanel, '_itemExistsForLayer').andReturn(false);
-
-                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, layer);
-
-                expect(subsettingPanel._addItemForLayer).toHaveBeenCalledWith(layer);
-                expect(subsettingPanel._activateItemForLayer).toHaveBeenCalledWith(layer);
-            });
-
-            it('removes SubsetPanelAccordion for removed layer', function() {
-                spyOn(subsettingPanel, '_itemExistsForLayer').andReturn(true);
-                spyOn(subsettingPanel, '_removeFolderForLayer');
-
-                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);
-
-                expect(subsettingPanel._removeFolderForLayer).toHaveBeenCalledWith(layer);
-            });
-
-            it('sets empty text', function() {
-                spyOn(subsettingPanel, '_itemExistsForLayer').andReturn(true);
-                spyOn(subsettingPanel, 'checkState');
-
-                Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, layer);
-
-                expect(subsettingPanel.checkState).toHaveBeenCalled();
-            });
-        });
-
-        describe('no selected layer', function() {
-            beforeEach(function() {
-                Ext.MsgBus.publish('selectedLayerChanged');
-            });
-
-            it("set title to 'no selected layer'", function() {
-                subsettingPanel.title = 'something';
-                expect(subsettingPanel.title).toBe('something');
-                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
-                expect(subsettingPanel.title).toBe('something');
-            });
-        });
+        dataCollectionStore.getCount = returns(0);
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, dataCollection);
+        expect(subsettingPanel._setEmptyNotificationVisible).toHaveBeenCalledWith(true);
     });
 
-    describe('step title', function() {
-        it('is correct', function() {
+    it('show correct step title', function() {
+        var expectedTitle = OpenLayers.i18n(
+            'stepHeader',
+            {
+                stepNumber: 2,
+                stepDescription: OpenLayers.i18n('step2Description')
+            }
+        );
 
-            var expectedTitle = OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description') });
-            expect(subsettingPanel.title).toEqual(expectedTitle);
-        });
+        expect(subsettingPanel.title).toEqual(expectedTitle);
     });
 });

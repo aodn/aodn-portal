@@ -265,8 +265,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     isRecActive: function(uuid) {
-        var record = this._getRecordFromUuid(uuid);
-        return this.dataCollectionStore.isRecordActive(record);
+        return this.dataCollectionStore.findBy(function(dataCollection) {
+            return dataCollection.getUuid() == uuid;
+        }) != -1;
     },
 
     _getRecordFromUuid: function(uuid) {

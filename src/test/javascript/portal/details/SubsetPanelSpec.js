@@ -23,7 +23,9 @@ describe("Portal.details.SubsetPanel", function() {
 
         subsetPanel = new Portal.details.SubsetPanel({
             map: map,
-            layer: layer
+            dataCollection: {
+                getSelectedLayer: returns(layer)
+            }
         });
     });
 

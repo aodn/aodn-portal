@@ -15,6 +15,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
         facetedSearchDataView = new Portal.search.FacetedSearchResultsDataView({
             dataCollectionStore: {
                 isRecordActive: noOp,
+                findBy: noOp,
                 add: noOp
             }
         });

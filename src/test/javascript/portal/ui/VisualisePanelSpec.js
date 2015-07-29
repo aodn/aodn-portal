@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2013 IMOS
  *
@@ -19,6 +18,7 @@ describe('Portal.ui.VisualisePanel', function() {
     var visualisePanel;
 
     beforeEach(function() {
+        spyOn(Portal.details.SubsettingPanel.prototype, '_newSubsetPanelAccordion').andReturn(new Ext.Panel());
         visualisePanel = new Portal.ui.VisualisePanel({
             mapPanel: new Portal.ui.MapPanel()
         });
@@ -65,6 +65,7 @@ describe('Portal.ui.VisualisePanel', function() {
         it('expands details panel', function() {
             spyOn(visualisePanel.detailsPanel, 'expand');
             Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
+
             expect(visualisePanel.detailsPanel.expand).toHaveBeenCalled();
         });
     });

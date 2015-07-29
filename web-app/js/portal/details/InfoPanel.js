@@ -11,7 +11,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
 
-        this.layer = cfg.layer;
+        this.dataCollection = cfg.dataCollection;
 
         var config = Ext.apply({
             title: OpenLayers.i18n('infoTabTitle'),
@@ -25,9 +25,9 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
     _constructInfoTabHtml: function() {
 
-        var rawAbstract = this.layer.dataCollection.get('metadataRecord').get('abstract');
+        var rawAbstract = this.dataCollection.get('metadataRecord').get('abstract');
         var abstract = Ext.util.Format.htmlEncode(rawAbstract);
-        var linkRecords = this.layer.dataCollection.getWebPageLinks();
+        var linkRecords = this.dataCollection.getWebPageLinks();
 
         return String.format(
             '<h4>Abstract</h4>\n' + // Todo - DN: i18n

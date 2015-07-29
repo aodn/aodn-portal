@@ -31,7 +31,9 @@ describe('Portal.details.NcWmsPanel', function() {
 
         ncwmsPanel = new Portal.details.NcWmsPanel({
             map: map,
-            layer: layer
+            dataCollection: {
+                getSelectedLayer: returns(layer)
+            }
         });
 
         ncwmsPanel._setBounds = noOp;
