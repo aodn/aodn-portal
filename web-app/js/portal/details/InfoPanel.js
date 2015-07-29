@@ -27,7 +27,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
         var rawAbstract = this.layer.dataCollection.get('metadataRecord').get('abstract');
         var abstract = Ext.util.Format.htmlEncode(rawAbstract);
-        var linkRecords = this.layer.dataCollection.getPageLinks();
+        var linkRecords = this.layer.dataCollection.getWebPageLinks();
 
         return String.format(
             '<h4>Abstract</h4>\n' + // Todo - DN: i18n

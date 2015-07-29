@@ -40,36 +40,19 @@ Portal.data.DataCollection = function() {
     };
 
     constructor.prototype.getWmsLayerLinks = function() {
-        return this._getFilteredLinks([
-            'OGC:WMS-1.1.1-http-get-map',
-            'OGC:WMS-1.3.0-http-get-map'
-        ]);
+        return this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.wms);
     };
 
     constructor.prototype.getWfsLayerLinks = function() {
-        return this._getFilteredLinks([
-            'OGC:WFS-1.0.0-http-get-capabilities'
-        ]);
+        return this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.wfs);
     };
 
     constructor.prototype.getDataFileLinks = function() {
-        return this._getFilteredLinks([
-            'WWW:DOWNLOAD-1.0-http--download',
-            'WWW:DOWNLOAD-1.0-http--downloaddata',
-            'WWW:DOWNLOAD-1.0-http--downloadother',
-            'WWW:LINK-1.0-http--downloaddata'
-        ]);
+        return this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.dataFile);
     };
 
-    constructor.prototype.getPageLinks = function() {
-        return this._getFilteredLinks([
-            'WWW:LINK-1.0-http--metadata-URL',
-            'WWW:LINK-1.0-http--link',
-            'WWW:LINK-1.0-http--downloaddata',
-            'WWW:DOWNLOAD-1.0-http--download',
-            'WWW:DOWNLOAD-1.0-http--downloaddata',
-            'WWW:DOWNLOAD-1.0-http--downloadother' // Todo - DN: Should these lists of protocols be defined somewhere? config? (I don't think they've even been configured any differently)
-        ]);
+    constructor.prototype.getWebPageLinks = function() {
+        return this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.webPage);
     };
 
     constructor.prototype._getFilteredLinks = function(protocols) {

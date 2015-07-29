@@ -36,7 +36,9 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
         beforeEach(function() {
             Portal.app.appConfig = {
                 portal: {
-                    downloadCartDownloadableProtocols: [ 'downloadable', 'some other downloadable protocol']
+                    metadataProtocols: {
+                        dataFile: [ 'downloadable', 'some other downloadable protocol']
+                    }
                 }
             };
 
