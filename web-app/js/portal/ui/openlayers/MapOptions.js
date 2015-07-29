@@ -50,6 +50,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             this.clickControl
         ];
 
+        this.tileManager = null;
         this.theme = null;
         this.displayProjection = new OpenLayers.Projection("EPSG:4326");
         this.prettyStateKeys = true; // for pretty permalinks,
