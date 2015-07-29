@@ -37,18 +37,22 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
                         margin: '2px'
                     }
                 },
-                items: [ this.searchField = new Ext.form.TextField({
+                items: [
+                    this.searchField = new Ext.form.TextField({
                         flex: 1,
                         enableKeyEvents: true
-                    }), this.goButton = new Ext.Button({
+                    }),
+                    this.goButton = new Ext.Button({
                         text: OpenLayers.i18n("goButton"),
                         width: 65,
                         disabled: false
-                }), this.clearButton = new Ext.Button({
+                    }),
+                    this.clearButton = new Ext.Button({
                         text: OpenLayers.i18n("clearButton"),
                         width: 65,
                         disabled: false
-                })]
+                    })
+                ]
             }]
         }, cfg, defaults);
 
