@@ -28,7 +28,7 @@ describe("Portal.details.InfoPanel", function() {
                 get: returns({
                     get: returns("Abstract & information")
                 }),
-                getPageLinks: returns(mockLinkRecords)
+                getWebPageLinks: returns(mockLinkRecords)
             }}
         });
     });
@@ -41,4 +41,3 @@ describe("Portal.details.InfoPanel", function() {
         });
     });
 });
-

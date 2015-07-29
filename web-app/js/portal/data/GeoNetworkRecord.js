@@ -147,7 +147,7 @@ Portal.data.GeoNetworkRecord = function() {
 
         var protocols = [];
 
-        Ext.each(Portal.app.appConfig.portal.downloadCartDownloadableProtocols, function(protocol) {
+        Ext.each(Portal.app.appConfig.portal.metadataProtocols.dataFile, function(protocol) {
             protocols.push(protocol.trim());
         });
 
@@ -158,7 +158,7 @@ Portal.data.GeoNetworkRecord = function() {
 
         var allowedOnlineResources = [];
 
-        Ext.each(Portal.app.appConfig.portal.onlineResourceLinks, function(protocol) {
+        Ext.each(Portal.app.appConfig.portal.metadataProtocols.webPage, function(protocol) {
             allowedOnlineResources.push(protocol.trim());
         });
 
@@ -199,7 +199,7 @@ Portal.data.GeoNetworkRecord = function() {
             }
         });
 
-        linkStore.filterByProtocols(Portal.app.appConfig.portal.metadataLayerProtocols);
+        linkStore.filterByProtocols(Portal.app.appConfig.portal.metadataProtocols.wms);
 
         return linkStore.getLayerLink(0);
     };
