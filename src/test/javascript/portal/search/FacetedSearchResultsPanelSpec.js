@@ -48,23 +48,4 @@ describe("Portal.search.FacetedSearchResultsPanel", function() {
             expect(resultsPanel._refreshView).toHaveBeenCalled();
         });
     });
-
-    describe('scroll position', function() {
-        it('calls resetScrollPositionToTop on store load', function() {
-            spyOn(resultsPanel, '_resetScrollPositionToTop');
-            store.fireEvent('load');
-            expect(resultsPanel._resetScrollPositionToTop).toHaveBeenCalled();
-        });
-
-        it('sets scroll position to 0', function() {
-            resultsPanel.body = {
-                dom: {
-                    scrollTop: 123
-                }
-            };
-
-            store.fireEvent('load');
-            expect(resultsPanel.body.dom.scrollTop).toBe(0);
-        });
-    });
 });
