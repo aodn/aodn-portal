@@ -16,7 +16,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
 
-        this.layer = cfg.layer;
+        this.layer = cfg.dataCollection.getSelectedLayer();
 
         var config = Ext.apply({
             cls: 'filterGroupPanel'

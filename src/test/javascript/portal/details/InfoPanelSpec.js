@@ -24,12 +24,12 @@ describe("Portal.details.InfoPanel", function() {
         }];
 
         mockInfoPanel = new Portal.details.InfoPanel({
-            layer: { dataCollection: {
+            dataCollection: {
                 get: returns({
                     get: returns("Abstract & information")
                 }),
                 getWebPageLinks: returns(mockLinkRecords)
-            }}
+            }
         });
     });
 

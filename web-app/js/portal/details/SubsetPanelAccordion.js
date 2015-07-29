@@ -22,5 +22,27 @@ Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
         }, cfg);
 
         Portal.details.SubsetPanelAccordion.superclass.constructor.call(this, config);
+
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function(eventName, dataCollection) {
+            this.add(this._newSubsetItemsWrapperPanel(dataCollection));
+        }, this);
+
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, function(eventName, dataCollection) {
+            this.remove(dataCollection.getUuid());
+        }, this);
+    },
+
+    _newSubsetItemsWrapperPanel: function(dataCollection) {
+        return new Portal.details.SubsetItemsWrapperPanel({
+            map: this.map,
+            dataCollection: dataCollection,
+            dataCollectionStore: this.dataCollectionStore,
+            id: dataCollection.getUuid(),
+            listeners: {
+                expand: function (panel) {
+                    Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, panel.layer);
+                }
+            }
+        });
     }
 });

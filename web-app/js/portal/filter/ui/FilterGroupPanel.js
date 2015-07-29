@@ -10,7 +10,7 @@ Ext.namespace('Portal.filter.ui');
 Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     constructor: function(cfg) {
 
-        this.layer = cfg.layer;
+        this.layer = cfg.dataCollection.getSelectedLayer();
         this.map = cfg.map;
         this.loadingMessage = this._createLoadingMessageContainer();
         var config = Ext.apply({

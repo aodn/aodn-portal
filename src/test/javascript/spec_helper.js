@@ -137,7 +137,7 @@ var mockAjaxXmlResponse = function(responseContent) {
             argument: opts.argument
         };
 
-        opts.success.call(opts.scope, response, opts)
+        opts.success.call(opts.scope, response, opts);
     });
 };
 
@@ -147,7 +147,7 @@ var noOp = function() {};
 var returns = function(val) {
     return function() {
         return val;
-    }
+    };
 };
 
 var wktPolygon = 'POLYGON((1 2,3 4,1 2))';

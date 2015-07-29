@@ -12,7 +12,8 @@ Portal.details.SubsetItemsTabPanel = Ext.extend(Ext.TabPanel, {
     constructor: function (cfg) {
         var childPanelConfig =  {
             map: cfg.map,
-            layer: cfg.layer,
+            layer: cfg.dataCollection.getSelectedLayer(),
+            dataCollection: cfg.dataCollection,
             dataCollectionStore: cfg.dataCollectionStore
         };
 

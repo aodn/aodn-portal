@@ -13,23 +13,23 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
 
         var tabPanelForLayer = this._initSubsetItemsTabPanel(cfg);
 
-        this.createTools(cfg.layer);
+        this.createTools(cfg.dataCollection.getSelectedLayer());
 
-        cfg.layer.events.register('loadstart', this, function() {
+        cfg.dataCollection.getSelectedLayer().events.register('loadstart', this, function() {
             this._onLayerLoadStart();
         });
 
-        cfg.layer.events.register('loadend', this, function() {
+        cfg.dataCollection.getSelectedLayer().events.register('loadend', this, function() {
             this._onLayerLoadEnd();
+        });
 
-        cfg.layer.events.register('tileerror', this, function() {
+        cfg.dataCollection.getSelectedLayer().events.register('tileerror', this, function() {
             this._onLayerLoadError();
         });
 
         var config = Ext.apply({
-            id: cfg.layerItemId,
             cls: 'subsetPanelAccordionItem',
-            title: '<h4>' + cfg.layer.name + '</h4>',
+            title: '<h4>' + cfg.dataCollection.getSelectedLayer().name + '</h4>',
             autoHeight: true,
             defaults: {
                 style: {padding: '10px'},
@@ -72,7 +72,7 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
     _initSubsetItemsTabPanel: function(cfg) {
         return new Portal.details.SubsetItemsTabPanel({
             map: cfg.map,
-            layer: cfg.layer,
+            dataCollection: cfg.dataCollection,
             dataCollectionStore: cfg.dataCollectionStore,
             listeners: {
                 beforeTabChange: this._doTracking
@@ -104,17 +104,17 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
     },
 
     _layerDelete: function() {
-
-        this.dataCollectionStore.remove(this.layer.dataCollection);
+        this.dataCollectionStore.remove(this.dataCollection);
     },
 
     _doTracking: function(panel, newTab, currentTab) {
 
         if (currentTab) {
-            trackUsage(OpenLayers.i18n('subsetItemsTrackingCategory'),
+            trackUsage(
+                OpenLayers.i18n('subsetItemsTrackingCategory'),
                 OpenLayers.i18n('subsetItemsTabsTrackingAction'),
                 newTab.title,
-                this.layer.name
+                this.dataCollection.getSelectedLayer().name
             );
             return true;
         }

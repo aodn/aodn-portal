@@ -21,7 +21,9 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
         layer.map = getMockMap();
 
         filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
-            layer: layer
+            dataCollection: {
+                getSelectedLayer: returns(layer)
+            }
         });
     });
 
@@ -38,14 +40,20 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             };
 
             cfg = {
-                layer: layer
+                dataCollection: {
+                    getSelectedLayer: returns(layer)
+                }
             };
 
             filterPanel = {
                 needsFilterRange: returns(false)
             };
 
-            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel(cfg);
+            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
+                dataCollection: {
+                    getSelectedLayer: returns(layer)
+                }
+            });
 
             spyOn(filterGroupPanel, '_updateAndShow');
             spyOn(filterGroupPanel, '_sortFilters').andReturn([{}]);
@@ -123,8 +131,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 layer.filters[3]
             ];
 
-            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel(cfg);
-            filterGroupPanel._sortFilters(layer.filters);
+            Portal.filter.ui.FilterGroupPanel.prototype._sortFilters(layer.filters);
 
             expect(layer.filters).toEqual(expectedFilterOrder);
         });
@@ -140,7 +147,9 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             filterGroupPanel._isLayerActive = returns(true);
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
-                layer: layer
+                dataCollection: {
+                    getSelectedLayer: returns(layer)
+                }
             });
 
             filters = ["Boolean"];
@@ -177,7 +186,9 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             filterGroupPanel._isLayerActive = returns(true);
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
-                layer: layer
+                dataCollection: {
+                    getSelectedLayer: returns(layer)
+                }
             });
 
             filterPanel = {
@@ -225,7 +236,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 filter: {
                     type: filterType
                 }
-            }
+            };
         };
 
         it('clears all non-global filters', function() {
@@ -294,9 +305,10 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
         var numVerticalSpacers = 1;
 
         beforeEach(function() {
-            spyOn(Portal.filter.ui.NumberFilterPanel.prototype, '_createControls');
-            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createControls');
             spyOn(Portal.filter.ui.BooleanFilterPanel.prototype, '_createControls');
+            spyOn(Portal.filter.ui.ComboFilterPanel.prototype, '_createControls');
+            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createControls');
+            spyOn(Portal.filter.ui.NumberFilterPanel.prototype, '_createControls');
 
             filterPanels = [
                 new Portal.filter.ui.DateFilterPanel(),

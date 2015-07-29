@@ -7,13 +7,18 @@
 describe("Portal.details.SubsetItemsWrapperPanel", function() {
     var panel;
     var layer;
+    var dataCollection;
 
     beforeEach(function() {
         spyOn(Portal.details.SubsetItemsWrapperPanel.prototype, '_initSubsetItemsTabPanel').andReturn(new Ext.Panel());
 
         layer = new OpenLayers.Layer.WMS();
+        dataCollection = {
+            getSelectedLayer: returns(layer)
+        };
+
         panel = new Portal.details.SubsetItemsWrapperPanel({
-            layer: layer
+            dataCollection: dataCollection
         });
     });
 

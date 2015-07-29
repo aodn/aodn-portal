@@ -18,10 +18,15 @@ Portal.data.DataCollection = function() {
     State? (for now?)
     */
 
-    var constructor = Ext.data.Record.create([
-        'uuid',
-        'title'
-    ]);
+    var constructor = Ext.data.Record.create([]);
+
+    constructor.prototype.getTitle = function() {
+        return this.getMetadataRecord().get('title');
+    };
+
+    constructor.prototype.getUuid = function() {
+        return this.getMetadataRecord().get('uuid');
+    };
 
     constructor.prototype.getMetadataRecord = function() {
         return this.data.metadataRecord;
@@ -71,9 +76,7 @@ Portal.data.DataCollection = function() {
 }();
 
 Portal.data.DataCollection.fromMetadataRecord = function(metadataRecord) {
-
     return new Portal.data.DataCollection({
-        "title": 'My Data Collection',
         "metadataRecord": metadataRecord
     });
 };
