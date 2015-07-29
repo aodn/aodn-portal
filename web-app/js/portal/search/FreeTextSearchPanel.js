@@ -33,7 +33,7 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
                 layout: 'hbox',
                 defaults: {
                     style: {
-                        padding: '2px',
+                        padding: '4px',
                         margin: '2px'
                     }
                 },
