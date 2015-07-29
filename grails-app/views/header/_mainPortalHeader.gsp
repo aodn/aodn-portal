@@ -29,6 +29,8 @@
     </g:if>
 
     <div id="toplinks">
-        <a class="external mainlinks" target="_blank" href="${grailsApplication.config.help.url}" title="Portal Help">Help</a>
+        <g:each in="${grailsApplication.config.portal.header.externalLinks}" var="link">
+            <a class="external mainlinks" target="_blank" href="${link.href}" title="${link.tooltipText}">${link.linkText}</a>
+        </g:each>
     </div>
 </div>
