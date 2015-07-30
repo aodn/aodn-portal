@@ -19,6 +19,7 @@ describe("Portal.ui.MapPanel", function() {
     var mapPanel;
 
     beforeEach(function() {
+        OpenLayers.Util.getImageLocation = returns(null);
         mapPanel = new Portal.ui.MapPanel({
             appConfig : appConfig
         });
