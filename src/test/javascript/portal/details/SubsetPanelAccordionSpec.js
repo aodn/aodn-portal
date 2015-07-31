@@ -34,16 +34,18 @@ describe("Portal.details.SubsetPanelAccordion", function() {
 
             spyOn(subsetPanelAccordion, 'add');
             spyOn(subsetPanelAccordion, 'remove');
+            spyOn(subsetPanelAccordion, 'doLayout');
+            spyOn(subsetPanelAccordion, 'setActiveItem');
             spyOn(subsetPanelAccordion, '_newSubsetItemsWrapperPanel').andCallFake(function(dataCollection) {
                 return subsetItemsWrapperPanel;
             });
         });
 
-        // PORTAL_EVENTS.DATA_COLLECTION_SELECTED?
-
         it('adds item when collection added', function() {
             Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED, dataCollection);
             expect(subsetPanelAccordion.add).toHaveBeenCalledWith(subsetItemsWrapperPanel);
+            expect(subsetPanelAccordion.doLayout).toHaveBeenCalled();
+            expect(subsetPanelAccordion.setActiveItem).toHaveBeenCalledWith(dataCollection.getUuid());
         });
 
         it('removes item when collection removed', function() {
