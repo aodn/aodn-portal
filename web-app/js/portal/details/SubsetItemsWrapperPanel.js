@@ -29,7 +29,7 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             cls: 'subsetPanelAccordionItem',
-            title: '<h4>' + cfg.dataCollection.getSelectedLayer().name + '</h4>',
+            title: '<h4>' + cfg.dataCollection.getTitle() + '</h4>',
             autoHeight: true,
             defaults: {
                 style: {padding: '10px'},

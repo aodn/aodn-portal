@@ -14,7 +14,8 @@ describe("Portal.details.SubsetItemsWrapperPanel", function() {
 
         layer = new OpenLayers.Layer.WMS();
         dataCollection = {
-            getSelectedLayer: returns(layer)
+            getSelectedLayer: returns(layer),
+            getTitle: returns('amazetion')
         };
 
         panel = new Portal.details.SubsetItemsWrapperPanel({
