@@ -17,6 +17,7 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
         this.searcher = cfg.searcher;
 
         this.searchResultsPanel = new Portal.search.FacetedSearchResultsPanel({
+            searchResultsPanel: this,
             searcher: this.searcher,
             store: this.resultsStore,
             classificationStore: cfg.classificationStore
@@ -42,6 +43,16 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
         if (this.resultsStore.getTotalCount() == 0) {
             this._displayNoResultsAlert();
         }
+
+        // We want to reset scroll position to top on load, in case we were
+        // previously not at the top.
+        // Ref: https://github.com/aodn/aodn-portal/issues/464
+        // Ref: https://github.com/aodn/aodn-portal/issues/1834
+        this._resetScrollPositionToTop();
+    },
+
+    _resetScrollPositionToTop: function() {
+        this.body.dom.scrollTop = 0;
     },
 
     _displayNoResultsAlert: function() {
