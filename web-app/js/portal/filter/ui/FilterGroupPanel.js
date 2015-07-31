@@ -36,7 +36,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         return new Ext.Spacer({
             cls: 'block',
             height: sizeInPixels
-        })
+        });
     },
 
     _createFilterGroupHeading: function(headerText) {
@@ -61,7 +61,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         return new Ext.Container({
             autoEl: 'div',
             html: ""
-        })
+        });
     },
 
     _setErrorMessageText: function(msg, errorMsgContainer) {
