@@ -60,11 +60,14 @@ Portal.data.DataCollection = function() {
         return this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.webPage);
     };
 
+    constructor.prototype._getRawLinks = function() { // Todo - DN: 'raw' here because they haven't gone thorugh the LayerStore. What is a better name?
+        return this.getMetadataRecord().get('links');
+    };
+
     constructor.prototype._getFilteredLinks = function(protocols) {
 
-        var links = this.getMetadataRecord().get('links');
         var linkStore = new Portal.search.data.LinkStore({
-            data: { links: links }
+            data: { links: this._getRawLinks() }
         });
 
         linkStore.filterByProtocols(protocols);
