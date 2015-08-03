@@ -102,10 +102,9 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         });
         var html = '';
 
-        Ext.each(this.dataCollectionStore.getLoadedRecords(), function(item) {
-            var collection = item.data;
+        Ext.each(this.dataCollectionStore.getLoadedRecords(), function(collectionRecord) {
 
-            html += this._generateBodyContentForCollection(tpl, collection);
+            html += this._generateBodyContentForCollection(tpl, collectionRecord);
         }, this);
 
         if (!html) {
