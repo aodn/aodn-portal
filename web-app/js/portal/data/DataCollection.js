@@ -60,6 +60,34 @@ Portal.data.DataCollection = function() {
         return this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.webPage);
     };
 
+    constructor.prototype.getDataDownloadHandlers = function() {
+
+        var protocolHandlerConstructors = { // Todo - DN: Should this mapping live in config?
+            'OGC:WFS-1.0.0-http-get-capabilities': [
+                Portal.cart.WfsDownloadHandler,
+                Portal.cart.PythonDownloadHandler
+            ],
+            'IMOS:AGGREGATION--bodaac': Portal.cart.BodaacDownloadHandler,
+            'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckDownloadHandler
+        };
+
+        var applicableDownloadOptions = [];
+
+        Ext.each(this._getRawLinks(), function(link) {
+            var constructors = protocolHandlerConstructors[link.protocol];
+
+            if (constructors) {
+                Ext.each(constructors, function(constructor) {
+                    applicableDownloadOptions.push(
+                        new constructor(link)
+                    );
+                })
+            }
+        }, this);
+
+        return applicableDownloadOptions;
+    };
+
     constructor.prototype._getRawLinks = function() { // Todo - DN: 'raw' here because they haven't gone thorugh the LayerStore. What is a better name?
         return this.getMetadataRecord().get('links');
     };
