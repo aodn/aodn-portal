@@ -23,30 +23,23 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         this._initBaseLayers();
     },
 
-    addUsingLayerLink: function(layerDisplayName, layerLink, dataCollection, layerRecordCallback) {
-        var serverUri = layerLink.server.uri;
-        var serverInfo = Portal.data.Server.getInfo(serverUri);
+    _linkToOpenLayer: function(layerLink, dataCollection) {
+        return Portal.data.DataCollectionLayers.prototype._linkToOpenLayer(layerLink, dataCollection);
+    },
 
-        layerLink.server = serverInfo;
-
-        if (layerLink.server == Portal.data.Server.UNKNOWN) {
-            layerRecordCallback = undefined;
-            dataCollection = undefined;
-            this._serverUnrecognized(serverUri);
-        }
-
-        var layerDescriptor = new Portal.common.LayerDescriptor(
-            layerLink, layerDisplayName, dataCollection, serverInfo.getLayerType()
+    addUsingLayerLink: function(layerLink, dataCollection, layerRecordCallback) {
+        return this._addLayer(
+            this._linkToOpenLayer(layerLink, dataCollection),
+            layerRecordCallback
         );
-        this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
     },
 
     addUsingDescriptor: function(layerDescriptor, layerRecordCallback) {
         return this._addLayer(layerDescriptor.toOpenLayer(), layerRecordCallback);
     },
 
-    _serverUnrecognized: function(serverUri) {
-        log.error("Server '" + serverUri + "' is blocked!!");
+    addUsingOpenLayer: function(openLayer, layerRecordCallback) {
+        return this._addLayer(openLayer, layerRecordCallback);
     },
 
     removeAll: function() {

@@ -81,7 +81,7 @@ Portal.data.DataCollection = function() {
                     applicableDownloadOptions.push(
                         new constructor(link)
                     );
-                })
+                });
             }
         }, this);
 
@@ -132,10 +132,16 @@ Portal.data.DataCollection = function() {
         return linkStore.getRange(); // Get all records
     };
 
+    // TODO: remove this.
+    constructor.prototype.getSelectedLayer = function() {
+        return this.getLayerState().getSelectedLayer();
+    };
+
     return constructor;
 }();
 
 Portal.data.DataCollection.fromMetadataRecord = function(metadataRecord) {
+
     return new Portal.data.DataCollection({
         "metadataRecord": metadataRecord
     });
