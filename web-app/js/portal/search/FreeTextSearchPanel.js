@@ -23,32 +23,29 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
             titleCollapse: true
         };
 
-        Ext.apply(this, cfg, defaults);
-
         var config = Ext.apply({
             layout: 'form',
             cls: 'search-filter-panel filter-selection-panel',
+            align: 'stretch',
             items: [{
                 xtype: 'container',
                 layout: 'hbox',
-                defaults: {
-                    style: {
-                        padding: '2px',
-                        margin: '2px'
-                    }
-                },
-                items: [ this.searchField = new Ext.form.TextField({
+                align: 'middle',
+                cls: 'free-text-search',
+                items: [
+                    this.searchField = new Ext.form.TextField({
                         flex: 1,
                         enableKeyEvents: true
-                    }), this.goButton = new Ext.Button({
-                        text: OpenLayers.i18n("goButton"),
-                        width: 65,
-                        disabled: false
-                }), this.clearButton = new Ext.Button({
-                        text: OpenLayers.i18n("clearButton"),
-                        width: 65,
-                        disabled: false
-                })]
+                    }),
+                    { xtype: 'spacer', width: 10 },
+                    this.goButton = new Ext.Button({
+                        text: OpenLayers.i18n("goButton")
+                    }),
+                    { xtype: 'spacer', width: 10 },
+                    this.clearButton = new Ext.Button({
+                        text: OpenLayers.i18n("clearButton")
+                    })
+                ]
             }]
         }, cfg, defaults);
 

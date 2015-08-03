@@ -907,6 +907,10 @@ div.allwhite {
     padding: 10px;
 }
 
+.free-text-search {
+    margin: 5px;
+}
+
 .filterGroupPanel h4 {
     padding: 7px 0;
 }
