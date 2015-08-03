@@ -58,28 +58,31 @@ describe("Portal.data.LayerStore", function() {
 
     describe('addUsingLayerLink', function() {
         var layerDescriptor = {};
-        var layerRecordCallback = {};
+        var layerRecordCallback = noOp;
+        var dataCollection = {
+            get: returns('name')
+        };
+        var openLayer = {};
+
+        beforeEach(function() {
+            spyOn(layerStore, 'addUsingDescriptor');
+            spyOn(layerStore, '_linkToOpenLayer').andReturn(openLayer);
+            spyOn(layerStore, '_addLayer');
+        });
 
         it('Unknown', function() {
-            spyOn(layerStore, '_serverUnrecognized');
-            spyOn(layerStore, 'addUsingDescriptor');
-
             var origServerUri = layerLink.server.uri;
-            layerStore.addUsingLayerLink("layerName", layerLink, {}, layerRecordCallback);
-            expect(layerStore._serverUnrecognized).toHaveBeenCalledWith(origServerUri);
-            expect(layerStore.addUsingDescriptor).toHaveBeenCalledWith(
-                jasmine.any(Portal.common.LayerDescriptor),
-                undefined
+            layerStore.addUsingLayerLink(layerLink, dataCollection, layerRecordCallback);
+            expect(layerStore._addLayer).toHaveBeenCalledWith(
+                openLayer,
+                layerRecordCallback
             );
         });
 
         it('GeoServer', function() {
-            spyOn(Portal.data.Server, 'getInfo').andReturn({ getLayerType: returns('type') });
-            spyOn(layerStore, 'addUsingDescriptor');
-
-            layerStore.addUsingLayerLink("layerName", layerLink, {}, layerRecordCallback);
-            expect(layerStore.addUsingDescriptor).toHaveBeenCalledWith(
-                jasmine.any(Portal.common.LayerDescriptor),
+            layerStore.addUsingLayerLink(layerLink, dataCollection, layerRecordCallback);
+            expect(layerStore._addLayer).toHaveBeenCalledWith(
+                openLayer,
                 layerRecordCallback
             );
         });
@@ -92,14 +95,22 @@ describe("Portal.data.LayerStore", function() {
             beforeEach(function() {
 
                 var dataCollection = {
-                    getMetadataRecord: function() { return {
-                        data: { bbox: {
-                            getBounds: function() { return {};}
-                        }}
-                    }}
+                    getMetadataRecord: function() {
+                        return {
+                            data: {
+                                bbox: {
+                                    getBounds: function() {
+                                        return {};
+                                    }
+                                }
+                            }
+                        };
+                    }
                 };
 
-                layerDescriptor = new Portal.common.LayerDescriptor(layerLink, 'title', dataCollection, OpenLayers.Layer.WMS);
+                layerDescriptor = new Portal.common.LayerDescriptor(
+                    layerLink, 'title', dataCollection, OpenLayers.Layer.WMS
+                );
             });
 
             it('no callback', function() {

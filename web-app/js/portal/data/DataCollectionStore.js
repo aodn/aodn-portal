@@ -58,28 +58,21 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
 
         Ext.each(dataCollections, function(dataCollection) {
 
-            if (dataCollection.getDefaultWmsLayerLink()) {
+            // TODO: revisit - what is the life cycle of DataCollectionLayers?
+            var dataCollectionLayers = new Portal.data.DataCollectionLayers({
+                dataCollection: dataCollection
+            });
 
-                this.layerStore.addUsingLayerLink(
-                    dataCollection.get('title'),
-                    dataCollection.getDefaultWmsLayerLink(),
-                    dataCollection,
-                    function(layerRecord) {
+            dataCollection.getLayerState = function() {
+                return dataCollectionLayers;
+            };
 
-                        layerRecord.get('layer').dataCollection = dataCollection; // Todo - DN: Can we get away without this?
-                        // TODO: this is just to make it easier to convert many UI components to take a
-                        // DataCollection, rather than a OpenLayer.
-                        dataCollection.getSelectedLayer = function() {
-                            return layerRecord.get('layer');
-                        };
-
-                        _this._recordLoaded(dataCollection);
-                    }
-                );
-            }
-            else {
-                _this._recordLoaded(dataCollection);
-            }
+            this.layerStore.addUsingOpenLayer(
+                dataCollectionLayers.getSelectedLayer(),
+                function(layerRecord) {
+                    _this._recordLoaded(dataCollection);
+                }
+            );
         }, this);
     },
 
