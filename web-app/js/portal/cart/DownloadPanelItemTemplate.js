@@ -198,7 +198,8 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getSingleFileEntry: function(link) {
-        return this._makeExternalLinkMarkup(link.href, link.title);
+        var linkData = link.data; // Todo - DN: Should this be a record form the LinkStore or not?
+        return this._makeExternalLinkMarkup(linkData.url, linkData.title);
     },
 
     _makeExternalLinkMarkup: function(href, text, extras) {

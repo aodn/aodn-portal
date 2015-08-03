@@ -110,7 +110,7 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function(resp, options) {
 OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(serverUrl, layerName, outputFormat) {
 
     var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
-        layer: this
+        dataCollection: this.dataCollection
     });
 
     return this._buildGetFeatureRequestUrl(

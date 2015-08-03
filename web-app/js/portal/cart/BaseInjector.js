@@ -12,25 +12,25 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         Portal.cart.BaseInjector.superclass.constructor.call(this, Ext.apply(this, config));
     },
 
-    getInjectionJson: function(collection) {
+    getInjectionJson: function(dataCollection) {
 
         return {
-            uuid: collection.uuid,
-            title: collection.title,
-            dataFilters: this._getDataFilterEntry(collection),
-            dataMarkup: this._getDataMarkup(collection),
-            linkedFiles: this._getMetadataLinks(collection),
-            pointOfTruthLink: this._getPointOfTruthLink(collection),
-            downloadStatus: collection.downloadStatus
+            uuid: dataCollection.getUuid(),
+            title: dataCollection.getTitle(),
+            dataFilters: this._getDataFilterEntry(dataCollection),
+            dataMarkup: this._getDataMarkup(dataCollection),
+            linkedFiles: this._getMetadataLinks(dataCollection),
+            pointOfTruthLink: this._getPointOfTruthLink(dataCollection),
+            downloadStatus: dataCollection.downloadStatus
         };
     },
 
     _getMetadataLinks: function(collection) {
-        return collection.linkedFiles;
+        return collection.getDataFileLinks();
     },
 
     _getPointOfTruthLink: function(collection) {
-        return collection.pointOfTruthLink;
+        return collection.getMetadataRecord().data.pointOfTruthLink;
     },
 
     _getDataMarkup: function(collection) {
@@ -41,7 +41,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
 
         var handlerToEstimateWith;
 
-        Ext.each(collection.dataDownloadHandlers, function(handler) {
+        Ext.each(collection.getDataDownloadHandlers(), function(handler) {
 
             if (handler.canEstimateDownloadSize()) {
                 handlerToEstimateWith = handler;

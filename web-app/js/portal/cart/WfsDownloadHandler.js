@@ -37,10 +37,10 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         var _this = this;
 
         return function(collection) {
-            return collection.wmsLayer.getFeatureRequestUrl(
+            return collection.getSelectedLayer().getFeatureRequestUrl(
                 _this._resourceHref(),
                 _this._resourceName(),
-                collection.wmsLayer.getCsvDownloadFormat()
+                collection.getSelectedLayer().getCsvDownloadFormat()
             );
         };
     }

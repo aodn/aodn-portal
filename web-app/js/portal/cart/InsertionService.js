@@ -21,11 +21,11 @@ Portal.cart.InsertionService = Ext.extend(Object, {
             downloadConfirmationScope: this
         };
 
-        var wmsLayer = collection.wmsLayer;
+        var wmsLayer = collection.getSelectedLayer();
         var htmlInjection;
 
         // Todo - DN: Review this code. If we consolidate ncwms and wms filtering this should be the same
-        if (this._isCollectionDownloadable(collection) && wmsLayer) { // Todo - DN: wmsLayer is currently null. So just avoiding JS errors till we sort that
+        if (this._isCollectionDownloadable(collection)) {
             if (wmsLayer.isNcwms()) {
                 htmlInjection = this._getNcwmsInjector(config);
             }

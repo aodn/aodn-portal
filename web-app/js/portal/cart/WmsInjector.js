@@ -9,10 +9,10 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
-    _getDataFilterEntry: function(collection) {
+    _getDataFilterEntry: function(dataCollection) {
 
         var describer = new Portal.filter.combiner.HumanReadableFilterDescriber({
-            layer: collection.wmsLayer
+            dataCollection: dataCollection
         });
 
         var description = describer.buildDescription('<br />');

@@ -73,11 +73,11 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         return function(collection) {
 
-            var wmsLayer = collection.wmsLayer;
             var builder = new Portal.filter.combiner.BodaacCqlBuilder({
-                layer: wmsLayer
+                dataCollection: collection
             });
 
+            var wmsLayer = collection.getSelectedLayer();
             return wmsLayer._buildGetFeatureRequestUrl(
                 _this._resourceHref(),
                 _this._layerName(),
