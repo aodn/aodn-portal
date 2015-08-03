@@ -84,38 +84,6 @@ Portal.data.GeoNetworkRecord = function() {
         }
     };
 
-    var dataDownloadHandlersField = {
-        name: 'dataDownloadHandlers',
-        convert: function(v, record) {
-            var allLinks = convertXmlToLinks(v, record);
-
-            var protocolHandlerConstructors = {
-                'OGC:WFS-1.0.0-http-get-capabilities': [
-                    Portal.cart.WfsDownloadHandler,
-                    Portal.cart.PythonDownloadHandler
-                ],
-                'IMOS:AGGREGATION--bodaac': Portal.cart.BodaacDownloadHandler,
-                'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckDownloadHandler
-            };
-
-            var applicableDownloadOptions = [];
-
-            Ext.each(allLinks, function(link) {
-                var constructors = protocolHandlerConstructors[link.protocol];
-
-                if (constructors) {
-                    Ext.each(constructors, function(constructor) {
-                        applicableDownloadOptions.push(
-                            new constructor(link)
-                        );
-                    })
-                }
-            }, this);
-
-            return applicableDownloadOptions;
-        }
-    };
-
     var parameterField = new Portal.data.ChildElementsField({
         name: 'parameter'
     });
@@ -178,7 +146,6 @@ Portal.data.GeoNetworkRecord = function() {
         linkedFilesField,
         onlineResourcesField,
         pointOfTruthLinkField,
-        dataDownloadHandlersField,
         bboxField,
         'wmsLayer',
         'ncwmsParams' // Todo - DN: This needs to go
