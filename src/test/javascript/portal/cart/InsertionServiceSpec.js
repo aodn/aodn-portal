@@ -19,7 +19,8 @@ describe('Portal.cart.InsertionService', function() {
             wmsLayer: {
                 isNcwms: returns(false)
             },
-            aggregator: { childAggregators: [] }
+            aggregator: { childAggregators: [] },
+            getDataDownloadHandlers: returns([{}])
         };
     });
 
@@ -94,20 +95,18 @@ describe('Portal.cart.InsertionService', function() {
     }
 
     function getWmsRecord() {
-        geoNetworkRecord.dataDownloadHandlers = [{}];
-
         return geoNetworkRecord;
     }
 
     function getNcwmsRecord() {
         geoNetworkRecord.wmsLayer.isNcwms = returns(true);
 
-        geoNetworkRecord.dataDownloadHandlers = [{}];
-
         return geoNetworkRecord;
     }
 
     function getNoDataRecord() {
+        geoNetworkRecord.getDataDownloadHandlers = returns([]);
+
         return geoNetworkRecord;
     }
 });

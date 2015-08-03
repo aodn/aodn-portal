@@ -24,7 +24,8 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         var wmsLayer = collection.wmsLayer;
         var htmlInjection;
 
-        if (this._isCollectionDownloadable(collection)) {
+        // Todo - DN: Review this code. If we consolidate ncwms and wms filtering this should be the same
+        if (this._isCollectionDownloadable(collection) && wmsLayer) { // Todo - DN: wmsLayer is currently null. So just avoiding JS errors till we sort that
             if (wmsLayer.isNcwms()) {
                 htmlInjection = this._getNcwmsInjector(config);
             }
@@ -40,10 +41,10 @@ Portal.cart.InsertionService = Ext.extend(Object, {
     },
 
     _isCollectionDownloadable: function(collection) {
-        return collection.dataDownloadHandlers && (collection.dataDownloadHandlers.length > 0);
+        return collection.getDataDownloadHandlers().length > 0;
     },
 
-    _getNcwmsInjector: function(config) {
+    _getNcwmsInjector: function(config) { // Todo - DN: I think this can go.
 
         if (!this.ncwmsInjector) {
             this.ncwmsInjector = new Portal.cart.NcwmsInjector(config);
@@ -52,7 +53,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         return this.ncwmsInjector;
     },
 
-    _getWmsInjector: function(config) {
+    _getWmsInjector: function(config) { // Todo - DN: I think this can go.
 
         if (!this.wmsInjector) {
             this.wmsInjector = new Portal.cart.WmsInjector(config);
@@ -61,7 +62,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         return this.wmsInjector;
     },
 
-    _getNoDataInjector: function(config) {
+    _getNoDataInjector: function(config) { // Todo - DN: I think this can go.
 
         if (!this.noDataInjector) {
             this.noDataInjector = new Portal.cart.NoDataInjector(config);
