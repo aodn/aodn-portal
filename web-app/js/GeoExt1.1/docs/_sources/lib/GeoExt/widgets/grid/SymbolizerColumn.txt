@@ -1,3 +1,4 @@
+
 .. currentmodule:: GeoExt.grid
 
 :class:`GeoExt.grid.SymbolizerColumn`

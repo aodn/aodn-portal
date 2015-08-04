@@ -1,3 +1,4 @@
+
 .. currentmodule:: GeoExt
 
 :class:`GeoExt.Popup`
