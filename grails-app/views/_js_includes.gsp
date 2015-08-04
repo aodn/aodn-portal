@@ -124,7 +124,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'UtcExtentDateTime.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'PolygonTypeComboBox.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NCWMSColourScalePanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'StylePanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'LayerDetailsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsettingPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NcWmsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanelAccordion.js')}"></script>

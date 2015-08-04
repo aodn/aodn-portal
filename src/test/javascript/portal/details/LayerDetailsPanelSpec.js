@@ -21,14 +21,14 @@ function getParameterByNameFromUrlString(urlString, name) {
     }
 }
 
-describe("Portal.details.StylePanel", function() {
+describe("Portal.details.LayerDetailsPanel", function() {
 
-    var stylePanel;
+    var layerDetailsPanel;
 
     beforeEach(function() {
-        spyOn(Portal.details.StylePanel.prototype, '_initWithLayer');
-        spyOn(Portal.details.StylePanel.prototype, '_attachEvents');
-        stylePanel = new Portal.details.StylePanel({});
+        spyOn(Portal.details.LayerDetailsPanel.prototype, '_initWithLayer');
+        spyOn(Portal.details.LayerDetailsPanel.prototype, '_attachEvents');
+        layerDetailsPanel = new Portal.details.LayerDetailsPanel({});
     });
 
     describe("buildGetLegend()", function() {
@@ -39,7 +39,7 @@ describe("Portal.details.StylePanel", function() {
                 params: {},
                 url: ""
             };
-            var urlString = stylePanel.buildGetLegend(layer, null, null, false);
+            var urlString = layerDetailsPanel.buildGetLegend(layer, null, null, false);
             expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual(null);
         });
 
@@ -50,7 +50,7 @@ describe("Portal.details.StylePanel", function() {
                 url: "",
                 server: {wmsVersion: '1.1.0'}
             };
-            var urlString = stylePanel.buildGetLegend(layer, null, null, false);
+            var urlString = layerDetailsPanel.buildGetLegend(layer, null, null, false);
             expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("1.1.0");
         });
 
@@ -60,7 +60,7 @@ describe("Portal.details.StylePanel", function() {
                 params: {},
                 url: ""
             };
-            var urlString = stylePanel.buildGetLegend(layer, 'style/palette', null, false);
+            var urlString = layerDetailsPanel.buildGetLegend(layer, 'style/palette', null, false);
             expect(getParameterByNameFromUrlString(urlString, "STYLE")).toEqual("style/palette");
         });
 
@@ -70,7 +70,7 @@ describe("Portal.details.StylePanel", function() {
                 params: {},
                 url: ""
             };
-            var urlString = stylePanel.buildGetLegend(layer, '', null, false);
+            var urlString = layerDetailsPanel.buildGetLegend(layer, '', null, false);
             expect(getParameterByNameFromUrlString(urlString, "STYLE")).toEqual(null);
         });
 
@@ -80,7 +80,7 @@ describe("Portal.details.StylePanel", function() {
                 params: {},
                 url: ""
             };
-            var urlString = stylePanel.buildGetLegend(layer, '', 'palette', false);
+            var urlString = layerDetailsPanel.buildGetLegend(layer, '', 'palette', false);
             expect(getParameterByNameFromUrlString(urlString, "PALETTE")).toEqual("palette");
         });
 
@@ -90,7 +90,7 @@ describe("Portal.details.StylePanel", function() {
                 params: {},
                 url: ""
             };
-            var urlString = stylePanel.buildGetLegend(layer, null, null, false);
+            var urlString = layerDetailsPanel.buildGetLegend(layer, null, null, false);
             expect(getParameterByNameFromUrlString(urlString, "PALETTE")).toEqual(null);
         });
     });
@@ -100,14 +100,14 @@ describe("Portal.details.StylePanel", function() {
         it("Returns empty array if layer.styles is undefined", function() {
 
             var layer = {styles: undefined};
-            var retVal = stylePanel._processStyleData(layer);
+            var retVal = layerDetailsPanel._processStyleData(layer);
 
             expect(JSON.stringify(retVal)).toBe(JSON.stringify([]));
         });
 
         it("Returns array of name and legend URL", function() {
 
-            stylePanel.buildGetLegend = function(a, b, c, d) {
+            layerDetailsPanel.buildGetLegend = function(a, b, c, d) {
                 return String.format('{0} {1} {2} {3}', a, b, c, d);
             };
 
@@ -120,7 +120,7 @@ describe("Portal.details.StylePanel", function() {
                     {name: 'style2', palette: 'palette2'}
                 ]
             };
-            var retVal = stylePanel._processStyleData(layer);
+            var retVal = layerDetailsPanel._processStyleData(layer);
             var expected = '[' +
                 '["style1/palette1","[object Object] style1/palette1 palette1 true"],' +
                 '["style1/palette2","[object Object] style1/palette2 palette2 true"],' +
@@ -147,17 +147,17 @@ describe("Portal.details.StylePanel", function() {
                 }
             };
 
-            stylePanel.styleCombo = combo;
-            stylePanel.layer = {
+            layerDetailsPanel.styleCombo = combo;
+            layerDetailsPanel.layer = {
                 defaultStyle: 'theDefault'
             };
         });
 
         it('does not load combo box data if 1 style or fewer', function() {
 
-            stylePanel._processStyleData = returns(['style1']);
+            layerDetailsPanel._processStyleData = returns(['style1']);
 
-            stylePanel._stylesLoaded();
+            layerDetailsPanel._stylesLoaded();
 
             expect(combo.store.loadData).not.toHaveBeenCalled();
             expect(combo.setValue).not.toHaveBeenCalled();
@@ -168,9 +168,9 @@ describe("Portal.details.StylePanel", function() {
         it('loads combo box data if more than 1 style to choose from', function() {
 
             var styles = ['style1', 'style2'];
-            stylePanel._processStyleData = returns(styles);
+            layerDetailsPanel._processStyleData = returns(styles);
 
-            stylePanel._stylesLoaded();
+            layerDetailsPanel._stylesLoaded();
 
             expect(combo.store.loadData).toHaveBeenCalledWith(styles);
             expect(combo.setValue).toHaveBeenCalledWith('theDefault');
@@ -186,21 +186,21 @@ describe("Portal.details.StylePanel", function() {
 
         it("Returns palette when the style is in the form style/palette", function() {
 
-            var retVal = stylePanel._getPalette(ncWmsLayer, "dots/rainbow");
+            var retVal = layerDetailsPanel._getPalette(ncWmsLayer, "dots/rainbow");
 
             expect(retVal).toBe("rainbow");
         });
 
         it("Returns style when in other forms", function() {
 
-            var retVal = stylePanel._getPalette(ncWmsLayer, "squiggle");
+            var retVal = layerDetailsPanel._getPalette(ncWmsLayer, "squiggle");
 
             expect(retVal).toBe("squiggle");
         });
 
         it("Returns undefined for non-ncWMS Layers", function() {
 
-            var retVal = stylePanel._getPalette(otherLayer, "style name");
+            var retVal = layerDetailsPanel._getPalette(otherLayer, "style name");
 
             expect(retVal).toBeUndefined();
         });

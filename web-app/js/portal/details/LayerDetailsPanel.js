@@ -7,16 +7,16 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.StylePanel = Ext.extend(Ext.Container, {
+Portal.details.LayerDetailsPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
         this.layer = cfg.layer;
 
         var config = Ext.apply({
-            title: OpenLayers.i18n('stylePanelTitle')
+            title: OpenLayers.i18n('layerDetailsPanelTitle')
         }, cfg);
 
-        Portal.details.StylePanel.superclass.constructor.call(this, config);
+        Portal.details.LayerDetailsPanel.superclass.constructor.call(this, config);
 
         this._attachEvents();
     },
@@ -98,7 +98,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             }
         ];
 
-        Portal.details.StylePanel.superclass.initComponent.call(this);
+        Portal.details.LayerDetailsPanel.superclass.initComponent.call(this);
 
         this._initWithLayer();
     },
@@ -106,7 +106,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
     _makeSpacer: function() {
         return new Ext.Spacer({
             height: 10
-        })
+        });
     },
 
     makeCombo: function() {

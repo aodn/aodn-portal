@@ -76,7 +76,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // tab titles
     subsetPanelTitle: 'Subset',
-    stylePanelTitle: 'Layer',
+    layerDetailsPanelTitle: 'Layer',
     infoTabTitle: 'Info',
     mapTabTitle: 'Map',
 
