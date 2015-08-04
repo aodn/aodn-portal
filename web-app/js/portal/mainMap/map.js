@@ -1,25 +1,3 @@
-
-
-/*
- * Copyright 2009, 2010, 2011 Integrated Marine Observing System (IMOS)
- * Copyright 2010, 2011 Australian Ocean Data Network (AODN)
-
- *  This file is part of aodn_ocean_portal
-
- *  aodn_ocean_portal is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
-
- *  aodn_ocean_portal is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
-
- *  You should have received a copy of the GNU General Public License
- *  along with aodn_ocean_portal  If not, see <http://www.gnu.org/licenses/>.
- */
-
 OpenLayers.Control.Click2 =  OpenLayers.Class(OpenLayers.Control, {
     defaultHandlerOptions: {
         single: true,
@@ -72,4 +50,3 @@ function showChannel(css_id, facilityName) {
     jQuery('#' + facilityName + css_id).show(450);
     Portal.utils.Image.resizeWhenLoadedAfterDelay('div > .featureinfocontent .feature img', 500);
 }
-

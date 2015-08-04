@@ -1,13 +1,6 @@
 /*
- * Copyright 2014 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
  * Credit: http://akeffalas.github.io/blog/2014/04/jenkins-build-info-grails-war.html
- *
  */
-
-
 includeTargets << grailsScript("_GrailsInit")
 
 target(main: "Includes build info in war") {
@@ -22,8 +15,8 @@ target(includeBuildInfoInWar: "Includes build info in war") {
     def buildNumberProperty = 'build.number'
     def scmRevisionProperty = 'build.revision'
 
-    def buildNumber = System.getenv(buildNumberEnvironment)     
-    if(!buildNumber) {        
+    def buildNumber = System.getenv(buildNumberEnvironment)
+    if(!buildNumber) {
         buildNumber = System.getProperty(buildNumberProperty, unknownValue)
     }
 
@@ -35,14 +28,14 @@ target(includeBuildInfoInWar: "Includes build info in war") {
     def buildDate = new Date()
 
     ant.propertyfile(file:"${buildSettings.projectWarExplodedDir}/WEB-INF/classes/application.properties") {
-        entry(key:'app.build.number', value: buildNumber)        
-        entry(key:'app.build.date', value: buildDate)        
-        entry(key:'app.build.scmRevision', value: scmRevision)        
+        entry(key:'app.build.number', value: buildNumber)
+        entry(key:'app.build.date', value: buildDate)
+        entry(key:'app.build.scmRevision', value: scmRevision)
     }
 
     ant.manifest(file: "${buildSettings.projectWarExplodedDir}/META-INF/MANIFEST.MF", mode: "update") {
-        attribute(name: "Build-Time", value: buildDate)        
-        section(name: "Grails Application") {       
+        attribute(name: "Build-Time", value: buildDate)
+        section(name: "Grails Application") {
             attribute(name: "Implementation-Build-Number", value: buildNumber)
             attribute(name: "Implementation-SCM-Revision", value: scmRevision)
         }
