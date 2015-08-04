@@ -35,7 +35,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
         this.styleCombo = this.makeCombo();
 
-        //add the opacity slider container, style combo picker and colour scale panel to the Styles panel
         this.items = [
             this.styleCombo,
             this.ncwmsColourScalePanel,
