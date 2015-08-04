@@ -6,11 +6,4 @@
  */
 
 describe("Portal.details.LayerDetailsPanel", function() {
-
-    var layerDetailsPanel;
-
-    beforeEach(function() {
-        spyOn(Portal.details.LayerDetailsPanel.prototype, '_initWithLayer');
-        layerDetailsPanel = new Portal.details.LayerDetailsPanel({});
-    });
 });
