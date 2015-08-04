@@ -37,17 +37,18 @@ describe('Portal.cart.WfsDownloadHandler', function () {
                 expect(downloadOption.handlerParams).not.toBeNull();
 
                 var downloadHandler = downloadOption.handler;
+                var dummyLayer = {
+                    getFeatureRequestUrl: jasmine.createSpy('getFeatureRequestUrl'),
+                    getCsvDownloadFormat: jasmine.createSpy('getCsvDownloadFormat').andReturn('csv')
+                };
                 var dummyCollection = {
-                    wmsLayer: {
-                        getFeatureRequestUrl: jasmine.createSpy('getFeatureRequestUrl'),
-                        getCsvDownloadFormat: jasmine.createSpy('getCsvDownloadFormat').andReturn('csv')
-                    }
+                    getSelectedLayer: returns(dummyLayer)
                 };
 
                 downloadHandler(dummyCollection);
 
-                expect(dummyCollection.wmsLayer.getCsvDownloadFormat).toHaveBeenCalled();
-                expect(dummyCollection.wmsLayer.getFeatureRequestUrl).toHaveBeenCalledWith('server_url', 'layer_name', 'csv');
+                expect(dummyLayer.getCsvDownloadFormat).toHaveBeenCalled();
+                expect(dummyLayer.getFeatureRequestUrl).toHaveBeenCalledWith('server_url', 'layer_name', 'csv');
             });
         });
 

@@ -44,7 +44,9 @@ describe("Portal.filter.combiner.MapCqlBuilder", function() {
         };
 
         builder = new Portal.filter.combiner.MapCqlBuilder({
-            layer: layer
+            dataCollection: {
+                getSelectedLayer: returns(layer)
+            }
         });
     });
 

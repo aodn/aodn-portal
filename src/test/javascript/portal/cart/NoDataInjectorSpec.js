@@ -9,16 +9,20 @@
 describe('Portal.cart.NoDataInjector', function() {
 
     var injector;
-    var geoNetworkRecord;
+    var dataCollection;
 
     beforeEach(function() {
 
         injector = new Portal.cart.NoDataInjector();
 
-        geoNetworkRecord = {
+        dataCollection = {
             uuid: 9,
-            pointOfTruthLink: 'Link!',
-            linkedFiles: 'Downloadable link!'
+            getMetadataRecord: returns({
+                data: {
+                    pointOfTruthLink: 'Link!'
+                }
+            }),
+            getDataFileLinks: returns('Downloadable link!')
         }
     });
 
@@ -42,14 +46,14 @@ describe('Portal.cart.NoDataInjector', function() {
     describe('getPointOfTruthLinks', function() {
 
         it('returns point of truth links as appropriate', function() {
-            expect(injector._getPointOfTruthLink(geoNetworkRecord)).toEqual('Link!');
+            expect(injector._getPointOfTruthLink(dataCollection)).toEqual('Link!');
         });
     });
 
     describe('getMetadataLinks', function() {
 
         it('returns metadata links as appropriate', function() {
-            expect(injector._getMetadataLinks(geoNetworkRecord)).toEqual('Downloadable link!');
+            expect(injector._getMetadataLinks(dataCollection)).toEqual('Downloadable link!');
         });
     });
 

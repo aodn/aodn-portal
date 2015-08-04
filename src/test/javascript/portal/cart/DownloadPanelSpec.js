@@ -180,25 +180,23 @@ describe("Portal.cart.DownloadPanel", function() {
 
 /*        it('includes menu items from download handlers', function() {
 
-            testCollection1.dataDownloadHandlers = [{
-                getDownloadOptions: function() {
-                    return [
-                        {
-                            textKey: 'key1',
-                            handler: {},
-                            handlerParams: {}
-                        },
-                        {
-                            textKey: 'key2',
-                            handler: {},
-                            handlerParams: {}
-                        }
-                    ];
-                }
-            }];
+            testCollection1.getDataDownloadHandlers = returns([{
+                getDownloadOptions: returns([
+                    {
+                        textKey: 'key1',
+                        handler: {},
+                        handlerParams: {}
+                    },
+                    {
+                        textKey: 'key2',
+                        handler: {},
+                        handlerParams: {}
+                    }
+                ])
+            }]);
 
             spyOn(Portal.cart, 'InsertionService').andReturn({
-                insertionValues: function() {return {menuItems: []}}
+                insertionValues: returns({menuItems: []})
             });
 
             downloadPanel = makeTestDownloadPanel([
@@ -217,11 +215,9 @@ describe("Portal.cart.DownloadPanel", function() {
 
     describe('confirmDownload', function() {
 
-        var makeTestParams = function() {
-            return {
-                filenameFormat: "{0}.csv"
-            };
-        };
+        var makeTestParams = returns({
+            filenameFormat: "{0}.csv"
+        });
 
         it('calls trackUsage when the user accepts download', function() {
             var testParams = makeTestParams();
@@ -236,7 +232,7 @@ describe("Portal.cart.DownloadPanel", function() {
 
             downloadPanel.confirmDownload(testCollection, callbackScope, callback, testParams, testKey);
             testParams.onAccept(testParams);
-            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(testKey), testCollection.title, undefined);
+            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(testKey), testCollection.getTitle(), undefined);
         });
     });
 
@@ -244,11 +240,11 @@ describe("Portal.cart.DownloadPanel", function() {
         return {
             uuid: uuid,
             aggregator: { childAggregators: []},
-            title: "Argo",
-            wmsLayer: {
+            getTitle: returns("Argo"),
+            getSelectedLayer: returns({
                 isNcwms: noOp
-            },
-            dataDownloadHandlers: []
+            }),
+            getDataDownloadHandlers: returns([])
         };
     };
 });

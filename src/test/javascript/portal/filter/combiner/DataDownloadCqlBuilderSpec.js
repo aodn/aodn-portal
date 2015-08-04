@@ -39,7 +39,9 @@ describe("Portal.filter.combiner.DataDownloadCqlBuilder", function() {
         };
 
         builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
-            layer: layer
+            dataCollection: {
+                getSelectedLayer: returns(layer)
+            }
         });
     });
 

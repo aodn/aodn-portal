@@ -21,6 +21,8 @@ Portal.cart.InsertionService = Ext.extend(Object, {
             downloadConfirmationScope: this
         };
 
+        console.log('collection');
+        console.log(collection);
         var wmsLayer = collection.getSelectedLayer();
         var htmlInjection;
 

@@ -149,7 +149,7 @@ describe("Portal.cart.Downloader", function() {
             var params = {
                 filenameFormat: '{0}_source_files.zip'
             };
-            collection.title = 'the title';
+            collection.getTitle = returns('the title');
 
             expect(downloader._constructFilename(collection, params)).toBe('the title_source_files.zip');
         });

@@ -188,7 +188,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             self.downloader.download(collection, generateUrlCallbackScope, generateUrlCallback, callbackParams);
             trackDownloadUsage(
                 OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(textKey),
-                collection.title,
+                collection.getTitle(),
                 undefined
             );
         };

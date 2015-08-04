@@ -39,7 +39,9 @@ describe("Portal.filter.combiner.HumanReadableFilterDescriber", function() {
         };
 
         describer = new Portal.filter.combiner.HumanReadableFilterDescriber({
-            layer: layer
+            dataCollection: {
+                getSelectedLayer: returns(layer)
+            }
         });
     });
 

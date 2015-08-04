@@ -8,31 +8,35 @@
 describe('Portal.cart.BaseInjector', function() {
 
     var injector;
-    var geoNetworkRecord;
+    var dataCollection;
 
     beforeEach(function() {
 
         injector = new Portal.cart.BaseInjector();
 
-        geoNetworkRecord = {
+        dataCollection = {
             uuid: 9,
-            dataDownloadHandlers: [],
-            pointOfTruthLink: 'Link!',
-            linkedFiles: 'Downloadable link!'
+            getMetadataRecord: returns({
+                data: {
+                    pointOfTruthLink: 'Link!'
+                }
+            }),
+            getDataDownloadHandlers: returns([]),
+            getDataFileLinks: returns('Downloadable link!')
         }
     });
 
     describe('getPointOfTruthLinks', function() {
 
         it('returns point of truth links as appropriate', function() {
-            expect(injector._getPointOfTruthLink(geoNetworkRecord)).toEqual('Link!');
+            expect(injector._getPointOfTruthLink(dataCollection)).toEqual('Link!');
         });
     });
 
     describe('getMetadataLinks', function() {
 
         it('returns metadata links as appropriate', function() {
-            expect(injector._getMetadataLinks(geoNetworkRecord)).toEqual('Downloadable link!');
+            expect(injector._getMetadataLinks(dataCollection)).toEqual('Downloadable link!');
         });
     });
 
@@ -67,7 +71,7 @@ describe('Portal.cart.BaseInjector', function() {
 
         it('returns the failed message if it can not calculate an estimate', function() {
 
-            var markup = injector._getDataMarkup(geoNetworkRecord);
+            var markup = injector._getDataMarkup(dataCollection);
 
             expect(markup).toContain(OpenLayers.i18n('estimatedDlFailedMsg'));
         });
@@ -76,14 +80,14 @@ describe('Portal.cart.BaseInjector', function() {
 
             var sizeEstimateParams = {};
 
-            geoNetworkRecord.dataDownloadHandlers.push({
+            dataCollection.getDataDownloadHandlers = returns([{
                 canEstimateDownloadSize: returns(true),
                 getDownloadEstimateParams: returns(sizeEstimateParams)
-            });
+            }]);
 
-            var markup = injector._getDataMarkup(geoNetworkRecord);
+            var markup = injector._getDataMarkup(dataCollection);
 
-            expect(markup).toContain(geoNetworkRecord.uuid);
+            expect(markup).toContain(dataCollection.uuid);
             expect(markup).toContain(OpenLayers.i18n("estimatedDlLoadingMessage"));
             expect(markup).toContain(OpenLayers.i18n("faSpinner"));
         });

@@ -39,7 +39,9 @@ describe("Portal.filter.combiner.BodaacCqlBuilder", function() {
         };
 
         builder = new Portal.filter.combiner.BodaacCqlBuilder({
-            layer: layer
+            dataCollection: {
+                getSelectedLayer: returns(layer)
+            }
         });
     });
 
