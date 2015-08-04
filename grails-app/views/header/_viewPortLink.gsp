@@ -1,10 +1,4 @@
-<%--
 
- Copyright 2013 IMOS
-
- The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
-
---%>
 <div class="viewPortTab viewPortTabDisabled" id="viewPortTab${stepIndex}">
   <button>
     <h1>${stepIndex + 1}</h1>
