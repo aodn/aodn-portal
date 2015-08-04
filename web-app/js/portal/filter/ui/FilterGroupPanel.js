@@ -86,10 +86,10 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    _isLayerActive: function(layer) {
+    _isLayerActive: function(layer) { // Todo - DN: Let's make this more clear. It basically checks if the data collection is still in the store
         var active = false;
 
-        if (layer.parentGeoNetworkRecord != undefined) {
+        if (layer.parentGeoNetworkRecord != undefined) { // Todo - DN: Rework
             active = (this.dataCollectionStore.isRecordActive(layer.parentGeoNetworkRecord));
         }
         return active;
@@ -132,7 +132,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
                     this
                 );
             }
-
         }, this);
 
         this.filterPanels = filterPanels;
