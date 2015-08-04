@@ -1,9 +1,4 @@
-/*
- * Copyright 2012 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
+
 
 /*
  * Copyright 2009, 2010, 2011 Integrated Marine Observing System (IMOS)

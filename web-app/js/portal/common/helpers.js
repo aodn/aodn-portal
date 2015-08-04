@@ -1,9 +1,4 @@
-/*
- * Copyright 2012 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
+
 
 //Formats the given value to numSigFigs significant figures
 function toNSigFigs(num, dec) {

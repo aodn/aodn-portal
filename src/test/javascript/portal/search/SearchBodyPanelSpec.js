@@ -1,9 +1,4 @@
-/*
- * Copyright 2013 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
+
 describe("Portal.search.SearchBodyPanel", function() {
 
     var searchBodyPanel;

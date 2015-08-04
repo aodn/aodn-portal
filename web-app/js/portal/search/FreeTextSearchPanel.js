@@ -1,10 +1,4 @@
-/*
- * Copyright 2015 IMOS
- * Originally written by Mark Hepburn for IMAS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
+
 
 Ext.namespace('Portal.search');
 

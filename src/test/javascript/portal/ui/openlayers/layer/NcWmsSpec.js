@@ -1,11 +1,5 @@
-/*
- * Copyright 2014 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
-describe('OpenLayers.Layer.NcWms', function() {
 
+describe("OpenLayers.Layer.NcWms", function() {
     var cachedLayer;
     var extent;
     var params;

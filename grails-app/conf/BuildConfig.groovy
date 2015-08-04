@@ -1,9 +1,4 @@
-/*
- * Copyright 2012 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
+
 
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
