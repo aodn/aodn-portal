@@ -56,7 +56,7 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
             this.zoomToLayer,
         ];
 
-        Portal.details.LayerDetailsPanel.superclass.initComponent.call(this);
+        Portal.details.LayerControlPanel.superclass.initComponent.call(this);
 
         this._initWithLayer();
     },

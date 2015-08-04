@@ -11,7 +11,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
     constructor: function(cfg) {
         this.layer = cfg.layer;
 
-        Portal.details.LayerDetailsPanel.superclass.constructor.call(this, cfg);
+        Portal.details.StylePanel.superclass.constructor.call(this, cfg);
 
         this._attachEvents();
     },
