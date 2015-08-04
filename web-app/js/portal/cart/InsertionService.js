@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.cart');
 
 Portal.cart.InsertionService = Ext.extend(Object, {

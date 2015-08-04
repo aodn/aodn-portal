@@ -1,4 +1,3 @@
-
 describe('Portal.service.CatalogSearcher', function() {
 
     var searcher;

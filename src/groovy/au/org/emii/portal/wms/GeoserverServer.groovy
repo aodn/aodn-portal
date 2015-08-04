@@ -1,5 +1,3 @@
-
-
 package au.org.emii.portal.wms
 
 import au.org.emii.portal.proxying.ExternalRequest

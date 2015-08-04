@@ -1,5 +1,3 @@
-
-
 // Track slow-running specs
 jasmine.slow.enable(500);
 

@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.data');
 
 Portal.data.TermClassificationStore = Ext.extend(Ext.data.XmlStore, {

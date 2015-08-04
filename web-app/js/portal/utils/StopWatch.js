@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.utils');
 
 Portal.utils.StopWatch = Ext.extend(Ext.util.Observable, {

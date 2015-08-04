@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.ui.openlayers');
 
 Portal.ui.openlayers.ClickControl = Ext.extend(OpenLayers.Control, {

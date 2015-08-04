@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.form');
 
 Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {

@@ -1,5 +1,3 @@
-
-
 describe("Portal.ui.Viewport", function() {
 
     var viewport;

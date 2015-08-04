@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.combiner.BodaacCqlBuilder", function() {
 
     var builder;

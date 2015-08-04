@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {

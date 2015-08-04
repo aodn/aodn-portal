@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.ui.BooleanFilterPanel", function() {
 
     var booleanFilter;

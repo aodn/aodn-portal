@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.combiner.HumanReadableFilterDescriber", function() {
 
     var describer;

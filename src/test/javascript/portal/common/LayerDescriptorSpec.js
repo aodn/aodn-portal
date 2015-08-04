@@ -1,5 +1,3 @@
-
-
 describe("Portal.common.LayerDescriptor", function() {
 
     it('from javascript object', function() {

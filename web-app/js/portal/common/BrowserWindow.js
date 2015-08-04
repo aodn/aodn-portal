@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.common');
 
 Portal.common.BrowserWindow = {

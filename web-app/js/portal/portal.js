@@ -1,5 +1,3 @@
-
-
 var viewport;
 var progressCount = 0;
 

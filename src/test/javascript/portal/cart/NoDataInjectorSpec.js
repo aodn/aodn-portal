@@ -1,5 +1,3 @@
-
-
 describe('Portal.cart.NoDataInjector', function() {
 
     var injector;

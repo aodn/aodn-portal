@@ -1,5 +1,3 @@
-
-
 describe("Portal.data.LayerStore", function() {
 
     var layerStore;

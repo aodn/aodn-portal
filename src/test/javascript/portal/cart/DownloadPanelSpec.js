@@ -1,5 +1,3 @@
-
-
 describe("Portal.cart.DownloadPanel", function() {
 
     var downloadPanel;

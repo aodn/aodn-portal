@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.utils');
 
 // An inefficient and naive implementation for a set using an array

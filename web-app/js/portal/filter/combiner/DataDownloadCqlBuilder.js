@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.filter.combiner');
 
 Portal.filter.combiner.DataDownloadCqlBuilder = Ext.extend(Portal.filter.combiner.FilterCqlBuilder, {

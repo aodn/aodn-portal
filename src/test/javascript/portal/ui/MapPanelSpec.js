@@ -1,5 +1,3 @@
-
-
 describe("Portal.ui.MapPanel", function() {
 
     Ext.Ajax.request.isSpy = false;

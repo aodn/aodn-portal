@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.data');
 
 Portal.data.TermClassification = function() {

@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.form');
 
 Portal.form.PolygonTypeComboBox = Ext.extend(Ext.form.ComboBox, {

@@ -1,5 +1,3 @@
-
-
 // Ext.tree.TreeNode additions
 
 Ext.namespace('Ext.tree');

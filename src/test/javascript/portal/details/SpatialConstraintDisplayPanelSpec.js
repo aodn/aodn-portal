@@ -1,5 +1,3 @@
-
-
 describe("Portal.details.SpatialConstraintDisplayPanel", function() {
 
     var displayPanel;

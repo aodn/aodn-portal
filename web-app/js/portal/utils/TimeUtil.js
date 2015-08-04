@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.utils');
 
 Portal.utils.TimeUtil = Ext.extend(Object, {

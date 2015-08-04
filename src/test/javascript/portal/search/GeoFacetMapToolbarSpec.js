@@ -1,4 +1,3 @@
-
 describe("Portal.search.GeoFacetMapToolbar", function() {
 
     var toolbar;

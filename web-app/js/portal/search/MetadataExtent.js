@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.search');
 
 Portal.search.MetadataExtent = Ext.extend(Object, {

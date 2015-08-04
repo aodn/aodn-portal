@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.FilterService", function() {
 
     var service = new Portal.filter.FilterService();

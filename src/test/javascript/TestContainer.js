@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.test');
 
 Portal.test.TestContainer = Ext.extend(Ext.Container, {

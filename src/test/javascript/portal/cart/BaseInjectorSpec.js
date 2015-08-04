@@ -1,5 +1,3 @@
-
-
 describe('Portal.cart.BaseInjector', function() {
 
     var injector;

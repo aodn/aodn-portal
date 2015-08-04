@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.common');
 
 Portal.common.EmptyCollectionStatusPanel = Ext.extend(Ext.Container, {

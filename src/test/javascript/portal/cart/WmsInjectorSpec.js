@@ -1,5 +1,3 @@
-
-
 describe('Portal.cart.WmsInjector', function() {
 
     var injector;

@@ -1,4 +1,3 @@
-
 describe("Portal.search.GeoSelectionPanel", function() {
 
     var geoFilter;

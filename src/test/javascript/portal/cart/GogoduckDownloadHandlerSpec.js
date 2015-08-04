@@ -1,5 +1,3 @@
-
-
 describe('Portal.cart.GogoduckDownloadHandler', function () {
 
     var handler;

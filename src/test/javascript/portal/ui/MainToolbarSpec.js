@@ -1,4 +1,3 @@
-
 describe("Portal.ui.MainToolbar", function() {
 
     var mainPanel;

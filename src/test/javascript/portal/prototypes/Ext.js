@@ -1,4 +1,3 @@
-
 describe("Ext.Component", function() {
     describe('createSafeCallback', function() {
         var testComponent;

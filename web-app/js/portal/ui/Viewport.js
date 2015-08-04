@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.ui');
 
 Portal.ui.Viewport = Ext.extend(Ext.Viewport, {

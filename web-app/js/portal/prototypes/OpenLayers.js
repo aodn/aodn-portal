@@ -1,5 +1,3 @@
-
-
 // Override some OpenLayers default images
 OpenLayers.Util.__getImageLocation = OpenLayers.Util.getImageLocation;
 OpenLayers.Util.getImageLocation = function(image) {

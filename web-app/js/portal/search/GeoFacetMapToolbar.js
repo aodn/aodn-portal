@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.search');
 
 Portal.search.GeoFacetMapToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {

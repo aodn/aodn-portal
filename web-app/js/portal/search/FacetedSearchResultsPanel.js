@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {

@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.ui');
 
 Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {

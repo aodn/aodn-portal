@@ -1,5 +1,3 @@
-
-
 describe('Portal.cart.InsertionService', function() {
 
     var mockInsertionService;

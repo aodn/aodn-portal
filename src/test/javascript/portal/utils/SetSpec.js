@@ -1,5 +1,3 @@
-
-
 describe("Portal.utils.Set", function() {
     var testSet;
 

@@ -1,5 +1,3 @@
-
-
 describe('Portal.data.Server', function() {
     describe('getInfo', function() {
         var server1Info;

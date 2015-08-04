@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.search');
 
 Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {

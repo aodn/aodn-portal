@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.cart');
 
 Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {

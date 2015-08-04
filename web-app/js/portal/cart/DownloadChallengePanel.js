@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {

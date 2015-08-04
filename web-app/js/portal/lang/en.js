@@ -1,5 +1,3 @@
-
-
 OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     unsupportedWarningMessage: "Your browser or device is unsupported and may not work with this site. \nPlease use Chrome or Firefox on a later generation Windows PC, Linux or Macbook/iMac for the best experience.",

@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.details');
 
 Portal.details.LayerDetailsPanel = Ext.extend(Ext.Container, {

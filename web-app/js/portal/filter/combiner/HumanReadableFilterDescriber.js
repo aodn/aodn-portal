@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.filter.combiner');
 
 Portal.filter.combiner.HumanReadableFilterDescriber = Ext.extend(Portal.filter.combiner.BaseFilterCombiner, {

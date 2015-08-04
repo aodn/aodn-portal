@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.search.data');
 
 Portal.search.data.LinkStore = Ext.extend(Ext.data.JsonStore, {

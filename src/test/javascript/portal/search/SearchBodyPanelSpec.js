@@ -1,4 +1,3 @@
-
 describe("Portal.search.SearchBodyPanel", function() {
 
     var searchBodyPanel;

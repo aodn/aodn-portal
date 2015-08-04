@@ -1,4 +1,3 @@
-
 describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
     var html;

@@ -1,4 +1,3 @@
-
 describe("Portal.cart.DownloadConfirmationWindow", function() {
 
     var confirmationWindow;

@@ -1,5 +1,3 @@
-
-
 package au.org.emii.portal.proxying
 
 import org.apache.catalina.connector.ClientAbortException

@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.filter.ui');
 
 Portal.filter.ui.ResettableDate = Ext.extend(Ext.Container, {

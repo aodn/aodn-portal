@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.details');
 
 Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {

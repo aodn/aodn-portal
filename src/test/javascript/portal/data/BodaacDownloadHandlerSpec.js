@@ -1,5 +1,3 @@
-
-
 describe('Portal.cart.BodaacDownloadHandler', function () {
 
     var handler;

@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.visualise.animations');
 
 /* This class is managing a temporal extent. The way we manage the temporal

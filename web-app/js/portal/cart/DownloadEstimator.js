@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadEstimator = Ext.extend(Object, {

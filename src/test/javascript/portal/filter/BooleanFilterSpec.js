@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.BooleanFilter", function() {
 
     var filter;

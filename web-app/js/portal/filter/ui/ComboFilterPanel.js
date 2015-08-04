@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.filter.ui');
 
 Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {

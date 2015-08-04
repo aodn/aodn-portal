@@ -1,5 +1,3 @@
-
-
 describe('Portal.cart.DownloadHandler', function () {
 
     var handler;

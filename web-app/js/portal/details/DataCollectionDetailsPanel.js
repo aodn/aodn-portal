@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.details');
 
 Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {

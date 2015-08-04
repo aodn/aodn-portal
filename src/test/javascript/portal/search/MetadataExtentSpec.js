@@ -1,5 +1,3 @@
-
-
 describe("Portal.search.MetadataExtent", function() {
 
     it("creates a geometry out of geoBox string", function() {

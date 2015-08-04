@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.search');
 
 // TODO: note that this panel is probably redundant now that it has only one child - we can just use

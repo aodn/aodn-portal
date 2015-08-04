@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {

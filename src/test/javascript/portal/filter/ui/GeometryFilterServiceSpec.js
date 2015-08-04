@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.GeometryFilterService", function() {
 
     var filterPanel;

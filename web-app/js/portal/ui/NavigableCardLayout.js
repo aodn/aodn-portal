@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.ui');
 
 Portal.ui.NavigableCardLayout = Ext.extend(Ext.layout.CardLayout, {

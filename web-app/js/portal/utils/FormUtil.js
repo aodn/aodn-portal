@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.utils.FormUtil');
 
 /**

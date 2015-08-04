@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.combiner.MapCqlBuilder", function() {
 
     var builder;

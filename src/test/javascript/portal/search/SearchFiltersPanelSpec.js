@@ -1,4 +1,3 @@
-
 describe("Portal.search.SearchFiltersPanel", function() {
 
     var searchFiltersPanel;

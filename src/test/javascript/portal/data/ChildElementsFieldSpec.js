@@ -1,4 +1,3 @@
-
 describe('Portal.data.ChildElementsField', function() {
     describe('convert method', function() {
         it('converts multiple matching elements into an array', function() {

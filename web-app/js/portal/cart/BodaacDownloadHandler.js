@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.cart');
 
 Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {

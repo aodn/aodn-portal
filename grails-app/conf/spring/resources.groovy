@@ -1,5 +1,3 @@
-
-
 import grails.util.Environment
 import net.sf.json.JSONNull
 

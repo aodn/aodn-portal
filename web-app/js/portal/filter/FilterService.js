@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.filter');
 
 Portal.filter.FilterService = Ext.extend(Object, {

@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.ui.FilterGroupPanel", function() {
 
     var filterGroupPanel;

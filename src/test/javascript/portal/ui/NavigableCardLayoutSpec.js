@@ -1,4 +1,3 @@
-
 describe('Portal.ui.NavigableCardLayout', function() {
 
     var layout;

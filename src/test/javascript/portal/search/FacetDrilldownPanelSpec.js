@@ -1,4 +1,3 @@
-
 describe("Portal.search.FacetDrilldownPanel", function() {
 
     var searcher;

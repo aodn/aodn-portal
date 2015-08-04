@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.search');
 
 Portal.search.SearchPanel = Ext.extend(Ext.Panel, {

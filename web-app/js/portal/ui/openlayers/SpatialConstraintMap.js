@@ -1,5 +1,3 @@
-
-
 OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
 
     initialize: function(div, options) {

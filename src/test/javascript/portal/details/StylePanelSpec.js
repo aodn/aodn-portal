@@ -1,5 +1,3 @@
-
-
 function getParameterByNameFromUrlString(urlString, name) {
 
     urlString = decodeURIComponent(urlString);

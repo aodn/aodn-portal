@@ -1,5 +1,3 @@
-
-
 describe("Portal.ui.openlayers.LayerOptions", function() {
 
     var layerDescriptor;

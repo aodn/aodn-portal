@@ -1,5 +1,3 @@
-
-
 describe("Portal.ui.FeatureInfoPopup", function()
 {
     var map;

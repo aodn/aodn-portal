@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.details');
 
 Portal.details.SubsetItemsTabPanel = Ext.extend(Ext.TabPanel, {

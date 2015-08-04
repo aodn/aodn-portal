@@ -1,5 +1,3 @@
-
-
 describe('Moment', function() {
 
     describe('formats', function() {

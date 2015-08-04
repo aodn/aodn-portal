@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.filter.ui');
 
 Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {

@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {

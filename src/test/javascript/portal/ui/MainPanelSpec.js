@@ -1,5 +1,3 @@
-
-
 describe("Portal.ui.MainPanel", function() {
 
     var mainPanel;

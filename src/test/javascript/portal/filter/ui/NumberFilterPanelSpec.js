@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.ui.NumberFilterPanel", function() {
 
     var numberFilter;

@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.ui.ComboFilterPanel", function() {
 
     var filterPanel;

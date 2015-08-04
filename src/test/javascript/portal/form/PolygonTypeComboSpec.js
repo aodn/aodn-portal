@@ -1,5 +1,3 @@
-
-
 describe('Portal.form.PolygonTypeCombo', function() {
 
     var mockMap;

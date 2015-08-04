@@ -1,4 +1,3 @@
-
 describe("Portal.cart.DownloadChallengePanel", function() {
 
     var panel;

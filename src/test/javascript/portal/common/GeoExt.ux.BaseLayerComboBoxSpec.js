@@ -1,5 +1,3 @@
-
-
 describe("GeoExt.ux.BaseLayerComboBox", function() {
 
     it('It loads only base layers from map on creation', function() {

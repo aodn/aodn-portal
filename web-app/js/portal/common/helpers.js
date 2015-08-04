@@ -1,5 +1,3 @@
-
-
 //Formats the given value to numSigFigs significant figures
 function toNSigFigs(num, dec) {
     return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);

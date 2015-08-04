@@ -1,5 +1,3 @@
-
-
 package au.org.emii.portal
 
 import org.slf4j.Logger

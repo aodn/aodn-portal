@@ -1,4 +1,3 @@
-
 if (!window.console || !console.firebug) { (function()
 {
     window.console = 

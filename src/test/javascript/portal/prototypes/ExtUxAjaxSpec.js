@@ -1,4 +1,3 @@
-
 describe("Ext.ux.Ajax", function() {
     describe('proxyRequest', function() {
         it('forwards proxied and encoded URL to Ext.Ajax.request', function() {

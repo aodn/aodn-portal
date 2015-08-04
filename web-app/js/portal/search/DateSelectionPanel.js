@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.search');
 
 Portal.search.DateSelectionPanel = Ext.extend(Ext.Panel, {

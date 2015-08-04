@@ -1,5 +1,3 @@
-
-
 import javax.naming.InitialContext
 
 // locations to search for config files that get merged into the main config

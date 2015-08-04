@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.ui.ResettableDate", function() {
 
     describe('change event', function() {

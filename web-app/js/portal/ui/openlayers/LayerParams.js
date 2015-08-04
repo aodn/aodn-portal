@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.ui.openlayer');
 
 Portal.ui.openlayers.LayerParams = Ext.extend(Object, {

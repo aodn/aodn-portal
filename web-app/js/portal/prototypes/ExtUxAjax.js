@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Ext.ux');
 
 Ext.ux.Ajax = Ext.Ajax;

@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.search');
 
 Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {

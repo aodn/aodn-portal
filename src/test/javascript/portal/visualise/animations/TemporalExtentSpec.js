@@ -1,5 +1,3 @@
-
-
 describe("Portal.visualise.animations.TemporalExtent", function() {
 
     var temporalExtent;

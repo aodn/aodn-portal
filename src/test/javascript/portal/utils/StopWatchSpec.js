@@ -1,5 +1,3 @@
-
-
 describe("Portal.utils.StopWatch", function() {
     it('calculates elapsed time in ms on stop', function() {
         var sw = new Portal.utils.StopWatch();

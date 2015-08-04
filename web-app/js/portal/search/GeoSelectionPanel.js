@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.search');
 
 Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {

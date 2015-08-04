@@ -1,5 +1,3 @@
-
-
 describe("Portal.search.FacetedSearchResultsPanel", function() {
 
     var resultsPanel;

@@ -1,5 +1,4 @@
 
-
 describe("Portal.search.data.MetadataSearchResponseLoader", function() {
 
     var searchResponse = "<?xml version=\"1.0\" encoding=\"UTF-8\"?> \

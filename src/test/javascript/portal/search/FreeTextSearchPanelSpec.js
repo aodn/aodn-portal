@@ -1,5 +1,3 @@
-
-
 describe("Portal.search.FreeTextSearchPanel", function()
 {
     var freeTextSearchPanel;

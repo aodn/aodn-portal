@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.StringFilter", function() {
 
     var filter;

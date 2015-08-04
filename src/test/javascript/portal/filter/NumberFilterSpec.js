@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.NumberFilter", function() {
 
     var filter;

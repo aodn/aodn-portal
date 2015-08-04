@@ -1,5 +1,3 @@
-
-
 describe("Portal.search.FacetedSearchResultsDataView", function() {
 
     var facetedSearchDataView;

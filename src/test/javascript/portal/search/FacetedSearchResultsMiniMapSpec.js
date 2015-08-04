@@ -1,4 +1,3 @@
-
 describe("Portal.search.FacetedSearchResultsMiniMap", function() {
     var miniMap;
     var bbox;

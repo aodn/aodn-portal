@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.filter');
 
 Portal.filter.Filter = Ext.extend(Ext.util.Observable, {

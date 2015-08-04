@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.validation.SpatialConstraintValidator", function() {
 
     var validator;

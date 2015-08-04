@@ -1,5 +1,3 @@
-
-
 describe("Portal.common.helpers", function() {
     describe("getPortalBase", function() {
         it("returns base", function() {

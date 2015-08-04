@@ -1,4 +1,3 @@
-
 describe("Portal.cart.DownloadEmailPanel", function() {
 
     var panel;

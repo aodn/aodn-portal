@@ -1,5 +1,3 @@
-
-
 package au.org.emii.portal.proxying
 
 import org.codehaus.groovy.grails.io.support.IOUtils

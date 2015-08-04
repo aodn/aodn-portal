@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.details');
 
 Portal.details.StylePanel = Ext.extend(Ext.Container, {

@@ -1,5 +1,3 @@
-
-
 describe('Portal.cart.DownloadEstimator', function() {
 
     var estimator;

@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.details');
 
 Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {

@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.details');
 
 Portal.details.InfoPanel = Ext.extend(Ext.Container, {

@@ -1,5 +1,3 @@
-
-
 describe("Portal.ui.DownloadCartWidget", function() {
 
     var downloadCartWidget;

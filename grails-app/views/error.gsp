@@ -1,6 +1,3 @@
-
-
-
 <html>
   <head>
       <title>Grails Runtime Exception</title>

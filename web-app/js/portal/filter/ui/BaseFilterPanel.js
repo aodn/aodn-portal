@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.filter.ui');
 
 /**

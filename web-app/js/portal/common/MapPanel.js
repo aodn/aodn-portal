@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.common');
 
 /* Code common to main map and minimap */

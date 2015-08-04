@@ -1,4 +1,3 @@
-
 describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
     var spatialConstraint;

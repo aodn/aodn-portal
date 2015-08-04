@@ -1,4 +1,3 @@
-
 .. currentmodule:: GeoExt
 
 :class:`GeoExt.ZoomSlider`

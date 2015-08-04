@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.ui');
 
 Portal.ui.TimeRangeLabel = Ext.extend(Ext.form.Label, {

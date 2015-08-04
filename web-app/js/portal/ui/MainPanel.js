@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.ui');
 
 TAB_INDEX_SEARCH = 0;

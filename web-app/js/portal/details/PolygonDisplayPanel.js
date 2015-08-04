@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.details');
 
 Portal.details.PolygonDisplayPanel = Ext.extend(Ext.grid.GridPanel, {

@@ -1,4 +1,3 @@
-
 .. currentmodule:: GeoExt.data
 
 :class:`GeoExt.data.ScaleStore`

@@ -1,5 +1,3 @@
-
-
 describe('Portal.cart.WfsDownloadHandler', function () {
 
     describe('getDownloadOptions', function() {

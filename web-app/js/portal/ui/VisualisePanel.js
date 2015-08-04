@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.ui');
 
 Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {

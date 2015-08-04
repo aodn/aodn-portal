@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.cart');
 
 Portal.cart.NoDataInjector = Ext.extend(Portal.cart.BaseInjector, {

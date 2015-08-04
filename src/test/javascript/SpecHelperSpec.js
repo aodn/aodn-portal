@@ -1,5 +1,3 @@
-
-
 describe('Custom matchers', function () {
 
     describe('toHaveParameterWithValue()', function () {

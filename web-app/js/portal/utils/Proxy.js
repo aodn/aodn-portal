@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.utils');
 Ext.namespace('Portal.utils.Proxy');
 

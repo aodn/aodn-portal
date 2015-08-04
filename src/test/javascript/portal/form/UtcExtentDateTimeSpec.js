@@ -1,5 +1,3 @@
-
-
 describe("Portal.form.UtcExtentDateTime", function() {
 
     var utcDateTime;

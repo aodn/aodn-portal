@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.details');
 
 Portal.details.GlobalGeometryFilterPanel = Ext.extend(Ext.Panel, {

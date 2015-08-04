@@ -1,5 +1,3 @@
-
-
 includeTargets << grailsScript("_GrailsInit")
 
 target(main: "Collates all the custom portal JS code into a single portal-all.js file") {

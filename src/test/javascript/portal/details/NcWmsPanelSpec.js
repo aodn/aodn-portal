@@ -1,5 +1,3 @@
-
-
 describe('Portal.details.NcWmsPanel', function() {
 
     var map;

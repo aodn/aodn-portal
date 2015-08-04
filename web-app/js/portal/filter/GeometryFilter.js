@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.filter');
 
 Portal.filter.GeometryFilter = Ext.extend(Portal.filter.Filter, {

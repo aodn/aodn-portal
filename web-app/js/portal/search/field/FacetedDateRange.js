@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.search.field');
 
 Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {

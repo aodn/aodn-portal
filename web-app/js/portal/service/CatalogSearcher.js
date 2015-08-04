@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.service');
 
 Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {

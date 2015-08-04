@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.filter.ui');
 
 Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {

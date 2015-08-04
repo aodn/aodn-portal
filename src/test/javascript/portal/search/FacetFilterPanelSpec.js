@@ -1,4 +1,3 @@
-
 describe("Portal.search.FacetFilterPanel", function() {
 
     var searcher;

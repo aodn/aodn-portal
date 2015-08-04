@@ -1,5 +1,3 @@
-
-
 describe('OpenLayers', function() {
 
     describe("Layer.WMS", function() {

@@ -1,5 +1,3 @@
-
-
 describe("Portal.util.Proxy", function() {
 
     it('proxy requests enabled', function() {

@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.utils.geo');
 
 Portal.utils.geo.bboxAsStringToBounds = function(bboxAsString) {

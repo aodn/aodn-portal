@@ -1,5 +1,3 @@
-
-
 describe("Portal.filter.combiner.DataDownloadCqlBuilder", function() {
 
     var builder;

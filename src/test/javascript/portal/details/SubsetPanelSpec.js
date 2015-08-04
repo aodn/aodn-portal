@@ -1,4 +1,3 @@
-
 describe("Portal.details.SubsetPanel", function() {
 
     var subsetPanel;

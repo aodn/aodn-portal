@@ -1,4 +1,3 @@
-
 describe('Portal.details.PolygonDisplayPanel', function() {
 
     var polyDisplayPanel;

@@ -1,5 +1,3 @@
-
-
 Ext.namespace('Portal.ui');
 
 Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {

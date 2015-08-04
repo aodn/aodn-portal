@@ -1,4 +1,3 @@
-
 describe("Portal.cart.Downloader", function() {
 
     var downloader;
