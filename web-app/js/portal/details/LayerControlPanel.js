@@ -10,29 +10,46 @@ Ext.namespace('Portal.details');
 Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
 
     initComponent: function() {
-        this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
-            layer: new OpenLayers.Layer("Dummy Layer"),
-            keyIncrement: 10,
-            increment: 5,
-            minValue: 20, // minimum visibility for the current layer is 20%
-            maxValue: 100,
-            aggressive: true,
-            width: 175,
-            isFormField: true,
-            inverse: false,
-            fieldLabel: OpenLayers.i18n('Opacity'),
-            plugins: new GeoExt.LayerOpacitySliderTip({
-                template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
-            })
-        });
+        this.items = [];
 
-        // Put in container so that we see the label.
-        this.opacitySliderContainer = new Ext.Panel({
+        var layerSelector = this._newLayerSelectorComponent();
+        if (layerSelector) {
+            this.items.push(layerSelector, { xtype: 'spacer', height: 10 });
+        }
+
+        this.items.push(this._newOpacitySlider());
+        this.items.push(this._newVisibilityCheckbox());
+        this.items.push(this._newZoomToDataButton());
+
+        Portal.details.LayerControlPanel.superclass.initComponent.call(this);
+    },
+
+    _newOpacitySlider: function() {
+        // Put slider in container with form layout so that we see the label.
+        return new Ext.Panel({
             layout: 'form',
-            items: [ this.opacitySlider ]
+            items: [
+                new Portal.common.LayerOpacitySliderFixed({
+                    layer: this.layer,
+                    keyIncrement: 10,
+                    increment: 5,
+                    minValue: 20,
+                    maxValue: 100,
+                    aggressive: true,
+                    width: 175,
+                    isFormField: true,
+                    inverse: false,
+                    fieldLabel: OpenLayers.i18n('Opacity'),
+                    plugins: new GeoExt.LayerOpacitySliderTip({
+                        template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
+                    })
+                })
+            ]
         });
+    },
 
-        this.layerVisibilityCheckbox = new Ext.form.Checkbox({
+    _newVisibilityCheckbox: function() {
+        return new Ext.form.Checkbox({
             value: true,
             boxLabel: OpenLayers.i18n('showMapLayer'),
             checked: true,
@@ -41,29 +58,41 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
                 check: this._visibilityButtonChecked
             }
         });
+    },
 
-        this.zoomToLayer = new Ext.ux.Hyperlink({
+    _newZoomToDataButton: function() {
+        return new Ext.ux.Hyperlink({
             text: OpenLayers.i18n('zoomToDataCollection'),
             listeners: {
                 scope: this,
                 click: this._zoomToLayer
             }
         });
-
-        this.items = [
-            this.opacitySliderContainer,
-            this.layerVisibilityCheckbox,
-            this.zoomToLayer,
-        ];
-
-        Portal.details.LayerControlPanel.superclass.initComponent.call(this);
-
-        this._initWithLayer();
     },
 
-    _initWithLayer: function() {
-        //according to bug #1582, must set the layer for the opacity slider after the container has been shown
-        this.opacitySlider.setLayer(this.layer);
+    _newLayerSelectorComponent: function() {
+        if (this.dataCollection.getLayerState().getLayers().length <= 1) {
+            return undefined;
+        }
+
+        var items = [];
+        Ext.each(this.dataCollection.getLayerState().getLayers(), function(openLayer) {
+            items.push({
+                boxLabel: openLayer.wmsName,
+                name: 'selectedLayer',
+                checked: openLayer == this.dataCollection.getLayerState().getSelectedLayer()
+            });
+        }, this);
+
+        return new Ext.form.RadioGroup({
+            columns: 1,
+            items: items
+            // listeners: {
+            //     'change': function(radioGroup, checkedRadio) {
+            //         console.log('checkedRadio', checkedRadio);
+            //     }
+            // }
+        });
     },
 
     _visibilityButtonChecked: function(obj, val) {
