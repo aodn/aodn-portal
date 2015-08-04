@@ -14,14 +14,14 @@ Portal.details.SubsetItemsTabPanel = Ext.extend(Ext.TabPanel, {
 
         this.subsetPanel = new Portal.details.SubsetPanel(childPanelConfig);
         this.infoPanel = new Portal.details.InfoPanel(childPanelConfig);
-        this.stylePanel = new Portal.details.StylePanel(childPanelConfig);
+        this.layerDetailsPanel = new Portal.details.LayerDetailsPanel(childPanelConfig);
 
         var config = Ext.apply({
             activeTab: 0,
             items: [
                 this.subsetPanel,
                 this.infoPanel,
-                this.stylePanel
+                this.layerDetailsPanel
             ],
             listeners: {
                 beforetabchange: this._doTracking
