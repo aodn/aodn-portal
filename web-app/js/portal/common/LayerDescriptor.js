@@ -125,27 +125,5 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
             openLayer.bboxMaxX = bounds.right;
             openLayer.bboxMaxY = bounds.top;
         }
-    },
-
-    _getParent: function() {
-        return this.parent;
-    },
-
-    _getParentId: function() {
-        if (this._getParent()) {
-            return this._getParent().id;
-        }
-        else {
-            return undefined;
-        }
-    },
-
-    _getParentName: function() {
-        if (this._getParent()) {
-            return this._getParent().name;
-        }
-        else {
-            return undefined;
-        }
     }
 });

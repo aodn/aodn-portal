@@ -48,22 +48,6 @@ describe("Portal.common.LayerDescriptor", function() {
         });
     });
 
-    it('tests underlying access to parent', function() {
-        var layerDescriptor = new Portal.common.LayerDescriptor({
-            title : 'test',
-            parent : {
-                id : 100,
-                name : 'parent layer'
-            }
-        });
-
-        expect(layerDescriptor._getParentId()).toEqual(100);
-        expect(layerDescriptor._getParentName()).toEqual('parent layer');
-        layerDescriptor.parent = undefined;
-        expect(layerDescriptor._getParentId()).toBeFalsy();
-        expect(layerDescriptor._getParentName()).toBeFalsy();
-    });
-
     describe('zoom override', function() {
 
         var layerDesc = new Portal.common.LayerDescriptor({
