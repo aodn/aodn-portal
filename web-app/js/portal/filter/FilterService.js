@@ -15,7 +15,9 @@ Portal.filter.FilterService = Ext.extend(Object, {
         this.GET_FILTER_VALUES = "layer/getFilterValues";
     },
 
-    loadFilters: function(layer, successCallback, failureCallback, callbackScope) {
+    loadFilters: function(dataCollection, successCallback, failureCallback, callbackScope) {
+
+        var layer = dataCollection.getSelectedLayer();
 
         var params = {
             server: layer.server.uri,
@@ -75,7 +77,9 @@ Portal.filter.FilterService = Ext.extend(Object, {
         callbackFunction.call(callbackScope);
     },
 
-    loadFilterRange: function(filterId, layer, successCallback, failureCallback, callbackScope) {
+    loadFilterRange: function(filterId, dataCollection, successCallback, failureCallback, callbackScope) {
+
+        var layer = dataCollection.getSelectedLayer();
 
         var params = {
             filter: filterId,

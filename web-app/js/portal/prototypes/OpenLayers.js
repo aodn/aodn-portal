@@ -163,10 +163,10 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
-OpenLayers.Layer.WMS.prototype.updateCqlFilter = function() {
+OpenLayers.Layer.WMS.prototype.updateCqlFilter = function() { // Todo - DN: Does this move to DataCollection?
 
     var builder = new Portal.filter.combiner.MapCqlBuilder({
-        layer: this
+        dataCollection: this.dataCollection
     });
 
     var newValue = builder.buildCql();

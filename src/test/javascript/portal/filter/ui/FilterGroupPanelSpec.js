@@ -57,7 +57,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
             spyOn(filterGroupPanel, '_updateAndShow');
             spyOn(filterGroupPanel, '_sortFilters').andReturn([{}]);
-            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
+            spyOn(filterGroupPanel, '_isDataCollectionActive').andReturn(true);
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
 
             filterGroupPanel._filtersLoaded(layer.filters);
@@ -144,7 +144,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 server: { uri: "uri" }
             };
             layer.isKnownToThePortal = returns(true);
-            filterGroupPanel._isLayerActive = returns(true);
+            filterGroupPanel._isDataCollectionActive = returns(true);
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
                 dataCollection: {
@@ -161,7 +161,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_clearFilters');
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, '_addErrorMessage');
-            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
+            spyOn(filterGroupPanel, '_isDataCollectionActive').andReturn(true);
             spyOn(filterGroupPanel, '_sortFilters').andReturn([{}]);
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
         });
@@ -183,7 +183,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             layer = {
                 server: { uri: "uri" }
             };
-            filterGroupPanel._isLayerActive = returns(true);
+            filterGroupPanel._isDataCollectionActive = returns(true);
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
                 dataCollection: {
@@ -198,7 +198,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, '_addErrorMessage');
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
-            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
+            spyOn(filterGroupPanel, '_isDataCollectionActive').andReturn(true);
         });
 
         it('calls the _addErrorMessage function when filters set but has no filters configured', function() {

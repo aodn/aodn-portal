@@ -11,15 +11,15 @@ describe("Portal.filter.FilterService", function() {
     var successCallback;
     var failureCallback;
     var callbackScope;
-    var testLayer;
+    var testDataCollection;
 
     beforeEach(function() {
 
         successCallback = jasmine.createSpy('successCallback');
         failureCallback = jasmine.createSpy('failureCallback');
         callbackScope = {};
-        testLayer = {
-            server: {}
+        testDataCollection = {
+            getSelectedLayer: returns({server: {}})
         };
     });
 
@@ -30,7 +30,7 @@ describe("Portal.filter.FilterService", function() {
             spyOnAjaxAndReturn('[]', 200);
 
             service.loadFilters(
-                testLayer,
+                testDataCollection,
                 successCallback,
                 failureCallback,
                 callbackScope
@@ -45,7 +45,7 @@ describe("Portal.filter.FilterService", function() {
             spyOnAjaxAndReturn(null, 500);
 
             service.loadFilters(
-                testLayer,
+                testDataCollection,
                 successCallback,
                 failureCallback,
                 callbackScope
@@ -64,7 +64,7 @@ describe("Portal.filter.FilterService", function() {
 
             service.loadFilterRange(
                 'some_filter',
-                testLayer,
+                testDataCollection,
                 successCallback,
                 failureCallback,
                 callbackScope
@@ -80,7 +80,7 @@ describe("Portal.filter.FilterService", function() {
 
             service.loadFilterRange(
                 'some_filter',
-                testLayer,
+                testDataCollection,
                 successCallback,
                 failureCallback,
                 callbackScope

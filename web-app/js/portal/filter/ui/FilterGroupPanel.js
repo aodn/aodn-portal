@@ -10,7 +10,6 @@ Ext.namespace('Portal.filter.ui');
 Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     constructor: function(cfg) {
 
-        this.layer = cfg.dataCollection.getSelectedLayer();
         this.map = cfg.map;
         this.loadingMessage = this._createLoadingMessageContainer();
         var config = Ext.apply({
@@ -86,13 +85,9 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    _isLayerActive: function(layer) { // Todo - DN: Let's make this more clear. It basically checks if the data collection is still in the store
-        var active = false;
+    _isDataCollectionActive: function() { // Todo - DN: Is 'active' clear enough?
 
-        if (layer.parentGeoNetworkRecord != undefined) { // Todo - DN: Rework
-            active = (this.dataCollectionStore.isRecordActive(layer.parentGeoNetworkRecord));
-        }
-        return active;
+        return this.dataCollectionStore.isRecordActive(this.dataCollection);
     },
 
     _initWithLayer: function() {
@@ -100,7 +95,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         var filterService = new Portal.filter.FilterService();
 
         filterService.loadFilters(
-            this.layer,
+            this.dataCollection,
             this.createSafeCallback(this._filtersLoaded),
             this.createSafeCallback(this._handleFilterLoadFailure),
             this
@@ -122,7 +117,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
                 filterService.loadFilterRange(
                     filter.getName(),
-                    this.layer,
+                    this.dataCollection,
                     this.createSafeCallback(function(filterRange) {
                         filterPanel.setFilterRange(filterRange);
                     }),
@@ -186,7 +181,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         var uiElementClass = filterClass.prototype.getUiComponentClass();
         var newFilterPanel = new uiElementClass({
             filter: filter,
-            layer: this.layer,
+            layer: this.dataCollection.getSelectedLayer(), // Todo - DN: All filter panels need to be changed to accept DataCollections
             map: this.map
         });
 
@@ -252,9 +247,9 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     _updateLayerFilters: function() {
-        if (this._isLayerActive(this.layer)) {
+        if (this._isDataCollectionActive()) {
 
-            this.layer.updateCqlFilter();
+            this.dataCollection.getSelectedLayer().updateCqlFilter();
         }
     },
 
