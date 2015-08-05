@@ -16,11 +16,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     WFS_PROTOCOL: 'OGC:WFS-1.0.0-http-get-capabilities',
     WMS_PROTOCOL: 'OGC:WMS-1.1.1-http-get-map',
 
-    constructor: function(cfg, title, dataCollection, openLayerClass) { // Todo - DN: Could we tidy this up so it just takes a config object?
-        if (typeof cfg == "string") {
-            console.log('!! Config was String'); // Todo - DN: Ever seen this?
-            cfg = Ext.util.JSON.decode(cfg);
-        }
+    constructor: function(cfg, title, dataCollection, openLayerClass) {
 
         if (!openLayerClass) {
             // By default, use the WMS Openlayer class

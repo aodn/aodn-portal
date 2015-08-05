@@ -186,10 +186,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             url: 'layer/configuredBaselayers',
             scope: this,
             success: function(resp) {
-                var layerDescriptorsAsText = Ext.util.JSON.decode(resp.responseText);
+                var baseLayerConfigs = Ext.util.JSON.decode(resp.responseText);
 
-                Ext.each(layerDescriptorsAsText, function(layerDescriptorAsText) {
-                    var layerDescriptor = new Portal.common.LayerDescriptor(layerDescriptorAsText);
+                Ext.each(baseLayerConfigs, function(baseLayerConfig) {
+                    var layerDescriptor = new Portal.common.LayerDescriptor(baseLayerConfig);
                     this.addUsingDescriptor(layerDescriptor);
                 }, this);
 

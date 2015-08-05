@@ -7,15 +7,6 @@
 
 describe("Portal.common.LayerDescriptor", function() {
 
-    it('from string', function() {
-        var layerDescAsString = "{name: 'satellite', server: { uri: 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi' } }";
-
-        var layerDesc = new Portal.common.LayerDescriptor(layerDescAsString);
-
-        expect(layerDesc.name).toBe('satellite');
-        expect(layerDesc.server.uri).toBe('http://tilecache.emii.org.au/cgi-bin/tilecache.cgi');
-    });
-
     it('from javascript object', function() {
         var layerDescAsDecodedJSON = {
             name: 'satellite',
