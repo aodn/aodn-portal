@@ -15,7 +15,6 @@ describe("Portal.filter.GeometryFilterService", function() {
         map.navigationControl = {};
         map.navigationControl.deactivate = returns(null);
 
-        spyOn(Portal.filter.ui.GeometryFilterService.prototype, 'setLayerAndFilter');
         spyOn(Portal.filter.ui.GeometryFilterService.prototype, '_updateWithGeometry');
         filterPanel = new Portal.filter.ui.GeometryFilterService({
             map: map,

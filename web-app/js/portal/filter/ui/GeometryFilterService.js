@@ -27,10 +27,6 @@ Portal.filter.ui.GeometryFilterService = Ext.extend(Portal.filter.ui.BaseFilterP
         });
 
         Portal.filter.ui.GeometryFilterService.superclass.constructor.call(this, config);
-    },
-
-    setLayerAndFilter: function(layer, filter) {
-        Portal.filter.ui.GeometryFilterService.superclass.setLayerAndFilter.apply(this, arguments);
 
         if (this.map.spatialConstraintControl) {
             this._updateWithGeometry(this.map.spatialConstraintControl.getConstraint());

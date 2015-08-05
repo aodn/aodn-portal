@@ -26,8 +26,7 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
             layer: {
                 name: 'layerName',
                 getDownloadCql: returns('')
-            },
-            setLayerAndFilter: noOp
+            }
         });
 
         _mockFilterFields(filterPanel);
