@@ -12,7 +12,7 @@ describe("Portal.data.DataCollectionStoreSpec", function() {
     var layerStore;
 
     beforeEach(function() {
-        layer = {};
+        layer = new OpenLayers.Layer();
 
         layerStore = new Portal.data.LayerStore();
         spyOn(layerStore, 'addUsingOpenLayer');
@@ -41,7 +41,8 @@ describe("Portal.data.DataCollectionStoreSpec", function() {
 
     it('updates layer store with newly selected layer', function() {
         var oldLayer = layer;
-        var newLayer = {};
+        var newLayer = new OpenLayers.Layer();
+        console.log(oldLayer, newLayer);
 
         dataCollectionStore.add(dataCollection);
         var layerState = dataCollection.getLayerState();
@@ -49,9 +50,6 @@ describe("Portal.data.DataCollectionStoreSpec", function() {
         layerState.setSelectedLayer(newLayer);
 
         expect(layerStore.removeUsingOpenLayer).toHaveBeenCalledWith(oldLayer);
-        expect(layerStore.addUsingOpenLayer).toHaveBeenCalledWith(
-            newLayer,
-            jasmine.any(Function)
-        );
+        expect(layerStore.addUsingOpenLayer).toHaveBeenCalledWith(newLayer);
     });
 });

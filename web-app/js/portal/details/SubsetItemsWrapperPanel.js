@@ -15,17 +15,17 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
 
         this.createTools(cfg.dataCollection.getSelectedLayer());
 
-        cfg.dataCollection.getSelectedLayer().events.register('loadstart', this, function() {
+        cfg.dataCollection.getLayerState().on('loadstart', function() {
             this._onLayerLoadStart();
-        });
+        }, this);
 
-        cfg.dataCollection.getSelectedLayer().events.register('loadend', this, function() {
+        cfg.dataCollection.getLayerState().on('loadend', function() {
             this._onLayerLoadEnd();
-        });
+        }, this);
 
-        cfg.dataCollection.getSelectedLayer().events.register('tileerror', this, function() {
+        cfg.dataCollection.getLayerState().on('tileerror', function() {
             this._onLayerLoadError();
-        });
+        }, this);
 
         var config = Ext.apply({
             cls: 'subsetPanelAccordionItem',

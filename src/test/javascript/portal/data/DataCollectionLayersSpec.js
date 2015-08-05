@@ -79,37 +79,67 @@ describe("Portal.data.DataCollectionLayersSpec", function() {
         });
     });
 
-    describe('selected layer', function() {
-        var layer;
-        var layerLink;
+    describe('events', function() {
+        describe('selected layer', function() {
+            var layer;
+            var layerLink;
 
-        beforeEach(function() {
-            layer = {};
-            layerLink = {};
+            beforeEach(function() {
+                layer = new OpenLayers.Layer();
+                layerLink = {};
+            });
+
+            it('returns selected layer', function() {
+                dataCollectionLayers.selectedLayer = layer;
+                expect(dataCollectionLayers.getSelectedLayer()).toBe(layer);
+            });
+
+            it('selects default layer', function() {
+                spyOn(dataCollectionLayers, 'getDefaultLayer').andReturn(layer);
+
+                expect(dataCollectionLayers.getSelectedLayer()).toBe(layer);
+                expect(dataCollectionLayers.getDefaultLayer).toHaveBeenCalled();
+            });
+
+            it('fires event when layer selected', function() {
+                var oldLayer = new OpenLayers.Layer();
+                var newLayer = new OpenLayers.Layer();
+
+                var selectedLayerChangedListener = jasmine.createSpy('selectedLayerChangedListener');
+                dataCollectionLayers.selectedLayer = oldLayer;
+                dataCollectionLayers.on('selectedlayerchanged', selectedLayerChangedListener);
+
+                dataCollectionLayers.setSelectedLayer(newLayer);
+
+                expect(selectedLayerChangedListener).toHaveBeenCalledWith(newLayer, oldLayer);
+            });
         });
 
-        it('returns selected layer', function() {
-            dataCollectionLayers.selectedLayer = layer;
-            expect(dataCollectionLayers.getSelectedLayer()).toBe(layer);
-        });
+        Ext.each(['loadstart', 'loadend', 'tileerror'], function(eventName) {
+            it('forwards ' + eventName + ' event', function() {
+                var eventListener = jasmine.createSpy('eventListener');
+                dataCollectionLayers.on(eventName, eventListener);
 
-        it('selects default layer', function() {
-            spyOn(dataCollectionLayers, 'getDefaultLayer').andReturn(layer);
+                var newLayer = new OpenLayers.Layer.Grid();
+                dataCollectionLayers.setSelectedLayer(newLayer);
+                newLayer.events.triggerEvent(eventName, newLayer);
 
-            expect(dataCollectionLayers.getSelectedLayer()).toBe(layer);
-            expect(dataCollectionLayers.getDefaultLayer).toHaveBeenCalled();
-        });
+                expect(eventListener).toHaveBeenCalled();
+            });
 
-        it('fires event when layer selected', function() {
-            var oldLayer = {};
-            var newLayer = {};
-            var selectedLayerChangedListener = jasmine.createSpy('selectedLayerChangedListener');
-            dataCollectionLayers.selectedLayer = oldLayer;
-            dataCollectionLayers.on('selectedlayerchanged', selectedLayerChangedListener);
+            it('does not forward deselected layer ' + eventName + ' event', function() {
+                var eventListener = jasmine.createSpy('eventListener');
+                dataCollectionLayers.on(eventName, eventListener);
 
-            dataCollectionLayers.setSelectedLayer(newLayer);
+                var origLayer = new OpenLayers.Layer();
+                dataCollectionLayers.setSelectedLayer(origLayer);
 
-            expect(selectedLayerChangedListener).toHaveBeenCalledWith(newLayer, oldLayer);
+                dataCollectionLayers.setSelectedLayer(new OpenLayers.Layer());
+
+                origLayer.events.triggerEvent(eventName, origLayer);
+
+                expect(eventListener).not.toHaveBeenCalled();
+            });
         });
     });
 });
