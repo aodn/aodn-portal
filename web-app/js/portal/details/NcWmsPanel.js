@@ -35,7 +35,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _initWithLayer: function() {
 
-        this.geoNetworkRecord = this.layer.parentGeoNetworkRecord;
+        this.dataCollection = this.layer.dataCollection;
 
         this._disableDateTimeFields();
         this._attachTemporalEvents();
@@ -63,7 +63,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     _removeLoadingInfo: function() {
         this.remove(this.loadingInfo);
         delete this.loadingInfo;
-
     },
 
     _addLoadingInfo: function() {
@@ -317,9 +316,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
 
-        if (this.geoNetworkRecord) {
+        if (this.dataCollection) {
             this._addDateTimeFilterToLayer();
-            this.geoNetworkRecord.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
+            this.dataCollection.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
         }
     },
 

@@ -147,8 +147,7 @@ Portal.data.GeoNetworkRecord = function() {
         onlineResourcesField,
         pointOfTruthLinkField,
         bboxField,
-        'wmsLayer',
-        'ncwmsParams' // Todo - DN: This needs to go
+        'wmsLayer'
     ]);
 
     var prototype = constructor.prototype;
@@ -173,30 +172,6 @@ Portal.data.GeoNetworkRecord = function() {
 
     prototype.hasWmsLink = function() {
         return this.getFirstWmsLink() != undefined;
-    };
-
-    prototype.updateNcwmsParams = function(dateRangeStart, dateRangeEnd, geometry) { // Todo - DN: This needs to go
-
-        var params = {};
-
-        if (dateRangeStart && dateRangeStart.isValid()) {
-            params.dateRangeStart = dateRangeStart;
-        }
-
-        if (dateRangeEnd && dateRangeEnd.isValid()) {
-            params.dateRangeEnd = dateRangeEnd;
-        }
-
-        if (geometry) {
-            var bounds = geometry.getBounds();
-
-            params.latitudeRangeStart = bounds.bottom;
-            params.longitudeRangeStart = bounds.left;
-            params.latitudeRangeEnd = bounds.top;
-            params.longitudeRangeEnd = bounds.right;
-        }
-
-        this.set('ncwmsParams', params);
     };
 
     return constructor;

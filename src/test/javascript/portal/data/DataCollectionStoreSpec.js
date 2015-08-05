@@ -5,6 +5,6 @@
  *
  */
 
-describe("Portal.data.DataCollectionStoreSpec", function() {
+describe("Portal.data.DataCollectionStore", function() {
 
 });

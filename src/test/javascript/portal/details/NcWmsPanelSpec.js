@@ -9,8 +9,8 @@ describe('Portal.details.NcWmsPanel', function() {
 
     var map;
     var ncwmsPanel;
-    var geoNetworkRecord = {
-        id: '45678',
+    var dataCollection = {
+        getUuid: returns(45678),
         updateNcwmsParams: jasmine.createSpy('updateNcwmsParams')
     };
 
@@ -43,15 +43,15 @@ describe('Portal.details.NcWmsPanel', function() {
         spyOn(window, 'trackUsage');
     });
 
-    describe('GeoNetworkRecord', function() {
+    describe('DataCollection', function() {
 
-        it('assigns a GeoNetworkRecord instance from a layer', function() {
+        it('assigns a DataCollection instance from a layer', function() {
             _applyCommonSpies();
             spyOn(ncwmsPanel, '_removeLoadingInfo');
 
             ncwmsPanel._initWithLayer();
-            expect(ncwmsPanel.geoNetworkRecord).toBeTruthy();
-            expect(ncwmsPanel.geoNetworkRecord.id).toEqual(geoNetworkRecord.id);
+            expect(ncwmsPanel.dataCollection).toBeTruthy();
+            expect(ncwmsPanel.dataCollection.getUuid()).toEqual(dataCollection.getUuid());
         });
     });
 
@@ -63,7 +63,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('updates the record when panel is created', function() {
             ncwmsPanel._initWithLayer();
-            expect(ncwmsPanel.geoNetworkRecord.updateNcwmsParams).toHaveBeenCalled();
+            expect(ncwmsPanel.dataCollection.updateNcwmsParams).toHaveBeenCalled();
         });
 
         it('updates the date when the start date changes via edit', function() {
@@ -82,7 +82,7 @@ describe('Portal.details.NcWmsPanel', function() {
             spyOn(ncwmsPanel, '_disableDateTimeFields');
             ncwmsPanel._initWithLayer();
             expect(ncwmsPanel._disableDateTimeFields).toHaveBeenCalled();
-            delete ncwmsPanel.geoNetworkRecord;
+            delete ncwmsPanel.dataCollection;
         });
     });
 
@@ -145,8 +145,8 @@ describe('Portal.details.NcWmsPanel', function() {
 
     describe('next and previous buttons', function() {
         beforeEach(function() {
-            ncwmsPanel.layer.getPreviousTimeSlice = function() {};
-            ncwmsPanel.layer.getNextTimeSlice = function() {};
+            ncwmsPanel.layer.getPreviousTimeSlice = noOp;
+            ncwmsPanel.layer.getNextTimeSlice = noOp;
             spyOn(ncwmsPanel.layer, 'getPreviousTimeSlice');
             spyOn(ncwmsPanel.layer, 'getNextTimeSlice');
         });
@@ -177,9 +177,8 @@ describe('Portal.details.NcWmsPanel', function() {
     });
 
     function _applyCommonSpies(panel) {
-        var _panel = panel || ncwmsPanel;
-        spyOn(_panel, '_onDateSelected');
-        spyOn(_panel, '_setBounds');
+        spyOn(ncwmsPanel, '_onDateSelected');
+        spyOn(ncwmsPanel, '_setBounds');
     }
 
     function _mockLayer() {
@@ -188,14 +187,14 @@ describe('Portal.details.NcWmsPanel', function() {
             extent.add(moment("2001-01-01T01:00:00.000Z").add('h', i));
         }
         return {
-            parentGeoNetworkRecord: geoNetworkRecord,
+            dataCollection: dataCollection,
             temporalExtent: extent,
             missingDays: [],
             time: extent.min(),
             getTemporalExtent: function() {
                 return this.temporalExtent;
             },
-            setSubsetExtentView: function() {},
+            setSubsetExtentView: noOp,
             getSubsetExtentMin: returns(extent.min()),
             getSubsetExtentMax: returns(extent.max())
         };

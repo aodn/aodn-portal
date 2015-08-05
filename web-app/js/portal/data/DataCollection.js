@@ -88,6 +88,35 @@ Portal.data.DataCollection = function() {
         return applicableDownloadOptions;
     };
 
+    constructor.prototype.getNcwmsParams = function() { // Todo - DN: Consolodate this with GeoServer filters
+
+        return this.ncwmsParams || {};
+    };
+
+    constructor.prototype.updateNcwmsParams = function(dateRangeStart, dateRangeEnd, geometry) { // Todo - DN: Consolodate this with GeoServer filters
+
+        var params = {};
+
+        if (dateRangeStart && dateRangeStart.isValid()) {
+            params.dateRangeStart = dateRangeStart;
+        }
+
+        if (dateRangeEnd && dateRangeEnd.isValid()) {
+            params.dateRangeEnd = dateRangeEnd;
+        }
+
+        if (geometry) {
+            var bounds = geometry.getBounds();
+
+            params.latitudeRangeStart = bounds.bottom;
+            params.longitudeRangeStart = bounds.left;
+            params.latitudeRangeEnd = bounds.top;
+            params.longitudeRangeEnd = bounds.right;
+        }
+
+        this.ncwmsParams = params;
+    };
+
     constructor.prototype._getRawLinks = function() { // Todo - DN: 'raw' here because they haven't gone thorugh the LayerStore. What is a better name?
         return this.getMetadataRecord().get('links');
     };

@@ -34,24 +34,24 @@ describe('Portal.cart.InsertionService', function() {
                 getInjectionJson: jasmine.createSpy('getInjectionJson')
             };
 
-            spyOn(mockInsertionService, '_getNcwmsInjector').andReturn(mockInjector);
-            spyOn(mockInsertionService, '_getWmsInjector').andReturn(mockInjector);
-            spyOn(mockInsertionService, '_getNoDataInjector').andReturn(mockInjector);
+            spyOn(Portal.cart, 'NcwmsInjector').andReturn(mockInjector);
+            spyOn(Portal.cart, 'WmsInjector').andReturn(mockInjector);
+            spyOn(Portal.cart, 'NoDataInjector').andReturn(mockInjector);
         });
 
         it('creates an ncwms injector for ncwms layers', function() {
             mockInsertionService.insertionValues(getNcwmsRecord());
-            expectGetInjectorToHaveBeenCalled(mockInsertionService._getNcwmsInjector)
+            expectGetInjectorToHaveBeenCalled(Portal.cart.NcwmsInjector)
         });
 
         it('creates a wms injector for wms layers', function() {
             mockInsertionService.insertionValues(getWmsRecord());
-            expectGetInjectorToHaveBeenCalled(mockInsertionService._getWmsInjector);
+            expectGetInjectorToHaveBeenCalled(Portal.cart.WmsInjector);
         });
 
         it('creates a no data injector for layers containing no data', function() {
             mockInsertionService.insertionValues(getNoDataRecord());
-            expectGetInjectorToHaveBeenCalled(mockInsertionService._getNoDataInjector);
+            expectGetInjectorToHaveBeenCalled(Portal.cart.NoDataInjector);
         });
 
         afterEach(function() {
@@ -78,18 +78,19 @@ describe('Portal.cart.InsertionService', function() {
         });
     });
 
-    function expectGetInjectorToHaveBeenCalled(getInjectorFn) {
-        expect(getInjectorFn).toHaveBeenCalled();
+    function expectGetInjectorToHaveBeenCalled(injectorConstructor) {
 
-        var getInjectorFns = [
-            mockInsertionService._getNcwmsInjector,
-            mockInsertionService._getWmsInjector,
-            mockInsertionService._getNoDataInjector
+        var injectorConstructors = [
+            Portal.cart.NcwmsInjector,
+            Portal.cart.WmsInjector,
+            Portal.cart.NoDataInjector
         ];
 
-        for (var i = 0; i < getInjectorFns.length; i++) {
-            if (getInjectorFns[i] != getInjectorFn) {
-                expect(getInjectorFns[i]).not.toHaveBeenCalled();
+        expect(injectorConstructor).toHaveBeenCalled();
+
+        for (var i = 0; i < injectorConstructors.length; i++) {
+            if (injectorConstructors[i] != injectorConstructor) {
+                expect(injectorConstructors[i]).not.toHaveBeenCalled();
             }
         }
     }
