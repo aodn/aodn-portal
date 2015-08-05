@@ -95,11 +95,9 @@ describe("Portal.data.DataCollectionLayersSpec", function() {
 
         it('selects default layer', function() {
             spyOn(dataCollectionLayers, 'getDefaultLayer').andReturn(layer);
-            // spyOn(dataCollectionLayers, '_getLayerByLink').andReturn(layer);
 
             expect(dataCollectionLayers.getSelectedLayer()).toBe(layer);
             expect(dataCollectionLayers.getDefaultLayer).toHaveBeenCalled();
-            // expect(dataCollectionLayers._getLayerByLink).toHaveBeenCalledWith(layerLink);
         });
 
         it('fires event when layer selected', function() {
@@ -111,7 +109,7 @@ describe("Portal.data.DataCollectionLayersSpec", function() {
 
             dataCollectionLayers.setSelectedLayer(newLayer);
 
-            expect(selectedLayerChangedListener).toHaveBeenCalledWith(newLayer);
+            expect(selectedLayerChangedListener).toHaveBeenCalledWith(newLayer, oldLayer);
         });
     });
 });
