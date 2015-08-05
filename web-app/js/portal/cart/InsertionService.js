@@ -21,22 +21,20 @@ Portal.cart.InsertionService = Ext.extend(Object, {
             downloadConfirmationScope: this
         };
 
-        console.log('collection');
-        console.log(collection);
         var wmsLayer = collection.getSelectedLayer();
         var htmlInjection;
 
         // Todo - DN: Review this code. If we consolidate ncwms and wms filtering this should be the same
         if (this._isCollectionDownloadable(collection)) {
             if (wmsLayer.isNcwms()) {
-                htmlInjection = this._getNcwmsInjector(config);
+                htmlInjection = new Portal.cart.NcwmsInjector(config);
             }
             else {
-                htmlInjection = this._getWmsInjector(config);
+                htmlInjection = new Portal.cart.WmsInjector(config);
             }
         }
         else {
-            htmlInjection = this._getNoDataInjector(config);
+            htmlInjection = new Portal.cart.NoDataInjector(config);
         }
 
         return htmlInjection.getInjectionJson(collection);
@@ -44,33 +42,6 @@ Portal.cart.InsertionService = Ext.extend(Object, {
 
     _isCollectionDownloadable: function(collection) {
         return collection.getDataDownloadHandlers().length > 0;
-    },
-
-    _getNcwmsInjector: function(config) { // Todo - DN: I think this can go.
-
-        if (!this.ncwmsInjector) {
-            this.ncwmsInjector = new Portal.cart.NcwmsInjector(config);
-        }
-
-        return this.ncwmsInjector;
-    },
-
-    _getWmsInjector: function(config) { // Todo - DN: I think this can go.
-
-        if (!this.wmsInjector) {
-            this.wmsInjector = new Portal.cart.WmsInjector(config);
-        }
-
-        return this.wmsInjector;
-    },
-
-    _getNoDataInjector: function(config) { // Todo - DN: I think this can go.
-
-        if (!this.noDataInjector) {
-            this.noDataInjector = new Portal.cart.NoDataInjector(config);
-        }
-
-        return this.noDataInjector;
     },
 
     downloadWithConfirmation: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
