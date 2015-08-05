@@ -61,7 +61,7 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
             if (dataCollection.getDefaultWmsLayerLink()) {
 
                 this.layerStore.addUsingLayerLink(
-                    dataCollection.get('title'),
+                    dataCollection.getTitle(),
                     dataCollection.getDefaultWmsLayerLink(),
                     dataCollection,
                     function(layerRecord) {

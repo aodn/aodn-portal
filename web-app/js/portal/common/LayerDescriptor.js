@@ -16,23 +16,16 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     WFS_PROTOCOL: 'OGC:WFS-1.0.0-http-get-capabilities',
     WMS_PROTOCOL: 'OGC:WMS-1.1.1-http-get-map',
 
-    constructor: function(cfg, title, dataCollection, openLayerClass) {
+    constructor: function(cfg, titleOverride, dataCollection, openLayerClass) {
 
-        if (!openLayerClass) {
-            // By default, use the WMS Openlayer class
-            openLayerClass = OpenLayers.Layer.WMS;
-        }
-
-        this.openLayerClass = openLayerClass;
+        this.openLayerClass = openLayerClass || OpenLayers.Layer.WMS;
         this.dataCollection = dataCollection;
 
         Ext.apply(this, cfg);
 
-        if (title) {
-            this.title = title;
+        if (titleOverride) {
+            this.title = titleOverride;
         }
-
-        this.cql = cfg.cql; // Todo - DN: Can this go? (I hope so)
     },
 
     toOpenLayer: function(optionOverrides, paramOverrides) {
@@ -62,9 +55,6 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         openLayer.server = this.server;
         openLayer.wmsName = this.name;
 
-        //injecting credentials for authenticated WMSes.  Openlayer doesn't
-        //provide a way to add header information to a WMS request
-        openLayer.cql = this.cql;
         this._setOpenLayerBounds(openLayer);
         this._initialiseDownloadLayer(openLayer);
         openLayer.cache = this.cache;
