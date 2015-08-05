@@ -80,7 +80,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     removeUsingOpenLayer: function(openLayer) {
         var layerRecordToRemove = this.getByLayer(openLayer);
         this.remove(layerRecordToRemove);
-        openLayer.destroyWhenLoaded();
         Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
     },
 
