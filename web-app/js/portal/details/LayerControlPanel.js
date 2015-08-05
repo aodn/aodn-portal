@@ -80,19 +80,21 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
             items.push({
                 boxLabel: openLayer.wmsName,
                 name: 'selectedLayer',
-                checked: openLayer == this.dataCollection.getLayerState().getSelectedLayer()
+                checked: openLayer == this.dataCollection.getLayerState().getSelectedLayer(),
+                layer: openLayer
             });
         }, this);
 
 
         return new Ext.form.RadioGroup({
             columns: 1,
-            items: items
-            // listeners: {
-            //     'change': function(radioGroup, checkedRadio) {
-            //         console.log('checkedRadio', checkedRadio);
-            //     }
-            // }
+            items: items,
+            listeners: {
+                'scope': this,
+                'change': function(radioGroup, checkedRadio) {
+                    this.dataCollection.getLayerState().setSelectedLayer(checkedRadio.layer);
+                }
+            }
         });
     },
 

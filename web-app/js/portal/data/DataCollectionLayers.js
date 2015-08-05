@@ -32,9 +32,10 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
         return this.selectedLayer;
     },
 
-    setSelectedLayer: function(layer) {
-        this.selectedLayer = layer;
-        this.fireEvent('selectedlayerchanged', this.selectedLayer);
+    setSelectedLayer: function(newLayer) {
+        var oldLayer = this.selectedLayer;
+        this.selectedLayer = newLayer;
+        this.fireEvent('selectedlayerchanged', this.selectedLayer, oldLayer);
     },
 
     _initLayers: function() {
