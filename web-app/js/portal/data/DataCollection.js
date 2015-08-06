@@ -88,6 +88,29 @@ Portal.data.DataCollection = function() {
         return applicableDownloadOptions;
     };
 
+    constructor.prototype.setFilters = function(filters) {
+
+        this.filters = filters;
+    };
+
+    constructor.prototype.updateFilters = function() {
+
+        // Update layer with new values
+        var layer = this.getSelectedLayer();
+        if (layer.updateCqlFilter) {
+            var builder = new Portal.filter.combiner.MapCqlBuilder({
+                dataCollection: this
+            });
+
+            layer.updateCqlFilter(builder);
+        }
+    };
+
+    constructor.prototype.getFilters = function() {
+
+        return this.filters || [];
+    };
+
     constructor.prototype.getNcwmsParams = function() { // Todo - DN: Consolodate this with GeoServer filters
 
         return this.ncwmsParams || {};

@@ -30,7 +30,7 @@ Portal.filter.ui.GeometryFilterService = Ext.extend(Portal.filter.ui.BaseFilterP
 
         if (this.map.spatialConstraintControl) {
             this._updateWithGeometry(this.map.spatialConstraintControl.getConstraint());
-            filter.map = this.map;
+            this.filter.map = this.map;
         }
     },
 

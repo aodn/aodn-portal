@@ -249,7 +249,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     _updateLayerFilters: function() {
         if (this._isDataCollectionActive()) {
 
-            this.dataCollection.getSelectedLayer().updateCqlFilter();
+            this.dataCollection.updateFilters();
         }
     },
 

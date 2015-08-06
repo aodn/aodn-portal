@@ -7,13 +7,12 @@
 
 describe("Portal.filter.combiner.MapCqlBuilder", function() {
 
-    var layer;
     var builder;
 
     beforeEach(function() {
 
-        layer = {
-            filters: [
+        var dataCollection = {
+            getFilters: returns([
                 {
                     constructor: Portal.filter.GeometryFilter, // Is Geometry filter
                     isVisualised: returns(true),
@@ -40,13 +39,11 @@ describe("Portal.filter.combiner.MapCqlBuilder", function() {
                     hasValue: returns(true),
                     getCql: returns('cql5')
                 }
-            ]
+            ])
         };
 
         builder = new Portal.filter.combiner.MapCqlBuilder({
-            dataCollection: {
-                getSelectedLayer: returns(layer)
-            }
+            dataCollection: dataCollection
         });
     });
 

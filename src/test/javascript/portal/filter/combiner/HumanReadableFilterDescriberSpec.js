@@ -7,13 +7,12 @@
 
 describe("Portal.filter.combiner.HumanReadableFilterDescriber", function() {
 
-    var layer;
     var describer;
 
     beforeEach(function() {
 
-        layer = {
-            filters: [
+        var dataCollection = {
+            getFilters: returns([
                 {
                     constructor: Portal.filter.GeometryFilter, // Is Geometry filter
                     isVisualised: returns(true),
@@ -35,13 +34,11 @@ describe("Portal.filter.combiner.HumanReadableFilterDescriber", function() {
                     hasValue: returns(true),
                     getHumanReadableForm: returns('four')
                 }
-            ]
+            ])
         };
 
         describer = new Portal.filter.combiner.HumanReadableFilterDescriber({
-            dataCollection: {
-                getSelectedLayer: returns(layer)
-            }
+            dataCollection: dataCollection
         });
     });
 

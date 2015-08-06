@@ -17,7 +17,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
     loadFilters: function(dataCollection, successCallback, failureCallback, callbackScope) {
 
-        var layer = dataCollection.getSelectedLayer();
+        var layer = dataCollection.getSelectedLayer(); // Todo - DN: What do we do here without getSelectedLayer() ?
 
         var params = {
             server: layer.server.uri,
@@ -33,7 +33,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
             successCallback: successCallback,
             failureCallback: failureCallback,
             callbackScope: callbackScope,
-            layer: layer
+            dataCollection: dataCollection
         });
     },
 
@@ -41,7 +41,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
         var callbackFunction = opts.successCallback;
         var callbackScope = opts.callbackScope;
-        var layer = opts.layer;
+        var dataCollection = opts.dataCollection;
         var filterDetails = Ext.util.JSON.decode(response.responseText);
         var filterObjects = [];
 
@@ -51,18 +51,18 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
             if (filterConstructor) {
 
-                var newFilterObject = new filterConstructor(filterDetail, layer);
+                var newFilterObject = new filterConstructor(filterDetail);
 
                 filterObjects.push(newFilterObject);
             }
             else {
-                log.error("Can't create Filter for layer '" + layer.wmsName + "' from data: " + JSON.stringify(filterDetail));
+                log.error("Can't create Filter for dataCollection '" + dataCollection.getTitle() + "' from data: " + JSON.stringify(filterDetail));
             }
         });
 
         this._determinePrimaryFilters(filterObjects);
 
-        layer.filters = filterObjects;
+        dataCollection.setFilters(filterObjects);
 
         callbackFunction.call(callbackScope, filterObjects);
     },

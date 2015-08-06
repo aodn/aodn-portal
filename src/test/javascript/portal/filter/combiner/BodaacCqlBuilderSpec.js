@@ -7,13 +7,12 @@
 
 describe("Portal.filter.combiner.BodaacCqlBuilder", function() {
 
-    var layer;
     var builder;
 
     beforeEach(function() {
 
-        layer = {
-            filters: [
+        var dataCollection = {
+            getFilters: returns([
                 {
                     constructor: Portal.filter.GeometryFilter, // Is Geometry filter
                     isVisualised: returns(true),
@@ -35,13 +34,11 @@ describe("Portal.filter.combiner.BodaacCqlBuilder", function() {
                     hasValue: returns(true),
                     getCql: returns('cql4')
                 }
-            ]
+            ])
         };
 
         builder = new Portal.filter.combiner.BodaacCqlBuilder({
-            dataCollection: {
-                getSelectedLayer: returns(layer)
-            }
+            dataCollection: dataCollection
         });
     });
 
