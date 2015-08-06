@@ -239,7 +239,6 @@ describe("Portal.cart.DownloadPanel", function() {
     var makeTestCollection = function(uuid) {
         return {
             uuid: uuid,
-            aggregator: { childAggregators: []},
             getTitle: returns("Argo"),
             getSelectedLayer: returns({
                 isNcwms: noOp

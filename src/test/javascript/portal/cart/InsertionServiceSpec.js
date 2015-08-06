@@ -19,7 +19,6 @@ describe('Portal.cart.InsertionService', function() {
             title: 'the title',
             uuid: '42',
             getSelectedLayer: returns(geoserverLayer),
-            aggregator: { childAggregators: [] },
             getDataDownloadHandlers: returns([{}])
         };
     });
