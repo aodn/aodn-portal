@@ -107,10 +107,10 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function(resp, options) {
     return formatGetFeatureInfo(resp, options);
 };
 
-OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(serverUrl, layerName, outputFormat) {
+OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(dataCollection, serverUrl, layerName, outputFormat) { // Todo - DN: I think this is wierd, why do we need to give a layer a dataCollection to generate a URL?
 
     var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
-        dataCollection: this.dataCollection
+        dataCollection: dataCollection
     });
 
     return this._buildGetFeatureRequestUrl(

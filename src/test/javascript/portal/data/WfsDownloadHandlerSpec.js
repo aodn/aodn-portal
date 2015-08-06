@@ -48,7 +48,7 @@ describe('Portal.cart.WfsDownloadHandler', function () {
                 downloadHandler(dummyCollection);
 
                 expect(dummyLayer.getCsvDownloadFormat).toHaveBeenCalled();
-                expect(dummyLayer.getFeatureRequestUrl).toHaveBeenCalledWith('server_url', 'layer_name', 'csv');
+                expect(dummyLayer.getFeatureRequestUrl).toHaveBeenCalledWith(dummyCollection, 'server_url', 'layer_name', 'csv');
             });
         });
 

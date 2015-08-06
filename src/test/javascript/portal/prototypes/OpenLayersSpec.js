@@ -62,10 +62,10 @@ describe('OpenLayers', function() {
 
                 spyOn(openLayer, '_buildGetFeatureRequestUrl');
                 spyOn(Portal.filter.combiner, 'DataDownloadCqlBuilder').andReturn({
-                    buildCql: function() { return 'download filters' }
+                    buildCql: returns('download filters')
                 });
 
-                openLayer.getFeatureRequestUrl('wms_uri', 'layerName', 'csv');
+                openLayer.getFeatureRequestUrl(null, 'wms_uri', 'layerName', 'csv');
 
                 expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wms_uri', 'layerName', 'csv', 'download filters');
             });

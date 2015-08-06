@@ -38,6 +38,7 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         return function(collection) {
             return collection.getSelectedLayer().getFeatureRequestUrl(
+                collection,
                 _this._resourceHref(),
                 _this._resourceName(),
                 collection.getSelectedLayer().getCsvDownloadFormat()
