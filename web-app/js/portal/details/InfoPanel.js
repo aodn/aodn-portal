@@ -25,7 +25,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
     _constructInfoTabHtml: function() {
 
-        var rawAbstract = this.dataCollection.get('metadataRecord').get('abstract');
+        var rawAbstract = this.dataCollection.getMetadataRecord().get('abstract');
         var abstract = Ext.util.Format.htmlEncode(rawAbstract);
         var linkRecords = this.dataCollection.getWebPageLinks();
 

@@ -25,7 +25,7 @@ describe("Portal.details.InfoPanel", function() {
 
         mockInfoPanel = new Portal.details.InfoPanel({
             dataCollection: {
-                get: returns({
+                getMetadataRecord: returns({
                     get: returns("Abstract & information")
                 }),
                 getWebPageLinks: returns(mockLinkRecords)
