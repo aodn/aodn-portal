@@ -156,7 +156,8 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         this._fireAddEvent();
 
         if (this.firstField.getValue()) {
-            trackFiltersUsage('filtersTrackingNumberAction', this._getTrackUsageLabel(), this.layer.name);
+            var layer = this.dataCollection.getSelectedLayer();
+            trackFiltersUsage('filtersTrackingNumberAction', this._getTrackUsageLabel(), layer.name); // Todo - DN: Again. Collection name?
         }
     },
 

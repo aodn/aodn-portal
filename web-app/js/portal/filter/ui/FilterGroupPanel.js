@@ -181,7 +181,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         var uiElementClass = filterClass.prototype.getUiComponentClass();
         var newFilterPanel = new uiElementClass({
             filter: filter,
-            layer: this.dataCollection.getSelectedLayer(), // Todo - DN: All filter panels need to be changed to accept DataCollections
+            dataCollection: this.dataCollection,
             map: this.map
         });
 

@@ -31,8 +31,10 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
                 label: 'testLabel',
                 setValue: noOp
             },
-            layer: {
-                name: 'test layer'
+            dataCollection: {
+                getSelectedLayer: returns({
+                    name: 'test layer'
+                })
             }
         });
     });

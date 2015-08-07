@@ -55,7 +55,8 @@ Portal.filter.ui.BooleanFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPane
 
         this._fireAddEvent();
 
+        var layer = this.dataCollection.getSelectedLayer();
         var val = this.filter.getLabel() + "=" + this.checkbox.getValue();
-        trackFiltersUsage('filtersTrackingBooleanAction', val, this.layer.name);
+        trackFiltersUsage('filtersTrackingBooleanAction', val, layer.name); // Todo - DN: Should we track filtering by layer name or collection name? I think Collection.
     }
 });

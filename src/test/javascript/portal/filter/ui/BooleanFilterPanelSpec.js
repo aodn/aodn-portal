@@ -25,9 +25,11 @@ describe("Portal.filter.ui.BooleanFilterPanel", function() {
                 getLabel: returns('testLabel'),
                 setValue: noOp
             },
-            layer: {
-                name: 'test layer',
-                getDownloadCql: returns("")
+            dataCollection: {
+                getSelectedLayer: returns({
+                    name: 'test layer',
+                    getDownloadCql: returns("")
+                })
             }
         });
 

@@ -23,9 +23,11 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
                 clearValue: noOp,
                 setValue: noOp
             },
-            layer: {
-                name: 'layerName',
-                getDownloadCql: returns('')
+            dataCollection: {
+                getSelectedLayer: returns({
+                    name: 'layerName',
+                    getDownloadCql: returns('')
+                })
             }
         });
 

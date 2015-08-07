@@ -96,8 +96,9 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
         this.fromDate.setMaxValue(this.toDate.getValue());
 
         var usageLabelKey = changedField.getValue() ? 'trackingUserSet' : 'trackingDefaultValueReset';
+        var layer = this.dataCollection.getSelectedLayer();
         var val = changedField.name + " " + OpenLayers.i18n(usageLabelKey) + " " + changedField.getValue();
-        trackFiltersUsage('filtersTrackingDateAction', val, this.layer.name);
+        trackFiltersUsage('filtersTrackingDateAction', val, layer.name); // Todo - DN: Again. Collection name?
 
         this.filter.setValue({
             fromDate: this.fromDate.getValue(),
