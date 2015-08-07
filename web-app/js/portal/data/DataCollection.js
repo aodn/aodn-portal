@@ -8,15 +8,6 @@
 Ext.namespace('Portal.data.DataCollection');
 
 Portal.data.DataCollection = function() {
-    /*
-    COnstructor takign GNR?
-    UUID
-    Title
-    Metadata -> GNR
-    Map Layers -> (To what?)
-    Downloads -> (To what? DownloadHandlers?) -- Maybe doenload handlers should all live in step 3 and this is just a list of oibjects which represent downlaods
-    State? (for now?)
-    */
 
     var constructor = Ext.data.Record.create([]);
 
