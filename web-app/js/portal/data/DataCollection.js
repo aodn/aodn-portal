@@ -102,12 +102,12 @@ Portal.data.DataCollection = function() {
         return this.filters || [];
     };
 
-    constructor.prototype.getNcwmsParams = function() { // Todo - DN: Consolodate this with GeoServer filters
+    constructor.prototype.getNcwmsParams = function() {
 
         return this.ncwmsParams || {};
     };
 
-    constructor.prototype.updateNcwmsParams = function(dateRangeStart, dateRangeEnd, geometry) { // Todo - DN: Consolodate this with GeoServer filters
+    constructor.prototype.updateNcwmsParams = function(dateRangeStart, dateRangeEnd, geometry) {
 
         var params = {};
 

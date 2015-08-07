@@ -38,12 +38,12 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
     getLoadedRecords: function() {
         var loadedRecords = [];
         this.each(function(record) {
-            if (record.loaded) { loadedRecords.push(record); } // Todo - DN: Use filter?
+            if (record.loaded) { loadedRecords.push(record); }
         });
         return loadedRecords;
     },
 
-    isRecordActive: function(recordToCheck) { // Todo - DN: When is this used?
+    isRecordActive: function(recordToCheck) {
         return this.findBy(function(record) {
             return record.get('uuid') == recordToCheck.get('uuid');
         }) != -1;
