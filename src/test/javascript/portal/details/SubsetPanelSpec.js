@@ -24,7 +24,8 @@ describe("Portal.details.SubsetPanel", function() {
         subsetPanel = new Portal.details.SubsetPanel({
             map: map,
             dataCollection: {
-                getSelectedLayer: returns(layer)
+                getSelectedLayer: returns(layer),
+                updateNcwmsParams: noOp
             }
         });
     });

@@ -16,7 +16,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
 
-        this.layer = cfg.dataCollection.getSelectedLayer();
+        Ext.apply(this, cfg);
+
+        this.layer = this.dataCollection.getSelectedLayer();
 
         var config = Ext.apply({
             cls: 'filterGroupPanel'
@@ -34,8 +36,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _initWithLayer: function() {
-
-        this.dataCollection = this.layer.dataCollection;
 
         this._disableDateTimeFields();
         this._attachTemporalEvents();

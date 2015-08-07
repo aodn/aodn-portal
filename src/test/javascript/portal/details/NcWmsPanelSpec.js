@@ -9,10 +9,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
     var map;
     var ncwmsPanel;
-    var dataCollection = {
-        getUuid: returns(45678),
-        updateNcwmsParams: jasmine.createSpy('updateNcwmsParams')
-    };
+    var dataCollection;
 
     var layer;
 
@@ -29,11 +26,15 @@ describe('Portal.details.NcWmsPanel', function() {
         layer.processTemporalExtent = noOp;
         layer.map = map;
 
+        dataCollection = {
+            getUuid: returns(45678),
+            updateNcwmsParams: jasmine.createSpy('updateNcwmsParams'),
+            getSelectedLayer: returns(layer)
+        };
+
         ncwmsPanel = new Portal.details.NcWmsPanel({
             map: map,
-            dataCollection: {
-                getSelectedLayer: returns(layer)
-            }
+            dataCollection: dataCollection
         });
 
         ncwmsPanel._setBounds = noOp;
