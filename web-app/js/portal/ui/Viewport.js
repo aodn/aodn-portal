@@ -19,8 +19,6 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
             layerStore: layerStore
         });
 
-        Portal.getDataCollectionStore = function() { console.warn('Direct access to Data Collection Store'); return dataCollectionStore }; // Todo - DN: Temporary to support direct access which should be removed
-
         this.mainPanel = new Portal.ui.MainPanel({
             region: 'center',
             mapPanel: mapPanel,

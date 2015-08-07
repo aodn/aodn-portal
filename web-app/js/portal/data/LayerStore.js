@@ -91,12 +91,10 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
                 layerRecordCallback(layerRecord);
             }
 
-            // has the parentGeoNetworkRecord overlay layer been deleted
-            if (layerRecord.parentGeoNetworkRecord) {
-                if (!Portal.getDataCollectionStore().isRecordActive(layerRecord.parentGeoNetworkRecord)) { // Todo - DN: I don't think layer store should worry about this. Should be handled by Data Collection Store
-                    return;
-                }
-            }
+            // Todo - DN: Previously here we checked if the DataCollection was still in the store, and if not we
+            // Todo - DN: returned form this method (ie. not calling this.add(layerRecord) and so on).
+            // Todo - DN: It required a reference from a layer back to it's data collection.
+            // Todo - DN: Should we keep that behaviour? How?
 
             this.add(layerRecord);
 
