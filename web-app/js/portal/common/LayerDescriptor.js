@@ -62,7 +62,6 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         openLayer.blacklist = this.blacklist;
         openLayer.abstractTrimmed = this.abstractTrimmed;
         openLayer.dimensions = this.dimensions;
-        openLayer.layerHierarchyPath = this.layerHierarchyPath;
         openLayer.params.QUERYABLE = true;
 
         if (this.viewParams) {

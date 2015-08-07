@@ -225,32 +225,9 @@ describe("Portal.data.LayerStore", function() {
     });
 
     describe('containsOpenLayer', function() {
-        it('returns false with duplicate names if layerHierarchy are different', function() {
+        it('returns true with duplicate names', function() {
             var layer1 = createOpenLayer();
             var layer2 = createOpenLayer();
-
-            layer1.layerHierarchyPath = "this/is/hierarchy";
-            layer2.layerHierarchyPath = "this/is/also/hierarchy";
-
-            layerStore._addLayer(layer1);
-            expect(layerStore.containsOpenLayer(layer2)).toBeFalsy();
-        });
-
-        it('returns true with duplicate names if layerHierarchy are nonexistant', function() {
-            var layer1 = createOpenLayer();
-            var layer2 = createOpenLayer();
-
-            layerStore._addLayer(layer1);
-            expect(layerStore.containsOpenLayer(layer2)).toBeTruthy();
-        });
-
-        it('returns true with duplicate layerHierarchies ', function() {
-            var layer1 = createOpenLayer();
-            var layer2 = createOpenLayer();
-            layerStore._addLayer(createOpenLayer());
-            layer1.layerHierarchyPath = "this/is/hierarchy";
-            layer2.layerHierarchyPath = "this/is/hierarchy";
-
 
             layerStore._addLayer(layer1);
             expect(layerStore.containsOpenLayer(layer2)).toBeTruthy();
