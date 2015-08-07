@@ -30,11 +30,11 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
         var linkRecords = this.dataCollection.getWebPageLinks();
 
         return String.format(
-            '<h4>Abstract</h4>\n' + // Todo - DN: i18n
-            '{0}' +
-            '<h4>Online Resources</h4>\n' + // Todo - DN: i18n
-            '<ul>\n{1}</ul>',
+            '<h4>{0}</h4>\n{1}' +
+            '<h4>{2}</h4>\n<ul>\n{3}</ul>',
+            OpenLayers.i18n('abstractTitle'),
             abstract,
+            OpenLayers.i18n('webpageLinksTitle'),
             this._getHtmlForLinks(linkRecords)
         );
     },
@@ -49,7 +49,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
             var linkText;
 
             if (link.title == "") {
-                linkText = '<i>Unnamed Resource</i>'; // Todo - DN: i18n
+                linkText = String.format('<i>{0}</i>', OpenLayers.i18n('unnamedResourceName'));
             }
             else {
                 linkText = link.title;

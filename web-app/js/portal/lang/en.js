@@ -80,6 +80,11 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     infoTabTitle: 'Info',
     mapTabTitle: 'Map',
 
+    // Info panel (abstract and links)
+    abstractTitle: "Abstract",
+    webpageLinksTitle: "Online Resources",
+    unnamedResourceName: "Unnamed Resource",
+
     // Search form
     northBL: 'N',
     eastBL: 'E',
