@@ -8,7 +8,7 @@
 describe('Portal.cart.NcwmsInjector', function() {
 
     var injector;
-    var geoNetworkRecord;
+    var dataCollection;
     var startDate;
     var endDate;
 
@@ -18,39 +18,39 @@ describe('Portal.cart.NcwmsInjector', function() {
         injector = new Portal.cart.NcwmsInjector();
         startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
         endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
-        geoNetworkRecord = getMockGeonetworkRecord();
+        dataCollection = getMockDataCollection();
     });
 
     describe('getDataFilterEntry', function() {
 
         beforeEach(function() {
-            geoNetworkRecord.ncwmsParams.latitudeRangeStart = '-10';
-            geoNetworkRecord.ncwmsParams.latitudeRangeEnd = '40';
-            geoNetworkRecord.ncwmsParams.longitudeRangeEnd = '180';
-            geoNetworkRecord.ncwmsParams.longitudeRangeStart = '150';
+            dataCollection.ncwmsParams.latitudeRangeStart = '-10';
+            dataCollection.ncwmsParams.latitudeRangeEnd = '40';
+            dataCollection.ncwmsParams.longitudeRangeEnd = '180';
+            dataCollection.ncwmsParams.longitudeRangeStart = '150';
         });
 
         it('still returns date range stuff with no bbox', function() {
-            expect(injector._getDataFilterEntry(geoNetworkRecord)).not.toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
+            expect(injector._getDataFilterEntry(dataCollection)).not.toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
         });
 
         it('returns a default message when no defined date', function() {
-            geoNetworkRecord.ncwmsParams.latitudeRangeStart = undefined;
-            geoNetworkRecord.ncwmsParams.dateRangeStart = null;
-            expect(injector._getDataFilterEntry(geoNetworkRecord)).toEqual(OpenLayers.i18n("emptyDownloadPlaceholder"));
+            dataCollection.ncwmsParams.latitudeRangeStart = undefined;
+            dataCollection.ncwmsParams.dateRangeStart = null;
+            expect(injector._getDataFilterEntry(dataCollection)).toEqual(OpenLayers.i18n("emptyDownloadPlaceholder"));
         });
 
         it('indicates bounds properly created', function() {
 
-            var entry = injector._getDataFilterEntry(geoNetworkRecord);
+            var entry = injector._getDataFilterEntry(dataCollection);
             expect(entry).toContain(OpenLayers.i18n("spatialExtentHeading"));
         });
 
         it('indicates temporal range', function() {
-            geoNetworkRecord.ncwmsParams.dateRangeStart = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0));
-            geoNetworkRecord.ncwmsParams.dateRangeEnd = moment.utc(Date.UTC(2014, 11, 21, 10, 30, 30, 500));
+            dataCollection.ncwmsParams.dateRangeStart = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0));
+            dataCollection.ncwmsParams.dateRangeEnd = moment.utc(Date.UTC(2014, 11, 21, 10, 30, 30, 500));
 
-            var entry = injector._getDataFilterEntry(geoNetworkRecord);
+            var entry = injector._getDataFilterEntry(dataCollection);
             expect(entry).toContain(dateLabel);
 
             entry = injector._formatHumanDateInfo('temporalExtentHeading', 'startdate', 'enddate');
@@ -60,7 +60,7 @@ describe('Portal.cart.NcwmsInjector', function() {
         });
     });
 
-    function getMockGeonetworkRecord() {
+    function getMockDataCollection() {
 
         return {
             uuid: 9,

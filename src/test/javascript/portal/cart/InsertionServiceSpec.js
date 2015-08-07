@@ -8,14 +8,14 @@
 describe('Portal.cart.InsertionService', function() {
 
     var mockInsertionService;
-    var geoNetworkRecord;
+    var dataCollection;
     var geoserverLayer = { isNcwms: returns(false) };
     var ncwmsLayer = { isNcwms: returns(true) };
 
     beforeEach(function() {
         mockInsertionService = new Portal.cart.InsertionService();
 
-        geoNetworkRecord = {
+        dataCollection = {
             title: 'the title',
             uuid: '42',
             getSelectedLayer: returns(geoserverLayer),
@@ -95,20 +95,20 @@ describe('Portal.cart.InsertionService', function() {
     }
 
     function getWmsRecord() {
-        geoNetworkRecord.getSelectedLayer = returns(geoserverLayer);
+        dataCollection.getSelectedLayer = returns(geoserverLayer);
 
-        return geoNetworkRecord;
+        return dataCollection;
     }
 
     function getNcwmsRecord() {
-        geoNetworkRecord.getSelectedLayer = returns(ncwmsLayer);
+        dataCollection.getSelectedLayer = returns(ncwmsLayer);
 
-        return geoNetworkRecord;
+        return dataCollection;
     }
 
     function getNoDataRecord() {
-        geoNetworkRecord.getDataDownloadHandlers = returns([]);
+        dataCollection.getDataDownloadHandlers = returns([]);
 
-        return geoNetworkRecord;
+        return dataCollection;
     }
 });
