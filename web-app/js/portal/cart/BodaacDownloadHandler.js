@@ -74,7 +74,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return function(collection) {
 
             var builder = new Portal.filter.combiner.BodaacCqlBuilder({
-                dataCollection: collection
+                filters: collection.getFilters()
             });
 
             var wmsLayer = collection.getSelectedLayer();

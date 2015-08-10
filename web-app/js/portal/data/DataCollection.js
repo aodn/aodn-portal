@@ -88,12 +88,9 @@ Portal.data.DataCollection = function() {
 
         // Update layer with new values
         var layer = this.getSelectedLayer();
-        if (layer.updateCqlFilter) {
-            var builder = new Portal.filter.combiner.MapCqlBuilder({
-                dataCollection: this
-            });
 
-            layer.updateCqlFilter(builder);
+        if (layer.updateCqlFilter) {
+            layer.updateCqlFilter(this.getFilters());
         }
     };
 

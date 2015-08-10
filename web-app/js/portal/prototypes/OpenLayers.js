@@ -107,10 +107,10 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function(resp, options) {
     return formatGetFeatureInfo(resp, options);
 };
 
-OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(dataCollection, serverUrl, layerName, outputFormat) { // Todo - DN: I think this is wierd, why do we need to give a layer a dataCollection to generate a URL?
+OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(filters, serverUrl, layerName, outputFormat) {
 
     var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
-        dataCollection: dataCollection
+        filters: filters
     });
 
     return this._buildGetFeatureRequestUrl(
@@ -163,9 +163,13 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
-OpenLayers.Layer.WMS.prototype.updateCqlFilter = function(mapCqlBuilder) { // Todo - DN: Does this move to DataCollection?
+OpenLayers.Layer.WMS.prototype.updateCqlFilter = function(filters) {
 
-    var newValue = mapCqlBuilder.buildCql();
+    var builder = new Portal.filter.combiner.MapCqlBuilder({
+        filters: filters
+    });
+
+    var newValue = builder.buildCql();
     var existingValue = this.params['CQL_FILTER'];
 
     if (newValue != existingValue) {

@@ -12,7 +12,7 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     _getDataFilterEntry: function(dataCollection) {
 
         var describer = new Portal.filter.combiner.HumanReadableFilterDescriber({
-            dataCollection: dataCollection
+            filters: dataCollection.getFilters()
         });
 
         var description = describer.buildDescription('<br />');

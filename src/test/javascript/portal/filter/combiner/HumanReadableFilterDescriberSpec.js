@@ -11,34 +11,32 @@ describe("Portal.filter.combiner.HumanReadableFilterDescriber", function() {
 
     beforeEach(function() {
 
-        var dataCollection = {
-            getFilters: returns([
-                {
-                    constructor: Portal.filter.GeometryFilter, // Is Geometry filter
-                    isVisualised: returns(true),
-                    hasValue: returns(true),
-                    getHumanReadableForm: returns('one')
-                },
-                {
-                    isVisualised: returns(false), // Not visualised
-                    hasValue: returns(true),
-                    getHumanReadableForm: returns('two')
-                },
-                {
-                    isVisualised: returns(true),
-                    hasValue: returns(false), // No value
-                    getHumanReadableForm: returns('three')
-                },
-                {
-                    isVisualised: returns(true),
-                    hasValue: returns(true),
-                    getHumanReadableForm: returns('four')
-                }
-            ])
-        };
+        var filters = [
+            {
+                constructor: Portal.filter.GeometryFilter, // Is Geometry filter
+                isVisualised: returns(true),
+                hasValue: returns(true),
+                getHumanReadableForm: returns('one')
+            },
+            {
+                isVisualised: returns(false), // Not visualised
+                hasValue: returns(true),
+                getHumanReadableForm: returns('two')
+            },
+            {
+                isVisualised: returns(true),
+                hasValue: returns(false), // No value
+                getHumanReadableForm: returns('three')
+            },
+            {
+                isVisualised: returns(true),
+                hasValue: returns(true),
+                getHumanReadableForm: returns('four')
+            }
+        ];
 
         describer = new Portal.filter.combiner.HumanReadableFilterDescriber({
-            dataCollection: dataCollection
+            filters: filters
         });
     });
 

@@ -65,8 +65,11 @@ describe('OpenLayers', function() {
                     buildCql: returns('download filters')
                 });
 
-                openLayer.getFeatureRequestUrl(null, 'wms_uri', 'layerName', 'csv');
+                var testFilters = ['filters'];
 
+                openLayer.getFeatureRequestUrl(testFilters, 'wms_uri', 'layerName', 'csv');
+
+                expect(Portal.filter.combiner.DataDownloadCqlBuilder).toHaveBeenCalledWith({filters: testFilters});
                 expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wms_uri', 'layerName', 'csv', 'download filters');
             });
         });

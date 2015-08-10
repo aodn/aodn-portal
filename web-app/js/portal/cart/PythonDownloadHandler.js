@@ -38,7 +38,7 @@ Portal.cart.PythonDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         return function(collection) {
             return collection.getSelectedLayer().getFeatureRequestUrl(
-                collection,
+                collection.getFilters(),
                 _this._resourceHref(),
                 _this._resourceName(),
                 OpenLayers.Layer.DOWNLOAD_FORMAT_CSV
