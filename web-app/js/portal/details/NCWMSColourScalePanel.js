@@ -11,12 +11,6 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
 
     layout: 'form',
 
-    constructor: function (cfg) {
-
-        var config = Ext.apply({}, cfg);
-        Portal.details.NCWMSColourScalePanel.superclass.constructor.call(this, config);
-    },
-
     initComponent: function() {
 
         this.colourScaleHeader = new Ext.form.Label({
@@ -87,8 +81,8 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
     },
 
     _canSubmit: function() {
-        var scaleMin = (this.colourScaleMin.getValue().length==0) ? undefined : parseFloat(this.colourScaleMin.getValue());
-        var scaleMax = (this.colourScaleMax.getValue().length==0) ? undefined : parseFloat(this.colourScaleMax.getValue());
+        var scaleMin = (this.colourScaleMin.getValue().length == 0) ? undefined : parseFloat(this.colourScaleMin.getValue());
+        var scaleMax = (this.colourScaleMax.getValue().length == 0) ? undefined : parseFloat(this.colourScaleMax.getValue());
         return (!isNaN(scaleMin) && !isNaN(scaleMax) && (scaleMax > scaleMin));
     },
 
@@ -96,14 +90,11 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
         this.goButton.setDisabled(!this._canSubmit());
     },
 
-    updateScale: function(comp, event) {
+    updateScale: function() {
 
         this.setGoButton();
 
-        if ( this._canSubmit()) {
-
-            var scaleMin = parseFloat(this.colourScaleMin.getValue());
-            var scaleMax = parseFloat(this.colourScaleMax.getValue());
+        if (this._canSubmit()) {
 
             this.selectedLayer.mergeNewParams({
                 COLORSCALERANGE: this.colourScaleMin.getValue() + "," + this.colourScaleMax.getValue()
@@ -113,7 +104,6 @@ Portal.details.NCWMSColourScalePanel = Ext.extend(Ext.Panel, {
 
             // set the user selected range
             this.selectedLayer.metadata.userScaleRange = [this.colourScaleMin.getValue(),this.colourScaleMax.getValue()];
-
         }
     }
 });
