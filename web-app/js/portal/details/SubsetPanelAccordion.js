@@ -45,8 +45,11 @@ Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
             dataCollectionStore: this.dataCollectionStore,
             id: dataCollection.getUuid(),
             listeners: {
-                expand: function (panel) {
-                    Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, panel.layer);
+                expand: function(panel) {
+                    Ext.MsgBus.publish(
+                        PORTAL_EVENTS.SELECTED_LAYER_CHANGED,
+                        dataCollection.getLayerState().getSelectedLayer()
+                    );
                 }
             }
         });
