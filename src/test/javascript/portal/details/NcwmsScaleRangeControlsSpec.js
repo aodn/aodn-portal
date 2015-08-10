@@ -7,44 +7,44 @@
 describe('Portal.details.NcwmsScaleRangeControls', function() {
     describe('makeNcWMSColourScale', function() {
 
-        var ncWmsColourScalePanel;
+        var controls;
         var layer;
 
         beforeEach(function() {
-            ncWmsColourScalePanel = new Portal.details.NcwmsScaleRangeControls();
-            layer = {}
+            controls = new Portal.details.NcwmsScaleRangeControls();
+            layer = {};
         });
 
         it('no param range', function() {
-            ncWmsColourScalePanel.makeNcWMSColourScale(layer);
-            expect(ncWmsColourScalePanel.colourScaleMax.getValue()).toBeUndefined();
-            expect(ncWmsColourScalePanel.colourScaleMin.getValue()).toBeUndefined();
+            controls.makeNcWMSColourScale(layer);
+            expect(controls.colourScaleMax.getValue()).toBeUndefined();
+            expect(controls.colourScaleMin.getValue()).toBeUndefined();
         });
 
         it('param range', function() {
             layer.params = {
                 COLORSCALERANGE: '2.3,6.7'
-            }
+            };
 
-            ncWmsColourScalePanel.makeNcWMSColourScale(layer);
-            expect(ncWmsColourScalePanel.colourScaleMax.getValue()).toEqual('6.7');
-            expect(ncWmsColourScalePanel.colourScaleMin.getValue()).toEqual('2.3');
+            controls.makeNcWMSColourScale(layer);
+            expect(controls.colourScaleMax.getValue()).toEqual('6.7');
+            expect(controls.colourScaleMin.getValue()).toEqual('2.3');
         });
 
         it('no param range layer after layer with param range', function() {
-            ncWmsColourScalePanel.colourScaleMin.setValue('2');
-            ncWmsColourScalePanel.colourScaleMax.setValue('5');
+            controls.colourScaleMin.setValue('2');
+            controls.colourScaleMax.setValue('5');
 
-            ncWmsColourScalePanel.makeNcWMSColourScale(layer);
-            expect(ncWmsColourScalePanel.colourScaleMax.getValue()).toBeUndefined();
-            expect(ncWmsColourScalePanel.colourScaleMin.getValue()).toBeUndefined();
+            controls.makeNcWMSColourScale(layer);
+            expect(controls.colourScaleMax.getValue()).toBeUndefined();
+            expect(controls.colourScaleMin.getValue()).toBeUndefined();
         });
 
         it('show called', function() {
-            spyOn(ncWmsColourScalePanel, 'show');
+            spyOn(controls, 'show');
 
-            ncWmsColourScalePanel.makeNcWMSColourScale(layer);
-            expect(ncWmsColourScalePanel.show).toHaveBeenCalled();
+            controls.makeNcWMSColourScale(layer);
+            expect(controls.show).toHaveBeenCalled();
         });
     });
 });
