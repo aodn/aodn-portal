@@ -42,10 +42,10 @@ describe("Portal.data.DataCollectionStoreSpec", function() {
     it('updates layer store with newly selected layer', function() {
         var oldLayer = layer;
         var newLayer = new OpenLayers.Layer();
-        console.log(oldLayer, newLayer);
 
         dataCollectionStore.add(dataCollection);
         var layerState = dataCollection.getLayerState();
+        spyOn(layerState, '_copyAttributesFromSelectedLayer');
 
         layerState.setSelectedLayer(newLayer);
 
