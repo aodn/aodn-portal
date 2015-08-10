@@ -28,7 +28,7 @@ Portal.details.LayerDetailsPanel = Ext.extend(Ext.Container, {
             }),
             this._makeSpacer(),
             new Portal.details.StylePanel({
-                layer: this.layer
+                dataCollection: this.dataCollection
             })
         ];
 

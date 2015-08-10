@@ -8,11 +8,6 @@
 Ext.namespace('Portal.details');
 
 Portal.details.StylePanel = Ext.extend(Ext.Container, {
-    constructor: function(cfg) {
-        this.layer = cfg.layer;
-
-        Portal.details.StylePanel.superclass.constructor.call(this, cfg);
-    },
 
     initComponent: function() {
 
@@ -23,7 +18,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         this.ncwmsColourScalePanel = new Portal.details.NCWMSColourScalePanel();
         this.ncwmsColourScalePanel.on('colourScaleUpdated', this.refreshLegend, this);
 
-        var layer = this.layer;
+        var layer = this.dataCollection.getSelectedLayer();
 
         this.styleCombo = this.makeCombo(layer);
 

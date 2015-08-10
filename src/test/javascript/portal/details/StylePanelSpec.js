@@ -28,7 +28,11 @@ describe("Portal.details.StylePanel", function() {
     beforeEach(function() {
         spyOn(Portal.details.StylePanel.prototype, '_initWithLayer');
         spyOn(Portal.details.StylePanel.prototype, '_attachEvents');
-        stylePanel = new Portal.details.StylePanel({});
+        stylePanel = new Portal.details.StylePanel({
+            dataCollection: {
+                getSelectedLayer: returns(undefined)
+            }
+        });
     });
 
     describe("buildGetLegend()", function() {
