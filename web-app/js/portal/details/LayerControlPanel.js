@@ -12,6 +12,8 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
     initComponent: function() {
         this.items = [];
 
+        this.layer = this.dataCollection.getLayerState();
+
         var layerSelector = this._newLayerSelectorComponent();
         if (layerSelector) {
             this.items.push(layerSelector, { xtype: 'spacer', height: 10 });
@@ -98,8 +100,7 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
     },
 
     _visibilityButtonChecked: function(obj, val) {
-        var layer = this.map.getLayersBy("id", this.layer.id)[0];
-        layer.setVisibility(val);
+        this.layer.setVisibility(val);
     },
 
     _zoomToLayer: function() {

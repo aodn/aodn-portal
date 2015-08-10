@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2012 IMOS
  *
@@ -51,5 +50,11 @@ Portal.common.LayerOpacitySliderFixed = Ext.extend(GeoExt.LayerOpacitySlider, {
             this.layer.setOpacity(value);
             delete this._settingOpacity;
         }
+    },
+
+    getLayer: function(layer) {
+        // Superclass is expecting either a OpenLayer.Layer or a GeoExt.data.LayerRecord,
+        // but we're using a DataCollectionLayers object masquerading as a Layer (for now).
+        return layer;
     }
 });

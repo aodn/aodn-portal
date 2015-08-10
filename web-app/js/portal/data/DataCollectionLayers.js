@@ -20,6 +20,10 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
         return this.layerCache;
     },
 
+    eachLayer: function(fn, scope) {
+        Ext.each(this.getLayers(), fn, scope);
+    },
+
     getDefaultLayer: function() {
         return this.layerCache[0];
     },
@@ -37,6 +41,8 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
 
         var oldLayer = this.selectedLayer;
         this.selectedLayer = newLayer;
+
+        this._copyAttributesFromSelectedLayer();
 
         this._registerLayerEventListeners(this.selectedLayer);
         this.fireEvent('selectedlayerchanged', this.selectedLayer, oldLayer);
@@ -110,5 +116,42 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
 
     _serverUnrecognized: function(serverUri) {
         log.error("Server '" + serverUri + "' is blocked!!");
+    },
+
+    //
+    // TODO: Following functions to be replaced by `LayerGroup`?
+    //
+    _copyAttributesFromSelectedLayer: function() {
+        Ext.each([
+            'bboxMaxX',
+            'bboxMaxY',
+            'bboxMinX',
+            'bboxMinY',
+            'opacity',
+            'projection',
+            'zoomOverride'
+        ], function(attr) {
+            this[attr] = this.getSelectedLayer()[attr];
+        }, this);
+    },
+
+    _is130: function() {
+        return this.getSelectedLayer()._is130();
+    },
+
+    setOpacity: function(opacity) {
+        this.eachLayer(function(layer) {
+            layer.setOpacity(opacity);
+        });
+    },
+
+    setVisibility: function(visible) {
+        this.eachLayer(function(layer) {
+            layer.setVisibility(visible);
+        });
+    },
+
+    hasBoundingBox: function() {
+        return this.getSelectedLayer().hasBoundingBox();
     }
 });
