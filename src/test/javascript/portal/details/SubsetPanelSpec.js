@@ -25,7 +25,8 @@ describe("Portal.details.SubsetPanel", function() {
             map: map,
             dataCollection: {
                 getSelectedLayer: returns(layer),
-                updateNcwmsParams: noOp
+                updateNcwmsParams: noOp,
+                getLayerState: returns(new Ext.util.Observable())
             }
         });
     });

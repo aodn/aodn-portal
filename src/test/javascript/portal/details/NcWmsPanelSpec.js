@@ -12,6 +12,7 @@ describe('Portal.details.NcWmsPanel', function() {
     var dataCollection;
 
     var layer;
+    var layerState;
 
     beforeEach(function() {
         map = new OpenLayers.SpatialConstraintMap();
@@ -26,10 +27,13 @@ describe('Portal.details.NcWmsPanel', function() {
         layer.processTemporalExtent = noOp;
         layer.map = map;
 
+        layerState = new Ext.util.Observable();
+
         dataCollection = {
             getUuid: returns(45678),
             updateNcwmsParams: jasmine.createSpy('updateNcwmsParams'),
-            getSelectedLayer: returns(layer)
+            getSelectedLayer: returns(layer),
+            getLayerState: returns(layerState)
         };
 
         ncwmsPanel = new Portal.details.NcWmsPanel({
@@ -79,12 +83,13 @@ describe('Portal.details.NcWmsPanel', function() {
             expect(ncwmsPanel._onDateSelected).toHaveBeenCalled();
         });
 
-        it('clears the date and time pickers when the layer is updating', function() {
-            spyOn(ncwmsPanel, '_disableDateTimeFields');
-            ncwmsPanel._initWithLayer();
-            expect(ncwmsPanel._disableDateTimeFields).toHaveBeenCalled();
-            delete ncwmsPanel.dataCollection;
-        });
+        // Not sure that this is necessary.
+        // it('clears the date and time pickers when the layer is updating', function() {
+        //     spyOn(ncwmsPanel, '_disableDateTimeFields');
+        //     ncwmsPanel._initWithLayer();
+        //     expect(ncwmsPanel._disableDateTimeFields).toHaveBeenCalled();
+        //     delete ncwmsPanel.dataCollection;
+        // });
     });
 
     describe('_newHtmlElement', function() {
@@ -175,6 +180,29 @@ describe('Portal.details.NcWmsPanel', function() {
                 expect(ncwmsPanel.layer.getNextTimeSlice).toHaveBeenCalled();
             });
         });
+    });
+
+    describe('selected layer change', function() {
+        var newLayer = {};
+
+        it('responds to selectedlayerchanged event', function() {
+            spyOn(ncwmsPanel, '_onSelectedLayerChanged');
+            ncwmsPanel.dataCollection.getLayerState().fireEvent('selectedlayerchanged', newLayer);
+
+            expect(ncwmsPanel._onSelectedLayerChanged).toHaveBeenCalledWith(newLayer);
+        });
+
+        it('updates and resets for new layer', function() {
+            spyOn(ncwmsPanel, '_initWithLayer');
+            spyOn(ncwmsPanel, 'resetConstraints');
+            ncwmsPanel._onSelectedLayerChanged(newLayer);
+
+            expect(ncwmsPanel.layer).toBe(newLayer);
+            expect(ncwmsPanel._initWithLayer).toHaveBeenCalled();
+            expect(ncwmsPanel.resetConstraints).toHaveBeenCalled();
+        });
+
+
     });
 
     function _applyCommonSpies(panel) {
