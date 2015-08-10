@@ -15,8 +15,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             ctCls: 'legendImage'
         });
 
-        this.ncwmsColourScalePanel = new Portal.details.NcwmsScaleRangeControls();
-        this.ncwmsColourScalePanel.on('colourScaleUpdated', this.refreshLegend, this);
+        this.ncwmsScaleRangeControls = new Portal.details.NcwmsScaleRangeControls();
+        this.ncwmsScaleRangeControls.on('colourScaleUpdated', this.refreshLegend, this);
 
         var layer = this.dataCollection.getSelectedLayer();
 
@@ -24,7 +24,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
         this.items = [
             this.styleCombo,
-            this.ncwmsColourScalePanel,
+            this.ncwmsScaleRangeControls,
             {
                 xtype: "panel",
                 autoWidth: true,
@@ -79,10 +79,10 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         this.styleCombo.hide();
 
         if (layer.isNcwms()) {
-            this.ncwmsColourScalePanel.makeNcWMSColourScale(layer);
+            this.ncwmsScaleRangeControls.makeNcWMSColourScale(layer);
         }
         else {
-            this.ncwmsColourScalePanel.hide();
+            this.ncwmsScaleRangeControls.hide();
         }
 
         this.refreshLegend(layer);
