@@ -4,14 +4,14 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe('Portal.details.NCWMSColourScalePanel', function() {
+describe('Portal.details.NcwmsScaleRangeControls', function() {
     describe('makeNcWMSColourScale', function() {
 
         var ncWmsColourScalePanel;
         var layer;
 
         beforeEach(function() {
-            ncWmsColourScalePanel = new Portal.details.NCWMSColourScalePanel();
+            ncWmsColourScalePanel = new Portal.details.NcwmsScaleRangeControls();
             layer = {}
         });
 

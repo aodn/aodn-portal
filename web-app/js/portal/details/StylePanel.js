@@ -15,7 +15,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             ctCls: 'legendImage'
         });
 
-        this.ncwmsColourScalePanel = new Portal.details.NCWMSColourScalePanel();
+        this.ncwmsColourScalePanel = new Portal.details.NcwmsScaleRangeControls();
         this.ncwmsColourScalePanel.on('colourScaleUpdated', this.refreshLegend, this);
 
         var layer = this.dataCollection.getSelectedLayer();
