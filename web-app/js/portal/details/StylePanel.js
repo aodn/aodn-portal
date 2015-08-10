@@ -152,15 +152,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
     // builds a getLegend image request for the combobox form and the selected palette
     buildGetLegend: function(layer, style, palette, colorBarOnly) {
 
-        var url = "";
-
-        if (layer.cache === true) {
-            url = layer.server.uri;
-        }
-        else {
-            url = layer.url;
-        }
-
+        var url = layer.url;
         var opts = "";
 
         // Palette used for once off. eg combobox picker

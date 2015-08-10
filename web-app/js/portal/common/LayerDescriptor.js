@@ -57,7 +57,6 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
 
         this._setOpenLayerBounds(openLayer);
         this._initialiseDownloadLayer(openLayer);
-        openLayer.cache = this.cache;
         openLayer.projection = this.projection;
         openLayer.blacklist = this.blacklist;
         openLayer.abstractTrimmed = this.abstractTrimmed;
