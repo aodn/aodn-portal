@@ -12,16 +12,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         this.layer = cfg.layer;
 
         Portal.details.StylePanel.superclass.constructor.call(this, cfg);
-
-        this._attachEvents();
-    },
-
-    _attachEvents: function() {
-
-        this.layer.events.on({
-            'stylesloaded': this._stylesLoaded,
-            scope: this
-        });
     },
 
     initComponent: function() {
@@ -33,7 +23,9 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         this.ncwmsColourScalePanel = new Portal.details.NCWMSColourScalePanel();
         this.ncwmsColourScalePanel.on('colourScaleUpdated', this.refreshLegend, this);
 
-        this.styleCombo = this.makeCombo();
+        var layer = this.layer;
+
+        this.styleCombo = this.makeCombo(layer);
 
         this.items = [
             this.styleCombo,
@@ -47,10 +39,11 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
         Portal.details.StylePanel.superclass.initComponent.call(this);
 
-        this._initWithLayer();
+        this._initWithLayer(layer);
+        this._attachEvents(layer);
     },
 
-    makeCombo: function() {
+    makeCombo: function(layer) {
         var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{styleName}</p><img src="{displayImage}" /></div></tpl>';
         var fields;
 
@@ -79,33 +72,42 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             tpl: tpl,
             listeners: {
                 scope: this,
-                select: function(cbbox, record, index) {
-                    this.setChosenStyle(record);
+                select: function(cbbox, record) {
+                    this.setChosenStyle(layer, record);
                 }
             }
         });
     },
 
-    _initWithLayer: function() {
+    _initWithLayer: function(layer) {
+
         this.styleCombo.hide();
 
-        if (this.layer.isNcwms()) {
-            this.ncwmsColourScalePanel.makeNcWMSColourScale(this.layer);
+        if (layer.isNcwms()) {
+            this.ncwmsColourScalePanel.makeNcWMSColourScale(layer);
         }
         else {
             this.ncwmsColourScalePanel.hide();
         }
 
-        this.refreshLegend();
+        this.refreshLegend(layer);
     },
 
-    _stylesLoaded: function() {
+    _attachEvents: function(layer) {
 
-        var styleData = this._processStyleData(this.layer);
+        layer.events.on({
+            'stylesloaded': this._stylesLoaded,
+            scope: this
+        });
+    },
+
+    _stylesLoaded: function(layer) {
+
+        var styleData = this._processStyleData(layer);
 
         if (styleData.length > 1) {
             this.styleCombo.store.loadData(styleData);
-            this.styleCombo.setValue(this.layer.defaultStyle);
+            this.styleCombo.setValue(layer.defaultStyle);
             this.styleCombo.collapse();
             this.styleCombo.show();
         }
@@ -126,25 +128,25 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         return data;
     },
 
-    setChosenStyle: function(record) {
+    setChosenStyle: function(layer, record) {
 
         var styleName = record.get('styleName');
 
-        this.layer.mergeNewParams({
+        layer.mergeNewParams({
             styles: styleName
         });
 
         // Params should already have been changed, but legend doesn't update if we don't do this...
-        this.layer.params.STYLES = styleName;
-        this.refreshLegend();
+        layer.params.STYLES = styleName;
+        this.refreshLegend(layer);
     },
 
-    refreshLegend: function() {
+    refreshLegend: function(layer) {
 
         // get openlayers style as string
-        var styleName = this.layer.params.STYLES;
-        var palette = this._getPalette(this.layer, styleName);
-        var url = this.buildGetLegend(this.layer, styleName, palette, false);
+        var styleName = layer.params.STYLES;
+        var palette = this._getPalette(layer, styleName);
+        var url = this.buildGetLegend(layer, styleName, palette, false);
 
         this.legendImage.setUrl(url);
         this.legendImage.show();

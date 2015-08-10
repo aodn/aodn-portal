@@ -148,9 +148,6 @@ describe("Portal.details.StylePanel", function() {
             };
 
             stylePanel.styleCombo = combo;
-            stylePanel.layer = {
-                defaultStyle: 'theDefault'
-            };
         });
 
         it('does not load combo box data if 1 style or fewer', function() {
@@ -170,7 +167,9 @@ describe("Portal.details.StylePanel", function() {
             var styles = ['style1', 'style2'];
             stylePanel._processStyleData = returns(styles);
 
-            stylePanel._stylesLoaded();
+            stylePanel._stylesLoaded({
+                defaultStyle: 'theDefault'
+            });
 
             expect(combo.store.loadData).toHaveBeenCalledWith(styles);
             expect(combo.setValue).toHaveBeenCalledWith('theDefault');
