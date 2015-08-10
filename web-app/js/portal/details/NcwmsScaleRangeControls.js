@@ -53,7 +53,6 @@ Portal.details.NcwmsScaleRangeControls = Ext.extend(Ext.Panel, {
             width: 75,
             labelStyle: "width:30px",
             ctCls: 'smallIndentInputBox',
-            grow: true,
             listeners: {
                 scope: this,
                 keyup: function() {
