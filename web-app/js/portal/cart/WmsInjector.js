@@ -17,6 +17,6 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
         var description = describer.buildDescription('<br />');
 
-        return description ? description : OpenLayers.i18n('emptyDownloadPlaceholder');
+        return description || OpenLayers.i18n('emptyDownloadPlaceholder');
     }
 });
