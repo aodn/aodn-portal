@@ -26,9 +26,7 @@ Portal.details.NcwmsScaleRangeControls = Ext.extend(Ext.Panel, {
             disabled: true,
             listeners: {
                 scope: this,
-                click: function(button, event) {
-                    this.updateScale(button, event);
-                }
+                click: this.updateScale
             }
         });
 
@@ -44,6 +42,8 @@ Portal.details.NcwmsScaleRangeControls = Ext.extend(Ext.Panel, {
 
         this.addEvents('colourScaleUpdated');
         Portal.details.NcwmsScaleRangeControls.superclass.initComponent.call(this);
+
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, this.makeNcWMSColourScale, this);
     },
 
     makeSmallIndentInputBox: function(fieldLabel) {
@@ -62,19 +62,13 @@ Portal.details.NcwmsScaleRangeControls = Ext.extend(Ext.Panel, {
         });
     },
 
-    makeNcWMSColourScale: function(layer) {
+    makeNcWMSColourScale: function() {
 
-        this.selectedLayer = layer;
+        var layerState = this.dataCollection.getLayerState();
+        var range = layerState.getScaleRange();
 
-        if (layer.params && layer.params.COLORSCALERANGE) {
-            var range = layer.params.COLORSCALERANGE.split(',');
-            this.colourScaleMin.setValue(range[0]);
-            this.colourScaleMax.setValue(range[1]);
-        }
-        else {
-            this.colourScaleMin.setValue(undefined);
-            this.colourScaleMax.setValue(undefined);
-        }
+        this.colourScaleMin.setValue(range.min);
+        this.colourScaleMax.setValue(range.max);
 
         this.show();
     },
@@ -95,14 +89,12 @@ Portal.details.NcwmsScaleRangeControls = Ext.extend(Ext.Panel, {
 
         if (this._canSubmit()) {
 
-            this.selectedLayer.mergeNewParams({
-                COLORSCALERANGE: this.colourScaleMin.getValue() + "," + this.colourScaleMax.getValue()
-            });
+            var layerState = this.dataCollection.getLayerState();
+            var min = this.colourScaleMin.getValue();
+            var max = this.colourScaleMax.getValue();
+            layerState.setScaleRange(min, max);
 
             this.fireEvent('colourScaleUpdated');
-
-            // set the user selected range
-            this.selectedLayer.metadata.userScaleRange = [this.colourScaleMin.getValue(),this.colourScaleMax.getValue()];
         }
     }
 });

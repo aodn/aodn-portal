@@ -153,5 +153,23 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
 
     hasBoundingBox: function() {
         return this.getSelectedLayer().hasBoundingBox();
+    },
+
+    setScaleRange: function(min, max) {
+
+        var layer = this.getSelectedLayer();
+
+        layer.scaleRange = {
+            min: min,
+            max: max
+        };
+
+        layer.mergeNewParams({
+            COLORSCALERANGE: min + "," + max
+        });
+    },
+
+    getScaleRange: function() {
+        return this.getSelectedLayer().scaleRange || {};
     }
 });

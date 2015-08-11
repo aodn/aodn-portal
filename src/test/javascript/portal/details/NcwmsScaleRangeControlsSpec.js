@@ -8,25 +8,43 @@ describe('Portal.details.NcwmsScaleRangeControls', function() {
     describe('makeNcWMSColourScale', function() {
 
         var controls;
-        var layer;
+        var layerState = {};
+        var dataCollection;
 
         beforeEach(function() {
-            controls = new Portal.details.NcwmsScaleRangeControls();
-            layer = {};
+
+            spyOn(Ext.MsgBus, 'subscribe');
+
+            dataCollection = {
+                getLayerState: function() {
+                    return layerState
+                }
+            };
+
+            controls = new Portal.details.NcwmsScaleRangeControls({
+                dataCollection: dataCollection
+            });
+
+            spyOn(controls, 'show');
         });
 
         it('no param range', function() {
-            controls.makeNcWMSColourScale(layer);
+
+            layerState.getScaleRange = returns({});
+
+            controls.makeNcWMSColourScale();
             expect(controls.colourScaleMax.getValue()).toBeUndefined();
             expect(controls.colourScaleMin.getValue()).toBeUndefined();
         });
 
         it('param range', function() {
-            layer.params = {
-                COLORSCALERANGE: '2.3,6.7'
-            };
 
-            controls.makeNcWMSColourScale(layer);
+            layerState.getScaleRange = returns({
+                min: '2.3',
+                max: '6.7'
+            });
+
+            controls.makeNcWMSColourScale();
             expect(controls.colourScaleMax.getValue()).toEqual('6.7');
             expect(controls.colourScaleMin.getValue()).toEqual('2.3');
         });
@@ -35,15 +53,15 @@ describe('Portal.details.NcwmsScaleRangeControls', function() {
             controls.colourScaleMin.setValue('2');
             controls.colourScaleMax.setValue('5');
 
-            controls.makeNcWMSColourScale(layer);
+            layerState.getScaleRange = returns({});
+
+            controls.makeNcWMSColourScale();
             expect(controls.colourScaleMax.getValue()).toBeUndefined();
             expect(controls.colourScaleMin.getValue()).toBeUndefined();
         });
 
         it('show called', function() {
-            spyOn(controls, 'show');
-
-            controls.makeNcWMSColourScale(layer);
+            controls.makeNcWMSColourScale();
             expect(controls.show).toHaveBeenCalled();
         });
     });

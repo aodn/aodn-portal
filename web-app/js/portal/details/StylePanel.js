@@ -15,7 +15,9 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             ctCls: 'legendImage'
         });
 
-        this.ncwmsScaleRangeControls = new Portal.details.NcwmsScaleRangeControls();
+        this.ncwmsScaleRangeControls = new Portal.details.NcwmsScaleRangeControls({
+            dataCollection: this.dataCollection
+        });
         this.ncwmsScaleRangeControls.on('colourScaleUpdated', this.refreshLegend, this);
 
         var layer = this.dataCollection.getSelectedLayer();
@@ -136,9 +138,10 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         this.refreshLegend(layer);
     },
 
-    refreshLegend: function(layer) {
+    refreshLegend: function() {
 
         // get openlayers style as string
+        var layer = this.dataCollection.getSelectedLayer();
         var styleName = layer.params.STYLES;
         var palette = this._getPalette(layer, styleName);
         var url = this.buildGetLegend(layer, styleName, palette, false);

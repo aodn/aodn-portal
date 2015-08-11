@@ -26,6 +26,7 @@ describe("Portal.details.StylePanel", function() {
     var stylePanel;
 
     beforeEach(function() {
+        spyOn(Ext.MsgBus, 'subscribe');
         spyOn(Portal.details.StylePanel.prototype, '_initWithLayer');
         spyOn(Portal.details.StylePanel.prototype, '_attachEvents');
         stylePanel = new Portal.details.StylePanel({
