@@ -72,7 +72,7 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
             [baseUrl + '?val=something', []],
             [baseUrl + '?uuid=uuid1', 'uuid1'],
             [baseUrl + '?uuid=uuid1&val=something', 'uuid1'],
-            [baseUrl + '?uuid=uuid1&uuid=uuid2', 'uuid1']
+            [baseUrl + '?uuid=uuid1&uuid=uuid2', ['uuid1', 'uuid2']]
         ];
 
         it('returns correct values for various inputs', function() {
