@@ -26,8 +26,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         this.pendingRequests = new Portal.utils.Set();
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, this._propagateDelete, this);
-
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, [name, url, params, options]);
 
         this._setExtraLayerInfoFromNcwms();
@@ -131,12 +129,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     _initToMostRecentTime: function() {
         this.time = moment.utc(this.temporalExtent.max());
-    },
-
-    _propagateDelete: function(label, thelayer) {
-        if (thelayer == this) {
-            delete this;
-        }
     },
 
     getTimeSeriesForDay: function(date) {
