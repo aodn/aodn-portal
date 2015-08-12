@@ -71,7 +71,8 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         });
 
         this.legendImage = new GeoExt.LegendImage({
-            ctCls: 'legendImage'
+            ctCls: 'legendImage',
+            hidden: true
         });
     },
 
@@ -142,18 +143,16 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
     refreshLegend: function() {
 
-        var styleName = this.dataCollection.getLayerState().getStyle();
+        var styleName = this.dataCollection.getLayerState().getStyle() || '';
+        var palette = this._getPalette(styleName);
 
-        if (styleName) {
-            var palette = this._getPalette(styleName);
-            var layer = this.dataCollection.getSelectedLayer();
-            var url = this.buildGetLegend(layer, styleName, palette, false);
+        var layer = this.dataCollection.getSelectedLayer();
+        var url = this.buildGetLegend(layer, styleName, palette, false);
 
-            this.legendImage.setUrl(url);
-            this.legendImage.show();
+        this.legendImage.setUrl(url);
+        this.legendImage.show();
 
-            this.styleCombo.setValue(styleName);
-        }
+        this.styleCombo.setValue(styleName);
     },
 
     buildGetLegend: function(layer, style, palette, colorBarOnly) {
