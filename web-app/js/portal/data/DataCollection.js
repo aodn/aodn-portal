@@ -23,18 +23,6 @@ Portal.data.DataCollection = function() {
         return this.data.metadataRecord;
     };
 
-    constructor.prototype.getDefaultWmsLayerLink = function() {
-
-        var layers = this.getWmsLayerLinks();
-
-        if (layers.length == 0) {
-            return null;
-        }
-
-        var tmp = new Portal.search.data.LinkStore(); // Todo - DN: Do this better (extract where?)
-        return tmp._convertLink(layers[0]);
-    };
-
     constructor.prototype.getWmsLayerLinks = function() {
         return this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.wms);
     };
