@@ -57,7 +57,6 @@ describe("Portal.data.LayerStore", function() {
     });
 
     describe('addUsingLayerLink', function() {
-        var layerDescriptor = {};
         var layerRecordCallback = noOp;
         var dataCollection = {
             get: returns('name')
@@ -71,7 +70,6 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('Unknown', function() {
-            var origServerUri = layerLink.server.uri;
             layerStore.addUsingLayerLink(layerLink, dataCollection, layerRecordCallback);
             expect(layerStore._addLayer).toHaveBeenCalledWith(
                 openLayer,
