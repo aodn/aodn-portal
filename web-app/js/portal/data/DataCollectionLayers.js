@@ -13,6 +13,8 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
         Ext.apply(this, config);
         this._initLayers();
 
+        this._layerState = {};
+
         Portal.data.DataCollectionLayers.superclass.constructor.call(this, config);
     },
 
@@ -46,6 +48,18 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
 
         this._registerLayerEventListeners(this.selectedLayer);
         this.fireEvent('selectedlayerchanged', this.selectedLayer, oldLayer);
+    },
+
+    _layerProperties: function() {
+
+        var layer = this.getSelectedLayer();
+        var key = layer.id;
+
+        if (this._layerState[key] == undefined) {
+            this._layerState[key] = {};
+        }
+
+        return this._layerState[key];
     },
 
     _registerLayerEventListeners: function() {
@@ -159,7 +173,7 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
 
         var layer = this.getSelectedLayer();
 
-        layer.scaleRange = {
+        this._layerProperties().scaleRange = {
             min: min,
             max: max
         };
@@ -170,24 +184,20 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
     },
 
     getScaleRange: function() {
-        return this.getSelectedLayer().scaleRange || {};
+        return this._layerProperties().scaleRange || {};
     },
 
     setStyle: function(style) {
 
-        var layer = this.getSelectedLayer();
+        this._layerProperties().style = style;
 
-        layer.style = style;
-
-        layer.mergeNewParams({
+        this.getSelectedLayer().mergeNewParams({
             styles: style
         });
     },
 
     getStyle: function() {
 
-        var layer = this.getSelectedLayer();
-
-        return layer.style || layer.defaultStyle;
+        return this._layerProperties().style || this.getSelectedLayer().defaultStyle;
     }
 });
