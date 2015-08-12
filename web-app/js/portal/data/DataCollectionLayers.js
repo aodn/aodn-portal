@@ -126,7 +126,7 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
 
         if (layerLink.server == Portal.data.Server.UNKNOWN) {
             dataCollection = undefined;
-            this._serverUnrecognized(serverUri);
+            log.error("Server '" + serverUri + "' is blocked!");
         }
 
         var layerDescriptor = new Portal.common.LayerDescriptor(
@@ -134,10 +134,6 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
         );
 
         return layerDescriptor.toOpenLayer();
-    },
-
-    _serverUnrecognized: function(serverUri) {
-        log.error("Server '" + serverUri + "' is blocked!!");
     },
 
     //
