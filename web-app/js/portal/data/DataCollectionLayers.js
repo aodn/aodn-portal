@@ -46,7 +46,7 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
 
         this._copyAttributesFromSelectedLayer();
 
-        this._registerLayerEventListeners(this.selectedLayer);
+        this._registerLayerEventListeners();
         this.fireEvent('selectedlayerchanged', this.selectedLayer, oldLayer);
     },
 
