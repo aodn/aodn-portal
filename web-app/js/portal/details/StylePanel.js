@@ -57,7 +57,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             displayField: 'styleName',
             tpl: tpl,
             listeners: {
-                'select': function(cbbox, record) { this.setChosenStyle(record); },
+                'select': this.setChosenStyle,
                 scope: this
             }
         });
@@ -132,7 +132,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         return data;
     },
 
-    setChosenStyle: function(record) {
+    setChosenStyle: function(styleCombo, record) {
 
         var styleName = record.get('styleName');
 
