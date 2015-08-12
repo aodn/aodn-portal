@@ -198,11 +198,6 @@ describe("Portal.data.LayerStore", function() {
                 layerStore.removeUsingOpenLayer(openLayer);
                 expect(layerStore.getCount()).toBe(0);
             });
-
-            it('layerRemoved event published', function() {
-                layerStore.removeUsingOpenLayer(openLayer);
-                expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
-            });
         });
 
         it('removeAll', function() {
