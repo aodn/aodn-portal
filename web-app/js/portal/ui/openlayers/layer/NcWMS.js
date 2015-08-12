@@ -6,9 +6,6 @@
  */
 OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
-    DEFAULT_GIF_HEIGHT: 512,
-    FRAMES_TO_LOAD_ON_INIT: 1,
-
     /**
      * Moment in time that this layer represents.
      */
