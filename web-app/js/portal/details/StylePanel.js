@@ -81,7 +81,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         this.styleCombo.hide();
 
         if (layer.isNcwms()) {
-            this.ncwmsScaleRangeControls.makeNcWMSColourScale(layer);
+            this.ncwmsScaleRangeControls.loadScaleFromLayer();
         }
         else {
             this.ncwmsScaleRangeControls.hide();

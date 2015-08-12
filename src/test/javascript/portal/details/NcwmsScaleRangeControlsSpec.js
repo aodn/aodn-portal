@@ -5,7 +5,7 @@
  *
  */
 describe('Portal.details.NcwmsScaleRangeControls', function() {
-    describe('makeNcWMSColourScale', function() {
+    describe('loadScaleFromLayer', function() {
 
         var controls;
         var layerState = {};
@@ -32,7 +32,7 @@ describe('Portal.details.NcwmsScaleRangeControls', function() {
 
             layerState.getScaleRange = returns({});
 
-            controls.makeNcWMSColourScale();
+            controls.loadScaleFromLayer();
             expect(controls.colourScaleMax.getValue()).toBeUndefined();
             expect(controls.colourScaleMin.getValue()).toBeUndefined();
         });
@@ -44,7 +44,7 @@ describe('Portal.details.NcwmsScaleRangeControls', function() {
                 max: '6.7'
             });
 
-            controls.makeNcWMSColourScale();
+            controls.loadScaleFromLayer();
             expect(controls.colourScaleMax.getValue()).toEqual('6.7');
             expect(controls.colourScaleMin.getValue()).toEqual('2.3');
         });
@@ -55,13 +55,13 @@ describe('Portal.details.NcwmsScaleRangeControls', function() {
 
             layerState.getScaleRange = returns({});
 
-            controls.makeNcWMSColourScale();
+            controls.loadScaleFromLayer();
             expect(controls.colourScaleMax.getValue()).toBeUndefined();
             expect(controls.colourScaleMin.getValue()).toBeUndefined();
         });
 
         it('show called', function() {
-            controls.makeNcWMSColourScale();
+            controls.loadScaleFromLayer();
             expect(controls.show).toHaveBeenCalled();
         });
     });
