@@ -53,7 +53,7 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
     _setLayerProperty: function(key, value) {
         this._layerProperties()[key] = value;
     },
-    
+
     _getLayerProperty: function(key) {
         return this._layerProperties()[key];
     },

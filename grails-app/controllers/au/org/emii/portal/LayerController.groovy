@@ -47,7 +47,6 @@ class LayerController {
 
             render serverObject.getStyles(server, layer) as JSON
         }
-
         else {
             render text: "Host '$params.server' not allowed", status: HTTP_502_BAD_GATEWAY
         }
