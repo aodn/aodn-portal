@@ -57,7 +57,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
             spyOn(filterGroupPanel, '_updateAndShow');
             spyOn(filterGroupPanel, '_sortFilters').andReturn([{}]);
-            spyOn(filterGroupPanel, '_isDataCollectionActive').andReturn(true);
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
 
             filterGroupPanel._filtersLoaded(layer.filters);
@@ -161,7 +160,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_clearFilters');
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, '_addErrorMessage');
-            spyOn(filterGroupPanel, '_isDataCollectionActive').andReturn(true);
             spyOn(filterGroupPanel, '_sortFilters').andReturn([{}]);
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
         });
@@ -198,7 +196,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, '_addErrorMessage');
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
-            spyOn(filterGroupPanel, '_isDataCollectionActive').andReturn(true);
         });
 
         it('calls the _addErrorMessage function when filters set but has no filters configured', function() {
@@ -300,7 +297,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
         var filterPanels;
         var numPanels;
-        var numDifferentTypes = 3;
         var numHeadings = 2; // Only Date has a non default typeLabel "Date + default = 2"
         var numVerticalSpacers = 1;
 

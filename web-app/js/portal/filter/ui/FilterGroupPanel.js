@@ -85,11 +85,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    _isDataCollectionActive: function() { // Todo - DN: Is 'active' clear enough?
-
-        return this.dataCollectionStore.isRecordActive(this.dataCollection);
-    },
-
     _initWithLayer: function() {
 
         var filterService = new Portal.filter.FilterService();
@@ -247,10 +242,8 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     _updateLayerFilters: function() {
-        if (this._isDataCollectionActive()) {
 
-            this.dataCollection.updateFilters();
-        }
+        this.dataCollection.updateFilters();
     },
 
     _handleAddFilter: function() {
