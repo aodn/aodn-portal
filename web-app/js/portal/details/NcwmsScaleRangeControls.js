@@ -55,9 +55,7 @@ Portal.details.NcwmsScaleRangeControls = Ext.extend(Ext.Panel, {
             ctCls: 'smallIndentInputBox',
             listeners: {
                 scope: this,
-                keyup: function() {
-                    this.setGoButton();
-                }
+                keyup: this.updateGoButton
             }
         });
     },
@@ -79,13 +77,11 @@ Portal.details.NcwmsScaleRangeControls = Ext.extend(Ext.Panel, {
         return (!isNaN(scaleMin) && !isNaN(scaleMax) && (scaleMax > scaleMin));
     },
 
-    setGoButton: function() {
+    updateGoButton: function() {
         this.goButton.setDisabled(!this._canSubmit());
     },
 
     updateScale: function() {
-
-        this.setGoButton();
 
         if (this._canSubmit()) {
 
