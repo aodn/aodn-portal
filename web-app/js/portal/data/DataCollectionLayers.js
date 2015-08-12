@@ -171,5 +171,23 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
 
     getScaleRange: function() {
         return this.getSelectedLayer().scaleRange || {};
+    },
+
+    setStyle: function(style) {
+
+        var layer = this.getSelectedLayer();
+
+        layer.style = style;
+
+        layer.mergeNewParams({
+            styles: style
+        });
+    },
+
+    getStyle: function() {
+
+        var layer = this.getSelectedLayer();
+
+        return layer.style || layer.defaultStyle;
     }
 });
