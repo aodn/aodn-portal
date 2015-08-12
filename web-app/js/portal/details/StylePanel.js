@@ -143,7 +143,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         // get openlayers style as string
         var layer = this.dataCollection.getSelectedLayer();
         var styleName = layer.params.STYLES;
-        var palette = this._getPalette(layer, styleName);
+        var palette = this._getPalette(styleName);
         var url = this.buildGetLegend(layer, styleName, palette, false);
 
         this.legendImage.setUrl(url);
@@ -209,21 +209,14 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         return url;
     },
 
-    _getPalette: function(layer, style) {
-        if (layer.isNcwms()) {
+    _getPalette: function(style) {
 
-            // Use palette if title is in the form [type]/[palette]
-            var parts = style.split("/");
-            if (parts.length > 1) {
-
-                return parts[1];
-            }
-            else {
-
-                return style;
-            }
+        // Use palette if title is in the form [type]/[palette]
+        var parts = style.split("/");
+        if (parts.length > 1) {
+            return parts[1];
         }
 
-        return undefined;
+        return style;
     }
 });

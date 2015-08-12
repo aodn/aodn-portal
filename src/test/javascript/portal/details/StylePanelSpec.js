@@ -183,30 +183,20 @@ describe("Portal.details.StylePanel", function() {
         });
     });
 
-    describe("_getPalette(layer)", function() {
-
-        var ncWmsLayer = {isNcwms: returns(true)};
-        var otherLayer = {isNcwms: returns(false)};
+    describe("_getPalette()", function() {
 
         it("Returns palette when the style is in the form style/palette", function() {
 
-            var retVal = stylePanel._getPalette(ncWmsLayer, "dots/rainbow");
+            var retVal = stylePanel._getPalette("dots/rainbow");
 
             expect(retVal).toBe("rainbow");
         });
 
         it("Returns style when in other forms", function() {
 
-            var retVal = stylePanel._getPalette(ncWmsLayer, "squiggle");
+            var retVal = stylePanel._getPalette("squiggle");
 
             expect(retVal).toBe("squiggle");
-        });
-
-        it("Returns undefined for non-ncWMS Layers", function() {
-
-            var retVal = stylePanel._getPalette(otherLayer, "style name");
-
-            expect(retVal).toBeUndefined();
         });
     });
 });
