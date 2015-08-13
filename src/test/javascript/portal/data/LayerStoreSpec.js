@@ -33,19 +33,9 @@ describe("Portal.data.LayerStore", function() {
 
     var createOpenLayer = function(title, url) {
 
-        if (title == undefined) {
-
-            title = "the title";
-        }
-
-        if (url == undefined) {
-
-            url = "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi";
-        }
-
         return new OpenLayers.Layer.WMS(
-            title,
-            url,
+            title || "the title",
+            url || "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
             {},
             { isBaseLayer: false }
         );
@@ -93,17 +83,11 @@ describe("Portal.data.LayerStore", function() {
             beforeEach(function() {
 
                 var dataCollection = {
-                    getMetadataRecord: function() {
-                        return {
-                            data: {
-                                bbox: {
-                                    getBounds: function() {
-                                        return {};
-                                    }
-                                }
-                            }
-                        };
-                    }
+                    getMetadataRecord: returns({
+                        data: { bbox: {
+                            getBounds: returns({})
+                        }}
+                    })
                 };
 
                 layerDescriptor = new Portal.common.LayerDescriptor(
