@@ -114,7 +114,7 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
                 OpenLayers.i18n('subsetItemsTrackingCategory'),
                 OpenLayers.i18n('subsetItemsTabsTrackingAction'),
                 newTab.title,
-                this.dataCollection.getSelectedLayer().name
+                this.dataCollection.getTitle()
             );
             return true;
         }

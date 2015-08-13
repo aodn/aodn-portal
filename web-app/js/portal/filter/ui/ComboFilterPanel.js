@@ -92,9 +92,8 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
         }
 
         if (this.combo.getValue() != "") {
-            var layer = this.dataCollection.getSelectedLayer();
             var val = this.filter.getLabel() + "=" + this.combo.getValue();
-            trackFiltersUsage('filtersTrackingComboAction', val, layer.name); // Todo - DN: Again. Collection name?
+            trackFiltersUsage('filtersTrackingComboAction', val, this.dataCollection.getTitle());
         }
 
         this.filter.setValue(this.combo.getValue());

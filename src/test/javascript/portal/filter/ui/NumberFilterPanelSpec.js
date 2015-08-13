@@ -32,9 +32,7 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
                 setValue: noOp
             },
             dataCollection: {
-                getSelectedLayer: returns({
-                    name: 'test layer'
-                })
+                getTitle: returns('Collection title')
             }
         });
     });
@@ -62,7 +60,7 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
             numberFilter._operatorIsBetween = returns(false);
             numberFilter._updateFilter();
 
-            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Number", "testLabel less than 5", "test layer");
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Number", "testLabel less than 5", "Collection title");
         });
 
         it('sends correct tracking data when operator is between', function() {
@@ -73,7 +71,7 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
             numberFilter.secondField.getValue = returns(6);
             numberFilter._updateFilter();
 
-            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Number", "testLabel between 5 and 6", "test layer");
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Number", "testLabel between 5 and 6", "Collection title");
         });
 
         it('no update when operator is not set', function() {
@@ -111,7 +109,7 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
 
             numberFilter.firstField.getValue = returns("45");
             numberFilter._updateFilter();
-            expect(window.trackUsage).toHaveBeenCalledWith( 'Filters', 'Number', 'testLabel less than 45', 'test layer' );
+            expect(window.trackUsage).toHaveBeenCalledWith('Filters', 'Number', 'testLabel less than 45', 'Collection title');
         });
 
         it('no update when operator is between and some values are empty', function() {

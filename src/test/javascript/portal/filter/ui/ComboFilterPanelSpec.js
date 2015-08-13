@@ -25,8 +25,8 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
                 setValue: noOp
             },
             dataCollection: {
+                getTitle: returns('Collection title'),
                 getSelectedLayer: returns({
-                    name: 'test layer',
                     getDownloadCql: returns("")
                 })
             }
@@ -72,7 +72,7 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
 
             filterPanel._onChange();
 
-            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "testLabel=value", "test layer");
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "testLabel=value", "Collection title");
         });
     });
 });
