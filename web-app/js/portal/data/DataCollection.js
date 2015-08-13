@@ -131,6 +131,16 @@ Portal.data.DataCollection = function() {
         return linkStore.getRange(); // Get all records
     };
 
+    constructor.prototype.getLayerState = function() {
+        if (!this.layerState) {
+            this.layerState = new Portal.data.DataCollectionLayers({
+                dataCollection: this
+            });
+        }
+
+        return this.layerState;
+    };
+
     // TODO: remove this.
     constructor.prototype.getSelectedLayer = function() {
         return this.getLayerState().getSelectedLayer();
