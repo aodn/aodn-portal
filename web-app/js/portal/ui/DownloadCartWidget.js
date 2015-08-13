@@ -44,11 +44,6 @@ Portal.ui.DownloadCartWidget = Ext.extend(Ext.Panel, {
             this.collectionCounter --;
             this.updateDownloadCartSize();
         }, this);
-
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
-            this.collectionCounter = 0;
-            this.updateDownloadCartSize();
-        }, this);
     },
 
     updateDownloadCartSize: function() {
