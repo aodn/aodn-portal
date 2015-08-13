@@ -24,7 +24,6 @@ Portal.cart.InsertionService = Ext.extend(Object, {
         var wmsLayer = collection.getSelectedLayer();
         var htmlInjection;
 
-        // Todo - DN: Review this code. If we consolidate ncwms and wms filtering this should be the same
         if (this._isCollectionDownloadable(collection)) {
             if (wmsLayer.isNcwms()) {
                 htmlInjection = new Portal.cart.NcwmsInjector(config);
