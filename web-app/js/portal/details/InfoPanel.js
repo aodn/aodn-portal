@@ -11,7 +11,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
 
-        this.dataCollection = cfg.dataCollection;
+        Ext.apply(this, cfg);
 
         var config = Ext.apply({
             title: OpenLayers.i18n('infoTabTitle'),

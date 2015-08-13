@@ -12,11 +12,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Container, {
 
         var panelType = cfg.dataCollection.getSelectedLayer().isNcwms() ?
                 Portal.details.NcWmsPanel : Portal.filter.ui.FilterGroupPanel;
-        var newPanel = new panelType({
-            map: cfg.map,
-            dataCollection: cfg.dataCollection,
-            dataCollectionStore: cfg.dataCollectionStore
-        });
+        var newPanel = new panelType(cfg);
 
         var config = Ext.apply({
             title: OpenLayers.i18n('subsetPanelTitle'),
