@@ -12,7 +12,7 @@ describe("Portal.search.FacetedSearchResultsPanel", function() {
     var store;
 
     beforeEach(function() {
-        Portal.search.FacetedSearchResultsPanel.prototype._refreshView = function() {};
+        Portal.search.FacetedSearchResultsPanel.prototype._refreshView = noOp;
 
         searcher = {
             pageSize: 999

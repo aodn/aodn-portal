@@ -41,8 +41,8 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
         beforeEach(function() {
             numberFilter._createControls();
             numberFilter.firstField.getValue = returns(5);
-            numberFilter.firstField.clearInvalid = function() {};
-            numberFilter.secondField.clearInvalid = function() {};
+            numberFilter.firstField.clearInvalid = noOp;
+            numberFilter.secondField.clearInvalid = noOp;
             numberFilter.firstField.validateValue = returns(true);
             numberFilter.secondField.validateValue = returns(true);
             numberFilter.operators = {

@@ -137,11 +137,9 @@ describe('OpenLayers', function() {
             describe('uses featureInfoFormat format', function() {
                 beforeEach(function() {
                     openLayer.setMap(new OpenLayers.Map());
-                    openLayer.map.getProjectionObject = function() {
-                        return {
-                            getCode: function() {}
-                        };
-                    };
+                    openLayer.map.getProjectionObject = returns({
+                        getCode: noOp
+                    });
                     openLayer._getBoundingBox = noOp;
                     openLayer.server = {
                         infoFormat: 'text/html'

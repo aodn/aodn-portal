@@ -15,7 +15,7 @@ describe("Portal.ui.MainPanel", function() {
 
     beforeEach(function() {
 
-        spyOn(Portal.ui.MainToolbar.prototype, "_registerEvents").andCallFake(function() {});
+        spyOn(Portal.ui.MainToolbar.prototype, "_registerEvents");
 
         Portal.app.appConfig.portal = {footer: {}};
         mainPanel = new Portal.ui.MainPanel({
