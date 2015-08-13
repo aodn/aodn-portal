@@ -154,7 +154,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     _clearAllAndReset: function() {
 
         this.dataCollectionStore.removeAll();
-        setViewPortTab(0);
+        setViewPortTab(TAB_INDEX_SEARCH);
     },
 
     _loadMenuItemsFromHandlers: function(processedValues, collection) {
