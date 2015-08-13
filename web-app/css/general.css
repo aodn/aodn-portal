@@ -1219,3 +1219,23 @@ div.tool-plus-disabled {
 .spatialSubsetControl {
     background-color: #f5f5f5;
 }
+
+/* Turn off GPU support to fix line issue when browser is zoomed in */
+/* Refer: https://github.com/openlayers/openlayers/issues/513 */
+
+img.olTileImage {
+    -webkit-transform: inherit;
+    -moz-transform: inherit;
+    -o-transform: inherit;
+    -ms-transform: inherit;
+    transform: inherit;
+    -webkit-backface-visibility: inherit;
+    -moz-backface-visibility: inherit;
+    -ms-backface-visibility: inherit;
+    backface-visibility: inherit;
+    -webkit-perspective: inherit;
+    -moz-perspective: inherit;
+    -ms-perspective: inherit;
+    perspective: inherit;
+}
+
