@@ -20,9 +20,6 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
         spyOn(superclass, "hide");
     });
 
-    describe('shouldDownload', function() {
-    });
-
     describe('show', function() {
 
         beforeEach(function() {
@@ -62,7 +59,6 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
                 expect(confirmationWindow.downloadChallengePanel.show).not.toHaveBeenCalled();
                 expect(confirmationWindow.downloadChallengePanel.hide).toHaveBeenCalled();
             });
-
 
             describe('download button', function() {
                 var downloadButton;
