@@ -20,8 +20,16 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
     },
 
     removeAll: function() {
+        var beingRemoved = [];
+        this.each(function(dataCollection) {
+            beingRemoved.push(dataCollection);
+        });
+
         Portal.data.DataCollectionStore.superclass.removeAll.call(this);
-        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
+
+        Ext.each(beingRemoved, function(dataCollection) {
+            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, dataCollection);
+        });
         Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
     },
 
