@@ -28,11 +28,11 @@ describe('Portal.details.NcWmsPanel', function() {
         layer.map = map;
 
         layerState = new Ext.util.Observable();
+        layerState.getSelectedLayer = returns(layer);
 
         dataCollection = {
             getUuid: returns(45678),
             updateNcwmsParams: jasmine.createSpy('updateNcwmsParams'),
-            getSelectedLayer: returns(layer),
             getLayerState: returns(layerState)
         };
 

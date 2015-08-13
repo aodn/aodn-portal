@@ -19,7 +19,9 @@ describe("Portal.filter.FilterService", function() {
         failureCallback = jasmine.createSpy('failureCallback');
         callbackScope = {};
         testDataCollection = {
-            getSelectedLayer: returns({server: {}}),
+            getLayerState: returns({
+                getSelectedLayer: returns({server: {}})
+            }),
             setFilters: noOp
         };
     });

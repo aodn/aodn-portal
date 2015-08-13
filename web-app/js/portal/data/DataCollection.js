@@ -75,7 +75,7 @@ Portal.data.DataCollection = function() {
     constructor.prototype.updateFilters = function() {
 
         // Update layer with new values
-        var layer = this.getSelectedLayer();
+        var layer = this.getLayerState().getSelectedLayer();
 
         if (layer.updateCqlFilter) {
             layer.updateCqlFilter(this.getFilters());
@@ -141,9 +141,8 @@ Portal.data.DataCollection = function() {
         return this.layerState;
     };
 
-    // TODO: remove this.
-    constructor.prototype.getSelectedLayer = function() {
-        return this.getLayerState().getSelectedLayer();
+    constructor.prototype.isNcwms = function() {
+        return this.getLayerState().isNcwms();
     };
 
     return constructor;

@@ -11,6 +11,7 @@ describe("Portal.data.DataCollection", function() {
 
     beforeEach(function() {
         dataCollection = new Portal.data.DataCollection();
+        spyOn(dataCollection, 'getWmsLayerLinks').andReturn([]);
     });
 
     describe('updateNcwmsParams', function() {
@@ -59,13 +60,16 @@ describe("Portal.data.DataCollection", function() {
 
     describe('layerstate', function() {
         it('lazily initialises layer state', function() {
-            spyOn(dataCollection, 'getWmsLayerLinks').andReturn([]);
-
             var layerState = dataCollection.getLayerState();
             expect(layerState).toBeInstanceOf(Portal.data.DataCollectionLayers);
 
             // Make sure we're reusing the same object.
             expect(dataCollection.getLayerState()).toBe(layerState);
         });
+    });
+
+    it('returns correct WMS type', function() {
+        spyOn(dataCollection.getLayerState(), 'isNcwms').andReturn(true);
+        expect(dataCollection.isNcwms()).toBe(true);
     });
 });

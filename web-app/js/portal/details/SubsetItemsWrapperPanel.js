@@ -13,7 +13,7 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
 
         var tabPanelForLayer = this._initSubsetItemsTabPanel(cfg);
 
-        this.createTools(cfg.dataCollection.getSelectedLayer());
+        this.createTools(cfg.dataCollection.getLayerState().getSelectedLayer());
 
         cfg.dataCollection.getLayerState().on('loadstart', function() {
             this._onLayerLoadStart();

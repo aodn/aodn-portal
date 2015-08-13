@@ -21,11 +21,10 @@ Portal.cart.InsertionService = Ext.extend(Object, {
             downloadConfirmationScope: this
         };
 
-        var wmsLayer = collection.getSelectedLayer();
         var htmlInjection;
 
         if (this._isCollectionDownloadable(collection)) {
-            if (wmsLayer.isNcwms()) {
+            if (collection.isNcwms()) {
                 htmlInjection = new Portal.cart.NcwmsInjector(config);
             }
             else {

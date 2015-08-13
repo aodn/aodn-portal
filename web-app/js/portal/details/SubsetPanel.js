@@ -10,7 +10,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
 
-        var panelType = cfg.dataCollection.getSelectedLayer().isNcwms() ?
+        var panelType = cfg.dataCollection.isNcwms() ?
                 Portal.details.NcWmsPanel : Portal.filter.ui.FilterGroupPanel;
         var newPanel = new panelType(cfg);
 

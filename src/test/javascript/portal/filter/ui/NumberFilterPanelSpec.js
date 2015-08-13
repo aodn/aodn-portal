@@ -32,7 +32,12 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
                 setValue: noOp
             },
             dataCollection: {
-                getTitle: returns('Collection title')
+                getTitle: returns('Collection title'),
+                getLayerState: returns({
+                    getSelectedLayer: returns({
+                        name: 'test layer'
+                    })
+                })
             }
         });
     });

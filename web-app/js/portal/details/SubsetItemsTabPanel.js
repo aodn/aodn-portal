@@ -10,7 +10,6 @@ Ext.namespace('Portal.details');
 Portal.details.SubsetItemsTabPanel = Ext.extend(Ext.TabPanel, {
 
     constructor: function (cfg) {
-
         this.subsetPanel = new Portal.details.SubsetPanel(cfg);
         this.infoPanel = new Portal.details.InfoPanel(cfg);
         this.layerDetailsPanel = new Portal.details.LayerDetailsPanel(cfg);

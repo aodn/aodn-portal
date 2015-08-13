@@ -99,6 +99,6 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
     },
 
     _removeFromLayerStore: function(dataCollection) {
-        this.layerStore.removeUsingOpenLayer(dataCollection.getSelectedLayer());
+        this.layerStore.removeUsingOpenLayer(dataCollection.getLayerState().getSelectedLayer());
     }
 });

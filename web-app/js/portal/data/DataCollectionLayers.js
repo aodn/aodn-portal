@@ -18,6 +18,10 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
         Portal.data.DataCollectionLayers.superclass.constructor.call(this, config);
     },
 
+    isNcwms: function() {
+        return this.getDefaultLayer().isNcwms();
+    },
+
     getLayers: function() {
         return this.layerCache;
     },

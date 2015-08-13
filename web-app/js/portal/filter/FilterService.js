@@ -17,7 +17,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
     loadFilters: function(dataCollection, successCallback, failureCallback, callbackScope) {
 
-        var layer = dataCollection.getSelectedLayer(); // Todo - DN: What do we do here without getSelectedLayer() ?
+        var layer = dataCollection.getLayerState().getSelectedLayer(); // Todo - DN: What do we do here without getSelectedLayer() ?
 
         var params = {
             server: layer.server.uri,
@@ -79,7 +79,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
     loadFilterRange: function(filterId, dataCollection, successCallback, failureCallback, callbackScope) {
 
-        var layer = dataCollection.getSelectedLayer();
+        var layer = dataCollection.getLayerState().getSelectedLayer();
 
         var params = {
             filter: filterId,
