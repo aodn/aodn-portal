@@ -77,4 +77,13 @@ class PortalBranding {
             true
         )
     }
+
+    def getMotdUrl() {
+        if (grailsApplication.config.portal.brandingBase) {
+            return "${grailsApplication.config.portal.brandingBase}/motd"
+        }
+        else {
+            return grailsApplication.config.portal.motdUrl
+        }
+    }
 }
