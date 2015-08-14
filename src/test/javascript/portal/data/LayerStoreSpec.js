@@ -46,36 +46,6 @@ describe("Portal.data.LayerStore", function() {
         expect(layerStore.getCount()).toBe(1);
     });
 
-    describe('addUsingLayerLink', function() {
-        var layerRecordCallback = noOp;
-        var dataCollection = {
-            get: returns('name')
-        };
-        var openLayer = {};
-
-        beforeEach(function() {
-            spyOn(layerStore, 'addUsingDescriptor');
-            spyOn(layerStore, '_linkToOpenLayer').andReturn(openLayer);
-            spyOn(layerStore, '_addLayer');
-        });
-
-        it('Unknown', function() {
-            layerStore.addUsingLayerLink(layerLink, dataCollection, layerRecordCallback);
-            expect(layerStore._addLayer).toHaveBeenCalledWith(
-                openLayer,
-                layerRecordCallback
-            );
-        });
-
-        it('GeoServer', function() {
-            layerStore.addUsingLayerLink(layerLink, dataCollection, layerRecordCallback);
-            expect(layerStore._addLayer).toHaveBeenCalledWith(
-                openLayer,
-                layerRecordCallback
-            );
-        });
-    });
-
     describe('addUsingDescriptor', function() {
         describe('layer record callback', function() {
             var layerDescriptor;

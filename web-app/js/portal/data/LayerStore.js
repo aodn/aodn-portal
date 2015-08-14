@@ -23,13 +23,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         return Portal.data.DataCollectionLayers.prototype._linkToOpenLayer(layerLink, dataCollection);
     },
 
-    addUsingLayerLink: function(layerLink, dataCollection, layerRecordCallback) {
-        return this._addLayer(
-            this._linkToOpenLayer(layerLink, dataCollection),
-            layerRecordCallback
-        );
-    },
-
     addUsingDescriptor: function(layerDescriptor, layerRecordCallback) {
         return this._addLayer(layerDescriptor.toOpenLayer(), layerRecordCallback);
     },
