@@ -42,11 +42,11 @@ describe("Portal.data.LayerStore", function() {
     };
 
     it('add layer descriptor', function() {
-        layerStore.addUsingDescriptor(layerDescriptor);
+        layerStore._addUsingDescriptor(layerDescriptor);
         expect(layerStore.getCount()).toBe(1);
     });
 
-    describe('addUsingDescriptor', function() {
+    describe('_addUsingDescriptor', function() {
         describe('layer record callback', function() {
             var layerDescriptor;
 
@@ -66,13 +66,13 @@ describe("Portal.data.LayerStore", function() {
             });
 
             it('no callback', function() {
-                layerStore.addUsingDescriptor(layerDescriptor);
+                layerStore._addUsingDescriptor(layerDescriptor);
             });
 
             it('callback', function() {
                 var callback = jasmine.createSpy('callback');
 
-                layerStore.addUsingDescriptor(layerDescriptor, callback);
+                layerStore._addUsingDescriptor(layerDescriptor, callback);
                 expect(callback).toHaveBeenCalled();
                 expect(callback.mostRecentCall.args[0]).toBeInstanceOf(GeoExt.data.LayerRecord);
             });
@@ -95,7 +95,7 @@ describe("Portal.data.LayerStore", function() {
 
         it('addLayerUsingDescriptor', function() {
             expect(layerStore.getCount()).toBe(0);
-            layerStore.addUsingDescriptor(layerDescriptor);
+            layerStore._addUsingDescriptor(layerDescriptor);
             expect(layerStore.getCount()).toBe(1);
         });
 

@@ -23,7 +23,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         return Portal.data.DataCollectionLayers.prototype._linkToOpenLayer(layerLink, dataCollection);
     },
 
-    addUsingDescriptor: function(layerDescriptor, layerRecordCallback) {
+    _addUsingDescriptor: function(layerDescriptor, layerRecordCallback) {
         return this._addLayer(layerDescriptor.toOpenLayer(), layerRecordCallback);
     },
 
@@ -151,7 +151,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
                 Ext.each(baseLayerConfigs, function(baseLayerConfig) {
                     var layerDescriptor = new Portal.common.LayerDescriptor(baseLayerConfig);
-                    this.addUsingDescriptor(layerDescriptor);
+                    this._addUsingDescriptor(layerDescriptor);
                 }, this);
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);
