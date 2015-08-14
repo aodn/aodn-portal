@@ -9,7 +9,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
     var filterGroupPanel;
     var layer;
-    var cfg;
     var filterPanel;
     var filters;
 
@@ -37,12 +36,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 filters: [
                     { /* some filter */ }
                 ]
-            };
-
-            cfg = {
-                dataCollection: {
-                    getSelectedLayer: returns(layer)
-                }
             };
 
             filterPanel = {
@@ -143,7 +136,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 server: { uri: "uri" }
             };
             layer.isKnownToThePortal = returns(true);
-            filterGroupPanel._isDataCollectionActive = returns(true);
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
                 dataCollection: {
@@ -181,7 +173,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             layer = {
                 server: { uri: "uri" }
             };
-            filterGroupPanel._isDataCollectionActive = returns(true);
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
                 dataCollection: {
