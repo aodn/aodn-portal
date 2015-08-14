@@ -4,59 +4,52 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
+
 describe("Portal.details.InfoPanel", function() {
 
-    var mockInfoPanel;
-    var mockAbstract;
-    var mockLinkObjects;
+    var panel;
+    var abstractTitle = OpenLayers.i18n('abstractTitle');
+    var webpageLinksTitle = OpenLayers.i18n('webpageLinksTitle');
+    var unnamedResourceName = OpenLayers.i18n('unnamedResourceName');
 
     beforeEach(function() {
 
-        mockInfoPanel = new Portal.details.InfoPanel({
-            layer: new OpenLayers.Layer.WMS()
-        });
-
-        mockAbstract = "Abstract information";
-
-        mockLinkObjects = [{
-            href: "/",
-            title: ""
+        var mockLinkRecords = [{
+            data: {
+                url: "http://www.google.com",
+                title: ""
+            }
+        }, {
+            data: {
+                url: "http://imos.aodn.org.au",
+                title: "Portal"
+            }
         }];
 
-        mockInfoPanel.update = jasmine.createSpy('update').andCallFake(function(html) { mockInfoPanel.html = html });
+        panel = new Portal.details.InfoPanel({
+            dataCollection: {
+                getMetadataRecord: returns({
+                    get: returns("Abstract & information")
+                }),
+                getWebPageLinks: returns(mockLinkRecords)
+            }
+        });
     });
 
     describe('_constructInfoTabHtml', function() {
-        it('generates an error response if response text is null', function() {
-            mockInfoPanel._constructInfoTabHtml(null, mockLinkObjects);
 
-            expect(mockInfoPanel.update.callCount).toBe(1);
-            expect(mockInfoPanel.html).toEqual(mockInfoPanel._getHtmlHeader("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>") + '<li><a  href=/ target="_blank"><i>Unnamed Resource</i></a></li>\n</ul>');
-        });
+        it('generates correct HTML', function() {
 
-        it('generates an internal link with with unnamed resource if href and title are empty', function() {
-            mockInfoPanel._constructInfoTabHtml(mockAbstract, mockLinkObjects);
+            var output = panel._constructInfoTabHtml();
 
-            expect(mockInfoPanel.update.callCount).toBe(1);
-            expect(mockInfoPanel.html).toEqual(mockInfoPanel._getHtmlHeader(mockAbstract) + '<li><a  href=/ target="_blank"><i>Unnamed Resource</i></a></li>\n</ul>');
-        });
+            expect(output).toContain(abstractTitle);
+            expect(output).toContain("Abstract &amp; information");
 
-        it('generates an external link with unnamed resource if href is not empty and title is empty', function() {
-            mockLinkObjects[0].href = "https://something.somewhere.com";
-            mockInfoPanel._constructInfoTabHtml(mockAbstract, mockLinkObjects);
-
-            expect(mockInfoPanel.update.callCount).toBe(1);
-            expect(mockInfoPanel.html).toEqual(mockInfoPanel._getHtmlHeader(mockAbstract) + '<li><a class=\"external\" href=https://something.somewhere.com target="_blank"><i>Unnamed Resource</i></a></li>\n</ul>');
-        });
-
-        it('generates an external link with the link title if both are non-empty', function() {
-            mockLinkObjects[0].href = "https://something.somewhere.com";
-            mockLinkObjects[0].title = "Zelda";
-            mockInfoPanel._constructInfoTabHtml(mockAbstract, mockLinkObjects);
-
-            expect(mockInfoPanel.update.callCount).toBe(1);
-            expect(mockInfoPanel.html).toEqual(mockInfoPanel._getHtmlHeader(mockAbstract) + '<li><a class=\"external\" href=https://something.somewhere.com target="_blank">Zelda</a></li>\n</ul>');
+            expect(output).toContain(webpageLinksTitle);
+            expect(output).toContain('href="http://www.google.com"');
+            expect(output).toContain(unnamedResourceName);
+            expect(output).toContain('href="http://imos.aodn.org.au"');
+            expect(output).toContain('Portal');
         });
     });
 });
-

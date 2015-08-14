@@ -33,74 +33,46 @@ describe("Portal.data.LayerStore", function() {
 
     var createOpenLayer = function(title, url) {
 
-        if (title == undefined) {
-
-            title = "the title";
-        }
-
-        if (url == undefined) {
-
-            url = "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi";
-        }
-
         return new OpenLayers.Layer.WMS(
-            title,
-            url,
+            title || "the title",
+            url || "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
             {},
             { isBaseLayer: false }
         );
     };
 
     it('add layer descriptor', function() {
-        layerStore.addUsingDescriptor(layerDescriptor);
+        layerStore._addUsingDescriptor(layerDescriptor);
         expect(layerStore.getCount()).toBe(1);
     });
 
-    describe('addUsingLayerLink', function() {
-        var layerDescriptor = {};
-        var layerRecordCallback = {};
-
-        it('Unknown', function() {
-            spyOn(layerStore, '_serverUnrecognized');
-            spyOn(layerStore, 'addUsingDescriptor');
-
-            var origServerUri = layerLink.server.uri;
-            layerStore.addUsingLayerLink("layerName", layerLink, {}, layerRecordCallback);
-            expect(layerStore._serverUnrecognized).toHaveBeenCalledWith(origServerUri);
-            expect(layerStore.addUsingDescriptor).toHaveBeenCalledWith(
-                jasmine.any(Portal.common.LayerDescriptor),
-                undefined
-            );
-        });
-
-        it('GeoServer', function() {
-            spyOn(Portal.data.Server, 'getInfo').andReturn({ getLayerType: returns('type') });
-            spyOn(layerStore, 'addUsingDescriptor');
-
-            layerStore.addUsingLayerLink("layerName", layerLink, {}, layerRecordCallback);
-            expect(layerStore.addUsingDescriptor).toHaveBeenCalledWith(
-                jasmine.any(Portal.common.LayerDescriptor),
-                layerRecordCallback
-            );
-        });
-    });
-
-    describe('addUsingDescriptor', function() {
+    describe('_addUsingDescriptor', function() {
         describe('layer record callback', function() {
             var layerDescriptor;
 
             beforeEach(function() {
-                layerDescriptor = new Portal.common.LayerDescriptor(layerLink, {}, OpenLayers.Layer.WMS);
+
+                var dataCollection = {
+                    getMetadataRecord: returns({
+                        data: { bbox: {
+                            getBounds: returns({})
+                        }}
+                    })
+                };
+
+                layerDescriptor = new Portal.common.LayerDescriptor(
+                    layerLink, 'title', dataCollection, OpenLayers.Layer.WMS
+                );
             });
 
             it('no callback', function() {
-                layerStore.addUsingDescriptor(layerDescriptor);
+                layerStore._addUsingDescriptor(layerDescriptor);
             });
 
             it('callback', function() {
                 var callback = jasmine.createSpy('callback');
 
-                layerStore.addUsingDescriptor(layerDescriptor, callback);
+                layerStore._addUsingDescriptor(layerDescriptor, callback);
                 expect(callback).toHaveBeenCalled();
                 expect(callback.mostRecentCall.args[0]).toBeInstanceOf(GeoExt.data.LayerRecord);
             });
@@ -123,7 +95,7 @@ describe("Portal.data.LayerStore", function() {
 
         it('addLayerUsingDescriptor', function() {
             expect(layerStore.getCount()).toBe(0);
-            layerStore.addUsingDescriptor(layerDescriptor);
+            layerStore._addUsingDescriptor(layerDescriptor);
             expect(layerStore.getCount()).toBe(1);
         });
 
@@ -178,11 +150,6 @@ describe("Portal.data.LayerStore", function() {
                 layerStore.removeUsingOpenLayer(openLayer);
                 expect(layerStore.getCount()).toBe(0);
             });
-
-            it('layerRemoved event published', function() {
-                layerStore.removeUsingOpenLayer(openLayer);
-                expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
-            });
         });
 
         it('removeAll', function() {
@@ -205,32 +172,9 @@ describe("Portal.data.LayerStore", function() {
     });
 
     describe('containsOpenLayer', function() {
-        it('returns false with duplicate names if layerHierarchy are different', function() {
+        it('returns true with duplicate names', function() {
             var layer1 = createOpenLayer();
             var layer2 = createOpenLayer();
-
-            layer1.layerHierarchyPath = "this/is/hierarchy";
-            layer2.layerHierarchyPath = "this/is/also/hierarchy";
-
-            layerStore._addLayer(layer1);
-            expect(layerStore.containsOpenLayer(layer2)).toBeFalsy();
-        });
-
-        it('returns true with duplicate names if layerHierarchy are nonexistant', function() {
-            var layer1 = createOpenLayer();
-            var layer2 = createOpenLayer();
-
-            layerStore._addLayer(layer1);
-            expect(layerStore.containsOpenLayer(layer2)).toBeTruthy();
-        });
-
-        it('returns true with duplicate layerHierarchies ', function() {
-            var layer1 = createOpenLayer();
-            var layer2 = createOpenLayer();
-            layerStore._addLayer(createOpenLayer());
-            layer1.layerHierarchyPath = "this/is/hierarchy";
-            layer2.layerHierarchyPath = "this/is/hierarchy";
-
 
             layerStore._addLayer(layer1);
             expect(layerStore.containsOpenLayer(layer2)).toBeTruthy();

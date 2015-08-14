@@ -8,18 +8,18 @@
 describe('Portal.cart.InsertionService', function() {
 
     var mockInsertionService;
-    var geoNetworkRecord;
+    var dataCollection;
+    var geoserverLayer = { isNcwms: returns(false) };
+    var ncwmsLayer = { isNcwms: returns(true) };
 
     beforeEach(function() {
         mockInsertionService = new Portal.cart.InsertionService();
 
-        geoNetworkRecord = {
+        dataCollection = {
             title: 'the title',
             uuid: '42',
-            wmsLayer: {
-                isNcwms: returns(false)
-            },
-            aggregator: { childAggregators: [] }
+            getSelectedLayer: returns(geoserverLayer),
+            getDataDownloadHandlers: returns([{}])
         };
     });
 
@@ -33,24 +33,24 @@ describe('Portal.cart.InsertionService', function() {
                 getInjectionJson: jasmine.createSpy('getInjectionJson')
             };
 
-            spyOn(mockInsertionService, '_getNcwmsInjector').andReturn(mockInjector);
-            spyOn(mockInsertionService, '_getWmsInjector').andReturn(mockInjector);
-            spyOn(mockInsertionService, '_getNoDataInjector').andReturn(mockInjector);
+            spyOn(Portal.cart, 'NcwmsInjector').andReturn(mockInjector);
+            spyOn(Portal.cart, 'WmsInjector').andReturn(mockInjector);
+            spyOn(Portal.cart, 'NoDataInjector').andReturn(mockInjector);
         });
 
         it('creates an ncwms injector for ncwms layers', function() {
             mockInsertionService.insertionValues(getNcwmsRecord());
-            expectGetInjectorToHaveBeenCalled(mockInsertionService._getNcwmsInjector)
+            expectGetInjectorToHaveBeenCalled(Portal.cart.NcwmsInjector)
         });
 
         it('creates a wms injector for wms layers', function() {
             mockInsertionService.insertionValues(getWmsRecord());
-            expectGetInjectorToHaveBeenCalled(mockInsertionService._getWmsInjector);
+            expectGetInjectorToHaveBeenCalled(Portal.cart.WmsInjector);
         });
 
         it('creates a no data injector for layers containing no data', function() {
             mockInsertionService.insertionValues(getNoDataRecord());
-            expectGetInjectorToHaveBeenCalled(mockInsertionService._getNoDataInjector);
+            expectGetInjectorToHaveBeenCalled(Portal.cart.NoDataInjector);
         });
 
         afterEach(function() {
@@ -77,37 +77,38 @@ describe('Portal.cart.InsertionService', function() {
         });
     });
 
-    function expectGetInjectorToHaveBeenCalled(getInjectorFn) {
-        expect(getInjectorFn).toHaveBeenCalled();
+    function expectGetInjectorToHaveBeenCalled(injectorConstructor) {
 
-        var getInjectorFns = [
-            mockInsertionService._getNcwmsInjector,
-            mockInsertionService._getWmsInjector,
-            mockInsertionService._getNoDataInjector
+        var injectorConstructors = [
+            Portal.cart.NcwmsInjector,
+            Portal.cart.WmsInjector,
+            Portal.cart.NoDataInjector
         ];
 
-        for (var i = 0; i < getInjectorFns.length; i++) {
-            if (getInjectorFns[i] != getInjectorFn) {
-                expect(getInjectorFns[i]).not.toHaveBeenCalled();
+        expect(injectorConstructor).toHaveBeenCalled();
+
+        for (var i = 0; i < injectorConstructors.length; i++) {
+            if (injectorConstructors[i] != injectorConstructor) {
+                expect(injectorConstructors[i]).not.toHaveBeenCalled();
             }
         }
     }
 
     function getWmsRecord() {
-        geoNetworkRecord.dataDownloadHandlers = [{}];
+        dataCollection.getSelectedLayer = returns(geoserverLayer);
 
-        return geoNetworkRecord;
+        return dataCollection;
     }
 
     function getNcwmsRecord() {
-        geoNetworkRecord.wmsLayer.isNcwms = returns(true);
+        dataCollection.getSelectedLayer = returns(ncwmsLayer);
 
-        geoNetworkRecord.dataDownloadHandlers = [{}];
-
-        return geoNetworkRecord;
+        return dataCollection;
     }
 
     function getNoDataRecord() {
-        return geoNetworkRecord;
+        dataCollection.getDataDownloadHandlers = returns([]);
+
+        return dataCollection;
     }
 });

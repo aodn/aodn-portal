@@ -56,6 +56,6 @@ Portal.filter.ui.BooleanFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPane
         this._fireAddEvent();
 
         var val = this.filter.getLabel() + "=" + this.checkbox.getValue();
-        trackFiltersUsage('filtersTrackingBooleanAction', val, this.layer.name);
+        trackFiltersUsage('filtersTrackingBooleanAction', val, this.dataCollection.getTitle());
     }
 });

@@ -83,14 +83,14 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
             clickHandler = handler._getUrlGeneratorFunction();
 
             testCollection = {
-                ncwmsParams: {
+                getNcwmsParams: returns({
                     dateRangeStart: moment.utc('2000-01-01T01:01:01'),
                     dateRangeEnd: moment.utc('2014-12-23T23:59:59'),
                     latitudeRangeStart: -42,
                     latitudeRangeEnd: -20,
                     longitudeRangeStart: 160,
                     longitudeRangeEnd: 170
-                }
+                })
             };
             testHandlerParams = {
                 emailAddress: 'bob@example.com'
@@ -123,11 +123,10 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
         });
 
         it('builds the correct URL if no area is specified', function() {
-
-            testCollection.ncwmsParams.latitudeRangeStart = undefined;
-            testCollection.ncwmsParams.latitudeRangeEnd = undefined;
-            testCollection.ncwmsParams.longitudeRangeStart = undefined;
-            testCollection.ncwmsParams.longitudeRangeEnd = undefined;
+            testCollection.getNcwmsParams = returns({
+                dateRangeStart: moment.utc('2000-01-01T01:01:01'),
+                dateRangeEnd: moment.utc('2014-12-23T23:59:59')
+            });
 
             url = clickHandler(testCollection, testHandlerParams);
             json = jsonFromUrl(url, expectedUrlStart);
@@ -141,8 +140,12 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
         });
 
         it('builds the correct URL is no dates are specified', function() {
-            testCollection.ncwmsParams.dateRangeStart = null;
-            testCollection.ncwmsParams.dateRangeEnd = null;
+            testCollection.getNcwmsParams = returns({
+                latitudeRangeStart: -42,
+                latitudeRangeEnd: -20,
+                longitudeRangeStart: 160,
+                longitudeRangeEnd: 170
+            });
 
             url = clickHandler(testCollection, testHandlerParams);
             json = jsonFromUrl(url, expectedUrlStart);

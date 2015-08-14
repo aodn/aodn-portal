@@ -62,11 +62,14 @@ describe('OpenLayers', function() {
 
                 spyOn(openLayer, '_buildGetFeatureRequestUrl');
                 spyOn(Portal.filter.combiner, 'DataDownloadCqlBuilder').andReturn({
-                    buildCql: function() { return 'download filters' }
+                    buildCql: returns('download filters')
                 });
 
-                openLayer.getFeatureRequestUrl('wms_uri', 'layerName', 'csv');
+                var testFilters = ['filters'];
 
+                openLayer.getFeatureRequestUrl(testFilters, 'wms_uri', 'layerName', 'csv');
+
+                expect(Portal.filter.combiner.DataDownloadCqlBuilder).toHaveBeenCalledWith({filters: testFilters});
                 expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wms_uri', 'layerName', 'csv', 'download filters');
             });
         });
@@ -134,11 +137,9 @@ describe('OpenLayers', function() {
             describe('uses featureInfoFormat format', function() {
                 beforeEach(function() {
                     openLayer.setMap(new OpenLayers.Map());
-                    openLayer.map.getProjectionObject = function() {
-                        return {
-                            getCode: function() {}
-                        };
-                    };
+                    openLayer.map.getProjectionObject = returns({
+                        getCode: noOp
+                    });
                     openLayer._getBoundingBox = noOp;
                     openLayer.server = {
                         infoFormat: 'text/html'

@@ -15,18 +15,10 @@ describe("Portal.filter.GeometryFilterService", function() {
         map.navigationControl = {};
         map.navigationControl.deactivate = returns(null);
 
-        spyOn(Portal.filter.ui.GeometryFilterService.prototype, 'setLayerAndFilter');
         spyOn(Portal.filter.ui.GeometryFilterService.prototype, '_updateWithGeometry');
         filterPanel = new Portal.filter.ui.GeometryFilterService({
-            map: map,
-            filter: {
-                getName: returns('geom_filter'),
-                setValue: noOp,
-                clearValue: noOp
-            }
+            map: map
         });
-
-        spyOn(window, 'trackUsage');
     });
 
     describe('map', function() {
@@ -42,18 +34,6 @@ describe("Portal.filter.GeometryFilterService", function() {
 
         it("subscribes to 'spatialconstraintcleared' event", function() {
             map.events.triggerEvent('spatialconstraintcleared');
-            expect(filterPanel._updateWithGeometry).toHaveBeenCalledWith();
-        });
-    });
-
-    describe('handleRemoveFilter', function() {
-        it('clears the spatial constraint', function() {
-            Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
-            spyOn(map.spatialConstraintControl, 'clear');
-
-            filterPanel.handleRemoveFilter();
-            expect(map.spatialConstraintControl.clear).toHaveBeenCalled();
-            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Spatial Constraint", "cleared", undefined);
             expect(filterPanel._updateWithGeometry).toHaveBeenCalledWith();
         });
     });

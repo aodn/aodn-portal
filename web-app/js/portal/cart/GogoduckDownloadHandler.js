@@ -63,7 +63,7 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return function(collection, handlerParams) {
 
             var gogoduckUrl = _this._buildGogoduckUrl(
-                collection.ncwmsParams,
+                collection.getNcwmsParams(),
                 _this._resourceName(),
                 _this._resourceHref(),
                 handlerParams.emailAddress

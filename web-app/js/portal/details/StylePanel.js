@@ -8,36 +8,13 @@
 Ext.namespace('Portal.details');
 
 Portal.details.StylePanel = Ext.extend(Ext.Container, {
-    constructor: function(cfg) {
-        this.layer = cfg.layer;
-
-        Portal.details.StylePanel.superclass.constructor.call(this, cfg);
-
-        this._attachEvents();
-    },
-
-    _attachEvents: function() {
-
-        this.layer.events.on({
-            'stylesloaded': this._stylesLoaded,
-            scope: this
-        });
-    },
 
     initComponent: function() {
 
-        this.legendImage = new GeoExt.LegendImage({
-            ctCls: 'legendImage'
-        });
-
-        this.ncwmsColourScalePanel = new Portal.details.NCWMSColourScalePanel();
-        this.ncwmsColourScalePanel.on('colourScaleUpdated', this.refreshLegend, this);
-
-        this.styleCombo = this.makeCombo();
-
+        this._createControls();
         this.items = [
             this.styleCombo,
-            this.ncwmsColourScalePanel,
+            this.ncwmsScaleRangeControls,
             {
                 xtype: "panel",
                 autoWidth: true,
@@ -48,71 +25,100 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         Portal.details.StylePanel.superclass.initComponent.call(this);
 
         this._initWithLayer();
+
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, this._initWithLayer, this);
     },
 
-    makeCombo: function() {
+    _createControls: function() {
+
         var tpl = '<tpl for="."><div class="x-combo-list-item"><p>{styleName}</p><img src="{displayImage}" /></div></tpl>';
-        var fields;
-
-        fields = [
-            { name: 'styleName' },
-            { name: 'displayImage' }
-        ];
-
-        var valueStore = new Ext.data.ArrayStore({
+        var styleStore = new Ext.data.ArrayStore({
             autoDestroy: true,
             itemId: 'style',
             name: 'style',
-            fields: fields
+            fields: [
+                { name: 'styleName' },
+                { name: 'displayImage' }
+            ]
         });
 
-        return new Ext.form.ComboBox({
-            width: 200,
+        this.styleCombo = new Ext.form.ComboBox({
+            width: 250,
             fieldLabel: 'style',
             triggerAction: 'all',
             editable: false,
             lazyRender: true,
+            hidden: true,
+            disabled: true,
+            emptyText: OpenLayers.i18n('loadingMessage'),
             mode: 'local',
-            store: valueStore,
+            store: styleStore,
             valueField: 'styleName',
             displayField: 'styleName',
             tpl: tpl,
             listeners: {
-                scope: this,
-                select: function(cbbox, record, index) {
-                    this.setChosenStyle(record);
-                }
+                'select': this.setChosenStyle,
+                scope: this
             }
+        });
+
+        this.ncwmsScaleRangeControls = new Portal.details.NcwmsScaleRangeControls({
+            dataCollection: this.dataCollection,
+            listeners: {
+                'colourScaleUpdated': this.refreshLegend,
+                scope: this
+            }
+        });
+
+        this.legendImage = new GeoExt.LegendImage({
+            ctCls: 'legendImage',
+            hidden: true
         });
     },
 
     _initWithLayer: function() {
-        this.styleCombo.hide();
 
-        if (this.layer.isNcwms()) {
-            this.ncwmsColourScalePanel.makeNcWMSColourScale(this.layer);
+        var layer = this.dataCollection.getSelectedLayer();
+
+        if (layer.isNcwms()) {
+            this.ncwmsScaleRangeControls.loadScaleFromLayer();
         }
         else {
-            this.ncwmsColourScalePanel.hide();
+            this.ncwmsScaleRangeControls.hide();
+        }
+
+        layer.events.on({
+            'stylesloaded': this._stylesLoaded,
+            scope: this
+        });
+
+        this.refreshLegend();
+    },
+
+    _stylesLoaded: function(layer) {
+
+        var styleData = this._processStyleData(layer);
+
+        var picker = this.styleCombo;
+
+        if (styleData.length > 1) {
+            picker.store.loadData(styleData);
+            picker.setValue(layer.defaultStyle);
+            picker.collapse();
+            picker.enable();
+            picker.show();
+        }
+        else {
+            picker.setValue('');
+            picker.hide();
         }
 
         this.refreshLegend();
     },
 
-    _stylesLoaded: function() {
-
-        var styleData = this._processStyleData(this.layer);
-
-        if (styleData.length > 1) {
-            this.styleCombo.store.loadData(styleData);
-            this.styleCombo.setValue(this.layer.defaultStyle);
-            this.styleCombo.collapse();
-            this.styleCombo.show();
-        }
-    },
-
-    _processStyleData: function(layer) {
+    _processStyleData: function() {
         var data = [];
+        var layer = this.dataCollection.getSelectedLayer();
 
         Ext.each(layer.styles, function(style) {
 
@@ -126,44 +132,32 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         return data;
     },
 
-    setChosenStyle: function(record) {
+    setChosenStyle: function(styleCombo, record) {
 
         var styleName = record.get('styleName');
 
-        this.layer.mergeNewParams({
-            styles: styleName
-        });
+        this.dataCollection.getLayerState().setStyle(styleName);
 
-        // Params should already have been changed, but legend doesn't update if we don't do this...
-        this.layer.params.STYLES = styleName;
         this.refreshLegend();
     },
 
     refreshLegend: function() {
 
-        // get openlayers style as string
-        var styleName = this.layer.params.STYLES;
-        var palette = this._getPalette(this.layer, styleName);
-        var url = this.buildGetLegend(this.layer, styleName, palette, false);
+        var styleName = this.dataCollection.getLayerState().getStyle() || '';
+        var palette = this._getPalette(styleName);
+
+        var layer = this.dataCollection.getSelectedLayer();
+        var url = this.buildGetLegend(layer, styleName, palette, false);
 
         this.legendImage.setUrl(url);
         this.legendImage.show();
-        // dont worry if the form is visible here
+
         this.styleCombo.setValue(styleName);
     },
 
-    // builds a getLegend image request for the combobox form and the selected palette
     buildGetLegend: function(layer, style, palette, colorBarOnly) {
 
-        var url = "";
-
-        if (layer.cache === true) {
-            url = layer.server.uri;
-        }
-        else {
-            url = layer.url;
-        }
-
+        var url = layer.url;
         var opts = "";
 
         // Palette used for once off. eg combobox picker
@@ -217,21 +211,14 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         return url;
     },
 
-    _getPalette: function(layer, style) {
-        if (layer.isNcwms()) {
+    _getPalette: function(style) {
 
-            // Use palette if title is in the form [type]/[palette]
-            var parts = style.split("/");
-            if (parts.length > 1) {
-
-                return parts[1];
-            }
-            else {
-
-                return style;
-            }
+        // Use palette if title is in the form [type]/[palette]
+        var parts = style.split("/");
+        if (parts.length > 1) {
+            return parts[1];
         }
 
-        return undefined;
+        return style;
     }
 });

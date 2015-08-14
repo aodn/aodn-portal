@@ -70,21 +70,8 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
 
     _addLabel: function(labelText) {
 
-        if (!this.hideLabel) {
-            var label = new Ext.form.Label({
-                html: "<h3>" + labelText + "</h3>"
-            });
-            return label;
-        }
-    },
-
-    handleRemoveFilter: function() {
-
-        if (this.map.spatialConstraintControl) {
-            this.map.spatialConstraintControl.clear();
-        }
-
-        this.map.events.triggerEvent('spatialconstraintcleared');
-        trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingValueCleared'));
+        return new Ext.form.Label({
+            html: "<h3>" + labelText + "</h3>"
+        });
     }
 });

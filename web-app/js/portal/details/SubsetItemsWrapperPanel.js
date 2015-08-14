@@ -13,24 +13,23 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
 
         var tabPanelForLayer = this._initSubsetItemsTabPanel(cfg);
 
-        this.createTools(cfg.layer);
+        this.createTools(cfg.dataCollection.getSelectedLayer());
 
-        cfg.layer.events.register('loadstart', this, function() {
+        cfg.dataCollection.getLayerState().on('loadstart', function() {
             this._onLayerLoadStart();
-        });
+        }, this);
 
-        cfg.layer.events.register('loadend', this, function() {
+        cfg.dataCollection.getLayerState().on('loadend', function() {
             this._onLayerLoadEnd();
-        });
+        }, this);
 
-        cfg.layer.events.register('tileerror', this, function() {
+        cfg.dataCollection.getLayerState().on('tileerror', function() {
             this._onLayerLoadError();
-        });
+        }, this);
 
         var config = Ext.apply({
-            id: cfg.layerItemId,
             cls: 'subsetPanelAccordionItem',
-            title: '<h4>' + cfg.layer.name + '</h4>',
+            title: '<h4>' + cfg.dataCollection.getTitle() + '</h4>',
             autoHeight: true,
             defaults: {
                 style: {padding: '10px'},
@@ -73,7 +72,8 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
     _initSubsetItemsTabPanel: function(cfg) {
         return new Portal.details.SubsetItemsTabPanel({
             map: cfg.map,
-            layer: cfg.layer,
+            dataCollection: cfg.dataCollection,
+            dataCollectionStore: cfg.dataCollectionStore,
             listeners: {
                 beforeTabChange: this._doTracking
             }
@@ -103,20 +103,18 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
         };
     },
 
-    _layerDelete: function(event, toolEl, panel) {
-
-        var collectionId = this.layer.parentGeoNetworkRecord.data.uuid;
-        var record = Portal.data.ActiveGeoNetworkRecordStore.instance().getRecordFromUuid(collectionId);
-        Portal.data.ActiveGeoNetworkRecordStore.instance().remove(record);
+    _layerDelete: function() {
+        this.dataCollectionStore.remove(this.dataCollection);
     },
 
     _doTracking: function(panel, newTab, currentTab) {
 
         if (currentTab) {
-            trackUsage(OpenLayers.i18n('subsetItemsTrackingCategory'),
+            trackUsage(
+                OpenLayers.i18n('subsetItemsTrackingCategory'),
                 OpenLayers.i18n('subsetItemsTabsTrackingAction'),
                 newTab.title,
-                this.layer.name
+                this.dataCollection.getTitle()
             );
             return true;
         }

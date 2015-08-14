@@ -21,53 +21,26 @@ Portal.cart.InsertionService = Ext.extend(Object, {
             downloadConfirmationScope: this
         };
 
-        var wmsLayer = collection.wmsLayer;
+        var wmsLayer = collection.getSelectedLayer();
         var htmlInjection;
 
         if (this._isCollectionDownloadable(collection)) {
             if (wmsLayer.isNcwms()) {
-                htmlInjection = this._getNcwmsInjector(config);
+                htmlInjection = new Portal.cart.NcwmsInjector(config);
             }
             else {
-                htmlInjection = this._getWmsInjector(config);
+                htmlInjection = new Portal.cart.WmsInjector(config);
             }
         }
         else {
-            htmlInjection = this._getNoDataInjector(config);
+            htmlInjection = new Portal.cart.NoDataInjector(config);
         }
 
         return htmlInjection.getInjectionJson(collection);
     },
 
     _isCollectionDownloadable: function(collection) {
-        return collection.dataDownloadHandlers && (collection.dataDownloadHandlers.length > 0);
-    },
-
-    _getNcwmsInjector: function(config) {
-
-        if (!this.ncwmsInjector) {
-            this.ncwmsInjector = new Portal.cart.NcwmsInjector(config);
-        }
-
-        return this.ncwmsInjector;
-    },
-
-    _getWmsInjector: function(config) {
-
-        if (!this.wmsInjector) {
-            this.wmsInjector = new Portal.cart.WmsInjector(config);
-        }
-
-        return this.wmsInjector;
-    },
-
-    _getNoDataInjector: function(config) {
-
-        if (!this.noDataInjector) {
-            this.noDataInjector = new Portal.cart.NoDataInjector(config);
-        }
-
-        return this.noDataInjector;
+        return collection.getDataDownloadHandlers().length > 0;
     },
 
     downloadWithConfirmation: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {

@@ -11,78 +11,53 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
 
-        this.layer = cfg.layer;
+        Ext.apply(this, cfg);
 
         var config = Ext.apply({
             title: OpenLayers.i18n('infoTabTitle'),
-            html: OpenLayers.i18n('loadingMessage', {resource: " collection information"}),
+            html: this._constructInfoTabHtml(),
             autoHeight: true,
-            style: {padding: '10px 25px 10px 10px'},
-            listeners: {
-                scope: this,
-                afterrender: this._initWithLayer
-            }
+            style: {padding: '10px 25px 10px 10px'}
         }, cfg);
 
         Portal.details.InfoPanel.superclass.constructor.call(this, config);
     },
 
-    _initWithLayer: function() {
+    _constructInfoTabHtml: function() {
 
-        var metadataUrl = 'layer/getMetadataAbstract?uuid=' +
-            encodeURIComponent(this.layer.metadataUuid);
+        var rawAbstract = this.dataCollection.getMetadataRecord().get('abstract');
+        var abstract = Ext.util.Format.htmlEncode(rawAbstract);
+        var linkRecords = this.dataCollection.getWebPageLinks();
 
-        Ext.Ajax.request({
-            url: metadataUrl,
-            scope: this,
-            success: function(resp, options) {
-                this._constructInfoTabHtml(resp.responseText, this.layer.parentGeoNetworkRecord.data.onlineResources);
-            },
-            failure: function(resp) {
-                log.error("Error receiving metadata abstract for record with uuid " + this.layer.metadataUuid);
-                this._constructInfoTabHtml(null, this.layer.parentGeoNetworkRecord.data.onlineResources);
-            }
-        });
+        return String.format(
+            '<h4>{0}</h4>\n{1}' +
+            '<h4>{2}</h4>\n<ul>\n{3}</ul>',
+            OpenLayers.i18n('abstractTitle'),
+            abstract,
+            OpenLayers.i18n('webpageLinksTitle'),
+            this._getHtmlForLinks(linkRecords)
+        );
     },
 
-    _constructInfoTabHtml: function(responseText, linkObjects) {
+    _getHtmlForLinks: function(linkRecords) {
 
-        var html;
+        var linkHtml = "";
 
-        if (responseText) {
-            html = this._getHtmlHeader(responseText);
-        }
-        else {
-            html = this._getHtmlHeader("<i>" + OpenLayers.i18n('noMetadataMessage') + "</i>");
-        }
+        Ext.each(linkRecords, function(linkRecord) {
 
-        Ext.each(linkObjects, function(linkObject) {
-            var onlineResource;
-            var linkExternal = "";
-            var linkText = "";
+            var link = linkRecord.data;
+            var linkText;
 
-            if (linkObject.href != "/") {
-                linkExternal = 'class=\"external\"';
-            }
-
-            if (linkObject.title == "") {
-                linkText = '<i>Unnamed Resource</i>';
+            if (link.title == "") {
+                linkText = String.format('<i>{0}</i>', OpenLayers.i18n('unnamedResourceName'));
             }
             else {
-                linkText = linkObject.title;
+                linkText = link.title;
             }
 
-            onlineResource = String.format('<li><a {0} href={1} target="_blank">{2}</a></li>\n', linkExternal, linkObject.href, linkText);
-
-            html += onlineResource;
+            linkHtml += String.format('<li><a class="external" href="{0}" target="_blank">{1}</a></li>\n', link.url, linkText);
         });
 
-        html += '</ul>';
-
-        this.update(html);
-    },
-
-    _getHtmlHeader: function(responseText) {
-        return String.format('<!DOCTYPE html>\n<h4>Abstract</h4>{0}<BR><h4>Online Resources</h4>\n<ul>\n', responseText);
+        return linkHtml;
     }
 });

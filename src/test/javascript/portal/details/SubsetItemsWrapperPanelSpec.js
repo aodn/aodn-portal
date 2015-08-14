@@ -7,17 +7,29 @@
 describe("Portal.details.SubsetItemsWrapperPanel", function() {
     var panel;
     var layer;
+    var layerState;
+
+    var dataCollection;
 
     beforeEach(function() {
         spyOn(Portal.details.SubsetItemsWrapperPanel.prototype, '_initSubsetItemsTabPanel').andReturn(new Ext.Panel());
 
         layer = new OpenLayers.Layer.WMS();
+        layerState = new Ext.util.Observable();
+
+        dataCollection = {
+            getSelectedLayer: returns(layer),
+            getTitle: returns('amazetion'),
+            getLayerState: returns(layerState)
+        };
+
         panel = new Portal.details.SubsetItemsWrapperPanel({
-            layer: layer
+            dataCollection: dataCollection
         });
     });
 
     describe('layer event listeners', function() {
+
         beforeEach(function() {
             spyOn(panel, '_onLayerLoadStart');
             spyOn(panel, '_onLayerLoadEnd');
@@ -25,17 +37,17 @@ describe("Portal.details.SubsetItemsWrapperPanel", function() {
         });
 
         it('responds to loadstart', function() {
-            layer.events.triggerEvent('loadstart');
+            layerState.fireEvent('loadstart');
             expect(panel._onLayerLoadStart).toHaveBeenCalled();
         });
 
         it('responds to loadend', function() {
-            layer.events.triggerEvent('loadend');
+            layerState.fireEvent('loadend');
             expect(panel._onLayerLoadEnd).toHaveBeenCalled();
         });
 
         it('responds to tileerror', function() {
-            layer.events.triggerEvent('tileerror');
+            layerState.fireEvent('tileerror');
             expect(panel._onLayerLoadError).toHaveBeenCalled();
         });
     });

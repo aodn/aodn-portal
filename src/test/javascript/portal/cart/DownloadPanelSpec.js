@@ -10,7 +10,9 @@ describe("Portal.cart.DownloadPanel", function() {
     var downloadPanel;
 
     beforeEach(function() {
-        downloadPanel = new Portal.cart.DownloadPanel();
+        downloadPanel = new Portal.cart.DownloadPanel({
+            dataCollectionStore: { removeAll: jasmine.createSpy('removeAll') }
+        });
         spyOn(downloadPanel, 'generateContent');
         spyOn(downloadPanel, '_generateBodyContentForCollection');
     });
@@ -37,10 +39,6 @@ describe("Portal.cart.DownloadPanel", function() {
                 Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
 
                 expect(downloadPanel.generateContent).toHaveBeenCalled();
-            });
-
-            it('store is the ActiveGeoNetworkRecordStore singleton instance', function() {
-                expect(downloadPanel.store).toBe(Portal.data.ActiveGeoNetworkRecordStore.instance());
             });
         });
 
@@ -84,10 +82,9 @@ describe("Portal.cart.DownloadPanel", function() {
 
     describe('clear all', function() {
         it('calls to active geo network record store remove all', function() {
-            spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'removeAll');
             window.setViewPortTab = jasmine.createSpy();
             downloadPanel._clearAllAndReset();
-            expect(Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll).toHaveBeenCalled();
+            expect(downloadPanel.dataCollectionStore.removeAll).toHaveBeenCalled();
         });
     });
 
@@ -99,24 +96,17 @@ describe("Portal.cart.DownloadPanel", function() {
 
     describe('generateBodyContent', function() {
 
-        var mockTemplate;
         var testCollection1;
         var testCollection2;
         var testCollection3;
         var testCollection4;
 
         var makeTestDownloadPanel = function(collections) {
-            var downloadPanel = new Portal.cart.DownloadPanel();
-
-            var items = [];
-            Ext.each(collections, function(collection) {
-                items.push({
-                    data: collection,
-                    loaded: true
-                });
+            var downloadPanel = new Portal.cart.DownloadPanel({
+                dataCollectionStore: {
+                    getLoadedRecords: returns(collections)
+                }
             });
-
-            downloadPanel.store.data.items = items;
 
             spyOn(downloadPanel.bodyContent, 'update');
             spyOn(downloadPanel, '_applyTemplate');
@@ -132,6 +122,9 @@ describe("Portal.cart.DownloadPanel", function() {
             testCollection4 = makeTestCollection('[Content 4]');
 
             spyOn(Portal.cart, 'DownloadPanelItemTemplate');
+            spyOn(Portal.cart, 'InsertionService').andReturn({
+                insertionValues: returns({})
+            });
         });
 
         it('creates a DownloadPanelItemTemplate', function() {
@@ -182,26 +175,20 @@ describe("Portal.cart.DownloadPanel", function() {
 
         it('includes menu items from download handlers', function() {
 
-            testCollection1.dataDownloadHandlers = [{
-                getDownloadOptions: function() {
-                    return [
-                        {
-                            textKey: 'key1',
-                            handler: {},
-                            handlerParams: {}
-                        },
-                        {
-                            textKey: 'key2',
-                            handler: {},
-                            handlerParams: {}
-                        }
-                    ];
-                }
-            }];
-
-            spyOn(Portal.cart, 'InsertionService').andReturn({
-                insertionValues: function() {return {menuItems: []}}
-            });
+            testCollection1.getDataDownloadHandlers = returns([{
+                getDownloadOptions: returns([
+                    {
+                        textKey: 'key1',
+                        handler: {},
+                        handlerParams: {}
+                    },
+                    {
+                        textKey: 'key2',
+                        handler: {},
+                        handlerParams: {}
+                    }
+                ])
+            }]);
 
             downloadPanel = makeTestDownloadPanel([
                 testCollection1
@@ -219,14 +206,10 @@ describe("Portal.cart.DownloadPanel", function() {
 
     describe('confirmDownload', function() {
 
-        var makeTestParams = function() {
-            return {
+        it('calls trackUsage when the user accepts download', function() {
+            var testParams = {
                 filenameFormat: "{0}.csv"
             };
-        };
-
-        it('calls trackUsage when the user accepts download', function() {
-            var testParams = makeTestParams();
             var testCollection = makeTestCollection();
             var callbackScope = downloadPanel;
             var callback = noOp;
@@ -238,19 +221,18 @@ describe("Portal.cart.DownloadPanel", function() {
 
             downloadPanel.confirmDownload(testCollection, callbackScope, callback, testParams, testKey);
             testParams.onAccept(testParams);
-            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(testKey), testCollection.title, undefined);
+            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(testKey), testCollection.getTitle(), undefined);
         });
     });
 
     var makeTestCollection = function(uuid) {
         return {
-            uuid: uuid,
-            aggregator: { childAggregators: []},
-            title: "Argo",
-            wmsLayer: {
+            getUuid: returns(uuid),
+            getTitle: returns("Argo"),
+            getSelectedLayer: returns({
                 isNcwms: noOp
-            },
-            dataDownloadHandlers: []
+            }),
+            getDataDownloadHandlers: returns([])
         };
     };
 });

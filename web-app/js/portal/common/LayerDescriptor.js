@@ -16,28 +16,16 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     WFS_PROTOCOL: 'OGC:WFS-1.0.0-http-get-capabilities',
     WMS_PROTOCOL: 'OGC:WMS-1.1.1-http-get-map',
 
-    geonetworkRecord: null,
+    constructor: function(cfg, titleOverride, dataCollection, openLayerClass) {
 
-    constructor: function(cfg, title, geonetworkRecord, openLayerClass) {
-        if (typeof cfg == "string") {
-            cfg = Ext.util.JSON.decode(cfg);
-        }
-
-        if (!openLayerClass) {
-            // By default, use the WMS Openlayer class
-            openLayerClass = OpenLayers.Layer.WMS;
-        }
-
-        this.openLayerClass = openLayerClass;
-        this.geonetworkRecord = geonetworkRecord;
+        this.openLayerClass = openLayerClass || OpenLayers.Layer.WMS;
+        this.dataCollection = dataCollection;
 
         Ext.apply(this, cfg);
 
-        if (title) {
-            this.title = title;
+        if (titleOverride) {
+            this.title = titleOverride;
         }
-
-        this.cql = cfg.cql;
     },
 
     toOpenLayer: function(optionOverrides, paramOverrides) {
@@ -67,17 +55,12 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         openLayer.server = this.server;
         openLayer.wmsName = this.name;
 
-        //injecting credentials for authenticated WMSes.  Openlayer doesn't
-        //provide a way to add header information to a WMS request
-        openLayer.cql = this.cql;
         this._setOpenLayerBounds(openLayer);
         this._initialiseDownloadLayer(openLayer);
-        openLayer.cache = this.cache;
         openLayer.projection = this.projection;
         openLayer.blacklist = this.blacklist;
         openLayer.abstractTrimmed = this.abstractTrimmed;
         openLayer.dimensions = this.dimensions;
-        openLayer.layerHierarchyPath = this.layerHierarchyPath;
         openLayer.params.QUERYABLE = true;
 
         if (this.viewParams) {
@@ -91,8 +74,8 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
 
     _initialiseDownloadLayer: function(openLayer) {
 
-        if (this.geonetworkRecord && this.geonetworkRecord.data) {
-            var links = this.geonetworkRecord.data.links;
+        if (this.dataCollection) {
+            var links = this.dataCollection.getMetadataRecord().data.links;
 
             var downloadLayerName = this._findFirst(links, this.WFS_PROTOCOL);
 
@@ -130,49 +113,15 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     },
 
     _setOpenLayerBounds: function(openLayer) {
-        if (this.geonetworkRecord
-            && this.geonetworkRecord.data
-            && this.geonetworkRecord.data.bbox
-            && this.geonetworkRecord.data.bbox.geometries) {
-            var bounds = this.geonetworkRecord.data.bbox.getBounds();
+
+        if (this.dataCollection) {
+            var metadataRecord = this.dataCollection.getMetadataRecord();
+            var bounds = metadataRecord.data.bbox.getBounds();
+
             openLayer.bboxMinX = bounds.left;
             openLayer.bboxMinY = bounds.bottom;
             openLayer.bboxMaxX = bounds.right;
             openLayer.bboxMaxY = bounds.top;
-        }
-    },
-
-    _getAttribute: function(attribute) {
-        if (this[attribute]) {
-            return this[attribute];
-        }
-        else if (this.geonetworkRecord && this.geonetworkRecord.data && this.geonetworkRecord.data[attribute]) {
-            return this.geonetworkRecord.data[attribute];
-        }
-        else {
-            return undefined
-        }
-    },
-
-    _getParent: function() {
-        return this.parent;
-    },
-
-    _getParentId: function() {
-        if (this._getParent()) {
-            return this._getParent().id;
-        }
-        else {
-            return undefined;
-        }
-    },
-
-    _getParentName: function() {
-        if (this._getParent()) {
-            return this._getParent().name;
-        }
-        else {
-            return undefined;
         }
     }
 });

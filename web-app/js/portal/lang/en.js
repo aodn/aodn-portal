@@ -80,6 +80,11 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     infoTabTitle: 'Info',
     mapTabTitle: 'Map',
 
+    // Info panel (abstract and links)
+    abstractTitle: "Abstract",
+    webpageLinksTitle: "Online Resources",
+    unnamedResourceName: "Unnamed Resource",
+
     // Search form
     northBL: 'N',
     eastBL: 'E',
@@ -265,8 +270,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     navigationTrackingStepPrefix: "Step ",
     downloadTrackingCategory: "DataCollections",
     downloadTrackingActionPrefix: "Download - ",
-    layerSelectionTrackingCategory: "Collection",
-    layerSelectionTrackingAction: "select",
+    dataCollectionSelectionTrackingCategory: "Collection",
+    dataCollectionSelectionTrackingAction: "select",
     filtersTrackingCategory: "Filters",
     subsetItemsTrackingCategory: "Details",
     subsetItemsTabsTrackingAction: "Tabs",
@@ -275,6 +280,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     filtersTrackingDateAction: 'Date',
     filtersTrackingNumberAction: 'Number',
     filtersTrackingSpatialConstraintAction: 'Spatial Constraint',
+    layerControlTrackingCategory: "LayerControl",
+    changeLayerTrackingAction: "change layer",
     featureInfoTrackingCategory: "FeatureInfo",
     metadataTrackingCategory: "Metadata",
     metadataTrackingStep1Action: "Search",

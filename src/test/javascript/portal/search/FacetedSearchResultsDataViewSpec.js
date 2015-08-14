@@ -12,7 +12,13 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
     var template;
 
     beforeEach(function() {
-        facetedSearchDataView = new Portal.search.FacetedSearchResultsDataView();
+        facetedSearchDataView = new Portal.search.FacetedSearchResultsDataView({
+            dataCollectionStore: {
+                isRecordActive: noOp,
+                findBy: noOp,
+                add: noOp
+            }
+        });
         testString = "2000-12-31t13:00:00.000z";
         template = new Ext.Template(
             '<div><span class="x-panel-header">{label}</span>',

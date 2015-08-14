@@ -9,7 +9,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
     var filterGroupPanel;
     var layer;
-    var cfg;
     var filterPanel;
     var filters;
 
@@ -21,7 +20,9 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
         layer.map = getMockMap();
 
         filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
-            layer: layer
+            dataCollection: {
+                getSelectedLayer: returns(layer)
+            }
         });
     });
 
@@ -37,19 +38,18 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 ]
             };
 
-            cfg = {
-                layer: layer
-            };
-
             filterPanel = {
                 needsFilterRange: returns(false)
             };
 
-            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel(cfg);
+            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
+                dataCollection: {
+                    getSelectedLayer: returns(layer)
+                }
+            });
 
             spyOn(filterGroupPanel, '_updateAndShow');
             spyOn(filterGroupPanel, '_sortFilters').andReturn([{}]);
-            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
 
             filterGroupPanel._filtersLoaded(layer.filters);
@@ -123,8 +123,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 layer.filters[3]
             ];
 
-            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel(cfg);
-            filterGroupPanel._sortFilters(layer.filters);
+            Portal.filter.ui.FilterGroupPanel.prototype._sortFilters(layer.filters);
 
             expect(layer.filters).toEqual(expectedFilterOrder);
         });
@@ -137,10 +136,11 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 server: { uri: "uri" }
             };
             layer.isKnownToThePortal = returns(true);
-            filterGroupPanel._isLayerActive = returns(true);
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
-                layer: layer
+                dataCollection: {
+                    getSelectedLayer: returns(layer)
+                }
             });
 
             filters = ["Boolean"];
@@ -152,7 +152,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_clearFilters');
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, '_addErrorMessage');
-            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
             spyOn(filterGroupPanel, '_sortFilters').andReturn([{}]);
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
         });
@@ -174,10 +173,11 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             layer = {
                 server: { uri: "uri" }
             };
-            filterGroupPanel._isLayerActive = returns(true);
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
-                layer: layer
+                dataCollection: {
+                    getSelectedLayer: returns(layer)
+                }
             });
 
             filterPanel = {
@@ -187,7 +187,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, '_addErrorMessage');
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
-            spyOn(filterGroupPanel, '_isLayerActive').andReturn(true);
         });
 
         it('calls the _addErrorMessage function when filters set but has no filters configured', function() {
@@ -225,7 +224,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 filter: {
                     type: filterType
                 }
-            }
+            };
         };
 
         it('clears all non-global filters', function() {
@@ -289,14 +288,14 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
         var filterPanels;
         var numPanels;
-        var numDifferentTypes = 3;
         var numHeadings = 2; // Only Date has a non default typeLabel "Date + default = 2"
         var numVerticalSpacers = 1;
 
         beforeEach(function() {
-            spyOn(Portal.filter.ui.NumberFilterPanel.prototype, '_createControls');
-            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createControls');
             spyOn(Portal.filter.ui.BooleanFilterPanel.prototype, '_createControls');
+            spyOn(Portal.filter.ui.ComboFilterPanel.prototype, '_createControls');
+            spyOn(Portal.filter.ui.DateFilterPanel.prototype, '_createControls');
+            spyOn(Portal.filter.ui.NumberFilterPanel.prototype, '_createControls');
 
             filterPanels = [
                 new Portal.filter.ui.DateFilterPanel(),

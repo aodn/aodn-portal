@@ -7,15 +7,6 @@
 
 describe("Portal.common.LayerDescriptor", function() {
 
-    it('from string', function() {
-        var layerDescAsString = "{name: 'satellite', server: { uri: 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi' } }";
-
-        var layerDesc = new Portal.common.LayerDescriptor(layerDescAsString);
-
-        expect(layerDesc.name).toBe('satellite');
-        expect(layerDesc.server.uri).toBe('http://tilecache.emii.org.au/cgi-bin/tilecache.cgi');
-    });
-
     it('from javascript object', function() {
         var layerDescAsDecodedJSON = {
             name: 'satellite',
@@ -57,22 +48,6 @@ describe("Portal.common.LayerDescriptor", function() {
         });
     });
 
-    it('tests underlying access to parent', function() {
-        var layerDescriptor = new Portal.common.LayerDescriptor({
-            title : 'test',
-            parent : {
-                id : 100,
-                name : 'parent layer'
-            }
-        });
-
-        expect(layerDescriptor._getParentId()).toEqual(100);
-        expect(layerDescriptor._getParentName()).toEqual('parent layer');
-        layerDescriptor.parent = undefined;
-        expect(layerDescriptor._getParentId()).toBeFalsy();
-        expect(layerDescriptor._getParentName()).toBeFalsy();
-    });
-
     describe('zoom override', function() {
 
         var layerDesc = new Portal.common.LayerDescriptor({
@@ -107,63 +82,20 @@ describe("Portal.common.LayerDescriptor", function() {
         });
     });
 
-    describe('_getAttribute', function() {
-        it('from class if available', function() {
-            var layerDescriptor = new Portal.common.LayerDescriptor(
-                {
-                    bboxMinX: 1
-                },
-                'title',
-                {}
-            );
-
-            expect(layerDescriptor._getAttribute('bboxMinX')).toEqual(1);
-        });
-
-        it('from geonetwork record if not available in class', function() {
-            var layerDescriptor = new Portal.common.LayerDescriptor(
-                {},
-                'title',
-                {
-                    data: {
-                        bboxMinX: 1
-                    }
-                }
-            );
-
-            expect(layerDescriptor._getAttribute('bboxMinX')).toEqual(1);
-        });
-
-        it('from class if available also in geonetwork record', function() {
-            var layerDescriptor = new Portal.common.LayerDescriptor(
-                {
-                    bboxMinX: 2
-                },
-                {
-                    data: {
-                        bboxMinX: 1
-                    }
-                }
-            );
-
-            expect(layerDescriptor._getAttribute('bboxMinX')).toEqual(2);
-        });
-    });
-
     describe('_setOpenLayerBounds', function() {
-        it('from geonetwork', function() {
+        it('from dataCollection', function() {
             var openLayer = {};
 
-            var geonetworkRecord = {
-                data: {
-                    bbox: {
+            var dataCollection = {
+                getMetadataRecord: returns({
+                    data: { bbox: {
                         geometries: [],
                         getBounds: returns(new OpenLayers.Bounds(1,2,3,4))
-                    }
-                }
+                    }}
+                })
             };
 
-            var layerDescriptor = new Portal.common.LayerDescriptor({}, 'title', geonetworkRecord);
+            var layerDescriptor = new Portal.common.LayerDescriptor({}, 'title', dataCollection);
 
             layerDescriptor._setOpenLayerBounds(openLayer);
 
@@ -185,7 +117,11 @@ describe("Portal.common.LayerDescriptor", function() {
                 wmsName: 'aodn:other_layer'
             };
             descriptor = new Portal.common.LayerDescriptor({
-                geonetworkRecord: { data: {} }
+                dataCollection: {
+                    getMetadataRecord: function() {
+                        return {data: {}};
+                    }
+                }
             });
         });
 

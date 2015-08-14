@@ -10,7 +10,6 @@ Ext.namespace('Portal.filter.ui');
 Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     constructor: function(cfg) {
 
-        this.layer = cfg.layer;
         this.map = cfg.map;
         this.loadingMessage = this._createLoadingMessageContainer();
         var config = Ext.apply({
@@ -36,7 +35,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         return new Ext.Spacer({
             cls: 'block',
             height: sizeInPixels
-        })
+        });
     },
 
     _createFilterGroupHeading: function(headerText) {
@@ -61,7 +60,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         return new Ext.Container({
             autoEl: 'div',
             html: ""
-        })
+        });
     },
 
     _setErrorMessageText: function(msg, errorMsgContainer) {
@@ -86,21 +85,12 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    _isLayerActive: function(layer) {
-        var active = false;
-
-        if (layer.parentGeoNetworkRecord != undefined) {
-            active = (Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(layer.parentGeoNetworkRecord));
-        }
-        return active;
-    },
-
     _initWithLayer: function() {
 
         var filterService = new Portal.filter.FilterService();
 
         filterService.loadFilters(
-            this.layer,
+            this.dataCollection,
             this.createSafeCallback(this._filtersLoaded),
             this.createSafeCallback(this._handleFilterLoadFailure),
             this
@@ -122,7 +112,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
                 filterService.loadFilterRange(
                     filter.getName(),
-                    this.layer,
+                    this.dataCollection,
                     this.createSafeCallback(function(filterRange) {
                         filterPanel.setFilterRange(filterRange);
                     }),
@@ -132,7 +122,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
                     this
                 );
             }
-
         }, this);
 
         this.filterPanels = filterPanels;
@@ -187,7 +176,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         var uiElementClass = filterClass.prototype.getUiComponentClass();
         var newFilterPanel = new uiElementClass({
             filter: filter,
-            layer: this.layer,
+            dataCollection: this.dataCollection,
             map: this.map
         });
 
@@ -253,10 +242,8 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     _updateLayerFilters: function() {
-        if (this._isLayerActive(this.layer)) {
 
-            this.layer.updateCqlFilter();
-        }
+        this.dataCollection.updateFilters();
     },
 
     _handleAddFilter: function() {

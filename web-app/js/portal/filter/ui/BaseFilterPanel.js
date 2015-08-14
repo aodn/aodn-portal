@@ -24,19 +24,16 @@ Portal.filter.ui.BaseFilterPanel = Ext.extend(Ext.Panel, {
             }
         }, cfg);
 
+        Ext.apply(this, cfg);
+
         Portal.filter.ui.BaseFilterPanel.superclass.constructor.call(this, config);
-        this.setLayerAndFilter(cfg.layer, cfg.filter);
+
+        this._createControls();
     },
 
     initComponent: function() {
         this.addEvents('addFilter');
         Portal.filter.ui.BaseFilterPanel.superclass.initComponent.call(this);
-    },
-
-    setLayerAndFilter: function(layer, filter) {
-        this.filter = filter;
-        this.layer = layer;
-        this._createControls();
     },
 
     _createControls: function() {

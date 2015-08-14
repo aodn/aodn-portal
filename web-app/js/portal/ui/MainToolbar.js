@@ -72,7 +72,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
             success: function(resp) {
                 $("#footerContent").html(resp.responseText);
             },
-            failure: function(resp) {
+            failure: function() {
                 log.debug("Failed to obtain external links from server");
             }
         });
@@ -81,7 +81,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
     _registerEvents: function() {
         this.mainPanel.on('tabchange', this._renderNavigationButtons, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(subject, openLayer) {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, function() {
             this._renderNavigationButtons(this.mainPanel);
         }, this);
     },
@@ -93,7 +93,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
         // the map
         this.nextButton.setVisible(
             mainPanel.layout.hasNextTab() &&
-            Portal.data.ActiveGeoNetworkRecordStore.instance().getCount() > 0);
+            this.dataCollectionStore.getCount() > 0);
 
         this.prevButton.setText(mainPanel.layout.getPrevNavigationLabel());
         this.nextButton.setText(mainPanel.layout.getNextNavigationLabel());

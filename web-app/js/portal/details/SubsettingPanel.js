@@ -9,14 +9,14 @@ Ext.namespace('Portal.details');
 
 Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
 
-    constructor : function(cfg) {
+    constructor: function(cfg) {
 
         this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
             map: cfg.map,
             hideLabel: false
         });
 
-        this.subsetPanelAccordion = new Portal.details.SubsetPanelAccordion();
+        this.subsetPanelAccordion = this._newSubsetPanelAccordion(cfg);
 
         this.emptyTextPanel =  new Portal.common.EmptyCollectionStatusPanel({
             hidden: true
@@ -24,7 +24,13 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             autoScroll: true,
-            title: OpenLayers.i18n('stepHeader', { stepNumber: 2, stepDescription: OpenLayers.i18n('step2Description')}),
+            title: OpenLayers.i18n(
+                'stepHeader',
+                {
+                    stepNumber: 2,
+                    stepDescription: OpenLayers.i18n('step2Description')
+                }
+            ),
             headerCfg: {
                 cls : 'steps'
             },
@@ -40,66 +46,23 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
 
         Portal.details.SubsettingPanel.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, function(eventName, openlayer) {
-            this.updateSubsetPanelAccordionItem(openlayer);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function(eventName, dataCollection) {
+            this._setEmptyNotificationVisible(false);
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.LAYER_REMOVED, function(eventName, openlayer) {
-            this._removeFolderForLayer(openlayer);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, function(eventName, dataCollection) {
+            this._setEmptyNotificationVisible(this.dataCollectionStore.getCount() == 0);
         }, this);
     },
 
-    updateSubsetPanelAccordionItem: function(layer) {
-        if (layer) {
-            if (!this._itemExistsForLayer(layer)) {
-                this._addItemForLayer(layer);
-                this._activateItemForLayer(layer);
-            }
-        }
-    },
-
-    _itemExistsForLayer: function(layer) {
-        return (this.subsetPanelAccordion.items.item(this._getItemIdForLayer(layer)) != undefined);
-    },
-
-    _addItemForLayer: function(layer) {
-
-        var layerContainer = new Portal.details.SubsetItemsWrapperPanel({
-            map: this.map,
-            layer: layer,
-            layerItemId: this._getItemIdForLayer(layer),
-            listeners: {
-                expand: function (panel) {
-                    Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, panel.layer);
-                }
-            }
+    _newSubsetPanelAccordion: function(cfg) {
+        return new Portal.details.SubsetPanelAccordion({
+            map: cfg.map,
+            dataCollectionStore: cfg.dataCollectionStore
         });
-
-        this.subsetPanelAccordion.add(layerContainer);
-        this.emptyTextPanel.hide();
-        this.subsetPanelAccordion.doLayout();
     },
 
-    _activateItemForLayer: function(layer) {
-        if (this._itemExistsForLayer(layer)) {
-            this.subsetPanelAccordion.layout.setActiveItem(this._getItemIdForLayer(layer));
-        }
-    },
-
-    _removeFolderForLayer: function(layer) {
-        if (this._itemExistsForLayer(layer)) {
-            this.subsetPanelAccordion.remove(this._getItemIdForLayer(layer));
-        }
-        this.checkState();
-    },
-
-    checkState: function() {
-        if (this.subsetPanelAccordion.items.length == 0) {
-            this.emptyTextPanel.show();
-        }
-    },
-
-    _getItemIdForLayer: function(layer) {
-        return layer.id + '_subsettingPanel';
+    _setEmptyNotificationVisible: function(show) {
+        show ? this.emptyTextPanel.show() : this.emptyTextPanel.hide();
     }
 });

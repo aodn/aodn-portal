@@ -252,26 +252,33 @@ portal {
     popupWidth = 550
     popupHeight = 325
 
-    downloadCartDownloadableProtocols = [
-        "WWW:DOWNLOAD-1.0-http--download",
-        "WWW:DOWNLOAD-1.0-http--downloaddata",
-        "WWW:DOWNLOAD-1.0-http--downloadother",
-        "WWW:LINK-1.0-http--downloaddata"
-    ]
+    // Various metadata record protocols in which the portal is interested.
+    metadataProtocols {
+        wms = [
+            "OGC:WMS-1.1.1-http-get-map",
+            "OGC:WMS-1.3.0-http-get-map"
+        ]
 
-    onlineResourceLinks = [
-        "WWW:LINK-1.0-http--metadata-URL",
-        "WWW:DOWNLOAD-1.0-http--downloadother",
-        "WWW:LINK-1.0-http--link",
-        "WWW:DOWNLOAD-1.0-http--download",
-        "WWW:DOWNLOAD-1.0-http--downloaddata",
-        "WWW:LINK-1.0-http--downloaddata"
-    ]
+        wfs = [
+            "OGC:WFS-1.0.0-http-get-capabilities"
+        ]
 
-    metadataLayerProtocols = [
-        "OGC:WMS-1.1.1-http-get-map",
-        "OGC:WMS-1.3.0-http-get-map"
-    ]
+        dataFile = [
+            "WWW:DOWNLOAD-1.0-http--download",
+            "WWW:DOWNLOAD-1.0-http--downloaddata",
+            "WWW:DOWNLOAD-1.0-http--downloadother",
+            "WWW:LINK-1.0-http--downloaddata"
+        ]
+
+        webPage = [
+            "WWW:LINK-1.0-http--metadata-URL",
+            "WWW:DOWNLOAD-1.0-http--downloadother",
+            "WWW:LINK-1.0-http--link",
+            "WWW:DOWNLOAD-1.0-http--download",
+            "WWW:DOWNLOAD-1.0-http--downloaddata",
+            "WWW:LINK-1.0-http--downloaddata"
+        ]
+    }
 
     mapGetFeatureInfoBuffer = 10
 }

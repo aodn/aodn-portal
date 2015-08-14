@@ -11,7 +11,7 @@ Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _getDataFilterEntry: function(collection) {
 
-        var params = collection.ncwmsParams;
+        var params = collection.getNcwmsParams();
         var areaString = "";
         var dateString = "";
 

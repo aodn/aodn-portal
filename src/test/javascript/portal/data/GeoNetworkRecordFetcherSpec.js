@@ -15,7 +15,11 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
 
         Ext.namespace('Portal.app.appConfig.geonetwork');
         Portal.app.appConfig.geonetwork.url = catalogUrl;
-        fetcher = new Portal.data.GeoNetworkRecordFetcher();
+        fetcher = new Portal.data.GeoNetworkRecordFetcher({
+            dataCollectionStore: {
+                add: jasmine.createSpy('add)')
+            }
+        });
         uuid = '1234';
     });
 
@@ -41,14 +45,15 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
         expect(successCallback).toHaveBeenCalled();
     });
 
-    it('loads retrieved record in to ActiveGeoNetworkRecordStore', function() {
+    it('loads retrieved record into DataCollectionStore', function() {
         var response = {
             responseXML: '<some_xml></some_xml>'
         };
-        var record = {};
+        var metadataRecord = {};
+        var dataCollectionRecord = {};
         spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'loadData');
-        spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'getAt').andReturn(record);
-        spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'add');
+        spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'getAt').andReturn(metadataRecord);
+        spyOn(Portal.data.DataCollection, 'fromMetadataRecord').andReturn(dataCollectionRecord);
         spyOn(Ext.Ajax, 'request').andCallFake(
             function(params) {
                 params.success.call(fetcher, response);
@@ -56,7 +61,8 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
         );
 
         fetcher.load(uuid);
-        expect(Portal.data.ActiveGeoNetworkRecordStore.instance().add).toHaveBeenCalledWith(record);
+        expect(Portal.data.GeoNetworkRecordStore.prototype.getAt).toHaveBeenCalled();
+        expect(fetcher.dataCollectionStore.add).toHaveBeenCalledWith(dataCollectionRecord);
     });
 
     describe('getUuidsFromUrl', function() {
@@ -68,7 +74,7 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
             [baseUrl + '?val=something', []],
             [baseUrl + '?uuid=uuid1', 'uuid1'],
             [baseUrl + '?uuid=uuid1&val=something', 'uuid1'],
-            [baseUrl + '?uuid=uuid1&uuid=uuid2', 'uuid1']
+            [baseUrl + '?uuid=uuid1&uuid=uuid2', ['uuid1', 'uuid2']]
         ];
 
         it('returns correct values for various inputs', function() {

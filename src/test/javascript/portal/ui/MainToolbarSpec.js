@@ -10,17 +10,19 @@ describe("Portal.ui.MainToolbar", function() {
     var mainToolbar;
 
     beforeEach(function() {
+
+        var dataCollectionStore =  new Portal.data.DataCollectionStore();
+
         mainPanel = new Portal.ui.MainPanel({
-            panels: []
+            panels: [],
+            dataCollectionStore: dataCollectionStore
         });
         mainToolbar = new Portal.ui.MainToolbar({
-            mainPanel: mainPanel
+            mainPanel: mainPanel,
+            dataCollectionStore: dataCollectionStore
         });
 
         mockLayoutForMainPanel(mainPanel);
-
-        // Start with a fresh new ActiveGeoNetworkRecordStore
-        delete Portal.data.ActiveGeoNetworkRecordStore.THE_ACTIVE_RECORDS_INSTANCE;
     });
 
     describe('on main panel tab change', function() {
@@ -47,7 +49,7 @@ describe("Portal.ui.MainToolbar", function() {
             });
 
             it('show next button when data collections available', function() {
-                spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'getCount').andReturn(1);
+                spyOn(mainPanel.dataCollectionStore, 'getCount').andReturn(1);
                 mainPanel.fireEvent('tabchange', mainPanel);
                 expect(mainToolbar.nextButton.setVisible).toHaveBeenCalledWith(true);
             });
@@ -70,7 +72,7 @@ describe("Portal.ui.MainToolbar", function() {
             });
 
             it('shows next button when data collections available', function() {
-                spyOn(Portal.data.ActiveGeoNetworkRecordStore.instance(), 'getCount').andReturn(1);
+                spyOn(mainPanel.dataCollectionStore, 'getCount').andReturn(1);
                 mainPanel.fireEvent('tabchange', mainPanel);
                 expect(mainToolbar.nextButton.setVisible).toHaveBeenCalledWith(true);
             });
@@ -115,8 +117,8 @@ describe("Portal.ui.MainToolbar", function() {
 
     describe('MsgBus events', function() {
         it('should trigger render on layer removal', function() {
-            spyOn(mainToolbar, '_renderNavigationButtons').andCallFake(function() {});
-            Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, { id: "1234567890" });
+            spyOn(mainToolbar, '_renderNavigationButtons');
+            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, { id: "1234567890" });
             expect(mainToolbar._renderNavigationButtons).toHaveBeenCalled();
         });
     });

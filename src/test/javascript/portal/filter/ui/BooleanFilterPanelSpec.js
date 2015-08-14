@@ -25,9 +25,11 @@ describe("Portal.filter.ui.BooleanFilterPanel", function() {
                 getLabel: returns('testLabel'),
                 setValue: noOp
             },
-            layer: {
-                name: 'test layer',
-                getDownloadCql: returns("")
+            dataCollection: {
+                getTitle: returns('Collection title'),
+                getSelectedLayer: returns({
+                    getDownloadCql: returns("")
+                })
             }
         });
 
@@ -36,6 +38,6 @@ describe("Portal.filter.ui.BooleanFilterPanel", function() {
 
     it('tracking on booleanFilter click', function() {
         booleanFilter._buttonChecked();
-        expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Boolean", "testLabel=false", "test layer");
+        expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Boolean", "testLabel=false", "Collection title");
     });
 });

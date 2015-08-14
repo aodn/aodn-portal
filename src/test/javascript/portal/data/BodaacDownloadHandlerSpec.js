@@ -80,9 +80,10 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
             urlFn = handler._getUrlGeneratorFunction();
 
             testCollection = {
-                wmsLayer: {
+                getSelectedLayer: returns({
                     _buildGetFeatureRequestUrl: buildUrlSpy
-                }
+                }),
+                getFilters: returns([])
             };
 
             spyOn(Portal.filter.combiner, 'BodaacCqlBuilder').andReturn({
@@ -110,9 +111,10 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
         beforeEach(function() {
 
             testCollection = {
-                wmsLayer: {
+                getSelectedLayer: returns({
                     _buildGetFeatureRequestUrl: returns('the_url')
-                }
+                }),
+                getFilters: returns([])
             };
         });
 

@@ -12,36 +12,36 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         Portal.cart.BaseInjector.superclass.constructor.call(this, Ext.apply(this, config));
     },
 
-    getInjectionJson: function(collection) {
+    getInjectionJson: function(dataCollection) {
 
         return {
-            uuid: collection.uuid,
-            title: collection.title,
-            dataFilters: this._getDataFilterEntry(collection),
-            dataMarkup: this._getDataMarkup(collection),
-            linkedFiles: this._getMetadataLinks(collection),
-            pointOfTruthLink: this._getPointOfTruthLink(collection),
-            downloadStatus: collection.downloadStatus
+            uuid: dataCollection.getUuid(),
+            title: dataCollection.getTitle(),
+            dataFilters: this._getDataFilterEntry(dataCollection),
+            dataMarkup: this._getDataMarkup(dataCollection),
+            linkedFiles: this._getMetadataLinks(dataCollection),
+            pointOfTruthLink: this._getPointOfTruthLink(dataCollection),
+            downloadStatus: dataCollection.downloadStatus
         };
     },
 
-    _getMetadataLinks: function(collection) {
-        return collection.linkedFiles;
+    _getMetadataLinks: function(dataCollection) {
+        return dataCollection.getDataFileLinks();
     },
 
-    _getPointOfTruthLink: function(collection) {
-        return collection.pointOfTruthLink;
+    _getPointOfTruthLink: function(dataCollection) {
+        return dataCollection.getMetadataRecord().data.pointOfTruthLink;
     },
 
-    _getDataMarkup: function(collection) {
-        return this._addDownloadEstimate(collection);
+    _getDataMarkup: function(dataCollection) {
+        return this._addDownloadEstimate(dataCollection);
     },
 
-    _getDownloadEstimateHandler: function(collection) {
+    _getDownloadEstimateHandler: function(dataCollection) {
 
         var handlerToEstimateWith;
 
-        Ext.each(collection.dataDownloadHandlers, function(handler) {
+        Ext.each(dataCollection.getDataDownloadHandlers(), function(handler) {
 
             if (handler.canEstimateDownloadSize()) {
                 handlerToEstimateWith = handler;
@@ -63,25 +63,25 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         return viewport.isOnTab(TAB_INDEX_DOWNLOAD);
     },
 
-    _addDownloadEstimate: function(collection) {
+    _addDownloadEstimate: function(dataCollection) {
 
-        var estimateHandler = this._getDownloadEstimateHandler(collection);
+        var estimateHandler = this._getDownloadEstimateHandler(dataCollection);
 
         if (estimateHandler) {
             var estimator = new Portal.cart.DownloadEstimator({
-                estimateRequestParams: estimateHandler.getDownloadEstimateParams(collection)
+                estimateRequestParams: estimateHandler.getDownloadEstimateParams(dataCollection)
             });
 
             if (this._shouldEstimateSize()) {
                 estimator._getDownloadEstimate(
-                    collection,
+                    dataCollection,
                     this._hideButton
                 );
             }
 
             return String.format(
                 "<div id=\"{0}\">{1}{2}</div>",
-                estimator.getIdElementName(collection.uuid),
+                estimator.getIdElementName(dataCollection.uuid),
                 OpenLayers.i18n("estimatedDlLoadingMessage"),
                 OpenLayers.i18n("faSpinner")
             );
@@ -91,12 +91,12 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         }
     },
 
-    downloadWithConfirmation: function(collection, generateUrlCallback, params) {
+    downloadWithConfirmation: function(dataCollection, generateUrlCallback, params) {
 
         return function() {
             this.downloadConfirmation.call(
                 this.downloadConfirmationScope,
-                collection,
+                dataCollection,
                 this,
                 generateUrlCallback,
                 params

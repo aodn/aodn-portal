@@ -24,9 +24,11 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
                 getLabel: returns('testLabel'),
                 setValue: noOp
             },
-            layer: {
-                name: 'test layer',
-                getDownloadCql: returns("")
+            dataCollection: {
+                getTitle: returns('Collection title'),
+                getSelectedLayer: returns({
+                    getDownloadCql: returns("")
+                })
             }
         });
     });
@@ -70,7 +72,7 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
 
             filterPanel._onChange();
 
-            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "testLabel=value", "test layer");
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Combo", "testLabel=value", "Collection title");
         });
     });
 });

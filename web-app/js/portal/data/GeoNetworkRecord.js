@@ -66,14 +66,6 @@ Portal.data.GeoNetworkRecord = function() {
         }
     };
 
-    var popularity = {
-        name: 'popularity',
-        convert: function(v, record) {
-            var popularity = Ext.DomQuery.jsSelect('popularity', record);
-            return parseInt(popularity[0].childNodes[0].nodeValue);
-        }
-    };
-
     var pointOfTruthLinkField = {
         name: 'pointOfTruthLink',
         convert: function(v, record) {
@@ -89,38 +81,6 @@ Portal.data.GeoNetworkRecord = function() {
             });
 
             return pointOfTruthLink;
-        }
-    };
-
-    var dataDownloadHandlersField = {
-        name: 'dataDownloadHandlers',
-        convert: function(v, record) {
-            var allLinks = convertXmlToLinks(v, record);
-
-            var protocolHandlerConstructors = {
-                'OGC:WFS-1.0.0-http-get-capabilities': [
-                    Portal.cart.WfsDownloadHandler,
-                    Portal.cart.PythonDownloadHandler
-                ],
-                'IMOS:AGGREGATION--bodaac': Portal.cart.BodaacDownloadHandler,
-                'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckDownloadHandler
-            };
-
-            var applicableDownloadOptions = [];
-
-            Ext.each(allLinks, function(link) {
-                var constructors = protocolHandlerConstructors[link.protocol];
-
-                if (constructors) {
-                    Ext.each(constructors, function(constructor) {
-                        applicableDownloadOptions.push(
-                            new constructor(link)
-                        );
-                    })
-                }
-            }, this);
-
-            return applicableDownloadOptions;
         }
     };
 
@@ -155,7 +115,7 @@ Portal.data.GeoNetworkRecord = function() {
 
         var protocols = [];
 
-        Ext.each(Portal.app.appConfig.portal.downloadCartDownloadableProtocols, function(protocol) {
+        Ext.each(Portal.app.appConfig.portal.metadataProtocols.dataFile, function(protocol) {
             protocols.push(protocol.trim());
         });
 
@@ -166,7 +126,7 @@ Portal.data.GeoNetworkRecord = function() {
 
         var allowedOnlineResources = [];
 
-        Ext.each(Portal.app.appConfig.portal.onlineResourceLinks, function(protocol) {
+        Ext.each(Portal.app.appConfig.portal.metadataProtocols.webPage, function(protocol) {
             allowedOnlineResources.push(protocol.trim());
         });
 
@@ -176,7 +136,6 @@ Portal.data.GeoNetworkRecord = function() {
     var constructor = Ext.data.Record.create([
         'title',
         'abstract',
-        popularity,
         { name: 'uuid', mapping: '*/uuid' },
         parameterField,
         'platform',
@@ -187,11 +146,8 @@ Portal.data.GeoNetworkRecord = function() {
         linkedFilesField,
         onlineResourcesField,
         pointOfTruthLinkField,
-        dataDownloadHandlersField,
-        'source',
         bboxField,
-        'wmsLayer',
-        'ncwmsParams'
+        'wmsLayer'
     ]);
 
     var prototype = constructor.prototype;
@@ -209,50 +165,13 @@ Portal.data.GeoNetworkRecord = function() {
             }
         });
 
-        linkStore.filterByProtocols(Portal.app.appConfig.portal.metadataLayerProtocols);
+        linkStore.filterByProtocols(Portal.app.appConfig.portal.metadataProtocols.wms);
 
         return linkStore.getLayerLink(0);
     };
 
     prototype.hasWmsLink = function() {
         return this.getFirstWmsLink() != undefined;
-    };
-
-    prototype.convertedData = function() {
-        var convertedData = {};
-
-        Ext.each(Object.keys(this.data),
-            function(key) {
-                convertedData[key] = this.data[key];
-            },
-            this
-        );
-
-        return convertedData;
-    };
-
-    prototype.updateNcwmsParams = function(dateRangeStart, dateRangeEnd, geometry) {
-
-        var params = {};
-
-        if (dateRangeStart && dateRangeStart.isValid()) {
-            params.dateRangeStart = dateRangeStart;
-        }
-
-        if (dateRangeEnd && dateRangeEnd.isValid()) {
-            params.dateRangeEnd = dateRangeEnd;
-        }
-
-        if (geometry) {
-            var bounds = geometry.getBounds();
-
-            params.latitudeRangeStart = bounds.bottom;
-            params.longitudeRangeStart = bounds.left;
-            params.latitudeRangeEnd = bounds.top;
-            params.longitudeRangeEnd = bounds.right;
-        }
-
-        this.set('ncwmsParams', params);
     };
 
     return constructor;

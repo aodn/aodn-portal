@@ -27,14 +27,10 @@ Portal.filter.ui.GeometryFilterService = Ext.extend(Portal.filter.ui.BaseFilterP
         });
 
         Portal.filter.ui.GeometryFilterService.superclass.constructor.call(this, config);
-    },
-
-    setLayerAndFilter: function(layer, filter) {
-        Portal.filter.ui.GeometryFilterService.superclass.setLayerAndFilter.apply(this, arguments);
 
         if (this.map.spatialConstraintControl) {
             this._updateWithGeometry(this.map.spatialConstraintControl.getConstraint());
-            filter.map = this.map;
+            this.filter.map = this.map;
         }
     },
 
@@ -42,17 +38,7 @@ Portal.filter.ui.GeometryFilterService = Ext.extend(Portal.filter.ui.BaseFilterP
         // Not a physical panel, Using a global Geometry filter
     },
 
-    handleRemoveFilter: function() {
-
-        if (this.map.spatialConstraintControl) {
-            this.map.spatialConstraintControl.clear();
-        }
-        this.map.events.triggerEvent('spatialconstraintcleared');
-
-        this.filter.clearValue();
-
-        trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingValueCleared'));
-    },
+    handleRemoveFilter: function() {},
 
     needsFilterRange: function() {
         return false;

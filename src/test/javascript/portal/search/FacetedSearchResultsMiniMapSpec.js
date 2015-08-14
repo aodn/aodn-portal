@@ -32,7 +32,7 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
     describe('addLayersAndRender', function() {
         beforeEach(function() {
             spyOn(miniMap, '_addBaseAndExtentLayers');
-            spyOn(window, 'setTimeout');
+            spyOn(miniMap, '_renderAndPosition');
             miniMap.addLayersAndRender();
         });
 
@@ -40,8 +40,8 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
             expect(miniMap._addBaseAndExtentLayers).toHaveBeenCalled();
         });
 
-        it('calls setTimeout', function() {
-            expect(window.setTimeout).toHaveBeenCalled();
+        it('calls renderAndPosition', function() {
+            expect(miniMap._renderAndPosition).toHaveBeenCalled();
         });
     });
 

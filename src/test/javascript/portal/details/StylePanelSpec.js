@@ -13,7 +13,7 @@ function getParameterByNameFromUrlString(urlString, name) {
     var regex = new RegExp(regexS);
     var results = regex.exec(urlString);
 
-    if(results == null) {
+    if (results == null) {
         return null;
     }
     else {
@@ -24,11 +24,14 @@ function getParameterByNameFromUrlString(urlString, name) {
 describe("Portal.details.StylePanel", function() {
 
     var stylePanel;
+    var dataCollection = {};
 
     beforeEach(function() {
+        spyOn(Ext.MsgBus, 'subscribe');
         spyOn(Portal.details.StylePanel.prototype, '_initWithLayer');
-        spyOn(Portal.details.StylePanel.prototype, '_attachEvents');
-        stylePanel = new Portal.details.StylePanel({});
+        stylePanel = new Portal.details.StylePanel({
+            dataCollection: dataCollection
+        });
     });
 
     describe("buildGetLegend()", function() {
@@ -95,12 +98,12 @@ describe("Portal.details.StylePanel", function() {
         });
     });
 
-    describe("_processStyleData(layer)", function() {
+    describe("_processStyleData()", function() {
 
         it("Returns empty array if layer.styles is undefined", function() {
 
-            var layer = {styles: undefined};
-            var retVal = stylePanel._processStyleData(layer);
+            dataCollection.getSelectedLayer = returns({styles: undefined});
+            var retVal = stylePanel._processStyleData();
 
             expect(JSON.stringify(retVal)).toBe(JSON.stringify([]));
         });
@@ -111,7 +114,7 @@ describe("Portal.details.StylePanel", function() {
                 return String.format('{0} {1} {2} {3}', a, b, c, d);
             };
 
-            var layer = {
+            dataCollection.getSelectedLayer = returns({
                 isNcwms: returns(true),
                 styles: [
                     {name: 'style1', palette: 'palette1'},
@@ -119,8 +122,8 @@ describe("Portal.details.StylePanel", function() {
                     {name: 'style2', palette: 'palette1'},
                     {name: 'style2', palette: 'palette2'}
                 ]
-            };
-            var retVal = stylePanel._processStyleData(layer);
+            });
+            var retVal = stylePanel._processStyleData();
             var expected = '[' +
                 '["style1/palette1","[object Object] style1/palette1 palette1 true"],' +
                 '["style1/palette2","[object Object] style1/palette2 palette2 true"],' +
@@ -141,6 +144,8 @@ describe("Portal.details.StylePanel", function() {
             combo = {
                 collapse: jasmine.createSpy('collapse'),
                 show: jasmine.createSpy('show'),
+                hide: jasmine.createSpy('hide'),
+                enable: jasmine.createSpy('enable'),
                 setValue: jasmine.createSpy('setValue'),
                 store: {
                     loadData: jasmine.createSpy('loadData')
@@ -148,9 +153,8 @@ describe("Portal.details.StylePanel", function() {
             };
 
             stylePanel.styleCombo = combo;
-            stylePanel.layer = {
-                defaultStyle: 'theDefault'
-            };
+
+            spyOn(stylePanel, 'refreshLegend');
         });
 
         it('does not load combo box data if 1 style or fewer', function() {
@@ -159,9 +163,11 @@ describe("Portal.details.StylePanel", function() {
 
             stylePanel._stylesLoaded();
 
+            expect(combo.setValue).toHaveBeenCalledWith('');
+            expect(combo.hide).toHaveBeenCalled();
             expect(combo.store.loadData).not.toHaveBeenCalled();
-            expect(combo.setValue).not.toHaveBeenCalled();
             expect(combo.collapse).not.toHaveBeenCalled();
+            expect(combo.enable).not.toHaveBeenCalled();
             expect(combo.show).not.toHaveBeenCalled();
         });
 
@@ -170,39 +176,33 @@ describe("Portal.details.StylePanel", function() {
             var styles = ['style1', 'style2'];
             stylePanel._processStyleData = returns(styles);
 
-            stylePanel._stylesLoaded();
+            stylePanel._stylesLoaded({
+                defaultStyle: 'theDefault'
+            });
 
             expect(combo.store.loadData).toHaveBeenCalledWith(styles);
             expect(combo.setValue).toHaveBeenCalledWith('theDefault');
             expect(combo.collapse).toHaveBeenCalled();
+            expect(combo.enable).toHaveBeenCalled();
             expect(combo.show).toHaveBeenCalled();
+            expect(combo.hide).not.toHaveBeenCalled();
         });
     });
 
-    describe("_getPalette(layer)", function() {
-
-        var ncWmsLayer = {isNcwms: returns(true)};
-        var otherLayer = {isNcwms: returns(false)};
+    describe("_getPalette()", function() {
 
         it("Returns palette when the style is in the form style/palette", function() {
 
-            var retVal = stylePanel._getPalette(ncWmsLayer, "dots/rainbow");
+            var retVal = stylePanel._getPalette("dots/rainbow");
 
             expect(retVal).toBe("rainbow");
         });
 
         it("Returns style when in other forms", function() {
 
-            var retVal = stylePanel._getPalette(ncWmsLayer, "squiggle");
+            var retVal = stylePanel._getPalette("squiggle");
 
             expect(retVal).toBe("squiggle");
-        });
-
-        it("Returns undefined for non-ncWMS Layers", function() {
-
-            var retVal = stylePanel._getPalette(otherLayer, "style name");
-
-            expect(retVal).toBeUndefined();
         });
     });
 });

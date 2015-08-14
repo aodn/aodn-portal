@@ -22,12 +22,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
 
     addLayersAndRender: function() {
         this._addBaseAndExtentLayers();
-
-
-        var self = this;
-        setTimeout(function() {
-            self._renderAndPosition();
-        }, 10);
+        this._renderAndPosition();
     },
 
     _addBaseAndExtentLayers: function() {

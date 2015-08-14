@@ -18,7 +18,7 @@ Portal.search.SearchPanel = Ext.extend(Ext.Panel, {
         this.searcher = new Portal.service.CatalogSearcher({
             catalogUrl: Portal.app.appConfig.geonetwork.url,
             defaultParams: {
-                protocol: Portal.app.appConfig.portal.metadataLayerProtocols.join(' or '),
+                protocol: Portal.app.appConfig.portal.metadataProtocols.wms.join(' or '),
                 sortBy: 'popularity'
             }
         });
@@ -41,6 +41,7 @@ Portal.search.SearchPanel = Ext.extend(Ext.Panel, {
             region: 'center',
             unstyled: true,
             resultsStore: this.resultsStore,
+            dataCollectionStore: this.dataCollectionStore,
             classificationStore: this.classificationStore,
             searcher: this.searcher
         });

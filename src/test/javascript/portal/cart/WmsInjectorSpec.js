@@ -9,16 +9,14 @@ describe('Portal.cart.WmsInjector', function() {
 
     var injector;
     var collectionWithFilters = {
-        wmsLayer: {
-            filters: [
-                fakeFilter('Human'),
-                fakeFilter('readable'),
-                fakeFilter('description')
-            ]
-        }
+        getFilters: returns([
+            fakeFilter('Human'),
+            fakeFilter('readable'),
+            fakeFilter('description')
+        ])
     };
     var collectionWithNoFilters = {
-        wmsLayer: {}
+        getFilters: returns([])
     };
 
     beforeEach(function() {

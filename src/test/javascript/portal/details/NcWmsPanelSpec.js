@@ -9,12 +9,10 @@ describe('Portal.details.NcWmsPanel', function() {
 
     var map;
     var ncwmsPanel;
-    var geoNetworkRecord = {
-        id: '45678',
-        updateNcwmsParams: jasmine.createSpy('updateNcwmsParams')
-    };
+    var dataCollection;
 
     var layer;
+    var layerState;
 
     beforeEach(function() {
         map = new OpenLayers.SpatialConstraintMap();
@@ -29,9 +27,18 @@ describe('Portal.details.NcWmsPanel', function() {
         layer.processTemporalExtent = noOp;
         layer.map = map;
 
+        layerState = new Ext.util.Observable();
+
+        dataCollection = {
+            getUuid: returns(45678),
+            updateNcwmsParams: jasmine.createSpy('updateNcwmsParams'),
+            getSelectedLayer: returns(layer),
+            getLayerState: returns(layerState)
+        };
+
         ncwmsPanel = new Portal.details.NcWmsPanel({
             map: map,
-            layer: layer
+            dataCollection: dataCollection
         });
 
         ncwmsPanel._setBounds = noOp;
@@ -41,15 +48,15 @@ describe('Portal.details.NcWmsPanel', function() {
         spyOn(window, 'trackUsage');
     });
 
-    describe('GeoNetworkRecord', function() {
+    describe('DataCollection', function() {
 
-        it('assigns a GeoNetworkRecord instance from a layer', function() {
+        it('assigns a DataCollection instance from a layer', function() {
             _applyCommonSpies();
             spyOn(ncwmsPanel, '_removeLoadingInfo');
 
             ncwmsPanel._initWithLayer();
-            expect(ncwmsPanel.geoNetworkRecord).toBeTruthy();
-            expect(ncwmsPanel.geoNetworkRecord.id).toEqual(geoNetworkRecord.id);
+            expect(ncwmsPanel.dataCollection).toBeTruthy();
+            expect(ncwmsPanel.dataCollection.getUuid()).toEqual(dataCollection.getUuid());
         });
     });
 
@@ -61,7 +68,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('updates the record when panel is created', function() {
             ncwmsPanel._initWithLayer();
-            expect(ncwmsPanel.geoNetworkRecord.updateNcwmsParams).toHaveBeenCalled();
+            expect(ncwmsPanel.dataCollection.updateNcwmsParams).toHaveBeenCalled();
         });
 
         it('updates the date when the start date changes via edit', function() {
@@ -74,13 +81,6 @@ describe('Portal.details.NcWmsPanel', function() {
             ncwmsPanel._addTemporalControls();
             ncwmsPanel.startDateTimePicker.fireEvent('change', ncwmsPanel.endDateTimePicker);
             expect(ncwmsPanel._onDateSelected).toHaveBeenCalled();
-        });
-
-        it('clears the date and time pickers when the layer is updating', function() {
-            spyOn(ncwmsPanel, '_disableDateTimeFields');
-            ncwmsPanel._initWithLayer();
-            expect(ncwmsPanel._disableDateTimeFields).toHaveBeenCalled();
-            delete ncwmsPanel.geoNetworkRecord;
         });
     });
 
@@ -143,8 +143,8 @@ describe('Portal.details.NcWmsPanel', function() {
 
     describe('next and previous buttons', function() {
         beforeEach(function() {
-            ncwmsPanel.layer.getPreviousTimeSlice = function() {};
-            ncwmsPanel.layer.getNextTimeSlice = function() {};
+            ncwmsPanel.layer.getPreviousTimeSlice = noOp;
+            ncwmsPanel.layer.getNextTimeSlice = noOp;
             spyOn(ncwmsPanel.layer, 'getPreviousTimeSlice');
             spyOn(ncwmsPanel.layer, 'getNextTimeSlice');
         });
@@ -174,10 +174,30 @@ describe('Portal.details.NcWmsPanel', function() {
         });
     });
 
-    function _applyCommonSpies(panel) {
-        var _panel = panel || ncwmsPanel;
-        spyOn(_panel, '_onDateSelected');
-        spyOn(_panel, '_setBounds');
+    describe('selected layer change', function() {
+        var newLayer = {};
+
+        it('responds to selectedlayerchanged event', function() {
+            spyOn(ncwmsPanel, '_onSelectedLayerChanged');
+            ncwmsPanel.dataCollection.getLayerState().fireEvent('selectedlayerchanged', newLayer);
+
+            expect(ncwmsPanel._onSelectedLayerChanged).toHaveBeenCalledWith(newLayer);
+        });
+
+        it('updates and resets for new layer', function() {
+            spyOn(ncwmsPanel, '_initWithLayer');
+            spyOn(ncwmsPanel, 'resetConstraints');
+            ncwmsPanel._onSelectedLayerChanged(newLayer);
+
+            expect(ncwmsPanel.layer).toBe(newLayer);
+            expect(ncwmsPanel._initWithLayer).toHaveBeenCalled();
+            expect(ncwmsPanel.resetConstraints).toHaveBeenCalled();
+        });
+    });
+
+    function _applyCommonSpies() {
+        spyOn(ncwmsPanel, '_onDateSelected');
+        spyOn(ncwmsPanel, '_setBounds');
     }
 
     function _mockLayer() {
@@ -186,14 +206,14 @@ describe('Portal.details.NcWmsPanel', function() {
             extent.add(moment("2001-01-01T01:00:00.000Z").add('h', i));
         }
         return {
-            parentGeoNetworkRecord: geoNetworkRecord,
+            dataCollection: dataCollection,
             temporalExtent: extent,
             missingDays: [],
             time: extent.min(),
             getTemporalExtent: function() {
                 return this.temporalExtent;
             },
-            setSubsetExtentView: function() {},
+            setSubsetExtentView: noOp,
             getSubsetExtentMin: returns(extent.min()),
             getSubsetExtentMax: returns(extent.max())
         };

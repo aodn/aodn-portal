@@ -23,11 +23,12 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
                 clearValue: noOp,
                 setValue: noOp
             },
-            layer: {
-                name: 'layerName',
-                getDownloadCql: returns('')
-            },
-            setLayerAndFilter: noOp
+            dataCollection: {
+                getTitle: returns('Collection title'),
+                getSelectedLayer: returns({
+                    getDownloadCql: returns('')
+                })
+            }
         });
 
         _mockFilterFields(filterPanel);
@@ -68,7 +69,7 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
         it('fires events when required fields are set', function() {
             component._dateField.getValue = returns('12-02-1990');
             filterPanel._applyDateFilter(component);
-            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Date", "atestname user set 12-02-1990", "layerName");
+            expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Date", "atestname user set 12-02-1990", "Collection title");
             expect(filterPanel._fireAddEvent).toHaveBeenCalled();
         });
     });

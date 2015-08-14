@@ -21,22 +21,23 @@ describe("Portal.ui.DownloadCartWidget", function() {
         spyOn(downloadCartWidget, 'updateDownloadCartSize');
         Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
         expect(downloadCartWidget.updateDownloadCartSize).toHaveBeenCalled();
-
     });
 
     it('one record is added', function() {
         Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
         expect(downloadCartWidget.getCollectionCounterAsString()).toEqual("1");
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
+        expect(downloadCartWidget.getCollectionCounterAsString()).toEqual("2");
     });
 
-    it('it clears', function() {
+    it('record is removed', function() {
         Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
-        Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
+        expect(downloadCartWidget.getCollectionCounterAsString()).toEqual("1");
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
         expect(downloadCartWidget.getCollectionCounterAsString()).toEqual("0");
     });
 
     it('getCollectionCounterAsString returns a string', function() {
         expect(typeof downloadCartWidget.getCollectionCounterAsString()).toEqual("string");
     });
-
 });

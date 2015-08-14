@@ -12,6 +12,8 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
         var templateLines = this._getHtmlContent();
 
+        Ext.apply(this, cfg);
+
         Portal.cart.DownloadPanelItemTemplate.superclass.constructor.call(this, templateLines);
     },
 
@@ -174,8 +176,8 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     _removeButtonOnClick: function(button) {
         var collectionId = this.getIdFromButtonContainerId(button, "removeButtonId");
-        var record = Portal.data.ActiveGeoNetworkRecordStore.instance().getRecordFromUuid(collectionId);
-        Portal.data.ActiveGeoNetworkRecordStore.instance().remove(record);
+        var record = this.dataCollectionStore.getRecordFromUuid(collectionId);
+        this.dataCollectionStore.remove(record);
     },
 
     _getFileListEntries: function(values) {
@@ -196,7 +198,8 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getSingleFileEntry: function(link) {
-        return this._makeExternalLinkMarkup(link.href, link.title);
+        var linkData = link.data;
+        return this._makeExternalLinkMarkup(linkData.url, linkData.title);
     },
 
     _makeExternalLinkMarkup: function(href, text, extras) {

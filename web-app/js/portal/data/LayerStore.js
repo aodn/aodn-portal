@@ -8,11 +8,7 @@
 Ext.namespace('Portal.data');
 
 /**
- * Contains the set of currently "active" layers in the application,
- * i.e. those that have been added to the map.
- *
- * It's intended for this to be generalised when the concept of "bundles"
- * is introduced (i.e. it will store the set of active bundles).
+ * Contains the set of layers currently on the map
  */
 Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
@@ -23,30 +19,16 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         this._initBaseLayers();
     },
 
-    addUsingLayerLink: function(layerDisplayName, layerLink, geonetworkRecord, layerRecordCallback) {
-        var serverUri = layerLink.server.uri;
-        var serverInfo = Portal.data.Server.getInfo(serverUri);
-
-        layerLink.server = serverInfo;
-
-        if (layerLink.server == Portal.data.Server.UNKNOWN) {
-            layerRecordCallback = undefined;
-            geonetworkRecord = undefined;
-            this._serverUnrecognized(serverUri);
-        }
-
-        var layerDescriptor = new Portal.common.LayerDescriptor(
-            layerLink, layerDisplayName, geonetworkRecord, serverInfo.getLayerType()
-        );
-        this.addUsingDescriptor(layerDescriptor, layerRecordCallback);
+    _linkToOpenLayer: function(layerLink, dataCollection) {
+        return Portal.data.DataCollectionLayers.prototype._linkToOpenLayer(layerLink, dataCollection);
     },
 
-    addUsingDescriptor: function(layerDescriptor, layerRecordCallback) {
+    _addUsingDescriptor: function(layerDescriptor, layerRecordCallback) {
         return this._addLayer(layerDescriptor.toOpenLayer(), layerRecordCallback);
     },
 
-    _serverUnrecognized: function(serverUri) {
-        log.error("Server '" + serverUri + "' is blocked!!");
+    addUsingOpenLayer: function(openLayer, layerRecordCallback) {
+        return this._addLayer(openLayer, layerRecordCallback);
     },
 
     removeAll: function() {
@@ -87,8 +69,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     removeUsingOpenLayer: function(openLayer) {
         var layerRecordToRemove = this.getByLayer(openLayer);
         this.remove(layerRecordToRemove);
-        openLayer.destroyWhenLoaded();
-        Ext.MsgBus.publish(PORTAL_EVENTS.LAYER_REMOVED, openLayer);
     },
 
     _addLayer: function(openLayer, layerRecordCallback) {
@@ -101,12 +81,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
             if (layerRecordCallback) {
                 layerRecordCallback(layerRecord);
-            }
-            // has the parentGeoNetworkRecord overlay layer been deleted
-            if (layerRecord.parentGeoNetworkRecord) {
-                if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(layerRecord.parentGeoNetworkRecord)) {
-                    return;
-                }
             }
 
             this.add(layerRecord);
@@ -124,25 +98,13 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     containsOpenLayer: function(openLayer) {
-        var path;
-        if (openLayer.layerHierarchyPath) {
-            path = openLayer.layerHierarchyPath;
-        }
-        else {
-            path = openLayer.name;
-        }
 
-        var alreadyAdded = this.findBy(function(record, id) {
-            if (record) {
-                return (record.get("layer").layerHierarchyPath === path || record.get("layer").name === path) && record.get("layer").url === openLayer.url;
-            }
+        var layerIndex = this.findBy(function(record) {
+            var currentLayer = record.get("layer");
+            return currentLayer.name === openLayer.name && currentLayer.url === openLayer.url;
         });
 
-        if (alreadyAdded < 0) {
-            return false;
-        }
-
-        return true;
+        return layerIndex >= 0;
     },
 
     _registerMessageListeners: function() {
@@ -185,11 +147,11 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
             url: 'layer/configuredBaselayers',
             scope: this,
             success: function(resp) {
-                var layerDescriptorsAsText = Ext.util.JSON.decode(resp.responseText);
+                var baseLayerConfigs = Ext.util.JSON.decode(resp.responseText);
 
-                Ext.each(layerDescriptorsAsText, function(layerDescriptorAsText) {
-                    var layerDescriptor = new Portal.common.LayerDescriptor(layerDescriptorAsText);
-                    this.addUsingDescriptor(layerDescriptor);
+                Ext.each(baseLayerConfigs, function(baseLayerConfig) {
+                    var layerDescriptor = new Portal.common.LayerDescriptor(baseLayerConfig);
+                    this._addUsingDescriptor(layerDescriptor);
                 }, this);
 
                 Ext.MsgBus.publish(PORTAL_EVENTS.BASE_LAYER_LOADED_FROM_SERVER);

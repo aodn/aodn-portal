@@ -81,7 +81,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     },
 
     _constructFilename: function(collection, params) {
-        return String.format(params.filenameFormat, collection.title);
+        return String.format(params.filenameFormat, collection.getTitle());
     },
 
     _additionalQueryStringFrom: function(args) {

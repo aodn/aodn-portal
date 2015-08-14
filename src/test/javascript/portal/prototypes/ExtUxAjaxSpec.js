@@ -52,7 +52,7 @@ describe("Ext.ux.Ajax", function() {
     describe('proxyRequestXML', function() {
         it('adds Content-Type application/xml', function() {
             spyOn(Ext.ux.Ajax, 'setContentType');
-            spyOn(Ext.ux.Ajax, 'proxyRequest').andCallFake(function() {});
+            spyOn(Ext.ux.Ajax, 'proxyRequest');
 
             Ext.ux.Ajax.proxyRequestXML({});
 
@@ -64,7 +64,7 @@ describe("Ext.ux.Ajax", function() {
     describe('proxyRequestJSON', function() {
         it('adds Content-Type application/json', function() {
             spyOn(Ext.ux.Ajax, 'setContentType');
-            spyOn(Ext.ux.Ajax, 'proxyRequest').andCallFake(function() {});
+            spyOn(Ext.ux.Ajax, 'proxyRequest');
 
             Ext.ux.Ajax.proxyRequestJSON({});
 

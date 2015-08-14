@@ -16,7 +16,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
 
-        this.layer = cfg.layer;
+        Ext.apply(this, cfg);
+
+        this.layer = this.dataCollection.getSelectedLayer();
+
+        this.dataCollection.getLayerState().on('selectedlayerchanged', function(newLayer) {
+            this._onSelectedLayerChanged(newLayer);
+        }, this);
 
         var config = Ext.apply({
             cls: 'filterGroupPanel'
@@ -31,18 +37,20 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this._addLoadingInfo();
         this._addTemporalControls();
         this._initWithLayer();
+        this._addClearButton();
     },
 
     _initWithLayer: function() {
-
-        this.geoNetworkRecord = this.layer.parentGeoNetworkRecord;
-
-        this._disableDateTimeFields();
         this._attachTemporalEvents();
         this._attachSpatialEvents();
         this._removeLoadingInfo();
         this._applyFilterValuesFromMap();
-        this._addClearButton();
+    },
+
+    _onSelectedLayerChanged: function(newLayer) {
+        this.layer = newLayer;
+        this._initWithLayer();
+        this.resetConstraints();
     },
 
     _addClearButton: function() {
@@ -63,7 +71,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     _removeLoadingInfo: function() {
         this.remove(this.loadingInfo);
         delete this.loadingInfo;
-
     },
 
     _addLoadingInfo: function() {
@@ -317,9 +324,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
 
-        if (this.geoNetworkRecord) {
+        if (this.dataCollection) {
             this._addDateTimeFilterToLayer();
-            this.geoNetworkRecord.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
+            this.dataCollection.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
         }
     },
 
@@ -377,6 +384,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _layerTemporalExtentLoad: function() {
+
         if ('next' == this._getPendingEvent()) {
             this._removePendingEvent();
             this._goToNextTimeSlice();

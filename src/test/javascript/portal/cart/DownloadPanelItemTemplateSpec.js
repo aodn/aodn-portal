@@ -236,7 +236,9 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         it('creates links', function() {
             var values = {
-                linkedFiles: [{ href: href, title: text }]
+                linkedFiles: [{
+                    data: {url: href, title: text}
+                }]
             };
             var html = tpl._getFileListEntries(values);
 

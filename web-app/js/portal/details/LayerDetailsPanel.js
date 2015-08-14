@@ -10,7 +10,6 @@ Ext.namespace('Portal.details');
 Portal.details.LayerDetailsPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
-        this.layer = cfg.layer;
 
         var config = Ext.apply({
             title: OpenLayers.i18n('layerDetailsPanelTitle')
@@ -23,12 +22,12 @@ Portal.details.LayerDetailsPanel = Ext.extend(Ext.Container, {
         this.items = [
             this._makeSpacer(),
             new Portal.details.LayerControlPanel({
-                layer: this.layer,
+                dataCollection: this.dataCollection,
                 map: this.map
             }),
             this._makeSpacer(),
             new Portal.details.StylePanel({
-                layer: this.layer
+                dataCollection: this.dataCollection
             })
         ];
 

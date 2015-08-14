@@ -8,11 +8,11 @@
 describe('Portal.cart.DownloadEstimator', function() {
 
     var estimator;
-    var geoNetworkRecord;
+    var dataCollection;
 
     beforeEach(function() {
         estimator = new Portal.cart.DownloadEstimator();
-        geoNetworkRecord = {
+        dataCollection = {
             uuid: 9
         };
     });
@@ -26,7 +26,7 @@ describe('Portal.cart.DownloadEstimator', function() {
             };
 
             spyOn(estimator, '_generateFailureResponse');
-            estimator._createFailMessage(mockResult, geoNetworkRecord.uuid);
+            estimator._createFailMessage(mockResult, dataCollection.uuid);
             expect(estimator._generateFailureResponse).toHaveBeenCalled();
         });
 

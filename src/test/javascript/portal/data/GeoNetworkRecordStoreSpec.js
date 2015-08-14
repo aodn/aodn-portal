@@ -36,7 +36,9 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
         beforeEach(function() {
             Portal.app.appConfig = {
                 portal: {
-                    downloadCartDownloadableProtocols: [ 'downloadable', 'some other downloadable protocol']
+                    metadataProtocols: {
+                        dataFile: [ 'downloadable', 'some other downloadable protocol']
+                    }
                 }
             };
 
@@ -86,10 +88,6 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
             });
         });
 
-        it('source', function() {
-            expect(geoNetworkRecordStore.getAt(0).get('source')).toEqual('987654321');
-        });
-
         describe('bbox', function() {
             it('west', function() {
                 expect(geoNetworkRecordStore.getAt(0).get('bbox').getBounds().left).toBe(-80);
@@ -117,27 +115,6 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
                 var linkedFiles = geoNetworkRecordStore.getAt(0).get('linkedFiles');
                 expect(linkedFiles.length).toBe(1);
                 expect(linkedFiles[0].title).toBe('ACORN Radar Stations csv');
-            });
-        });
-
-        describe('download handlers', function() {
-            it('python download handler', function() {
-
-                spyOn(Portal.cart.PythonDownloadHandler.prototype, 'getDownloadOptions');
-
-
-                geoNetworkRecordStore = new Portal.data.GeoNetworkRecordStore();
-                geoNetworkRecordStore.loadData(doc);
-
-                var downloadHandlers = geoNetworkRecordStore.getAt(0).get('dataDownloadHandlers');
-
-                // This is a bit of an indirect way of checking the download handler type,
-                // since it doesn't seem possible to do it directly.
-                Ext.each(downloadHandlers, function(downloadHandler) {
-                    downloadHandler.getDownloadOptions();
-                });
-
-                expect(Portal.cart.PythonDownloadHandler.prototype.getDownloadOptions).toHaveBeenCalled();
             });
         });
     });

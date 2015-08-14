@@ -36,7 +36,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '         <div class="x-panel miniMap {[this.getStatusClasses(values)]}" title="{[this.getMiniMapLinkTitle(values)]}"',
             '            style="height:{[this.MINIMAP_HEIGHT]}px;width:{[this.MINIMAP_WIDTH]}px;margin:{[this.MINIMAP_PADDING]}px! important"',
             '            id="{[this.mapElementId(values.uuid)]}">',
-            '            {[this.getMiniMap(values)]}',
             '        </div>',
             '        <div class="x-panel resultsTextBody {[this.getStatusClasses(values)]}">',
             '            <span class="floatRight x-hyperlink small">{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
@@ -64,14 +63,40 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         Portal.search.FacetedSearchResultsDataView.superclass.initComponent.apply(this, arguments);
     },
 
+    refresh: function() {
+        Portal.search.FacetedSearchResultsDataView.superclass.refresh.call(this, arguments);
+
+        this.store.each(function(record) {
+            this.getMiniMap(record.data);
+        }, this);
+    },
+
+    getMiniMap: function(values) {
+
+        values.mapContainerId = this.mapElementId(values.uuid);
+
+        // remove any existing content fixes #1757
+        clearContents(values.mapContainerId);
+
+        var miniMap = new Portal.search.FacetedSearchResultsMiniMap(values);
+        miniMap.addLayersAndRender();
+
+        this.addMinimapLink(values.uuid);
+
+        // Must return something, otherwise 'undefined' is rendered in the mini map div in some browsers,
+        // e.g. firefox (but not chrome).
+        return '';
+    },
+
     addMinimapLink: function(uuid) {
 
         var that = this;
         var selector = '#' + this.mapElementId(uuid);
+        jQuery(selector).die();
         jQuery(selector).live("click", that, function(clickEvent) {
 
             var multiSelect = clickEvent.ctrlKey;
-            var uuid = this.uuidFromElementId(jQuery(this).attr('id'));
+            var uuid = that.uuidFromElementId(jQuery(this).attr('id'));
             that.addRecordWithUuid(uuid, multiSelect);
 
             jQuery(this).addClass(this.CSS_CLASS_ITEM_DISABLED);
@@ -247,26 +272,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return html;
     },
 
-    getMiniMap: function(values) {
-
-        values.mapContainerId = this.mapElementId(values.uuid);
-
-        // remove any existing content fixes #1757
-        clearContents(values.mapContainerId);
-
-        var miniMap = new Portal.search.FacetedSearchResultsMiniMap(values);
-        miniMap.addLayersAndRender();
-
-        this.addMinimapLink(values.uuid);
-
-        // Must return something, otherwise 'undefined' is rendered in the mini map div in some browsers,
-        // e.g. firefox (but not chrome).
-        return '';
-    },
-
     isRecActive: function(uuid) {
-        var record = this._getRecordFromUuid(uuid);
-        return Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record);
+        return this.dataCollectionStore.findBy(function(dataCollection) {
+            return dataCollection.getUuid() == uuid;
+        }) != -1;
     },
 
     _getRecordFromUuid: function(uuid) {
@@ -309,11 +318,13 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     addRecordWithUuid: function(uuid, multiSelect) {
         var record = this._getRecordFromUuid(uuid);
 
-        trackUsage(OpenLayers.i18n('layerSelectionTrackingCategory'), OpenLayers.i18n('layerSelectionTrackingAction'), record.data.title);
+        trackUsage(OpenLayers.i18n('dataCollectionSelectionTrackingCategory'), OpenLayers.i18n('dataCollectionSelectionTrackingAction'), record.data.title);
 
-        if (!Portal.data.ActiveGeoNetworkRecordStore.instance().isRecordActive(record)) {
+        if (!this.dataCollectionStore.isRecordActive(record)) {
 
-            Portal.data.ActiveGeoNetworkRecordStore.instance().add(record);
+            this.dataCollectionStore.add(
+                Portal.data.DataCollection.fromMetadataRecord(record)
+            );
         }
 
         if (!multiSelect) {

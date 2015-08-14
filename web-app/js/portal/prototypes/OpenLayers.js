@@ -107,10 +107,10 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function(resp, options) {
     return formatGetFeatureInfo(resp, options);
 };
 
-OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(serverUrl, layerName, outputFormat) {
+OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(filters, serverUrl, layerName, outputFormat) {
 
     var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
-        layer: this
+        filters: filters
     });
 
     return this._buildGetFeatureRequestUrl(
@@ -163,10 +163,10 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
-OpenLayers.Layer.WMS.prototype.updateCqlFilter = function() {
+OpenLayers.Layer.WMS.prototype.updateCqlFilter = function(filters) {
 
     var builder = new Portal.filter.combiner.MapCqlBuilder({
-        layer: this
+        filters: filters
     });
 
     var newValue = builder.buildCql();

@@ -15,25 +15,26 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
 
         var layerStore = new Portal.data.LayerStore();
         var mapPanel = new Portal.ui.MapPanel({layers: layerStore});
-
-        // TODO: probably we can remove this 'singleton' type access to the 'ActiveGeoNetworkRecordStore'
-        // and only pass it down to the components that actually need access to it.
-        Portal.data.ActiveGeoNetworkRecordStore.THE_ACTIVE_RECORDS_INSTANCE =
-            new Portal.data.ActiveGeoNetworkRecordStore({
-                layerStore: layerStore
-            });
+        var dataCollectionStore = new Portal.data.DataCollectionStore({
+            layerStore: layerStore
+        });
 
         this.mainPanel = new Portal.ui.MainPanel({
             region: 'center',
             mapPanel: mapPanel,
+            dataCollectionStore: dataCollectionStore,
             panels: [
                 new Portal.search.SearchPanel({
-                    mapPanel: mapPanel
+                    mapPanel: mapPanel,
+                    dataCollectionStore: dataCollectionStore
                 }),
                 new Portal.ui.VisualisePanel({
-                    mapPanel: mapPanel
+                    mapPanel: mapPanel,
+                    dataCollectionStore: dataCollectionStore
                 }),
-                new Portal.cart.DownloadPanel()
+                new Portal.cart.DownloadPanel({
+                    dataCollectionStore: dataCollectionStore
+                })
             ]
         });
 

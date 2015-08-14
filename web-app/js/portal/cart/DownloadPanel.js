@@ -38,7 +38,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             ]
         }, cfg);
 
-        this.store = Portal.data.ActiveGeoNetworkRecordStore.instance();
         this.confirmationWindow = new Portal.cart.DownloadConfirmationWindow();
 
         Ext.apply(this, config);
@@ -98,13 +97,14 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     },
 
     generateBodyContent: function() {
-        var tpl = new Portal.cart.DownloadPanelItemTemplate(this);
+        var tpl = new Portal.cart.DownloadPanelItemTemplate({
+            dataCollectionStore: this.dataCollectionStore
+        });
         var html = '';
 
-        Ext.each(this.store.getLoadedRecords(), function(item) {
-            var collection = item.data;
+        Ext.each(this.dataCollectionStore.getLoadedRecords(), function(collectionRecord) {
 
-            html += this._generateBodyContentForCollection(tpl, collection, html);
+            html += this._generateBodyContentForCollection(tpl, collectionRecord);
         }, this);
 
         if (!html) {
@@ -120,7 +120,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         this.bodyContent.update(html);
     },
 
-    _generateBodyContentForCollection: function(tpl, collection, html) {
+    _generateBodyContentForCollection: function(tpl, collection) {
         var service = new Portal.cart.InsertionService(this);
         var processedValues = service.insertionValues(collection);
 
@@ -133,7 +133,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         return tpl.apply(values);
     },
 
-    initButtonPanel: function () {
+    initButtonPanel: function() {
 
          this.resetLink = new Ext.ux.Hyperlink({
             text: OpenLayers.i18n("clearLinkLabel", {text: OpenLayers.i18n('clearAndResetLabel')}) ,
@@ -151,10 +151,10 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    _clearAllAndReset: function () {
+    _clearAllAndReset: function() {
 
-        Portal.data.ActiveGeoNetworkRecordStore.instance().removeAll();
-        setViewPortTab(0);
+        this.dataCollectionStore.removeAll();
+        setViewPortTab(TAB_INDEX_SEARCH);
     },
 
     _loadMenuItemsFromHandlers: function(processedValues, collection) {
@@ -163,7 +163,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             processedValues.menuItems = [];
         }
 
-        Ext.each(collection.dataDownloadHandlers, function(handler) {
+        Ext.each(collection.getDataDownloadHandlers(), function(handler) {
 
             Ext.each(handler.getDownloadOptions(), function(downloadOption) {
 
@@ -188,7 +188,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             self.downloader.download(collection, generateUrlCallbackScope, generateUrlCallback, callbackParams);
             trackDownloadUsage(
                 OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(textKey),
-                collection.title,
+                collection.getTitle(),
                 undefined
             );
         };
