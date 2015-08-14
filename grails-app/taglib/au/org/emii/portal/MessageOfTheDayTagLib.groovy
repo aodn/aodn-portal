@@ -10,6 +10,7 @@ package au.org.emii.portal
 class MessageOfTheDayTagLib {
 
     def grailsApplication
+    def portalBranding
 
     static namespace = "portal"
 
