@@ -45,14 +45,15 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
         expect(successCallback).toHaveBeenCalled();
     });
 
-    it('loads retrieved record in to ActiveGeoNetworkRecordStore', function() {
+    it('loads retrieved record into DataCollectionStore', function() {
         var response = {
             responseXML: '<some_xml></some_xml>'
         };
-        var record = {};
+        var metadataRecord = {};
+        var dataCollectionRecord = {};
         spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'loadData');
-        spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'getAt').andReturn(record);
-        //spyOn(fetcher.dataCollectionStore, 'add');
+        spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'getAt').andReturn(metadataRecord);
+        spyOn(Portal.data.DataCollection, 'fromMetadataRecord').andReturn(dataCollectionRecord);
         spyOn(Ext.Ajax, 'request').andCallFake(
             function(params) {
                 params.success.call(fetcher, response);
@@ -60,7 +61,8 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
         );
 
         fetcher.load(uuid);
-        //expect(Portal.data.ActiveGeoNetworkRecordStore.instance().add).toHaveBeenCalledWith(record);
+        expect(Portal.data.GeoNetworkRecordStore.prototype.getAt).toHaveBeenCalled();
+        expect(fetcher.dataCollectionStore.add).toHaveBeenCalledWith(dataCollectionRecord);
     });
 
     describe('getUuidsFromUrl', function() {
