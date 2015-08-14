@@ -82,14 +82,6 @@ describe('Portal.details.NcWmsPanel', function() {
             ncwmsPanel.startDateTimePicker.fireEvent('change', ncwmsPanel.endDateTimePicker);
             expect(ncwmsPanel._onDateSelected).toHaveBeenCalled();
         });
-
-        // Not sure that this is necessary.
-        // it('clears the date and time pickers when the layer is updating', function() {
-        //     spyOn(ncwmsPanel, '_disableDateTimeFields');
-        //     ncwmsPanel._initWithLayer();
-        //     expect(ncwmsPanel._disableDateTimeFields).toHaveBeenCalled();
-        //     delete ncwmsPanel.dataCollection;
-        // });
     });
 
     describe('_newHtmlElement', function() {
@@ -201,11 +193,9 @@ describe('Portal.details.NcWmsPanel', function() {
             expect(ncwmsPanel._initWithLayer).toHaveBeenCalled();
             expect(ncwmsPanel.resetConstraints).toHaveBeenCalled();
         });
-
-
     });
 
-    function _applyCommonSpies(panel) {
+    function _applyCommonSpies() {
         spyOn(ncwmsPanel, '_onDateSelected');
         spyOn(ncwmsPanel, '_setBounds');
     }
