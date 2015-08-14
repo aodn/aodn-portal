@@ -103,18 +103,10 @@ describe("Portal.cart.DownloadPanel", function() {
 
         var makeTestDownloadPanel = function(collections) {
             var downloadPanel = new Portal.cart.DownloadPanel({
-                dataCollectionStore: new Portal.data.DataCollectionStore()
+                dataCollectionStore: {
+                    getLoadedRecords: returns(collections)
+                }
             });
-
-            var items = [];
-            Ext.each(collections, function(collection) {
-                items.push({
-                    data: collection,
-                    loaded: true
-                });
-            });
-
-            downloadPanel.dataCollectionStore.data.items = items;
 
             spyOn(downloadPanel.bodyContent, 'update');
             spyOn(downloadPanel, '_applyTemplate');
@@ -130,6 +122,9 @@ describe("Portal.cart.DownloadPanel", function() {
             testCollection4 = makeTestCollection('[Content 4]');
 
             spyOn(Portal.cart, 'DownloadPanelItemTemplate');
+            spyOn(Portal.cart, 'InsertionService').andReturn({
+                insertionValues: returns({})
+            });
         });
 
         it('creates a DownloadPanelItemTemplate', function() {
@@ -141,7 +136,7 @@ describe("Portal.cart.DownloadPanel", function() {
             expect(Portal.cart.DownloadPanelItemTemplate).toHaveBeenCalled();
         });
 
-        /*it('reverse view order enforced', function() {
+        it('reverse view order enforced', function() {
 
             downloadPanel = makeTestDownloadPanel([
                 testCollection1,
@@ -157,7 +152,7 @@ describe("Portal.cart.DownloadPanel", function() {
             expect(downloadPanel._applyTemplate.argsForCall[2][1].uuid).toBe(testCollection3.uuid);
             expect(downloadPanel._applyTemplate.argsForCall[1][1].uuid).toBe(testCollection2.uuid);
             expect(downloadPanel._applyTemplate.argsForCall[0][1].uuid).toBe(testCollection1.uuid);
-        });*/
+        });
 
         it('calls update', function() {
 
@@ -178,7 +173,7 @@ describe("Portal.cart.DownloadPanel", function() {
             expect(downloadPanel.emptyMessage.show).toHaveBeenCalled();
         });
 
-/*        it('includes menu items from download handlers', function() {
+        it('includes menu items from download handlers', function() {
 
             testCollection1.getDataDownloadHandlers = returns([{
                 getDownloadOptions: returns([
@@ -195,10 +190,6 @@ describe("Portal.cart.DownloadPanel", function() {
                 ])
             }]);
 
-            spyOn(Portal.cart, 'InsertionService').andReturn({
-                insertionValues: returns({menuItems: []})
-            });
-
             downloadPanel = makeTestDownloadPanel([
                 testCollection1
             ]);
@@ -210,17 +201,15 @@ describe("Portal.cart.DownloadPanel", function() {
 
             expect(OpenLayers.i18n.argsForCall).toEqual([['key1'], ['key2']]);
             expect(processedValues.menuItems.length).toBe(2);
-        });*/
+        });
     });
 
     describe('confirmDownload', function() {
 
-        var makeTestParams = returns({
-            filenameFormat: "{0}.csv"
-        });
-
         it('calls trackUsage when the user accepts download', function() {
-            var testParams = makeTestParams();
+            var testParams = {
+                filenameFormat: "{0}.csv"
+            };
             var testCollection = makeTestCollection();
             var callbackScope = downloadPanel;
             var callback = noOp;
@@ -238,7 +227,7 @@ describe("Portal.cart.DownloadPanel", function() {
 
     var makeTestCollection = function(uuid) {
         return {
-            uuid: uuid,
+            getUuid: returns(uuid),
             getTitle: returns("Argo"),
             getSelectedLayer: returns({
                 isNcwms: noOp
