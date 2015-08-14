@@ -67,6 +67,16 @@ Portal.data.DataCollection = function() {
         return applicableDownloadOptions;
     };
 
+    constructor.prototype.getFilterParams = function() {
+        var layer = this.getSelectedLayer();
+        var layerName = layer.getDownloadLayer ? layer.getDownloadLayer() : layer.wmsName;
+
+        return {
+            server: layer.server.uri,
+            layer: layerName
+        }
+    };
+
     constructor.prototype.setFilters = function(filters) {
 
         this.filters = filters;

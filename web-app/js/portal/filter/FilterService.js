@@ -17,16 +17,9 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
     loadFilters: function(dataCollection, successCallback, failureCallback, callbackScope) {
 
-        var layer = dataCollection.getSelectedLayer(); // Todo - DN: What do we do here without getSelectedLayer() ?
-
-        var params = {
-            server: layer.server.uri,
-            layer:  this._filterLayerName(layer)
-        };
-
         Ext.Ajax.request({
             url: this.GET_FILTER,
-            params: params,
+            params: dataCollection.getFilterParams(),
             scope: this,
             success: this._filtersLoaded,
             failure: this._handleFilterLoadFailure,
@@ -116,17 +109,6 @@ Portal.filter.FilterService = Ext.extend(Object, {
         log.error('failed to load filter range for filter: ' + JSON.stringify(opts.params));
 
         callbackFunction.call(callbackScope);
-    },
-
-    _filterLayerName: function(layer) {
-
-        var filterLayer = layer.wmsName;
-
-        if (layer.getDownloadLayer) {
-            filterLayer = layer.getDownloadLayer();
-        }
-
-        return filterLayer;
     },
 
     _determinePrimaryFilters: function(filters) {
