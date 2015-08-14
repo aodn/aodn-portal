@@ -60,10 +60,6 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
     _onAdd: function(store, dataCollections) {
         var _this = this;
 
-        if (dataCollections.length != 1) {
-            alert('dataCollections (' + dataCollections.length + ')');
-        }
-
         Ext.each(dataCollections, function(dataCollection) {
             // TODO: revisit - what is the life cycle of DataCollectionLayers?
             var dataCollectionLayers = new Portal.data.DataCollectionLayers({
