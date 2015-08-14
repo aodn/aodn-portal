@@ -280,6 +280,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     filtersTrackingDateAction: 'Date',
     filtersTrackingNumberAction: 'Number',
     filtersTrackingSpatialConstraintAction: 'Spatial Constraint',
+    layerControlTrackingCategory: "LayerControl",
+    changeLayerTrackingAction: "change layer",
     featureInfoTrackingCategory: "FeatureInfo",
     metadataTrackingCategory: "Metadata",
     metadataTrackingStep1Action: "Search",

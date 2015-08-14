@@ -1,7 +1,7 @@
 
 // wrapper to the Google Analytics function
 function trackUsage(category, action, label, collection, value) {
-    if ( typeof ga == 'function' ) {
+    if (typeof ga == 'function') {
         ga('send', 'event', category, action, label, value, {
             dimension1: collection
         });
@@ -39,5 +39,14 @@ function trackDownloadUsage(action, collection, downloadParams) {
         action,
         collection,
         downloadParams
+    );
+}
+
+function trackLayerControlUsage(actionKey, label, collection) {
+    trackUsage(
+        OpenLayers.i18n('layerControlTrackingCategory'),
+        OpenLayers.i18n(actionKey),
+        label,
+        collection
     );
 }

@@ -20,6 +20,7 @@ describe("Portal.details.LayerControlPanel", function() {
             };
 
             dataCollection = {
+                getTitle: returns('Data Collection Title'),
                 getLayerState: returns(layerState)
             };
 
@@ -51,6 +52,21 @@ describe("Portal.details.LayerControlPanel", function() {
         });
 
         it('sets selected layer when selected', function() {
+            spyOn(dataCollection.getLayerState(), 'setSelectedLayer');
+            spyOn(window, 'trackLayerControlUsage');
+            addLayers();
+
+            var layerSelectComponent = layerControlPanel._newLayerSelectorComponent();
+
+            layerSelectComponent.fireEvent('change', layerSelectComponent, layerSelectComponent.items[0]);
+            expect(window.trackLayerControlUsage).toHaveBeenCalledWith(
+                'changeLayerTrackingAction',
+                'Data Collection Title',
+                'first layer'
+            );
+        });
+
+        it('sends google analytics tracking information when selected', function() {
             spyOn(dataCollection.getLayerState(), 'setSelectedLayer');
             addLayers();
 

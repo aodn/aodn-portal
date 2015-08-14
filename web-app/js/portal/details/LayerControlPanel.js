@@ -92,11 +92,19 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
             items: items,
             listeners: {
                 'scope': this,
-                'change': function(radioGroup, checkedRadio) {
-                    this.dataCollection.getLayerState().setSelectedLayer(checkedRadio.layer);
-                }
+                'change': this._radioGroupChanged
             }
         });
+    },
+
+    _radioGroupChanged: function(radioGroup, checkedRadio) {
+        this.dataCollection.getLayerState().setSelectedLayer(checkedRadio.layer);
+
+         trackLayerControlUsage(
+             'changeLayerTrackingAction',
+             this.dataCollection.getTitle(),
+             checkedRadio.layer.wmsName
+         );
     },
 
     _visibilityButtonChecked: function(obj, val) {
