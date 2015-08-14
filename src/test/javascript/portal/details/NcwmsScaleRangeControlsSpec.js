@@ -16,9 +16,7 @@ describe('Portal.details.NcwmsScaleRangeControls', function() {
             spyOn(Ext.MsgBus, 'subscribe');
 
             dataCollection = {
-                getLayerState: function() {
-                    return layerState
-                }
+                getLayerState: returns(layerState)
             };
 
             controls = new Portal.details.NcwmsScaleRangeControls({
