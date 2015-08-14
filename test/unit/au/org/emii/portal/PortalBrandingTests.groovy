@@ -71,14 +71,4 @@ class PortalBrandingTests extends GrailsUnitTestCase {
             portalBranding.returnBrandedUrlIfValid("invalidBrandedUrl", "nonBrandedValue", false)
         )
     }
-
-    void testGetMotdUrlNotBranded() {
-        portalBranding.grailsApplication.config.portal.motdUrl = "motdUrl"
-        assertEquals("motdUrl", portalBranding.getMotdUrl())
-    }
-
-    void testGetMotdUrlBranded() {
-        portalBranding.grailsApplication.config.portal.brandingBase = "isBranded"
-        assertEquals("isBranded/motd", portalBranding.getMotdUrl())
-    }
 }

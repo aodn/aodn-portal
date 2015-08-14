@@ -57,11 +57,9 @@ class MessageOfTheDayTagLib {
     def getMotd() {
         def motd = null
 
-        def motdUrl = portalBranding.getMotdUrl()
-
-        if (motdUrl) {
+        if (grailsApplication.config.portal.motdUrl) {
             try {
-                motd = new URL(motdUrl).text
+                motd = new URL(grailsApplication.config.portal.motdUrl).text
             }
             catch (Exception e) {
                 log.debug "Failed getting motd ", e
