@@ -22,7 +22,8 @@ describe("Portal.filter.FilterService", function() {
             getLayerState: returns({
                 getSelectedLayer: returns({server: {}})
             }),
-            setFilters: noOp
+            setFilters: noOp,
+            getFilterParams: noOp
         };
     });
 
@@ -91,30 +92,6 @@ describe("Portal.filter.FilterService", function() {
 
             expect(successCallback).not.toHaveBeenCalled();
             expect(failureCallback).toHaveBeenCalled();
-        });
-    });
-
-    describe('_filterLayerName', function() {
-
-        var layer;
-
-        beforeEach(function() {
-
-            layer = {
-                wmsName: 'wmsName'
-            };
-        });
-
-        it('should use download layer if present', function() {
-
-            layer.getDownloadLayer = returns('wfsName');
-
-            expect(service._filterLayerName(layer)).toBe('wfsName');
-        });
-
-        it('should use map layer otherwise', function() {
-
-            expect(service._filterLayerName(layer)).toBe('wmsName');
         });
     });
 
