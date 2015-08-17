@@ -80,13 +80,11 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
             urlFn = handler._getUrlGeneratorFunction();
 
             testCollection = {
-                getLayerState: function() {
-                    return {
-                        getSelectedLayer: returns({
-                            _buildGetFeatureRequestUrl: buildUrlSpy
-                        })
-                    };
-                },
+                getLayerState: returns({
+                    getSelectedLayer: returns({
+                        _buildGetFeatureRequestUrl: buildUrlSpy
+                    })
+                }),
                 getFilters: returns([])
             };
 
@@ -115,13 +113,11 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
         beforeEach(function() {
 
             testCollection = {
-                getLayerState: function() {
-                    return {
-                        getSelectedLayer: returns({
-                            _buildGetFeatureRequestUrl: returns('the_url')
-                        })
-                    };
-                },
+                getLayerState: returns({
+                    getSelectedLayer: returns({
+                        _buildGetFeatureRequestUrl: returns('the_url')
+                    })
+                }),
                 getFilters: returns([])
             };
         });

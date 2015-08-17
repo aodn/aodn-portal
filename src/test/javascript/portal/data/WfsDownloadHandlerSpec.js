@@ -43,11 +43,9 @@ describe('Portal.cart.WfsDownloadHandler', function () {
                 };
                 var dummyFilters = ['filters'];
                 var dummyCollection = {
-                    getLayerState: function() {
-                        return {
-                            getSelectedLayer: returns(dummyLayer)
-                        };
-                    },
+                    getLayerState: returns({
+                        getSelectedLayer: returns(dummyLayer)
+                    }),
                     getFilters: returns(dummyFilters)
                 };
 
