@@ -146,8 +146,7 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
             'bboxMinX',
             'bboxMinY',
             'opacity',
-            'projection',
-            'zoomOverride'
+            'projection'
         ], function(attr) {
             this[attr] = this.getSelectedLayer()[attr];
         }, this);

@@ -128,43 +128,33 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     zoomToLayer: function (openLayer) {
-        if (openLayer) {
-
-            if (openLayer.zoomOverride) {
-                this.map.setCenter(
-                    new OpenLayers.LonLat(
-                        openLayer.zoomOverride.centreLon,
-                        openLayer.zoomOverride.centreLat),
-                    openLayer.zoomOverride.openLayersZoomLevel);
+        if (openLayer && openLayer.hasBoundingBox()) {
+            // build openlayer bounding box
+            var bounds = null;
+            if (openLayer.bboxMinY == -180 && openLayer.bboxMaxY == 180 && this.enableDefaultDatelineZoom) {
+                // Geoserver can't represent bounding boxes that cross the date line - so, optionally, use a default
+                var defaultBbox = this.defaultDatelineZoomBbox.split(',');
+                bounds = new OpenLayers.Bounds(parseFloat(defaultBbox[1]), parseFloat(defaultBbox[0]), parseFloat(defaultBbox[3]), parseFloat(defaultBbox[2]));
             }
-            else if (openLayer.hasBoundingBox()) {
-                // build openlayer bounding box
-                var bounds = null;
-                if (openLayer.bboxMinY == -180 && openLayer.bboxMaxY == 180 && this.enableDefaultDatelineZoom) {
-                    // Geoserver can't represent bounding boxes that cross the date line - so, optionally, use a default
-                    var defaultBbox = this.defaultDatelineZoomBbox.split(',');
-                    bounds = new OpenLayers.Bounds(parseFloat(defaultBbox[1]), parseFloat(defaultBbox[0]), parseFloat(defaultBbox[3]), parseFloat(defaultBbox[2]));
-                }
-                else {
-                    bounds = new OpenLayers.Bounds(openLayer.bboxMinX, openLayer.bboxMinY, openLayer.bboxMaxX, openLayer.bboxMaxY);
-                }
+            else {
+                bounds = new OpenLayers.Bounds(openLayer.bboxMinX, openLayer.bboxMinY, openLayer.bboxMaxX, openLayer.bboxMaxY);
+            }
 
-                // ensure converted into this maps projection. convert metres into lat/lon etc
-                bounds.transform(new OpenLayers.Projection(openLayer.projection), this.map.getProjectionObject());
+            // ensure converted into this maps projection. convert metres into lat/lon etc
+            bounds.transform(new OpenLayers.Projection(openLayer.projection), this.map.getProjectionObject());
 
-                // openlayers wants left, bottom, right, top
-                // dont support NCWMS-1.3.0 until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187
-                if (openLayer._is130()) {
-                    bounds = new OpenLayers.Bounds.fromArray(bounds.toArray(true));
-                }
+            // openlayers wants left, bottom, right, top
+            // dont support NCWMS-1.3.0 until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187
+            if (openLayer._is130()) {
+                bounds = new OpenLayers.Bounds.fromArray(bounds.toArray(true));
+            }
 
-                if (bounds && bounds.getWidth() > 0 && bounds.getHeight() > 0) {
-                    this.zoomTo(bounds);
-                }
-                else if (bounds) {
-                    // when layer has no bbox volume
-                    this.map.setCenter(bounds.getCenterLonLat(), 3);
-                }
+            if (bounds && bounds.getWidth() > 0 && bounds.getHeight() > 0) {
+                this.zoomTo(bounds);
+            }
+            else if (bounds) {
+                // when layer has no bbox volume
+                this.map.setCenter(bounds.getCenterLonLat(), 3);
             }
         }
     },
