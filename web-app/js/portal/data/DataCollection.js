@@ -69,7 +69,7 @@ Portal.data.DataCollection = function() {
 
     constructor.prototype.getFilterParams = function() {
         var layer = this.getSelectedLayer();
-        var layerName = layer.getDownloadLayer ? layer.getDownloadLayer() : layer.wmsName;
+        var layerName = this.getDownloadLayerName();
 
         return {
             server: layer.server.uri,
@@ -139,6 +139,30 @@ Portal.data.DataCollection = function() {
         linkStore.filterByProtocols(protocols);
 
         return linkStore.getRange(); // Get all records
+    };
+
+    constructor.prototype.getDownloadLayerName = function() {
+        var firstWfsLink = this.getWfsLayerLinks()[0];
+        var firstWmsLink = this.getWmsLayerLinks()[0];
+        var link = firstWfsLink || firstWmsLink;
+
+        if (link) {
+            var linkName = link.data.name;
+
+            // If layer has no workspace defined, assume it is in the same workspace as the WMS layer
+            if (this._workspaceFromName(linkName)) {
+                return linkName;
+            }
+            else {
+                return this._workspaceFromName(firstWmsLink.data.name) + ':' + linkName;
+            }
+        }
+    };
+
+    constructor.prototype._workspaceFromName = function(layerName) {
+        if (layerName.indexOf(':') >= 0) {
+            return layerName.split(":")[0];
+        }
     };
 
     // TODO: remove this.
