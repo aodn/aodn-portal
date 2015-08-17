@@ -62,14 +62,6 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         openLayer.abstractTrimmed = this.abstractTrimmed;
         openLayer.dimensions = this.dimensions;
         openLayer.params.QUERYABLE = true;
-
-        if (this.viewParams) {
-            openLayer.zoomOverride = {
-                centreLon: this.viewParams.centreLon,
-                centreLat: this.viewParams.centreLat,
-                openLayersZoomLevel: this.viewParams.openLayersZoomLevel
-            }
-        }
     },
 
     _initialiseDownloadLayer: function(openLayer) {

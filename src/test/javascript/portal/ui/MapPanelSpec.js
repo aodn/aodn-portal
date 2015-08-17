@@ -90,18 +90,6 @@ describe("Portal.ui.MapPanel", function() {
             expect(mapPanel.zoomTo).toHaveBeenCalled();
             expect(mapPanel.map.setCenter).not.toHaveBeenCalled();
         });
-
-        it('zoomToLayer called with layer having zoom override', function() {
-            openLayer.zoomOverride = {
-                centreLon: 12,
-                centreLat: 34,
-                openLayersZoomLevel: 5
-            };
-
-            mapPanel.zoomToLayer(openLayer);
-            expect(mapPanel.zoomTo).not.toHaveBeenCalled();
-            expect(mapPanel.map.setCenter).toHaveBeenCalled();
-        });
     });
 
     describe('reset event', function() {
