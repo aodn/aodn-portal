@@ -41,7 +41,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             };
 
             spyOn(filterGroupPanel, '_updateAndShow');
-            spyOn(filterGroupPanel, '_sortFilters').andReturn([{}]);
+            spyOn(filterGroupPanel, '_sortFilters');
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
 
             filterGroupPanel._filtersLoaded(layer.filters);
@@ -133,7 +133,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_clearFilters');
             spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, '_addErrorMessage');
-            spyOn(filterGroupPanel, '_sortFilters').andReturn([{}]);
+            spyOn(filterGroupPanel, '_sortFilters');
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
         });
 
@@ -173,7 +173,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
             layer.filters = ["Boolean", "Combo"];
 
-            spyOn(filterGroupPanel, '_sortFilters').andReturn([{},{}]);
+            spyOn(filterGroupPanel, '_sortFilters');
 
             filterGroupPanel._filtersLoaded(layer.filters);
 
