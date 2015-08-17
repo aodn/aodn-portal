@@ -40,15 +40,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 needsFilterRange: returns(false)
             };
 
-            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
-                dataCollection: {
-                    getLayerState: returns({
-                        getSelectedLayer: returns(layer)
-                    }),
-                    getFilterParams: noOp
-                }
-            });
-
             spyOn(filterGroupPanel, '_updateAndShow');
             spyOn(filterGroupPanel, '_sortFilters').andReturn([{}]);
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
@@ -133,15 +124,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
     describe('the clear all filters button', function() {
 
         beforeEach(function() {
-            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
-                dataCollection: {
-                    getLayerState: returns({
-                        getSelectedLayer: returns(layer)
-                    }),
-                    getFilterParams: noOp
-                }
-            });
-
             filters = ["Boolean"];
 
             filterPanel = {
@@ -169,15 +151,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
     describe('the _filtersLoaded function', function() {
 
         beforeEach(function() {
-            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
-                dataCollection: {
-                    getLayerState: returns({
-                        getSelectedLayer: returns(layer)
-                    }),
-                    getFilterParams: noOp
-                }
-            });
-
             filterPanel = {
                 needsFilterRange: returns(false)
             };
