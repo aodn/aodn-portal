@@ -40,14 +40,6 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         return openLayer;
     },
 
-    _getLayerWorkspace: function(layerName) {
-        var workspace = null;
-        if (layerName.indexOf(":") != -1) {
-            workspace = layerName.split(":")[0];
-        }
-        return workspace;
-    },
-
     /**
      * Refactor.
      */
@@ -56,52 +48,11 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         openLayer.wmsName = this.name;
 
         this._setOpenLayerBounds(openLayer);
-        this._initialiseDownloadLayer(openLayer);
         openLayer.projection = this.projection;
         openLayer.blacklist = this.blacklist;
         openLayer.abstractTrimmed = this.abstractTrimmed;
         openLayer.dimensions = this.dimensions;
         openLayer.params.QUERYABLE = true;
-    },
-
-    _initialiseDownloadLayer: function(openLayer) {
-
-        if (this.dataCollection) {
-            var links = this.dataCollection.getMetadataRecord().data.links;
-
-            var downloadLayerName = this._findFirst(links, this.WFS_PROTOCOL);
-
-            if (!downloadLayerName) {
-                downloadLayerName = this._findFirst(links, this.WMS_PROTOCOL);
-            }
-
-            if (downloadLayerName) {
-                // If layer has no workspace defined, assume it is in the same workspace as the WMS layer
-                if (!this._getLayerWorkspace(downloadLayerName) && this._getLayerWorkspace(openLayer.wmsName)) {
-
-                    downloadLayerName = this._getLayerWorkspace(openLayer.wmsName) + ":" + downloadLayerName;
-                }
-
-                openLayer.getDownloadLayer = function() { return downloadLayerName };
-            }
-        }
-    },
-
-    _findFirst: function(links, protocol) {
-
-        var layerName = null;
-
-        Ext.each(links, function(link) {
-
-            if (link.protocol == protocol) {
-
-                layerName = link.name;
-
-                return false;
-            }
-        });
-
-        return layerName;
     },
 
     _setOpenLayerBounds: function(openLayer) {
