@@ -102,7 +102,10 @@ describe("Portal.details.StylePanel", function() {
 
         it("Returns empty array if layer.styles is undefined", function() {
 
-            dataCollection.getSelectedLayer = returns({styles: undefined});
+            dataCollection.getLayerState = returns({
+                getSelectedLayer: returns({styles: undefined})
+            });
+
             var retVal = stylePanel._processStyleData();
 
             expect(JSON.stringify(retVal)).toBe(JSON.stringify([]));
@@ -114,15 +117,18 @@ describe("Portal.details.StylePanel", function() {
                 return String.format('{0} {1} {2} {3}', a, b, c, d);
             };
 
-            dataCollection.getSelectedLayer = returns({
-                isNcwms: returns(true),
-                styles: [
-                    {name: 'style1', palette: 'palette1'},
-                    {name: 'style1', palette: 'palette2'},
-                    {name: 'style2', palette: 'palette1'},
-                    {name: 'style2', palette: 'palette2'}
-                ]
+            dataCollection.getLayerState = returns({
+                getSelectedLayer: returns({
+                    isNcwms: returns(true),
+                    styles: [
+                        {name: 'style1', palette: 'palette1'},
+                        {name: 'style1', palette: 'palette2'},
+                        {name: 'style2', palette: 'palette1'},
+                        {name: 'style2', palette: 'palette2'}
+                    ]
+                })
             });
+
             var retVal = stylePanel._processStyleData();
             var expected = '[' +
                 '["style1/palette1","[object Object] style1/palette1 palette1 true"],' +

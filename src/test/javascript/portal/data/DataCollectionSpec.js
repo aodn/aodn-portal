@@ -7,7 +7,12 @@
 
 describe("Portal.data.DataCollection", function() {
 
-    var dataCollection = new Portal.data.DataCollection();
+    var dataCollection;
+
+    beforeEach(function() {
+        dataCollection = new Portal.data.DataCollection();
+        spyOn(dataCollection, 'getWmsLayerLinks').andReturn([]);
+    });
 
     describe('updateNcwmsParams', function() {
 
@@ -51,5 +56,20 @@ describe("Portal.data.DataCollection", function() {
                 latitudeRangeEnd: 1
             });
         });
+    });
+
+    describe('layerstate', function() {
+        it('lazily initialises layer state', function() {
+            var layerState = dataCollection.getLayerState();
+            expect(layerState).toBeInstanceOf(Portal.data.DataCollectionLayers);
+
+            // Make sure we're reusing the same object.
+            expect(dataCollection.getLayerState()).toBe(layerState);
+        });
+    });
+
+    it('returns correct WMS type', function() {
+        spyOn(dataCollection.getLayerState(), 'isNcwms').andReturn(true);
+        expect(dataCollection.isNcwms()).toBe(true);
     });
 });

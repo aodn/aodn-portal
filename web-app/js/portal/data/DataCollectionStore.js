@@ -61,23 +61,16 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
         var _this = this;
 
         Ext.each(dataCollections, function(dataCollection) {
-            // TODO: revisit - what is the life cycle of DataCollectionLayers?
-            var dataCollectionLayers = new Portal.data.DataCollectionLayers({
-                dataCollection: dataCollection
-            });
-
-            dataCollection.getLayerState = function() {
-                return dataCollectionLayers;
-            };
+            var layerState = dataCollection.getLayerState();
 
             this.layerStore.addUsingOpenLayer(
-                dataCollectionLayers.getSelectedLayer(),
+                layerState.getSelectedLayer(),
                 function(layerRecord) {
                     _this._recordLoaded(dataCollection);
                 }
             );
 
-            dataCollectionLayers.on('selectedlayerchanged', function(newLayer, oldLayer) {
+            layerState.on('selectedlayerchanged', function(newLayer, oldLayer) {
                 if (oldLayer) {
                     this.layerStore.removeUsingOpenLayer(oldLayer);
                 }
@@ -106,6 +99,6 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
     },
 
     _removeFromLayerStore: function(dataCollection) {
-        this.layerStore.removeUsingOpenLayer(dataCollection.getSelectedLayer());
+        this.layerStore.removeUsingOpenLayer(dataCollection.getLayerState().getSelectedLayer());
     }
 });

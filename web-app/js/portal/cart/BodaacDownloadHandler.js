@@ -77,7 +77,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 filters: collection.getFilters()
             });
 
-            var wmsLayer = collection.getSelectedLayer();
+            var wmsLayer = collection.getLayerState().getSelectedLayer();
             return wmsLayer._buildGetFeatureRequestUrl(
                 _this._resourceHref(),
                 _this._layerName(),

@@ -10,7 +10,6 @@ Ext.namespace('Portal.details');
 Portal.details.LayerDetailsPanel = Ext.extend(Ext.Container, {
 
     constructor: function(cfg) {
-
         var config = Ext.apply({
             title: OpenLayers.i18n('layerDetailsPanelTitle')
         }, cfg);

@@ -9,8 +9,6 @@ describe('Portal.cart.InsertionService', function() {
 
     var mockInsertionService;
     var dataCollection;
-    var geoserverLayer = { isNcwms: returns(false) };
-    var ncwmsLayer = { isNcwms: returns(true) };
 
     beforeEach(function() {
         mockInsertionService = new Portal.cart.InsertionService();
@@ -18,7 +16,6 @@ describe('Portal.cart.InsertionService', function() {
         dataCollection = {
             title: 'the title',
             uuid: '42',
-            getSelectedLayer: returns(geoserverLayer),
             getDataDownloadHandlers: returns([{}])
         };
     });
@@ -40,7 +37,7 @@ describe('Portal.cart.InsertionService', function() {
 
         it('creates an ncwms injector for ncwms layers', function() {
             mockInsertionService.insertionValues(getNcwmsRecord());
-            expectGetInjectorToHaveBeenCalled(Portal.cart.NcwmsInjector)
+            expectGetInjectorToHaveBeenCalled(Portal.cart.NcwmsInjector);
         });
 
         it('creates a wms injector for wms layers', function() {
@@ -95,13 +92,13 @@ describe('Portal.cart.InsertionService', function() {
     }
 
     function getWmsRecord() {
-        dataCollection.getSelectedLayer = returns(geoserverLayer);
+        dataCollection.isNcwms = returns(false);
 
         return dataCollection;
     }
 
     function getNcwmsRecord() {
-        dataCollection.getSelectedLayer = returns(ncwmsLayer);
+        dataCollection.isNcwms = returns(true);
 
         return dataCollection;
     }

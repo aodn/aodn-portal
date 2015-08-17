@@ -25,8 +25,11 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
             },
             dataCollection: {
                 getTitle: returns('Collection title'),
-                getSelectedLayer: returns({
-                    getDownloadCql: returns('')
+                getLayerState: returns({
+                    getSelectedLayer: returns({
+                        name: 'layerName',
+                        getDownloadCql: returns("")
+                    })
                 })
             }
         });
@@ -63,7 +66,7 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
         beforeEach(function() {
             spyOn(filterPanel, '_fireAddEvent');
             spyOn(window, 'trackUsage');
-            component = {'_dateField':{"name":"atestname"}}
+            component = {'_dateField':{"name":"atestname"}};
         });
 
         it('fires events when required fields are set', function() {

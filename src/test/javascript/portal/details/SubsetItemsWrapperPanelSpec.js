@@ -16,9 +16,9 @@ describe("Portal.details.SubsetItemsWrapperPanel", function() {
 
         layer = new OpenLayers.Layer.WMS();
         layerState = new Ext.util.Observable();
+        layerState.getSelectedLayer = returns(layer);
 
         dataCollection = {
-            getSelectedLayer: returns(layer),
             getTitle: returns('amazetion'),
             getLayerState: returns(layerState)
         };

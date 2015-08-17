@@ -21,12 +21,15 @@ describe("Portal.details.SubsetPanel", function() {
         );
         layer.map = map;
 
+        var layerState = new Ext.util.Observable();
+        layerState.getSelectedLayer = returns(layer);
+
         subsetPanel = new Portal.details.SubsetPanel({
             map: map,
             dataCollection: {
-                getSelectedLayer: returns(layer),
                 updateNcwmsParams: noOp,
-                getLayerState: returns(new Ext.util.Observable())
+                getLayerState: returns(layerState),
+                isNcwms: returns(true)
             }
         });
     });

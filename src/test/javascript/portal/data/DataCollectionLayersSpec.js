@@ -142,4 +142,20 @@ describe("Portal.data.DataCollectionLayersSpec", function() {
             });
         });
     });
+
+    describe('isNcwms', function() {
+        it('returns appropriate WMS type', function() {
+            var isNcwms = true;
+
+            spyOn(dataCollectionLayers, 'getDefaultLayer').andReturn({
+                isNcwms: function() {
+                    return isNcwms;
+                }
+            });
+
+            expect(dataCollectionLayers.isNcwms()).toBe(true);
+            isNcwms = false;
+            expect(dataCollectionLayers.isNcwms()).toBe(false);
+        });
+    });
 });

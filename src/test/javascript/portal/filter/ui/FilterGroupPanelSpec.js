@@ -21,7 +21,9 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
         filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
             dataCollection: {
-                getSelectedLayer: returns(layer)
+                getLayerState: returns({
+                    getSelectedLayer: returns(layer)
+                })
             }
         });
     });
@@ -44,7 +46,9 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
                 dataCollection: {
-                    getSelectedLayer: returns(layer)
+                    getLayerState: returns({
+                        getSelectedLayer: returns(layer)
+                    })
                 }
             });
 
@@ -139,7 +143,9 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
                 dataCollection: {
-                    getSelectedLayer: returns(layer)
+                    getLayerState: returns({
+                        getSelectedLayer: returns(layer)
+                    })
                 }
             });
 
@@ -176,7 +182,9 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
             filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
                 dataCollection: {
-                    getSelectedLayer: returns(layer)
+                    getLayerState: returns({
+                        getSelectedLayer: returns(layer)
+                    })
                 }
             });
 
