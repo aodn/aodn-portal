@@ -66,10 +66,10 @@ describe("Portal.data.DataCollection", function() {
             // Make sure we're reusing the same object.
             expect(dataCollection.getLayerState()).toBe(layerState);
         });
-    });
 
-    it('returns correct WMS type', function() {
-        spyOn(dataCollection.getLayerState(), 'isNcwms').andReturn(true);
-        expect(dataCollection.isNcwms()).toBe(true);
+        it('returns correct WMS type', function() {
+            spyOn(dataCollection.getLayerState(), 'isNcwms').andReturn(true);
+            expect(dataCollection.isNcwms()).toBe(true);
+        });
     });
 });
