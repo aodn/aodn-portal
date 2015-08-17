@@ -155,20 +155,6 @@ baselayerServer = [
 
 // This array should be populated from chef config
 knownServers = [
-    /*
-     * An example of the possible fields for a Server
-     * Only url is required. All other fields have defaults (used if they are omitted)
-     * Maybe WMS version might be required. Not sure about that yet. I feel that for most cases either 1.1.1 or 1.3.0 would work well as a default
-    [
-        uri: '', // The server URL (required) -- I would prefer to see that is url rather than uri but I have it as uri for now to match the field in the Server domain class.
-        wmsVersion: '', // The version number as a string e.g. "1.1.1", "1.3.0" (not sure if we should make this required or not)
-        type: '', // Identifying the specific server software. e.g. "nvWMS", "GeoServer". If omitted or blank then it is considered to just be a general WMS server without any extra functionality. Should be case insensitive.
-        csvDownloadFormat: '', // We have some specialised CSV formats: 'csv-restricted-column' and 'csv-with-metadata-header'
-        httpAuthUsername: '', // Some servers use HTTP authentication, so store the credentials here. Null be default
-        httpAuthPassword: '',
-        urlListDownloadPrefixToRemove: '', // For the time being these are still needed for BODAAC functionality, null by default
-        urlListDownloadPrefixToSubstitue: ''
-    ]*/
     [
         uri: 'http://geoserver-123.aodn.org.au/geoserver/wms',
         wmsVersion: '1.1.1',
