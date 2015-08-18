@@ -12,6 +12,11 @@ describe("Portal.search.FreeTextSearchPanel", function()
 
     var buildMockFreeTextSearchPanel = function() {
         freeTextSearchPanel = new Portal.search.FreeTextSearchPanel();
+        freeTextSearchPanel.searcher = {
+            removeFilters: function() {},
+            addFilter: function() {},
+            search: function() {}
+        };
         return freeTextSearchPanel;
     };
 
@@ -37,5 +42,11 @@ describe("Portal.search.FreeTextSearchPanel", function()
 
         expect(freeTextSearchPanel.onGo).toHaveBeenCalled();
         expect(freeTextSearchPanel.searchField.setRawValue).toHaveBeenCalledWith('');
+    });
+
+    it("sends google analytics tracking information on go", function() {
+        spyOn(window, 'trackFacetUsage');
+        freeTextSearchPanel.onGo();
+        expect(window.trackFacetUsage).toHaveBeenCalled();
     });
 });
