@@ -146,22 +146,22 @@ Portal.data.DataCollection = function() {
         var firstWmsLink = this.getWmsLayerLinks()[0];
         var link = firstWfsLink || firstWmsLink;
 
+        var _workspaceFromName = function(layerName) {
+            if (layerName.indexOf(':') >= 0) {
+                return layerName.split(":")[0];
+            }
+        };
+
         if (link) {
             var linkName = link.data.name;
 
             // If layer has no workspace defined, assume it is in the same workspace as the WMS layer
-            if (this._workspaceFromName(linkName)) {
+            if (_workspaceFromName(linkName)) {
                 return linkName;
             }
             else {
-                return this._workspaceFromName(firstWmsLink.data.name) + ':' + linkName;
+                return _workspaceFromName(firstWmsLink.data.name) + ':' + linkName;
             }
-        }
-    };
-
-    constructor.prototype._workspaceFromName = function(layerName) {
-        if (layerName.indexOf(':') >= 0) {
-            return layerName.split(":")[0];
         }
     };
 
