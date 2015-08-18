@@ -104,26 +104,26 @@ Portal.data.DataCollection = function() {
 
     constructor.prototype.updateNcwmsParams = function(dateRangeStart, dateRangeEnd, geometry) {
 
-        var params = {};
+        var newNcwmsParams = {};
 
         if (dateRangeStart && dateRangeStart.isValid()) {
-            params.dateRangeStart = dateRangeStart;
+            newNcwmsParams.dateRangeStart = dateRangeStart;
         }
 
         if (dateRangeEnd && dateRangeEnd.isValid()) {
-            params.dateRangeEnd = dateRangeEnd;
+            newNcwmsParams.dateRangeEnd = dateRangeEnd;
         }
 
         if (geometry) {
             var bounds = geometry.getBounds();
 
-            params.latitudeRangeStart = bounds.bottom;
-            params.longitudeRangeStart = bounds.left;
-            params.latitudeRangeEnd = bounds.top;
-            params.longitudeRangeEnd = bounds.right;
+            newNcwmsParams.latitudeRangeStart = bounds.bottom;
+            newNcwmsParams.longitudeRangeStart = bounds.left;
+            newNcwmsParams.latitudeRangeEnd = bounds.top;
+            newNcwmsParams.longitudeRangeEnd = bounds.right;
         }
 
-        this.ncwmsParams = params;
+        this.ncwmsParams = newNcwmsParams;
     };
 
     constructor.prototype._getRawLinks = function() { // Todo - DN: 'raw' here because they haven't gone thorugh the LayerStore. What is a better name?
