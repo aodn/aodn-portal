@@ -324,30 +324,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
 
-        if (this.dataCollection) {
-            this._addDateTimeFilterToLayer();
-            this.dataCollection.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
-        }
-    },
-
-    _addDateTimeFilterToLayer: function() {
-
-        if (this.layer) {
-
-            var params = {};
-
-            var start = moment(this.startDateTimePicker.getValue());
-            if (start.isValid()) {
-                params.dateRangeStart = start;
-            }
-
-            var end = moment(this.endDateTimePicker.getValue());
-            if (end.isValid()) {
-                params.dateRangeEnd = end;
-            }
-
-            this.layer.bodaacFilterParams = params;
-        }
+        this.dataCollection.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
     },
 
     _attachTemporalEvents: function() {

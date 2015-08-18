@@ -8,13 +8,27 @@
 describe("Portal.data.DataCollection", function() {
 
     var dataCollection;
+    var expectedDateFilterConfig;
+    var testDateFilter;
 
     beforeEach(function() {
         dataCollection = new Portal.data.DataCollection();
         spyOn(dataCollection, 'getWmsLayerLinks').andReturn([]);
+        spyOn(dataCollection, 'setFilters');
+        spyOn(Portal.filter, 'DateFilter').andReturn(testDateFilter);
+
+        testDateFilter = {};
     });
 
     describe('updateNcwmsParams', function() {
+
+        beforeEach(function() {
+            expectedDateFilterConfig = {
+                name: 'time',
+                value: {},
+                visualised: true
+            };
+        });
 
         it('updated start date', function() {
 
@@ -25,6 +39,11 @@ describe("Portal.data.DataCollection", function() {
             expect(dataCollection.ncwmsParams).toEqual({
                 dateRangeStart: testStartDate
             });
+
+            expectedDateFilterConfig.value.fromDate = testStartDate.toDate();
+
+            expect(Portal.filter.DateFilter).toHaveBeenCalledWith(expectedDateFilterConfig);
+            expect(dataCollection.setFilters).toHaveBeenCalledWith([testDateFilter]);
         });
 
         it('updated end date', function() {
@@ -36,6 +55,11 @@ describe("Portal.data.DataCollection", function() {
             expect(dataCollection.ncwmsParams).toEqual({
                 dateRangeEnd: testEndDate
             });
+
+            expectedDateFilterConfig.value.toDate = testEndDate.toDate();
+
+            expect(Portal.filter.DateFilter).toHaveBeenCalledWith(expectedDateFilterConfig);
+            expect(dataCollection.setFilters).toHaveBeenCalledWith([testDateFilter]);
         });
 
         it('update geometry', function() {

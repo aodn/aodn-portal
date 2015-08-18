@@ -124,23 +124,6 @@ describe('Portal.details.NcWmsPanel', function() {
         });
     });
 
-    describe('_addDateTimeFilterToLayer', function() {
-
-        it('updates bodaacFilterParams in selected layer', function() {
-
-            var startTime = moment('2000-01-01T01:01:01');
-            var endTime = moment('2001-01-01T01:01:01');
-
-            spyOn(ncwmsPanel.startDateTimePicker, 'getValue').andReturn(startTime.toDate());
-            spyOn(ncwmsPanel.endDateTimePicker, 'getValue').andReturn(endTime.toDate());
-
-            ncwmsPanel._addDateTimeFilterToLayer();
-
-            expect(layer.bodaacFilterParams.dateRangeStart).toBeSame(startTime);
-            expect(layer.bodaacFilterParams.dateRangeEnd).toBeSame(endTime);
-        });
-    });
-
     describe('next and previous buttons', function() {
         beforeEach(function() {
             ncwmsPanel.layer.getPreviousTimeSlice = noOp;
