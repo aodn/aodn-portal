@@ -45,24 +45,39 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
         expect(successCallback).toHaveBeenCalled();
     });
 
-    it('loads retrieved record into DataCollectionStore', function() {
-        var response = {
-            responseXML: '<some_xml></some_xml>'
-        };
-        var metadataRecord = {};
-        var dataCollectionRecord = {};
-        spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'loadData');
-        spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'getAt').andReturn(metadataRecord);
-        spyOn(Portal.data.DataCollection, 'fromMetadataRecord').andReturn(dataCollectionRecord);
-        spyOn(Ext.Ajax, 'request').andCallFake(
-            function(params) {
-                params.success.call(fetcher, response);
-            }
-        );
 
-        fetcher.load(uuid);
-        expect(Portal.data.GeoNetworkRecordStore.prototype.getAt).toHaveBeenCalled();
-        expect(fetcher.dataCollectionStore.add).toHaveBeenCalledWith(dataCollectionRecord);
+    describe('load data collection', function() {
+        var dataCollectionRecord = {};
+
+        beforeEach(function() {
+            var response = {
+                responseXML: '<some_xml></some_xml>'
+            };
+            spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'loadData');
+            spyOn(Portal.data.DataCollection, 'fromMetadataRecord').andReturn(dataCollectionRecord);
+            spyOn(Ext.Ajax, 'request').andCallFake(
+                function(params) {
+                    params.success.call(fetcher, response);
+                }
+            );
+        });
+
+        it('record into DataCollectionStore', function() {
+            spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'getAt').andReturn({});
+
+            fetcher.load(uuid);
+            expect(Portal.data.GeoNetworkRecordStore.prototype.getAt).toHaveBeenCalled();
+            expect(fetcher.dataCollectionStore.add).toHaveBeenCalledWith(dataCollectionRecord);
+        });
+
+        it('with error', function() {
+            spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'getAt').andReturn(undefined);
+            spyOn(fetcher, '_errorLoadingDataCollection');
+
+            fetcher.load(uuid);
+            expect(Portal.data.GeoNetworkRecordStore.prototype.getAt).toHaveBeenCalled();
+            expect(fetcher._errorLoadingDataCollection).toHaveBeenCalledWith(uuid);
+        });
     });
 
     describe('getUuidsFromUrl', function() {

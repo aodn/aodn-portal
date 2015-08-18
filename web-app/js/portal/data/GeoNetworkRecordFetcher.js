@@ -38,9 +38,18 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
             var metadataRecord = store.getAt(0);
             var dataCollection = Portal.data.DataCollection.fromMetadataRecord(metadataRecord);
 
-            _this.dataCollectionStore.add(dataCollection);
-            Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_DATA_COLLECTION, dataCollection);
+            if (!metadataRecord) {
+                _this._errorLoadingDataCollection(uuid);
+            }
+            else {
+                _this.dataCollectionStore.add(dataCollection);
+                Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_DATA_COLLECTION, dataCollection);
+            }
         });
+    },
+
+    _errorLoadingDataCollection: function(uuid) {
+        Ext.MessageBox.alert('Error', String.format(OpenLayers.i18n('errorLoadingCollection'), uuid));
     },
 
     getUuidsFromUrl: function() {
