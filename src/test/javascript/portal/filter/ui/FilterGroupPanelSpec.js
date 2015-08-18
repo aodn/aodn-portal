@@ -183,27 +183,22 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
     describe('_clearFilters method', function() {
         var removeFilterSpy;
+        var mockFilterPanel;
 
         beforeEach(function() {
             removeFilterSpy = jasmine.createSpy('handleRemoveFilter');
-        });
 
-        var _mockFilterPanel = function(filterType, removeSpy) {
-
-            return {
-                handleRemoveFilter: removeSpy ? removeSpy : noOp,
-                filter: {
-                    type: filterType
-                }
+            mockFilterPanel = {
+                handleRemoveFilter: removeFilterSpy
             };
-        };
+        });
 
         it('clears all non-global filters', function() {
 
             filterGroupPanel.filterPanels = [
-                _mockFilterPanel('datetime', removeFilterSpy),
-                _mockFilterPanel('boolean', removeFilterSpy),
-                _mockFilterPanel('string', removeFilterSpy)
+                mockFilterPanel,
+                mockFilterPanel,
+                mockFilterPanel
             ];
 
             spyOn(filterGroupPanel, '_updateLayerFilters');
@@ -211,26 +206,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             filterGroupPanel._clearFilters();
 
             expect(removeFilterSpy.callCount).toBe(3);
-            expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
-        });
-
-
-        it('does not clear the global spatial extent', function() {
-            filterGroupPanel.filterPanels = [
-                _mockFilterPanel('geometrypropertytype'),
-                _mockFilterPanel('datetime'),
-                _mockFilterPanel('boolean'),
-                _mockFilterPanel('string')
-            ];
-
-            var geomFilter = filterGroupPanel.filterPanels[0];
-
-            spyOn(filterGroupPanel, '_updateLayerFilters');
-            spyOn(geomFilter, 'handleRemoveFilter');
-
-            filterGroupPanel._clearFilters();
-
-            expect(geomFilter.handleRemoveFilter).not.toHaveBeenCalled();
             expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
         });
     });

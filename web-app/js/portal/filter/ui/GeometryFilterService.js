@@ -35,10 +35,12 @@ Portal.filter.ui.GeometryFilterService = Ext.extend(Portal.filter.ui.BaseFilterP
     },
 
     _createControls: function() {
-        // Not a physical panel, Using a global Geometry filter
+        // No controls to create (handled by the global spatial filter)
     },
 
-    handleRemoveFilter: function() {},
+    handleRemoveFilter: function() {
+        // Nothing to do on clear (handled by the global spatial filter)
+    },
 
     needsFilterRange: function() {
         return false;
