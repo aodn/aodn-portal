@@ -14,9 +14,10 @@ describe("Portal.data.DataCollectionStoreSpec", function() {
     beforeEach(function() {
         layer = new OpenLayers.Layer();
 
-        layerStore = new Portal.data.LayerStore();
-        spyOn(layerStore, 'addUsingOpenLayer');
-        spyOn(layerStore, 'removeUsingOpenLayer');
+        layerStore = {
+            addUsingOpenLayer: jasmine.createSpy('addUsingOpenLayer'),
+            removeUsingOpenLayer: jasmine.createSpy('removeUsingOpenLayer')
+        };
 
         spyOn(Portal.data.DataCollectionLayers.prototype, '_initLayers');
         spyOn(Portal.data.DataCollectionLayers.prototype, 'getSelectedLayer').andCallFake(function() {

@@ -8,12 +8,15 @@ describe('Portal.details.NcwmsScaleRangeControls', function() {
     describe('loadScaleFromLayer', function() {
 
         var controls;
-        var layerState = {};
+        var layerState;
         var dataCollection;
 
         beforeEach(function() {
 
-            spyOn(Ext.MsgBus, 'subscribe');
+            layerState = {
+                on: noOp,
+                getScaleRange: returns({})
+            };
 
             dataCollection = {
                 getLayerState: returns(layerState)

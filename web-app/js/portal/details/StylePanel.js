@@ -26,7 +26,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
         this._initWithLayer();
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, this._initWithLayer, this);
+        this.dataCollection.getLayerState().on('selectedlayerchanged', this._initWithLayer, this);
     },
 
     _createControls: function() {

@@ -22,6 +22,7 @@ describe("Portal.ui.Viewport", function() {
     beforeEach(function() {
         spyOn(Portal.ui, "MainPanel").andReturn(mockMainPanel);
         spyOn(Portal.ui.Viewport.superclass.constructor, "call");
+        spyOn(Portal.ui.Viewport.prototype, '_newLayerStore').andReturn({});
 
         spyOn(Portal.ui, 'MapPanel');
         spyOn(Portal.ui, 'VisualisePanel');
