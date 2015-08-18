@@ -164,7 +164,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
 
-    autozoom: 'Auto zoom to data collection extent',
     showMapLayer: 'Shown on map',
     clearAllButtonTooltip: 'Remove all data collections from the Subset and Download pages, reset the map location and zoom level',
     removeButtonTooltip: 'Remove this data collection from the Subset and Download pages, the collection can be re-added from the search.',
