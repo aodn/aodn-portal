@@ -58,6 +58,46 @@ describe("Portal.data.DataCollection", function() {
         });
     });
 
+    describe('getFilterParams()', function() {
+        beforeEach(function() {
+            dataCollection.getLayerState = returns({
+                getSelectedLayer: returns({
+                    server: {uri: 'server url'}
+                })
+            });
+            dataCollection.getWfsLayerLinks = returns([{
+                data: {name: 'imos:wfs_layer'}
+            }]);
+            dataCollection.getWmsLayerLinks = returns([{
+                data: {name: 'aodn:wms_layer'}
+            }]);
+        });
+
+        it('uses uri from selected layer from layer state', function() {
+            expect(dataCollection.getFilterParams().server).toBe('server url');
+        });
+
+        describe('getDownloadLayerName()', function() {
+            it('uses WFS link if present', function() {
+                expect(dataCollection.getFilterParams().layer).toBe('imos:wfs_layer');
+            });
+
+            it('uses WMS link otherwise', function() {
+                dataCollection.getWfsLayerLinks = returns([]);
+
+                expect(dataCollection.getFilterParams().layer).toBe('aodn:wms_layer');
+            });
+
+            it('uses WFS link with workspace name from WMS link if missing', function() {
+                dataCollection.getWfsLayerLinks = returns([{
+                    data: {name: 'wfs_layer'} // No namespace
+                }]);
+
+                expect(dataCollection.getFilterParams().layer).toBe('aodn:wfs_layer');
+            });
+        });
+    });
+
     describe('layerstate', function() {
         it('lazily initialises layer state', function() {
             var layerState = dataCollection.getLayerState();
