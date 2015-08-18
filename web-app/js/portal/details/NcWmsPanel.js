@@ -288,7 +288,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this[this.PENDING_EVENT_ATTR] = buttonClicked;
     },
 
-    _removePendingEvent: function(datePicker) {
+    _removePendingEvent: function() {
         delete this[this.PENDING_EVENT_ATTR];
     },
 
@@ -388,10 +388,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.timeRangeLabel.updateTime(this.layer.time.toUtcDisplayFormat());
     },
 
-    _updateTimeRangeLabelLoading: function() {
-        this.timeRangeLabel.loading();
-    },
-
     _initTimeRangeLabel: function() {
         this.timeRangeLabel = new Portal.ui.TimeRangeLabel();
     },
@@ -404,12 +400,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if (moment(datePicker.getValue()).isValid()) {
             return moment.utc(datePicker.getValue());
         }
-    },
-
-    _disableDateTimeFields: function() {
-        this.startDateTimePicker.disable();
-        this.endDateTimePicker.disable();
-        this._updateTimeRangeLabelLoading();
     },
 
     _setLayerSubsetExtent: function() {
