@@ -67,6 +67,16 @@ Portal.data.DataCollection = function() {
         return applicableDownloadOptions;
     };
 
+    constructor.prototype.getFiltersRequestParams = function() {
+        var layer = this.getLayerState().getSelectedLayer();
+        var layerName = this.getDownloadLayerName();
+
+        return {
+            server: layer.server.uri,
+            layer: layerName
+        };
+    };
+
     constructor.prototype.setFilters = function(filters) {
 
         this.filters = filters;
@@ -129,6 +139,30 @@ Portal.data.DataCollection = function() {
         linkStore.filterByProtocols(protocols);
 
         return linkStore.getRange(); // Get all records
+    };
+
+    constructor.prototype.getDownloadLayerName = function() {
+        var firstWfsLink = this.getWfsLayerLinks()[0];
+        var firstWmsLink = this.getWmsLayerLinks()[0];
+        var link = firstWfsLink || firstWmsLink;
+
+        var _workspaceFromName = function(layerName) {
+            if (layerName.indexOf(':') >= 0) {
+                return layerName.split(":")[0];
+            }
+        };
+
+        if (link) {
+            var linkName = link.data.name;
+
+            // If layer has no workspace defined, assume it is in the same workspace as the WMS layer
+            if (_workspaceFromName(linkName)) {
+                return linkName;
+            }
+            else {
+                return _workspaceFromName(firstWmsLink.data.name) + ':' + linkName;
+            }
+        }
     };
 
     constructor.prototype.getLayerState = function() {
