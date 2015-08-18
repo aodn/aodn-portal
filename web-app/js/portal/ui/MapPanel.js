@@ -23,7 +23,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             split: true,
             header: false,
             initialBbox: portalConfig.initialBbox,
-            autoZoom: portalConfig.autoZoom,
             enableDefaultDatelineZoom: portalConfig.enableDefaultDatelineZoom,
             defaultDatelineZoomBbox: portalConfig.defaultDatelineZoomBbox,
             hideLayerOptions: this.appConfig.hideLayerOptions
@@ -60,7 +59,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         if (!openLayer) {
             this.map.resetSpatialConstraint();
         }
-        this._autoZoomToLayer(openLayer);
     },
 
     onBaseLayerChanged: function(openLayer) {
@@ -119,12 +117,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.mapOptions = new Portal.ui.openlayers.MapOptions(this.appConfig, this);
         this.map = this.mapOptions.newMap();
         this.map.setDefaultSpatialConstraintType(this.defaultSpatialConstraintType);
-    },
-
-    _autoZoomToLayer: function(openLayer) {
-        if (this.autoZoom === true) {
-            this.zoomToLayer(openLayer);
-        }
     },
 
     zoomToLayer: function (openLayer) {

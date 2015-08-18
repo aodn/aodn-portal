@@ -27,15 +27,6 @@ describe("Portal.ui.MapPanel", function() {
 
     describe('message bus tests', function() {
 
-        it('on selectedLayerChanged event', function() {
-            spyOn(mapPanel, 'zoomToLayer');
-
-            mapPanel.autoZoom = true;
-            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
-
-            expect(mapPanel.zoomToLayer).toHaveBeenCalled();
-        });
-
         it('clears the spatial constraint when there are no layers left', function() {
             spyOn(mapPanel.map, 'resetSpatialConstraint');
             Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);

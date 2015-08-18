@@ -231,7 +231,6 @@ portal {
         """
 
     initialBbox = "110,-50,160,-3"
-    autoZoom = false
     defaultDatelineZoomBbox = "110,-50,160,-3"
     enableDefaultDatelineZoom = false
 

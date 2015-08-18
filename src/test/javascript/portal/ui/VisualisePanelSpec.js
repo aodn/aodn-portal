@@ -10,7 +10,6 @@ describe('Portal.ui.VisualisePanel', function() {
     Portal.app = {
         config: {
             initialBbox: '130,-60,160,-20',
-            autoZoom: false,
             hideLayerOptions: false
         }
     };
