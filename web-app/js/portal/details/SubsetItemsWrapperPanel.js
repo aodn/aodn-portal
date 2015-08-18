@@ -13,7 +13,7 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
 
         var tabPanelForLayer = this._initSubsetItemsTabPanel(cfg);
 
-        this.createTools(cfg.dataCollection.getLayerState().getSelectedLayer());
+        this.createTools(cfg.dataCollection.getLayerState());
 
         cfg.dataCollection.getLayerState().on('loadstart', function() {
             this._onLayerLoadStart();
@@ -90,7 +90,7 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    createTools: function(layer) {
+    createTools: function(layerState) {
 
         this.errorToolItem = {
             id: 'errorToolItem',
@@ -101,7 +101,7 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
         this.spinnerToolItem = {
             id: 'spinnerToolItem',
             styles: 'fa-spin fa-spinner',
-            hidden: !layer.loading,
+            hidden: !layerState.isLoading(),
             title: OpenLayers.i18n('loadingMessage')
         };
         this.deleteToolItem = {

@@ -229,9 +229,6 @@ describe("Portal.cart.DownloadPanel", function() {
         return {
             getUuid: returns(uuid),
             getTitle: returns("Argo"),
-            getSelectedLayer: returns({
-                isNcwms: noOp
-            }),
             getDataDownloadHandlers: returns([])
         };
     };

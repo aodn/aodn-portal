@@ -9,6 +9,7 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
     var handler;
     var options;
+    var testCollection;
 
     var createHandler = function(onlineResource) {
         handler = new Portal.cart.BodaacDownloadHandler(onlineResource);
@@ -16,11 +17,14 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
     };
 
     beforeEach(function() {
-
+        spyOn(OpenLayers.Layer.WMS.prototype, '_buildGetFeatureRequestUrl').andReturn('the_url');
         createHandler({
             href: 'geoserver_url',
             name: 'layer_name#field_name'
         });
+        testCollection = {
+            getFilters: returns([])
+        };
     });
 
     describe('getDownloadOptions', function() {
@@ -72,21 +76,10 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
     describe('the url generator function', function() {
 
         var urlFn;
-        var testCollection;
-        var buildUrlSpy = jasmine.createSpy('_buildGetFeatureRequestUrl');
 
         beforeEach(function() {
 
             urlFn = handler._getUrlGeneratorFunction();
-
-            testCollection = {
-                getLayerState: returns({
-                    getSelectedLayer: returns({
-                        _buildGetFeatureRequestUrl: buildUrlSpy
-                    })
-                }),
-                getFilters: returns([])
-            };
 
             spyOn(Portal.filter.combiner, 'BodaacCqlBuilder').andReturn({
                 buildCql: returns('the_cql')
@@ -97,7 +90,7 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
         it('builds the correct URL', function() {
 
-            expect(buildUrlSpy).toHaveBeenCalledWith(
+            expect(OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl).toHaveBeenCalledWith(
                 'geoserver_url',
                 'layer_name',
                 'csv',
@@ -107,21 +100,6 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
     });
 
     describe('the estimate download size params', function() {
-
-        var testCollection;
-
-        beforeEach(function() {
-
-            testCollection = {
-                getLayerState: returns({
-                    getSelectedLayer: returns({
-                        _buildGetFeatureRequestUrl: returns('the_url')
-                    })
-                }),
-                getFilters: returns([])
-            };
-        });
-
         it('build the correct params object', function() {
 
             var params = handler.getDownloadEstimateParams(testCollection);

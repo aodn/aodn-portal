@@ -37,8 +37,10 @@ describe('Portal.cart.WfsDownloadHandler', function () {
                 expect(downloadOption.handlerParams).not.toBeNull();
 
                 var downloadHandler = downloadOption.handler;
+
+                spyOn(OpenLayers.Layer.WMS.prototype, 'getFeatureRequestUrl');
+
                 var dummyLayer = {
-                    getFeatureRequestUrl: jasmine.createSpy('getFeatureRequestUrl'),
                     getCsvDownloadFormat: jasmine.createSpy('getCsvDownloadFormat').andReturn('csv')
                 };
                 var dummyFilters = ['filters'];
@@ -52,7 +54,7 @@ describe('Portal.cart.WfsDownloadHandler', function () {
                 downloadHandler(dummyCollection);
 
                 expect(dummyLayer.getCsvDownloadFormat).toHaveBeenCalled();
-                expect(dummyLayer.getFeatureRequestUrl).toHaveBeenCalledWith(dummyFilters, 'server_url', 'layer_name', 'csv');
+                expect(OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl).toHaveBeenCalledWith(dummyFilters, 'server_url', 'layer_name', 'csv');
             });
         });
 

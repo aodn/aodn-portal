@@ -141,6 +141,14 @@ describe("Portal.data.DataCollectionLayersSpec", function() {
                 expect(eventListener).not.toHaveBeenCalled();
             });
         });
+
+        it('indicates loading', function() {
+            dataCollectionLayers.getSelectedLayer().loading = true;
+            expect(dataCollectionLayers.isLoading()).toBe(true);
+
+            dataCollectionLayers.getSelectedLayer().loading = false;
+            expect(dataCollectionLayers.isLoading()).toBe(false);
+        });
     });
 
     describe('isNcwms', function() {
