@@ -67,8 +67,8 @@ Portal.data.DataCollection = function() {
         return applicableDownloadOptions;
     };
 
-    constructor.prototype.getFilterParams = function() {
-        var layer = this.getSelectedLayer();
+    constructor.prototype.getFiltersRequestParams = function() {
+        var layer = this.getLayerState().getSelectedLayer();
         var layerName = this.getDownloadLayerName();
 
         return {

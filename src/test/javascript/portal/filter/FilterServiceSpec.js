@@ -23,7 +23,7 @@ describe("Portal.filter.FilterService", function() {
                 getSelectedLayer: returns({server: {}})
             }),
             setFilters: noOp,
-            getFilterParams: noOp
+            getFiltersRequestParams: noOp
         };
     });
 

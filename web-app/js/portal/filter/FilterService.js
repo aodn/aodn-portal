@@ -19,7 +19,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
         Ext.Ajax.request({
             url: this.GET_FILTER,
-            params: dataCollection.getFilterParams(),
+            params: dataCollection.getFiltersRequestParams(),
             scope: this,
             success: this._filtersLoaded,
             failure: this._handleFilterLoadFailure,

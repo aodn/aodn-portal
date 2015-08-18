@@ -22,7 +22,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 getLayerState: returns({
                     getSelectedLayer: returns(layer)
                 }),
-                getFilterParams: noOp
+                getFiltersRequestParams: noOp
             }
         });
     });
