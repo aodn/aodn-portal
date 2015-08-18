@@ -5,41 +5,6 @@
  *
  */
 describe('Portal.ui.openlayers.layer.NcWMS', function() {
-    describe('getCqlForTemporalExtent', function() {
-        it('constructs CQL', function() {
-
-            var ncwmsLayer = mockNcwmsLayer();
-            var startTime = moment('2000-01-01T01:01:01Z');
-            var endTime = moment('2001-01-01T01:01:01Z');
-
-            ncwmsLayer.bodaacFilterParams = {
-                dateRangeStart: startTime,
-                dateRangeEnd: endTime
-            };
-
-            expect(ncwmsLayer.getCqlForTemporalExtent()).toEqual(
-                'time >= 2000-01-01T01:01:01.000Z and time <= 2001-01-01T01:01:01.000Z'
-            );
-
-            ncwmsLayer.bodaacFilterParams = {
-                dateRangeStart: startTime,
-                dateRangeEnd: null
-            };
-
-            expect(ncwmsLayer.getCqlForTemporalExtent()).toEqual(
-                'time >= 2000-01-01T01:01:01.000Z'
-            );
-
-            ncwmsLayer.bodaacFilterParams = {
-                dateRangeStart: null,
-                dateRangeEnd: endTime
-            };
-
-            expect(ncwmsLayer.getCqlForTemporalExtent()).toEqual(
-                'time <= 2001-01-01T01:01:01.000Z'
-            );
-        });
-    });
 
     describe('_setExtraLayerInfoFromNcwms', function() {
 

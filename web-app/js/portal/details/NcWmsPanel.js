@@ -288,7 +288,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this[this.PENDING_EVENT_ATTR] = buttonClicked;
     },
 
-    _removePendingEvent: function(datePicker) {
+    _removePendingEvent: function() {
         delete this[this.PENDING_EVENT_ATTR];
     },
 
@@ -324,30 +324,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
 
-        if (this.dataCollection) {
-            this._addDateTimeFilterToLayer();
-            this.dataCollection.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
-        }
-    },
-
-    _addDateTimeFilterToLayer: function() {
-
-        if (this.layer) {
-
-            var params = {};
-
-            var start = moment(this.startDateTimePicker.getValue());
-            if (start.isValid()) {
-                params.dateRangeStart = start;
-            }
-
-            var end = moment(this.endDateTimePicker.getValue());
-            if (end.isValid()) {
-                params.dateRangeEnd = end;
-            }
-
-            this.layer.bodaacFilterParams = params;
-        }
+        this.dataCollection.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
     },
 
     _attachTemporalEvents: function() {
@@ -411,10 +388,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.timeRangeLabel.updateTime(this.layer.time.toUtcDisplayFormat());
     },
 
-    _updateTimeRangeLabelLoading: function() {
-        this.timeRangeLabel.loading();
-    },
-
     _initTimeRangeLabel: function() {
         this.timeRangeLabel = new Portal.ui.TimeRangeLabel();
     },
@@ -427,12 +400,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if (moment(datePicker.getValue()).isValid()) {
             return moment.utc(datePicker.getValue());
         }
-    },
-
-    _disableDateTimeFields: function() {
-        this.startDateTimePicker.disable();
-        this.endDateTimePicker.disable();
-        this._updateTimeRangeLabelLoading();
     },
 
     _setLayerSubsetExtent: function() {

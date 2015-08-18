@@ -357,46 +357,6 @@ OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
     },
 
-    getCqlForTemporalExtent: function() {
-        if (!this.bodaacFilterParams) {
-            return null;
-        }
-
-        var cqlParts = [];
-
-        var start = this.bodaacFilterParams.dateRangeStart;
-        if (start) {
-            cqlParts.push('time >= ' + start.toISOString());
-        }
-
-        var end = this.bodaacFilterParams.dateRangeEnd;
-        if (end) {
-            cqlParts.push('time <= ' + end.toISOString());
-        }
-
-        return cqlParts.join(" and ");
-    },
-
-    _buildGetFeatureRequestUrl: function(baseUrl, layerName, outputFormat) {
-        // Call the WMS class and apply NO download filters (null)
-        var wfsRequest = OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl.apply(
-            this,
-            [
-                baseUrl,
-                layerName,
-                outputFormat,
-                null
-            ]
-        );
-
-        var cql = this.getCqlForTemporalExtent();
-        if (cql) {
-            wfsRequest += "&CQL_FILTER=" + encodeURIComponent(cql);
-        }
-
-        return wfsRequest;
-    },
-
     _initSubsetExtent: function() {
         if (!this.subsetExtent) {
             this.setSubsetExtentView(this.temporalExtent.min(), this.temporalExtent.max());

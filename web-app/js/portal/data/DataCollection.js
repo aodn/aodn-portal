@@ -104,26 +104,41 @@ Portal.data.DataCollection = function() {
 
     constructor.prototype.updateNcwmsParams = function(dateRangeStart, dateRangeEnd, geometry) {
 
-        var params = {};
+        var newNcwmsParams = {};
+        var newFilterValue = {};
 
         if (dateRangeStart && dateRangeStart.isValid()) {
-            params.dateRangeStart = dateRangeStart;
+            newNcwmsParams.dateRangeStart = dateRangeStart;
+            newFilterValue.fromDate = dateRangeStart.toDate();
         }
 
         if (dateRangeEnd && dateRangeEnd.isValid()) {
-            params.dateRangeEnd = dateRangeEnd;
+            newNcwmsParams.dateRangeEnd = dateRangeEnd;
+            newFilterValue.toDate = dateRangeEnd.toDate();
         }
 
         if (geometry) {
             var bounds = geometry.getBounds();
 
-            params.latitudeRangeStart = bounds.bottom;
-            params.longitudeRangeStart = bounds.left;
-            params.latitudeRangeEnd = bounds.top;
-            params.longitudeRangeEnd = bounds.right;
+            newNcwmsParams.latitudeRangeStart = bounds.bottom;
+            newNcwmsParams.longitudeRangeStart = bounds.left;
+            newNcwmsParams.latitudeRangeEnd = bounds.top;
+            newNcwmsParams.longitudeRangeEnd = bounds.right;
         }
 
-        this.ncwmsParams = params;
+        this.ncwmsParams = newNcwmsParams;
+
+        // We also set a Filters equivalent of the date values for BODAAC CQL building
+        // This will disappear when https://github.com/aodn/backlog/issues/191 is done
+        var dateFilter = new Portal.filter.DateFilter({
+            name: 'time',
+            value: newFilterValue,
+            visualised: true
+        });
+
+        this.setFilters([
+            dateFilter
+        ]);
     };
 
     constructor.prototype._getRawLinks = function() { // Todo - DN: 'raw' here because they haven't gone thorugh the LayerStore. What is a better name?
