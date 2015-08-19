@@ -149,6 +149,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     btnSave: 'Save',
     btnCancel: 'Cancel',
 
+    errorLoadingCollection: 'Error loading collection with UUID \'{0}\'',
+
     // Faceted layer search
     searchTabTitle: 'Search',
     organisationFilter: 'Organisation',
