@@ -278,16 +278,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         }) != -1;
     },
 
-    _getRecordFromUuid: function(uuid) {
-        var record;
-        this.store.each(function(rec) {
-            if (rec.data.uuid == uuid) {
-                record = rec;
-            }
-        });
-        return record;
-    },
-
     mapElementId: function(uuid) {
         return this.elementIdFromUuid(this.MAP_ID_PREFIX, uuid);
     },
@@ -316,7 +306,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     addRecordWithUuid: function(uuid, multiSelect) {
-        var record = this._getRecordFromUuid(uuid);
+        var record = this.store.getWithUuid(uuid);
 
         trackUsage(OpenLayers.i18n('dataCollectionSelectionTrackingCategory'), OpenLayers.i18n('dataCollectionSelectionTrackingAction'), record.data.title);
 

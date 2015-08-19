@@ -99,7 +99,9 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
 
             facetedSearchDataView.uuidFromElementId = returns("my uuid");
 
-            facetedSearchDataView._getRecordFromUuid = returns(record);
+            facetedSearchDataView.store = {
+                getWithUuid: returns(record)
+            };
 
             spyOn(window, 'trackUsage');
             spyOn(Ext.MsgBus, 'publish');
