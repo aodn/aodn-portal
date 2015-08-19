@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe('OpenLayers.Layer.NcWMS', function() {
+describe('OpenLayers.Layer.NcWms', function() {
 
     var cachedLayer;
     var extent;
@@ -26,7 +26,7 @@ describe('OpenLayers.Layer.NcWMS', function() {
 
         params = {};
 
-        cachedLayer = new OpenLayers.Layer.NcWMS(
+        cachedLayer = new OpenLayers.Layer.NcWms(
             null,
             null,
             params,
@@ -335,7 +335,7 @@ describe('OpenLayers.Layer.NcWMS', function() {
                 '2001-02-05T00:00'
             ];
 
-            cachedLayer = new OpenLayers.Layer.NcWMS(
+            cachedLayer = new OpenLayers.Layer.NcWms(
                 null,
                 null,
                 params,
@@ -391,7 +391,7 @@ describe('OpenLayers.Layer.NcWMS', function() {
     describe('_setExtraLayerInfoFromNcwms', function() {
 
         it('called from initialize', function() {
-            spyOn(OpenLayers.Layer.NcWMS.prototype, '_setExtraLayerInfoFromNcwms');
+            spyOn(OpenLayers.Layer.NcWms.prototype, '_setExtraLayerInfoFromNcwms');
 
             var ncwmsLayer = mockNcwmsLayer();
 
@@ -407,7 +407,7 @@ describe('OpenLayers.Layer.NcWMS', function() {
         });
 
         it('_setExtraLayerInfoFromNcwms calls URL', function() {
-            spyOn(OpenLayers.Layer.NcWMS.prototype, '_getExtraLayerInfoFromNcwms').andReturn('mockedMetadataUrl');
+            spyOn(OpenLayers.Layer.NcWms.prototype, '_getExtraLayerInfoFromNcwms').andReturn('mockedMetadataUrl');
             spyOn(Ext.ux.Ajax, 'proxyRequest');
 
             var ncwmsLayer = mockNcwmsLayer();
@@ -420,7 +420,7 @@ describe('OpenLayers.Layer.NcWMS', function() {
     });
 
     function mockNcwmsLayer() {
-        return new OpenLayers.Layer.NcWMS(
+        return new OpenLayers.Layer.NcWms(
             'someLayer',
             'http://ncwms.aodn.org.au/ncwms/wms',
             { LAYERS: 'ncwmsLayerName' },

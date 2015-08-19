@@ -12,7 +12,7 @@ describe("Portal.details.SubsetPanel", function() {
 
     beforeEach(function() {
         map = new OpenLayers.SpatialConstraintMap();
-        layer = new OpenLayers.Layer.NcWMS(
+        layer = new OpenLayers.Layer.NcWms(
             'the title',
             'http://someaddress',
             {},
