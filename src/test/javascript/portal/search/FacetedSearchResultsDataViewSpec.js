@@ -14,7 +14,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
     beforeEach(function() {
         facetedSearchDataView = new Portal.search.FacetedSearchResultsDataView({
             dataCollectionStore: {
-                isRecordActive: noOp,
+                getByUuid: noOp,
                 findBy: noOp,
                 add: noOp
             }
@@ -99,7 +99,9 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
 
             facetedSearchDataView.uuidFromElementId = returns("my uuid");
 
-            facetedSearchDataView._getRecordFromUuid = returns(record);
+            facetedSearchDataView.store = {
+                getByUuid: returns(record)
+            };
 
             spyOn(window, 'trackUsage');
             spyOn(Ext.MsgBus, 'publish');

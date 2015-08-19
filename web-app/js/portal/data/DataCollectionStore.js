@@ -33,14 +33,12 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
         Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
     },
 
-    getRecordFromUuid: function(uuid) {
-        var record = undefined;
-        this.each(function(rec) {
-            if (rec.getUuid() == uuid) {
-                record = rec;
-            }
-        });
-        return record;
+    getByUuid: function(uuid) {
+        return this.getAt(
+            this.findBy(function(record) {
+                return record.getUuid() == uuid;
+            })
+        );
     },
 
     getLoadedRecords: function() {
@@ -49,12 +47,6 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
             if (record.loaded) { loadedRecords.push(record); }
         });
         return loadedRecords;
-    },
-
-    isRecordActive: function(recordToCheck) {
-        return this.findBy(function(record) {
-            return record.get('uuid') == recordToCheck.get('uuid');
-        }) != -1;
     },
 
     _onAdd: function(store, dataCollections) {
