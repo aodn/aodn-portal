@@ -25,7 +25,7 @@ Portal.cart.InsertionService = Ext.extend(Object, {
 
         if (this._isCollectionDownloadable(collection)) {
             if (collection.isNcwms()) {
-                htmlInjection = new Portal.cart.NcwmsInjector(config);
+                htmlInjection = new Portal.cart.NcWmsInjector(config);
             }
             else {
                 htmlInjection = new Portal.cart.WmsInjector(config);

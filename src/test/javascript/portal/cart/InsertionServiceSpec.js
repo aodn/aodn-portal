@@ -30,14 +30,14 @@ describe('Portal.cart.InsertionService', function() {
                 getInjectionJson: jasmine.createSpy('getInjectionJson')
             };
 
-            spyOn(Portal.cart, 'NcwmsInjector').andReturn(mockInjector);
+            spyOn(Portal.cart, 'NcWmsInjector').andReturn(mockInjector);
             spyOn(Portal.cart, 'WmsInjector').andReturn(mockInjector);
             spyOn(Portal.cart, 'NoDataInjector').andReturn(mockInjector);
         });
 
         it('creates an ncwms injector for ncwms layers', function() {
             mockInsertionService.insertionValues(getNcwmsRecord());
-            expectGetInjectorToHaveBeenCalled(Portal.cart.NcwmsInjector);
+            expectGetInjectorToHaveBeenCalled(Portal.cart.NcWmsInjector);
         });
 
         it('creates a wms injector for wms layers', function() {
@@ -77,7 +77,7 @@ describe('Portal.cart.InsertionService', function() {
     function expectGetInjectorToHaveBeenCalled(injectorConstructor) {
 
         var injectorConstructors = [
-            Portal.cart.NcwmsInjector,
+            Portal.cart.NcWmsInjector,
             Portal.cart.WmsInjector,
             Portal.cart.NoDataInjector
         ];

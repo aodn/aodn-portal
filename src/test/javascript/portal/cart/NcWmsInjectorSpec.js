@@ -5,7 +5,7 @@
  *
  */
 
-describe('Portal.cart.NcwmsInjector', function() {
+describe('Portal.cart.NcWmsInjector', function() {
 
     var injector;
     var dataCollection;
@@ -15,7 +15,7 @@ describe('Portal.cart.NcwmsInjector', function() {
     var dateLabel = OpenLayers.i18n('temporalExtentHeading');
 
     beforeEach(function() {
-        injector = new Portal.cart.NcwmsInjector();
+        injector = new Portal.cart.NcWmsInjector();
         startDate = moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)); // NB.Months are zero indexed
         endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
         dataCollection = {

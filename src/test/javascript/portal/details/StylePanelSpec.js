@@ -38,7 +38,7 @@ describe("Portal.details.StylePanel", function() {
 
         spyOn(Ext.MsgBus, 'subscribe');
 
-        spyOn(Portal.details, 'NcwmsScaleRangeControls');
+        spyOn(Portal.details, 'NcWmsScaleRangeControls');
         spyOn(Portal.details.StylePanel.prototype, '_initWithLayer');
         stylePanel = new Portal.details.StylePanel({
             dataCollection: dataCollection
