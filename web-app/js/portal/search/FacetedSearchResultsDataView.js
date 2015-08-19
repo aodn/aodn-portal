@@ -310,7 +310,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         trackUsage(OpenLayers.i18n('dataCollectionSelectionTrackingCategory'), OpenLayers.i18n('dataCollectionSelectionTrackingAction'), record.data.title);
 
-        if (!this.dataCollectionStore.isRecordActive(record)) {
+        if (!this.dataCollectionStore.getWithUuid(uuid)) {
 
             this.dataCollectionStore.add(
                 Portal.data.DataCollection.fromMetadataRecord(record)

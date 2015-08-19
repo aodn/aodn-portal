@@ -47,12 +47,6 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
         return loadedRecords;
     },
 
-    isRecordActive: function(recordToCheck) {
-        return this.findBy(function(record) {
-            return record.get('uuid') == recordToCheck.get('uuid');
-        }) != -1;
-    },
-
     _onAdd: function(store, dataCollections) {
         var _this = this;
 

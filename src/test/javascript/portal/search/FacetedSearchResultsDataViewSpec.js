@@ -14,7 +14,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
     beforeEach(function() {
         facetedSearchDataView = new Portal.search.FacetedSearchResultsDataView({
             dataCollectionStore: {
-                isRecordActive: noOp,
+                getWithUuid: noOp,
                 findBy: noOp,
                 add: noOp
             }
