@@ -306,7 +306,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     addRecordWithUuid: function(uuid, multiSelect) {
-        var record = this.store.getWithUuid(uuid);
+        var record = this.store.getByUuid(uuid);
 
         trackUsage(OpenLayers.i18n('dataCollectionSelectionTrackingCategory'), OpenLayers.i18n('dataCollectionSelectionTrackingAction'), record.data.title);
 

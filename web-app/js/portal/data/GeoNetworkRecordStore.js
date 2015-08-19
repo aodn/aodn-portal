@@ -20,7 +20,7 @@ Portal.data.GeoNetworkRecordStore = Ext.extend(Ext.data.XmlStore, {
         Portal.data.GeoNetworkRecordStore.superclass.constructor.call(this, config);
     },
 
-    getWithUuid: function(uuid) {
+    getByUuid: function(uuid) {
         return this.getAt(
             this.find('uuid', uuid)
         );

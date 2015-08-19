@@ -176,7 +176,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     _removeButtonOnClick: function(button) {
         var collectionId = this.getIdFromButtonContainerId(button, "removeButtonId");
-        var record = this.dataCollectionStore.getWithUuid(collectionId);
+        var record = this.dataCollectionStore.getByUuid(collectionId);
         this.dataCollectionStore.remove(record);
     },
 

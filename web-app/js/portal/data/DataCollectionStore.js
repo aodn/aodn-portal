@@ -33,7 +33,7 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
         Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
     },
 
-    getWithUuid: function(uuid) {
+    getByUuid: function(uuid) {
         return this.getAt(
             this.find('uuid', uuid)
         );
