@@ -107,6 +107,8 @@ var setupTestConfigAndStubs = function() {
     OpenLayers.Lang.en.loadingMessage = '';
 
     log.removeAllAppenders();
+
+    spyOn(OpenLayers.Layer, 'MiniMapBaseLayer').andReturn(new OpenLayers.Layer());
 };
 
 var mockLayoutForMainPanel = function(mainPanel) {

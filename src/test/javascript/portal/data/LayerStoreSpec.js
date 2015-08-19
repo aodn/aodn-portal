@@ -31,6 +31,10 @@ describe("Portal.data.LayerStore", function() {
         expect(layerStore.getCount()).toBe(0);
     });
 
+    afterEach(function() {
+        layerStore.destroy();
+    });
+
     var createOpenLayer = function(title, url) {
 
         return new OpenLayers.Layer.WMS(
@@ -109,12 +113,10 @@ describe("Portal.data.LayerStore", function() {
 
             var openLayer = createOpenLayer();
             openLayer.options.isBaseLayer = true;
-            spyOn(Ext.MsgBus, 'publish').andCallThrough();
 
             expect(layerStore.getCount()).toBe(0);
             layerStore._addLayer(openLayer);
             expect(layerStore.getCount()).toBe(1);
-            expect(Ext.MsgBus.publish).not.toHaveBeenCalledWith(PORTAL_EVENTS.SELECTED_LAYER_CHANGED);
         });
     });
 
@@ -231,6 +233,31 @@ describe("Portal.data.LayerStore", function() {
 
         it('getDefaultBaseLayer', function() {
             expect(layerStore.getDefaultBaseLayer()).toBe(baseLayerRecord);
+        });
+    });
+
+    describe('data collection events', function() {
+        var dataCollection;
+
+        beforeEach(function() {
+            dataCollection = {
+                getLayerState: returns({
+                    getSelectedLayer: noOp
+                })
+            };
+
+            spyOn(layerStore, '_selectedLayerChanged');
+        });
+
+        Ext.each([PORTAL_EVENTS.DATA_COLLECTION_ADDED, PORTAL_EVENTS.DATA_COLLECTION_SELECTED], function(eventName) {
+            it('handles selected layer on ' + eventName, function() {
+                var selectedLayer = {};
+
+                dataCollection.getLayerState().getSelectedLayer = returns(selectedLayer);
+                Ext.MsgBus.publish(eventName, dataCollection);
+
+                expect(layerStore._selectedLayerChanged).toHaveBeenCalledWith(eventName, selectedLayer);
+            });
         });
     });
 

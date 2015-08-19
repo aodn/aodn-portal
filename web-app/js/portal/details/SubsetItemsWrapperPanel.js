@@ -41,10 +41,20 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
                 this.errorToolItem,
                 this.spinnerToolItem,
                 this.deleteToolItem
-            ]
+            ],
+            listeners: {
+                expand: this._onExpand
+            }
         }, cfg);
 
         Portal.details.SubsetItemsWrapperPanel.superclass.constructor.call(this, config);
+    },
+
+    _onExpand: function() {
+        Ext.MsgBus.publish(
+            PORTAL_EVENTS.DATA_COLLECTION_SELECTED,
+            this.dataCollection
+        );
     },
 
     _onLayerLoadStart: function() {

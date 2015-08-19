@@ -26,21 +26,6 @@ describe("Portal.ui.MapPanel", function() {
     });
 
     describe('message bus tests', function() {
-
-        it('clears the spatial constraint when there are no layers left', function() {
-            spyOn(mapPanel.map, 'resetSpatialConstraint');
-            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, null);
-            expect(mapPanel.map.resetSpatialConstraint).toHaveBeenCalled();
-        });
-
-        it('does not clear the spatial constraint when there are layers', function() {
-            spyOn(mapPanel.map, 'updateSpatialConstraintStyle');
-            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, {
-                hasBoundingBox: noOp
-            });
-            expect(mapPanel.map.updateSpatialConstraintStyle).not.toHaveBeenCalled();
-        });
-
         it('on baseLayerChanged event', function() {
             spyOn(mapPanel, 'onBaseLayerChanged');
 

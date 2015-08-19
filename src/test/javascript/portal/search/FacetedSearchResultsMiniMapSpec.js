@@ -50,9 +50,8 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
         var extentLayer;
 
         beforeEach(function() {
-            baseLayer = {};
+            baseLayer = miniMap._getBaseLayer();
             extentLayer = {};
-            spyOn(miniMap, '_getBaseLayer').andReturn(baseLayer);
             spyOn(miniMap, '_getExtentLayer').andReturn(extentLayer);
             spyOn(miniMap, 'addLayers');
         });

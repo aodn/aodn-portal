@@ -24,10 +24,21 @@ function getParameterByNameFromUrlString(urlString, name) {
 describe("Portal.details.StylePanel", function() {
 
     var stylePanel;
-    var dataCollection = {};
+    var dataCollection;
 
     beforeEach(function() {
+        var layerState = {
+            on: noOp,
+            getScaleRange: returns({})
+        };
+
+        dataCollection = {
+            getLayerState: returns(layerState)
+        };
+
         spyOn(Ext.MsgBus, 'subscribe');
+
+        spyOn(Portal.details, 'NcwmsScaleRangeControls');
         spyOn(Portal.details.StylePanel.prototype, '_initWithLayer');
         stylePanel = new Portal.details.StylePanel({
             dataCollection: dataCollection

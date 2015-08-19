@@ -80,4 +80,10 @@ describe("Portal.details.SubsetItemsWrapperPanel", function() {
             expect(panel._indicateLayerError).toHaveBeenCalledWith(true);
         });
     });
+
+    it('fires "DATA_COLLECTION_SELECTED" event on expand', function() {
+        spyOn(Ext.MsgBus, 'publish');
+        panel._onExpand();
+        expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.DATA_COLLECTION_SELECTED, dataCollection);
+    });
 });
