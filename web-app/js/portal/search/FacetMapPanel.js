@@ -15,7 +15,7 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
 
         var layerStore = new GeoExt.data.LayerStore({
             layers: [
-                Portal.search.FacetedSearchResultsMiniMap.prototype._getBaseLayer()
+                new OpenLayers.Layer.MiniMapBaseLayer()
             ]
         });
 

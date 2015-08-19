@@ -108,7 +108,7 @@ var setupTestConfigAndStubs = function() {
 
     log.removeAllAppenders();
 
-    spyOn(Portal.search.FacetedSearchResultsMiniMap.prototype, '_getBaseLayer').andReturn(new OpenLayers.Layer());
+    spyOn(OpenLayers.Layer, 'MiniMapBaseLayer').andReturn(new OpenLayers.Layer());
 };
 
 var mockLayoutForMainPanel = function(mainPanel) {
