@@ -273,9 +273,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     isRecActive: function(uuid) {
-        return this.dataCollectionStore.findBy(function(dataCollection) {
-            return dataCollection.getUuid() == uuid;
-        }) != -1;
+        return this.dataCollectionStore.getByUuid(uuid);
     },
 
     mapElementId: function(uuid) {
@@ -310,7 +308,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         trackUsage(OpenLayers.i18n('dataCollectionSelectionTrackingCategory'), OpenLayers.i18n('dataCollectionSelectionTrackingAction'), record.data.title);
 
-        if (!this.dataCollectionStore.getWithUuid(uuid)) {
+        if (!this.isRecActive(uuid)) {
 
             this.dataCollectionStore.add(
                 Portal.data.DataCollection.fromMetadataRecord(record)

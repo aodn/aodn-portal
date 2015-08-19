@@ -35,7 +35,9 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
 
     getByUuid: function(uuid) {
         return this.getAt(
-            this.find('uuid', uuid)
+            this.findBy(function(record) {
+                return record.getUuid() == uuid;
+            })
         );
     },
 
