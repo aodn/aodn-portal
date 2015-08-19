@@ -38,12 +38,12 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
             var metadataRecord = store.getAt(0);
             var dataCollection = Portal.data.DataCollection.fromMetadataRecord(metadataRecord);
 
-            if (!metadataRecord) {
-                _this._errorLoadingDataCollection(uuid);
-            }
-            else {
+            if (metadataRecord) {
                 _this.dataCollectionStore.add(dataCollection);
                 Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_DATA_COLLECTION, dataCollection);
+            }
+            else {
+                _this._errorLoadingDataCollection(uuid);
             }
         });
     },
@@ -57,10 +57,6 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
         var params = Ext.urlDecode(getParams[1]);
 
         return params.uuid || [];
-    },
-
-    hasUuidsInUrl: function() {
-        return this.getUuidsFromUrl().length > 0;
     },
 
     _loadCollectionsFromUrl: function() {
