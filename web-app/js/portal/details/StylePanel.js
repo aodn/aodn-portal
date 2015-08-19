@@ -134,7 +134,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
     setChosenStyle: function(styleCombo, record) {
         var styleName = record.get('styleName');
-        trackLayerControlUsage(OpenLayers.i18n('layerControlTrackingActionStyle'), styleName, this.dataCollection.getTitle());
+        trackLayerControlUsage('layerControlTrackingActionStyle', styleName, this.dataCollection.getTitle());
         this.dataCollection.getLayerState().setStyle(styleName);
         this.refreshLegend();
     },
