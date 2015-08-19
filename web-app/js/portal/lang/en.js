@@ -284,6 +284,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerControlTrackingCategory: "LayerControl",
     changeLayerTrackingAction: "change layer",
     layerControlTrackingActionVisibility: "visibility",
+    layerControlTrackingActionStyle: "style",
     featureInfoTrackingCategory: "FeatureInfo",
     metadataTrackingCategory: "Metadata",
     metadataTrackingStep1Action: "Search",
