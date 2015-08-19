@@ -177,6 +177,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     _removeButtonOnClick: function(button) {
         var collectionId = this.getIdFromButtonContainerId(button, "removeButtonId");
         var record = this.dataCollectionStore.getByUuid(collectionId);
+        trackUsage(OpenLayers.i18n('dataCollectionSelectionTrackingCategory'), OpenLayers.i18n('dataCollectionRemovalTrackingAction'), record.data.title);
         this.dataCollectionStore.remove(record);
     },
 

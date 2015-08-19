@@ -273,6 +273,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadTrackingActionPrefix: "Download - ",
     dataCollectionSelectionTrackingCategory: "Collection",
     dataCollectionSelectionTrackingAction: "select",
+    dataCollectionRemovalTrackingAction: "remove",
     filtersTrackingCategory: "Filters",
     subsetItemsTrackingCategory: "Details",
     subsetItemsTabsTrackingAction: "Tabs",
