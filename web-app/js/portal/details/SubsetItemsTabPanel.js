@@ -20,23 +20,9 @@ Portal.details.SubsetItemsTabPanel = Ext.extend(Ext.TabPanel, {
                 this.subsetPanel,
                 this.infoPanel,
                 this.layerDetailsPanel
-            ],
-            listeners: {
-                beforetabchange: this._doTracking
-            }
+            ]
         }, cfg);
 
         Portal.details.SubsetItemsTabPanel.superclass.constructor.call(this, config);
-    },
-
-    _doTracking: function(tabPanel, newTab, oldTab){
-        if(oldTab) {
-            trackUsage(OpenLayers.i18n('subsetItemsTrackingCategory'),
-                OpenLayers.i18n('subsetItemsTabsTrackingAction'),
-                newTab.title,
-                this.layer.name
-            );
-        }
-        return true;
     }
 });
