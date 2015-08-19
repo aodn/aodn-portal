@@ -274,6 +274,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dataCollectionSelectionTrackingCategory: "Collection",
     dataCollectionSelectionTrackingAction: "select",
     dataCollectionRemovalTrackingAction: "remove",
+    dataCollectionClearAndReset: "clear and reset",
     filtersTrackingCategory: "Filters",
     subsetItemsTrackingCategory: "Details",
     subsetItemsTabsTrackingAction: "Tabs",

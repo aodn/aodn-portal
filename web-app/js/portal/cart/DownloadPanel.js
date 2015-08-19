@@ -152,7 +152,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     },
 
     _clearAllAndReset: function() {
-
+        trackUsage(OpenLayers.i18n('dataCollectionSelectionTrackingCategory'), OpenLayers.i18n('dataCollectionClearAndReset'), "");
         this.dataCollectionStore.removeAll();
         setViewPortTab(TAB_INDEX_SEARCH);
     },
