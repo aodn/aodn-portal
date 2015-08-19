@@ -108,6 +108,7 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
     },
 
     _visibilityButtonChecked: function(obj, val) {
+        trackLayerControlUsage(OpenLayers.i18n('layerControlTrackingActionVisibility'), val ? "on" : "off", this.dataCollection.getTitle());
         this.layer.setVisibility(val);
     },
 
