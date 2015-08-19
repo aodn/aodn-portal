@@ -13,7 +13,11 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
 
     constructor: function (cfg) {
 
-        var layerStore = new Portal.data.LayerStore();
+        var layerStore = new GeoExt.data.LayerStore({
+            layers: [
+                Portal.search.FacetedSearchResultsMiniMap.prototype._getBaseLayer()
+            ]
+        });
 
         var config = Ext.apply({
             layers: layerStore
