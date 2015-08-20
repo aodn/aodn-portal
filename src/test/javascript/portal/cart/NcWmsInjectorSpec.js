@@ -20,14 +20,21 @@ describe('Portal.cart.NcWmsInjector', function() {
         endDate = moment.utc(Date.UTC(2014, 11, 21, 22, 30, 30, 500));
         dataCollection = {
             uuid: 9,
-            getNcwmsParams: returns({
-                dateRangeStart: startDate,
-                dateRangeEnd: endDate,
-                latitudeRangeStart: '-10',
-                latitudeRangeEnd: '40',
-                longitudeRangeEnd: '180',
-                longitudeRangeStart: '150'
-            })
+            getFilters: returns([
+                {
+                    isNcwmsParams: true,
+                    dateRangeStart: startDate,
+                    dateRangeEnd: endDate,
+                    latitudeRangeStart: '-10',
+                    latitudeRangeEnd: '40',
+                    longitudeRangeEnd: '180',
+                    longitudeRangeStart: '150'
+                },
+                {
+                    type: Portal.filter.DateFilter,
+                    comment: 'Should be safely ignored for URL building'
+                }
+            ])
         };
     });
 
@@ -38,9 +45,10 @@ describe('Portal.cart.NcWmsInjector', function() {
         });
 
         it('returns a default message when no defined date', function() {
-            dataCollection.getNcwmsParams = returns({
+            dataCollection.getFilters = returns([{
+                isNcwmsParams: true,
                 dateRangeStart: null
-            });
+            }]);
 
             expect(injector._getDataFilterEntry(dataCollection)).toEqual(OpenLayers.i18n("emptyDownloadPlaceholder"));
         });
@@ -53,10 +61,11 @@ describe('Portal.cart.NcWmsInjector', function() {
 
         it('indicates temporal range', function() {
 
-            dataCollection.getNcWmsParams = returns({
+            dataCollection.getFilters = returns([{
+                isNcwmsParams: true,
                 dateRangeStart: moment.utc(Date.UTC(2013, 10, 20, 0, 30, 0, 0)),
                 dateRangeEnd: moment.utc(Date.UTC(2014, 11, 21, 10, 30, 30, 500))
-            });
+            }]);
 
             var entry = injector._getDataFilterEntry(dataCollection);
             expect(entry).toContain(dateLabel);

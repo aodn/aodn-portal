@@ -8,78 +8,11 @@
 describe("Portal.data.DataCollection", function() {
 
     var dataCollection;
-    var expectedDateFilterConfig;
-    var testDateFilter;
 
     beforeEach(function() {
         dataCollection = new Portal.data.DataCollection();
         spyOn(dataCollection, 'getWmsLayerLinks').andReturn([]);
         spyOn(dataCollection, 'setFilters');
-        spyOn(Portal.filter, 'DateFilter').andReturn(testDateFilter);
-
-        testDateFilter = {};
-    });
-
-    describe('updateNcwmsParams', function() {
-
-        beforeEach(function() {
-            expectedDateFilterConfig = {
-                name: 'time',
-                value: {},
-                visualised: true
-            };
-        });
-
-        it('updated start date', function() {
-
-            var testStartDate = moment();
-
-            dataCollection.updateNcwmsParams(testStartDate, moment('invalid date'), null);
-
-            expect(dataCollection.ncwmsParams).toEqual({
-                dateRangeStart: testStartDate
-            });
-
-            expectedDateFilterConfig.value.fromDate = testStartDate.toDate();
-
-            expect(Portal.filter.DateFilter).toHaveBeenCalledWith(expectedDateFilterConfig);
-            expect(dataCollection.setFilters).toHaveBeenCalledWith([testDateFilter]);
-        });
-
-        it('updated end date', function() {
-
-            var testEndDate = moment();
-
-            dataCollection.updateNcwmsParams(moment('invalid date'), testEndDate, null);
-
-            expect(dataCollection.ncwmsParams).toEqual({
-                dateRangeEnd: testEndDate
-            });
-
-            expectedDateFilterConfig.value.toDate = testEndDate.toDate();
-
-            expect(Portal.filter.DateFilter).toHaveBeenCalledWith(expectedDateFilterConfig);
-            expect(dataCollection.setFilters).toHaveBeenCalledWith([testDateFilter]);
-        });
-
-        it('update geometry', function() {
-
-            dataCollection.updateNcwmsParams(null, null, {
-                getBounds: returns({
-                    bottom: 4,
-                    left: 3,
-                    right: 2,
-                    top: 1
-                })
-            });
-
-            expect(dataCollection.ncwmsParams).toEqual({
-                longitudeRangeStart: 3,
-                longitudeRangeEnd: 2,
-                latitudeRangeStart: 4,
-                latitudeRangeEnd: 1
-            });
-        });
     });
 
     describe('getFiltersRequestParams()', function() {
