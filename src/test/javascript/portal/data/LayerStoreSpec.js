@@ -90,11 +90,9 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('add duplicate layer', function() {
-            spyOn(Ext.Msg, "alert");
             layerStore._addLayer(createOpenLayer());
             layerStore._addLayer(createOpenLayer());
-            expect(layerStore.getCount()).toBe(1);
-            expect(Ext.Msg.alert).toHaveBeenCalled();
+            expect(layerStore.getCount()).toBe(2);
         });
 
         it('addLayerUsingDescriptor', function() {
@@ -165,21 +163,10 @@ describe("Portal.data.LayerStore", function() {
             layerStore._addLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
 
-
             spyOn(layerStore, 'selectDefaultBaseLayer');
             layerStore.removeAll();
 
             expect(layerStore.selectDefaultBaseLayer).toHaveBeenCalled();
-        });
-    });
-
-    describe('containsOpenLayer', function() {
-        it('returns true with duplicate names', function() {
-            var layer1 = createOpenLayer();
-            var layer2 = createOpenLayer();
-
-            layerStore._addLayer(layer1);
-            expect(layerStore.containsOpenLayer(layer2)).toBeTruthy();
         });
     });
 
