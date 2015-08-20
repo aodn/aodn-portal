@@ -58,34 +58,34 @@ describe('OpenLayers', function() {
 
         describe('getFeatureRequestUrl', function() {
 
-            it('calls _buildGetFeatureRequestUrl correctly', function() {
+            it('calls buildGetFeatureRequestUrl correctly', function() {
 
-                spyOn(openLayer, '_buildGetFeatureRequestUrl');
+                spyOn(OpenLayers.Layer.WMS, 'buildGetFeatureRequestUrl');
                 spyOn(Portal.filter.combiner, 'DataDownloadCqlBuilder').andReturn({
                     buildCql: returns('download filters')
                 });
 
                 var testFilters = ['filters'];
 
-                openLayer.getFeatureRequestUrl(testFilters, 'wms_uri', 'layerName', 'csv');
+                OpenLayers.Layer.WMS.getFeatureRequestUrl(testFilters, 'wms_uri', 'layerName', 'csv');
 
                 expect(Portal.filter.combiner.DataDownloadCqlBuilder).toHaveBeenCalledWith({filters: testFilters});
-                expect(openLayer._buildGetFeatureRequestUrl).toHaveBeenCalledWith('wms_uri', 'layerName', 'csv', 'download filters');
+                expect(OpenLayers.Layer.WMS.buildGetFeatureRequestUrl).toHaveBeenCalledWith('wms_uri', 'layerName', 'csv', 'download filters');
             });
         });
 
-        describe('_buildGetFeatureRequestUrl', function() {
+        describe('buildGetFeatureRequestUrl', function() {
 
             it('does not add a ? if not required', function() {
 
-                var getFeatureUrl = openLayer._buildGetFeatureRequestUrl("wfs_url?a=b");
+                var getFeatureUrl = OpenLayers.Layer.WMS.buildGetFeatureRequestUrl("wfs_url?a=b");
 
                 expect(getFeatureUrl.startsWith('wfs_url?a=b&')).toBe(true);
             });
 
             it('adds a ? if required', function() {
 
-                var getFeatureUrl = openLayer._buildGetFeatureRequestUrl("wfs_url");
+                var getFeatureUrl = OpenLayers.Layer.WMS.buildGetFeatureRequestUrl("wfs_url");
 
                 expect(getFeatureUrl.startsWith('wfs_url?')).toBe(true);
             });
@@ -99,7 +99,7 @@ describe('OpenLayers', function() {
                     '&REQUEST=GetFeature' +
                     '&VERSION=1.0.0';
 
-                var getFeatureUrl = openLayer._buildGetFeatureRequestUrl('wfs_url', 'type_name', 'txt');
+                var getFeatureUrl = OpenLayers.Layer.WMS.buildGetFeatureRequestUrl('wfs_url', 'type_name', 'txt');
 
                 expect(getFeatureUrl).toBe(expectedUrl);
             });
@@ -114,7 +114,7 @@ describe('OpenLayers', function() {
                     '&VERSION=1.0.0' +
                     '&CQL_FILTER=cql%20%25%3A%2F';
 
-                var getFeatureUrl = openLayer._buildGetFeatureRequestUrl('wfs_url', 'type_name', 'csv', 'cql %:/');
+                var getFeatureUrl = OpenLayers.Layer.WMS.buildGetFeatureRequestUrl('wfs_url', 'type_name', 'csv', 'cql %:/');
 
                 expect(getFeatureUrl).toBe(expectedUrl);
             });

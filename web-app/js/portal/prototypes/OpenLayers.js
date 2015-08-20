@@ -107,13 +107,13 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function(resp, options) {
     return formatGetFeatureInfo(resp, options);
 };
 
-OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(filters, serverUrl, layerName, outputFormat) {
+OpenLayers.Layer.WMS.getFeatureRequestUrl = function(filters, serverUrl, layerName, outputFormat) {
 
     var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
         filters: filters
     });
 
-    return this._buildGetFeatureRequestUrl(
+    return OpenLayers.Layer.WMS.buildGetFeatureRequestUrl(
         serverUrl,
         layerName,
         outputFormat,
@@ -121,7 +121,7 @@ OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl = function(filters, serverUr
     );
 };
 
-OpenLayers.Layer.WMS.prototype._buildGetFeatureRequestUrl = function(baseUrl, layerName, outputFormat, downloadFilter) {
+OpenLayers.Layer.WMS.buildGetFeatureRequestUrl = function(baseUrl, layerName, outputFormat, downloadFilter) {
 
     var wfsUrl = baseUrl;
     wfsUrl += (wfsUrl.indexOf('?') !== -1) ? "&" : "?";

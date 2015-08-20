@@ -54,6 +54,10 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
         this.fireEvent('selectedlayerchanged', this.selectedLayer, oldLayer);
     },
 
+    isLoading: function() {
+        return this.getSelectedLayer().loading;
+    },
+
     _setLayerProperty: function(key, value) {
         this._layerProperties()[key] = value;
     },

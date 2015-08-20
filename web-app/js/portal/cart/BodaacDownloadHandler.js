@@ -77,8 +77,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 filters: collection.getFilters()
             });
 
-            var wmsLayer = collection.getLayerState().getSelectedLayer();
-            return wmsLayer._buildGetFeatureRequestUrl(
+            return OpenLayers.Layer.WMS.buildGetFeatureRequestUrl(
                 _this._resourceHref(),
                 _this._layerName(),
                 OpenLayers.Layer.DOWNLOAD_FORMAT_CSV,
