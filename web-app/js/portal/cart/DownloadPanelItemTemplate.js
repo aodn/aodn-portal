@@ -179,7 +179,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         var record = this.dataCollectionStore.getByUuid(collectionId);
         this.dataCollectionStore.remove(record);
 
-        trackUsage(OpenLayers.i18n('dataCollectionSelectionTrackingCategory'), OpenLayers.i18n('dataCollectionRemovalTrackingAction'), record.getTitle());
+        trackDataCollectionSelectionUsage('dataCollectionRemovalTrackingAction', record.getTitle());
     },
 
     _getFileListEntries: function(values) {

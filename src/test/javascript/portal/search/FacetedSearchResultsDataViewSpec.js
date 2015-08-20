@@ -89,10 +89,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
 
         beforeEach(function() {
             record = {
-                data: {
-                    title: "Argo Australia Profiles"
-                },
-                get: noOp,
+                get: returns("Argo Australia Profiles"),
                 join: noOp,
                 hasWmsLink: noOp
             };
@@ -110,7 +107,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
         it('sends correct tracking data', function() {
 
             facetedSearchDataView.addRecordWithUuid("my super uuid", false);
-            expect(window.trackUsage).toHaveBeenCalledWith("Collection", "select", "Argo Australia Profiles");
+            expect(window.trackUsage).toHaveBeenCalledWith("Collection", "select", "Argo Australia Profiles", undefined);
         });
 
         it('clears possible contents of buttons/maps', function() {
