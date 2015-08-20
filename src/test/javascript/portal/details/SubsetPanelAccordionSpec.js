@@ -36,7 +36,7 @@ describe("Portal.details.SubsetPanelAccordion", function() {
             spyOn(subsetPanelAccordion, 'remove');
             spyOn(subsetPanelAccordion, 'doLayout');
             spyOn(subsetPanelAccordion, 'setActiveItem');
-            spyOn(subsetPanelAccordion, '_newSubsetItemsWrapperPanel').andCallFake(function(dataCollection) {
+            spyOn(subsetPanelAccordion, '_newDataCollectionDetailsPanel').andCallFake(function(dataCollection) {
                 return subsetItemsWrapperPanel;
             });
         });

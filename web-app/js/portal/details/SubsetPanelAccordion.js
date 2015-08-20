@@ -24,7 +24,7 @@ Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
         Portal.details.SubsetPanelAccordion.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function(eventName, dataCollection) {
-            this.add(this._newSubsetItemsWrapperPanel(dataCollection));
+            this.add(this._newDataCollectionDetailsPanel(dataCollection));
             this.doLayout();  // This seems to be required in order to first collapse all folders.
             this.setActiveItem(dataCollection.getUuid());
         }, this);
@@ -38,8 +38,8 @@ Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
         this.layout.setActiveItem(itemId);
     },
 
-    _newSubsetItemsWrapperPanel: function(dataCollection) {
-        return new Portal.details.SubsetItemsWrapperPanel({
+    _newDataCollectionDetailsPanel: function(dataCollection) {
+        return new Portal.details.DataCollectionDetailsPanel({
             map: this.map,
             dataCollection: dataCollection,
             dataCollectionStore: this.dataCollectionStore,

@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.details.SubsetItemsWrapperPanel", function() {
+describe("Portal.details.DataCollectionDetailsPanel", function() {
     var panel;
     var layer;
     var layerState;
@@ -12,7 +12,7 @@ describe("Portal.details.SubsetItemsWrapperPanel", function() {
     var dataCollection;
 
     beforeEach(function() {
-        spyOn(Portal.details.SubsetItemsWrapperPanel.prototype, '_initSubsetItemsTabPanel').andReturn(new Ext.Panel());
+        spyOn(Portal.details.DataCollectionDetailsPanel.prototype, '_initSubsetItemsTabPanel').andReturn(new Ext.Panel());
 
         layer = new OpenLayers.Layer.WMS();
         layerState = new Ext.util.Observable();
@@ -23,7 +23,7 @@ describe("Portal.details.SubsetItemsWrapperPanel", function() {
             getLayerState: returns(layerState)
         };
 
-        panel = new Portal.details.SubsetItemsWrapperPanel({
+        panel = new Portal.details.DataCollectionDetailsPanel({
             dataCollection: dataCollection
         });
     });

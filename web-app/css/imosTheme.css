@@ -337,11 +337,11 @@ ul.x-tab-strip-top {
     border-radius: 6px;
 }
 
-.subsetPanelAccordionItem .x-tool:not(:first-of-type) {
+.dataCollectionDetailsPanel .x-tool:not(:first-of-type) {
     margin: 3px 0;
 }
 
-.subsetPanelAccordionItem .x-tool:first-of-type {
+.dataCollectionDetailsPanel .x-tool:first-of-type {
     margin-left: 6px;
     margin-right: 0;
 }
