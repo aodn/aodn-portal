@@ -62,7 +62,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             }
         });
 
-        this.ncwmsScaleRangeControls = new Portal.details.NcwmsScaleRangeControls({
+        this.ncwmsScaleRangeControls = new Portal.details.NcWmsScaleRangeControls({
             dataCollection: this.dataCollection,
             listeners: {
                 'colourScaleUpdated': this.refreshLegend,

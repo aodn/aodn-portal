@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe('Portal.details.NcwmsScaleRangeControls', function() {
+describe('Portal.details.NcWmsScaleRangeControls', function() {
     describe('loadScaleFromLayer', function() {
 
         var controls;
@@ -22,7 +22,7 @@ describe('Portal.details.NcwmsScaleRangeControls', function() {
                 getLayerState: returns(layerState)
             };
 
-            controls = new Portal.details.NcwmsScaleRangeControls({
+            controls = new Portal.details.NcWmsScaleRangeControls({
                 dataCollection: dataCollection
             });
 

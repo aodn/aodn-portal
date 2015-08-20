@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.NcwmsScaleRangeControls = Ext.extend(Ext.Panel, {
+Portal.details.NcWmsScaleRangeControls = Ext.extend(Ext.Panel, {
 
     layout: 'form',
 
@@ -41,7 +41,7 @@ Portal.details.NcwmsScaleRangeControls = Ext.extend(Ext.Panel, {
         ];
 
         this.addEvents('colourScaleUpdated');
-        Portal.details.NcwmsScaleRangeControls.superclass.initComponent.call(this);
+        Portal.details.NcWmsScaleRangeControls.superclass.initComponent.call(this);
 
         this.dataCollection.getLayerState().on('selectedlayerchanged', this.loadScaleFromLayer, this);
     },

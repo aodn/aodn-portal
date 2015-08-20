@@ -1,10 +1,11 @@
 /*
- * Copyright 2013 IMOS
+ * Copyright 2014 IMOS
  *
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("OpenLayers.Layer.NcWMS", function() {
+describe('OpenLayers.Layer.NcWms', function() {
+
     var cachedLayer;
     var extent;
     var params;
@@ -19,13 +20,13 @@ describe("OpenLayers.Layer.NcWMS", function() {
     };
 
     beforeEach(function() {
-        OpenLayers.Layer.WMS.prototype.getURL = function(bounds) {
+        OpenLayers.Layer.WMS.prototype.getURL = function() {
             return "http://someurl/page?param1=blaa";
         };
 
         params = {};
 
-        cachedLayer = new OpenLayers.Layer.NcWMS(
+        cachedLayer = new OpenLayers.Layer.NcWms(
             null,
             null,
             params,
@@ -37,12 +38,6 @@ describe("OpenLayers.Layer.NcWMS", function() {
     describe("getURL", function() {
 
         var time = moment('2011-07-08T03:32:45Z').utc();
-        var bounds = new OpenLayers.Bounds({
-            left: 0,
-            right: 10,
-            top: 0,
-            bottom: 10
-        });
 
         beforeEach(function() {
             cachedLayer.temporalExtent.parse([
@@ -233,13 +228,13 @@ describe("OpenLayers.Layer.NcWMS", function() {
 
         it('next item returned', function() {
             cachedLayer.toTime(cachedLayer.temporalExtent.min());
-            var res = cachedLayer.goToNextTimeSlice();
+            cachedLayer.goToNextTimeSlice();
             expect(cachedLayer.time).toBeSame(moment.utc('2001-01-02T00:00:00'));
         });
 
         it('no more items', function() {
             cachedLayer.toTime(cachedLayer.temporalExtent.max());
-            var res = cachedLayer.goToNextTimeSlice();
+            cachedLayer.goToNextTimeSlice();
             expect(cachedLayer.time).toBeSame(moment.utc('2001-01-03T00:00:00'));
         });
     });
@@ -340,7 +335,7 @@ describe("OpenLayers.Layer.NcWMS", function() {
                 '2001-02-05T00:00'
             ];
 
-            cachedLayer = new OpenLayers.Layer.NcWMS(
+            cachedLayer = new OpenLayers.Layer.NcWms(
                 null,
                 null,
                 params,
@@ -392,4 +387,45 @@ describe("OpenLayers.Layer.NcWMS", function() {
             expect(cachedLayer.getSubsetExtentMax()).toEqual(moment.utc('2000-01-03T00:00:00.000'));
         });
     });
+
+    describe('_setExtraLayerInfoFromNcwms', function() {
+
+        it('called from initialize', function() {
+            spyOn(OpenLayers.Layer.NcWms.prototype, '_setExtraLayerInfoFromNcwms');
+
+            var ncwmsLayer = mockNcwmsLayer();
+
+            expect(ncwmsLayer._setExtraLayerInfoFromNcwms).toHaveBeenCalled();
+        });
+
+        it('_getExtraLayerInfoFromNcwms generates URL', function() {
+            var ncwmsLayer = mockNcwmsLayer();
+
+            expect(ncwmsLayer._getExtraLayerInfoFromNcwms()).toEqual(
+                'http://ncwms.aodn.org.au/ncwms/wms?layerName=ncwmsLayerName&REQUEST=GetMetadata&item=layerDetails'
+            );
+        });
+
+        it('_setExtraLayerInfoFromNcwms calls URL', function() {
+            spyOn(OpenLayers.Layer.NcWms.prototype, '_getExtraLayerInfoFromNcwms').andReturn('mockedMetadataUrl');
+            spyOn(Ext.ux.Ajax, 'proxyRequest');
+
+            var ncwmsLayer = mockNcwmsLayer();
+
+            expect(ncwmsLayer._getExtraLayerInfoFromNcwms).toHaveBeenCalled();
+
+            var ajaxParams = Ext.ux.Ajax.proxyRequest.mostRecentCall.args[0];
+            expect(ajaxParams.url).toBe("mockedMetadataUrl");
+        });
+    });
+
+    function mockNcwmsLayer() {
+        return new OpenLayers.Layer.NcWms(
+            'someLayer',
+            'http://ncwms.aodn.org.au/ncwms/wms',
+            { LAYERS: 'ncwmsLayerName' },
+            {},
+            {}
+        );
+    }
 });

@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.cart');
 
-Portal.cart.NcwmsInjector = Ext.extend(Portal.cart.BaseInjector, {
+Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _getDataFilterEntry: function(collection) {
 

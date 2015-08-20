@@ -8,6 +8,7 @@
 describe('Portal.data.Server', function() {
     describe('getInfo', function() {
         var server1Info;
+        var server2Info;
 
         beforeEach(function() {
             Ext.namespace('Portal.app.appConfig');
@@ -18,7 +19,7 @@ describe('Portal.data.Server', function() {
             };
             server2Info = {
                 uri: 'http://server2',
-                type: 'NcWMS'
+                type: 'ncWMS'
             };
 
             Portal.app.appConfig.knownServers = [
@@ -38,7 +39,7 @@ describe('Portal.data.Server', function() {
 
         it('returns appropriate OpenLayers type', function() {
             expect(Portal.data.Server.getInfo('http://server1').getLayerType()).toBe(OpenLayers.Layer.WMS);
-            expect(Portal.data.Server.getInfo('http://server2').getLayerType()).toBe(OpenLayers.Layer.NcWMS);
+            expect(Portal.data.Server.getInfo('http://server2').getLayerType()).toBe(OpenLayers.Layer.NcWms);
             expect(Portal.data.Server.getInfo('http://unknown').getLayerType()).toBe(OpenLayers.Layer.WMS);
         });
     });

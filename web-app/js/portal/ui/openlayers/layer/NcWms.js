@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-OpenLayers.Layer.NcWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
+OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     /**
      * Moment in time that this layer represents.

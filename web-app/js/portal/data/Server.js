@@ -42,7 +42,7 @@ Portal.data.Server = {
 
     _getLayerType: function(serverInfo) {
         if (this.type.toLowerCase() == 'ncwms') {
-            return OpenLayers.Layer.NcWMS;
+            return OpenLayers.Layer.NcWms;
         }
 
         return OpenLayers.Layer.WMS;
