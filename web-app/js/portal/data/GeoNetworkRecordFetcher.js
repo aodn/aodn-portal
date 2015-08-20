@@ -49,7 +49,7 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
     },
 
     _errorLoadingDataCollection: function(uuid) {
-        Ext.MessageBox.alert('Error', String.format(OpenLayers.i18n('errorLoadingCollection'), uuid));
+        Ext.MessageBox.alert('Error', String.format(OpenLayers.i18n('errorLoadingCollectionMessage'), uuid));
     },
 
     getUuidsFromUrl: function() {
