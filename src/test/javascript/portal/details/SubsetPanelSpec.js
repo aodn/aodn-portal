@@ -4,14 +4,14 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.details.SubsettingPanel", function() {
+describe("Portal.details.SubsetPanel", function() {
 
-    var subsettingPanel;
+    var subsetPanel;
     var dataCollection;
     var dataCollectionStore;
 
     beforeEach(function() {
-        spyOn(Portal.details.SubsettingPanel.prototype, '_newSubsetPanelAccordion').andReturn(new Ext.Panel());
+        spyOn(Portal.details.SubsetPanel.prototype, '_newSubsetPanelAccordion').andReturn(new Ext.Panel());
 
         dataCollectionStore = {
             getCount: noOp
@@ -21,27 +21,27 @@ describe("Portal.details.SubsettingPanel", function() {
             getSelectedLayer: noOp
         };
 
-        subsettingPanel = new Portal.details.SubsettingPanel({
+        subsetPanel = new Portal.details.SubsetPanel({
             map: new OpenLayers.SpatialConstraintMap(),
             dataCollectionStore: dataCollectionStore
         });
 
-        spyOn(subsettingPanel, '_setEmptyNotificationVisible');
+        spyOn(subsetPanel, '_setEmptyNotificationVisible');
     });
 
     it('hides notification on collection added', function() {
         Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED, dataCollection);
-        expect(subsettingPanel._setEmptyNotificationVisible).toHaveBeenCalledWith(false);
+        expect(subsetPanel._setEmptyNotificationVisible).toHaveBeenCalledWith(false);
     });
 
     it('shows notification on collection removed if no collections', function() {
         dataCollectionStore.getCount = returns(1);
         Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, dataCollection);
-        expect(subsettingPanel._setEmptyNotificationVisible).toHaveBeenCalledWith(false);
+        expect(subsetPanel._setEmptyNotificationVisible).toHaveBeenCalledWith(false);
 
         dataCollectionStore.getCount = returns(0);
         Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, dataCollection);
-        expect(subsettingPanel._setEmptyNotificationVisible).toHaveBeenCalledWith(true);
+        expect(subsetPanel._setEmptyNotificationVisible).toHaveBeenCalledWith(true);
     });
 
     it('show correct step title', function() {
@@ -53,6 +53,6 @@ describe("Portal.details.SubsettingPanel", function() {
             }
         );
 
-        expect(subsettingPanel.title).toEqual(expectedTitle);
+        expect(subsetPanel.title).toEqual(expectedTitle);
     });
 });

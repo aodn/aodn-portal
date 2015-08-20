@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
+Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
@@ -44,7 +44,7 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
             ]
         }, cfg);
 
-        Portal.details.SubsettingPanel.superclass.constructor.call(this, config);
+        Portal.details.SubsetPanel.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function(eventName, dataCollection) {
             this._setEmptyNotificationVisible(false);

@@ -23,7 +23,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pleasePickNumberField: 'Please enter a number to filter on, according to your operator',
     loadingMessage: '&nbsp;<i>Loading ${resource}\u2025</i>',
 
-    // SubsettingPanel.js
+    // SubsetPanel.js
     opacity: "Opacity",
     layerProblem: "There is a problem with the availability of this collection",
     noActiveCollectionSelected: "No data collections selected",
