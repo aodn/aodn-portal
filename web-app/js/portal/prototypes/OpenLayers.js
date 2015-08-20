@@ -34,10 +34,6 @@ OpenLayers.Util.getImageLocation = function(image) {
 
 OpenLayers.Layer.DOWNLOAD_FORMAT_CSV = 'csv';
 
-OpenLayers.Layer.prototype.isOverlay = function() {
-    return !this.isBaseLayer;
-};
-
 // Override WMS.getURL to include proxy
 OpenLayers.Layer.WMS.prototype.___getURL = OpenLayers.Layer.WMS.prototype.getURL;
 OpenLayers.Layer.WMS.prototype.getURL = function(bounds) {
