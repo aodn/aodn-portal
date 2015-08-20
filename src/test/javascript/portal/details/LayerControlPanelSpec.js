@@ -8,14 +8,11 @@ describe("Portal.details.LayerControlPanel", function() {
         var selectedLayer;
 
         beforeEach(function() {
-            layers = [
-            ];
+            layers = [];
 
             layerState = {
                 getLayers: returns(layers),
-                getSelectedLayer: function() {
-                    return selectedLayer;
-                },
+                getSelectedLayer: returns(selectedLayer),
                 setSelectedLayer: noOp
             };
 
@@ -86,5 +83,11 @@ describe("Portal.details.LayerControlPanel", function() {
                 { wmsName: 'last layer' }
             );
         };
+    });
+
+    describe('visibility checkbox', function() {
+        it('sends google analytics tracking when changed', function() {
+
+        });
     });
 });
