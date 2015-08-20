@@ -1,31 +1,33 @@
 describe("Portal.details.LayerControlPanel", function() {
-    describe('layer select radio group', function() {
 
-        var dataCollection;
-        var layerControlPanel;
-        var layers;
-        var layerState;
-        var selectedLayer;
+    var dataCollection;
+    var layerControlPanel;
+    var layers;
+    var layerState;
+    var selectedLayer;
 
-        beforeEach(function() {
-            layers = [];
+    beforeEach(function() {
+        layers = [];
 
-            layerState = {
-                getLayers: returns(layers),
-                getSelectedLayer: returns(selectedLayer),
-                setSelectedLayer: noOp
-            };
+        layerState = {
+            getLayers: returns(layers),
+            getSelectedLayer: function() {
+                return selectedLayer;
+            },
+            setSelectedLayer: noOp
+        };
 
-            dataCollection = {
-                getTitle: returns('Data Collection Title'),
-                getLayerState: returns(layerState)
-            };
+        dataCollection = {
+            getTitle: returns('Data Collection Title'),
+            getLayerState: returns(layerState)
+        };
 
-            layerControlPanel = new Portal.details.LayerControlPanel({
-                dataCollection: dataCollection
-            });
+        layerControlPanel = new Portal.details.LayerControlPanel({
+            dataCollection: dataCollection
         });
+    });
 
+    describe('layer select radio group', function() {
         it('exists only when more than one layer', function() {
 
             expect(layerControlPanel._newLayerSelectorComponent()).toBe(undefined);
