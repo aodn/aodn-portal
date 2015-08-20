@@ -149,7 +149,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     btnSave: 'Save',
     btnCancel: 'Cancel',
 
-    errorLoadingCollection: 'Error loading collection with UUID \'{0}\'',
+    errorLoadingCollectionMessage: 'The data collection could not be loaded because a data collection with UUID \'{0}\' does not exist.',
 
     // Faceted layer search
     searchTabTitle: 'Search',
