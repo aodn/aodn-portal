@@ -77,34 +77,18 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _addLayer: function(openLayer, layerRecordCallback) {
-        if (!this.containsOpenLayer(openLayer)) {
-
-            var layerRecord = new GeoExt.data.LayerRecord({
-                layer: openLayer,
-                title: openLayer.name
-            });
-
-            if (layerRecordCallback) {
-                layerRecordCallback(layerRecord);
-            }
-
-            this.add(layerRecord);
-
-            return layerRecord;
-        }
-        else {
-            Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'), OpenLayers.i18n('collectionExistsMsg'));
-        }
-    },
-
-    containsOpenLayer: function(openLayer) {
-
-        var layerIndex = this.findBy(function(record) {
-            var currentLayer = record.get("layer");
-            return currentLayer.name === openLayer.name && currentLayer.url === openLayer.url;
+        var layerRecord = new GeoExt.data.LayerRecord({
+            layer: openLayer,
+            title: openLayer.name
         });
 
-        return layerIndex >= 0;
+        if (layerRecordCallback) {
+            layerRecordCallback(layerRecord);
+        }
+
+        this.add(layerRecord);
+
+        return layerRecord;
     },
 
     _registerMessageListeners: function() {
