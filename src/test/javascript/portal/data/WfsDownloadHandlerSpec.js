@@ -38,7 +38,7 @@ describe('Portal.cart.WfsDownloadHandler', function () {
 
                 var downloadHandler = downloadOption.handler;
 
-                spyOn(OpenLayers.Layer.WMS.prototype, 'getFeatureRequestUrl');
+                spyOn(OpenLayers.Layer.WMS, 'getFeatureRequestUrl');
 
                 var dummyLayer = {
                     getCsvDownloadFormat: jasmine.createSpy('getCsvDownloadFormat').andReturn('csv')
@@ -54,7 +54,7 @@ describe('Portal.cart.WfsDownloadHandler', function () {
                 downloadHandler(dummyCollection);
 
                 expect(dummyLayer.getCsvDownloadFormat).toHaveBeenCalled();
-                expect(OpenLayers.Layer.WMS.prototype.getFeatureRequestUrl).toHaveBeenCalledWith(dummyFilters, 'server_url', 'layer_name', 'csv');
+                expect(OpenLayers.Layer.WMS.getFeatureRequestUrl).toHaveBeenCalledWith(dummyFilters, 'server_url', 'layer_name', 'csv');
             });
         });
 

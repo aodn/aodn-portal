@@ -17,7 +17,7 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
     };
 
     beforeEach(function() {
-        spyOn(OpenLayers.Layer.WMS.prototype, 'buildGetFeatureRequestUrl').andReturn('the_url');
+        spyOn(OpenLayers.Layer.WMS, 'buildGetFeatureRequestUrl').andReturn('the_url');
         createHandler({
             href: 'geoserver_url',
             name: 'layer_name#field_name'
@@ -90,7 +90,7 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
         it('builds the correct URL', function() {
 
-            expect(OpenLayers.Layer.WMS.prototype.buildGetFeatureRequestUrl).toHaveBeenCalledWith(
+            expect(OpenLayers.Layer.WMS.buildGetFeatureRequestUrl).toHaveBeenCalledWith(
                 'geoserver_url',
                 'layer_name',
                 'csv',
