@@ -27,10 +27,6 @@ Portal.data.DataCollection = function() {
         return this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.wms);
     };
 
-    constructor.prototype.getWfsLayerLinks = function() {
-        return this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.wfs);
-    };
-
     constructor.prototype.getDataDownloadHandlers = function() {
 
         var protocolHandlerConstructors = { // Todo - DN: Should this mapping live in config?
@@ -105,7 +101,8 @@ Portal.data.DataCollection = function() {
     };
 
     constructor.prototype.getDownloadLayerName = function() {
-        var firstWfsLink = this.getWfsLayerLinks()[0];
+        var wfsLayerLinks = this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.wfs);
+        var firstWfsLink = wfsLayerLinks[0];
         var firstWmsLink = this.getWmsLayerLinks()[0];
         var link = firstWfsLink || firstWmsLink;
 
