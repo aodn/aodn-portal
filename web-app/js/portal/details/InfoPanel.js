@@ -27,7 +27,6 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
         var rawAbstract = this.dataCollection.getMetadataRecord().get('abstract');
         var abstract = Ext.util.Format.htmlEncode(rawAbstract);
-        var linkRecords = this.dataCollection.getWebPageLinks();
 
         return String.format(
             '<h4>{0}</h4>\n{1}' +
@@ -35,12 +34,13 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
             OpenLayers.i18n('abstractTitle'),
             abstract,
             OpenLayers.i18n('webpageLinksTitle'),
-            this._getHtmlForLinks(linkRecords)
+            this._getHtmlForLinks()
         );
     },
 
-    _getHtmlForLinks: function(linkRecords) {
+    _getHtmlForLinks: function() {
 
+        var linkRecords = this._getLinkRecords();
         var linkHtml = "";
 
         Ext.each(linkRecords, function(linkRecord) {
@@ -59,5 +59,9 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
         });
 
         return linkHtml;
+    },
+
+    _getLinkRecords: function() {
+        return this.dataCollection.getWebPageLinks();
     }
 });
