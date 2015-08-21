@@ -11,7 +11,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
+        this.globalGeometryFilterPanel = new Portal.details.GlobalGeometryFilterPanel({
             map: cfg.map,
             hideLabel: false
         });
@@ -37,7 +37,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
 
             items: [
                 new Ext.Spacer({height: 5}),
-                this.spatialSubsetControlsPanel,
+                this.globalGeometryFilterPanel,
                 this.subsetPanelAccordion,
                 new Ext.Spacer({height: 20}),
                 this.emptyTextPanel
