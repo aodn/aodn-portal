@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
+Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
@@ -28,7 +28,7 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
         }, this);
 
         var config = Ext.apply({
-            cls: 'subsetPanelAccordionItem',
+            cls: 'dataCollectionDetailsPanel',
             title: '<h4>' + cfg.dataCollection.getTitle() + '</h4>',
             autoHeight: true,
             defaults: {
@@ -47,7 +47,7 @@ Portal.details.SubsetItemsWrapperPanel = Ext.extend(Ext.Panel, {
             }
         }, cfg);
 
-        Portal.details.SubsetItemsWrapperPanel.superclass.constructor.call(this, config);
+        Portal.details.DataCollectionDetailsPanel.superclass.constructor.call(this, config);
     },
 
     _onExpand: function() {

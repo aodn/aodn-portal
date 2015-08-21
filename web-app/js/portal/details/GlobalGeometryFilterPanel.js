@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
+Portal.details.GlobalGeometryFilterPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
@@ -15,7 +15,7 @@ Portal.details.SpatialSubsetControlsPanel = Ext.extend(Ext.Panel, {
             cls: "spatialSubsetControl"
         }, cfg);
 
-        Portal.details.SpatialSubsetControlsPanel.superclass.constructor.call(this, config);
+        Portal.details.GlobalGeometryFilterPanel.superclass.constructor.call(this, config);
 
         this._addPickerPanel();
         this._addSpatialConstraintDisplayPanel();

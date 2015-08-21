@@ -902,7 +902,7 @@ div.allwhite {
 
 .search-filter-panel .x-panel-header,
 .filter-selection-panel .x-panel-header,
-.subsetPanelAccordion .x-panel-header {
+.dataCollectionDetailsAccordion .x-panel-header {
     margin: 5px 5px 0 0;
     padding: 10px;
 }
@@ -976,14 +976,14 @@ div.allwhite {
 .x-tab-strip-top .x-tab-left,
 .x-tab-strip-top .x-tab-strip-inner,
 .resultsRowHeaderTitle,
-.subsetPanelAccordion .x-panel-header,
+.dataCollectionDetailsAccordion .x-panel-header,
 .filter-selection-panel .x-panel-header {
     background-color: #EBEBEB;
 }
 
 
 .resultsRowHeaderTitle:hover,
-.subsetPanelAccordion .x-panel-header:hover,
+.dataCollectionDetailsAccordion .x-panel-header:hover,
 .filter-selection-panel .x-panel-header:hover,
 .x-btn-over:not(.navigationButton),
 .x-btn-over:not(.navigationButton) *,
@@ -996,20 +996,20 @@ ul.x-tab-strip-top li:hover * {
 }
 
 .resultsRowHeaderTitle,
-.subsetPanelAccordion .x-panel-header {
+.dataCollectionDetailsAccordion .x-panel-header {
     border-radius: 3px;
 }
 
-.subsetPanelAccordion .x-panel-header {
+.dataCollectionDetailsAccordion .x-panel-header {
     padding: 5px 8px;
 }
 
-.subsetPanelAccordionItem:not(.x-panel-collapsed) .x-panel-header {
+.dataCollectionDetailsPanel:not(.x-panel-collapsed) .x-panel-header {
     cursor: default !important;
     background-color: #DCDCDC;
 }
 
-.subsetPanelAccordion .x-panel-collapsed * {
+.dataCollectionDetailsAccordion .x-panel-collapsed * {
     font-weight: normal;
 }
 

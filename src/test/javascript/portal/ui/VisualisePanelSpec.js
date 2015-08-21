@@ -17,7 +17,7 @@ describe('Portal.ui.VisualisePanel', function() {
     var visualisePanel;
 
     beforeEach(function() {
-        spyOn(Portal.details.SubsettingPanel.prototype, '_newSubsetPanelAccordion').andReturn(new Ext.Panel());
+        spyOn(Portal.details.SubsetPanel.prototype, '_newDataCollectionDetailsAccordion').andReturn(new Ext.Panel());
         visualisePanel = new Portal.ui.VisualisePanel({
             mapPanel: new Portal.ui.MapPanel()
         });

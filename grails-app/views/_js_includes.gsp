@@ -98,7 +98,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'BoxDisplayPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'PolygonDisplayPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SpatialConstraintDisplayPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SpatialSubsetControlsPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'GlobalGeometryFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'Filter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'BooleanFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'DateFilter.js')}"></script>
@@ -127,12 +127,12 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'StylePanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'LayerControlPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'LayerDetailsPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsettingPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NcWmsPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanelAccordion.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DataCollectionDetailsAccordion.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'InfoPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetItemsTabPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetItemsWrapperPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DataCollectionDetailsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'ClickControl.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'LayerOptions.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'LayerParams.js')}"></script>

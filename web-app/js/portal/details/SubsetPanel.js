@@ -7,16 +7,16 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
+Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
-        this.spatialSubsetControlsPanel = new Portal.details.SpatialSubsetControlsPanel({
+        this.globalGeometryFilterPanel = new Portal.details.GlobalGeometryFilterPanel({
             map: cfg.map,
             hideLabel: false
         });
 
-        this.subsetPanelAccordion = this._newSubsetPanelAccordion(cfg);
+        this.dataCollectionDetailsAccordion = this._newDataCollectionDetailsAccordion(cfg);
 
         this.emptyTextPanel =  new Portal.common.EmptyCollectionStatusPanel({
             hidden: true
@@ -37,14 +37,14 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
 
             items: [
                 new Ext.Spacer({height: 5}),
-                this.spatialSubsetControlsPanel,
-                this.subsetPanelAccordion,
+                this.globalGeometryFilterPanel,
+                this.dataCollectionDetailsAccordion,
                 new Ext.Spacer({height: 20}),
                 this.emptyTextPanel
             ]
         }, cfg);
 
-        Portal.details.SubsettingPanel.superclass.constructor.call(this, config);
+        Portal.details.SubsetPanel.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function(eventName, dataCollection) {
             this._setEmptyNotificationVisible(false);
@@ -55,8 +55,8 @@ Portal.details.SubsettingPanel = Ext.extend(Ext.Panel, {
         }, this);
     },
 
-    _newSubsetPanelAccordion: function(cfg) {
-        return new Portal.details.SubsetPanelAccordion({
+    _newDataCollectionDetailsAccordion: function(cfg) {
+        return new Portal.details.DataCollectionDetailsAccordion({
             map: cfg.map,
             dataCollectionStore: cfg.dataCollectionStore
         });
