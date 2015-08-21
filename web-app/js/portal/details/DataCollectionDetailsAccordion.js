@@ -7,12 +7,12 @@
 
 Ext.namespace('Portal.details');
 
-Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
+Portal.details.DataCollectionDetailsAccordion = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
 
         var config = Ext.apply({
-            cls: 'subsetPanelAccordion',
+            cls: 'dataCollectionDetailsAccordion',
             layout: 'noncollapsingaccordion',
             autoScroll: true,
             layoutConfig: {
@@ -21,7 +21,7 @@ Portal.details.SubsetPanelAccordion = Ext.extend(Ext.Panel, {
             }
         }, cfg);
 
-        Portal.details.SubsetPanelAccordion.superclass.constructor.call(this, config);
+        Portal.details.DataCollectionDetailsAccordion.superclass.constructor.call(this, config);
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function(eventName, dataCollection) {
             this.add(this._newDataCollectionDetailsPanel(dataCollection));

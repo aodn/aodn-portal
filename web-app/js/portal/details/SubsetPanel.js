@@ -16,7 +16,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
             hideLabel: false
         });
 
-        this.subsetPanelAccordion = this._newSubsetPanelAccordion(cfg);
+        this.dataCollectionDetailsAccordion = this._newDataCollectionDetailsAccordion(cfg);
 
         this.emptyTextPanel =  new Portal.common.EmptyCollectionStatusPanel({
             hidden: true
@@ -38,7 +38,7 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
             items: [
                 new Ext.Spacer({height: 5}),
                 this.globalGeometryFilterPanel,
-                this.subsetPanelAccordion,
+                this.dataCollectionDetailsAccordion,
                 new Ext.Spacer({height: 20}),
                 this.emptyTextPanel
             ]
@@ -55,8 +55,8 @@ Portal.details.SubsetPanel = Ext.extend(Ext.Panel, {
         }, this);
     },
 
-    _newSubsetPanelAccordion: function(cfg) {
-        return new Portal.details.SubsetPanelAccordion({
+    _newDataCollectionDetailsAccordion: function(cfg) {
+        return new Portal.details.DataCollectionDetailsAccordion({
             map: cfg.map,
             dataCollectionStore: cfg.dataCollectionStore
         });

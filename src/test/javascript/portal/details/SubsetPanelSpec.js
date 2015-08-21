@@ -11,7 +11,7 @@ describe("Portal.details.SubsetPanel", function() {
     var dataCollectionStore;
 
     beforeEach(function() {
-        spyOn(Portal.details.SubsetPanel.prototype, '_newSubsetPanelAccordion').andReturn(new Ext.Panel());
+        spyOn(Portal.details.SubsetPanel.prototype, '_newDataCollectionDetailsAccordion').andReturn(new Ext.Panel());
 
         dataCollectionStore = {
             getCount: noOp
