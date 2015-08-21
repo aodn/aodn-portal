@@ -32,7 +32,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         dataCollection = {
             getUuid: returns(45678),
-            updateNcwmsParams: jasmine.createSpy('updateNcwmsParams'),
+            setFilters: jasmine.createSpy('setFilters'),
             getLayerState: returns(layerState)
         };
 
@@ -68,7 +68,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('updates the record when panel is created', function() {
             ncwmsPanel._initWithLayer();
-            expect(ncwmsPanel.dataCollection.updateNcwmsParams).toHaveBeenCalled();
+            expect(ncwmsPanel.dataCollection.setFilters).toHaveBeenCalled();
         });
 
         it('updates the date when the start date changes via edit', function() {
@@ -176,6 +176,85 @@ describe('Portal.details.NcWmsPanel', function() {
             expect(ncwmsPanel._initWithLayer).toHaveBeenCalled();
             expect(ncwmsPanel.resetConstraints).toHaveBeenCalled();
         });
+    });
+
+    describe('_ncwmsParamsAsFilters', function() {
+
+        var expectedNcwmsParamsFilter;
+        var expectedDateFilterConfig;
+        var testDateFilter = {};
+
+        beforeEach(function() {
+            expectedNcwmsParamsFilter = {
+                isNcwmsParams: true/*,
+                hasValue: function() { return false; }*/
+            };
+
+            expectedDateFilterConfig = {
+                name: 'time',
+                value: {},
+                visualised: true
+            };
+
+            spyOn(Portal.filter, 'DateFilter').andReturn(testDateFilter);
+        });
+
+        it('updated start date', function() {
+
+            var testStartDate = moment();
+
+            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(testStartDate, moment('invalid date'), null);
+
+            expectedNcwmsParamsFilter.dateRangeStart = testStartDate;
+            expectedDateFilterConfig.value.fromDate = testStartDate.toDate();
+
+            delete returnValue[1].hasValue; // Remove function so it isn't compared against
+            expect(Portal.filter.DateFilter).toHaveBeenCalledWith(expectedDateFilterConfig);
+            expect(returnValue).toEqual([
+                testDateFilter,
+                expectedNcwmsParamsFilter
+            ]);
+        });
+
+        it('updated end date', function() {
+
+            var testEndDate = moment();
+
+            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(moment('invalid date'), testEndDate, null);
+
+            expectedNcwmsParamsFilter.dateRangeEnd = testEndDate;
+            expectedDateFilterConfig.value.toDate = testEndDate.toDate();
+
+            delete returnValue[1].hasValue; // Remove function so it isn't compared against
+            expect(Portal.filter.DateFilter).toHaveBeenCalledWith(expectedDateFilterConfig);
+            expect(returnValue).toEqual([
+                testDateFilter,
+                expectedNcwmsParamsFilter
+            ]);
+        });
+
+        it('update geometry', function() {
+
+            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(null, null, {
+                getBounds: returns({
+                    bottom: 4,
+                    left: 3,
+                    top: 2,
+                    right: 1
+                })
+            });
+
+            expectedNcwmsParamsFilter.latitudeRangeStart = 4;
+            expectedNcwmsParamsFilter.longitudeRangeStart = 3;
+            expectedNcwmsParamsFilter.latitudeRangeEnd = 2;
+            expectedNcwmsParamsFilter.longitudeRangeEnd = 1;
+
+            expect(Portal.filter.DateFilter).toHaveBeenCalledWith(expectedDateFilterConfig);
+            expect(returnValue[0]).toEqual(
+                testDateFilter,
+                expectedNcwmsParamsFilter
+            );
+         });
     });
 
     function _applyCommonSpies() {

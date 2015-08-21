@@ -324,7 +324,46 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
 
-        this.dataCollection.updateNcwmsParams(dateRangeStart, dateRangeEnd, geometry);
+        this.dataCollection.setFilters(this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry));
+    },
+
+    _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry) {
+
+        var newFilterValue = {};
+        var ncwmsParamsAsFilter = {
+            isNcwmsParams: true,
+            hasValue: function() { return false; } // From the Portal.filter.Filter interface. Prevents filter from being used in CQL or displayed to user
+        };
+
+        if (dateRangeStart && dateRangeStart.isValid()) {
+            ncwmsParamsAsFilter.dateRangeStart = dateRangeStart;
+            newFilterValue.fromDate = dateRangeStart.toDate();
+        }
+
+        if (dateRangeEnd && dateRangeEnd.isValid()) {
+            ncwmsParamsAsFilter.dateRangeEnd = dateRangeEnd;
+            newFilterValue.toDate = dateRangeEnd.toDate();
+        }
+
+        if (geometry) {
+            var bounds = geometry.getBounds();
+
+            ncwmsParamsAsFilter.latitudeRangeStart = bounds.bottom;
+            ncwmsParamsAsFilter.longitudeRangeStart = bounds.left;
+            ncwmsParamsAsFilter.latitudeRangeEnd = bounds.top;
+            ncwmsParamsAsFilter.longitudeRangeEnd = bounds.right;
+        }
+
+        var realDateFilter = new Portal.filter.DateFilter({
+            name: 'time',
+            value: newFilterValue,
+            visualised: true
+        });
+
+        return [
+            realDateFilter,
+            ncwmsParamsAsFilter
+        ];
     },
 
     _attachTemporalEvents: function() {

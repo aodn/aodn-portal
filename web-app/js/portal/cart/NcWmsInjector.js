@@ -10,8 +10,11 @@ Ext.namespace('Portal.cart');
 Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _getDataFilterEntry: function(collection) {
+        var filters = collection.getFilters();
+        var params = filters.filter(function(filter) {
+            return filter.isNcwmsParams;
+        })[0];
 
-        var params = collection.getNcwmsParams();
         var areaString = "";
         var dateString = "";
 

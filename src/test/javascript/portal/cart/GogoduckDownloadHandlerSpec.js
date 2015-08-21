@@ -83,14 +83,21 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
             clickHandler = handler._getUrlGeneratorFunction();
 
             testCollection = {
-                getNcwmsParams: returns({
-                    dateRangeStart: moment.utc('2000-01-01T01:01:01'),
-                    dateRangeEnd: moment.utc('2014-12-23T23:59:59'),
-                    latitudeRangeStart: -42,
-                    latitudeRangeEnd: -20,
-                    longitudeRangeStart: 160,
-                    longitudeRangeEnd: 170
-                })
+                getFilters: returns([
+                    {
+                        isNcwmsParams: true,
+                        dateRangeStart: moment.utc('2000-01-01T01:01:01'),
+                        dateRangeEnd: moment.utc('2014-12-23T23:59:59'),
+                        latitudeRangeStart: -42,
+                        latitudeRangeEnd: -20,
+                        longitudeRangeStart: 160,
+                        longitudeRangeEnd: 170
+                    },
+                    {
+                        type: Portal.filter.DateFilter,
+                        comment: 'Should be safely ignored for URL building'
+                    }
+                ])
             };
             testHandlerParams = {
                 emailAddress: 'bob@example.com'
@@ -123,10 +130,11 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
         });
 
         it('builds the correct URL if no area is specified', function() {
-            testCollection.getNcwmsParams = returns({
+            testCollection.getFilters = returns([{
+                isNcwmsParams: true,
                 dateRangeStart: moment.utc('2000-01-01T01:01:01'),
                 dateRangeEnd: moment.utc('2014-12-23T23:59:59')
-            });
+            }]);
 
             url = clickHandler(testCollection, testHandlerParams);
             json = jsonFromUrl(url, expectedUrlStart);
@@ -140,12 +148,13 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
         });
 
         it('builds the correct URL is no dates are specified', function() {
-            testCollection.getNcwmsParams = returns({
+            testCollection.getFilters = returns([{
+                isNcwmsParams: true,
                 latitudeRangeStart: -42,
                 latitudeRangeEnd: -20,
                 longitudeRangeStart: 160,
                 longitudeRangeEnd: 170
-            });
+            }]);
 
             url = clickHandler(testCollection, testHandlerParams);
             json = jsonFromUrl(url, expectedUrlStart);
