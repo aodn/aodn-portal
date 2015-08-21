@@ -22,7 +22,7 @@ describe('Portal.cart.NoDataInjector', function() {
                     pointOfTruthLink: 'Link!'
                 }
             }),
-            getDataFileLinks: returns('Downloadable link!')
+            _getFilteredLinks: returns('Downloadable link!')
         }
     });
 

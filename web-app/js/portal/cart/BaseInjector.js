@@ -26,7 +26,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
     },
 
     _getMetadataLinks: function(dataCollection) {
-        return dataCollection.getDataFileLinks();
+        return dataCollection._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.dataFile);
     },
 
     _getPointOfTruthLink: function(dataCollection) {
