@@ -23,10 +23,6 @@ Portal.data.DataCollection = function() {
         return this.data.metadataRecord;
     };
 
-    constructor.prototype.getWmsLayerLinks = function() {
-        return this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.wms);
-    };
-
     constructor.prototype.getDataDownloadHandlers = function() {
 
         var protocolHandlerConstructors = { // Todo - DN: Should this mapping live in config?
@@ -102,8 +98,9 @@ Portal.data.DataCollection = function() {
 
     constructor.prototype.getDownloadLayerName = function() {
         var wfsLayerLinks = this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.wfs);
+        var wmsLayerLinks = this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.wms);
         var firstWfsLink = wfsLayerLinks[0];
-        var firstWmsLink = this.getWmsLayerLinks()[0];
+        var firstWmsLink = wmsLayerLinks[0];
         var link = firstWfsLink || firstWmsLink;
 
         var _workspaceFromName = function(layerName) {
