@@ -62,6 +62,6 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
     },
 
     _getLinkRecords: function() {
-        return this.dataCollection.getWebPageLinks();
+        return this.dataCollection._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.webPage);
     }
 });

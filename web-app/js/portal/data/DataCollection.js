@@ -35,10 +35,6 @@ Portal.data.DataCollection = function() {
         return this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.dataFile);
     };
 
-    constructor.prototype.getWebPageLinks = function() {
-        return this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.webPage);
-    };
-
     constructor.prototype.getDataDownloadHandlers = function() {
 
         var protocolHandlerConstructors = { // Todo - DN: Should this mapping live in config?
