@@ -10,12 +10,16 @@ Ext.namespace('Portal.details');
 Portal.details.SubsetItemsTabPanel = Ext.extend(Ext.TabPanel, {
 
     constructor: function (cfg) {
-        // Avoid having multiple elements with the same ID - a Bad Thing (tm).
-        cfg.id = undefined;
 
-        this.filterGroupPanel = this._newFilterGroupPanel(cfg);
-        this.infoPanel = new Portal.details.InfoPanel(cfg);
-        this.layerDetailsPanel = new Portal.details.LayerDetailsPanel(cfg);
+        var childPanelConfig =  {
+            map: cfg.map,
+            dataCollection: cfg.dataCollection,
+            dataCollectionStore: cfg.dataCollectionStore
+        };
+
+        this.filterGroupPanel = this._newFilterGroupPanel(childPanelConfig);
+        this.infoPanel = new Portal.details.InfoPanel(childPanelConfig);
+        this.layerDetailsPanel = new Portal.details.LayerDetailsPanel(childPanelConfig);
 
         var config = Ext.apply({
             activeTab: 0,
