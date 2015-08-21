@@ -1,34 +1,33 @@
 describe("Portal.details.LayerControlPanel", function() {
-    describe('layer select radio group', function() {
 
-        var dataCollection;
-        var layerControlPanel;
-        var layers;
-        var layerState;
-        var selectedLayer;
+    var dataCollection;
+    var layerControlPanel;
+    var layers;
+    var layerState;
+    var selectedLayer;
 
-        beforeEach(function() {
-            layers = [
-            ];
+    beforeEach(function() {
+        layers = [];
 
-            layerState = {
-                getLayers: returns(layers),
-                getSelectedLayer: function() {
-                    return selectedLayer;
-                },
-                setSelectedLayer: noOp
-            };
+        layerState = {
+            getLayers: returns(layers),
+            getSelectedLayer: function() {
+                return selectedLayer;
+            },
+            setSelectedLayer: noOp
+        };
 
-            dataCollection = {
-                getTitle: returns('Data Collection Title'),
-                getLayerState: returns(layerState)
-            };
+        dataCollection = {
+            getTitle: returns('Data Collection Title'),
+            getLayerState: returns(layerState)
+        };
 
-            layerControlPanel = new Portal.details.LayerControlPanel({
-                dataCollection: dataCollection
-            });
+        layerControlPanel = new Portal.details.LayerControlPanel({
+            dataCollection: dataCollection
         });
+    });
 
+    describe('layer select radio group', function() {
         it('exists only when more than one layer', function() {
 
             expect(layerControlPanel._newLayerSelectorComponent()).toBe(undefined);
@@ -86,5 +85,34 @@ describe("Portal.details.LayerControlPanel", function() {
                 { wmsName: 'last layer' }
             );
         };
+    });
+
+    describe('visibility checkbox', function() {
+        beforeEach(function() {
+            spyOn(window, 'trackLayerControlUsage');
+            layerControlPanel.layer = {
+                setVisibility: jasmine.createSpy('setVisibility')
+            }
+        });
+
+        it('sends google analytics tracking when checked', function() {
+            layerControlPanel._visibilityButtonChecked(null, true);
+
+            expect(window.trackLayerControlUsage).toHaveBeenCalledWith(
+                'layerControlTrackingActionVisibility',
+                'on',
+                'Data Collection Title'
+            );
+        });
+
+        it('sends google analytics tracking when unchecked', function() {
+            layerControlPanel._visibilityButtonChecked(null, false);
+
+            expect(window.trackLayerControlUsage).toHaveBeenCalledWith(
+                'layerControlTrackingActionVisibility',
+                'off',
+                'Data Collection Title'
+            );
+        });
     });
 });

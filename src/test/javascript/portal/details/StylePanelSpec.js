@@ -25,23 +25,51 @@ describe("Portal.details.StylePanel", function() {
 
     var stylePanel;
     var dataCollection;
+    var layerState;
 
     beforeEach(function() {
-        var layerState = {
+        layerState = {
             on: noOp,
-            getScaleRange: returns({})
+            getScaleRange: returns({}),
+            setStyle: jasmine.createSpy('setStyle')
         };
 
         dataCollection = {
-            getLayerState: returns(layerState)
+            getLayerState: returns(layerState),
+            getTitle: returns('Data Collection Title')
         };
 
         spyOn(Ext.MsgBus, 'subscribe');
+        spyOn(window, 'trackLayerControlUsage');
 
         spyOn(Portal.details, 'NcWmsScaleRangeControls');
         spyOn(Portal.details.StylePanel.prototype, '_initWithLayer');
         stylePanel = new Portal.details.StylePanel({
             dataCollection: dataCollection
+        });
+    });
+
+    describe('setChosenStyle', function() {
+        beforeEach(function() {
+            spyOn(stylePanel, 'refreshLegend');
+
+            var styleCombo = {};
+            var selectedStyleOption = {get: returns('pink swirls')};
+
+            stylePanel.setChosenStyle(styleCombo, selectedStyleOption);
+        });
+
+        it('sets style and refreshes legend', function() {
+            expect(stylePanel.refreshLegend).toHaveBeenCalled();
+            expect(layerState.setStyle).toHaveBeenCalledWith('pink swirls');
+        });
+
+        it('tracks action to google analytics', function() {
+            expect(window.trackLayerControlUsage).toHaveBeenCalledWith(
+                'layerControlTrackingActionStyle',
+                'pink swirls',
+                'Data Collection Title'
+            );
         });
     });
 

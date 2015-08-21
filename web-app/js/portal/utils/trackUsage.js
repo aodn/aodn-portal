@@ -50,3 +50,12 @@ function trackLayerControlUsage(actionKey, label, collection) {
         collection
     );
 }
+
+function trackDataCollectionSelectionUsage(actionKey, label, collection) {
+    trackUsage(
+        OpenLayers.i18n('dataCollectionSelectionTrackingCategory'),
+        OpenLayers.i18n(actionKey),
+        label,
+        collection
+    );
+}

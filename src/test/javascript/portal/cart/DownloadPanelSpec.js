@@ -15,6 +15,7 @@ describe("Portal.cart.DownloadPanel", function() {
         });
         spyOn(downloadPanel, 'generateContent');
         spyOn(downloadPanel, '_generateBodyContentForCollection');
+        spyOn(window, 'trackDataCollectionSelectionUsage');
     });
 
     afterEach(function() {
@@ -81,10 +82,17 @@ describe("Portal.cart.DownloadPanel", function() {
     });
 
     describe('clear all', function() {
-        it('calls to active geo network record store remove all', function() {
+        beforeEach(function() {
             window.setViewPortTab = jasmine.createSpy();
             downloadPanel._clearAllAndReset();
+        });
+
+        it('calls to data collection store remove all', function() {
             expect(downloadPanel.dataCollectionStore.removeAll).toHaveBeenCalled();
+        });
+
+        it('logs to Google Analytics', function() {
+            expect(window.trackDataCollectionSelectionUsage).toHaveBeenCalledWith('dataCollectionClearAndReset', '');
         });
     });
 

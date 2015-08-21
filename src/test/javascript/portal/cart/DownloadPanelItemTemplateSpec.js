@@ -9,10 +9,14 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
     var html;
     var tpl;
     var mockDataInjection;
+    var dataCollectionStore;
 
     beforeEach(function() {
+        dataCollectionStore = {};
 
-        tpl = new Portal.cart.DownloadPanelItemTemplate();
+        tpl = new Portal.cart.DownloadPanelItemTemplate({
+            dataCollectionStore: dataCollectionStore
+        });
 
         Portal.app.appConfig.grails = {serverURL: "munt"};
 
@@ -38,6 +42,8 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             ],
             menuItems: {}
         };
+
+        spyOn(window, 'trackDataCollectionSelectionUsage');
     });
 
     describe('_createRemoveButtonAfterPageLoad', function() {
@@ -187,7 +193,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         };
 
         var expectDownloadingLabel = function(status) {
-            mockDataInjection.downloadStatus = status
+            mockDataInjection.downloadStatus = status;
             tpl._downloadButton(mockDataInjection);
             expect(tpl._createDownloadButton.defer).not.toHaveBeenCalled();
             expect(tpl._createDownloadingLabel.defer).toHaveBeenCalled();
@@ -271,6 +277,31 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             var res = tpl._getPointOfTruthLinkEntry(values);
             expect(res).toContain('http://geonetwork');
             expect(res).toContain("trackUsage('Metadata','Download','Argo Profiles');return true;");
+        });
+    });
+
+    describe('_removeButtonOnClick', function() {
+        var testRecord;
+
+        beforeEach(function() {
+            testRecord = {
+                getTitle: returns('Argo Profiles')
+            };
+
+            spyOn(tpl, 'getIdFromButtonContainerId').andReturn('1234');
+            dataCollectionStore.getByUuid = jasmine.createSpy('getByUuid').andReturn(testRecord);
+            dataCollectionStore.remove = jasmine.createSpy('remove');
+
+            tpl._removeButtonOnClick();
+        });
+
+        it('removes record from store with uuid', function() {
+            expect(dataCollectionStore.getByUuid).toHaveBeenCalledWith('1234');
+            expect(dataCollectionStore.remove).toHaveBeenCalledWith(testRecord);
+        });
+
+        it('tracks action to Google Analytics', function() {
+            expect(window.trackDataCollectionSelectionUsage).toHaveBeenCalledWith('dataCollectionRemovalTrackingAction', 'Argo Profiles');
         });
     });
 });
