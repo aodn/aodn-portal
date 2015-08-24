@@ -25,16 +25,21 @@ describe("Portal.details.StylePanel", function() {
 
     var stylePanel;
     var dataCollection;
+    var layerAdapter;
     var layerState;
 
     beforeEach(function() {
-        layerState = {
-            on: noOp,
-            getScaleRange: returns({}),
+        layerAdapter = {
             setStyle: jasmine.createSpy('setStyle')
         };
 
+        layerState = {
+            on: noOp,
+            getScaleRange: returns({})
+        };
+
         dataCollection = {
+            getLayerAdapter: returns(layerAdapter),
             getLayerState: returns(layerState),
             getTitle: returns('Data Collection Title')
         };
@@ -61,7 +66,7 @@ describe("Portal.details.StylePanel", function() {
 
         it('sets style and refreshes legend', function() {
             expect(stylePanel.refreshLegend).toHaveBeenCalled();
-            expect(layerState.setStyle).toHaveBeenCalledWith('pink swirls');
+            expect(layerAdapter.setStyle).toHaveBeenCalledWith('pink swirls');
         });
 
         it('tracks action to google analytics', function() {

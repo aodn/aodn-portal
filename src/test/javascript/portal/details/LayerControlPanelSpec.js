@@ -3,12 +3,16 @@ describe("Portal.details.LayerControlPanel", function() {
     var dataCollection;
     var layerControlPanel;
     var layers;
+    var layerAdapter;
     var layerState;
     var selectedLayer;
 
     beforeEach(function() {
         layers = [];
 
+        layerAdapter = {
+            isLoading: returns(false)
+        };
         layerState = {
             getLayers: returns(layers),
             getSelectedLayer: function() {
@@ -19,6 +23,7 @@ describe("Portal.details.LayerControlPanel", function() {
 
         dataCollection = {
             getTitle: returns('Data Collection Title'),
+            getLayerAdapter: returns(layerAdapter),
             getLayerState: returns(layerState)
         };
 

@@ -134,7 +134,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
     setChosenStyle: function(styleCombo, record) {
         var styleName = record.get('styleName');
-        this.dataCollection.getLayerState().setStyle(styleName);
+        this.dataCollection.getLayerAdapter().setStyle(styleName);
         this.refreshLegend();
 
         trackLayerControlUsage('layerControlTrackingActionStyle', styleName, this.dataCollection.getTitle());
@@ -142,7 +142,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
     refreshLegend: function() {
 
-        var styleName = this.dataCollection.getLayerState().getStyle() || '';
+        var styleName = this.dataCollection.getLayerAdapter().getStyle() || '';
         var palette = this._getPalette(styleName);
 
         var layer = this.dataCollection.getLayerState().getSelectedLayer();

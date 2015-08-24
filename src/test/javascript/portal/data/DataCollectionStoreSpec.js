@@ -46,7 +46,6 @@ describe("Portal.data.DataCollectionStoreSpec", function() {
 
         dataCollectionStore.add(dataCollection);
         var layerState = dataCollection.getLayerState();
-        spyOn(layerState, '_copyAttributesFromSelectedLayer');
 
         layerState.setSelectedLayer(newLayer);
 

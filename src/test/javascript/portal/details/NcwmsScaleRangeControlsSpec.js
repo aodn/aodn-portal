@@ -8,17 +8,21 @@ describe('Portal.details.NcWmsScaleRangeControls', function() {
     describe('loadScaleFromLayer', function() {
 
         var controls;
+        var layerAdapter;
         var layerState;
         var dataCollection;
 
         beforeEach(function() {
 
-            layerState = {
-                on: noOp,
+            layerAdapter = {
                 getScaleRange: returns({})
+            };
+            layerState = {
+                on: noOp
             };
 
             dataCollection = {
+                getLayerAdapter: returns(layerAdapter),
                 getLayerState: returns(layerState)
             };
 
@@ -31,7 +35,7 @@ describe('Portal.details.NcWmsScaleRangeControls', function() {
 
         it('no param range', function() {
 
-            layerState.getScaleRange = returns({});
+            layerAdapter.getScaleRange = returns({});
 
             controls.loadScaleFromLayer();
             expect(controls.colourScaleMax.getValue()).toBeUndefined();
@@ -40,7 +44,7 @@ describe('Portal.details.NcWmsScaleRangeControls', function() {
 
         it('param range', function() {
 
-            layerState.getScaleRange = returns({
+            layerAdapter.getScaleRange = returns({
                 min: '2.3',
                 max: '6.7'
             });
@@ -54,7 +58,7 @@ describe('Portal.details.NcWmsScaleRangeControls', function() {
             controls.colourScaleMin.setValue('2');
             controls.colourScaleMax.setValue('5');
 
-            layerState.getScaleRange = returns({});
+            layerAdapter.getScaleRange = returns({});
 
             controls.loadScaleFromLayer();
             expect(controls.colourScaleMax.getValue()).toBeUndefined();

@@ -146,6 +146,16 @@ Portal.data.DataCollection = function() {
         return this.layerState;
     };
 
+    constructor.prototype.getLayerAdapter = function() {
+        if (!this.layerAdapter) {
+            this.layerAdapter = new Portal.data.DataCollectionLayerAdapter({
+                layerState: this.getLayerState()
+            });
+        }
+
+        return this.layerAdapter;
+    };
+
     constructor.prototype.isNcwms = function() {
         return this.getLayerState().isNcwms();
     };

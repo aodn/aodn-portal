@@ -12,7 +12,7 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
     initComponent: function() {
         this.items = [];
 
-        this.layer = this.dataCollection.getLayerState();
+        this.layer = this.dataCollection.getLayerAdapter();
 
         var layerSelector = this._newLayerSelectorComponent();
         if (layerSelector) {

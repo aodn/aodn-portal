@@ -13,7 +13,7 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
         Ext.apply(this, config);
         this._initLayers();
 
-        this._layerState = {};
+        // this._layerState = {};
 
         Portal.data.DataCollectionLayers.superclass.constructor.call(this, config);
     },
@@ -48,35 +48,33 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
         var oldLayer = this.selectedLayer;
         this.selectedLayer = newLayer;
 
-        this._copyAttributesFromSelectedLayer();
-
         this._registerLayerEventListeners();
         this.fireEvent('selectedlayerchanged', this.selectedLayer, oldLayer);
     },
 
-    isLoading: function() {
-        return this.getSelectedLayer().loading;
-    },
+    // isLoading: function() {
+    //     return this.getSelectedLayer().loading;
+    // },
 
-    _setLayerProperty: function(key, value) {
-        this._layerProperties()[key] = value;
-    },
+    // _setLayerProperty: function(key, value) {
+    //     this._layerProperties()[key] = value;
+    // },
 
-    _getLayerProperty: function(key) {
-        return this._layerProperties()[key];
-    },
+    // _getLayerProperty: function(key) {
+    //     return this._layerProperties()[key];
+    // },
 
-    _layerProperties: function() {
+    // _layerProperties: function() {
 
-        var layer = this.getSelectedLayer();
-        var key = layer.id;
+    //     var layer = this.getSelectedLayer();
+    //     var key = layer.id;
 
-        if (this._layerState[key] == undefined) {
-            this._layerState[key] = {};
-        }
+    //     if (this._layerState[key] == undefined) {
+    //         this._layerState[key] = {};
+    //     }
 
-        return this._layerState[key];
-    },
+    //     return this._layerState[key];
+    // },
 
     _registerLayerEventListeners: function() {
         this._updateLayerEventListeners('on');
@@ -144,71 +142,71 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
         return layerDescriptor.toOpenLayer();
     },
 
-    //
-    // TODO: Following functions to be replaced by `LayerGroup`?
-    //
-    _copyAttributesFromSelectedLayer: function() {
-        Ext.each([
-            'bboxMaxX',
-            'bboxMaxY',
-            'bboxMinX',
-            'bboxMinY',
-            'opacity',
-            'projection'
-        ], function(attr) {
-            this[attr] = this.getSelectedLayer()[attr];
-        }, this);
-    },
+    // //
+    // // TODO: Following functions to be replaced by `LayerGroup`?
+    // //
+    // _copyAttributesFromSelectedLayer: function() {
+    //     Ext.each([
+    //         'bboxMaxX',
+    //         'bboxMaxY',
+    //         'bboxMinX',
+    //         'bboxMinY',
+    //         'opacity',
+    //         'projection'
+    //     ], function(attr) {
+    //         this[attr] = this.getSelectedLayer()[attr];
+    //     }, this);
+    // },
 
-    _is130: function() {
-        return this.getSelectedLayer()._is130();
-    },
+    // _is130: function() {
+    //     return this.getSelectedLayer()._is130();
+    // },
 
-    setOpacity: function(opacity) {
-        this._eachLayer(function(layer) {
-            layer.setOpacity(opacity);
-        });
-    },
+    // setOpacity: function(opacity) {
+    //     this._eachLayer(function(layer) {
+    //         layer.setOpacity(opacity);
+    //     });
+    // },
 
-    setVisibility: function(visible) {
-        this._eachLayer(function(layer) {
-            layer.setVisibility(visible);
-        });
-    },
+    // setVisibility: function(visible) {
+    //     this._eachLayer(function(layer) {
+    //         layer.setVisibility(visible);
+    //     });
+    // },
 
-    hasBoundingBox: function() {
-        return this.getSelectedLayer().hasBoundingBox();
-    },
+    // hasBoundingBox: function() {
+    //     return this.getSelectedLayer().hasBoundingBox();
+    // },
 
-    setScaleRange: function(min, max) {
+    // setScaleRange: function(min, max) {
 
-        var layer = this.getSelectedLayer();
+    //     var layer = this.getSelectedLayer();
 
-        this._setLayerProperty('scaleRange', {
-            min: min,
-            max: max
-        });
+    //     this._setLayerProperty('scaleRange', {
+    //         min: min,
+    //         max: max
+    //     });
 
-        layer.mergeNewParams({
-            COLORSCALERANGE: min + "," + max
-        });
-    },
+    //     layer.mergeNewParams({
+    //         COLORSCALERANGE: min + "," + max
+    //     });
+    // },
 
-    getScaleRange: function() {
-        return this._getLayerProperty('scaleRange') || {};
-    },
+    // getScaleRange: function() {
+    //     return this._getLayerProperty('scaleRange') || {};
+    // },
 
-    setStyle: function(style) {
+    // setStyle: function(style) {
 
-        this._setLayerProperty('style', style);
+    //     this._setLayerProperty('style', style);
 
-        this.getSelectedLayer().mergeNewParams({
-            styles: style
-        });
-    },
+    //     this.getSelectedLayer().mergeNewParams({
+    //         styles: style
+    //     });
+    // },
 
-    getStyle: function() {
+    // getStyle: function() {
 
-        return this._getLayerProperty('style') || this.getSelectedLayer().defaultStyle;
-    }
+    //     return this._getLayerProperty('style') || this.getSelectedLayer().defaultStyle;
+    // }
 });

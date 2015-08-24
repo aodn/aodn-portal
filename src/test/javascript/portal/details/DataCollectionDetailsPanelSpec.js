@@ -7,6 +7,7 @@
 describe("Portal.details.DataCollectionDetailsPanel", function() {
     var panel;
     var layer;
+    var layerAdapter;
     var layerState;
 
     var dataCollection;
@@ -15,11 +16,14 @@ describe("Portal.details.DataCollectionDetailsPanel", function() {
         spyOn(Portal.details.DataCollectionDetailsPanel.prototype, '_initSubsetItemsTabPanel').andReturn(new Ext.Panel());
 
         layer = new OpenLayers.Layer.WMS();
+        layerAdapter = {
+            isLoading: returns(false)
+        };
         layerState = new Ext.util.Observable();
-        layerState.isLoading = returns(false);
 
         dataCollection = {
             getTitle: returns('amazetion'),
+            getLayerAdapter: returns(layerAdapter),
             getLayerState: returns(layerState)
         };
 
