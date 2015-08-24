@@ -95,10 +95,10 @@ describe("Portal.data.DataCollectionLayersSpec", function() {
             });
 
             it('selects default layer', function() {
-                spyOn(dataCollectionLayers, 'getDefaultLayer').andReturn(layer);
+                spyOn(dataCollectionLayers, '_getDefaultLayer').andReturn(layer);
 
                 expect(dataCollectionLayers.getSelectedLayer()).toBe(layer);
-                expect(dataCollectionLayers.getDefaultLayer).toHaveBeenCalled();
+                expect(dataCollectionLayers._getDefaultLayer).toHaveBeenCalled();
             });
 
             it('fires event when layer selected', function() {
@@ -155,7 +155,7 @@ describe("Portal.data.DataCollectionLayersSpec", function() {
         it('returns appropriate WMS type', function() {
             var isNcwms = true;
 
-            spyOn(dataCollectionLayers, 'getDefaultLayer').andReturn({
+            spyOn(dataCollectionLayers, '_getDefaultLayer').andReturn({
                 isNcwms: function() {
                     return isNcwms;
                 }

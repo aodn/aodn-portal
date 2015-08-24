@@ -19,24 +19,24 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
     },
 
     isNcwms: function() {
-        return this.getDefaultLayer().isNcwms();
+        return this._getDefaultLayer().isNcwms();
     },
 
     getLayers: function() {
         return this.layerCache;
     },
 
-    eachLayer: function(fn, scope) {
+    _eachLayer: function(fn, scope) {
         Ext.each(this.getLayers(), fn, scope);
     },
 
-    getDefaultLayer: function() {
+    _getDefaultLayer: function() {
         return this.layerCache[0];
     },
 
     getSelectedLayer: function() {
         if (!this.selectedLayer) {
-            this.setSelectedLayer(this.getDefaultLayer());
+            this.setSelectedLayer(this._getDefaultLayer());
         }
 
         return this.selectedLayer;
@@ -165,13 +165,13 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
     },
 
     setOpacity: function(opacity) {
-        this.eachLayer(function(layer) {
+        this._eachLayer(function(layer) {
             layer.setOpacity(opacity);
         });
     },
 
     setVisibility: function(visible) {
-        this.eachLayer(function(layer) {
+        this._eachLayer(function(layer) {
             layer.setVisibility(visible);
         });
     },
