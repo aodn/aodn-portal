@@ -12,17 +12,21 @@ describe('Portal.cart.NoDataInjector', function() {
     var dataCollection;
 
     beforeEach(function() {
+        Portal.app.appConfig.portal.metadataProtocols.metadataRecord = 'metadataRecord';
+        Portal.app.appConfig.portal.metadataProtocols.dataFile = 'dataFile';
 
         injector = new Portal.cart.NoDataInjector();
 
         dataCollection = {
             uuid: 9,
-            getMetadataRecord: returns({
-                data: {
-                    pointOfTruthLink: 'Link!'
+            _getFilteredLinks: function(protocols) {
+                if (protocols == 'dataFile') {
+                    return 'Downloadable link!';
                 }
-            }),
-            _getFilteredLinks: returns('Downloadable link!')
+                else if (protocols == 'metadataRecord') {
+                    return 'Metadata record link!'
+                }
+            }
         }
     });
 
@@ -46,7 +50,7 @@ describe('Portal.cart.NoDataInjector', function() {
     describe('getPointOfTruthLinks', function() {
 
         it('returns point of truth links as appropriate', function() {
-            expect(injector._getPointOfTruthLink(dataCollection)).toEqual('Link!');
+            expect(injector._getPointOfTruthLink(dataCollection)).toEqual('Metadata record link!');
         });
     });
 
