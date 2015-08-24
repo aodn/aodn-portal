@@ -21,8 +21,7 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
     constructor: function(config) {
         Ext.apply(this, config);
 
-        // TODO: rename - conflicts with `LayerState` class.
-        this._layerState = {};
+        this._layerProperties = {};
 
         this._copyAttributesFromSelectedLayer();
         this.layerState.on('selectedlayerchanged', function(newlayer) {
@@ -46,27 +45,27 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
     },
 
     _setLayerProperty: function(key, value) {
-        this._layerProperties()[key] = value;
+        this._getLayerProperties()[key] = value;
     },
 
     _getLayerProperty: function(key) {
-        return this._layerProperties()[key];
+        return this._getLayerProperties()[key];
     },
 
-    _layerProperties: function() {
+    _getLayerProperties: function() {
 
         var layer = this.getSelectedLayer();
         var key = layer.id;
 
-        if (!this._layerState) {
-            this._layerState = {};
+        if (!this._layerProperties) {
+            this._layerProperties = {};
         }
 
-        if (this._layerState[key] == undefined) {
-            this._layerState[key] = {};
+        if (this._layerProperties[key] == undefined) {
+            this._layerProperties[key] = {};
         }
 
-        return this._layerState[key];
+        return this._layerProperties[key];
     },
 
     _copyAttributesFromSelectedLayer: function() {
