@@ -19,7 +19,7 @@ describe('Portal.cart.NoDataInjector', function() {
 
         dataCollection = {
             uuid: 9,
-            _getFilteredLinks: function(protocols) {
+            getLinksByProtocol: function(protocols) {
                 if (protocols == 'dataFile') {
                     return 'Downloadable link!';
                 }

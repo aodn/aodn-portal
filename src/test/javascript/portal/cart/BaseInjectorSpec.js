@@ -19,7 +19,7 @@ describe('Portal.cart.BaseInjector', function() {
         dataCollection = {
             uuid: 9,
             getDataDownloadHandlers: returns([]),
-            _getFilteredLinks: function(protocols) {
+            getLinksByProtocol: function(protocols) {
                 if (protocols == 'dataFile') {
                     return 'Downloadable link!';
                 }

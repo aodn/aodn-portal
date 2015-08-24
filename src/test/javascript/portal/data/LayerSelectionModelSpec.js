@@ -55,7 +55,7 @@ describe("Portal.data.LayerSelectionModel", function() {
         }).records;
 
         dataCollection = {
-            _getFilteredLinks: returns(linkRecords),
+            getLinksByProtocol: returns(linkRecords),
             get: returns('name')
         };
 

@@ -85,7 +85,7 @@ Portal.data.DataCollection = function() {
         return this.getMetadataRecord().get('links');
     };
 
-    constructor.prototype._getFilteredLinks = function(protocols) {
+    constructor.prototype.getLinksByProtocol = function(protocols) {
 
         var linkStore = new Portal.search.data.LinkStore({
             data: { links: this._getRawLinks() }
@@ -97,8 +97,8 @@ Portal.data.DataCollection = function() {
     };
 
     constructor.prototype.getDownloadLayerName = function() {
-        var wfsLayerLinks = this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.wfs);
-        var wmsLayerLinks = this._getFilteredLinks(Portal.app.appConfig.portal.metadataProtocols.wms);
+        var wfsLayerLinks = this.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.wfs);
+        var wmsLayerLinks = this.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.wms);
         var firstWfsLink = wfsLayerLinks[0];
         var firstWmsLink = wmsLayerLinks[0];
         var link = firstWfsLink || firstWmsLink;

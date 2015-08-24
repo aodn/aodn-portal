@@ -35,6 +35,29 @@ describe("Portal.data.DataCollection", function() {
         });
 
         describe('getDownloadLayerName()', function() {
+            beforeEach(function() {
+                testWfsLayerLinks = [{
+                    data: {name: 'imos:wfs_layer1'}
+                }, {
+                    data: {name: 'imos:wfs_layer2'}
+                }];
+
+                testWmsLayerLinks = [{
+                    data: {name: 'aodn:wms_layer1'}
+                }, {
+                    data: {name: 'aodn:wms_layer2'}
+                }];
+
+                dataCollection.getLinksByProtocol = function(protocols) {
+                    if (protocols == 'wfs') {
+                        return testWfsLayerLinks;
+                    }
+                    else if (protocols == 'wms') {
+                        return testWmsLayerLinks;
+                    }
+                };
+            });
+
             it('uses WFS link if present', function() {
                 expect(dataCollection.getFiltersRequestParams().layer).toBe('imos:wfs_layer');
             });
