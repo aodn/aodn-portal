@@ -48,11 +48,9 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
             toolTemplate: new Ext.Template(''),
             items:[
                 this.facetMap,
-                new Ext.Spacer({
-                    height: 4
-                }),
                 new Ext.Container({
                     layout: 'hbox',
+                    cls: "geoSelectionPanelbuttons",
                     items: [
                         this.goButton = new Ext.Button({
                             text:OpenLayers.i18n("goButton")
