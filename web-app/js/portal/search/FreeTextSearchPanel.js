@@ -17,16 +17,11 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
             cfg.title = '<span class="filter-selection-panel-header">' + cfg.title + '</span>';
         }
 
-        var defaults = {
-            collapsible: true,
-            collapsed: false,
-            titleCollapse: true
-        };
-
         var config = Ext.apply({
-            layout: 'form',
             cls: 'search-filter-panel filter-selection-panel',
-            align: 'stretch',
+            collapsible: true,
+            collapsed: true,
+            titleCollapse: true,
             items: [{
                 xtype: 'container',
                 layout: 'hbox',
@@ -46,8 +41,9 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
                         text: OpenLayers.i18n("clearButton")
                     })
                 ]
-            }]
-        }, cfg, defaults);
+            }],
+            toolTemplate: new Ext.Template('')
+        }, cfg);
 
         Portal.search.FreeTextSearchPanel.superclass.constructor.call(this, config);
 
