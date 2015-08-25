@@ -114,33 +114,6 @@ describe("Portal.data.DataCollectionLayersSpec", function() {
                 expect(selectedLayerChangedListener).toHaveBeenCalledWith(newLayer, oldLayer);
             });
         });
-
-        Ext.each(['loadstart', 'loadend', 'tileerror'], function(eventName) {
-            it('forwards ' + eventName + ' event', function() {
-                var eventListener = jasmine.createSpy('eventListener');
-                dataCollectionLayers.on(eventName, eventListener);
-
-                var newLayer = new OpenLayers.Layer.Grid();
-                dataCollectionLayers.setSelectedLayer(newLayer);
-                newLayer.events.triggerEvent(eventName, newLayer);
-
-                expect(eventListener).toHaveBeenCalled();
-            });
-
-            it('does not forward deselected layer ' + eventName + ' event', function() {
-                var eventListener = jasmine.createSpy('eventListener');
-                dataCollectionLayers.on(eventName, eventListener);
-
-                var origLayer = new OpenLayers.Layer();
-                dataCollectionLayers.setSelectedLayer(origLayer);
-
-                dataCollectionLayers.setSelectedLayer(new OpenLayers.Layer());
-
-                origLayer.events.triggerEvent(eventName, origLayer);
-
-                expect(eventListener).not.toHaveBeenCalled();
-            });
-        });
     });
 
     describe('isNcwms', function() {

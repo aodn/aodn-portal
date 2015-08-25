@@ -6,23 +6,54 @@
  */
 
 describe("Portal.data.DataCollectionLayerAdapter", function() {
-    it('indicates loading', function() {
-        var layerState = {
-            getSelectedLayer: returns(new OpenLayers.Layer()),
-            on: noOp
-        };
-        var layerAdapter = new Portal.data.DataCollectionLayerAdapter({
+    var layerState;
+    var layerAdapter;
+
+    beforeEach(function() {
+        spyOn(Portal.data.DataCollectionLayers.prototype, '_initLayers');
+        layerState = new Portal.data.DataCollectionLayers();
+        layerState.selectedLayer = new OpenLayers.Layer();
+
+        layerAdapter = new Portal.data.DataCollectionLayerAdapter({
             layerState: layerState
         });
+    });
 
-        layerState.getSelectedLayer = returns({
-            loading: true
-        });
+    it('indicates loading', function() {
+        layerState.getSelectedLayer().loading = true;
         expect(layerAdapter.isLoading()).toBe(true);
 
-        layerState.getSelectedLayer = returns({
-            loading: false
-        });
+        layerState.getSelectedLayer().loading = false;
         expect(layerAdapter.isLoading()).toBe(false);
+    });
+
+    describe('events', function() {
+        Ext.each(['loadstart', 'loadend', 'tileerror'], function(eventName) {
+            it('forwards ' + eventName + ' event', function() {
+                var eventListener = jasmine.createSpy('eventListener');
+                layerAdapter.on(eventName, eventListener);
+
+                var newLayer = new OpenLayers.Layer.Grid();
+                layerState.setSelectedLayer(newLayer);
+
+                newLayer.events.triggerEvent(eventName, newLayer);
+
+                expect(eventListener).toHaveBeenCalled();
+            });
+
+            it('does not forward deselected layer ' + eventName + ' event', function() {
+                var eventListener = jasmine.createSpy('eventListener');
+                layerAdapter.on(eventName, eventListener);
+
+                var origLayer = new OpenLayers.Layer();
+                layerState.setSelectedLayer(origLayer);
+
+                layerState.setSelectedLayer(new OpenLayers.Layer());
+
+                origLayer.events.triggerEvent(eventName, origLayer);
+
+                expect(eventListener).not.toHaveBeenCalled();
+            });
+        });
     });
 });

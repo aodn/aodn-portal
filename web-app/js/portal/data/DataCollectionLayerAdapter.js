@@ -23,12 +23,36 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
 
         this._layerProperties = {};
 
-        this._copyAttributesFromSelectedLayer();
-        this.layerState.on('selectedlayerchanged', function() {
-            this._copyAttributesFromSelectedLayer();
-        }, this);
+        this._onSelectedLayerChanged(this.getSelectedLayer());
+        this.layerState.on('selectedlayerchanged', this._onSelectedLayerChanged, this);
 
         Portal.data.DataCollectionLayers.superclass.constructor.call(this, config);
+    },
+
+    _onSelectedLayerChanged: function(newLayer, oldLayer) {
+        this._copyAttributesFromSelectedLayer();
+
+        if (oldLayer) {
+            this._unregisterLayerEventListeners(oldLayer);
+        }
+
+        this._registerLayerEventListeners(newLayer);
+    },
+
+    _onLayerEvent: function(eventName) {
+        this.fireEvent(eventName, this.getSelectedLayer());
+    },
+
+    _onLayerLoadStart: function() {
+        this._onLayerEvent('loadstart');
+    },
+
+    _onLayerLoadEnd: function() {
+        this._onLayerEvent('loadend');
+    },
+
+    _onLayerTileError: function() {
+        this._onLayerEvent('tileerror');
     },
 
     getSelectedLayer: function() {
@@ -37,6 +61,25 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
 
     _eachLayer: function(fn, scope) {
         this.layerState._eachLayer(fn, scope);
+    },
+
+    _registerLayerEventListeners: function(layer) {
+        this._updateLayerEventListeners(layer, 'on');
+    },
+
+    _unregisterLayerEventListeners: function(layer) {
+        this._updateLayerEventListeners(layer, 'un');
+    },
+
+    _updateLayerEventListeners: function(layer, fn) {
+        if (layer) {
+            layer.events[fn]({
+                'loadstart': this._onLayerLoadStart,
+                'loadend': this._onLayerLoadEnd,
+                'tileerror': this._onLayerTileError,
+                scope: this
+            });
+        }
     },
 
     isLoading: function() {

@@ -13,17 +13,19 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
 
         var tabPanelForLayer = this._initSubsetItemsTabPanel(cfg);
 
-        this.createTools(cfg.dataCollection.getLayerAdapter());
+        var layerAdapter = cfg.dataCollection.getLayerAdapter();
 
-        cfg.dataCollection.getLayerState().on('loadstart', function() {
+        this.createTools(layerAdapter);
+
+        layerAdapter.on('loadstart', function() {
             this._onLayerLoadStart();
         }, this);
 
-        cfg.dataCollection.getLayerState().on('loadend', function() {
+        layerAdapter.on('loadend', function() {
             this._onLayerLoadEnd();
         }, this);
 
-        cfg.dataCollection.getLayerState().on('tileerror', function() {
+        layerAdapter.on('tileerror', function() {
             this._onLayerLoadError();
         }, this);
 

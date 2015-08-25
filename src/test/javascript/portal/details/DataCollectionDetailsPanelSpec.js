@@ -16,10 +16,10 @@ describe("Portal.details.DataCollectionDetailsPanel", function() {
         spyOn(Portal.details.DataCollectionDetailsPanel.prototype, '_initSubsetItemsTabPanel').andReturn(new Ext.Panel());
 
         layer = new OpenLayers.Layer.WMS();
-        layerAdapter = {
-            isLoading: returns(false)
-        };
-        layerState = new Ext.util.Observable();
+        layerAdapter = new Ext.util.Observable();
+        layerAdapter.isLoading = returns(false);
+
+        layerState = {};
 
         dataCollection = {
             getTitle: returns('amazetion'),
@@ -41,17 +41,17 @@ describe("Portal.details.DataCollectionDetailsPanel", function() {
         });
 
         it('responds to loadstart', function() {
-            layerState.fireEvent('loadstart');
+            layerAdapter.fireEvent('loadstart');
             expect(panel._onLayerLoadStart).toHaveBeenCalled();
         });
 
         it('responds to loadend', function() {
-            layerState.fireEvent('loadend');
+            layerAdapter.fireEvent('loadend');
             expect(panel._onLayerLoadEnd).toHaveBeenCalled();
         });
 
         it('responds to tileerror', function() {
-            layerState.fireEvent('tileerror');
+            layerAdapter.fireEvent('tileerror');
             expect(panel._onLayerLoadError).toHaveBeenCalled();
         });
     });

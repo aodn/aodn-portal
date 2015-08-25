@@ -41,48 +41,9 @@ Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
     },
 
     setSelectedLayer: function(newLayer) {
-        this._unregisterLayerEventListeners();
-
         var oldLayer = this.selectedLayer;
         this.selectedLayer = newLayer;
-
-        this._registerLayerEventListeners();
         this.fireEvent('selectedlayerchanged', this.selectedLayer, oldLayer);
-    },
-
-    _registerLayerEventListeners: function() {
-        this._updateLayerEventListeners('on');
-    },
-
-    _unregisterLayerEventListeners: function() {
-        this._updateLayerEventListeners('un');
-    },
-
-    _updateLayerEventListeners: function(fn) {
-        if (this.selectedLayer) {
-            this.selectedLayer.events[fn]({
-                'loadstart': this._onLayerLoadStart,
-                'loadend': this._onLayerLoadEnd,
-                'tileerror': this._onLayerTileError,
-                scope: this
-            });
-        }
-    },
-
-    _onLayerEvent: function(eventName) {
-        this.fireEvent(eventName, this.selectedLayer);
-    },
-
-    _onLayerLoadStart: function() {
-        this._onLayerEvent('loadstart');
-    },
-
-    _onLayerLoadEnd: function() {
-        this._onLayerEvent('loadend');
-    },
-
-    _onLayerTileError: function() {
-        this._onLayerEvent('tileerror');
     },
 
     _initLayers: function() {
