@@ -229,30 +229,4 @@ describe('OpenLayers', function() {
             expect(window.trackUsage).toHaveBeenCalledWith('Filters', 'Spatial Constraint', 'type=a style  that the current style is not set to', undefined);
         });
     });
-
-    describe("Layer.destroyWhenLoaded", function() {
-
-        var openLayer;
-        var destroySpy;
-
-        beforeEach(function() {
-            openLayer = new OpenLayers.Layer.WMS();
-            openLayer.server = {};
-            destroySpy = spyOn(openLayer, "destroy");
-        });
-
-        it("destroy deferred if loading", function() {
-            openLayer.loading = true;
-            openLayer.destroyWhenLoaded();
-            expect(openLayer.destroy).not.toHaveBeenCalled();
-            openLayer.events.triggerEvent("loadend");
-            expect(openLayer.destroy).toHaveBeenCalled();
-        });
-
-        it("destroyed immediately if not loading", function() {
-            openLayer.loaded = true;
-            openLayer.destroyWhenLoaded();
-            expect(openLayer.destroy).toHaveBeenCalled();
-        });
-    });
 });
