@@ -43,12 +43,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _getEnabledFacets: function() {
-        var enabledFacets = Portal.app.appConfig.enabledFacets;
-
-        enabledFacets.push({ classId: "Portal.search.DateSelectionPanel", name: "dateFilter" });
-        enabledFacets.push({ classId: "Portal.search.GeoSelectionPanel", name: "geoFilter" });
-
-        return enabledFacets;
+        return Portal.app.appConfig.enabledFacets;
     },
 
     _initFacetFilters: function(config) {

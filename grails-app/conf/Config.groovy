@@ -109,6 +109,14 @@ enabledFacets = [
         hierarchical: true
     ],
     [
+        classId: 'Portal.search.DateSelectionPanel',
+        name: 'dateFilter'
+    ],
+    [
+        classId: 'Portal.search.GeoSelectionPanel',
+        name: 'geoFilter'
+    ],
+    [
         classId: 'Portal.search.FreeTextSearchPanel',
         name: 'freetextFilter',
         key: 'freetextFilter'
