@@ -36,7 +36,7 @@ Ext.ux.NonCollapsingAccordionLayout = Ext.extend(Ext.layout.Accordion, {
             // fixes #1823
             setTimeout(function() {
                 panelToCollapse.collapse();
-            }, 400);
+            }, 800);
         }
         else {
             panelToCollapse.collapse();
