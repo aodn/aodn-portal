@@ -80,6 +80,17 @@ describe("Portal.details.LayerControlPanel", function() {
             expect(dataCollection.getLayerSelectionModel().setSelectedLayer).toHaveBeenCalledWith(layers[0]);
         });
 
+        it('sends google analytics tracking information when opacity changed', function() {
+            spyOn(window, 'trackLayerControlUsage');
+
+            layerControlPanel.opacitySlider.fireEvent('changecomplete', layerControlPanel.opacitySlider, '50');
+            expect(window.trackLayerControlUsage).toHaveBeenCalledWith(
+                OpenLayers.i18n('changeLayerTrackingActionOpacity'),
+                '50',
+                'Data Collection Title'
+            );
+        });
+
         var addLayers = function() {
             selectedLayer = {
                 wmsName: 'selected layer'

@@ -30,12 +30,19 @@ describe("Portal.details.StylePanel", function() {
 
     beforeEach(function() {
         layerAdapter = {
-            setStyle: jasmine.createSpy('setStyle')
+            setStyle: jasmine.createSpy('setStyle'),
+            getStyle: returns('aStyle')
+        };
+
+        var simpleLayer = {
+            params: {},
+            url: ""
         };
 
         layerSelectionModel = {
-            on: noOp,
-            getScaleRange: returns({})
+            on: returns(),
+            getScaleRange: returns({}),
+            getSelectedLayer: returns(simpleLayer)
         };
 
         dataCollection = {

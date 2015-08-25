@@ -259,6 +259,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         else {
             this._onDateSelected(datePicker, selectedDateTimeMoment);
         }
+
+        trackFiltersUsage(OpenLayers.i18n('trackingDateAction'), selectedDateTimeMoment.utc().toISOString(), this.dataCollection.getTitle());
     },
 
     _onTimeSelected: function(datePicker, selectedDateTimeMoment) {
@@ -301,6 +303,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     _goToPreviousTimeSlice: function() {
         this.layer.goToPreviousTimeSlice();
         this._updateTimeRangeLabel();
+
+        trackLayerControlUsage(OpenLayers.i18n('trackingDateAction'), OpenLayers.i18n("trackingTimeSliceAction", {direction: "previous"}), this.dataCollection.getTitle());
     },
 
     _loadNextTimeSlice: function() {
@@ -312,6 +316,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     _goToNextTimeSlice: function() {
         this.layer.goToNextTimeSlice();
         this._updateTimeRangeLabel();
+
+        trackLayerControlUsage(OpenLayers.i18n('trackingDateAction'), OpenLayers.i18n("trackingTimeSliceAction", {direction: "next"}), this.dataCollection.getTitle());
     },
 
     _applyFilterValuesFromMap: function() {

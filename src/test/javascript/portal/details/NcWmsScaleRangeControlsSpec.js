@@ -15,7 +15,8 @@ describe('Portal.details.NcWmsScaleRangeControls', function() {
         beforeEach(function() {
 
             layerAdapter = {
-                getScaleRange: returns({})
+                getScaleRange: returns({}),
+                setScaleRange: returns()
             };
             layerSelectionModel = {
                 on: noOp
@@ -23,11 +24,13 @@ describe('Portal.details.NcWmsScaleRangeControls', function() {
 
             dataCollection = {
                 getLayerAdapter: returns(layerAdapter),
-                getLayerSelectionModel: returns(layerSelectionModel)
+                getLayerSelectionModel: returns(layerSelectionModel),
+                getTitle: returns("aTitle")
             };
 
             controls = new Portal.details.NcWmsScaleRangeControls({
-                dataCollection: dataCollection
+                dataCollection: dataCollection,
+                _canSubmit: returns(true)
             });
 
             spyOn(controls, 'show');
@@ -68,6 +71,12 @@ describe('Portal.details.NcWmsScaleRangeControls', function() {
         it('show called', function() {
             controls.loadScaleFromLayer();
             expect(controls.show).toHaveBeenCalled();
+        });
+
+        it('scaleRange', function() {
+            spyOn(window, 'trackLayerControlUsage');
+            controls.applyNewScale();
+            expect(window.trackLayerControlUsage).toHaveBeenCalled();
         });
     });
 });
