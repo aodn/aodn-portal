@@ -156,7 +156,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     organisationFilter: 'Organisation',
     platformFilter: 'Platform',
     parameterFilter: 'Parameter',
-    freetextFilter: 'Text Search',
+    freetextFilter: 'Keyword',
     dateFilter: 'Date (UTC)',
     geoFilter: "Geographic Boundary",
     facetedSearchNewSearchButton: 'New Search',
