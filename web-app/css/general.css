@@ -934,6 +934,12 @@ div.allwhite {
     float: left;
 }
 
+.geoSelectionPanelButtons {
+    position: relative;
+    top: -35px;
+    right: -210px
+}
+
 .resultsTextBody {
     margin: 5px;
     width: 540px;
