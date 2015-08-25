@@ -23,10 +23,14 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
 
         this._layerProperties = {};
 
-        this._onSelectedLayerChanged(this.getSelectedLayer());
+        this._onSelectedLayerChanged(this._getSelectedLayer());
         this.layerState.on('selectedlayerchanged', this._onSelectedLayerChanged, this);
 
         Portal.data.DataCollectionLayers.superclass.constructor.call(this, config);
+    },
+
+    _getSelectedLayer: function() {
+        return this.layerState.getSelectedLayer();
     },
 
     _onSelectedLayerChanged: function(newLayer, oldLayer) {
@@ -40,7 +44,7 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
     },
 
     _onLayerEvent: function(eventName) {
-        this.fireEvent(eventName, this.getSelectedLayer());
+        this.fireEvent(eventName, this._getSelectedLayer());
     },
 
     _onLayerLoadStart: function() {
@@ -53,10 +57,6 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
 
     _onLayerTileError: function() {
         this._onLayerEvent('tileerror');
-    },
-
-    getSelectedLayer: function() {
-        return this.layerState.getSelectedLayer();
     },
 
     _eachLayer: function(fn, scope) {
@@ -83,7 +83,7 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
     },
 
     isLoading: function() {
-        return this.getSelectedLayer().loading;
+        return this._getSelectedLayer().loading;
     },
 
     _setLayerProperty: function(key, value) {
@@ -96,7 +96,7 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
 
     _getLayerProperties: function() {
 
-        var layer = this.getSelectedLayer();
+        var layer = this._getSelectedLayer();
         var key = layer.id;
 
         if (!this._layerProperties) {
@@ -119,12 +119,12 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
             'opacity',
             'projection'
         ], function(attr) {
-            this[attr] = this.getSelectedLayer()[attr];
+            this[attr] = this._getSelectedLayer()[attr];
         }, this);
     },
 
     _is130: function() {
-        return this.getSelectedLayer()._is130();
+        return this._getSelectedLayer()._is130();
     },
 
     setOpacity: function(opacity) {
@@ -140,12 +140,12 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
     },
 
     hasBoundingBox: function() {
-        return this.getSelectedLayer().hasBoundingBox();
+        return this._getSelectedLayer().hasBoundingBox();
     },
 
     setScaleRange: function(min, max) {
 
-        var layer = this.getSelectedLayer();
+        var layer = this._getSelectedLayer();
 
         this._setLayerProperty('scaleRange', {
             min: min,
@@ -164,12 +164,12 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
     setStyle: function(style) {
         this._setLayerProperty('style', style);
 
-        this.getSelectedLayer().mergeNewParams({
+        this._getSelectedLayer().mergeNewParams({
             styles: style
         });
     },
 
     getStyle: function() {
-        return this._getLayerProperty('style') || this.getSelectedLayer().defaultStyle;
+        return this._getLayerProperty('style') || this._getSelectedLayer().defaultStyle;
     }
 });
