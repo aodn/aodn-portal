@@ -24,8 +24,7 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
         this._layerProperties = {};
 
         this._copyAttributesFromSelectedLayer();
-        this.layerState.on('selectedlayerchanged', function(newlayer) {
-            console.log('copyAttrs');
+        this.layerState.on('selectedlayerchanged', function() {
             this._copyAttributesFromSelectedLayer();
         }, this);
 
