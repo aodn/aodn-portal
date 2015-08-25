@@ -33,7 +33,7 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
             },
             dataCollection: {
                 getTitle: returns('Collection title'),
-                getLayerState: returns({
+                getLayerSelectionModel: returns({
                     getSelectedLayer: returns({
                         name: 'test layer'
                     })

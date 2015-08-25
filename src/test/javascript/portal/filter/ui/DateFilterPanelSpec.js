@@ -25,7 +25,7 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
             },
             dataCollection: {
                 getTitle: returns('Collection title'),
-                getLayerState: returns({
+                getLayerSelectionModel: returns({
                     getSelectedLayer: returns({
                         name: 'layerName',
                         getDownloadCql: returns("")

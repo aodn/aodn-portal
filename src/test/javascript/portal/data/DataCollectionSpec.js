@@ -17,7 +17,7 @@ describe("Portal.data.DataCollection", function() {
 
     describe('getFiltersRequestParams()', function() {
         beforeEach(function() {
-            dataCollection.getLayerState = returns({
+            dataCollection.getLayerSelectionModel = returns({
                 getSelectedLayer: returns({
                     server: {uri: 'server url'}
                 })
@@ -57,15 +57,15 @@ describe("Portal.data.DataCollection", function() {
 
     describe('layerstate', function() {
         it('lazily initialises layer state', function() {
-            var layerState = dataCollection.getLayerState();
-            expect(layerState).toBeInstanceOf(Portal.data.DataCollectionLayers);
+            var layerSelectionModel = dataCollection.getLayerSelectionModel();
+            expect(layerSelectionModel).toBeInstanceOf(Portal.data.LayerSelectionModel);
 
             // Make sure we're reusing the same object.
-            expect(dataCollection.getLayerState()).toBe(layerState);
+            expect(dataCollection.getLayerSelectionModel()).toBe(layerSelectionModel);
         });
 
         it('returns correct WMS type', function() {
-            spyOn(dataCollection.getLayerState(), 'isNcwms').andReturn(true);
+            spyOn(dataCollection.getLayerSelectionModel(), 'isNcwms').andReturn(true);
             expect(dataCollection.isNcwms()).toBe(true);
         });
     });

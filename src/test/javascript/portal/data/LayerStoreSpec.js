@@ -228,7 +228,7 @@ describe("Portal.data.LayerStore", function() {
 
         beforeEach(function() {
             dataCollection = {
-                getLayerState: returns({
+                getLayerSelectionModel: returns({
                     getSelectedLayer: noOp
                 })
             };
@@ -240,7 +240,7 @@ describe("Portal.data.LayerStore", function() {
             it('handles selected layer on ' + eventName, function() {
                 var selectedLayer = {};
 
-                dataCollection.getLayerState().getSelectedLayer = returns(selectedLayer);
+                dataCollection.getLayerSelectionModel().getSelectedLayer = returns(selectedLayer);
                 Ext.MsgBus.publish(eventName, dataCollection);
 
                 expect(layerStore._selectedLayerChanged).toHaveBeenCalledWith(eventName, selectedLayer);

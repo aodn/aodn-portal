@@ -26,7 +26,7 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
             },
             dataCollection: {
                 getTitle: returns('Collection title'),
-                getLayerState: returns({
+                getLayerSelectionModel: returns({
                     getSelectedLayer: returns({
                         name: 'test layer',
                         getDownloadCql: returns("")

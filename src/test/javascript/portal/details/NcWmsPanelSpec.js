@@ -12,7 +12,7 @@ describe('Portal.details.NcWmsPanel', function() {
     var dataCollection;
 
     var layer;
-    var layerState;
+    var layerSelectionModel;
 
     beforeEach(function() {
         map = new OpenLayers.SpatialConstraintMap();
@@ -27,13 +27,13 @@ describe('Portal.details.NcWmsPanel', function() {
         layer.processTemporalExtent = noOp;
         layer.map = map;
 
-        layerState = new Ext.util.Observable();
-        layerState.getSelectedLayer = returns(layer);
+        layerSelectionModel = new Ext.util.Observable();
+        layerSelectionModel.getSelectedLayer = returns(layer);
 
         dataCollection = {
             getUuid: returns(45678),
             setFilters: jasmine.createSpy('setFilters'),
-            getLayerState: returns(layerState)
+            getLayerSelectionModel: returns(layerSelectionModel)
         };
 
         ncwmsPanel = new Portal.details.NcWmsPanel({
@@ -162,7 +162,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('responds to selectedlayerchanged event', function() {
             spyOn(ncwmsPanel, '_onSelectedLayerChanged');
-            ncwmsPanel.dataCollection.getLayerState().fireEvent('selectedlayerchanged', newLayer);
+            ncwmsPanel.dataCollection.getLayerSelectionModel().fireEvent('selectedlayerchanged', newLayer);
 
             expect(ncwmsPanel._onSelectedLayerChanged).toHaveBeenCalledWith(newLayer);
         });

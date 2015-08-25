@@ -53,16 +53,16 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
         var _this = this;
 
         Ext.each(dataCollections, function(dataCollection) {
-            var layerState = dataCollection.getLayerState();
+            var layerSelectionModel = dataCollection.getLayerSelectionModel();
 
             this.layerStore.addUsingOpenLayer(
-                layerState.getSelectedLayer(),
+                layerSelectionModel.getSelectedLayer(),
                 function(layerRecord) {
                     _this._recordLoaded(dataCollection);
                 }
             );
 
-            layerState.on('selectedlayerchanged', function(newLayer, oldLayer) {
+            layerSelectionModel.on('selectedlayerchanged', function(newLayer, oldLayer) {
                 if (oldLayer) {
                     this.layerStore.removeUsingOpenLayer(oldLayer);
                 }
@@ -91,6 +91,6 @@ Portal.data.DataCollectionStore = Ext.extend(Ext.data.Store, {
     },
 
     _removeFromLayerStore: function(dataCollection) {
-        this.layerStore.removeUsingOpenLayer(dataCollection.getLayerState().getSelectedLayer());
+        this.layerStore.removeUsingOpenLayer(dataCollection.getLayerSelectionModel().getSelectedLayer());
     }
 });

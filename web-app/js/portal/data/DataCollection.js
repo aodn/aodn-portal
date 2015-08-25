@@ -68,7 +68,7 @@ Portal.data.DataCollection = function() {
     };
 
     constructor.prototype.getFiltersRequestParams = function() {
-        var layer = this.getLayerState().getSelectedLayer();
+        var layer = this.getLayerSelectionModel().getSelectedLayer();
         var layerName = this.getDownloadLayerName();
 
         return {
@@ -85,7 +85,7 @@ Portal.data.DataCollection = function() {
     constructor.prototype.updateFilters = function() {
 
         // Update layer with new values
-        var layer = this.getLayerState().getSelectedLayer();
+        var layer = this.getLayerSelectionModel().getSelectedLayer();
 
         if (layer.updateCqlFilter) {
             layer.updateCqlFilter(this.getFilters());
@@ -136,18 +136,28 @@ Portal.data.DataCollection = function() {
         }
     };
 
-    constructor.prototype.getLayerState = function() {
-        if (!this.layerState) {
-            this.layerState = new Portal.data.DataCollectionLayers({
+    constructor.prototype.getLayerSelectionModel = function() {
+        if (!this.layerSelectionModel) {
+            this.layerSelectionModel = new Portal.data.LayerSelectionModel({
                 dataCollection: this
             });
         }
 
-        return this.layerState;
+        return this.layerSelectionModel;
+    };
+
+    constructor.prototype.getLayerAdapter = function() {
+        if (!this.layerAdapter) {
+            this.layerAdapter = new Portal.data.DataCollectionLayerAdapter({
+                layerSelectionModel: this.getLayerSelectionModel()
+            });
+        }
+
+        return this.layerAdapter;
     };
 
     constructor.prototype.isNcwms = function() {
-        return this.getLayerState().isNcwms();
+        return this.getLayerSelectionModel().isNcwms();
     };
 
     return constructor;

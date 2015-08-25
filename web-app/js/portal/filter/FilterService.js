@@ -72,7 +72,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
     loadFilterRange: function(filterId, dataCollection, successCallback, failureCallback, callbackScope) {
 
-        var layer = dataCollection.getLayerState().getSelectedLayer();
+        var layer = dataCollection.getLayerSelectionModel().getSelectedLayer();
 
         var params = {
             filter: filterId,

@@ -43,7 +43,7 @@ Portal.details.NcWmsScaleRangeControls = Ext.extend(Ext.Panel, {
         this.addEvents('colourScaleUpdated');
         Portal.details.NcWmsScaleRangeControls.superclass.initComponent.call(this);
 
-        this.dataCollection.getLayerState().on('selectedlayerchanged', this.loadScaleFromLayer, this);
+        this.dataCollection.getLayerSelectionModel().on('selectedlayerchanged', this.loadScaleFromLayer, this);
     },
 
     makeSmallIndentInputBox: function(fieldLabel) {
@@ -62,8 +62,8 @@ Portal.details.NcWmsScaleRangeControls = Ext.extend(Ext.Panel, {
 
     loadScaleFromLayer: function() {
 
-        var layerState = this.dataCollection.getLayerState();
-        var range = layerState.getScaleRange();
+        var layer = this.dataCollection.getLayerAdapter();
+        var range = layer.getScaleRange();
 
         this.colourScaleMin.setValue(range.min);
         this.colourScaleMax.setValue(range.max);
@@ -85,10 +85,10 @@ Portal.details.NcWmsScaleRangeControls = Ext.extend(Ext.Panel, {
 
         if (this._canSubmit()) {
 
-            var layerState = this.dataCollection.getLayerState();
+            var layer = this.dataCollection.getLayerAdapter();
             var min = this.colourScaleMin.getValue();
             var max = this.colourScaleMax.getValue();
-            layerState.setScaleRange(min, max);
+            layer.setScaleRange(min, max);
 
             this.fireEvent('colourScaleUpdated');
         }

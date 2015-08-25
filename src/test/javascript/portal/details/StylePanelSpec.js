@@ -25,17 +25,22 @@ describe("Portal.details.StylePanel", function() {
 
     var stylePanel;
     var dataCollection;
-    var layerState;
+    var layerAdapter;
+    var layerSelectionModel;
 
     beforeEach(function() {
-        layerState = {
-            on: noOp,
-            getScaleRange: returns({}),
+        layerAdapter = {
             setStyle: jasmine.createSpy('setStyle')
         };
 
+        layerSelectionModel = {
+            on: noOp,
+            getScaleRange: returns({})
+        };
+
         dataCollection = {
-            getLayerState: returns(layerState),
+            getLayerAdapter: returns(layerAdapter),
+            getLayerSelectionModel: returns(layerSelectionModel),
             getTitle: returns('Data Collection Title')
         };
 
@@ -61,7 +66,7 @@ describe("Portal.details.StylePanel", function() {
 
         it('sets style and refreshes legend', function() {
             expect(stylePanel.refreshLegend).toHaveBeenCalled();
-            expect(layerState.setStyle).toHaveBeenCalledWith('pink swirls');
+            expect(layerAdapter.setStyle).toHaveBeenCalledWith('pink swirls');
         });
 
         it('tracks action to google analytics', function() {
@@ -141,7 +146,7 @@ describe("Portal.details.StylePanel", function() {
 
         it("Returns empty array if layer.styles is undefined", function() {
 
-            dataCollection.getLayerState = returns({
+            dataCollection.getLayerSelectionModel = returns({
                 getSelectedLayer: returns({styles: undefined})
             });
 
@@ -156,7 +161,7 @@ describe("Portal.details.StylePanel", function() {
                 return String.format('{0} {1} {2} {3}', a, b, c, d);
             };
 
-            dataCollection.getLayerState = returns({
+            dataCollection.getLayerSelectionModel = returns({
                 getSelectedLayer: returns({
                     isNcwms: returns(true),
                     styles: [

@@ -3,13 +3,17 @@ describe("Portal.details.LayerControlPanel", function() {
     var dataCollection;
     var layerControlPanel;
     var layers;
-    var layerState;
+    var layerAdapter;
+    var layerSelectionModel;
     var selectedLayer;
 
     beforeEach(function() {
         layers = [];
 
-        layerState = {
+        layerAdapter = {
+            isLoading: returns(false)
+        };
+        layerSelectionModel = {
             getLayers: returns(layers),
             getSelectedLayer: function() {
                 return selectedLayer;
@@ -19,7 +23,8 @@ describe("Portal.details.LayerControlPanel", function() {
 
         dataCollection = {
             getTitle: returns('Data Collection Title'),
-            getLayerState: returns(layerState)
+            getLayerAdapter: returns(layerAdapter),
+            getLayerSelectionModel: returns(layerSelectionModel)
         };
 
         layerControlPanel = new Portal.details.LayerControlPanel({
@@ -51,7 +56,7 @@ describe("Portal.details.LayerControlPanel", function() {
         });
 
         it('sets selected layer when selected', function() {
-            spyOn(dataCollection.getLayerState(), 'setSelectedLayer');
+            spyOn(dataCollection.getLayerSelectionModel(), 'setSelectedLayer');
             spyOn(window, 'trackLayerControlUsage');
             addLayers();
 
@@ -66,13 +71,13 @@ describe("Portal.details.LayerControlPanel", function() {
         });
 
         it('sends google analytics tracking information when selected', function() {
-            spyOn(dataCollection.getLayerState(), 'setSelectedLayer');
+            spyOn(dataCollection.getLayerSelectionModel(), 'setSelectedLayer');
             addLayers();
 
             var layerSelectComponent = layerControlPanel._newLayerSelectorComponent();
 
             layerSelectComponent.fireEvent('change', layerSelectComponent, layerSelectComponent.items[0]);
-            expect(dataCollection.getLayerState().setSelectedLayer).toHaveBeenCalledWith(layers[0]);
+            expect(dataCollection.getLayerSelectionModel().setSelectedLayer).toHaveBeenCalledWith(layers[0]);
         });
 
         var addLayers = function() {

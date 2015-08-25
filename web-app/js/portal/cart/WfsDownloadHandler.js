@@ -41,7 +41,7 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 collection.getFilters(),
                 _this._resourceHref(),
                 _this._resourceName(),
-                collection.getLayerState().getSelectedLayer().getCsvDownloadFormat()
+                collection.getLayerSelectionModel().getSelectedLayer().getCsvDownloadFormat()
             );
         };
     }

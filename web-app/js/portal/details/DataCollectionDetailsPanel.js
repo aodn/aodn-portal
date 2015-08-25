@@ -13,17 +13,19 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
 
         var tabPanelForLayer = this._initSubsetItemsTabPanel(cfg);
 
-        this.createTools(cfg.dataCollection.getLayerState());
+        var layerAdapter = cfg.dataCollection.getLayerAdapter();
 
-        cfg.dataCollection.getLayerState().on('loadstart', function() {
+        this.createTools(layerAdapter);
+
+        layerAdapter.on('loadstart', function() {
             this._onLayerLoadStart();
         }, this);
 
-        cfg.dataCollection.getLayerState().on('loadend', function() {
+        layerAdapter.on('loadend', function() {
             this._onLayerLoadEnd();
         }, this);
 
-        cfg.dataCollection.getLayerState().on('tileerror', function() {
+        layerAdapter.on('tileerror', function() {
             this._onLayerLoadError();
         }, this);
 
@@ -90,7 +92,7 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    createTools: function(layerState) {
+    createTools: function(layer) {
 
         this.errorToolItem = {
             id: 'errorToolItem',
@@ -101,7 +103,7 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
         this.spinnerToolItem = {
             id: 'spinnerToolItem',
             styles: 'fa-spin fa-spinner',
-            hidden: !layerState.isLoading(),
+            hidden: !layer.isLoading(),
             title: OpenLayers.i18n('loadingMessage')
         };
         this.deleteToolItem = {

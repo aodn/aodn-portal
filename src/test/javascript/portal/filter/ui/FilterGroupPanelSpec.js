@@ -19,7 +19,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
         filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
             dataCollection: {
-                getLayerState: returns({
+                getLayerSelectionModel: returns({
                     getSelectedLayer: returns(layer)
                 }),
                 getFiltersRequestParams: noOp

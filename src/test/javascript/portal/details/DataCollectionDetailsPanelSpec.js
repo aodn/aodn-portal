@@ -7,7 +7,8 @@
 describe("Portal.details.DataCollectionDetailsPanel", function() {
     var panel;
     var layer;
-    var layerState;
+    var layerAdapter;
+    var layerSelectionModel;
 
     var dataCollection;
 
@@ -15,12 +16,15 @@ describe("Portal.details.DataCollectionDetailsPanel", function() {
         spyOn(Portal.details.DataCollectionDetailsPanel.prototype, '_initSubsetItemsTabPanel').andReturn(new Ext.Panel());
 
         layer = new OpenLayers.Layer.WMS();
-        layerState = new Ext.util.Observable();
-        layerState.isLoading = returns(false);
+        layerAdapter = new Ext.util.Observable();
+        layerAdapter.isLoading = returns(false);
+
+        layerSelectionModel = {};
 
         dataCollection = {
             getTitle: returns('amazetion'),
-            getLayerState: returns(layerState)
+            getLayerAdapter: returns(layerAdapter),
+            getLayerSelectionModel: returns(layerSelectionModel)
         };
 
         panel = new Portal.details.DataCollectionDetailsPanel({
@@ -37,17 +41,17 @@ describe("Portal.details.DataCollectionDetailsPanel", function() {
         });
 
         it('responds to loadstart', function() {
-            layerState.fireEvent('loadstart');
+            layerAdapter.fireEvent('loadstart');
             expect(panel._onLayerLoadStart).toHaveBeenCalled();
         });
 
         it('responds to loadend', function() {
-            layerState.fireEvent('loadend');
+            layerAdapter.fireEvent('loadend');
             expect(panel._onLayerLoadEnd).toHaveBeenCalled();
         });
 
         it('responds to tileerror', function() {
-            layerState.fireEvent('tileerror');
+            layerAdapter.fireEvent('tileerror');
             expect(panel._onLayerLoadError).toHaveBeenCalled();
         });
     });
