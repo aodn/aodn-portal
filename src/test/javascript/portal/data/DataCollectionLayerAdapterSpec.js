@@ -6,24 +6,24 @@
  */
 
 describe("Portal.data.DataCollectionLayerAdapter", function() {
-    var layerState;
+    var layerSelectionModel;
     var layerAdapter;
 
     beforeEach(function() {
-        spyOn(Portal.data.DataCollectionLayers.prototype, '_initLayers');
-        layerState = new Portal.data.DataCollectionLayers();
-        layerState.selectedLayer = new OpenLayers.Layer();
+        spyOn(Portal.data.LayerSelectionModel.prototype, '_initLayers');
+        layerSelectionModel = new Portal.data.LayerSelectionModel();
+        layerSelectionModel.selectedLayer = new OpenLayers.Layer();
 
         layerAdapter = new Portal.data.DataCollectionLayerAdapter({
-            layerState: layerState
+            layerSelectionModel: layerSelectionModel
         });
     });
 
     it('indicates loading', function() {
-        layerState.getSelectedLayer().loading = true;
+        layerSelectionModel.getSelectedLayer().loading = true;
         expect(layerAdapter.isLoading()).toBe(true);
 
-        layerState.getSelectedLayer().loading = false;
+        layerSelectionModel.getSelectedLayer().loading = false;
         expect(layerAdapter.isLoading()).toBe(false);
     });
 
@@ -34,7 +34,7 @@ describe("Portal.data.DataCollectionLayerAdapter", function() {
                 layerAdapter.on(eventName, eventListener);
 
                 var newLayer = new OpenLayers.Layer.Grid();
-                layerState.setSelectedLayer(newLayer);
+                layerSelectionModel.setSelectedLayer(newLayer);
 
                 newLayer.events.triggerEvent(eventName, newLayer);
 
@@ -46,9 +46,9 @@ describe("Portal.data.DataCollectionLayerAdapter", function() {
                 layerAdapter.on(eventName, eventListener);
 
                 var origLayer = new OpenLayers.Layer();
-                layerState.setSelectedLayer(origLayer);
+                layerSelectionModel.setSelectedLayer(origLayer);
 
-                layerState.setSelectedLayer(new OpenLayers.Layer());
+                layerSelectionModel.setSelectedLayer(new OpenLayers.Layer());
 
                 origLayer.events.triggerEvent(eventName, origLayer);
 

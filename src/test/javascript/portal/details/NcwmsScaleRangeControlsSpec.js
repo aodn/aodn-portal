@@ -9,7 +9,7 @@ describe('Portal.details.NcWmsScaleRangeControls', function() {
 
         var controls;
         var layerAdapter;
-        var layerState;
+        var layerSelectionModel;
         var dataCollection;
 
         beforeEach(function() {
@@ -17,13 +17,13 @@ describe('Portal.details.NcWmsScaleRangeControls', function() {
             layerAdapter = {
                 getScaleRange: returns({})
             };
-            layerState = {
+            layerSelectionModel = {
                 on: noOp
             };
 
             dataCollection = {
                 getLayerAdapter: returns(layerAdapter),
-                getLayerState: returns(layerState)
+                getLayerSelectionModel: returns(layerSelectionModel)
             };
 
             controls = new Portal.details.NcWmsScaleRangeControls({

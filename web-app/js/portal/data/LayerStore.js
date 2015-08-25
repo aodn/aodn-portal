@@ -26,7 +26,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _linkToOpenLayer: function(layerLink, dataCollection) {
-        return Portal.data.DataCollectionLayers.prototype._linkToOpenLayer(layerLink, dataCollection);
+        return Portal.data.LayerSelectionModel.prototype._linkToOpenLayer(layerLink, dataCollection);
     },
 
     _addUsingDescriptor: function(layerDescriptor, layerRecordCallback) {
@@ -103,7 +103,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _onDataCollectionChanged: function(eventName, dataCollection) {
-        this._selectedLayerChanged(eventName, dataCollection.getLayerState().getSelectedLayer());
+        this._selectedLayerChanged(eventName, dataCollection.getLayerSelectionModel().getSelectedLayer());
     },
 
     _selectedLayerChanged: function(eventName, openLayer) {

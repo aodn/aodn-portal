@@ -5,7 +5,7 @@
  *
  */
 
-describe("Portal.data.DataCollectionLayersSpec", function() {
+describe("Portal.data.LayerSelectionModelSpec", function() {
 
     var dataCollection;
     var dataCollectionLayers;
@@ -59,7 +59,7 @@ describe("Portal.data.DataCollectionLayersSpec", function() {
             get: returns('name')
         };
 
-        dataCollectionLayers = new Portal.data.DataCollectionLayers({
+        dataCollectionLayers = new Portal.data.LayerSelectionModel({
             dataCollection: dataCollection
         });
     });

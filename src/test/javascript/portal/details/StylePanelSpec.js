@@ -26,21 +26,21 @@ describe("Portal.details.StylePanel", function() {
     var stylePanel;
     var dataCollection;
     var layerAdapter;
-    var layerState;
+    var layerSelectionModel;
 
     beforeEach(function() {
         layerAdapter = {
             setStyle: jasmine.createSpy('setStyle')
         };
 
-        layerState = {
+        layerSelectionModel = {
             on: noOp,
             getScaleRange: returns({})
         };
 
         dataCollection = {
             getLayerAdapter: returns(layerAdapter),
-            getLayerState: returns(layerState),
+            getLayerSelectionModel: returns(layerSelectionModel),
             getTitle: returns('Data Collection Title')
         };
 
@@ -146,7 +146,7 @@ describe("Portal.details.StylePanel", function() {
 
         it("Returns empty array if layer.styles is undefined", function() {
 
-            dataCollection.getLayerState = returns({
+            dataCollection.getLayerSelectionModel = returns({
                 getSelectedLayer: returns({styles: undefined})
             });
 
@@ -161,7 +161,7 @@ describe("Portal.details.StylePanel", function() {
                 return String.format('{0} {1} {2} {3}', a, b, c, d);
             };
 
-            dataCollection.getLayerState = returns({
+            dataCollection.getLayerSelectionModel = returns({
                 getSelectedLayer: returns({
                     isNcwms: returns(true),
                     styles: [

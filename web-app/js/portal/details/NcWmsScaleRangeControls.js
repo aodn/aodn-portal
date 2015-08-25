@@ -43,7 +43,7 @@ Portal.details.NcWmsScaleRangeControls = Ext.extend(Ext.Panel, {
         this.addEvents('colourScaleUpdated');
         Portal.details.NcWmsScaleRangeControls.superclass.initComponent.call(this);
 
-        this.dataCollection.getLayerState().on('selectedlayerchanged', this.loadScaleFromLayer, this);
+        this.dataCollection.getLayerSelectionModel().on('selectedlayerchanged', this.loadScaleFromLayer, this);
     },
 
     makeSmallIndentInputBox: function(fieldLabel) {

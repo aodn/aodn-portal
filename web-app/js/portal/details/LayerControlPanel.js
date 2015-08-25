@@ -73,16 +73,16 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
     },
 
     _newLayerSelectorComponent: function() {
-        if (this.dataCollection.getLayerState().getLayers().length <= 1) {
+        if (this.dataCollection.getLayerSelectionModel().getLayers().length <= 1) {
             return undefined;
         }
 
         var items = [];
-        Ext.each(this.dataCollection.getLayerState().getLayers(), function(openLayer) {
+        Ext.each(this.dataCollection.getLayerSelectionModel().getLayers(), function(openLayer) {
             items.push({
                 boxLabel: openLayer.wmsName,
                 name: 'selectedLayer',
-                checked: openLayer == this.dataCollection.getLayerState().getSelectedLayer(),
+                checked: openLayer == this.dataCollection.getLayerSelectionModel().getSelectedLayer(),
                 layer: openLayer
             });
         }, this);
@@ -98,7 +98,7 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
     },
 
     _radioGroupChanged: function(radioGroup, checkedRadio) {
-        this.dataCollection.getLayerState().setSelectedLayer(checkedRadio.layer);
+        this.dataCollection.getLayerSelectionModel().setSelectedLayer(checkedRadio.layer);
 
          trackLayerControlUsage(
              'changeLayerTrackingAction',

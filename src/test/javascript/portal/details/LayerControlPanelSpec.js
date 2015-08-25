@@ -4,7 +4,7 @@ describe("Portal.details.LayerControlPanel", function() {
     var layerControlPanel;
     var layers;
     var layerAdapter;
-    var layerState;
+    var layerSelectionModel;
     var selectedLayer;
 
     beforeEach(function() {
@@ -13,7 +13,7 @@ describe("Portal.details.LayerControlPanel", function() {
         layerAdapter = {
             isLoading: returns(false)
         };
-        layerState = {
+        layerSelectionModel = {
             getLayers: returns(layers),
             getSelectedLayer: function() {
                 return selectedLayer;
@@ -24,7 +24,7 @@ describe("Portal.details.LayerControlPanel", function() {
         dataCollection = {
             getTitle: returns('Data Collection Title'),
             getLayerAdapter: returns(layerAdapter),
-            getLayerState: returns(layerState)
+            getLayerSelectionModel: returns(layerSelectionModel)
         };
 
         layerControlPanel = new Portal.details.LayerControlPanel({
@@ -56,7 +56,7 @@ describe("Portal.details.LayerControlPanel", function() {
         });
 
         it('sets selected layer when selected', function() {
-            spyOn(dataCollection.getLayerState(), 'setSelectedLayer');
+            spyOn(dataCollection.getLayerSelectionModel(), 'setSelectedLayer');
             spyOn(window, 'trackLayerControlUsage');
             addLayers();
 
@@ -71,13 +71,13 @@ describe("Portal.details.LayerControlPanel", function() {
         });
 
         it('sends google analytics tracking information when selected', function() {
-            spyOn(dataCollection.getLayerState(), 'setSelectedLayer');
+            spyOn(dataCollection.getLayerSelectionModel(), 'setSelectedLayer');
             addLayers();
 
             var layerSelectComponent = layerControlPanel._newLayerSelectorComponent();
 
             layerSelectComponent.fireEvent('change', layerSelectComponent, layerSelectComponent.items[0]);
-            expect(dataCollection.getLayerState().setSelectedLayer).toHaveBeenCalledWith(layers[0]);
+            expect(dataCollection.getLayerSelectionModel().setSelectedLayer).toHaveBeenCalledWith(layers[0]);
         });
 
         var addLayers = function() {

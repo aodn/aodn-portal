@@ -27,7 +27,7 @@ describe("Portal.filter.ui.BooleanFilterPanel", function() {
             },
             dataCollection: {
                 getTitle: returns('Collection title'),
-                getLayerState: returns({
+                getLayerSelectionModel: returns({
                     getSelectedLayer: returns({
                         name: 'test layer',
                         getDownloadCql: returns("")

@@ -18,9 +18,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         Ext.apply(this, cfg);
 
-        this.layer = this.dataCollection.getLayerState().getSelectedLayer();
+        this.layer = this.dataCollection.getLayerSelectionModel().getSelectedLayer();
 
-        this.dataCollection.getLayerState().on('selectedlayerchanged', function(newLayer) {
+        this.dataCollection.getLayerSelectionModel().on('selectedlayerchanged', function(newLayer) {
             this._onSelectedLayerChanged(newLayer);
         }, this);
 

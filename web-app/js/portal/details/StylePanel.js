@@ -26,7 +26,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
         this._initWithLayer();
 
-        this.dataCollection.getLayerState().on('selectedlayerchanged', this._initWithLayer, this);
+        this.dataCollection.getLayerSelectionModel().on('selectedlayerchanged', this._initWithLayer, this);
     },
 
     _createControls: function() {
@@ -78,7 +78,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
     _initWithLayer: function() {
 
-        var layer = this.dataCollection.getLayerState().getSelectedLayer();
+        var layer = this.dataCollection.getLayerSelectionModel().getSelectedLayer();
 
         if (layer.isNcwms()) {
             this.ncwmsScaleRangeControls.loadScaleFromLayer();
@@ -118,7 +118,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
     _processStyleData: function() {
         var data = [];
-        var layer = this.dataCollection.getLayerState().getSelectedLayer();
+        var layer = this.dataCollection.getLayerSelectionModel().getSelectedLayer();
 
         Ext.each(layer.styles, function(style) {
 
@@ -145,7 +145,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         var styleName = this.dataCollection.getLayerAdapter().getStyle() || '';
         var palette = this._getPalette(styleName);
 
-        var layer = this.dataCollection.getLayerState().getSelectedLayer();
+        var layer = this.dataCollection.getLayerSelectionModel().getSelectedLayer();
         var url = this.buildGetLegend(layer, styleName, palette, false);
 
         this.legendImage.setUrl(url);

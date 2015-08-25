@@ -7,13 +7,13 @@
 
 Ext.namespace('Portal.data');
 
-Portal.data.DataCollectionLayers = Ext.extend(Ext.util.Observable, {
+Portal.data.LayerSelectionModel = Ext.extend(Ext.util.Observable, {
 
     constructor: function(config) {
         Ext.apply(this, config);
         this._initLayers();
 
-        Portal.data.DataCollectionLayers.superclass.constructor.call(this, config);
+        Portal.data.LayerSelectionModel.superclass.constructor.call(this, config);
     },
 
     isNcwms: function() {

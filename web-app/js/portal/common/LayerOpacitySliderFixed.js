@@ -54,7 +54,7 @@ Portal.common.LayerOpacitySliderFixed = Ext.extend(GeoExt.LayerOpacitySlider, {
 
     getLayer: function(layer) {
         // Superclass is expecting either a OpenLayer.Layer or a GeoExt.data.LayerRecord,
-        // but we're using a DataCollectionLayers object masquerading as a Layer (for now).
+        // but we're using a LayerSelectionModel object masquerading as a Layer (for now).
         return layer;
     }
 });

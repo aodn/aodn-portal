@@ -45,7 +45,7 @@ describe('Portal.cart.WfsDownloadHandler', function () {
                 };
                 var dummyFilters = ['filters'];
                 var dummyCollection = {
-                    getLayerState: returns({
+                    getLayerSelectionModel: returns({
                         getSelectedLayer: returns(dummyLayer)
                     }),
                     getFilters: returns(dummyFilters)

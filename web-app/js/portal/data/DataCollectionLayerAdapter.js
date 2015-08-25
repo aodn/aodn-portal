@@ -12,7 +12,7 @@ Ext.namespace('Portal.data');
 // It allows client code to essentially treat a DataCollection as it would a Layer, without having to use code
 // such as:
 //
-//    dataCollection.getLayerState().getSelectedLayer()...
+//    dataCollection.getLayerSelectionModel().getSelectedLayer()...
 //
 // all over the place.
 //
@@ -24,13 +24,13 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
         this._layerProperties = {};
 
         this._onSelectedLayerChanged(this._getSelectedLayer());
-        this.layerState.on('selectedlayerchanged', this._onSelectedLayerChanged, this);
+        this.layerSelectionModel.on('selectedlayerchanged', this._onSelectedLayerChanged, this);
 
-        Portal.data.DataCollectionLayers.superclass.constructor.call(this, config);
+        Portal.data.LayerSelectionModel.superclass.constructor.call(this, config);
     },
 
     _getSelectedLayer: function() {
-        return this.layerState.getSelectedLayer();
+        return this.layerSelectionModel.getSelectedLayer();
     },
 
     _onSelectedLayerChanged: function(newLayer, oldLayer) {
@@ -60,7 +60,7 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
     },
 
     _eachLayer: function(fn, scope) {
-        this.layerState._eachLayer(fn, scope);
+        this.layerSelectionModel._eachLayer(fn, scope);
     },
 
     _registerLayerEventListeners: function(layer) {

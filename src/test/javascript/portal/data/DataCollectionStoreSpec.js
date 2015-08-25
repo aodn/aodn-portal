@@ -19,8 +19,8 @@ describe("Portal.data.DataCollectionStoreSpec", function() {
             removeUsingOpenLayer: jasmine.createSpy('removeUsingOpenLayer')
         };
 
-        spyOn(Portal.data.DataCollectionLayers.prototype, '_initLayers');
-        spyOn(Portal.data.DataCollectionLayers.prototype, 'getSelectedLayer').andCallFake(function() {
+        spyOn(Portal.data.LayerSelectionModel.prototype, '_initLayers');
+        spyOn(Portal.data.LayerSelectionModel.prototype, 'getSelectedLayer').andCallFake(function() {
             this.selectedLayer = layer;
             return layer;
         });
@@ -45,9 +45,9 @@ describe("Portal.data.DataCollectionStoreSpec", function() {
         var newLayer = new OpenLayers.Layer();
 
         dataCollectionStore.add(dataCollection);
-        var layerState = dataCollection.getLayerState();
+        var layerSelectionModel = dataCollection.getLayerSelectionModel();
 
-        layerState.setSelectedLayer(newLayer);
+        layerSelectionModel.setSelectedLayer(newLayer);
 
         expect(layerStore.removeUsingOpenLayer).toHaveBeenCalledWith(oldLayer);
         expect(layerStore.addUsingOpenLayer).toHaveBeenCalledWith(newLayer);

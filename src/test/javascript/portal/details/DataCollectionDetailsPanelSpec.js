@@ -8,7 +8,7 @@ describe("Portal.details.DataCollectionDetailsPanel", function() {
     var panel;
     var layer;
     var layerAdapter;
-    var layerState;
+    var layerSelectionModel;
 
     var dataCollection;
 
@@ -19,12 +19,12 @@ describe("Portal.details.DataCollectionDetailsPanel", function() {
         layerAdapter = new Ext.util.Observable();
         layerAdapter.isLoading = returns(false);
 
-        layerState = {};
+        layerSelectionModel = {};
 
         dataCollection = {
             getTitle: returns('amazetion'),
             getLayerAdapter: returns(layerAdapter),
-            getLayerState: returns(layerState)
+            getLayerSelectionModel: returns(layerSelectionModel)
         };
 
         panel = new Portal.details.DataCollectionDetailsPanel({
