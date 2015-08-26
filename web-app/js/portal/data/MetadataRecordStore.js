@@ -7,17 +7,17 @@
 
 Ext.namespace('Portal.data');
 
-Portal.data.GeoNetworkRecordStore = Ext.extend(Ext.data.XmlStore, {
+Portal.data.MetadataRecordStore = Ext.extend(Ext.data.XmlStore, {
 
     constructor: function() {
 
         var config = {
             record : 'metadata',
             totalProperty: 'summary/@count',
-            fields: Portal.data.GeoNetworkRecord
+            fields: Portal.data.MetadataRecord
         };
 
-        Portal.data.GeoNetworkRecordStore.superclass.constructor.call(this, config);
+        Portal.data.MetadataRecordStore.superclass.constructor.call(this, config);
     },
 
     getByUuid: function(uuid) {

@@ -25,7 +25,7 @@ describe("Portal.ui.MainPanel", function() {
     });
 
     afterEach(function() {
-        Ext.MsgBus.unsubscribe(PORTAL_EVENTS.VIEW_DATA_COLLECTION, mainPanel._onViewGeoNetworkRecord, mainPanel);
+        Ext.MsgBus.unsubscribe(PORTAL_EVENTS.VIEW_DATA_COLLECTION, mainPanel._onViewDataCollection, mainPanel);
     });
 
     describe('initialisation', function() {

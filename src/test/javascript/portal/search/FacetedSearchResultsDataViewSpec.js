@@ -56,7 +56,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
         });
     });
 
-    describe('getGeoNetworkRecordPointOfTruthLinkAsHtml', function() {
+    describe('getMetadataRecordPointOfTruthLinkAsHtml', function() {
         var values;
 
         beforeEach(function(){
@@ -69,7 +69,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
         });
 
         it('creates valid link from problematic title', function() {
-            var res = facetedSearchDataView.getGeoNetworkRecordPointOfTruthLinkAsHtml(values);
+            var res = facetedSearchDataView.getMetadataRecordPointOfTruthLinkAsHtml(values);
 
             expect(res).toContain('http://geonetwork');
             expect(res).toContain("trackUsage('Metadata','Search','Rottnest ...QCd is bad for embedding in a function');return true;");
@@ -77,7 +77,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
 
         it('creates valid link from non-problematic title', function() {
             values.title = "Argo Profiles";
-            var res = facetedSearchDataView.getGeoNetworkRecordPointOfTruthLinkAsHtml(values);
+            var res = facetedSearchDataView.getMetadataRecordPointOfTruthLinkAsHtml(values);
 
             expect(res).toContain('http://geonetwork');
             expect(res).toContain("trackUsage('Metadata','Search','Argo Profiles');return true;");

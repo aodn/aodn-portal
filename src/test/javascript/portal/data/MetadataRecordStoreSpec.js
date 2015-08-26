@@ -5,7 +5,7 @@
  *
  */
 
-describe("Portal.data.GeoNetworkRecordStore", function() {
+describe("Portal.data.MetadataRecordStore", function() {
 
     describe('load XML in to store', function() {
 
@@ -31,7 +31,7 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
 ";
 
         var doc = new DOMParser().parseFromString(recordsAsXml, 'text/xml');
-        var geoNetworkRecordStore;
+        var metadataRecordStore;
 
         beforeEach(function() {
             Portal.app.appConfig = {
@@ -42,77 +42,77 @@ describe("Portal.data.GeoNetworkRecordStore", function() {
                 }
             };
 
-            geoNetworkRecordStore = new Portal.data.GeoNetworkRecordStore();
-            geoNetworkRecordStore.loadData(doc);
+            metadataRecordStore = new Portal.data.MetadataRecordStore();
+            metadataRecordStore.loadData(doc);
         });
 
         it('title', function() {
-            expect(geoNetworkRecordStore.getAt(0).get('title')).toEqual('ANFOG');
+            expect(metadataRecordStore.getAt(0).get('title')).toEqual('ANFOG');
         });
 
         it('abstract', function() {
-            expect(geoNetworkRecordStore.getAt(0).get('abstract')).toEqual('This is about ANFOGs, man');
+            expect(metadataRecordStore.getAt(0).get('abstract')).toEqual('This is about ANFOGs, man');
         });
 
         it('uuid', function() {
-            expect(geoNetworkRecordStore.getAt(0).get('uuid')).toEqual('123456789');
+            expect(metadataRecordStore.getAt(0).get('uuid')).toEqual('123456789');
         });
 
         describe('links', function() {
             describe('first link', function() {
                 it('name', function() {
-                    expect(geoNetworkRecordStore.getAt(0).get('links')[0].name).toEqual('');
+                    expect(metadataRecordStore.getAt(0).get('links')[0].name).toEqual('');
                 });
 
                 it('title', function() {
-                    expect(geoNetworkRecordStore.getAt(0).get('links')[0].title).toEqual('Point of truth URL of this metadata record');
+                    expect(metadataRecordStore.getAt(0).get('links')[0].title).toEqual('Point of truth URL of this metadata record');
                 });
 
                 it('href', function() {
-                    expect(geoNetworkRecordStore.getAt(0).get('links')[0].href).toEqual('http://imosmest/metadata?uuid=1a69252d');
+                    expect(metadataRecordStore.getAt(0).get('links')[0].href).toEqual('http://imosmest/metadata?uuid=1a69252d');
                 });
 
                 it('protocol', function() {
-                    expect(geoNetworkRecordStore.getAt(0).get('links')[0].protocol).toEqual('WWW:LINK-1.0-http--metadata-URL');
+                    expect(metadataRecordStore.getAt(0).get('links')[0].protocol).toEqual('WWW:LINK-1.0-http--metadata-URL');
                 });
 
                 it('type', function() {
-                    expect(geoNetworkRecordStore.getAt(0).get('links')[0].type).toEqual('text/html');
+                    expect(metadataRecordStore.getAt(0).get('links')[0].type).toEqual('text/html');
                 });
             });
 
             describe('second link', function() {
                 it('name', function() {
-                    expect(geoNetworkRecordStore.getAt(0).get('links')[1].name).toEqual('imos:radar_stations');
+                    expect(metadataRecordStore.getAt(0).get('links')[1].name).toEqual('imos:radar_stations');
                 });
             });
         });
 
         describe('bbox', function() {
             it('west', function() {
-                expect(geoNetworkRecordStore.getAt(0).get('bbox').getBounds().left).toBe(-80);
+                expect(metadataRecordStore.getAt(0).get('bbox').getBounds().left).toBe(-80);
             });
 
             it('south', function() {
-                expect(geoNetworkRecordStore.getAt(0).get('bbox').getBounds().bottom).toBe(-44);
+                expect(metadataRecordStore.getAt(0).get('bbox').getBounds().bottom).toBe(-44);
             });
 
             it('east', function() {
-                expect(geoNetworkRecordStore.getAt(0).get('bbox').getBounds().right).toBe(154);
+                expect(metadataRecordStore.getAt(0).get('bbox').getBounds().right).toBe(154);
             });
 
             it('north', function() {
-                expect(geoNetworkRecordStore.getAt(0).get('bbox').getBounds().top).toBe(-9);
+                expect(metadataRecordStore.getAt(0).get('bbox').getBounds().top).toBe(-9);
             });
         });
 
         describe('downloadable links', function() {
             it('field exists', function() {
-                expect(geoNetworkRecordStore.getAt(0).get('linkedFiles')).toBeTruthy();
+                expect(metadataRecordStore.getAt(0).get('linkedFiles')).toBeTruthy();
             });
 
             it('contains only downloadable links', function() {
-                var linkedFiles = geoNetworkRecordStore.getAt(0).get('linkedFiles');
+                var linkedFiles = metadataRecordStore.getAt(0).get('linkedFiles');
                 expect(linkedFiles.length).toBe(1);
                 expect(linkedFiles[0].title).toBe('ACORN Radar Stations csv');
             });

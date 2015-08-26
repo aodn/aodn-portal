@@ -10,7 +10,7 @@ describe("Portal.search.SearchBodyPanel", function() {
 
     beforeEach(function() {
         searchBodyPanel = new Portal.search.SearchBodyPanel({
-            resultsStore: new Portal.data.GeoNetworkRecordStore(),
+            resultsStore: new Portal.data.MetadataRecordStore(),
             searcher: new Portal.service.CatalogSearcher()
         });
     });

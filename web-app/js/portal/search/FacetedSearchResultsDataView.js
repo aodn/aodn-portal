@@ -38,7 +38,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '            id="{[this.mapElementId(values.uuid)]}">',
             '        </div>',
             '        <div class="x-panel resultsTextBody {[this.getStatusClasses(values)]}">',
-            '            <span class="floatRight x-hyperlink small">{[this.getGeoNetworkRecordPointOfTruthLinkAsHtml(values)]}',
+            '            <span class="floatRight x-hyperlink small">{[this.getMetadataRecordPointOfTruthLinkAsHtml(values)]}',
             '            </span>',
             '            {[this.getParametersAsHtml(values)]}',
             '        </div>',
@@ -252,7 +252,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         }
     },
 
-    getGeoNetworkRecordPointOfTruthLinkAsHtml: function(values) {
+    getMetadataRecordPointOfTruthLinkAsHtml: function(values) {
         var html;
 
         if (values.pointOfTruthLink) {

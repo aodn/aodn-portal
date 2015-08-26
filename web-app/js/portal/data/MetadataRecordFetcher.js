@@ -7,12 +7,12 @@
 
 Ext.namespace('Portal.data');
 
-Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
+Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
 
     constructor: function(config) {
         Ext.apply(this, config);
 
-        Portal.data.GeoNetworkRecordFetcher.superclass.constructor.call(this, config);
+        Portal.data.MetadataRecordFetcher.superclass.constructor.call(this, config);
 
         this._loadCollectionsFromUrl();
     },
@@ -32,8 +32,8 @@ Portal.data.GeoNetworkRecordFetcher = Ext.extend(Ext.util.Observable, {
     load: function(uuid) {
         var _this = this;
         this.get(uuid, function(response) {
-            // Is there a more direct way to easily get a GeoNetworkRecord from XML?
-            var store = new Portal.data.GeoNetworkRecordStore();
+            // Is there a more direct way to easily get a MetadataRecord from XML?
+            var store = new Portal.data.MetadataRecordStore();
             store.loadData(response.responseXML);
             var metadataRecord = store.getAt(0);
             var dataCollection = Portal.data.DataCollection.fromMetadataRecord(metadataRecord);

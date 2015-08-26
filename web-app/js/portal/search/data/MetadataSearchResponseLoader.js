@@ -7,10 +7,10 @@
 
 Ext.namespace('Portal.ui.search.data');
 
-Portal.ui.search.data.GeoNetworkSearchResponseLoader = Ext.extend(Ext.ux.tree.XmlTreeLoader, {
+Portal.ui.search.data.MetadataSearchResponseLoader = Ext.extend(Ext.ux.tree.XmlTreeLoader, {
 
     createNode: function(attr) {
-        return Portal.ui.search.data.GeoNetworkSearchResponseLoader.superclass.createNode.call(this, attr);
+        return Portal.ui.search.data.MetadataSearchResponseLoader.superclass.createNode.call(this, attr);
     },
 
     processAttributes: function(attr) {
@@ -32,7 +32,7 @@ Portal.ui.search.data.GeoNetworkSearchResponseLoader = Ext.extend(Ext.ux.tree.Xm
         var ajaxDefaultHeaders = Ext.Ajax.defaultHeaders;
         Ext.Ajax.defaultHeaders = { 'Content-Type': 'application/xml' };
 
-        Portal.ui.search.data.GeoNetworkSearchResponseLoader.superclass.requestData.call(this, node, callback, scope);
+        Portal.ui.search.data.MetadataSearchResponseLoader.superclass.requestData.call(this, node, callback, scope);
 
         // Restore ajaxDefaultHeaders for Ext.Ajax
         Ext.Ajax.defaultHeaders = ajaxDefaultHeaders;

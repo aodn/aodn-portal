@@ -73,7 +73,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'Server.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'SuggestionStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/data', file: 'LinkStore.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/search/data', file: 'GeoNetworkSearchResponseLoader.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/search/data', file: 'MetadataSearchResponseLoader.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'DateRange.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'FacetedDateRange.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'MultiSelectCombo.js')}"></script>
@@ -156,11 +156,11 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'FacetDrilldownPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'FacetFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'ChildElementsField.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecord.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'MetadataRecord.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'TermClassification.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'TermClassificationStore.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecordFetcher.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'GeoNetworkRecordStore.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'MetadataRecordFetcher.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'MetadataRecordStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'DataCollection.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'LayerSelectionModel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'DataCollectionLayerAdapter.js')}"></script>

@@ -19,7 +19,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         this.addEvents('tabchange');
 
-        var fetcher = new Portal.data.GeoNetworkRecordFetcher({
+        var fetcher = new Portal.data.MetadataRecordFetcher({
             dataCollectionStore: this.dataCollectionStore
         });
 
@@ -46,15 +46,15 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.VIEW_DATA_COLLECTION, this._onViewGeoNetworkRecord, this);
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, this._onGeoNetworkRecordAdded, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.VIEW_DATA_COLLECTION, this._onViewDataCollection, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, this._onDataCollectionAdded, this);
     },
 
-    _onViewGeoNetworkRecord: function() {
+    _onViewDataCollection: function() {
         this.setActiveTab(TAB_INDEX_VISUALISE);
     },
 
-    _onGeoNetworkRecordAdded: function() {
+    _onDataCollectionAdded: function() {
         this._highlightActiveTab();
     },
 

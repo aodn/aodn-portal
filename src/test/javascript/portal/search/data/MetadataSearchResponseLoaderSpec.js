@@ -5,7 +5,7 @@
  *
  */
 
-describe("Portal.search.data.GeoNetworkSearchResponseLoader", function() {
+describe("Portal.search.data.MetadataSearchResponseLoader", function() {
 
     var searchResponse = "<?xml version=\"1.0\" encoding=\"UTF-8\"?> \
 <response from=\"1\" to=\"7\" selected=\"0\"> \
@@ -41,7 +41,7 @@ describe("Portal.search.data.GeoNetworkSearchResponseLoader", function() {
                 expect(Ext.Ajax.defaultHeaders).toEqual({ 'Content-Type': 'application/xml' });
             });
 
-            treeLoader = new Portal.ui.search.data.GeoNetworkSearchResponseLoader({
+            treeLoader = new Portal.ui.search.data.MetadataSearchResponseLoader({
                 dataUrl: 'http://url'
             });
 
@@ -55,7 +55,7 @@ describe("Portal.search.data.GeoNetworkSearchResponseLoader", function() {
         beforeEach(function() {
             mockAjaxXmlResponse(searchResponse);
 
-            treeLoader = new Portal.ui.search.data.GeoNetworkSearchResponseLoader({
+            treeLoader = new Portal.ui.search.data.MetadataSearchResponseLoader({
                 dataUrl: 'http://url'
             });
 

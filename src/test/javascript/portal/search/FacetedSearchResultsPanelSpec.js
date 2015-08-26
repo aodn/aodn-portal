@@ -18,7 +18,7 @@ describe("Portal.search.FacetedSearchResultsPanel", function() {
             pageSize: 999
         };
 
-        store = new Portal.data.GeoNetworkRecordStore();
+        store = new Portal.data.MetadataRecordStore();
         resultsPanel = new Portal.search.FacetedSearchResultsPanel({
             searcher: searcher,
             store: store,
