@@ -12,7 +12,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     defaultSpatialConstraintType: OpenLayers.i18n('comboBoxTypeLabels')[0].value,
 
-    constructor: function (cfg) {
+    constructor: function(cfg) {
 
         this.appConfig = Portal.app.appConfig;
         var portalConfig = this.appConfig.portal;
@@ -32,11 +32,11 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.initMap();
 
-        this.on('afterlayout', function () {
-            jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseover(function () {
+        this.on('afterlayout', function() {
+            jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseover(function() {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").addClass('allwhite');
             });
-            jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseout(function () {
+            jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseout(function() {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").removeClass('allwhite');
             });
         }, this);
@@ -45,7 +45,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             this.onBaseLayerChanged(message);
         }, this);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function () {
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
             this.reset();
             this._closeFeatureInfoPopup();
         }, this);
@@ -55,29 +55,29 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.map.setBaseLayer(openLayer);
     },
 
-    afterRender: function () {
+    afterRender: function() {
         Portal.ui.MapPanel.superclass.afterRender.call(this);
         this.mapOptions.afterRender(this);
     },
 
-    reset: function () {
+    reset: function() {
         this._closeFeatureInfoPopup();
         this.map.resetSpatialConstraint();
         this.zoomToInitialBbox();
     },
 
-    handleFeatureInfoClick: function (event) {
+    handleFeatureInfoClick: function(event) {
         this._closeFeatureInfoPopup();
         this._findFeatureInfo(event);
     },
 
-    _closeFeatureInfoPopup: function () {
+    _closeFeatureInfoPopup: function() {
         if (this.featureInfoPopup) {
             this.featureInfoPopup.close();
         }
     },
 
-    _findFeatureInfo: function (event) {
+    _findFeatureInfo: function(event) {
         this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({
             map: this.map,
             appConfig: this.appConfig,
@@ -99,7 +99,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    initMap: function () {
+    initMap: function() {
 
         // The MapActionsControl (in the OpenLayers map tools) needs this.
         this.appConfig.mapPanel = this;
@@ -109,7 +109,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.map.setDefaultSpatialConstraintType(this.defaultSpatialConstraintType);
     },
 
-    zoomToLayer: function (openLayer) {
+    zoomToLayer: function(openLayer) {
         if (openLayer && openLayer.hasBoundingBox()) {
             // build openlayer bounding box
             var bounds = null;
@@ -125,36 +125,15 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             // ensure converted into this maps projection. convert metres into lat/lon etc
             bounds.transform(new OpenLayers.Projection(openLayer.projection), this.map.getProjectionObject());
 
-            // openlayers wants left, bottom, right, top
-            // dont support NCWMS-1.3.0 until issues resolved http://www.resc.rdg.ac.uk/trac/ncWMS/ticket/187
-            if (openLayer._is130()) {
-                bounds = new OpenLayers.Bounds.fromArray(bounds.toArray(true));
-            }
-
-            if (bounds && bounds.getWidth() > 0 && bounds.getHeight() > 0) {
-                this.zoomTo(bounds);
-            }
-            else if (bounds) {
-                // when layer has no bbox volume
-                this.map.setCenter(bounds.getCenterLonLat(), 3);
-            }
+            this.map.zoomToExtent(bounds);
         }
     },
 
-    zoomTo: function (bounds, closest) {
-        if ((Math.abs(bounds.left - bounds.right) < 1) && (Math.abs(bounds.top == bounds.bottom) < 1)) {
-            this.map.setCenter(bounds.getCenterLonLat(), 3);
-        }
-        else {
-            this.map.zoomToExtent(bounds, closest);
-        }
-    },
-
-    getPanelX: function () {
+    getPanelX: function() {
         return this.getPosition()[0];
     },
 
-    getPanelY: function () {
+    getPanelY: function() {
         return this.getPosition()[1];
     },
 
