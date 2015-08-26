@@ -16,18 +16,7 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
         var layerAdapter = cfg.dataCollection.getLayerAdapter();
 
         this.createTools(layerAdapter);
-
-        layerAdapter.on('loadstart', function() {
-            this._onLayerLoadStart();
-        }, this);
-
-        layerAdapter.on('loadend', function() {
-            this._onLayerLoadEnd();
-        }, this);
-
-        layerAdapter.on('tileerror', function() {
-            this._onLayerLoadError();
-        }, this);
+        this.addListeners(layerAdapter);
 
         var config = Ext.apply({
             cls: 'dataCollectionDetailsPanel',
@@ -50,6 +39,18 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
         }, cfg);
 
         Portal.details.DataCollectionDetailsPanel.superclass.constructor.call(this, config);
+    },
+
+    addListeners: function(layerAdapter) {
+        layerAdapter.on('loadstart', this._onLayerLoadStart, this);
+        layerAdapter.on('loadend', this._onLayerLoadEnd, this);
+        layerAdapter.on('tileerror', this._onLayerLoadError, this);
+    },
+
+    removeListeners: function(layerAdapter) {
+        layerAdapter.un('loadstart', this._onLayerLoadStart, this);
+        layerAdapter.un('loadend', this._onLayerLoadEnd, this);
+        layerAdapter.un('tileerror', this._onLayerLoadError, this);
     },
 
     _onExpand: function() {
@@ -116,6 +117,7 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
     },
 
     _layerDelete: function() {
+        this.removeListeners(this.dataCollection.getLayerState());
         this.dataCollectionStore.remove(this.dataCollection);
     },
 

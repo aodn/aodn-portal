@@ -28,7 +28,17 @@ describe("Portal.details.DataCollectionDetailsPanel", function() {
         };
 
         panel = new Portal.details.DataCollectionDetailsPanel({
-            dataCollection: dataCollection
+            dataCollection: dataCollection,
+            tools: {
+                spinnerToolItem: {
+                    show: returns(),
+                    hide: returns()
+                },
+                errorToolItem: {
+                    show: returns(),
+                    hide: returns()
+                }
+            }
         });
     });
 
@@ -38,6 +48,11 @@ describe("Portal.details.DataCollectionDetailsPanel", function() {
             spyOn(panel, '_onLayerLoadStart');
             spyOn(panel, '_onLayerLoadEnd');
             spyOn(panel, '_onLayerLoadError');
+            panel.addListeners(dataCollection.getLayerAdapter());
+        });
+
+        afterEach(function() {
+            panel.removeListeners(dataCollection.getLayerAdapter());
         });
 
         it('responds to loadstart', function() {
