@@ -117,7 +117,7 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
     },
 
     _layerDelete: function() {
-        this.removeListeners(this.dataCollection.getLayerState());
+        this.removeListeners(this.dataCollection.getLayerAdapter());
         this.dataCollectionStore.remove(this.dataCollection);
     },
 
