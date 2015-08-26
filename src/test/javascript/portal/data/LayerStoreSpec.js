@@ -86,11 +86,9 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('add duplicate layer', function() {
-            spyOn(Ext.Msg, "alert");
             layerStore._addLayer(createOpenLayer());
             layerStore._addLayer(createOpenLayer());
-            expect(layerStore.getCount()).toBe(1);
-            expect(Ext.Msg.alert).toHaveBeenCalled();
+            expect(layerStore.getCount()).toBe(2);
         });
 
         it('addLayerUsingDescriptor', function() {

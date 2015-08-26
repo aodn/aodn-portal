@@ -72,29 +72,23 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _addLayer: function(openLayer, layerRecordCallback) {
-        if (!this.containsOpenLayer(openLayer)) {
+        var layerRecord = new GeoExt.data.LayerRecord({
+            layer: openLayer,
+            title: openLayer.name
+        });
 
-            var layerRecord = new GeoExt.data.LayerRecord({
-                layer: openLayer,
-                title: openLayer.name
-            });
-
-            if (layerRecordCallback) {
-                layerRecordCallback(layerRecord);
-            }
-
-            this.add(layerRecord);
-
-            // Only want to be notified of changes if not a base layer
-            if (!openLayer.options.isBaseLayer) {
-                Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
-            }
-
-            return layerRecord;
+        if (layerRecordCallback) {
+            layerRecordCallback(layerRecord);
         }
-        else {
-            Ext.Msg.alert(OpenLayers.i18n('layerExistsTitle'), OpenLayers.i18n('collectionExistsMsg'));
+
+        this.add(layerRecord);
+
+        // Only want to be notified of changes if not a base layer
+        if (!openLayer.options.isBaseLayer) {
+            Ext.MsgBus.publish(PORTAL_EVENTS.SELECTED_LAYER_CHANGED, openLayer);
         }
+
+        return layerRecord;
     },
 
     containsOpenLayer: function(openLayer) {
