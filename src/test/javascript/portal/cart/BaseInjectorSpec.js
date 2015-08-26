@@ -18,7 +18,6 @@ describe('Portal.cart.BaseInjector', function() {
 
         dataCollection = {
             uuid: 9,
-            getDataDownloadHandlers: returns([]),
             getLinksByProtocol: function(protocols) {
                 if (protocols == 'dataFile') {
                     return 'Downloadable link!';
@@ -27,7 +26,7 @@ describe('Portal.cart.BaseInjector', function() {
                     return 'Metadata record link!'
                 }
             }
-        }
+        };
     });
 
     describe('getPointOfTruthLinks', function() {
@@ -74,6 +73,7 @@ describe('Portal.cart.BaseInjector', function() {
         });
 
         it('returns the failed message if it can not calculate an estimate', function() {
+            spyOn(Portal.cart.DownloadHandler, 'handlersForDataCollection').andReturn([]);
 
             var markup = injector._getDataMarkup(dataCollection);
 
@@ -84,7 +84,7 @@ describe('Portal.cart.BaseInjector', function() {
 
             var sizeEstimateParams = {};
 
-            dataCollection.getDataDownloadHandlers = returns([{
+            spyOn(Portal.cart.DownloadHandler, 'handlersForDataCollection').andReturn([{
                 canEstimateDownloadSize: returns(true),
                 getDownloadEstimateParams: returns(sizeEstimateParams)
             }]);

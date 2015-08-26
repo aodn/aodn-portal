@@ -9,6 +9,14 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadHandler = Ext.extend(Object, {
 
+    PROTOCOL_CONSTRUCTOR_MAP: {
+        'OGC:WFS-1.0.0-http-get-capabilities': [
+            Portal.cart.WfsDownloadHandler,
+            Portal.cart.PythonDownloadHandler
+        ],
+        'IMOS:AGGREGATION--bodaac': Portal.cart.BodaacDownloadHandler,
+        'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckDownloadHandler
+    },
     DATE_FORMAT_FOR_PORTAL: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]',
     DEFAULT_LAT_START: -90,
     DEFAULT_LAT_END: 90,
@@ -66,3 +74,26 @@ Portal.cart.DownloadHandler = Ext.extend(Object, {
         return date.format(this.DATE_FORMAT_FOR_PORTAL);
     }
 });
+
+Portal.cart.DownloadHandler.handlersForDataCollection = function(dataCollection) {
+    var handlers = [];
+
+    Ext.each(dataCollection._getAllLinks(), function(link) {
+        handlers = handlers.concat(this._handlersForLink(link));
+    }, this);
+
+    return handlers;
+};
+
+Portal.cart.DownloadHandler._handlersForLink = function(link) {
+    var handlers = [];
+
+    var constructors = Portal.cart.DownloadHandler.PROTOCOL_CONSTRUCTOR_MAP[link.protocol] || [];
+    Ext.each(constructors, function(constructor) {
+        handlers.push(
+            new constructor(link)
+        );
+    });
+
+    return handlers;
+};

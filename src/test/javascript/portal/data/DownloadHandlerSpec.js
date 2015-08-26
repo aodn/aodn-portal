@@ -79,4 +79,76 @@ describe('Portal.cart.DownloadHandler', function () {
             expect(handler._resourceNameNotEmpty()).toBeTruthy();
         });
     });
+
+    describe('static methods', function() {
+        describe('handlesForDataCollection', function() {
+            var handlersReturned;
+
+            beforeEach(function() {
+                spyOn(Portal.cart.DownloadHandler, '_handlersForLink').andReturn([{}, {}]);
+
+                handlersReturned = Portal.cart.DownloadHandler.handlersForDataCollection({
+                    _getAllLinks: returns([{}, {}, {}])
+                });
+            });
+
+            it('calls _handlersForLink many times', function() {
+                expect(Portal.cart.DownloadHandler._handlersForLink.callCount).toBe(3);
+            });
+
+            it('returns a flat array of handlers (i.e. not an array of arrays)', function() {
+                expect(handlersReturned).toEqual([{}, {}, {}, {}, {}, {}]);
+            });
+        });
+
+        describe('_handlersForLink', function() {
+            var singleHandler;
+            var doubleHandlerOne;
+            var doubleHandlerTwo;
+
+            beforeEach(function() {
+                singleHandler = jasmine.createSpy('singleHandler');
+                doubleHandlerOne = jasmine.createSpy('doubleHandlerOne');
+                doubleHandlerTwo = jasmine.createSpy('doubleHandlerTwo');
+
+                Portal.cart.DownloadHandler.PROTOCOL_CONSTRUCTOR_MAP = {
+                    'protocolWithOneHandler': singleHandler,
+                    'protocolWithMultipleHandlers': [
+                        doubleHandlerOne,
+                        doubleHandlerTwo
+                    ]
+                }
+            });
+
+            it('calls constructor if one is found', function() {
+                Portal.cart.DownloadHandler._handlersForLink({
+                    protocol: 'protocolWithOneHandler'
+                });
+
+                expect(singleHandler).toHaveBeenCalled();
+                expect(doubleHandlerOne).not.toHaveBeenCalled();
+                expect(doubleHandlerTwo).not.toHaveBeenCalled();
+            });
+
+            it('calls all constructors if many are found', function() {
+                Portal.cart.DownloadHandler._handlersForLink({
+                    protocol: 'protocolWithMultipleHandlers'
+                });
+
+                expect(singleHandler).not.toHaveBeenCalled();
+                expect(doubleHandlerOne).toHaveBeenCalled();
+                expect(doubleHandlerTwo).toHaveBeenCalled();
+            });
+
+            it('returns an empty array if no constructors are found', function() {
+                Portal.cart.DownloadHandler._handlersForLink({
+                    protocol: 'protocolWithNoHandlers'
+                });
+
+                expect(singleHandler).not.toHaveBeenCalled();
+                expect(doubleHandlerOne).not.toHaveBeenCalled();
+                expect(doubleHandlerTwo).not.toHaveBeenCalled();
+            });
+        });
+    });
 });

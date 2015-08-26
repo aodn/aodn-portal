@@ -39,7 +39,8 @@ Portal.cart.InsertionService = Ext.extend(Object, {
     },
 
     _isCollectionDownloadable: function(collection) {
-        return collection.getDataDownloadHandlers().length > 0;
+        var downloadHandlers = Portal.cart.DownloadHandler.handlersForDataCollection(collection);
+        return downloadHandlers.length > 0;
     },
 
     downloadWithConfirmation: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {

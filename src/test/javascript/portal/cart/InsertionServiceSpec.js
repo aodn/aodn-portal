@@ -15,8 +15,7 @@ describe('Portal.cart.InsertionService', function() {
 
         dataCollection = {
             title: 'the title',
-            uuid: '42',
-            getDataDownloadHandlers: returns([{}])
+            uuid: '42'
         };
     });
 
@@ -36,16 +35,22 @@ describe('Portal.cart.InsertionService', function() {
         });
 
         it('creates an ncwms injector for ncwms layers', function() {
+            spyOn(Portal.cart.DownloadHandler, 'handlersForDataCollection').andReturn([{}]);
+
             mockInsertionService.insertionValues(getNcwmsRecord());
             expectGetInjectorToHaveBeenCalled(Portal.cart.NcWmsInjector);
         });
 
         it('creates a wms injector for wms layers', function() {
+            spyOn(Portal.cart.DownloadHandler, 'handlersForDataCollection').andReturn([{}]);
+
             mockInsertionService.insertionValues(getWmsRecord());
             expectGetInjectorToHaveBeenCalled(Portal.cart.WmsInjector);
         });
 
         it('creates a no data injector for layers containing no data', function() {
+            spyOn(Portal.cart.DownloadHandler, 'handlersForDataCollection').andReturn([]);
+
             mockInsertionService.insertionValues(getNoDataRecord());
             expectGetInjectorToHaveBeenCalled(Portal.cart.NoDataInjector);
         });
@@ -104,7 +109,6 @@ describe('Portal.cart.InsertionService', function() {
     }
 
     function getNoDataRecord() {
-        dataCollection.getDataDownloadHandlers = returns([]);
 
         return dataCollection;
     }

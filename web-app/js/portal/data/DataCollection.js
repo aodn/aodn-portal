@@ -23,34 +23,6 @@ Portal.data.DataCollection = function() {
         return this.data.metadataRecord;
     };
 
-    constructor.prototype.getDataDownloadHandlers = function() {
-
-        var protocolHandlerConstructors = { // Todo - DN: Should this mapping live in config?
-            'OGC:WFS-1.0.0-http-get-capabilities': [
-                Portal.cart.WfsDownloadHandler,
-                Portal.cart.PythonDownloadHandler
-            ],
-            'IMOS:AGGREGATION--bodaac': Portal.cart.BodaacDownloadHandler,
-            'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckDownloadHandler
-        };
-
-        var applicableDownloadOptions = [];
-
-        Ext.each(this._getAllLinks(), function(link) {
-            var constructors = protocolHandlerConstructors[link.protocol];
-
-            if (constructors) {
-                Ext.each(constructors, function(constructor) {
-                    applicableDownloadOptions.push(
-                        new constructor(link)
-                    );
-                });
-            }
-        }, this);
-
-        return applicableDownloadOptions;
-    };
-
     constructor.prototype.getFiltersRequestParams = function() {
         var layer = this.getLayerSelectionModel().getSelectedLayer();
         var layerName = this.getDownloadLayerName();
@@ -87,8 +59,8 @@ Portal.data.DataCollection = function() {
 
     constructor.prototype.getLinksByProtocol = function(protocols) {
         var allLinks = this._getAllLinks();
-        var matchesProtocols = function(rawLink) {
-            return protocols.indexOf(rawLink.protocol) != -1;
+        var matchesProtocols = function(link) {
+            return protocols.indexOf(link.protocol) != -1;
         };
 
         return allLinks.filter(matchesProtocols);
