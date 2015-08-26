@@ -290,7 +290,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <version>1.9.2</version>
+                    <version>1.9.8</version>
                 </configuration>
             </plugin>
 
@@ -315,9 +315,14 @@
                             <value>${phantomjs.binary}</value>
                         </capability>
                         <capability>
+                            <name>phantomjs.page.settings.resourceTimeout</name>
+                            <value>2000</value>
+                        </capability>
+                        <capability>
                             <name>phantomjs.cli.args</name>
                             <list>
                                 <value>--webdriver-loglevel=DEBUG</value>
+                                <value>--debug=true</value>
                             </list>
                         </capability>
                     </webDriverCapabilities>
