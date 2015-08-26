@@ -383,6 +383,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this._updateTimeRangeLabel();
 
         this._setLayerSubsetExtent();
+        this._applyFilterValuesFromMap();
     },
 
     _initializeDateTimePicker: function(dateTimePicker, defaultValue) {
