@@ -39,20 +39,15 @@ describe("Portal.ui.MapPanel", function() {
     describe('zoom to layer tests', function() {
 
         var openLayer = new OpenLayers.Layer.WMS();
-        openLayer.server = {
-            wmsVersion: '1.1.0'
-        };
 
         beforeEach(function() {
-            spyOn(mapPanel, 'zoomTo');
-            spyOn(mapPanel.map, 'setCenter');
+            spyOn(mapPanel.map, 'zoomToExtent');
         });
 
-        it('zoomTo not called for layer without bounds', function() {
+        it('zoomToExtent not called for layer without bounds', function() {
 
             mapPanel.zoomToLayer(openLayer);
-            expect(mapPanel.zoomTo).not.toHaveBeenCalled();
-            expect(mapPanel.map.setCenter).not.toHaveBeenCalled();
+            expect(mapPanel.map.zoomToExtent).not.toHaveBeenCalled();
         });
 
         it('zoomTo called for layer with bounds', function() {
@@ -63,8 +58,7 @@ describe("Portal.ui.MapPanel", function() {
             openLayer.bboxMaxY = 20;
 
             mapPanel.zoomToLayer(openLayer);
-            expect(mapPanel.zoomTo).toHaveBeenCalled();
-            expect(mapPanel.map.setCenter).not.toHaveBeenCalled();
+            expect(mapPanel.map.zoomToExtent).toHaveBeenCalled();
         });
     });
 
