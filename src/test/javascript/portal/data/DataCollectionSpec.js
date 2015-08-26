@@ -10,7 +10,7 @@ describe("Portal.data.DataCollection", function() {
     var dataCollection;
 
     beforeEach(function() {
-        dataCollection = new Portal.data.DataCollection();
+        dataCollection = Portal.data.DataCollection.fromMetadataRecord({});
         spyOn(dataCollection, 'setFilters');
     });
 

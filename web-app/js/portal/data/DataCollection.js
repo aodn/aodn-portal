@@ -120,8 +120,11 @@ Portal.data.DataCollection = function() {
 }();
 
 Portal.data.DataCollection.fromMetadataRecord = function(metadataRecord) {
-
-    return new Portal.data.DataCollection({
+    var dataCollection = new Portal.data.DataCollection({
         "metadataRecord": metadataRecord
     });
+
+    Portal.utils.ObservableUtils.makeObservable(dataCollection);
+
+    return dataCollection;
 };
