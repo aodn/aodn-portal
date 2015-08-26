@@ -290,14 +290,14 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <version>1.9.2</version>
+                    <version>1.9.8</version>
                 </configuration>
             </plugin>
 
             <plugin>
                 <groupId>com.github.searls</groupId>
                 <artifactId>jasmine-maven-plugin</artifactId>
-                <version>1.3.1.2</version>
+                <version>1.3.1.4</version>
                 <executions>
                     <execution>
                         <goals>
@@ -306,10 +306,25 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <debug>true</debug>
                     <jsSrcDir>${project.basedir}/web-app/js</jsSrcDir>
                     <webDriverClassName>org.openqa.selenium.phantomjs.PhantomJSDriver</webDriverClassName>
                     <webDriverCapabilities>
-                        <phantomjs.binary.path>${phantomjs.binary}</phantomjs.binary.path>
+                        <capability>
+                            <name>phantomjs.binary.path</name>
+                            <value>${phantomjs.binary}</value>
+                        </capability>
+                        <capability>
+                            <name>phantomjs.page.settings.resourceTimeout</name>
+                            <value>2000</value>
+                        </capability>
+                        <capability>
+                            <name>phantomjs.cli.args</name>
+                            <list>
+                                <value>--webdriver-loglevel=DEBUG</value>
+                                <value>--debug=true</value>
+                            </list>
+                        </capability>
                     </webDriverCapabilities>
                     <sourceIncludes>
                         <include>jquery/jquery-1.6.min.js</include>
