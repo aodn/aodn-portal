@@ -259,13 +259,13 @@ describe('Portal.details.NcWmsPanel', function() {
 
     describe('resetting extents', function() {
         beforeEach(function() {
-            spyOn(ncwmsPanel, '_applyFilterValuesFromMap');
+            spyOn(ncwmsPanel, '_applyFilterValuesToCollection');
 
             ncwmsPanel._resetExtent();
         });
 
         it('applies filters with reset values', function() {
-            expect(ncwmsPanel._applyFilterValuesFromMap).toHaveBeenCalled();
+            expect(ncwmsPanel._applyFilterValuesToCollection).toHaveBeenCalled();
         });
     });
 

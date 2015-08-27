@@ -44,7 +44,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this._attachTemporalEvents();
         this._attachSpatialEvents();
         this._removeLoadingInfo();
-        this._applyFilterValuesFromMap();
+        this._applyFilterValuesToCollection();
     },
 
     _onSelectedLayerChanged: function(newLayer) {
@@ -266,7 +266,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this._layerToTime(selectedDateTimeMoment);
         this._setLayerSubsetExtent();
         this._updateTimeRangeLabel();
-        this._applyFilterValuesFromMap();
+        this._applyFilterValuesToCollection();
     },
 
     _onDateSelected: function(datePicker, selectedDateTimeMoment) {
@@ -314,15 +314,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this._updateTimeRangeLabel();
     },
 
-    _applyFilterValuesFromMap: function() {
-
-        this._applyFilterValuesToCollection(this.layer, this.map.getConstraint());
-    },
-
-    _applyFilterValuesToCollection: function(layer, geometry) {
+    _applyFilterValuesToCollection: function() {
 
         var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
+        var geometry = this.map.getConstraint();
 
         this.dataCollection.setFilters(this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry));
     },
@@ -383,7 +379,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this._updateTimeRangeLabel();
 
         this._setLayerSubsetExtent();
-        this._applyFilterValuesFromMap();
+        this._applyFilterValuesToCollection();
     },
 
     _initializeDateTimePicker: function(dateTimePicker, defaultValue) {
@@ -412,7 +408,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
         else {
             this._resetExtent(this.layer.getSubsetExtentMin(), this.layer.getSubsetExtentMax());
-            this._applyFilterValuesFromMap();
+            this._applyFilterValuesToCollection();
         }
     },
 
