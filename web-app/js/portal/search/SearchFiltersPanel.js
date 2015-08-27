@@ -38,10 +38,6 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this._monitor(this.searcher, searcherEvents, this);
     },
 
-    initComponent: function() {
-        Portal.search.SearchFiltersPanel.superclass.initComponent.apply(this);
-    },
-
     _getEnabledFacets: function() {
         return Portal.app.appConfig.enabledFacets;
     },
@@ -54,7 +50,6 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
             var facetClass = facet.classId ? eval(facet.classId) : Portal.search.FacetFilterPanel;
             var collapsedByDefault = facet.collapsedByDefault ? true : false;
-            var hierarchical = facet.hierarchical ? true : false;
 
             this._buildFilter(
                 facetClass,
@@ -149,10 +144,6 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this._setSpinnerText('');
         this.newSearchButton.setVisible(true);
         this._hideSpinnerText();
-    },
-
-    _buildFacetFilter: function(name, config) {
-        return this._buildFilter(Portal.ui.FacetFilterPanel, name, config);
     },
 
     _buildFilter: function(constructor, name, config) {
