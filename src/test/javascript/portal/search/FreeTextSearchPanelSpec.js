@@ -36,12 +36,22 @@ describe("Portal.search.FreeTextSearchPanel", function()
 
     it("clears text box on clear", function() {
         spyOn(freeTextSearchPanel, 'onGo');
-        spyOn(freeTextSearchPanel.searchField, 'setRawValue');
+        spyOn(freeTextSearchPanel.searchField, 'reset');
 
         freeTextSearchPanel.clearSearch();
 
         expect(freeTextSearchPanel.onGo).toHaveBeenCalled();
-        expect(freeTextSearchPanel.searchField.setRawValue).toHaveBeenCalledWith('');
+        expect(freeTextSearchPanel.searchField.reset).toHaveBeenCalledWith();
+    });
+
+    it("clears text box and filters on fresh search", function() {
+        spyOn(freeTextSearchPanel.searchField, 'reset');
+        spyOn(freeTextSearchPanel.searcher, 'removeFilters');
+
+        freeTextSearchPanel.removeAnyFilters();
+
+        expect(freeTextSearchPanel.searcher.removeFilters).toHaveBeenCalledWith('any');
+        expect(freeTextSearchPanel.searchField.reset).toHaveBeenCalled();
     });
 
     it("sends google analytics tracking information on go", function() {
