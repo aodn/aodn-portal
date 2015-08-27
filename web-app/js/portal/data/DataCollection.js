@@ -56,7 +56,7 @@ Portal.data.DataCollection = function() {
         var layerName = this.getDownloadLayerName();
 
         return {
-            server: layer.server.uri,
+            server: layer.url,
             layer: layerName
         };
     };
@@ -86,14 +86,12 @@ Portal.data.DataCollection = function() {
     };
 
     constructor.prototype.getLinksByProtocol = function(protocols) {
+        var rawLinks = this._getRawLinks();
+        var matchesProtocols = function(rawLink) {
+            return protocols.indexOf(rawLink.protocol) != -1;
+        };
 
-        var linkStore = new Portal.search.data.LinkStore({
-            data: { links: this._getRawLinks() }
-        });
-
-        linkStore.filterByProtocols(protocols);
-
-        return linkStore.getRange(); // Get all records
+        return rawLinks.filter(matchesProtocols);
     };
 
     constructor.prototype.getDownloadLayerName = function() {
@@ -110,14 +108,14 @@ Portal.data.DataCollection = function() {
         };
 
         if (link) {
-            var linkName = link.data.name;
+            var linkName = link.name;
 
             // If layer has no workspace defined, assume it is in the same workspace as the WMS layer
             if (_workspaceFromName(linkName)) {
                 return linkName;
             }
             else {
-                return _workspaceFromName(firstWmsLink.data.name) + ':' + linkName;
+                return _workspaceFromName(firstWmsLink.name) + ':' + linkName;
             }
         }
     };

@@ -40,12 +40,10 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
     _getHtmlForLinks: function() {
 
-        var linkRecords = this._getLinkRecords();
+        var links = this._getWebpageLinks();
         var linkHtml = "";
 
-        Ext.each(linkRecords, function(linkRecord) {
-
-            var link = linkRecord.data;
+        Ext.each(links, function(link) {
             var linkText;
 
             if (link.title == "") {
@@ -61,7 +59,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
         return linkHtml;
     },
 
-    _getLinkRecords: function() {
+    _getWebpageLinks: function() {
         return this.dataCollection.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.webPage);
     }
 });

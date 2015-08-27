@@ -200,8 +200,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getSingleFileEntry: function(link) {
-        var linkData = link.data;
-        return this._makeExternalLinkMarkup(linkData.url, linkData.title);
+        return this._makeExternalLinkMarkup(link.url, link.title);
     },
 
     _makeExternalLinkMarkup: function(href, text, extras) {
