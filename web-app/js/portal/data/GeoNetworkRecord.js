@@ -170,9 +170,5 @@ Portal.data.GeoNetworkRecord = function() {
         return linkStore.getLayerLink(0);
     };
 
-    prototype.hasWmsLink = function() {
-        return this.getFirstWmsLink() != undefined;
-    };
-
     return constructor;
 }();

@@ -43,21 +43,6 @@ describe('Portal.data.GeoNetworkRecord', function() {
 
     describe('wms link', function() {
 
-        it('has wms link', function() {
-            record.get('links')[0].protocol = 'OGC:WMS-1.1.1-http-get-map';
-            expect(record.hasWmsLink()).toBeTruthy();
-        });
-
-        it('does not have wms link', function() {
-            record.get('links')[0].protocol = 'some protocol';
-            expect(record.hasWmsLink()).toBeFalsy();
-        });
-
-        it('does not have any links', function() {
-            record.set('links', undefined);
-            expect(record.hasWmsLink()).toBeFalsy();
-        });
-
         it('get first wms link', function() {
             record.get('links')[0].protocol = 'OGC:WMS-1.1.1-http-get-map';
             var link = record.getFirstWmsLink();

@@ -90,8 +90,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
         beforeEach(function() {
             record = {
                 get: returns("Argo Australia Profiles"),
-                join: noOp,
-                hasWmsLink: noOp
+                join: noOp
             };
 
             facetedSearchDataView.uuidFromElementId = returns("my uuid");
