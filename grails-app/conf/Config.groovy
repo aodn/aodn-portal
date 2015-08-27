@@ -271,6 +271,10 @@ portal {
             "WWW:DOWNLOAD-1.0-http--downloaddata",
             "WWW:LINK-1.0-http--downloaddata"
         ]
+
+        metadataRecord = [
+            "WWW:LINK-1.0-http--metadata-URL"
+        ]
     }
 
     mapGetFeatureInfoBuffer = 10

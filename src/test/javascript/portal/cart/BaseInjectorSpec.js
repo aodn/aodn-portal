@@ -11,25 +11,29 @@ describe('Portal.cart.BaseInjector', function() {
     var dataCollection;
 
     beforeEach(function() {
+        Portal.app.appConfig.portal.metadataProtocols.metadataRecord = 'metadataRecord';
+        Portal.app.appConfig.portal.metadataProtocols.dataFile = 'dataFile';
 
         injector = new Portal.cart.BaseInjector();
 
         dataCollection = {
             uuid: 9,
-            getMetadataRecord: returns({
-                data: {
-                    pointOfTruthLink: 'Link!'
-                }
-            }),
             getDataDownloadHandlers: returns([]),
-            getDataFileLinks: returns('Downloadable link!')
+            getLinksByProtocol: function(protocols) {
+                if (protocols == 'dataFile') {
+                    return 'Downloadable link!';
+                }
+                else if (protocols == 'metadataRecord') {
+                    return 'Metadata record link!'
+                }
+            }
         }
     });
 
     describe('getPointOfTruthLinks', function() {
 
         it('returns point of truth links as appropriate', function() {
-            expect(injector._getPointOfTruthLink(dataCollection)).toEqual('Link!');
+            expect(injector._getPointOfTruthLink(dataCollection)).toEqual('Metadata record link!');
         });
     });
 

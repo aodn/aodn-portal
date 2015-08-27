@@ -30,9 +30,9 @@ describe("Portal.details.InfoPanel", function() {
             dataCollection: {
                 getMetadataRecord: returns({
                     get: returns("Abstract & information")
-                }),
-                getWebPageLinks: returns(mockLinkRecords)
-            }
+                })
+            },
+            _getLinkRecords: returns(mockLinkRecords)
         });
     });
 

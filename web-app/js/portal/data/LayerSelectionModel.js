@@ -49,7 +49,8 @@ Portal.data.LayerSelectionModel = Ext.extend(Ext.util.Observable, {
     _initLayers: function() {
         this.layerCache = [];
 
-        Ext.each(this.dataCollection.getWmsLayerLinks(), function(layerLink) {
+        var wmsLayerLinks = this.dataCollection.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.wms);
+        Ext.each(wmsLayerLinks, function(layerLink) {
             // TODO: rename LayerLink classes/vars appropriately - when is a layer link *really*
             // a layer link?
             var convertedLayerLink = Portal.search.data.LinkStore.prototype._convertLink(layerLink);

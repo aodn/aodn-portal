@@ -5,7 +5,7 @@
  *
  */
 
-describe("Portal.data.LayerSelectionModelSpec", function() {
+describe("Portal.data.LayerSelectionModel", function() {
 
     var dataCollection;
     var dataCollectionLayers;
@@ -55,7 +55,7 @@ describe("Portal.data.LayerSelectionModelSpec", function() {
         }).records;
 
         dataCollection = {
-            getWmsLayerLinks: returns(linkRecords),
+            getLinksByProtocol: returns(linkRecords),
             get: returns('name')
         };
 
