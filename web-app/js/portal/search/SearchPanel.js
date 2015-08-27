@@ -23,7 +23,7 @@ Portal.search.SearchPanel = Ext.extend(Ext.Panel, {
             }
         });
 
-        this.resultsStore = new Portal.data.GeoNetworkRecordStore();
+        this.resultsStore = new Portal.data.MetadataRecordStore();
         this.classificationStore = new Portal.data.TermClassificationStore();
 
         var filtersPanelConfig = {

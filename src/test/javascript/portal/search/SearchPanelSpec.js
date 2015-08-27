@@ -24,7 +24,7 @@ describe("Portal.search.SearchPanel", function() {
 
         it('initialises results store', function() {
             var resultsStore = searchPanel.resultsStore;
-            expect(resultsStore).toBeInstanceOf(Portal.data.GeoNetworkRecordStore);
+            expect(resultsStore).toBeInstanceOf(Portal.data.MetadataRecordStore);
         });
 
         it('initialises SearchBodyPanel', function() {

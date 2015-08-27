@@ -4,9 +4,9 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-Ext.namespace('Portal.data.GeoNetworkRecord');
+Ext.namespace('Portal.data.MetadataRecord');
 
-Portal.data.GeoNetworkRecord = function() {
+Portal.data.MetadataRecord = function() {
 
     var PROTOCOL_WWW_METADATA_LINK = 'WWW:LINK-1.0-http--metadata-URL';
 

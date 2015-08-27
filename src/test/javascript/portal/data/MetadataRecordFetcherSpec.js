@@ -4,7 +4,7 @@
  * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
  *
  */
-describe("Portal.data.GeoNetworkRecordFetcher", function() {
+describe("Portal.data.MetadataRecordFetcher", function() {
 
     var catalogUrl;
     var fetcher;
@@ -15,7 +15,7 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
 
         Ext.namespace('Portal.app.appConfig.geonetwork');
         Portal.app.appConfig.geonetwork.url = catalogUrl;
-        fetcher = new Portal.data.GeoNetworkRecordFetcher({
+        fetcher = new Portal.data.MetadataRecordFetcher({
             dataCollectionStore: {
                 add: jasmine.createSpy('add)')
             }
@@ -53,7 +53,7 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
             var response = {
                 responseXML: '<some_xml></some_xml>'
             };
-            spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'loadData');
+            spyOn(Portal.data.MetadataRecordStore.prototype, 'loadData');
             spyOn(Portal.data.DataCollection, 'fromMetadataRecord').andReturn(dataCollectionRecord);
             spyOn(Ext.Ajax, 'request').andCallFake(
                 function(params) {
@@ -63,19 +63,19 @@ describe("Portal.data.GeoNetworkRecordFetcher", function() {
         });
 
         it('record into DataCollectionStore', function() {
-            spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'getAt').andReturn({});
+            spyOn(Portal.data.MetadataRecordStore.prototype, 'getAt').andReturn({});
 
             fetcher.load(uuid);
-            expect(Portal.data.GeoNetworkRecordStore.prototype.getAt).toHaveBeenCalled();
+            expect(Portal.data.MetadataRecordStore.prototype.getAt).toHaveBeenCalled();
             expect(fetcher.dataCollectionStore.add).toHaveBeenCalledWith(dataCollectionRecord);
         });
 
         it('with error', function() {
-            spyOn(Portal.data.GeoNetworkRecordStore.prototype, 'getAt').andReturn(undefined);
+            spyOn(Portal.data.MetadataRecordStore.prototype, 'getAt').andReturn(undefined);
             spyOn(fetcher, '_errorLoadingDataCollection');
 
             fetcher.load(uuid);
-            expect(Portal.data.GeoNetworkRecordStore.prototype.getAt).toHaveBeenCalled();
+            expect(Portal.data.MetadataRecordStore.prototype.getAt).toHaveBeenCalled();
             expect(fetcher._errorLoadingDataCollection).toHaveBeenCalledWith(uuid);
         });
     });

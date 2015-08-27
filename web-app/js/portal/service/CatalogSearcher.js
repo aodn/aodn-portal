@@ -70,9 +70,9 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     },
 
     // TODO: this function only exists because I didn't have any luck spying
-    // GeoNetworkSearchResponseLoader's constructor.
+    // MetadataSearchResponseLoader's constructor.
     _newSearchResponseLoader: function(loaderConfig) {
-        return new Portal.ui.search.data.GeoNetworkSearchResponseLoader(loaderConfig);
+        return new Portal.ui.search.data.MetadataSearchResponseLoader(loaderConfig);
     },
 
     hasFacetNode: function(facetName) {

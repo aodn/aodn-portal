@@ -318,7 +318,7 @@
                         <!-- needs to load before FacetMapPanel-->
                         <include>portal/ui/openlayers/layer/NcWMS.js</include>
                         <include>portal/data/ChildElementsField.js</include>
-                        <include>portal/data/GeoNetwork*.js</include>
+                        <include>portal/data/Metadata*.js</include>
                         <include>portal/ui/MapPanel.js</include>
                         <include>portal/search/SearchFiltersPanel.js</include>
                         <include>portal/search/HierarchicalSearchFiltersPanel.js</include>

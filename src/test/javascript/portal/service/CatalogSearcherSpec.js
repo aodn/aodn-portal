@@ -127,7 +127,7 @@ describe('Portal.service.CatalogSearcher', function() {
         });
 
         it('loads loader', function() {
-            var loader = new Portal.ui.search.data.GeoNetworkSearchResponseLoader();
+            var loader = new Portal.ui.search.data.MetadataSearchResponseLoader();
 
             spyOn(loader, 'load');
             spyOn(searcher, '_newSearchResponseLoader').andReturn(loader);
