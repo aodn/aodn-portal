@@ -66,7 +66,7 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
     },
 
     clearSearch: function() {
-        this.searchField.setRawValue('');
+        this.searchField.reset();
         this.onGo();
     },
 
@@ -77,6 +77,8 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
     },
 
     removeAnyFilters: function() {
+        this.searchField.reset();
+        this.searcher.removeFilters('any');
         this.collapse();
     }
 });
