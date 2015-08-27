@@ -78,7 +78,7 @@ Portal.cart.DownloadHandler = Ext.extend(Object, {
 Portal.cart.DownloadHandler.handlersForDataCollection = function(dataCollection) {
     var handlers = [];
 
-    Ext.each(dataCollection._getAllLinks(), function(link) {
+    Ext.each(dataCollection.getAllLinks(), function(link) {
         handlers = handlers.concat(this._handlersForLink(link));
     }, this);
 

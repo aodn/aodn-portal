@@ -88,7 +88,7 @@ describe('Portal.cart.DownloadHandler', function () {
                 spyOn(Portal.cart.DownloadHandler, '_handlersForLink').andReturn([{}, {}]);
 
                 handlersReturned = Portal.cart.DownloadHandler.handlersForDataCollection({
-                    _getAllLinks: returns([{}, {}, {}])
+                    getAllLinks: returns([{}, {}, {}])
                 });
             });
 
@@ -117,7 +117,7 @@ describe('Portal.cart.DownloadHandler', function () {
                         doubleHandlerOne,
                         doubleHandlerTwo
                     ]
-                }
+                };
             });
 
             it('calls constructor if one is found', function() {

@@ -53,12 +53,12 @@ Portal.data.DataCollection = function() {
         return this.filters || [];
     };
 
-    constructor.prototype._getAllLinks = function() {
+    constructor.prototype.getAllLinks = function() {
         return this.getMetadataRecord().get('links');
     };
 
     constructor.prototype.getLinksByProtocol = function(protocols) {
-        var allLinks = this._getAllLinks();
+        var allLinks = this.getAllLinks();
         var matchesProtocols = function(link) {
             return protocols.indexOf(link.protocol) != -1;
         };
