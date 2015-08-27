@@ -24,7 +24,7 @@ describe("Portal.data.DataCollection", function() {
 
             dataCollection.getLayerSelectionModel = returns({
                 getSelectedLayer: returns({
-                    server: {uri: 'server url'}
+                    url: 'server url'
                 })
             });
         });
@@ -38,15 +38,15 @@ describe("Portal.data.DataCollection", function() {
         describe('getDownloadLayerName()', function() {
             beforeEach(function() {
                 testWfsLayerLinks = [{
-                    data: {name: 'imos:wfs_layer1'}
+                    name: 'imos:wfs_layer1'
                 }, {
-                    data: {name: 'imos:wfs_layer2'}
+                    name: 'imos:wfs_layer2'
                 }];
 
                 testWmsLayerLinks = [{
-                    data: {name: 'aodn:wms_layer1'}
+                    name: 'aodn:wms_layer1'
                 }, {
-                    data: {name: 'aodn:wms_layer2'}
+                    name: 'aodn:wms_layer2'
                 }];
 
                 dataCollection.getLinksByProtocol = function(protocols) {
@@ -71,7 +71,7 @@ describe("Portal.data.DataCollection", function() {
 
             it('uses WFS link with workspace name from WMS link if missing', function() {
                 testWfsLayerLinks = [{
-                    data: {name: 'wfs_layer1'} // No namespace
+                    name: 'wfs_layer1' // No namespace
                 }];
 
                 expect(dataCollection.getFiltersRequestParams().layer).toBe('aodn:wfs_layer1');

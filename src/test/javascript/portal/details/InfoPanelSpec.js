@@ -14,16 +14,12 @@ describe("Portal.details.InfoPanel", function() {
 
     beforeEach(function() {
 
-        var mockLinkRecords = [{
-            data: {
-                url: "http://www.google.com",
-                title: ""
-            }
+        var mockLinks = [{
+            url: "http://www.google.com",
+            title: ""
         }, {
-            data: {
-                url: "http://imos.aodn.org.au",
-                title: "Portal"
-            }
+            url: "http://imos.aodn.org.au",
+            title: "Portal"
         }];
 
         panel = new Portal.details.InfoPanel({
@@ -32,7 +28,7 @@ describe("Portal.details.InfoPanel", function() {
                     get: returns("Abstract & information")
                 })
             },
-            _getLinkRecords: returns(mockLinkRecords)
+            _getWebpageLinks: returns(mockLinks)
         });
     });
 

@@ -133,7 +133,7 @@ Portal.data.GeoNetworkRecord = function() {
         return (allowedOnlineResources.indexOf(protocol) >= 0);
     }
 
-    var constructor = Ext.data.Record.create([
+    return Ext.data.Record.create([
         'title',
         'abstract',
         { name: 'uuid', mapping: '*/uuid' },
@@ -149,30 +149,4 @@ Portal.data.GeoNetworkRecord = function() {
         bboxField,
         'wmsLayer'
     ]);
-
-    var prototype = constructor.prototype;
-
-    prototype.getFirstWmsLink = function() {
-        var links = this.get('links');
-
-        if (!links) {
-            return undefined;
-        }
-
-        var linkStore = new Portal.search.data.LinkStore({
-            data: {
-                links: links
-            }
-        });
-
-        linkStore.filterByProtocols(Portal.app.appConfig.portal.metadataProtocols.wms);
-
-        return linkStore.getLayerLink(0);
-    };
-
-    prototype.hasWmsLink = function() {
-        return this.getFirstWmsLink() != undefined;
-    };
-
-    return constructor;
 }();

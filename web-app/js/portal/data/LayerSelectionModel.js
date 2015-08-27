@@ -51,17 +51,14 @@ Portal.data.LayerSelectionModel = Ext.extend(Ext.util.Observable, {
 
         var wmsLayerLinks = this.dataCollection.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.wms);
         Ext.each(wmsLayerLinks, function(layerLink) {
-            // TODO: rename LayerLink classes/vars appropriately - when is a layer link *really*
-            // a layer link?
-            var convertedLayerLink = Portal.search.data.LinkStore.prototype._convertLink(layerLink);
-            this.layerCache.push(this._linkToOpenLayer(convertedLayerLink, this.dataCollection));
+            this.layerCache.push(this._linkToOpenLayer(layerLink, this.dataCollection));
         }, this);
     },
 
     // TODO: unit tests?
     _linkToOpenLayer: function(layerLink, dataCollection) {
         var layerDisplayName = dataCollection.get('title');
-        var serverUri = layerLink.server.uri;
+        var serverUri = layerLink.href;
         var serverInfo = Portal.data.Server.getInfo(serverUri);
 
         layerLink.server = serverInfo;
