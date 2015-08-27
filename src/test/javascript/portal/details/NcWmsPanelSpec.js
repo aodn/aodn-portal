@@ -11,6 +11,8 @@ describe('Portal.details.NcWmsPanel', function() {
     var ncwmsPanel;
     var dataCollection;
 
+    var date;
+    var momentUtcIsoDate;
     var layer;
     var layerSelectionModel;
 
@@ -33,7 +35,8 @@ describe('Portal.details.NcWmsPanel', function() {
         dataCollection = {
             getUuid: returns(45678),
             setFilters: jasmine.createSpy('setFilters'),
-            getLayerSelectionModel: returns(layerSelectionModel)
+            getLayerSelectionModel: returns(layerSelectionModel),
+            getTitle: returns("collectionTitle")
         };
 
         ncwmsPanel = new Portal.details.NcWmsPanel({
@@ -45,7 +48,8 @@ describe('Portal.details.NcWmsPanel', function() {
         ncwmsPanel._removeLoadingInfo = noOp;
         ncwmsPanel.selectedLayer = layer;
 
-        spyOn(window, 'trackUsage');
+        date = new Date('1999/9/9');
+        momentUtcIsoDate = moment(date).utc().toISOString();
     });
 
     describe('DataCollection', function() {
@@ -64,6 +68,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         beforeEach(function() {
             _applyCommonSpies();
+            spyOn(window, 'trackFiltersUsage');
         });
 
         it('updates the record when panel is created', function() {
@@ -73,14 +78,16 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('updates the date when the start date changes via edit', function() {
             ncwmsPanel._addTemporalControls();
-            ncwmsPanel.startDateTimePicker.fireEvent('change', ncwmsPanel.startDateTimePicker);
+            ncwmsPanel.startDateTimePicker.fireEvent('change', ncwmsPanel.startDateTimePicker, date);
             expect(ncwmsPanel._onDateSelected).toHaveBeenCalled();
+            expect(window.trackFiltersUsage).toHaveBeenCalledWith(OpenLayers.i18n('trackingDateAction'), momentUtcIsoDate, dataCollection.getTitle());
         });
 
         it('updates the date when the end date changes via edit', function() {
             ncwmsPanel._addTemporalControls();
-            ncwmsPanel.startDateTimePicker.fireEvent('change', ncwmsPanel.endDateTimePicker);
+            ncwmsPanel.startDateTimePicker.fireEvent('change', ncwmsPanel.endDateTimePicker, date);
             expect(ncwmsPanel._onDateSelected).toHaveBeenCalled();
+            expect(window.trackFiltersUsage).toHaveBeenCalledWith(OpenLayers.i18n('trackingDateAction'), momentUtcIsoDate, dataCollection.getTitle());
         });
     });
 
@@ -126,10 +133,13 @@ describe('Portal.details.NcWmsPanel', function() {
 
     describe('next and previous buttons', function() {
         beforeEach(function() {
-            ncwmsPanel.layer.getPreviousTimeSlice = noOp;
-            ncwmsPanel.layer.getNextTimeSlice = noOp;
+            ncwmsPanel.layer.getPreviousTimeSlice = returns();
+            ncwmsPanel.layer.getNextTimeSlice = returns();
+            ncwmsPanel.layer.goToPreviousTimeSlice = returns();
+            ncwmsPanel.layer.goToNextTimeSlice = returns();
             spyOn(ncwmsPanel.layer, 'getPreviousTimeSlice');
             spyOn(ncwmsPanel.layer, 'getNextTimeSlice');
+            spyOn(window, 'trackLayerControlUsage');
         });
 
         describe('_previousTimeSlice', function() {
@@ -153,6 +163,13 @@ describe('Portal.details.NcWmsPanel', function() {
             it('loads next time slice', function() {
                 ncwmsPanel._loadNextTimeSlice();
                 expect(ncwmsPanel.layer.getNextTimeSlice).toHaveBeenCalled();
+            });
+
+            it('time slice tracking', function() {
+                ncwmsPanel._goToPreviousTimeSlice();
+                expect(window.trackLayerControlUsage).toHaveBeenCalledWith(OpenLayers.i18n('trackingDateAction'), OpenLayers.i18n("trackingTimeSliceAction", {direction: "previous"}), dataCollection.getTitle());
+                ncwmsPanel._goToNextTimeSlice();
+                expect(window.trackLayerControlUsage).toHaveBeenCalledWith(OpenLayers.i18n('trackingDateAction'), OpenLayers.i18n("trackingTimeSliceAction", {direction: "next"}), dataCollection.getTitle());
             });
         });
     });

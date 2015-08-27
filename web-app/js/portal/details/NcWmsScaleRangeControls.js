@@ -91,6 +91,9 @@ Portal.details.NcWmsScaleRangeControls = Ext.extend(Ext.Panel, {
             layer.setScaleRange(min, max);
 
             this.fireEvent('colourScaleUpdated');
+
+            var scaleRangeString = toNSigFigs(min, 2) + "," + toNSigFigs(max, 2);
+            trackLayerControlUsage(OpenLayers.i18n('layerControlTrackingActionStyleRange'), scaleRangeString, this.dataCollection.getTitle());
         }
     }
 });

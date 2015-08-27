@@ -19,35 +19,50 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
             this.items.push(layerSelector, { xtype: 'spacer', height: 10 });
         }
 
-        this.items.push(this._newOpacitySlider());
+        this.items.push(this._newOpacitySliderContainer());
         this.items.push(this._newVisibilityCheckbox());
         this.items.push(this._newZoomToDataButton());
 
         Portal.details.LayerControlPanel.superclass.initComponent.call(this);
     },
 
-    _newOpacitySlider: function() {
+    _newOpacitySliderContainer: function() {
+
+        this.opacitySlider = new Portal.common.LayerOpacitySliderFixed({
+            layer: this.layer,
+            keyIncrement: 10,
+            increment: 5,
+            minValue: 20,
+            maxValue: 100,
+            aggressive: true,
+            width: 175,
+            isFormField: true,
+            inverse: false,
+            fieldLabel: OpenLayers.i18n('Opacity'),
+            plugins: new GeoExt.LayerOpacitySliderTip({
+                template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
+            }),
+            listeners: {
+                'changecomplete': this.doTracking,
+                scope: this
+            }
+        });
+
         // Put slider in container with form layout so that we see the label.
         return new Ext.Panel({
             layout: 'form',
             items: [
-                new Portal.common.LayerOpacitySliderFixed({
-                    layer: this.layer,
-                    keyIncrement: 10,
-                    increment: 5,
-                    minValue: 20,
-                    maxValue: 100,
-                    aggressive: true,
-                    width: 175,
-                    isFormField: true,
-                    inverse: false,
-                    fieldLabel: OpenLayers.i18n('Opacity'),
-                    plugins: new GeoExt.LayerOpacitySliderTip({
-                        template: '<div class="opacitySlider" >Opacity: {opacity}%</div>'
-                    })
-                })
+                this.opacitySlider
             ]
         });
+    },
+
+    doTracking: function(slider, value) {
+        trackLayerControlUsage(
+            OpenLayers.i18n('changeLayerTrackingActionOpacity'),
+            value,
+            this.dataCollection.getTitle()
+        );
     },
 
     _newVisibilityCheckbox: function() {
