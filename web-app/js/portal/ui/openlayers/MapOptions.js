@@ -55,22 +55,9 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
         this.displayProjection = new OpenLayers.Projection("EPSG:4326");
         this.prettyStateKeys = true; // for pretty permalinks,
         this.resolutions = [0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 0.0006866455078125, 0.00034332275390625, 0.000171661376953125];
-
-        // This is included here, as it is essentially just another control for the map, although
-        // not an actual OpenLayers.Control.
-        this.mapPanel = mapPanel;
-
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function(eventName, message) {
-            var map = this.mapPanel.map;
-            var theLayer = map.getLayersByName(message.layer.name)[0];
-            if (theLayer) {
-                var requiredIndex = map.getLayerIndex(theLayer) + message.direction;
-                map.setLayerIndex(theLayer, requiredIndex);
-            }
-        }, this);
     },
 
-    afterRender: function (mapPanel) {
+    afterRender: function () {
 
         this.navigationControl.events.on({
             "activate": function () {
