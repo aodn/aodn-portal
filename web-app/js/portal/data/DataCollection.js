@@ -36,7 +36,7 @@ Portal.data.DataCollection = function() {
 
         var applicableDownloadOptions = [];
 
-        Ext.each(this._getRawLinks(), function(link) {
+        Ext.each(this._getAllLinks(), function(link) {
             var constructors = protocolHandlerConstructors[link.protocol];
 
             if (constructors) {
@@ -81,17 +81,17 @@ Portal.data.DataCollection = function() {
         return this.filters || [];
     };
 
-    constructor.prototype._getRawLinks = function() { // Todo - DN: 'raw' here because they haven't gone thorugh the LayerStore. What is a better name?
+    constructor.prototype._getAllLinks = function() {
         return this.getMetadataRecord().get('links');
     };
 
     constructor.prototype.getLinksByProtocol = function(protocols) {
-        var rawLinks = this._getRawLinks();
+        var allLinks = this._getAllLinks();
         var matchesProtocols = function(rawLink) {
             return protocols.indexOf(rawLink.protocol) != -1;
         };
 
-        return rawLinks.filter(matchesProtocols);
+        return allLinks.filter(matchesProtocols);
     };
 
     constructor.prototype.getDownloadLayerName = function() {
