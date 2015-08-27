@@ -38,10 +38,6 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this._monitor(this.searcher, searcherEvents, this);
     },
 
-    initComponent: function() {
-        Portal.search.SearchFiltersPanel.superclass.initComponent.apply(this);
-    },
-
     _getEnabledFacets: function() {
         return Portal.app.appConfig.enabledFacets;
     },
@@ -54,7 +50,6 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
             var facetClass = facet.classId ? eval(facet.classId) : Portal.search.FacetFilterPanel;
             var collapsedByDefault = facet.collapsedByDefault ? true : false;
-            var hierarchical = facet.hierarchical ? true : false;
 
             this._buildFilter(
                 facetClass,
@@ -89,7 +84,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _buildSpinner: function() {
         this.spinner = new Ext.Panel({
-            html: this._makeSpinnerText(OpenLayers.i18n('loadingMessage', {'resource':'search terms'})),
+            html: this._makeSpinnerText(OpenLayers.i18n('loadingMessage', {'resource': 'search terms'})),
             cls: 'search-filters-toolbar-title',
             hidden: false
         });
@@ -111,16 +106,16 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         return this.newSearchButton;
     },
 
-    _setSpinnerText: function( newText ) {
+    _setSpinnerText: function(newText) {
         this.spinner.update(this._makeSpinnerText(newText));
         this.spinner.show();
     },
 
-    _makeSpinnerText: function( text ) {
+    _makeSpinnerText: function(text) {
         return '<span class=\"fa fa-spin fa-spinner \"></span> ' + text;
     },
 
-    _hideSpinnerText: function( ) {
+    _hideSpinnerText: function() {
         this.spinner.hide();
     },
 
@@ -141,18 +136,14 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _setNewSearchButtonVisibility: function() {
-        this._setSpinnerText(OpenLayers.i18n('loadingMessage',{'resource':'Collections'}));
-        this.newSearchButton.setVisible( this.searcher.hasFilters() );
+        this._setSpinnerText(OpenLayers.i18n('loadingMessage', {'resource': 'Collections'}));
+        this.newSearchButton.setVisible(this.searcher.hasFilters());
     },
 
     _showNewSearchForGeoFacet: function() {
         this._setSpinnerText('');
         this.newSearchButton.setVisible(true);
         this._hideSpinnerText();
-    },
-
-    _buildFacetFilter: function(name, config) {
-        return this._buildFilter(Portal.ui.FacetFilterPanel, name, config);
     },
 
     _buildFilter: function(constructor, name, config) {

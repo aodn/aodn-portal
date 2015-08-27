@@ -63,14 +63,14 @@ describe("Portal.search.SearchFiltersPanel", function() {
                 'platformFilter',
                 'dateFilter',
                 'geoFilter'
-            ]
+            ];
 
             for (var i = 0; i < filters.length; i++) {
                 spyOnFilter(searchFiltersPanel[filters[i]]);
             }
 
-            for (var i = 0; i < filters.length; i++) {
-                testNewSearchButton(searchFiltersPanel[filters[i]]);
+            for (var j = 0; j < filters.length; j++) {
+                testNewSearchButton(searchFiltersPanel[filters[j]]);
             }
         });
     });
@@ -107,7 +107,7 @@ describe("Portal.search.SearchFiltersPanel", function() {
                 }
             };
 
-            searchFiltersPanel._getJQueryElement = function() {return { scrollTo: scrollSpy }};
+            searchFiltersPanel._getJQueryElement = returns({scrollTo: scrollSpy});
             searchFiltersPanel._onExpand(searchFiltersPanel.filters[0]);
 
             expect(scrollSpy).toHaveBeenCalled();
@@ -136,7 +136,7 @@ describe("Portal.search.SearchFiltersPanel", function() {
     function _mockConfig() {
         return {
             searcher: _mockSearcher()
-        }
+        };
     }
 
     function _mockSearcher() {
@@ -144,6 +144,6 @@ describe("Portal.search.SearchFiltersPanel", function() {
             on: noOp,
             search: noOp,
             hasFacetNode: returns(false)
-        }
+        };
     }
 });
