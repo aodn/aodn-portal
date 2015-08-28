@@ -4,6 +4,5 @@ var PORTAL_EVENTS = {
     DATA_COLLECTION_ADDED:         "dataCollectionAdded",
     DATA_COLLECTION_REMOVED:       "dataCollectionRemoved",
     DATA_COLLECTION_SELECTED:      "dataCollectionSelected",
-    VIEW_DATA_COLLECTION:          "viewDataCollection",
     RESET:                         "reset"
 };

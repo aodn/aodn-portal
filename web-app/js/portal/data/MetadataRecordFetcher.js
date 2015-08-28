@@ -38,7 +38,7 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
 
             if (metadataRecord) {
                 _this.dataCollectionStore.add(dataCollection);
-                Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_DATA_COLLECTION, dataCollection);
+                viewport.setActiveTab(TAB_INDEX_VISUALISE);
             }
             else {
                 _this._errorLoadingDataCollection(uuid);

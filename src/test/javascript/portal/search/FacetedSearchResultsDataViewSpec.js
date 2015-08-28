@@ -25,6 +25,9 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             '   <span>- {value}</span>',
             '</div>'
         );
+        viewport = {
+            setActiveTab: jasmine.createSpy('setActiveTab')
+        };
     });
 
     describe ('encoding and decoding', function() {
@@ -100,7 +103,6 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             };
 
             spyOn(window, 'trackUsage');
-            spyOn(Ext.MsgBus, 'publish');
         });
 
         it('sends correct tracking data', function() {
@@ -116,16 +118,16 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             expect(clearContents).toHaveBeenCalled();
         });
 
-        it('sends view event for normal select', function() {
+        it('sends user to step 2 for normal select', function() {
 
             facetedSearchDataView.addRecordWithUuid("my super uuid", false);
-            expect(Ext.MsgBus.publish).toHaveBeenCalledWith(PORTAL_EVENTS.VIEW_DATA_COLLECTION, record);
+            expect(viewport.setActiveTab).toHaveBeenCalledWith(TAB_INDEX_VISUALISE);
         });
 
-        it('does not send view event when multi selecting', function() {
+        it('does not send user to step 2 for multi select', function() {
 
             facetedSearchDataView.addRecordWithUuid("my super uuid", true);
-            expect(Ext.MsgBus.publish).not.toHaveBeenCalled();
+            expect(viewport.setActiveTab).not.toHaveBeenCalledWith(TAB_INDEX_VISUALISE);
         });
     });
 

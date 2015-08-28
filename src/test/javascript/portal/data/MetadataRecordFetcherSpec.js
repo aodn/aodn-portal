@@ -17,10 +17,14 @@ describe("Portal.data.MetadataRecordFetcher", function() {
         Portal.app.appConfig.geonetwork.url = catalogUrl;
         fetcher = new Portal.data.MetadataRecordFetcher({
             dataCollectionStore: {
-                add: jasmine.createSpy('add)')
+                add: jasmine.createSpy('add')
             }
         });
         uuid = '1234';
+
+        viewport = {
+            setActiveTab: jasmine.createSpy('setActiveTab')
+        };
     });
 
     it('makes ajax request to catalogue', function() {
