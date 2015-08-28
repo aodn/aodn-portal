@@ -10,7 +10,7 @@ Ext.namespace('Portal.data');
 Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
 
     constructor: function(config) {
-        Ext.apply(this, config);
+        Ext.apply(this, config); // Required because Observable does not apply config for some resaon
 
         Portal.data.MetadataRecordFetcher.superclass.constructor.call(this, config);
     },
