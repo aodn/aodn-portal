@@ -111,12 +111,14 @@ describe('Portal.cart.DownloadHandler', function () {
                 doubleHandlerOne = jasmine.createSpy('doubleHandlerOne');
                 doubleHandlerTwo = jasmine.createSpy('doubleHandlerTwo');
 
-                Portal.cart.DownloadHandler.PROTOCOL_CONSTRUCTOR_MAP = {
-                    'protocolWithOneHandler': singleHandler,
-                    'protocolWithMultipleHandlers': [
-                        doubleHandlerOne,
-                        doubleHandlerTwo
-                    ]
+                Portal.cart.DownloadHandler._downloadHandlerConstructorForProtocol = function(protocol) {
+                    return {
+                        'protocolWithOneHandler': singleHandler,
+                        'protocolWithMultipleHandlers': [
+                            doubleHandlerOne,
+                            doubleHandlerTwo
+                        ]
+                    }[protocol] || [];
                 };
             });
 

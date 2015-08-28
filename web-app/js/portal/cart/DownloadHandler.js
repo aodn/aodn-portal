@@ -9,14 +9,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadHandler = Ext.extend(Object, {
 
-    PROTOCOL_CONSTRUCTOR_MAP: {
-        'OGC:WFS-1.0.0-http-get-capabilities': [
-            Portal.cart.WfsDownloadHandler,
-            Portal.cart.PythonDownloadHandler
-        ],
-        'IMOS:AGGREGATION--bodaac': Portal.cart.BodaacDownloadHandler,
-        'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckDownloadHandler
-    },
     DATE_FORMAT_FOR_PORTAL: 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]',
     DEFAULT_LAT_START: -90,
     DEFAULT_LAT_END: 90,
@@ -88,7 +80,7 @@ Portal.cart.DownloadHandler.handlersForDataCollection = function(dataCollection)
 Portal.cart.DownloadHandler._handlersForLink = function(link) {
     var handlers = [];
 
-    var constructors = Portal.cart.DownloadHandler.PROTOCOL_CONSTRUCTOR_MAP[link.protocol] || [];
+    var constructors = this._downloadHandlerConstructorForProtocol(link.protocol);
     Ext.each(constructors, function(constructor) {
         handlers.push(
             new constructor(link)
@@ -96,4 +88,17 @@ Portal.cart.DownloadHandler._handlersForLink = function(link) {
     });
 
     return handlers;
+};
+
+Portal.cart.DownloadHandler._downloadHandlerConstructorForProtocol = function(protocol) {
+    var mapping = {
+        'OGC:WFS-1.0.0-http-get-capabilities': [
+            Portal.cart.WfsDownloadHandler,
+            Portal.cart.PythonDownloadHandler
+        ],
+        'IMOS:AGGREGATION--bodaac': Portal.cart.BodaacDownloadHandler,
+        'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckDownloadHandler
+    };
+
+    return mapping[protocol] || [];
 };
