@@ -13,8 +13,6 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
         Ext.apply(this, config);
 
         Portal.data.MetadataRecordFetcher.superclass.constructor.call(this, config);
-
-        this._loadCollectionsFromUrl();
     },
 
     get: function(uuid, successCallback) {
@@ -59,7 +57,7 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
         return params.uuid || [];
     },
 
-    _loadCollectionsFromUrl: function() {
+    loadCollectionsFromUrl: function() {
 
         Ext.each(this.getUuidsFromUrl(), function(aUuid) {
             this.load(aUuid);

@@ -22,6 +22,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         var fetcher = new Portal.data.MetadataRecordFetcher({
             dataCollectionStore: this.dataCollectionStore
         });
+        fetcher.loadCollectionsFromUrl();
 
         var config = Ext.apply({
             activeItem: TAB_INDEX_SEARCH,
