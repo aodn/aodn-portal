@@ -23,16 +23,6 @@ Portal.data.DataCollection = function() {
         return this.data.metadataRecord;
     };
 
-    constructor.prototype.getFiltersRequestParams = function() {
-        var layer = this.getLayerSelectionModel().getSelectedLayer();
-        var layerName = this.getDownloadLayerName();
-
-        return {
-            server: layer.url,
-            layer: layerName
-        };
-    };
-
     constructor.prototype._loadFilters = function() {
         var filterService = new Portal.filter.FilterService();
         filterService.loadFilters(this, this._onFiltersLoadSuccess, this._onFiltersLoadFailure, this);
@@ -58,25 +48,17 @@ Portal.data.DataCollection = function() {
         this.getLayerAdapter().applyFilters(this.getFilters());
     };
 
-    constructor.prototype.getFilters = function() {
+    constructor.prototype.getFiltersRequestParams = function() {
+        var layer = this.getLayerSelectionModel().getSelectedLayer();
+        var layerName = this._getDownloadLayerName();
 
-        return this.filters;
-    };
-
-    constructor.prototype.getAllLinks = function() {
-        return this.getMetadataRecord().get('links');
-    };
-
-    constructor.prototype.getLinksByProtocol = function(protocols) {
-        var allLinks = this.getAllLinks();
-        var matchesProtocols = function(link) {
-            return protocols.indexOf(link.protocol) != -1;
+        return {
+            server: layer.url,
+            layer: layerName
         };
-
-        return allLinks.filter(matchesProtocols);
     };
 
-    constructor.prototype.getDownloadLayerName = function() {
+    constructor.prototype._getDownloadLayerName = function() {
         var wfsLayerLinks = this.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.wfs);
         var wmsLayerLinks = this.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.wms);
         var firstWfsLink = wfsLayerLinks[0];
@@ -100,6 +82,24 @@ Portal.data.DataCollection = function() {
                 return _workspaceFromName(firstWmsLink.name) + ':' + linkName;
             }
         }
+    };
+
+    constructor.prototype.getFilters = function() {
+
+        return this.filters;
+    };
+
+    constructor.prototype.getAllLinks = function() {
+        return this.getMetadataRecord().get('links');
+    };
+
+    constructor.prototype.getLinksByProtocol = function(protocols) {
+        var allLinks = this.getAllLinks();
+        var matchesProtocols = function(link) {
+            return protocols.indexOf(link.protocol) != -1;
+        };
+
+        return allLinks.filter(matchesProtocols);
     };
 
     constructor.prototype.getLayerSelectionModel = function() {

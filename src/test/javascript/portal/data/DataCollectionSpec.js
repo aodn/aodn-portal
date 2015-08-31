@@ -30,12 +30,12 @@ describe("Portal.data.DataCollection", function() {
         });
 
         it('uses uri from selected layer from layer state', function() {
-            dataCollection.getDownloadLayerName = returns('layerName');
+            dataCollection._getDownloadLayerName = returns('layerName');
 
             expect(dataCollection.getFiltersRequestParams().server).toBe('server url');
         });
 
-        describe('getDownloadLayerName()', function() {
+        describe('_getDownloadLayerName()', function() {
             beforeEach(function() {
                 testWfsLayerLinks = [{
                     name: 'imos:wfs_layer1'
