@@ -33,6 +33,10 @@ Portal.data.DataCollection = function() {
         };
     };
 
+    constructor.prototype._loadFilters = function() {
+        console.log('Loading filters...');
+    };
+
     constructor.prototype.setFilters = function(filters) {
 
         this.filters = filters;
@@ -125,6 +129,8 @@ Portal.data.DataCollection.fromMetadataRecord = function(metadataRecord) {
     });
 
     Portal.utils.ObservableUtils.makeObservable(dataCollection);
+
+    dataCollection._loadFilters();
 
     return dataCollection;
 };
