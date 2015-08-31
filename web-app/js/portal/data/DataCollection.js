@@ -37,6 +37,14 @@ Portal.data.DataCollection = function() {
         console.log('Loading filters...');
     };
 
+    constructor.prototype._onFiltersLoadSuccess = function(filters) {
+        this.fireEvent(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS);
+    };
+
+    constructor.prototype._onFiltersLoadFailure = function() {
+        this.fireEvent(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_FAILURE);
+    };
+
     constructor.prototype.setFilters = function(filters) {
 
         this.filters = filters;
@@ -122,6 +130,11 @@ Portal.data.DataCollection = function() {
 
     return constructor;
 }();
+
+Portal.data.DataCollection.EVENTS = {
+    FILTERS_LOAD_SUCCESS: 'filtersLoadSuccess',
+    FILTERS_LOAD_FAILURE: 'filtersLoadFailure'
+};
 
 Portal.data.DataCollection.fromMetadataRecord = function(metadataRecord) {
     var dataCollection = new Portal.data.DataCollection({
