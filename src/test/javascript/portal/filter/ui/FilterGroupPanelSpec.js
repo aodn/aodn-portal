@@ -127,7 +127,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             };
 
             spyOn(filterGroupPanel, '_clearFilters');
-            spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, '_addErrorMessage');
             spyOn(filterGroupPanel, '_sortFilters');
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
@@ -140,7 +139,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             expect(filterGroupPanel._createFilterPanel).toHaveBeenCalled();
             filterGroupPanel.resetLink.fireEvent('click');
             expect(filterGroupPanel._clearFilters).toHaveBeenCalled();
-            expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
         });
     });
 
@@ -151,7 +149,6 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 needsFilterRange: returns(false)
             };
 
-            spyOn(filterGroupPanel, '_updateLayerFilters');
             spyOn(filterGroupPanel, '_addErrorMessage');
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
         });
@@ -193,12 +190,9 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 mockFilterPanel
             ];
 
-            spyOn(filterGroupPanel, '_updateLayerFilters');
-
             filterGroupPanel._clearFilters();
 
             expect(removeFilterSpy.callCount).toBe(3);
-            expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
         });
     });
 
@@ -207,18 +201,12 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
         beforeEach(function() {
 
             spyOn(filterGroupPanel.loadingMessage, 'hide');
-            spyOn(filterGroupPanel, '_updateLayerFilters');
 
             filterGroupPanel._updateAndShow();
         });
 
         it('hides the loading message', function() {
             expect(filterGroupPanel.loadingMessage.hide).toHaveBeenCalled();
-        });
-
-        it('calls _updateLayerFilter', function() {
-
-            expect(filterGroupPanel._updateLayerFilters).toHaveBeenCalled();
         });
     });
 

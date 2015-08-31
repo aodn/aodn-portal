@@ -58,16 +58,6 @@ Portal.data.DataCollection = function() {
         this.getLayerAdapter().applyFilters(this.getFilters());
     };
 
-    constructor.prototype.updateFilters = function() {
-
-        // Update layer with new values
-        var layer = this.getLayerSelectionModel().getSelectedLayer();
-
-        if (layer.updateCqlFilter) {
-            layer.updateCqlFilter(this.getFilters());
-        }
-    };
-
     constructor.prototype.getFilters = function() {
 
         return this.filters;

@@ -221,8 +221,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         this.loadingMessage.hide();
 
-        this._updateLayerFilters();
-
         this.add(this._createVerticalSpacer(15));
         this.add(this.resetLink);
         this.add(this._createVerticalSpacer(25));
@@ -230,20 +228,9 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         this.doLayout();
     },
 
-    _updateLayerFilters: function() {
-
-        this.dataCollection.updateFilters();
-    },
-
-    _handleAddFilter: function() {
-        this._updateLayerFilters();
-    },
-
     _clearFilters: function() {
         Ext.each(this.filterPanels, function(panel) {
             panel.handleRemoveFilter();
         });
-
-        this._updateLayerFilters();
     }
 });
