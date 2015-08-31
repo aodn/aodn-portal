@@ -41,6 +41,10 @@ Portal.data.DataCollection = function() {
     constructor.prototype._onFiltersLoadSuccess = function(filters) {
         this.filters = filters;
 
+        Ext.each(filters, function(filter) {
+            filter.on(Portal.filter.Filter.EVENTS.VALUE_CHANGED, this._onFilterValueChanged, this);
+        }, this);
+
         this.fireEvent(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS, filters);
     };
 
@@ -48,6 +52,16 @@ Portal.data.DataCollection = function() {
         this.filters = [];
 
         this.fireEvent(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_FAILURE);
+    };
+
+    constructor.prototype._onFilterValueChanged = function() {
+
+        // Update layer with new values
+        var layer = this.getLayerSelectionModel().getSelectedLayer();
+
+        if (layer.updateCqlFilter) {
+            layer.updateCqlFilter(this.getFilters());
+        }
     };
 
     constructor.prototype.updateFilters = function() {
