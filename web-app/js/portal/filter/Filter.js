@@ -35,7 +35,7 @@ Portal.filter.Filter = Ext.extend(Ext.util.Observable, {
 
     clearValue: function() {
 
-        this.value = null;
+        this.setValue(null);
     },
 
     getName: function() {
