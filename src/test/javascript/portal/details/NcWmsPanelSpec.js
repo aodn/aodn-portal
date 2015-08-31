@@ -34,7 +34,6 @@ describe('Portal.details.NcWmsPanel', function() {
 
         dataCollection = {
             getUuid: returns(45678),
-            setFilters: jasmine.createSpy('setFilters'),
             getLayerSelectionModel: returns(layerSelectionModel),
             getTitle: returns("collectionTitle")
         };
@@ -73,7 +72,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('updates the record when panel is created', function() {
             ncwmsPanel._initWithLayer();
-            expect(ncwmsPanel.dataCollection.setFilters).toHaveBeenCalled();
+            expect(ncwmsPanel.dataCollection.filters).not.toBeUndefined();
         });
 
         it('updates the date when the start date changes via edit', function() {

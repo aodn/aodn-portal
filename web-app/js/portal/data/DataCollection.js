@@ -39,20 +39,15 @@ Portal.data.DataCollection = function() {
     };
 
     constructor.prototype._onFiltersLoadSuccess = function(filters) {
-        this.setFilters(filters);
+        this.filters = filters;
 
         this.fireEvent(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS, filters);
     };
 
     constructor.prototype._onFiltersLoadFailure = function() {
-        this.setFilters([]);
+        this.filters = [];
 
         this.fireEvent(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_FAILURE);
-    };
-
-    constructor.prototype.setFilters = function(filters) {
-
-        this.filters = filters;
     };
 
     constructor.prototype.updateFilters = function() {

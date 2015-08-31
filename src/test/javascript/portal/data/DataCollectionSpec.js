@@ -12,7 +12,6 @@ describe("Portal.data.DataCollection", function() {
     beforeEach(function() {
         spyOn(Portal.data.DataCollection.prototype, '_loadFilters');
         dataCollection = Portal.data.DataCollection.fromMetadataRecord({});
-        spyOn(dataCollection, 'setFilters');
     });
 
     describe('getFiltersRequestParams()', function() {
