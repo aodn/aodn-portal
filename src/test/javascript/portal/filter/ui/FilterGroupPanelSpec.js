@@ -8,33 +8,31 @@
 describe("Portal.filter.ui.FilterGroupPanel", function() {
 
     var filterGroupPanel;
-    var layer;
     var filterPanel;
     var filters;
+    var dataCollection;
 
     beforeEach(function() {
-        layer = new OpenLayers.Layer.WMS();
-        layer.isKnownToThePortal = returns(true);
-        layer.map = getMockMap();
+        dataCollection = {
+            getFilters: function() {
+                return filters;
+            },
+            on: noOp
+        };
 
         filterGroupPanel = new Portal.filter.ui.FilterGroupPanel({
-            dataCollection: {
-                getLayerSelectionModel: returns({
-                    getSelectedLayer: returns(layer)
-                }),
-                getFiltersRequestParams: noOp
-            }
+            dataCollection:dataCollection
         });
+    });
+
+    afterEach(function() {
+        filters = undefined;
     });
 
     describe('_filtersLoaded', function() {
 
         beforeEach(function() {
-            layer = {
-                filters: [
-                    { /* some filter */ }
-                ]
-            };
+            filters = [{}];
 
             filterPanel = {
                 needsFilterRange: returns(false)
@@ -44,7 +42,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_sortFilters');
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
 
-            filterGroupPanel._filtersLoaded(layer.filters);
+            filterGroupPanel._filtersLoaded(filters);
         });
 
         it('creates a filter panel', function() {
@@ -67,57 +65,55 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
         it('sorts panels in expected order', function() {
 
-            layer = {
-                filters: [
-                    {
-                        constructor: Portal.filter.BooleanFilter,
-                        isVisualised: returns(true),
-                        hasValue: returns(true),
-                        getLabel: returns("kappa"),
-                        getHumanReadableForm: returns('four')
-                    },
-                    {
-                        constructor: Portal.filter.BooleanFilter,
-                        isVisualised: returns(false),
-                        hasValue: returns(true),
-                        getLabel: returns("gamma"),
-                        getHumanReadableForm: returns('two')
-                    },
-                    {
-                        constructor: Portal.filter.StringFilter,
-                        isVisualised: returns(true),
-                        hasValue: returns(false),
-                        getLabel: returns("beta"),
-                        getHumanReadableForm: returns('three')
-                    },
-                    {
-                        constructor: Portal.filter.StringFilter,
-                        isVisualised: returns(true),
-                        hasValue: returns(true),
-                        getLabel: returns("omega"),
-                        getHumanReadableForm: returns('five')
-                    },
-                    {
-                        constructor: Portal.filter.GeometryFilter,
-                        isVisualised: returns(true),
-                        hasValue: returns(true),
-                        getLabel: returns("alpha"),
-                        getHumanReadableForm: returns('one')
-                    }
-                ]
-            };
-
-            var expectedFilterOrder = [
-                layer.filters[4],
-                layer.filters[1],
-                layer.filters[0],
-                layer.filters[2],
-                layer.filters[3]
+            filters = [
+                {
+                    constructor: Portal.filter.BooleanFilter,
+                    isVisualised: returns(true),
+                    hasValue: returns(true),
+                    getLabel: returns("kappa"),
+                    getHumanReadableForm: returns('four')
+                },
+                {
+                    constructor: Portal.filter.BooleanFilter,
+                    isVisualised: returns(false),
+                    hasValue: returns(true),
+                    getLabel: returns("gamma"),
+                    getHumanReadableForm: returns('two')
+                },
+                {
+                    constructor: Portal.filter.StringFilter,
+                    isVisualised: returns(true),
+                    hasValue: returns(false),
+                    getLabel: returns("beta"),
+                    getHumanReadableForm: returns('three')
+                },
+                {
+                    constructor: Portal.filter.StringFilter,
+                    isVisualised: returns(true),
+                    hasValue: returns(true),
+                    getLabel: returns("omega"),
+                    getHumanReadableForm: returns('five')
+                },
+                {
+                    constructor: Portal.filter.GeometryFilter,
+                    isVisualised: returns(true),
+                    hasValue: returns(true),
+                    getLabel: returns("alpha"),
+                    getHumanReadableForm: returns('one')
+                }
             ];
 
-            Portal.filter.ui.FilterGroupPanel.prototype._sortFilters(layer.filters);
+            var expectedFilterOrder = [
+                filters[4],
+                filters[1],
+                filters[0],
+                filters[2],
+                filters[3]
+            ];
 
-            expect(layer.filters).toEqual(expectedFilterOrder);
+            Portal.filter.ui.FilterGroupPanel.prototype._sortFilters(filters);
+
+            expect(filters).toEqual(expectedFilterOrder);
         });
     });
 
@@ -162,20 +158,16 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
         it('calls the _addErrorMessage function when filters set but has no filters configured', function() {
 
-            layer.filters = [];
-
-            filterGroupPanel._filtersLoaded(layer.filters);
+            filterGroupPanel._filtersLoaded([]);
 
             expect(filterGroupPanel._addErrorMessage).toHaveBeenCalled();
         });
 
         it('_addErrorMessage function not called when filters are configured', function() {
 
-            layer.filters = ["Boolean", "Combo"];
-
             spyOn(filterGroupPanel, '_sortFilters');
 
-            filterGroupPanel._filtersLoaded(layer.filters);
+            filterGroupPanel._filtersLoaded(["Boolean", "Combo"]);
 
             expect(filterGroupPanel._addErrorMessage).not.toHaveBeenCalled();
         });

@@ -41,7 +41,7 @@ Portal.data.DataCollection = function() {
     constructor.prototype._onFiltersLoadSuccess = function(filters) {
         this.setFilters(filters);
 
-        this.fireEvent(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS);
+        this.fireEvent(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS, filters);
     };
 
     constructor.prototype._onFiltersLoadFailure = function() {
@@ -67,7 +67,7 @@ Portal.data.DataCollection = function() {
 
     constructor.prototype.getFilters = function() {
 
-        return this.filters || [];
+        return this.filters;
     };
 
     constructor.prototype.getAllLinks = function() {

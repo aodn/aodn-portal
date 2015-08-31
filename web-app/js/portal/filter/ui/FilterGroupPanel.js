@@ -28,7 +28,14 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         Portal.filter.ui.FilterGroupPanel.superclass.initComponent.call(this);
 
-        this._initWithLayer();
+        var filters = this.dataCollection.getFilters();
+        if (filters == undefined) {
+            this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS, this._filtersLoaded, this);
+            this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_FAILURE, function() { this._filtersLoaded([]); }, this);
+        }
+        else {
+            this._filtersLoaded(filters);
+        }
     },
 
     _createVerticalSpacer: function(sizeInPixels) {
@@ -83,18 +90,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
             this.add(this.errorMessage);
             this.doLayout();
         }
-    },
-
-    _initWithLayer: function() {
-
-        var filterService = new Portal.filter.FilterService();
-
-        filterService.loadFilters(
-            this.dataCollection,
-            this.createSafeCallback(this._filtersLoaded),
-            this.createSafeCallback(this._handleFilterLoadFailure),
-            this
-        );
     },
 
     _filtersLoaded: function(filters) {
