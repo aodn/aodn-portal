@@ -34,14 +34,19 @@ Portal.data.DataCollection = function() {
     };
 
     constructor.prototype._loadFilters = function() {
-        console.log('Loading filters...');
+        var filterService = new Portal.filter.FilterService();
+        filterService.loadFilters(this, this._onFiltersLoadSuccess, this._onFiltersLoadFailure, this);
     };
 
     constructor.prototype._onFiltersLoadSuccess = function(filters) {
+        this.setFilters(filters);
+
         this.fireEvent(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS);
     };
 
     constructor.prototype._onFiltersLoadFailure = function() {
+        this.setFilters([]);
+
         this.fireEvent(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_FAILURE);
     };
 
