@@ -149,8 +149,6 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
         });
 
         it('updates when operator is set to none / cleared ', function() {
-            spyOn(numberFilter, '_fireAddEvent');
-
             numberFilter.operators.clearValue = noOp;
             numberFilter.firstField.reset = noOp;
             numberFilter.secondField.reset = noOp;
@@ -158,7 +156,6 @@ describe("Portal.filter.ui.NumberFilterPanel", function() {
             numberFilter.filter.clearValue = noOp;
 
             numberFilter.handleRemoveFilter();
-            expect(numberFilter._fireAddEvent).toHaveBeenCalled();
         });
     });
 });

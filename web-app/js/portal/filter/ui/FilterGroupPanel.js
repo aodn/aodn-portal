@@ -24,8 +24,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     initComponent: function() {
-        this.on('addFilter', this._handleAddFilter);
-
         Portal.filter.ui.FilterGroupPanel.superclass.initComponent.call(this);
 
         var filters = this.dataCollection.getFilters();
@@ -169,15 +167,11 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         var filterClass = Portal.filter.Filter.classFor(filter);
         var uiElementClass = filterClass.prototype.getUiComponentClass();
-        var newFilterPanel = new uiElementClass({
+        return new uiElementClass({
             filter: filter,
             dataCollection: this.dataCollection,
             map: this.map
         });
-
-        this.relayEvents(newFilterPanel, ['addFilter']);
-
-        return newFilterPanel;
     },
 
     _organiseFilterPanels: function(panels) {

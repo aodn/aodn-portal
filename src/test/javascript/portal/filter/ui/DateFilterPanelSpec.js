@@ -64,7 +64,6 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
     describe('apply date filter', function() {
 
         beforeEach(function() {
-            spyOn(filterPanel, '_fireAddEvent');
             spyOn(window, 'trackUsage');
             component = {'_dateField':{"name":"atestname"}};
         });
@@ -73,7 +72,6 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
             component._dateField.getValue = returns('12-02-1990');
             filterPanel._applyDateFilter(component);
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Date", "atestname user set 12-02-1990", "Collection title");
-            expect(filterPanel._fireAddEvent).toHaveBeenCalled();
         });
     });
 
@@ -84,7 +82,7 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
                 setMinValue: noOp,
                 setMaxValue: noOp,
                 applyDefaultValueLimits: noOp
-            }
+            };
         }, filterPanel);
     }
 });
