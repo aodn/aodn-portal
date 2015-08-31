@@ -28,7 +28,7 @@ Portal.search.FacetFilterPanel = Ext.extend(Ext.Panel, {
             toolTemplate: new Ext.Template('<div class="x-tool-awesome fa fa-fw {styles}" title="{label}"></div>'),
             tools: [{
                 id: 'plus',
-                styles: 'fa-chain',
+                styles: 'fa-plus-square',
                 handler: this._onAdd,
                 scope: this,
                 hidden: true,
