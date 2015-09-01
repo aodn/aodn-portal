@@ -126,8 +126,8 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
     applyFilters: function(filters) {
         var layer = this._getSelectedLayer();
 
-        if (layer.updateCqlFilter) {
-            layer.updateCqlFilter(filters);
+        if (layer.applyFilters) {
+            layer.applyFilters(filters);
         }
     },
 
