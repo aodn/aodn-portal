@@ -11,7 +11,18 @@ describe("Portal.data.DataCollection", function() {
 
     beforeEach(function() {
         spyOn(Portal.data.DataCollection.prototype, '_loadFilters');
+        spyOn(Portal.utils.ObservableUtils, 'makeObservable');
         dataCollection = Portal.data.DataCollection.fromMetadataRecord({});
+    });
+
+    describe('fromMetadataRecord()', function() {
+        it('makes DataCollection Observable', function() {
+            expect(Portal.utils.ObservableUtils.makeObservable).toHaveBeenCalled();
+        });
+
+        it('starts the Filters loading', function() {
+            expect(dataCollection._loadFilters).toHaveBeenCalled();
+        });
     });
 
     describe('getFiltersRequestParams()', function() {
