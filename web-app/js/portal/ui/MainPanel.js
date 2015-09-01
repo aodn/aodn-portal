@@ -22,6 +22,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
         var fetcher = new Portal.data.MetadataRecordFetcher({
             dataCollectionStore: this.dataCollectionStore
         });
+        fetcher.loadCollectionsFromUrl();
 
         var config = Ext.apply({
             activeItem: TAB_INDEX_SEARCH,
@@ -46,12 +47,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
 
         Portal.ui.MainPanel.superclass.constructor.call(this, config);
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.VIEW_DATA_COLLECTION, this._onViewDataCollection, this);
         Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, this._onDataCollectionAdded, this);
-    },
-
-    _onViewDataCollection: function() {
-        this.setActiveTab(TAB_INDEX_VISUALISE);
     },
 
     _onDataCollectionAdded: function() {

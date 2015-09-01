@@ -316,7 +316,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         }
 
         if (!multiSelect) {
-            Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_DATA_COLLECTION, record);
+            viewport.setActiveTab(TAB_INDEX_VISUALISE);
         }
     }
 });

@@ -10,11 +10,9 @@ Ext.namespace('Portal.data');
 Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
 
     constructor: function(config) {
-        Ext.apply(this, config);
+        Ext.apply(this, config); // Required because Observable does not apply config for some resaon
 
         Portal.data.MetadataRecordFetcher.superclass.constructor.call(this, config);
-
-        this._loadCollectionsFromUrl();
     },
 
     get: function(uuid, successCallback) {
@@ -40,7 +38,7 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
 
             if (metadataRecord) {
                 _this.dataCollectionStore.add(dataCollection);
-                Ext.MsgBus.publish(PORTAL_EVENTS.VIEW_DATA_COLLECTION, dataCollection);
+                viewport.setActiveTab(TAB_INDEX_VISUALISE);
             }
             else {
                 _this._errorLoadingDataCollection(uuid);
@@ -59,7 +57,7 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
         return params.uuid || [];
     },
 
-    _loadCollectionsFromUrl: function() {
+    loadCollectionsFromUrl: function() {
 
         Ext.each(this.getUuidsFromUrl(), function(aUuid) {
             this.load(aUuid);
