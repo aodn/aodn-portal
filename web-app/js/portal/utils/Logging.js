@@ -5,7 +5,9 @@
  *
  */
 
-var log = log4javascript.getLogger();
+var log = log4javascript.getLogger('Portal');
 
 var ajaxAppender = new log4javascript.AjaxAppender('system/clientLog');
 log.addAppender(ajaxAppender);
+
+log.addAppender(new log4javascript.BrowserConsoleAppender);
