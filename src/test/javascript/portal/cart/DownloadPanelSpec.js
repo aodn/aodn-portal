@@ -13,6 +13,7 @@ describe("Portal.cart.DownloadPanel", function() {
         downloadPanel = new Portal.cart.DownloadPanel({
             dataCollectionStore: { removeAll: jasmine.createSpy('removeAll') }
         });
+
         spyOn(downloadPanel, 'generateContent');
         spyOn(downloadPanel, '_generateBodyContentForCollection');
         spyOn(window, 'trackDataCollectionSelectionUsage');
@@ -145,6 +146,7 @@ describe("Portal.cart.DownloadPanel", function() {
         });
 
         it('reverse view order enforced', function() {
+            spyOn(Portal.cart.DownloadHandler, 'handlersForDataCollection').andReturn([]);
 
             downloadPanel = makeTestDownloadPanel([
                 testCollection1,
@@ -182,8 +184,7 @@ describe("Portal.cart.DownloadPanel", function() {
         });
 
         it('includes menu items from download handlers', function() {
-
-            testCollection1.getDataDownloadHandlers = returns([{
+            spyOn(Portal.cart.DownloadHandler, 'handlersForDataCollection').andReturn([{
                 getDownloadOptions: returns([
                     {
                         textKey: 'key1',
@@ -236,8 +237,7 @@ describe("Portal.cart.DownloadPanel", function() {
     var makeTestCollection = function(uuid) {
         return {
             getUuid: returns(uuid),
-            getTitle: returns("Argo"),
-            getDataDownloadHandlers: returns([])
+            getTitle: returns("Argo")
         };
     };
 });

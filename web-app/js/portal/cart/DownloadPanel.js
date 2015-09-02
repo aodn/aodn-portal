@@ -162,7 +162,8 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             processedValues.menuItems = [];
         }
 
-        Ext.each(collection.getDataDownloadHandlers(), function(handler) {
+        var downloadHandlers = Portal.cart.DownloadHandler.handlersForDataCollection(collection);
+        Ext.each(downloadHandlers, function(handler) {
 
             Ext.each(handler.getDownloadOptions(), function(downloadOption) {
 
