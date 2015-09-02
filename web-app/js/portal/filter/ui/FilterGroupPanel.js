@@ -24,11 +24,16 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     initComponent: function() {
-        this.on('addFilter', this._handleAddFilter);
-
         Portal.filter.ui.FilterGroupPanel.superclass.initComponent.call(this);
 
-        this._initWithLayer();
+        var filters = this.dataCollection.getFilters();
+        if (filters == undefined) {
+            this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS, this._filtersLoaded, this);
+            this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_FAILURE, function() { this._filtersLoaded([]); }, this);
+        }
+        else {
+            this._filtersLoaded(filters);
+        }
     },
 
     _createVerticalSpacer: function(sizeInPixels) {
@@ -83,18 +88,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
             this.add(this.errorMessage);
             this.doLayout();
         }
-    },
-
-    _initWithLayer: function() {
-
-        var filterService = new Portal.filter.FilterService();
-
-        filterService.loadFilters(
-            this.dataCollection,
-            this.createSafeCallback(this._filtersLoaded),
-            this.createSafeCallback(this._handleFilterLoadFailure),
-            this
-        );
     },
 
     _filtersLoaded: function(filters) {
@@ -174,15 +167,11 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         var filterClass = Portal.filter.Filter.classFor(filter);
         var uiElementClass = filterClass.prototype.getUiComponentClass();
-        var newFilterPanel = new uiElementClass({
+        return new uiElementClass({
             filter: filter,
             dataCollection: this.dataCollection,
             map: this.map
         });
-
-        this.relayEvents(newFilterPanel, ['addFilter']);
-
-        return newFilterPanel;
     },
 
     _organiseFilterPanels: function(panels) {
@@ -232,8 +221,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         this.loadingMessage.hide();
 
-        this._updateLayerFilters();
-
         this.add(this._createVerticalSpacer(15));
         this.add(this.resetLink);
         this.add(this._createVerticalSpacer(25));
@@ -241,20 +228,9 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         this.doLayout();
     },
 
-    _updateLayerFilters: function() {
-
-        this.dataCollection.updateFilters();
-    },
-
-    _handleAddFilter: function() {
-        this._updateLayerFilters();
-    },
-
     _clearFilters: function() {
         Ext.each(this.filterPanels, function(panel) {
             panel.handleRemoveFilter();
         });
-
-        this._updateLayerFilters();
     }
 });

@@ -326,7 +326,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
         var geometry = this.map.getConstraint();
 
-        this.dataCollection.setFilters(this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry));
+        this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry);
     },
 
     _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry) {

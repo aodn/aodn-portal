@@ -22,7 +22,6 @@ describe("Portal.filter.FilterService", function() {
             getLayerSelectionModel: returns({
                 getSelectedLayer: returns({server: {}})
             }),
-            setFilters: noOp,
             getFiltersRequestParams: noOp
         };
     });

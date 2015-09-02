@@ -97,8 +97,6 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
         }
 
         this.filter.setValue(this.combo.getValue());
-
-        this._fireAddEvent();
     },
 
     setFilterRange: function(range) {

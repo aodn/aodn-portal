@@ -123,6 +123,14 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
         }, this);
     },
 
+    applyFilters: function(filters) {
+        this._eachLayer(function(layer) {
+            if (layer.applyFilters) {
+                layer.applyFilters(filters);
+            }
+        });
+    },
+
     setOpacity: function(opacity) {
         this._eachLayer(function(layer) {
             layer.setOpacity(opacity);

@@ -159,7 +159,7 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
-OpenLayers.Layer.WMS.prototype.updateCqlFilter = function(filters) {
+OpenLayers.Layer.WMS.prototype.applyFilters = function(filters) {
 
     var builder = new Portal.filter.combiner.MapCqlBuilder({
         filters: filters

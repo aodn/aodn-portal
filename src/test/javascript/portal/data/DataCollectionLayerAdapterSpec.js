@@ -56,4 +56,27 @@ describe("Portal.data.DataCollectionLayerAdapter", function() {
             });
         });
     });
+
+    describe('applyFilters()', function() {
+        var applyFiltersSpy1;
+        var applyFiltersSpy2;
+
+        beforeEach(function() {
+            applyFiltersSpy1 = jasmine.createSpy('applyFilters1');
+            applyFiltersSpy2 = jasmine.createSpy('applyFilters2');
+
+            layerSelectionModel.layerCache = [
+                {applyFilters: applyFiltersSpy1},
+                {},
+                {applyFilters: applyFiltersSpy2}
+            ];
+
+            layerAdapter.applyFilters();
+        });
+
+        it('calls applyFilters() where possible', function() {
+            expect(applyFiltersSpy1.callCount).toBe(1);
+            expect(applyFiltersSpy2.callCount).toBe(1);
+        });
+    });
 });

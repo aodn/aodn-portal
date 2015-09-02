@@ -7,7 +7,7 @@
 
 Ext.namespace('Portal.filter');
 
-Portal.filter.Filter = Ext.extend(Object, {
+Portal.filter.Filter = Ext.extend(Ext.util.Observable, {
 
     constructor: function(cfg) {
 
@@ -19,6 +19,8 @@ Portal.filter.Filter = Ext.extend(Object, {
     setValue: function(value) {
 
         this.value = value;
+
+        this.fireEvent(Portal.filter.Filter.EVENTS.VALUE_CHANGED);
     },
 
     getValue: function() {
@@ -33,7 +35,7 @@ Portal.filter.Filter = Ext.extend(Object, {
 
     clearValue: function() {
 
-        this.value = null;
+        this.setValue(null);
     },
 
     getName: function() {
@@ -86,6 +88,10 @@ Portal.filter.Filter = Ext.extend(Object, {
         throw 'Subclasses must implement the getHumanReadableForm function';
     }
 });
+
+Portal.filter.Filter.EVENTS = {
+    VALUE_CHANGED: 'filterValueChanged'
+};
 
 Portal.filter.Filter.classFor = function(filterConfig) {
 

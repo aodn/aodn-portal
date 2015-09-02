@@ -10,8 +10,19 @@ describe("Portal.data.DataCollection", function() {
     var dataCollection;
 
     beforeEach(function() {
-        dataCollection = new Portal.data.DataCollection();
-        spyOn(dataCollection, 'setFilters');
+        spyOn(Portal.data.DataCollection.prototype, '_loadFilters');
+        spyOn(Portal.utils.ObservableUtils, 'makeObservable');
+        dataCollection = Portal.data.DataCollection.fromMetadataRecord({});
+    });
+
+    describe('fromMetadataRecord()', function() {
+        it('makes DataCollection Observable', function() {
+            expect(Portal.utils.ObservableUtils.makeObservable).toHaveBeenCalled();
+        });
+
+        it('starts the Filters loading', function() {
+            expect(dataCollection._loadFilters).toHaveBeenCalled();
+        });
     });
 
     describe('getFiltersRequestParams()', function() {
@@ -30,12 +41,12 @@ describe("Portal.data.DataCollection", function() {
         });
 
         it('uses uri from selected layer from layer state', function() {
-            dataCollection.getDownloadLayerName = returns('layerName');
+            dataCollection._getDownloadLayerName = returns('layerName');
 
             expect(dataCollection.getFiltersRequestParams().server).toBe('server url');
         });
 
-        describe('getDownloadLayerName()', function() {
+        describe('_getDownloadLayerName()', function() {
             beforeEach(function() {
                 testWfsLayerLinks = [{
                     name: 'imos:wfs_layer1'

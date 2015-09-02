@@ -55,8 +55,6 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
         this._determinePrimaryFilters(filterObjects);
 
-        dataCollection.setFilters(filterObjects);
-
         callbackFunction.call(callbackScope, filterObjects);
     },
 

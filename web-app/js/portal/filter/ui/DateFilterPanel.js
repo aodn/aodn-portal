@@ -103,7 +103,5 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
             fromDate: this.fromDate.getValue(),
             toDate: this.toDate.getValue()
         });
-
-        this._fireAddEvent();
     }
 });

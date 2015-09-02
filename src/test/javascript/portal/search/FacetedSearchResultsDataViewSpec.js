@@ -91,6 +91,8 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
         var record;
 
         beforeEach(function() {
+            spyOn(Portal.data.DataCollection.prototype, '_loadFilters');
+
             record = {
                 get: returns("Argo Australia Profiles"),
                 join: noOp

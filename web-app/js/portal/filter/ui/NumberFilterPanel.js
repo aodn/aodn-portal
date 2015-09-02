@@ -90,7 +90,6 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
         this.secondField.setVisible(false);
 
         this.filter.clearValue();
-        this._fireAddEvent();
     },
 
     needsFilterRange: function() {
@@ -152,8 +151,6 @@ Portal.filter.ui.NumberFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel
             operator: this._getSelectedOperatorObject(),
             secondField: this.secondField.getValue()
         });
-
-        this._fireAddEvent();
 
         if (this.firstField.getValue()) {
             trackFiltersUsage('filtersTrackingNumberAction', this._getTrackUsageLabel(), this.dataCollection.getTitle());

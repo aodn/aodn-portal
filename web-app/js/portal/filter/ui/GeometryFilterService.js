@@ -49,7 +49,5 @@ Portal.filter.ui.GeometryFilterService = Ext.extend(Portal.filter.ui.BaseFilterP
     _updateWithGeometry: function(geometry) {
 
         this.filter.setValue(geometry);
-
-        this._fireAddEvent();
     }
 });
