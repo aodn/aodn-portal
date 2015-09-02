@@ -1,7 +1,20 @@
 Ext.namespace('Portal.utils');
 
 Portal.utils.ObservableUtils = {
-    FUNCTIONS_TO_FORWARD: ['on', 'un', 'fireEvent'],
+    FUNCTIONS_TO_FORWARD: [
+        'addEvents',
+        'addListener',
+        'enableBubble',
+        'fireEvent',
+        'hasListener',
+        'on',
+        'purgeListeners',
+        'relayEvents',
+        'removeListener',
+        'resumeEvents',
+        'suspendEvents',
+        'un'
+    ],
 
     makeObservable: function(target) {
         target._observable = new Ext.util.Observable();
