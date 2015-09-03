@@ -60,6 +60,14 @@ describe("Portal.filter.ui.ComboFilterPanel", function() {
         });
     });
 
+    describe('_filterData', function() {
+        it('removes empty and null values', function() {
+            var values = [ null, "cake", undefined, "stapler", "", " ", "valid value with space" ];
+            var filteredValues = [ ["cake"] , ["stapler"], ["valid value with space"] ];
+            expect(filterPanel._filterValues(values)).toEqual(filteredValues);
+        });
+    });
+
     describe('onChange', function() {
 
         beforeEach(function() {
