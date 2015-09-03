@@ -68,10 +68,10 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
     },
 
     _buildBoundingBox: function(config) {
-        this.northBL = this._buildCoord('northBL',-90,90);
-        this.eastBL = this._buildCoord('eastBL',-180,180);
-        this.southBL = this._buildCoord('southBL',-90,90);
-        this.westBL = this._buildCoord('westBL',-180,180);
+        this.northBL = this._buildCoord('northBL', -90, 90);
+        this.eastBL = this._buildCoord('eastBL', -179.99, 179.99);
+        this.southBL = this._buildCoord('southBL', -90, 90);
+        this.westBL = this._buildCoord('westBL', -179.99, 179.99);
 
         return [
             {
