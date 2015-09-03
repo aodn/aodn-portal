@@ -60,8 +60,8 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
 
     onGo: function() {
         this.searcher.removeFilters('any');
-        this.searcher.addFilter('any', this.searchField.getRawValue());
-        trackFacetUsage(this.facetName, this.searchField.getRawValue());
+        this.searcher.addFilter('any', this.searchField.getRawValue().toLowerCase());
+        trackFacetUsage(this.facetName, this.searchField.getRawValue().toLowerCase());
         this.searcher.search();
     },
 
