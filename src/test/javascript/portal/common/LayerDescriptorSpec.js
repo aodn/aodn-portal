@@ -47,28 +47,4 @@ describe("Portal.common.LayerDescriptor", function() {
             expect(openLayerWithOptionOverrides.opacity).toBe(2);
         });
     });
-
-    describe('_setOpenLayerBounds', function() {
-        it('from dataCollection', function() {
-            var openLayer = {};
-
-            var dataCollection = {
-                getMetadataRecord: returns({
-                    data: { bbox: {
-                        geometries: [],
-                        getBounds: returns(new OpenLayers.Bounds(1,2,3,4))
-                    }}
-                })
-            };
-
-            var layerDescriptor = new Portal.common.LayerDescriptor({}, 'title', dataCollection);
-
-            layerDescriptor._setOpenLayerBounds(openLayer);
-
-            expect(openLayer.bboxMinX).toEqual(1);
-            expect(openLayer.bboxMinY).toEqual(2);
-            expect(openLayer.bboxMaxX).toEqual(3);
-            expect(openLayer.bboxMaxY).toEqual(4);
-        });
-    });
 });

@@ -240,7 +240,6 @@ portal {
 
     initialBbox = "110,-50,160,-3"
     defaultDatelineZoomBbox = "110,-50,160,-3"
-    enableDefaultDatelineZoom = false
 
     popupWidth = 550
     popupHeight = 325

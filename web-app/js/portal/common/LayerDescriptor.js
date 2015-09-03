@@ -44,24 +44,10 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
         openLayer.server = this.server;
         openLayer.wmsName = this.name;
 
-        this._setOpenLayerBounds(openLayer);
         openLayer.projection = this.projection;
         openLayer.blacklist = this.blacklist;
         openLayer.abstractTrimmed = this.abstractTrimmed;
         openLayer.dimensions = this.dimensions;
         openLayer.params.QUERYABLE = true;
-    },
-
-    _setOpenLayerBounds: function(openLayer) {
-
-        if (this.dataCollection) {
-            var metadataRecord = this.dataCollection.getMetadataRecord();
-            var bounds = metadataRecord.data.bbox.getBounds();
-
-            openLayer.bboxMinX = bounds.left;
-            openLayer.bboxMinY = bounds.bottom;
-            openLayer.bboxMaxX = bounds.right;
-            openLayer.bboxMaxY = bounds.top;
-        }
     }
 });

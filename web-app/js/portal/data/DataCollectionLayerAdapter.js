@@ -112,10 +112,6 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
 
     _copyAttributesFromSelectedLayer: function() {
         Ext.each([
-            'bboxMaxX',
-            'bboxMaxY',
-            'bboxMinX',
-            'bboxMinY',
             'opacity',
             'projection'
         ], function(attr) {

@@ -24,8 +24,13 @@ describe("Portal.details.LayerControlPanel", function() {
         dataCollection = {
             getTitle: returns('Data Collection Title'),
             getLayerAdapter: returns(layerAdapter),
-            getLayerSelectionModel: returns(layerSelectionModel)
+            getLayerSelectionModel: returns(layerSelectionModel),
+            bounds: true
         };
+
+        spyOn(Portal.details.LayerControlPanel.prototype, '_getCollectionBounds').andCallFake(function() {
+            return dataCollection.bounds;
+        });
 
         layerControlPanel = new Portal.details.LayerControlPanel({
             dataCollection: dataCollection
@@ -108,7 +113,7 @@ describe("Portal.details.LayerControlPanel", function() {
             spyOn(window, 'trackLayerControlUsage');
             layerControlPanel.layer = {
                 setVisibility: jasmine.createSpy('setVisibility')
-            }
+            };
         });
 
         it('sends google analytics tracking when checked', function() {
@@ -129,6 +134,37 @@ describe("Portal.details.LayerControlPanel", function() {
                 'off',
                 'Data Collection Title'
             );
+        });
+    });
+
+    describe('zoom to layer control', function() {
+        beforeEach(function() {
+            spyOn(Portal.details.LayerControlPanel.prototype, '_newZoomToDataButton').andCallThrough();
+        });
+
+        it('exists only when collection has bounds', function() {
+            dataCollection.bounds = true;
+            layerControlPanel = new Portal.details.LayerControlPanel({
+                dataCollection: dataCollection
+            });
+            expect(layerControlPanel._newZoomToDataButton).toHaveBeenCalled();
+        });
+
+        it("doesn't exist only when collection has bounds", function() {
+            dataCollection.bounds = false;
+            layerControlPanel = new Portal.details.LayerControlPanel({
+                dataCollection: dataCollection
+            });
+            expect(layerControlPanel._newZoomToDataButton).not.toHaveBeenCalled();
+        });
+
+        it('calls through to map.zoomToExtent', function() {
+            layerControlPanel.map = {
+                zoomToExtent: jasmine.createSpy('zoomToExtent')
+            };
+
+            layerControlPanel._zoomToLayer();
+            expect(layerControlPanel.map.zoomToExtent).toHaveBeenCalledWith(layerControlPanel._getCollectionBounds());
         });
     });
 });
