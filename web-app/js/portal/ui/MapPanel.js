@@ -23,8 +23,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
             split: true,
             header: false,
             initialBbox: portalConfig.initialBbox,
-            enableDefaultDatelineZoom: portalConfig.enableDefaultDatelineZoom,
-            defaultDatelineZoomBbox: portalConfig.defaultDatelineZoomBbox,
             hideLayerOptions: this.appConfig.hideLayerOptions
         }, cfg);
 
@@ -107,26 +105,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.mapOptions = new Portal.ui.openlayers.MapOptions(this.appConfig, this);
         this.map = this.mapOptions.newMap();
         this.map.setDefaultSpatialConstraintType(this.defaultSpatialConstraintType);
-    },
-
-    zoomToLayer: function(openLayer) {
-        if (openLayer && openLayer.hasBoundingBox()) {
-            // build openlayer bounding box
-            var bounds = null;
-            if (openLayer.bboxMinY == -180 && openLayer.bboxMaxY == 180 && this.enableDefaultDatelineZoom) {
-                // Geoserver can't represent bounding boxes that cross the date line - so, optionally, use a default
-                var defaultBbox = this.defaultDatelineZoomBbox.split(',');
-                bounds = new OpenLayers.Bounds(parseFloat(defaultBbox[1]), parseFloat(defaultBbox[0]), parseFloat(defaultBbox[3]), parseFloat(defaultBbox[2]));
-            }
-            else {
-                bounds = new OpenLayers.Bounds(openLayer.bboxMinX, openLayer.bboxMinY, openLayer.bboxMaxX, openLayer.bboxMaxY);
-            }
-
-            // ensure converted into this maps projection. convert metres into lat/lon etc
-            bounds.transform(new OpenLayers.Projection(openLayer.projection), this.map.getProjectionObject());
-
-            this.map.zoomToExtent(bounds);
-        }
     },
 
     getPanelX: function() {

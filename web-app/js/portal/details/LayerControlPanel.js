@@ -21,7 +21,10 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
 
         this.items.push(this._newOpacitySliderContainer());
         this.items.push(this._newVisibilityCheckbox());
-        this.items.push(this._newZoomToDataButton());
+
+        if (this._getCollectionBounds()) {
+            this.items.push(this._newZoomToDataButton());
+        }
 
         Portal.details.LayerControlPanel.superclass.initComponent.call(this);
     },
@@ -128,6 +131,10 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
     },
 
     _zoomToLayer: function() {
-        this.map.mapPanel.zoomToLayer(this.layer);
+        this.map.zoomToExtent(this._getCollectionBounds());
+    },
+
+    _getCollectionBounds: function() {
+        return this.dataCollection.getMetadataRecord().data.bbox.getBounds();
     }
 });

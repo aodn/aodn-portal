@@ -36,32 +36,6 @@ describe("Portal.ui.MapPanel", function() {
         });
     });
 
-    describe('zoom to layer tests', function() {
-
-        var openLayer = new OpenLayers.Layer.WMS();
-
-        beforeEach(function() {
-            spyOn(mapPanel.map, 'zoomToExtent');
-        });
-
-        it('zoomToExtent not called for layer without bounds', function() {
-
-            mapPanel.zoomToLayer(openLayer);
-            expect(mapPanel.map.zoomToExtent).not.toHaveBeenCalled();
-        });
-
-        it('zoomTo called for layer with bounds', function() {
-
-            openLayer.bboxMinX = 10;
-            openLayer.bboxMinY = 10;
-            openLayer.bboxMaxX = 20;
-            openLayer.bboxMaxY = 20;
-
-            mapPanel.zoomToLayer(openLayer);
-            expect(mapPanel.map.zoomToExtent).toHaveBeenCalled();
-        });
-    });
-
     describe('reset event', function() {
 
         it('should call reset()', function() {
