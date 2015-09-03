@@ -23,9 +23,11 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         mockDataInjection = {
             uuid: '42',
             title: 'the title',
-            pointOfTruthLink: {
-                href: 'point of truth url'
-            },
+            pointOfTruthLink: [
+                {
+                    href: 'point of truth url'
+                }
+            ],
             dataMarkup: 'markup!',
             dataFilters: 'Filters!',
             linkedFiles: [
@@ -243,7 +245,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         it('creates links', function() {
             var values = {
                 linkedFiles: [
-                    {url: href, title: text}
+                    {href: href, title: text}
                 ]
             };
             var html = tpl._getFileListEntries(values);
@@ -259,9 +261,11 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         beforeEach(function() {
             values = {
                 title: "Rottnest ...QC'd (is bad for embedding in a function)",
-                pointOfTruthLink: {
-                    href: "http://geonetwork"
-                }
+                pointOfTruthLink: [
+                    {
+                        href: "http://geonetwork"
+                    }
+                ]
             };
         });
 
