@@ -116,15 +116,28 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
         this.combo.disable();
     },
 
+    _isValidValue: function(value) {
+        // Omit values that are either null-ish, empty, or only contain spaces
+        return value && ! value.match("^\\s*$");
+    },
+
+    _filterValues: function(values) {
+        data = [];
+        for (var i = 0; i < values.length; i++) {
+            if (this._isValidValue(values[i])) {
+                data.push([values[i]]);
+            }
+        }
+        return data;
+    },
+
     _loadDataIntoComboBox: function(values) {
 
         var data = [];
         var clearFilter = [OpenLayers.i18n('clearFilterOption')];
         data.push(clearFilter);
 
-        for (var i = 0; i < values.length; i++) {
-            data.push([values[i]]);
-        }
+        Array.prototype.push.apply(data, this._filterValues(values));
 
         this.combo.clearValue();
         this.combo.getStore().loadData(data);
