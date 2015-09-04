@@ -54,9 +54,22 @@ describe("Portal.search.FreeTextSearchPanel", function()
         expect(freeTextSearchPanel.searchField.reset).toHaveBeenCalled();
     });
 
-    it("sends google analytics tracking information on go", function() {
-        spyOn(window, 'trackFacetUsage');
-        freeTextSearchPanel.onGo();
-        expect(window.trackFacetUsage).toHaveBeenCalled();
+    describe("google analytics", function() {
+        beforeEach(function() {
+            spyOn(window, 'trackFacetUsage');
+            freeTextSearchPanel.facetName = "facetName";
+        });
+
+        it("sends tracking information on go", function() {
+            spyOn(freeTextSearchPanel.searchField, 'getRawValue').andReturn("search value");
+            freeTextSearchPanel.onGo();
+            expect(window.trackFacetUsage).toHaveBeenCalledWith("facetName", "search value");
+        });
+
+        it("tracking information is case insensitive", function() {
+            spyOn(freeTextSearchPanel.searchField, 'getRawValue').andReturn("SEARCH VALUE 222");
+            freeTextSearchPanel.onGo();
+            expect(window.trackFacetUsage).toHaveBeenCalledWith("facetName", "search value 222");
+        });
     });
 });
