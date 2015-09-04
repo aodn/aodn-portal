@@ -53,7 +53,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
                 linkText = link.title;
             }
 
-            linkHtml += String.format('<li><a class="external" href="{0}" target="_blank">{1}</a></li>\n', link.url, linkText);
+            linkHtml += String.format('<li><a class="external" href="{0}" target="_blank">{1}</a></li>\n', link.href, linkText);
         });
 
         return linkHtml;

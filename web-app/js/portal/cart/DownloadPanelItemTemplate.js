@@ -77,7 +77,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
                 cleanStringForFunctionParameter(record.title)
             );
 
-            markup = this._makeExternalLinkMarkup(record.pointOfTruthLink.href, OpenLayers.i18n('metadataLinkText'), trackUsageText);
+            markup = this._makeExternalLinkMarkup(record.pointOfTruthLink[0].href, OpenLayers.i18n('metadataLinkText'), trackUsageText);
         }
 
         return markup;
@@ -200,7 +200,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getSingleFileEntry: function(link) {
-        return this._makeExternalLinkMarkup(link.url, link.title);
+        return this._makeExternalLinkMarkup(link.href, link.title);
     },
 
     _makeExternalLinkMarkup: function(href, text, extras) {

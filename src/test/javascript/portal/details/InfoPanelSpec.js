@@ -15,10 +15,10 @@ describe("Portal.details.InfoPanel", function() {
     beforeEach(function() {
 
         var mockLinks = [{
-            url: "http://www.google.com",
+            href: "http://www.google.com",
             title: ""
         }, {
-            url: "http://imos.aodn.org.au",
+            href: "http://imos.aodn.org.au",
             title: "Portal"
         }];
 
