@@ -79,6 +79,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
     describe('layer', function() {
 
         beforeEach(function() {
+            spyOn(spatialConstraint, '_resetSpatialExtentError');
             spatialConstraint._checkSketch = returns(true);
         });
 
@@ -326,7 +327,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             });
 
             it('layer style to be reset', function() {
-                expect(spatialConstraint.layer.style).toBe( OpenLayers.Feature.Vector.style['default']);
+                expect(spatialConstraint.layer.style).toBe(OpenLayers.Feature.Vector.style['default']);
             });
 
             it('redraw is called', function() {
@@ -356,6 +357,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
         beforeEach(function() {
             spyOn(spatialConstraint, 'addAntimeridian');
+            spyOn(spatialConstraint, '_resetSpatialExtentError');
             spatialConstraint.layer = testLayer;
             spatialConstraint.map = { events: {
                 triggerEvent: jasmine.createSpy('triggerEvent')
