@@ -314,7 +314,10 @@ function getPortalBase(pathname) {
 };
 
 function normaliseLongitude(longitude) {
-    return (longitude + 540) % 360 - 180;
+    if (longitude >= -180 && longitude <= 180)
+        return longitude; // No need to normalize!
+    else
+        return (longitude + 540) % 360 - 180;
 };
 
 // Remove all child nodes of HTML elements from the DOM
