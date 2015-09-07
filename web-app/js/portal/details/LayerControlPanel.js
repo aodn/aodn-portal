@@ -99,7 +99,7 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
         Ext.each(this.dataCollection.getLayerSelectionModel().getLayers(), function(openLayer) {
             items.push({
                 boxLabel: openLayer.wmsName,
-                name: 'selectedLayer',
+                name: String.format("{0}-selectedLayer", this.dataCollection.getUuid()),
                 checked: openLayer == this.dataCollection.getLayerSelectionModel().getSelectedLayer(),
                 layer: openLayer
             });
