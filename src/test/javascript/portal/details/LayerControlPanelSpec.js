@@ -25,6 +25,7 @@ describe("Portal.details.LayerControlPanel", function() {
             getTitle: returns('Data Collection Title'),
             getLayerAdapter: returns(layerAdapter),
             getLayerSelectionModel: returns(layerSelectionModel),
+            getUuid: returns('1234'),
             bounds: true
         };
 
