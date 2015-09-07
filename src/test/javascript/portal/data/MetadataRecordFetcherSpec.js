@@ -49,7 +49,6 @@ describe("Portal.data.MetadataRecordFetcher", function() {
         expect(successCallback).toHaveBeenCalled();
     });
 
-
     describe('load data collection', function() {
         var dataCollectionRecord = {};
 
@@ -80,6 +79,7 @@ describe("Portal.data.MetadataRecordFetcher", function() {
 
             fetcher.load(uuid);
             expect(Portal.data.MetadataRecordStore.prototype.getAt).toHaveBeenCalled();
+            expect(Portal.data.DataCollection.fromMetadataRecord).not.toHaveBeenCalled();
             expect(fetcher._errorLoadingDataCollection).toHaveBeenCalledWith(uuid);
         });
     });
