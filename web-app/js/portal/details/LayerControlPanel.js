@@ -110,19 +110,23 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
             items: items,
             listeners: {
                 'scope': this,
-                'change': this._radioGroupChanged
+                'change': this._onSelectedLayerChange
             }
         });
     },
 
-    _radioGroupChanged: function(radioGroup, checkedRadio) {
-        this.dataCollection.getLayerSelectionModel().setSelectedLayer(checkedRadio.layer);
+    _onSelectedLayerChange: function(radioGroup, checkedRadio) {
+        this._setSelectedLayer(checkedRadio.layer);
+    },
 
-         trackLayerControlUsage(
-             'changeLayerTrackingAction',
-             this.dataCollection.getTitle(),
-             checkedRadio.layer.wmsName
-         );
+    _setSelectedLayer: function(layer) {
+        this.dataCollection.getLayerSelectionModel().setSelectedLayer(layer);
+
+        trackLayerControlUsage(
+            'changeLayerTrackingAction',
+            this.dataCollection.getTitle(),
+            layer.wmsName
+        );
     },
 
     _visibilityButtonChecked: function(obj, val) {
