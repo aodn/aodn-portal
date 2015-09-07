@@ -52,7 +52,7 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
     },
 
     getUuidsFromUrl: function() {
-        var getParams = this._getUrl().split("?");
+        var getParams = this._getUrl().split("#")[0].split("?");
         var params = Ext.urlDecode(getParams[1]);
 
         return params.uuid || [];
