@@ -34,10 +34,11 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
             var store = new Portal.data.MetadataRecordStore();
             store.loadData(response.responseXML);
             var metadataRecord = store.getAt(0);
-            var dataCollection = Portal.data.DataCollection.fromMetadataRecord(metadataRecord);
 
             if (metadataRecord) {
+                var dataCollection = Portal.data.DataCollection.fromMetadataRecord(metadataRecord);
                 _this.dataCollectionStore.add(dataCollection);
+
                 viewport.setActiveTab(TAB_INDEX_VISUALISE);
             }
             else {
