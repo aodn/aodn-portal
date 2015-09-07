@@ -85,10 +85,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             this.map.events.on({
                 scope: this,
                 'spatialconstraintadded': function(geometry) {
-                    this._applyFilterValuesToCollection(currentLayer, geometry);
+                    this._applyFilterValuesToCollection(geometry);
                 },
                 'spatialconstraintcleared': function() {
-                    this._applyFilterValuesToCollection(currentLayer, null);
+                    this._applyFilterValuesToCollection();
                 }
             });
 
@@ -320,11 +320,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         trackLayerControlUsage(OpenLayers.i18n('trackingDateAction'), OpenLayers.i18n("trackingTimeSliceAction", {direction: "next"}), this.dataCollection.getTitle());
     },
 
-    _applyFilterValuesToCollection: function() {
-
+    _applyFilterValuesToCollection: function(geometry) {
         var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
-        var geometry = this.map.getConstraint();
 
         this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry);
     },
