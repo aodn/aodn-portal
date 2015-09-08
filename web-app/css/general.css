@@ -220,7 +220,7 @@ hr {
 }
 
 .listButtonWrapper {
-    margin-top: 1px;
+    margin-top: 3px;
 }
 
 .removeButton {
@@ -1039,14 +1039,13 @@ ul.x-tab-strip-top li:hover * {
 }
 
 .downloadPanelResultsTitle {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 10px 0;
 }
 
 .resultsRowHeaderTitle {
     float: left;
-    margin: 1px 15px 0 0;
-    padding: 3px 10px 2px 5px;
+    margin: 1px 10px 0 0;
+    padding: 5px 10px 5px 9px;
     width: 700px;
 }
 
@@ -1055,7 +1054,6 @@ ul.x-tab-strip-top li:hover * {
 }
 
 .resultsRowHeaderTitle * {
-    margin: 2px 0;
     display: inline-block;
 }
 

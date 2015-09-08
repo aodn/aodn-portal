@@ -21,9 +21,10 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         return [
             '<div class="downloadPanelResultsWrapper">',
             '  <div class="x-panel-header downloadPanelResultsTitle">',
-            '    <div class="downloads resultsRowHeaderTitle"><h3>{[this._getRecordTitle(values)]}</h3></div>',
-            '    <div class="floatRight listButtonWrapper" id="{[this._getButtonId(values,\'downloadButtonId\')]}">{[this._downloadButton(values)]}</div>',
-            '    <div class="floatRight listButtonWrapper removeButton" id="{[this._getButtonId(values,\'removeButtonId\')]}">{[this._createRemoveButtonAfterPageLoad(values)]}</div>',
+            '    <div class="downloads resultsRowHeaderTitle"><h3>{[this._getRecordTitle(values)]}</h3>',
+            '    <div class="floatRight" id="{[this._getLinkId(values,\'removeButtonId\')]}">{[this._createRemoveButtonAfterPageLoad(values)]}</div>',
+            '    </div>',
+            '    <div class="floatRight listButtonWrapper" id="{[this._getLinkId(values,\'downloadButtonId\')]}">{[this._downloadButton(values)]}</div>',
             '  </div>',
             '  <div style="overflow:hidden;">',
             '    <div class="floatLeft dataFilterEntry">',
@@ -101,7 +102,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     // It's *actually* a button, but we're using it as a label here...
     _createDownloadingLabel: function(collection) {
-        var elementId = this._getButtonId(collection, 'downloadButtonId');
+        var elementId = this._getLinkId(collection, 'downloadButtonId');
 
         Ext.fly(elementId).update("");
 
@@ -117,7 +118,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     _createDownloadButton: function(collection) {
 
-        var elementId = this._getButtonId(collection, 'downloadButtonId');
+        var elementId = this._getLinkId(collection, 'downloadButtonId');
 
         if (collection.menuItems.length > 0 && Ext.get(elementId)) {
 
@@ -137,45 +138,40 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createRemoveButtonAfterPageLoad: function(collection) {
-        this._createRemoveButton.defer(1, this, [collection]);
+        this._createRemoveLink.defer(1, this, [collection]);
         return '';
     },
 
-    _createRemoveButton: function(collection) {
-        var elementId = this._getButtonId(collection, 'removeButtonId');
+    _createRemoveLink: function(collection) {
+        var elementId = this._getLinkId(collection, 'removeButtonId');
         if (collection.menuItems.length > 0 && Ext.get(elementId)) {
 
             // remove old button
             Ext.fly(elementId).update("");
 
-            new Ext.Button({
+            this.removeLink = new Ext.ux.Hyperlink({
                 text: OpenLayers.i18n("removeButton"),
-                tooltip: OpenLayers.i18n("removeButtonTooltip"),
-                width: 65,
-                scope: this,
-                renderTo: elementId,
-                listeners: {
-                    click: {
-                        fn: this._removeButtonOnClick,
-                        scope: this
-                    }
-                }
+                title: OpenLayers.i18n("removeButtonTooltip"),
+                cls: 'x-tool-awesome fa fa-fw fa-close',
+                renderTo: elementId
             });
+            this.removeLink.on('click', function() {
+                this._removeLinkOnClick(elementId);
+            }, this);
         }
     },
 
-    getIdFromButtonContainerId: function(button, i18Name) {
-        var collectionId = button.container.id;
+    getIdFromButtonContainerId: function(containerId, i18Name) {
         var prefix = OpenLayers.i18n(i18Name, {id: ""});
-        return collectionId.replace(prefix, '');
+        return containerId.replace(prefix, '');
     },
 
-    _getButtonId: function(collection, i18Name) {
+    _getLinkId: function(collection, i18Name) {
         return OpenLayers.i18n(i18Name, {id: collection.uuid});
     },
 
-    _removeButtonOnClick: function(button) {
-        var collectionId = this.getIdFromButtonContainerId(button, "removeButtonId");
+    _removeLinkOnClick: function(containerId) {
+        var collectionId = this.getIdFromButtonContainerId(containerId, "removeButtonId");
         var record = this.dataCollectionStore.getByUuid(collectionId);
         this.dataCollectionStore.remove(record);
 

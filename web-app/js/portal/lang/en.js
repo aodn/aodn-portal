@@ -168,7 +168,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     showMapLayer: 'Shown on map',
     clearAllButtonTooltip: 'Remove all data collections from the Subset and Download pages, reset the map location and zoom level',
-    removeButtonTooltip: 'Remove this data collection from the Subset and Download pages, the collection can be re-added from the search.',
 
     clearLinkLabel: '<span class=\"fa fa-undo\"></span> ${text}',
     clearAndResetLabel: 'Clear and Reset',
@@ -229,7 +228,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     depthLabel: 'Depth:',
     elevationLabel: 'Elevation:',
 
-    removeDataCollection: 'Remove data collection',
+    removeDataCollectionTooltip: 'Remove this data collection from the Subset and Download pages, the collection can be re-added from the search',
     zoomToDataCollection: '<span class=\"fa fa-fw fa-search\"></span> Zoom to collection',
 
     // PolygonTypeComboBox

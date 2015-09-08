@@ -8,11 +8,13 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
+    WIDTH: 925,
+
     initComponent: function(cfg) {
 
         this.bodyContent = new Ext.Panel({
             cls: 'downloadPanelItem',
-            width: 1024
+            width: this.WIDTH
         });
         this.initButtonPanel();
 
@@ -145,7 +147,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
         this.buttonPanel = new Ext.Panel({
             cls: 'downloadPanelItem',
-            width: 1024,
+            width: this.WIDTH,
             items: [this.resetLink]
         });
     },

@@ -50,7 +50,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
     describe('_createRemoveButtonAfterPageLoad', function() {
         it('returns empty string', function() {
-            spyOn(tpl, '_createRemoveButton');
+            spyOn(tpl, '_createRemoveLink');
             expect(tpl._createRemoveButtonAfterPageLoad()).toEqual('');
         });
     });
@@ -214,7 +214,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
     describe('get id', function() {
         it('from button Container Id', function() {
-            var buttonId = tpl._getButtonId(mockDataInjection,"removeButtonId");
+            var buttonId = tpl._getLinkId(mockDataInjection,"removeButtonId");
             expect(buttonId).not.toBeNull();
             expect(typeof buttonId).toEqual('string');
         });
@@ -296,7 +296,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             dataCollectionStore.getByUuid = jasmine.createSpy('getByUuid').andReturn(testRecord);
             dataCollectionStore.remove = jasmine.createSpy('remove');
 
-            tpl._removeButtonOnClick();
+            tpl._removeLinkOnClick();
         });
 
         it('removes record from store with uuid', function() {
