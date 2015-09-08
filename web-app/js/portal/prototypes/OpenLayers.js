@@ -222,6 +222,18 @@ OpenLayers.Geometry.prototype.isBox = function() {
     return Math.abs(this.getArea() - boundsAsGeom.getArea()) < 0.001;
 };
 
+OpenLayers.Geometry.prototype.getPrettyBounds = function() {
+    var bounds = this.getBounds();
+
+    return String.format(
+        '{0}W {1}S {2}E {3}N',
+        toNSigFigs(bounds['left'], 3),
+        toNSigFigs(bounds['bottom'], 3),
+        toNSigFigs(bounds['right'], 3),
+        toNSigFigs(bounds['top'], 3)
+    );
+};
+
 OpenLayers.Geometry.prototype.toWkt = function() {
     var wktFormatter = new OpenLayers.Format.WKTNormalised();
     return wktFormatter.write({ geometry: this });

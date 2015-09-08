@@ -27,9 +27,9 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
                 params.longitudeRangeEnd,
                 params.latitudeRangeEnd
             );
-            var bbox = Portal.utils.geo.bboxAsStringToBounds(bboxString);
+            var bbox = Portal.utils.geo.bboxAsStringToGeometry(bboxString).getPrettyBounds();
             // differs from WMS layers. It will always be a bbox even when a polygon was used by the user
-            areaString = String.format('{0}:&nbsp;{1}<br>', OpenLayers.i18n("spatialExtentHeading"), bbox.toString());
+            areaString = String.format('{0}:&nbsp;{1}<br>', OpenLayers.i18n("spatialExtentHeading"), bbox);
         }
 
         if (params.dateRangeStart != undefined) {
