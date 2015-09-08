@@ -32,12 +32,13 @@ Portal.filter.GeometryFilter = Ext.extend(Portal.filter.Filter, {
 
         var label = OpenLayers.i18n("spatialExtentHeading");
         var note = this._isRealPolygon() ? OpenLayers.i18n("spatialExtentPolygonNote") : "";
+        var prettyBounds = this.getValue().getPrettyBounds();
 
         return String.format(
             '{0}: {1}{2}',
             label,
             note,
-            this.getValue().getBounds()
+            prettyBounds
         );
     },
 

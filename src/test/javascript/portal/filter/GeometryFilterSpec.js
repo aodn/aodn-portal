@@ -15,10 +15,7 @@ describe("Portal.filter.GeometryFilter", function() {
 
             filter = new Portal.filter.GeometryFilter({
                 name: 'column_name',
-                value: {
-                    toWkt: returns('WKT'),
-                    getBounds: returns('bounds')
-                }
+                getValue: returns(new OpenLayers.Geometry.fromWKT('POLYGON((1 2,3 2,3 4,1 4,1 2))'))
             });
             filter.map = {
                 getSpatialConstraintType: returns('polygon')
@@ -29,7 +26,7 @@ describe("Portal.filter.GeometryFilter", function() {
 
             it('returns CQL', function() {
 
-                expect(filter.getCql()).toBe('INTERSECTS(column_name,WKT)');
+                expect(filter.getCql()).toBe('INTERSECTS(column_name,POLYGON((1 2,3 2,3 4,1 4,1 2)))');
             });
         });
 
@@ -41,7 +38,7 @@ describe("Portal.filter.GeometryFilter", function() {
 
                 expect(humanReadableForm).toContain(OpenLayers.i18n("spatialExtentHeading"));
                 expect(humanReadableForm).toContain(OpenLayers.i18n("spatialExtentPolygonNote"));
-                expect(humanReadableForm).toContain('bounds');
+                expect(humanReadableForm).toBe('Spatial Subset: Polygon with max extent 1W 2S 3E 4N');
             });
         });
     });
@@ -52,10 +49,7 @@ describe("Portal.filter.GeometryFilter", function() {
 
             filter = new Portal.filter.GeometryFilter({
                 name: 'column_name',
-                value: {
-                    toWkt: returns('WKT'),
-                    getBounds: returns('bounds')
-                }
+                getValue: returns(new OpenLayers.Geometry.fromWKT('POLYGON((1 2,3 2,3 4,1 4,1 2))'))
             });
             filter.map = {
                 getSpatialConstraintType: returns('box')
@@ -66,7 +60,7 @@ describe("Portal.filter.GeometryFilter", function() {
 
             it('returns CQL', function() {
 
-                expect(filter.getCql()).toBe('INTERSECTS(column_name,WKT)');
+                expect(filter.getCql()).toBe('INTERSECTS(column_name,POLYGON((1 2,3 2,3 4,1 4,1 2)))');
             });
         });
 
@@ -77,7 +71,7 @@ describe("Portal.filter.GeometryFilter", function() {
                 var humanReadableForm = filter.getHumanReadableForm();
 
                 expect(humanReadableForm).toContain(OpenLayers.i18n("spatialExtentHeading"));
-                expect(humanReadableForm).toContain('bounds');
+                expect(humanReadableForm).toBe('Spatial Subset: 1W 2S 3E 4N');
             });
         });
     });
