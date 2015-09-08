@@ -278,6 +278,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         datePicker.setValue(selectedDateTimeMoment);
 
+        if (datePicker.validate()) {
+            this._applyFilterValuesToCollection(); // Set this date on the collection now. Fixes #1922
+        }
+
         this.layer.loadTimeSeriesForDay(selectedDateTimeMoment);
         // Now we wait for the event of 'temporalextentloaded'
     },
