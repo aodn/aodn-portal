@@ -306,6 +306,15 @@ Site navigation
     margin: 0;
 }
 
+.viewPortTab button {
+    background-color: inherit;
+    border: none;
+}
+
+.viewPortTabActive button{
+    cursor: pointer;
+}
+
 .viewPortTab h1 {
     line-height: 26px;
     float: left;

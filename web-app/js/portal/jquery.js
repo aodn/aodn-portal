@@ -50,7 +50,7 @@ jQuery( window ).load(function() {
         .live("mouseenter", function(){
             var tabId = $(this).attr('id');
             var tabIdInt = parseInt(tabId.substr(tabId.length - 1));
-            jQuery(this).children('a').each(
+            jQuery(this).children('button').each(
                 function() {
                     var events = jQuery(this).data('events');
                     if (events == undefined || typeof (events.click) != "object") {

@@ -6,8 +6,8 @@
 
 --%>
 <div class="viewPortTab viewPortTabDisabled" id="viewPortTab${stepIndex}">
-  <a href="#" >
+  <button>
     <h1>${stepIndex + 1}</h1>
     <h2>${description}</h2>
-  </a>
+  </button>
 </div>
