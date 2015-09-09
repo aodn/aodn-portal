@@ -14,6 +14,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     PENDING_EVENT_ATTR: 'PENDING_EVENT',
 
+    geometryFilter: undefined,
+
     constructor: function(cfg) {
 
         Ext.apply(this, cfg);
@@ -85,15 +87,25 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             this.map.events.on({
                 scope: this,
                 'spatialconstraintadded': function(geometry) {
-                    this._applyFilterValuesToCollection(geometry);
+                    this._setGeometryFilter(geometry);
+                    this._applyFilterValuesToCollection();
                 },
                 'spatialconstraintcleared': function() {
+                    this._setGeometryFilter(undefined);
                     this._applyFilterValuesToCollection();
                 }
             });
 
             this.layer.attachedSpatialEvents = true;
         }
+    },
+
+    _getGeometryFilter: function() {
+        return this.geometryFilter;
+    },
+
+    _setGeometryFilter: function(geometry) {
+        this.geometryFilter = geometry;
     },
 
     _addTemporalControls: function() {
@@ -324,9 +336,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         trackLayerControlUsage(OpenLayers.i18n('trackingDateAction'), OpenLayers.i18n("trackingTimeSliceAction", {direction: "next"}), this.dataCollection.getTitle());
     },
 
-    _applyFilterValuesToCollection: function(geometry) {
+    _applyFilterValuesToCollection: function() {
         var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
+        var geometry = this._getGeometryFilter();
 
         this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry);
     },
