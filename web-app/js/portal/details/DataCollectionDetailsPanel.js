@@ -111,7 +111,7 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
             id: 'deleteToolItem',
             styles: 'fa-close',
             handler: this._layerDelete,
-            title: OpenLayers.i18n('removeDataCollection'),
+            title: OpenLayers.i18n('removeDataCollectionTooltip'),
             scope: this
         };
     },

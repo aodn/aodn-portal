@@ -21,9 +21,12 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         return [
             '<div class="downloadPanelResultsWrapper">',
             '  <div class="x-panel-header downloadPanelResultsTitle">',
-            '    <div class="downloads resultsRowHeaderTitle"><h3>{[this._getRecordTitle(values)]}</h3></div>',
-            '    <div class="floatRight listButtonWrapper" id="{[this._getButtonId(values,\'downloadButtonId\')]}">{[this._downloadButton(values)]}</div>',
-            '    <div class="floatRight listButtonWrapper removeButton" id="{[this._getButtonId(values,\'removeButtonId\')]}">{[this._createRemoveButtonAfterPageLoad(values)]}</div>',
+            '    <div class="downloads resultsRowHeaderTitle">',
+            '      <div class="x-tool-awesome" title="{[this.getTooltip(\'removeDataCollectionTooltip\')]}" class="removeButton" id="{[this._getLinkId(values,\'removeButtonId\')]}">{[this._createRemoveButtonAfterPageLoad(values)]}</div>',
+            '      <div class="x-tool-awesome" title="{[this.getTooltip(\'shareButtonTooltip\')]}" id="{[this._getLinkId(values,\'shareButtonId\')]}">{[this._createShareButtonAfterPageLoad(values)]}</div>',
+            '    <span class="x-panel-header-text"><h3>{[this._getRecordTitle(values)]}</h3></span>',
+            '    </div>',
+            '    <div class="floatRight listButtonWrapper" id="{[this._getLinkId(values,\'downloadButtonId\')]}">{[this._createDownloadButtonAfterPageLoad(values)]}</div>',
             '  </div>',
             '  <div style="overflow:hidden;">',
             '    <div class="floatLeft dataFilterEntry">',
@@ -41,25 +44,49 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             '    </div>',
             '    <div class="floatRight">',
             '      {[this._dataSpecificMarkup(values)]}<br>',
-            '      {[this._shareButtonMarkup(values)]}',
             '    </div>',
             '  </div>',
             '</div>'
         ];
     },
 
+    getTooltip: function(i18nId) {
+        return OpenLayers.i18n(i18nId);
+    },
+
     _getRecordTitle: function(values) {
         return values.title;
     },
 
-    _shareButtonMarkup: function(values) {
-        return String.format(
-            '      <span class="fa fa-fw fa-share-alt fa-lg"></span>' +
-            '      <input readonly onclick="this.focus(); this.select();" title="{0}" value="{1}/home?uuid={2}" />',
-            OpenLayers.i18n('shareButton'),
+    _createShareButtonAfterPageLoad: function(collection) {
+        this._createShareButton.defer(1, this, [collection]);
+        return '';
+    },
+
+    _createShareButton: function(collection) {
+        var url =  String.format(
+            '{0}/home?uuid={1}',
             Portal.app.appConfig.grails.serverURL,
-            values.uuid
+            collection.uuid
         );
+        var elementId = this._getLinkId(collection, 'shareButtonId');
+
+        if (Ext.get(elementId)) {
+
+            Ext.fly(elementId).update("");
+
+            var shareLink = new Ext.ux.Hyperlink({
+                cls: 'fa fa-fw fa-share-alt',
+                renderTo: elementId
+            });
+            shareLink.on('click', function() {
+                this._shareButtonOnClick(url);
+            }, this);
+        }
+    },
+
+    _shareButtonOnClick: function(url) {
+        Ext.MessageBox.alert('Share Link', url);
     },
 
     _getDataFilterEntry: function(values) {
@@ -87,7 +114,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         return values.dataMarkup;
     },
 
-    _downloadButton: function(collection) {
+    _createDownloadButtonAfterPageLoad: function(collection) {
 
         if (collection.downloadStatus == 'requested') {
             this._createDownloadingLabel.defer(1, this, [collection]);
@@ -101,7 +128,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     // It's *actually* a button, but we're using it as a label here...
     _createDownloadingLabel: function(collection) {
-        var elementId = this._getButtonId(collection, 'downloadButtonId');
+        var elementId = this._getLinkId(collection, 'downloadButtonId');
 
         Ext.fly(elementId).update("");
 
@@ -117,7 +144,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     _createDownloadButton: function(collection) {
 
-        var elementId = this._getButtonId(collection, 'downloadButtonId');
+        var elementId = this._getLinkId(collection, 'downloadButtonId');
 
         if (collection.menuItems.length > 0 && Ext.get(elementId)) {
 
@@ -137,45 +164,40 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createRemoveButtonAfterPageLoad: function(collection) {
-        this._createRemoveButton.defer(1, this, [collection]);
+        this._createRemoveLink.defer(1, this, [collection]);
         return '';
     },
 
-    _createRemoveButton: function(collection) {
-        var elementId = this._getButtonId(collection, 'removeButtonId');
+    _createRemoveLink: function(collection) {
+        var elementId = this._getLinkId(collection, 'removeButtonId');
         if (collection.menuItems.length > 0 && Ext.get(elementId)) {
 
             // remove old button
             Ext.fly(elementId).update("");
 
-            new Ext.Button({
+            var removeLink = new Ext.ux.Hyperlink({
                 text: OpenLayers.i18n("removeButton"),
-                tooltip: OpenLayers.i18n("removeButtonTooltip"),
-                width: 65,
-                scope: this,
-                renderTo: elementId,
-                listeners: {
-                    click: {
-                        fn: this._removeButtonOnClick,
-                        scope: this
-                    }
-                }
+                title: OpenLayers.i18n("removeButtonTooltip"),
+                cls: 'fa fa-fw fa-close',
+                renderTo: elementId
             });
+            removeLink.on('click', function() {
+                this._removeLinkOnClick(elementId);
+            }, this);
         }
     },
 
-    getIdFromButtonContainerId: function(button, i18Name) {
-        var collectionId = button.container.id;
+    getIdFromButtonContainerId: function(containerId, i18Name) {
         var prefix = OpenLayers.i18n(i18Name, {id: ""});
-        return collectionId.replace(prefix, '');
+        return containerId.replace(prefix, '');
     },
 
-    _getButtonId: function(collection, i18Name) {
+    _getLinkId: function(collection, i18Name) {
         return OpenLayers.i18n(i18Name, {id: collection.uuid});
     },
 
-    _removeButtonOnClick: function(button) {
-        var collectionId = this.getIdFromButtonContainerId(button, "removeButtonId");
+    _removeLinkOnClick: function(containerId) {
+        var collectionId = this.getIdFromButtonContainerId(containerId, "removeButtonId");
         var record = this.dataCollectionStore.getByUuid(collectionId);
         this.dataCollectionStore.remove(record);
 
