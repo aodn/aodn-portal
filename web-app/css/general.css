@@ -281,7 +281,6 @@ Site navigation
     width: 100%;
     border: 2px solid #6b6b6b;
     vertical-align: middle;
-
     min-width: 920px;
 }
 
@@ -297,18 +296,23 @@ Site navigation
 .viewPortTab {
     display: block;
     float: left;
-    padding: 8px 30px 6px 60px;
-    width: 200px;
+    padding: 0 20px 4px 20px;
+    width: 260px;
 }
 
 .viewPortTab * {
     color: #fafafa;
-    margin: 0;
+}
+
+.viewPortTab *:focus {
+    outline: none !important;
 }
 
 .viewPortTab button {
     background-color: inherit;
     border: none;
+    margin-left: 35px;
+    padding: 2px;
 }
 
 .viewPortTabActive button{
@@ -316,16 +320,18 @@ Site navigation
 }
 
 .viewPortTab h1 {
-    line-height: 26px;
-    float: left;
+    top: .1em;
+    position: relative;
+    display: inline-block;
     font-size: 24px;
     font-weight: bold;
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-right: 5px;
 }
 
+.viewPortTab h1,
 .viewPortTab h2 {
-    line-height: 26px;
+    display: inline-block;
+    margin: 0 3px;
 }
 
 .viewPortTabActive {
