@@ -12,14 +12,12 @@ describe("Portal.common.LayerDescriptor", function() {
             name: 'satellite',
             server: {
                 uri: 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi'
-            },
-            cql: 'attr=123'
+            }
         };
 
         var layerDesc = new Portal.common.LayerDescriptor(layerDescAsDecodedJSON);
         expect(layerDesc.name).toBe('satellite');
         expect(layerDesc.server.uri).toBe('http://tilecache.emii.org.au/cgi-bin/tilecache.cgi');
-        expect(layerDesc.cql).toBe('attr=123');
     });
 
     describe('toOpenLayer', function() {
