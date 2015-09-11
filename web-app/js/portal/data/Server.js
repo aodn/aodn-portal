@@ -24,7 +24,7 @@ Portal.data.Server = {
         var serverInfo;
 
         Ext.each(Portal.app.appConfig.knownServers, function(server) {
-            if (server.uri == uri) {
+            if (uri.startsWith(server.uri)) {
                 serverInfo = server;
                 return false;
             }
