@@ -28,7 +28,7 @@ Portal.common.LayerDescriptor = Ext.extend(Object, {
     toOpenLayer: function(optionOverrides, paramOverrides) {
         var openLayer = new this.openLayerClass(
             this.title,
-            this.server.uri,
+            this.href || this.server.uri,
             new Portal.ui.openlayers.LayerParams(this, paramOverrides),
             new Portal.ui.openlayers.LayerOptions(this, optionOverrides)
         );

@@ -10,14 +10,12 @@ describe("Portal.common.LayerDescriptor", function() {
     it('from javascript object', function() {
         var layerDescAsDecodedJSON = {
             name: 'satellite',
-            server: {
-                uri: 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi'
-            }
+            href: 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi'
         };
 
         var layerDesc = new Portal.common.LayerDescriptor(layerDescAsDecodedJSON);
         expect(layerDesc.name).toBe('satellite');
-        expect(layerDesc.server.uri).toBe('http://tilecache.emii.org.au/cgi-bin/tilecache.cgi');
+        expect(layerDesc.href).toBe('http://tilecache.emii.org.au/cgi-bin/tilecache.cgi');
     });
 
     describe('toOpenLayer', function() {
@@ -26,9 +24,10 @@ describe("Portal.common.LayerDescriptor", function() {
 
         beforeEach(function() {
             layerDesc = new Portal.common.LayerDescriptor({
+                href: 'http://tilecache.emii.org.au/cgi-bin/tilecache.cgi',
                 "isBaseLayer": true,
                 "server": {
-                    "uri": "http://tilecache.emii.org.au/cgi-bin/tilecache.cgi"
+                    "uri": "http://tilecache.emii.org.au/"
                 }
             });
         });

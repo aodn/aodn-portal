@@ -30,7 +30,7 @@ describe('Portal.data.Server', function() {
 
         it('returns info for known server', function() {
             expect(Portal.data.Server.getInfo('http://server1')).toBe(server1Info);
-            expect(Portal.data.Server.getInfo('http://server2')).toBe(server2Info);
+            expect(Portal.data.Server.getInfo('http://server2/someExtraPath')).toBe(server2Info);
         });
 
         it('returns undefined for unknown server', function() {
