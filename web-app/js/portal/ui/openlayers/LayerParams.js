@@ -16,12 +16,6 @@ Portal.ui.openlayers.LayerParams = Ext.extend(Object, {
             layerDescriptor.name = layerDescriptor.namespace + ":" + layerDescriptor.name;
         }
 
-        var defaultStyle = "";
-        if (layerDescriptor.defaultStyle != null)
-        {
-            defaultStyle = this.defaultStyle;
-        }
-
         var defaultParams = {
             layers: layerDescriptor.name,
             transparent: 'TRUE',
