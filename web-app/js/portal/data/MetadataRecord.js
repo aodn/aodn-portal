@@ -126,7 +126,11 @@ Portal.data.MetadataRecord = function() {
 
         var allowedOnlineResources = [];
 
-        Ext.each(Portal.app.appConfig.portal.metadataProtocols.webPage, function(protocol) {
+        var onlineResourceProtocols = Portal.app.appConfig.portal.metadataProtocols.supplementary.concat(
+            Portal.app.appConfig.portal.metadataProtocols.metadataRecord
+        );
+
+        Ext.each(onlineResourceProtocols, function(protocol) {
             allowedOnlineResources.push(protocol.trim());
         });
 

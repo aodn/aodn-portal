@@ -1255,3 +1255,8 @@ span.menu-title {
     font-weight: bold;
 }
 
+.infoPanel h3,
+.infoPanel h4 {
+    margin: 10px 0 5px 0;
+}
+

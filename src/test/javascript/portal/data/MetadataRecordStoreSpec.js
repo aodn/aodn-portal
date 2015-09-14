@@ -37,7 +37,9 @@ describe("Portal.data.MetadataRecordStore", function() {
             Portal.app.appConfig = {
                 portal: {
                     metadataProtocols: {
-                        dataFile: [ 'downloadable', 'some other downloadable protocol']
+                        dataFile: [ 'downloadable', 'some other downloadable protocol'],
+                        supplementary: [ 'extrdownloadable', 'some other downloadable thing'],
+                        metadataRecord: [ 'metadata', 'the metadata link']
                     }
                 }
             };
