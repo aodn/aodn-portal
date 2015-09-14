@@ -1254,3 +1254,7 @@ img.olTileImage {
     perspective: inherit;
 }
 
+span.menu-title {
+    font-weight: bold;
+}
+

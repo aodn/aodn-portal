@@ -24,7 +24,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             autoScroll: true,
-            title: OpenLayers.i18n('stepHeader', { stepNumber: 3, stepDescription: OpenLayers.i18n('step3Description')}),
+            title: OpenLayers.i18n('stepHeader', {stepNumber: 3, stepDescription: OpenLayers.i18n('step3Description')}),
             headerCfg: {
                 cls: 'steps'
             },
@@ -136,8 +136,8 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
     initButtonPanel: function() {
 
-         this.resetLink = new Ext.ux.Hyperlink({
-            text: OpenLayers.i18n("clearLinkLabel", {text: OpenLayers.i18n('clearAndResetLabel')}) ,
+        this.resetLink = new Ext.ux.Hyperlink({
+            text: OpenLayers.i18n("clearLinkLabel", {text: OpenLayers.i18n('clearAndResetLabel')}),
             tooltip: OpenLayers.i18n("clearAllButtonTooltip"),
             cls: "clearFiltersLink buttonPad"
         });
@@ -158,28 +158,85 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         setViewPortTab(TAB_INDEX_SEARCH);
     },
 
+    hasDuplicateWfsDownloadLinks: function(downloadHandlers) {
+
+        var wfsDownloads = [];
+        Ext.each(downloadHandlers, function(handler) {
+            Ext.each(handler.getDownloadOptions(), function(downloadOption) {
+                if (downloadOption.type == "WFS") {
+                    wfsDownloads.push(downloadOption.textKey);
+                }
+            });
+        });
+        return (wfsDownloads.hasDuplicates());
+    },
+
+    _getMenuItem: function (handler, downloadOption) {
+        return {
+            name: handler.onlineResource.name,
+            title: handler.onlineResource.title,
+            text: OpenLayers.i18n(downloadOption.textKey),
+            handler: function() {
+                this.confirmDownload(collection, this, downloadOption.handler, downloadOption.handlerParams, downloadOption.textKey);
+            },
+            scope: this
+        }
+    },
+
     _loadMenuItemsFromHandlers: function(processedValues, collection) {
 
         if (!processedValues.menuItems) {
             processedValues.menuItems = [];
         }
 
+        var groupedMenuItems = [];
+        var downloadOptionTextKeysUsed = [];
         var downloadHandlers = Portal.cart.DownloadHandler.handlersForDataCollection(collection);
-        Ext.each(downloadHandlers, function(handler) {
 
+        Ext.each(downloadHandlers, function(handler) {
             Ext.each(handler.getDownloadOptions(), function(downloadOption) {
 
-                var newMenuItem = {
-                    text: OpenLayers.i18n(downloadOption.textKey),
-                    handler: function() {
-                        this.confirmDownload(collection, this, downloadOption.handler, downloadOption.handlerParams, downloadOption.textKey)
-                    },
-                    scope: this
-                };
+                var newMenuItem = this._getMenuItem(handler, downloadOption);
 
-                processedValues.menuItems.push(newMenuItem);
+                if (this.hasDuplicateWfsDownloadLinks(downloadHandlers)) {
+                    // add to group if a title is configured
+                    if (this.getEmbeddedTitle(handler.onlineResource.title)) {
+                        var groupLabel = this.getEmbeddedTitle(handler.onlineResource.title);
+                        if (groupedMenuItems[groupLabel] == undefined) {
+                            groupedMenuItems[groupLabel] = [];
+                        }
+                        groupedMenuItems[groupLabel].push(newMenuItem);
+                    }
+                    // otherwise only one download link will be shown for each downloadOption.textKey
+                    else if (downloadOptionTextKeysUsed.indexOf(newMenuItem.text) == -1) {
+                        processedValues.menuItems.push(newMenuItem);
+                    }
+                }
+                else {
+                    // no grouping
+                    processedValues.menuItems.push(newMenuItem);
+                }
+
+                downloadOptionTextKeysUsed.push(newMenuItem.text);
+
             }, this);
         }, this);
+
+        // grouped items will appear last
+        for (var key in groupedMenuItems) {
+            if (groupedMenuItems.hasOwnProperty(key)) {
+                processedValues.menuItems.push(OpenLayers.i18n('menuItemGroupTitle', {title: key}));
+                Ext.each(groupedMenuItems[key], function(item) {
+                    processedValues.menuItems.push(item);
+                });
+            }
+        };
+    },
+
+    getEmbeddedTitle: function(title) {
+        var regexBracketContents = /\(([^)]+)\)/;
+        var regexRes = regexBracketContents.exec(title);
+        return (regexRes && regexRes[1].length > 0) ? regexRes[1].toTitleCase() : false;
     },
 
     confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params, textKey) {

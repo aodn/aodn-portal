@@ -146,7 +146,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
         var elementId = this._getLinkId(collection, 'downloadButtonId');
 
-        if (collection.menuItems.length > 0 && Ext.get(elementId)) {
+        if (Object.size(collection.menuItems) > 0 && Ext.get(elementId)) {
 
             // clear old button
             Ext.fly(elementId).update("");
@@ -157,6 +157,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
                 scope: this,
                 renderTo: elementId,
                 menu: new Ext.menu.Menu({
+                    showSeparator: false,
                     items: collection.menuItems
                 })
             });

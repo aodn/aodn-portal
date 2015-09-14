@@ -305,5 +305,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     trackingTypedBboxLabel: 'typedBbox',
     facetTrackingCategory: "Facets",
     goButtonTrackingLabel: "Go",
-    gogoduckTrackingLabel: "GoGoDuck"
+    gogoduckTrackingLabel: "GoGoDuck",
+
+    shareButton: "New portal with only this collection",
+    menuItemGroupTitle: '<span class="menu-title">${title}</span>'
 });
