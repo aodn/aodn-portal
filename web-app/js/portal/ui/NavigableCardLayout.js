@@ -27,10 +27,11 @@ Portal.ui.NavigableCardLayout = Ext.extend(Ext.layout.CardLayout, {
     },
 
     setActiveTab: function(tabIndex) {
-        this.setActiveItem(tabIndex);
-
-        this.container._highlightActiveTab();
-        this.container.fireEvent('tabchange', this.container);
+        if (tabIndex != this.getActiveItemIndex()) {
+            this.setActiveItem(tabIndex);
+            this.container._highlightActiveTab();
+            this.container.fireEvent('tabchange', this.container);
+        }
     },
 
     navigateToNextTab: function() {
@@ -54,7 +55,7 @@ Portal.ui.NavigableCardLayout = Ext.extend(Ext.layout.CardLayout, {
     },
 
     getPrevNavigationLabel: function() {
-        return this._getNeighbouringNavigationLabel(-1, OpenLayers.i18n('navigationButtonPrevious',{label: "Previous"}));
+        return this._getNeighbouringNavigationLabel(-1, OpenLayers.i18n('navigationButtonPrevious', {label: "Previous"}));
     },
 
     _getNeighbouringNavigationLabel: function(relativeIndex, defaultLabel) {
