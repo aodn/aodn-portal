@@ -121,4 +121,15 @@ describe('Portal.ui.NavigableCardLayout', function() {
             });
         });
     });
+
+    describe('set active tab links', function() {
+        beforeEach(function() {
+            layout.setActiveItem(TAB_INDEX_SEARCH);
+        });
+        it("dont change tab", function() {
+            spyOn(layout, 'setActiveItem');
+            layout.setActiveTab(TAB_INDEX_SEARCH);
+            expect(layout.setActiveItem).not.toHaveBeenCalled();
+        });
+    });
 });
