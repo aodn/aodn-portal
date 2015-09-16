@@ -302,6 +302,7 @@ Site navigation
 
 .viewPortTab * {
     color: #fafafa;
+    cursor: pointer;
 }
 
 .viewPortTab *:focus {
@@ -313,10 +314,6 @@ Site navigation
     border: none;
     margin-left: 35px;
     padding: 2px;
-}
-
-.viewPortTabActive button{
-    cursor: pointer;
 }
 
 .viewPortTab h1 {
