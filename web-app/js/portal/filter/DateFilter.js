@@ -11,7 +11,6 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
 
     constructor: function(cfg) {
 
-        this.timezoneCorrection = (new Date().getTimezoneOffset()) / -60; // Divide time zone offset by 60 to get total hours
         this.timeUtil = new Portal.utils.TimeUtil();
 
         Portal.filter.DateFilter.superclass.constructor.call(this, cfg);
@@ -79,7 +78,6 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
     },
 
     getHumanReadableForm: function() {
-
         var formatKey;
 
         if (this._getFromDate() && this._getToDate()) {
@@ -123,17 +121,14 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
     _getDateString: function(newDate) {
 
         if (newDate) {
-            newDate.setHours(this.timezoneCorrection);
             return this.timeUtil._toUtcIso8601DateString(newDate);
         }
-
         return '';
     },
 
     _getDateHumanString: function(newDate) {
 
         if (newDate) {
-            newDate.setHours(this.timezoneCorrection);
             return this._formatHumanDate(newDate);
         }
 
