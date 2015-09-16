@@ -82,7 +82,7 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
 
             return String.format(
                 "<div id=\"{0}\">{1}{2}</div>",
-                estimator.getIdElementName(dataCollection.uuid),
+                estimator.getIdElementName(dataCollection.getUuid()),
                 OpenLayers.i18n("estimatedDlLoadingMessage"),
                 OpenLayers.i18n("faSpinner")
             );

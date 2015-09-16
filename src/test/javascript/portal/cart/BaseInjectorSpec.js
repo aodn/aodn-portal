@@ -17,7 +17,7 @@ describe('Portal.cart.BaseInjector', function() {
         injector = new Portal.cart.BaseInjector();
 
         dataCollection = {
-            uuid: 9,
+            getUuid: returns(9),
             getLinksByProtocol: function(protocols) {
                 if (protocols == 'dataFile') {
                     return 'Downloadable link!';
@@ -91,7 +91,7 @@ describe('Portal.cart.BaseInjector', function() {
 
             var markup = injector._getDataMarkup(dataCollection);
 
-            expect(markup).toContain(dataCollection.uuid);
+            expect(markup).toContain(dataCollection.getUuid());
             expect(markup).toContain(OpenLayers.i18n("estimatedDlLoadingMessage"));
             expect(markup).toContain(OpenLayers.i18n("faSpinner"));
         });
