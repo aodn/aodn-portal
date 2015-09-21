@@ -45,7 +45,7 @@ class AsyncDownloadController {
         }
         catch (Exception e) {
             log.error "Problem registering new aggregator job with type '$aggregatorServiceString' and parameters: '$params'", e
-            render text: 'Problem registering new aggregator job', status: HTTP_500_INTERNAL_SERVER_ERROR
+            render text: "Problem registering new aggregator job", status: HTTP_500_INTERNAL_SERVER_ERROR
         }
     }
 }

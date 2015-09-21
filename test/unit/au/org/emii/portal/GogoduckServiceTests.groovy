@@ -8,40 +8,10 @@ class GogoduckServiceTests extends GrailsUnitTestCase {
 
     @Override
     void setUp() {
-
-        super.setUp();
+        super.setUp()
 
         service = new GogoduckService()
         service.grailsApplication = [config: [gogoduck: [url: 'GOGODUCK_URL']]]
-    }
-
-    void testRegisterJob() {
-
-        def postCallCount = 0
-        def roundUpEndTimeCount = 0
-
-        def testParams = [jobParameters: "{gogoduck_json}"]
-        def testSuccessHandler = new Object()
-        def testConnection = [
-            post: { params, handler ->
-
-                postCallCount++
-                assertEquals "{gogoduck_json}", params.body
-            }
-        ]
-
-        service.metaClass._gogoduckConnection = { -> testConnection }
-        service.metaClass._roundUpEndTime = {
-            params ->
-            roundUpEndTimeCount++
-
-            params
-        }
-
-        service.registerJob(testParams)
-
-        assertEquals 1, postCallCount
-        assertEquals 1, roundUpEndTimeCount
     }
 
     void testRegisterJobEmptyParams() {
@@ -65,14 +35,31 @@ class GogoduckServiceTests extends GrailsUnitTestCase {
         assertEquals 'GOGODUCK_URL/job/', connection.uri.toString()
     }
 
+    void testGetJobParameters() {
+        boolean called = false
+        service.metaClass._roundUpEndTime = {
+            called = true
+        }
+
+        service._getJobParameters([ jobParameters: '{}'])
+
+        assertTrue called
+    }
+
     void testRoundUpEndTime() {
-        def jobParams = '''{"layerName":"cars_australia_weekly","emailAddress":"jkburges@gmail.com","geoserver":"http://gogoduck.aodn.org.au/gogoduck","subsetDescriptor":{"temporalExtent":{"start":"2009-01-01T00:00:00.000Z","end":"2009-12-25T23:04:36.923Z"},"spatialExtent":{"north":90,"south":-90,"east":180,"west":-180}}}'''
+        def jobParams = [
+            'subsetDescriptor': [
+                'temporalExtent': [
+                    'start': '2009-01-01T00:00:00.000Z',
+                    'end': '2009-12-25T23:04:36.923Z'
+                ]
+            ]
+        ]
 
-        def alteredJobParams = service._roundUpEndTime(jobParams)
+        service._roundUpEndTime(jobParams)
 
-        assertTrue alteredJobParams.contains("2009-12-25T23:04:36.923999Z")
-
+        assertEquals "2009-12-25T23:04:36.923999Z", jobParams.subsetDescriptor.temporalExtent.end
         // Unchanged.
-        assertTrue alteredJobParams.contains("2009-01-01T00:00:00.000Z")
+        assertEquals "2009-01-01T00:00:00.000Z", jobParams.subsetDescriptor.temporalExtent.start
     }
 }
