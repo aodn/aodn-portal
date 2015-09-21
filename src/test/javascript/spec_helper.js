@@ -191,3 +191,8 @@ var textToXML = function(text) {
     catch (e) {
     }
 };
+
+var jsonFromUrl = function(url, urlStart) {
+    var jobParameters = url.substring(urlStart.length);
+    return Ext.util.JSON.decode(decodeURIComponent(jobParameters));
+};

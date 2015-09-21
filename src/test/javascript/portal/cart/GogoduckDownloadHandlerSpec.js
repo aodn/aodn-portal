@@ -17,23 +17,6 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
         });
     });
 
-    describe('serviceResponseHandler', function() {
-        it('invalid json', function() {
-            var json = "HERE BE INAVLID JSON";
-            expect(handler.serviceResponseHandler(json)).toEqual("");
-        });
-
-        it('no url', function() {
-            var json = "{}";
-            expect(handler.serviceResponseHandler(json)).toEqual("");
-        });
-
-        it('valid url', function() {
-            var json = '{ "url": "http://gogoduck.aodn.org.au" }';
-            expect(handler.serviceResponseHandler(json)).toMatch("href='http://gogoduck.aodn.org.au'");
-        });
-    });
-
     describe('getDownloadOptions', function() {
 
         it('has one valid option', function() {
@@ -53,18 +36,14 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
         it('has no options when missing required href information', function() {
 
             handler.onlineResource.href = "";
-
             var options = handler.getDownloadOptions();
-
             expect(options.length).toBe(0);
         });
 
         it('has no options when missing required name information', function() {
 
             handler.onlineResource.name = "";
-
             var options = handler.getDownloadOptions();
-
             expect(options.length).toBe(0);
         });
     });
@@ -75,12 +54,13 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
         var testCollection;
         var testHandlerParams;
         var url;
-        var expectedUrlStart = Portal.cart.GogoduckDownloadHandler.prototype.ASYNC_DOWNLOAD_URL;
+        var expectedUrlStart;
         var json;
 
         beforeEach(function() {
 
             clickHandler = handler._getUrlGeneratorFunction();
+            expectedUrlStart = handler.getAsyncDownloadUrl('gogoduck');
 
             testCollection = {
                 getFilters: returns([
@@ -165,9 +145,3 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
         });
     });
 });
-
-var jsonFromUrl = function(url, urlStart) {
-
-    var jobParameters = url.substring(urlStart.length);
-    return Ext.util.JSON.decode(decodeURIComponent(jobParameters));
-};

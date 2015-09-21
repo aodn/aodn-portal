@@ -47,6 +47,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadAsAllSourceNetCdfLabel: 'Un-subsetted NetCDFs',
     downloadAsUrlsLabel: 'List of URLs',
     downloadAsPythonSnippetLabel: 'Python',
+    downloadAsWpsLabel: 'Download later',
     parameterDateLabel: 'Date range',
     metadataLinkText: 'View metadata record',
     emailAddressPlaceholder: 'Your email address',
@@ -193,7 +194,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     asyncDownloadPanelTitle: 'Subset',
     asyncDownloadSuccessMsg: 'Your subsetting job has been created. Processing commenced.<br /><br />When the job is complete we will send an email to <i>${email}</i> with download instructions.<br /><br />${serviceMessage}NB. Subsetting jobs can vary considerably in how long they take, from minutes to hours. Both the number of source files and the selected area can affect how long a job takes to run.',
     asyncDownloadErrorMsg: 'Unable to create subsetting job. Please re-check the parameters you provided and try again.',
-    gogoduckServiceMsg: "<a class='external' target='_blank' href='${url}'>Follow the progress of your job</a><br /><br />",
+    asyncServiceMsg: "<a class='external' target='_blank' href='${url}'>Follow the progress of your job</a><br /><br />",
 
     spatialExtentHeading: 'Spatial Subset',
     temporalExtentHeading: 'Temporal Extent',
@@ -308,5 +309,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     gogoduckTrackingLabel: "GoGoDuck",
 
     shareButton: "New portal with only this collection",
-    menuItemGroupTitle: '<span class="menu-title">${title}</span>'
+    menuItemGroupTitle: '<span class="menu-title">${title}</span>',
+    wpsTrackingLabel: "WPS Service"
 });
