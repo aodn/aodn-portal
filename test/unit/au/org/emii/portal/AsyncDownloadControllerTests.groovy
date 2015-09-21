@@ -8,6 +8,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
     def downloadAuthService
     def gogoduckService
+    def wpsService
 
     protected void setUp() {
         super.setUp()
@@ -21,10 +22,10 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
         gogoduckService = mockFor(GogoduckService)
         gogoduckService.demand.registerJob { params -> return "gogoduck_rendered_text" }
         controller.gogoduckService = gogoduckService.createMock()
-    }
 
-    protected void tearDown() {
-        super.tearDown()
+        wpsService = mockFor(WpsService)
+        wpsService.demand.registerJob { params -> return "wps_rendered_text" }
+        controller.wpsService = wpsService.createMock()
     }
 
     void testRegisterJobBadChallengeResponse() {
@@ -92,4 +93,8 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
         assertEquals HTTP_500_INTERNAL_SERVER_ERROR, controller.renderArgs.status
     }
 
+    void testGetAggregatorService() {
+        assertEquals controller.gogoduckService, controller.getAggregatorService('gogoduck')
+        assertEquals controller.wpsService, controller.getAggregatorService('wps')
+    }
 }

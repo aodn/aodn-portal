@@ -8,7 +8,7 @@ class GogoduckService extends AsyncDownloadService {
 
     def grailsApplication
 
-    def getConnection() {
+    def getConnection(params) {
         return _gogoduckConnection()
     }
 

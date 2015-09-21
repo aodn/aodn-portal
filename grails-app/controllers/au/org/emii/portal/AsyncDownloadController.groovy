@@ -5,12 +5,15 @@ import static au.org.emii.portal.HttpUtils.Status.*
 class AsyncDownloadController {
 
     def gogoduckService
+    def wpsService
     def downloadAuthService
 
     AsyncDownloadService getAggregatorService(aggregatorService) {
         switch (aggregatorService) {
-            case "gogoduck":
+            case 'gogoduck':
                 return gogoduckService
+            case 'wps':
+                return wpsService
             default:
                 throw new Exception("Cannot find aggregatorService for '$aggregatorService'")
         }

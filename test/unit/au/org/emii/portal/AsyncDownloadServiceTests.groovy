@@ -11,7 +11,7 @@ class AsyncDownloadServiceTests extends GrailsUnitTestCase {
         def requestCalled = false
         service = new AsyncDownloadService() {
             def getBody(params) {}
-            def getConnection() {
+            def getConnection(params) {
                 [
                     request: { method, handler ->
                         requestCalled = true
@@ -28,7 +28,7 @@ class AsyncDownloadServiceTests extends GrailsUnitTestCase {
     void testGetJobParametersEmptyParams() {
         service = new AsyncDownloadService() {
             def getBody(params) {}
-            def getConnection() {}
+            def getConnection(params) {}
         }
 
         def testParams = [jobParameters: ""]
