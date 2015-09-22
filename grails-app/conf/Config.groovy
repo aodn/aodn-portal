@@ -75,7 +75,7 @@ depthService.url = "https://depthservice.aodn.org.au/depth"
 downloadAuth {
     // Never show a captcha to those IP addresses
     whitelistClients = [
-        '127.0.0.1'
+        '127.0.0.1', '0:0:0:0:0:0:0:1'
     ]
 
     // Treat those as usual even if they're whitelisted
@@ -291,14 +291,10 @@ marvl {
 // WFS indexed file info
 indexedFile.fileSizeColumnName = "size"
 
-// Something else is adding an appender (what?!) - get rid of it, else we end up
-// with duplicate logs in production.
-org.apache.log4j.Logger.rootLogger.removeAllAppenders()
-
 // log4j configuration
-def log4jConversionPattern = "%-5p %d [%-12t] %c %X{username}- %m%n"
+def log4jConversionPattern = "%-5p %d [%t] %c - %m%n"
 
-log4j = {
+log4j.main = {
 
     appenders {
         console name:'stdout', layout: pattern(conversionPattern: log4jConversionPattern)
