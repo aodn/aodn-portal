@@ -86,7 +86,9 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _shareButtonOnClick: function(url) {
-        Ext.MessageBox.alert('Share Link', url);
+        var charLength = url.length;
+        var urlMarkup = String.format('<input readonly onclick="this.select();this.focus;" value="{0}" type="text" size="{1}" ></input>', url, charLength);
+        Ext.MessageBox.alert('Share Link', urlMarkup);
     },
 
     _getDataFilterEntry: function(values) {
