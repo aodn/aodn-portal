@@ -75,7 +75,7 @@ depthService.url = "https://depthservice.aodn.org.au/depth"
 downloadAuth {
     // Never show a captcha to those IP addresses
     whitelistClients = [
-        '127.0.0.1'
+        '127.0.0.1', '0:0:0:0:0:0:0:1'
     ]
 
     // Treat those as usual even if they're whitelisted
