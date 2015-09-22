@@ -171,7 +171,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         return (wfsDownloads.hasDuplicates());
     },
 
-    _getMenuItem: function (handler, downloadOption) {
+    _getMenuItem: function (handler, downloadOption, collection) {
         return {
             name: handler.onlineResource.name,
             title: handler.onlineResource.title,
@@ -196,7 +196,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         Ext.each(downloadHandlers, function(handler) {
             Ext.each(handler.getDownloadOptions(), function(downloadOption) {
 
-                var newMenuItem = this._getMenuItem(handler, downloadOption);
+                var newMenuItem = this._getMenuItem(handler, downloadOption, collection);
 
                 if (this.hasDuplicateWfsDownloadLinks(downloadHandlers)) {
                     // add to group if a title is configured
