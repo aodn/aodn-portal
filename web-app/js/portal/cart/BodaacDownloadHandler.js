@@ -21,6 +21,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
             downloadOptions.push({
                 textKey: 'downloadAsAllSourceNetCdfLabel',
+                type: 'WFS',
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
                     filenameFormat: '{0}_source_files.zip',

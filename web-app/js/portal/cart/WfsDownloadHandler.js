@@ -17,6 +17,7 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
             downloadOptions.push({
                 textKey: 'downloadAsCsvLabel',
+                type: 'WFS',
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
                     filenameFormat: "{0}.csv"

@@ -185,6 +185,7 @@ describe("Portal.cart.DownloadPanel", function() {
 
         it('includes menu items from download handlers', function() {
             spyOn(Portal.cart.DownloadHandler, 'handlersForDataCollection').andReturn([{
+                onlineResource: returns("lala"),
                 getDownloadOptions: returns([
                     {
                         textKey: 'key1',
@@ -231,6 +232,17 @@ describe("Portal.cart.DownloadPanel", function() {
             downloadPanel.confirmDownload(testCollection, callbackScope, callback, testParams, testKey);
             testParams.onAccept(testParams);
             expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(testKey), testCollection.getTitle(), undefined);
+        });
+    });
+
+    describe('getEmbeddedTitle', function() {
+
+        it('Extracts the real title super trickerly embeded title in the description field from Geonetwork', function() {
+            expect(downloadPanel.getEmbeddedTitle('title = "this is a super long string (data Download) stuff";')).toEqual('Data Download');
+        });
+
+        it('returns false when the super trickerly embeded title is missing from the description field from Geonetwork', function() {
+            expect(downloadPanel.getEmbeddedTitle('title = "this is a super long string {data Download) stuff";')).toEqual(false);
         });
     });
 
