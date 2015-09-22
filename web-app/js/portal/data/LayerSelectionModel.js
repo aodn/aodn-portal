@@ -57,7 +57,12 @@ Portal.data.LayerSelectionModel = Ext.extend(Ext.util.Observable, {
 
     // TODO: unit tests?
     _linkToOpenLayer: function(layerLink, dataCollection) {
-        var layerDisplayName = dataCollection.get('title');
+
+        var layerDisplayName;
+        if (layerLink.title == "") {
+            layerDisplayName = dataCollection.getTitle();
+        }
+
         var serverUri = layerLink.href;
         var serverInfo = Portal.data.Server.getInfo(serverUri);
 
