@@ -27,7 +27,7 @@ class WpsControllerTests extends ControllerUnitTestCase {
         def execResponse = new MarkupBuilder(writer)
         execResponse.ExecuteResponse() {
             Status(creationTime: '1979-06-01T04:00+10:00') {
-                ProcessSucceeded('Process succeeded.')
+                SomeStatus('Process succeeded.')
             }
             ProcessOutputs {
                 Output {
@@ -41,7 +41,7 @@ class WpsControllerTests extends ControllerUnitTestCase {
             job: [
                 uuid: '1234',
                 createdTimestamp: new DateTime('1979-06-01T04:00+10:00'),
-                status: 'Process succeeded.',
+                status: 'SomeStatus',
                 downloadTitle: 'Amazing download',
                 downloadUrl: 'such wow'
             ]

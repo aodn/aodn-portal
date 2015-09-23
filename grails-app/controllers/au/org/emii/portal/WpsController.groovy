@@ -23,7 +23,7 @@ class WpsController extends RequestProxyingController {
                 job: [
                     uuid: params.uuid,
                     createdTimestamp: new DateTime(String.valueOf(execResponse.Status.@creationTime)),
-                    status: execResponse.Status.ProcessSucceeded.text(),
+                    status: execResponse.Status.children()?.first().name(),
                     downloadTitle: execResponse.ProcessOutputs.Output.Title.text(),
                     downloadUrl: String.valueOf(execResponse.ProcessOutputs.Output.Reference.@href)
                 ]
