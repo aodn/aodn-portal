@@ -44,6 +44,7 @@ grails.project.dependency.resolution = {
     pom true
     plugins {
         compile ":simple-captcha:1.0.0"
+        compile ":joda-time:1.5"
         test ":code-coverage:1.2.4"
         compile ":csv:0.3.1"
         build ":tomcat:7.0.54"
