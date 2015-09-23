@@ -23,7 +23,7 @@ class WpsServiceTests extends GrailsUnitTestCase {
     }
 
     void testGetBody() {
-        def requestParams = [ typeName: 'an awesome layer', cqlFilter: 'some cql' ]
+        def params = [ jobParams: [ typeName: 'an awesome layer', cqlFilter: 'some cql' ] ]
         def called = false
 
         service.groovyPageRenderer = [
@@ -31,11 +31,11 @@ class WpsServiceTests extends GrailsUnitTestCase {
                 called = true
 
                 assertEquals '/wps/asyncRequest.xml', args.template
-                assertEquals requestParams, args.model
+                assertEquals params, args.model
             }
         ]
 
-        service.getBody(requestParams)
+        service.getBody(params)
 
         assertTrue called
     }

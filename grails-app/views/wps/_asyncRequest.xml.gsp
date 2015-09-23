@@ -9,28 +9,16 @@
   <ows:Identifier>gs:NetcdfOutput</ows:Identifier>
 
   <wps:DataInputs>
-    <wps:Input>
-      <ows:Identifier>namespace</ows:Identifier>
-      <wps:Data>
-        <wps:LiteralData>imos</wps:LiteralData>
-      </wps:Data>
-    </wps:Input>
-    <wps:Input>
-      <ows:Identifier>typeName</ows:Identifier>
-      <wps:Data>
-        <wps:LiteralData>${typeName}</wps:LiteralData>
-      </wps:Data>
-    </wps:Input>
+    <g:each in="${jobParams}" var="id, value">
 
-    <g:if test="${cqlFilter}">
       <wps:Input>
-        <ows:Identifier>cqlFilter</ows:Identifier>
+        <ows:Identifier>${id}</ows:Identifier>
         <wps:Data>
-          <wps:LiteralData>${cqlFilter}</wps:LiteralData>
+          <wps:LiteralData>${value}</wps:LiteralData>
         </wps:Data>
       </wps:Input>
-    </g:if>
 
+    </g:each>
   </wps:DataInputs>
 
   <wps:ResponseForm>
