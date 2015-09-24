@@ -346,5 +346,21 @@ ul.x-tab-strip-top {
     margin-right: 0;
 }
 
+.imosHeader, .jumbotronFooter {
+    padding: 10px 0;
+    background-color: #666;
+}
 
+.jumbotronFooter {
+    padding: 48px 0;
+}
+.jumbotronFooter * {
+    color: #ffffff;
+}
+.jumbotronFooter a{
+    color: #ccc;
+}
 
+dt {
+    padding-top: 10px;
+}
