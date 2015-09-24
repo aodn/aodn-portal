@@ -70,6 +70,23 @@ describe('Portal.service.CatalogSearcher', function() {
         });
     });
 
+    describe('extra search filters', function() {
+        it('when healthy=true passed', function() {
+            var url = "http://imos.aodn.org.au/aodn-portal/home?healthy=true";
+            expect(searcher._getCollectionAvailabilityParams(url)).toEqual({ filters: 'collectionavailability'});
+        });
+
+        it('when healthy=false passed', function() {
+            var url = "http://imos.aodn.org.au/aodn-portal/home?healthy=false";
+            expect(searcher._getCollectionAvailabilityParams(url)).toEqual({ filters: '!collectionavailability'});
+        });
+
+        it('when nothing passed', function() {
+            var url = "http://imos.aodn.org.au/aodn-portal/home";
+            expect(searcher._getCollectionAvailabilityParams(url)).toEqual({});
+        });
+    });
+
     describe('search', function() {
 
         describe('query', function() {
