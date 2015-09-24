@@ -16,7 +16,9 @@
             <h2><g:message code="job.status" default="WPS Status"/></h2>
             <dl>
                 <g:labelledContent labelCode="job.id.label">${job.uuid}</g:labelledContent>
-                <g:labelledContent labelCode="job.createdTimestamp.label"><joda:format value="${job.createdTimestamp}" /></g:labelledContent>
+                <g:labelledContent labelCode="job.createdTimestamp.label" if="${job.createdTimestamp}" >
+                  <joda:format value="${job.createdTimestamp}" />
+                </g:labelledContent>
                 <g:labelledContent labelCode="job.status.label">
                   <g:message code="job.status.${job.status}" default="${job.status.toString()}" />
                 </g:labelledContent>

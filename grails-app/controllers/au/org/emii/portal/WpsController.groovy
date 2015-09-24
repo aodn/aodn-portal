@@ -12,8 +12,14 @@ class WpsController extends RequestProxyingController {
     }
 
     def _performProxying = { paramProcessor = null, streamProcessor = null, fieldName = null, url = null ->
-        def execResponse = _getExecutionStatusResponse(url.toURL())
-        _renderExecutionStatus(execResponse)
+        try {
+            def execResponse = _getExecutionStatusResponse(url.toURL())
+            _renderExecutionStatus(execResponse)
+        }
+        catch (Exception e) {
+            log.error('Error getting execution status from WPS server', e)
+            _renderError()
+        }
     }
 
     def _renderExecutionStatus(execResponse) {
@@ -26,6 +32,18 @@ class WpsController extends RequestProxyingController {
                     status: execResponse.Status.children()?.first().name(),
                     downloadTitle: execResponse.ProcessOutputs.Output.Title.text(),
                     downloadUrl: String.valueOf(execResponse.ProcessOutputs.Output.Reference.@href)
+                ]
+            ]
+        )
+    }
+
+    def _renderError() {
+        render(
+            view: 'show',
+            model: [
+                job: [
+                    uuid: params.uuid,
+                    status: 'ProcessUnknown'
                 ]
             ]
         )
