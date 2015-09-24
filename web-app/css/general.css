@@ -253,6 +253,10 @@ div.x-hyperlink a{
     color: inherit;
 }
 
+div.x-hyperlink a:hover{
+    color: black;
+}
+
 .x-btn {
     padding: 0 6px;
     background-color: #EEEEEE;
@@ -1032,13 +1036,22 @@ ul.x-tab-strip-top li:hover * {
 }
 
 .x-tool-awesome {
-    cursor: pointer;
     margin-top: 3px;
     float: right;
     height: 15px;
     margin-left: 2px;
     overflow: hidden;
     width: 15px;
+}
+
+.x-tool-awesome,
+.x-tool-awesome * {
+    cursor: pointer;
+}
+
+.x-tool-awesome:hover,
+.x-tool-awesome *:hover {
+    color: black;
 }
 
 .downloadPanelResultsTitle {
