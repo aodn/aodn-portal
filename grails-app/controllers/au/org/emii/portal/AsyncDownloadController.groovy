@@ -5,12 +5,15 @@ import static au.org.emii.portal.HttpUtils.Status.*
 class AsyncDownloadController {
 
     def gogoduckService
+    def wpsService
     def downloadAuthService
 
     AsyncDownloadService getAggregatorService(aggregatorService) {
         switch (aggregatorService) {
-            case "gogoduck":
+            case 'gogoduck':
                 return gogoduckService
+            case 'wps':
+                return wpsService
             default:
                 throw new Exception("Cannot find aggregatorService for '$aggregatorService'")
         }
@@ -45,7 +48,7 @@ class AsyncDownloadController {
         }
         catch (Exception e) {
             log.error "Problem registering new aggregator job with type '$aggregatorServiceString' and parameters: '$params'", e
-            render text: 'Problem registering new aggregator job', status: HTTP_500_INTERNAL_SERVER_ERROR
+            render text: "Problem registering new aggregator job", status: HTTP_500_INTERNAL_SERVER_ERROR
         }
     }
 }
