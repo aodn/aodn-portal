@@ -212,6 +212,21 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         return deepestFacets;
     },
 
+    _getCollectionAvailabilityParams: function(url) {
+        var getParams = url.split("#")[0].split("?");
+        var params = Ext.urlDecode(getParams[1]);
+
+        if (params.healthy === "true") {
+            return { filters: "collectionavailability" };
+        }
+        else if (params.healthy === "false") {
+            return { filters: "!collectionavailability" };
+        }
+        else {
+            return {};
+        }
+    },
+
     _getParams: function(page) {
         //--- Add search defaults (e.g. map layers only)
         var params = Ext.apply({}, this.defaultParams);
@@ -240,6 +255,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         //--- Add required base parameters (e.g. fast=index)
         Ext.apply(params, this.baseParams);
+        Ext.apply(params, this._getCollectionAvailabilityParams(document.URL));
 
         return params;
     }
