@@ -14,6 +14,8 @@ class WpsControllerTests extends ControllerUnitTestCase {
 
     void testRenderExecutionStatus() {
         controller.params.uuid = '1234'
+        controller.metaClass.createLink = { 'http://the_link' }
+
         def (execResponse, expectedModel) = _getMockExecutionStatusResponseAndModel()
 
         controller._renderExecutionStatus(execResponse)
@@ -40,6 +42,7 @@ class WpsControllerTests extends ControllerUnitTestCase {
         def expectedModel = [
             job: [
                 uuid: '1234',
+                reportUrl: 'http://the_link',
                 createdTimestamp: new DateTime('1979-06-01T04:00+10:00'),
                 status: 'SomeStatus',
                 downloadTitle: 'Amazing download',
@@ -48,5 +51,36 @@ class WpsControllerTests extends ControllerUnitTestCase {
         ]
 
         return [new XmlSlurper().parseText(writer.toString()), expectedModel]
+    }
+
+    void testJobComplete() {
+        controller.params.with {
+            uuid = '1234'
+            server = 'http://wps.ftw'
+            email = [ to: 'user@example.com' ]
+        }
+
+        def notifyViaEmailCalled = false
+        def notifyViaEmailParams
+
+        controller.wpsService = [
+            notifyViaEmail: { params ->
+                notifyViaEmailCalled = true
+                notifyViaEmailParams = params
+            }
+        ]
+
+        controller.jobComplete()
+
+        assertTrue notifyViaEmailCalled
+        assertEquals([
+            uuid: '1234',
+            server: 'http://wps.ftw',
+            email: [
+                to: 'user@example.com',
+                subject: 'IMOS download request complete - 1234',
+                template: 'jobComplete'
+            ]
+        ], notifyViaEmailParams)
     }
 }

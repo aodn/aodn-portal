@@ -2,7 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="${resource(dir: 'css', file: 'imosTheme.css')}" type="text/css">
+        <link rel="stylesheet" href="${resource(dir: 'css', file: 'imosTheme.css', absolute: true)}" type="text/css">
     </head>
     <body>
         <div class="imosHeader">
@@ -15,7 +15,7 @@
         <div class="container">
             <h2><g:message code="job.status" default="WPS Status"/></h2>
             <dl>
-                <g:labelledContent labelCode="job.id.label">${job.uuid}</g:labelledContent>
+                <g:labelledContent labelCode="job.id.label" href="${job.reportUrl}">${job.uuid}</g:labelledContent>
                 <g:labelledContent labelCode="job.createdTimestamp.label" if="${job.createdTimestamp}" >
                   <joda:format value="${job.createdTimestamp}" />
                 </g:labelledContent>

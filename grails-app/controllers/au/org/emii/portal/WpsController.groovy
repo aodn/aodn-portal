@@ -6,9 +6,20 @@ import au.org.emii.portal.proxying.RequestProxyingController
 import org.joda.time.DateTime
 
 class WpsController extends RequestProxyingController {
+
+    def wpsService
+
     def jobReport = {
         params.url = _getExecutionStatusUrl(params)
         _performProxyingIfAllowed()
+    }
+
+    def jobComplete = {
+        params.email.subject = "IMOS download request complete - ${params.uuid}"
+        params.email.template = 'jobComplete'
+        wpsService.notifyViaEmail(params)
+
+        render status: 200
     }
 
     def _performProxying = { paramProcessor = null, streamProcessor = null, fieldName = null, url = null ->
@@ -28,6 +39,7 @@ class WpsController extends RequestProxyingController {
             model: [
                 job: [
                     uuid: params.uuid,
+                    reportUrl: g.createLink(action: 'jobReport', absolute: true, params: params),
                     createdTimestamp: new DateTime(String.valueOf(execResponse.Status.@creationTime)),
                     status: execResponse.Status.children()?.first().name(),
                     downloadTitle: execResponse.ProcessOutputs.Output.Title.text(),

@@ -12,7 +12,7 @@ class LabelledContentTagLib {
         if (!attrs.containsKey('if') || attrs['if']) {
             out << render(
                 template: "/taglib/labelledContentTemplate",
-                model: [labelCode: attrs.labelCode, content: body()]
+                model: [ labelCode: attrs.labelCode, href: attrs.href, content: body() ]
             )
         }
     }
