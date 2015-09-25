@@ -268,7 +268,8 @@ portal {
             "WWW:LINK-1.0-http--link",
             "WWW:DOWNLOAD-1.0-http--download",
             "WWW:DOWNLOAD-1.0-http--downloaddata",
-            "WWW:LINK-1.0-http--downloaddata"
+            "WWW:LINK-1.0-http--downloaddata",
+            "OGC:WPS"
         ]
 
         metadataRecord = [

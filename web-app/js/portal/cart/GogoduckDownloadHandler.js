@@ -43,7 +43,7 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
             try {
                 var responseJson = JSON.parse(response);
                 if (responseJson['url']) {
-                    msg = OpenLayers.i18n('gogoduckServiceMsg', {
+                    msg = OpenLayers.i18n('asyncServiceMsg', {
                         url: responseJson['url']
                     });
                 }
