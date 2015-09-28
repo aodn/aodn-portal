@@ -36,7 +36,7 @@
                            please let us
                            know.
                            All feedback is very welcome. For help and information about this site
-                           please contact <a href="mailt:info@emii.org.au">info@emii.org.au</a></p>
+                           please contact <a href="mailto:info@emii.org.au">info@emii.org.au</a></p>
                     </div>
                     <div class="col-md-8">
                         <p>Use of this web site and information available from it is subject to our <a href="http://imos.org.au/imostermsofuse0.html">
