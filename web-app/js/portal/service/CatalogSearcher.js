@@ -216,14 +216,17 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         var getParams = url.split("#")[0].split("?");
         var params = Ext.urlDecode(getParams[1]);
 
-        if (params.healthy === "true") {
+        if (params.health === "good") {
             return { filters: "collectionavailability" };
         }
-        else if (params.healthy === "false") {
+        else if (params.health === "bad") {
             return { filters: "!collectionavailability" };
         }
-        else {
+        else if (params.health === "all") {
             return {};
+        }
+        else {
+            return { filters: "collectionavailability" };
         }
     },
 

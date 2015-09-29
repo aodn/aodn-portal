@@ -71,23 +71,31 @@ describe('Portal.service.CatalogSearcher', function() {
     });
 
     describe('extra search filters', function() {
-        it('when healthy=true passed', function() {
-            var url = "http://imos.aodn.org.au/aodn-portal/home?healthy=true";
+        it('when health=good passed', function() {
+            var url = "http://imos.aodn.org.au/aodn-portal/home?health=good";
             expect(searcher._getCollectionAvailabilityParams(url)).toEqual({ filters: 'collectionavailability'});
         });
 
-        it('when healthy=false passed', function() {
-            var url = "http://imos.aodn.org.au/aodn-portal/home?healthy=false";
+        it('when health=bad passed', function() {
+            var url = "http://imos.aodn.org.au/aodn-portal/home?health=bad";
             expect(searcher._getCollectionAvailabilityParams(url)).toEqual({ filters: '!collectionavailability'});
         });
 
         it('when nothing passed', function() {
             var url = "http://imos.aodn.org.au/aodn-portal/home";
+            expect(searcher._getCollectionAvailabilityParams(url)).toEqual({ filters: 'collectionavailability'});
+        });
+
+        it('when health=all passed', function() {
+            var url = "http://imos.aodn.org.au/aodn-portal/home?health=all";
             expect(searcher._getCollectionAvailabilityParams(url)).toEqual({});
         });
     });
 
     describe('search', function() {
+        beforeEach(function() {
+            searcher._getCollectionAvailabilityParams = function() { return {}; }
+        });
 
         describe('query', function() {
             it('adds drilldown value to drilldown parameter', function() {
