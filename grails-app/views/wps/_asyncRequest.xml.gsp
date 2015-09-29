@@ -9,7 +9,7 @@
   <ows:Identifier>gs:NetcdfOutput</ows:Identifier>
 
   <wps:DataInputs>
-    <g:each in="${jobParams}" var="id, value">
+    <g:each in="${jobParameters}" var="id, value">
 
       <wps:Input>
         <ows:Identifier>${id}</ows:Identifier>

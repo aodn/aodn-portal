@@ -1,4 +1,3 @@
-
 describe('Portal.cart.WpsDownloadHandler', function () {
 
     var handler;
@@ -47,9 +46,7 @@ describe('Portal.cart.WpsDownloadHandler', function () {
         var clickHandler;
         var testCollection;
         var testHandlerParams;
-        var url;
         var expectedUrlStart;
-        var json;
 
         beforeEach(function() {
 
@@ -77,25 +74,22 @@ describe('Portal.cart.WpsDownloadHandler', function () {
                     }
                 ])
             };
+
             testHandlerParams = {
                 emailAddress: 'bob@example.com'
             };
-
-            url = clickHandler(testCollection, testHandlerParams);
-
-            json = jsonFromUrl(url, expectedUrlStart);
-
         });
 
         it('builds the correct URL', function() {
+            var url = clickHandler(testCollection, testHandlerParams);
 
             expect(url).toStartWith(expectedUrlStart);
 
-            expect(json.typeName).toBe('layer_name');
-            expect(json.emailAddress).toBe('bob@example.com');
-            expect(json.url).toBe('geoserver_url');
-            expect(json.cqlFilter).toBe('Geometry Cql AND Salinity Cql');
+            var decodedUrl = Ext.urlDecode(url);
+            expect(decodedUrl['server']).toBe('geoserver_url');
+            expect(decodedUrl['jobParameters.typeName']).toBe('layer_name');
+            expect(decodedUrl['jobParameters.email.to']).toBe('bob@example.com');
+            expect(decodedUrl['jobParameters.cqlFilter']).toBe('Geometry Cql AND Salinity Cql');
         });
     });
-
 });
