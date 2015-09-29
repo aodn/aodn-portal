@@ -15,6 +15,7 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
         var config = Ext.apply({
             title: OpenLayers.i18n('infoTabTitle'),
+            cls: "infoPanel",
             html: this._constructInfoTabHtml(),
             autoHeight: true,
             style: {padding: '10px 25px 10px 10px'}
@@ -27,27 +28,27 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
 
         var rawAbstract = this.dataCollection.getMetadataRecord().get('abstract');
         var abstract = Ext.util.Format.htmlEncode(rawAbstract);
-
         return String.format(
-            '<h4>{0}</h4>\n{1}' +
-            '<h4>{2}</h4>\n<ul>\n{3}</ul>',
+            '<h3>{0}</h3>\n{1}' +
+            '<hr>\n{2}<h3>{3}</h3>\n<ul>\n{4}</ul>',
             OpenLayers.i18n('abstractTitle'),
             abstract,
-            OpenLayers.i18n('webpageLinksTitle'),
-            this._getHtmlForLinks()
-        );
+            this._getMetadataLinkAsHtml(),
+            OpenLayers.i18n('supplementaryLinksTitle'),
+            this.getSupplementaryLinkAsHtml()
+            );
     },
 
-    _getHtmlForLinks: function() {
+    getSupplementaryLinkAsHtml: function() {
 
-        var links = this._getWebpageLinks();
+        var links = this._getSupplementaryLinks();
         var linkHtml = "";
 
         Ext.each(links, function(link) {
             var linkText;
 
             if (link.title == "") {
-                linkText = String.format('<i>{0}</i>', OpenLayers.i18n('unnamedResourceName'));
+                linkText = String.format('<i>({0})</i>', OpenLayers.i18n('unnamedResourceName'));
             }
             else {
                 linkText = link.title;
@@ -59,7 +60,12 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
         return linkHtml;
     },
 
-    _getWebpageLinks: function() {
-        return this.dataCollection.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.webPage);
+    _getSupplementaryLinks: function() {
+        return this.dataCollection.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.supplementary);
+    },
+
+    _getMetadataLinkAsHtml: function() {
+        var metadata = this.dataCollection.getMetadataRecord().data.pointOfTruthLink;
+        return String.format('<a class="external" href="{0}" target="_blank" title="{1}" >{1}</a>\n', metadata.href,metadata.title);
     }
 });

@@ -83,7 +83,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // Info panel (abstract and links)
     abstractTitle: "Abstract",
-    webpageLinksTitle: "Online Resources",
+    supplementaryLinksTitle: "Supplementary Resources",
     unnamedResourceName: "Unnamed Resource",
 
     // Search form
