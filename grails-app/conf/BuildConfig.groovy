@@ -43,7 +43,6 @@ grails.project.dependency.resolution = {
     // Allow grails commands to be run as usual, see: http://grails.org/doc/latest/guide/conf.html#mavenIntegration
     pom true
     plugins {
-        compile ":greenmail:1.3.4"
         compile ":joda-time:1.5"
         compile ":mail:1.0.7"
         compile ":simple-captcha:1.0.0"

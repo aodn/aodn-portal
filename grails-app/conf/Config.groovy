@@ -143,8 +143,6 @@ environments {
         grails.serverURL = "http://${localhostAddress}:8080/$appName"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-123.aodn.org.au/geonetwork"
-
-        grails.mail.port = com.icegreen.greenmail.util.ServerSetupTest.SMTP.port
     }
 
     test {
@@ -158,8 +156,6 @@ environments {
         // URLs
         grails.serverURL = "http://myaodn.example.com"
         geonetwork.url = "http://catalogue-123.aodn.org.au/geonetwork"
-
-        greenmail.disabled = true
     }
 }
 
