@@ -7,53 +7,10 @@
 
 Ext.namespace('Portal.cart');
 
-Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
-
-    ASYNC_DOWNLOAD_URL: 'asyncDownload?aggregatorService=gogoduck&',
+Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
     getDownloadOptions: function() {
-
-        var downloadOptions = [];
-
-        if (this._hasRequiredInfo()) {
-
-            downloadOptions.push({
-                textKey: 'downloadAsSubsettedNetCdfLabel',
-                handler: this._getUrlGeneratorFunction(),
-                handlerParams: {
-                    asyncDownload: true,
-                    collectEmailAddress: true,
-                    serviceResponseHandler: this.serviceResponseHandler
-                }
-            });
-        }
-
-        return downloadOptions;
-    },
-
-    _hasRequiredInfo: function() {
-
-        return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty();
-    },
-
-    serviceResponseHandler: function(response) {
-        var msg = "";
-
-        if (response) {
-            try {
-                var responseJson = JSON.parse(response);
-                if (responseJson['url']) {
-                    msg = OpenLayers.i18n('gogoduckServiceMsg', {
-                        url: responseJson['url']
-                    });
-                }
-            }
-            catch (e) {
-                log.error(String.format("Could not parse Gogoduck response: '{0}'", response));
-            }
-        }
-
-        return msg;
+        return Portal.cart.GogoduckDownloadHandler.superclass.getDownloadOptions.call(this, 'downloadAsSubsettedNetCdfLabel');
     },
 
     _getUrlGeneratorFunction: function() {
@@ -104,7 +61,7 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         var paramsAsJson = Ext.util.JSON.encode(args);
 
-        return String.format(this.ASYNC_DOWNLOAD_URL + 'jobParameters={0}', encodeURIComponent(paramsAsJson));
+        return String.format(this.getAsyncDownloadUrl('gogoduck') + 'jobParameters={0}', encodeURIComponent(paramsAsJson));
     },
 
     _trackUsage: function(layerName, subsetDescriptor) {

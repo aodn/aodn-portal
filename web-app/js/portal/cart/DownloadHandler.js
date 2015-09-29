@@ -86,7 +86,6 @@ Portal.cart.DownloadHandler._handlersForLink = function(link) {
             new constructor(link)
         );
     });
-
     return handlers;
 };
 
