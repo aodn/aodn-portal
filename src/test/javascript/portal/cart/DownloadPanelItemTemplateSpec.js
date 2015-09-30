@@ -21,7 +21,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         Portal.app.appConfig.grails = {serverURL: "munt"};
 
         mockDataInjection = {
-            uuid: '42',
+            getUuid: returns(42),
             title: 'the title',
             pointOfTruthLink: [
                 {
