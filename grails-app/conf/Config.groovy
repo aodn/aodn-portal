@@ -126,6 +126,12 @@ enabledFacets = [
 // Google Analytics
 googleAnalytics.trackingId = null
 
+// Let's be careful about not being open to spamming.
+// This must be specifically enabled in order for emails to be sent from the app.
+// This can be changed once we have some other form of protection in place (e.g. apache locking
+// down which IP address are allowed to access certain email-producing URLs).
+grails.mail.disabled = true
+
 environments {
 
     development {
@@ -316,7 +322,8 @@ log4j.main = {
 
     debug   'grails.app.job',
         'grails.app.tagLib',
-        'grails.app.controller.au.org.emii.portal.SystemController'
+        'grails.app.controller.au.org.emii.portal.SystemController',
+        'grails.plugin.mail'
 }
 
 /**
