@@ -20,7 +20,7 @@ describe("Portal.filter.Filter", function() {
             checkClassFor('string', Portal.filter.StringFilter);
             checkClassFor('geometrypropertytype', Portal.filter.GeometryFilter);
             checkClassFor('boolean', Portal.filter.BooleanFilter);
-            checkClassFor('date', Portal.filter.DateFilter);
+            checkClassFor('date', Portal.filter.WmsDateFilter);
             checkClassFor('unknown', null);
         });
 

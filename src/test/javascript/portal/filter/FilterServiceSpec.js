@@ -100,7 +100,7 @@ describe("Portal.filter.FilterService", function() {
 
             var testFilters = [
                 new Portal.filter.NumberFilter(),
-                new Portal.filter.DateFilter(),
+                new Portal.filter.WmsDateFilter(),
                 new Portal.filter.BooleanFilter()
             ];
 

@@ -97,7 +97,7 @@ Portal.filter.Filter.classFor = function(filterConfig) {
 
     var filterConstructors = [
         Portal.filter.BooleanFilter,
-        Portal.filter.DateFilter,
+        Portal.filter.WmsDateFilter,
         Portal.filter.GeometryFilter,
         Portal.filter.NumberFilter,
         Portal.filter.StringFilter
