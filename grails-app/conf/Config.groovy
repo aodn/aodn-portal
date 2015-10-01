@@ -263,12 +263,13 @@ portal {
 
         dataFile = [
             "WWW:DOWNLOAD-1.0-http--download",
-            "IMOS:AGGREGATION--gogoduck",
-            "IMOS:AGGREGATION--bodaac"
+            "WWW:DOWNLOAD-1.0-http--downloadother",
+            "WWW:DOWNLOAD-1.0-http--downloaddata"
         ]
 
         supplementary = [
             "WWW:LINK-1.0-http--link",
+            "WWW:LINK-1.0-http--downloaddata"
         ]
 
         metadataRecord = [
