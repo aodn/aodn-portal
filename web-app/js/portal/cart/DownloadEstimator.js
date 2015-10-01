@@ -34,10 +34,10 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
             scope: this,
             params: this.estimateRequestParams,
             success: function(result, values) {
-                this._createDownloadEstimate(result, collection.uuid, callback);
+                this._createDownloadEstimate(result, collection.getUuid(), callback);
             },
             failure: function(result, values) {
-                this._createFailMessage(result, collection.uuid);
+                this._createFailMessage(result, collection.getUuid());
             }
         });
     },
