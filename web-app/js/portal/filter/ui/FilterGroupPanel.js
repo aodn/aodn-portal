@@ -14,6 +14,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         this.loadingMessage = this._createLoadingMessageContainer();
         var config = Ext.apply({
             autoDestroy: true,
+            autoHeight: true,
             cls: 'filterGroupPanel',
             items: [
                 this.loadingMessage
