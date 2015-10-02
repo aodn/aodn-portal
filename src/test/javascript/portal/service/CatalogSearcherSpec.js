@@ -83,7 +83,17 @@ describe('Portal.service.CatalogSearcher', function() {
 
         it('when nothing passed', function() {
             var url = "http://imos.aodn.org.au/aodn-portal/home";
+            expect(searcher._getCollectionAvailabilityParams(url)).toEqual({});
+        });
+
+        it('when nothing passed and feature toggle is on/off', function() {
+            var url = "http://imos.aodn.org.au/aodn-portal/home";
+
+            Portal.app.appConfig.featureToggles.geonetworkLinkMonitor = true;
             expect(searcher._getCollectionAvailabilityParams(url)).toEqual({ filters: 'collectionavailability'});
+
+            Portal.app.appConfig.featureToggles.geonetworkLinkMonitor = false;
+            expect(searcher._getCollectionAvailabilityParams(url)).toEqual({});
         });
 
         it('when health=all passed', function() {
