@@ -54,6 +54,7 @@ Portal.data.DataCollection = function() {
 
         return {
             server: layer.url,
+            serverType: layer.server.type.toLowerCase(),
             layer: layerName
         };
     };
@@ -74,13 +75,10 @@ Portal.data.DataCollection = function() {
         if (link) {
             var linkName = link.name;
 
-            // If layer has no workspace defined, assume it is in the same workspace as the WMS layer
-            if (_workspaceFromName(linkName)) {
-                return linkName;
+            if (!_workspaceFromName(linkName) &&_workspaceFromName(firstWmsLink.name)) {
+                    return _workspaceFromName(firstWmsLink.name) + ':' + linkName;
             }
-            else {
-                return _workspaceFromName(firstWmsLink.name) + ':' + linkName;
-            }
+            return linkName;
         }
     };
 

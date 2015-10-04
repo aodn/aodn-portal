@@ -35,7 +35,8 @@ describe("Portal.data.DataCollection", function() {
 
             dataCollection.getLayerSelectionModel = returns({
                 getSelectedLayer: returns({
-                    url: 'server url'
+                    url: 'server url',
+                    server: {type: 'ncWMS'}
                 })
             });
         });
@@ -44,6 +45,12 @@ describe("Portal.data.DataCollection", function() {
             dataCollection._getDownloadLayerName = returns('layerName');
 
             expect(dataCollection.getFiltersRequestParams().server).toBe('server url');
+        });
+
+        it('uses server from selected layer for the Layer controller', function() {
+            dataCollection._getDownloadLayerName = returns('layerName');
+
+            expect(dataCollection.getFiltersRequestParams().serverType).toBe('ncwms');
         });
 
         describe('_getDownloadLayerName()', function() {
