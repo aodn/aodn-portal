@@ -104,9 +104,12 @@ describe('Portal.details.NcWmsPanel', function() {
         it('resets the temporal extent', function() {
             layer.getTemporalExtentMin = returns("ExtentMin");
             layer.getTemporalExtentMax = returns("ExtentMax");
+            layer.setTime = returns();
 
             spyOn(ncwmsPanel, '_resetExtent');
-            ncwmsPanel.resetConstraints();
+            spyOn(ncwmsPanel, '_layerSetTime');
+            ncwmsPanel.clearAndReset();
+            expect(ncwmsPanel._layerSetTime).toHaveBeenCalled();
             expect(ncwmsPanel._resetExtent).toHaveBeenCalledWith("ExtentMin", "ExtentMax");
         });
 
@@ -185,12 +188,12 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('updates and resets for new layer', function() {
             spyOn(ncwmsPanel, '_initWithLayer');
-            spyOn(ncwmsPanel, 'resetConstraints');
+            spyOn(ncwmsPanel, 'resetTemporalConstraints');
             ncwmsPanel._onSelectedLayerChanged(newLayer);
 
             expect(ncwmsPanel.layer).toBe(newLayer);
             expect(ncwmsPanel._initWithLayer).toHaveBeenCalled();
-            expect(ncwmsPanel.resetConstraints).toHaveBeenCalled();
+            expect(ncwmsPanel.resetTemporalConstraints).toHaveBeenCalled();
         });
     });
 
