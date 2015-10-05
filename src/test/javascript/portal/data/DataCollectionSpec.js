@@ -8,9 +8,11 @@
 describe("Portal.data.DataCollection", function() {
 
     var dataCollection;
+    var isNcwmsSpy;
 
     beforeEach(function() {
         spyOn(Portal.data.DataCollection.prototype, '_loadFilters');
+        isNcwmsSpy = spyOn(Portal.data.DataCollection.prototype, 'isNcwms').andReturn(true);
         spyOn(Portal.utils.ObservableUtils, 'makeObservable');
         dataCollection = Portal.data.DataCollection.fromMetadataRecord({});
     });
@@ -20,8 +22,16 @@ describe("Portal.data.DataCollection", function() {
             expect(Portal.utils.ObservableUtils.makeObservable).toHaveBeenCalled();
         });
 
-        it('starts the Filters loading', function() {
+        it('starts the Filters loading if non-ncwms', function() {
+            isNcwmsSpy.andReturn(false);
+            dataCollection = Portal.data.DataCollection.fromMetadataRecord({});
             expect(dataCollection._loadFilters).toHaveBeenCalled();
+        });
+
+        it("doesn't start the Filters loading if non-ncwms", function() {
+            isNcwmsSpy.andReturn(true);
+            dataCollection = Portal.data.DataCollection.fromMetadataRecord({});
+            expect(dataCollection._loadFilters).not.toHaveBeenCalled();
         });
     });
 

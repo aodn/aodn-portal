@@ -24,11 +24,6 @@ Portal.data.DataCollection = function() {
     };
 
     constructor.prototype._loadFilters = function() {
-
-        if (this.isNcwms()) {
-            return;
-        }
-
         var filterService = new Portal.filter.FilterService();
         filterService.loadFilters(this, this._onFiltersLoadSuccess, this._onFiltersLoadFailure, this);
     };
@@ -144,7 +139,9 @@ Portal.data.DataCollection.fromMetadataRecord = function(metadataRecord) {
 
     Portal.utils.ObservableUtils.makeObservable(dataCollection);
 
-    dataCollection._loadFilters();
+    if (!dataCollection.isNcwms()) {
+        dataCollection._loadFilters();
+    }
 
     return dataCollection;
 };
