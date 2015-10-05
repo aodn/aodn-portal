@@ -173,8 +173,8 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     _createRemoveLink: function(collection) {
         var elementId = this._getLinkId(collection, 'removeButtonId');
-        if (collection.menuItems.length > 0 && Ext.get(elementId)) {
 
+        if (Ext.get(elementId)) {
             // remove old button
             Ext.fly(elementId).update("");
 
@@ -184,6 +184,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
                 cls: 'fa fa-fw fa-close',
                 renderTo: elementId
             });
+
             removeLink.on('click', function() {
                 this._removeLinkOnClick(elementId);
             }, this);

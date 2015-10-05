@@ -48,13 +48,6 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         spyOn(window, 'trackDataCollectionSelectionUsage');
     });
 
-    describe('_createRemoveButtonAfterPageLoad', function() {
-        it('returns empty string', function() {
-            spyOn(tpl, '_createRemoveLink');
-            expect(tpl._createRemoveButtonAfterPageLoad()).toEqual('');
-        });
-    });
-
     describe('apply', function() {
 
         beforeEach(function() {
