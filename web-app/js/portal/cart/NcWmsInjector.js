@@ -1,9 +1,3 @@
-/*
- * Copyright 2014 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
 
 Ext.namespace('Portal.cart');
 
@@ -18,7 +12,7 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         var areaString = "";
         var dateString = "";
 
-        if (params.latitudeRangeStart) {
+        if (params && params.latitudeRangeStart) {
 
             var bboxString = String.format(
                 '{0},{1},{2},{3}',
@@ -32,7 +26,7 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             areaString = String.format('{0}:&nbsp;{1}<br>', OpenLayers.i18n("spatialExtentHeading"), bbox);
         }
 
-        if (params.dateRangeStart != undefined) {
+        if (params && params.dateRangeStart) {
             var startDateString = this._formatDate(params.dateRangeStart);
             var endDateString = this._formatDate(params.dateRangeEnd);
             dateString = this._formatHumanDateInfo('temporalExtentHeading', startDateString, endDateString);
