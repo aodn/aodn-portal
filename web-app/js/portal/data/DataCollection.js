@@ -24,6 +24,11 @@ Portal.data.DataCollection = function() {
     };
 
     constructor.prototype._loadFilters = function() {
+
+        if (this.isNcwms()) {
+            return;
+        }
+
         var filterService = new Portal.filter.FilterService();
         filterService.loadFilters(this, this._onFiltersLoadSuccess, this._onFiltersLoadFailure, this);
     };
