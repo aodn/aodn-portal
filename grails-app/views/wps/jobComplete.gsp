@@ -1,6 +1,8 @@
 Hi,
 
-Your IMOS download is ready. You can download it by clicking here: ${jobReportUrl}
+Your IMOS subset has been created. You can download it by clicking here: ${jobReportUrl}
+
+The download will be available ${expirationPeriod}.
 
 Kind regards,
 The eMII Team.

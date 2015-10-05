@@ -15,7 +15,7 @@ class WpsController extends RequestProxyingController {
     }
 
     def jobComplete = {
-        params.email.subject = "IMOS download request complete - ${params.uuid}"
+        params.email.subject = "IMOS subsetting complete - ${params.uuid}"
         params.email.template = 'jobComplete'
         wpsService.notifyViaEmail(params)
 

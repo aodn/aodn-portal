@@ -78,7 +78,7 @@ class WpsControllerTests extends ControllerUnitTestCase {
             server: 'http://wps.ftw',
             email: [
                 to: 'user@example.com',
-                subject: 'IMOS download request complete - 1234',
+                subject: 'IMOS subsetting complete - 1234',
                 template: 'jobComplete'
             ]
         ], notifyViaEmailParams)
