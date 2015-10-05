@@ -13,8 +13,6 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
     beforeEach(function() {
         Portal.filter.ui.DateFilterPanel.prototype._createControls = noOp;
 
-        Portal.filter.ui.DateFilterPanel.prototype._getDateString = noOp;
-
         filterPanel = new Portal.filter.ui.DateFilterPanel({
             filter: {
                 name: 'some_column',
@@ -65,12 +63,17 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
 
         beforeEach(function() {
             spyOn(window, 'trackUsage');
-            component = {'_dateField':{"name":"atestname"}};
+            component = {
+                _dateField: {
+                    name: "atestname",
+                    getValue: returns('12-02-1990')
+                }
+            };
+
+            filterPanel._applyDateFilter(component);
         });
 
         it('fires events when required fields are set', function() {
-            component._dateField.getValue = returns('12-02-1990');
-            filterPanel._applyDateFilter(component);
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Date", "atestname user set 12-02-1990", "Collection title");
         });
     });
