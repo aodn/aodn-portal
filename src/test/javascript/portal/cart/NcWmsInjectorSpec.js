@@ -25,10 +25,10 @@ describe('Portal.cart.NcWmsInjector', function() {
                     isNcwmsParams: true,
                     dateRangeStart: startDate,
                     dateRangeEnd: endDate,
-                    latitudeRangeStart: '-10',
-                    latitudeRangeEnd: '40',
-                    longitudeRangeEnd: '180',
-                    longitudeRangeStart: '150'
+                    latitudeRangeStart: 0,
+                    latitudeRangeEnd: 40,
+                    longitudeRangeEnd: 180,
+                    longitudeRangeStart: -150
                 },
                 {
                     type: Portal.filter.DateFilter,
@@ -57,6 +57,7 @@ describe('Portal.cart.NcWmsInjector', function() {
 
             var entry = injector._getDataFilterEntry(dataCollection);
             expect(entry).toContain(OpenLayers.i18n("spatialExtentHeading"));
+            expect(entry).toContain('-150W 0S 180E 40N');
         });
 
         it('indicates temporal range', function() {

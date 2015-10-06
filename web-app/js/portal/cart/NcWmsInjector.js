@@ -12,7 +12,7 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         var areaString = "";
         var dateString = "";
 
-        if (params && params.latitudeRangeStart) {
+        if (params && params.latitudeRangeStart != undefined) {
 
             var bboxString = String.format(
                 '{0},{1},{2},{3}',
