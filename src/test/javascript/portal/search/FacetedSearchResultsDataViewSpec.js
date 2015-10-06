@@ -12,6 +12,8 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
     var template;
 
     beforeEach(function() {
+        spyOn(Portal.data.DataCollection.prototype, 'isNcwms');
+
         facetedSearchDataView = new Portal.search.FacetedSearchResultsDataView({
             dataCollectionStore: {
                 getByUuid: noOp,

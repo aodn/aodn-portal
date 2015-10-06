@@ -139,7 +139,9 @@ Portal.data.DataCollection.fromMetadataRecord = function(metadataRecord) {
 
     Portal.utils.ObservableUtils.makeObservable(dataCollection);
 
-    dataCollection._loadFilters();
+    if (!dataCollection.isNcwms()) {
+        dataCollection._loadFilters();
+    }
 
     return dataCollection;
 };
