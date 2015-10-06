@@ -101,7 +101,13 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
 
         this.filter.setValue({
             fromDate: this.fromDate.getValue(),
-            toDate: this.toDate.getValue()
+            toDate: this._endOfDay(this.toDate.getValue())
         });
+    },
+
+    _endOfDay: function(date) {
+        if (date) {
+            return moment(date).endOf('day').toDate();
+        }
     }
 });

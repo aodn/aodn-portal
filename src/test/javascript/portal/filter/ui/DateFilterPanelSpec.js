@@ -13,15 +13,13 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
     beforeEach(function() {
         Portal.filter.ui.DateFilterPanel.prototype._createControls = noOp;
 
-        Portal.filter.ui.DateFilterPanel.prototype._getDateString = noOp;
-
         filterPanel = new Portal.filter.ui.DateFilterPanel({
             filter: {
                 name: 'some_column',
                 wmsStartDateName: "aWmsStartDateName",
                 wmsEndDateName: "aWmsEndDateName",
                 clearValue: noOp,
-                setValue: noOp
+                setValue: jasmine.createSpy('setValue')
             },
             dataCollection: {
                 getTitle: returns('Collection title'),
@@ -65,13 +63,29 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
 
         beforeEach(function() {
             spyOn(window, 'trackUsage');
-            component = {'_dateField':{"name":"atestname"}};
+            component = {
+                _dateField: {
+                    name: "atestname",
+                    getValue: returns('12-02-1990')
+                }
+            };
+            filterPanel.toDate = {
+                getValue: returns(new Date(1999, 11, 31, 4, 4, 4, 4)), // 4:04:04.0004am
+                setMinValue: noOp
+            };
+
+            filterPanel._applyDateFilter(component);
         });
 
         it('fires events when required fields are set', function() {
-            component._dateField.getValue = returns('12-02-1990');
-            filterPanel._applyDateFilter(component);
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Date", "atestname user set 12-02-1990", "Collection title");
+        });
+
+        it('uses end-of-day for end date', function() {
+            expect(filterPanel.filter.setValue).toHaveBeenCalledWith({
+                fromDate: undefined,
+                toDate: new Date(1999, 11, 31, 23, 59, 59, 999)
+            });
         });
     });
 
