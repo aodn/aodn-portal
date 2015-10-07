@@ -88,7 +88,7 @@ downloadAuth {
 }
 
 featureToggles {
-    // someFeature = <boolean>
+    geonetworkLinkMonitor = false
 }
 
 enabledFacets = [

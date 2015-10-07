@@ -215,19 +215,22 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
     _getCollectionAvailabilityParams: function(url) {
         var getParams = url.split("#")[0].split("?");
         var params = Ext.urlDecode(getParams[1]);
+        var filters = {};
 
         if (params.health === "good") {
-            return { filters: "collectionavailability" };
+            filters = { filters: "collectionavailability" };
         }
         else if (params.health === "bad") {
-            return { filters: "!collectionavailability" };
+            filters = { filters: "!collectionavailability" };
         }
         else if (params.health === "all") {
-            return {};
+            filters = {};
         }
-        else {
-            return { filters: "collectionavailability" };
+        else if (Portal.app.appConfig.featureToggles.geonetworkLinkMonitor == true) {
+            filters = { filters: "collectionavailability" };
         }
+
+        return filters;
     },
 
     _getParams: function(page) {
