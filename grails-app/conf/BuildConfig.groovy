@@ -38,6 +38,7 @@ grails.project.dependency.resolution = {
         compile('org.codehaus.groovy.modules.http-builder:http-builder:0.7') {
             excludes "commons-logging", "xml-apis", "groovy"
         }
+        compile('org.ocpsoft.prettytime:prettytime:3.2.7.Final')
     }
 
     // Allow grails commands to be run as usual, see: http://grails.org/doc/latest/guide/conf.html#mavenIntegration

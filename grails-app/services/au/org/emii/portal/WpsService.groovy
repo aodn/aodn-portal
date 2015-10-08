@@ -7,9 +7,13 @@ import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import static groovyx.net.http.Method.POST
 import static groovyx.net.http.ContentType.XML
 
+import org.ocpsoft.prettytime.PrettyTime
+import org.ocpsoft.prettytime.units.*
+
 class WpsService extends AsyncDownloadService {
 
     def groovyPageRenderer
+    def grailsApplication
     LinkGenerator grailsLinkGenerator
 
     String registerJob(params) throws HttpResponseException {
@@ -39,10 +43,12 @@ class WpsService extends AsyncDownloadService {
     }
 
     def notifyViaEmail(params) {
+
+        params.expirationPeriod = _getExpirationPeriod()
         params.jobReportUrl = grailsLinkGenerator.link(
             controller: 'wps',
             action: 'jobReport',
-            params: [ server: params.server, uuid: params.uuid ],
+            params: [server: params.server, uuid: params.uuid],
             absolute: true
         )
 
@@ -55,6 +61,20 @@ class WpsService extends AsyncDownloadService {
                 model: params
             )
         }
+    }
+
+    def _getExpirationPeriod() {
+
+        def res = "for a limited time"
+
+        if (grailsApplication.config.isSet("wpsResourceExpirationTimeout")) {
+            def p = new PrettyTime(new Date());
+            def duration = p.format(
+                new Date(System.currentTimeMillis() + (grailsApplication.config.wpsResourceExpirationTimeout) * 1000 )
+            )
+            res = "until approximately " + duration
+        }
+        return res
     }
 
     def _notifyRegistrationViaEmail(params) {
