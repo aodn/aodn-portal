@@ -44,7 +44,7 @@ describe("OpenLayers.Layer.NcWms", function() {
 
         it('time specified', function() {
             cachedLayer.setTime(time);
-            expect(cachedLayer.params['TIME']).toBe(time.utc().format('YYYY-MM-DDTHH:mm:ss.SSS'));
+            expect(cachedLayer.params['TIME']).toBe(time.utc().format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'));
         });
     });
 
