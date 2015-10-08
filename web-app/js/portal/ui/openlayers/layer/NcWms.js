@@ -215,7 +215,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return this.temporalExtent.max();
     },
 
-    toTime: function(dateTime) {
+    setTime: function(dateTime) {
         // Don't send a request if we don't have to
         if (!this.time || this._isValidTime(dateTime)) {
             this.time = dateTime;
@@ -342,7 +342,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     goToPreviousTimeSlice: function() {
         if (this.temporalExtent.previous(this.time)) {
-            this.toTime(this.temporalExtent.previous(this.time));
+            this.setTime(this.temporalExtent.previous(this.time));
         }
     },
 
@@ -353,7 +353,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     goToNextTimeSlice: function() {
         if (this.temporalExtent.next(this.time)) {
-            this.toTime(this.temporalExtent.next(this.time));
+            this.setTime(this.temporalExtent.next(this.time));
         }
     },
 

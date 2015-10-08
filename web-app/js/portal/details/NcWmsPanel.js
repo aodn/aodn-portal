@@ -52,7 +52,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     _onSelectedLayerChanged: function(newLayer) {
         this.layer = newLayer;
         this._initWithLayer();
-        this.resetConstraints();
+        this.resetTemporalConstraints();
     },
 
     _addClearButton: function() {
@@ -61,12 +61,17 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             text: OpenLayers.i18n('clearLinkLabel', {text: OpenLayers.i18n('clearSubsetLabel')})
         });
         this.resetLink.on('click', function() {
-            this.resetConstraints();
+            this.clearAndReset();
         }, this);
         this.add(this.resetLink);
     },
 
-    resetConstraints: function() {
+    clearAndReset: function() {
+        this._layerSetTime(this.layer.getTemporalExtentMax());
+        this.resetTemporalConstraints();
+    },
+
+    resetTemporalConstraints: function() {
         this._resetExtent(this.layer.getTemporalExtentMin(), this.layer.getTemporalExtentMax());
     },
 
@@ -277,7 +282,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _onTimeSelected: function(datePicker, selectedDateTimeMoment) {
         datePicker.setValue(selectedDateTimeMoment);
-        this._layerToTime(selectedDateTimeMoment);
+        this._layerSetTime(selectedDateTimeMoment);
         this._setLayerSubsetExtent();
         this._updateTimeRangeLabel();
         this._applyFilterValuesToCollection();
@@ -410,7 +415,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             var selectedTimeMoment = this.layer.getTemporalExtent().firstTimeOfDay(selectedDate);
             dateTimePicker.initvalue = selectedTimeMoment.clone();
             this._removeAttachedSelectedDate(dateTimePicker);
-            this._layerToTime(selectedTimeMoment);
+            this._layerSetTime(selectedTimeMoment);
         }
         else {
             dateTimePicker.initvalue = defaultValue;
@@ -449,8 +454,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.timeRangeLabel = new Portal.ui.TimeRangeLabel();
     },
 
-    _layerToTime: function(momentDate) {
-        this.layer.toTime(momentDate);
+    _layerSetTime: function(momentDate) {
+        this.layer.setTime(momentDate);
     },
 
     _getDateFromPicker: function(datePicker) {

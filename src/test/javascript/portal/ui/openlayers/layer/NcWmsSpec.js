@@ -49,7 +49,7 @@ describe('OpenLayers.Layer.NcWms', function() {
         });
 
         it('time specified', function() {
-            cachedLayer.toTime(time);
+            cachedLayer.setTime(time);
             expect(cachedLayer.params['TIME']).toBe(time.utc().format('YYYY-MM-DDTHH:mm:ss.SSS'));
         });
     });
@@ -227,13 +227,13 @@ describe('OpenLayers.Layer.NcWms', function() {
         });
 
         it('next item returned', function() {
-            cachedLayer.toTime(cachedLayer.temporalExtent.min());
+            cachedLayer.setTime(cachedLayer.temporalExtent.min());
             cachedLayer.goToNextTimeSlice();
             expect(cachedLayer.time).toBeSame(moment.utc('2001-01-02T00:00:00'));
         });
 
         it('no more items', function() {
-            cachedLayer.toTime(cachedLayer.temporalExtent.max());
+            cachedLayer.setTime(cachedLayer.temporalExtent.max());
             cachedLayer.goToNextTimeSlice();
             expect(cachedLayer.time).toBeSame(moment.utc('2001-01-03T00:00:00'));
         });
@@ -247,35 +247,35 @@ describe('OpenLayers.Layer.NcWms', function() {
             });
 
             it('around first date/time', function() {
-                cachedLayer.toTime(moment.utc('2000-01-01T00:00:00.000'));
+                cachedLayer.setTime(moment.utc('2000-01-01T00:00:00.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time).toBeSame(moment.utc('2000-01-01T00:30:00.000'));
 
-                cachedLayer.toTime(moment.utc('2000-01-01T00:00:01.000'));
+                cachedLayer.setTime(moment.utc('2000-01-01T00:00:01.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time).toBeSame(moment.utc('2000-01-01T00:30:00.000'));
             });
 
             it('around half way between two possible values', function() {
-                cachedLayer.toTime(moment.utc('2000-01-01T00:15:00.000'));
+                cachedLayer.setTime(moment.utc('2000-01-01T00:15:00.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time).toBeSame(moment.utc('2000-01-01T00:30:00.000'));
 
-                cachedLayer.toTime(moment.utc('2000-01-01T00:15:01.000'));
+                cachedLayer.setTime(moment.utc('2000-01-01T00:15:01.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time).toBeSame(moment.utc('2000-01-01T00:30:00.000'));
             });
 
             it('around last date/time', function() {
-                cachedLayer.toTime(moment.utc('2000-01-01T01:00:00.000'));
+                cachedLayer.setTime(moment.utc('2000-01-01T01:00:00.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time.valueOf()).toEqual(moment.utc('2000-01-01T01:00:00.000').valueOf());
 
-                cachedLayer.toTime(moment.utc('2000-01-01T00:59:59.000'));
+                cachedLayer.setTime(moment.utc('2000-01-01T00:59:59.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time.valueOf()).toEqual(moment.utc('2000-01-01T01:00:00.000').valueOf());
 
-                cachedLayer.toTime(moment.utc('2000-01-01T01:00:01.000'));
+                cachedLayer.setTime(moment.utc('2000-01-01T01:00:01.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time.valueOf()).toEqual(moment.utc('2000-01-01T01:00:01.000').valueOf());
             });
@@ -287,39 +287,39 @@ describe('OpenLayers.Layer.NcWms', function() {
             });
 
             it('around first date/time', function() {
-                cachedLayer.toTime(moment.utc('2000-01-01T00:00:00.000'));
+                cachedLayer.setTime(moment.utc('2000-01-01T00:00:00.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time).toBeSame(moment.utc('2000-01-02T00:00:00.000'));
 
-                cachedLayer.toTime(moment.utc('2000-01-01T00:00:01.000'));
+                cachedLayer.setTime(moment.utc('2000-01-01T00:00:01.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time).toBeSame(moment.utc('2000-01-02T00:00:00.000'));
             });
 
             it('around half way between two possible values', function() {
-                cachedLayer.toTime(moment.utc('2000-01-01T11:59:59.000'));
+                cachedLayer.setTime(moment.utc('2000-01-01T11:59:59.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time).toBeSame(moment.utc('2000-01-02T00:00:00.000'));
 
-                cachedLayer.toTime(moment.utc('2000-01-01T12:00:00.000'));
+                cachedLayer.setTime(moment.utc('2000-01-01T12:00:00.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time).toBeSame(moment.utc('2000-01-02T00:00:00.000'));
 
-                cachedLayer.toTime(moment.utc('2000-01-01T12:00:01.000'));
+                cachedLayer.setTime(moment.utc('2000-01-01T12:00:01.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time).toBeSame(moment.utc('2000-01-02T00:00:00.000'));
             });
 
             it('around last date/time', function() {
-                cachedLayer.toTime(moment.utc('2000-01-02T23:59:59.000'));
+                cachedLayer.setTime(moment.utc('2000-01-02T23:59:59.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time).toBeSame(moment.utc('2000-01-03T00:00:00.000'));
 
-                cachedLayer.toTime(moment.utc('2000-01-03T00:00:00.000'));
+                cachedLayer.setTime(moment.utc('2000-01-03T00:00:00.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time.valueOf()).toEqual(moment.utc('2000-01-03T00:00:00.000').valueOf());
 
-                cachedLayer.toTime(moment.utc('2000-01-03T00:00:01.000'));
+                cachedLayer.setTime(moment.utc('2000-01-03T00:00:01.000'));
                 cachedLayer.goToNextTimeSlice();
                 expect(cachedLayer.time.valueOf()).toEqual(moment.utc('2000-01-03T00:00:01.000').valueOf());
             });
@@ -355,15 +355,15 @@ describe('OpenLayers.Layer.NcWms', function() {
         });
 
         it('date is not available in extent', function() {
-            cachedLayer.toTime(moment.utc('1900-12-31T23:59:59.000'));
+            cachedLayer.setTime(moment.utc('1900-12-31T23:59:59.000'));
             cachedLayer.goToNextTimeSlice();
             expect(cachedLayer.time.startOf('day').toISOString()).toEqual('2000-01-01T00:00:00.000Z');
 
-            cachedLayer.toTime(moment.utc('1999-12-31T23:59:59.000'));
+            cachedLayer.setTime(moment.utc('1999-12-31T23:59:59.000'));
             cachedLayer.goToNextTimeSlice();
             expect(cachedLayer.time.startOf('day').toISOString()).toEqual('2001-02-03T00:00:00.000Z');
 
-            cachedLayer.toTime(moment.utc('2030-01-03T00:00:00.000'));
+            cachedLayer.setTime(moment.utc('2030-01-03T00:00:00.000'));
             cachedLayer.goToNextTimeSlice();
             expect(cachedLayer.time.startOf('day').toISOString()).toEqual('2001-02-05T00:00:00.000Z');
         });
