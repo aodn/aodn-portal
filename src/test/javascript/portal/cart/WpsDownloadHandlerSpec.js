@@ -84,12 +84,10 @@ describe('Portal.cart.WpsDownloadHandler', function () {
             var url = clickHandler(testCollection, testHandlerParams);
 
             expect(url).toStartWith(expectedUrlStart);
-
-            var decodedUrl = Ext.urlDecode(url);
-            expect(decodedUrl['server']).toBe('geoserver_url');
-            expect(decodedUrl['jobParameters.typeName']).toBe('layer_name');
-            expect(decodedUrl['jobParameters.email.to']).toBe('bob@example.com');
-            expect(decodedUrl['jobParameters.cqlFilter']).toBe('Geometry Cql AND Salinity Cql');
+            expect(url).toHaveParameterWithValue('server', 'geoserver_url');
+            expect(url).toHaveParameterWithValue('jobParameters.typeName', 'layer_name');
+            expect(url).toHaveParameterWithValue('jobParameters.email.to', 'bob@example.com');
+            expect(url).toHaveParameterWithValue('jobParameters.cqlFilter', 'Geometry Cql AND Salinity Cql');
         });
     });
 });
