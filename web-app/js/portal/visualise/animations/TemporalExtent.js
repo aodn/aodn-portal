@@ -1,10 +1,3 @@
-/*
- * Copyright 2013 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
-
 Ext.namespace('Portal.visualise.animations');
 
 /* This class is managing a temporal extent. The way we manage the temporal

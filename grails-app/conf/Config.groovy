@@ -1,10 +1,3 @@
-/*
- * Copyright 2012 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
-
 import javax.naming.InitialContext
 
 // locations to search for config files that get merged into the main config

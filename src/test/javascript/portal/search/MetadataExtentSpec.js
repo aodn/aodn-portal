@@ -1,10 +1,3 @@
-/*
- * Copyright 2013 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
-
 describe("Portal.search.MetadataExtent", function() {
 
     it("creates a geometry out of geoBox string", function() {

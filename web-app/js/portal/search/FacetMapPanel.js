@@ -1,10 +1,3 @@
-/*
- * Copyright 2012 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
-
 Ext.namespace('Portal.search');
 
 Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {

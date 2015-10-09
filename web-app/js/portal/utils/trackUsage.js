@@ -1,4 +1,3 @@
-
 // wrapper to the Google Analytics function
 function trackUsage(category, action, label, collection, value) {
     if (typeof ga == 'function') {

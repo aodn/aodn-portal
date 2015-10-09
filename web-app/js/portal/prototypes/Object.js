@@ -1,11 +1,3 @@
-
-/*
- * Copyright 2013 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
-
 // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
 if (!Object.keys) {
     Object.keys = (function () {

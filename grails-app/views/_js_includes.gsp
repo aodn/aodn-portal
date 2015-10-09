@@ -1,11 +1,3 @@
-<%--
-
- Copyright 2012 IMOS
-
- The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
-
---%>
-
 <!-- First import JQUERY -->
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery-1.6.min.js')}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/portal', file: 'jquery.js')}"></script>

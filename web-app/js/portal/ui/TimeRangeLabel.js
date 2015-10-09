@@ -1,10 +1,3 @@
-/*
- * Copyright 2014 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
-
 Ext.namespace('Portal.ui');
 
 Portal.ui.TimeRangeLabel = Ext.extend(Ext.form.Label, {

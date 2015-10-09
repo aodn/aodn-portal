@@ -1,11 +1,3 @@
-
-/*
- * Copyright 2012 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
-
 Ext.namespace('Portal.data.SuggestionStore');
 
 Portal.data.SuggestionStore = Ext.extend(Ext.data.XmlStore, {

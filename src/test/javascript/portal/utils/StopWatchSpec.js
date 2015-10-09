@@ -1,10 +1,3 @@
-/*
- * Copyright 2014 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
-
 describe("Portal.utils.StopWatch", function() {
     it('calculates elapsed time in ms on stop', function() {
         var sw = new Portal.utils.StopWatch();

@@ -1,8 +1,5 @@
 /*
  * NonCollapsingAccordionLayout.js copied from https://www.sencha.com/forum/showthread.php?61487-Way-to-keep-at-least-one-panel-in-an-accordion-layout-always-expanded
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
  */
 
 // Custom accordion layout that does not allow the accordion to be fully closed.

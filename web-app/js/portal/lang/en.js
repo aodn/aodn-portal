@@ -1,10 +1,3 @@
-/*
- * Copyright 2012 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
-
 OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     unsupportedWarningMessage: "Your browser or device is unsupported and may not work with this site. \nPlease use Chrome or Firefox on a later generation Windows PC, Linux or Macbook/iMac for the best experience.",

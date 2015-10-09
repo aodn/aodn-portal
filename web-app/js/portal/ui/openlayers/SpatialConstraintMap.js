@@ -1,10 +1,3 @@
-/*
- * Copyright 2014 IMOS
- *
- * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
- *
- */
-
 OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
 
     initialize: function(div, options) {
