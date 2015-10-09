@@ -23,7 +23,7 @@ class WpsServiceTests extends GrailsUnitTestCase {
     }
 
     void testGetBody() {
-        def params = [ jobParams: [ typeName: 'an awesome layer', cqlFilter: 'some cql' ] ]
+        def params = [ jobParameters: [ typeName: 'an awesome layer', cqlFilter: 'some cql' ] ]
         def called = false
 
         service.groovyPageRenderer = [

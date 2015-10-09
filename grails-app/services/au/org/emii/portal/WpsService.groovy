@@ -32,8 +32,11 @@ class WpsService extends AsyncDownloadService {
     }
 
     def getBody(params) {
+        // grails puts all permutations of dotted parameters in here, we only want one lot.
+        params.jobParameters = params.jobParameters.findAll { it.value instanceof String }
+
         def body = groovyPageRenderer.render(template: '/wps/asyncRequest.xml', model: params)
-        log.debug("Request body: ${body}")
+        log.debug("Request body:\n\n${body}")
 
         return body
     }

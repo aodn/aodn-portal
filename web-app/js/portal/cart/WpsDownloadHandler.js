@@ -39,25 +39,27 @@ Portal.cart.WpsDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
             filters: filters
         });
 
-        var args = {
-            typeName: layerName,
-            emailAddress: notificationEmailAddress,
-            url: serverUrl,
-            cqlFilter: builder.buildCql()
-        };
+        var cqlFilter = builder.buildCql();
 
-        this._trackUsage(layerName, args.cqlFilter);
+        this._trackUsage(layerName, cqlFilter);
 
-        var paramsAsJson = Ext.util.JSON.encode(args);
-        return String.format(this.getAsyncDownloadUrl('wps') + 'jobParameters={0}', encodeURIComponent(paramsAsJson));
+        return String.format(
+            "{0}{1}",
+            this.getAsyncDownloadUrl('wps'),
+            Ext.urlEncode({
+                server: serverUrl,
+                'jobParameters.typeName': layerName,
+                'jobParameters.cqlFilter': cqlFilter,
+                'jobParameters.email.to': notificationEmailAddress
+            })
+        );
     },
 
-    _trackUsage: function(layerName, cql) {
+    _trackUsage: function(layerName, cqlFilter) {
         trackDownloadUsage(
             OpenLayers.i18n('wpsTrackingLabel'),
             layerName,
-            cql
+            cqlFilter
         );
     }
-
 });
