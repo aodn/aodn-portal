@@ -263,7 +263,9 @@ portal {
 
         supplementary = [
             "WWW:LINK-1.0-http--link",
-            "WWW:LINK-1.0-http--downloaddata"
+            "WWW:LINK-1.0-http--downloaddata",
+            "WWW:LINK-1.0-http--related",
+            "WWW:DOWNLOAD-1.0-ftp--download"
         ]
 
         metadataRecord = [
