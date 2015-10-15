@@ -21,6 +21,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         this.pendingRequests = new Portal.utils.Set();
 
+        params['SERVICE'] = "ncwms";
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, [name, url, params, options]);
 
         this._setExtraLayerInfoFromNcwms();
@@ -273,7 +274,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     _getTimeParameter: function(dateTime) {
-        return dateTime.clone().utc().format('YYYY-MM-DDTHH:mm:ss.SSS');
+        return dateTime.clone().utc().format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
     },
 
     _getExtraLayerInfoFromNcwms: function() {
