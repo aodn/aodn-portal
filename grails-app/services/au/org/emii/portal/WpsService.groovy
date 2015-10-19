@@ -4,6 +4,8 @@ import grails.gsp.PageRenderer
 import groovyx.net.http.*
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
+import grails.converters.JSON
+
 import static groovyx.net.http.Method.POST
 import static groovyx.net.http.ContentType.XML
 
@@ -21,7 +23,7 @@ class WpsService extends AsyncDownloadService {
         params.uuid = _getUuidFromRegisterResponse(registerResponse)
         _notifyRegistrationViaEmail(params)
 
-        return registerResponse
+        return [ url: _getJobReportUrl(params) ] as JSON
     }
 
     def getConnection(params) {
@@ -48,12 +50,7 @@ class WpsService extends AsyncDownloadService {
     def notifyViaEmail(params) {
 
         params.expirationPeriod = _getExpirationPeriod()
-        params.jobReportUrl = grailsLinkGenerator.link(
-            controller: 'wps',
-            action: 'jobReport',
-            params: [server: params.server, uuid: params.uuid],
-            absolute: true
-        )
+        params.jobReportUrl = _getJobReportUrl(params)
 
         sendMail {
             async true
@@ -64,6 +61,15 @@ class WpsService extends AsyncDownloadService {
                 model: params
             )
         }
+    }
+
+    def _getJobReportUrl(params) {
+        return grailsLinkGenerator.link(
+            controller: 'wps',
+            action: 'jobReport',
+            params: [server: params.server, uuid: params.uuid],
+            absolute: true
+        )
     }
 
     def _getExpirationPeriod() {
