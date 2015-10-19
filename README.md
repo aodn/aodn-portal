@@ -32,11 +32,11 @@ Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_h
 ## Building From Source
 If you want to build from source you will need to have [Grails](http://grails.org/) 2.4.4 installed on your build machine.
 
-The recommended way of installing grails is by using [gvm](http://gvmtool.net/):
+The recommended way of installing grails is by using [SdkMan](http://sdkman.io/):
 ```
-$ curl -s get.gvmtool.net | bash
-$ source $HOME/.gvm/bin/gvm-init.sh
-$ gvm use grails 2.4.4
+$ curl -s http://get.sdkman.io | bash 
+$ source $HOME/.sdkman/bin/sdkman-init.sh
+$ sdk use grails 2.4.4
 ```
 
 Once you have the source it should be as simple as ```$ grails war``` in the root folder where you have checked out portal
