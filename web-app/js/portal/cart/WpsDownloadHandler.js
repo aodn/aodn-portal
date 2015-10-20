@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.cart');
 
 Portal.cart.WpsDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
@@ -42,9 +41,9 @@ Portal.cart.WpsDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
             this.getAsyncDownloadUrl('wps'),
             Ext.urlEncode({
                 server: serverUrl,
+                'email.to': notificationEmailAddress,
                 'jobParameters.typeName': layerName,
-                'jobParameters.cqlFilter': cqlFilter,
-                'jobParameters.email.to': notificationEmailAddress
+                'jobParameters.cqlFilter': cqlFilter
             })
         );
     },

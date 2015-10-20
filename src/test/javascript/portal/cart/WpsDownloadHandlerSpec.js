@@ -85,8 +85,8 @@ describe('Portal.cart.WpsDownloadHandler', function () {
 
             expect(url).toStartWith(expectedUrlStart);
             expect(url).toHaveParameterWithValue('server', 'geoserver_url');
+            expect(url).toHaveParameterWithValue('email.to', 'bob@example.com');
             expect(url).toHaveParameterWithValue('jobParameters.typeName', 'layer_name');
-            expect(url).toHaveParameterWithValue('jobParameters.email.to', 'bob@example.com');
             expect(url).toHaveParameterWithValue('jobParameters.cqlFilter', 'Geometry Cql AND Salinity Cql');
         });
     });
