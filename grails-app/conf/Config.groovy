@@ -102,6 +102,12 @@ enabledFacets = [
         hierarchical: true
     ],
     [
+        name: 'temporalResolutionFilter',
+        key: 'Temporal Resolution',
+        collapsedByDefault: true,
+        hierarchical: true
+    ],
+    [
         classId: 'Portal.search.DateSelectionPanel',
         name: 'dateFilter'
     ],
