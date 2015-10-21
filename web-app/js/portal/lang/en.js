@@ -152,6 +152,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     searchTabTitle: 'Search',
     organisationFilter: 'Organisation',
     platformFilter: 'Platform',
+    temporalResolutionFilter: 'Temporal Resolution',
     parameterFilter: 'Parameter',
     freetextFilter: 'Keyword',
     dateFilter: 'Date (UTC)',
