@@ -46,6 +46,14 @@ describe("Portal.search.FreeTextSearchPanel", function()
         expect(freeTextSearchPanel.searchField.reset).toHaveBeenCalled();
     });
 
+    it("focuses text box on expand", function() {
+        spyOn(freeTextSearchPanel.searchField, 'focus');
+
+        freeTextSearchPanel.fireEvent('expand');
+
+        expect(freeTextSearchPanel.searchField.focus).toHaveBeenCalledWith(true);
+    });
+
     describe("google analytics", function() {
         beforeEach(function() {
             spyOn(window, 'trackFacetUsage');
