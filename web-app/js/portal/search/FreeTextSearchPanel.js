@@ -44,6 +44,10 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
         this.mon(this.goButton, 'click', this.onGo, this);
         this.mon(this.clearButton, 'click', this.clearSearch, this);
         this.mon(this.searchField, 'keyup', this.onSearchChange, this);
+
+        this.on('expand', function() {
+            this.searchField.focus(true);
+        }, this);
     },
 
     initComponent: function() {
