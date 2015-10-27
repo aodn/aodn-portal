@@ -120,7 +120,8 @@ var getMockMap = function() {
             on: jasmine.createSpy()
         },
         setSpatialConstraintStyle: jasmine.createSpy(),
-        getSpatialConstraintType: jasmine.createSpy()
+        getSpatialConstraintType: jasmine.createSpy(),
+        getConstraint: jasmine.createSpy()
     };
 };
 

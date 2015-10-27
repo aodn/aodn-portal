@@ -19,6 +19,10 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             items: this.filters
         }, config);
 
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
+            this._clearAllSearchFilters();
+        }, this);
+
         Portal.search.SearchFiltersPanel.superclass.constructor.call(this, config);
 
         var searcherEvents = [
@@ -93,7 +97,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             hidden: true
         });
         this.newSearchButton.on('click', function() {
-            this._onNewSearchClicked();
+            this._clearAllSearchFilters();
         }, this);
 
         return this.newSearchButton;
@@ -112,7 +116,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
         this.spinner.hide();
     },
 
-    _onNewSearchClicked: function() {
+    _clearAllSearchFilters: function() {
         this._setSpinnerText(OpenLayers.i18n('facetedSearchResetting'));
 
         Ext.each(this.filters, function(filter, index, all) {

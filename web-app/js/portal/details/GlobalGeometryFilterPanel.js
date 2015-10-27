@@ -10,6 +10,10 @@ Portal.details.GlobalGeometryFilterPanel = Ext.extend(Ext.Panel, {
 
         Portal.details.GlobalGeometryFilterPanel.superclass.constructor.call(this, config);
 
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
+            this._callSpatialConstraintCleared();
+        }, this);
+
         this._addPickerPanel();
         this._addSpatialConstraintDisplayPanel();
     },
@@ -28,7 +32,7 @@ Portal.details.GlobalGeometryFilterPanel = Ext.extend(Ext.Panel, {
         });
 
         resetLink.on('click', function() {
-            this.map.events.triggerEvent('spatialconstraintcleared');
+            this._callSpatialConstraintCleared();
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingValueCleared'));
         }, this);
 
@@ -45,6 +49,10 @@ Portal.details.GlobalGeometryFilterPanel = Ext.extend(Ext.Panel, {
         });
 
         this.add(pickerPanel);
+    },
+
+    _callSpatialConstraintCleared: function() {
+        this.map.events.triggerEvent('spatialconstraintcleared');
     },
 
     _addSpatialConstraintDisplayPanel: function() {

@@ -3,7 +3,9 @@ describe("Portal.search.SearchPanel", function() {
     var searchPanel;
 
     beforeEach(function() {
+        Portal.app.appConfig.enabledFacets = [];
         searchPanel = new Portal.search.SearchPanel({ protocols: {} });
+        searchPanel.filtersPanel.spinner.update = noOp;
     });
 
     describe('initialisation', function() {

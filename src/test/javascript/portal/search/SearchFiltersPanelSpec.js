@@ -29,9 +29,15 @@ describe("Portal.search.SearchFiltersPanel", function() {
                 name: "geoFilter"
             }
         ]);
-
+        Portal.app.appConfig.enabledFacets = [];
         searchFiltersPanel = new Portal.search.SearchFiltersPanel(_mockConfig());
+        searchFiltersPanel.spinner.update = noOp;
+        searchFiltersPanel.spinner.show = noOp;
         spyOn(searchFiltersPanel, '_setSpinnerText');
+    });
+
+    afterEach(function () {
+        searchFiltersPanel._clearAllSearchFilters = noOp;
     });
 
     it('initialisation', function() {

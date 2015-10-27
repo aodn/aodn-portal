@@ -7,6 +7,11 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
         this.mapPanel = cfg.mapPanel;
         this.mapPanel.region = 'center';
 
+        var globalGeometryFilterPanel = new Portal.details.GlobalGeometryFilterPanel({
+            map: this.mapPanel.map,
+            hideLabel: false
+        });
+
         this.detailsPanel = new Portal.details.SubsetPanel({
             region: 'west',
             collapsible: true,
@@ -16,7 +21,8 @@ Portal.ui.VisualisePanel = Ext.extend(Ext.Panel, {
             width: 355,
             map: this.mapPanel.map,
             mapPanel: this.mapPanel,
-            dataCollectionStore: cfg.dataCollectionStore
+            dataCollectionStore: cfg.dataCollectionStore,
+            globalGeometryFilterPanel: globalGeometryFilterPanel
         });
 
         var config = Ext.apply({
