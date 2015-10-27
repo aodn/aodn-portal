@@ -43,7 +43,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             lazyRender: true,
             hidden: true,
             disabled: true,
-            emptyText: OpenLayers.i18n('loadingMessage'),
+            emptyText: OpenLayers.i18n('defaultTextStylesPicker'),
             mode: 'local',
             store: styleStore,
             valueField: 'styleName',
@@ -102,7 +102,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             picker.show();
         }
         else {
-            picker.setValue('');
             picker.hide();
         }
 

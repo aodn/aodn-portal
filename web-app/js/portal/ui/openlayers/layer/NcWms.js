@@ -114,11 +114,12 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
             });
         }, this);
 
-        var defaultStyle = (includesVectorStyle ? 'vector' : 'boxfill');
-        defaultStyle += '/' + response.defaultPalette;
-
         this.styles = styles;
-        this.defaultStyle = defaultStyle;
+
+        if (response.defaultPalette != null) {
+            var defaultStyle = (includesVectorStyle ? 'vector' : 'boxfill');
+            this.defaultStyle = defaultStyle + '/' + response.defaultPalette;
+        }
 
         this.events.triggerEvent('stylesloaded', this);
     },
