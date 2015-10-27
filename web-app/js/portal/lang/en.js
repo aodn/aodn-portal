@@ -257,6 +257,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateAltFormats: "Y|Y/m|d-m-Y", // Ext.form.DateField formatting
     dateNcWmsMinError: "The entered date is earlier than the first available date: {0}",
     dateNcWmsMaxError: "The entered date is greater than the last available date: {0}",
+    defaultTextStylesPicker: "Default style/palette",
 
     // Google Analytics
     onClickTrackUsageFunction: " onclick=\"trackUsage('{0}','{1}','{2}');return true;\"",

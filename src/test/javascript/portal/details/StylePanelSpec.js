@@ -213,7 +213,6 @@ describe("Portal.details.StylePanel", function() {
 
             stylePanel._stylesLoaded();
 
-            expect(combo.setValue).toHaveBeenCalledWith('');
             expect(combo.hide).toHaveBeenCalled();
             expect(combo.store.loadData).not.toHaveBeenCalled();
             expect(combo.collapse).not.toHaveBeenCalled();
