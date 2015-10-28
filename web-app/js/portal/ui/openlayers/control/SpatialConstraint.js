@@ -23,7 +23,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
         options = options || {};
 
-        this.layer = new OpenLayers.Layer.Vector(
+        this.vectorlayer = new OpenLayers.Layer.Vector(
             this.layerName,
             {
                 displayInLayerSwitcher: false
@@ -39,12 +39,12 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
         options.autoActivate = options.autoActivate || true;
 
-        OpenLayers.Control.DrawFeature.prototype.initialize.apply(this, [this.layer, handler, options]);
+        OpenLayers.Control.DrawFeature.prototype.initialize.apply(this, [this.vectorlayer, handler, options]);
 
         this._configureEventsAndHandlers();
 
         if (options.initialConstraint) {
-            this.layer.addFeatures(new OpenLayers.Feature.Vector(options.initialConstraint));
+            this.vectorlayer.addFeatures(new OpenLayers.Feature.Vector(options.initialConstraint));
             this.events.triggerEvent('spatialconstraintadded');
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingInitLabel'));
         }
@@ -57,7 +57,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         this.events.addEventType('spatialconstraintcleared');
         this.events.addEventType('spatialconstrainttypechanged');
 
-        this.layer.events.on({
+        this.vectorlayer.events.on({
             scope: this,
             "sketchstarted": this._onSketchStarted,
             "sketchcomplete": this._onSketchComplete
@@ -65,34 +65,40 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _onSketchStarted: function() {
-        this.layer.style = OpenLayers.Feature.Vector.style['default'];
+        this.vectorlayer.style = OpenLayers.Feature.Vector.style['default'];
     },
 
     setMap: function(map) {
-        map.addLayer(this.layer);
+        map.addLayer(this.vectorlayer);
         return OpenLayers.Control.DrawFeature.prototype.setMap.apply(this, arguments);
     },
 
     removeFromMap: function() {
         this.deactivate();
         this._removeMapEvents();
-        this.map.removeLayer(this.layer);
+        this.map.removeLayer(this.vectorlayer);
         this.map.removeControl(this);
+        this._setGeometryFilter();
     },
 
     clear: function() {
-        this.layer.destroyFeatures();
+        this.vectorlayer.destroyFeatures();
         this._isModified = true;
     },
 
     redraw: function(geometry) {
         this.clear();
-        this.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
+        this.vectorlayer.addFeatures(new OpenLayers.Feature.Vector(geometry));
     },
 
     setGeometry: function(geometry) {
         this.oldGeometry = geometry;
+        this._setGeometryFilter(geometry);
         this.events.triggerEvent('spatialconstraintadded', geometry);
+    },
+
+    _setGeometryFilter: function(geometry) {
+        this.map.geometryFilter = geometry;
     },
 
     isModified: function() {
@@ -145,12 +151,12 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         if (this.handler && this.handler.layer) {
             this.handler.layer.setZIndex(maxZIndexForOverlay - 1);
         }
-        this.layer.setZIndex(maxZIndexForOverlay);
+        this.vectorlayer.setZIndex(maxZIndexForOverlay);
     },
 
     _getFeature: function() {
         // Contains geometry that is not normalised
-        return this.layer.features[0];
+        return this.vectorlayer.features[0];
     },
 
     _checkSketch: function(geometry) {
@@ -158,7 +164,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _showSpatialExtentError: function(geometry) {
-        this.layer.style = this.errorStyle;
+        this.vectorlayer.style = this.errorStyle;
 
         if (geometry.crossesAntimeridian()) {
             this.addAntimeridian();
@@ -173,7 +179,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     _resetSpatialExtentError: function(that) {
         if (that.oldGeometry) {
-            that.layer.style = OpenLayers.Feature.Vector.style['default'];
+            that.vectorlayer.style = OpenLayers.Feature.Vector.style['default'];
             that.redraw(that.oldGeometry);
         }
         else {
@@ -187,7 +193,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             new OpenLayers.Geometry.Point(180, 90)
         ]);
         var meridianLineFeature = new OpenLayers.Feature.Vector(meridianLine, null, this.errorStyle);
-        this.layer.addFeatures([meridianLineFeature]);
+        this.vectorlayer.addFeatures([meridianLineFeature]);
     },
 
     _onSketchComplete: function(event) {

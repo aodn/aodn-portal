@@ -81,15 +81,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     _attachSpatialEvents: function() {
         if (!this.layer.attachedSpatialEvents) {
 
-            var currentLayer = this.layer;
             this.map.events.on({
                 scope: this,
                 'spatialconstraintadded': function(geometry) {
-                    this._setGeometryFilter(geometry);
                     this._applyFilterValuesToCollection();
                 },
                 'spatialconstraintcleared': function() {
-                    this._setGeometryFilter(undefined);
                     this._applyFilterValuesToCollection();
                 }
             });
@@ -99,11 +96,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _getGeometryFilter: function() {
-        return this.geometryFilter;
-    },
-
-    _setGeometryFilter: function(geometry) {
-        this.geometryFilter = geometry;
+        return this.map.geometryFilter;
     },
 
     _addTemporalControls: function() {

@@ -10,7 +10,8 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         spatialConstraint = new Portal.ui.openlayers.control.SpatialConstraint({
             validator: new Portal.filter.validation.SpatialConstraintValidator({
                 map: map
-            })
+            }),
+            map: map
         });
     });
 
@@ -46,8 +47,9 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
     describe('user', function() {
 
-        it("fires 'spatialconstraintadded' on setGeometry", function() {
+        it("fires 'spatialconstraintadded' and calls '_setGeometryFilter' on setGeometry", function() {
             var eventSpy = jasmine.createSpy('spatialconstraintadded');
+            spyOn(spatialConstraint, '_setGeometryFilter');
             spatialConstraint.events.on({
                 'spatialconstraintadded': eventSpy
             });
@@ -55,6 +57,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             var geometry = constructGeometry();
             spatialConstraint.setGeometry(geometry);
 
+            expect(spatialConstraint._setGeometryFilter).toHaveBeenCalled();
             expect(eventSpy).toHaveBeenCalledWith(geometry);
         });
 
@@ -78,8 +81,8 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         });
 
         it('intialises layer', function() {
-            expect(spatialConstraint.layer).toBeInstanceOf(OpenLayers.Layer.Vector);
-            expect(spatialConstraint.layer.displayInLayerSwitcher).toBeFalsy();
+            expect(spatialConstraint.vectorlayer).toBeInstanceOf(OpenLayers.Layer.Vector);
+            expect(spatialConstraint.vectorlayer.displayInLayerSwitcher).toBeFalsy();
         });
 
         it("fires 'spatialconstraintadded' on layer sketchcomplete where geometry is valid", function() {
@@ -90,7 +93,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
             var geometry = constructGeometry();
             var feature = new OpenLayers.Feature.Vector(geometry);
-            spatialConstraint.layer.events.triggerEvent('sketchcomplete', { feature: feature });
+            spatialConstraint.vectorlayer.events.triggerEvent('sketchcomplete', { feature: feature });
 
             expect(eventSpy).toHaveBeenCalled();
         });
@@ -100,7 +103,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
             var geometry = constructGeometry();
             var feature = new OpenLayers.Feature.Vector(geometry);
-            spatialConstraint.layer.events.triggerEvent('sketchcomplete', { feature: feature });
+            spatialConstraint.vectorlayer.events.triggerEvent('sketchcomplete', { feature: feature });
             expect(spatialConstraint.clear).toHaveBeenCalled();
         });
 
@@ -114,7 +117,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
             var geometry = constructGeometry();
             var feature = new OpenLayers.Feature.Vector(geometry);
-            spatialConstraint.layer.events.triggerEvent('sketchcomplete', { feature: feature });
+            spatialConstraint.vectorlayer.events.triggerEvent('sketchcomplete', { feature: feature });
 
             expect(eventSpy).not.toHaveBeenCalled();
         });
@@ -244,7 +247,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
         it('equal to geometry of first feature from vector layer', function() {
             var geometry = constructGeometry();
-            spatialConstraint.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
+            spatialConstraint.vectorlayer.addFeatures(new OpenLayers.Feature.Vector(geometry));
 
             expect(spatialConstraint.hasConstraint()).toBe(true);
             expect(spatialConstraint.getConstraint().toString()).toEqual(wktPolygon);
@@ -252,19 +255,17 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
         it('getConstraint not return an un-normalised geometry', function() {
             var geometry = OpenLayers.Geometry.fromWKT('POLYGON((250 2, 3 4, 1 2))');
-            spatialConstraint.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
+            spatialConstraint.vectorlayer.addFeatures(new OpenLayers.Feature.Vector(geometry));
             expect(spatialConstraint.getConstraint().toString()).toEqual('POLYGON((-110 2,3 4,1 2,-110 2))');
         });
 
         it('as WKT', function() {
             var geometry = constructGeometry();
-            spatialConstraint.layer.addFeatures(new OpenLayers.Feature.Vector(geometry));
+            spatialConstraint.vectorlayer.addFeatures(new OpenLayers.Feature.Vector(geometry));
 
             expect(spatialConstraint.getConstraintAsWKT()).toBe(wktPolygon);
         });
     });
-
-
 
     describe('_checkSketch', function() {
 
@@ -315,13 +316,13 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             beforeEach(function() {
                 spyOn(spatialConstraint, 'redraw');
                 spatialConstraint.oldGeometry = {};
-                spatialConstraint.layer = {};
+                spatialConstraint.vectorlayer = {};
 
                 spatialConstraint._resetSpatialExtentError(spatialConstraint);
             });
 
             it('layer style to be reset', function() {
-                expect(spatialConstraint.layer.style).toBe(OpenLayers.Feature.Vector.style['default']);
+                expect(spatialConstraint.vectorlayer.style).toBe(OpenLayers.Feature.Vector.style['default']);
             });
 
             it('redraw is called', function() {
@@ -352,7 +353,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         beforeEach(function() {
             spyOn(spatialConstraint, 'addAntimeridian');
             spyOn(spatialConstraint, '_resetSpatialExtentError');
-            spatialConstraint.layer = testLayer;
+            spatialConstraint.vectorlayer = testLayer;
             spatialConstraint.map = { events: {
                 triggerEvent: jasmine.createSpy('triggerEvent')
             }};
