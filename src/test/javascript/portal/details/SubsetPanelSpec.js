@@ -17,7 +17,8 @@ describe("Portal.details.SubsetPanel", function() {
 
         subsetPanel = new Portal.details.SubsetPanel({
             map: new OpenLayers.SpatialConstraintMap(),
-            dataCollectionStore: dataCollectionStore
+            dataCollectionStore: dataCollectionStore,
+            globalGeometryFilterPanel: {}
         });
 
         spyOn(subsetPanel, '_setEmptyNotificationVisible');
