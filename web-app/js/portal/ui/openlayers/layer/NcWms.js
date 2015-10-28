@@ -282,7 +282,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return String.format(
             "{0}?layerName={1}&REQUEST=GetMetadata&item=layerDetails",
             this.url,
-            this.params.LAYERS
+            encodeURIComponent(this.params.LAYERS)
         );
     },
 
@@ -290,7 +290,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return String.format(
             "layer/getFilters?serverType=ncwms&server={0}&layer={1}",
             encodeURIComponent(this.url),
-            this.params.LAYERS
+            encodeURIComponent(this.params.LAYERS)
         );
     },
 
@@ -298,7 +298,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return String.format(
             "layer/getStyles?serverType=ncwms&server={0}&layer={1}",
             encodeURIComponent(this.url),
-            this.params.LAYERS
+            encodeURIComponent(this.params.LAYERS)
         );
     },
 
@@ -306,7 +306,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return String.format(
             "layer/getFilterValues?serverType=ncwms&server={0}&layer={1}&filter={2}",
             encodeURIComponent(this.url),
-            this.params.LAYERS,
+            encodeURIComponent(this.params.LAYERS),
             date.clone().startOf('day').toISOString()
         );
     },
