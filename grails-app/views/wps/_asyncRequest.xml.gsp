@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<%@ page import="groovy.xml.XmlUtil" %>
 <wps:Execute service="WPS" version="1.0.0"
              xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1"
              xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -20,7 +21,7 @@
                                 <wps:Input>
                                     <ows:Identifier>${id}</ows:Identifier>
                                     <wps:Data>
-                                        <wps:LiteralData>${value}</wps:LiteralData>
+                                        <wps:LiteralData>${XmlUtil.escapeXml(value)}</wps:LiteralData>
                                     </wps:Data>
                                 </wps:Input>
 
