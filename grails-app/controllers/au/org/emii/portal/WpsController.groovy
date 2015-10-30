@@ -43,10 +43,22 @@ class WpsController extends RequestProxyingController {
                     createdTimestamp: new DateTime(String.valueOf(execResponse.Status.@creationTime)),
                     status: execResponse.Status.children()?.first().name(),
                     downloadTitle: execResponse.ProcessOutputs.Output.Title.text(),
-                    downloadUrl: String.valueOf(execResponse.ProcessOutputs.Output.Reference.@href)
+                    downloadUrl: _getProxiedDownloadUrl(execResponse.ProcessOutputs.Output.Reference.@href)
                 ]
             ]
         )
+    }
+
+    def _getProxiedDownloadUrl(downloadUrl) {
+        if (downloadUrl) {
+            return g.createLink(
+                controller: 'proxy',
+                absolute: true,
+                params: [ url: downloadUrl ]
+            )
+        }
+
+        return null
     }
 
     def _renderError() {
