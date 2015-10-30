@@ -50,7 +50,7 @@ class WpsController extends RequestProxyingController {
     }
 
     def _getProxiedDownloadUrl(downloadUrl) {
-        if (downloadUrl) {
+        if (String.valueOf(downloadUrl)) {
             return g.createLink(
                 controller: 'proxy',
                 absolute: true,
