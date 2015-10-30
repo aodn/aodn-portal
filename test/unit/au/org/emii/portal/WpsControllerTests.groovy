@@ -15,6 +15,7 @@ class WpsControllerTests extends ControllerUnitTestCase {
     void testRenderExecutionStatus() {
         controller.params.uuid = '1234'
         controller.metaClass.createLink = { 'http://the_link' }
+        controller.metaClass._getProxiedDownloadUrl = { 'proxied url' }
 
         def (execResponse, expectedModel) = _getMockExecutionStatusResponseAndModel()
 
@@ -46,7 +47,7 @@ class WpsControllerTests extends ControllerUnitTestCase {
                 createdTimestamp: new DateTime('1979-06-01T04:00+10:00'),
                 status: 'SomeStatus',
                 downloadTitle: 'Amazing download',
-                downloadUrl: 'such wow'
+                downloadUrl: 'proxied url'
             ]
         ]
 
