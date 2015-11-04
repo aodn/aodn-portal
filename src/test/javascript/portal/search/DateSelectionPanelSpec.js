@@ -14,7 +14,6 @@ describe("Portal.search.DateSelectionPanel", function() {
 
         var dateFilter = new Portal.search.DateSelectionPanel({
             title: "Date Filter",
-            hierarchical: false,
             searcher: searcher
         });
 

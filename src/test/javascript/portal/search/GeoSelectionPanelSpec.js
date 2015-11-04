@@ -17,7 +17,6 @@ describe("Portal.search.GeoSelectionPanel", function() {
         searcher = new Portal.service.CatalogSearcher();
         geoFilter = new Portal.search.GeoSelectionPanel({
             title: "Geo Filter",
-            hierarchical: false,
             searcher: searcher
         });
     });

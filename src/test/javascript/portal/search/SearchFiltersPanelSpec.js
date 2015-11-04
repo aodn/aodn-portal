@@ -6,19 +6,16 @@ describe("Portal.search.SearchFiltersPanel", function() {
         Portal.search.SearchFiltersPanel.prototype._getEnabledFacets = returns([
             {
                 name: 'parameterFilter',
-                key: 'Measured parameter',
-                hierarchical: true
+                key: 'Measured parameter'
             },
             {
                 name: 'organisationFilter',
                 key: 'Organisation',
-                collapsedByDefault: true,
-                hierarchical: true
+                collapsedByDefault: true
             },
             {
                 name: 'platformFilter',
-                key: 'Platform',
-                hierarchical: true
+                key: 'Platform'
             },
             {
                 classId: "Portal.search.DateSelectionPanel",
