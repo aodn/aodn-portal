@@ -87,25 +87,21 @@ featureToggles {
 enabledFacets = [
     [
         name: 'parameterFilter',
-        key: 'Measured parameter',
-        hierarchical: true
+        key: 'Measured parameter'
     ],
     [
         name: 'organisationFilter',
         key: 'Organisation',
-        collapsedByDefault: true,
-        hierarchical: true
+        collapsedByDefault: true
     ],
     [
         name: 'platformFilter',
-        key: 'Platform',
-        hierarchical: true
+        key: 'Platform'
     ],
     [
         name: 'temporalResolutionFilter',
         key: 'Temporal Resolution',
-        collapsedByDefault: true,
-        hierarchical: true
+        collapsedByDefault: true
     ],
     [
         classId: 'Portal.search.DateSelectionPanel',
