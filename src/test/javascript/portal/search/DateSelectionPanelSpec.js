@@ -1,7 +1,5 @@
 
-
-describe("Portal.search.DateSelectionPanel", function()
-{
+describe("Portal.search.DateSelectionPanel", function() {
 
     var testWindow;
 
@@ -118,24 +116,24 @@ describe("Portal.search.DateSelectionPanel", function()
     describe("go button", function() {
         it("disabled on creation", function() {
             var dateFilter = buildMockSelectionPanel();
-            
+
             expect(dateFilter.goButton.disabled).toEqual(true);
         });
 
         it("enabled when a valid date is entered", function() {
             var dateFilter = buildMockSelectionPanel();
-            
+
             dateFilter._onValid();
-            
+
             expect(dateFilter.goButton.disabled).toEqual(false);
         });
 
         it("disabled when an invalid date is entered", function() {
             var dateFilter = buildMockSelectionPanel();
-            
+
             dateFilter._onValid();
             dateFilter._onInvalid();
-            
+
             expect(dateFilter.goButton.disabled).toEqual(true);
         });
     });
