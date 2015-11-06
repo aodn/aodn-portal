@@ -1,9 +1,9 @@
 Ext.namespace('Portal.cart');
 
-Portal.cart.WpsDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
+Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
     getDownloadOptions: function() {
-        return Portal.cart.WpsDownloadHandler.superclass.getDownloadOptions.call(this, 'downloadAsWpsLabel');
+        return Portal.cart.NetcdfSubsetServiceDownloadHandler.superclass.getDownloadOptions.call(this, 'downloadAsWpsLabel');
     },
 
     _getUrlGeneratorFunction: function() {

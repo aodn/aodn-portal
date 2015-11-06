@@ -1,10 +1,10 @@
-describe('Portal.cart.WpsDownloadHandler', function () {
+describe('Portal.cart.NetcdfSubsetServiceDownloadHandler', function () {
 
     var handler;
 
     beforeEach(function() {
 
-        handler = new Portal.cart.WpsDownloadHandler({
+        handler = new Portal.cart.NetcdfSubsetServiceDownloadHandler({
             href: 'geoserver_url',
             name: 'layer_name'
         });
