@@ -89,7 +89,7 @@ Portal.cart.DownloadHandler._downloadHandlerConstructorForProtocol = function(pr
             Portal.cart.PythonDownloadHandler
         ],
         'IMOS:AGGREGATION--bodaac': Portal.cart.BodaacDownloadHandler,
-        'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckDownloadHandler
+        'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckV1DownloadHandler
     };
 
     return mapping[protocol] || [];
