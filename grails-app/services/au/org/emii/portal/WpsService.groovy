@@ -1,16 +1,14 @@
 package au.org.emii.portal
 
-import grails.gsp.PageRenderer
+import groovy.xml.StreamingMarkupBuilder
 import groovyx.net.http.*
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 import grails.converters.JSON
 
-import static groovyx.net.http.Method.POST
 import static groovyx.net.http.ContentType.XML
 
 import org.ocpsoft.prettytime.PrettyTime
-import org.ocpsoft.prettytime.units.*
 
 class WpsService extends AsyncDownloadService {
 
@@ -44,7 +42,7 @@ class WpsService extends AsyncDownloadService {
     }
 
     def onResponseSuccess = { resp, xmlReader ->
-        return new groovy.xml.StreamingMarkupBuilder().bindNode(xmlReader).toString()
+        return new StreamingMarkupBuilder().bindNode(xmlReader).toString()
     }
 
     def notifyViaEmail(params) {
