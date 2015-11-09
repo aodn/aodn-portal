@@ -41,6 +41,7 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
             this.getAsyncDownloadUrl('wps'),
             Ext.urlEncode({
                 server: serverUrl,
+                jobType: 'NetcdfOutput',
                 'email.to': notificationEmailAddress,
                 'jobParameters.typeName': layerName,
                 'jobParameters.cqlFilter': cqlFilter
