@@ -31,7 +31,7 @@
                         <wps:ResponseForm>
                             <wps:ResponseDocument storeExecuteResponse="true"
                                                   lineage="false" status="true">
-                                <wps:Output asReference="true" mimeType="application/zip">
+                                <wps:Output asReference="true" mimeType="application/x-netcdf">
                                     <ows:Identifier>result</ows:Identifier>
                                 </wps:Output>
                             </wps:ResponseDocument>
