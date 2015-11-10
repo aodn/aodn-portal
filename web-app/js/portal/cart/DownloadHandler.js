@@ -90,7 +90,8 @@ Portal.cart.DownloadHandler._downloadHandlerConstructorForProtocol = function(pr
         ],
         'IMOS:AGGREGATION--bodaac': Portal.cart.BodaacDownloadHandler,
         'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckV1DownloadHandler,
-        'OGC:WPS--gogoduck': Portal.cart.GogoduckDownloadHandler
+        'OGC:WPS--gogoduck': Portal.cart.GogoduckDownloadHandler,
+        'OGC:WPS--netcdf-subset-service': Portal.cart.NetcdfSubsetServiceDownloadHandler
     };
 
     return mapping[protocol] || [];
