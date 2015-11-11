@@ -10,19 +10,7 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
 
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
 
-        var aggregationParams = filters.filter(function(filter) {
-            return filter.isNcwmsParams;
-        })[0];
-
-        var subset = String.format(
-            this.SUBSET_FORMAT,
-            this._formatDate(aggregationParams.dateRangeStart || this.DEFAULT_DATE_START),
-            this._formatDate(aggregationParams.dateRangeEnd || this.DEFAULT_DATE_END),
-            aggregationParams.latitudeRangeStart || this.DEFAULT_LAT_START,
-            aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END,
-            aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START,
-            aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END
-        );
+        var subset = this._getSubset(filters);
 
         var jobParameters = {
             server: serverUrl,
@@ -38,6 +26,22 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
             "{0}{1}",
             this.getAsyncDownloadUrl('wps'),
             Ext.urlEncode(jobParameters)
+        );
+    },
+
+    _getSubset: function(filters) {
+        var aggregationParams = filters.filter(function(filter) {
+            return filter.isNcwmsParams;
+        })[0];
+
+        return String.format(
+            this.SUBSET_FORMAT,
+            this._formatDate(aggregationParams.dateRangeStart || this.DEFAULT_DATE_START),
+            this._formatDate(aggregationParams.dateRangeEnd || this.DEFAULT_DATE_END),
+            aggregationParams.latitudeRangeStart || this.DEFAULT_LAT_START,
+            aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END,
+            aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START,
+            aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END
         );
     },
 

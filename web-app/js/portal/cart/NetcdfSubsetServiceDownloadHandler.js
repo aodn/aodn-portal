@@ -8,11 +8,7 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
 
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
 
-        var builder = new Portal.filter.combiner.BodaacCqlBuilder({
-            filters: filters
-        });
-
-        var cqlFilter = builder.buildCql();
+        var cqlFilter = this._getSubset(filters);
 
         this._trackUsage(layerName, cqlFilter);
 
@@ -27,6 +23,14 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
                 'jobParameters.cqlFilter': cqlFilter
             })
         );
+    },
+
+    _getSubset: function(filters) {
+        var builder = new Portal.filter.combiner.BodaacCqlBuilder({
+            filters: filters
+        });
+
+        return builder.buildCql();
     },
 
     _trackUsage: function(layerName, cqlFilter) {
