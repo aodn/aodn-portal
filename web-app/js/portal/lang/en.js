@@ -60,7 +60,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     max: 'Max',
 
     // MapOptions
-    panControl: 'Pan/Zoom Control',
+    panControl: 'Enable Pan/Zoom',
+    drawingControl: 'Enable spatial subset drawing',
     mapGlobalOptionsTitle: "Global Map Options",
 
     // Animation Panel

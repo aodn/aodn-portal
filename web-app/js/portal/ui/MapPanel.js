@@ -1,7 +1,6 @@
 Ext.namespace('Portal.ui');
 
 Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
-    loadSpinner: null,
 
     defaultSpatialConstraintType: OpenLayers.i18n('comboBoxTypeLabels')[0].value,
 
@@ -38,7 +37,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
             this.reset();
-            this._closeFeatureInfoPopup();
         }, this);
     },
 
@@ -53,7 +51,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     reset: function() {
         this._closeFeatureInfoPopup();
-        this.map.resetSpatialConstraint();
+        this.map.setSpatialConstraintStyle();
         this.zoomToInitialBbox();
     },
 
@@ -72,9 +70,17 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.featureInfoPopup = new Portal.ui.FeatureInfoPopup({
             map: this.map,
             appConfig: this.appConfig,
-            maximisedPosition: { x: this.getPanelX(), y: this.getPanelY() }
+            maximisedPosition: {x: this.getPanelX(), y: this.getPanelY()}
         });
         this.featureInfoPopup.findFeatures(event);
+    },
+
+    findFeatureInfoForGeometry: function(geometry) {
+        // get mouse position from centroid of geom
+        var c = geometry.getCentroid();
+        var lonLat = new OpenLayers.LonLat(c.x, c.y);
+        var fakeEvent = {xy: this.map.getViewPortPxFromLonLat(lonLat)};
+        this._findFeatureInfo(fakeEvent);
     },
 
     renderMap: function() {

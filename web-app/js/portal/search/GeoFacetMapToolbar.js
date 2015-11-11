@@ -12,14 +12,14 @@ Portal.search.GeoFacetMapToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {
     initialize: function(options) {
 
         options = Ext.apply({
-            displayClass: 'olControlEditingToolbar'
+            displayClass: 'olControlGeoFacetToolbar'
         }, options);
 
         OpenLayers.Control.Panel.prototype.initialize.apply(this, [options]);
 
         this.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
             handler: OpenLayers.Handler.Polygon,
-            'displayClass': 'olControlDrawFeaturePolygon'
+            'displayClass': 'olControlDrawFeature'
         });
 
         this.addControls([

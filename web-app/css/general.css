@@ -666,12 +666,9 @@ div.olMap .olControlDragPanActive.olDragDown {
     cursor: all-scroll;
 }
 
-.olControlPanel .olControlNavigationItemActive,
-.olControlPanel .olControlNavigationItemInactive,
-.olControlPanel .olControlZoomBoxItemActive,
-.olControlPanel .olControlZoomBoxItemInactive,
-.olControlPanel .olControlEditingToolbar,
-.olControlPanel .olControlEditingToolbarItemInactive {
+div[class^='olControlNavigationItem'],
+div[class^='olControlZoomBoxItem'],
+div[class^='olControlDrawFeature'] {
     background-image: url("../images/raa_y.png");
     display: block;
     height: 25px;
@@ -693,6 +690,19 @@ div.olMap .olControlDragPanActive.olDragDown {
 .olControlNavigationItemActive {
     background-position: -800px 0;
 }
+.olControlDrawFeatureItemInactive {
+    background-position: -500px 0;
+}
+.olControlDrawFeatureItemInactive:hover {
+    background-position: -450px 0;
+}
+.olControlDrawFeatureItemActive {
+    background-position: -600px 0;
+}
+.olControlDrawFeatureItemActive:hover {
+     background-position: -550px 0;
+ }
+
 
 .olControlNavigationItemInactive {
     background-position: -700px 0;
@@ -709,6 +719,11 @@ div.olMap .olControlDragPanActive.olDragDown {
 .olControlPanel {
     margin-left: 5px;
     top: 230px;
+}
+
+.olControlGeoFacetToolbar {
+    top: 10px;
+    right: 0;
 }
 
 .olControlScaleLine {
@@ -773,20 +788,6 @@ div.olControlScaleLineTop, div.olControlScaleLineBottom {
     border-color: #253745;
     color: #253745;
     font-weight: bold;
-}
-
-.olControlDrawFeatureActive .olControlDrawFeature {
-    position: absolute;
-    float: left;
-    width: 42px;
-    z-index: 1001;
-    margin-top: 280px;
-    margin-left: 3px;
-    height: 22px;
-    background-image: url("../images/openlayers/draw.png");
-    background-position: 12px 1px;
-    background-repeat: no-repeat;
-    display: block;
 }
 
 .olControlZoomPanel {
