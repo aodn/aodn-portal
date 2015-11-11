@@ -12,7 +12,7 @@ Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHand
 
         return function(collection, handlerParams) {
 
-            var gogoduckUrl = _this._buildGogoduckUrl(
+            var gogoduckUrl = _this._buildServiceUrl(
                 collection.getFilters(),
                 _this._resourceName(),
                 _this._resourceHref(),
@@ -27,7 +27,7 @@ Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHand
         };
     },
 
-    _buildGogoduckUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
+    _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
         var aggregationParams = filters.filter(function(filter) {
             return filter.isNcwmsParams;
         })[0];

@@ -13,7 +13,7 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
         var _this = this;
 
         return function(collection, handlerParams) {
-            var wpsUrl = _this._buildWpsUrl(
+            var wpsUrl = _this._buildServiceUrl(
                 collection.getFilters(),
                 _this._resourceName(),
                 _this._resourceHref(),
@@ -28,7 +28,7 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
         };
     },
 
-    _buildWpsUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
+    _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
 
         var aggregationParams = filters.filter(function(filter) {
             return filter.isNcwmsParams;
