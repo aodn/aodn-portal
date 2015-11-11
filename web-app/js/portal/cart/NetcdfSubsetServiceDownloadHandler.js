@@ -2,8 +2,8 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
-    getDownloadOptions: function() {
-        return Portal.cart.NetcdfSubsetServiceDownloadHandler.superclass.getDownloadOptions.call(this, 'downloadAsWpsLabel');
+    _getDownloadOptionTextKey: function() {
+        return 'downloadAsWpsLabel';
     },
 
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {

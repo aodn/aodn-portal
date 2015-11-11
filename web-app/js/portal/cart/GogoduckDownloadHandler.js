@@ -4,8 +4,8 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
 
     SUBSET_FORMAT: 'TIME,{0},{1};LATITUDE,{2},{3};LONGITUDE,{4},{5}',
 
-    getDownloadOptions: function() {
-        return Portal.cart.GogoduckDownloadHandler.superclass.getDownloadOptions.call(this, 'downloadAsSubsettedNetCdfLabel');
+    _getDownloadOptionTextKey: function() {
+        return 'downloadAsSubsettedNetCdfLabel';
     },
 
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
