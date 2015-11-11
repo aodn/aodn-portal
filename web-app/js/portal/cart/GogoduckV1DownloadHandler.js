@@ -6,27 +6,6 @@ Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHand
         return Portal.cart.GogoduckV1DownloadHandler.superclass.getDownloadOptions.call(this, 'downloadAsSubsettedNetCdfLabel');
     },
 
-    _getUrlGeneratorFunction: function() {
-
-        var _this = this;
-
-        return function(collection, handlerParams) {
-
-            var gogoduckUrl = _this._buildServiceUrl(
-                collection.getFilters(),
-                _this._resourceName(),
-                _this._resourceHref(),
-                handlerParams.emailAddress
-            );
-
-            if (handlerParams.challengeResponse) {
-                gogoduckUrl += String.format("&challengeResponse={0}", encodeURIComponent(handlerParams.challengeResponse));
-            }
-
-            return gogoduckUrl;
-        };
-    },
-
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
         var aggregationParams = filters.filter(function(filter) {
             return filter.isNcwmsParams;
