@@ -177,6 +177,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'BodaacDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'AsyncDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'GogoduckV1DownloadHandler.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'GogoduckDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NetcdfSubsetServiceDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'PythonDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'WfsDownloadHandler.js')}"></script>

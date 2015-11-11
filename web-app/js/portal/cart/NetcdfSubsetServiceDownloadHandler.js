@@ -2,37 +2,13 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
-    getDownloadOptions: function() {
-        return Portal.cart.NetcdfSubsetServiceDownloadHandler.superclass.getDownloadOptions.call(this, 'downloadAsWpsLabel');
+    _getDownloadOptionTextKey: function() {
+        return 'downloadAsWpsLabel';
     },
 
-    _getUrlGeneratorFunction: function() {
+    _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
 
-        var _this = this;
-
-        return function(collection, handlerParams) {
-            var wpsUrl = _this._buildWpsUrl(
-                collection.getFilters(),
-                _this._resourceName(),
-                _this._resourceHref(),
-                handlerParams.emailAddress
-            );
-
-            if (handlerParams.challengeResponse) {
-                wpsUrl += String.format("&challengeResponse={0}", encodeURIComponent(handlerParams.challengeResponse));
-            }
-
-            return wpsUrl;
-        };
-    },
-
-    _buildWpsUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
-
-        var builder = new Portal.filter.combiner.BodaacCqlBuilder({
-            filters: filters
-        });
-
-        var cqlFilter = builder.buildCql();
+        var cqlFilter = this._getSubset(filters);
 
         this._trackUsage(layerName, cqlFilter);
 
@@ -47,6 +23,14 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
                 'jobParameters.cqlFilter': cqlFilter
             })
         );
+    },
+
+    _getSubset: function(filters) {
+        var builder = new Portal.filter.combiner.BodaacCqlBuilder({
+            filters: filters
+        });
+
+        return builder.buildCql();
     },
 
     _trackUsage: function(layerName, cqlFilter) {

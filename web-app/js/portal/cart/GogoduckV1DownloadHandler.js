@@ -2,32 +2,11 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
-    getDownloadOptions: function() {
-        return Portal.cart.GogoduckV1DownloadHandler.superclass.getDownloadOptions.call(this, 'downloadAsSubsettedNetCdfLabel');
+    _getDownloadOptionTextKey: function() {
+        return 'downloadAsSubsettedNetCdfLabel';
     },
 
-    _getUrlGeneratorFunction: function() {
-
-        var _this = this;
-
-        return function(collection, handlerParams) {
-
-            var gogoduckUrl = _this._buildGogoduckUrl(
-                collection.getFilters(),
-                _this._resourceName(),
-                _this._resourceHref(),
-                handlerParams.emailAddress
-            );
-
-            if (handlerParams.challengeResponse) {
-                gogoduckUrl += String.format("&challengeResponse={0}", encodeURIComponent(handlerParams.challengeResponse));
-            }
-
-            return gogoduckUrl;
-        };
-    },
-
-    _buildGogoduckUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
+    _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
         var aggregationParams = filters.filter(function(filter) {
             return filter.isNcwmsParams;
         })[0];
