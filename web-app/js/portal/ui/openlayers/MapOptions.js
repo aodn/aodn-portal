@@ -52,11 +52,9 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
 
         this.navigationControl.events.on({
             "activate": function() {
-                console.log("active");
                 this.clickControl.activate();
             },
             "deactivate": function() {
-                console.log("deactive");
                 this.clickControl.deactivate();
             },
             scope: this

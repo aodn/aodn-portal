@@ -295,7 +295,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _addPopupTabContent: function(content, title) {
-        if (!content || this.isDestroyed === true) {
+        if (!content || this.isDestroyed) {
             return;
         }
 

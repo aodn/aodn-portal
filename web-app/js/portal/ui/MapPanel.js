@@ -76,6 +76,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     findFeatureInfoForGeometry: function(geometry) {
+        this._closeFeatureInfoPopup();
         // get mouse position from centroid of geom
         var c = geometry.getCentroid();
         var lonLat = new OpenLayers.LonLat(c.x, c.y);

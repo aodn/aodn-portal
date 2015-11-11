@@ -101,7 +101,7 @@ function formatGetFeatureInfo(response, options) {
             }
         }
     }
-    else if (expectedFormat == 'text/xml') {
+    else if (expectedFormat == 'text/xml' && response.responseXML) {
         return setHTML_ncWMS(response, options);
     }
     else if (expectedFormat == 'text/plain') {

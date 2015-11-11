@@ -64,7 +64,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         });
     },
 
-    _onSketchStarted: function(event) {
+    _onSketchStarted: function() {
         this.vectorlayer.style = OpenLayers.Feature.Vector.style['default'];
         if (this.map.mapPanel) {
             this.map.mapPanel._closeFeatureInfoPopup();
