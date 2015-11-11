@@ -13,7 +13,7 @@
             <wps:Reference mimeType="application/octet-stream" xlink:href="http://geoserver/wps" method="POST">
                 <wps:Body>
                     <wps:Execute version="1.0.0" service="WPS">
-                        <ows:Identifier>gs:NetcdfOutput</ows:Identifier>
+                        <ows:Identifier>gs:${jobType}</ows:Identifier>
 
                         <wps:DataInputs>
                             <g:each in="${jobParameters}" var="id, value">
@@ -31,7 +31,7 @@
                         <wps:ResponseForm>
                             <wps:ResponseDocument storeExecuteResponse="true"
                                                   lineage="false" status="true">
-                                <wps:Output asReference="true" mimeType="application/zip">
+                                <wps:Output asReference="true" mimeType="application/x-netcdf">
                                     <ows:Identifier>result</ows:Identifier>
                                 </wps:Output>
                             </wps:ResponseDocument>

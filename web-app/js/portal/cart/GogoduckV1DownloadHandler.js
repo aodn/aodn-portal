@@ -1,9 +1,9 @@
 Ext.namespace('Portal.cart');
 
-Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
+Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
     getDownloadOptions: function() {
-        return Portal.cart.GogoduckDownloadHandler.superclass.getDownloadOptions.call(this, 'downloadAsSubsettedNetCdfLabel');
+        return Portal.cart.GogoduckV1DownloadHandler.superclass.getDownloadOptions.call(this, 'downloadAsSubsettedNetCdfLabel');
     },
 
     _getUrlGeneratorFunction: function() {

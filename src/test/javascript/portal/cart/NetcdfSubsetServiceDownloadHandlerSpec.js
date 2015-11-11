@@ -1,10 +1,10 @@
-describe('Portal.cart.WpsDownloadHandler', function () {
+describe('Portal.cart.NetcdfSubsetServiceDownloadHandler', function () {
 
     var handler;
 
     beforeEach(function() {
 
-        handler = new Portal.cart.WpsDownloadHandler({
+        handler = new Portal.cart.NetcdfSubsetServiceDownloadHandler({
             href: 'geoserver_url',
             name: 'layer_name'
         });
@@ -85,6 +85,7 @@ describe('Portal.cart.WpsDownloadHandler', function () {
 
             expect(url).toStartWith(expectedUrlStart);
             expect(url).toHaveParameterWithValue('server', 'geoserver_url');
+            expect(url).toHaveParameterWithValue('jobType', 'NetcdfOutput');
             expect(url).toHaveParameterWithValue('email.to', 'bob@example.com');
             expect(url).toHaveParameterWithValue('jobParameters.typeName', 'layer_name');
             expect(url).toHaveParameterWithValue('jobParameters.cqlFilter', 'Geometry Cql AND Salinity Cql');

@@ -1,10 +1,10 @@
-describe('Portal.cart.GogoduckDownloadHandler', function () {
+describe('Portal.cart.GogoduckV1DownloadHandler', function () {
 
     var handler;
 
     beforeEach(function() {
 
-        handler = new Portal.cart.GogoduckDownloadHandler({
+        handler = new Portal.cart.GogoduckV1DownloadHandler({
             href: 'geoserver_url',
             name: 'layer_name'
         });

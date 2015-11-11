@@ -1,9 +1,9 @@
 Ext.namespace('Portal.cart');
 
-Portal.cart.WpsDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
+Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
     getDownloadOptions: function() {
-        return Portal.cart.WpsDownloadHandler.superclass.getDownloadOptions.call(this, 'downloadAsWpsLabel');
+        return Portal.cart.NetcdfSubsetServiceDownloadHandler.superclass.getDownloadOptions.call(this, 'downloadAsWpsLabel');
     },
 
     _getUrlGeneratorFunction: function() {
@@ -41,6 +41,7 @@ Portal.cart.WpsDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
             this.getAsyncDownloadUrl('wps'),
             Ext.urlEncode({
                 server: serverUrl,
+                jobType: 'NetcdfOutput',
                 'email.to': notificationEmailAddress,
                 'jobParameters.typeName': layerName,
                 'jobParameters.cqlFilter': cqlFilter
