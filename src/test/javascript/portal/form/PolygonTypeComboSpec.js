@@ -31,7 +31,7 @@ describe('Portal.form.PolygonTypeCombo', function() {
     });
 
     describe('setting spatial constraint', function() {
-        it('calls setSpatialConstraintStyle when the value is set', function() {
+        it('calls doSetSpatialConstraint when the value is set', function() {
             polygonTypeCombo.setValue('none');
             expect(mockMap.setSpatialConstraintStyle).toHaveBeenCalled();
         });

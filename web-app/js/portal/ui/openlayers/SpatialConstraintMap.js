@@ -20,7 +20,7 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
             'spatialconstraintcleared',
             this,
             function() {
-                this.resetSpatialConstraint();
+                this.setSpatialConstraint();
             }
         );
     },
@@ -44,13 +44,14 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
 
     setDefaultSpatialConstraintType: function(spatialConstraintType) {
         this.defaultSpatialConstraintType = spatialConstraintType;
-        this.resetSpatialConstraint();
+        this.setSpatialConstraint();
     },
 
     setSpatialConstraintStyle: function(polygonStyle) {
+
         // Avoid unnecessary removal/addition of the control.
         if (this.polygonStyle != polygonStyle) {
-            this.updateSpatialConstraintStyle(polygonStyle);
+            this.doSetSpatialConstraint(polygonStyle);
             this.events.triggerEvent('spatialconstrainttypechanged', polygonStyle);
 
             var val = 'type=' + polygonStyle;
@@ -62,19 +63,18 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         return this.polygonStyle;
     },
 
-    resetSpatialConstraint: function() {
+    setSpatialConstraint: function() {
         if (this.polygonStyle != this.defaultSpatialConstraintType || this.isConstraintModified()) {
-            this.updateSpatialConstraintStyle(this.defaultSpatialConstraintType);
+            this.doSetSpatialConstraint(this.defaultSpatialConstraintType);
         }
     },
 
-    updateSpatialConstraintStyle: function(polygonStyle) {
+    doSetSpatialConstraint: function(polygonStyle) {
+
         this.polygonStyle = polygonStyle;
 
-        this.navigationControl.deactivate();
-
         if (this.spatialConstraintControl) {
-            this.spatialConstraintControl.removeFromMap();
+            this.spatialConstraintControl.resetSpatialConstraint();
         }
 
         if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.POLYGON) {
@@ -83,6 +83,11 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         else if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX) {
             this.addSpatialConstraintControlToMap();
         }
+
+        if (this.spatialConstraintControl && this.spatialConstraintControl.div){
+            this.spatialConstraintControl.activate();
+        }
+        this.navigationControl.deactivate();
     },
 
     addSpatialConstraintControlToMap: function(handler) {

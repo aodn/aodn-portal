@@ -108,8 +108,14 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         });
 
         it('does not fire spatialconstraintadded where geometry is invalid', function() {
+
+            var findFeatureInfoForGeometrySpy = jasmine.createSpy('findFeatureInfoForGeometrySpy');
             spatialConstraint._checkSketch = returns(false);
-            spatialConstraint.map = { events: { triggerEvent: noOp } };
+            spatialConstraint.map = {
+                events: { triggerEvent: noOp },
+                mapPanel: {findFeatureInfoForGeometry: findFeatureInfoForGeometrySpy}
+            };
+
             var eventSpy = jasmine.createSpy('spatialconstraintadded');
             spatialConstraint.events.on({
                 'spatialconstraintadded': eventSpy
@@ -120,6 +126,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             spatialConstraint.vectorlayer.events.triggerEvent('sketchcomplete', { feature: feature });
 
             expect(eventSpy).not.toHaveBeenCalled();
+            expect(findFeatureInfoForGeometrySpy).toHaveBeenCalled();
         });
 
         it("getNormalizedGeometry fixes Geometries with longitudes > 180 ", function() {
@@ -153,6 +160,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
         beforeEach(function() {
             map = new OpenLayers.SpatialConstraintMap();
+            map.toolPanel = new OpenLayers.Control.Panel();
             map.navigationControl = {
                 activate: noOp,
                 deactivate: noOp
@@ -160,15 +168,8 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
         });
 
-        it('adds layer to map when control added', function() {
-            expect(map.layers).toContain(map.spatialConstraintControl.layer);
-        });
-
-        it('removes layer from map when control removed', function() {
-            expect(map.layers).toContain(map.spatialConstraintControl.layer);
-
-            map.spatialConstraintControl.removeFromMap();
-            expect(map.layers).not.toContain(map.spatialConstraintControl.layer);
+        it('adds layer to toolPanel when control added', function() {
+            expect(map.toolPanel.controls[0].layer).toEqual(map.spatialConstraintControl.layer);
         });
 
         it('fires events from map', function() {
@@ -196,8 +197,6 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             map.addLayer(newLayer);
 
             expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(newLayer.getZIndex());
-            expect(map.spatialConstraintControl.handler.layer.getZIndex()).toBeGreaterThan(newLayer.getZIndex());
-            expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(map.spatialConstraintControl.handler.layer.getZIndex());
         });
 
         it('moves drawing layers to larger z index when layer removed', function() {
@@ -209,8 +208,6 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             map.removeLayer(newLayer2);
 
             expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(newLayer1.getZIndex());
-            expect(map.spatialConstraintControl.handler.layer.getZIndex()).toBeGreaterThan(newLayer1.getZIndex());
-            expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(map.spatialConstraintControl.handler.layer.getZIndex());
         });
 
         it('moves drawing layers to larger z index when layers shuffled', function() {
@@ -225,17 +222,13 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
             // Higher Z index than newLayer1
             expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(newLayer1.getZIndex());
-            expect(map.spatialConstraintControl.handler.layer.getZIndex()).toBeGreaterThan(newLayer1.getZIndex());
 
             // Higher Z index than newLayer2
             expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(newLayer2.getZIndex());
-            expect(map.spatialConstraintControl.handler.layer.getZIndex()).toBeGreaterThan(newLayer2.getZIndex());
 
             // Higher Z index than newLayer3
             expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(newLayer3.getZIndex());
-            expect(map.spatialConstraintControl.handler.layer.getZIndex()).toBeGreaterThan(newLayer3.getZIndex());
 
-            expect(map.spatialConstraintControl.layer.getZIndex()).toBeGreaterThan(map.spatialConstraintControl.handler.layer.getZIndex());
         });
     });
 
@@ -428,6 +421,8 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         describe('with invalid geometry', function() {
 
             beforeEach(function() {
+
+                spatialConstraint.map.mapPanel = {findFeatureInfoForGeometry: returns()};
                 spyOn(spatialConstraint, '_checkSketch').andReturn(false);
                 spyOn(spatialConstraint, '_showSpatialExtentError');
 

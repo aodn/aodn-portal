@@ -14,7 +14,6 @@ Portal.form.PolygonTypeComboBox = Ext.extend(Ext.form.ComboBox, {
             triggerAction: "all",
             editable: false
         }, cfg);
-
         Portal.form.PolygonTypeComboBox.superclass.constructor.call(this, config);
 
         this._bindToMap();

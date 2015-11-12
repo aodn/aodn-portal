@@ -8,6 +8,7 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
         Ext.layout.CardLayout.prototype.setActiveItem = noOp;
 
         map = new OpenLayers.SpatialConstraintMap();
+        map.toolPanel = new OpenLayers.Control.Panel();
         displayPanel = new Portal.details.SpatialConstraintDisplayPanel({
             map: map
         });

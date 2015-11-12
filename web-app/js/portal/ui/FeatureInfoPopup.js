@@ -254,24 +254,27 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _updateStatus: function() {
-        if (this.numGoodResults > 0) {
-            this.setTitle(
-                OpenLayers.i18n(
-                    'infoFoundTitle',
-                    { 'dataCollectionNumber': this.numGoodResults }
-                ));
-        }
-        else if (this.numResultQueries == this.numResultsToLoad) {
-            this.setTitle(
-                OpenLayers.i18n(
-                    'noInfoFoundTitle',
-                    { 'dataCollectionNumber': this.numResultsToLoad }
-                ));
+
+        if (this.isDestroyed === undefined) {
+            if (this.numGoodResults > 0) {
+                this.setTitle(
+                    OpenLayers.i18n(
+                        'infoFoundTitle',
+                        {'dataCollectionNumber': this.numGoodResults}
+                    ));
+            }
+            else if (this.numResultQueries == this.numResultsToLoad) {
+                this.setTitle(
+                    OpenLayers.i18n(
+                        'noInfoFoundTitle',
+                        {'dataCollectionNumber': this.numResultsToLoad}
+                    ));
+            }
         }
     },
 
     _updatePopupDepthStatus: function(response) {
-        if (response !== undefined) {
+        if (response && response.responseXML) {
             var xmldoc = response.responseXML;
 
             // Depth service can return 204 but our app changes that to a 200 and pipes down nothing
@@ -292,7 +295,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _addPopupTabContent: function(content, title) {
-        if (!content) {
+        if (!content || this.isDestroyed) {
             return;
         }
 

@@ -178,12 +178,17 @@ describe('OpenLayers', function() {
         });
     });
 
-    describe('setSpatialConstraintStyle', function() {
+    describe('doSetSpatialConstraint', function() {
         var map;
         beforeEach(function() {
             map = new OpenLayers.SpatialConstraintMap();
+            map.toolPanel = new OpenLayers.Control.Panel();
 
             map.navigationControl = {
+                activate: jasmine.createSpy(),
+                deactivate: jasmine.createSpy()
+            };
+            map.clickControl = {
                 activate: jasmine.createSpy(),
                 deactivate: jasmine.createSpy()
             };
@@ -192,27 +197,24 @@ describe('OpenLayers', function() {
         });
 
         it('set polygon spatial constraint control when style is POLYGON', function() {
-            map.setSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.POLYGON);
+            map.doSetSpatialConstraint(Portal.ui.openlayers.SpatialConstraintType.POLYGON);
 
             expect(map.spatialConstraintControl.handler).toBeInstanceOf(OpenLayers.Handler.Polygon);
             expect(map.spatialConstraintControl.handler).not.toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
-            expect(map.spatialConstraintControl.displayClass).toBe('none');
-            expect(map.controls).toContain(map.spatialConstraintControl);
+            expect(map.spatialConstraintControl.displayClass).toBe('olControlDrawFeature');
+            expect(map.toolPanel.controls).toContain(map.spatialConstraintControl);
             expect(map.navigationControl.deactivate).toHaveBeenCalled();
         });
 
         it('set polygon spatial constraint control when style is BOUNDING_BOX', function() {
-            map.setSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX);
+            map.doSetSpatialConstraint(Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX);
 
             expect(map.spatialConstraintControl.handler).toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
             expect(map.spatialConstraintControl.handler.sides).toBe(4);
-            expect(map.spatialConstraintControl.displayClass).toBe('none');
-            expect(map.controls).toContain(map.spatialConstraintControl);
-            expect(map.navigationControl.deactivate).toHaveBeenCalled();
         });
 
         it('has spatial constraint control', function() {
-            map.setSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX);
+            map.doSetSpatialConstraint(Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX);
             expect(map.spatialConstraintControl).toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);
         });
 
