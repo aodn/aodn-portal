@@ -1,31 +1,49 @@
 package au.org.emii.portal
-
-import au.org.emii.portal.proxying.ExternalRequest
 import au.org.emii.portal.proxying.RequestProxyingController
-
 import org.joda.time.DateTime
+
+import static au.org.emii.portal.HttpUtils.Status.*
 
 class WpsController extends RequestProxyingController {
 
     def wpsService
 
+    // Users get WPS status here -> HTML
     def jobReport = {
-        params.url = _getExecutionStatusUrl(params)
-        _performProxyingIfAllowed()
+        params.url = wpsService._getExecutionStatusUrl(params)
+
+        def execResponse = _performProxyingIfAllowed()
+        if (execResponse != null) {
+            if (execResponse.name() == "ExceptionReport") {
+                _renderExecutionFailed(execResponse)
+            }
+            else {
+                params.status = "Preparing download"
+                _renderExecutionStatus(execResponse)
+            }
+        }
     }
 
+    // the WPS geoserver plugin callback -> email
     def jobComplete = {
-        params.email.subject = "IMOS subsetting complete - ${params.uuid}"
-        params.email.template = 'jobComplete'
-        wpsService.notifyViaEmail(params)
 
-        render status: 200
+        params.url = wpsService._getExecutionStatusUrl(params)
+        def execResponse = _performProxyingIfAllowed()
+        if (execResponse != null) {
+            if (execResponse.name() == "ExceptionReport") {
+                 wpsService._notifyErrorViaEmail(params)
+            }
+            else {
+                 wpsService._notifyDownloadViaEmail(params)
+            }
+        }
+        render status: HTTP_200_OK
+
     }
 
     def _performProxying = { paramProcessor = null, streamProcessor = null, fieldName = null, url = null ->
         try {
-            def execResponse = _getExecutionStatusResponse(url.toURL())
-            _renderExecutionStatus(execResponse)
+            return wpsService._getExecutionStatusResponse(url.toURL())
         }
         catch (Exception e) {
             log.error('Error getting execution status from WPS server', e)
@@ -34,16 +52,35 @@ class WpsController extends RequestProxyingController {
     }
 
     def _renderExecutionStatus(execResponse) {
+
+        if (execResponse.ProcessOutputs.Output.Reference.@href != null) {
+            params.status = "Download ready"
+        }
+
         render(
             view: 'show',
             model: [
                 job: [
                     uuid: params.uuid,
                     reportUrl: g.createLink(action: 'jobReport', absolute: true, params: params),
-                    createdTimestamp: new DateTime(String.valueOf(execResponse.Status.@creationTime)),
-                    status: execResponse.Status.children()?.first().name(),
-                    downloadTitle: execResponse.ProcessOutputs.Output.Title.text(),
+                    createdTimestamp: new DateTime(String.valueOf(execResponse.Status.@creationTime)).toString(),
+                    status: params.status,
+                    downloadTitle: "IMOS download - ${params.uuid}",
                     downloadUrl: _getProxiedDownloadUrl(execResponse.ProcessOutputs.Output.Reference.@href)
+                ]
+            ]
+        )
+    }
+
+    def _renderExecutionFailed(execResponse) {
+        render(
+            view: 'show',
+            model: [
+                job: [
+                    uuid: params.uuid,
+                    status: "ProcessFailed",
+                    downloadTitle: "IMOS download ERROR - ${params.uuid}",
+                    errorMessageCode: "message"
                 ]
             ]
         )
@@ -71,18 +108,5 @@ class WpsController extends RequestProxyingController {
                 ]
             ]
         )
-    }
-
-    def _getExecutionStatusResponse(url) {
-        def responseStream = new ByteArrayOutputStream()
-
-        def request = new ExternalRequest(responseStream, url)
-        request.executeRequest()
-
-        return new XmlSlurper().parseText(new String(responseStream.toByteArray(), 'UTF-8'))
-    }
-
-    def _getExecutionStatusUrl(params) {
-        return "${params.server}?service=WPS&version=1.0.0&request=GetExecutionStatus&executionId=${params.uuid}"
     }
 }

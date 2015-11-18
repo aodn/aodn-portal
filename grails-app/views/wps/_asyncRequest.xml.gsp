@@ -9,30 +9,28 @@
     <ows:Identifier>gs:Notifier</ows:Identifier>
     <wps:DataInputs>
         <wps:Input>
-            <ows:Identifier>notifiable</ows:Identifier>
+            <ows:Identifier>wrappedProcessResponse</ows:Identifier>
             <wps:Reference mimeType="application/octet-stream" xlink:href="http://geoserver/wps" method="POST">
                 <wps:Body>
                     <wps:Execute version="1.0.0" service="WPS">
                         <ows:Identifier>gs:${jobType}</ows:Identifier>
-
                         <wps:DataInputs>
                             <g:each in="${jobParameters}" var="id, value">
-
                                 <wps:Input>
                                     <ows:Identifier>${id}</ows:Identifier>
                                     <wps:Data>
                                         <wps:LiteralData>${XmlUtil.escapeXml(value)}</wps:LiteralData>
                                     </wps:Data>
                                 </wps:Input>
-
                             </g:each>
                         </wps:DataInputs>
-
                         <wps:ResponseForm>
-                            <wps:ResponseDocument storeExecuteResponse="true"
-                                                  lineage="false" status="true">
+                            <wps:ResponseDocument storeExecuteResponse="false" status="true">
                                 <wps:Output asReference="true" mimeType="application/x-netcdf">
                                     <ows:Identifier>result</ows:Identifier>
+                                </wps:Output>
+                                <wps:Output asReference="true" mimeType="text/plain">
+                                    <ows:Identifier>errors</ows:Identifier>
                                 </wps:Output>
                             </wps:ResponseDocument>
                         </wps:ResponseForm>
@@ -57,8 +55,8 @@
     </wps:DataInputs>
     <wps:ResponseForm>
         <wps:ResponseDocument storeExecuteResponse="true"
-                              lineage="false" status="true">
-            <wps:Output asReference="true" mimeType="application/zip">
+            lineage="false" status="true">
+            <wps:Output asReference="true" mimeType="application/xml">
                 <ows:Identifier>result</ows:Identifier>
             </wps:Output>
         </wps:ResponseDocument>

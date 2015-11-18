@@ -22,6 +22,13 @@ class WpsServiceTests extends GrailsUnitTestCase {
         assertEquals groovyx.net.http.ContentType.XML, connection.contentType
     }
 
+    void testGetExecutionStatusUrl() {
+        assertEquals(
+            "the url?service=WPS&version=1.0.0&request=GetExecutionStatus&executionId=1234",
+            service._getExecutionStatusUrl(server: 'the url', uuid: '1234')
+        )
+    }
+
     void testGetBody() {
         def params = [ jobParameters: [ typeName: 'an awesome layer', cqlFilter: 'some cql' ] ]
         def called = false
@@ -36,7 +43,6 @@ class WpsServiceTests extends GrailsUnitTestCase {
         ]
 
         service.getBody(params)
-
         assertTrue called
     }
 }

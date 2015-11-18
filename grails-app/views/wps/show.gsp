@@ -3,6 +3,7 @@
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'imosTheme.css', absolute: true)}" type="text/css">
+        <title >${job.downloadTitle}</title>
     </head>
     <body>
         <div class="imosHeader">
@@ -13,18 +14,21 @@
             </div>
         </div>
         <div class="container">
-            <h2><g:message code="job.status" default="WPS Status"/></h2>
+            <h2><g:message code="job.status" default="WPS download status"/></h2>
             <dl>
-                <g:labelledContent labelCode="job.id.label" href="${job.reportUrl}">${job.uuid}</g:labelledContent>
+
+                <g:labelledContent labelCode="job.id.label" href="${job.downloadUrl}">${job.uuid}</g:labelledContent>
                 <g:labelledContent labelCode="job.createdTimestamp.label" if="${job.createdTimestamp}" >
-                  <joda:format value="${job.createdTimestamp}" />
+                  <joda:time value="${job.createdTimestamp}" />
                 </g:labelledContent>
                 <g:labelledContent labelCode="job.status.label">
                   <g:message code="job.status.${job.status}" default="${job.status.toString()}" />
                 </g:labelledContent>
-
                 <g:labelledContent if="${job.downloadUrl}" labelCode="job.download.label">
                     <a href="${job.downloadUrl}">${job.downloadTitle}</a>
+                </g:labelledContent>
+                <g:labelledContent if="${job.errorMessageCode}" labelCode="job.error.label">
+                    <g:message code="job.error.${job.errorMessageCode}" />
                 </g:labelledContent>
             </dl>
         </div>
