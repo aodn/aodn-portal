@@ -11,10 +11,18 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
     var downloadFilename = "imos:argo profiles";
     var superclass;
 
+    var mockCollection = {
+        getMetadataRecord: returns({ data: '' })
+    };
+
     beforeEach(function() {
 
         confirmationWindow = new Portal.cart.DownloadConfirmationWindow();
         superclass = Portal.cart.DownloadConfirmationWindow.superclass;
+
+        // Mock UI-related methods invoked in show()
+        confirmationWindow.contentPanel.update = function() {};
+        confirmationWindow.syncShadow = undefined;
 
         spyOn(superclass, "show");
         spyOn(superclass, "hide");
@@ -24,7 +32,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
 
         beforeEach(function() {
 
-            confirmationWindow.show(downloadUrl, downloadFilename);
+            confirmationWindow.show({ collection: mockCollection });
         });
 
         it('shows window', function() {
@@ -43,7 +51,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
             });
 
             it('shows when required', function() {
-                confirmationWindow.show({ collectEmailAddress: true });
+                confirmationWindow.show({ collectEmailAddress: true, collection: mockCollection });
                 expect(confirmationWindow.downloadEmailPanel.show).toHaveBeenCalled();
                 expect(confirmationWindow.downloadEmailPanel.hide).not.toHaveBeenCalled();
 
@@ -52,7 +60,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
             });
 
             it('hides when required', function() {
-                confirmationWindow.show({ collectEmailAddress: false });
+                confirmationWindow.show({ collectEmailAddress: false, collection: mockCollection });
                 expect(confirmationWindow.downloadEmailPanel.show).not.toHaveBeenCalled();
                 expect(confirmationWindow.downloadEmailPanel.hide).toHaveBeenCalled();
 

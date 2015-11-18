@@ -125,15 +125,24 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadConfirmationWindowTitle: 'Data Download',
     downloadConfirmationWindowContent: " \
   <h3>Licence and use limitations</h3> \
-    <p>Data downloaded in a cart may include licence information or use limitations. \
-       If an agreement is included with data in the cart then by using those data you are accepting the terms of that \
-       agreement.</p> \
-    <h3>Any questions?</h3> \
-    <p>Please visit the <a class='external' target='_blank' href=\"${downloadDatasetHelpUrl}\">Download a Dataset</a> \
-       page of the <a class='external' target='_blank' href=\"${helpUrl}\">Portal Help</a> forum where you can find \
-       more information.</p> \
-    <br /> \
-    <p class=\"small\"><i>You accept all risks and responsibility for losses, damages, costs and other consequences \
+    <p> \
+      <tpl if=\"jurisdictionLink\"><a href=\"{jurisdictionLink}\">Jurisdiction</a></tpl> \
+      <tpl if=\"imageLink\"><img src=\"{imageLink}\" /></tpl> \
+      <tpl if=\"licenseLink != undefined\"><a href=\"{licenseLink}\">{licenseName}</a></tpl> \
+      <tpl if=\"licenseLink == undefined\">{licenseName}</tpl> \
+    </p> \
+    <tpl if=\"attrConstr && attrConstr.length &gt; 0\"> \
+      <h4><legend>Attribution Constraints</h4> \
+      <tpl if=\"otherCitation\"><p>{otherCitation}</p></tpl> \
+      <tpl for=\"attrConstr\"><p>{.}</p></tpl> \
+      <tpl for=\"otherConstr\"><p>{.}</p></tpl> \
+    </tpl> \
+    <tpl if=\"useLimitation && useLimitation.length\"> \
+      <h4>Usage Constraints</h4> \
+      <tpl for=\"useLimitation\"><p>{.}</p></tpl> \
+    </tpl> \
+    <p><b>B​y using this data you are accepting the license agreement and terms specified above.</b><br /> \
+    <i class=\"small\">You accept all risks and responsibility for losses, damages, costs and other consequences \
       resulting directly or indirectly from using this site and any information or material available from it.</i></p> \
 ",
     downloadConfirmationDownloadText: 'I understand, download',

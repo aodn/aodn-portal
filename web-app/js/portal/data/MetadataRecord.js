@@ -92,6 +92,27 @@ Portal.data.MetadataRecord = function() {
         name: 'organisation'
     });
 
+    var resourceConstraintsField = new Portal.data.ChildElementsField({
+        name: 'resourceConstraints'// ,
+        // convert: function(v, record) {
+        //     // Do we want to extract these individually and ignore
+        //     // resourceConstraints (which groups jurisdictionlink,
+        //     // licenseLink, etc), or just treat everything separately?
+        // }
+    });
+
+    var attrConstrField = new Portal.data.ChildElementsField({
+        name: 'attrConstr'
+    });
+
+    var otherConstrField = new Portal.data.ChildElementsField({
+        name: 'otherConstr'
+    });
+
+    var useLimitationField = new Portal.data.ChildElementsField({
+        name: 'useLimitation'
+    });
+
     function convertXmlToLinks(v, record) {
         var linkElems = Ext.DomQuery.jsSelect('link', record);
         var links = [];
@@ -140,6 +161,15 @@ Portal.data.MetadataRecord = function() {
         parameterField,
         'platform',
         organisationField,
+        resourceConstraintsField,
+        'jurisdictionLink',
+        'licenseLink',
+        'licenseName',
+        'imageLink',
+        attrConstrField,
+        otherConstrField,
+        'otherCitation',
+        useLimitationField,
         { name: 'temporalExtentBegin', mapping: 'tempExtentBegin' },
         { name: 'temporalExtentEnd', mapping: 'tempExtentEnd' },
         linksField,
