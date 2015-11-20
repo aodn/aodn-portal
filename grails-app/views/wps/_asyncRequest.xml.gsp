@@ -10,8 +10,9 @@
     <wps:DataInputs>
         <wps:Input>
             <ows:Identifier>wrappedProcessResponse</ows:Identifier>
-            <wps:Reference mimeType="application/octet-stream" xlink:href="http://geoserver/wps" method="POST">
+            <wps:Reference mimeType="text/xml" xlink:href="${server}" method="POST">
                 <wps:Body>
+                    <![CDATA[
                     <wps:Execute version="1.0.0" service="WPS">
                         <ows:Identifier>gs:${jobType}</ows:Identifier>
                         <wps:DataInputs>
@@ -35,6 +36,7 @@
                             </wps:ResponseDocument>
                         </wps:ResponseForm>
                     </wps:Execute>
+                    ]]>
                 </wps:Body>
             </wps:Reference>
         </wps:Input>
@@ -56,7 +58,7 @@
     <wps:ResponseForm>
         <wps:ResponseDocument storeExecuteResponse="true"
             lineage="false" status="true">
-            <wps:Output asReference="true" mimeType="application/xml">
+            <wps:Output>
                 <ows:Identifier>result</ows:Identifier>
             </wps:Output>
         </wps:ResponseDocument>
