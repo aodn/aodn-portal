@@ -13,6 +13,7 @@ class WpsService extends AsyncDownloadService {
 
     def groovyPageRenderer
     def grailsApplication
+    def mailService
     LinkGenerator grailsLinkGenerator
 
     String registerJob(params) throws HttpResponseException {
@@ -49,7 +50,7 @@ class WpsService extends AsyncDownloadService {
         params.expirationPeriod = _getExpirationPeriod()
         params.jobReportUrl = _getJobReportUrl(params)
 
-        sendMail {
+        mailService.sendMail {
             async true
             to params.email.to
             subject params.email.subject
