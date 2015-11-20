@@ -63,7 +63,7 @@ class WpsController extends RequestProxyingController {
                 job: [
                     uuid: params.uuid,
                     reportUrl: g.createLink(action: 'jobReport', absolute: true, params: params),
-                    createdTimestamp: new DateTime(String.valueOf(execResponse.Status.@creationTime)).toString(),
+                    createdTimestamp: new DateTime(String.valueOf(execResponse.Status.@creationTime)),
                     status: params.status,
                     downloadTitle: "IMOS download - ${params.uuid}",
                     downloadUrl: _getProxiedDownloadUrl(execResponse.ProcessOutputs.Output.Reference.@href)
