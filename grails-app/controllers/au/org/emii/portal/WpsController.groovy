@@ -18,7 +18,7 @@ class WpsController extends HostVerifyingController {
 
             if (execResponse != null) {
                 if (_error(execResponse)) {
-                    _renderExecutionFailed(execResponse)
+                    _renderExecutionFailed()
                 }
                 else {
                     params.status = "Preparing download"
@@ -92,7 +92,7 @@ class WpsController extends HostVerifyingController {
         it.'**'.find{node -> node.name() == 'Reference'}?.@href
     }
 
-    def _renderExecutionFailed(execResponse) {
+    def _renderExecutionFailed() {
         render(
             view: 'show',
             model: [
