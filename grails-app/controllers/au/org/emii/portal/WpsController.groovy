@@ -1,26 +1,29 @@
 package au.org.emii.portal
-import au.org.emii.portal.proxying.RequestProxyingController
 
+import au.org.emii.portal.proxying.HostVerifyingController
 import org.joda.time.DateTime
 
 import static au.org.emii.portal.HttpUtils.Status.*
 
-class WpsController extends RequestProxyingController {
+class WpsController extends HostVerifyingController {
 
     def wpsService
 
     // Users get WPS status here -> HTML
     def jobReport = {
-        params.url = wpsService._getExecutionStatusUrl(params)
+        def url = wpsService._getExecutionStatusUrl(params)
 
-        def execResponse = _performProxyingIfAllowed()
-        if (execResponse != null) {
-            if (_error(execResponse)) {
-                _renderExecutionFailed(execResponse)
-            }
-            else {
-                params.status = "Preparing download"
-                _renderExecutionStatus(execResponse)
+        ifAllowed(url) {
+            def execResponse = _getExecutionStatusResponse(url)
+
+            if (execResponse != null) {
+                if (_error(execResponse)) {
+                    _renderExecutionFailed(execResponse)
+                }
+                else {
+                    params.status = "Preparing download"
+                    _renderExecutionStatus(execResponse)
+                }
             }
         }
     }
@@ -28,25 +31,29 @@ class WpsController extends RequestProxyingController {
     // the WPS geoserver plugin callback -> email
     def jobComplete = {
 
-        params.url = wpsService._getExecutionStatusUrl(params)
-        def execResponse = _performProxyingIfAllowed()
-        if (execResponse != null) {
-            if (_error(execResponse)) {
-                 wpsService._notifyErrorViaEmail(params)
-            }
-            else {
-                 wpsService._notifyDownloadViaEmail(params)
+        def url = wpsService._getExecutionStatusUrl(params)
+
+        ifAllowed(url) {
+            def execResponse = _getExecutionStatusResponse(url)
+
+            if (execResponse != null) {
+                if (_error(execResponse)) {
+                    wpsService._notifyErrorViaEmail(params)
+                }
+                else {
+                    wpsService._notifyDownloadViaEmail(params)
+                }
             }
         }
-        render status: HTTP_200_OK
 
+        render status: HTTP_200_OK
     }
 
     def _error = {
         it.'**'.find{node -> node.name() == 'Exception'}
     }
-    
-    def _performProxying = { paramProcessor = null, streamProcessor = null, fieldName = null, url = null ->
+
+    def _getExecutionStatusResponse(url) {
         try {
             return wpsService._getExecutionStatusResponse(url.toURL())
         }
