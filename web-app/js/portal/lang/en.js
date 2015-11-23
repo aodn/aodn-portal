@@ -40,12 +40,12 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadAsAllSourceNetCdfLabel: 'Un-subsetted NetCDFs',
     downloadAsUrlsLabel: 'List of URLs',
     downloadAsPythonSnippetLabel: 'Python',
-    downloadAsWpsLabel: 'Download later',
+    downloadAsWpsLabel: 'Request Subsetted NetCDFs',
     parameterDateLabel: 'Date range',
     metadataLinkText: 'View metadata record',
     emailAddressPlaceholder: 'Your email address',
     emailAddressValidationError: 'Enter a valid email address',
-    notificationBlurbMessage: 'Subsetting gridded data can take a long time.<br>You will be notified via email when your data is ready for download.',
+    notificationBlurbMessage: 'Subsetting data can take a long time.<br>You will be notified via email when your data is ready for download.',
 
     // WFS Filters Panel
     subsetParametersText: 'subset parameters',
