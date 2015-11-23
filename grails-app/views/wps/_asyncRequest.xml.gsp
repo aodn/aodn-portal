@@ -13,7 +13,11 @@
             <wps:Reference mimeType="text/xml" xlink:href="${server}" method="POST">
                 <wps:Body>
                     <![CDATA[
-                    <wps:Execute version="1.0.0" service="WPS">
+                    <wps:Execute version="1.0.0" service="WPS"
+                             xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1"
+                             xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink"
+                             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                             xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsExecute_request.xsd">
                         <ows:Identifier>gs:${jobType}</ows:Identifier>
                         <wps:DataInputs>
                             <g:each in="${jobParameters}" var="id, value">
@@ -27,11 +31,8 @@
                         </wps:DataInputs>
                         <wps:ResponseForm>
                             <wps:ResponseDocument storeExecuteResponse="false" status="true">
-                                <wps:Output asReference="true" mimeType="application/x-netcdf">
+                                <wps:Output asReference="true" mimeType="application/zip">
                                     <ows:Identifier>result</ows:Identifier>
-                                </wps:Output>
-                                <wps:Output asReference="true" mimeType="text/plain">
-                                    <ows:Identifier>errors</ows:Identifier>
                                 </wps:Output>
                             </wps:ResponseDocument>
                         </wps:ResponseForm>

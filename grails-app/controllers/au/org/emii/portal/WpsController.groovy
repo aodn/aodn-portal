@@ -1,5 +1,6 @@
 package au.org.emii.portal
 import au.org.emii.portal.proxying.RequestProxyingController
+
 import org.joda.time.DateTime
 
 import static au.org.emii.portal.HttpUtils.Status.*
@@ -14,7 +15,7 @@ class WpsController extends RequestProxyingController {
 
         def execResponse = _performProxyingIfAllowed()
         if (execResponse != null) {
-            if (execResponse.name() == "ExceptionReport") {
+            if (_error(execResponse)) {
                 _renderExecutionFailed(execResponse)
             }
             else {
@@ -30,7 +31,7 @@ class WpsController extends RequestProxyingController {
         params.url = wpsService._getExecutionStatusUrl(params)
         def execResponse = _performProxyingIfAllowed()
         if (execResponse != null) {
-            if (execResponse.name() == "ExceptionReport") {
+            if (_error(execResponse)) {
                  wpsService._notifyErrorViaEmail(params)
             }
             else {
@@ -41,6 +42,10 @@ class WpsController extends RequestProxyingController {
 
     }
 
+    def _error = {
+        it.'**'.find{node -> node.name() == 'Exception'}
+    }
+    
     def _performProxying = { paramProcessor = null, streamProcessor = null, fieldName = null, url = null ->
         try {
             return wpsService._getExecutionStatusResponse(url.toURL())
@@ -53,7 +58,7 @@ class WpsController extends RequestProxyingController {
 
     def _renderExecutionStatus(execResponse) {
 
-        if (execResponse.ProcessOutputs.Output.Reference.@href != null) {
+        if (_downloadReady(execResponse)) {
             params.status = "Download ready"
         }
 
@@ -66,10 +71,18 @@ class WpsController extends RequestProxyingController {
                     createdTimestamp: new DateTime(String.valueOf(execResponse.Status.@creationTime)),
                     status: params.status,
                     downloadTitle: "IMOS download - ${params.uuid}",
-                    downloadUrl: _getProxiedDownloadUrl(execResponse.ProcessOutputs.Output.Reference.@href)
+                    downloadUrl: _getProxiedDownloadUrl(_getDownloadUrl(execResponse))
                 ]
             ]
         )
+    }
+
+    def _downloadReady = {
+        _getDownloadUrl(it)
+    }
+
+    def _getDownloadUrl = {
+        it.'**'.find{node -> node.name() == 'Reference'}?.@href
     }
 
     def _renderExecutionFailed(execResponse) {
