@@ -87,17 +87,17 @@ describe("Portal.ui.FeatureInfoPopup", function()
    });
 
     describe("_clickPoint", function(){
-        it("returns integer x and y values", function()
+        it("returns original integer x and y values", function()
         {
-            featureInfoPopup.map.getViewPortPxFromLonLat = function() {
-                var position = {};
-                position.x = 30.1;
-                position.y = 30.1;
-                return position;
-            };
+            featureInfoPopup._display = noOp;
+            featureInfoPopup._setLocationString = noOp;
+            featureInfoPopup._handleDepthService = noOp;
+            featureInfoPopup._handleLayers = noOp;
 
-            expect(featureInfoPopup._clickPoint().x).toEqual(30);
-            expect(featureInfoPopup._clickPoint().y).toEqual(30);
+            featureInfoPopup.findFeatures({xy: {x: 1298, y: 241}});
+
+            expect(featureInfoPopup._clickPoint().x).toEqual(1298);
+            expect(featureInfoPopup._clickPoint().y).toEqual(241);
         });
     });
 

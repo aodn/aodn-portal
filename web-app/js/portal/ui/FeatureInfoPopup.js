@@ -71,7 +71,9 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     findFeatures: function(event) {
+
         this.location = this.map.getLonLatFromViewPortPx(event.xy);
+        this.locationXy = event.xy;
 
         this._setLocationString();
         this._display();
@@ -165,8 +167,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _clickPoint: function() {
-        var pixel = this.map.getViewPortPxFromLonLat(this.location);
-        return { x: Math.round(pixel.x), y: Math.round(pixel.y)}
+        return this.locationXy;
     },
 
     _collectUniqueLayers: function() {
@@ -235,7 +236,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         return result;
     },
 
-    _display: function(clickLocation) {
+    _display: function() {
         this.doLayout();
         this.show();
     },
