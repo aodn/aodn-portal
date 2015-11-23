@@ -231,7 +231,9 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         }
         else {
             this._showSpatialExtentError(geometry);
-            this.map.mapPanel.findFeatureInfoForGeometry(geometry); // trigger GFI then
+            if (!geometry.crossesAntimeridian()) {
+                this.map.mapPanel.findFeatureInfoForGeometry(geometry); // trigger GFI then
+            }
             return true; // Let the features to be added to the layer
         }
     },
