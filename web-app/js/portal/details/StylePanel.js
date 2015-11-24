@@ -185,7 +185,7 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         }
 
         opts += "&REQUEST=GetLegendGraphic"
-             +  "&LAYER=" + encodeURIComponent(layer.params.LAYERS),
+             +  "&LAYER=" + encodeURIComponent(layer.params.LAYERS)
              +  "&FORMAT=" + layer.params.FORMAT;
 
         if (layer && layer.server && layer.server.wmsVersion) {
