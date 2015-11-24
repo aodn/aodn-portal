@@ -107,7 +107,7 @@ class WpsController extends HostVerifyingController {
     }
 
     def _getProxiedDownloadUrl(downloadUrl) {
-        if (String.valueOf(downloadUrl)) {
+        if (downloadUrl) {
             return g.createLink(
                 controller: 'proxy',
                 absolute: true,
