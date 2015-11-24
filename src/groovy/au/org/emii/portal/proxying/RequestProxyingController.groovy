@@ -7,9 +7,7 @@ import javax.servlet.http.Cookie
 import static au.org.emii.portal.HttpUtils.Status.*
 import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilename
 
-abstract class RequestProxyingController {
-
-    def hostVerifier
+abstract class RequestProxyingController extends HostVerifyingController {
 
     def index = {
 
@@ -22,14 +20,7 @@ abstract class RequestProxyingController {
 
         def url = params.url
 
-        if (!url) {
-            render text: "No URL supplied", contentType: "text/html", encoding: "UTF-8", status: HTTP_400_BAD_REQUEST
-        }
-        else if (!hostVerifier.allowedHost(url)) {
-            log.info "Proxy: The url $url was not allowed"
-            render text: "Host for address '$url' not allowed", contentType: "text/html", encoding: "UTF-8", status: HTTP_403_FORBIDDEN
-        }
-        else {
+        ifAllowed(url) {
             _performProxying(paramProcessor, streamProcessor, fieldName, url)
         }
     }

@@ -6,6 +6,15 @@ import org.joda.time.DateTime
 
 class WpsControllerTests extends ControllerUnitTestCase {
 
+    @Override
+    void setUp() {
+        super.setUp()
+
+        controller.hostVerifier = [
+            allowedHost: { it =~ '.*allowedhost.*' }
+        ]
+    }
+
     void testRenderExecutionStatus() {
         controller.params.uuid = '1234'
         controller.params.status = 'great'
@@ -53,26 +62,20 @@ class WpsControllerTests extends ControllerUnitTestCase {
 
     void testJobComplete() {
 
-        controller.metaClass._performProxyingIfAllowed = { -> [name: {-> "notAnException" }]}
+        controller.metaClass._getExecutionStatusResponse = { [name: {-> "notAnException" }]}
 
         def notifyViaEmailCalled = false
-        def notifyViaEmailParams
         def url = "http://allowedhost.com/aproxyurl"
 
         controller.wpsService = [
-            _notifyDownloadViaEmail: { params ->
+            _notifyDownloadViaEmail: {
                 notifyViaEmailCalled = true
-                notifyViaEmailParams = params
             },
-            _getExecutionStatusUrl: {return url},
+            _getExecutionStatusUrl: {return url}
         ]
 
         controller.jobComplete(mockParams)
 
         assertTrue notifyViaEmailCalled
-        assertEquals(
-            url,
-            notifyViaEmailParams.url
-        )
     }
 }
