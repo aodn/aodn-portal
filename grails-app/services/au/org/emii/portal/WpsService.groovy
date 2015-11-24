@@ -1,19 +1,19 @@
 package au.org.emii.portal
-
-import groovy.xml.StreamingMarkupBuilder
-import groovyx.net.http.*
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator
-
+import au.org.emii.portal.proxying.ExternalRequest
 import grails.converters.JSON
+import groovy.xml.StreamingMarkupBuilder
+import groovyx.net.http.HTTPBuilder
+import groovyx.net.http.HttpResponseException
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+import org.ocpsoft.prettytime.PrettyTime
 
 import static groovyx.net.http.ContentType.XML
-
-import org.ocpsoft.prettytime.PrettyTime
 
 class WpsService extends AsyncDownloadService {
 
     def groovyPageRenderer
     def grailsApplication
+    def mailService
     LinkGenerator grailsLinkGenerator
 
     String registerJob(params) throws HttpResponseException {
@@ -50,7 +50,7 @@ class WpsService extends AsyncDownloadService {
         params.expirationPeriod = _getExpirationPeriod()
         params.jobReportUrl = _getJobReportUrl(params)
 
-        sendMail {
+        mailService.sendMail {
             async true
             to params.email.to
             subject params.email.subject
@@ -90,10 +90,37 @@ class WpsService extends AsyncDownloadService {
         notifyViaEmail(params)
     }
 
+    def _notifyDownloadViaEmail(params) {
+        params.email.subject = "IMOS download available - ${params.uuid}"
+        params.email.template = 'jobComplete'
+        notifyViaEmail(params)
+    }
+
+    def _notifyErrorViaEmail(params) {
+        params.email.subject = "IMOS download ERROR - ${params.uuid}"
+        params.email.template = 'jobFailed'
+        notifyViaEmail(params)
+    }
+
     def _getUuidFromRegisterResponse(registerResponse) {
         // It'd be nice if the response from geoserver had the job UUID in a separate attribute, but alas, it's not,
         // so we must resort to a regex for now.
         def statusLocation = new XmlSlurper().parseText(registerResponse).@statusLocation
+
         return (statusLocation =~ "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}")[0]
+
+    }
+
+    def _getExecutionStatusUrl(params) {
+        return "${params.server}?service=WPS&version=1.0.0&request=GetExecutionStatus&executionId=${params.uuid}"
+    }
+
+    def _getExecutionStatusResponse(url) {
+        def responseStream = new ByteArrayOutputStream()
+
+        def request = new ExternalRequest(responseStream, url)
+        request.executeRequest()
+
+        return new XmlSlurper().parseText(new String(responseStream.toByteArray(), 'UTF-8'))
     }
 }
