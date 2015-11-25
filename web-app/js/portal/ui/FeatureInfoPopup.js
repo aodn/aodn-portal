@@ -277,22 +277,20 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     _updatePopupDepthStatus: function(response) {
         if (response && response.responseXML) {
             var xmldoc = response.responseXML;
-
-            // Depth service can return 204 but our app changes that to a 200 and pipes down nothing
             if (xmldoc && xmldoc.getElementsByTagName('depth') !== undefined) {
-                var depth = xmldoc.getElementsByTagName('depth')[0].firstChild.nodeValue;
-                var label = OpenLayers.i18n(depth <= 0 ? 'depthLabel' : 'elevationLabel');
-
-                this.depthInfoPanel.update(this.locationString + " " + this._boldify(label) + " " + Math.abs(depth) + "m");
-            }
-            else {
-                this.depthInfoPanel.update("");
+                var depthTag = xmldoc.getElementsByTagName('depth')[0].firstChild;
+                // Depth service can return 204 but our app changes that to a 200 and pipes down nothing
+                if (depthTag != null) {
+                    var depth = depthTag.nodeValue;
+                    if (depth && (+depth === +depth)) {
+                        var label = OpenLayers.i18n(depth <= 0 ? 'depthLabel' : 'elevationLabel');
+                        this.depthInfoPanel.update(this.locationString + " " + this._boldify(label) + " " + Math.abs(depth) + "m");
+                        return;
+                    }
+                }
             }
         }
-        else {
-            // clear out any placeholder 'loading' text
-            this.depthInfoPanel.update("");
-        }
+        this.depthInfoPanel.update("&nbsp;");
     },
 
     _addPopupTabContent: function(content, title) {
