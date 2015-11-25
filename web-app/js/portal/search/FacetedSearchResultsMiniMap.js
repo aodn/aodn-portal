@@ -32,15 +32,12 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
         if (Ext.get(this.mapContainerId)) {
 
             this.render(this.mapContainerId);
-            if (this.metadataExtent.getBounds()) {
-                this.setCenter(
-                    this._getCenterLonLat(),
-                    this._calculateZoomLevel(this.metadataExtent.getBounds())
-                );
+
+            var extent = this.metadataExtent.getBounds();
+            if (!extent) {
+                extent = new OpenLayers.Bounds.fromString(Portal.app.appConfig.portal.defaultDatelineZoomBbox);
             }
-            else {
-                this.zoomToExtent(new OpenLayers.Bounds.fromString(Portal.app.appConfig.portal.defaultDatelineZoomBbox));
-            }
+            this.zoomToExtent(extent);
         }
     },
 
@@ -63,17 +60,5 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
             zoomLevel = 4;
         }
         return zoomLevel;
-    },
-
-    _getCenterLonLat: function() {
-        var LONGITUDE_OF_AUSTRALIA = 90;
-        var bounds = this.metadataExtent.getBounds();
-        var centerLonLat = bounds.getCenterLonLat();
-
-        if (this.getZoomForExtent(bounds) == 0) {
-            centerLonLat.lon = LONGITUDE_OF_AUSTRALIA;
-        }
-
-        return centerLonLat;
     }
 });
