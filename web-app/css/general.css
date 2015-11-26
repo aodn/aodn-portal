@@ -1059,10 +1059,6 @@ ul.x-tab-strip-top li:hover * {
     width: 700px;
 }
 
-.resultsRowHeaderTitle.downloads {
-    width: 760px;
-}
-
 .downloadPanelResultsWrapper.dataFilterEntry {
     width: 70%;
 }
