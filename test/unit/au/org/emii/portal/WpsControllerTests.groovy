@@ -74,6 +74,7 @@ class WpsControllerTests extends ControllerUnitTestCase {
             _getExecutionStatusUrl: {return url}
         ]
 
+        mockParams.successful = "true"
         controller.jobComplete(mockParams)
 
         assertTrue notifyViaEmailCalled

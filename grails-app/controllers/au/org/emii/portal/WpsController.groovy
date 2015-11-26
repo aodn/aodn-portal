@@ -31,19 +31,11 @@ class WpsController extends HostVerifyingController {
     // the WPS geoserver plugin callback -> email
     def jobComplete = {
 
-        def url = wpsService._getExecutionStatusUrl(params)
-
-        ifAllowed(url) {
-            def execResponse = _getExecutionStatusResponse(url)
-
-            if (execResponse != null) {
-                if (_error(execResponse)) {
-                    wpsService._notifyErrorViaEmail(params)
-                }
-                else {
-                    wpsService._notifyDownloadViaEmail(params)
-                }
-            }
+        if (params.successful == 'true') {
+            wpsService._notifyDownloadViaEmail(params)
+        }
+        else {
+            wpsService._notifyErrorViaEmail(params)
         }
 
         render status: HTTP_200_OK
