@@ -3,6 +3,9 @@ Ext.namespace('Portal.cart');
 Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
 
     constructor: function(config) {
+
+        this.ALERTWIDTH =  500;
+
         this.addEvents('downloadrequested', 'downloadstarted', 'downloadfailed');
 
         Ext.apply(this, config);
@@ -96,6 +99,12 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     _downloadAsynchronously: function(collection, downloadUrl, params) {
         log.debug('downloading asynchronously', downloadUrl);
 
+        this.messageBox = Ext.Msg.show({
+            title: OpenLayers.i18n('asyncDownloadPanelTitleLoading'),
+            msg: OpenLayers.i18n('asyncDownloadSuccessPendingMsg'),
+            width: this.ALERTWIDTH
+        });
+
         Ext.Ajax.request({
             url: downloadUrl,
             scope: this,
@@ -107,13 +116,14 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     },
 
     _onAsyncDownloadRequestSuccess: function(response, params) {
-        Ext.Msg.alert(
-            OpenLayers.i18n('asyncDownloadPanelTitle'),
-            OpenLayers.i18n('asyncDownloadSuccessMsg', {
+        this.messageBox.show({
+            title: OpenLayers.i18n('asyncDownloadPanelTitle'),
+            msg: OpenLayers.i18n('asyncDownloadSuccessMsg', {
                 email: params.emailAddress,
                 serviceMessage: this._getServiceMessage(params.serviceResponseHandler, response.responseText)
-            })
-        );
+            }),
+            width: this.ALERTWIDTH
+        });
     },
 
     _getServiceMessage: function(serviceResponseHandler, response) {
@@ -121,10 +131,11 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     },
 
     _onAsyncDownloadRequestFailure: function() {
-        Ext.Msg.alert(
-            OpenLayers.i18n('asyncDownloadPanelTitle'),
-            OpenLayers.i18n('asyncDownloadErrorMsg')
-        );
+        this.messageBox.show({
+            title: OpenLayers.i18n('asyncDownloadPanelTitle'),
+            msg: OpenLayers.i18n('asyncDownloadErrorMsg'),
+            width: this.ALERTWIDTH
+        });
     },
 
     _sanitiseFilename: function(str) {
