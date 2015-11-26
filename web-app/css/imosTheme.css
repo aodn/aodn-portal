@@ -357,3 +357,6 @@ ul.x-tab-strip-top {
 dt {
     padding-top: 10px;
 }
+.x-window-plain .x-window-body {
+    background-color: #fefefe !important;
+}

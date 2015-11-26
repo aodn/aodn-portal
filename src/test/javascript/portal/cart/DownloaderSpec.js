@@ -11,6 +11,7 @@ describe("Portal.cart.Downloader", function() {
 
     beforeEach(function() {
         downloader = new Portal.cart.Downloader();
+        downloader.messageBox = {show: noOp};
         wfsDownloadUrl = 'http://download';
         generateUrlCallback = jasmine.createSpy('generateUrl').andReturn(wfsDownloadUrl);
         downloadToken = 1234;
@@ -51,6 +52,7 @@ describe("Portal.cart.Downloader", function() {
             var wfsDownloadUrl = 'http://someurl';
             var params = {};
 
+            spyOn(Ext.Msg, 'show');
             spyOn(Ext.Ajax, 'request');
 
             downloader._downloadAsynchronously(collection, wfsDownloadUrl, params);
@@ -90,7 +92,7 @@ describe("Portal.cart.Downloader", function() {
 
         beforeEach(function() {
             downloadUrl = "http://downloadurl";
-
+            spyOn(Ext.Msg, 'show');
             spyOn(downloader, '_constructProxyUrl').andReturn(downloadUrl);
             spyOn($, 'fileDownload');
         });
