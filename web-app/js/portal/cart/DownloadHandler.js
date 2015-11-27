@@ -83,16 +83,27 @@ Portal.cart.DownloadHandler._handlersForLink = function(link) {
 };
 
 Portal.cart.DownloadHandler._downloadHandlerConstructorForProtocol = function(protocol) {
-    var mapping = {
-        'OGC:WFS-1.0.0-http-get-capabilities': [
-            Portal.cart.WfsDownloadHandler,
-            Portal.cart.PythonDownloadHandler
-        ],
-        'IMOS:AGGREGATION--bodaac': Portal.cart.BodaacDownloadHandler,
-        'IMOS:AGGREGATION--gogoduck': Portal.cart.GogoduckV1DownloadHandler,
-        'OGC:WPS--gogoduck': Portal.cart.GogoduckDownloadHandler,
-        'OGC:WPS--netcdf-subset-service': Portal.cart.NetcdfSubsetServiceDownloadHandler
-    };
+    var mapping = this._mappingFromConfig();
 
     return mapping[protocol] || [];
+};
+
+Portal.cart.DownloadHandler._mappingFromConfig = function() {
+
+    if (!this.__mappingFromConfig) {
+        var configuredMapping = Portal.app.appConfig.portal.downloadHandlersForProtocol;
+        var mapping = {};
+
+        Ext.each(Object.keys(configuredMapping), function(key) {
+            mapping[key] = [];
+
+            Ext.each(configuredMapping[key], function(constructorName) {
+                mapping[key].push(Portal.cart[constructorName]);
+            });
+
+            this.__mappingFromConfig = mapping;
+        }, this);
+    }
+
+    return this.__mappingFromConfig;
 };
