@@ -21,7 +21,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     layerProblem: "There is a problem with the availability of this collection",
     noActiveCollectionSelected: "No data collections selected",
     dataCollectionsTitle: "Subsetting data collection:",
-    noCollectionSelectedHelp: "Please return and search for data collections.",
+    noCollectionSelectedHelp: "Please return to Step 1 to add data collections.",
 
     // Geographic Bounds
     navigate: 'Select by Map Bounds',
