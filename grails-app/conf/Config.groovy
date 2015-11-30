@@ -125,7 +125,18 @@ googleAnalytics.trackingId = null
 // This must be specifically enabled in order for emails to be sent from the app.
 // This can be changed once we have some other form of protection in place (e.g. apache locking
 // down which IP address are allowed to access certain email-producing URLs).
-grails.mail.disabled = true
+grails {
+    mail {
+        'default' {
+            from = "emiioffice@emii.org.au"
+        }
+        // Configurable mail properties: see http://grails.org/plugin/mail
+        host = "localhost"
+        port = 25
+        props = ["mail.smtp.auth": "false"]
+        disabled = false
+    }
+}
 
 environments {
 
