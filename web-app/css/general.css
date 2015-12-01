@@ -1,4 +1,4 @@
-body, html, td, p {
+body, html, td, p, button {
     font-family: arial, sans-serif;
     font-size: 12px;
 }
@@ -1062,10 +1062,6 @@ ul.x-tab-strip-top li:hover * {
     margin: 1px 10px 0 0;
     padding: 5px 10px 5px 9px;
     width: 700px;
-}
-
-.resultsRowHeaderTitle.downloads {
-    width: 760px;
 }
 
 .downloadPanelResultsWrapper.dataFilterEntry {

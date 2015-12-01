@@ -28,6 +28,10 @@ html {
     margin-top: 0 ! important;
 }
 
+body, html, td, p, button {
+    font-family: 'Arimo', sans-serif;
+}
+
 body, html, td {
     color: #4D5B63;
 }
@@ -83,10 +87,6 @@ h2 {
 .landingSubRight {
     float: right;
     width: 64%;
-}
-
-.x-panel-header {
-    font-family: arial, verdana, sans-serif;
 }
 
 h1, h2, h3, h4,
@@ -230,7 +230,7 @@ ul.x-tab-strip-top {
 }
 
 .x-btn, .x-btn button {
-    font: 11px arial, verdana, sans-serif;
+    font-size: 11px;
 }
 
 .x-btn-tl, .x-btn-tr, .x-btn-tc, .x-btn-ml, .x-btn-mr, .x-btn-mc, .x-btn-bl, .x-btn-br, .x-btn-bc {
