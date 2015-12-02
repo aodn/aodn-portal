@@ -73,16 +73,15 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
             expect(miniMap.render).toHaveBeenCalledWith(mapContainerId);
         });
 
-        it('calls setCenter if bounds are set', function() {
+        it('calls zoomToExtent if bounds are set', function() {
             spyOn(miniMap.metadataExtent, 'getBounds').andReturn(new OpenLayers.Bounds(40, -40, 80, 40));
             miniMap._renderAndPosition();
-            expect(miniMap.setCenter).toHaveBeenCalled();
+            expect(miniMap.zoomToExtent).toHaveBeenCalled();
         });
 
         it('calls zoomToExtent if bounds are not set', function() {
             spyOn(miniMap.metadataExtent, 'getBounds').andReturn(false);
             miniMap._renderAndPosition();
-            expect(miniMap.zoomToExtent).toHaveBeenCalled();
         });
     });
 
