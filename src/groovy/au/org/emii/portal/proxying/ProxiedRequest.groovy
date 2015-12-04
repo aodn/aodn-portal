@@ -43,6 +43,14 @@ class ProxiedRequest extends ExternalRequest {
         }
     }
 
+    def onConnectionOpened = { conn ->
+        if (!response.containsHeader("Content-disposition")) {
+            def contentDisposition = conn.getHeaderField("Content-disposition")
+            log.debug "Setting content disposition to '${contentDisposition}'"
+            response.setHeader("Content-disposition", contentDisposition)
+        }
+    }
+
     def _determineResponseContentType = {
 
         response.contentType = params.remove('format') ?: request.contentType
