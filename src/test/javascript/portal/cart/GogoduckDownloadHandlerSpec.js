@@ -85,8 +85,8 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
             expect(url).toHaveParameterWithValue(
                 'jobParameters.subset',
                 'TIME,2000-01-01T01:01:01.000Z,2014-12-23T23:59:59.000Z;' +
-                'LATITUDE,-42,-20;' +
-                'LONGITUDE,160,170'
+                'LATITUDE,-42.0,-20.0;' +
+                'LONGITUDE,160.0,170.0'
             );
         });
 
@@ -102,8 +102,8 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
             expect(url).toHaveParameterWithValue(
                 'jobParameters.subset',
                 'TIME,2000-01-01T01:01:01.000Z,2014-12-23T23:59:59.000Z;' +
-                'LATITUDE,-90,90;' +
-                'LONGITUDE,-180,180'
+                'LATITUDE,-90.0,90.0;' +
+                'LONGITUDE,-180.0,180.0'
             );
         });
 
@@ -121,8 +121,8 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
             expect(url).toHaveParameterWithValue(
                 'jobParameters.subset',
                 'TIME,1900-01-01T00:00:00.000Z,' + handler._formatDate(handler.DEFAULT_DATE_END).toString() + ';' +
-                'LATITUDE,20,42;' +
-                'LONGITUDE,-170,-160'
+                'LATITUDE,20.0,42.0;' +
+                'LONGITUDE,-170.0,-160.0'
             );
         });
     });
