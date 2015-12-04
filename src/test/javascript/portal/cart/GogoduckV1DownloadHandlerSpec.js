@@ -61,7 +61,7 @@ describe('Portal.cart.GogoduckV1DownloadHandler', function () {
                         isNcwmsParams: true,
                         dateRangeStart: moment.utc('2000-01-01T01:01:01'),
                         dateRangeEnd: moment.utc('2014-12-23T23:59:59'),
-                        latitudeRangeStart: -42,
+                        latitudeRangeStart: -42.35,
                         latitudeRangeEnd: -20,
                         longitudeRangeStart: 160,
                         longitudeRangeEnd: 170
@@ -96,10 +96,10 @@ describe('Portal.cart.GogoduckV1DownloadHandler', function () {
 
             var spatialExtent = json.subsetDescriptor.spatialExtent;
 
-            expect(spatialExtent.north).toBe(-20);
-            expect(spatialExtent.south).toBe(-42);
-            expect(spatialExtent.east).toBe(170);
-            expect(spatialExtent.west).toBe(160);
+            expect(spatialExtent.north).toBe('-20.0');
+            expect(spatialExtent.south).toBe('-42.35');
+            expect(spatialExtent.east).toBe('170.0');
+            expect(spatialExtent.west).toBe('160.0');
         });
 
         it('builds the correct URL if no area is specified', function() {
@@ -114,10 +114,10 @@ describe('Portal.cart.GogoduckV1DownloadHandler', function () {
 
             var spatialExtent = json.subsetDescriptor.spatialExtent;
 
-            expect(spatialExtent.north).toBe(90);
-            expect(spatialExtent.south).toBe(-90);
-            expect(spatialExtent.east).toBe(180);
-            expect(spatialExtent.west).toBe(-180);
+            expect(spatialExtent.north).toBe('90.0');
+            expect(spatialExtent.south).toBe('-90.0');
+            expect(spatialExtent.east).toBe('180.0');
+            expect(spatialExtent.west).toBe('-180.0');
         });
 
         it('builds the correct URL is no dates are specified', function() {

@@ -38,10 +38,10 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
             this.SUBSET_FORMAT,
             this._formatDate(aggregationParams.dateRangeStart || this.DEFAULT_DATE_START),
             this._formatDate(aggregationParams.dateRangeEnd || this.DEFAULT_DATE_END),
-            aggregationParams.latitudeRangeStart || this.DEFAULT_LAT_START,
-            aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END,
-            aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START,
-            aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END
+            (aggregationParams.latitudeRangeStart || this.DEFAULT_LAT_START).toDecimalString(),
+            (aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END).toDecimalString(),
+            (aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START).toDecimalString(),
+            (aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END).toDecimalString()
         );
     },
 

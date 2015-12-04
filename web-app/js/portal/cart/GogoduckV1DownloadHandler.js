@@ -21,10 +21,10 @@ Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHand
                     end: this._formatDate(aggregationParams.dateRangeEnd || this.DEFAULT_DATE_END)
                 },
                 spatialExtent: {
-                    north: (aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END),
-                    south: (aggregationParams.latitudeRangeStart || this.DEFAULT_LAT_START),
-                    east: (aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END),
-                    west: (aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START)
+                    north: (aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END).toDecimalString(),
+                    south: (aggregationParams.latitudeRangeStart || this.DEFAULT_LAT_START).toDecimalString(),
+                    east: (aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END).toDecimalString(),
+                    west: (aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START).toDecimalString()
                 }
             }
         };
