@@ -22,6 +22,10 @@ class ExternalRequest {
         outputStream << inputStream
     }
 
+    def onConnectionOpened = { conn ->
+        // give sub classes access to headers
+    }
+
     def executeRequest = { streamProcessor = null ->
 
         def processStream = streamProcessor ?: straightThrough
@@ -29,6 +33,8 @@ class ExternalRequest {
         log.debug "Opening connection to target URL: $targetUrl"
 
         def conn = targetUrl.openConnection()
+
+        onConnectionOpened conn
 
         try {
             processStream conn.inputStream, outputStream

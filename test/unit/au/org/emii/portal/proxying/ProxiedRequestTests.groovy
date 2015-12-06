@@ -69,4 +69,25 @@ class ProxiedRequestTests extends GrailsUnitTestCase {
         assertEquals URL.class, targetUrl.getClass()
         assertEquals "http://www.google.com/?one=1&two=2", targetUrl.toString()
     }
+
+    void testOnConnectionOpened() {
+        response.containsHeader = {
+            false
+        }
+
+        def headerField = null
+        def headerValue = null
+
+        response.setHeader = { field, value ->
+            headerField = field
+            headerValue = value
+        }
+
+        def conn = [getHeaderField: {'test'}]
+
+        proxiedRequest.onConnectionOpened(conn)
+
+        assertEquals 'Content-disposition', headerField
+        assertEquals 'test', headerValue
+    }
 }
