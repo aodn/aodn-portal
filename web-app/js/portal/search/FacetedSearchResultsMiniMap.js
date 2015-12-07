@@ -3,12 +3,18 @@ Ext.namespace('Portal.search');
 Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
 
     EPSG_4326_PROJECTION: new OpenLayers.Projection("EPSG:4326"),
+    MAXZOOMLEVEL: 3,
 
     constructor: function(values) {
+
+        var restrictedExtent = new OpenLayers.Bounds(-180,-90,180,90);
+
         Ext.apply(this, {
             controls: [],
             metadataExtent: values.bbox,
-            mapContainerId: values.mapContainerId
+            mapContainerId: values.mapContainerId,
+            restrictedExtent:restrictedExtent,
+            wrapDateLine:true
         });
 
         Portal.search.FacetedSearchResultsMiniMap.superclass.constructor.call(this);
@@ -37,7 +43,11 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
             if (!extent) {
                 extent = new OpenLayers.Bounds.fromString(Portal.app.appConfig.portal.defaultDatelineZoomBbox);
             }
+
             this.zoomToExtent(extent);
+            if (this.getZoomForExtent(extent) > this.MAXZOOMLEVEL) {
+                this.zoomTo(this.MAXZOOMLEVEL);
+            }
         }
     },
 
@@ -47,18 +57,5 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
 
     _getExtentLayer: function() {
         return this.metadataExtent.getLayer();
-    },
-
-    _calculateZoomLevel: function(bounds) {
-        var zoomLevel = this.getZoomForExtent(bounds);
-        if (zoomLevel == 0) {
-            // 0 is too large
-            zoomLevel = 1;
-        }
-        else if (zoomLevel > 4) {
-            // Anything over 4 doesn't show enough to get an idea of where things are
-            zoomLevel = 4;
-        }
-        return zoomLevel;
     }
 });
