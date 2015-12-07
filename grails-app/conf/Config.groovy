@@ -278,14 +278,12 @@ portal {
 
     // Download handler config (online resource protocol -> DownloadHandler class)
     downloadHandlersForProtocol = [
-        'OGC:WFS-1.0.0-http-get-capabilities': [
-            'WfsDownloadHandler',
-            'PythonDownloadHandler'
-        ],
-        'IMOS:AGGREGATION--bodaac': 'BodaacDownloadHandler',
-        'IMOS:AGGREGATION--gogoduck': 'GogoduckV1DownloadHandler',
-        'OGC:WPS--gogoduck': 'GogoduckDownloadHandler',
-        'OGC:WPS--netcdf-subset-service': 'NetcdfSubsetServiceDownloadHandler'
+        [ 'handler': 'WfsDownloadHandler',                 'protocol': 'OGC:WFS-1.0.0-http-get-capabilities' ],
+        [ 'handler': 'GogoduckDownloadHandler',            'protocol': 'OGC:WPS--gogoduck'                   ],
+        [ 'handler': 'NetcdfSubsetServiceDownloadHandler', 'protocol': 'OGC:WPS--netcdf-subset-service'      ],
+        [ 'handler': 'PythonDownloadHandler',              'protocol': 'OGC:WFS-1.0.0-http-get-capabilities' ],
+        [ 'handler': 'BodaacDownloadHandler',              'protocol': 'IMOS:AGGREGATION--bodaac'            ],
+        [ 'handler': 'GogoduckV1DownloadHandler',          'protocol': 'IMOS:AGGREGATION--gogoduck'          ]
     ]
 
     mapGetFeatureInfoBuffer = 10

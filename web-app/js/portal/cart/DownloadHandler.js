@@ -64,45 +64,77 @@ Portal.cart.DownloadHandler.handlersForDataCollection = function(dataCollection)
     var handlers = [];
 
     Ext.each(dataCollection.getAllLinks(), function(link) {
-        handlers = handlers.concat(this._handlersForLink(link));
+        Ext.each(this._handlersForProtocol(link.protocol), function(handler) {
+            handlers.push({ 'handler': handler, 'link': link });
+        }, this);
     }, this);
 
-    return handlers;
+    handlers = this._applyHandlerPrecedence(handlers);
+    return this._constructify(handlers);
 };
 
-Portal.cart.DownloadHandler._handlersForLink = function(link) {
-    var handlers = [];
-
-    var constructors = this._downloadHandlerConstructorForProtocol(link.protocol);
-    Ext.each(constructors, function(constructor) {
-        handlers.push(
-            new constructor(link)
-        );
-    });
-    return handlers;
+Portal.cart.DownloadHandler._constructify = function(handlers) {
+    constructedHandlers = [];
+    Ext.each(handlers, function(handlerDescriptor) {
+        constructedHandlers.push(new Portal.cart[handlerDescriptor.handler](handlerDescriptor.link));
+    }, this);
+    return constructedHandlers;
 };
 
-Portal.cart.DownloadHandler._downloadHandlerConstructorForProtocol = function(protocol) {
+Portal.cart.DownloadHandler._applyHandlerPrecedence = function(handlers) {
+    orderedHandlers = [];
+
+    Ext.each(this._handlerOrder(), function(handler) {
+        Ext.each(handlers, function(handlerDescriptor) {
+            if (handler == handlerDescriptor.handler) {
+                orderedHandlers.push(handlerDescriptor);
+            }
+        }, this);
+    }, this);
+
+    return orderedHandlers;
+};
+
+Portal.cart.DownloadHandler._handlersForProtocol = function(protocol) {
     var mapping = this._mappingFromConfig();
 
     return mapping[protocol] || [];
 };
 
+Portal.cart.DownloadHandler._protocolHandlerMapping = function() {
+    return Portal.app.appConfig.portal.downloadHandlersForProtocol;
+};
+
+Portal.cart.DownloadHandler._handlerOrder = function() {
+    if (!this.__handlerOrder) {
+        var handlerOrder = [];
+
+        Ext.each(this._protocolHandlerMapping(), function(obj) {
+            handlerOrder.push(obj.handler);
+        }, this);
+
+        this.__handlerOrder = handlerOrder;
+    }
+
+    return this.__handlerOrder;
+};
+
 Portal.cart.DownloadHandler._mappingFromConfig = function() {
 
     if (!this.__mappingFromConfig) {
-        var configuredMapping = Portal.app.appConfig.portal.downloadHandlersForProtocol;
         var mapping = {};
 
-        Ext.each(Object.keys(configuredMapping), function(key) {
-            mapping[key] = [];
+        Ext.each(this._protocolHandlerMapping(), function(protocolMapping) {
+            protocol = protocolMapping.protocol;
+            handler = protocolMapping.handler;
 
-            Ext.each(configuredMapping[key], function(constructorName) {
-                mapping[key].push(Portal.cart[constructorName]);
-            });
-
-            this.__mappingFromConfig = mapping;
+            if (mapping[protocol] == undefined) {
+                mapping[protocol] = [];
+            }
+            mapping[protocol].push(handler);
         }, this);
+
+        this.__mappingFromConfig = mapping;
     }
 
     return this.__mappingFromConfig;

@@ -40,7 +40,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadAsAllSourceNetCdfLabel: 'Un-subsetted NetCDFs',
     downloadAsUrlsLabel: 'List of URLs',
     downloadAsPythonSnippetLabel: 'Python',
-    downloadAsWpsLabel: 'Request Subsetted NetCDFs',
     parameterDateLabel: 'Date range',
     metadataLinkText: 'View metadata record',
     emailAddressPlaceholder: 'Your email address',
