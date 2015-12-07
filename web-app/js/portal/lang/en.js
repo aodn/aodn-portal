@@ -172,8 +172,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     noParametersForCollection: 'No parameters',
 
     showAll: {'true': '(less\u2025)', 'false': '(more\u2025)'},
-
-    showMapLayer: 'Shown on map',
     clearAllButtonTooltip: 'Remove all data collections from the Subset and Download pages, reset the map location and zoom level',
 
     clearLinkLabel: '<span class=\"fa fa-undo\"></span> ${text}',
@@ -237,6 +235,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     depthLabel: 'Depth:',
     elevationLabel: 'Elevation:',
 
+    showHideTooltip: '{0} the map',
     removeDataCollectionTooltip: 'Remove this data collection from the Subset and Download pages, the collection can be re-added from the search',
     zoomToDataCollection: '<span class=\"fa fa-fw fa-search\"></span> Zoom to collection',
 

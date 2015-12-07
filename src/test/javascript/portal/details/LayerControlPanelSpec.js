@@ -109,35 +109,6 @@ describe("Portal.details.LayerControlPanel", function() {
         };
     });
 
-    describe('visibility checkbox', function() {
-        beforeEach(function() {
-            spyOn(window, 'trackLayerControlUsage');
-            layerControlPanel.layer = {
-                setVisibility: jasmine.createSpy('setVisibility')
-            };
-        });
-
-        it('sends google analytics tracking when checked', function() {
-            layerControlPanel._visibilityButtonChecked(null, true);
-
-            expect(window.trackLayerControlUsage).toHaveBeenCalledWith(
-                'layerControlTrackingActionVisibility',
-                'on',
-                'Data Collection Title'
-            );
-        });
-
-        it('sends google analytics tracking when unchecked', function() {
-            layerControlPanel._visibilityButtonChecked(null, false);
-
-            expect(window.trackLayerControlUsage).toHaveBeenCalledWith(
-                'layerControlTrackingActionVisibility',
-                'off',
-                'Data Collection Title'
-            );
-        });
-    });
-
     describe('zoom to layer control', function() {
         beforeEach(function() {
             spyOn(Portal.details.LayerControlPanel.prototype, '_newZoomToDataButton').andCallThrough();
