@@ -251,7 +251,8 @@ portal {
     metadataProtocols {
         wms = [
             "OGC:WMS-1.1.1-http-get-map",
-            "OGC:WMS-1.3.0-http-get-map"
+            "OGC:WMS-1.3.0-http-get-map",
+            "IMOS:NCWMS--abom"
         ]
 
         wfs = [
