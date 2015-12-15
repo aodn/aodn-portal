@@ -73,8 +73,15 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
             expect(miniMap.render).toHaveBeenCalledWith(mapContainerId);
         });
 
-        it('calls zoomToExtent if bounds are set', function() {
-            spyOn(miniMap.metadataExtent, 'getBounds').andReturn(new OpenLayers.Bounds(40, -40, 80, 40));
+        it('calls zoomTo if bounds are small / zoomlevel too far in', function() {
+            spyOn(miniMap.metadataExtent, 'getBounds').andReturn(new OpenLayers.Bounds(40, -39.001, 40.001, -39));
+            spyOn(miniMap, 'getZoomForExtent').andReturn(12);
+            spyOn(miniMap, 'zoomTo');
+            miniMap._renderAndPosition();
+            expect(miniMap.zoomTo).toHaveBeenCalled();
+        });
+
+        it('calls zoomToExtent', function() {
             miniMap._renderAndPosition();
             expect(miniMap.zoomToExtent).toHaveBeenCalled();
         });
@@ -82,22 +89,7 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
         it('calls zoomToExtent if bounds are not set', function() {
             spyOn(miniMap.metadataExtent, 'getBounds').andReturn(false);
             miniMap._renderAndPosition();
+            expect(miniMap.zoomToExtent).toHaveBeenCalled();
         });
-    });
-
-    describe('_calculateZoomLevel', function() {
-        it('limits zoom level between 1 and 4 inclusive', function() {
-            spyOn(miniMap, 'getZoomForExtent');
-
-            expectZoomLevelForExtent(0, 1);
-            expectZoomLevelForExtent(1, 1);
-            expectZoomLevelForExtent(4, 4);
-            expectZoomLevelForExtent(5, 4);
-        });
-
-        var expectZoomLevelForExtent = function(zoomForExtent, expectedZoomLevel) {
-            miniMap.getZoomForExtent.andReturn(zoomForExtent);
-            expect(miniMap._calculateZoomLevel()).toBe(expectedZoomLevel);
-        };
     });
 });
