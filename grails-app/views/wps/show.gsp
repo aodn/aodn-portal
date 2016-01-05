@@ -27,8 +27,8 @@
                 <g:labelledContent if="${job.downloadUrl}" labelCode="job.download.label">
                     <a href="${job.downloadUrl}">${job.downloadTitle}</a>
                 </g:labelledContent>
-                <g:labelledContent if="${job.errorMessageCode}" labelCode="job.error.label">
-                    <g:message code="job.error.${job.errorMessageCode}" />
+                <g:labelledContent if="${job.errorMessage}" labelCode="job.error.label">
+                    ${job.errorMessage}
                 </g:labelledContent>
             </dl>
         </div>

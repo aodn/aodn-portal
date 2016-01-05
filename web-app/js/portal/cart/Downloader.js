@@ -111,7 +111,9 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
             success: function(response) {
                 this._onAsyncDownloadRequestSuccess(response, params);
             },
-            failure: this._onAsyncDownloadRequestFailure
+            failure: function(response) {
+                this._onAsyncDownloadRequestFailure(response);
+            }
         });
     },
 
@@ -130,10 +132,13 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
         return serviceResponseHandler ? serviceResponseHandler(response) : "";
     },
 
-    _onAsyncDownloadRequestFailure: function() {
+    _onAsyncDownloadRequestFailure: function(response) {
+
+        var msg = String.format("Error! The server response was: '{0}'<BR>{1}", response.statusText, OpenLayers.i18n('asyncDownloadErrorMsg'));
+
         this.messageBox.show({
             title: OpenLayers.i18n('asyncDownloadPanelTitle'),
-            msg: OpenLayers.i18n('asyncDownloadErrorMsg'),
+            msg: msg,
             width: this.ALERTWIDTH
         });
     },

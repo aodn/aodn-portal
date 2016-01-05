@@ -17,8 +17,8 @@ class WpsController extends HostVerifyingController {
             def execResponse = _getExecutionStatusResponse(url)
 
             if (execResponse != null) {
-                if (_error(execResponse)) {
-                    _renderExecutionFailed()
+                if (_getErrorMessage(execResponse)) {
+                    _renderExecutionFailed(execResponse)
                 }
                 else {
                     params.status = "Preparing download"
@@ -39,10 +39,6 @@ class WpsController extends HostVerifyingController {
         }
 
         render status: HTTP_200_OK
-    }
-
-    def _error = {
-        it.'**'.find{node -> node.name() == 'Exception'}
     }
 
     def _getExecutionStatusResponse(url) {
@@ -84,7 +80,12 @@ class WpsController extends HostVerifyingController {
         it.'**'.find{node -> node.name() == 'Reference'}?.@href
     }
 
-    def _renderExecutionFailed() {
+    def _getErrorMessage = {
+        it.'**'.find{node -> node.name() == 'ExceptionText'}
+    }
+
+    def _renderExecutionFailed(execResponse) {
+
         render(
             view: 'show',
             model: [
@@ -92,7 +93,7 @@ class WpsController extends HostVerifyingController {
                     uuid: params.uuid,
                     status: "ProcessFailed",
                     downloadTitle: "IMOS download ERROR - ${params.uuid}",
-                    errorMessageCode: "message"
+                    errorMessage: _getErrorMessage(execResponse)
                 ]
             ]
         )

@@ -62,11 +62,15 @@ describe("Portal.cart.Downloader", function() {
 
             expect(requestArgs.url).toEqual(wfsDownloadUrl);
             expect(requestArgs.scope).toEqual(downloader);
-            expect(requestArgs.failure).toEqual(downloader._onAsyncDownloadRequestFailure);
 
             spyOn(downloader, '_onAsyncDownloadRequestSuccess');
             requestArgs.success.call(downloader, "response");
             expect(downloader._onAsyncDownloadRequestSuccess).toHaveBeenCalledWith("response", params);
+
+            spyOn(downloader, '_onAsyncDownloadRequestFailure');
+            requestArgs.failure.call(downloader);
+            expect(downloader._onAsyncDownloadRequestFailure).toHaveBeenCalled();
+
         });
 
         describe('_onAsyncDownloadRequestSuccess', function() {
