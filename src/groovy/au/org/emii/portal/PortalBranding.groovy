@@ -47,6 +47,13 @@ class PortalBranding {
         )
     }
 
+    def getSecondaryLogoImage() {
+        return returnBrandedUrlIfValid(
+            "secondaryLogo.png",
+            grailsApplication.config.portal.secondaryLogo
+        )
+    }
+
     def getSiteHeader() {
         return returnBrandedUrlIfValid(
             "siteHeader",

@@ -2,11 +2,11 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="${resource(dir: 'css', file: 'imosTheme.css', absolute: true)}" type="text/css">
+        <link rel="stylesheet" href="${resource(dir: 'css', file: 'AODNTheme.css', absolute: true)}" type="text/css">
         <title >${job.downloadTitle}</title>
     </head>
     <body>
-        <div class="imosHeader">
+        <div class="portalheader">
             <div class="container">
                 <a class="btn" role="button" href="https://imos.aodn.org.au/imos123/home">
                     <img src="https://static.emii.org.au/images/logo/IMOS-Ocean-Portal-logo.png" alt="IMOS logo">

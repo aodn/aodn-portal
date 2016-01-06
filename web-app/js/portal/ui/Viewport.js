@@ -4,7 +4,7 @@ Portal.ui.Viewport = Ext.extend(Ext.Viewport, {
     constructor: function(cfg) {
 
         // approximate height of viewport main tabs. css will impact on this buffer
-        this.viewportTabsHeight = 180;
+        this.viewportTabsHeight = 195;
 
         var layerStore = this._newLayerStore();
         var mapPanel = new Portal.ui.MapPanel({layers: layerStore});

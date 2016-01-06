@@ -193,10 +193,6 @@ input, select, textarea {
     border-radius: 3px 3px 3px 3px;
 }
 
-.mainToolBar {
-    box-shadow: 0 -15px 15px -15px #ccc;
-}
-
 .mainToolBarFooter {
     margin-right: 20px;
     font-size: 12px ! important;
@@ -246,27 +242,10 @@ ul.x-tab-strip-top {
 #downLoadCartWidget {
     background-color: #ECECEC;
     color: black;
-    border-radius: 8px;
-    right: 90px;
-    top: 152px;
+    border-radius: 0 0 8px 8px;
+    right: 100px;
+    top: 155px;
     box-shadow: 1px 1px 6px #999;
-}
-
-#downLoadCartWidget:before, #downLoadCartWidget:after {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: #AAAAAA transparent transparent #ABABAB;
-    border-image: none;
-    border-style: solid;
-    border-width: 8px;
-    content: " ";
-    height: 0;
-    left: 18px;
-    position: absolute;
-    top: 34px;
-    width: 0;
 }
 
 .x-btn.navigationButton {
