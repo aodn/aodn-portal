@@ -35,6 +35,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '            </span>',
             '            {[this.getParametersAsHtml(values)]}',
             '        </div>',
+            '        <div class="floatLeft resultsIconContainer">',
+            '            <img class="floatRight" src="{[this.getIconUrl(values)]}" max-height="50" alt="Icon of metadata record holder" />',
+            '        </div>',
             '    </div>',
             '</div>',
             '</tpl>',
@@ -49,7 +52,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 },
                 getMiniMapLinkTitle: function(values) {
                     return (this.isRecActive(values.uuid)) ? OpenLayers.i18n('collectionExistsMsg') : OpenLayers.i18n("addDataCollectionMsg");
-                }
+                },
+                getIconUrl: function(values) {
+                    return Ext.ux.Ajax.constructProxyUrl(Portal.app.appConfig.geonetwork.url + '/images/logos/' + values.iconSourceUuid + ".gif");
+                },
             }
         );
 
