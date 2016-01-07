@@ -5,6 +5,11 @@ Portal.data.MetadataRecord = function() {
 
     var PROTOCOL_WWW_METADATA_LINK = 'WWW:LINK-1.0-http--metadata-URL';
 
+    var iconSourceUuid = {
+        name: 'iconSourceUuid',
+        mapping: 'source'
+    };
+
     var linksField = {
         name: 'links',
         convert: convertXmlToLinks
@@ -146,6 +151,7 @@ Portal.data.MetadataRecord = function() {
         onlineResourcesField,
         pointOfTruthLinkField,
         bboxField,
-        'wmsLayer'
+        'wmsLayer',
+        iconSourceUuid
     ]);
 }();

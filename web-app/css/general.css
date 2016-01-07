@@ -1268,3 +1268,7 @@ span.menu-title {
     margin: 10px 0 5px 0;
 }
 
+.resultsIconContainer {
+    margin-top: 6px;
+    width: 100px;
+}
