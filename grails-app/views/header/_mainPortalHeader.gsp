@@ -1,23 +1,16 @@
-<div id="header">
-
+<div id="header"class="headerHeightOverlord" >
+    <div id="header-bg-image"></div>
     <div id="logoContainer">
-        <a href="landing"><img src="${portalBranding.logoImage}" alt="logo" id="logo" />
+        <a href="${createLink(uri: '/', absolute: true)}"><img src="${portalBranding.logoImage}" alt="main logo" width="180" />
         </a>
     </div>
-    <div id="landingHeaderContainer" class="headerHeightOverlord">
+    <div id="headerContainer" >
         <h1 id="headerTitle">${portalBranding.siteHeader}</h1>
     </div>
-
-    <g:if test="${showLinks}">
-        <div id="viewPortLinks">
-            <g:each var="viewPortLink" status="i"
-                    in="${[['tabIndex': 'TAB_INDEX_SEARCH', 'description': 'Select a Data Collection'],
-                           ['tabIndex': 'TAB_INDEX_VISUALISE', 'description': 'Create a Subset'],
-                           ['tabIndex': 'TAB_INDEX_DOWNLOAD', 'description': 'Download']]}" >
-                <g:render template="/header/viewPortLink"
-                          model="['stepIndex': i, 'tabIndex': viewPortLink.tabIndex, 'description': viewPortLink.description]" />
-            </g:each>
-        </div>
+    <g:if test="${portalBranding.secondaryLogoImage}">
+    <div id="secondaryLogoContainer">
+        <img src="${portalBranding.secondaryLogoImage}" alt="secondary logo" width="120" />
+    </div>
     </g:if>
 
     <div id="toplinks">
@@ -26,3 +19,16 @@
         </g:each>
     </div>
 </div>
+<g:if test="${showLinks}">
+    <div id="viewPortLinks">
+        <g:each var="viewPortLink" status="i"
+            in="${[['tabIndex': 'TAB_INDEX_SEARCH', 'description': 'Select a Data Collection'],
+                   ['tabIndex': 'TAB_INDEX_VISUALISE', 'description': 'Create a Subset'],
+                   ['tabIndex': 'TAB_INDEX_DOWNLOAD', 'description': 'Download']]}" >
+            <g:render template="/header/viewPortLink"
+                model="['stepIndex': i, 'tabIndex': viewPortLink.tabIndex, 'description': viewPortLink.description]" />
+        </g:each>
+        <div style="clear:both"></div>
+    </div>
+</g:if>
+
