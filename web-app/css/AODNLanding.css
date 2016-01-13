@@ -1,0 +1,182 @@
+td, p, button {
+    font-family: inherit;
+}
+
+h1 {
+    font-family: impact, sans-serif;
+    text-shadow: 1px 1px 8px #1A212C;
+    font-weight: 700;
+}
+
+h1, h2 {
+    white-space: normal;
+}
+
+#header {
+    padding-bottom: 10px;
+}
+
+.text-vcenter h1 {
+    font-size: 4.5em;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+}
+
+.white {
+    color: white;
+}
+
+.white:hover {
+    color: inherit;
+}
+
+.hero-unit {
+    font-family: 'portalheader';
+    font-size: 2.5em;
+    text-shadow: 1px 1px 8px #1A212C;
+}
+
+@media (max-width: 992px) {
+
+    .hero-unit {
+        font-size: 2.2em;
+    }
+
+    .text-vcenter h1 {
+        font-size: 3.5em;
+        font-weight: 600;
+    }
+}
+
+@media (max-width: 800px) {
+    #header {
+        padding: 5px;
+    }
+
+    #landingHeaderContainer {
+        margin-left: 240px;
+    }
+
+    #secondaryLogoContainer {
+        position: inherit;
+        display: block;
+        margin-left: 75px;
+        margin-bottom: 10px;
+    }
+
+    .hero-unit {
+        font-size: 2.0em;
+    }
+
+    .text-vcenter h1 {
+        font-size: 2.5em;
+    }
+}
+
+.text-vcenter {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#home {
+    background: url(../images/AODN/landing/Nature-Clear-Sky-Blue-Water.jpg) no-repeat top center fixed;
+    box-shadow: inset 29px 10px 159px 0 rgba(0, 0, 0, 0.4);
+    display: table;
+    height: 90%;
+    width: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: whitesmoke;
+}
+
+#home .btn-primary {
+    background-color: #E38D1F;
+    border-color: #E38D1F;
+    font-weight: 700;
+    text-shadow: 0 1px 0 rgba(205, 205, 205, 0.5);
+}
+
+#home .btn-primary:hover {
+    background-color: #E7AC5F;
+    color: black;
+}
+
+.homeContent div {
+    margin: 20px;
+}
+
+#services {
+    padding: 100px 0 150px 0;
+    height: 100%;
+    width: 100%;
+    display: table;
+    background-color: #306d9f;
+    color: #ffffff;
+}
+
+a:focus  {
+    border:none !important;
+    outline: 0;
+}
+
+#services a,
+a.white {
+    color: white;
+    text-decoration: underline;
+}
+
+#services a.services-links {
+    color: #232323;
+    text-decoration: none;
+}
+
+#services p {
+    font-size: 1em;
+    font-weight: 200;
+}
+
+#services a:hover {
+    color: orange;
+}
+
+#information {
+    background: url(http://felipeyjoana.smugmug.com/Public-Gallery/i-dZGrDBs/0/XL/_5082210-XL.jpg) no-repeat center center fixed;
+    display: table;
+    width: 100%;
+    height: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#information .information-panel {
+    background-color: white;
+    box-shadow: 29px 10px 139px 0 rgba(50, 50, 50, 0.5);
+    opacity: 0.95;
+    padding: 50px 0;
+}
+
+#toplinks a {
+    color: #ffffff;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+#toplinks a:hover {
+    color: grey;
+    text-shadow: none;
+}
+
+#toplinks a:not(:first-child) {
+    border-left: 1px solid #9daab1;
+}
+
+.information-panel-wrapper {
+    background-color: rgba(255, 255, 255, 0.4);
+    height: 100%;
+}

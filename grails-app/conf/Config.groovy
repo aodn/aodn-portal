@@ -138,6 +138,9 @@ environments {
         grails.serverURL = "http://${localhostAddress}:8080/$appName"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-123.aodn.org.au/geonetwork"
+        portal {
+            secondaryLogo = "https://static.emii.org.au/images/logo/IMOS_logo-stacked3.png"
+        }
     }
 
     test {
@@ -221,7 +224,7 @@ portal {
     siteHeader = "Open Access to Ocean Data"
     motdUrl = "https://static.emii.org.au/motd"
 
-    logo = "images/IMOS_logo.png"
+    logo = "images/AODN/AODN_logo.png"
     header {
         externalLinks = [
             [

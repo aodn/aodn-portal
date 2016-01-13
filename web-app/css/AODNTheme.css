@@ -1,24 +1,7 @@
-/*
-IMOS Logo colours
 
-Pantone 5405 C   63 96  117     #3F6075
-Pantone 2915 C   96 175 221     #60AFDD
-
-#52BDEC
-
-Mono split complement colours of #60AFDD
-#89C8EE
-#A4D2EE
-#1F6690
-#5F8Ca6
-Complemetary
-#FFBA66 orangeish
-#FFD29F mango
-#BF915D
-*/
 
 @font-face {
-    font-family: imosheader;
+    font-family: portalheader;
     src: url('../fonts/TerminalEvent.eot'); /* IE9 Compat Modes */
     src: url('../fonts/TerminalEvent.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('../fonts/TerminalEvent.woff') format('woff'), /* Modern Browsers */ url('../fonts/TerminalEvent.ttf') format('truetype'); /* Safari, Android, iOS */
 }
@@ -99,7 +82,6 @@ h1, h2, h3, h4,
 #header {
     z-index: 300;
     width: 100%;
-    box-shadow: 2px 2px 5px rgba(50, 50, 50, 0.75);
     background: #3b3e41; /* Old browsers */
     background: -moz-linear-gradient(left, #3b3e41 0%, #565a5e 23%, #5a5e62 49%, #3b3e41 100%, #0f0f0f 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, right top, color-stop(0%, #3b3e41), color-stop(23%, #565a5e), color-stop(49%, #5a5e62), color-stop(100%, #3b3e41), color-stop(100%, #0f0f0f)); /* Chrome,Safari4+ */
@@ -110,16 +92,38 @@ h1, h2, h3, h4,
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3b3e41', endColorstr='#0f0f0f', GradientType=1); /* IE6-9 */
 }
 
-#logo {
-    margin: 10px 15px 0 35px;
+#landingHeaderContainer {
+    margin-left: 260px;
+}
+
+#secondaryLogoContainer {
+    right: 60px;
+    top: 20px;
 }
 
 #headerTitle {
-    font-family: 'imosheader';
+    font-family: 'portalheader';
     color: #FFFFFF;
     text-shadow: 1px 1px 8px #333;
     font-size: 46px;
-    padding: 45px 0 6px 20px;
+    padding: 40px 0 6px 20px;
+    margin: 0;
+}
+
+@media (max-width: 992px) {
+    #headerTitle {
+        font-size: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    #headerTitle {
+        font-size: 38px;
+    }
+    #secondaryLogoContainer {
+        display: none;
+    }
 }
 
 #toplinks {
@@ -187,11 +191,6 @@ input, select, textarea {
     margin-right: 5px;
     padding: 2px 4px;
     border-radius: 3px 3px 3px 3px;
-    /*box-shadow: 2px 2px 3px 0 #EEEEEE;*/
-}
-
-.mainToolBar {
-    box-shadow: 0 -15px 15px -15px #ccc;
 }
 
 .mainToolBarFooter {
@@ -199,6 +198,9 @@ input, select, textarea {
     font-size: 12px ! important;
 }
 
+.footer {
+    background-color: whitesmoke;
+}
 .footer p {
     font-size: 10px;
 }
@@ -238,28 +240,12 @@ ul.x-tab-strip-top {
 }
 
 #downLoadCartWidget {
-    background-color: #FFBA66;
-    color: #212121;
-    border-radius: 8px;
-    right: 30px;
-    top: 65px;
-}
-
-#downLoadCartWidget:before, #downLoadCartWidget:after {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: #FFBA66 transparent transparent #FFBA66;
-    border-image: none;
-    border-style: solid;
-    border-width: 6px;
-    content: " ";
-    height: 0;
-    left: 18px;
-    position: absolute;
-    top: 34px;
-    width: 0;
+    background-color: #ECECEC;
+    color: black;
+    border-radius: 0 0 8px 8px;
+    right: 100px;
+    top: 155px;
+    box-shadow: 1px 1px 6px #999;
 }
 
 .x-btn.navigationButton {
@@ -288,7 +274,7 @@ ul.x-tab-strip-top {
 }
 
 #viewPortLinks {
-    box-shadow: 2px 2px 5px rgba(50, 50, 50, 0.75);
+    box-shadow: 1px 1px 8px #666;
 }
 
 .viewPortTab {
@@ -302,12 +288,12 @@ ul.x-tab-strip-top {
 
 .viewPortTabActive {
     background-color: #FFBA66; /* IE8 */
-    background: url(../images/IMOS/viewPortTabActive.png) right 0 center no-repeat #FFBA66;
+    background: url(../images/AODN/viewPortTabActive.png) right 0 center no-repeat #FFBA66;
     border: none;
 }
 
 .viewPortTabActiveLast {
-    background: url(../images/IMOS/viewPortTabActiveLast.png) right 0 center no-repeat;
+    background: url(../images/AODN/viewPortTabActiveLast.png) right 0 center no-repeat;
 }
 
 .steps .stepTitle {
@@ -339,7 +325,7 @@ ul.x-tab-strip-top {
     margin-right: 0;
 }
 
-.imosHeader, .jumbotronFooter {
+.portalheader, .jumbotronFooter {
     padding: 10px 0;
     background-color: #666;
 }

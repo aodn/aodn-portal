@@ -133,8 +133,8 @@ hr {
     height: 120px;
 }
 
-#logoContainer {
-    float: left;
+#logoContainer,
+#secondaryLogoContainer {
     position: absolute;
 }
 
