@@ -673,7 +673,7 @@ div.olMap .olControlDragPanActive.olDragDown {
 
 div[class^='olControlNavigationItem'],
 div[class^='olControlZoomBoxItem'],
-div[class^='olControlDrawFeature'] {
+div[class^='olControlDrawFeatureItem'] {
     background-image: url("../images/raa_y.png");
     display: block;
     height: 25px;
