@@ -20,8 +20,6 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         Portal.ui.MapPanel.superclass.constructor.call(this, config);
 
-        this.initMap();
-
         this.on('afterlayout', function() {
             jQuery("div.olControlMousePosition,div.olControlScaleLine *").mouseover(function() {
                 jQuery("div.olControlMousePosition,div.olControlScaleLine *").addClass('allwhite');
@@ -97,7 +95,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         }
     },
 
-    initMap: function() {
+    _initMap: function() {
 
         // The MapActionsControl (in the OpenLayers map tools) needs this.
         this.appConfig.mapPanel = this;
@@ -105,6 +103,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         this.mapOptions = new Portal.ui.openlayers.MapOptions(this.appConfig, this);
         this.map = this.mapOptions.newMap();
         this.map.setDefaultSpatialConstraintType(this.defaultSpatialConstraintType);
+
+        Portal.ui.MapPanel.superclass._initMap.call(this);
     },
 
     getPanelX: function() {
