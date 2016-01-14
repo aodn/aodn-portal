@@ -18,8 +18,6 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
 
         Portal.search.FacetMapPanel.superclass.constructor.call(this, config);
 
-        this._initGeoFacetMapToolbar();
-        this._initMap();
         this._initSpatialConstraintValidator();
 
         this.map.events.register("mousemove", this, this._updateMapSize);
@@ -45,6 +43,8 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
     },
 
     _initMap: function() {
+        this._initGeoFacetMapToolbar();
+
         this.map = new OpenLayers.Map({
             controls: [
                 new OpenLayers.Control.ZoomPanel(),
@@ -53,6 +53,8 @@ Portal.search.FacetMapPanel = Ext.extend(Portal.common.MapPanel, {
             resolutions: this.RESOLUTIONS,
             restrictedExtent: new OpenLayers.Bounds.fromArray([-360, -90, 360, 90])
         });
+
+        Portal.search.FacetMapPanel.superclass._initMap.call(this);
     },
 
     _initSpatialConstraintValidator: function() {

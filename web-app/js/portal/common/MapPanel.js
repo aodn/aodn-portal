@@ -13,6 +13,24 @@ Portal.common.MapPanel = Ext.extend(GeoExt.MapPanel, {
         }, cfg);
 
         Portal.common.MapPanel.superclass.constructor.call(this, config);
+
+        this._initMap();
+    },
+
+    _initMap: function() {
+        this.map.events.register("mouseover", this, this._disableSelections);
+        this.map.events.register("mouseout", this, this._enableSelections);
+    },
+
+    _disableSelections: function() {
+        if (typeof this.oldonselectstart !== "undefined") return;
+        this.oldonselectstart = document.onselectstart;
+        document.onselectstart = function() { return false; };
+    },
+
+    _enableSelections: function() {
+        document.onselectstart = this.oldonselectstart;
+        delete this.oldonselectstart;
     },
 
     /* setExtent method for use when the map may not yet have been rendered */
