@@ -140,6 +140,7 @@ environments {
         geonetwork.url = "https://catalogue-123.aodn.org.au/geonetwork"
         portal {
             secondaryLogo = "https://static.emii.org.au/images/logo/IMOS_logo-stacked3.png"
+            icon = "https://static.emii.org.au/images/aodn/favicon.ico"
         }
     }
 
@@ -224,7 +225,7 @@ portal {
     siteHeader = "Open Access to Ocean Data"
     motdUrl = "https://static.emii.org.au/motd"
 
-    logo = "images/AODN/AODN_logo.png"
+    logo = "https://static.emii.org.au/images/aodn/AODN_logo.png"
     header {
         externalLinks = [
             [
