@@ -225,7 +225,7 @@ portal {
     siteHeader = "Open Access to Ocean Data"
     motdUrl = "https://static.emii.org.au/motd"
 
-    logo = "images/AODN/AODN_logo.png"
+    logo = "https://static.emii.org.au/images/aodn/AODN_logo.png"
     header {
         externalLinks = [
             [
