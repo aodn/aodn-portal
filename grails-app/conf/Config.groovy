@@ -140,6 +140,7 @@ environments {
         geonetwork.url = "https://catalogue-123.aodn.org.au/geonetwork"
         portal {
             secondaryLogo = "https://static.emii.org.au/images/logo/IMOS_logo-stacked3.png"
+            icon = "https://static.emii.org.au/images/aodn/favicon.ico"
         }
     }
 
