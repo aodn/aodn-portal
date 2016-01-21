@@ -31,8 +31,16 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
     unanchorPopup: function() {
         this._makeResizable();
-        Portal.ui.FeatureInfoPopup.superclass.unanchorPopup.call(this);
-    },
+        $( ".gx-popup.x-window" ).draggable();
+
+        //remove anchor
+        this.removeAnchorEvents();
+        this.anc.remove();
+        this.anc = null;
+
+        //hide unpin tool
+        this.tools.unpin.hide();
+        },
 
     _makeResizable: function() {
         this.resizable = true;
