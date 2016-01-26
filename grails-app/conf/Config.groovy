@@ -138,6 +138,10 @@ environments {
         grails.serverURL = "http://${localhostAddress}:8080/$appName"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-123.aodn.org.au/geonetwork"
+
+        // Set to true if you want to test interaction with new servers. This turns
+        // your portal instance into an open proxy and can be dangerous.
+        allowAnyHost = true
     }
 
     test {

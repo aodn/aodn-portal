@@ -12,6 +12,9 @@ class HostVerifier {
     def allowedHosts = null
 
     def allowedHost(address) {
+        if (grailsApplication.config.allowAnyHost) {
+            return true
+        }
 
         initializeAllowedHostsIfNeeded()
 
