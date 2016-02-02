@@ -36,7 +36,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '            {[this.getParametersAsHtml(values)]}',
             '        </div>',
             '        <div class="floatLeft resultsIconContainer">',
-            '            <img class="floatRight" src="{[this.getIconUrl(values)]}" max-height="50" alt="Icon of metadata record holder" />',
+            '            <img class="floatRight" src="{[this.getIconUrl(values)]}" height="50" max-height="50" alt="Icon of metadata record holder" />',
             '        </div>',
             '    </div>',
             '</div>',
