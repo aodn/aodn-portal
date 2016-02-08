@@ -89,6 +89,7 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
     removeAnyFilters: function() {
         this._clearFacetGeometry();
         this._removeFacetFilters();
+        this._resetExtent();
         this.collapse();
     },
 
@@ -98,6 +99,10 @@ Portal.search.GeoSelectionPanel = Ext.extend(Ext.Panel, {
 
     _clearFacetGeometry: function() {
         this.facetMap.clearGeometry();
+    },
+
+    _resetExtent: function() {
+        this.facetMap.zoomToInitialBbox();
     },
 
     _onPolygonAdded: function() {
