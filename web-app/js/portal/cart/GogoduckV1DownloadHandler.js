@@ -2,8 +2,33 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
-    _getDownloadOptionTextKey: function() {
-        return 'downloadAsSubsettedNetCdfLabel';
+    getDownloadOptions: function() {
+
+        var downloadOptions = [];
+
+        if (this._hasRequiredInfo()) {
+
+            downloadOptions.push({
+                textKey: this._getDownloadAsCdfKey(),
+                handler: this._getUrlGeneratorFunction(),
+                handlerParams: {
+                    asyncDownload: true,
+                    collectEmailAddress: true,
+                    serviceResponseHandler: this.serviceResponseHandler
+                }
+            });
+
+            downloadOptions.push({
+                textKey: this._getDownloadAsCsvKey(),
+                handler: this._getUrlGeneratorFunction(),
+                handlerParams: {
+                    asyncDownload: true,
+                    collectEmailAddress: true,
+                    serviceResponseHandler: this.serviceResponseHandler
+                }
+            });
+        }
+        return downloadOptions;
     },
 
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {

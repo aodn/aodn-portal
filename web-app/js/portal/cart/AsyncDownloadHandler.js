@@ -13,7 +13,7 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         if (this._hasRequiredInfo()) {
 
             downloadOptions.push({
-                textKey: this._getDownloadOptionTextKey(),
+                textKey: this._getDownloadAsCdfKey(),
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
                     asyncDownload: true,
@@ -25,8 +25,12 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return downloadOptions;
     },
 
-    _getDownloadOptionTextKey: function() {
-        throw 'Should be implemented by subclasses';
+    _getDownloadAsCdfKey: function() {
+        return 'downloadAsSubsettedNetCdfLabel';
+    },
+
+    _getDownloadAsCsvKey: function() {
+        return 'downloadAsCsvLabel';
     },
 
     _getUrlGeneratorFunction: function() {
@@ -38,7 +42,8 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 collection.getFilters(),
                 _this._resourceName(),
                 _this._resourceHref(),
-                handlerParams.emailAddress
+                handlerParams.emailAddress,
+                handlerParams.downloadFormat
             );
 
             if (handlerParams.challengeResponse) {
