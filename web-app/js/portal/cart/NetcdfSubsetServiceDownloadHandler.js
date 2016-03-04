@@ -26,7 +26,7 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
     },
 
     _getSubset: function(filters) {
-        var builder = new Portal.filter.combiner.BodaacCqlBuilder({
+        var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
             filters: filters
         });
 

@@ -64,7 +64,8 @@ describe('Portal.cart.NetcdfSubsetServiceDownloadHandler', function () {
                     },
                     {
                         isVisualised: returns(false), // Not visualised
-                        hasValue: returns(true)
+                        hasValue: returns(true),
+                        getCql: returns("Depth Cql")
                     },
                     {
                         visualised: true,
@@ -88,7 +89,7 @@ describe('Portal.cart.NetcdfSubsetServiceDownloadHandler', function () {
             expect(url).toHaveParameterWithValue('jobType', 'NetcdfOutput');
             expect(url).toHaveParameterWithValue('email.to', 'bob@example.com');
             expect(url).toHaveParameterWithValue('jobParameters.typeName', 'layer_name');
-            expect(url).toHaveParameterWithValue('jobParameters.cqlFilter', 'Geometry Cql AND Salinity Cql');
+            expect(url).toHaveParameterWithValue('jobParameters.cqlFilter', 'Geometry Cql AND Depth Cql AND Salinity Cql');
         });
     });
 });
