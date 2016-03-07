@@ -16,8 +16,15 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
             name: 'layer_name#field_name'
         });
         testCollection = {
-            getFilters: returns([])
+            getFilters: returns([]),
+            getTitle: noOp
         };
+
+        options.downloadControllerArgs = returns({
+            action: noOp
+        });
+        options.generatorFunction = noOp;
+        options.collectionFiltersAsTextFunction = noOp;
     });
 
     describe('getDownloadOptions', function() {
@@ -99,6 +106,16 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
             expect(params.url).toBe('the_url');
             expect(params.urlFieldName).toBe('field_name');
+        });
+    });
+
+    describe('Download', function() {
+        it('calls trackDownloadUsage', function() {
+
+            spyOn(window, 'trackDownloadUsage');
+
+            var x = handler.downloadClickHandler(testCollection,options);
+            expect(window.trackDownloadUsage).toHaveBeenCalled();
         });
     });
 });

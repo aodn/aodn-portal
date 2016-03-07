@@ -59,7 +59,7 @@ describe('Portal.cart.DownloadHandler', function () {
     });
 
     it('handlesForDataCollection', function() {
-        Portal.cart.DownloadHandler._constructify = function(x) { return x; }
+        Portal.cart.DownloadHandler._constructify = function(x) { return x; };
         Portal.cart.DownloadHandler._protocolHandlerMapping = returns([
             { handler: 'handler1', protocol: 'protocol1' },
             { handler: 'handler2', protocol: 'protocol2' },
