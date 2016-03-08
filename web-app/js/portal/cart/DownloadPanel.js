@@ -237,6 +237,9 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
         var self = this;
 
+        params = params || {};
+        params.collection = collection;
+
         params.onAccept = function(callbackParams) {
             self.downloader.download(collection, generateUrlCallbackScope, generateUrlCallback, callbackParams);
             trackDownloadUsage(

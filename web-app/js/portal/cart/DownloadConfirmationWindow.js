@@ -5,13 +5,8 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
     initComponent: function() {
 
         // Content
-        var contentPanel = new Ext.Panel({
-            html: OpenLayers.i18n(
-                'downloadConfirmationWindowContent', {
-                    downloadDatasetHelpUrl: Portal.app.appConfig.help.downloadDatasetUrl,
-                    helpUrl: Portal.app.appConfig.help.url
-                }
-            ),
+        this.contentPanel = new Ext.Panel({
+            tpl: OpenLayers.i18n('downloadConfirmationWindowContent'),
             width: 450,
             resizable: false
         });
@@ -65,7 +60,7 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
                     this.downloadEmailPanel,
                     this.downloadChallengePanel,
                     {xtype: 'spacer', height: 20},
-                    contentPanel
+                    this.contentPanel
                 ],
                 buttons: [this.downloadButton, cancelButton],
                 keys: [
@@ -108,6 +103,15 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         this.onAcceptCallback = params.onAccept;
 
         Portal.cart.DownloadConfirmationWindow.superclass.show.call(this);
+
+        var metadataRecord = params.collection.getMetadataRecord();
+        this.contentPanel.update(metadataRecord.data);
+
+        // Undocumented, but works around a Ext bug where the shadow
+        // doesn't resize when the content does:
+        if (typeof(this.syncShadow) === 'function') {
+            this.syncShadow();
+        }
     },
 
     _showEmailPanelIfNeeded: function(params) {
