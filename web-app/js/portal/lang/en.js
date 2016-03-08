@@ -135,8 +135,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
       <h4>Usage Constraints</h4> \
       <tpl for=\"useLimitation\"><p>{.}</p></tpl> \
     </tpl> \
-    <p><b>B​y using this data you are accepting the license agreement and terms specified above.</b><br /> \
-    <i class=\"small\">You accept all risks and responsibility for losses, damages, costs and other consequences \
+    <p><i class=\"small\">By using this data you are accepting the license agreement and terms specified above. \
+      You accept all risks and responsibility for losses, damages, costs and other consequences \
       resulting directly or indirectly from using this site and any information or material available from it.</i></p> \
 ",
     downloadConfirmationDownloadText: 'I understand, download',
