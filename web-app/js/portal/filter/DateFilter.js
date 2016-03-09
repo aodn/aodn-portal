@@ -114,7 +114,7 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
     _getDateString: function(newDate) {
 
         if (newDate) {
-            return this.timeUtil._toUtcIso8601DateString(newDate);
+            return this.timeUtil.toUtcIso8601DateString(newDate);
         }
         return '';
     },
