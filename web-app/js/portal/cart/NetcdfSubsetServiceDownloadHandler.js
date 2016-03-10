@@ -10,8 +10,6 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
 
         var cqlFilter = this._getSubset(filters);
 
-        this._trackUsage(layerName, cqlFilter);
-
         return String.format(
             "{0}{1}",
             this.getAsyncDownloadUrl('wps'),
@@ -31,13 +29,5 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
         });
 
         return builder.buildCql();
-    },
-
-    _trackUsage: function(layerName, cqlFilter) {
-        trackDownloadUsage(
-            OpenLayers.i18n('wpsTrackingLabel'),
-            layerName,
-            cqlFilter
-        );
     }
 });

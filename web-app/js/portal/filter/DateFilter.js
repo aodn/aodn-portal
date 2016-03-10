@@ -88,8 +88,7 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
 
         var label = OpenLayers.i18n('temporalExtentHeading');
 
-        if (!this.isPrimary()) {
-
+        if (!this.isPrimary() && this.getLabel()) {
             label += ' (' + this.getLabel() + ')';
         }
 

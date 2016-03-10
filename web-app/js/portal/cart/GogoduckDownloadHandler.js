@@ -20,8 +20,6 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
             'jobParameters.subset': subset
         };
 
-        this._trackUsage(layerName, subset);
-
         return String.format(
             "{0}{1}",
             this.getAsyncDownloadUrl('wps'),
@@ -42,14 +40,6 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
             (aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END).toDecimalString(),
             (aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START).toDecimalString(),
             (aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END).toDecimalString()
-        );
-    },
-
-    _trackUsage: function(layerName, subset) {
-        trackDownloadUsage(
-            OpenLayers.i18n('gogoduckTrackingLabel'),
-            layerName,
-            subset
         );
     }
 });
