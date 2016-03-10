@@ -12,27 +12,34 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         if (this._hasRequiredInfo()) {
 
+            var generatorFunction = this._getUrlGeneratorFunction();
+            var urlFieldName =  this._urlFieldName();
+
             downloadOptions.push({
                 textKey: 'downloadAsAllSourceNetCdfLabel',
                 type: 'WFS',
-                handler: this._getUrlGeneratorFunction(),
+                handler: this.downloadClickHandler,
                 handlerParams: {
+                    generatorFunction: generatorFunction,
+                    collectionFiltersAsTextFunction: this.getCollectionFiltersAsText,
                     filenameFormat: '{0}_source_files.zip',
                     downloadControllerArgs: {
                         action: 'downloadNetCdfFilesForLayer',
-                        urlFieldName: this._urlFieldName()
+                        urlFieldName: urlFieldName
                     }
                 }
             });
 
             downloadOptions.push({
                 textKey: 'downloadAsUrlsLabel',
-                handler: this._getUrlGeneratorFunction(),
+                handler: this.downloadClickHandler,
                 handlerParams: {
+                    generatorFunction: generatorFunction,
+                    collectionFiltersAsTextFunction: this.getCollectionFiltersAsText,
                     filenameFormat: '{0}_URLs.txt',
                     downloadControllerArgs: {
                         action: 'urlListForLayer',
-                        urlFieldName: this._urlFieldName()
+                        urlFieldName: urlFieldName
                     }
                 }
             });
@@ -59,6 +66,17 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
     _hasRequiredInfo: function() {
 
         return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty() && (this._resourceName().indexOf(this.NAME_FIELD_DELIMETER) > -1);
+    },
+
+    downloadClickHandler: function(collection,args) {
+
+        trackDownloadUsage(
+            args.downloadControllerArgs.action,
+            collection.getTitle(),
+            args.collectionFiltersAsTextFunction(collection)
+        );
+
+        return args.generatorFunction(collection);
     },
 
     _getUrlGeneratorFunction: function() {

@@ -13,6 +13,7 @@ describe('Portal.cart.WfsDownloadHandler', function () {
                     href: 'server_url'
                 };
                 var handler = new Portal.cart.WfsDownloadHandler(testResource);
+                handler.getCollectionFiltersAsText = returns("filter As Text");
                 downloadOptions =  handler.getDownloadOptions();
             });
 
@@ -41,12 +42,16 @@ describe('Portal.cart.WfsDownloadHandler', function () {
                     getLayerSelectionModel: returns({
                         getSelectedLayer: returns(dummyLayer)
                     }),
-                    getFilters: returns(dummyFilters)
+                    getFilters: returns(dummyFilters),
+                    getTitle: noOp
                 };
 
+                spyOn(window, 'trackDownloadUsage');
                 downloadHandler(dummyCollection);
 
                 expect(dummyLayer.getCsvDownloadFormat).toHaveBeenCalled();
+                expect(window.trackDownloadUsage).toHaveBeenCalled();
+
                 expect(OpenLayers.Layer.WMS.getFeatureRequestUrl).toHaveBeenCalledWith(dummyFilters, 'server_url', 'layer_name', 'csv');
             });
         });

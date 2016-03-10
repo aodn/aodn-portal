@@ -32,6 +32,13 @@ Portal.cart.PythonDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         var _this = this;
 
         return function(collection) {
+
+            trackDownloadUsage(
+                OpenLayers.i18n('downloadAsPythonSnippetLabel'),
+                collection.getTitle(),
+                _this.getCollectionFiltersAsText(collection)
+            );
+
             return OpenLayers.Layer.WMS.getFeatureRequestUrl(
                 collection.getFilters(),
                 _this._resourceHref(),

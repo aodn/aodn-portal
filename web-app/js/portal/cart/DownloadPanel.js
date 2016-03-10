@@ -224,7 +224,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
                     processedValues.menuItems.push(item);
                 });
             }
-        };
+        }
     },
 
     getEmbeddedTitle: function(title) {
@@ -242,11 +242,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
         params.onAccept = function(callbackParams) {
             self.downloader.download(collection, generateUrlCallbackScope, generateUrlCallback, callbackParams);
-            trackDownloadUsage(
-                OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(textKey),
-                collection.getTitle(),
-                undefined
-            );
         };
 
         this.confirmationWindow.show(params);

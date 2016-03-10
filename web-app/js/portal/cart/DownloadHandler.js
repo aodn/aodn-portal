@@ -57,6 +57,11 @@ Portal.cart.DownloadHandler = Ext.extend(Object, {
     _formatDate: function(date) {
 
         return date.format(this.DATE_FORMAT_FOR_PORTAL);
+    },
+
+    getCollectionFiltersAsText: function(collection) {
+        var service = new Portal.cart.InsertionService(this);
+        return service.insertionValues(collection).dataFilters.replace("<br />", " " );
     }
 });
 

@@ -35,7 +35,7 @@ function trackFiltersUsage(actionKey, label, collection) {
 function trackDownloadUsage(action, collection, downloadParams) {
     trackUsage(
         OpenLayers.i18n('downloadTrackingCategory'),
-        action,
+        OpenLayers.i18n('downloadTrackingActionPrefix') + action,
         collection,
         downloadParams
     );
