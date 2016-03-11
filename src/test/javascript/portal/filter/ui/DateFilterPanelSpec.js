@@ -63,7 +63,7 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
                 }
             };
             filterPanel.toDate = {
-                getValue: returns(new Date(1999, 11, 31, 4, 4, 4, 4)), // 4:04:04.0004am
+                getValue: returns(moment('1999-11-31T00:00:00.000Z')), 
                 setMinValue: noOp
             };
 
@@ -77,7 +77,7 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
         it('uses end-of-day for end date', function() {
             expect(filterPanel.filter.setValue).toHaveBeenCalledWith({
                 fromDate: undefined,
-                toDate: new Date(1999, 11, 31, 23, 59, 59, 999)
+                toDate: moment('1999-11-31T23:59:59.999Z').toDate()
             });
         });
     });

@@ -2,13 +2,6 @@ Ext.namespace('Portal.filter');
 
 Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
 
-    constructor: function(cfg) {
-
-        this.timeUtil = new Portal.utils.TimeUtil();
-
-        Portal.filter.DateFilter.superclass.constructor.call(this, cfg);
-    },
-
     hasValue: function() {
 
         return this.getValue() && (this._getFromDate() || this._getToDate());
@@ -114,7 +107,7 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
     _getDateString: function(newDate) {
 
         if (newDate) {
-            return this.timeUtil.toUtcIso8601DateString(newDate);
+            return moment(newDate).toISOString();
         }
         return '';
     },
@@ -130,6 +123,6 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
 
     _formatHumanDate: function(date) {
 
-        return moment(date).format(OpenLayers.i18n('dateTimeDisplayFormat'));
+        return moment(date).utc().format(OpenLayers.i18n('dateTimeDisplayFormat'));
     }
 });

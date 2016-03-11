@@ -74,10 +74,10 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
     },
 
     _setMinMax: function(resettableDate, vals) {
-        resettableDate.setMinValue(this.TIME_UTIL._parseIso8601Date(vals[0]));
+        resettableDate.setMinValue(moment(vals[0]).toDate());
 
         if (vals.length == 2) {
-            resettableDate.setMaxValue(this.TIME_UTIL._parseIso8601Date(vals[1]));
+            resettableDate.setMaxValue(moment(vals[1]).toDate());
         }
     },
 
@@ -100,7 +100,7 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
 
     _endOfDay: function(date) {
         if (date) {
-            return moment(date).endOf('day').toDate();
+            return moment(date).utc().endOf('day').toDate();
         }
     }
 });

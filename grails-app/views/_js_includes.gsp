@@ -85,7 +85,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'MetadataExtent.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'FormUtil.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'StopWatch.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'TimeUtil.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Date.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'moment.min.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'trackUsage.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/prototypes', file: 'Moment.js')}"></script>
@@ -117,6 +117,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'HumanReadableFilterDescriber.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/validation', file: 'SpatialConstraintValidator.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'UtcExtentDateTime.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'UtcDateField.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'PolygonTypeComboBox.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NcWmsScaleRangeControls.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'StylePanel.js')}"></script>

@@ -38,12 +38,12 @@ Portal.filter.ui.ResettableDate = Ext.extend(Ext.Container, {
 
     getValue: function() {
 
-        var value = this._dateField.getValue();
+        var value = this._dateField.getUtcValue();
         return value == '' ? null : value;
     },
 
     setValue: function(value) {
-        return this._dateField.setValue(value);
+        return this._dateField.setUtcValue(value);
     },
 
     reset: function() {
@@ -54,11 +54,11 @@ Portal.filter.ui.ResettableDate = Ext.extend(Ext.Container, {
     },
 
     setMinValue: function(value) {
-        this._dateField.setMinValue(value ? value : new Date(0));
+        this._dateField.setMinUtcValue(value ? value : new Date(0));
     },
 
     setMaxValue: function(value) {
-        this._dateField.setMaxValue(value ? value : new Date());
+        this._dateField.setMaxUtcValue(value ? value : new Date());
     },
 
     applyDefaultValueLimits: function() {
@@ -67,7 +67,7 @@ Portal.filter.ui.ResettableDate = Ext.extend(Ext.Container, {
     },
 
     _createDateField: function(cfg) {
-        this._dateField = new Ext.form.DateField({
+        this._dateField = new Portal.form.UtcDateField({
             name: cfg.name,
             format: OpenLayers.i18n('dateDisplayFormatExtJs'),
             altFormats: OpenLayers.i18n('dateAltFormats'),
