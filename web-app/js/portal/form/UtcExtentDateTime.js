@@ -107,28 +107,14 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
     },
 
     getLocalDateFromUtcValues: function(utcDate) {
-        return new Date(
-            utcDate.getUTCFullYear(),
-            utcDate.getUTCMonth(),
-            utcDate.getUTCDate(),
-            utcDate.getUTCHours(),
-            utcDate.getUTCMinutes(),
-            utcDate.getUTCSeconds(),
-            utcDate.getUTCMilliseconds()
-        );
+        return Portal.utils.Date.getLocalDateFromUtcDate(utcDate);
     },
 
     getUtcDateFromLocalValues: function(localDate) {
         var utcDate = new Date(this.dateValue.getTime());
 
         if (localDate && "" != localDate) {
-            utcDate.setUTCFullYear(localDate.getFullYear());
-            utcDate.setUTCMonth(localDate.getMonth());
-            utcDate.setUTCDate(localDate.getDate());
-            utcDate.setUTCHours(localDate.getHours());
-            utcDate.setUTCMinutes(localDate.getMinutes());
-            utcDate.setUTCSeconds(localDate.getSeconds());
-            utcDate.setUTCMilliseconds(localDate.getMilliseconds());
+            utcDate = Portal.utils.Date.getUtcDateFromLocalDate(localDate);
         }
 
         return utcDate;
