@@ -214,6 +214,7 @@ describe("Portal.cart.DownloadPanel", function() {
                 filenameFormat: "{0}.csv"
             };
             var testCollection = makeTestCollection();
+            testCollection.getFilters = returns();
             var callbackScope = downloadPanel;
             var callback = noOp;
             var testKey = "downloadAsCsvLabel";
@@ -224,7 +225,7 @@ describe("Portal.cart.DownloadPanel", function() {
 
             downloadPanel.confirmDownload(testCollection, callbackScope, callback, testParams, testKey);
             testParams.onAccept(testParams);
-            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(testKey), testCollection.getTitle(), undefined);
+            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(testKey), testCollection.getTitle(), null);
         });
     });
 

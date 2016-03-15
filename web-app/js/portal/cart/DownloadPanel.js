@@ -245,10 +245,19 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             trackDownloadUsage(
                 OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(textKey),
                 collection.getTitle(),
-                undefined
+                self._getCollectionFiltersAsText(collection)
             );
         };
 
         this.confirmationWindow.show(params);
+    },
+
+    _getCollectionFiltersAsText: function(dataCollection){
+
+        var describer = new Portal.filter.combiner.HumanReadableFilterDescriber({
+            filters: dataCollection.getFilters()
+        });
+
+        return describer.buildDescription(' ');
     }
 });

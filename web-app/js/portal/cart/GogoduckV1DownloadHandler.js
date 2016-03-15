@@ -29,24 +29,8 @@ Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHand
             }
         };
 
-        this._trackUsage(layerName, args.subsetDescriptor);
-
         var paramsAsJson = Ext.util.JSON.encode(args);
 
         return String.format(this.getAsyncDownloadUrl('gogoduck') + 'jobParameters={0}', encodeURIComponent(paramsAsJson));
-    },
-
-    _trackUsage: function(layerName, subsetDescriptor) {
-        trackDownloadUsage(
-            OpenLayers.i18n('gogoduckTrackingLabel'),
-            layerName,
-            String.format("TIME:{0},{1} LAT:{2},{3} LON:{4},{5}",
-                subsetDescriptor.temporalExtent.start,
-                subsetDescriptor.temporalExtent.end,
-                subsetDescriptor.spatialExtent.south,
-                subsetDescriptor.spatialExtent.north,
-                subsetDescriptor.spatialExtent.west,
-                subsetDescriptor.spatialExtent.east)
-        );
     }
 });
