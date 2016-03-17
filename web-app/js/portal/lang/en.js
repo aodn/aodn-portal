@@ -120,9 +120,9 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadConfirmationWindowContent: " \
   <h3>Licence and use limitations</h3> \
     <p> \
-      <tpl if=\"jurisdictionLink\"><a href=\"{jurisdictionLink}\">Jurisdiction</a></tpl> \
+      <tpl if=\"jurisdictionLink\"><a target=\"_blank\" href=\"{jurisdictionLink}\">Jurisdiction</a></tpl> \
       <tpl if=\"imageLink\"><img src=\"{imageLink}\" /></tpl> \
-      <tpl if=\"licenseLink != undefined\"><a href=\"{licenseLink}\">{licenseName}</a></tpl> \
+      <tpl if=\"licenseLink != undefined\"><a target=\"_blank\" href=\"{licenseLink}\">{licenseName}</a></tpl> \
       <tpl if=\"licenseLink == undefined\">{licenseName}</tpl> \
     </p> \
     <tpl if=\"attrConstr && attrConstr.length &gt; 0\"> \
