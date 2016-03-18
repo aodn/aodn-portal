@@ -139,12 +139,15 @@ class BulkDownloadService {
         zipStream.closeEntry()
     }
 
-    public static void copy(final InputStream input, final OutputStream output, final int bufferSize) throws IOException
+    public static int copy(final InputStream input, final OutputStream output, final int bufferSize) throws IOException
     {
         final byte[] buffer = new byte[bufferSize];
-        int bytesRead = 0;
-        while(-1 != (bytesRead = input.read(buffer))) {
-            output.write(buffer, 0, bytesRead);
+        int bytesRead;
+        int totalBytesRead = 0;
+        while ((bytesRead = input.read(buffer)) != -1) {
+            totalBytesRead += bytesRead
+            output.write buffer, 0, bytesRead
         }
+        return totalBytesRead
     }
 }
