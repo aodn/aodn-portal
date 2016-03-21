@@ -77,17 +77,32 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
             this.spatialConstraintControl.resetSpatialConstraint();
         }
 
-        if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.POLYGON) {
-            this.addSpatialConstraintControlToMap(OpenLayers.Handler.Polygon);
-        }
-        else if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX) {
-            this.addSpatialConstraintControlToMap();
+        switch (polygonStyle) {
+            case Portal.ui.openlayers.SpatialConstraintType.POLYGON:
+                this.addSpatialConstraintControlToMap(OpenLayers.Handler.Polygon);
+                this.activateSpatialConstraintControl(true);
+                break;
+            case Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX:
+                this.addSpatialConstraintControlToMap();
+                this.activateSpatialConstraintControl(true);
+                break;
+            case Portal.ui.openlayers.SpatialConstraintType.POINT:
+                this.addSpatialConstraintControlToMap();
+                this.activateSpatialConstraintControl(false);
+                break;
         }
 
-        if (this.spatialConstraintControl && this.spatialConstraintControl.div){
-            this.spatialConstraintControl.activate();
-        }
         this.navigationControl.deactivate();
+    },
+
+    activateSpatialConstraintControl: function(activate) {
+        if (this.spatialConstraintControl && this.spatialConstraintControl.div && activate){
+            this.spatialConstraintControl.activate();
+            //activate a simple getfeatureinfo
+        }
+        else {
+            this.spatialConstraintControl.deactivate();
+        }
     },
 
     addSpatialConstraintControlToMap: function(handler) {

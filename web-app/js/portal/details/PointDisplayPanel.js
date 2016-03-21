@@ -1,0 +1,97 @@
+Ext.namespace('Portal.details');
+
+Portal.details.PointDisplayPanel = Ext.extend(Portal.details.GeomDisplayPanel, {
+    TABLE_WIDTH: 200,
+
+    constructor: function(cfg) {
+
+        this.map = cfg.map;
+
+        var config = Ext.apply({
+            cls: "bboxExtentPicker",
+            items: [
+                this._buildPointBox(cfg)
+            ],
+            padding: '5px'
+        }, cfg);
+
+        Portal.details.PointDisplayPanel.superclass.constructor.call(this, config);
+    },
+
+    getBounds: function() {
+        return new OpenLayers.Bounds(
+            this.lon.getValue(),
+            this.lat.getValue(),
+            this.lon.getValue(),
+            this.lat.getValue()
+        );
+    },
+
+    setBounds: function(bounds) {
+        this.lon.setValue(bounds.left);
+        this.lat.setValue(bounds.top);
+        this.lat.setValue(bounds.bottom);
+        this.lon.setValue(bounds.right);
+    },
+
+    emptyBounds: function() {
+        this.lon.setRawValue();
+        this.lat.setRawValue();
+    },
+
+    _buildPointBox: function(config) {
+        this.lat = this._buildCoord('lat',-90,90);
+        this.lon = this._buildCoord('lon',-180,180);
+
+
+        return [
+            {
+                xtype: 'container',
+                layout: {
+                    type: 'vbox',
+                    pack: 'center',
+                    align: 'middle'
+                },
+                width: this.TABLE_WIDTH,
+                height: 70,
+                defaults:{
+                    margins:'5'
+                },
+                items: [
+                    {
+                        items: [
+                            this._buildLabel('lon'),
+                            this.lon
+                        ]
+                    },
+                    {
+                        items: [
+                            this._buildLabel('lat'),
+                            this.lat
+                        ]
+                    }
+                ]
+            }
+        ];
+    },
+
+    _buildCoord: function(name, min, max) {
+        return new Ext.form.NumberField({
+            name: name,
+            decimalPrecision: 2,
+            width: 55,
+            overCls: "hightlightInputbox",
+            emptyText: OpenLayers.i18n('emptySpatialBL'),
+            minValue : min,
+            maxValue : max,
+            listeners: {
+                scope: this,
+                change: function(numberField) {
+                    if (this.hasNumberFieldErrors()) {
+                        this.setGeometryFromUserEnteredVals();
+                    }
+                }
+            }
+        });
+    }
+});

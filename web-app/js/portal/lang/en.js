@@ -79,11 +79,12 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     supplementaryLinksTitle: "Supplementary Resources",
     unnamedResourceName: "Unnamed Resource",
 
-    // Search form
     northBL: 'N',
     eastBL: 'E',
     westBL: 'W',
     southBL: 'S',
+    lon: 'Lon',
+    lat: 'Lat',
     keyword: 'Keyword',
     parameter: 'Parameter',
     organisation: 'Organisation',
@@ -243,7 +244,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // PolygonTypeComboBox
     comboBoxTypeLabels: [
         { value: Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX, label: "Bounding Box" },
-        { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "Polygon" }
+        { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "Polygon" },
+        { value: Portal.ui.openlayers.SpatialConstraintType.POINT, label: "Point" }
     ],
 
     emptyPolygonHelperText: "Click points on the map to create your polygon.",

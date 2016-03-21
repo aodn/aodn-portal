@@ -2,7 +2,8 @@ Ext.namespace('Portal.ui.openlayers.control');
 
 Portal.ui.openlayers.SpatialConstraintType = {
     POLYGON: 'polygon',
-    BOUNDING_BOX: 'bounding box'
+    BOUNDING_BOX: 'bounding box',
+    POINT: 'point box'
 };
 
 Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.DrawFeature, {

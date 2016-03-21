@@ -4,6 +4,7 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
         this.boxDisplayPanel = new Portal.details.BoxDisplayPanel(cfg);
+        this.pointDisplayPanel = new Portal.details.PointDisplayPanel(cfg);
 
         this.polygonDisplayPanel = new Portal.details.PolygonDisplayPanel({
             height: 90,
@@ -24,6 +25,7 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
             items: [
                 this.boxDisplayPanel,
                 this.polygonDisplayPanel,
+                this.pointDisplayPanel,
                 this.emptyPolygonDisplayPanel
             ]
         }, cfg);
@@ -62,7 +64,9 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
         if (type == Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX) {
             card = this.boxDisplayPanel;
         }
-
+        else if (type == Portal.ui.openlayers.SpatialConstraintType.POINT) {
+            card = this.pointDisplayPanel;
+        }
         this._showCard(card, this.lastSpatialGeometry);
     },
 
@@ -77,9 +81,28 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
 
         if (geometry) {
             this.lastSpatialGeometry = geometry;
-            var card = geometry.isBox() ? this.boxDisplayPanel : this.polygonDisplayPanel;
+            var card;
+
+            if (geometry.isBox()) {
+                if (this.isInfinatelySmallGeometry(geometry)) {
+                    card = this.pointDisplayPanel;
+                }
+                else {
+                    card = this.boxDisplayPanel;
+                }
+            }
+            else {
+                card = this.polygonDisplayPanel;
+            }
+
             this._showCard(card, geometry);
         }
+    },
+
+    isInfinatelySmallGeometry: function(geometry) {
+        return geometry.getArea() == 0 &&
+                geometry.getBounds().getWidth() == 0 &&
+                geometry.getBounds().getHeight() == 0
     },
 
     _showCard: function(card, geometry) {
