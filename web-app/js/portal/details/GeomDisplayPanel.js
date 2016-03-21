@@ -2,6 +2,7 @@ Ext.namespace('Portal.details');
 
 Portal.details.GeomDisplayPanel = Ext.extend(Ext.Panel, {
 
+    TABLE_HEIGHT: 25,
 
     setGeometry: function(geometry) {
         // Defer this incase this is not rendered yet.

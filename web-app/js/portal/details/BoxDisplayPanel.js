@@ -1,8 +1,8 @@
 Ext.namespace('Portal.details');
 
 Portal.details.BoxDisplayPanel = Ext.extend(Portal.details.GeomDisplayPanel, {
+
     TABLE_WIDTH: 165,
-    TABLE_HEIGHT: 25,
 
     constructor: function(cfg) {
 

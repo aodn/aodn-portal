@@ -1,7 +1,6 @@
 Ext.namespace('Portal.details');
 
 Portal.details.PointDisplayPanel = Ext.extend(Portal.details.GeomDisplayPanel, {
-    TABLE_WIDTH: 200,
 
     constructor: function(cfg) {
 
@@ -12,7 +11,7 @@ Portal.details.PointDisplayPanel = Ext.extend(Portal.details.GeomDisplayPanel, {
             items: [
                 this._buildPointBox(cfg)
             ],
-            padding: '5px'
+            padding: '15px 0 0 0'
         }, cfg);
 
         Portal.details.PointDisplayPanel.superclass.constructor.call(this, config);
@@ -39,37 +38,42 @@ Portal.details.PointDisplayPanel = Ext.extend(Portal.details.GeomDisplayPanel, {
         this.lat.setRawValue();
     },
 
+    _buildLabel: function(i18nKey) {
+        return new Ext.form.Label({
+            text: OpenLayers.i18n(i18nKey),
+            width: 25
+        });
+    },
+
     _buildPointBox: function(config) {
         this.lat = this._buildCoord('lat',-90,90);
         this.lon = this._buildCoord('lon',-180,180);
-
 
         return [
             {
                 xtype: 'container',
                 layout: {
-                    type: 'vbox',
+                    type: 'hbox',
+                    pack:'center',
+                    align: 'middle'
+                },
+                height: this.TABLE_HEIGHT,
+                items: [
+                    this._buildLabel('lon'),
+                    this.lon
+                ]
+            },
+            {
+                xtype: 'container',
+                layout: {
+                    type: 'hbox',
                     pack: 'center',
                     align: 'middle'
                 },
-                width: this.TABLE_WIDTH,
-                height: 70,
-                defaults:{
-                    margins:'5'
-                },
+                height: this.TABLE_HEIGHT,
                 items: [
-                    {
-                        items: [
-                            this._buildLabel('lon'),
-                            this.lon
-                        ]
-                    },
-                    {
-                        items: [
-                            this._buildLabel('lat'),
-                            this.lat
-                        ]
-                    }
+                    this._buildLabel('lat'),
+                    this.lat
                 ]
             }
         ];
