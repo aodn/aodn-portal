@@ -37,5 +37,25 @@ Portal.details.GeomDisplayPanel = Ext.extend(Ext.Panel, {
                 trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingTypedBboxLabel'));
             }
         }
+    },
+
+    _buildCoord: function(name, min, max) {
+        return new Ext.form.NumberField({
+            name: name,
+            decimalPrecision: 2,
+            width: 55,
+            overCls: "hightlightInputbox",
+            emptyText: OpenLayers.i18n('emptySpatialBL'),
+            minValue : min,
+            maxValue : max,
+            listeners: {
+                scope: this,
+                change: function(numberField) {
+                    if (this.hasNumberFieldErrors()) {
+                        this.setGeometryFromUserEnteredVals();
+                    }
+                }
+            }
+        });
     }
 });

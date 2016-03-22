@@ -16,9 +16,7 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
         displayPanel.layout.activeItem = displayPanel.activeItem;
     });
 
-
     describe('map', function() {
-
 
         it("subscribes to 'spatialconstrainttypechanged' event", function() {
             Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(map);
@@ -60,16 +58,27 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
 
         describe('spatial constraint added', function() {
 
-            it('shows box display panel when constraint is box', function() {
-                var geometry = {
-                    isBox: returns(true)
-                };
+            it('shows box display panel when constraint is a box with area', function() {
+
+                var geometry = new OpenLayers.Bounds(160,-30,170,10).toGeometry();
 
                 spyOn(displayPanel, '_showCard');
 
                 map.events.triggerEvent('spatialconstraintadded', geometry);
 
                 expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.boxDisplayPanel, geometry);
+            });
+
+
+            it('shows point display panel when constraint is a box without area', function() {
+
+                var geometry = new OpenLayers.Bounds(160,10,160,10).toGeometry();
+
+                spyOn(displayPanel, '_showCard');
+
+                map.events.triggerEvent('spatialconstraintadded', geometry);
+
+                expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.pointDisplayPanel, geometry);
             });
 
             it('shows polygon display panel when constraint is polygon', function() {
@@ -81,7 +90,7 @@ describe("Portal.details.SpatialConstraintDisplayPanel", function() {
 
                 map.events.triggerEvent('spatialconstraintadded', geometry);
 
-                expect(displayPanel._showCard).toHaveBeenCalledWith(displayPanel.polygonDisplayPanel, geometry);
+                expect(displayPanel._showCard).toHaveBeenCalled();
             });
 
             it('shows none display panel when constraint is cleared', function() {
