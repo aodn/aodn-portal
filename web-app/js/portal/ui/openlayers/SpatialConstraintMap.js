@@ -6,6 +6,7 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
 
         this.events.addEventType('spatialconstraintusermodded');
         this.events.addEventType('spatialconstraintcleared');
+        this.events.addEventType('resetspatialconstraint');
 
         this.events.register(
             'spatialconstraintusermodded',
@@ -21,6 +22,14 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
             this,
             function() {
                 this.setSpatialConstraint();
+            }
+        );
+
+        this.events.register(
+            'resetspatialconstraint',
+            this,
+            function() {
+                this.setSpatialConstraintStyle(OpenLayers.i18n('comboBoxTypeLabels')[0].value);
             }
         );
     },
@@ -93,6 +102,7 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         }
 
         this.navigationControl.deactivate();
+        this.clickControl.activate();
     },
 
     activateSpatialConstraintControl: function(activate) {

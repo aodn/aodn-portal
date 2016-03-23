@@ -58,6 +58,14 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         this.events.addEventType('spatialconstraintcleared');
         this.events.addEventType('spatialconstrainttypechanged');
 
+        this.events.register(
+            'activate',
+            this,
+            function() {
+                this.map.events.triggerEvent('resetspatialconstraint');
+            }
+        );
+
         this.vectorlayer.events.on({
             scope: this,
             "sketchstarted": this._onSketchStarted,

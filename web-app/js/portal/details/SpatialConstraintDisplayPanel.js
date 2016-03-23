@@ -106,7 +106,6 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
     },
 
     _showCard: function(card, geometry) {
-
         if (this.rendered) {
             this.layout.setActiveItem(card);
         }
