@@ -2,12 +2,14 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
+    WINDOW_WIDTH: 780,
+    WINDOW_HEIGHT: 360,
+
     initComponent: function() {
 
         // Content
         this.contentPanel = new Ext.Panel({
             tpl: OpenLayers.i18n('downloadConfirmationWindowContent'),
-            width: 450,
             resizable: false
         });
 
@@ -49,11 +51,11 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         Ext.apply(this, {
             title:OpenLayers.i18n('downloadConfirmationWindowTitle'),
             modal: true,
-            padding: 15,
-            layout: 'fit',
+            autoScroll: true,
+            padding: 20,
+            height: this.WINDOW_HEIGHT,
+            width: this.WINDOW_WIDTH,
             items: {
-                autoHeight: true,
-                autoWidth: true,
                 padding: 5,
                 xtype: 'form',
                 items: [
