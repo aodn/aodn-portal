@@ -184,6 +184,13 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(addedSpy).toHaveBeenCalled();
         });
 
+        it('resets the spatial constraint to the default when drawing bbox in point mode', function() {
+            var constraintType = Portal.ui.openlayers.SpatialConstraintType.POINT;
+            spyOn(map, 'resetToDefaultConstraint');
+            map.events.triggerEvent('resetspatialconstraint', constraintType);
+            expect(map.resetToDefaultConstraint).toHaveBeenCalledWith(constraintType);
+        });
+
         describe('clear', function() {
             it('destroys existing feature', function() {
                 spyOn(map.spatialConstraintControl.layer, 'destroyFeatures');

@@ -24,6 +24,8 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
         options = options || {};
 
+        this.constraintType = options.constraintType;
+
         this.vectorlayer = new OpenLayers.Layer.Vector(
             this.layerName,
             {
@@ -62,7 +64,8 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             'activate',
             this,
             function() {
-                this.map.events.triggerEvent('resetspatialconstraint');
+                console.log("activated");
+                this.map.events.triggerEvent('resetspatialconstraint', this.constraintType);
             }
         );
 
@@ -252,10 +255,11 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     }
 });
 
-Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map, handler) {
+Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map, handler, constraintType) {
 
     map.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
         title: OpenLayers.i18n("drawingControl"),
+        constraintType: constraintType,
         handler: handler,
         'displayClass': 'olControlDrawFeature',
         validator: new Portal.filter.validation.SpatialConstraintValidator({

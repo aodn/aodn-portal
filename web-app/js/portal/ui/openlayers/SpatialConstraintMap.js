@@ -28,8 +28,8 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         this.events.register(
             'resetspatialconstraint',
             this,
-            function() {
-                this.setSpatialConstraintStyle(OpenLayers.i18n('comboBoxTypeLabels')[0].value);
+            function(constraintType) {
+                this.resetToDefaultConstraint(constraintType);
             }
         );
     },
@@ -40,6 +40,12 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         }
 
         return undefined;
+    },
+
+    resetToDefaultConstraint: function(constraintType) {
+        if (constraintType == Portal.ui.openlayers.SpatialConstraintType.POINT) {
+            this.setSpatialConstraintStyle(this.defaultSpatialConstraintType);
+        }
     },
 
     isConstraintModified: function() {
@@ -56,47 +62,47 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         this.setSpatialConstraint();
     },
 
-    setSpatialConstraintStyle: function(polygonStyle) {
+    setSpatialConstraintStyle: function(constraintType) {
 
         // Avoid unnecessary removal/addition of the control.
-        if (this.polygonStyle != polygonStyle) {
-            this.doSetSpatialConstraint(polygonStyle);
-            this.events.triggerEvent('spatialconstrainttypechanged', polygonStyle);
+        if (this.constraintType != constraintType) {
+            this.doSetSpatialConstraint(constraintType);
+            this.events.triggerEvent('spatialconstrainttypechanged', constraintType);
 
-            var val = 'type=' + polygonStyle;
+            var val = 'type=' + constraintType;
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', val);
         }
     },
 
     getSpatialConstraintType: function() {
-        return this.polygonStyle;
+        return this.constraintType;
     },
 
     setSpatialConstraint: function() {
-        if (this.polygonStyle != this.defaultSpatialConstraintType || this.isConstraintModified()) {
+        if (this.constraintType != this.defaultSpatialConstraintType || this.isConstraintModified()) {
             this.doSetSpatialConstraint(this.defaultSpatialConstraintType);
         }
     },
 
-    doSetSpatialConstraint: function(polygonStyle) {
+    doSetSpatialConstraint: function(constraintType) {
 
-        this.polygonStyle = polygonStyle;
+        this.constraintType = constraintType;
 
         if (this.spatialConstraintControl) {
             this.spatialConstraintControl.resetSpatialConstraint();
         }
 
-        switch (polygonStyle) {
+        switch (constraintType) {
             case Portal.ui.openlayers.SpatialConstraintType.POLYGON:
-                this.addSpatialConstraintControlToMap(OpenLayers.Handler.Polygon);
+                this.addSpatialConstraintControlToMap(constraintType, OpenLayers.Handler.Polygon);
                 this.activateSpatialConstraintControl(true);
                 break;
             case Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX:
-                this.addSpatialConstraintControlToMap();
+                this.addSpatialConstraintControlToMap(constraintType);
                 this.activateSpatialConstraintControl(true);
                 break;
             case Portal.ui.openlayers.SpatialConstraintType.POINT:
-                this.addSpatialConstraintControlToMap();
+                this.addSpatialConstraintControlToMap(constraintType);
                 this.activateSpatialConstraintControl(false);
                 break;
         }
@@ -115,8 +121,8 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         }
     },
 
-    addSpatialConstraintControlToMap: function(handler) {
-        Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(this, handler);
+    addSpatialConstraintControlToMap: function(constraintType, handler) {
+        Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(this, handler, constraintType);
     },
 
     CLASS_NAME: "OpenLayers.SpatialConstraintMap"
