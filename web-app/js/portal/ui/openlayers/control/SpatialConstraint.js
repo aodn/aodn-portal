@@ -64,7 +64,6 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             'activate',
             this,
             function() {
-                console.log("activated");
                 this.map.events.triggerEvent('resetspatialconstraint', this.constraintType);
             }
         );

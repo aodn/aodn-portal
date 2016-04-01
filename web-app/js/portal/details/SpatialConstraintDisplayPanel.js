@@ -71,14 +71,12 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
     },
 
     _showCardForReset: function() {
-
         this.lastSpatialGeometry = undefined;
         this.boxDisplayPanel.emptyBounds();
         this._showCard(this.boxDisplayPanel);
     },
 
     _showCardForGeometry: function(geometry) {
-
         if (geometry) {
             this.lastSpatialGeometry = geometry;
             var card;

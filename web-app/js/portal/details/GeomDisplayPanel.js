@@ -19,16 +19,11 @@ Portal.details.GeomDisplayPanel = Ext.extend(Ext.Panel, {
         });
     },
 
-    hasNumberFieldErrors: function() {
-
-        var errors = [].concat(
-            this.lon.getErrors(),
-            this.lat.getErrors()
-        );
-        return (errors.length == 0);
+    _hasErrors: function() {
+        throw ("Should be implemented by subclasses");
     },
 
-    setGeometryFromUserEnteredVals: function() {
+    _setGeometryFromUserEnteredVals: function() {
 
         if (this.map) {
             var newBoundsAsGeometry = this.getBounds().toGeometry();
@@ -50,9 +45,9 @@ Portal.details.GeomDisplayPanel = Ext.extend(Ext.Panel, {
             maxValue : max,
             listeners: {
                 scope: this,
-                change: function(numberField) {
-                    if (this.hasNumberFieldErrors()) {
-                        this.setGeometryFromUserEnteredVals();
+                change: function() {
+                    if (this._hasErrors()) {
+                        this._setGeometryFromUserEnteredVals();
                     }
                 }
             }

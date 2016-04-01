@@ -38,6 +38,14 @@ Portal.details.PointDisplayPanel = Ext.extend(Portal.details.GeomDisplayPanel, {
         this.lat.setRawValue();
     },
 
+    _hasErrors: function() {
+        var errors = [].concat(
+            this.lon.getErrors(),
+            this.lat.getErrors()
+        );
+        return (errors.length == 0);
+    },
+
     _buildLabel: function(i18nKey) {
         return new Ext.form.Label({
             text: OpenLayers.i18n(i18nKey),

@@ -43,6 +43,16 @@ Portal.details.BoxDisplayPanel = Ext.extend(Portal.details.GeomDisplayPanel, {
         this.eastBL.setRawValue();
     },
 
+    _hasErrors: function() {
+        var errors = [].concat(
+            this.southBL.getErrors(),
+            this.westBL.getErrors(),
+            this.northBL.getErrors(),
+            this.eastBL.getErrors()
+        );
+        return (errors.length == 0);
+    },
+
     _buildBoundingBox: function(config) {
         this.northBL = this._buildCoord('northBL',-90,90);
         this.eastBL = this._buildCoord('eastBL',-180,180);
