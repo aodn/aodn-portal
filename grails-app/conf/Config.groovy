@@ -180,6 +180,11 @@ knownServers = [
         ]
     ],
     [
+        uri: 'http://geoserver-123.aodn.org.au/geoserver/ncwms',
+        wmsVersion: '1.3.0',
+        type: 'ncWMS'
+    ],
+    [
         uri: 'http://ncwms.aodn.org.au/ncwms/wms',
         wmsVersion: '1.1.1',
         type: 'ncWMS',
