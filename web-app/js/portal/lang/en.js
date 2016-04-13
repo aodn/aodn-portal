@@ -35,6 +35,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadButtonLabel: '<span class="fa fa-lg fa-fw fa-download"></span> Download as\u2026 ',
     downloadAsCsvLabel: 'CSV',
     downloadAsSubsettedNetCdfLabel: 'NetCDF',
+    downloadAsPointTimeSeriesCsvLabel: 'CSV',
     downloadAsAllSourceNetCdfLabel: 'Un-subsetted NetCDFs',
     downloadAsUrlsLabel: 'List of URLs',
     downloadAsPythonSnippetLabel: 'Python',
@@ -206,6 +207,9 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     generalFilterHeading: 'Filters',
     currentDateTimeLabel: 'Displaying',
     spatialExtentPolygonNote: 'Polygon with max extent ',
+    pointTimeSeriesLabel: 'Time Series',
+    latitudeLabel: 'Lat',
+    longitudeLabel: 'Lon',
 
     dateFilterBeforeFormat: '{0}: before {2}',
     dateFilterAfterFormat: '{0}: after {1}',

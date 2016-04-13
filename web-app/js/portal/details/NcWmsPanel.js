@@ -9,13 +9,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     geometryFilter: undefined,
 
-    constructor: function(cfg) {
+    constructor: function (cfg) {
 
         Ext.apply(this, cfg);
 
         this.layer = this.dataCollection.getLayerSelectionModel().getSelectedLayer();
 
-        this.dataCollection.getLayerSelectionModel().on('selectedlayerchanged', function(newLayer) {
+        this.dataCollection.getLayerSelectionModel().on('selectedlayerchanged', function (newLayer) {
             this._onSelectedLayerChanged(newLayer);
         }, this);
 
@@ -26,7 +26,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         Portal.details.NcWmsPanel.superclass.constructor.call(this, config);
     },
 
-    initComponent: function() {
+    initComponent: function () {
         Portal.details.NcWmsPanel.superclass.initComponent.call(this);
 
         this._addLoadingInfo();
@@ -35,58 +35,58 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this._addClearButton();
     },
 
-    _initWithLayer: function() {
+    _initWithLayer: function () {
         this._attachTemporalEvents();
         this._attachSpatialEvents();
         this._removeLoadingInfo();
         this._applyFilterValuesToCollection();
     },
 
-    _onSelectedLayerChanged: function(newLayer) {
+    _onSelectedLayerChanged: function (newLayer) {
         this.layer = newLayer;
         this._initWithLayer();
         this.resetTemporalConstraints();
     },
 
-    _addClearButton: function() {
+    _addClearButton: function () {
         this.resetLink = new Ext.ux.Hyperlink({
             cls: 'resetText clearFiltersLink small',
             text: OpenLayers.i18n('clearLinkLabel', {text: OpenLayers.i18n('clearSubsetLabel')})
         });
-        this.resetLink.on('click', function() {
+        this.resetLink.on('click', function () {
             this.clearAndReset();
         }, this);
         this.add(this.resetLink);
     },
 
-    clearAndReset: function() {
+    clearAndReset: function () {
         this._layerSetTime(this.layer.getTemporalExtentMax());
         this.resetTemporalConstraints();
     },
 
-    resetTemporalConstraints: function() {
+    resetTemporalConstraints: function () {
         this._resetExtent(this.layer.getTemporalExtentMin(), this.layer.getTemporalExtentMax());
     },
 
-    _removeLoadingInfo: function() {
+    _removeLoadingInfo: function () {
         this.remove(this.loadingInfo);
         delete this.loadingInfo;
     },
 
-    _addLoadingInfo: function() {
+    _addLoadingInfo: function () {
         this.loadingInfo = this._newHtmlElement(OpenLayers.i18n('loadingMessage', {resource: ""}));
         this.add(this.loadingInfo);
     },
 
-    _attachSpatialEvents: function() {
+    _attachSpatialEvents: function () {
         if (!this.layer.attachedSpatialEvents) {
 
             this.map.events.on({
                 scope: this,
-                'spatialconstraintadded': function(geometry) {
+                'spatialconstraintadded': function (geometry) {
                     this._applyFilterValuesToCollection();
                 },
-                'spatialconstraintcleared': function() {
+                'spatialconstraintcleared': function () {
                     this._applyFilterValuesToCollection();
                 }
             });
@@ -95,11 +95,23 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    _getGeometryFilter: function() {
+    _getTimeSeriesFilter: function () {
+        return this.pointTimeSeriesCheckbox.checked;
+    },
+
+    _getTimeSeriesLatitude: function () {
+        return (this.pointTimeSeries.items.items[2].getEl()) ? this.pointTimeSeries.items.items[2].getEl().dom.value : this.pointTimeSeries.items.items[2].value;
+    },
+
+    _getTimeSeriesLongitude: function () {
+        return (this.pointTimeSeries.items.items[4].getEl()) ? this.pointTimeSeries.items.items[4].getEl().dom.value : this.pointTimeSeries.items.items[4].value;
+    },
+
+    _getGeometryFilter: function () {
         return this.map.geometryFilter;
     },
 
-    _addTemporalControls: function() {
+    _addTemporalControls: function () {
         var temporalExtentHeader = this._newHtmlElement(String.format("<h4>{0}</h4>", OpenLayers.i18n('temporalExtentHeading')));
 
         this._initTimeRangeLabel();
@@ -149,7 +161,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.previousFrameButton = new Ext.Button({
             iconCls: 'previousButton',
             cls: "",
-            margins: { top: 0, right: 5, bottom: 0, left: 0 },
+            margins: {top: 0, right: 5, bottom: 0, left: 0},
             listeners: {
                 scope: this,
                 'click': function () {
@@ -162,7 +174,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.nextFrameButton = new Ext.Button({
             iconCls: 'nextButton',
             cls: "",
-            margins: { top: 0, right: 5, bottom: 0, left: 0 },
+            margins: {top: 0, right: 5, bottom: 0, left: 0},
             listeners: {
                 scope: this,
                 'click': function () {
@@ -184,6 +196,93 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             height: 40
         });
 
+        this.pointTimeSeriesCheckbox = new Ext.form.Checkbox({
+            id: 'point-time-series',
+            boxLabel: OpenLayers.i18n('pointTimeSeriesLabel'),
+            checked: false,
+            listeners: {
+                scope: this,
+                check: {
+                    element: 'el', //bind to the underlying el property on the panel
+                    fn: function (checkbox, isChecked) {
+                        var lat = Ext.getCmp('pointTimeSeriesLatitude');
+                        var lon = Ext.getCmp('pointTimeSeriesLongitude');
+
+                        if (isChecked) {
+                            lat.setReadOnly(false);
+                            lon.setReadOnly(false);
+                        } else {
+                            lat.setReadOnly(true);
+                            lon.setReadOnly(true);
+                        }
+                    }
+                }
+            }
+        });
+
+        this.pointTimeSeries = new Ext.Panel({
+            layout: 'hbox',
+            plain: true,
+            items: [this.pointTimeSeriesCheckbox,
+                {
+                    xtype: 'label',
+                    text: OpenLayers.i18n('latitudeLabel'),
+                    style: 'margin: 4px 0 0 10px'
+                }, {
+                    xtype: 'textfield',
+                    id: 'pointTimeSeriesLatitude',
+                    fieldLabel: OpenLayers.i18n('latitudeLabel'),
+                    value: this.dataCollection.data.metadataRecord.data.bbox.bounds.centerLonLat.lat,
+                    readOnly: true,
+                    width: 60,
+                    style: 'margin: 0 0 0 15px',
+                    listeners: {
+                        scope: this,
+                        render: function(c) {
+                            Ext.QuickTips.register({
+                                target: c.getEl(),
+                                text: 'Check '+OpenLayers.i18n('pointTimeSeriesLabel')+' to enable editing',
+                                enabled: true,
+                                showDelay: 0,
+                                trackMouse: true,
+                                autoShow: true
+                            });
+                        },
+                        change: function (c) {
+                            this._applyFilterValuesToCollection();
+                        },
+                    }
+                }, {
+                    xtype: 'label',
+                    text: OpenLayers.i18n('longitudeLabel'),
+                    style: 'margin: 4px 0 0 20px'
+                }, {
+                    xtype: 'textfield',
+                    id: 'pointTimeSeriesLongitude',
+                    fieldLabel: OpenLayers.i18n('longitudeLabel'),
+                    value: this.dataCollection.data.metadataRecord.data.bbox.bounds.centerLonLat.lon,
+                    readOnly: true,
+                    width: 60,
+                    style: 'margin: 0 0 0 25px',
+                    listeners: {
+                        scope: this,
+                        render: function(c) {
+                            Ext.QuickTips.register({
+                                target: c.getEl(),
+                                text: 'Check '+OpenLayers.i18n('pointTimeSeriesLabel')+' to enable editing',
+                                enabled: true,
+                                showDelay: 0,
+                                trackMouse: true,
+                                autoShow: true
+                            });
+                        },
+                        change: function (c) {
+                            this._applyFilterValuesToCollection();
+                        },
+                    }
+                }]
+        });
+
         // Group controls for hide/show
         this.temporalControls = new Ext.Container({
             items: [
@@ -192,6 +291,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
                 dateEndRow,
                 this._newSectionSpacer(10),
                 this.mapTimeControls,
+                this.pointTimeSeries,
+                this._newSectionSpacer(10),
                 this.timeRangeLabel,
                 this._newSectionSpacer(10)
             ]
@@ -200,7 +301,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.add(this.temporalControls);
     },
 
-    _defaultDateTimePickerConfiguration: function() {
+    _defaultDateTimePickerConfiguration: function () {
         return {
             dateFormat: OpenLayers.i18n('dateDisplayFormatExtJs'),
             timeFormat: OpenLayers.i18n('timeDisplayFormatExtJs'),
@@ -225,32 +326,32 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         };
     },
 
-    _newHtmlElement: function(html) {
+    _newHtmlElement: function (html) {
         return new Ext.Container({
             autoEl: 'div',
             html: html
         });
     },
 
-    _newSectionSpacer: function(height) {
-        return new Ext.Spacer({ height: height });
+    _newSectionSpacer: function (height) {
+        return new Ext.Spacer({height: height});
     },
 
-    _attachSelectedDateToPicker: function(datePicker, dateMoment) {
+    _attachSelectedDateToPicker: function (datePicker, dateMoment) {
         if (dateMoment) {
             datePicker['selectedDate'] = dateMoment.clone();
         }
     },
 
-    _getAttachedSelectedDate: function(datePicker) {
+    _getAttachedSelectedDate: function (datePicker) {
         return datePicker['selectedDate'];
     },
 
-    _removeAttachedSelectedDate: function(datePicker) {
+    _removeAttachedSelectedDate: function (datePicker) {
         delete datePicker['selectedDate'];
     },
 
-    _onChange: function(datePicker, jsDate) {
+    _onChange: function (datePicker, jsDate) {
         var selectedDateTimeMoment = moment(jsDate);
         var selectedDatePickerMoment = moment.utc(datePicker.getValue());
 
@@ -266,7 +367,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         trackFiltersUsage(OpenLayers.i18n('trackingDateAction'), selectedDateTimeMoment.utc().toISOString(), this.dataCollection.getTitle());
     },
 
-    _onTimeSelected: function(datePicker, selectedDateTimeMoment) {
+    _onTimeSelected: function (datePicker, selectedDateTimeMoment) {
         datePicker.setValue(selectedDateTimeMoment);
         this._layerSetTime(selectedDateTimeMoment);
         this._setLayerSubsetExtent();
@@ -274,7 +375,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this._applyFilterValuesToCollection();
     },
 
-    _onDateSelected: function(datePicker, selectedDateTimeMoment) {
+    _onDateSelected: function (datePicker, selectedDateTimeMoment) {
         // Store selected date, so when we wake up from event, we know which
         // date to move to
         this._attachSelectedDateToPicker(datePicker, selectedDateTimeMoment);
@@ -289,58 +390,64 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         // Now we wait for the event of 'temporalextentloaded'
     },
 
-    _getPendingEvent: function() {
+    _getPendingEvent: function () {
         return this[this.PENDING_EVENT_ATTR];
     },
 
-    _attachPendingEvent: function(buttonClicked) {
+    _attachPendingEvent: function (buttonClicked) {
         this[this.PENDING_EVENT_ATTR] = buttonClicked;
     },
 
-    _removePendingEvent: function() {
+    _removePendingEvent: function () {
         delete this[this.PENDING_EVENT_ATTR];
     },
 
-    _loadPreviousTimeSlice: function() {
+    _loadPreviousTimeSlice: function () {
         this._attachPendingEvent('previous');
         this.layer.getPreviousTimeSlice();
         // Now we wait for the event 'temporalextentloaded'
     },
 
-    _goToPreviousTimeSlice: function() {
+    _goToPreviousTimeSlice: function () {
         this.layer.goToPreviousTimeSlice();
         this._updateTimeRangeLabel();
 
         trackLayerControlUsage(OpenLayers.i18n('trackingDateAction'), OpenLayers.i18n("trackingTimeSliceAction", {direction: "previous"}), this.dataCollection.getTitle());
     },
 
-    _loadNextTimeSlice: function() {
+    _loadNextTimeSlice: function () {
         this._attachPendingEvent('next');
         this.layer.getNextTimeSlice();
         // Now we wait for the event 'temporalextentloaded'
     },
 
-    _goToNextTimeSlice: function() {
+    _goToNextTimeSlice: function () {
         this.layer.goToNextTimeSlice();
         this._updateTimeRangeLabel();
 
         trackLayerControlUsage(OpenLayers.i18n('trackingDateAction'), OpenLayers.i18n("trackingTimeSliceAction", {direction: "next"}), this.dataCollection.getTitle());
     },
 
-    _applyFilterValuesToCollection: function() {
+    _applyFilterValuesToCollection: function () {
         var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
         var geometry = this._getGeometryFilter();
 
-        this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry);
+        var timeSeries = this._getTimeSeriesFilter();
+        var lat = this._getTimeSeriesLatitude();
+        var lon = this._getTimeSeriesLongitude();
+
+        this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, timeSeries, lat, lon);
     },
 
-    _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry) {
+    _ncwmsParamsAsFilters: function (dateRangeStart, dateRangeEnd, geometry, timeSeries, lat, lon) {
 
         var newFilterValue = {};
         var ncwmsParamsAsFilter = {
             isNcwmsParams: true,
-            hasValue: function() { return false; } // From the Portal.filter.Filter interface. Prevents filter from being used in CQL or displayed to user
+            hasValue: function () {
+                return false;
+            } // From the Portal.filter.Filter interface. Prevents filter from being used in CQL or displayed to user
         };
 
         if (dateRangeStart && dateRangeStart.isValid()) {
@@ -368,20 +475,30 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             visualised: true
         });
 
+        var timeSeriesFilter = {
+            timeSeries: timeSeries,
+            lat: lat,
+            lon: lon,
+            hasValue: function () {
+                return false;
+            } // From the Portal.filter.Filter interface. Prevents filter from being used in CQL or displayed to user
+        };
+
         return [
             realDateFilter,
-            ncwmsParamsAsFilter
+            ncwmsParamsAsFilter,
+            timeSeriesFilter
         ];
     },
 
-    _attachTemporalEvents: function() {
+    _attachTemporalEvents: function () {
         this.layer.events.on({
             'temporalextentloaded': this._layerTemporalExtentLoad,
             scope: this
         });
     },
 
-    _resetExtent: function(extentMin, extentMax) {
+    _resetExtent: function (extentMin, extentMax) {
         this._initializeDateTimePicker(this.startDateTimePicker, extentMin);
         this._initializeDateTimePicker(this.endDateTimePicker, extentMax);
 
@@ -394,7 +511,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this._applyFilterValuesToCollection();
     },
 
-    _initializeDateTimePicker: function(dateTimePicker, defaultValue) {
+    _initializeDateTimePicker: function (dateTimePicker, defaultValue) {
         if (this._getAttachedSelectedDate(dateTimePicker)) {
             var selectedDate = this._getAttachedSelectedDate(dateTimePicker).clone();
             this._removeAttachedSelectedDate(dateTimePicker);
@@ -408,7 +525,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    _layerTemporalExtentLoad: function() {
+    _layerTemporalExtentLoad: function () {
 
         if ('next' == this._getPendingEvent()) {
             this._removePendingEvent();
@@ -424,7 +541,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    _setDateTimePickerExtent: function(picker, extent, value, toMaxValue) {
+    _setDateTimePickerExtent: function (picker, extent, value, toMaxValue) {
         if (value) {
             picker.enable();
             picker.setExtent(extent);
@@ -432,25 +549,25 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    _updateTimeRangeLabel: function() {
+    _updateTimeRangeLabel: function () {
         this.timeRangeLabel.updateTime(this.layer.time.toUtcDisplayFormat());
     },
 
-    _initTimeRangeLabel: function() {
+    _initTimeRangeLabel: function () {
         this.timeRangeLabel = new Portal.ui.TimeRangeLabel();
     },
 
-    _layerSetTime: function(momentDate) {
+    _layerSetTime: function (momentDate) {
         this.layer.setTime(momentDate);
     },
 
-    _getDateFromPicker: function(datePicker) {
+    _getDateFromPicker: function (datePicker) {
         if (moment(datePicker.getValue()).isValid()) {
             return moment.utc(datePicker.getValue());
         }
     },
 
-    _setLayerSubsetExtent: function() {
+    _setLayerSubsetExtent: function () {
         if (this.layer) {
             this.layer.setSubsetExtentView(
                 moment.utc(this.startDateTimePicker.getValue()),

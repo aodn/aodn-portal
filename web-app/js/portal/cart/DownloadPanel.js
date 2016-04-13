@@ -187,6 +187,9 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         var downloadOptionTextKeysUsed = [];
         var downloadHandlers = Portal.cart.DownloadHandler.handlersForDataCollection(collection);
 
+        //Storing collection data which will be used during the creation of the download options
+        $( "body" ).data( "collection", collection );
+
         Ext.each(downloadHandlers, function(handler) {
             Ext.each(handler.getDownloadOptions(), function(downloadOption) {
 

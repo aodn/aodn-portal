@@ -8,6 +8,7 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     getDownloadOptions: function() {
 
+        var collection  = $( "body" ).data("collection");
         var downloadOptions = [];
 
         if (this._hasRequiredInfo()) {
@@ -21,7 +22,21 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                     serviceResponseHandler: this.serviceResponseHandler
                 }
             });
+
+            // Checking conditions for the Point in time series
+            if (this._getDownloadOptionTextKey()=== 'downloadAsSubsettedNetCdfLabel' && typeof collection.filters[2].timeSeries !== "undefined" && collection.filters[2].timeSeries) {
+                downloadOptions.push({
+                    textKey: OpenLayers.i18n('downloadAsPointTimeSeriesCsvLabel'),
+                    handler: this._getUrlGeneratorFunction(),
+                    handlerParams: {
+                        asyncDownload: true,
+                        collectEmailAddress: true,
+                        serviceResponseHandler: this.serviceResponseHandler
+                    }
+                });
+            }
         }
+
         return downloadOptions;
     },
 
