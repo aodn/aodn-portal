@@ -35,7 +35,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         });
     },
 
-    _createFailMessage: function(result, uuid) {
+    _createFailMessage: function(result, uuid, callback) {
 
         log.error(
             "Size estimation failed. Server response detailed below.\n" +
@@ -43,20 +43,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
             "Response text: '" + result.responseText + "'"
         );
 
-        this._addDownloadEstimate.defer(1, this, [this._generateFailureResponse(result), this.getIdElementName(uuid)]);
-    },
-
-    _generateFailureResponse: function(result) {
-        var estResponse;
-
-        if (result.isTimeout) {
-            estResponse = result.statusText;
-        }
-        else {
-            estResponse = parseInt(result.status);
-        }
-
-        return estResponse;
+        this._createDownloadEstimate(result, uuid, callback);
     },
 
     _createDownloadEstimate: function(result, uuid, callback) {
@@ -66,7 +53,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     _addDownloadEstimate: function(sizeEstimate, uuid, callback) {
 
         var htmlAddition = this._generateEstHtmlString(sizeEstimate);
-        var sizeDiv = Ext.get(this.getIdElementName(uuid));
+        var sizeDiv = Ext.select(this.getIdElementName(uuid));
 
         if (sizeDiv) {
             if (sizeEstimate == 0) {
