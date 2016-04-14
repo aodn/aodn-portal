@@ -11,35 +11,16 @@ describe('Portal.cart.DownloadEstimator', function() {
     });
 
     describe('behavior on timeout', function() {
-        it('_createFailMessage calls _generateFailureResponse', function() {
+        it('_createFailMessage calls _createDownloadEstimate', function() {
             var mockResult = {
                 isTimeout: true,
                 statusText: 'transaction aborted',
                 status: -1
             };
 
-            spyOn(estimator, '_generateFailureResponse');
+            spyOn(estimator, '_createDownloadEstimate');
             estimator._createFailMessage(mockResult, dataCollection.uuid);
-            expect(estimator._generateFailureResponse).toHaveBeenCalled();
-        });
-
-        it('_generateFailureResponse generates correct response on timeout', function() {
-            var mockResult = {
-                isTimeout: true,
-                statusText: 'transaction aborted',
-                status: -1
-            };
-
-            expect(estimator._generateFailureResponse(mockResult)).toEqual('transaction aborted');
-        });
-
-        it('_generateFailureResponse generates correct response on other failure', function() {
-            var mockResult = {
-                statusText: 'transaction aborted',
-                status: -1
-            };
-
-            expect(estimator._generateFailureResponse(mockResult)).toEqual(-1);
+            expect(estimator._createDownloadEstimate).toHaveBeenCalled();
         });
     });
 
