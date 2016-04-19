@@ -8,12 +8,16 @@ jQuery( window ).load(function() {
 
         });
 
-    // getFeatureInfo popup links without internal javascript calls
-    jQuery('.featureinfocontent a').not(['onclick','onClick']).live('hover',
-        function(){
-            jQuery(this).attr('target', '_blank').addClass('external');
+    // getFeatureInfo popup links  .not('.jQueryLiveAnchor')
+    jQuery('.featureinfocontent a:not(.jQueryLiveAnchor)').live('hover',
+        function() {
+            var thisTag = jQuery(this);
+            var trackChangesCommand = "trackGetFeatureInfoClickUsage('" + thisTag.attr('href') + "'); return true;";
+            thisTag.attr('onclick', trackChangesCommand)
+                .attr('target', '_blank')
+                .addClass('jQueryLiveAnchor')
+                .addClass('external');
         });
-
 
     // activelayer/tree labels
     jQuery('#activeLayerTreePanel .x-tree-node a span, .x-tree-node-leaf span').live('hover',

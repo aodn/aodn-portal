@@ -58,3 +58,11 @@ function trackDataCollectionSelectionUsage(actionKey, label, collection) {
         collection
     );
 }
+
+function trackGetFeatureInfoClickUsage(link) {
+    trackUsage(
+        OpenLayers.i18n('downloadTrackingCategory'),
+        OpenLayers.i18n('getfeatureInfoAnchorTrackingCategory'),
+        link
+    );
+}
