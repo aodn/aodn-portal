@@ -31,7 +31,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
     unanchorPopup: function() {
         this._makeResizable();
-        $( ".gx-popup.x-window" ).draggable();
+        $(".gx-popup.x-window").draggable();
 
         //remove anchor
         this.removeAnchorEvents();
@@ -40,7 +40,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
 
         //hide unpin tool
         this.tools.unpin.hide();
-        },
+    },
 
     _makeResizable: function() {
         this.resizable = true;
@@ -136,7 +136,6 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         this.numResultsToLoad++;
 
         var extraLayerInfo = layer.extraLayerInfo ? layer.extraLayerInfo : {};
-
         Ext.ux.Ajax.proxyRequestXML({
             scope: this,
             url: this._getLayerFeatureInfoRequestString(layer),
@@ -144,7 +143,7 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                 layer: layer,
                 name: layer.name,
                 expectedFormat: layer.getFeatureInfoFormat(),
-                units: extraLayerInfo.units,
+                units: (extraLayerInfo.units != undefined) ? extraLayerInfo.units : layer.units,
                 copyright: extraLayerInfo.copyright
             },
             success: function(resp, options) {
