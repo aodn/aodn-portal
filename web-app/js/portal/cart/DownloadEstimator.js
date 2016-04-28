@@ -30,7 +30,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
                 this._createDownloadEstimate(result, collection.getUuid(), callback);
             },
             failure: function(result, values) {
-                this._createFailMessage(result, collection.getUuid());
+                this._createFailMessage(result, collection.getUuid(), callback);
             }
         });
     },
@@ -53,7 +53,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
     _addDownloadEstimate: function(sizeEstimate, uuid, callback) {
 
         var htmlAddition = this._generateEstHtmlString(sizeEstimate);
-        var sizeDiv = Ext.select(this.getIdElementName(uuid));
+        var sizeDiv = Ext.get(this.getIdElementName(uuid));
 
         if (sizeDiv) {
             if (sizeEstimate == 0) {
