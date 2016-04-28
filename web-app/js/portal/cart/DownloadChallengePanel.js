@@ -8,6 +8,7 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
 
         this.challengeResponseField = new Ext.form.TextField({
             name: "challengeResponseField",
+            selectOnFocus: 'true',
             width: 250
         });
 
@@ -30,6 +31,7 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
                 scope: this,
                 show: function() {
                     this._getChallenge();
+                    this.challengeResponseField.reset();
                 }
             }
         };
