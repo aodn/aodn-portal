@@ -4,7 +4,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     MINIMAP_HEIGHT: 90,
     MINIMAP_WIDTH: 160, // 16:9 ratio http://size43.com/jqueryVideoTool.html
-    ICON_WIDTH: 70,
+    ICON_WIDTH: 50,
     MINIMAP_PADDING: 4,
     MAP_ID_PREFIX: "facetedSearchMap",
     ADD_BUTTON_PREFIX: "fsSearchAddBtn",
@@ -36,8 +36,8 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '            </span>',
             '            {[this.getParametersAsHtml(values)]}',
             '        </div>',
-            '        <div class="floatLeft resultsIconContainer">',
-            '            <img class="floatRight" src="{[this.getIconUrl(values)]}" onClick="{[this.getTrackingFunction(values)]}" width="' + this.ICON_WIDTH +
+            '        <div class="resultsIconContainer">',
+            '            <img src="{[this.getIconUrl(values)]}" onClick="{[this.getTrackingFunction(values)]}" width="' + this.ICON_WIDTH +
             '" max-width="'+ this.ICON_WIDTH +'" alt="Icon of metadata record holder" />',
             '        </div>',
             '    </div>',
