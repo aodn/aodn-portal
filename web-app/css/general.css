@@ -949,6 +949,21 @@ div.allwhite {
     float: left;
 }
 
+.resultsIconContainer {
+    margin-top: 16px;
+    margin-left: 25px;
+    text-align: center;
+}
+
+.resultsIconContainer img {
+    -webkit-filter: grayscale(80%);
+    -moz-filter: grayscale(80%);
+    -o-filter: grayscale(80%);
+    -ms-filter: grayscale(80%);
+    filter: grayscale(80%);
+    filter: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' height='0'><filter id='greyscale'><feColorMatrix type='saturate' values='0.2' /></filter></svg>#greyscale");
+}
+
 .geoSelectionPanelButtons {
     position: relative;
     top: -35px;
@@ -1266,9 +1281,4 @@ span.menu-title {
 .infoPanel h3,
 .infoPanel h4 {
     margin: 10px 0 5px 0;
-}
-
-.resultsIconContainer {
-    margin-top: 6px;
-    width: 100px;
 }
