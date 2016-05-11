@@ -1,6 +1,6 @@
 Ext.namespace('Portal.cart');
 
-Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
+Portal.cart.PointCSVDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
     SUBSET_FORMAT: 'TIME,{0},{1};LATITUDE,{2},{3};LONGITUDE,{4},{5}',
 
@@ -17,7 +17,8 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
             'email.to': notificationEmailAddress,
             jobType: 'GoGoDuck',
             'jobParameters.layer': layerName,
-            'jobParameters.subset': subset
+            'jobParameters.subset': subset,
+            'jobParameters.filter': "csv"
         };
 
         return String.format(
@@ -28,7 +29,8 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
     },
 
     _downloadEnabled: function(collection) {
-        return true;
+        return typeof collection.filters[2].timeSeries !== "undefined"
+            && collection.filters[2].timeSeries;
     },
 
     _getSubset: function(filters) {

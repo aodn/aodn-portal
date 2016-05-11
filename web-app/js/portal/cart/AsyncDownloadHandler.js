@@ -11,7 +11,7 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         var collection  = $( "body" ).data("collection");
         var downloadOptions = [];
 
-        if (this._hasRequiredInfo()) {
+        if (this._hasRequiredInfo()  && this._downloadEnabled(collection)) {
 
             downloadOptions.push({
                 textKey: this._getDownloadOptionTextKey(),
@@ -22,19 +22,6 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                     serviceResponseHandler: this.serviceResponseHandler
                 }
             });
-
-            // Checking conditions for the Point in time series
-            if (this._getDownloadOptionTextKey()=== 'downloadAsSubsettedNetCdfLabel' && typeof collection.filters[2].timeSeries !== "undefined" && collection.filters[2].timeSeries) {
-                downloadOptions.push({
-                    textKey: OpenLayers.i18n('downloadAsPointTimeSeriesCsvLabel'),
-                    handler: this._getUrlGeneratorFunction(),
-                    handlerParams: {
-                        asyncDownload: true,
-                        collectEmailAddress: true,
-                        serviceResponseHandler: this.serviceResponseHandler
-                    }
-                });
-            }
         }
 
         return downloadOptions;
@@ -70,6 +57,10 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     _hasRequiredInfo: function() {
         return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty();
+    },
+
+    _downloadEnabled: function(collection) {
+        throw 'Should be implemented by subclasses';
     },
 
     serviceResponseHandler: function(response) {
