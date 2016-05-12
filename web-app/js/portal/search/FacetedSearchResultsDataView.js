@@ -37,8 +37,8 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '            {[this.getParametersAsHtml(values)]}',
             '        </div>',
             '        <div class="resultsIconContainer">',
-            '            <img src="{[this.getIconUrl(values)]}" onClick="{[this.getTrackingFunction(values)]}" width="' + this.ICON_WIDTH +
-            '" max-width="'+ this.ICON_WIDTH +'" alt="Icon of metadata record holder" />',
+            '            <!--img src="{[this.getIconUrl(values)]}" onClick="{[this.getTrackingFunction(values)]}" width="' + this.ICON_WIDTH +
+            '" max-width="'+ this.ICON_WIDTH +'" alt="Icon of metadata record holder" /-->',
             '        </div>',
             '    </div>',
             '</div>',
