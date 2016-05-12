@@ -955,15 +955,6 @@ div.allwhite {
     text-align: center;
 }
 
-.resultsIconContainer img {
-    -webkit-filter: grayscale(80%);
-    -moz-filter: grayscale(80%);
-    -o-filter: grayscale(80%);
-    -ms-filter: grayscale(80%);
-    filter: grayscale(80%);
-    filter: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' height='0'><filter id='greyscale'><feColorMatrix type='saturate' values='0.2' /></filter></svg>#greyscale");
-}
-
 .geoSelectionPanelButtons {
     position: relative;
     top: -35px;
