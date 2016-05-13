@@ -18,6 +18,9 @@ describe('Portal.cart.BaseInjector', function() {
                 else if (protocols == 'metadataRecord') {
                     return 'Metadata record link!'
                 }
+            },
+            getFilters: function() {
+                return [];
             }
         };
     });

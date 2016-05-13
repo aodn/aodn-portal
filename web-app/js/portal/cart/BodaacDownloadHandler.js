@@ -6,11 +6,11 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
     LAYER_NAME_INDEX: 0,
     FIELD_NAME_INDEX: 1,
 
-    getDownloadOptions: function() {
+    getDownloadOptions: function(filters) {
 
         var downloadOptions = [];
 
-        if (this._hasRequiredInfo()) {
+        if (this._showDownloadOptions(filters)) {
 
             downloadOptions.push({
                 textKey: 'downloadAsAllSourceNetCdfLabel',
@@ -41,9 +41,9 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return downloadOptions;
     },
 
-    canEstimateDownloadSize: function() {
+    canEstimateDownloadSize: function(filters) {
 
-        return true;
+        return !Portal.filter.FilterUtils.hasFilter(filters, 'timeSeriesAtPoint');
     },
 
     getDownloadEstimateParams: function(collection) {
@@ -56,9 +56,12 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         };
     },
 
-    _hasRequiredInfo: function() {
+    _showDownloadOptions: function(filters) {
 
-        return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty() && (this._resourceName().indexOf(this.NAME_FIELD_DELIMETER) > -1);
+        return this._resourceHrefNotEmpty()
+            && this._resourceNameNotEmpty()
+            && (this._resourceName().indexOf(this.NAME_FIELD_DELIMETER) > -1)
+            && !Portal.filter.FilterUtils.hasFilter(filters, 'timeSeriesAtPoint');
     },
 
     _getUrlGeneratorFunction: function() {

@@ -8,6 +8,12 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
         return 'downloadAsSubsettedNetCdfLabel';
     },
 
+    _showDownloadOptions: function(filters) {
+        return this._resourceHrefNotEmpty()
+            && this._resourceNameNotEmpty()
+            && !Portal.filter.FilterUtils.hasFilter(filters, 'timeSeriesAtPoint');
+    },
+
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
 
         var subset = this._getSubset(filters);
@@ -25,10 +31,6 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
             this.getAsyncDownloadUrl('wps'),
             Ext.urlEncode(jobParameters)
         );
-    },
-
-    _downloadEnabled: function(collection) {
-        return true;
     },
 
     _getSubset: function(filters) {

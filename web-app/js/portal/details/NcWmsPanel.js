@@ -31,8 +31,28 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this._addLoadingInfo();
         this._addTemporalControls();
+
+        if (this._timeSeriesOptionAvailable()) {
+            this._addTimeSeriesControls();
+        }
+
         this._initWithLayer();
         this._addClearButton();
+    },
+
+    _timeSeriesOptionAvailable: function() {
+        var handlers = Portal.cart.DownloadHandler.handlersForDataCollection(this.dataCollection);
+
+        var timeseriesHandlerFound = false;
+
+        var handlerIndex = Ext.each(handlers, function(handler) {
+            if (handler instanceof Portal.cart.PointCSVDownloadHandler) {
+                timeseriesHandlerFound = true;
+                return false;
+            }
+        })
+
+        return timeseriesHandlerFound;
     },
 
     _initWithLayer: function() {
@@ -96,15 +116,15 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _getTimeSeriesFilter: function() {
-        return this.pointTimeSeriesCheckbox.checked;
+        return this._timeSeriesOptionAvailable() && this.pointTimeSeriesCheckbox.checked;
     },
 
     _getTimeSeriesLatitude: function() {
-        return (this.pointTimeSeries.items.items[2].getEl()) ? this.pointTimeSeries.items.items[2].getEl().dom.value : this.pointTimeSeries.items.items[2].value;
+        return this._timeSeriesOptionAvailable() ? this.timeSeriesLatitudeControl.getValue() : undefined;
     },
 
     _getTimeSeriesLongitude: function() {
-        return (this.pointTimeSeries.items.items[4].getEl()) ? this.pointTimeSeries.items.items[4].getEl().dom.value : this.pointTimeSeries.items.items[4].value;
+        return this._timeSeriesOptionAvailable() ? this.timeSeriesLongitudeControl.getValue() : undefined;
     },
 
     _getGeometryFilter: function() {
@@ -196,93 +216,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             height: 40
         });
 
-        this.pointTimeSeriesCheckbox = new Ext.form.Checkbox({
-            id: 'point-time-series',
-            boxLabel: OpenLayers.i18n('pointTimeSeriesLabel'),
-            checked: false,
-            listeners: {
-                scope: this,
-                check: {
-                    element: 'el', //bind to the underlying el property on the panel
-                    fn: function(checkbox, isChecked) {
-                        var lat = Ext.getCmp('pointTimeSeriesLatitude');
-                        var lon = Ext.getCmp('pointTimeSeriesLongitude');
-
-                        if (isChecked) {
-                            lat.setReadOnly(false);
-                            lon.setReadOnly(false);
-                        } else {
-                            lat.setReadOnly(true);
-                            lon.setReadOnly(true);
-                        }
-                    }
-                }
-            }
-        });
-
-        this.pointTimeSeries = new Ext.Panel({
-            layout: 'hbox',
-            plain: true,
-            items: [this.pointTimeSeriesCheckbox,
-                {
-                    xtype: 'label',
-                    text: OpenLayers.i18n('latitudeLabel'),
-                    style: 'margin: 4px 0 0 10px'
-                }, {
-                    xtype: 'textfield',
-                    id: 'pointTimeSeriesLatitude',
-                    fieldLabel: OpenLayers.i18n('latitudeLabel'),
-                    value: this.dataCollection.data.metadataRecord.data.bbox.bounds.centerLonLat.lat,
-                    readOnly: true,
-                    width: 60,
-                    style: 'margin: 0 0 0 15px',
-                    listeners: {
-                        scope: this,
-                        render: function(c) {
-                            Ext.QuickTips.register({
-                                target: c.getEl(),
-                                text: 'Check '+OpenLayers.i18n('pointTimeSeriesLabel')+' to enable editing',
-                                enabled: true,
-                                showDelay: 0,
-                                trackMouse: true,
-                                autoShow: true
-                            });
-                        },
-                        change: function(c) {
-                            this._applyFilterValuesToCollection();
-                        },
-                    }
-                }, {
-                    xtype: 'label',
-                    text: OpenLayers.i18n('longitudeLabel'),
-                    style: 'margin: 4px 0 0 20px'
-                }, {
-                    xtype: 'textfield',
-                    id: 'pointTimeSeriesLongitude',
-                    fieldLabel: OpenLayers.i18n('longitudeLabel'),
-                    value: this.dataCollection.data.metadataRecord.data.bbox.bounds.centerLonLat.lon,
-                    readOnly: true,
-                    width: 60,
-                    style: 'margin: 0 0 0 25px',
-                    listeners: {
-                        scope: this,
-                        render: function(c) {
-                            Ext.QuickTips.register({
-                                target: c.getEl(),
-                                text: 'Check '+OpenLayers.i18n('pointTimeSeriesLabel')+' to enable editing',
-                                enabled: true,
-                                showDelay: 0,
-                                trackMouse: true,
-                                autoShow: true
-                            });
-                        },
-                        change: function(c) {
-                            this._applyFilterValuesToCollection();
-                        },
-                    }
-                }]
-        });
-
         // Group controls for hide/show
         this.temporalControls = new Ext.Container({
             items: [
@@ -291,14 +224,126 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
                 dateEndRow,
                 this._newSectionSpacer(10),
                 this.mapTimeControls,
-                this.pointTimeSeries,
-                this._newSectionSpacer(10),
                 this.timeRangeLabel,
-                this._newSectionSpacer(10)
+                this._newSectionSpacer(20)
             ]
         });
 
         this.add(this.temporalControls);
+    },
+
+    _addTimeSeriesControls: function() {
+        this.timeSeriesLatitudeControl = new Ext.form.NumberField({
+            minValue: this.dataCollection.getBounds().bottom,
+            maxValue: this.dataCollection.getBounds().top,
+            decimalPrecision: 7,
+            value: this.dataCollection.getBounds().centerLonLat.lat,
+            readOnly: true,
+            width: 60,
+            style: 'margin: 0 0 0 15px',
+            listeners: {
+                scope: this,
+                render: function(c) {
+                    this._addTimeSeriesQuickTip(c);
+                },
+                change: function(c) {
+                    this._applyFilterValuesToCollection();
+                }
+            }
+        });
+
+        this.timeSeriesLongitudeControl = new Ext.form.NumberField({
+            minValue: this.dataCollection.getBounds().left,
+            maxValue: this.dataCollection.getBounds().right,
+            decimalPrecision: 7,
+            value: this.dataCollection.getBounds().centerLonLat.lon,
+            readOnly: true,
+            width: 60,
+            style: 'margin: 0 0 0 15px',
+            listeners: {
+                scope: this,
+                render: function(c) {
+                    this._addTimeSeriesQuickTip(c);
+                },
+                change: function(c) {
+                    this._applyFilterValuesToCollection();
+                }
+            }
+        });
+
+        this.pointTimeSeriesCheckbox = new Ext.form.Checkbox({
+            boxLabel: OpenLayers.i18n('pointTimeSeriesLabel'),
+            cls: 'checkboxHeading',
+            checked: false,
+            listeners: {
+                scope: this,
+                check: {
+                    fn: function(checkbox, isChecked) {
+                        this._onPointTimeSeriesCheckBoxChange(isChecked);
+                    }
+                }
+            }
+        });
+
+        this.pointTimeSeries = new Ext.Panel({
+            cls: 'checkBoxHeadings',
+            items: [
+                this.pointTimeSeriesCheckbox,
+                this._newSectionSpacer(10),
+                {
+                    xtype: 'label',
+                    text: OpenLayers.i18n('latitudeLabel')
+                },
+                this.timeSeriesLatitudeControl,
+                {
+                    xtype: 'label',
+                    text: OpenLayers.i18n('longitudeLabel'),
+                    style: 'margin: 0 0 0 10px',
+                },
+                this.timeSeriesLongitudeControl,
+                this._newSectionSpacer(10),
+            ]
+        });
+
+        this.add(this.pointTimeSeries);
+    },
+
+    _onPointTimeSeriesCheckBoxChange: function(isChecked) {
+        if (isChecked) {
+            this._enablePointTimeSeriesControls();
+        } else {
+            this._disablePointTimeSeriesControls();
+        };
+        this._applyFilterValuesToCollection();
+    },
+
+    _enablePointTimeSeriesControls: function() {
+        this.timeSeriesLatitudeControl.setReadOnly(false);
+        this._removeQuickTip(this.timeSeriesLatitudeControl);
+        this.timeSeriesLongitudeControl.setReadOnly(false);
+        this._removeQuickTip(this.timeSeriesLongitudeControl);
+    },
+
+    _disablePointTimeSeriesControls: function() {
+        this.timeSeriesLatitudeControl.setReadOnly(true);
+        this._addTimeSeriesQuickTip(this.timeSeriesLatitudeControl);
+        this.timeSeriesLongitudeControl.setReadOnly(true);
+        this._addTimeSeriesQuickTip(this.timeSeriesLongitudeControl);
+    },
+
+    _addTimeSeriesQuickTip: function(component) {
+        Ext.QuickTips.register({
+            target: component.getEl(),
+            text: String.format(OpenLayers.i18n('enableTimeSeriesEditing'), OpenLayers.i18n('pointTimeSeriesLabel')),
+            enabled: true,
+            showDelay: 0,
+            trackMouse: true,
+            autoShow: true
+        });
+    },
+
+    _removeQuickTip: function(component) {
+        Ext.QuickTips.unregister(component.getEl()); 
     },
 
     _defaultDateTimePickerConfiguration: function() {
@@ -442,7 +487,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry, timeSeries, lat, lon) {
 
-        var newFilterValue = {};
+        var dateFilterValue = {};
+        var pointFilterValue = {};
         var ncwmsParamsAsFilter = {
             isNcwmsParams: true,
             hasValue: function() {
@@ -452,17 +498,19 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         if (dateRangeStart && dateRangeStart.isValid()) {
             ncwmsParamsAsFilter.dateRangeStart = dateRangeStart;
-            newFilterValue.fromDate = dateRangeStart.toDate();
+            dateFilterValue.fromDate = dateRangeStart.toDate();
         }
 
         if (dateRangeEnd && dateRangeEnd.isValid()) {
             ncwmsParamsAsFilter.dateRangeEnd = dateRangeEnd;
-            newFilterValue.toDate = dateRangeEnd.toDate();
+            dateFilterValue.toDate = dateRangeEnd.toDate();
         }
 
-        if (geometry) {
+        if (timeSeries) {
+            pointFilterValue.latitude = parseFloat(lat);
+            pointFilterValue.longitude = parseFloat(lon);
+        } else if (geometry) {
             var bounds = geometry.getBounds();
-
             ncwmsParamsAsFilter.latitudeRangeStart = bounds.bottom;
             ncwmsParamsAsFilter.longitudeRangeStart = bounds.left;
             ncwmsParamsAsFilter.latitudeRangeEnd = bounds.top;
@@ -471,23 +519,19 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         var realDateFilter = new Portal.filter.DateFilter({
             name: 'time',
-            value: newFilterValue,
+            value: dateFilterValue,
             visualised: true
         });
 
-        var timeSeriesFilter = {
-            timeSeries: timeSeries,
-            lat: lat,
-            lon: lon,
-            hasValue: function() {
-                return false;
-            } // From the Portal.filter.Filter interface. Prevents filter from being used in CQL or displayed to user
-        };
+        var pointFilter = new Portal.filter.PointFilter({
+            name: 'timeSeriesAtPoint',
+            value: pointFilterValue
+        });
 
         return [
             realDateFilter,
             ncwmsParamsAsFilter,
-            timeSeriesFilter
+            pointFilter
         ];
     },
 

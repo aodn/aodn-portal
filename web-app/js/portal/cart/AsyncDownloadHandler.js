@@ -6,12 +6,11 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return String.format('asyncDownload?aggregatorService={0}&', aggregatorServiceName);
     },
 
-    getDownloadOptions: function() {
+    getDownloadOptions: function(filters) {
 
-        var collection  = $( "body" ).data("collection");
         var downloadOptions = [];
 
-        if (this._hasRequiredInfo()  && this._downloadEnabled(collection)) {
+        if (this._showDownloadOptions(filters)) {
 
             downloadOptions.push({
                 textKey: this._getDownloadOptionTextKey(),
@@ -55,12 +54,8 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         throw 'Should be implemented by subclasses';
     },
 
-    _hasRequiredInfo: function() {
+    _showDownloadOptions: function() {
         return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty();
-    },
-
-    _downloadEnabled: function(collection) {
-        throw 'Should be implemented by subclasses';
     },
 
     serviceResponseHandler: function(response) {

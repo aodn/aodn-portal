@@ -1,42 +1,59 @@
-describe('Portal.cart.GogoduckDownloadHandler', function () {
-
+describe('Portal.cart.PointCSVDownloadHandler', function () {
     var handler;
+    var timeSeriesInTimeRangeFilters;
+    var timeSeriesAtPointFilter;
+    var noTemporalFilter;
 
     beforeEach(function() {
-
-        handler = new Portal.cart.GogoduckDownloadHandler({
+        handler = new Portal.cart.PointCSVDownloadHandler({
             href: 'geoserver_url',
             name: 'layer_name'
         });
+
+        var temporalFilter = {
+            isNcwmsParams: true,
+            dateRangeStart: moment.utc('2000-01-01T01:01:01'),
+            dateRangeEnd: moment.utc('2014-12-23T23:59:59')
+        };
+
+        noTemporalFilter = {
+            isNcwmsParams: true
+        };
+
+        timeSeriesAtPointFilter = new Portal.filter.PointFilter({
+            name: 'timeSeriesAtPoint',
+            value: {
+                latitude: -24.523,
+                longitude: 114.8735
+            }
+        });
+
+        timeSeriesInTimeRangeFilters = [temporalFilter, timeSeriesAtPointFilter];
     });
 
     describe('getDownloadOptions', function() {
-
         it('has one valid option', function() {
-
-            var options = handler.getDownloadOptions([]);
+            var options = handler.getDownloadOptions(timeSeriesInTimeRangeFilters);
 
             expect(options.length).toBe(1);
 
             var option = options[0];
 
-            expect(option.textKey).toBeNonEmptyString();
+            expect(option.textKey).toEqual('downloadAsPointTimeSeriesCsvLabel');
             expect(typeof option.handler).toBe('function');
             expect(option.handlerParams.asyncDownload).toBe(true);
             expect(option.handlerParams.collectEmailAddress).toBe(true);
         });
 
         it('has no options when missing required href information', function() {
-
             handler.onlineResource.href = "";
-            var options = handler.getDownloadOptions();
+            var options = handler.getDownloadOptions(timeSeriesInTimeRangeFilters);
             expect(options.length).toBe(0);
         });
 
         it('has no options when missing required name information', function() {
-
             handler.onlineResource.name = "";
-            var options = handler.getDownloadOptions();
+            var options = handler.getDownloadOptions(timeSeriesInTimeRangeFilters);
             expect(options.length).toBe(0);
         });
     });
@@ -53,21 +70,7 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
             clickHandler = handler._getUrlGeneratorFunction();
 
             testCollection = {
-                getFilters: returns([
-                    {
-                        isNcwmsParams: true,
-                        dateRangeStart: moment.utc('2000-01-01T01:01:01'),
-                        dateRangeEnd: moment.utc('2014-12-23T23:59:59'),
-                        latitudeRangeStart: -42,
-                        latitudeRangeEnd: -20,
-                        longitudeRangeStart: 160,
-                        longitudeRangeEnd: 170
-                    },
-                    {
-                        type: Portal.filter.DateFilter,
-                        comment: 'Should be safely ignored for URL building'
-                    }
-                ])
+                getFilters: returns(timeSeriesInTimeRangeFilters)
             };
             testHandlerParams = {
                 emailAddress: 'bob@example.com'
@@ -85,44 +88,21 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
             expect(url).toHaveParameterWithValue(
                 'jobParameters.subset',
                 'TIME,2000-01-01T01:01:01.000Z,2014-12-23T23:59:59.000Z;' +
-                'LATITUDE,-42.0,-20.0;' +
-                'LONGITUDE,160.0,170.0'
+                'LATITUDE,-24.523,-24.523;' +
+                'LONGITUDE,114.8735,114.8735'
             );
         });
 
-        it('builds the correct URL if no area is specified', function() {
-            testCollection.getFilters = returns([{
-                isNcwmsParams: true,
-                dateRangeStart: moment.utc('2000-01-01T01:01:01'),
-                dateRangeEnd: moment.utc('2014-12-23T23:59:59')
-            }]);
-
-            url = clickHandler(testCollection, testHandlerParams);
-
-            expect(url).toHaveParameterWithValue(
-                'jobParameters.subset',
-                'TIME,2000-01-01T01:01:01.000Z,2014-12-23T23:59:59.000Z;' +
-                'LATITUDE,-90.0,90.0;' +
-                'LONGITUDE,-180.0,180.0'
-            );
-        });
-
-        it('builds the correct URL is no dates are specified', function() {
-            testCollection.getFilters = returns([{
-                isNcwmsParams: true,
-                latitudeRangeStart: 20,
-                latitudeRangeEnd: 42,
-                longitudeRangeStart: -170,
-                longitudeRangeEnd: -160
-            }]);
+        it('builds the correct URL if no dates are specified', function() {
+            testCollection.getFilters = returns([timeSeriesAtPointFilter, noTemporalFilter]);
 
             url = clickHandler(testCollection, testHandlerParams);
 
             expect(url).toHaveParameterWithValue(
                 'jobParameters.subset',
                 'TIME,1900-01-01T00:00:00.000Z,' + handler._formatDate(handler.DEFAULT_DATE_END).toString() + ';' +
-                'LATITUDE,20.0,42.0;' +
-                'LONGITUDE,-170.0,-160.0'
+                'LATITUDE,-24.523,-24.523;' +
+                'LONGITUDE,114.8735,114.8735'
             );
         });
     });
