@@ -135,7 +135,7 @@ environments {
 
         // URLs
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
-        grails.serverURL = "http://${localhostAddress}:8080/$appName"
+        grails.serverURL = "http://${localhostAddress}:8080"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-portal.aodn.org.au/geonetwork"
 
@@ -147,7 +147,7 @@ environments {
     test {
 
         // URLs
-        grails.serverURL = "http://localhost:8080/$appName"
+        grails.serverURL = "http://localhost:8080"
     }
 
     production {
