@@ -5,6 +5,6 @@
 
 <link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'imosTheme.css')}?v=${resourceVersionNumber}"/>
 
-<link rel="stylesheet" type="text/css" href="${createLink(controller: 'home', action: 'css')}?v=${new Date().time}"/>
+<link rel="stylesheet" type="text/css" href="${createLink(controller: 'search', action: 'css')}?v=${new Date().time}"/>
 
 <link href='https://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>

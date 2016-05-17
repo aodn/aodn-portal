@@ -9,7 +9,8 @@
     <packaging>grails-app</packaging>
     <version>4.22.7</version>
 
-    <name>aodn-portal</name>
+    <!-- context-less like production -->
+    <name></name>
     <description>aodn-portal</description>
 
     <properties>
