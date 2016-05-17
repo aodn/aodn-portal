@@ -46,7 +46,7 @@
 
             <p>"The gateway to Australian marine and climate science data"</p>
 
-            <div><a href="home" class="btn btn-primary btn-lg">Get Ocean Data Now</a></div>
+            <div><a href="search" class="btn btn-primary btn-lg">Get Ocean Data Now</a></div>
         </div>
     </div>
 

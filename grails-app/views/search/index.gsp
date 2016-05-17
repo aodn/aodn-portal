@@ -22,8 +22,8 @@
         <script type="text/javascript">
 
             (function () {
-                // Fixes #1723, redirect 'home/' to 'home'
-                if (window.location.href.match(/\/home\/$/)) {
+                // Fixes #1723, redirect 'search/' to 'search'
+                if (window.location.href.match(/\/search\/$/)) {
                     var homeWithoutTrailingSlash = window.location.href.substring(0, window.location.href.length - 1);
                     window.location.replace(homeWithoutTrailingSlash);
                 }
