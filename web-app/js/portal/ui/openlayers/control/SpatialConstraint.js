@@ -2,7 +2,8 @@ Ext.namespace('Portal.ui.openlayers.control');
 
 Portal.ui.openlayers.SpatialConstraintType = {
     POLYGON: 'polygon',
-    BOUNDING_BOX: 'bounding box'
+    BOUNDING_BOX: 'bounding box',
+    POINT: 'point box'
 };
 
 Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.DrawFeature, {
@@ -22,6 +23,8 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         this.layerName = 'spatial constraint';
 
         options = options || {};
+
+        this.constraintType = options.constraintType;
 
         this.vectorlayer = new OpenLayers.Layer.Vector(
             this.layerName,
@@ -56,6 +59,14 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         this.events.addEventType('spatialconstraintadded');
         this.events.addEventType('spatialconstraintcleared');
         this.events.addEventType('spatialconstrainttypechanged');
+
+        this.events.register(
+            'activate',
+            this,
+            function() {
+                this.map.events.triggerEvent('resetspatialconstraint', this.constraintType);
+            }
+        );
 
         this.vectorlayer.events.on({
             scope: this,
@@ -243,10 +254,11 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     }
 });
 
-Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map, handler) {
+Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map, handler, constraintType) {
 
     map.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
         title: OpenLayers.i18n("drawingControl"),
+        constraintType: constraintType,
         handler: handler,
         'displayClass': 'olControlDrawFeature',
         validator: new Portal.filter.validation.SpatialConstraintValidator({

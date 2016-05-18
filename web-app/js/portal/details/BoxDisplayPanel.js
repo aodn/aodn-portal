@@ -1,8 +1,8 @@
 Ext.namespace('Portal.details');
 
-Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
+Portal.details.BoxDisplayPanel = Ext.extend(Portal.details.GeomDisplayPanel, {
+
     TABLE_WIDTH: 165,
-    TABLE_HEIGHT: 25,
 
     constructor: function(cfg) {
 
@@ -19,24 +19,6 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
         Portal.details.BoxDisplayPanel.superclass.constructor.call(this, config);
     },
 
-    setGeometry: function(geometry) {
-        // Defer this incase this is not rendered yet.
-        var self = this;
-        setTimeout(function() {
-            self.setBounds(geometry.getBounds());
-        }, 0);
-    },
-
-    setGeometryFromUserEnteredVals: function() {
-
-        if (this.map) {
-            var newBoundsAsGeometry = this.getBounds().toGeometry();
-            if (newBoundsAsGeometry.getArea() >= 0) {
-                this.map.events.triggerEvent('spatialconstraintusermodded', newBoundsAsGeometry);
-                trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingTypedBboxLabel'));
-            }
-        }
-    },
 
     getBounds: function() {
         return new OpenLayers.Bounds(
@@ -59,6 +41,16 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
         this.westBL.setRawValue();
         this.northBL.setRawValue();
         this.eastBL.setRawValue();
+    },
+
+    _hasErrors: function() {
+        var errors = [].concat(
+            this.southBL.getErrors(),
+            this.westBL.getErrors(),
+            this.northBL.getErrors(),
+            this.eastBL.getErrors()
+        );
+        return (errors.length == 0);
     },
 
     _buildBoundingBox: function(config) {
@@ -122,42 +114,5 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
                 ]
             }
         ];
-    },
-
-    _buildLabel: function(i18nKey) {
-        return new Ext.form.Label({
-            text: OpenLayers.i18n(i18nKey),
-            width: 15
-        });
-    },
-
-    hasNumberFieldErrors: function() {
-
-        var errors = [].concat(
-            this.southBL.getErrors(),
-            this.westBL.getErrors(),
-            this.northBL.getErrors(),
-            this.eastBL.getErrors());
-        return (errors.length == 0);
-    },
-
-    _buildCoord: function(name, min, max) {
-        return new Ext.form.NumberField({
-            name: name,
-            decimalPrecision: 2,
-            width: 55,
-            overCls: "hightlightInputbox",
-            emptyText: OpenLayers.i18n('emptySpatialBL'),
-            minValue : min,
-            maxValue : max,
-            listeners: {
-                scope: this,
-                change: function(numberField) {
-                    if (this.hasNumberFieldErrors()) {
-                        this.setGeometryFromUserEnteredVals();
-                    }
-                }
-            }
-        });
     }
 });

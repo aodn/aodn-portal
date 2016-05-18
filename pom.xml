@@ -330,6 +330,9 @@
                         <include>portal/common/MapPanel.js</include>
                         <include>portal/search/CloneMapPanel.js</include>
                         <!-- needs to load before FacetMapPanel-->
+                        <include>portal/details/GeomDisplayPanel.js</include>
+                        <include>portal/details/PointDisplayPanel.js</include>
+                        <include>portal/details/BoxDisplayPanel.js</include>
                         <include>portal/ui/openlayers/layer/NcWMS.js</include>
                         <include>portal/data/ChildElementsField.js</include>
                         <include>portal/data/Metadata*.js</include>

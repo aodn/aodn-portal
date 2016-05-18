@@ -324,10 +324,8 @@ ul.x-tab-strip-top {
 }
 
 .spatialSubsetControl {
-    border: solid 1px #e8e8e8;
     margin-right: 5px;
     padding: 18px;
-    border-radius: 6px;
 }
 
 .dataCollectionDetailsPanel .x-tool:not(:first-of-type) {
