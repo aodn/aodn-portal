@@ -2,10 +2,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
-    _getDownloadOptionTextKey: function() {
-        return 'downloadAsSubsettedNetCdfLabel';
-    },
-
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
 
         var cqlFilter = this._getSubset(filters);

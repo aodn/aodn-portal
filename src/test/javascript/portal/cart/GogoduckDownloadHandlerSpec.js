@@ -12,11 +12,11 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
 
     describe('getDownloadOptions', function() {
 
-        it('has one valid option', function() {
+        it('has two valid options, netCDF and CSV', function() {
 
             var options = handler.getDownloadOptions();
 
-            expect(options.length).toBe(1);
+            expect(options.length).toBe(2);
 
             var option = options[0];
 

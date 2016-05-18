@@ -99,6 +99,8 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     _downloadAsynchronously: function(collection, downloadUrl, params) {
         log.debug('downloading asynchronously', downloadUrl);
 
+        console.log(downloadUrl);
+
         this.messageBox = Ext.Msg.show({
             title: OpenLayers.i18n('asyncDownloadPanelTitleLoading'),
             msg: OpenLayers.i18n('asyncDownloadSuccessPendingMsg'),
