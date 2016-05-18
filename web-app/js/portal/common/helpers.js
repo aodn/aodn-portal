@@ -303,7 +303,7 @@ function getPortalBase(pathname) {
     if (!pathname) {
         pathname = window.location.pathname;
     }
-    return pathname.replace(/\/home$/, "");
+    return pathname.replace(/\/search$/, "");
 };
 
 function normaliseLongitude(longitude) {

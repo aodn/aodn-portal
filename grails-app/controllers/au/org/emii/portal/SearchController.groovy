@@ -2,7 +2,7 @@ package au.org.emii.portal
 
 import grails.converters.JSON
 
-class HomeController {
+class SearchController {
 
     def grailsApplication
     def portalBranding
