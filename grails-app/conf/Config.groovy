@@ -56,8 +56,7 @@ grails.exceptionresolver.params.exclude = ['password']
 
 // Portal help site
 help {
-    url = "http://help.aodn.org.au"
-    downloadDatasetUrl = "${help.url}/?q=node/6"
+    url = "https://help.aodn.org.au/"
 }
 
 oceanCurrent.url = "http://oceancurrent.aodn.org.au"
@@ -127,6 +126,8 @@ googleAnalytics.trackingId = null
 // down which IP address are allowed to access certain email-producing URLs).
 grails.mail.disabled = true
 
+grails.app.context = "/"
+
 environments {
 
     development {
@@ -135,7 +136,7 @@ environments {
 
         // URLs
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
-        grails.serverURL = "http://${localhostAddress}:8080/$appName"
+        grails.serverURL = "http://${localhostAddress}:9090/"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-portal.aodn.org.au/geonetwork"
 
@@ -147,12 +148,12 @@ environments {
     test {
 
         // URLs
-        grails.serverURL = "http://localhost:8080/$appName"
+        grails.serverURL = "http://localhost:8080"
     }
 
     production {
 
-        // URLs
+        // overwritten by Chef in production
         grails.serverURL = "http://myaodn.example.com"
         geonetwork.url = "http://catalogue-123.aodn.org.au/geonetwork"
     }
@@ -229,8 +230,15 @@ baselayers = [
 portal {
     siteHeader = "Open Access to Ocean Data"
     motdUrl = "https://static.emii.org.au/motd"
+    logo = "https://static.emii.org.au/images/logo/AODN_logo_fullText.png"
+    secondaryLogo = "https://static.emii.org.au/images/logo/IMOS_logo-stacked-reversed-Converted.png"
+    icon = "https://static.emii.org.au/images/aodn/favicon.ico"
+    localThemeCss = "AODNTheme.css"
 
-    logo = "images/IMOS_logo.png"
+    contactEmail = "info@aodn.org.au"
+    conditionOfUse = "http://imos.org.au/imostermsofuse0.html"
+
+    /*logo = "images/favicon.ico"*/
     header {
         externalLinks = [
             [
@@ -243,11 +251,12 @@ portal {
 
     footerContent =
         """
-        <a title="Email us for help in using this site" target="_blank" class="external" href="mailto:info@emii.org.au?subject=Portal enquiry - ">Contact</a> <b>|</b>
-        <a title="Data usage acknowledgement" target="_blank" class="external" href="${help.url}/help/?q=node/81">Acknowledgement</a> <b>|</b>
-        <a title="Disclaimer information" target="_blank" class="external" href="${help.url}/help/?q=node/80">Disclaimer</a> <b>|</b>
-        <a title="Integrated Marine Observing System" target="_blank" class="external" href="http://www.imos.org.au">IMOS</a> <b>|</b>
-        <a title="Australian Ocean Data Network" target="_blank" class="external" href="http://imos.org.au/aodn.html">AODN</a>
+        <a title="Email us for help in using this site" target="_blank" class="external" href="mailto:${portal.contactEmail}?subject=Portal enquiry - ">Contact</a> <b>|</b>
+        <a title="Data usage acknowledgement" target="_blank" class="external" href="${help.url}user-guide-introduction/aodn-portal/data-use-acknowledgement">Acknowledgement</a> <b>|</b>
+        <a title="Disclaimer information" target="_blank" class="external" href="${help.url}user-guide-introduction/aodn-portal/disclaimer">Disclaimer</a> <b>|</b>
+        <a title="Australian Ocean Data Network" target="_blank" class="external" href="http://imos.org.au/aodn.html">AODN</a> <b>|</b>
+        <a title="Integrated Marine Observing System" target="_blank" class="external" href="http://www.imos.org.au/">IMOS</a> <b>|</b>
+        <a title="AODN Portal User Guide" target="_blank" class="external" href="${help.url}contributing-data">Contributing</a>
         """
 
     initialBbox = "110,-50,160,-3"

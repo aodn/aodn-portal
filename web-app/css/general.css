@@ -130,37 +130,23 @@ hr {
 }
 
 .headerHeightOverlord {
-    height: 120px;
+    height: 130px;
 }
 
-#logoContainer {
+#logoContainer,
+#headerContainer {
     float: left;
+}
+
+#secondaryLogoContainer {
+    top: 40px;
+    right: 20px;
     position: absolute;
-}
-
-.landingContainer {
-    width: 950px;
-    padding-top: 12px;
-}
-
-#landingLeft {
-    float: left;
-}
-
-#landingHeaderContainer {
-    margin-left: 340px;
 }
 
 .bigtext {
     font-size: 18px;
     margin: 10px 0;
-}
-
-#landingCentre {
-    float: right;
-    width: 620px;
-    padding: 30px 0;
-    margin-bottom: 70px;
 }
 
 #toplinks {
@@ -1007,7 +993,6 @@ div.allwhite {
     background-color: #EBEBEB;
 }
 
-
 .resultsRowHeaderTitle:hover,
 .dataCollectionDetailsAccordion .x-panel-header:hover,
 .filter-selection-panel .x-panel-header:hover,
@@ -1154,7 +1139,7 @@ div:not(.x-tree-selected) * {
     padding: 4px 8px 6px;
     position: absolute;
     right: 25px;
-    top: 45px;
+    top: 145px;
 }
 
 #downLoadCartWidget span {

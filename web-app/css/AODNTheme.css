@@ -1,0 +1,345 @@
+html {
+    background-color: white;
+    margin-top: 0 ! important;
+}
+
+body, html, td, p, button {
+    font-family: 'Arimo', sans-serif;
+}
+
+body, html, td {
+    color: #4D5B63;
+}
+
+h2 {
+    margin-bottom: 14px;
+}
+
+#logoContainer {
+    margin-top: 7px;
+    padding-left: 35px;
+    position: relative;
+    overflow: hidden;
+}
+
+#secondaryLogoContainer {
+    right: 40px;
+}
+
+.buildInfo {
+    color: #999999;
+    font-size: 10px;
+    margin-top: 20px;
+}
+
+h1, h2, h3, h4,
+.x-panel-header,
+.x-window-header-text,
+.search-filter-panel .filter-selection-panel-header-selected {
+    color: #4D5B63;
+}
+
+#header {
+    background-image: linear-gradient(0deg, transparent 24%,
+    rgba(255, 255, 255, 0.1) 25%,
+    rgba(255, 255, 255, 0.1) 26%, transparent 27%, transparent 74%,
+    rgba(255, 255, 255, 0.1) 75%,
+    rgba(255, 255, 255, 0.1) 76%, transparent 77%, transparent),
+    linear-gradient(90deg, transparent 24%,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(255, 255, 255, 0.1) 26%, transparent 27%, transparent 74%,
+        rgba(255, 255, 255, 0.05) 75%,
+        rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent),
+    linear-gradient(to right, #0a283a 0%, #0d405f 23%, rgb(0, 92, 146) 75%, rgb(0, 72, 114) 100%);
+    background-repeat: repeat, repeat, repeat;
+    background-size: 10px 10px, 10px 6px, 100% 100px;
+    position: relative;
+    overflow: hidden;
+    min-width: 710px;
+}
+
+#header-bg-image {
+    background-image: url(https://aodnsite.files.wordpress.com/2016/02/cropped-nature-clear-sky-blue-water4.jpg);
+    opacity: 0.1;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    width: 100%;
+}
+
+#headerTitle {
+    font-family: "Oswald", sans-serif;
+    font-weight: 700;
+    color: White;
+    font-size: 37px;
+    margin: 0;
+    padding-top: 37px;
+    padding-left: 10px;
+    line-height: 48px ! important;
+}
+
+@media (max-width: 800px) {
+
+    #headerContainer #headerTitle {
+        font-size: 28px;
+    }
+}
+
+#toplinks {
+    color: #a4d2ee;
+    float: right;
+    position: absolute;
+    right: 20px;
+    top: 12px;
+}
+
+#toplinks {
+    color: #FFFFFF;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+#toplinks a:hover {
+    color: grey;
+    text-shadow: none;
+}
+
+#toplinks a:not(:first-child) {
+    border-left: 1px solid #9DAAB1;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+input, select, textarea {
+    background-color: #FCFCFC;
+    border: 1px solid #CCCCCC;
+    font: 11px verdana, arial, helvetica, sans-serif;
+    margin: 2px 0;
+    margin-right: 5px;
+    padding: 2px 4px;
+    border-radius: 3px 3px 3px 3px;
+}
+
+.mainToolBarFooter {
+    margin-right: 20px;
+    font-size: 12px ! important;
+}
+
+.footer {
+    background-color: whitesmoke;
+}
+
+.footer p {
+    font-size: 10px;
+}
+
+.footer .x-box-inner {
+    overflow: visible;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.x-toolbar {
+    padding-top: 10px ! important;
+    border: none;
+    background: none;
+}
+
+.x-tab-strip span.x-tab-strip-text, .x-btn-text {
+    color: #666;
+}
+
+ul.x-tab-strip-top {
+    border: none;
+}
+
+.vSpacer {
+    height: 30px;
+    clear: both;
+}
+
+.clear {
+    height: 10px;
+}
+
+.x-btn, .x-btn button {
+    font-size: 11px;
+}
+
+.x-btn-tl, .x-btn-tr, .x-btn-tc, .x-btn-ml, .x-btn-mr, .x-btn-mc, .x-btn-bl, .x-btn-br, .x-btn-bc {
+    background: none;
+}
+
+#downLoadCartWidget {
+    background-color: #ECECEC;
+    color: black;
+    border-radius: 0 0 8px 8px;
+    right: 100px;
+    top: 160px;
+    box-shadow: 1px 1px 6px #999;
+}
+
+.x-btn.navigationButton {
+    background: #F9A840; /* strong orange */
+}
+
+.x-btn.navigationButtonActive {
+    background-color: #89C8EE;
+}
+
+.viewPortTab * {
+    color: #CFD4D7;
+}
+
+/* action links */
+.viewPortTabActive *,
+.viewPortTabActiveLast *,
+.x-btn.navigationButton * {
+    color: #3A3F41;
+    font-weight: bold;
+}
+
+.viewPortTabActive:hover *,
+.x-btn.navigationButton.x-btn-over:not(.x-btn-selected) * {
+    color: black;
+}
+
+.x-btn.navigationButton.x-btn-over:not(.x-btn-selected) {
+    background-color: #FFBA66; /* AODN logo mandarin color */
+}
+
+.x-btn-selected {
+    background: #B5B6BB ! important;
+}
+
+#viewPortLinks {
+    border: none;
+    background: #306a93;
+    box-shadow: 2px 2px 5px rgba(50, 50, 50, 0.35);
+}
+
+.viewPortTab button {
+    background-color: transparent;
+}
+
+.viewPortTab {
+    background: #637580;
+    position: relative;
+}
+
+.viewPortTab::after {
+    background: #637580;
+    position: absolute;
+    width: 20px;
+    height: 100%;
+    content: " ";
+    border-right: 3px solid #435B6A;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    right: -15px;
+    z-index: 1000;
+}
+
+.viewPortTabActive,
+.viewPortTab.viewPortTabActive::after {
+    background-color: #F9A840;
+    border-right-color: #987E43;
+}
+
+.viewPortTabActive:hover,
+.viewPortTab.viewPortTabActive:hover::after {
+    background-color: #FFBA66;
+}
+
+.steps .stepTitle {
+    color: black;
+    font-weight: bold;
+}
+
+.steps .x-panel-header-text {
+    font-size: 20px;
+}
+
+.hightlightInputbox {
+    border-color: #AEAEAE;
+}
+
+.spatialSubsetControl {
+    border: solid 1px #e8e8e8;
+    margin-right: 5px;
+    padding: 18px;
+    border-radius: 6px;
+}
+
+.dataCollectionDetailsPanel .x-tool:not(:first-of-type) {
+    margin: 3px 0;
+}
+
+.dataCollectionDetailsPanel .x-tool:first-of-type {
+    margin-left: 6px;
+    margin-right: 0;
+}
+
+.portalheader, .jumbotronFooter {
+    padding: 10px 0;
+    background-color: #666;
+}
+
+.jumbotronFooter {
+    padding: 48px 0;
+}
+
+.jumbotronFooter * {
+    color: #ffffff;
+}
+
+.jumbotronFooter a {
+    color: #ccc;
+}
+
+dt {
+    padding-top: 10px;
+}
+
+.x-window-plain .x-window-body {
+    background-color: #fefefe !important;
+}
+
+.x-tab-strip-top .x-tab-right,
+.x-tab-strip-top .x-tab-left,
+.x-tab-strip-top .x-tab-strip-inner,
+.resultsRowHeaderTitle,
+.dataCollectionDetailsAccordion .x-panel-header,
+.filter-selection-panel .x-panel-header,
+.dataCollectionDetailsPanel:not(.x-panel-collapsed) .x-panel-header {
+    background-color: #E5E7E8;
+}
+
+.resultsRowHeaderTitle:hover,
+.dataCollectionDetailsAccordion .x-panel-header:hover,
+.filter-selection-panel .x-panel-header:hover,
+.x-btn-over:not(.navigationButton),
+.x-btn-over:not(.navigationButton) *,
+ul.x-tab-strip-top li:hover * {
+    background-color: #D3D8DA;
+}
