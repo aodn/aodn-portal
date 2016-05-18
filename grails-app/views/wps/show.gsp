@@ -2,7 +2,8 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="${resource(dir: 'css', file: 'AODNTheme.css', absolute: true)}" type="text/css">
+        <g:if test="${grailsApplication.config.portal.localThemeCss}"><link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: grailsApplication.config.portal.localThemeCss)}?v=${resourceVersionNumber}"/></g:if>
+        <g:if test="${grailsApplication.config.portal.externalThemeCss}"><link rel="stylesheet" type="text/css" href="${grailsApplication.config.portal.externalThemeCss}?v=${resourceVersionNumber}"/></g:if>
         <title >${job.downloadTitle}</title>
     </head>
     <body>

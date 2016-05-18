@@ -231,6 +231,7 @@ portal {
     logo = "https://static.emii.org.au/images/logo/AODN_logo_fullText.png"
     secondaryLogo = "https://static.emii.org.au/images/logo/IMOS_logo-stacked-reversed-Converted.png"
     icon = "https://static.emii.org.au/images/aodn/favicon.ico"
+    localThemeCss = "AODNTheme.css"
 
     contactEmail = "info@aodn.org.au"
     conditionOfUse = "http://imos.org.au/imostermsofuse0.html"
