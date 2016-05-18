@@ -68,7 +68,7 @@
                                 dir: 'images', file: 'Twitter_logo_black.png'
                             )}" title="Follow us on twitter" alt="Follow us on twitter" />
                         </a>
-                        <a class="noUnderline" href="http://www.facebook.com/AusOceanDataNet" target="_blank">
+                        <a class="noUnderline" href="http://facebook.com/AusOceanDataNet" target="_blank">
                             <img src="${resource(
                                 dir: 'images', file: 'FB-logo-gray.png'
                             )}" title="Find us on Facebook" alt="Find us on Facebook" />
