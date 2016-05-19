@@ -143,6 +143,14 @@ environments {
         // Set to true if you want to test interaction with new servers. This turns
         // your portal instance into an open proxy and can be dangerous.
         allowAnyHost = true
+
+
+        portal {
+            siteHeader = "Open Access to Ocean Data"
+            logo = "images/AODN/AODN_logo_fullText.png"
+            secondaryLogo = "https://static.emii.org.au/images/logo/IMOS_logo-stacked-reversed-Converted.png"
+            icon = "https://static.emii.org.au/images/aodn/favicon.ico"
+        }
     }
 
     test {
@@ -156,6 +164,12 @@ environments {
         // overwritten by Chef in production
         grails.serverURL = "http://myaodn.example.com"
         geonetwork.url = "http://catalogue-123.aodn.org.au/geonetwork"
+        portal {
+            siteHeader = "Open Access to Ocean Data"
+            logo = "images/AODN/AODN_logo_fullText.png"
+            secondaryLogo = "https://static.emii.org.au/images/logo/IMOS_logo-stacked-reversed-Converted.png"
+            icon = "https://static.emii.org.au/images/aodn/favicon.ico"
+        }
     }
 }
 
@@ -228,7 +242,7 @@ baselayers = [
 ]
 
 portal {
-    siteHeader = "Open Access to Ocean Data"
+    siteHeader = "[not configured]"
     motdUrl = "https://static.emii.org.au/motd"
     logo = "https://static.emii.org.au/images/logo/AODN_logo_fullText.png"
     secondaryLogo = "https://static.emii.org.au/images/logo/IMOS_logo-stacked-reversed-Converted.png"

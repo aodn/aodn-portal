@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Test case run on different browsers" verbose="3"  parallel="tests" thread-count="100">
+    <listeners>
+        <listener class-name="org.uncommons.reportng.HTMLReporter"/>
+        <listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>
+    </listeners>
+
+    <test name="IE 8 on Windows">
+        <parameter name="browser"  value="IE"/>
+        <parameter name="browser_version"  value="8.0"/>
+        <parameter name="os"  value="WINDOWS"/>
+        <parameter name="os_version"  value="7"/>
+        <parameter name="resolution"  value="1024x768"/>
+        <parameter name="mobile"  value="false"/>
+        <parameter name="device"  value=""/>
+        <classes>
+            <!--<class name="au.org.emii.portal.tests.BrowserStack"/>-->
+        </classes>
+    </test>
+    <test name="Firefox on Windows">
+        <parameter name="browser"  value="Firefox"/>
+        <parameter name="browser_version"  value="16.0"/>
+        <parameter name="os"  value="WINDOWS"/>
+        <parameter name="os_version"  value="XP"/>
+        <parameter name="resolution"  value="1024x768"/>
+        <parameter name="device"  value=""/>
+        <parameter name="mobile"  value="false"/>
+        <classes>
+            <!--<class name="au.org.emii.portal.tests.BrowserStack"/>-->
+        </classes>
+    </test>
+    <test name="Chrome on Windows">
+        <parameter name="browser"  value="Chrome"/>
+        <parameter name="browser_version"  value="35.0"/>
+        <parameter name="os"  value="WINDOWS"/>
+        <parameter name="os_version"  value="8.1"/>
+        <parameter name="resolution"  value="1024x768"/>
+        <parameter name="device"  value=""/>
+        <parameter name="mobile"  value="false"/>
+        <classes>
+            <class name="au.org.emii.portal.tests.BrowserStack"/>
+        </classes>
+    </test>
+
+</suite>
