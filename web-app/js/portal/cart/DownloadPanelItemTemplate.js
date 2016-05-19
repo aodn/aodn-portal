@@ -60,7 +60,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     _createShareButton: function(collection) {
         var url =  String.format(
             '{0}/search?uuid={1}',
-            Portal.app.appConfig.grails.serverURL,
+            Portal.app.appConfig.grails.serverURL.replace(/\/+$/, ""),
             collection.uuid
         );
         var elementId = this._getLinkId(collection, 'shareButtonId');
