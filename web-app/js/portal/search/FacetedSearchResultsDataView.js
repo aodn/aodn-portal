@@ -4,6 +4,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     MINIMAP_HEIGHT: 90,
     MINIMAP_WIDTH: 160, // 16:9 ratio http://size43.com/jqueryVideoTool.html
+    ICON_MAX_SIZE: 50,
     MINIMAP_PADDING: 4,
     MAP_ID_PREFIX: "facetedSearchMap",
     ADD_BUTTON_PREFIX: "fsSearchAddBtn",
@@ -35,8 +36,9 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '            </span>',
             '            {[this.getParametersAsHtml(values)]}',
             '        </div>',
-            '        <div class="floatLeft resultsIconContainer">',
-            '            <!--img class="floatRight" src="{[this.getIconUrl(values)]}" height="50" max-height="50" alt="Icon of metadata record holder" /-->',
+            '        <div class="resultsIconContainer">',
+            '            <img src="{[this.getIconUrl(values)]}" onClick="{[this.getTrackingFunction(values)]}" style="max-height: ' + this.ICON_MAX_SIZE +
+            '; max-width: '+ this.ICON_MAX_SIZE +'" alt="Icon of metadata record holder" />',
             '        </div>',
             '    </div>',
             '</div>',
@@ -54,12 +56,21 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                     return (this.isRecActive(values.uuid)) ? OpenLayers.i18n('collectionExistsMsg') : OpenLayers.i18n("addDataCollectionMsg");
                 },
                 getIconUrl: function(values) {
-                    return Ext.ux.Ajax.constructProxyUrl(Portal.app.appConfig.geonetwork.url + '/images/logos/' + values.iconSourceUuid + ".gif");
-                },
+                    return Ext.ux.Ajax.constructProxyUrl(this.getGeonetworkImageUrl(values.iconSourceUuid));
+                }
             }
         );
 
         Portal.search.FacetedSearchResultsDataView.superclass.initComponent.apply(this, arguments);
+    },
+
+    getTrackingFunction: function(values) {
+        var url = this.getGeonetworkImageUrl(values.iconSourceUuid);
+        return String.format("trackNavigationUsage('navigationTrackingIconAction', '{0}');return true;", url);
+    },
+
+    getGeonetworkImageUrl: function(iconSourceUuid) {
+        return Portal.app.appConfig.geonetwork.url + '/images/logos/' + iconSourceUuid + ".gif";
     },
 
     refresh: function() {
@@ -177,7 +188,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform');
         if (broader.length > 0) {
             broader = broader.sort();
-            broader = broader.filter( function(item, pos) {
+            broader = broader.filter(function(item, pos) {
                 return !pos || item != broader[pos - 1];
             });
             return template.apply({

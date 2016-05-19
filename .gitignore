@@ -16,6 +16,8 @@ plugins
 .\#*
 *.swp
 grails-app/conf/Config.local.groovy
+selenium/target
+selenium/test-output
 
 # Include code style settings for IntelliJ IDEA projects
 .idea/*

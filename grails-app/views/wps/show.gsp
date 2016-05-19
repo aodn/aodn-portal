@@ -2,14 +2,15 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="${resource(dir: 'css', file: 'imosTheme.css', absolute: true)}" type="text/css">
+        <g:if test="${grailsApplication.config.portal.localThemeCss}"><link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: grailsApplication.config.portal.localThemeCss)}?v=${resourceVersionNumber}"/></g:if>
+        <g:if test="${grailsApplication.config.portal.externalThemeCss}"><link rel="stylesheet" type="text/css" href="${grailsApplication.config.portal.externalThemeCss}?v=${resourceVersionNumber}"/></g:if>
         <title >${job.downloadTitle}</title>
     </head>
     <body>
-        <div class="imosHeader">
+        <div class="portalheader">
             <div class="container">
-                <a class="btn" role="button" href="https://imos.aodn.org.au/imos123/home">
-                    <img src="https://static.emii.org.au/images/logo/IMOS-Ocean-Portal-logo.png" alt="IMOS logo">
+                <a class="btn" role="button" href="${createLink(uri: '', absolute: true)}">
+                    <img src="${grailsApplication.config.portal.logo}" alt="Portal logo">
                 </a>
             </div>
         </div>
@@ -40,13 +41,12 @@
                            please let us
                            know.
                            All feedback is very welcome. For help and information about this site
-                           please contact <a href="mailto:info@emii.org.au">info@emii.org.au</a></p>
+                           please contact <a href="mailto:${grailsApplication.config.portal.contactEmail}">${grailsApplication.config.portal.contactEmail}</a></p>
                     </div>
                     <div class="col-md-8">
-                        <p>Use of this web site and information available from it is subject to our <a href="http://imos.org.au/imostermsofuse0.html">
+                        <p>Use of this web site and information available from it is subject to our <a href="${grailsApplication.config.portal.conditionOfUse}">
                            Conditions of use
                         </a></p>
-                        <p>© 2015 IMOS</p>
                     </div>
                 </footer>
             </div>

@@ -277,6 +277,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     navigationTrackingPrimaryAction: "Primary",
     navigationTrackingSecondaryAction: "Secondary",
     navigationTrackingCartButtonAction: "Cart Button",
+    navigationTrackingIconAction: "Icon",
     navigationTrackingStepPrefix: "Step ",
     downloadTrackingCategory: "DataCollections",
     downloadTrackingActionPrefix: "Download - ",

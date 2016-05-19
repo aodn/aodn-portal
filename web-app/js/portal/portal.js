@@ -53,7 +53,7 @@ Portal.app = {
 
         // Load config
         Ext.Ajax.request({
-            url: 'home/config',
+            url: 'search/config',
             scope: this,
             success: this.afterConfigLoad,
             failure: this.configLoadFailed

@@ -60,7 +60,7 @@ Portal.ui.MainToolbar = Ext.extend(Ext.Toolbar, {
 
     _getMainToolBarLinksHtml: function() {
         Ext.Ajax.request({
-            url: 'home/footerContent',
+            url: 'search/footerContent',
             scope: this,
             success: function(resp) {
                 $("#footerContent").html(resp.responseText);
