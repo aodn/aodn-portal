@@ -17,6 +17,9 @@
         <portal:motdPopup />
 
         $(document).ready(function() {
+            // Supporting only Firefox and Chrome users
+            browserCheck();
+
             $window = $(window);
 
             $('section[data-uitype="background"]').each(function() {
