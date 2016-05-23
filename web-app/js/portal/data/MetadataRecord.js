@@ -92,15 +92,6 @@ Portal.data.MetadataRecord = function() {
         name: 'organisation'
     });
 
-    var resourceConstraintsField = new Portal.data.ChildElementsField({
-        name: 'resourceConstraints'// ,
-        // convert: function(v, record) {
-        //     // Do we want to extract these individually and ignore
-        //     // resourceConstraints (which groups jurisdictionlink,
-        //     // licenseLink, etc), or just treat everything separately?
-        // }
-    });
-
     var attrConstrField = new Portal.data.ChildElementsField({
         name: 'attrConstr'
     });
@@ -165,7 +156,6 @@ Portal.data.MetadataRecord = function() {
         parameterField,
         'platform',
         organisationField,
-        resourceConstraintsField,
         'jurisdictionLink',
         'licenseLink',
         'licenseName',
