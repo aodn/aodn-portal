@@ -12,7 +12,7 @@ The application is a stateless front end to other servers:
 * [ncWMS](http://www.resc.rdg.ac.uk/trac/ncWMS/) web map server
 * [GoGoDuck](https://github.com/aodn/go-go-duck) netCDF subsetting and aggregation service
 
-You can view the portal in action at [IMOS](http://imos.aodn.org.au), which always runs the latest version of the code.
+You can view the portal in action at [IMOS](http://portal.aodn.org.au), which always runs the latest version of the code.
 
 ## Contact
 Please post any questions in our [forum](http://portalhelp.aodn.org.au/Portal2_help/?q=forum).
@@ -72,5 +72,5 @@ We welcome contributions so please feel free to fork the project, address any is
 a pull request.
 
 --
-The IMOS Portal is used to publish the [IMOS data collection](https://imos.aodn.org.au/data_collections.html).
+The IMOS Portal is used to publish the [IMOS data collection](https://portal.aodn.org.au/data_collections.html).
 
