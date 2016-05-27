@@ -92,7 +92,7 @@
                 <div class="footerText">
                     <div class="panel-body lead">
                         <p>
-                            The <a target="_blank" class="external" title="AODN Portal" href="http://portal.aodn.org.au/aodn">AODN Portal</a> provides access to all available Australian marine and climate science data and provides the primary access to IMOS data including access to the IMOS metadata.
+                            The <strong>AODN Portal</strong> provides access to all available Australian marine and climate science data and provides the primary access to IMOS data including access to the IMOS metadata.
                         </p>
 
                         <p>
