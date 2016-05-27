@@ -97,7 +97,7 @@
 
                         <p>
                             IMOS is a national collaborative research infrastructure, supported by
-                            Australian Government. It is led by <a target="_blank" title="UTAS home page" href="http://www.utas.edu.au/">University of Tasmania</a> in partnership
+                            Australian Government. It is led by <a target="_blank" class="external" title="UTAS home page" href="http://www.utas.edu.au/">University of Tasmania</a> in partnership
                         with the Australian marine &amp; climate science community.
                         </p>
 
