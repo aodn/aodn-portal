@@ -30,7 +30,7 @@
             }());
 
             // Supporting only Firefox and Chrome users
-            Ext.onReady(browserCheck());
+            Ext.onReady(browserCheck);
             // Init step One
             Ext.onReady(Portal.app.init, Portal.app);
 
