@@ -125,7 +125,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     </p> \
     <tpl if=\"attrConstr && attrConstr.length &gt; 0\"> \
       <h4><legend>Attribution Constraints</h4> \
-      <tpl if=\"otherCitation\"><p>{otherCitation}</p></tpl> \
       <tpl for=\"attrConstr\"><p>{.}</p></tpl> \
     </tpl> \
     <tpl if=\"otherConstr && otherConstr.length &gt; 0\"> \
