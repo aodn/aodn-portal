@@ -2,7 +2,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
     var html;
     var tpl;
-    var mockDataInjection;
+    var  mockDataInjection;
     var dataCollectionStore;
 
     beforeEach(function() {
@@ -16,7 +16,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         mockDataInjection = {
             getUuid: returns(42),
-            title: 'the title',
+            title: 'AODN Contributors idea of a concise title to best describe a dataset: This is the title that is simply too long to fit into the available space even when we allow contributors to use 2 lines to fit this super long title in',
             pointOfTruthLink: [
                 {
                     href: 'point of truth url'
@@ -46,7 +46,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         beforeEach(function() {
 
-            spyOn(tpl, '_getRecordTitle');
+            spyOn(tpl, '_getHtmlTitle');
             spyOn(tpl, '_createDownloadButtonAfterPageLoad');
             spyOn(tpl, '_createRemoveButtonAfterPageLoad');
             spyOn(tpl, '_getDataFilterEntry');
@@ -58,7 +58,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         });
 
         it('creates a title for the record', function() {
-            expect(tpl._getRecordTitle).toHaveBeenCalled();
+            expect(tpl._getHtmlTitle).toHaveBeenCalled();
         });
 
         it('creates a download button', function() {
@@ -94,8 +94,8 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         it('returns the correct record title', function() {
 
-            html = tpl._getRecordTitle(mockDataInjection);
-            expect(html).toBe('the title');
+            html = tpl._getHtmlTitle(mockDataInjection);
+            expect(html).toBe('<h3 title=\"AODN Contributors idea of a concise title to best describe a dataset: This is the title that is simply too long to fit into the available space even when we allow contributors to use 2 lines to fit this super long title in\">AODN Contributors idea of a concise title to best describe a dataset: This is the title that is simply too long to fit into the available space even when we allow contributors...</h3>');
         });
     });
 

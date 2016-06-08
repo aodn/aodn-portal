@@ -20,7 +20,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '<div class="resultsHeaderBackground">',
             '    <div class="x-panel-header">',
             '        <div class="resultsRowHeaderTitle">',
-            '            <h3>{[values.title]}</h3>',
+            '            {[this.getHtmlTitle(values)]}',
             '        </div>',
             '        <div class="facetedSearchBtn" id="{[this.buttonElementId(values.uuid)]}">',
             '            {[this.getButton(values)]}',
@@ -57,6 +57,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 },
                 getIconUrl: function(values) {
                     return Ext.ux.Ajax.constructProxyUrl(this.getGeonetworkImageUrl(values.iconSourceUuid));
+                },
+                getHtmlTitle: function(values) {
+                    var title = values.title;
+                    return String.format("<h3 title=\"{0}\">{1}</h3>", title, Ext.util.Format.ellipsis(title, 180, true));
                 }
             }
         );

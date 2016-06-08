@@ -13,7 +13,7 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
 
         var config = Ext.apply({
             cls: 'dataCollectionDetailsPanel',
-            title: '<h4>' + cfg.dataCollection.getTitle() + '</h4>',
+            title: this._getHtmlTitle(cfg.dataCollection.getTitle()),
             autoHeight: true,
             defaults: {
                 style: {padding: '10px'},
@@ -44,6 +44,10 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
         layerAdapter.un('loadstart', this._onLayerLoadStart, this);
         layerAdapter.un('loadend', this._onLayerLoadEnd, this);
         layerAdapter.un('tileerror', this._onLayerLoadError, this);
+    },
+
+    _getHtmlTitle: function(title) {
+        return String.format("<h4 title=\"{0}\">{1}</h4>", title, Ext.util.Format.ellipsis(title, 100, true));
     },
 
     _onExpand: function() {
