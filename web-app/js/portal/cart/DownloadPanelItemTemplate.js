@@ -18,7 +18,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             '    <div class="downloads resultsRowHeaderTitle">',
             '      <div class="x-tool-awesome" title="{[this.getTooltip(\'removeDataCollectionTooltip\')]}" class="removeButton" id="{[this._getLinkId(values,\'removeButtonId\')]}">{[this._createRemoveButtonAfterPageLoad(values)]}</div>',
             '      <div class="x-tool-awesome" title="{[this.getTooltip(\'shareButtonTooltip\')]}" id="{[this._getLinkId(values,\'shareButtonId\')]}">{[this._createShareButtonAfterPageLoad(values)]}</div>',
-            '    <span class="x-panel-header-text"><h3>{[this._getRecordTitle(values)]}</h3></span>',
+            '    <span class="x-panel-header-text">{[this._getHtmlTitle(values)]}</span>',
             '    </div>',
             '    <div class="floatRight listButtonWrapper" id="{[this._getLinkId(values,\'downloadButtonId\')]}">{[this._createDownloadButtonAfterPageLoad(values)]}</div>',
             '  </div>',
@@ -48,8 +48,9 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         return OpenLayers.i18n(i18nId);
     },
 
-    _getRecordTitle: function(values) {
-        return values.title;
+    _getHtmlTitle: function(values) {
+        var title = values.title;
+        return String.format("<h3 title=\"{0}\">{1}</h3>", title, Ext.util.Format.ellipsis(title, 180, true));
     },
 
     _createShareButtonAfterPageLoad: function(collection) {

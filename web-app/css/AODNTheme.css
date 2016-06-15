@@ -37,6 +37,7 @@ h1, h2, h3, h4,
 .x-window-header-text,
 .search-filter-panel .filter-selection-panel-header-selected {
     color: #4D5B63;
+    cursor: default;
 }
 
 #header {
