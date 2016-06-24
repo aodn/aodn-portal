@@ -31,8 +31,28 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this._addLoadingInfo();
         this._addTemporalControls();
+
+        if (this._timeSeriesOptionAvailable()) {
+            this._addTimeSeriesControls();
+        }
+
         this._initWithLayer();
         this._addClearButton();
+    },
+
+    _timeSeriesOptionAvailable: function() {
+        var handlers = Portal.cart.DownloadHandler.handlersForDataCollection(this.dataCollection);
+
+        var timeseriesHandlerFound = false;
+
+        var handlerIndex = Ext.each(handlers, function(handler) {
+            if (handler instanceof Portal.cart.PointCSVDownloadHandler) {
+                timeseriesHandlerFound = true;
+                return false;
+            }
+        })
+
+        return timeseriesHandlerFound;
     },
 
     _initWithLayer: function() {
@@ -95,6 +115,18 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
     },
 
+    _getTimeSeriesFilter: function() {
+        return this._timeSeriesOptionAvailable() && this.pointTimeSeriesCheckbox.checked;
+    },
+
+    _getTimeSeriesLatitude: function() {
+        return this._timeSeriesOptionAvailable() ? this.timeSeriesLatitudeControl.getValue() : undefined;
+    },
+
+    _getTimeSeriesLongitude: function() {
+        return this._timeSeriesOptionAvailable() ? this.timeSeriesLongitudeControl.getValue() : undefined;
+    },
+
     _getGeometryFilter: function() {
         return this.map.geometryFilter;
     },
@@ -149,10 +181,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.previousFrameButton = new Ext.Button({
             iconCls: 'previousButton',
             cls: "",
-            margins: { top: 0, right: 5, bottom: 0, left: 0 },
+            margins: {top: 0, right: 5, bottom: 0, left: 0},
             listeners: {
                 scope: this,
-                'click': function () {
+                'click': function() {
                     this._loadPreviousTimeSlice();
                 }
             },
@@ -162,10 +194,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.nextFrameButton = new Ext.Button({
             iconCls: 'nextButton',
             cls: "",
-            margins: { top: 0, right: 5, bottom: 0, left: 0 },
+            margins: {top: 0, right: 5, bottom: 0, left: 0},
             listeners: {
                 scope: this,
-                'click': function () {
+                'click': function() {
                     this._loadNextTimeSlice();
                 }
             },
@@ -193,11 +225,125 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
                 this._newSectionSpacer(10),
                 this.mapTimeControls,
                 this.timeRangeLabel,
-                this._newSectionSpacer(10)
+                this._newSectionSpacer(20)
             ]
         });
 
         this.add(this.temporalControls);
+    },
+
+    _addTimeSeriesControls: function() {
+        this.timeSeriesLatitudeControl = new Ext.form.NumberField({
+            minValue: this.dataCollection.getBounds().bottom,
+            maxValue: this.dataCollection.getBounds().top,
+            decimalPrecision: 7,
+            value: this.dataCollection.getBounds().centerLonLat.lat,
+            readOnly: true,
+            width: 60,
+            style: 'margin: 0 0 0 15px',
+            listeners: {
+                scope: this,
+                render: function(c) {
+                    this._addTimeSeriesQuickTip(c);
+                },
+                change: function(c) {
+                    this._applyFilterValuesToCollection();
+                }
+            }
+        });
+
+        this.timeSeriesLongitudeControl = new Ext.form.NumberField({
+            minValue: this.dataCollection.getBounds().left,
+            maxValue: this.dataCollection.getBounds().right,
+            decimalPrecision: 7,
+            value: this.dataCollection.getBounds().centerLonLat.lon,
+            readOnly: true,
+            width: 60,
+            style: 'margin: 0 0 0 15px',
+            listeners: {
+                scope: this,
+                render: function(c) {
+                    this._addTimeSeriesQuickTip(c);
+                },
+                change: function(c) {
+                    this._applyFilterValuesToCollection();
+                }
+            }
+        });
+
+        this.pointTimeSeriesCheckbox = new Ext.form.Checkbox({
+            boxLabel: OpenLayers.i18n('pointTimeSeriesLabel'),
+            cls: 'checkboxHeading',
+            checked: false,
+            listeners: {
+                scope: this,
+                check: {
+                    fn: function(checkbox, isChecked) {
+                        this._onPointTimeSeriesCheckBoxChange(isChecked);
+                    }
+                }
+            }
+        });
+
+        this.pointTimeSeries = new Ext.Panel({
+            cls: 'checkBoxHeadings',
+            items: [
+                this.pointTimeSeriesCheckbox,
+                this._newSectionSpacer(10),
+                {
+                    xtype: 'label',
+                    text: OpenLayers.i18n('latitudeLabel')
+                },
+                this.timeSeriesLatitudeControl,
+                {
+                    xtype: 'label',
+                    text: OpenLayers.i18n('longitudeLabel'),
+                    style: 'margin: 0 0 0 10px',
+                },
+                this.timeSeriesLongitudeControl,
+                this._newSectionSpacer(10),
+            ]
+        });
+
+        this.add(this.pointTimeSeries);
+    },
+
+    _onPointTimeSeriesCheckBoxChange: function(isChecked) {
+        if (isChecked) {
+            this._enablePointTimeSeriesControls();
+        } else {
+            this._disablePointTimeSeriesControls();
+        };
+        this._applyFilterValuesToCollection();
+    },
+
+    _enablePointTimeSeriesControls: function() {
+        this.timeSeriesLatitudeControl.setReadOnly(false);
+        this._removeQuickTip(this.timeSeriesLatitudeControl);
+        this.timeSeriesLongitudeControl.setReadOnly(false);
+        this._removeQuickTip(this.timeSeriesLongitudeControl);
+    },
+
+    _disablePointTimeSeriesControls: function() {
+        this.timeSeriesLatitudeControl.setReadOnly(true);
+        this._addTimeSeriesQuickTip(this.timeSeriesLatitudeControl);
+        this.timeSeriesLongitudeControl.setReadOnly(true);
+        this._addTimeSeriesQuickTip(this.timeSeriesLongitudeControl);
+    },
+
+    _addTimeSeriesQuickTip: function(component) {
+        Ext.QuickTips.register({
+            target: component.getEl(),
+            text: String.format(OpenLayers.i18n('enableTimeSeriesEditing'), OpenLayers.i18n('pointTimeSeriesLabel')),
+            enabled: true,
+            showDelay: 0,
+            trackMouse: true,
+            autoShow: true
+        });
+    },
+
+    _removeQuickTip: function(component) {
+        Ext.QuickTips.unregister(component.getEl()); 
     },
 
     _defaultDateTimePickerConfiguration: function() {
@@ -233,7 +379,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _newSectionSpacer: function(height) {
-        return new Ext.Spacer({ height: height });
+        return new Ext.Spacer({height: height});
     },
 
     _attachSelectedDateToPicker: function(datePicker, dateMoment) {
@@ -332,30 +478,39 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
         var geometry = this._getGeometryFilter();
 
-        this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry);
+        var timeSeries = this._getTimeSeriesFilter();
+        var lat = this._getTimeSeriesLatitude();
+        var lon = this._getTimeSeriesLongitude();
+
+        this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, timeSeries, lat, lon);
     },
 
-    _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry) {
+    _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry, timeSeries, lat, lon) {
 
-        var newFilterValue = {};
+        var dateFilterValue = {};
+        var pointFilterValue = {};
         var ncwmsParamsAsFilter = {
             isNcwmsParams: true,
-            hasValue: function() { return false; } // From the Portal.filter.Filter interface. Prevents filter from being used in CQL or displayed to user
+            hasValue: function() {
+                return false;
+            } // From the Portal.filter.Filter interface. Prevents filter from being used in CQL or displayed to user
         };
 
         if (dateRangeStart && dateRangeStart.isValid()) {
             ncwmsParamsAsFilter.dateRangeStart = dateRangeStart;
-            newFilterValue.fromDate = dateRangeStart.toDate();
+            dateFilterValue.fromDate = dateRangeStart.toDate();
         }
 
         if (dateRangeEnd && dateRangeEnd.isValid()) {
             ncwmsParamsAsFilter.dateRangeEnd = dateRangeEnd;
-            newFilterValue.toDate = dateRangeEnd.toDate();
+            dateFilterValue.toDate = dateRangeEnd.toDate();
         }
 
-        if (geometry) {
+        if (timeSeries) {
+            pointFilterValue.latitude = parseFloat(lat);
+            pointFilterValue.longitude = parseFloat(lon);
+        } else if (geometry) {
             var bounds = geometry.getBounds();
-
             ncwmsParamsAsFilter.latitudeRangeStart = bounds.bottom;
             ncwmsParamsAsFilter.longitudeRangeStart = bounds.left;
             ncwmsParamsAsFilter.latitudeRangeEnd = bounds.top;
@@ -364,13 +519,19 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         var realDateFilter = new Portal.filter.DateFilter({
             name: 'time',
-            value: newFilterValue,
+            value: dateFilterValue,
             visualised: true
+        });
+
+        var pointFilter = new Portal.filter.PointFilter({
+            name: 'timeSeriesAtPoint',
+            value: pointFilterValue
         });
 
         return [
             realDateFilter,
-            ncwmsParamsAsFilter
+            ncwmsParamsAsFilter,
+            pointFilter
         ];
     },
 

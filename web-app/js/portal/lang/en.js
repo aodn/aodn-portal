@@ -35,6 +35,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadButtonLabel: '<span class="fa fa-lg fa-fw fa-download"></span> Download as\u2026 ',
     downloadAsCsvLabel: 'CSV',
     downloadAsSubsettedNetCdfLabel: 'NetCDF',
+    downloadAsPointTimeSeriesCsvLabel: 'CSV',
     downloadAsAllSourceNetCdfLabel: 'Un-subsetted NetCDFs',
     downloadAsUrlsLabel: 'List of URLs',
     downloadAsPythonSnippetLabel: 'Python',
@@ -202,10 +203,15 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     asyncServiceMsg: "<a class='external' target='_blank' href='${url}'>Follow the progress of your job</a><br /><br />",
 
     spatialExtentHeading: 'Spatial Subset',
+    timeSeriesAtHeading: 'Timeseries at point',
     temporalExtentHeading: 'Temporal Extent',
     generalFilterHeading: 'Filters',
     currentDateTimeLabel: 'Displaying',
     spatialExtentPolygonNote: 'Polygon with max extent ',
+    pointTimeSeriesLabel: 'Point timeseries',
+    latitudeLabel: 'Latitude',
+    longitudeLabel: 'Longitude',
+    enableTimeSeriesEditing: 'Check {0} to enable editing',
 
     dateFilterBeforeFormat: '{0}: before {2}',
     dateFilterAfterFormat: '{0}: after {1}',

@@ -28,7 +28,9 @@ describe('Portal.details.NcWmsPanel', function() {
         dataCollection = {
             getUuid: returns(45678),
             getLayerSelectionModel: returns(layerSelectionModel),
-            getTitle: returns("collectionTitle")
+            getTitle: returns("collectionTitle"),
+            getBounds: returns({centerLonLat: {lat: -20, lon: 30}}),
+            getAllLinks: returns([])
         };
 
         ncwmsPanel = new Portal.details.NcWmsPanel({
@@ -192,57 +194,24 @@ describe('Portal.details.NcWmsPanel', function() {
 
     describe('_ncwmsParamsAsFilters', function() {
 
-        var expectedNcwmsParamsFilter;
-        var expectedDateFilterConfig;
-        var testDateFilter = {};
-
-        beforeEach(function() {
-            expectedNcwmsParamsFilter = {
-                isNcwmsParams: true/*,
-                hasValue: function() { return false; }*/
-            };
-
-            expectedDateFilterConfig = {
-                name: 'time',
-                value: {},
-                visualised: true
-            };
-
-            spyOn(Portal.filter, 'DateFilter').andReturn(testDateFilter);
-        });
-
         it('updated start date', function() {
 
             var testStartDate = moment();
 
-            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(testStartDate, moment('invalid date'), null);
+            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(testStartDate, moment('invalid date'), null, false, 0, 0);
 
-            expectedNcwmsParamsFilter.dateRangeStart = testStartDate;
-            expectedDateFilterConfig.value.fromDate = testStartDate.toDate();
-
-            delete returnValue[1].hasValue; // Remove function so it isn't compared against
-            expect(Portal.filter.DateFilter).toHaveBeenCalledWith(expectedDateFilterConfig);
-            expect(returnValue).toEqual([
-                testDateFilter,
-                expectedNcwmsParamsFilter
-            ]);
+            expect(returnValue[0].getValue().fromDate).toEqual(testStartDate.toDate());
+            expect(returnValue[1].dateRangeStart).toEqual(testStartDate);
         });
 
         it('updated end date', function() {
 
             var testEndDate = moment();
 
-            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(moment('invalid date'), testEndDate, null);
+            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(moment('invalid date'), testEndDate, null, false, 0, 0);
 
-            expectedNcwmsParamsFilter.dateRangeEnd = testEndDate;
-            expectedDateFilterConfig.value.toDate = testEndDate.toDate();
-
-            delete returnValue[1].hasValue; // Remove function so it isn't compared against
-            expect(Portal.filter.DateFilter).toHaveBeenCalledWith(expectedDateFilterConfig);
-            expect(returnValue).toEqual([
-                testDateFilter,
-                expectedNcwmsParamsFilter
-            ]);
+            expect(returnValue[0].getValue().toDate).toEqual(testEndDate.toDate());
+            expect(returnValue[1].dateRangeEnd).toEqual(testEndDate);
         });
 
         it('update geometry', function() {
@@ -256,18 +225,19 @@ describe('Portal.details.NcWmsPanel', function() {
                 })
             });
 
-            expectedNcwmsParamsFilter.latitudeRangeStart = 4;
-            expectedNcwmsParamsFilter.longitudeRangeStart = 3;
-            expectedNcwmsParamsFilter.latitudeRangeEnd = 2;
-            expectedNcwmsParamsFilter.longitudeRangeEnd = 1;
-
-            expect(Portal.filter.DateFilter).toHaveBeenCalledWith(expectedDateFilterConfig);
-            expect(returnValue[0]).toEqual(
-                testDateFilter,
-                expectedNcwmsParamsFilter
-            );
+            expect(returnValue[1].latitudeRangeStart).toEqual(4);
+            expect(returnValue[1].longitudeRangeStart).toEqual(3);
+            expect(returnValue[1].latitudeRangeEnd).toEqual(2);
+            expect(returnValue[1].longitudeRangeEnd).toEqual(1);
          });
-    });
+
+        it('returns timeseries at point filter', function() {
+            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(moment(), moment(), null, true, -31.4, 114.6);
+            var pointFilterValue = Portal.filter.FilterUtils.getFilter(returnValue, 'timeSeriesAtPoint').getValue();
+            expect(pointFilterValue.latitude).toEqual(-31.4);
+            expect(pointFilterValue.longitude).toEqual(114.6);
+        });
+});
 
     describe('resetting extents', function() {
         beforeEach(function() {

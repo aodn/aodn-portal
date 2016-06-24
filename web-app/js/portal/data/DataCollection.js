@@ -81,6 +81,10 @@ Portal.data.DataCollection = function() {
         return this.filters;
     };
 
+    constructor.prototype.getBounds = function() {
+        return this.getMetadataRecord().getBounds();
+    };
+
     constructor.prototype.getAllLinks = function() {
         return this.getMetadataRecord().get('links');
     };

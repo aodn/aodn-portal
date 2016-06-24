@@ -152,11 +152,11 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         setViewPortTab(TAB_INDEX_SEARCH);
     },
 
-    hasDuplicateWfsDownloadLinks: function(downloadHandlers) {
+    hasDuplicateWfsDownloadLinks: function(downloadHandlers, filters) {
 
         var wfsDownloads = [];
         Ext.each(downloadHandlers, function(handler) {
-            Ext.each(handler.getDownloadOptions(), function(downloadOption) {
+            Ext.each(handler.getDownloadOptions(filters), function(downloadOption) {
                 if (downloadOption.type == "WFS") {
                     wfsDownloads.push(downloadOption.textKey);
                 }
@@ -188,11 +188,11 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         var downloadHandlers = Portal.cart.DownloadHandler.handlersForDataCollection(collection);
 
         Ext.each(downloadHandlers, function(handler) {
-            Ext.each(handler.getDownloadOptions(), function(downloadOption) {
+            Ext.each(handler.getDownloadOptions(collection.getFilters()), function(downloadOption) {
 
                 var newMenuItem = this._getMenuItem(handler, downloadOption, collection);
 
-                if (this.hasDuplicateWfsDownloadLinks(downloadHandlers)) {
+                if (this.hasDuplicateWfsDownloadLinks(downloadHandlers, collection.getFilters())) {
                     // add to group if a title is configured
                     if (this.getEmbeddedTitle(handler.onlineResource.title)) {
                         var groupLabel = this.getEmbeddedTitle(handler.onlineResource.title);
