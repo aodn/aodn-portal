@@ -27,8 +27,6 @@ class ProxiedRequest extends ExternalRequest {
 
         log.debug "ProxiedRequest.proxy() params: $params"
 
-        _determineResponseContentType()
-
         try {
             executeRequest(streamProcessor)
         }
@@ -49,11 +47,16 @@ class ProxiedRequest extends ExternalRequest {
             log.debug "Setting content disposition to '${contentDisposition}'"
             response.setHeader("Content-disposition", contentDisposition)
         }
+
+        _determineResponseContentType(conn)
     }
 
-    def _determineResponseContentType = {
-
-        response.contentType = params.remove('format') ?: request.contentType
+    def _determineResponseContentType = { conn ->
+        if (params.remove('proxyContentType')) {
+            response.contentType = conn.contentType
+        } else {
+            response.contentType = params.remove('format') ?: request.contentType
+        }
     }
 
     static def _getTargetUrl(params) {
