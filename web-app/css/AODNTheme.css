@@ -334,7 +334,7 @@ dt {
     background-color: #E5E7E8;
 }
 
-.resultsRowHeaderTitle:hover,
+.expandable .resultsRowHeaderTitle:hover,
 .dataCollectionDetailsAccordion .x-panel-header:hover,
 .filter-selection-panel .x-panel-header:hover,
 .x-btn-over:not(.navigationButton),
