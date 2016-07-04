@@ -315,6 +315,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         this.addRecordWithUuid(uuid, multiSelect);
 
         btn.addClass(this.CSS_CLASS_BUTTON_SELECTED);
+
+        // Updating the popularity counter of the metadata record at GeoNetwork
+        Ext.ux.Ajax.proxyRequestXML({
+            url: Portal.app.appConfig.geonetwork.url + '/srv/eng/xml_iso19139?uuid=' + uuid
+        });
     },
 
     addRecordWithUuid: function(uuid, multiSelect) {
