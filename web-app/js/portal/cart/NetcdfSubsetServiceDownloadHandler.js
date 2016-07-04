@@ -16,6 +16,7 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
             Ext.urlEncode({
                 server: serverUrl,
                 jobType: 'NetcdfOutput',
+                mimeType: 'application/zip',
                 'email.to': notificationEmailAddress,
                 'jobParameters.typeName': layerName,
                 'jobParameters.cqlFilter': cqlFilter

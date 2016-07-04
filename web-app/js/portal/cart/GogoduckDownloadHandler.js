@@ -22,6 +22,7 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
             server: serverUrl,
             'email.to': notificationEmailAddress,
             jobType: 'GoGoDuck',
+            mimeType: "application/x-netcdf",
             'jobParameters.layer': layerName,
             'jobParameters.subset': subset
         };
