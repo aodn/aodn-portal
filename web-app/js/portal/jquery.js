@@ -1,5 +1,31 @@
 jQuery( window ).load(function() {
 
+    jQuery(".resultsHeaderBackground").live("click",
+        function(){
+            var resBody = jQuery(this).children('.facetedSearchResultBody');
+            var fullHeight = resBody[0].scrollHeight;
+            var originalHeight = resBody.height();
+
+            if (fullHeight != originalHeight) {
+                resBody.data("originalHeight", originalHeight );
+                resBody.animate({
+                    height: fullHeight
+                }, 300);
+            }
+            else {
+                resBody.animate({
+                    height: resBody.data("originalHeight")
+                }, 150);
+            }
+        });
+
+    jQuery(".resultsHeaderBackground").live("mouseover",
+        function(){
+            var resBody = jQuery(this).children('.facetedSearchResultBody');
+            if (resBody[0].scrollHeight != resBody.height()) {
+                jQuery(this).addClass("expandable");
+            }
+        });
 
     jQuery('.button input').live('hover',
         function(){
