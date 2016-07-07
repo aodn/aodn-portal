@@ -49,6 +49,7 @@ class WpsService extends AsyncDownloadService {
 
         params.expirationPeriod = _getExpirationPeriod()
         params.jobReportUrl = _getJobReportUrl(params)
+        params.contactEmail = grailsApplication.config.portal.contactEmail
 
         mailService.sendMail {
             async true

@@ -149,7 +149,7 @@ Portal.data.MetadataRecord = function() {
         return (allowedOnlineResources.indexOf(protocol) >= 0);
     }
 
-    return Ext.data.Record.create([
+    var constructor = Ext.data.Record.create([
         'title',
         'abstract',
         { name: 'uuid', mapping: '*/uuid' },
@@ -174,4 +174,10 @@ Portal.data.MetadataRecord = function() {
         'wmsLayer',
         iconSourceUuid
     ]);
+
+    constructor.prototype.getBounds = function() {
+        return this.data.bbox.bounds;
+    };
+
+    return constructor;
 }();

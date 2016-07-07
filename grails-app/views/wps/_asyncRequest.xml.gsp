@@ -33,7 +33,7 @@
     </wps:DataInputs>
     <wps:ResponseForm>
         <wps:ResponseDocument storeExecuteResponse="true" status="true">
-            <wps:Output asReference="true" mimeType="application/zip">
+            <wps:Output asReference="true" mimeType="${mimeType}">
                 <ows:Identifier>result</ows:Identifier>
             </wps:Output>
         </wps:ResponseDocument>

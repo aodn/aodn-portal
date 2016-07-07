@@ -6,7 +6,7 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
 
     var createHandler = function(onlineResource) {
         handler = new Portal.cart.BodaacDownloadHandler(onlineResource);
-        options = handler.getDownloadOptions();
+        options = handler.getDownloadOptions([]);
     };
 
     beforeEach(function() {

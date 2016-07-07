@@ -37,6 +37,7 @@ h1, h2, h3, h4,
 .x-window-header-text,
 .search-filter-panel .filter-selection-panel-header-selected {
     color: #4D5B63;
+    cursor: default;
 }
 
 #header {
@@ -285,10 +286,8 @@ ul.x-tab-strip-top {
 }
 
 .spatialSubsetControl {
-    border: solid 1px #e8e8e8;
     margin-right: 5px;
-    padding: 18px;
-    border-radius: 6px;
+    padding: 19px;
 }
 
 .dataCollectionDetailsPanel .x-tool:not(:first-of-type) {
@@ -335,7 +334,7 @@ dt {
     background-color: #E5E7E8;
 }
 
-.resultsRowHeaderTitle:hover,
+.expandable .resultsRowHeaderTitle:hover,
 .dataCollectionDetailsAccordion .x-panel-header:hover,
 .filter-selection-panel .x-panel-header:hover,
 .x-btn-over:not(.navigationButton),

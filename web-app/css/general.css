@@ -971,6 +971,20 @@ div.allwhite {
     margin-bottom: 5px;
 }
 
+.resultsHeaderBackground .facetedSearchResultBody {
+    height: 100px;
+    overflow-y: hidden;
+}
+
+.expandable .facetedSearchResultBody::after {
+    bottom: 5px;
+    box-shadow: 10px 10px 15px 5px rgba(240, 240, 240, 1);
+    content: " ";
+    position: absolute;
+    right: 125px;
+    width: 100%;
+}
+
 .resultsHeaderBackground .x-panel-header {
     padding: 0 5px;
 }
@@ -993,7 +1007,7 @@ div.allwhite {
     background-color: #EBEBEB;
 }
 
-.resultsRowHeaderTitle:hover,
+.expandable .resultsRowHeaderTitle:hover,
 .dataCollectionDetailsAccordion .x-panel-header:hover,
 .filter-selection-panel .x-panel-header:hover,
 .x-btn-over:not(.navigationButton),
@@ -1052,6 +1066,11 @@ ul.x-tab-strip-top li:hover * {
     margin: 1px 10px 0 0;
     padding: 5px 10px 5px 9px;
     width: 700px;
+    z-index: 1;
+}
+
+.expandable * {
+    cursor: pointer;
 }
 
 .downloadPanelResultsWrapper.dataFilterEntry {
@@ -1226,10 +1245,6 @@ div.tool-plus-disabled {
     margin-bottom: 5px;
 }
 
-.spatialSubsetControl {
-    background-color: #f5f5f5;
-}
-
 /* Turn off GPU support to fix line issue when browser is zoomed in */
 /* Refer: https://github.com/openlayers/openlayers/issues/513 */
 
@@ -1256,4 +1271,9 @@ span.menu-title {
 .infoPanel h3,
 .infoPanel h4 {
     margin: 10px 0 5px 0;
+}
+
+.checkboxHeadings input[type='checkbox'] ~ label {
+    font-size: 12px;
+    font-weight: bold;
 }

@@ -20,7 +20,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '<div class="resultsHeaderBackground">',
             '    <div class="x-panel-header">',
             '        <div class="resultsRowHeaderTitle">',
-            '            <h3>{[values.title]}</h3>',
+            '            {[this.getHtmlTitle(values)]}',
             '        </div>',
             '        <div class="facetedSearchBtn" id="{[this.buttonElementId(values.uuid)]}">',
             '            {[this.getButton(values)]}',
@@ -57,6 +57,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 },
                 getIconUrl: function(values) {
                     return Ext.ux.Ajax.constructProxyUrl(this.getGeonetworkImageUrl(values.iconSourceUuid));
+                },
+                getHtmlTitle: function(values) {
+                    var title = values.title;
+                    return String.format("<h3 title=\"{0}\">{1}</h3>", title, Ext.util.Format.ellipsis(title, 180, true));
                 }
             }
         );
@@ -311,6 +315,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         this.addRecordWithUuid(uuid, multiSelect);
 
         btn.addClass(this.CSS_CLASS_BUTTON_SELECTED);
+
+        // Updating the popularity counter of the metadata record at GeoNetwork
+        Ext.ux.Ajax.proxyRequestXML({
+            url: Portal.app.appConfig.geonetwork.url + '/srv/eng/xml_iso19139?uuid=' + uuid
+        });
     },
 
     addRecordWithUuid: function(uuid, multiSelect) {

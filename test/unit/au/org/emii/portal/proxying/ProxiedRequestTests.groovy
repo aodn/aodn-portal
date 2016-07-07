@@ -25,19 +25,16 @@ class ProxiedRequestTests extends GrailsUnitTestCase {
         def testStreamProcessor = new Object()
 
         def executeRequestCallCount = 0
-        def determineResponseTypeCallCount = 0
 
         proxiedRequest.executeRequest = { streamProcessor ->
 
             assertEquals testStreamProcessor,  streamProcessor
             executeRequestCallCount++
         }
-        proxiedRequest._determineResponseContentType = { determineResponseTypeCallCount++ }
 
         proxiedRequest.proxy(testStreamProcessor)
 
         assertEquals 1, executeRequestCallCount
-        assertEquals 1, determineResponseTypeCallCount
     }
 
     void testDetermineResponseContentType() {

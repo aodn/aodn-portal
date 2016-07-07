@@ -243,7 +243,10 @@ describe("Portal.cart.DownloadPanel", function() {
     var makeTestCollection = function(uuid) {
         return {
             getUuid: returns(uuid),
-            getTitle: returns("Argo")
+            getTitle: returns("Argo"),
+            getFilters: function() {
+                return [];
+            }
         };
     };
 });

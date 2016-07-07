@@ -104,7 +104,7 @@ class WpsController extends HostVerifyingController {
             return g.createLink(
                 controller: 'proxy',
                 absolute: true,
-                params: [ url: downloadUrl ]
+                params: [ url: downloadUrl, proxyContentType: true ]
             )
         }
 

@@ -8,7 +8,7 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         var params = filters.filter(function(filter) {
             return filter.isNcwmsParams;
         })[0];
-
+        var timeSeriesAtString = "";
         var areaString = "";
         var dateString = "";
 
@@ -26,17 +26,29 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             areaString = String.format('{0}:&nbsp;{1}<br>', OpenLayers.i18n("spatialExtentHeading"), bbox);
         }
 
+        var pointFilter = Portal.filter.FilterUtils.getFilter(filters, 'timeSeriesAtPoint');
+
+        if (pointFilter && pointFilter.hasValue()) {
+            var pointFilterValue = pointFilter.getValue();
+            timeSeriesAtString = String.format(
+                '{0}:&nbsp;{1}, {2}<br>',
+                OpenLayers.i18n("timeSeriesAtHeading"),
+                pointFilterValue.latitude,
+                pointFilterValue.longitude
+            );
+        }
+
         if (params && params.dateRangeStart) {
             var startDateString = this._formatDate(params.dateRangeStart);
             var endDateString = this._formatDate(params.dateRangeEnd);
             dateString = this._formatHumanDateInfo('temporalExtentHeading', startDateString, endDateString);
         }
 
-        if (areaString == "" && dateString == "") {
+        if (timeSeriesAtString == "" && areaString == "" && dateString == "") {
             areaString = OpenLayers.i18n("emptyDownloadPlaceholder");
         }
 
-        return areaString + dateString;
+        return areaString + timeSeriesAtString + dateString;
     },
 
     _formatHumanDateInfo: function(labelKey, value1, value2) {

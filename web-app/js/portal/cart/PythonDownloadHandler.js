@@ -7,7 +7,7 @@ Portal.cart.PythonDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
     getDownloadOptions: function() {
         var downloadOptions = [];
 
-        if (this._hasRequiredInfo()) {
+        if (this._showDownloadOptions()) {
 
             downloadOptions.push({
                 textKey: 'downloadAsPythonSnippetLabel',
@@ -24,7 +24,7 @@ Portal.cart.PythonDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return downloadOptions;
     },
 
-    _hasRequiredInfo: function() {
+    _showDownloadOptions: function() {
         return this._resourceHrefNotEmpty();
     },
 

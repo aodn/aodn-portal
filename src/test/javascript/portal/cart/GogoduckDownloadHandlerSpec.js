@@ -14,7 +14,7 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
 
         it('has one valid option', function() {
 
-            var options = handler.getDownloadOptions();
+            var options = handler.getDownloadOptions([]);
 
             expect(options.length).toBe(1);
 
