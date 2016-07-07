@@ -1,37 +1,33 @@
 package au.org.emii.portal.tests;
 
-
 import org.apache.log4j.Logger;
-import org.openqa.selenium.*;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
 public class BaseTest {
+    public static final int invocationCount = 1;
+    public static final int threadPoolSize = 1;
     public static String BROWSER_STACK_USERNAME;
     public static String BROWSER_STACK_AUTOMATE_KEY;
     public static String BROWSER_STACK_URL;
     public static String BROWSER_STACK_LOCAL_URL;
-
     public static String BROWSER_STACK_DEBUG;
     public static String BROWSER_STACK_LOCAL;
     public static String BROWSER_STACK_VIDEO;
     public static String BROWSER_STACK_BUILD;
-
     public static String AODN_PORTAL_HOME_PAGE;
     public static String AODN_PORTAL_SEARCH_PAGE;
-
-    public static final int invocationCount = 1;
-    public static final int threadPoolSize = 1;
-
     public static Properties properties = new Properties();
     private static Logger log = Logger.getLogger(BaseTest.class.getName());
 

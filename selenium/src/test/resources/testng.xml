@@ -18,8 +18,8 @@
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
         <classes>
-<!--            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>-->
+            <!--            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>-->
         </classes>
     </test>
     <test name="Firefox 45.0 on Windows 10">
@@ -32,10 +32,10 @@
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
         <classes>
-<!--
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
--->
+            <!--
+                        <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
         </classes>
     </test>
     <test name="Firefox 44.0 on Windows 10">
@@ -48,10 +48,10 @@
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
         <classes>
-<!--
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
--->
+            <!--
+                        <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
         </classes>
     </test>
 
@@ -67,10 +67,10 @@
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
         <classes>
-<!--
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
--->
+            <!--
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
+            -->
         </classes>
     </test>
     <test name="Firefox 45.0 on OS X El Capitan">
@@ -83,10 +83,10 @@
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
         <classes>
-<!--
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
--->
+            <!--
+                        <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
         </classes>
     </test>
     <test name="Firefox 44.0 on OS X El Capitan">
@@ -99,10 +99,10 @@
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
         <classes>
-<!--
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
--->
+            <!--
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
+            -->
         </classes>
     </test>
 
@@ -119,10 +119,10 @@
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
         <classes>
-<!--
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
--->
+            <!--
+                        <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
         </classes>
     </test>
     <test name="Chrome 50.0 on Windows 10">
@@ -135,10 +135,10 @@
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
         <classes>
-<!--
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
--->
+            <!--
+                        <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
         </classes>
     </test>
     <test name="Chrome 49.0 on Windows 10">
@@ -151,10 +151,10 @@
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
         <classes>
-<!--
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
--->
+            <!--
+                        <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
         </classes>
     </test>
 
@@ -170,10 +170,10 @@
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
         <classes>
-<!--
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
--->
+            <!--
+                        <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
         </classes>
     </test>
     <test name="Chrome 50.0 on OS X El Capitan">
@@ -186,10 +186,10 @@
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
         <classes>
-<!--
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
--->
+            <!--
+                        <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
         </classes>
     </test>
     <test name="Chrome 49.0 on OS X El Capitan">
@@ -202,10 +202,10 @@
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
         <classes>
-<!--
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
--->
+            <!--
+                        <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
             <class name="au.org.emii.portal.tests.BrowserStackTest"/>
         </classes>
     </test>

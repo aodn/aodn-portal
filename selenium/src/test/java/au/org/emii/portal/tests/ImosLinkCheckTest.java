@@ -3,8 +3,6 @@ package au.org.emii.portal.tests;
 import au.org.emii.portal.utils.SeleniumUtil;
 import au.org.emii.portal.utils.WebElementUtil;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

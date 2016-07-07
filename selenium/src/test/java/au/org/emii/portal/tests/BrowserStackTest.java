@@ -1,8 +1,8 @@
 package au.org.emii.portal.tests;
 
-import org.testng.annotations.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.Test;
 
 public class BrowserStackTest extends BaseTest {
 
