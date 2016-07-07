@@ -1,3 +1,11 @@
+Setting up Project
+
+Import "selenium" as maven project into IntelliJ.
+Right Click "selenium/src/test/resources/testng.xml" and select Run
+Test results will be available on console and on browserstack dashboard - https://www.browserstack.com/automate
+Html test report will be available at selenium/test-output/html/index.html
+Test can also be executed from command line (inside selenium directory) using "mvn clean install" - Currently it does not produces html test report
+
 Setting up Local Testing
 
 Download the appropriate binary:
@@ -17,7 +25,9 @@ To test a private server, execute the binary:
 ./BrowserStackLocal gHycUBmFvrs5PWq8qYqS
 Once the connection is made, you need to set the browserstack.local capability to true.
 
-caps.setCapability("browserstack.local", "true");
+Set "browserstack.local" to "true" in pom.xml
+Set "aodnPortal" to localhost url of aodn-portal in pom.xml
+Set "build" to "your-username" in pom.xml to identify your test results easily.
 
 Windows
 To test a private server, execute the binary:
@@ -25,4 +35,6 @@ To test a private server, execute the binary:
 BrowserStackLocal.exe gHycUBmFvrs5PWq8qYqS
 Once the connection is made, you need to set the browserstack.local capability to true.
 
-caps.setCapability("browserstack.local", "true");
+Set "browserstack.local" to "true" in pom.xml
+Set "aodnPortal" to localhost url of aodn-portal in pom.xml
+Set "build" to "your-username" in pom.xml to identify your test results easily.
