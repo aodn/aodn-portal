@@ -49,15 +49,25 @@ class WpsService extends AsyncDownloadService {
 
         params.expirationPeriod = _getExpirationPeriod()
         params.jobReportUrl = _getJobReportUrl(params)
-        params.contactEmail = grailsApplication.config.portal.contactEmail
+        params.portalConfig = grailsApplication.config.portal
 
-        mailService.sendMail {
-            async true
-            to params.email.to
-            subject params.email.subject
-            body(
-                view: "/wps/${params.email.template}",
-                model: params
+        if (grailsApplication.config.grails.mail.disabled != true) {
+            mailService.sendMail {
+                async true
+                to params.email.to
+                subject params.email.subject
+                body(
+                    view: "/wps/${params.email.template}",
+                    model: params
+                )
+            }
+        }
+        else {
+            log.info(
+                groovyPageRenderer.render (
+                    view: "/wps/${params.email.template}",
+                    model: params
+                )
             )
         }
     }
