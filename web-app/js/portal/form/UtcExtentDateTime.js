@@ -19,6 +19,36 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
             this.onBlur(field);
         }, this);
 
+        this.df.getErrors = function() {
+            var errors = Portal.form.UtcExtentDateTime.superclass.getErrors.apply(this);
+            var startEndDateIds = JSON.parse(sessionStorage.getItem('startEndDateIds'));
+            var id = this.id;
+
+            try {
+                startEndDateIds.forEach( function(startEndDateId) {
+                    if (startEndDateId.contains(id)) {
+                        var startEndDateIdArray = startEndDateId.split(':')
+                        var startDate = Ext.getCmp(startEndDateIdArray[0]).getValue();
+                        var endDate = Ext.getCmp(startEndDateIdArray[1]).getValue();
+
+                        if ( endDate < startDate) {
+                            errors.push("From date should be before To date");
+                        } else {
+                            // Removing error message from the other date element
+                            startEndDateIdArray.forEach( function(dateElementId) {
+                                if (!dateElementId.contains(id)) {
+                                    Ext.getCmp(dateElementId).clearInvalid();
+                                }
+                            });
+                        }
+                    }
+                } );
+            }
+            catch(err) {
+            }
+            return errors;
+        };
+
         this.df.on('select', function(field, record, index) {
             this.onBlur(field);
         }, this);
