@@ -24,6 +24,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }, cfg);
 
         Portal.details.NcWmsPanel.superclass.constructor.call(this, config);
+        sessionStorage.clear();
     },
 
     initComponent: function() {
@@ -348,6 +349,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _defaultDateTimePickerConfiguration: function() {
         return {
+            parentPanel: this,
             dateFormat: OpenLayers.i18n('dateDisplayFormatExtJs'),
             timeFormat: OpenLayers.i18n('timeDisplayFormatExtJs'),
             altDateFormats: OpenLayers.i18n('dateAltFormats'),
@@ -410,6 +412,25 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
 
         trackFiltersUsage(OpenLayers.i18n('trackingDateAction'), selectedDateTimeMoment.utc().toISOString(), this.dataCollection.getTitle());
+
+        // Put the start and end date input fields ids into storage
+        try {
+            var startDateId = this.startDateTimePicker.tableEl.dom.rows[0].children[0].children[0].children[0].id;
+            var endDateId = this.endDateTimePicker.tableEl.dom.rows[0].children[0].children[0].children[0].id;
+            var startEndDateId = startDateId + ':' + endDateId
+            var startEndDateIds = JSON.parse(sessionStorage.getItem('startEndDateIds'));
+
+            if (startEndDateIds == null) {
+                startEndDateIds = new Array();
+            }
+
+            if (startEndDateIds.indexOf(startEndDateId) < 0) {
+                startEndDateIds.push(startEndDateId);
+                sessionStorage.setItem('startEndDateIds', JSON.stringify(startEndDateIds));
+            }
+           }
+        catch(err) {
+        }
     },
 
     _onTimeSelected: function(datePicker, selectedDateTimeMoment) {
