@@ -1,13 +1,13 @@
 package au.org.emii.portal.tests;
 
+import au.org.emii.portal.utils.SeleniumUtil;
+import au.org.emii.portal.utils.WebElementUtil;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 
@@ -29,20 +29,24 @@ public class BaseTest {
     public static String AODN_PORTAL_HOME_PAGE;
     public static String AODN_PORTAL_SEARCH_PAGE;
     public static Properties properties = new Properties();
+    public WebElementUtil webElementUtil;
+    public SeleniumUtil seleniumUtil;
     private static Logger log = Logger.getLogger(BaseTest.class.getName());
 
     private WebDriver driver;
 
-    @Parameters({"browser", "browser_version", "os", "os_version", "device", "platform", "resolution"})
-    @BeforeClass
-    public void setup(String browser, String browser_version, String os, String os_version, String device, String platform, String resolution) throws MalformedURLException, InterruptedException {
-
+    static {
         BROWSER_STACK_AUTOMATE_KEY = System.getProperty("browserstack.automateKey");
         BROWSER_STACK_USERNAME = System.getProperty("browserstack.username");
         BROWSER_STACK_DEBUG = System.getProperty("browserstack.debug");
         BROWSER_STACK_VIDEO = System.getProperty("browserstack.video");
         BROWSER_STACK_BUILD = System.getProperty("build");
         BROWSER_STACK_LOCAL = System.getProperty("browserstack.local");
+    }
+
+    @Parameters({"browser", "browser_version", "os", "os_version", "device", "platform", "resolution"})
+    @BeforeClass
+    public void setup(String browser, String browser_version, String os, String os_version, String device, String platform, String resolution) throws MalformedURLException, InterruptedException {
 
         log.debug("BROWSER_STACK_AUTOMATE_KEY: " + BROWSER_STACK_AUTOMATE_KEY);
         log.debug("BROWSER_STACK_USERNAME: " + BROWSER_STACK_USERNAME);
@@ -65,11 +69,14 @@ public class BaseTest {
             driver = new RemoteWebDriver(new URL(BROWSER_STACK_URL), capability);
         }
 
+        webElementUtil = new WebElementUtil(driver);
+        seleniumUtil = new SeleniumUtil(driver);
+
         driver.get(AODN_PORTAL_HOME_PAGE);
-        wait(5);
+        wait(3);
     }
 
-    @org.testng.annotations.AfterClass
+    @AfterClass
     public void tearDown() {
         driver.quit();
     }
@@ -96,25 +103,6 @@ public class BaseTest {
 
     public WebDriver getDriver() {
         return driver;
-    }
-
-    public boolean isElementClickable(By locator) {
-        WebElement element = driver.findElement(locator);
-        return (element != null && element.isDisplayed() && element.isEnabled()) ? true : false;
-    }
-
-    public void acceptAlert() {
-        // Check the presence of alert
-        Alert alert = driver.switchTo().alert();
-        // if present consume the alert
-        alert.accept();
-    }
-
-    public void cancelAlert() {
-        // Check the presence of alert
-        Alert alert = driver.switchTo().alert();
-        // if present consume the alert
-        alert.dismiss();
     }
 
     public void wait(int seconds) {

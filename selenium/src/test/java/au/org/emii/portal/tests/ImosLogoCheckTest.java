@@ -12,27 +12,27 @@ public class ImosLogoCheckTest extends BaseTest {
     private static Logger log = Logger.getLogger(ImosLogoCheckTest.class.getName());
 
     //Look at logo in top right corner of any step including landing page
-    @Test(invocationCount = invocationCount, threadPoolSize = threadPoolSize)
-    public void ImosLogoCheckTest() {
+    @Test
+    public void verifyLogoTest() {
         // Go to home page
         getDriver().get(AODN_PORTAL_HOME_PAGE);
-        int invalidImageCountHomePage = SeleniumUtil.validateInvalidImages(getDriver());
+        int invalidImageCountHomePage = seleniumUtil.validateInvalidImages();
         Assert.assertEquals(invalidImageCountHomePage, 0);
 
         // Go to search page - Step 1
         getDriver().get(AODN_PORTAL_SEARCH_PAGE);
         wait(2);
-        int invalidImageCountSearchPageStep1 = SeleniumUtil.validateInvalidImages(getDriver());
+        int invalidImageCountSearchPageStep1 = seleniumUtil.validateInvalidImages();
         Assert.assertEquals(invalidImageCountSearchPageStep1, 0);
 
         // Go to search page - Step 2
-        WebElementUtil.clickButtonWithTitle("Add this collection", getDriver());
-        int invalidImageCountSearchPageStep2 = SeleniumUtil.validateInvalidImages(getDriver());
+        webElementUtil.clickButtonWithTitle("Add this collection");
+        int invalidImageCountSearchPageStep2 = seleniumUtil.validateInvalidImages();
         Assert.assertEquals(invalidImageCountSearchPageStep2, 0);
 
         // Go to search page - Step 3
-        WebElementUtil.clickButtonWithText("Next", getDriver());
-        int invalidImageCountSearchPageStep3 = SeleniumUtil.validateInvalidImages(getDriver());
+        webElementUtil.clickButtonWithText("Next");
+        int invalidImageCountSearchPageStep3 = seleniumUtil.validateInvalidImages();
         Assert.assertEquals(invalidImageCountSearchPageStep3, 0);
     }
 }

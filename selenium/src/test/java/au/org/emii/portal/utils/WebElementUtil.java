@@ -1,11 +1,12 @@
 package au.org.emii.portal.utils;
 
 import org.apache.log4j.Logger;
-import org.junit.Assert;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 
 import java.util.NoSuchElementException;
 
@@ -13,43 +14,53 @@ public class WebElementUtil {
 
     private static Logger log = Logger.getLogger(WebElementUtil.class.getName());
 
-    public static void clickElementByXpath(String xpath, WebDriver driver) {
+    private WebDriver driver;
+
+    public WebElementUtil(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public void clickElementByXpath(String xpath) {
         try {
             WebElement element = driver.findElement(By.xpath(xpath));
+            Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with xpath " + xpath + "could not be found", e);
         }
     }
 
-    public static void clickElementWithLinkText(String linkText, WebDriver driver) {
+    public void clickElementWithLinkText(String linkText) {
         try {
             WebElement element = driver.findElement(By.linkText(linkText));
+            Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Link text " + linkText + "could not be found", e);
         }
     }
 
-    public static void clickLinkContainingText(String linkText, WebDriver driver) {
+    public void clickLinkContainingText(String linkText) {
         try {
             WebElement element = driver.findElement(By.xpath("//a[contains(.,'" + linkText + "')]"));
+            Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Link text " + linkText + "could not be found", e);
         }
     }
 
-    public static void clickButtonWithText(String text, WebDriver driver) {
+    public void clickButtonWithText(String text) {
         try {
             WebElement element = driver.findElement(By.xpath("//button[contains(.,'" + text + "')]"));
+            Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error(text + " element cannot be found", e);
         }
     }
 
-    public static void clickElementById(String id, WebDriver driver) {
+    public void clickElementById(String id) {
         try {
             WebElement element = driver.findElement(By.id(id));
             element.click();
@@ -58,16 +69,17 @@ public class WebElementUtil {
         }
     }
 
-    public static void clickElementWithClass(String className, WebDriver driver) {
+    public void clickElementWithClass(String className) {
         try {
             WebElement element = driver.findElement(By.xpath("[contains(@class, '" + className + "')]"));
+            Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with class " + className + " cannot be found", e);
         }
     }
 
-    public static void clickButtonWithClass(String className, WebDriver driver) {
+    public void clickButtonWithClass(String className) {
         try {
             WebElement element = driver.findElement(By.xpath("//button[contains(@class, '" + className + "')]"));
             element.click();
@@ -76,52 +88,60 @@ public class WebElementUtil {
         }
     }
 
-    public static void clickButtonWithTitle(String title, WebDriver driver) {
+    public void clickButtonWithTitle(String title) {
         try {
             WebElement element = driver.findElement(By.xpath("//button[contains(@title, '" + title + "')]"));
+            Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Button with title " + title + " cannot be found", e);
         }
     }
 
-    public static void clickButtonWithId(String id, WebDriver driver) {
+    public void clickButtonWithId(String id) {
         try {
             WebElement element = driver.findElement(By.id(id));
+            Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Button with id " + id + " cannot be found", e);
         }
     }
 
-    public static void selectDropDownTextById(String selectText, String selectId, WebDriver driver) {
+    public void selectDropDownTextById(String selectText, String selectId) {
         try {
-            Select dropdown = new Select(driver.findElement(By.id(selectId)));
+            WebElement element = driver.findElement(By.id(selectId));
+            Assert.assertNotNull(element);
+            Select dropdown = new Select(element);
             dropdown.selectByVisibleText(selectText);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(selectText + " could not be selected", e);
         }
     }
 
-    public static void selectDropDownTextByClass(String selectText, String className, WebDriver driver) {
+    public void selectDropDownTextByClass(String selectText, String className) {
         try {
-            Select dropdown = new Select(driver.findElement(By.xpath("[contains(@class, '" + className + "')]")));
+            WebElement element = driver.findElement(By.xpath("[contains(@class, '" + className + "')]"));
+            Assert.assertNotNull(element);
+            Select dropdown = new Select(element);
             dropdown.selectByVisibleText(selectText);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(selectText + " could not be selected", e);
         }
     }
 
-    public static void selectDropDownTextByXpath(String selectText, String xpath, WebDriver driver) {
+    public void selectDropDownTextByXpath(String selectText, String xpath) {
         try {
-            Select dropdown = new Select(driver.findElement(By.xpath(xpath)));
+            WebElement element = driver.findElement(By.xpath(xpath));
+            Assert.assertNotNull(element);
+            Select dropdown = new Select(element);
             dropdown.selectByVisibleText(selectText);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(selectText + " could not be selected", e);
         }
     }
 
-    public static void enterInputStringById(String inputString, String inputId, WebDriver driver) {
+    public void enterInputStringById(String inputString, String inputId) {
         try {
             WebElement element = driver.findElement(By.id(inputId));
             Assert.assertNotNull(element);
@@ -132,7 +152,7 @@ public class WebElementUtil {
         }
     }
 
-    public static void enterInputStringByXpath(String inputString, String xpath, WebDriver driver) {
+    public void enterInputStringByXpath(String inputString, String xpath) {
         try {
             WebElement element = driver.findElement(By.xpath(xpath));
             Assert.assertNotNull(element);
@@ -143,7 +163,7 @@ public class WebElementUtil {
         }
     }
 
-    public static void clearInputById(String inputId, WebDriver driver) {
+    public void clearInputById(String inputId) {
         try {
             WebElement element = driver.findElement(By.id(inputId));
             Assert.assertNotNull(element);
@@ -153,17 +173,17 @@ public class WebElementUtil {
         }
     }
 
-    public static void verifyInputText(String inputId, String matchText, WebDriver driver) {
+    public void verifyInputText(String inputId, String matchText) {
         try {
             WebElement element = driver.findElement(By.id(inputId));
             Assert.assertNotNull(element);
-            Assert.assertTrue("Unable to math text: " + matchText, element.getAttribute("value").equals(matchText));
+            Assert.assertTrue(element.getAttribute("value").equals(matchText), "Unable to math text: " + matchText);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(" Field with id " + inputId + " could not be found", e);
         }
     }
 
-    public static void clearInputByXpath(String xpath, WebDriver driver) {
+    public void clearInputByXpath(String xpath) {
         try {
             WebElement element = driver.findElement(By.xpath(xpath));
             Assert.assertNotNull(element);
@@ -174,7 +194,7 @@ public class WebElementUtil {
     }
 
 
-    public static void verifyValidationMessage(String validationMessage, WebDriver driver) {
+    public void verifyValidationMessage(String validationMessage) {
         //Validation message test
         try {
             WebElement element = driver.findElement(By.xpath("//span[contains(.,'" + validationMessage + "')]"));
@@ -184,7 +204,7 @@ public class WebElementUtil {
         }
     }
 
-    public static void verifyTextPresentOnPage(String text, WebDriver driver) {
+    public void verifyTextPresentOnPage(String text) {
         //Validation message test
         try {
             WebElement element = driver.findElement(By.xpath("[contains(.,'" + text + "')]"));
@@ -194,7 +214,7 @@ public class WebElementUtil {
         }
     }
 
-    public static void verifyPageTitle(String title, WebDriver driver) {
+    public void verifyPageTitle(String title) {
         // Check Page Title
         try {
             String pageTitle = driver.getTitle();
@@ -202,6 +222,25 @@ public class WebElementUtil {
         } catch (AssertionError e) {
             log.error("Assertion Failed", e);
         }
+    }
+
+    public boolean isElementClickable(By locator) {
+        WebElement element = driver.findElement(locator);
+        return (element != null && element.isDisplayed() && element.isEnabled()) ? true : false;
+    }
+
+    public void acceptAlert(WebDriver driver) {
+        // Check the presence of alert
+        Alert alert = driver.switchTo().alert();
+        // if present consume the alert
+        alert.accept();
+    }
+
+    public void cancelAlert(WebDriver driver) {
+        // Check the presence of alert
+        Alert alert = driver.switchTo().alert();
+        // if present consume the alert
+        alert.dismiss();
     }
 }
 

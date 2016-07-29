@@ -12,27 +12,27 @@ public class ImosLinkCheckTest extends BaseTest {
     private static Logger log = Logger.getLogger(ImosLinkCheckTest.class.getName());
 
     //Click on the IMOS link at the top right of the screen (22/08 now at bottom of screen)
-    @Test(invocationCount = invocationCount, threadPoolSize = threadPoolSize)
-    public void ImosLinkCheckTest() {
+    @Test
+    public void verifyLinkTest() {
         // Go to home page
         getDriver().get(AODN_PORTAL_HOME_PAGE);
-        int invalidLinksCountHomePage = SeleniumUtil.validateInvalidLinks(getDriver());
+        int invalidLinksCountHomePage = seleniumUtil.validateInvalidLinks();
         Assert.assertEquals(invalidLinksCountHomePage, 0);
 
         // Go to search page - Step 1
         getDriver().get(AODN_PORTAL_SEARCH_PAGE);
         wait(2);
-        int invalidLinksCountSearchPageStep1 = SeleniumUtil.validateInvalidLinks(getDriver());
+        int invalidLinksCountSearchPageStep1 = seleniumUtil.validateInvalidLinks();
         Assert.assertEquals(invalidLinksCountSearchPageStep1, 0);
 
         // Go to search page - Step 2
-        WebElementUtil.clickButtonWithTitle("Add this collection", getDriver());
-        int invalidLinksCountSearchPageStep2 = SeleniumUtil.validateInvalidLinks(getDriver());
+        webElementUtil.clickButtonWithTitle("Add this collection");
+        int invalidLinksCountSearchPageStep2 = seleniumUtil.validateInvalidLinks();
         Assert.assertEquals(invalidLinksCountSearchPageStep2, 0);
 
         // Go to search page - Step 3
-        WebElementUtil.clickButtonWithText("Next", getDriver());
-        int invalidLinksCountSearchPageStep3 = SeleniumUtil.validateInvalidLinks(getDriver());
+        webElementUtil.clickButtonWithText("Next");
+        int invalidLinksCountSearchPageStep3 = seleniumUtil.validateInvalidLinks();
         Assert.assertEquals(invalidLinksCountSearchPageStep3, 0);
     }
 }
