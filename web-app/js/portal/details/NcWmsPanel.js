@@ -20,6 +20,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }, this);
 
         var config = Ext.apply({
+            autoHeight: true,
             cls: 'filterGroupPanel'
         }, cfg);
 
