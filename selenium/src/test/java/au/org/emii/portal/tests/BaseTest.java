@@ -14,6 +14,7 @@ import org.testng.annotations.Parameters;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
     public static final int invocationCount = 1;
@@ -73,7 +74,7 @@ public class BaseTest {
         seleniumUtil = new SeleniumUtil(driver);
 
         driver.get(AODN_PORTAL_HOME_PAGE);
-        wait(3);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
     @AfterClass
@@ -103,14 +104,6 @@ public class BaseTest {
 
     public WebDriver getDriver() {
         return driver;
-    }
-
-    public void wait(int seconds) {
-        try {
-            Thread.sleep(1000 * seconds);
-        } catch (InterruptedException e) {
-            log.error("Unable to wait", e);
-        }
     }
 }
 
