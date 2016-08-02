@@ -383,5 +383,15 @@ try {
     println "Loading external config from '$configurationPath'..."
 }
 catch (e) {
-    println "Not loading external config"
+    println "Not loading external config from 'java:comp/env/aodn.configuration'..."
+}
+
+// If configurationPath unset, fall back to default path
+defaultConfigPath =  "/etc/aodn-config/Portal.groovy"
+defaultConfigExists = new File(defaultConfigPath).exists()
+if (!configurationPath && defaultConfigExists) {
+    grails.config.locations << "file:${defaultConfigPath}"
+    println "Loading external config from '$defaultConfigPath'..."
+} else {
+    println "Not loading external config from '$defaultConfigPath'..."
 }
