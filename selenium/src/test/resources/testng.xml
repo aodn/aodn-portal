@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Test case run on different browsers" verbose="3" parallel="tests" thread-count="100">
+    <listeners>
+        <listener class-name="org.uncommons.reportng.HTMLReporter"/>
+        <listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>
+    </listeners>
+
+    <!-- Reference https://www.browserstack.com/automate/java-->
+    <!--Firefox Windows 10 Configurations-->
+    <test name="Firefox Latest on Windows 10">
+        <parameter name="browser" value="Firefox"/>
+        <!--Note: If browser_version capability is not set, the test will run on the latest version of the browser set by browser capability.-->
+        <parameter name="browser_version" value=""/>
+        <parameter name="os" value="WINDOWS"/>
+        <parameter name="os_version" value="10"/>
+        <parameter name="resolution" value="1024x768"/>
+        <parameter name="device" value=""/>
+        <parameter name="platform" value=""/>
+        <parameter name="mobile" value="false"/>
+        <classes>
+            <!--            <class name="au.org.emii.portal.tests.verifyLogoTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>-->
+        </classes>
+    </test>
+    <test name="Firefox 45.0 on Windows 10">
+        <parameter name="browser" value="Firefox"/>
+        <parameter name="browser_version" value="45.0"/>
+        <parameter name="os" value="WINDOWS"/>
+        <parameter name="os_version" value="10"/>
+        <parameter name="resolution" value="1024x768"/>
+        <parameter name="device" value=""/>
+        <parameter name="platform" value=""/>
+        <parameter name="mobile" value="false"/>
+        <classes>
+            <!--
+                        <class name="au.org.emii.portal.tests.verifyLogoTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
+        </classes>
+    </test>
+    <test name="Firefox 44.0 on Windows 10">
+        <parameter name="browser" value="Firefox"/>
+        <parameter name="browser_version" value="44.0"/>
+        <parameter name="os" value="WINDOWS"/>
+        <parameter name="os_version" value="10"/>
+        <parameter name="resolution" value="1024x768"/>
+        <parameter name="device" value=""/>
+        <parameter name="platform" value=""/>
+        <parameter name="mobile" value="false"/>
+        <classes>
+            <!--
+                        <class name="au.org.emii.portal.tests.verifyLogoTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
+        </classes>
+    </test>
+
+    <!--Firefox OS X El Capitan Configurations-->
+    <test name="Firefox Latest on OS X El Capitan">
+        <parameter name="browser" value="Firefox"/>
+        <!--Note: If browser_version capability is not set, the test will run on the latest version of the browser set by browser capability.-->
+        <parameter name="browser_version" value=""/>
+        <parameter name="os" value="OS X"/>
+        <parameter name="os_version" value="El Capitan"/>
+        <parameter name="resolution" value="1024x768"/>
+        <parameter name="device" value=""/>
+        <parameter name="platform" value=""/>
+        <parameter name="mobile" value="false"/>
+        <classes>
+            <!--
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+                        <class name="au.org.emii.portal.tests.verifyLogoTest"/>
+            -->
+        </classes>
+    </test>
+    <test name="Firefox 45.0 on OS X El Capitan">
+        <parameter name="browser" value="Firefox"/>
+        <parameter name="browser_version" value="45.0"/>
+        <parameter name="os" value="OS X"/>
+        <parameter name="os_version" value="El Capitan"/>
+        <parameter name="resolution" value="1024x768"/>
+        <parameter name="device" value=""/>
+        <parameter name="platform" value=""/>
+        <parameter name="mobile" value="false"/>
+        <classes>
+            <!--
+                        <class name="au.org.emii.portal.tests.verifyLogoTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
+        </classes>
+    </test>
+    <test name="Firefox 44.0 on OS X El Capitan">
+        <parameter name="browser" value="Firefox"/>
+        <parameter name="browser_version" value="44.0"/>
+        <parameter name="os" value="OS X"/>
+        <parameter name="os_version" value="El Capitan"/>
+        <parameter name="resolution" value="1024x768"/>
+        <parameter name="device" value=""/>
+        <parameter name="platform" value=""/>
+        <parameter name="mobile" value="false"/>
+        <classes>
+            <!--
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+                        <class name="au.org.emii.portal.tests.verifyLogoTest"/>
+            -->
+        </classes>
+    </test>
+
+
+    <!--Chrome Windows 10 Configurations-->
+    <test name="Chrome Latest on Windows 10">
+        <parameter name="browser" value="Chrome"/>
+        <!--Note: If browser_version capability is not set, the test will run on the latest version of the browser set by browser capability.-->
+        <parameter name="browser_version" value=""/>
+        <parameter name="os" value="WINDOWS"/>
+        <parameter name="os_version" value="10"/>
+        <parameter name="resolution" value="1024x768"/>
+        <parameter name="device" value=""/>
+        <parameter name="platform" value=""/>
+        <parameter name="mobile" value="false"/>
+        <classes>
+            <!--
+                        <class name="au.org.emii.portal.tests.verifyLogoTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
+        </classes>
+    </test>
+    <test name="Chrome 50.0 on Windows 10">
+        <parameter name="browser" value="Chrome"/>
+        <parameter name="browser_version" value="50.0"/>
+        <parameter name="os" value="WINDOWS"/>
+        <parameter name="os_version" value="10"/>
+        <parameter name="resolution" value="1024x768"/>
+        <parameter name="device" value=""/>
+        <parameter name="platform" value=""/>
+        <parameter name="mobile" value="false"/>
+        <classes>
+            <!--
+                        <class name="au.org.emii.portal.tests.verifyLogoTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
+        </classes>
+    </test>
+    <test name="Chrome 49.0 on Windows 10">
+        <parameter name="browser" value="Chrome"/>
+        <parameter name="browser_version" value="49.0"/>
+        <parameter name="os" value="WINDOWS"/>
+        <parameter name="os_version" value="10"/>
+        <parameter name="resolution" value="1024x768"/>
+        <parameter name="device" value=""/>
+        <parameter name="platform" value=""/>
+        <parameter name="mobile" value="false"/>
+        <classes>
+            <!--
+                        <class name="au.org.emii.portal.tests.verifyLogoTest"/>
+                        <class name="au.org.emii.portal.tests.verifyLinkTest"/>
+            -->
+        </classes>
+    </test>
+
+    <!--Chrome OS X El Capitan Configurations-->
+    <test name="Chrome Latest on OS X El Capitan">
+        <parameter name="browser" value="Chrome"/>
+        <!--Note: If browser_version capability is not set, the test will run on the latest version of the browser set by browser capability.-->
+        <parameter name="browser_version" value=""/>
+        <parameter name="os" value="OS X"/>
+        <parameter name="os_version" value="El Capitan"/>
+        <parameter name="resolution" value="1024x768"/>
+        <parameter name="device" value=""/>
+        <parameter name="platform" value=""/>
+        <parameter name="mobile" value="false"/>
+        <classes>
+            <!--
+                        <class name="au.org.emii.portal.tests.verifyLogoTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
+        </classes>
+    </test>
+    <test name="Chrome 50.0 on OS X El Capitan">
+        <parameter name="browser" value="Chrome"/>
+        <parameter name="browser_version" value="50.0"/>
+        <parameter name="os" value="OS X"/>
+        <parameter name="os_version" value="El Capitan"/>
+        <parameter name="resolution" value="1024x768"/>
+        <parameter name="device" value=""/>
+        <parameter name="platform" value=""/>
+        <parameter name="mobile" value="false"/>
+        <classes>
+            <!--
+                        <class name="au.org.emii.portal.tests.verifyLogoTest"/>
+                        <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            -->
+        </classes>
+    </test>
+    <test name="Chrome 49.0 on OS X El Capitan">
+        <parameter name="browser" value="Chrome"/>
+        <parameter name="browser_version" value="49.0"/>
+        <parameter name="os" value="OS X"/>
+        <parameter name="os_version" value="El Capitan"/>
+        <parameter name="resolution" value="1024x768"/>
+        <parameter name="device" value=""/>
+        <parameter name="platform" value=""/>
+        <parameter name="mobile" value="false"/>
+        <classes>
+            <!--
+                        <class name="au.org.emii.portal.tests.verifyLogoTest"/>
+                        <class name="au.org.emii.portal.tests.verifyLinkTest"/>
+            -->
+            <class name="au.org.emii.portal.tests.BrowserStackTest"/>
+            <!--<class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>-->
+        </classes>
+    </test>
+
+    <!--Smart Devices Configurations-->
+    <test name="iPad on iPad Air 2">
+        <parameter name="browser" value="iPad"/>
+        <parameter name="browser_version" value=""/>
+        <parameter name="os" value=""/>
+        <parameter name="os_version" value=""/>
+        <parameter name="resolution" value=""/>
+        <parameter name="device" value="iPad Air 2"/>
+        <parameter name="platform" value="MAC"/>
+        <parameter name="mobile" value="false"/>
+        <classes>
+
+        </classes>
+    </test>
+</suite>
