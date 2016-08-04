@@ -40,6 +40,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this._initWithLayer();
         this._addClearButton();
+
+        this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS, this._populateTimeSeriesControls, this);
+
     },
 
     _timeSeriesOptionAvailable: function() {
@@ -47,12 +50,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         var timeseriesHandlerFound = false;
 
-        var handlerIndex = Ext.each(handlers, function(handler) {
+        Ext.each(handlers, function(handler) {
             if (handler instanceof Portal.cart.PointCSVDownloadHandler) {
                 timeseriesHandlerFound = true;
                 return false;
             }
-        })
+        });
 
         return timeseriesHandlerFound;
     },
@@ -235,11 +238,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _addTimeSeriesControls: function() {
+
         this.timeSeriesLatitudeControl = new Ext.form.NumberField({
-            minValue: this.dataCollection.getBounds().bottom,
-            maxValue: this.dataCollection.getBounds().top,
             decimalPrecision: 7,
-            value: this.dataCollection.getBounds().centerLonLat.lat,
             readOnly: true,
             width: 60,
             style: 'margin: 0 0 0 15px',
@@ -255,10 +256,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         });
 
         this.timeSeriesLongitudeControl = new Ext.form.NumberField({
-            minValue: this.dataCollection.getBounds().left,
-            maxValue: this.dataCollection.getBounds().right,
             decimalPrecision: 7,
-            value: this.dataCollection.getBounds().centerLonLat.lon,
             readOnly: true,
             width: 60,
             style: 'margin: 0 0 0 15px',
@@ -300,10 +298,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
                 {
                     xtype: 'label',
                     text: OpenLayers.i18n('longitudeLabel'),
-                    style: 'margin: 0 0 0 10px',
+                    style: 'margin: 0 0 0 10px'
                 },
                 this.timeSeriesLongitudeControl,
-                this._newSectionSpacer(10),
+                this._newSectionSpacer(10)
             ]
         });
 
@@ -315,7 +313,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             this._enablePointTimeSeriesControls();
         } else {
             this._disablePointTimeSeriesControls();
-        };
+        }
         this._applyFilterValuesToCollection();
     },
 
@@ -418,11 +416,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         try {
             var startDateId = this.startDateTimePicker.tableEl.dom.rows[0].children[0].children[0].children[0].id;
             var endDateId = this.endDateTimePicker.tableEl.dom.rows[0].children[0].children[0].children[0].id;
-            var startEndDateId = startDateId + ':' + endDateId
+            var startEndDateId = startDateId + ':' + endDateId;
             var startEndDateIds = JSON.parse(sessionStorage.getItem('startEndDateIds'));
 
             if (startEndDateIds == null) {
-                startEndDateIds = new Array();
+                startEndDateIds = [];
             }
 
             if (startEndDateIds.indexOf(startEndDateId) < 0) {
@@ -575,6 +573,16 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this._setLayerSubsetExtent();
         this._applyFilterValuesToCollection();
+    },
+
+    _populateTimeSeriesControls: function() {
+        var bounds = this.dataCollection.getBounds();
+        this.timeSeriesLatitudeControl.setMinValue(bounds.bottom);
+        this.timeSeriesLatitudeControl.setMaxValue(bounds.top);
+        this.timeSeriesLatitudeControl.setValue(bounds.getCenterLonLat().lat);
+        this.timeSeriesLongitudeControl.setMinValue(bounds.left);
+        this.timeSeriesLongitudeControl.setMaxValue(bounds.right);
+        this.timeSeriesLongitudeControl.setValue(bounds.getCenterLonLat().lon);
     },
 
     _initializeDateTimePicker: function(dateTimePicker, defaultValue) {

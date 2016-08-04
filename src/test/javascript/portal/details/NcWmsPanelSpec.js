@@ -30,7 +30,8 @@ describe('Portal.details.NcWmsPanel', function() {
             getLayerSelectionModel: returns(layerSelectionModel),
             getTitle: returns("collectionTitle"),
             getBounds: returns({centerLonLat: {lat: -20, lon: 30}}),
-            getAllLinks: returns([])
+            getAllLinks: returns([]),
+            on: noOp
         };
 
         ncwmsPanel = new Portal.details.NcWmsPanel({
