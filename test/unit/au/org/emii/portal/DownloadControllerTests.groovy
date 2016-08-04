@@ -1,9 +1,9 @@
 package au.org.emii.portal
 
-import grails.test.ControllerUnitTestCase
+import grails.test.mixin.TestFor
 
 import static au.org.emii.portal.DownloadController.SIZE_ESTIMATE_ERROR
-import static au.org.emii.portal.HttpUtils.Status.*
+import static au.org.emii.portal.HttpUtils.Status.getHTTP_403_FORBIDDEN
 
 @TestFor(DownloadController)
 class DownloadControllerTests {
@@ -206,7 +206,7 @@ class DownloadControllerTests {
             aatams_sattag_nrt_wfs.331441,/mnt/imos-t4/IMOS/Q9900540.nc
             aatams_sattag_nrt_wfs.331442,/mnt/imos-t4/IMOS/Q9900541.nc
             aatams_sattag_nrt_wfs.331443,/mnt/imos-t4/IMOS/Q9900542.nc
-            aatams_sattag_nrt_wfs.331445,/mnt/imos-t4/IMOS/Q9900543.nc
+            aatams_sattag_nrt_wfs.331445,http://someexternalplace.org/imos-t4/IMOS/Q9900543.nc
             some_cool_data,/some_path/foo/123.nc
 
         """
@@ -216,6 +216,7 @@ http://data.imos.org.au/IMOS/Q9900542.nc\n\
 http://data.imos.org.au/IMOS/Q9900543.nc\n\
 http://data.imos.org.au/IMOS/Q9900540.nc\n\
 http://data.imos.org.au/IMOS/Q9900541.nc\n\
+http://someexternalplace.org/imos-t4/IMOS/Q9900543.nc\n\
 /some_path/bar/123.nc\n\
 """
 

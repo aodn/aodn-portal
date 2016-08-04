@@ -173,8 +173,9 @@ class DownloadController extends RequestProxyingController {
                     def rowValue = currentRow[fieldIndex].trim()
                     urlSubstitutions.each {
                         search, replace ->
-
-                        rowValue = rowValue.replaceAll(search, replace)
+                        if (!rowValue.startsWith("http")) {
+                            rowValue = rowValue.replaceAll(search, replace)
+                        }
                     }
 
                     if (rowValue && includedUrls.add(rowValue)) {
