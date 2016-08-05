@@ -16,7 +16,6 @@ public class BrowserStackTest extends BaseTest {
 
         element.sendKeys("sampleBrowserStackTest");
         element.submit();
-        wait(5);
         log.info(getDriver().getTitle());
     }
 }

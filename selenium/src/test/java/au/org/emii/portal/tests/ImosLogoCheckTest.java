@@ -1,7 +1,5 @@
 package au.org.emii.portal.tests;
 
-import au.org.emii.portal.utils.SeleniumUtil;
-import au.org.emii.portal.utils.WebElementUtil;
 import org.apache.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -21,7 +19,6 @@ public class ImosLogoCheckTest extends BaseTest {
 
         // Go to search page - Step 1
         getDriver().get(AODN_PORTAL_SEARCH_PAGE);
-        wait(2);
         int invalidImageCountSearchPageStep1 = seleniumUtil.validateInvalidImages();
         Assert.assertEquals(invalidImageCountSearchPageStep1, 0);
 
