@@ -545,6 +545,33 @@ div.olMap.x-item-disabled * {
 /* getFeatureInfo popup
 */
 
+.gx-popup.x-window, .ext-el-mask-msg {
+    background-color: white;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.39);
+    border-radius: 12px;
+    border: 1px solid #CCCCCC;
+}
+
+.gx-popup-anc{
+    background:transparent url(/images/popupPointer.png) no-repeat 0 0;
+    position:absolute;
+    left:45px;
+    z-index:2;
+    height:20px;
+    width:40px;
+    pointer-events:none;
+}
+.gx-popup-anc.top{
+    background:transparent url(/images/popupPointer-top.png) no-repeat 0 0;
+    top: -20px;
+    height:20px;
+    left:40px;
+}
+.gx-popup-anc.right{
+    left:auto;
+    right:45px;
+}
+
 .popupHtml {
     color: #6A6A6A;
     font-size: smaller;
