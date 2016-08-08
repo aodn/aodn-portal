@@ -13,7 +13,6 @@ import org.testng.annotations.Parameters;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
@@ -29,7 +28,6 @@ public class BaseTest {
     public static String BROWSER_STACK_BUILD;
     public static String AODN_PORTAL_HOME_PAGE;
     public static String AODN_PORTAL_SEARCH_PAGE;
-    public static Properties properties = new Properties();
     public WebElementUtil webElementUtil;
     public SeleniumUtil seleniumUtil;
     private static Logger log = Logger.getLogger(BaseTest.class.getName());
