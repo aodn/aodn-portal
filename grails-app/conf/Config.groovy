@@ -265,6 +265,8 @@ portal {
 
     initialBbox = "110,-50,160,-3"
     defaultDatelineZoomBbox = "110,-50,160,-3"
+    earliestDate = "1900"
+    latestDate = "3000"
 
     popupWidth = 550
     popupHeight = 325

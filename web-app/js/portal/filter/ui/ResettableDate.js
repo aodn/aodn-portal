@@ -54,11 +54,11 @@ Portal.filter.ui.ResettableDate = Ext.extend(Ext.Container, {
     },
 
     setMinValue: function(value) {
-        this._dateField.setMinUtcValue(value ? value : new Date(0));
+        this._dateField.setMinUtcValue(value ? value : Portal.utils.Date.getEarliestPortalDate());
     },
 
     setMaxValue: function(value) {
-        this._dateField.setMaxUtcValue(value ? value : new Date());
+        this._dateField.setMaxUtcValue(value ? value : Portal.utils.Date.getLatestPortalDate());
     },
 
     applyDefaultValueLimits: function() {

@@ -21,8 +21,8 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
                         format: OpenLayers.i18n('dateDisplayFormatExtJs'),
                         altFormats: OpenLayers.i18n('dateAltFormats'),
                         anchor: '100%',
-                        minValue: new Date(0),
-                        maxValue: new Date(),
+                        minValue: Portal.utils.Date.getEarliestPortalDate(),
+                        maxValue: Portal.utils.Date.getLatestPortalDate(),
                         listeners: {
                             scope: this,
                             invalid: this._onUpdate,
@@ -47,8 +47,8 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
                         format: OpenLayers.i18n('dateDisplayFormatExtJs'),
                         altFormats: OpenLayers.i18n('dateAltFormats'),
                         anchor: '100%',
-                        minValue: new Date(0),
-                        maxValue: new Date(),
+                        minValue: Portal.utils.Date.getEarliestPortalDate(),
+                        maxValue: Portal.utils.Date.getLatestPortalDate(),
                         listeners: {
                             scope: this,
                             invalid: this._onUpdate,
