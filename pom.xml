@@ -324,8 +324,6 @@
                         <include>portal/ui/openlayers/control/SpatialConstraint.js</include>
                         <include>portal/lang/en.js</include>
                         <include>portal/utils/Logging.js</include>
-                        <include>portal/search/field/CheckBox.js</include>
-                        <include>portal/search/field/ValueCheckBox.js</include>
                         <include>portal/search/field/MapLayersCheckBox.js</include>
                         <include>portal/common/MapPanel.js</include>
                         <include>portal/search/CloneMapPanel.js</include>

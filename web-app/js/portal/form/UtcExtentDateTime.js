@@ -27,7 +27,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
             try {
                 startEndDateIds.forEach( function(startEndDateId) {
                     if (startEndDateId.contains(id)) {
-                        var startEndDateIdArray = startEndDateId.split(':')
+                        var startEndDateIdArray = startEndDateId.split(':');
                         var startDate = Ext.getCmp(startEndDateIdArray[0]).getValue();
                         var endDate = Ext.getCmp(startEndDateIdArray[1]).getValue();
 

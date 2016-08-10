@@ -1,6 +1,17 @@
 Ext.namespace('Portal.utils');
 
 Portal.utils.Date = {
+
+    getEarliestPortalDate: function() {
+        // configured date or the ubiquitous 1970
+        return new Date(Portal.app.appConfig.portal.earliestDate || 0 );
+    },
+
+    getLatestPortalDate: function() {
+        // configured date (hopefully in the future) or returns today
+        return new Date(Portal.app.appConfig.portal.latestDate);
+    },
+
     getUtcDateFromLocalDate: function(localDate) {
         try {
             return Portal.utils.Date._getUtcDateFromLocalDate(localDate);
@@ -32,9 +43,7 @@ Portal.utils.Date = {
     },
 
     _getLocalDateFromUtcDate: function(utcDate) {
-        var localDate = null;
-
-        localDate = new Date(
+        return new Date(
             utcDate.getUTCFullYear(),
             utcDate.getUTCMonth(),
             utcDate.getUTCDate(),
@@ -43,7 +52,5 @@ Portal.utils.Date = {
             utcDate.getUTCSeconds(),
             utcDate.getUTCMilliseconds()
         );
-
-        return localDate;
     }
 };

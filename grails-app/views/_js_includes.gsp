@@ -70,11 +70,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'SuggestionStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/data', file: 'LinkStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/data', file: 'MetadataSearchResponseLoader.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'DateRange.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'FacetedDateRange.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'MultiSelectCombo.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'CheckBox.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/search/field', file: 'ValueCheckBox.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'GeoFacetMapToolbar.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'FacetMapPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'FacetedSearchResultsMiniMap.js')}"></script>
