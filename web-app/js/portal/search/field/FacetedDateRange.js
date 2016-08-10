@@ -21,8 +21,8 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
                         format: OpenLayers.i18n('dateDisplayFormatExtJs'),
                         altFormats: OpenLayers.i18n('dateAltFormats'),
                         anchor: '100%',
-                        minValue: new Date(0),
-                        maxValue: new Date(),
+                        minValue: Portal.utils.Date.getEarliestPortalDate(),
+                        maxValue: Portal.utils.Date.getLatestPortalDate(),
                         listeners: {
                             scope: this,
                             invalid: this._onUpdate,
@@ -47,8 +47,8 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
                         format: OpenLayers.i18n('dateDisplayFormatExtJs'),
                         altFormats: OpenLayers.i18n('dateAltFormats'),
                         anchor: '100%',
-                        minValue: new Date(0),
-                        maxValue: new Date(),
+                        minValue: Portal.utils.Date.getEarliestPortalDate(),
+                        maxValue: Portal.utils.Date.getLatestPortalDate(),
                         listeners: {
                             scope: this,
                             invalid: this._onUpdate,
@@ -79,8 +79,8 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
     clearValues:function () {
         this.fromDate.reset();
         this.toDate.reset();
-        this.toDate.setMinValue(new Date(0));
-        this.fromDate.setMaxValue(new Date());
+        this.toDate.setMinValue(Portal.utils.Date.getEarliestPortalDate());
+        this.fromDate.setMaxValue(Portal.utils.Date.getLatestPortalDate());
     },
 
     isValid:function () {
@@ -108,9 +108,7 @@ Portal.search.field.FacetedDateRange = Ext.extend(Ext.Container, {
         this._updatingMinMax = true;
 
         this.toDate.setMinValue(this.fromDate.getValue());
-        this.toDate.validate();
         this.fromDate.setMaxValue(this.toDate.getValue());
-        this.fromDate.validate();
 
         delete this._updatingMinMax;
 
