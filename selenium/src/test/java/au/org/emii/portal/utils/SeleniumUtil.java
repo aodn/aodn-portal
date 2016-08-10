@@ -86,7 +86,7 @@ public class SeleniumUtil {
         if (StringUtils.isNotBlank(URL)) {
             log.info("Validating URL " + URL);
             //Validating the contact us email
-            if (URL.startsWith("mailto:info@aodn.org.au?subject=")) {
+            if (URL.startsWith("mailto:")) {
                 return invalidLinksCount;
             }
             try {
@@ -99,7 +99,7 @@ public class SeleniumUtil {
                 if (response.getStatusLine().getStatusCode() != 200) {
                     invalidLinksCount++;
                     invalidLinks.add(URL);
-                    log.error("Invalid URL " + URL);
+                    log.error(String.format("Invalid URL %s with status %s", URL, response.getStatusLine()));
                 } else {
                     validLinks.add(URL);
                     log.info("Valid URL " + URL);
