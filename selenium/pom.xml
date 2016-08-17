@@ -115,8 +115,6 @@
         <build>local</build>
         <browserstack.video>false</browserstack.video>
         <browserstack.debug>true</browserstack.debug>
-        <browserstack.automateKey>hp3vg22JUprFFZzESJrz</browserstack.automateKey>
-        <browserstack.username>developers44</browserstack.username>
         <browserstack.local>false</browserstack.local>
         <aodnPortal>https://portal-edge.aodn.org.au/</aodnPortal>
         <aodnPortalSearch>search</aodnPortalSearch>
