@@ -1,12 +1,12 @@
 Sorry,
 
-Thank you for submitting a request for ${portalConfig.siteAcronym} data, although your job failed due to a server error.
-For further information about the error: ${jobReportUrl}
+Something has gone wrong with your download request. Please see the attached log for more details: ${jobReportUrl}
+
+Please try again. If you continue to experience problems please contact us at ${portalConfig.contactEmail}. The job reference is ${uuid}.
+
 
 ${portalConfig.emailSignature}
 
 
 --
-If you require assistance with this service please contact us at ${portalConfig.contactEmail}. The job reference is ${uuid}.
-
 ${portalConfig.emailFooter}
