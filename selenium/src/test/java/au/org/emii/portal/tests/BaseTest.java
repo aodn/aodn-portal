@@ -71,8 +71,8 @@ public class BaseTest {
         webElementUtil = new WebElementUtil(driver);
         seleniumUtil = new SeleniumUtil(driver);
 
-        driver.get(AODN_PORTAL_HOME_PAGE);
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        goToHome();
     }
 
     @AfterClass
@@ -102,6 +102,10 @@ public class BaseTest {
 
     public WebDriver getDriver() {
         return driver;
+    }
+
+    public void goToHome() {
+        driver.get(AODN_PORTAL_HOME_PAGE);
     }
 }
 

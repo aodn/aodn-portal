@@ -1,20 +1,22 @@
 package au.org.emii.portal.utils;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 public class WebElementUtil {
 
     private static Logger log = Logger.getLogger(WebElementUtil.class.getName());
 
     private WebDriver driver;
+    private final int TIMEOUT = 30;
+    private final int POLLING_PERIOND = 1;
 
     public WebElementUtil(WebDriver driver) {
         this.driver = driver;
@@ -22,210 +24,254 @@ public class WebElementUtil {
 
     public void clickElementByXpath(String xpath) {
         try {
-            WebElement element = driver.findElement(By.xpath(xpath));
+            WebElement element = findElement(By.xpath(xpath));
             Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with xpath " + xpath + "could not be found", e);
+            throw e;
         }
     }
 
     public void clickElementWithLinkText(String linkText) {
         try {
-            WebElement element = driver.findElement(By.linkText(linkText));
+            WebElement element = findElement(By.linkText(linkText));
             Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Link text " + linkText + "could not be found", e);
+            throw e;
         }
     }
 
     public void clickLinkContainingText(String linkText) {
         try {
-            WebElement element = driver.findElement(By.xpath("//a[contains(.,'" + linkText + "')]"));
+            WebElement element = findElement(By.xpath("//a[contains(.,'" + linkText + "')]"));
             Assert.assertNotNull(element);
-            element.click();
+            click(element);
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Link text " + linkText + "could not be found", e);
+            throw e;
+        }
+    }
+
+    public void clickLinkWithTitle(String title) {
+        try {
+            By xpath = By.xpath("//a[contains(@title, '" + title + "')]");
+            WebElement element = findElement(xpath);
+            Assert.assertNotNull(element);
+            click(element);
+        } catch (NoSuchElementException | AssertionError e) {
+            log.error("Button with title " + title + " cannot be found", e);
+            throw e;
         }
     }
 
     public void clickButtonWithText(String text) {
         try {
-            WebElement element = driver.findElement(By.xpath("//button[contains(.,'" + text + "')]"));
+            WebElement element = findElement(By.xpath("//button[contains(.,'" + text + "')]"));
             Assert.assertNotNull(element);
-            element.click();
+            click(element);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(text + " element cannot be found", e);
+            throw e;
         }
     }
 
     public void clickElementById(String id) {
         try {
-            WebElement element = driver.findElement(By.id(id));
+            WebElement element = findElement(By.id(id));
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with id " + id + " cannot be found", e);
+            throw e;
         }
     }
 
     public void clickElementWithClass(String className) {
         try {
-            WebElement element = driver.findElement(By.xpath("[contains(@class, '" + className + "')]"));
+            WebElement element = findElement(By.xpath("[contains(@class, '" + className + "')]"));
             Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with class " + className + " cannot be found", e);
+            throw e;
         }
     }
 
     public void clickButtonWithClass(String className) {
         try {
-            WebElement element = driver.findElement(By.xpath("//button[contains(@class, '" + className + "')]"));
+            WebElement element = findElement(By.xpath("//button[contains(@class, '" + className + "')]"));
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with class " + className + " cannot be found", e);
+            throw e;
         }
     }
 
     public void clickButtonWithTitle(String title) {
         try {
-            WebElement element = driver.findElement(By.xpath("//button[contains(@title, '" + title + "')]"));
+            By xpath = By.xpath("//button[contains(@title, '" + title + "')]");
+            WebElement element = findElement(xpath);
             Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Button with title " + title + " cannot be found", e);
+            throw e;
         }
     }
 
     public void clickButtonWithId(String id) {
         try {
-            WebElement element = driver.findElement(By.id(id));
+            WebElement element = findElement(By.id(id));
             Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Button with id " + id + " cannot be found", e);
+            throw e;
         }
     }
 
     public void selectDropDownTextById(String selectText, String selectId) {
         try {
-            WebElement element = driver.findElement(By.id(selectId));
+            WebElement element = findElement(By.id(selectId));
             Assert.assertNotNull(element);
             Select dropdown = new Select(element);
             dropdown.selectByVisibleText(selectText);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(selectText + " could not be selected", e);
+            throw e;
         }
     }
 
     public void selectDropDownTextByClass(String selectText, String className) {
         try {
-            WebElement element = driver.findElement(By.xpath("[contains(@class, '" + className + "')]"));
+            WebElement element = findElement(By.xpath("[contains(@class, '" + className + "')]"));
             Assert.assertNotNull(element);
             Select dropdown = new Select(element);
             dropdown.selectByVisibleText(selectText);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(selectText + " could not be selected", e);
+            throw e;
         }
     }
 
     public void selectDropDownTextByXpath(String selectText, String xpath) {
         try {
-            WebElement element = driver.findElement(By.xpath(xpath));
+            WebElement element = findElement(By.xpath(xpath));
             Assert.assertNotNull(element);
             Select dropdown = new Select(element);
             dropdown.selectByVisibleText(selectText);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(selectText + " could not be selected", e);
+            throw e;
         }
     }
 
     public void enterInputStringById(String inputString, String inputId) {
         try {
-            WebElement element = driver.findElement(By.id(inputId));
+            WebElement element = findElement(By.id(inputId));
             Assert.assertNotNull(element);
             element.clear();
             element.sendKeys(new String[]{inputString});
         } catch (NoSuchElementException | AssertionError e) {
             log.error(inputString + " field with id " + inputId + " could not be found", e);
+            throw e;
         }
     }
 
     public void enterInputStringByXpath(String inputString, String xpath) {
         try {
-            WebElement element = driver.findElement(By.xpath(xpath));
+            WebElement element = findElement(By.xpath(xpath));
             Assert.assertNotNull(element);
             element.clear();
             element.sendKeys(new String[]{inputString});
         } catch (NoSuchElementException | AssertionError e) {
             log.error(inputString + " field with xpath " + xpath + " could not be found", e);
+            throw e;
         }
     }
 
     public void clearInputById(String inputId) {
         try {
-            WebElement element = driver.findElement(By.id(inputId));
+            WebElement element = findElement(By.id(inputId));
             Assert.assertNotNull(element);
             element.clear();
         } catch (NoSuchElementException | AssertionError e) {
             log.error(" Field with id " + inputId + " could not be found", e);
+            throw e;
         }
     }
 
     public void verifyInputText(String inputId, String matchText) {
         try {
-            WebElement element = driver.findElement(By.id(inputId));
+            WebElement element = findElement(By.id(inputId));
             Assert.assertNotNull(element);
             Assert.assertTrue(element.getAttribute("value").equals(matchText), "Unable to math text: " + matchText);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(" Field with id " + inputId + " could not be found", e);
+            throw e;
         }
     }
 
     public void clearInputByXpath(String xpath) {
         try {
-            WebElement element = driver.findElement(By.xpath(xpath));
+            WebElement element = findElement(By.xpath(xpath));
             Assert.assertNotNull(element);
             element.clear();
         } catch (NoSuchElementException | AssertionError e) {
             log.error(" Field with xpath " + xpath + " could not be found", e);
+            throw e;
         }
     }
 
 
     public void verifyValidationMessage(String validationMessage) {
-        //Validation message test
         try {
-            WebElement element = driver.findElement(By.xpath("//span[contains(.,'" + validationMessage + "')]"));
+            WebElement element = findElement(By.xpath("//span[contains(.,'" + validationMessage + "')]"));
             Assert.assertNotNull(element);
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Validation Message " + validationMessage + " could not be found", e);
+            throw e;
         }
     }
 
     public void verifyTextPresentOnPage(String text) {
-        //Validation message test
         try {
-            WebElement element = driver.findElement(By.xpath("[contains(.,'" + text + "')]"));
+            WebElement element = findElement(By.xpath("[contains(.,'" + text + "')]"));
             Assert.assertNotNull(element);
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Text " + text + " could not be found", e);
+            throw e;
         }
     }
 
     public void verifyPageTitle(String title) {
-        // Check Page Title
         try {
-            String pageTitle = driver.getTitle();
+            WebElement element = findElement(By.xpath("/html/head/title"));
+            String pageTitle = element.getAttribute("innerHTML");
             Assert.assertTrue(pageTitle.contains(title));
         } catch (AssertionError e) {
             log.error("Assertion Failed", e);
+            log.error(String.format("Expected Title:%s", title));
+            log.error(String.format("Page Title:%s", driver.getTitle()));
+            throw e;
+        }
+    }
+
+    public void verifyInnerHtml(String innerHtml) {
+        try {
+            Assert.assertTrue(driver.getPageSource().contains(innerHtml));
+        } catch (AssertionError e) {
+            log.error("Assertion Failed", e);
+            log.error(String.format("Expected Content:%s", innerHtml));
+            log.error(String.format("Page Content:%s", driver.getPageSource()));
+            throw e;
         }
     }
 
     public boolean isElementClickable(By locator) {
-        WebElement element = driver.findElement(locator);
+        WebElement element = findElement(locator);
         return (element != null && element.isDisplayed() && element.isEnabled()) ? true : false;
     }
 
@@ -241,6 +287,47 @@ public class WebElementUtil {
         Alert alert = driver.switchTo().alert();
         // if present consume the alert
         alert.dismiss();
+    }
+
+    public void clickMap(WebElement mapPanel, int xOffset, int yOffset) {
+        Actions builder = new Actions(driver);
+        builder.moveToElement(mapPanel, xOffset, yOffset).click().build().perform();
+    }
+
+    public WebElement findElement(By by) {
+        WebElement element = null;
+        FluentWait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(TIMEOUT, TimeUnit.SECONDS)
+                .pollingEvery(POLLING_PERIOND, TimeUnit.SECONDS)
+                .ignoring(NoSuchElementException.class)
+                .ignoring(StaleElementReferenceException.class);
+        int attempts = 1, totalAttempts = 2;
+        while(attempts <= totalAttempts) {
+            try {
+                element = wait.until(
+                        ExpectedConditions.presenceOfElementLocated(by));
+                break;
+            } catch(NoSuchElementException | TimeoutException | StaleElementReferenceException e) {
+                log.debug(String.format("Unable to find element %s. Attempt: %s Total Attempts: %s. Error:%s", by.toString(), attempts, totalAttempts, e.getMessage()));
+            }
+            attempts++;
+        }
+        return element;
+    }
+
+    private void click(WebElement element) {
+        // element.click() fails for some browsers
+        WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+        element.sendKeys(Keys.ENTER);
+    }
+
+    public void switchToNewTab() {
+        ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+        // Do not switch if browser fails to open new tab
+        if(tabs.size() > 1) {
+            driver.switchTo().window(tabs.get(1));
+        }
     }
 }
 
