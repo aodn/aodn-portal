@@ -1,11 +1,11 @@
 package au.org.emii.portal.utils;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.util.NoSuchElementException;
@@ -22,7 +22,7 @@ public class WebElementUtil {
 
     public void clickElementByXpath(String xpath) {
         try {
-            WebElement element = driver.findElement(By.xpath(xpath));
+            WebElement element = findElement(By.xpath(xpath));
             Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
@@ -32,7 +32,7 @@ public class WebElementUtil {
 
     public void clickElementWithLinkText(String linkText) {
         try {
-            WebElement element = driver.findElement(By.linkText(linkText));
+            WebElement element = findElement(By.linkText(linkText));
             Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
@@ -42,7 +42,7 @@ public class WebElementUtil {
 
     public void clickLinkContainingText(String linkText) {
         try {
-            WebElement element = driver.findElement(By.xpath("//a[contains(.,'" + linkText + "')]"));
+            WebElement element = findElement(By.xpath("//a[contains(.,'" + linkText + "')]"));
             Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
@@ -52,7 +52,7 @@ public class WebElementUtil {
 
     public void clickButtonWithText(String text) {
         try {
-            WebElement element = driver.findElement(By.xpath("//button[contains(.,'" + text + "')]"));
+            WebElement element = findElement(By.xpath("//button[contains(.,'" + text + "')]"));
             Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
@@ -62,7 +62,7 @@ public class WebElementUtil {
 
     public void clickElementById(String id) {
         try {
-            WebElement element = driver.findElement(By.id(id));
+            WebElement element = findElement(By.id(id));
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with id " + id + " cannot be found", e);
@@ -71,7 +71,7 @@ public class WebElementUtil {
 
     public void clickElementWithClass(String className) {
         try {
-            WebElement element = driver.findElement(By.xpath("[contains(@class, '" + className + "')]"));
+            WebElement element = findElement(By.xpath("[contains(@class, '" + className + "')]"));
             Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
@@ -81,7 +81,7 @@ public class WebElementUtil {
 
     public void clickButtonWithClass(String className) {
         try {
-            WebElement element = driver.findElement(By.xpath("//button[contains(@class, '" + className + "')]"));
+            WebElement element = findElement(By.xpath("//button[contains(@class, '" + className + "')]"));
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with class " + className + " cannot be found", e);
@@ -90,7 +90,8 @@ public class WebElementUtil {
 
     public void clickButtonWithTitle(String title) {
         try {
-            WebElement element = driver.findElement(By.xpath("//button[contains(@title, '" + title + "')]"));
+            By xpath = By.xpath("//button[contains(@title, '" + title + "')]");
+            WebElement element = findElement(xpath);
             Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
@@ -100,7 +101,7 @@ public class WebElementUtil {
 
     public void clickButtonWithId(String id) {
         try {
-            WebElement element = driver.findElement(By.id(id));
+            WebElement element = findElement(By.id(id));
             Assert.assertNotNull(element);
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
@@ -110,7 +111,7 @@ public class WebElementUtil {
 
     public void selectDropDownTextById(String selectText, String selectId) {
         try {
-            WebElement element = driver.findElement(By.id(selectId));
+            WebElement element = findElement(By.id(selectId));
             Assert.assertNotNull(element);
             Select dropdown = new Select(element);
             dropdown.selectByVisibleText(selectText);
@@ -121,7 +122,7 @@ public class WebElementUtil {
 
     public void selectDropDownTextByClass(String selectText, String className) {
         try {
-            WebElement element = driver.findElement(By.xpath("[contains(@class, '" + className + "')]"));
+            WebElement element = findElement(By.xpath("[contains(@class, '" + className + "')]"));
             Assert.assertNotNull(element);
             Select dropdown = new Select(element);
             dropdown.selectByVisibleText(selectText);
@@ -132,7 +133,7 @@ public class WebElementUtil {
 
     public void selectDropDownTextByXpath(String selectText, String xpath) {
         try {
-            WebElement element = driver.findElement(By.xpath(xpath));
+            WebElement element = findElement(By.xpath(xpath));
             Assert.assertNotNull(element);
             Select dropdown = new Select(element);
             dropdown.selectByVisibleText(selectText);
@@ -143,7 +144,7 @@ public class WebElementUtil {
 
     public void enterInputStringById(String inputString, String inputId) {
         try {
-            WebElement element = driver.findElement(By.id(inputId));
+            WebElement element = findElement(By.id(inputId));
             Assert.assertNotNull(element);
             element.clear();
             element.sendKeys(new String[]{inputString});
@@ -154,7 +155,7 @@ public class WebElementUtil {
 
     public void enterInputStringByXpath(String inputString, String xpath) {
         try {
-            WebElement element = driver.findElement(By.xpath(xpath));
+            WebElement element = findElement(By.xpath(xpath));
             Assert.assertNotNull(element);
             element.clear();
             element.sendKeys(new String[]{inputString});
@@ -165,7 +166,7 @@ public class WebElementUtil {
 
     public void clearInputById(String inputId) {
         try {
-            WebElement element = driver.findElement(By.id(inputId));
+            WebElement element = findElement(By.id(inputId));
             Assert.assertNotNull(element);
             element.clear();
         } catch (NoSuchElementException | AssertionError e) {
@@ -175,7 +176,7 @@ public class WebElementUtil {
 
     public void verifyInputText(String inputId, String matchText) {
         try {
-            WebElement element = driver.findElement(By.id(inputId));
+            WebElement element = findElement(By.id(inputId));
             Assert.assertNotNull(element);
             Assert.assertTrue(element.getAttribute("value").equals(matchText), "Unable to math text: " + matchText);
         } catch (NoSuchElementException | AssertionError e) {
@@ -185,7 +186,7 @@ public class WebElementUtil {
 
     public void clearInputByXpath(String xpath) {
         try {
-            WebElement element = driver.findElement(By.xpath(xpath));
+            WebElement element = findElement(By.xpath(xpath));
             Assert.assertNotNull(element);
             element.clear();
         } catch (NoSuchElementException | AssertionError e) {
@@ -197,7 +198,7 @@ public class WebElementUtil {
     public void verifyValidationMessage(String validationMessage) {
         //Validation message test
         try {
-            WebElement element = driver.findElement(By.xpath("//span[contains(.,'" + validationMessage + "')]"));
+            WebElement element = findElement(By.xpath("//span[contains(.,'" + validationMessage + "')]"));
             Assert.assertNotNull(element);
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Validation Message " + validationMessage + " could not be found", e);
@@ -207,7 +208,7 @@ public class WebElementUtil {
     public void verifyTextPresentOnPage(String text) {
         //Validation message test
         try {
-            WebElement element = driver.findElement(By.xpath("[contains(.,'" + text + "')]"));
+            WebElement element = findElement(By.xpath("[contains(.,'" + text + "')]"));
             Assert.assertNotNull(element);
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Text " + text + " could not be found", e);
@@ -225,7 +226,7 @@ public class WebElementUtil {
     }
 
     public boolean isElementClickable(By locator) {
-        WebElement element = driver.findElement(locator);
+        WebElement element = findElement(locator);
         return (element != null && element.isDisplayed() && element.isEnabled()) ? true : false;
     }
 
@@ -241,6 +242,28 @@ public class WebElementUtil {
         Alert alert = driver.switchTo().alert();
         // if present consume the alert
         alert.dismiss();
+    }
+
+    public void clickMap(WebElement mapPanel, int xOffset, int yOffset) {
+        Actions builder = new Actions(driver);
+        builder.moveToElement(mapPanel, xOffset, yOffset).click().build().perform();
+    }
+
+    public WebElement findElement(By by) {
+        WebElement element = null;
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        int attempts = 0, totalAttempts = 2;
+        while(attempts < totalAttempts) {
+            try {
+                element = wait.until(
+                        ExpectedConditions.visibilityOfElementLocated(by));
+                break;
+            } catch(StaleElementReferenceException e) {
+                log.debug(String.format("Unable to find element %s. Attempt: %s Total Attempts: %s", by.toString(), attempts, totalAttempts));
+            }
+            attempts++;
+        }
+        return element;
     }
 }
 
