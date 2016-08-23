@@ -313,7 +313,9 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     /* Overrides */
     getFeatureInfoRequestString: function(clickPoint, overrideParams) {
-        overrideParams.TIME = this._getTimeParameter(this.time);
+        if (this.time) {
+            overrideParams.TIME = this._getTimeParameter(this.time);
+        }
         overrideParams.INFO_FORMAT = this.getFeatureInfoFormat();
         return OpenLayers.Layer.WMS.prototype.getFeatureInfoRequestString.call(this, clickPoint, overrideParams);
     },
