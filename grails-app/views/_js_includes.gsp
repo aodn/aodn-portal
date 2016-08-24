@@ -128,6 +128,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'InfoPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetItemsTabPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DataCollectionDetailsPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'PointTimeSeriesPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'ClickControl.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'LayerOptions.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'LayerParams.js')}"></script>

@@ -92,7 +92,12 @@ describe('Portal.cart.NcWmsInjector', function() {
             })]);
 
             var entry = injector._getDataFilterEntry(dataCollection);
-            expect(entry).toEqual('Timeseries at point:&nbsp;-23.654, 114.567<br>Temporal Extent:&nbsp;2013/Nov/20-00:30-UTC to 2014/Dec/21-10:30-UTC<br>');
+            expect(entry).toEqual(
+                String.format('{0}:&nbsp;-23.654, 114.567<br>{1}:&nbsp;2013/Nov/20-00:30-UTC to 2014/Dec/21-10:30-UTC<br>',
+                    OpenLayers.i18n("timeSeriesAtHeading"),
+                    OpenLayers.i18n("temporalExtentHeading")
+                )
+            );
         });
     });
 

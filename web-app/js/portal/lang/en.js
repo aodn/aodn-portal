@@ -203,7 +203,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     asyncServiceMsg: "<a class='external' target='_blank' href='${url}'>Follow the progress of your job</a><br /><br />",
 
     spatialExtentHeading: 'Spatial Subset',
-    timeSeriesAtHeading: 'Timeseries at point',
+    timeSeriesAtHeading: 'Timeseries at Lat/Lon',
     temporalExtentHeading: 'Temporal Extent',
     generalFilterHeading: 'Filters',
     currentDateTimeLabel: 'Displaying',
