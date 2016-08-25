@@ -90,7 +90,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     mapLayers: 'Map Collections',
     mapLayer: 'Map Collections',
     precision: 'Precision',
-    emptySpatialBL: 'enter',
+    emptyText: 'enter',
     goButton: 'Go',
     clearButton: 'Clear',
 

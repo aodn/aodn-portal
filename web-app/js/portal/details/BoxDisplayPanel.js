@@ -146,8 +146,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
             name: name,
             decimalPrecision: 2,
             width: 55,
-            overCls: "hightlightInputbox",
-            emptyText: OpenLayers.i18n('emptySpatialBL'),
+            emptyText: OpenLayers.i18n('emptyText'),
             minValue : min,
             maxValue : max,
             listeners: {
