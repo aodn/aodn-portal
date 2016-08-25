@@ -3,18 +3,20 @@ package au.org.emii.portal.utils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 public class WebElementUtil {
 
     private static Logger log = Logger.getLogger(WebElementUtil.class.getName());
 
     private WebDriver driver;
+    private final int TIMEOUT = 30;
+    private final int POLLING_PERIOND = 1;
 
     public WebElementUtil(WebDriver driver) {
         this.driver = driver;
@@ -27,6 +29,7 @@ public class WebElementUtil {
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with xpath " + xpath + "could not be found", e);
+            throw e;
         }
     }
 
@@ -37,6 +40,7 @@ public class WebElementUtil {
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Link text " + linkText + "could not be found", e);
+            throw e;
         }
     }
 
@@ -44,9 +48,22 @@ public class WebElementUtil {
         try {
             WebElement element = findElement(By.xpath("//a[contains(.,'" + linkText + "')]"));
             Assert.assertNotNull(element);
-            element.click();
+            click(element);
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Link text " + linkText + "could not be found", e);
+            throw e;
+        }
+    }
+
+    public void clickLinkWithTitle(String title) {
+        try {
+            By xpath = By.xpath("//a[contains(@title, '" + title + "')]");
+            WebElement element = findElement(xpath);
+            Assert.assertNotNull(element);
+            click(element);
+        } catch (NoSuchElementException | AssertionError e) {
+            log.error("Button with title " + title + " cannot be found", e);
+            throw e;
         }
     }
 
@@ -54,9 +71,10 @@ public class WebElementUtil {
         try {
             WebElement element = findElement(By.xpath("//button[contains(.,'" + text + "')]"));
             Assert.assertNotNull(element);
-            element.click();
+            click(element);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(text + " element cannot be found", e);
+            throw e;
         }
     }
 
@@ -66,6 +84,7 @@ public class WebElementUtil {
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with id " + id + " cannot be found", e);
+            throw e;
         }
     }
 
@@ -76,6 +95,7 @@ public class WebElementUtil {
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with class " + className + " cannot be found", e);
+            throw e;
         }
     }
 
@@ -85,6 +105,7 @@ public class WebElementUtil {
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with class " + className + " cannot be found", e);
+            throw e;
         }
     }
 
@@ -96,6 +117,7 @@ public class WebElementUtil {
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Button with title " + title + " cannot be found", e);
+            throw e;
         }
     }
 
@@ -106,6 +128,7 @@ public class WebElementUtil {
             element.click();
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Button with id " + id + " cannot be found", e);
+            throw e;
         }
     }
 
@@ -117,6 +140,7 @@ public class WebElementUtil {
             dropdown.selectByVisibleText(selectText);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(selectText + " could not be selected", e);
+            throw e;
         }
     }
 
@@ -128,6 +152,7 @@ public class WebElementUtil {
             dropdown.selectByVisibleText(selectText);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(selectText + " could not be selected", e);
+            throw e;
         }
     }
 
@@ -139,6 +164,7 @@ public class WebElementUtil {
             dropdown.selectByVisibleText(selectText);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(selectText + " could not be selected", e);
+            throw e;
         }
     }
 
@@ -150,6 +176,7 @@ public class WebElementUtil {
             element.sendKeys(new String[]{inputString});
         } catch (NoSuchElementException | AssertionError e) {
             log.error(inputString + " field with id " + inputId + " could not be found", e);
+            throw e;
         }
     }
 
@@ -161,6 +188,7 @@ public class WebElementUtil {
             element.sendKeys(new String[]{inputString});
         } catch (NoSuchElementException | AssertionError e) {
             log.error(inputString + " field with xpath " + xpath + " could not be found", e);
+            throw e;
         }
     }
 
@@ -171,6 +199,7 @@ public class WebElementUtil {
             element.clear();
         } catch (NoSuchElementException | AssertionError e) {
             log.error(" Field with id " + inputId + " could not be found", e);
+            throw e;
         }
     }
 
@@ -181,6 +210,7 @@ public class WebElementUtil {
             Assert.assertTrue(element.getAttribute("value").equals(matchText), "Unable to math text: " + matchText);
         } catch (NoSuchElementException | AssertionError e) {
             log.error(" Field with id " + inputId + " could not be found", e);
+            throw e;
         }
     }
 
@@ -191,37 +221,52 @@ public class WebElementUtil {
             element.clear();
         } catch (NoSuchElementException | AssertionError e) {
             log.error(" Field with xpath " + xpath + " could not be found", e);
+            throw e;
         }
     }
 
 
     public void verifyValidationMessage(String validationMessage) {
-        //Validation message test
         try {
             WebElement element = findElement(By.xpath("//span[contains(.,'" + validationMessage + "')]"));
             Assert.assertNotNull(element);
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Validation Message " + validationMessage + " could not be found", e);
+            throw e;
         }
     }
 
     public void verifyTextPresentOnPage(String text) {
-        //Validation message test
         try {
             WebElement element = findElement(By.xpath("[contains(.,'" + text + "')]"));
             Assert.assertNotNull(element);
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Text " + text + " could not be found", e);
+            throw e;
         }
     }
 
     public void verifyPageTitle(String title) {
-        // Check Page Title
         try {
-            String pageTitle = driver.getTitle();
+            WebElement element = findElement(By.xpath("/html/head/title"));
+            String pageTitle = element.getAttribute("innerHTML");
             Assert.assertTrue(pageTitle.contains(title));
         } catch (AssertionError e) {
             log.error("Assertion Failed", e);
+            log.error(String.format("Expected Title:%s", title));
+            log.error(String.format("Page Title:%s", driver.getTitle()));
+            throw e;
+        }
+    }
+
+    public void verifyInnerHtml(String innerHtml) {
+        try {
+            Assert.assertTrue(driver.getPageSource().contains(innerHtml));
+        } catch (AssertionError e) {
+            log.error("Assertion Failed", e);
+            log.error(String.format("Expected Content:%s", innerHtml));
+            log.error(String.format("Page Content:%s", driver.getPageSource()));
+            throw e;
         }
     }
 
@@ -251,19 +296,38 @@ public class WebElementUtil {
 
     public WebElement findElement(By by) {
         WebElement element = null;
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        int attempts = 0, totalAttempts = 2;
-        while(attempts < totalAttempts) {
+        FluentWait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(TIMEOUT, TimeUnit.SECONDS)
+                .pollingEvery(POLLING_PERIOND, TimeUnit.SECONDS)
+                .ignoring(NoSuchElementException.class)
+                .ignoring(StaleElementReferenceException.class);
+        int attempts = 1, totalAttempts = 2;
+        while(attempts <= totalAttempts) {
             try {
                 element = wait.until(
-                        ExpectedConditions.visibilityOfElementLocated(by));
+                        ExpectedConditions.presenceOfElementLocated(by));
                 break;
-            } catch(StaleElementReferenceException e) {
-                log.debug(String.format("Unable to find element %s. Attempt: %s Total Attempts: %s", by.toString(), attempts, totalAttempts));
+            } catch(NoSuchElementException | TimeoutException | StaleElementReferenceException e) {
+                log.debug(String.format("Unable to find element %s. Attempt: %s Total Attempts: %s. Error:%s", by.toString(), attempts, totalAttempts, e.getMessage()));
             }
             attempts++;
         }
         return element;
+    }
+
+    private void click(WebElement element) {
+        // element.click() fails for some browsers
+        WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+        element.sendKeys(Keys.ENTER);
+    }
+
+    public void switchToNewTab() {
+        ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+        // Do not switch if browser fails to open new tab
+        if(tabs.size() > 1) {
+            driver.switchTo().window(tabs.get(1));
+        }
     }
 }
 
