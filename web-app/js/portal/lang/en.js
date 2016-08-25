@@ -211,6 +211,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pointTimeSeriesLabel: 'Point timeseries',
     latitudeLabel: 'Latitude',
     longitudeLabel: 'Longitude',
+    enableTimeSeriesDialog: 'A {0} is required for downloading CSV at a point',
     enableTimeSeriesEditing: 'Check {0} to enable editing',
 
     dateFilterBeforeFormat: '{0}: before {2}',

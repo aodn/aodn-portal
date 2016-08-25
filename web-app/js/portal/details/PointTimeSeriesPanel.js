@@ -37,6 +37,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
             decimalPrecision: 7,
             readOnly: true,
             allowBlank: false,
+            blankText: String.format(OpenLayers.i18n('enableTimeSeriesDialog'), OpenLayers.i18n('latitudeLabel')),
             width: 70,
             minValue : -90,
             maxValue : 90,
@@ -58,6 +59,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
             decimalPrecision: 7,
             readOnly: true,
             allowBlank: false,
+            blankText: String.format(OpenLayers.i18n('enableTimeSeriesDialog'), OpenLayers.i18n('longitudeLabel')),
             width: 70,
             style: 'margin: 0 0 0 15px',
             minValue : -180,
@@ -127,15 +129,19 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
 
     _enablePointTimeSeriesControls: function() {
         this.timeSeriesLatitudeControl.setReadOnly(false);
+        this.timeSeriesLatitudeControl.validate();
         this._removeQuickTip(this.timeSeriesLatitudeControl);
         this.timeSeriesLongitudeControl.setReadOnly(false);
+        this.timeSeriesLongitudeControl.validate();
         this._removeQuickTip(this.timeSeriesLongitudeControl);
     },
 
     _disablePointTimeSeriesControls: function() {
         this.timeSeriesLatitudeControl.setReadOnly(true);
+        this.timeSeriesLatitudeControl.clearInvalid();
         this._addTimeSeriesQuickTip(this.timeSeriesLatitudeControl);
         this.timeSeriesLongitudeControl.setReadOnly(true);
+        this.timeSeriesLongitudeControl.clearInvalid();
         this._addTimeSeriesQuickTip(this.timeSeriesLongitudeControl);
     },
 
