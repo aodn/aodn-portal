@@ -1169,10 +1169,6 @@ div:not(.x-tree-selected) * {
     background-color: #ffff99;
 }
 
-.hightlightInputbox {
-    border-width: 2px;
-}
-
 .search-filters-toolbar-title * {
     font-size: 13px! important;
 }
@@ -1305,4 +1301,16 @@ span.menu-title {
     font-weight: bold;
 }
 
+input[type=text] {
+    cursor: default;
+}
+
+input[type=checkbox] {
+    cursor: pointer;
+}
+
 input:read-only { background: #eee; }
+
+.x-trigger-noedit {
+    cursor: default;
+}
