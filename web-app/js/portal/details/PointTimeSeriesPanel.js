@@ -101,12 +101,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
                 scope: this,
                 'click': this.updatePoint
             });
-            this.updatePoint(this.map.getConstraint());
         }
-    },
-
-    isPointTimeSeriesAvailable: function() {
-        return this.pointTimeSeriesCheckbox.getValue();
     },
 
     updatePoint: function(e) {
