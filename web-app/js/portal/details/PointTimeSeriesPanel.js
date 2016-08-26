@@ -5,6 +5,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
 
         this.map = cfg.map;
+        this.dataCollectionStore = cfg.dataCollectionStore;
         this.createComponents();
 
         var config = Ext.apply({
@@ -105,7 +106,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
     },
 
     updatePoint: function(e) {
-        if (e) {
+        if (e && this._isThisPanelAlive()) {
             var xys = this.map.getLonLatFromViewPortPx(e.xy);
             this.timeSeriesLatitudeControl.setValue(toNSigFigs(xys.lat, 4));
             this.timeSeriesLongitudeControl.setValue(toNSigFigs(xys.lon, 4));
@@ -161,7 +162,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
     _applyTimeSeriesFilterValuesToCollection: function() {
 
         // Create or modify filter 'timeSeriesAtPoint' and disable the spatial filter
-        if (this._getTimeSeriesFilter()) {
+        if (this._isTimeSeriesFilterAvailable()) {
 
             var pointFilterValue = {};
             pointFilterValue.latitude = this.timeSeriesLatitudeControl.getValue();
@@ -206,20 +207,30 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
         return this.map.geometryFilter;
     },
 
-    _getTimeSeriesFilter: function() {
+    // todo kill this and ncwms panels when collection is removed from Step 2
+    _isThisPanelAlive: function() {
+        return this.timeSeriesLatitudeControl.el &&
+            this.timeSeriesLatitudeControl.el.dom != undefined &&
+            this.timeSeriesLongitudeControl.el &&
+            this.timeSeriesLongitudeControl.el.dom != undefined
+    },
+
+    _isTimeSeriesFilterAvailable: function() {
         return this.pointTimeSeriesCheckbox.checked &&
             this.timeSeriesLatitudeControl.getErrors().length == 0 &&
             this.timeSeriesLongitudeControl.getErrors().length == 0;
     },
 
     _getTimeSeriesLatitude: function() {
-        return this.timeSeriesLatitudeControl.getErrors().length == 0 ?
+        return this._isThisPanelAlive() &&
+            this.timeSeriesLatitudeControl.getErrors().length == 0 ?
             this.timeSeriesLatitudeControl.getValue() :
             undefined;
     },
 
     _getTimeSeriesLongitude: function() {
-        return this.timeSeriesLongitudeControl.getErrors().length == 0 ?
+        return this._isThisPanelAlive() &&
+            this.timeSeriesLongitudeControl.getErrors().length == 0 ?
             this.timeSeriesLongitudeControl.getValue() :
             undefined;
     }
