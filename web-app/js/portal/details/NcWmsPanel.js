@@ -37,7 +37,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if (this._timeSeriesOptionAvailable()) {
             this._addTimeSeriesControls({
                 map: this.map,
-                dataCollection: this.dataCollection
+                dataCollection: this.dataCollection,
+                dataCollectionStore: this.dataCollectionStore
             });
         }
 
@@ -384,16 +385,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         var geometry = this._getGeometryFilter();
 
         if (this._timeSeriesOptionAvailable()){
-            var timeSeries = this.pointTimeSeriesPanel._getTimeSeriesFilter();
+            var pointFilterAvailable = this.pointTimeSeriesPanel._isTimeSeriesFilterAvailable();
             var lat = this.pointTimeSeriesPanel._getTimeSeriesLatitude();
             var lon = this.pointTimeSeriesPanel._getTimeSeriesLongitude();
         }
-
-        this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, timeSeries, lat, lon);
-
+        this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, lat, lon);
     },
 
-    _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry, timeSeries, lat, lon) {
+    _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, lat, lon) {
 
         var dateFilterValue = {};
         var pointFilterValue = {};
@@ -415,7 +414,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             dateFilterValue.toDate = dateRangeEnd.toDate();
         }
 
-        if (timeSeries) {
+        if (pointFilterAvailable) {
             pointFilterValue.latitude = parseFloat(lat);
             pointFilterValue.longitude = parseFloat(lon);
         } else if (geometry) {
