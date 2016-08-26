@@ -8,6 +8,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
         this.createComponents();
 
         var config = Ext.apply({
+            cls: 'pointTimeSeriesPanel',
             items: [
                 this.pointTimeSeriesCheckbox,
                 new Ext.Spacer({height: 10}),
@@ -110,6 +111,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
             this.timeSeriesLatitudeControl.setValue(toNSigFigs(xys.lat, 4));
             this.timeSeriesLongitudeControl.setValue(toNSigFigs(xys.lon, 4));
             this._applyTimeSeriesFilterValuesToCollection();
+            animateNumberField(this.getItemId());
             Event.stop(e);
         }
     },

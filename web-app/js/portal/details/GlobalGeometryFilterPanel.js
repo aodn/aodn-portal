@@ -40,6 +40,7 @@ Portal.details.GlobalGeometryFilterPanel = Ext.extend(Ext.Panel, {
             width: 135,
             cls: "floatLeft",
             items: [
+                this._addVerticalSpacer(7),
                 this._addLabel(OpenLayers.i18n('spatialExtentHeading')),
                 this._addVerticalSpacer(10),
                 this.polygonTypeCombo,
@@ -58,9 +59,7 @@ Portal.details.GlobalGeometryFilterPanel = Ext.extend(Ext.Panel, {
     _addSpatialConstraintDisplayPanel: function() {
         this.spatialConstraintDisplayPanel = new Portal.details.SpatialConstraintDisplayPanel({
             map: this.map,
-            cls: "floatLeft",
-            unstyled: true,
-            width: 160
+            cls: "floatLeft"
         });
         this.add(this.spatialConstraintDisplayPanel);
     },

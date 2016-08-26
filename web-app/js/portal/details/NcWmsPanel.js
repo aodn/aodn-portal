@@ -120,8 +120,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
     },
 
-
-
     _getGeometryFilter: function() {
         return this.map.geometryFilter;
     },

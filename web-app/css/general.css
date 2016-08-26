@@ -1314,3 +1314,7 @@ input:read-only { background: #eee; }
 .x-trigger-noedit {
     cursor: default;
 }
+
+.spatialSubsetControl {
+    padding: 15px 5px 15px 10px;
+}

@@ -318,6 +318,12 @@ function clearContents(jQuerySelector) {
     jQuery(jQuerySelector).empty();
 }
 
+function animateNumberField(jQueryParentIdSelector) {
+    jQuery("#" + jQueryParentIdSelector + ' .x-form-num-field').addClass('animatedBox').delay(1500).queue(function(){
+        $(this).removeClass('animatedBox').clearQueue();
+    });
+}
+
 Object.size = function(obj) {
     var size = 0, key;
     for (key in obj) {

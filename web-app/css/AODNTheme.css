@@ -281,15 +281,6 @@ ul.x-tab-strip-top {
     font-size: 20px;
 }
 
-.hightlightInputbox {
-    border-color: #AEAEAE;
-}
-
-.spatialSubsetControl {
-    margin-right: 5px;
-    padding: 19px;
-}
-
 .dataCollectionDetailsPanel .x-tool:not(:first-of-type) {
     margin: 3px 0;
 }
@@ -342,3 +333,29 @@ dt {
 ul.x-tab-strip-top li:hover * {
     background-color: #D3D8DA;
 }
+
+.ext-webkit .x-form-invalid,
+.x-form-invalid
+{
+    background-color: inherit;
+}
+
+input[type=text]:read-only {
+    background: #eee;
+}
+
+.x-form-text, textarea.x-form-field {
+    padding-bottom: 4px ! important;
+}
+
+.animatedBox {
+    color: #336673;
+    border: 1px solid #104567;
+    transition: border-width 0.2s ease-in-out;
+    transform: scale(1.1);
+    transform-origin: 10% 10%;
+    box-shadow: 0 0 10px #9ecaed;
+    padding-bottom: 2px ! important;
+}
+
+
