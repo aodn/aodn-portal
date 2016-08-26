@@ -96,11 +96,10 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
     },
 
     addMapEvents: function() {
-
         if (this.map) {
             this.map.events.on({
                 scope: this,
-                'click': this.updatePoint
+                'featureInfoClick': this.updatePoint
             });
         }
     },

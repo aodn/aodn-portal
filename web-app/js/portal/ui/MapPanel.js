@@ -36,6 +36,13 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
             this.reset();
         }, this);
+
+        this.map.events.on({
+            scope: this,
+            'featureInfoClick': function(event) {
+                this.handleFeatureInfoClick(event);
+            }
+        });
     },
 
     onBaseLayerChanged: function(openLayer) {
@@ -79,7 +86,8 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         var c = geometry.getCentroid();
         var lonLat = new OpenLayers.LonLat(c.x, c.y);
         var fakeEvent = {xy: this.map.getViewPortPxFromLonLat(lonLat)};
-        this._findFeatureInfo(fakeEvent);
+        this.map.events.triggerEvent('featureInfoClick', fakeEvent);
+
     },
 
     renderMap: function() {
