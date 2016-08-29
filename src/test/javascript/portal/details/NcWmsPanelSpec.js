@@ -42,6 +42,9 @@ describe('Portal.details.NcWmsPanel', function() {
         ncwmsPanel._setBounds = noOp;
         ncwmsPanel._removeLoadingInfo = noOp;
         ncwmsPanel.selectedLayer = layer;
+        ncwmsPanel.pointTimeSeriesPanel = {
+            _resetPanel: returns()
+        };
 
         date = new Date('1999/9/9');
         momentUtcIsoDate = moment(date).utc().toISOString();

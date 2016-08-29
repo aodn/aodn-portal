@@ -87,6 +87,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     clearAndReset: function() {
         this._layerSetTime(this.layer.getTemporalExtentMax());
+        this.pointTimeSeriesPanel._resetPanel();
         this.resetTemporalConstraints();
     },
 
@@ -109,7 +110,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
             this.map.events.on({
                 scope: this,
-                'spatialconstraintadded': function(geometry) {
+                'spatialconstraintadded': function() {
                     this._applyFilterValuesToCollection();
                 },
                 'spatialconstraintcleared': function() {

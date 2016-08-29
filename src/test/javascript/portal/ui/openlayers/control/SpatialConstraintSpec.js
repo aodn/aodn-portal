@@ -76,7 +76,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
     describe('layer', function() {
 
         beforeEach(function() {
-            spyOn(spatialConstraint, '_resetSpatialExtentError');
+            spyOn(spatialConstraint, '_resetLastSpatialExtent');
             spatialConstraint._checkSketch = returns(true);
         });
 
@@ -302,7 +302,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         });
     });
 
-    describe('_resetSpatialExtentError', function() {
+    describe('_resetLastSpatialExtent', function() {
 
         describe ('restoring previous geometry after timeout', function() {
 
@@ -311,7 +311,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
                 spatialConstraint.oldGeometry = {};
                 spatialConstraint.vectorlayer = {};
 
-                spatialConstraint._resetSpatialExtentError(spatialConstraint);
+                spatialConstraint._resetLastSpatialExtent(spatialConstraint);
             });
 
             it('layer style to be reset', function() {
@@ -320,20 +320,6 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
             it('redraw is called', function() {
                 expect(spatialConstraint.redraw).toHaveBeenCalled();
-            });
-        });
-
-        describe('no previous geometry to restore after timeout', function() {
-            beforeEach(function() {
-                spatialConstraint.map = { events: {
-                    triggerEvent: jasmine.createSpy('triggerEvent')
-                }};
-
-                spatialConstraint._resetSpatialExtentError(spatialConstraint);
-            });
-
-            it('triggers cleared event', function() {
-                expect(spatialConstraint.map.events.triggerEvent).toHaveBeenCalledWith('spatialconstraintcleared');
             });
         });
     });
@@ -345,7 +331,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
         beforeEach(function() {
             spyOn(spatialConstraint, 'addAntimeridian');
-            spyOn(spatialConstraint, '_resetSpatialExtentError');
+            spyOn(spatialConstraint, '_resetLastSpatialExtent');
             spatialConstraint.vectorlayer = testLayer;
             spatialConstraint.map = { events: {
                 triggerEvent: jasmine.createSpy('triggerEvent')
@@ -362,8 +348,8 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(spatialConstraint.addAntimeridian).not.toHaveBeenCalled();
         });
 
-        it('sets the error style', function() {
-            expect(testLayer.style).toBe(spatialConstraint.errorStyle);
+        it('resets the LastSpatialExtent', function() {
+            expect(spatialConstraint._resetLastSpatialExtent).toHaveBeenCalled();
         });
 
         describe('geometry crosses date line', function() {
