@@ -35,14 +35,15 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this._addTemporalControls();
 
         if (this._timeSeriesOptionAvailable()) {
-            this._addTimeSeriesControls();
+            this._addTimeSeriesControls({
+                map: this.map,
+                dataCollection: this.dataCollection,
+                dataCollectionStore: this.dataCollectionStore
+            });
         }
 
         this._initWithLayer();
         this._addClearButton();
-
-        this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS, this._populateTimeSeriesControls, this);
-
     },
 
     _timeSeriesOptionAvailable: function() {
@@ -118,18 +119,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
             this.layer.attachedSpatialEvents = true;
         }
-    },
-
-    _getTimeSeriesFilter: function() {
-        return this._timeSeriesOptionAvailable() && this.pointTimeSeriesCheckbox.checked;
-    },
-
-    _getTimeSeriesLatitude: function() {
-        return this._timeSeriesOptionAvailable() ? this.timeSeriesLatitudeControl.getValue() : undefined;
-    },
-
-    _getTimeSeriesLongitude: function() {
-        return this._timeSeriesOptionAvailable() ? this.timeSeriesLongitudeControl.getValue() : undefined;
     },
 
     _getGeometryFilter: function() {
@@ -237,113 +226,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.add(this.temporalControls);
     },
 
-    _addTimeSeriesControls: function() {
+    _addTimeSeriesControls: function(cfg) {
 
-        this.timeSeriesLatitudeControl = new Ext.form.NumberField({
-            decimalPrecision: 7,
-            readOnly: true,
-            width: 60,
-            style: 'margin: 0 0 0 15px',
-            listeners: {
-                scope: this,
-                render: function(c) {
-                    this._addTimeSeriesQuickTip(c);
-                },
-                change: function(c) {
-                    this._applyFilterValuesToCollection();
-                }
-            }
-        });
-
-        this.timeSeriesLongitudeControl = new Ext.form.NumberField({
-            decimalPrecision: 7,
-            readOnly: true,
-            width: 60,
-            style: 'margin: 0 0 0 15px',
-            listeners: {
-                scope: this,
-                render: function(c) {
-                    this._addTimeSeriesQuickTip(c);
-                },
-                change: function(c) {
-                    this._applyFilterValuesToCollection();
-                }
-            }
-        });
-
-        this.pointTimeSeriesCheckbox = new Ext.form.Checkbox({
-            boxLabel: OpenLayers.i18n('pointTimeSeriesLabel'),
-            cls: 'checkboxHeading',
-            checked: false,
-            listeners: {
-                scope: this,
-                check: {
-                    fn: function(checkbox, isChecked) {
-                        this._onPointTimeSeriesCheckBoxChange(isChecked);
-                    }
-                }
-            }
-        });
-
-        this.pointTimeSeries = new Ext.Panel({
-            cls: 'checkBoxHeadings',
-            items: [
-                this.pointTimeSeriesCheckbox,
-                this._newSectionSpacer(10),
-                {
-                    xtype: 'label',
-                    text: OpenLayers.i18n('latitudeLabel')
-                },
-                this.timeSeriesLatitudeControl,
-                {
-                    xtype: 'label',
-                    text: OpenLayers.i18n('longitudeLabel'),
-                    style: 'margin: 0 0 0 10px'
-                },
-                this.timeSeriesLongitudeControl,
-                this._newSectionSpacer(10)
-            ]
-        });
-
-        this.add(this.pointTimeSeries);
-    },
-
-    _onPointTimeSeriesCheckBoxChange: function(isChecked) {
-        if (isChecked) {
-            this._enablePointTimeSeriesControls();
-        } else {
-            this._disablePointTimeSeriesControls();
-        }
-        this._applyFilterValuesToCollection();
-    },
-
-    _enablePointTimeSeriesControls: function() {
-        this.timeSeriesLatitudeControl.setReadOnly(false);
-        this._removeQuickTip(this.timeSeriesLatitudeControl);
-        this.timeSeriesLongitudeControl.setReadOnly(false);
-        this._removeQuickTip(this.timeSeriesLongitudeControl);
-    },
-
-    _disablePointTimeSeriesControls: function() {
-        this.timeSeriesLatitudeControl.setReadOnly(true);
-        this._addTimeSeriesQuickTip(this.timeSeriesLatitudeControl);
-        this.timeSeriesLongitudeControl.setReadOnly(true);
-        this._addTimeSeriesQuickTip(this.timeSeriesLongitudeControl);
-    },
-
-    _addTimeSeriesQuickTip: function(component) {
-        Ext.QuickTips.register({
-            target: component.getEl(),
-            text: String.format(OpenLayers.i18n('enableTimeSeriesEditing'), OpenLayers.i18n('pointTimeSeriesLabel')),
-            enabled: true,
-            showDelay: 0,
-            trackMouse: true,
-            autoShow: true
-        });
-    },
-
-    _removeQuickTip: function(component) {
-        Ext.QuickTips.unregister(component.getEl()); 
+        this.pointTimeSeriesPanel = new Portal.details.PointTimeSeriesPanel(cfg);
+        this.add(this.pointTimeSeriesPanel);
     },
 
     _defaultDateTimePickerConfiguration: function() {
@@ -498,18 +384,20 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
         var geometry = this._getGeometryFilter();
 
-        var timeSeries = this._getTimeSeriesFilter();
-        var lat = this._getTimeSeriesLatitude();
-        var lon = this._getTimeSeriesLongitude();
-
-        this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, timeSeries, lat, lon);
+        if (this._timeSeriesOptionAvailable()){
+            var pointFilterAvailable = this.pointTimeSeriesPanel._isTimeSeriesFilterAvailable();
+            var lat = this.pointTimeSeriesPanel._getTimeSeriesLatitude();
+            var lon = this.pointTimeSeriesPanel._getTimeSeriesLongitude();
+        }
+        this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, lat, lon);
     },
 
-    _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry, timeSeries, lat, lon) {
+    _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, lat, lon) {
 
         var dateFilterValue = {};
         var pointFilterValue = {};
         var ncwmsParamsAsFilter = {
+            name: 'nwmsParamsFilter',
             isNcwmsParams: true,
             hasValue: function() {
                 return false;
@@ -526,7 +414,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             dateFilterValue.toDate = dateRangeEnd.toDate();
         }
 
-        if (timeSeries) {
+        if (pointFilterAvailable) {
             pointFilterValue.latitude = parseFloat(lat);
             pointFilterValue.longitude = parseFloat(lon);
         } else if (geometry) {
@@ -534,7 +422,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             ncwmsParamsAsFilter.latitudeRangeStart = bounds.bottom;
             ncwmsParamsAsFilter.longitudeRangeStart = bounds.left;
             ncwmsParamsAsFilter.latitudeRangeEnd = bounds.top;
-            ncwmsParamsAsFilter.longitudeRangeEnd = bounds.right;
+            ncwmsParamsAsFilter.longitudeRangeEnd = bounds.right; // 0 to 360
         }
 
         var realDateFilter = new Portal.filter.DateFilter({
@@ -573,16 +461,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this._setLayerSubsetExtent();
         this._applyFilterValuesToCollection();
-    },
-
-    _populateTimeSeriesControls: function() {
-        var bounds = this.dataCollection.getBounds();
-        this.timeSeriesLatitudeControl.setMinValue(bounds.bottom);
-        this.timeSeriesLatitudeControl.setMaxValue(bounds.top);
-        this.timeSeriesLatitudeControl.setValue(bounds.getCenterLonLat().lat);
-        this.timeSeriesLongitudeControl.setMinValue(bounds.left);
-        this.timeSeriesLongitudeControl.setMaxValue(bounds.right);
-        this.timeSeriesLongitudeControl.setValue(bounds.getCenterLonLat().lon);
     },
 
     _initializeDateTimePicker: function(dateTimePicker, defaultValue) {

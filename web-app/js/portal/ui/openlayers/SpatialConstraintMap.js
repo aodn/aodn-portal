@@ -4,6 +4,7 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
 
         OpenLayers.Map.prototype.initialize.apply(this, arguments);
 
+        this.events.addEventType('featureInfoClick');
         this.events.addEventType('spatialconstraintusermodded');
         this.events.addEventType('spatialconstraintcleared');
 

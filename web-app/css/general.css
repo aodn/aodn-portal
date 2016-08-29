@@ -1169,10 +1169,6 @@ div:not(.x-tree-selected) * {
     background-color: #ffff99;
 }
 
-.hightlightInputbox {
-    border-width: 2px;
-}
-
 .search-filters-toolbar-title * {
     font-size: 13px! important;
 }
@@ -1300,7 +1296,25 @@ span.menu-title {
     margin: 10px 0 5px 0;
 }
 
-.checkboxHeadings input[type='checkbox'] ~ label {
+.checkboxLabel ~ label {
     font-size: 12px;
     font-weight: bold;
+}
+
+input[type=text] {
+    cursor: default;
+}
+
+input[type=checkbox] {
+    cursor: pointer;
+}
+
+input:read-only { background: #eee; }
+
+.x-trigger-noedit {
+    cursor: default;
+}
+
+.spatialSubsetControl {
+    padding: 15px 5px 15px 10px;
 }

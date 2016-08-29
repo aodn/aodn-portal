@@ -1,29 +1,35 @@
 Ext.namespace('Portal.details');
 
 Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
-    TABLE_WIDTH: 165,
-    TABLE_HEIGHT: 25,
+    TABLE_WIDTH: 170,
+    TABLE_HEIGHT: 30,
 
     constructor: function(cfg) {
 
         this.map = cfg.map;
+        this.geometry;
 
         var config = Ext.apply({
             cls: "bboxExtentPicker",
             items: [
                 this._buildBoundingBox(cfg)
             ],
-            padding: '0 5px 0 5px'
+            padding: '0 5px 0 15px'
         }, cfg);
 
         Portal.details.BoxDisplayPanel.superclass.constructor.call(this, config);
     },
 
     setGeometry: function(geometry) {
+
         // Defer this incase this is not rendered yet.
         var self = this;
         setTimeout(function() {
-            self.setBounds(geometry.getBounds());
+            if (self.geometry != geometry) {
+                self.setBounds(geometry.getBounds());
+                animateNumberField(self.getItemId());
+            }
+            self.geometry = geometry;
         }, 0);
     },
 
@@ -146,8 +152,7 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
             name: name,
             decimalPrecision: 2,
             width: 55,
-            overCls: "hightlightInputbox",
-            emptyText: OpenLayers.i18n('emptySpatialBL'),
+            emptyText: OpenLayers.i18n('emptyText'),
             minValue : min,
             maxValue : max,
             listeners: {

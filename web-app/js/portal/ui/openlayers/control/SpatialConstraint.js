@@ -64,11 +64,24 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         });
     },
 
-    _onSketchStarted: function() {
+    _onSketchStarted: function(e) {
+
+        this.triggerMapClick(e);
         this.vectorlayer.style = OpenLayers.Feature.Vector.style['default'];
         if (this.map.mapPanel) {
             this.map.mapPanel._closeFeatureInfoPopup();
         }
+    },
+
+    triggerMapClick: function(e) {
+
+        var lonlat = new OpenLayers.LonLat([
+            e.vertex.getCentroid().x,
+            e.vertex.getCentroid().y
+        ]);
+
+        e.xy = this.map.getViewPortPxFromLonLat(lonlat);
+        this.map.events.triggerEvent('click', e);
     },
 
     setMap: function(map) {

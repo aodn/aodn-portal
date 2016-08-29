@@ -90,7 +90,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     mapLayers: 'Map Collections',
     mapLayer: 'Map Collections',
     precision: 'Precision',
-    emptySpatialBL: 'enter',
+    emptyText: 'enter',
     goButton: 'Go',
     clearButton: 'Clear',
 
@@ -203,7 +203,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     asyncServiceMsg: "<a class='external' target='_blank' href='${url}'>Follow the progress of your job</a><br /><br />",
 
     spatialExtentHeading: 'Spatial Subset',
-    timeSeriesAtHeading: 'Timeseries at point',
+    timeSeriesAtHeading: 'Timeseries at Lat/Lon',
     temporalExtentHeading: 'Temporal Extent',
     generalFilterHeading: 'Filters',
     currentDateTimeLabel: 'Displaying',
@@ -211,6 +211,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pointTimeSeriesLabel: 'Point timeseries',
     latitudeLabel: 'Latitude',
     longitudeLabel: 'Longitude',
+    enableTimeSeriesDialog: 'A {0} is required for downloading CSV at a point',
     enableTimeSeriesEditing: 'Check {0} to enable editing',
 
     dateFilterBeforeFormat: '{0}: before {2}',
