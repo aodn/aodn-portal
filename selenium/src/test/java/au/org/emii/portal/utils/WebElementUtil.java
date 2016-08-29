@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 public class WebElementUtil {
@@ -46,9 +45,7 @@ public class WebElementUtil {
 
     public void clickLinkContainingText(String linkText) {
         try {
-            WebElement element = findElement(By.xpath("//a[contains(.,'" + linkText + "')]"));
-            Assert.assertNotNull(element);
-            click(element);
+            click(By.xpath("//a[contains(.,'" + linkText + "')]"));
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Link text " + linkText + "could not be found", e);
             throw e;
@@ -58,9 +55,7 @@ public class WebElementUtil {
     public void clickLinkWithTitle(String title) {
         try {
             By xpath = By.xpath("//a[contains(@title, '" + title + "')]");
-            WebElement element = findElement(xpath);
-            Assert.assertNotNull(element);
-            click(element);
+            click(xpath);
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Button with title " + title + " cannot be found", e);
             throw e;
@@ -69,9 +64,7 @@ public class WebElementUtil {
 
     public void clickButtonWithText(String text) {
         try {
-            WebElement element = findElement(By.xpath("//button[contains(.,'" + text + "')]"));
-            Assert.assertNotNull(element);
-            click(element);
+            click(By.xpath("//button[contains(.,'" + text + "')]"));
         } catch (NoSuchElementException | AssertionError e) {
             log.error(text + " element cannot be found", e);
             throw e;
@@ -112,9 +105,7 @@ public class WebElementUtil {
     public void clickButtonWithTitle(String title) {
         try {
             By xpath = By.xpath("//button[contains(@title, '" + title + "')]");
-            WebElement element = findElement(xpath);
-            Assert.assertNotNull(element);
-            element.click();
+            click(xpath);
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Button with title " + title + " cannot be found", e);
             throw e;
@@ -123,9 +114,7 @@ public class WebElementUtil {
 
     public void clickButtonWithId(String id) {
         try {
-            WebElement element = findElement(By.id(id));
-            Assert.assertNotNull(element);
-            element.click();
+            click(By.id(id));
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Button with id " + id + " cannot be found", e);
             throw e;
@@ -291,7 +280,7 @@ public class WebElementUtil {
 
     public void clickMap(WebElement mapPanel, int xOffset, int yOffset) {
         Actions builder = new Actions(driver);
-        builder.moveToElement(mapPanel, xOffset, yOffset).click().build().perform();
+        builder.moveToElement(mapPanel).moveByOffset(xOffset, yOffset).click().build().perform();
     }
 
     public WebElement findElement(By by) {
@@ -308,18 +297,30 @@ public class WebElementUtil {
                         ExpectedConditions.presenceOfElementLocated(by));
                 break;
             } catch(NoSuchElementException | TimeoutException | StaleElementReferenceException e) {
-                log.debug(String.format("Unable to find element %s. Attempt: %s Total Attempts: %s. Error:%s", by.toString(), attempts, totalAttempts, e.getMessage()));
+                log.debug(String.format("Unable to find element %s. Attempt: %s Total Attempts: %s", by.toString(), attempts, totalAttempts));
+                log.debug(String.format("Error:%s", e.getMessage()));
             }
             attempts++;
         }
         return element;
     }
 
-    private void click(WebElement element) {
-        // element.click() fails for some browsers
-        WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
-        wait.until(ExpectedConditions.elementToBeClickable(element));
-        element.sendKeys(Keys.ENTER);
+    private void click(By by) {
+        int attempts = 1, totalAttempts = 2;
+        while(attempts <= totalAttempts) {
+            try {
+                WebElement element = findElement(by);
+                Assert.assertNotNull(element);
+                WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
+                wait.until(ExpectedConditions.elementToBeClickable(element));
+                element.click();
+                break;
+            } catch(StaleElementReferenceException e) {
+                log.debug(String.format("Unable to click element %s. Attempt: %s Total Attempts: %s", by.toString(), attempts, totalAttempts));
+                log.debug(String.format("Error:%s", e.getMessage()));
+            }
+            attempts++;
+        }
     }
 
     public void switchToNewTab() {
@@ -328,6 +329,10 @@ public class WebElementUtil {
         if(tabs.size() > 1) {
             driver.switchTo().window(tabs.get(1));
         }
+    }
+
+    public void clickElementBy(By by) {
+        click(by);
     }
 }
 
