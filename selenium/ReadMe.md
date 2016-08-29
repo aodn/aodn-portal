@@ -20,6 +20,7 @@ Update pom.xml and add following properties
 # Setting up Local Testing
 
 Download the appropriate binary:
+
 1. OS X (Lion, Mountain Lion, Mavericks) https://www.browserstack.com/browserstack-local/BrowserStackLocal-darwin-x64.zip
 
 2. Linux 32-bit https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-ia32.zip
