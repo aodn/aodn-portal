@@ -73,13 +73,6 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
         it('fires events when required fields are set', function() {
             expect(window.trackUsage).toHaveBeenCalledWith("Filters", "Date", "atestname user set 12-02-1990", "Collection title");
         });
-
-        it('uses end-of-day for end date', function() {
-            expect(filterPanel.filter.setValue).toHaveBeenCalledWith({
-                fromDate: undefined,
-                toDate: moment('1999-11-31T23:59:59.999Z').toDate()
-            });
-        });
     });
 
     function _mockFilterFields(filterPanel) {

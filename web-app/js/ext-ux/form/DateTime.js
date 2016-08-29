@@ -4,8 +4,8 @@
  *
  * DateTime field, combination of DateField and TimeField
  *
- * @author      Ing. Jozef Sakáloš
- * @copyright (c) 2008, Ing. Jozef Sakáloš
+ * @author      Ing. Jozef Sakï¿½loï¿½
+ * @copyright (c) 2008, Ing. Jozef Sakï¿½loï¿½
  * @version   2.0
  * @revision  $Id: Ext.ux.form.DateTime.js 603 2009-03-04 22:27:06Z jozo $
  *
