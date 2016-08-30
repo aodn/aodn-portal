@@ -201,26 +201,25 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _showSpatialExtentError: function(geometry) {
-        this.vectorlayer.style = this.errorStyle;
 
         if (geometry.crossesAntimeridian()) {
+            this.vectorlayer.style = this.errorStyle;
             this.addAntimeridian();
+            setTimeout(
+                this._resetLastSpatialExtent,
+                this.SPATIAL_EXTENT_ERROR_TIMEOUT,
+                this
+            );
         }
-
-        setTimeout(
-            this._resetSpatialExtentError,
-            this.SPATIAL_EXTENT_ERROR_TIMEOUT,
-            this
-        );
+        else {
+            this._resetLastSpatialExtent(this);
+        }
     },
 
-    _resetSpatialExtentError: function(that) {
+    _resetLastSpatialExtent: function(that) {
         if (that.oldGeometry) {
             that.vectorlayer.style = OpenLayers.Feature.Vector.style['default'];
             that.redraw(that.oldGeometry);
-        }
-        else {
-            that.map.events.triggerEvent('spatialconstraintcleared');
         }
     },
 

@@ -179,8 +179,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     clearLinkLabel: '<span class=\"fa fa-undo\"></span> ${text}',
     clearAndResetLabel: 'Clear and Reset',
-    resetLabel: 'Reset',
-    clearSubsetLabel: 'Clear Subset',
+    resetLabel: 'Reset Spatial Subsets',
+    clearSubsetLabel: 'Clear All Subsets',
 
     // ComboFilterPanel.js
     clearFilterOption: 'All',

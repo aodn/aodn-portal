@@ -69,7 +69,7 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
     _showCardForReset: function() {
 
         this.lastSpatialGeometry = undefined;
-        this.boxDisplayPanel.emptyBounds();
+        this.boxDisplayPanel.emptyBounds(); // todo this should be clearing it
         this._showCard(this.boxDisplayPanel);
     },
 

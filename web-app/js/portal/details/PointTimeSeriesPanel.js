@@ -52,7 +52,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
                 render: function(c) {
                     this._addTimeSeriesQuickTip(c);
                 },
-                change: function() {
+                change: function(c) {
                     this._applyTimeSeriesFilterValuesToCollection();
                 }
             }
@@ -75,7 +75,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
                 render: function(c) {
                     this._addTimeSeriesQuickTip(c);
                 },
-                change: function() {
+                change: function(c) {
                     this._applyTimeSeriesFilterValuesToCollection();
                 }
             }
@@ -101,6 +101,10 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
             this.map.events.on({
                 scope: this,
                 'featureInfoClick': this.updatePoint
+            });
+            this.map.events.on({
+                scope: this,
+                'spatialconstraintcleared': this._resetPanel
             });
         }
     },
@@ -161,8 +165,6 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
 
     _applyTimeSeriesFilterValuesToCollection: function() {
 
-        var timeSeriesAtPoint = Portal.filter.FilterUtils.getFilter(this.dataCollection.filters,"timeSeriesAtPoint");
-
         // Create or modify filter 'timeSeriesAtPoint' and disable the spatial filter
         if (this._isTimeSeriesFilterAvailable()) {
 
@@ -170,6 +172,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
             pointFilterValue.latitude = this.timeSeriesLatitudeControl.getValue();
             pointFilterValue.longitude = this.timeSeriesLongitudeControl.getValue();
 
+            var timeSeriesAtPoint = Portal.filter.FilterUtils.getFilter(this.dataCollection.filters,"timeSeriesAtPoint");
             var nwmsParamsFilter =  Portal.filter.FilterUtils.getFilter(this.dataCollection.filters,"nwmsParamsFilter");
 
             if (nwmsParamsFilter) {
@@ -193,6 +196,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
         }
         // disable 'timeSeriesAtPoint' and re-instate the global map constraint
         else {
+            var timeSeriesAtPoint = Portal.filter.FilterUtils.getFilter(this.dataCollection.filters,"timeSeriesAtPoint");
             if (timeSeriesAtPoint) {
                 timeSeriesAtPoint.setValue(null);
 
@@ -233,7 +237,16 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
             this.timeSeriesLongitudeControl.getErrors().length == 0 ?
             this.timeSeriesLongitudeControl.getValue() :
             undefined;
+    },
+
+    _resetPanel: function() {
+        this.pointTimeSeriesCheckbox.reset();
+        this.timeSeriesLatitudeControl.reset();
+        this.timeSeriesLongitudeControl.reset();
+        this._disablePointTimeSeriesControls();
+        this._applyTimeSeriesFilterValuesToCollection();
     }
+
 });
 
 
