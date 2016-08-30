@@ -80,7 +80,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             text: OpenLayers.i18n('clearLinkLabel', {text: OpenLayers.i18n('clearSubsetLabel')})
         });
         this.resetLink.on('click', function() {
-            this.clearAndReset();
+            this.map.events.triggerEvent('spatialconstraintcleared');
         }, this);
         this.add(this.resetLink);
     },
@@ -109,10 +109,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
             this.map.events.on({
                 scope: this,
-                'spatialconstraintadded': function(geometry) {
+                'spatialconstraintadded': function() {
                     this._applyFilterValuesToCollection();
                 },
                 'spatialconstraintcleared': function() {
+                    this.clearAndReset();
                     this._applyFilterValuesToCollection();
                 }
             });
