@@ -217,6 +217,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateFilterBeforeFormat: '{0}: before {2}',
     dateFilterAfterFormat: '{0}: after {1}',
     dateFilterBetweenFormat: '{0}: {1} to {2}',
+    dateFormLogicalError: "Start date ({0}) must be before end date ({1})",
 
     numberFilterOptionsFields: [
          'code', 'text',                     'cql',                 'symbol'
@@ -272,7 +273,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     timeDisplayFormat: 'HH:mm UTC',
     timeDisplayFormatExtJs: 'H:i \\U\\TC',// Ext.form.DateField formatting
     dateDisplayFormatExtJs: 'Y/m/d', // Ext.form.DateField formatting
-    dateAltFormats: "Y|Y/m|d-m-Y", // Ext.form.DateField formatting
+    dateAltFormats: "Y|Y/m",
     dateNcWmsMinError: "The entered date is earlier than the first available date: {0}",
     dateNcWmsMaxError: "The entered date is greater than the last available date: {0}",
     defaultTextStylesPicker: "Default style/palette",

@@ -7,6 +7,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     PENDING_EVENT_ATTR: 'PENDING_EVENT',
 
+    START_DATE: 'start date',
+    END_DATE: 'end date',
+
     geometryFilter: undefined,
 
     constructor: function(cfg) {
@@ -25,7 +28,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }, cfg);
 
         Portal.details.NcWmsPanel.superclass.constructor.call(this, config);
-        sessionStorage.clear();
     },
 
     initComponent: function() {
@@ -142,7 +144,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             flex: 2
         });
 
-        this.startDateTimePicker = new Portal.form.UtcExtentDateTime(this._defaultDateTimePickerConfiguration());
+        this.startDateTimePicker = new Portal.form.UtcExtentDateTime(this._utcExtentDateTimePickerConfiguration(this.START_DATE));
 
         var dateStartRow = new Ext.Panel({
             xtype: 'panel',
@@ -157,7 +159,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             ]
         });
 
-        this.endDateTimePicker = new Portal.form.UtcExtentDateTime(this._defaultDateTimePickerConfiguration());
+        this.endDateTimePicker = new Portal.form.UtcExtentDateTime(this._utcExtentDateTimePickerConfiguration(this.END_DATE));
 
         var dateEndRow = new Ext.Panel({
             xtype: 'panel',
@@ -232,17 +234,44 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.add(this.pointTimeSeriesPanel);
     },
 
-    _defaultDateTimePickerConfiguration: function() {
+    areDatesLogical: function(datePicker) {
+
+        if (this.endDateTimePicker.rendered && this.startDateTimePicker.rendered) {
+
+            var start = moment(this.startDateTimePicker.getValue()).clone();
+            var end = moment(this.endDateTimePicker.getValue()).clone();
+            var date = moment(datePicker.getValue()).clone();
+
+            if (datePicker.pickerType == this.START_DATE) {
+                start = date;
+            }
+            else {
+                end = date;
+            }
+
+            if (start.isValid() && end.isValid() && !this._isDateRangeValid(start,end)) {
+                return String.format(OpenLayers.i18n('dateFormLogicalError'),
+                    start.format('Do MMMM YYYY'),
+                    end.format('Do MMMM YYYY')
+                );
+            }
+        }
+        return true;
+    },
+
+    _utcExtentDateTimePickerConfiguration: function(name) {
+
+        var that = this;
         return {
-            parentPanel: this,
             dateFormat: OpenLayers.i18n('dateDisplayFormatExtJs'),
-            timeFormat: OpenLayers.i18n('timeDisplayFormatExtJs'),
-            altDateFormats: OpenLayers.i18n('dateAltFormats'),
-            flex: 2,
-            listeners: {
-                scope: this,
-                change: this._onChange
+            dateConfig: {
+                scope: that,
+                pickerType: name,
+                validator: function() {
+                    return that.areDatesLogical(this);
+                }
             },
+            timeFormat: OpenLayers.i18n('timeDisplayFormatExtJs'),
             timeConfig: {
                 store: new Ext.data.JsonStore({
                     autoLoad: false,
@@ -254,6 +283,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
                 editable: false,
                 valueField: 'timeValue',
                 displayField: 'displayTime'
+            },
+            flex: 2,
+            listeners: {
+                scope: this,
+                change: this._onChange
             }
         };
     },
@@ -297,25 +331,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
 
         trackFiltersUsage(OpenLayers.i18n('trackingDateAction'), selectedDateTimeMoment.utc().toISOString(), this.dataCollection.getTitle());
-
-        // Put the start and end date input fields ids into storage
-        try {
-            var startDateId = this.startDateTimePicker.tableEl.dom.rows[0].children[0].children[0].children[0].id;
-            var endDateId = this.endDateTimePicker.tableEl.dom.rows[0].children[0].children[0].children[0].id;
-            var startEndDateId = startDateId + ':' + endDateId;
-            var startEndDateIds = JSON.parse(sessionStorage.getItem('startEndDateIds'));
-
-            if (startEndDateIds == null) {
-                startEndDateIds = [];
-            }
-
-            if (startEndDateIds.indexOf(startEndDateId) < 0) {
-                startEndDateIds.push(startEndDateId);
-                sessionStorage.setItem('startEndDateIds', JSON.stringify(startEndDateIds));
-            }
-           }
-        catch(err) {
-        }
     },
 
     _onTimeSelected: function(datePicker, selectedDateTimeMoment) {
@@ -392,7 +407,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, lat, lon);
     },
 
-    _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, lat, lon) {
+    _isDateRangeValid: function(start, end) {
+        if (start && start.isValid() && end && end.isValid()) {
+            return  start.isSameOrBefore(end);
+        }
+        return false;
+    },
+
+    _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry, timeSeries, lat, lon) {
 
         var dateFilterValue = {};
         var pointFilterValue = {};
@@ -404,20 +426,18 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             } // From the Portal.filter.Filter interface. Prevents filter from being used in CQL or displayed to user
         };
 
-        if (dateRangeStart && dateRangeStart.isValid()) {
+        if (this._isDateRangeValid(dateRangeStart, dateRangeEnd)) {
             ncwmsParamsAsFilter.dateRangeStart = dateRangeStart;
             dateFilterValue.fromDate = dateRangeStart.toDate();
-        }
-
-        if (dateRangeEnd && dateRangeEnd.isValid()) {
             ncwmsParamsAsFilter.dateRangeEnd = dateRangeEnd;
             dateFilterValue.toDate = dateRangeEnd.toDate();
         }
 
-        if (pointFilterAvailable) {
+        if (timeSeries) {
             pointFilterValue.latitude = parseFloat(lat);
             pointFilterValue.longitude = parseFloat(lon);
-        } else if (geometry) {
+        }
+        else if (geometry) {
             var bounds = geometry.getBounds();
             ncwmsParamsAsFilter.latitudeRangeStart = bounds.bottom;
             ncwmsParamsAsFilter.longitudeRangeStart = bounds.left;

@@ -374,11 +374,11 @@ describe("OpenLayers.Layer.NcWms", function() {
         });
 
         it('sets the subset extent minimum', function() {
-            expect(cachedLayer.getSubsetExtentMin()).toEqual(moment.utc('2000-01-01T00:00:00.000'));
+            expect(cachedLayer.getSubsetExtentMin().toString()).toEqual(moment.utc('2000-01-01T00:00:00.000').toString());
         });
 
         it('sets the subset extent maximum', function() {
-            expect(cachedLayer.getSubsetExtentMax()).toEqual(moment.utc('2000-01-03T00:00:00.000'));
+            expect(cachedLayer.getSubsetExtentMax().toString()).toEqual(moment.utc('2000-01-03T00:00:00.000').toString());
         });
     });
 

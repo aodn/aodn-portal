@@ -60,9 +60,9 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
                 // Fill in all the days in this gap (if there's any), a day after
                 // the previous existing date, until a day before the current
                 // existing date
-                for (var nonExistingDay = previousExistingDay.clone().add('days', 1);
+                for (var nonExistingDay = previousExistingDay.clone().add(1, 'days');
                     nonExistingDay.isBefore(currentExistingDay);
-                    nonExistingDay = nonExistingDay.add('days', 1))
+                    nonExistingDay = nonExistingDay.add(1, 'days'))
                 {
                     this.missingDays.push(nonExistingDay.toDate().clone());
                 }

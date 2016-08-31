@@ -195,24 +195,25 @@ describe('Portal.details.NcWmsPanel', function() {
 
     describe('_ncwmsParamsAsFilters', function() {
 
-        it('updated start date', function() {
+        it('updating valid dates', function() {
 
             var testStartDate = moment();
+            var testEndDate = moment();
 
-            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(testStartDate, moment('invalid date'), null, false, 0, 0);
+            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(testStartDate, testEndDate, null, false, 0, 0);
 
             expect(returnValue[0].getValue().fromDate).toEqual(testStartDate.toDate());
             expect(returnValue[1].dateRangeStart).toEqual(testStartDate);
         });
 
-        it('updated end date', function() {
+        it('updated invalid date', function() {
 
             var testEndDate = moment();
 
             var returnValue = ncwmsPanel._ncwmsParamsAsFilters(moment('invalid date'), testEndDate, null, false, 0, 0);
 
-            expect(returnValue[0].getValue().toDate).toEqual(testEndDate.toDate());
-            expect(returnValue[1].dateRangeEnd).toEqual(testEndDate);
+            expect(returnValue[0].getValue().toDate).toEqual(undefined);
+            expect(returnValue[1].dateRangeEnd).toEqual(undefined);
         });
 
         it('update geometry', function() {
