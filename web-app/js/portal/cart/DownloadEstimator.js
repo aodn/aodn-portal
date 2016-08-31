@@ -139,18 +139,11 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         })[0];
         var bounds = collection.getBounds();
 
-        if (params && params.latitudeRangeStart != undefined) {
-            intersect = this._rectanglesIntersect(bounds.left, bounds.bottom, bounds.right, bounds.top, params.longitudeRangeStart, params.latitudeRangeStart, params.longitudeRangeEnd, params.latitudeRangeEnd);
+        if (bounds && params && params.latitudeRangeStart != undefined) {
+            var extent = new OpenLayers.Bounds(params.longitudeRangeStart, params.latitudeRangeStart, params.longitudeRangeEnd, params.latitudeRangeEnd);
+            intersect = bounds.containsBounds(extent, true, true);
         }
 
         return intersect;
-    },
-
-    _rectanglesIntersect: function(minAx, minAy, maxAx, maxAy, minBx, minBy, maxBx, maxBy) {
-        var aLeftOfB = maxAx < minBx;
-        var aRightOfB = minAx > maxBx;
-        var aAboveB = minAy > maxBy;
-        var aBelowB = maxAy < minBy;
-        return !( aLeftOfB || aRightOfB || aAboveB || aBelowB );
     }
 });
