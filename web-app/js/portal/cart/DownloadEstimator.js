@@ -34,7 +34,8 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
                     this._createFailMessage(result, collection.getUuid(), callback);
                 }
             });
-        } else {
+        }
+        else {
             this._addNoDataErrorMessage(collection.getUuid(), callback);
         }
     },
@@ -139,7 +140,7 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         var bounds = collection.getBounds();
 
         if (params && params.latitudeRangeStart != undefined) {
-            intersect = this._rectanglesIntersect (bounds.left, bounds.bottom, bounds.right, bounds.top, params.longitudeRangeStart, params.latitudeRangeStart, params.longitudeRangeEnd, params.latitudeRangeEnd);
+            intersect = this._rectanglesIntersect(bounds.left, bounds.bottom, bounds.right, bounds.top, params.longitudeRangeStart, params.latitudeRangeStart, params.longitudeRangeEnd, params.latitudeRangeEnd);
         }
 
         return intersect;
