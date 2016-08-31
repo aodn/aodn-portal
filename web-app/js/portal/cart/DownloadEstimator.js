@@ -21,18 +21,22 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
 
     _getDownloadEstimate: function(collection, callback) {
 
-        Ext.Ajax.request({
-            url: 'download/estimateSizeForLayer',
-            timeout: 30000,
-            scope: this,
-            params: this.estimateRequestParams,
-            success: function(result, values) {
-                this._createDownloadEstimate(result, collection.getUuid(), callback);
-            },
-            failure: function(result, values) {
-                this._createFailMessage(result, collection.getUuid(), callback);
-            }
-        });
+        if (this._spatialSubsetIntersect(collection)) {
+            Ext.Ajax.request({
+                url: 'download/estimateSizeForLayer',
+                timeout: 30000,
+                scope: this,
+                params: this.estimateRequestParams,
+                success: function(result, values) {
+                    this._createDownloadEstimate(result, collection.getUuid(), callback);
+                },
+                failure: function(result, values) {
+                    this._createFailMessage(result, collection.getUuid(), callback);
+                }
+            });
+        } else {
+            this._addNoDataErrorMessage(collection.getUuid(), callback);
+        }
     },
 
     _createFailMessage: function(result, uuid, callback) {
@@ -48,6 +52,10 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
 
     _createDownloadEstimate: function(result, uuid, callback) {
         this._addDownloadEstimate.defer(1, this, [parseInt(result.responseText), uuid, callback]);
+    },
+
+    _addNoDataErrorMessage: function(uuid, callback) {
+        this._addDownloadEstimate.defer(1000, this, [0, uuid, callback]);
     },
 
     _addDownloadEstimate: function(sizeEstimate, uuid, callback) {
@@ -119,5 +127,29 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         var fileSizeImage = OpenLayers.i18n("faError");
 
         return String.format(html, downloadTimeoutMessage, fileSizeImage);
+    },
+
+    _spatialSubsetIntersect: function(collection) {
+
+        var intersect = true;
+        var filters = collection.getFilters();
+        var params = filters.filter(function(filter) {
+            return filter.isNcwmsParams;
+        })[0];
+        var bounds = collection.getBounds();
+
+        if (params && params.latitudeRangeStart != undefined) {
+            intersect = this._rectanglesIntersect (bounds.left, bounds.bottom, bounds.right, bounds.top, params.longitudeRangeStart, params.latitudeRangeStart, params.longitudeRangeEnd, params.latitudeRangeEnd);
+        }
+
+        return intersect;
+    },
+
+    _rectanglesIntersect: function(minAx, minAy, maxAx, maxAy, minBx, minBy, maxBx, maxBy) {
+        var aLeftOfB = maxAx < minBx;
+        var aRightOfB = minAx > maxBx;
+        var aAboveB = minAy > maxBy;
+        var aBelowB = maxAy < minBy;
+        return !( aLeftOfB || aRightOfB || aAboveB || aBelowB );
     }
 });
