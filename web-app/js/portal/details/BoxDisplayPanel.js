@@ -61,10 +61,10 @@ Portal.details.BoxDisplayPanel = Ext.extend(Ext.Panel, {
     },
 
     emptyBounds: function() {
-        this.southBL.setRawValue();
-        this.westBL.setRawValue();
-        this.northBL.setRawValue();
-        this.eastBL.setRawValue();
+        this.southBL.reset();
+        this.westBL.reset();
+        this.northBL.reset();
+        this.eastBL.reset();
     },
 
     _buildBoundingBox: function(config) {

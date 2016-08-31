@@ -233,7 +233,16 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
             this.timeSeriesLongitudeControl.getErrors().length == 0 ?
             this.timeSeriesLongitudeControl.getValue() :
             undefined;
+    },
+
+    _resetPanel: function() {
+        this.pointTimeSeriesCheckbox.reset();
+        this.timeSeriesLatitudeControl.reset();
+        this.timeSeriesLongitudeControl.reset();
+        this._disablePointTimeSeriesControls();
+        this._applyTimeSeriesFilterValuesToCollection();
     }
+
 });
 
 
