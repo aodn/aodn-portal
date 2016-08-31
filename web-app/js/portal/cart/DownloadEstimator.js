@@ -137,9 +137,9 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
         var params = filters.filter(function(filter) {
             return filter.isNcwmsParams;
         })[0];
-        var bounds = collection.getBounds();
 
-        if (bounds && params && params.latitudeRangeStart != undefined) {
+        if (params && params.latitudeRangeStart != undefined) {
+            var bounds = collection.getBounds();
             var extent = new OpenLayers.Bounds(params.longitudeRangeStart, params.latitudeRangeStart, params.longitudeRangeEnd, params.latitudeRangeEnd);
             intersect = bounds.containsBounds(extent, true, true);
         }
