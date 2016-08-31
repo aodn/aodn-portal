@@ -7,7 +7,7 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
 
         this.polygonDisplayPanel = new Portal.details.PolygonDisplayPanel({
             height: 90,
-            width: 200
+            width: 190
         });
 
         this.emptyPolygonDisplayPanel = new Ext.Panel({
