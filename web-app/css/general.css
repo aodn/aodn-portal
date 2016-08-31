@@ -385,40 +385,33 @@ a:hover.mainlinks {
     border-radius: 5px;
 }
 
-.message {
-    background: #f3f3ff;
-    border: 1px solid #b2d1ff;
-    color: #006dba! important;
-    box-shadow: 0 0 0.25em #b2d1ff;
-}
-
 .message * {
-    color: #006dba! important;
+    color: #5b8fbf! important;
     margin-bottom: inherit;
 }
 
 .errors {
-background: #fff3f3;
-border: 1px solid #ffaaaa;
-color: #cc0000;
-box-shadow: 0 0 0.25em #ff8888;
+    background: #fff3f3;
+    border: 1px solid #ffaaaa;
+    color: #cc0000;
+    box-shadow: 0 0 0.25em #ff8888;
 }
 
 .errors ul,
 .message {
-padding: 0;
+    padding: 0;
 }
 
 .errors li {
-list-style: none;
-background: transparent url(../images/skin/exclamation.png) 0 50% no-repeat;
-text-indent: 22px;
+    list-style: none;
+    background: transparent url(../images/skin/exclamation.png) 0 50% no-repeat;
+    text-indent: 22px;
 }
 
 .message {
-background: transparent url(../images/skin/information.png) 3px 5px no-repeat;
-text-indent: 22px;
-padding: 5px;
+    background: transparent url(../images/skin/information.png) 3px 12px no-repeat;
+    text-indent: 22px;
+    padding: 5px;
 }
 
 /*
