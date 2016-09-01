@@ -151,6 +151,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     addDataCollectionMsg: "Add this collection",
 
     loadingMessage: 'Loading ...',
+    requiredMessage: "**Required**",
+    emptyDateFieldMessage: "This field will not apply if empty",
     noMetadataMessage: 'No information available at this time.',
 
     btnSave: 'Save',
