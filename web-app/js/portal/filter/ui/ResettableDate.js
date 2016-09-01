@@ -72,6 +72,8 @@ Portal.filter.ui.ResettableDate = Ext.extend(Ext.Container, {
             format: OpenLayers.i18n('dateDisplayFormatExtJs'),
             altFormats: OpenLayers.i18n('dateAltFormats'),
             emptyText: cfg.emptyText,
+            blankText: OpenLayers.i18n('emptyDateFieldMessage'),
+            allowBlank: false,
             height: this.ELEMENT_HEIGHT,
             width: this.ELEMENT_WIDTH,
             listeners: {

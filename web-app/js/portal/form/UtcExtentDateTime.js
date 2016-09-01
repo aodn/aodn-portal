@@ -7,6 +7,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
 
         // least nasty hack to add altFormats
         this.df = this.df.cloneConfig({
+            allowBlank: false,
             altFormats: OpenLayers.i18n('dateAltFormats'),
             emptyText: OpenLayers.i18n('loadingMessage'),
             minText: OpenLayers.i18n('dateNcWmsMinError'),
@@ -32,6 +33,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         this.extent = extent;
         this.df.setMinValue(this.getLocalDateFromUtcMoment(extent.min(), true));
         this.df.setMaxValue(this.getLocalDateFromUtcMoment(extent.max(), true));
+        this.df.emptyText = OpenLayers.i18n('requiredMessage');
 
         if (extent.getMissingDays().length > 0) {
             this.df.setDisabledDates(extent.getMissingDays());
