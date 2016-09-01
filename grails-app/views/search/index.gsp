@@ -40,7 +40,7 @@
 
     <body>
         <g:render template="/header/mainPortalHeader" model="['showLinks': true, 'configInstance': configInstance]"></g:render>
-
         <g:render template="/google_analytics"></g:render>
+        <g:render template="/hotjar"></g:render>
     </body>
 </html>
