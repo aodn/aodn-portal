@@ -112,7 +112,6 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
             this.timeSeriesLongitudeControl.setValue(toNSigFigs(xys.lon, 4));
             this._applyTimeSeriesFilterValuesToCollection();
             animateNumberField(this.getItemId());
-            Event.stop(e);
         }
     },
 
