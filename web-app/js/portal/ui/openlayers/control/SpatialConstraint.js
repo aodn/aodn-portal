@@ -201,29 +201,22 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _showSpatialExtentError: function(geometry) {
-
-        if (geometry.crossesAntimeridian()) {
-            this.vectorlayer.style = this.errorStyle;
-            this.addAntimeridian();
-            setTimeout(
-                this._resetLastSpatialExtent,
-                this.SPATIAL_EXTENT_ERROR_TIMEOUT,
-                this
-            );
-        }
-        else {
-            this._resetLastSpatialExtent(this);
-        }
+        this.vectorlayer.style = this.errorStyle;
+        setTimeout(
+            this._recallLastSpatialExtent,
+            this.SPATIAL_EXTENT_ERROR_TIMEOUT,
+            this
+        );
     },
 
-    _resetLastSpatialExtent: function(that) {
+    _recallLastSpatialExtent: function(that) {
         if (that.oldGeometry) {
             that.vectorlayer.style = OpenLayers.Feature.Vector.style['default'];
             that.redraw(that.oldGeometry);
         }
     },
 
-    addAntimeridian: function() {
+    addAntimeridianFeature: function() {
         var meridianLine = new OpenLayers.Geometry.LineString([
             new OpenLayers.Geometry.Point(180, -90),
             new OpenLayers.Geometry.Point(180, 90)
@@ -243,11 +236,14 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         }
         else {
             this._showSpatialExtentError(geometry);
-            if (!geometry.crossesAntimeridian()) {
+            if (geometry.crossesAntimeridian()) {
+                this.addAntimeridianFeature();
+            }
+            else {
                 this.map.mapPanel.findFeatureInfoForGeometry(geometry); // trigger GFI then
             }
-            return true; // Let the features to be added to the layer
         }
+        return true; // Let the feature to be added to the map
     },
 
     getNormalizedGeometry: function(geometry) {
