@@ -24,9 +24,7 @@ public class WebElementUtil {
 
     public void clickElementByXpath(String xpath) {
         try {
-            WebElement element = findElement(By.xpath(xpath));
-            Assert.assertNotNull(element);
-            element.click();
+            click(By.xpath(xpath));
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with xpath " + xpath + "could not be found", e);
             throw e;
@@ -35,9 +33,7 @@ public class WebElementUtil {
 
     public void clickElementWithLinkText(String linkText) {
         try {
-            WebElement element = findElement(By.linkText(linkText));
-            Assert.assertNotNull(element);
-            element.click();
+            click(By.linkText(linkText));
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Link text " + linkText + "could not be found", e);
             throw e;
@@ -46,9 +42,7 @@ public class WebElementUtil {
 
     public void clickLinkContainingText(String linkText) {
         try {
-            WebElement element = findElement(By.xpath("//a[contains(.,'" + linkText + "')]"));
-            Assert.assertNotNull(element);
-            click(element);
+            click(By.xpath("//a[contains(.,'" + linkText + "')]"));
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Link text " + linkText + "could not be found", e);
             throw e;
@@ -58,9 +52,7 @@ public class WebElementUtil {
     public void clickLinkWithTitle(String title) {
         try {
             By xpath = By.xpath("//a[contains(@title, '" + title + "')]");
-            WebElement element = findElement(xpath);
-            Assert.assertNotNull(element);
-            click(element);
+            click(xpath);
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Button with title " + title + " cannot be found", e);
             throw e;
@@ -69,9 +61,7 @@ public class WebElementUtil {
 
     public void clickButtonWithText(String text) {
         try {
-            WebElement element = findElement(By.xpath("//button[contains(.,'" + text + "')]"));
-            Assert.assertNotNull(element);
-            click(element);
+            click(By.xpath("//button[contains(.,'" + text + "')]"));
         } catch (NoSuchElementException | AssertionError e) {
             log.error(text + " element cannot be found", e);
             throw e;
@@ -80,8 +70,7 @@ public class WebElementUtil {
 
     public void clickElementById(String id) {
         try {
-            WebElement element = findElement(By.id(id));
-            element.click();
+            click(By.id(id));
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with id " + id + " cannot be found", e);
             throw e;
@@ -90,9 +79,7 @@ public class WebElementUtil {
 
     public void clickElementWithClass(String className) {
         try {
-            WebElement element = findElement(By.xpath("[contains(@class, '" + className + "')]"));
-            Assert.assertNotNull(element);
-            element.click();
+            click(By.xpath("[contains(@class, '" + className + "')]"));
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with class " + className + " cannot be found", e);
             throw e;
@@ -101,8 +88,7 @@ public class WebElementUtil {
 
     public void clickButtonWithClass(String className) {
         try {
-            WebElement element = findElement(By.xpath("//button[contains(@class, '" + className + "')]"));
-            element.click();
+            click(By.xpath("//button[contains(@class, '" + className + "')]"));
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Element with class " + className + " cannot be found", e);
             throw e;
@@ -112,9 +98,7 @@ public class WebElementUtil {
     public void clickButtonWithTitle(String title) {
         try {
             By xpath = By.xpath("//button[contains(@title, '" + title + "')]");
-            WebElement element = findElement(xpath);
-            Assert.assertNotNull(element);
-            element.click();
+            click(xpath);
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Button with title " + title + " cannot be found", e);
             throw e;
@@ -123,9 +107,7 @@ public class WebElementUtil {
 
     public void clickButtonWithId(String id) {
         try {
-            WebElement element = findElement(By.id(id));
-            Assert.assertNotNull(element);
-            element.click();
+            click(By.id(id));
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Button with id " + id + " cannot be found", e);
             throw e;
@@ -315,11 +297,22 @@ public class WebElementUtil {
         return element;
     }
 
-    private void click(WebElement element) {
-        // element.click() fails for some browsers
-        WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
-        wait.until(ExpectedConditions.elementToBeClickable(element));
-        element.sendKeys(Keys.ENTER);
+    private void click(By by) {
+        int attempts = 1, totalAttempts = 2;
+        while(attempts <= totalAttempts) {
+            try {
+                WebElement element = findElement(by);
+                Assert.assertNotNull(element);
+                WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
+                wait.until(ExpectedConditions.elementToBeClickable(element));
+                element.sendKeys(Keys.RETURN); // element.click() does not work in some environments
+                break;
+            } catch(Exception e) {
+                log.debug(String.format("Unable to click element %s. Attempt: %s Total Attempts: %s", by.toString(), attempts, totalAttempts));
+                log.debug(String.format("Error:%s", e.getMessage()));
+            }
+            attempts++;
+        }
     }
 
     public void switchToNewTab() {
@@ -328,6 +321,10 @@ public class WebElementUtil {
         if(tabs.size() > 1) {
             driver.switchTo().window(tabs.get(1));
         }
+    }
+
+    public void clickElementBy(By by) {
+        click(by);
     }
 }
 
