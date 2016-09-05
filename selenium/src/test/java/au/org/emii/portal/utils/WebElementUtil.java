@@ -305,8 +305,7 @@ public class WebElementUtil {
                 Assert.assertNotNull(element);
                 WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
                 wait.until(ExpectedConditions.elementToBeClickable(element));
-                //element.click();
-                element.sendKeys(Keys.RETURN);
+                element.sendKeys(Keys.RETURN); // element.click() does not work in some environments
                 break;
             } catch(Exception e) {
                 log.debug(String.format("Unable to click element %s. Attempt: %s Total Attempts: %s", by.toString(), attempts, totalAttempts));
