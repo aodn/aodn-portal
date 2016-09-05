@@ -20,6 +20,14 @@
         <classes>
             <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
             <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
+            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
         </classes>
     </test>
     <test name="Firefox 45.0 on Windows 10">
@@ -63,6 +71,14 @@
         <classes>
             <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
             <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
+            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
         </classes>
     </test>
     <test name="Firefox 45.0 on OS X El Capitan">
@@ -107,6 +123,14 @@
         <classes>
             <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
             <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
+            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
         </classes>
     </test>
     <test name="Chrome 50.0 on Windows 10">
@@ -150,6 +174,14 @@
         <classes>
             <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
             <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
+            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
+            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
+            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
         </classes>
     </test>
     <test name="Chrome 50.0 on OS X El Capitan">
