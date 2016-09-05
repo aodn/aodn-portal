@@ -112,7 +112,6 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
             this.timeSeriesLongitudeControl.setValue(toNSigFigs(xys.lon, 4));
             this._applyTimeSeriesFilterValuesToCollection();
             animateNumberField(this.getItemId());
-            Event.stop(e);
         }
     },
 
@@ -216,7 +215,8 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
     },
 
     _isTimeSeriesFilterAvailable: function() {
-        return this.pointTimeSeriesCheckbox.checked &&
+        return this._isThisPanelAlive() &&
+            this.pointTimeSeriesCheckbox.checked &&
             this.timeSeriesLatitudeControl.getErrors().length == 0 &&
             this.timeSeriesLongitudeControl.getErrors().length == 0;
     },

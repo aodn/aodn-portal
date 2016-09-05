@@ -76,7 +76,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
     describe('layer', function() {
 
         beforeEach(function() {
-            spyOn(spatialConstraint, '_resetLastSpatialExtent');
+            spyOn(spatialConstraint, '_recallLastSpatialExtent');
             spatialConstraint._checkSketch = returns(true);
         });
 
@@ -302,7 +302,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         });
     });
 
-    describe('_resetLastSpatialExtent', function() {
+    describe('_recallLastSpatialExtent', function() {
 
         describe ('restoring previous geometry after timeout', function() {
 
@@ -311,7 +311,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
                 spatialConstraint.oldGeometry = {};
                 spatialConstraint.vectorlayer = {};
 
-                spatialConstraint._resetLastSpatialExtent(spatialConstraint);
+                spatialConstraint._recallLastSpatialExtent(spatialConstraint);
             });
 
             it('layer style to be reset', function() {
@@ -330,8 +330,8 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         var testGeometry;
 
         beforeEach(function() {
-            spyOn(spatialConstraint, 'addAntimeridian');
-            spyOn(spatialConstraint, '_resetLastSpatialExtent');
+            spyOn(spatialConstraint, 'addAntimeridianFeature');
+            spyOn(spatialConstraint, '_recallLastSpatialExtent');
             spatialConstraint.vectorlayer = testLayer;
             spatialConstraint.map = { events: {
                 triggerEvent: jasmine.createSpy('triggerEvent')
@@ -345,25 +345,9 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         });
 
         it('does not add antimeridian indicator', function() {
-            expect(spatialConstraint.addAntimeridian).not.toHaveBeenCalled();
+            expect(spatialConstraint.addAntimeridianFeature).not.toHaveBeenCalled();
         });
 
-        it('resets the LastSpatialExtent', function() {
-            expect(spatialConstraint._resetLastSpatialExtent).toHaveBeenCalled();
-        });
-
-        describe('geometry crosses date line', function() {
-
-            beforeEach(function() {
-                testGeometry.crossesAntimeridian = returns(true);
-
-                spatialConstraint._showSpatialExtentError(testGeometry);
-            });
-
-            it ('adds antimeridian indicator', function() {
-                expect(spatialConstraint.addAntimeridian).toHaveBeenCalled();
-            });
-        });
     });
 
     describe('onSketchComplete', function() {
@@ -400,7 +384,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             });
 
             it('returns falsey', function() {
-                expect(returnValue).not.toBeTruthy();
+                expect(returnValue).toBeTruthy();
             });
         });
 
@@ -412,7 +396,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
                 spyOn(spatialConstraint, '_checkSketch').andReturn(false);
                 spyOn(spatialConstraint, '_showSpatialExtentError');
 
-                returnVal = spatialConstraint._onSketchComplete(testEvent);
+                returnValue = spatialConstraint._onSketchComplete(testEvent);
             });
 
             it('shows the error indicator', function() {
@@ -424,7 +408,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             });
 
             it('returns true', function() {
-                expect(returnVal).toBe(true);
+                expect(returnValue).toBeTruthy();
             });
         });
     });

@@ -85,8 +85,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         // get mouse position from centroid of geom
         var c = geometry.getCentroid();
         var lonLat = new OpenLayers.LonLat(c.x, c.y);
-        var fakeEvent = {xy: this.map.getViewPortPxFromLonLat(lonLat)};
-        this.map.events.triggerEvent('featureInfoClick', fakeEvent);
+        this.map.events.triggerEvent('featureInfoClick', {xy: this.map.getViewPortPxFromLonLat(lonLat)});
 
     },
 
