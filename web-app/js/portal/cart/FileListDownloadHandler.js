@@ -1,10 +1,6 @@
 Ext.namespace('Portal.cart');
 
-Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
-
-    NAME_FIELD_DELIMETER: "#",
-    LAYER_NAME_INDEX: 0,
-    FIELD_NAME_INDEX: 1,
+Portal.cart.FileListDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     getDownloadOptions: function(filters) {
 
@@ -13,7 +9,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         if (this._showDownloadOptions(filters)) {
 
             downloadOptions.push({
-                textKey: 'downloadAsAllSourceNetCdfLabel',
+                textKey: this.onlineResource.name,
                 type: 'WFS',
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
@@ -41,9 +37,8 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return downloadOptions;
     },
 
-    canEstimateDownloadSize: function(filters) {
-
-        return !Portal.filter.FilterUtils.hasFilter(filters, 'timeSeriesAtPoint');
+    canEstimateDownloadSize: function() {
+        return true;
     },
 
     getDownloadEstimateParams: function(collection) {
@@ -60,7 +55,6 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         return this._resourceHrefNotEmpty()
             && this._resourceNameNotEmpty()
-            && (this._resourceName().indexOf(this.NAME_FIELD_DELIMETER) > -1)
             && !Portal.filter.FilterUtils.hasFilter(filters, 'timeSeriesAtPoint');
     },
 
@@ -70,28 +64,29 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         return function(collection) {
 
-            var builder = new Portal.filter.combiner.BodaacCqlBuilder({
+            var builder = new Portal.filter.combiner.FileListCqlBuilder({
                 filters: collection.getFilters()
             });
 
             return OpenLayers.Layer.WMS.buildGetFeatureRequestUrl(
-                _this._resourceHref(),
+                _this._baseUrl(),
                 _this._layerName(),
-                OpenLayers.Layer.DOWNLOAD_FORMAT_CSV,
+                _this.onlineResource.name,
                 builder.buildCql()
             );
         };
     },
 
     _layerName: function() {
-        return this._valueFromNameField(this.LAYER_NAME_INDEX);
+        return Ext.urlDecode(this.onlineResource.href.split("?")[1]).typeName;
     },
 
     _urlFieldName: function() {
-        return this._valueFromNameField(this.FIELD_NAME_INDEX);
+        return Ext.urlDecode(this.onlineResource.href.split("?")[1]).propertyName;
     },
 
-    _valueFromNameField: function(index) {
-        return this.onlineResource.name.split(this.NAME_FIELD_DELIMETER)[index];
+    _baseUrl: function() {
+        return this.onlineResource.href.split("?")[0];
     }
+
 });
