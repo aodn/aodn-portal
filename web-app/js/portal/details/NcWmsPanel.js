@@ -264,6 +264,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         var that = this;
         return {
+            START_DATE: that.START_DATE,
+            END_DATE: that.END_DATE,
             dateFormat: OpenLayers.i18n('dateDisplayFormatExtJs'),
             dateConfig: {
                 scope: that,
@@ -347,12 +349,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         // date to move to
         this._attachSelectedDateToPicker(datePicker, selectedDateTimeMoment);
 
+        // todo why setValue if not validate() ??
         datePicker.setValue(selectedDateTimeMoment);
 
         if (datePicker.validate()) {
             this._applyFilterValuesToCollection(); // Set this date on the collection now. Fixes #1922
         }
-
+        // todo why loadTimeSeriesForDay if not validate()
         this.layer.loadTimeSeriesForDay(selectedDateTimeMoment);
         // Now we wait for the event of 'temporalextentloaded'
     },
@@ -410,7 +413,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _isDateRangeValid: function(start, end) {
         if (start && start.isValid() && end && end.isValid()) {
-            return  start.isSameOrBefore(end);
+            var startDay = new Date(start.startOf('day').toString());
+            var endDay = new Date(end.startOf('day').toString());
+            /* todo
+            Called from _ncwmsParamsAsFilters, the test should between absolute dateTimes
+            Called from onchange of the date picker the test should be between the days only
+             */
+            return moment(startDay).isSameOrBefore(endDay);
         }
         return false;
     },
@@ -472,8 +481,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _resetExtent: function(extentMin, extentMax) {
-        this._initializeDateTimePicker(this.startDateTimePicker, extentMin);
-        this._initializeDateTimePicker(this.endDateTimePicker, extentMax);
+        this._setDateTimePicker(this.startDateTimePicker, extentMin); // todo now use END_DATE or START_DATE
+        this._setDateTimePicker(this.endDateTimePicker, extentMax); // todo now use END_DATE or START_DATE
 
         var extent = this.layer.getTemporalExtent();
         this._setDateTimePickerExtent(this.startDateTimePicker, extent, this.startDateTimePicker.initvalue, false);
@@ -484,11 +493,19 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this._applyFilterValuesToCollection();
     },
 
-    _initializeDateTimePicker: function(dateTimePicker, defaultValue) {
+    _setDateTimePicker: function(dateTimePicker, defaultValue) {
         if (this._getAttachedSelectedDate(dateTimePicker)) {
             var selectedDate = this._getAttachedSelectedDate(dateTimePicker).clone();
-            this._removeAttachedSelectedDate(dateTimePicker);
+            this._removeAttachedSelectedDate(dateTimePicker); // todo doing this twice ??
             var selectedTimeMoment = this.layer.getTemporalExtent().firstTimeOfDay(selectedDate);
+
+            // todo this is essentially the fix for #2279
+            // selectedTimeMoment cannot always be the result of firstTimeOfDay and then be sent to _layerSetTime
+
+            if (dateTimePicker.dateConfig.pickerType == dateTimePicker.END_DATE) {
+                selectedTimeMoment = this.layer.getTemporalExtent().lastTimeOfDay(selectedDate);
+            }
+
             dateTimePicker.initvalue = selectedTimeMoment.clone();
             this._removeAttachedSelectedDate(dateTimePicker);
             this._layerSetTime(selectedTimeMoment);
@@ -518,6 +535,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if (value) {
             picker.enable();
             picker.setExtent(extent);
+            // todo setValue does not accept two parameters ??
             picker.setValue(value, toMaxValue);
         }
     },
