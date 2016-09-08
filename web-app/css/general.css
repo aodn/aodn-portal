@@ -1166,6 +1166,15 @@ div:not(.x-tree-selected) * {
     font-size: 13px! important;
 }
 
+/* Form Items CSS */
+
+.x-form-item {
+    display:block;
+    margin-bottom:4px;
+    margin-left:2px;
+    zoom:1;
+}
+
 #downLoadCartWidget {
     background-color: grey;
     cursor: pointer;
