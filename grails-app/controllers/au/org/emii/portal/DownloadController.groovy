@@ -40,7 +40,7 @@ class DownloadController extends RequestProxyingController {
         response.outputStream << g.render(template: "pythonSnippet.py", model: [ collectionUrl: params.url])
     }
 
-    def downloadNetCdfFilesForLayer = {
+    def downloadFilesForLayer = {
 
         def (fieldName, urlSubstitutions) = _loadCommonFields(params)
 

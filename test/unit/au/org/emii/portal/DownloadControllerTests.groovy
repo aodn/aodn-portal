@@ -72,28 +72,28 @@ class DownloadControllerTests {
         assertEquals([ collectionUrl: "http://someurl" ], renderParams.model)
     }
 
-    void testDownloadNetCdfFilesForLayerExceptionThrown() {
+    void testDownloadFilesForLayerExceptionThrown() {
 
         controller.metaClass._executeExternalRequest = { a, b, c ->
 
             throw new Exception('Failed before downloading started')
         }
 
-        controller.downloadNetCdfFilesForLayer()
+        controller.downloadFilesForLayer()
 
         assertEquals 'An error occurred before downloading could begin', response.contentAsString
     }
 
-    void testDownloadNetCdfFilesForLayerInvalidHost() {
+    void testDownloadFilesForLayerInvalidHost() {
 
         _setHostShouldBeValid(false)
 
-        controller.downloadNetCdfFilesForLayer()
+        controller.downloadFilesForLayer()
 
         assertEquals HTTP_403_FORBIDDEN, response.status
     }
 
-    void testDownloadNetCdfFilesForLayer() {
+    void testDownloadFilesForLayer() {
 
         controller.params.downloadFilename = 'somedata.txt'
 
@@ -117,7 +117,7 @@ class DownloadControllerTests {
             }
         ]
 
-        controller.downloadNetCdfFilesForLayer()
+        controller.downloadFilesForLayer()
 
         assertTrue archiveGenerated
     }
