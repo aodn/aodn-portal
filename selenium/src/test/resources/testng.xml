@@ -29,6 +29,7 @@
             <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
             <class name="au.org.emii.portal.tests.landing.PortalTest"/>
             <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
+            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
         </classes>
     </test>
     <test name="Firefox 45.0 on Windows 10">
@@ -52,6 +53,7 @@
             <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
             <class name="au.org.emii.portal.tests.landing.PortalTest"/>
             <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
+            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
         </classes>
     </test>
     <test name="Firefox 44.0 on Windows 10">
@@ -75,6 +77,7 @@
             <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
             <class name="au.org.emii.portal.tests.landing.PortalTest"/>
             <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
+            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
         </classes>
     </test>
 
@@ -101,6 +104,7 @@
             <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
             <class name="au.org.emii.portal.tests.landing.PortalTest"/>
             <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
+            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
         </classes>
     </test>
     <test name="Firefox 45.0 on OS X El Capitan">
@@ -124,6 +128,7 @@
             <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
             <class name="au.org.emii.portal.tests.landing.PortalTest"/>
             <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
+            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
         </classes>
     </test>
     <test name="Firefox 44.0 on OS X El Capitan">
@@ -147,6 +152,7 @@
             <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
             <class name="au.org.emii.portal.tests.landing.PortalTest"/>
             <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
+            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
         </classes>
     </test>
 
@@ -174,6 +180,7 @@
             <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
             <class name="au.org.emii.portal.tests.landing.PortalTest"/>
             <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
+            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
         </classes>
     </test>
     <test name="Chrome 50.0 on Windows 10">
@@ -197,6 +204,7 @@
             <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
             <class name="au.org.emii.portal.tests.landing.PortalTest"/>
             <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
+            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
         </classes>
     </test>
     <test name="Chrome 49.0 on Windows 10">
@@ -220,6 +228,7 @@
             <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
             <class name="au.org.emii.portal.tests.landing.PortalTest"/>
             <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
+            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
         </classes>
     </test>
 
@@ -246,6 +255,7 @@
             <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
             <class name="au.org.emii.portal.tests.landing.PortalTest"/>
             <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
+            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
         </classes>
     </test>
     <test name="Chrome 50.0 on OS X El Capitan">
@@ -269,6 +279,7 @@
             <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
             <class name="au.org.emii.portal.tests.landing.PortalTest"/>
             <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
+            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
         </classes>
     </test>
     <test name="Chrome 49.0 on OS X El Capitan">
@@ -292,6 +303,7 @@
             <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
             <class name="au.org.emii.portal.tests.landing.PortalTest"/>
             <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
+            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
         </classes>
     </test>
 

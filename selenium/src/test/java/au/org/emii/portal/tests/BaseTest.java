@@ -107,5 +107,9 @@ public class BaseTest {
     public void goToHome() {
         driver.get(AODN_PORTAL_HOME_PAGE);
     }
+
+    public void goToSearchPage() {
+        driver.get(AODN_PORTAL_SEARCH_PAGE);
+    }
 }
 
