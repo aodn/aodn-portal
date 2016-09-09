@@ -158,7 +158,7 @@ environments {
 
         // overwritten by Chef in production
         grails.serverURL = "http://myaodn.example.com"
-        geonetwork.url = "http://catalogue-123.aodn.org.au/geonetwork"
+        geonetwork.url = "http://catalogue-portal.aodn.org.au/geonetwork"
     }
 }
 
