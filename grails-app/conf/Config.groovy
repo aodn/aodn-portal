@@ -256,6 +256,9 @@ portal {
         ]
     }
 
+    // WPS result expiration period (48 hrs by default)
+    wpsResourceExpirationTimeout = 172800
+
     footerContent =
         """
         <a title="Email us for help in using this site" target="_blank" class="external" href="mailto:${portal.contactEmail}?subject=Portal enquiry - ">Contact</a> <b>|</b>
