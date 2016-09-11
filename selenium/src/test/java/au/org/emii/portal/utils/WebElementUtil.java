@@ -17,9 +17,11 @@ public class WebElementUtil {
     private WebDriver driver;
     private final int TIMEOUT = 30;
     private final int POLLING_PERIOND = 1;
+    private String originalHandle;
 
     public WebElementUtil(WebDriver driver) {
         this.driver = driver;
+        this.originalHandle = driver.getWindowHandle();
     }
 
     public void clickElementByXpath(String xpath) {
@@ -297,12 +299,14 @@ public class WebElementUtil {
         return element;
     }
 
-    private void click(By by) {
+    public void click(By by, WebElement element) {
         int attempts = 1, totalAttempts = 2;
         while(attempts <= totalAttempts) {
             try {
-                WebElement element = findElement(by);
-                Assert.assertNotNull(element);
+                if (element == null) {
+                    element = findElement(by);
+                    Assert.assertNotNull(element);
+                }
                 WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
                 wait.until(ExpectedConditions.elementToBeClickable(element));
                 element.sendKeys(Keys.RETURN); // element.click() does not work in some environments
@@ -315,12 +319,31 @@ public class WebElementUtil {
         }
     }
 
+    public void click(By by) {
+        click(by, null);
+    }
+
+    public void click(WebElement element) {
+        click(null, element);
+    }
+
     public void switchToNewTab() {
         ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
         // Do not switch if browser fails to open new tab
         if(tabs.size() > 1) {
             driver.switchTo().window(tabs.get(1));
         }
+    }
+
+    public void switchToOriginalTab() {
+        for(String handle : driver.getWindowHandles()) {
+            if (!handle.equals(originalHandle)) {
+                driver.switchTo().window(handle);
+                driver.close();
+            }
+        }
+
+        driver.switchTo().window(originalHandle);
     }
 
     public void clickElementBy(By by) {
