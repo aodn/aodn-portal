@@ -113,7 +113,7 @@
     <properties>
         <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
         <build>local</build>
-        <browserstack.video>false</browserstack.video>
+        <browserstack.video>true</browserstack.video>
         <browserstack.debug>true</browserstack.debug>
         <browserstack.local>false</browserstack.local>
         <aodnPortal>https://portal-edge.aodn.org.au/</aodnPortal>
