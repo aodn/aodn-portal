@@ -7,10 +7,10 @@
 
     <!-- Reference https://www.browserstack.com/automate/java-->
     <!--Firefox Windows 10 Configurations-->
-    <test name="Firefox Latest on Windows 10">
+    <test name="Firefox 47.0 on Windows 10">
         <parameter name="browser" value="Firefox"/>
         <!--Note: If browser_version capability is not set, the test will run on the latest version of the browser set by browser capability.-->
-        <parameter name="browser_version" value=""/>
+        <parameter name="browser_version" value="47.0"/>
         <parameter name="os" value="WINDOWS"/>
         <parameter name="os_version" value="10"/>
         <parameter name="resolution" value="1024x768"/>
@@ -82,10 +82,10 @@
     </test>
 
     <!--Firefox OS X El Capitan Configurations-->
-    <test name="Firefox Latest on OS X El Capitan">
+    <test name="Firefox 47.0 on OS X El Capitan">
         <parameter name="browser" value="Firefox"/>
         <!--Note: If browser_version capability is not set, the test will run on the latest version of the browser set by browser capability.-->
-        <parameter name="browser_version" value=""/>
+        <parameter name="browser_version" value="47.0"/>
         <parameter name="os" value="OS X"/>
         <parameter name="os_version" value="El Capitan"/>
         <parameter name="resolution" value="1024x768"/>
