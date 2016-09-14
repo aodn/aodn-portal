@@ -335,8 +335,10 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     getPreviousTimeSlice: function() {
-        var previousDay = this.temporalExtent.previousValidDate(this.time);
-        this.loadTimeSeriesForDay(previousDay);
+        if (this.time) {
+            var previousDay = this.temporalExtent.previousValidDate(this.time);
+            this.loadTimeSeriesForDay(previousDay);
+        }
     },
 
     goToPreviousTimeSlice: function() {
@@ -346,8 +348,10 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     getNextTimeSlice: function() {
-        var nextDay = this.temporalExtent.nextValidDate(this.time);
-        this.loadTimeSeriesForDay(nextDay);
+        if (this.time) {
+            var nextDay = this.temporalExtent.nextValidDate(this.time);
+            this.loadTimeSeriesForDay(nextDay);
+        }
     },
 
     goToNextTimeSlice: function() {

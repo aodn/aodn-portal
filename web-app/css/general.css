@@ -1320,3 +1320,11 @@ input:read-only { background: #eee; }
 .spatialSubsetControl {
     padding: 15px 5px 15px 10px;
 }
+
+.x-item-disabled {
+    cursor: inherit;
+}
+
+.mapTimeControls .x-item-disabled {
+    pointer-events: none; /* prevents :hover styling on child elements (tooltips) */
+}

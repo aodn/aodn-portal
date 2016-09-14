@@ -178,6 +178,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.previousFrameButton = new Ext.Button({
             iconCls: 'previousButton',
             cls: "",
+            disabled: true,
             margins: {top: 0, right: 5, bottom: 0, left: 0},
             listeners: {
                 scope: this,
@@ -191,6 +192,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.nextFrameButton = new Ext.Button({
             iconCls: 'nextButton',
             cls: "",
+            disabled: true,
             margins: {top: 0, right: 5, bottom: 0, left: 0},
             listeners: {
                 scope: this,
@@ -208,6 +210,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this.mapTimeControls = new Ext.Panel({
             layout: 'hbox',
+            cls: 'mapTimeControls',
             plain: true,
             items: [this.selectMapTimeLabel, this.previousFrameButton, this.nextFrameButton],
             height: 40
@@ -511,6 +514,17 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         else {
             this._resetExtent(this.layer.getSubsetExtentMin(), this.layer.getSubsetExtentMax());
             this._applyFilterValuesToCollection();
+        }
+
+        this._setFrameButtonsState();
+    },
+
+    _setFrameButtonsState: function() {
+        this.previousFrameButton.enable();
+        this.nextFrameButton.enable()
+
+        if (this.layer.getSubsetExtentMax().toString() == this.layer.time.toString()){
+            this.nextFrameButton.disable();
         }
     },
 
