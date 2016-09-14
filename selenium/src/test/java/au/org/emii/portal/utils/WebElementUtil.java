@@ -70,6 +70,15 @@ public class WebElementUtil {
         }
     }
 
+    public void clickSpanWithText(String text) {
+        try {
+            click(By.xpath("//span[contains(.,'" + text + "')]"));
+        } catch (NoSuchElementException | AssertionError e) {
+            log.error(text + " element cannot be found", e);
+            throw e;
+        }
+    }
+
     public void clickElementById(String id) {
         try {
             click(By.id(id));
