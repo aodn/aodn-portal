@@ -20,18 +20,6 @@ Portal.cart.FileListDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                     }
                 }
             });
-
-            downloadOptions.push({
-                textKey: 'downloadAsUrlsLabel',
-                handler: this._getUrlGeneratorFunction(),
-                handlerParams: {
-                    filenameFormat: '{0}_URLs.txt',
-                    downloadControllerArgs: {
-                        action: 'urlListForLayer',
-                        urlFieldName: this._urlFieldName()
-                    }
-                }
-            });
         }
 
         return downloadOptions;
@@ -71,7 +59,7 @@ Portal.cart.FileListDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
             return OpenLayers.Layer.WMS.buildGetFeatureRequestUrl(
                 _this._baseUrl(),
                 _this._layerName(),
-                _this.onlineResource.name,
+                _this._outputFormat(),
                 builder.buildCql()
             );
         };
@@ -83,6 +71,10 @@ Portal.cart.FileListDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
     _urlFieldName: function() {
         return Ext.urlDecode(this.onlineResource.href.split("?")[1]).propertyName;
+    },
+
+    _outputFormat: function() {
+        return Ext.urlDecode(this.onlineResource.href.split("?")[1]).outputFormat;
     },
 
     _baseUrl: function() {
