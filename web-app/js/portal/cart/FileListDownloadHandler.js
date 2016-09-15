@@ -26,7 +26,7 @@ Portal.cart.FileListDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
     },
 
     canEstimateDownloadSize: function() {
-        return true;
+        return false;
     },
 
     getDownloadEstimateParams: function(collection) {
