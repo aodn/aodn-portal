@@ -14,9 +14,15 @@ class ExternalConfigReloadController {
         def locations = config.grails.config.locations
 
         locations.each { location ->
-            String configFileName = location.split("file:")[1]
-            log.info "Reloading config from file '${configFileName}'..."
-            config.merge(new ConfigSlurper().parse(new File(configFileName).text))
+            String configFileName = location.replaceFirst(~/^file:/, '')
+            File configFile = new File(configFileName)
+
+            if (configFile.exists()) {
+                log.info "Reloading config from file '${configFileName}'..."
+                config.merge(new ConfigSlurper().parse(configFile.text))
+            } else {
+                log.debug "File for config location '${location}' doesn't exist."
+            }
         }
         render(status: 200, text: 'OK')
     }
