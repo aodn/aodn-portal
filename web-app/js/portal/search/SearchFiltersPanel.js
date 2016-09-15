@@ -54,6 +54,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
                 {
                     facetName: facet.key,
                     title: OpenLayers.i18n(facet.name),
+                    id: OpenLayers.i18n(facet.name),
                     collapsedByDefault: collapsedByDefault,
                     searcher: config.searcher,
                     mapPanel: config.mapPanel,
