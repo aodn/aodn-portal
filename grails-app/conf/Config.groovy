@@ -258,7 +258,7 @@ portal {
 
     footerContent =
         """
-        <a title="Email us for help in using this site" target="_blank" class="external" href="mailto:${portal.contactEmail}?subject=Portal enquiry - ">Contact</a> <b>|</b>
+        <a title="Email us for help in using this site" class="external" href="mailto:${portal.contactEmail}?subject=Portal enquiry - ">Contact</a> <b>|</b>
         <a title="Data usage acknowledgement" target="_blank" class="external" href="${help.url}user-guide-introduction/aodn-portal/data-use-acknowledgement">Acknowledgement</a> <b>|</b>
         <a title="Disclaimer information" target="_blank" class="external" href="${help.url}user-guide-introduction/aodn-portal/disclaimer">Disclaimer</a> <b>|</b>
         <a title="Australian Ocean Data Network" target="_blank" class="external" href="http://imos.org.au/aodn.html">AODN</a> <b>|</b>
