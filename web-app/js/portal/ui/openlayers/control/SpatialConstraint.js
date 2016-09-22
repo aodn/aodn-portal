@@ -201,18 +201,19 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _showSpatialExtentError: function(geometry) {
+        var that = this;
         this.vectorlayer.style = this.errorStyle;
-        setTimeout(
-            this._recallLastSpatialExtent,
-            this.SPATIAL_EXTENT_ERROR_TIMEOUT,
-            this
-        );
+        setTimeout((function() {
+            that._recallLastSpatialExtent(that);
+        }), that.SPATIAL_EXTENT_ERROR_TIMEOUT);
     },
 
     _recallLastSpatialExtent: function(that) {
         if (that.oldGeometry) {
             that.vectorlayer.style = OpenLayers.Feature.Vector.style['default'];
             that.redraw(that.oldGeometry);
+        } else {
+            this.clear();
         }
     },
 
