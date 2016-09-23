@@ -134,14 +134,17 @@ Portal.cart.DownloadEstimator = Ext.extend(Object, {
 
         var intersect = true;
         var filters = collection.getFilters();
-        var params = filters.filter(function(filter) {
-            return filter.isNcwmsParams;
-        })[0];
 
-        if (params && params.latitudeRangeStart != undefined) {
-            var bounds = collection.getBounds();
-            var extent = new OpenLayers.Bounds(params.longitudeRangeStart, params.latitudeRangeStart, params.longitudeRangeEnd, params.latitudeRangeEnd);
-            intersect = bounds.containsBounds(extent, true, true);
+        if (filters && filters.length > 0) {
+            var params = filters.filter(function(filter) {
+                return filter.isNcwmsParams;
+            })[0];
+
+            if (params && params.latitudeRangeStart != undefined) {
+                var bounds = collection.getBounds();
+                var extent = new OpenLayers.Bounds(params.longitudeRangeStart, params.latitudeRangeStart, params.longitudeRangeEnd, params.latitudeRangeEnd);
+                intersect = bounds.containsBounds(extent, true, true);
+            }
         }
 
         return intersect;
