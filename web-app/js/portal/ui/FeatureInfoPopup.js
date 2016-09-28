@@ -81,13 +81,19 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     findFeatures: function(event) {
 
         this.location = this.map.getLonLatFromViewPortPx(event.xy);
-        this.locationXy = event.xy;
+        this.locationXy = {x:this._truncateToInt(event.xy.x), y:this._truncateToInt(event.xy.y)};
 
         this._setLocationString();
         this._display();
 
         this._handleDepthService();
         this._handleLayers();
+    },
+
+    _truncateToInt: function(number) {
+        return number > 0
+            ? Math.floor(number)
+            : Math.ceil(number);
     },
 
     _handleDepthService: function() {
