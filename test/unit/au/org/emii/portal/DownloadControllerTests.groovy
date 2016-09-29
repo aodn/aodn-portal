@@ -2,7 +2,6 @@ package au.org.emii.portal
 
 import grails.test.mixin.TestFor
 
-import static au.org.emii.portal.DownloadController.SIZE_ESTIMATE_ERROR
 import static au.org.emii.portal.HttpUtils.Status.getHTTP_403_FORBIDDEN
 
 @TestFor(DownloadController)
@@ -120,71 +119,6 @@ class DownloadControllerTests {
         controller.downloadFilesForLayer()
 
         assertTrue archiveGenerated
-    }
-
-    void testEstimateSizeForLayerNoUrlFieldName() {
-
-        controller.params.urlFieldName = null
-
-        controller.estimateSizeForLayer()
-
-        assertEquals SIZE_ESTIMATE_ERROR, response.contentAsString
-    }
-
-    void testEstimateSizeForLayerInvalidHost() {
-
-        _setHostShouldBeValid(false)
-
-        controller.estimateSizeForLayer()
-
-        assertEquals SIZE_ESTIMATE_ERROR, response.contentAsString
-    }
-
-    void testEstimateSizeForLayerNoUrlColumnSpecified() {
-
-        controller.params.urlFieldName = null
-
-        def testStreamProcessor = new Object()
-        controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->
-            assertEquals null, filenameFieldName
-            assertEquals "size", sizeFieldName
-            return testStreamProcessor
-        }
-
-        controller.estimateSizeForLayer()
-
-        assertEquals SIZE_ESTIMATE_ERROR, response.contentAsString
-    }
-
-    void testEstimateSizeForLayerNoProblems() {
-
-        def testStreamProcessor = new Object()
-        controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->
-            assertEquals "relativeFilePath", filenameFieldName
-            assertEquals "size", sizeFieldName
-            return testStreamProcessor
-        }
-        controller.metaClass._executeExternalRequest = { url, streamProcessor, resultStream ->
-            assertEquals testStreamProcessor, streamProcessor
-            resultStream << "the output"
-        }
-
-        controller.estimateSizeForLayer()
-
-        assertEquals "the output", response.contentAsString
-    }
-
-    void testEstimateSizeForLayerWitExternalRequestException() {
-
-        def testStreamProcessor = new Object()
-        controller.metaClass.calculateSumStreamProcessor = { filenameFieldName, sizeFieldName ->  testStreamProcessor }
-        controller.metaClass._executeExternalRequest = { url, streamProcessor, resultStream ->
-            throw new Exception("Test Exception")
-        }
-
-        controller.estimateSizeForLayer()
-
-        assertEquals SIZE_ESTIMATE_ERROR, response.contentAsString
     }
 
     void testRequestSingleFieldParamProcessor() {

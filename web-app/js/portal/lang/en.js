@@ -262,13 +262,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // WfsDataRowTemplate
     faError: '<span class=\"fa fa-fw fa-warning error \"></span>',
-
-    estimatedDlMessage: "The download size is ",
-    estimatedDlFailedMsg: "The download size is unknown.",
-    estimatedNoDataMsg: "No data available. <i>(Try changing filters)</i>",
-    estimatedDlLoadingMessage: "Estimating download size...",
-    faSpinner: '<span class=\"fa fa-spin fa-spinner \"></span>',
-    estimatedDlTimeoutMsg: "The download size is too large to estimate.",
     transAbortMsg: "transaction aborted",
 
     dateTimeDisplayFormat: 'YYYY/MMM/DD-HH:mm-UTC', // moment formatting
