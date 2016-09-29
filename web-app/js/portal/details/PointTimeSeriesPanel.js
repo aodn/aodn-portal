@@ -126,6 +126,11 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
     },
 
     _enablePointTimeSeriesControls: function() {
+        this.timeSeriesLatitudeControl.setMinValue(this._getCollectionBounds().bottom);
+        this.timeSeriesLatitudeControl.setMaxValue(this._getCollectionBounds().top);
+        this.timeSeriesLongitudeControl.setMinValue(this._getCollectionBounds().left);
+        this.timeSeriesLongitudeControl.setMaxValue(this._getCollectionBounds().right);
+        
         this.timeSeriesLatitudeControl.setReadOnly(false);
         this.timeSeriesLatitudeControl.validate();
         this._removeQuickTip(this.timeSeriesLatitudeControl);
@@ -141,6 +146,10 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
         this.timeSeriesLongitudeControl.setReadOnly(true);
         this.timeSeriesLongitudeControl.clearInvalid();
         this._addTimeSeriesQuickTip(this.timeSeriesLongitudeControl);
+    },
+
+    _getCollectionBounds: function() {
+        return this.dataCollection.getMetadataRecord().data.bbox.getBounds();
     },
 
     _addTimeSeriesQuickTip: function(component) {
