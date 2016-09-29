@@ -25,20 +25,6 @@ Portal.cart.FileListDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return downloadOptions;
     },
 
-    canEstimateDownloadSize: function() {
-        return false;
-    },
-
-    getDownloadEstimateParams: function(collection) {
-
-        var urlFn = this._getUrlGeneratorFunction();
-
-        return {
-            url: urlFn(collection),
-            urlFieldName: this._urlFieldName()
-        };
-    },
-
     _showDownloadOptions: function(filters) {
 
         return this._resourceHrefNotEmpty()

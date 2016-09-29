@@ -91,14 +91,4 @@ describe('Portal.cart.BodaacDownloadHandler', function () {
             );
         });
     });
-
-    describe('the estimate download size params', function() {
-        it('build the correct params object', function() {
-
-            var params = handler.getDownloadEstimateParams(testCollection);
-
-            expect(params.url).toBe('the_url');
-            expect(params.urlFieldName).toBe('field_name');
-        });
-    });
 });

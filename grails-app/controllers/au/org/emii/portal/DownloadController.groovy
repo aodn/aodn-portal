@@ -13,8 +13,6 @@ class DownloadController extends RequestProxyingController {
     def grailsApplication
     def bulkDownloadService
 
-    static def SIZE_ESTIMATE_ERROR = "-1"
-
     // Index action inherited from RequestProxyingController
 
     def urlListForLayer = {
@@ -86,44 +84,6 @@ class DownloadController extends RequestProxyingController {
                 log.error "Unhandled exception during bulk download", e
             }
         }
-    }
-
-    def estimateSizeForLayer = {
-
-        def urlFieldName = params.urlFieldName
-        def sizeFieldName = grailsApplication.config.indexedFile.fileSizeColumnName
-        def url = UrlUtils.urlWithQueryString(params.url, "PROPERTYNAME=$urlFieldName,$sizeFieldName")
-
-        if (!hostVerifier.allowedHost(url)) {
-
-            log.error "Host for address '$url' not allowed"
-            render SIZE_ESTIMATE_ERROR
-            return
-        }
-
-        def resultStream = new ByteArrayOutputStream()
-
-        if (urlFieldName) {
-
-            try {
-                def streamProcessor = calculateSumStreamProcessor(urlFieldName, sizeFieldName)
-                _executeExternalRequest url, streamProcessor, resultStream
-            }
-            catch (Exception e) {
-
-                log.error "Problem estimating size with $url", e
-
-                resultStream << SIZE_ESTIMATE_ERROR
-            }
-        }
-        else {
-
-            log.error "No urlFieldName provided"
-
-            resultStream << SIZE_ESTIMATE_ERROR
-        }
-
-        render new String(resultStream.toByteArray(), 'UTF-8')
     }
 
     void _executeExternalRequest(url, streamProcessor, resultStream) {

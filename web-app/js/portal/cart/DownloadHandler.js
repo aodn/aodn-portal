@@ -20,16 +20,6 @@ Portal.cart.DownloadHandler = Ext.extend(Object, {
         throw 'Should be implemented by subclasses';
     },
 
-    canEstimateDownloadSize: function() {
-
-        return false;
-    },
-
-    getDownloadEstimateParams: function() {
-
-        throw "Should be implemented by sublasses which return 'true' for canEstimateDownloadSize()";
-    },
-
     _resourceName: function() {
 
         return this.onlineResource.name;

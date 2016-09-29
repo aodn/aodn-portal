@@ -41,21 +41,6 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         return downloadOptions;
     },
 
-    canEstimateDownloadSize: function(filters) {
-
-        return !Portal.filter.FilterUtils.hasFilter(filters, 'timeSeriesAtPoint');
-    },
-
-    getDownloadEstimateParams: function(collection) {
-
-        var urlFn = this._getUrlGeneratorFunction();
-
-        return {
-            url: urlFn(collection),
-            urlFieldName: this._urlFieldName()
-        };
-    },
-
     _showDownloadOptions: function(filters) {
 
         return this._resourceHrefNotEmpty()

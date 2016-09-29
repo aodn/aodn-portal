@@ -11,7 +11,6 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
             uuid: dataCollection.getUuid(),
             title: dataCollection.getTitle(),
             dataFilters: this._getDataFilterEntry(dataCollection),
-            dataMarkup: this._getDataMarkup(dataCollection),
             linkedFiles: this._getMetadataLinks(dataCollection),
             pointOfTruthLink: this._getPointOfTruthLink(dataCollection),
             downloadStatus: dataCollection.downloadStatus
@@ -26,62 +25,11 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         return dataCollection.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.metadataRecord);
     },
 
-    _getDataMarkup: function(dataCollection) {
-        return this._addDownloadEstimate(dataCollection);
-    },
-
-    _getDownloadEstimateHandler: function(dataCollection) {
-
-        var handlerToEstimateWith;
-
-        var downloadHandlers = Portal.cart.DownloadHandler.handlersForDataCollection(dataCollection);
-        Ext.each(downloadHandlers, function(handler) {
-
-            if (handler.canEstimateDownloadSize(dataCollection.getFilters())) {
-                handlerToEstimateWith = handler;
-            }
-        });
-
-        return handlerToEstimateWith;
-    },
-
     _hideButton: function(uuid) {
 
         var elementId = OpenLayers.i18n('downloadButtonId', {id: uuid});
         if (Ext.get(elementId)) {
             Ext.fly(elementId).update("");
-        }
-    },
-
-    _shouldEstimateSize: function() {
-        return viewport.isOnTab(TAB_INDEX_DOWNLOAD);
-    },
-
-    _addDownloadEstimate: function(dataCollection) {
-
-        var estimateHandler = this._getDownloadEstimateHandler(dataCollection);
-
-        if (estimateHandler) {
-            var estimator = new Portal.cart.DownloadEstimator({
-                estimateRequestParams: estimateHandler.getDownloadEstimateParams(dataCollection)
-            });
-
-            if (this._shouldEstimateSize()) {
-                estimator._getDownloadEstimate(
-                    dataCollection,
-                    this._hideButton
-                );
-            }
-
-            return String.format(
-                "<div id=\"{0}\">{1}{2}</div>",
-                estimator.getIdElementName(dataCollection.getUuid()),
-                OpenLayers.i18n("estimatedDlLoadingMessage"),
-                OpenLayers.i18n("faSpinner")
-            );
-        }
-        else {
-            return String.format('<div>{0}</div>', OpenLayers.i18n('estimatedDlFailedMsg'));
         }
     },
 
