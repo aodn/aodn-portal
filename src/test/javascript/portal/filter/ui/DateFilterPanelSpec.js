@@ -31,7 +31,7 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
     describe('handleRemoveFilter', function() {
         beforeEach(function() {
             filterPanel.toDate.reset = jasmine.createSpy('toDate reset');
-            filterPanel.toDate.setMinValue = jasmine.createSpy('toDate setMinValue');
+            filterPanel.toDate.setMinimumValue = jasmine.createSpy('toDate setMinValue');
 
             filterPanel.fromDate.reset = jasmine.createSpy('fromDate reset');
         });
@@ -43,7 +43,7 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
 
         it('sets min value of toDate', function() {
             filterPanel.handleRemoveFilter();
-            expect(filterPanel.toDate.setMinValue).toHaveBeenCalled();
+            expect(filterPanel.toDate.setMinimumValue).toHaveBeenCalled();
         });
 
         it('resets fromDate', function() {
@@ -64,7 +64,8 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
             };
             filterPanel.toDate = {
                 getValue: returns(moment('1999-11-31T00:00:00.000Z')), 
-                setMinValue: noOp
+                setMinimumValue: noOp,
+                isDateValid: noOp
             };
 
             filterPanel._applyDateFilter(component);
@@ -79,9 +80,10 @@ describe("Portal.filter.ui.DateFilterPanel", function() {
         Ext.each(['fromDate', 'toDate'], function(property) {
             this[property] = {
                 getValue: noOp,
-                setMinValue: noOp,
-                setMaxValue: noOp,
-                applyDefaultValueLimits: noOp
+                setMinimumValue: noOp,
+                setMaximumValue: noOp,
+                applyDefaultValueLimits: noOp,
+                isDateValid: noOp
             };
         }, filterPanel);
     }

@@ -38,7 +38,7 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
     handleRemoveFilter: function() {
         this.fromDate.reset();
         this.toDate.reset();
-        this.toDate.setMinValue(Portal.utils.Date.getEarliestPortalDate());
+        this.toDate.setMinimumValue(Portal.utils.Date.getEarliestPortalDate());
 
         this.filter.clearValue();
     },
@@ -74,10 +74,10 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
     },
 
     _setMinMax: function(resettableDate, vals) {
-        resettableDate.setMinValue(moment(vals[0]).toDate());
+        resettableDate.setMinimumValue(moment(vals[0]).toDate());
 
         if (vals.length == 2) {
-            resettableDate.setMaxValue(moment(vals[1]).toDate());
+            resettableDate.setMaximumValue(moment(vals[1]).toDate());
         }
     },
 
@@ -85,8 +85,11 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
 
         var changedField = component._dateField;
 
-        this.toDate.setMinValue(this.fromDate.getValue());
-        this.fromDate.setMaxValue(this.toDate.getValue());
+        this.toDate.setMinimumValue(this.fromDate.getValue());
+        this.fromDate.setMaximumValue(this.toDate.getValue());
+
+        this.fromDate.isDateValid();
+        this.toDate.isDateValid();
 
         var usageLabelKey = changedField.getValue() ? 'trackingUserSet' : 'trackingDefaultValueReset';
         var val = changedField.name + " " + OpenLayers.i18n(usageLabelKey) + " " + changedField.getValue();
