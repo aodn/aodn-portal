@@ -52,7 +52,6 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             spyOn(tpl, '_getDataFilterEntry');
             spyOn(tpl, '_getPointOfTruthLinkEntry');
             spyOn(tpl, '_getFileListEntries');
-            spyOn(tpl, '_dataSpecificMarkup');
             spyOn(tpl, '_createShareButtonAfterPageLoad');
             tpl.apply(mockDataInjection);
         });
@@ -79,10 +78,6 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
 
         it('creates a file list entry', function() {
             expect(tpl._getFileListEntries).toHaveBeenCalled();
-        });
-
-        it('creates data specific markup', function() {
-            expect(tpl._dataSpecificMarkup).toHaveBeenCalled();
         });
 
         it('creates share button markup', function() {
@@ -115,15 +110,6 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             spyOn(tpl, '_makeExternalLinkMarkup').andReturn('link markup');
             html = tpl._getPointOfTruthLinkEntry(mockDataInjection);
             expect(html).toBe('link markup');
-        });
-    });
-
-    describe('dataSpecificMarkup', function() {
-
-        it('returns the correct data markup for the collection', function() {
-
-            html = tpl._dataSpecificMarkup(mockDataInjection);
-            expect(html).toBe('markup!');
         });
     });
 

@@ -36,9 +36,6 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             '        </div>',
             '      </div>',
             '    </div>',
-            '    <div class="floatRight">',
-            '      {[this._dataSpecificMarkup(values)]}<br>',
-            '    </div>',
             '  </div>',
             '</div>'
         ];
@@ -105,10 +102,6 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         }
 
         return markup;
-    },
-
-    _dataSpecificMarkup: function(values) {
-        return values.dataMarkup;
     },
 
     _createDownloadButtonAfterPageLoad: function(collection) {
