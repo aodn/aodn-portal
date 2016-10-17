@@ -13,7 +13,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pleasePickNumberOperator: 'Please pick a condition operator to filter on',
     pleasePickNumberField: 'Please enter a number to filter on, according to your operator',
     loadingMessage: '&nbsp;<i>Loading ${resource}\u2025</i>',
-
+    emptyMsg : 'No data to display. Your spatial subset is out of bounds.',
+    
     // SubsetPanel.js
     opacity: "Opacity",
     layerProblem: "There is a problem with the availability of this collection",
