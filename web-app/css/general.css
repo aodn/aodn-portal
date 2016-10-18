@@ -497,12 +497,12 @@ div.olMap.miniMap:hover:not(.x-item-disabled) {
 }
 
 div.olMap.x-item-disabled * {
+    filter: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' height='0'><filter id='greyscale'><feColorMatrix type='saturate' values='0.8' /></filter></svg>#greyscale");
     -webkit-filter: grayscale(40%);
     -moz-filter: grayscale(40%);
     -o-filter: grayscale(40%);
     -ms-filter: grayscale(40%);
     filter: grayscale(40%);
-    filter: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' height='0'><filter id='greyscale'><feColorMatrix type='saturate' values='0.8' /></filter></svg>#greyscale");
 }
 
 #maptools .x-panel-body {
