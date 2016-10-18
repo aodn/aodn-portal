@@ -20,7 +20,14 @@
 
                 <g:labelledContent labelCode="job.id.label" href="${job.downloadUrl}">${job.uuid}</g:labelledContent>
                 <g:labelledContent labelCode="job.createdTimestamp.label" if="${job.createdTimestamp}" >
-                  <joda:time value="${job.createdTimestamp}" />
+                    <label id="localTime"></label>
+                    <g:javascript>
+                       if('${job.createdTimestamp}')
+                       {
+                            var date = new Date('${job.createdTimestamp}');
+                            document.getElementById('localTime').innerHTML = date;
+                       }
+                    </g:javascript>
                 </g:labelledContent>
                 <g:labelledContent labelCode="job.status.label">
                   <g:message code="job.status.${job.status}" default="${job.status.toString()}" />
