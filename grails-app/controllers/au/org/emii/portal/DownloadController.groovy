@@ -209,7 +209,7 @@ class DownloadController extends RequestProxyingController {
     }
 
     def _getServer(host) {
-        return grailsApplication.config.knownServers.find { it.uri.toURL().host == host }
+        return grailsApplication.config.knownServers.find { it.uri.toURL().host == host && it.type == 'GeoServer' }
     }
 
     def _loadCommonFields(params) {
