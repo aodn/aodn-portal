@@ -266,11 +266,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     _utcExtentDateTimePickerConfiguration: function(name) {
 
         var that = this;
+        var seleniumCls = name.replace(' ', '-');
         return {
             dateFormat: OpenLayers.i18n('dateDisplayFormatExtJs'),
             dateConfig: {
                 scope: that,
                 pickerType: name,
+                cls: seleniumCls,
                 validator: function() {
                     return that.areDatesLogical(this);
                 }

@@ -70,6 +70,15 @@ public class WebElementUtil {
         }
     }
 
+    public void clickSpanWithText(String text) {
+        try {
+            click(By.xpath("//span[contains(.,'" + text + "')]"));
+        } catch (NoSuchElementException | AssertionError e) {
+            log.error(text + " element cannot be found", e);
+            throw e;
+        }
+    }
+
     public void clickElementById(String id) {
         try {
             click(By.id(id));
@@ -312,7 +321,13 @@ public class WebElementUtil {
                 element.sendKeys(Keys.RETURN); // element.click() does not work in some environments
                 break;
             } catch(Exception e) {
-                log.debug(String.format("Unable to click element %s. Attempt: %s Total Attempts: %s", by.toString(), attempts, totalAttempts));
+                String elem;
+                if (by == null) {
+                    elem = element.toString();
+                } else {
+                    elem = by.toString();
+                }
+                log.debug(String.format("Unable to click element %s. Attempt: %s Total Attempts: %s", elem, attempts, totalAttempts));
                 log.debug(String.format("Error:%s", e.getMessage()));
             }
             attempts++;
