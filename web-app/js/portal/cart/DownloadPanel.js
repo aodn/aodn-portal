@@ -121,43 +121,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
         this._loadMenuItemsFromHandlers(processedValues, collection);
 
-        if (this._spatialSubsetIntersect(collection)) {
-            return this._applyTemplate(tpl, processedValues);
-        } else {
-            return this._emptyMsg();
-        }
-    },
-
-    _spatialSubsetIntersect: function(collection) {
-
-        var intersect = true;
-        var filters = collection.getFilters();
-
-        if (filters) {
-            var params = filters.filter(function(filter) {
-                if (filter.isNcwmsParams || filter.type === 'geometrypropertytype') {
-                    return true;
-                }
-            })[0];
-
-            if (params && params.isNcwmsParams && params.latitudeRangeStart != undefined) {
-                var bounds = collection.getBounds();
-                var extent = new OpenLayers.Bounds(params.longitudeRangeStart, params.latitudeRangeStart, params.longitudeRangeEnd, params.latitudeRangeEnd);
-                intersect = bounds.containsBounds(extent, true, true);
-            } else if (params && params.type === 'geometrypropertytype') {
-                var bounds = collection.getBounds();
-                var extent = new OpenLayers.Bounds(params.value.bounds.left, params.value.bounds.bottom, params.value.bounds.right, params.value.bounds.top);
-                intersect = bounds.containsBounds(extent, true, true);
-            }
-        }
-
-        return intersect;
-    },
-
-    _emptyMsg: function() {
-        return "<div class=\"message\" >" +
-            "<h2>" + OpenLayers.i18n('emptyMsg') + "</h2>" +
-            "</p></div>"
+        return this._applyTemplate(tpl, processedValues);
     },
 
     _applyTemplate: function(tpl, values) {
