@@ -95,6 +95,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         var tpl = new Portal.cart.DownloadPanelItemTemplate({
             dataCollectionStore: this.dataCollectionStore
         });
+        
         var html = '';
 
         Ext.each(this.dataCollectionStore.getLoadedRecords(), function(collectionRecord) {
@@ -121,7 +122,38 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
         this._loadMenuItemsFromHandlers(processedValues, collection);
 
+        if (this._spatialSubsetIntersect(collection))
+            processedValues.intersect = true;
+         else
+            processedValues.intersect = false;
+        
         return this._applyTemplate(tpl, processedValues);
+    },
+
+    _spatialSubsetIntersect: function(collection) {
+
+        var intersect = true, extent;
+        var filters = collection.getFilters();
+
+        if (filters) {
+            var params = filters.filter(function(filter) {
+                if (filter.isNcwmsParams || filter.type === 'geometrypropertytype') {
+                    return true;
+                }
+            })[0];
+
+
+            if (params && params.isNcwmsParams && params.latitudeRangeStart != undefined) {
+                extent = new OpenLayers.Bounds(params.longitudeRangeStart, params.latitudeRangeStart, params.longitudeRangeEnd, params.latitudeRangeEnd);
+            } else if (params && params.value != undefined && params.type === 'geometrypropertytype') {
+                extent = new OpenLayers.Bounds(params.value.bounds.left, params.value.bounds.bottom, params.value.bounds.right, params.value.bounds.top);
+            }
+
+            if (extent)
+                intersect = collection.getBounds().intersectsBounds(extent, true, true);
+        }
+
+        return intersect;
     },
 
     _applyTemplate: function(tpl, values) {

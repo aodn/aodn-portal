@@ -36,7 +36,8 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
                     title: 'the title too'
                 }
             ],
-            menuItems: {}
+            menuItems: {},
+            intersect: true
         };
 
         spyOn(window, 'trackDataCollectionSelectionUsage');
@@ -53,6 +54,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             spyOn(tpl, '_getPointOfTruthLinkEntry');
             spyOn(tpl, '_getFileListEntries');
             spyOn(tpl, '_createShareButtonAfterPageLoad');
+            spyOn(tpl, '_getUserErrorMsg');
             tpl.apply(mockDataInjection);
         });
 

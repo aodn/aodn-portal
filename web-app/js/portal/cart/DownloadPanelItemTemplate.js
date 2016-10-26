@@ -23,6 +23,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             '    <div class="floatRight listButtonWrapper" id="{[this._getLinkId(values,\'downloadButtonId\')]}">{[this._createDownloadButtonAfterPageLoad(values)]}</div>',
             '  </div>',
             '  <div style="overflow:hidden;">',
+            '    {[this._getUserErrorMsg(values)]}',
             '    <div class="floatLeft dataFilterEntry">',
             '      <div>',
             '        {[this._getDataFilterEntry(values)]}',
@@ -50,18 +51,24 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         return String.format("<h3 title=\"{0}\">{1}</h3>", title, Ext.util.Format.ellipsis(title, 180, true));
     },
 
-    _createShareButtonAfterPageLoad: function(collection) {
-        this._createShareButton.defer(1, this, [collection]);
+    _getUserErrorMsg: function(values) {
+        if (!values.intersect) {
+            return '<div class="message">'+OpenLayers.i18n('emptyMsg')+'</div>';
+        }
+    },
+
+    _createShareButtonAfterPageLoad: function(values) {
+        this._createShareButton.defer(1, this, [values]);
         return '';
     },
 
-    _createShareButton: function(collection) {
+    _createShareButton: function(values) {
         var url =  String.format(
             '{0}/search?uuid={1}',
             Portal.app.appConfig.grails.serverURL.replace(/\/+$/, ""),
-            collection.uuid
+            values.uuid
         );
-        var elementId = this._getLinkId(collection, 'shareButtonId');
+        var elementId = this._getLinkId(values, 'shareButtonId');
 
         if (Ext.get(elementId)) {
 
@@ -104,21 +111,23 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         return markup;
     },
 
-    _createDownloadButtonAfterPageLoad: function(collection) {
+    _createDownloadButtonAfterPageLoad: function(values) {
 
-        if (collection.downloadStatus == 'requested') {
-            this._createDownloadingLabel.defer(1, this, [collection]);
-        }
-        else {
-            this._createDownloadButton.defer(1, this, [collection]);
+        if (values.intersect) {
+            if (values.downloadStatus == 'requested') {
+                this._createDownloadingLabel.defer(1, this, [values]);
+            }
+            else {
+                this._createDownloadButton.defer(1, this, [values]);
+            }
         }
 
         return '';
     },
 
     // It's *actually* a button, but we're using it as a label here...
-    _createDownloadingLabel: function(collection) {
-        var elementId = this._getLinkId(collection, 'downloadButtonId');
+    _createDownloadingLabel: function(values) {
+        var elementId = this._getLinkId(values, 'downloadButtonId');
 
         Ext.fly(elementId).update("");
 
@@ -132,11 +141,11 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         });
     },
 
-    _createDownloadButton: function(collection) {
+    _createDownloadButton: function(values) {
 
-        var elementId = this._getLinkId(collection, 'downloadButtonId');
+        var elementId = this._getLinkId(values, 'downloadButtonId');
 
-        if (Object.size(collection.menuItems) > 0 && Ext.get(elementId)) {
+        if (Object.size(values.menuItems) > 0 && Ext.get(elementId)) {
 
             // clear old button
             Ext.fly(elementId).update("");
@@ -148,19 +157,19 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
                 renderTo: elementId,
                 menu: new Ext.menu.Menu({
                     showSeparator: false,
-                    items: collection.menuItems
+                    items: values.menuItems
                 })
             });
         }
     },
 
-    _createRemoveButtonAfterPageLoad: function(collection) {
-        this._createRemoveLink.defer(1, this, [collection]);
+    _createRemoveButtonAfterPageLoad: function(values) {
+        this._createRemoveLink.defer(1, this, [values]);
         return '';
     },
 
-    _createRemoveLink: function(collection) {
-        var elementId = this._getLinkId(collection, 'removeButtonId');
+    _createRemoveLink: function(values) {
+        var elementId = this._getLinkId(values, 'removeButtonId');
 
         if (Ext.get(elementId)) {
             // remove old button
@@ -184,8 +193,8 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         return containerId.replace(prefix, '');
     },
 
-    _getLinkId: function(collection, i18Name) {
-        return OpenLayers.i18n(i18Name, {id: collection.uuid});
+    _getLinkId: function(values, i18Name) {
+        return OpenLayers.i18n(i18Name, {id: values.uuid});
     },
 
     _removeLinkOnClick: function(containerId) {
