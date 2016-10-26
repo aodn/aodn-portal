@@ -339,10 +339,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _onTimeSelected: function(datePicker, selectedDateTimeMoment) {
         datePicker.setValue(selectedDateTimeMoment);
+        datePicker.tf.collapse();
         this._layerSetTime(selectedDateTimeMoment);
         this._setLayerSubsetExtent();
         this._updateTimeRangeLabel();
         this._applyFilterValuesToCollection();
+        this._setFrameButtonsState();
     },
 
     _onDateSelected: function(datePicker, selectedDateTimeMoment) {
