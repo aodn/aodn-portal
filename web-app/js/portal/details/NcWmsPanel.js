@@ -493,7 +493,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if (this._getAttachedSelectedDate(dateTimePicker)) {
             var selectedDate = this._getAttachedSelectedDate(dateTimePicker).clone();
             this._removeAttachedSelectedDate(dateTimePicker);
-            var selectedTimeMoment = this.layer.getTemporalExtent().lastTimeOfDay(selectedDate);
+            var selectedTimeMoment = this.layer.getTemporalExtent().firstTimeOfDay(selectedDate);
+            if (dateTimePicker.dateConfig.pickerType == this.END_DATE) {
+                selectedTimeMoment = this.layer.getTemporalExtent().lastTimeOfDay(selectedDate);
+            }
             dateTimePicker.initvalue = selectedTimeMoment.clone();
             this._removeAttachedSelectedDate(dateTimePicker);
             this._layerSetTime(selectedTimeMoment);
