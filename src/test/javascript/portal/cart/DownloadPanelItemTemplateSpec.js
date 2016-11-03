@@ -54,7 +54,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             spyOn(tpl, '_getPointOfTruthLinkEntry');
             spyOn(tpl, '_getFileListEntries');
             spyOn(tpl, '_createShareButtonAfterPageLoad');
-            spyOn(tpl, '_getUserErrorMsg');
+            spyOn(tpl, '_getUserMsg');
             tpl.apply(mockDataInjection);
         });
 

@@ -33,8 +33,8 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             timeSeriesAtString = String.format(
                 '{0}:&nbsp;{1}, {2}<br>',
                 OpenLayers.i18n("timeSeriesAtHeading"),
-                pointFilterValue.latitude,
-                pointFilterValue.longitude
+                pointFilterValue.latitude  != "" ? pointFilterValue.latitude  : "-",
+                pointFilterValue.longitude != "" ? pointFilterValue.longitude : "-"
             );
         }
 
@@ -42,10 +42,6 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             var startDateString = this._formatDate(params.dateRangeStart);
             var endDateString = this._formatDate(params.dateRangeEnd);
             dateString = this._formatHumanDateInfo('temporalExtentHeading', startDateString, endDateString);
-        }
-
-        if (timeSeriesAtString == "" && areaString == "" && dateString == "") {
-            areaString = OpenLayers.i18n("emptyDownloadPlaceholder");
         }
 
         return areaString + timeSeriesAtString + dateString;

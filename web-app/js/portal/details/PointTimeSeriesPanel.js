@@ -177,6 +177,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
             var pointFilterValue = {};
             pointFilterValue.latitude = this.timeSeriesLatitudeControl.getValue();
             pointFilterValue.longitude = this.timeSeriesLongitudeControl.getValue();
+            pointFilterValue.errors = this._getTimeSeriesFilterErrors();
 
             var nwmsParamsFilter =  Portal.filter.FilterUtils.getFilter(this.dataCollection.filters,"nwmsParamsFilter");
 
@@ -225,9 +226,15 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
 
     _isTimeSeriesFilterAvailable: function() {
         return this._isThisPanelAlive() &&
-            this.pointTimeSeriesCheckbox.checked &&
-            this.timeSeriesLatitudeControl.getErrors().length == 0 &&
-            this.timeSeriesLongitudeControl.getErrors().length == 0;
+            this.pointTimeSeriesCheckbox.checked;
+    },
+
+    _getTimeSeriesFilterErrors: function() {
+
+        var errorMsgs =  this.timeSeriesLatitudeControl.getErrors().concat(
+            this.timeSeriesLongitudeControl.getErrors()).toString().split(",");
+        // filter duplicate error messages?
+        return errorMsgs.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
     },
 
     _getTimeSeriesLatitude: function() {
@@ -253,5 +260,4 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
     }
 
 });
-
 

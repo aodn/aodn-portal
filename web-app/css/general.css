@@ -378,40 +378,17 @@ a:hover.mainlinks {
     color: #aa6708;
 }
 
-.errors, .message {
-    font-size: 0.9em;
-    line-height: 2;
-    padding: 0.5em;
-    border-radius: 5px;
+.alert-warning {
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    color: #8a6d3b;
+    font-weight: bold;
 }
-
-.message * {
-    color: #5b8fbf! important;
-    margin-bottom: inherit;
-}
-
-.errors {
-    background: #fff3f3;
-    border: 1px solid #ffaaaa;
-    color: #cc0000;
-    box-shadow: 0 0 0.25em #ff8888;
-}
-
-.errors ul,
-.message {
-    padding: 0;
-}
-
-.errors li {
-    list-style: none;
-    background: transparent url(../images/skin/exclamation.png) 0 50% no-repeat;
-    text-indent: 22px;
-}
-
-.message {
-    background: transparent url(../images/skin/information.png) 3px 12px no-repeat;
-    text-indent: 22px;
-    padding: 5px;
+.alert {
+    border: 1px solid transparent;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 15px;
 }
 
 /*
@@ -1325,6 +1302,11 @@ input:read-only { background: #eee; }
     cursor: inherit;
 }
 
+.x-item-disabled * {
+    color: inherit !important;
+}
+
 .mapTimeControls .x-item-disabled {
     pointer-events: none; /* prevents :hover styling on child elements (tooltips) */
 }
+

@@ -23,7 +23,6 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             '    <div class="floatRight listButtonWrapper" id="{[this._getLinkId(values,\'downloadButtonId\')]}">{[this._createDownloadButtonAfterPageLoad(values)]}</div>',
             '  </div>',
             '  <div style="overflow:hidden;">',
-            '    {[this._getUserErrorMsg(values)]}',
             '    <div class="floatLeft dataFilterEntry">',
             '      <div>',
             '        {[this._getDataFilterEntry(values)]}',
@@ -37,6 +36,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             '        </div>',
             '      </div>',
             '    </div>',
+            '    <div class="floatRight">{[this._getUserMsg(values)]}</div>',
             '  </div>',
             '</div>'
         ];
@@ -51,9 +51,19 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         return String.format("<h3 title=\"{0}\">{1}</h3>", title, Ext.util.Format.ellipsis(title, 180, true));
     },
 
-    _getUserErrorMsg: function(values) {
-        if (!values.intersect) {
-            return '<div class="message">'+OpenLayers.i18n('emptyMsg')+'</div>';
+    _getUserMsg: function(values) {
+        var msg = "";
+        if (values.dataFilters == "") {
+            msg = OpenLayers.i18n('emptyDownloadPlaceholder');
+        }
+        if (values.intersect == false) {
+            msg = OpenLayers.i18n('spatialSubsetOutOfBoundsMsg');
+        }
+        if (msg != "") {
+            return String.format("<div class=\"alert alert-warning\">{0}</div>", msg);
+        }
+        else {
+            return msg;
         }
     },
 
@@ -91,7 +101,8 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getDataFilterEntry: function(values) {
-        return String.format('<i>{0}</i>', values.dataFilters);
+
+        return String.format('<p><i>{0}</i></p>', values.dataFilters);
     },
 
     _getPointOfTruthLinkEntry: function(record) {
@@ -113,13 +124,11 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     _createDownloadButtonAfterPageLoad: function(values) {
 
-        if (values.intersect) {
-            if (values.downloadStatus == 'requested') {
-                this._createDownloadingLabel.defer(1, this, [values]);
-            }
-            else {
-                this._createDownloadButton.defer(1, this, [values]);
-            }
+        if (values.downloadStatus == 'requested') {
+            this._createDownloadingLabel.defer(1, this, [values]);
+        }
+        else {
+            this._createDownloadButton.defer(1, this, [values]);
         }
 
         return '';
@@ -153,6 +162,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             new Ext.Button({
                 text: OpenLayers.i18n('downloadButtonLabel'),
                 cls: 'navigationButton',
+                disabled: values.intersect == false,
                 scope: this,
                 renderTo: elementId,
                 menu: new Ext.menu.Menu({
