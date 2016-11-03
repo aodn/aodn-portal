@@ -237,7 +237,11 @@ describe('Portal.details.NcWmsPanel', function() {
          });
 
         it('returns timeseries at point filter', function() {
-            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(moment(), moment(), null, true, -31.4, 114.6);
+            var point = {
+                latitude: -31.4,
+                longitude: 114.6
+            };
+            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(moment(), moment(), null, true, point);
             var pointFilterValue = Portal.filter.FilterUtils.getFilter(returnValue, 'timeSeriesAtPoint').getValue();
             expect(pointFilterValue.latitude).toEqual(-31.4);
             expect(pointFilterValue.longitude).toEqual(114.6);

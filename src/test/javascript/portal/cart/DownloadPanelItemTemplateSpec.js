@@ -101,7 +101,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         it('returns the correct data filter entry', function() {
 
             html = tpl._getDataFilterEntry(mockDataInjection);
-            expect(html).toBe('<i>Filters!</i>');
+            expect(html).toContain('Filters');
         });
     });
 
