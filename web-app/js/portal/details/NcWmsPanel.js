@@ -407,10 +407,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         if (this._timeSeriesOptionAvailable()){
             var pointFilterAvailable = this.pointTimeSeriesPanel._isTimeSeriesFilterAvailable();
-            var lat = this.pointTimeSeriesPanel._getTimeSeriesLatitude();
-            var lon = this.pointTimeSeriesPanel._getTimeSeriesLongitude();
+            var pointFilterValue = {};
+            if (pointFilterAvailable) {
+                pointFilterValue.latitude = this.pointTimeSeriesPanel._getTimeSeriesLatitude();
+                pointFilterValue.longitude = this.pointTimeSeriesPanel._getTimeSeriesLongitude();
+                pointFilterValue.errors = this.pointTimeSeriesPanel._getTimeSeriesFilterErrors();
+            }
         }
-        this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, lat, lon);
+        this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, pointFilterValue);
     },
 
     _isDateRangeValid: function(start, end) {
@@ -420,10 +424,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         return false;
     },
 
-    _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry, timeSeries, lat, lon) {
+    _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, pointFilterValue) {
 
         var dateFilterValue = {};
-        var pointFilterValue = {};
         var ncwmsParamsAsFilter = {
             name: 'nwmsParamsFilter',
             isNcwmsParams: true,
@@ -439,11 +442,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             dateFilterValue.toDate = dateRangeEnd.toDate();
         }
 
-        if (timeSeries) {
-            pointFilterValue.latitude = parseFloat(lat);
-            pointFilterValue.longitude = parseFloat(lon);
-        }
-        else if (geometry) {
+        if (!pointFilterAvailable && geometry) {
             var bounds = geometry.getBounds();
             ncwmsParamsAsFilter.latitudeRangeStart = bounds.bottom;
             ncwmsParamsAsFilter.longitudeRangeStart = bounds.left;
@@ -526,7 +525,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _setFrameButtonsState: function() {
         this.previousFrameButton.enable();
-        this.nextFrameButton.enable()
+        this.nextFrameButton.enable();
 
         if (this.layer.getSubsetExtentMax().toString() == this.layer.time.toString()){
             this.nextFrameButton.disable();

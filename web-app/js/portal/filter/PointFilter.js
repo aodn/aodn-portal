@@ -13,12 +13,12 @@ Portal.filter.PointFilter = Ext.extend(Portal.filter.Filter, {
 
     getHumanReadableForm: function() {
         var label = OpenLayers.i18n("timeSeriesAtHeading");
+        var value = this.getValue();
         return String.format(
             '{0}: {1},{2}',
             label,
-            this.getValue().longitude,
-            this.getValue().latitude
+            value.latitude  != "" ? value.latitude  : "-",
+            value.longitude != "" ? value.longitude : "-"
         );
     }
-
 });

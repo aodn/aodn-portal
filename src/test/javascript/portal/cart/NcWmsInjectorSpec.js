@@ -38,13 +38,13 @@ describe('Portal.cart.NcWmsInjector', function() {
             expect(injector._getDataFilterEntry(dataCollection)).not.toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
         });
 
-        it('returns a default message when no defined date', function() {
+        it('returns an empty message when no defined date', function() {
             dataCollection.getFilters = returns([{
                 isNcwmsParams: true,
                 dateRangeStart: null
             }]);
 
-            expect(injector._getDataFilterEntry(dataCollection)).toEqual(OpenLayers.i18n("emptyDownloadPlaceholder"));
+            expect(injector._getDataFilterEntry(dataCollection)).toEqual("");
         });
 
         it('indicates bounds properly created', function() {

@@ -54,7 +54,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
             spyOn(tpl, '_getPointOfTruthLinkEntry');
             spyOn(tpl, '_getFileListEntries');
             spyOn(tpl, '_createShareButtonAfterPageLoad');
-            spyOn(tpl, '_getUserErrorMsg');
+            spyOn(tpl, '_getUserMsg');
             tpl.apply(mockDataInjection);
         });
 
@@ -101,7 +101,7 @@ describe('Portal.cart.DownloadPanelItemTemplate', function () {
         it('returns the correct data filter entry', function() {
 
             html = tpl._getDataFilterEntry(mockDataInjection);
-            expect(html).toBe('<i>Filters!</i>');
+            expect(html).toContain('Filters');
         });
     });
 
