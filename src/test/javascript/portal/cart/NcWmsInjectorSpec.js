@@ -92,10 +92,13 @@ describe('Portal.cart.NcWmsInjector', function() {
             })]);
 
             var entry = injector._getDataFilterEntry(dataCollection);
+            console.log(dataCollection.getFilters());
             expect(entry).toEqual(
-                String.format('{0}:&nbsp;-23.654, 114.567<br>{1}:&nbsp;2013/Nov/20-00:30-UTC to 2014/Dec/21-10:30-UTC<br>',
+                String.format('{0}:&nbsp;-23.654, 114.567<br>{1}:&nbsp;{2} to {3}<br>',
                     OpenLayers.i18n("timeSeriesAtHeading"),
-                    OpenLayers.i18n("temporalExtentHeading")
+                    OpenLayers.i18n("temporalExtentHeading"),
+                    dataCollection.getFilters()[0].dateRangeStart.format(OpenLayers.i18n('dateTimeDisplayFormat')),
+                    dataCollection.getFilters()[0].dateRangeEnd.format(OpenLayers.i18n('dateTimeDisplayFormat'))
                 )
             );
         });

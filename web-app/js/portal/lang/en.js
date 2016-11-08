@@ -220,7 +220,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     dateFilterBeforeFormat: '{0}: before {2}',
     dateFilterAfterFormat: '{0}: after {1}',
     dateFilterBetweenFormat: '{0}: {1} to {2}',
-    dateFormLogicalError: "Start date ({0}) must be before end date ({1})",
+    dateFormLogicalError: "<b>Start date</b> <i>({0})</i> must be before <BR><b>End date</b> <i>({1})</i>",
 
     numberFilterOptionsFields: [
          'code', 'text',                     'cql',                 'symbol'
@@ -265,11 +265,12 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     faError: '<span class=\"fa fa-fw fa-warning error \"></span>',
     transAbortMsg: "transaction aborted",
 
-    dateTimeDisplayFormat: 'YYYY/MMM/DD-HH:mm-UTC', // moment formatting
+    dateTimeDisplayFormat: 'YYYY-MMM-DD-HH:mm-UTC', // moment formatting
+    dateTimeDisplayDayFormat: 'YYYY-MM-DD', // moment formatting
     timeDisplayFormat: 'HH:mm UTC',
     timeDisplayFormatExtJs: 'H:i \\U\\TC',// Ext.form.DateField formatting
-    dateDisplayFormatExtJs: 'Y/m/d', // Ext.form.DateField formatting
-    dateAltFormats: "Y|Y/m",
+    dateDisplayFormatExtJs: 'Y-m-d', // Ext.form.DateField formatting
+    dateAltFormats: "Y|Y-m",
     dateNcWmsMinError: "The entered date is earlier than the first available date: {0}",
     dateNcWmsMaxError: "The entered date is greater than the last available date: {0}",
     defaultTextStylesPicker: "Default style/palette",

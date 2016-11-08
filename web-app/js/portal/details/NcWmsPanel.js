@@ -238,29 +238,54 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.add(this.pointTimeSeriesPanel);
     },
 
-    areDatesLogical: function(datePicker) {
+    areDatesTimesLogical: function(datePicker, dateTime) {
 
-        if (this.endDateTimePicker.rendered && this.startDateTimePicker.rendered) {
+        if (this.startDateTimePicker.getValue() && this.endDateTimePicker.getValue()) {
 
-            var start = moment(this.startDateTimePicker.getValue()).clone();
-            var end = moment(this.endDateTimePicker.getValue()).clone();
-            var date = moment(datePicker.getValue()).clone();
+            var start = dateTime;
+            var end   = dateTime;
 
-            if (datePicker.pickerType == this.START_DATE) {
-                start = date;
+            if (datePicker.dateConfig.pickerType == this.START_DATE) {
+                end = moment.utc(this.endDateTimePicker.getValue());
             }
             else {
-                end = date;
+                start = moment.utc(this.startDateTimePicker.getValue());
             }
 
-            if (start.isValid() && end.isValid() && !this._isDateRangeValid(start,end)) {
+            if (!this._isDateRangeValid(start, end)) {
+
                 return String.format(OpenLayers.i18n('dateFormLogicalError'),
-                    start.format('Do MMMM YYYY'),
-                    end.format('Do MMMM YYYY')
+                    start.toISOString(),
+                    end.toISOString()
                 );
             }
         }
         return true;
+    },
+
+    areDatesLogical: function(datePicker) {
+
+        if (this.endDateTimePicker.rendered && this.startDateTimePicker.rendered) {
+
+            var start = (this.startDateTimePicker.getValue()) ? this.getMomentStartOfDay(this.startDateTimePicker.df.getValue()) : undefined;
+            var end = (this.endDateTimePicker.getValue()) ? this.getMomentStartOfDay(this.endDateTimePicker.df.getValue()) : undefined;
+            var date = moment(datePicker.getValue());
+
+            (datePicker.pickerType == this.START_DATE) ? start = date : end = date;
+
+            if (start && start.isValid() && end && end.isValid() && !this._isDateRangeValid(start,end)) {
+
+                return String.format(OpenLayers.i18n('dateFormLogicalError'),
+                        start.format(OpenLayers.i18n('dateTimeDisplayDayFormat')),
+                        end.format(OpenLayers.i18n('dateTimeDisplayDayFormat'))
+                    );
+            }
+        }
+        return true;
+    },
+
+    getMomentStartOfDay: function(datetime) {
+        return moment(datetime).startOf('day').clone();
     },
 
     _utcExtentDateTimePickerConfiguration: function(name) {
@@ -269,7 +294,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         return {
             dateFormat: OpenLayers.i18n('dateDisplayFormatExtJs'),
             dateConfig: {
-                scope: that,
                 pickerType: name,
                 validator: function() {
                     return that.areDatesLogical(this);
@@ -284,6 +308,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
                 }),
                 mode: 'local',
                 triggerAction: "all",
+                pickerType: name,
                 editable: false,
                 valueField: 'timeValue',
                 displayField: 'displayTime'
@@ -337,14 +362,25 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         trackFiltersUsage(OpenLayers.i18n('trackingDateAction'), selectedDateTimeMoment.utc().toISOString(), this.dataCollection.getTitle());
     },
 
+
     _onTimeSelected: function(datePicker, selectedDateTimeMoment) {
+
         datePicker.setValue(selectedDateTimeMoment);
         datePicker.tf.collapse();
-        this._layerSetTime(selectedDateTimeMoment);
-        this._setLayerSubsetExtent();
-        this._updateTimeRangeLabel();
+
+        var valid = this.areDatesTimesLogical(datePicker, selectedDateTimeMoment);
+
+        if (valid === true) {
+            this._layerSetTime(selectedDateTimeMoment);
+            this._setLayerSubsetExtent();
+            this._updateTimeRangeLabel();
+            this._setFrameButtonsState();
+        }
+        else {
+            datePicker.markInvalid(valid);
+        }
+
         this._applyFilterValuesToCollection();
-        this._setFrameButtonsState();
     },
 
     _onDateSelected: function(datePicker, selectedDateTimeMoment) {
@@ -526,7 +562,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _setFrameButtonsState: function() {
         this.previousFrameButton.enable();
-        this.nextFrameButton.enable()
+        this.nextFrameButton.enable();
 
         if (this.layer.getSubsetExtentMax().toString() == this.layer.time.toString()){
             this.nextFrameButton.disable();

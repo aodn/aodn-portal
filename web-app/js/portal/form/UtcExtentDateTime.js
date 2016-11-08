@@ -52,7 +52,7 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
     },
 
     getValue: function() {
-        // create new instance of date using clone
+        // create new instance of date using ExtJS clone
         // new Date(this.dateValue) used by superclass doesn't preserve milliseconds
         // on firefox
         return this.dateValue ? this.dateValue.clone() : '';
