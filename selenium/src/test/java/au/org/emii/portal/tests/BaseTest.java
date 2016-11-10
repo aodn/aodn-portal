@@ -1,8 +1,11 @@
 package au.org.emii.portal.tests;
 
+import au.org.emii.portal.utils.PortalUtil;
 import au.org.emii.portal.utils.SeleniumUtil;
 import au.org.emii.portal.utils.WebElementUtil;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -16,8 +19,6 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
-    public static final int invocationCount = 1;
-    public static final int threadPoolSize = 1;
     public static String BROWSER_STACK_USERNAME;
     public static String BROWSER_STACK_AUTOMATE_KEY;
     public static String BROWSER_STACK_URL;
@@ -30,6 +31,8 @@ public class BaseTest {
     public static String AODN_PORTAL_SEARCH_PAGE;
     public WebElementUtil webElementUtil;
     public SeleniumUtil seleniumUtil;
+    protected PortalUtil portalUtil;
+
     private static Logger log = Logger.getLogger(BaseTest.class.getName());
 
     private WebDriver driver;
@@ -41,11 +44,6 @@ public class BaseTest {
         BROWSER_STACK_VIDEO = System.getProperty("browserstack.video");
         BROWSER_STACK_BUILD = System.getProperty("build");
         BROWSER_STACK_LOCAL = System.getProperty("browserstack.local");
-    }
-
-    @Parameters({"browser", "browser_version", "os", "os_version", "device", "platform", "resolution"})
-    @BeforeClass
-    public void setup(String browser, String browser_version, String os, String os_version, String device, String platform, String resolution) throws MalformedURLException, InterruptedException {
 
         log.debug("BROWSER_STACK_AUTOMATE_KEY: " + BROWSER_STACK_AUTOMATE_KEY);
         log.debug("BROWSER_STACK_USERNAME: " + BROWSER_STACK_USERNAME);
@@ -53,6 +51,19 @@ public class BaseTest {
         log.debug("BROWSER_STACK_VIDEO: " + BROWSER_STACK_VIDEO);
         log.debug("BROWSER_STACK_BUILD: " + BROWSER_STACK_BUILD);
         log.debug("BROWSER_STACK_LOCAL: " + BROWSER_STACK_LOCAL);
+    }
+
+    @Parameters({"browser", "browser_version", "os", "os_version", "device", "platform", "resolution"})
+    @BeforeClass
+    public void setup(String browser, String browser_version, String os, String os_version, String device, String platform, String resolution) throws MalformedURLException, InterruptedException {
+        log.debug("browser: " + browser);
+        log.debug("browser_version: " + browser_version);
+        log.debug("os: " + os);
+        log.debug("os_version: " + os_version);
+        log.debug("device: " + device);
+        log.debug("platform: " + platform);
+        log.debug("resolution: " + resolution);
+        log.debug(getClass().getSimpleName());
 
         BROWSER_STACK_URL = "https://" + BROWSER_STACK_USERNAME + ":" + BROWSER_STACK_AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub";
         BROWSER_STACK_LOCAL_URL = "https://" + BROWSER_STACK_USERNAME + ":" + BROWSER_STACK_AUTOMATE_KEY + "@hub.browserstack.com/wd/hub";
@@ -70,8 +81,11 @@ public class BaseTest {
 
         webElementUtil = new WebElementUtil(driver);
         seleniumUtil = new SeleniumUtil(driver);
+        portalUtil = new PortalUtil(webElementUtil);
 
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().window().setPosition(new Point(0,0));
+        driver.manage().window().setSize(new Dimension(getWidth(resolution),getHeight(resolution)));
         goToHome();
     }
 
@@ -81,7 +95,7 @@ public class BaseTest {
     }
 
     public DesiredCapabilities getDesiredCapability(String browser, String browser_version, String os, String os_version, String device, String platform, String resolution) {
-        String name = browser + " " + browser_version + " " + os + " " + os_version + " " + device;
+        String name = getClass().getSimpleName();
         DesiredCapabilities capability = new DesiredCapabilities();
 
         capability.setCapability("browser", browser);
@@ -111,5 +125,14 @@ public class BaseTest {
     public void goToSearchPage() {
         driver.get(AODN_PORTAL_SEARCH_PAGE);
     }
+
+    private int getWidth(String resolution) {
+        return Integer.parseInt(resolution.split("x")[0]);
+    }
+
+    private int getHeight(String resolution) {
+        return Integer.parseInt(resolution.split("x")[0]);
+    }
+
 }
 

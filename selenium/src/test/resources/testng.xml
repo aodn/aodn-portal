@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="Test case run on different browsers" verbose="3" parallel="tests" thread-count="100">
+<suite name="Test case run on different browsers" verbose="3" parallel="tests" thread-count="2">
     <listeners>
         <listener class-name="org.uncommons.reportng.HTMLReporter"/>
         <listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>
