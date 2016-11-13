@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="Test case run on different browsers" verbose="3" parallel="tests" thread-count="100">
+<suite name="Test case run on different browsers" verbose="3" parallel="tests" thread-count="2">
     <listeners>
         <listener class-name="org.uncommons.reportng.HTMLReporter"/>
         <listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>
@@ -17,20 +17,9 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
-        <classes>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
-            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
-            <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
-            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
-        </classes>
+        <packages>
+            <package name="au.org.emii.portal.tests.*"/>
+        </packages>
     </test>
     <test name="Firefox 45.0 on Windows 10">
         <parameter name="browser" value="Firefox"/>
@@ -41,20 +30,9 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
-        <classes>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
-            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
-            <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
-            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
-        </classes>
+        <packages>
+            <package name="au.org.emii.portal.tests.*"/>
+        </packages>
     </test>
     <test name="Firefox 44.0 on Windows 10">
         <parameter name="browser" value="Firefox"/>
@@ -65,20 +43,9 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
-        <classes>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
-            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
-            <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
-            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
-        </classes>
+        <packages>
+            <package name="au.org.emii.portal.tests.*"/>
+        </packages>
     </test>
 
     <!--Firefox OS X El Capitan Configurations-->
@@ -92,20 +59,9 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
-        <classes>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
-            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
-            <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
-            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
-        </classes>
+        <packages>
+            <package name="au.org.emii.portal.tests.*"/>
+        </packages>
     </test>
     <test name="Firefox 45.0 on OS X El Capitan">
         <parameter name="browser" value="Firefox"/>
@@ -116,20 +72,9 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
-        <classes>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
-            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
-            <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
-            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
-        </classes>
+        <packages>
+            <package name="au.org.emii.portal.tests.*"/>
+        </packages>
     </test>
     <test name="Firefox 44.0 on OS X El Capitan">
         <parameter name="browser" value="Firefox"/>
@@ -140,20 +85,9 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
-        <classes>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
-            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
-            <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
-            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
-        </classes>
+        <packages>
+            <package name="au.org.emii.portal.tests.*"/>
+        </packages>
     </test>
 
 
@@ -168,20 +102,9 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
-        <classes>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
-            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
-            <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
-            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
-        </classes>
+        <packages>
+            <package name="au.org.emii.portal.tests.*"/>
+        </packages>
     </test>
     <test name="Chrome 50.0 on Windows 10">
         <parameter name="browser" value="Chrome"/>
@@ -192,20 +115,9 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
-        <classes>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
-            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
-            <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
-            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
-        </classes>
+        <packages>
+            <package name="au.org.emii.portal.tests.*"/>
+        </packages>
     </test>
     <test name="Chrome 49.0 on Windows 10">
         <parameter name="browser" value="Chrome"/>
@@ -216,20 +128,9 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
-        <classes>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
-            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
-            <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
-            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
-        </classes>
+        <packages>
+            <package name="au.org.emii.portal.tests.*"/>
+        </packages>
     </test>
 
     <!--Chrome OS X El Capitan Configurations-->
@@ -243,20 +144,9 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
-        <classes>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
-            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
-            <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
-            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
-        </classes>
+        <packages>
+            <package name="au.org.emii.portal.tests.*"/>
+        </packages>
     </test>
     <test name="Chrome 50.0 on OS X El Capitan">
         <parameter name="browser" value="Chrome"/>
@@ -267,20 +157,9 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
-        <classes>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
-            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
-            <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
-            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
-        </classes>
+        <packages>
+            <package name="au.org.emii.portal.tests.*"/>
+        </packages>
     </test>
     <test name="Chrome 49.0 on OS X El Capitan">
         <parameter name="browser" value="Chrome"/>
@@ -291,20 +170,9 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
-        <classes>
-            <class name="au.org.emii.portal.tests.ImosLogoCheckTest"/>
-            <class name="au.org.emii.portal.tests.ImosLinkCheckTest"/>
-            <class name="au.org.emii.portal.tests.landing.AcknowledgementTest"/>
-            <class name="au.org.emii.portal.tests.landing.AodnLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContactLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ContributingLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.DisclaimerLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.ImosLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.OceanCurrentLinkTest"/>
-            <class name="au.org.emii.portal.tests.landing.PortalTest"/>
-            <class name="au.org.emii.portal.tests.PointTimeSeriesLatLonTest"/>
-            <class name="au.org.emii.portal.tests.step1.HelpLinkTest"/>
-        </classes>
+        <packages>
+            <package name="au.org.emii.portal.tests.*"/>
+        </packages>
     </test>
 
     <!--Smart Devices Configurations-->

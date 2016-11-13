@@ -3,11 +3,14 @@ package au.org.emii.portal.utils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 public class WebElementUtil {
@@ -292,11 +295,15 @@ public class WebElementUtil {
                         ExpectedConditions.presenceOfElementLocated(by));
                 break;
             } catch(NoSuchElementException | TimeoutException | StaleElementReferenceException e) {
-                log.debug(String.format("Unable to find element %s. Attempt: %s Total Attempts: %s. Error:%s", by.toString(), attempts, totalAttempts, e.getMessage()));
+                log.info(String.format("Unable to find element %s. Attempt: %s Total Attempts: %s. Error:%s", by.toString(), attempts, totalAttempts, e.getMessage()));
             }
             attempts++;
         }
         return element;
+    }
+
+    public WebElement waitForElement(By by) {
+        return findElement(by);
     }
 
     public void click(By by, WebElement element) {
@@ -328,11 +335,9 @@ public class WebElementUtil {
     }
 
     public void switchToNewTab() {
+        waitForNumberOfWindowsToEqual(2);
         ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
-        // Do not switch if browser fails to open new tab
-        if(tabs.size() > 1) {
-            driver.switchTo().window(tabs.get(1));
-        }
+        driver.switchTo().window(tabs.get(1));
     }
 
     public void switchToOriginalTab() {
@@ -348,6 +353,30 @@ public class WebElementUtil {
 
     public void clickElementBy(By by) {
         click(by);
+    }
+
+    public void clickElementAt(int x, int y) {
+        WebElement element = (WebElement)executeScript(
+                "return document.elementFromPoint(arguments[0], arguments[1]);", x, y);
+        element.click();
+    }
+
+    private Object executeScript(String s, Object... args) {
+        if (driver instanceof JavascriptExecutor) {
+            return ((JavascriptExecutor)driver).executeScript(s, args);
+        } else {
+            throw new IllegalStateException("This driver does not support JavaScript!");
+        }
+    }
+
+    public void waitForNumberOfWindowsToEqual(final int numberOfWindows) {
+        new WebDriverWait(driver, TIMEOUT) {
+        }.until(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                return (driver.getWindowHandles().size() == numberOfWindows);
+            }
+        });
     }
 }
 

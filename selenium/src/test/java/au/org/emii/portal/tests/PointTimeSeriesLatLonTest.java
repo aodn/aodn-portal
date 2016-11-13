@@ -2,6 +2,7 @@ package au.org.emii.portal.tests;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -16,7 +17,7 @@ public class PointTimeSeriesLatLonTest extends BaseTest {
         getDriver().get(AODN_PORTAL_SEARCH_PAGE);
 
         log.info("Selecting Satellite Platform");
-        webElementUtil.clickLinkContainingText("Satellite");
+        portalUtil.selectFacet("Satellite");
         webElementUtil.clickButtonWithTitle("Add this collection");
 
         log.info("Validating that point time series lat/lon is not populated by default");
@@ -38,11 +39,13 @@ public class PointTimeSeriesLatLonTest extends BaseTest {
     public void validateLatLon(int x, int y) {
         log.info("Validating that clicking on the map (in a way that brings up the GFI) also updates the point time series lat/lon.");
         WebElement mapPanel = webElementUtil.findElement(By.className("x-panel-bwrap"));
-        webElementUtil.clickMap(mapPanel, x, y);
+        Point location = mapPanel.getLocation();
+        webElementUtil.clickElementAt(location.getX() + x, location.getY() + y);
 
         String mainWindowHandle = getDriver().getWindowHandle();
         getDriver().switchTo().activeElement();
-        String popupHtml = webElementUtil.findElement(By.className(" popupHtml")).getText();
+
+        String popupHtml = webElementUtil.waitForElement(By.xpath("//div[contains(@class,'popupHtml') and contains(.,'Lat:')]")).getText();
         getDriver().switchTo().window(mainWindowHandle);
 
         WebElement latitude2 = webElementUtil.findElement(By.xpath("//label[text()='Latitude']/following-sibling::input"));

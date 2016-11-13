@@ -12,6 +12,7 @@ public class PortalTest extends BaseTest {
         // Step 1
         webElementUtil.verifyPageTitle("Open Access to Ocean Data");
         webElementUtil.verifyInnerHtml("<span class=\"stepTitle\">Step 1:</span> Select a Data Collection");
+        portalUtil.selectFacet("Mooring and buoy");
         webElementUtil.clickButtonWithTitle("Add this collection");
 
         // Step 2
