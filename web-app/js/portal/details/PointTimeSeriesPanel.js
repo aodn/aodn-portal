@@ -231,10 +231,17 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
 
     _getTimeSeriesFilterErrors: function() {
 
-        var errorMsgs =  this.timeSeriesLatitudeControl.getErrors().concat(
-            this.timeSeriesLongitudeControl.getErrors()).toString().split(",");
-        // filter duplicate error messages?
-        return errorMsgs.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+        var latErrors = this.timeSeriesLatitudeControl.getErrors();
+        var lonErrors = this.timeSeriesLongitudeControl.getErrors();
+        var errorMsgs = [];
+
+        if (latErrors.length == 0 && lonErrors.length == 0) {
+            return errorMsgs;
+        } else {
+            errorMsgs =  latErrors.concat(lonErrors).toString().split(",");
+            // filter duplicate error messages?
+            return errorMsgs.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+        }
     },
 
     _getTimeSeriesLatitude: function() {
