@@ -7,7 +7,7 @@ Portal.cart.NoDataInjector = Ext.extend(Portal.cart.BaseInjector, {
     },
 
     _getDataFilterEntry: function() {
-        return OpenLayers.i18n('noDataMessage');
+        return "";
     },
 
     _getDataMarkup: function() {
