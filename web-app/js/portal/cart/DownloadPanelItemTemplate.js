@@ -53,12 +53,18 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
 
     _getUserMsg: function(values) {
         var msg = "";
-        if (values.dataFilters == "") {
+
+        if (values.errorMessage && values.errorMessage != "") {
+            msg = values.errorMessage;
+        }
+        else if (values.dataFilters == "") {
             msg = OpenLayers.i18n('emptyDownloadPlaceholder');
         }
-        if (values.intersect == false) {
+
+        if (msg == "" && values.intersect == false) {
             msg = OpenLayers.i18n('spatialSubsetOutOfBoundsMsg');
         }
+
         if (msg != "") {
             return String.format("<div class=\"alert alert-warning\">{0}</div>", msg);
         }

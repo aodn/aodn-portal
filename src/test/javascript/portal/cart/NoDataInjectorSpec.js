@@ -34,8 +34,8 @@ describe('Portal.cart.NoDataInjector', function() {
 
     describe('getDataFilterEntry', function() {
 
-        it('it returns text that contains a no data available message', function() {
-            expect(injector._getDataFilterEntry()).toContain(OpenLayers.i18n('noDataMessage'));
+        it('it returns empty string when no data available', function() {
+            expect(injector._getDataFilterEntry()).toEqual('');
         });
     });
 
