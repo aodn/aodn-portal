@@ -213,7 +213,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
             var testEndDate = moment();
 
-            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(moment('invalid date'), testEndDate, null, false, 0, 0);
+            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(moment.invalid(), testEndDate, null, false, 0, 0);
 
             expect(returnValue[0].getValue().toDate).toEqual(undefined);
             expect(returnValue[1].dateRangeEnd).toEqual(undefined);
@@ -268,7 +268,7 @@ describe('Portal.details.NcWmsPanel', function() {
     function _mockLayer() {
         var extent = new Portal.visualise.animations.TemporalExtent();
         for (var i = 0; i < 24; i++) {
-            extent.add(moment("2001-01-01T01:00:00.000Z").add('h', i));
+            extent.add(moment("2001-01-01T01:00:00.000Z").add(i, 'h'));
         }
         return {
             dataCollection: dataCollection,
