@@ -1,4 +1,4 @@
-describe("Portal.visualise.animations.TemporalExtent", function() {
+    describe("Portal.visualise.animations.TemporalExtent", function() {
 
     var temporalExtent;
 
@@ -280,7 +280,7 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
             for (var i = 1; i <= 50; i++) {
                 expected.push(m.clone());
                 temporalExtent.add(m);
-                m.add('hours', 1);
+                m.add(1, 'hours');
             }
         });
 
@@ -339,7 +339,7 @@ describe("Portal.visualise.animations.TemporalExtent", function() {
             // Loop creates moments from 2013-01-01T00:00:00.000 to 2013-01-03T01:00:00.000
             for (var i = 1; i <= 50; i++) {
                 temporalExtent.add(m);
-                m.add('hours', 1);
+                m.add(1, 'hours');
             }
         });
 

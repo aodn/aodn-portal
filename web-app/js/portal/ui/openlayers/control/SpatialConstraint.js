@@ -119,7 +119,9 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     clear: function() {
-        this.vectorlayer.destroyFeatures();
+        if (this.vectorlayer.destroyFeatures) {
+            this.vectorlayer.destroyFeatures();
+        }
         this._isModified = true;
     },
 
