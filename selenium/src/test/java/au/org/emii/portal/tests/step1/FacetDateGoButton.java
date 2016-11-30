@@ -18,29 +18,19 @@ public class FacetDateGoButton extends BaseTest {
         log.info("Loading search page - Step 1");
         getDriver().get(AODN_PORTAL_SEARCH_PAGE);
 
-        log.info("Selecting Date Facet with 'Go' label");
+        log.info("Selecting Date Facet");
+        portalUtil.selectFacetHeading("Parameter");
+        portalUtil.selectFacetHeading("Platform");
+        portalUtil.selectFacetHeading("Date (UTC)");
 
-        // Open the Date Facet
-        String dateFacetXPath = "(//span[contains(.,'Date') and @class='filter-selection-panel-header']/ancestor::div[1])[1]";
-        /*
-        * didnt work !!
-        * webElementUtil.clickElementByXpath(dateFacetXPath);
-        */
-        WebElement dateFacetHeader = webElementUtil.findElement(By.xpath(dateFacetXPath));
-        dateFacetHeader.click();
+        WebElement goButton = portalUtil.getFacetHeadingElement("Date (UTC)").findElement(By.xpath("//button[contains(.,'Go')]"));
+        WebElement parentElement = goButton.findElement(By.xpath("./../../../../.."));
+        Assert.assertTrue(parentElement.getAttribute("class").contains("x-item-disabled"), "Go button should not be enabled");
 
-        // stupid table wrapper of the Go button
-        String goButtonXPath = dateFacetXPath + "/parent::div[1]/descendant::table[contains(.,'Go')]";
-        WebElement goButtonTable = webElementUtil.findElement(By.xpath(goButtonXPath));
-        Assert.assertTrue(goButtonTable.getAttribute("class").contains("x-item-disabled"));
-
-        // make the Go button go
-        webElementUtil.findElement(By.xpath("//input[@name='extFrom']")).sendKeys("2016-11-22");
-        webElementUtil.findElement(By.xpath("//input[@name='extTo']")).sendKeys("2016-11-22");
-        webElementUtil.click(goButtonTable);
-
-        getDriver().manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        Assert.assertFalse(goButtonTable.getAttribute("class").contains("x-item-disabled"));
+        webElementUtil.findElement(By.xpath("//input[@name='extFrom']")).sendKeys("1991-11-22");
+        webElementUtil.findElement(By.xpath("//input[@name='extTo']")).sendKeys("1992-11-22");
+        webElementUtil.clickButtonWithText("Go");
+        portalUtil.validateFacetHeading("1991");
 
         log.info("Validation Complete");
     }
