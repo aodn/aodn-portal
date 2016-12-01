@@ -26,11 +26,11 @@ describe('Portal.cart.WmsInjector', function() {
             expect(entry).toBe("Human<br />readable<br />description");
         });
 
-        it('includes placeholder when no text returned', function() {
+        it('empty string returned when NoFilters', function() {
 
             var entry = injector._getDataFilterEntry(collectionWithNoFilters);
 
-            expect(entry).toContain(OpenLayers.i18n('emptyDownloadPlaceholder'));
+            expect(entry).toContain('');
         });
     });
 

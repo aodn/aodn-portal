@@ -8,8 +8,6 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             filters: dataCollection.getFilters()
         });
 
-        var description = describer.buildDescription('<br />');
-
-        return description || OpenLayers.i18n('emptyDownloadPlaceholder');
+        return describer.buildDescription('<br />') || "";
     }
 });

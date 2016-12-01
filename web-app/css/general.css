@@ -381,9 +381,13 @@ a:hover.mainlinks {
 .alert-warning {
     background-color: #fcf8e3;
     border-color: #faebcc;
-    color: #8a6d3b;
     font-weight: bold;
 }
+
+.alert-warning, .alert-warning * {
+    color: #8a6d3b;
+}
+
 .alert {
     border: 1px solid transparent;
     border-radius: 4px;
