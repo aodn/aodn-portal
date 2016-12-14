@@ -42,7 +42,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
                 filterObjects.push(newFilterObject);
             }
             else {
-                log.error("Can't create Filter for dataCollection '" + dataCollection.getTitle() + "' from data: " + JSON.stringify(filterDetail));
+                log.debug("Can't create Filter for dataCollection '" + dataCollection.getTitle() + "' from data: " + JSON.stringify(filterDetail));
             }
         });
 
