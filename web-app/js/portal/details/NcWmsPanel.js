@@ -563,11 +563,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.previousFrameButton.enable();
         this.nextFrameButton.enable();
 
-        if (this.layer.time && this.layer.temporalExtent.max().toString() == this.layer.time.toString()){
+        if (this.layer.temporalExtent.max().toString() == this.layer.time.toString()){
             this.nextFrameButton.disable();
         }
 
-        if (this.layer.time && this.layer.temporalExtent.min().toString() == this.layer.time.toString()){
+        if (this.layer.temporalExtent.min().toString() == this.layer.time.toString()){
             this.previousFrameButton.disable();
         }
     },
