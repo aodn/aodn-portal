@@ -178,9 +178,7 @@ knownServers = [
         type: 'GeoServer',
         csvDownloadFormat: 'csv-with-metadata-header',
         urlListDownloadSubstitutions: [
-            '^/mnt/imos-t3/': 'http://data.aodn.org.au/',
-            '^/mnt/opendap/2/SRS': 'http://thredds.aodn.org.au/thredds/fileServer/srs',
-            '^IMOS/': 'http://imos-data.aodn.org.au/IMOS/'
+            '^': 'http://data.aodn.org.au/'
         ]
     ],
     [
