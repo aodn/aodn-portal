@@ -6,18 +6,19 @@ class UniqueFilenameGenerator {
 
     def generateUniqueFilename(filename, extension = "") {
 
-        def currentCount = usedFilenames[filename]
+        def fullFileName = filename + extension
+        def currentCount = usedFilenames[fullFileName]
 
         // First usage of this filename
         if (!currentCount) {
-            usedFilenames[filename] = 1
+            usedFilenames[fullFileName] = 1
 
             return filename + extension
         }
 
         // Subsequent usage of this filename
         currentCount++
-        usedFilenames[filename] = currentCount
+        usedFilenames[fullFileName] = currentCount
 
         return "$filename($currentCount)$extension"
     }
