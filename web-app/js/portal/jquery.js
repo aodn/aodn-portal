@@ -1,12 +1,12 @@
 jQuery( window ).load(function() {
 
-    jQuery(".resultsHeaderBackground").live("click",
+    jQuery(".resultsHeaderBackground:not(.facetedSearchBtn *)").live("click",
         function(){
             var resBody = jQuery(this).children('.facetedSearchResultBody');
             var fullHeight = resBody[0].scrollHeight;
             var originalHeight = resBody.height();
 
-            if (fullHeight != originalHeight) {
+            if (fullHeight > 0  && fullHeight != originalHeight) {
                 resBody.data("originalHeight", originalHeight );
                 resBody.animate({
                     height: fullHeight
@@ -19,10 +19,12 @@ jQuery( window ).load(function() {
             }
         });
 
-    jQuery(".resultsHeaderBackground").live("mouseover",
+    jQuery(".resultsHeaderBackground:not(.facetedSearchBtn *)").live("mouseover",
         function(){
             var resBody = jQuery(this).children('.facetedSearchResultBody');
-            if (resBody[0].scrollHeight != resBody.height()) {
+            var fullHeight = resBody[0].scrollHeight;
+
+            if (fullHeight > 0  && fullHeight != resBody.height()) {
                 jQuery(this).addClass("expandable");
             }
         });
