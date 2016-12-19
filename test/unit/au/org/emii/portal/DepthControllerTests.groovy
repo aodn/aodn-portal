@@ -1,6 +1,6 @@
 package au.org.emii.portal
 
-import grails.test.ControllerUnitTestCase
+import grails.test.mixin.TestFor
 
 @TestFor(DepthController)
 class DepthControllerTests {

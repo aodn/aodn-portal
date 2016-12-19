@@ -1,13 +1,14 @@
 package au.org.emii.portal
 
-import grails.test.ControllerUnitTestCase
+import grails.test.mixin.TestFor
 
 @TestFor(MarvlController)
 class MarvlControllerTests {
 
     void setUp() {
         controller.grailsApplication.config =
-            new ConfigSlurper().parse("""
+            new ConfigSlurper().parse(
+                """
                 marvl {
                     urlList {
                         substitutions = [

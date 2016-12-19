@@ -17,9 +17,13 @@ class UniqueFilenameGeneratorTests extends GrailsUnitTestCase {
 
         assertEquals "file.txt",     generator.generateUniqueFilename("file", ".txt")
         assertEquals "file(2).txt",  generator.generateUniqueFilename("file", ".txt")
-        assertEquals "file(3).html", generator.generateUniqueFilename("file", ".html")
+        assertEquals "file.html", generator.generateUniqueFilename("file", ".html")
         assertEquals "index.html",   generator.generateUniqueFilename("index", ".html")
-        assertEquals "index(2).txt", generator.generateUniqueFilename("index", ".txt")
-        assertEquals "index(3)",     generator.generateUniqueFilename("index")
+        assertEquals "index.txt", generator.generateUniqueFilename("index", ".txt")
+        assertEquals "index",     generator.generateUniqueFilename("index")
+    }
+
+    protected void tearDown() {
+        super.tearDown()
     }
 }
