@@ -44,7 +44,7 @@ describe('Portal.cart.NcWmsInjector', function() {
                 dateRangeStart: null
             }]);
 
-            expect(injector._getDataFilterEntry(dataCollection)).toEqual("");
+            expect(injector._getDataFilterEntry(dataCollection)).toEqual(OpenLayers.i18n('temporalExtentNotLoaded'));
         });
 
         it('indicates bounds properly created', function() {

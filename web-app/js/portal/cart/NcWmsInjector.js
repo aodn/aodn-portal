@@ -43,8 +43,22 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             var endDateString = this._formatDate(params.dateRangeEnd);
             dateString = this._formatHumanDateInfo('temporalExtentHeading', startDateString, endDateString);
         }
-
+        else {
+            dateString = OpenLayers.i18n('temporalExtentNotLoaded');
+        }
         return areaString + timeSeriesAtString + dateString;
+    },
+
+    getInjectionJson: function(collection) {
+        var injectionJson = Portal.cart.NcWmsInjector.superclass.getInjectionJson(collection);
+
+        injectionJson.dataFilters = this._getDataFilterEntry(collection);
+        if (injectionJson.dataFilters.contains(OpenLayers.i18n('temporalExtentNotLoaded'))) {
+            injectionJson.errorMessage = OpenLayers.i18n('temporalExtentNotLoaded');
+        }
+        injectionJson.isTemporalExtentSubsetted = collection.isTemporalExtentSubsetted;
+
+        return injectionJson;
     },
 
     _formatHumanDateInfo: function(labelKey, value1, value2) {

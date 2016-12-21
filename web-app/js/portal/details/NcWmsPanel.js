@@ -437,8 +437,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _applyFilterValuesToCollection: function() {
-        var dateRangeStart = this._getDateFromPicker(this.startDateTimePicker);
-        var dateRangeEnd = this._getDateFromPicker(this.endDateTimePicker);
+        var dateRangeStart = this._getUtcMomentFromPicker(this.startDateTimePicker);
+        var dateRangeEnd = this._getUtcMomentFromPicker(this.endDateTimePicker);
         var geometry = this._getGeometryFilter();
 
         if (this._timeSeriesOptionAvailable()){
@@ -451,6 +451,19 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             }
         }
         this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, pointFilterValue);
+
+        this.dataCollection.isTemporalExtentSubsetted = this.isTemporalExtentSubsetted(dateRangeStart, dateRangeEnd);
+    },
+
+    isTemporalExtentSubsetted: function(dateRangeStart, dateRangeEnd) {
+
+        var temporalExtentBegin = this.layer.getTemporalExtentMin();
+        var temporalExtentEnd = this.layer.getTemporalExtentMax();
+        if (dateRangeStart && temporalExtentBegin && temporalExtentEnd) {
+            return ! (dateRangeStart.isSame(temporalExtentBegin) && dateRangeEnd.isSame(temporalExtentEnd));
+        }
+        return undefined;
+
     },
 
     _isDateRangeValid: function(start, end) {
@@ -594,7 +607,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.layer.setTime(momentDate);
     },
 
-    _getDateFromPicker: function(datePicker) {
+    _getUtcMomentFromPicker: function(datePicker) {
         if (moment(datePicker.getValue()).isValid()) {
             return moment.utc(datePicker.getValue());
         }
