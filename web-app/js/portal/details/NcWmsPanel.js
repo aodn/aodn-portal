@@ -554,6 +554,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         else {
             this._resetExtent(this.layer.getSubsetExtentMin(), this.layer.getSubsetExtentMax());
             this._applyFilterValuesToCollection();
+
+            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, this.dataCollection);
         }
 
         this._setFrameButtonsState();
