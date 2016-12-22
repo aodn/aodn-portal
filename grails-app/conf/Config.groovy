@@ -139,7 +139,7 @@ environments {
 
         // URLs
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
-        grails.serverURL = "http://${localhostAddress}:9090"
+        grails.serverURL = "http://${localhostAddress}:9090/"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-portal.aodn.org.au/geonetwork"
 
