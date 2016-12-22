@@ -15,7 +15,7 @@ Portal.details.SubsetItemsTabPanel = Ext.extend(Ext.TabPanel, {
         this.layerDetailsPanel = new Portal.details.LayerDetailsPanel(childPanelConfig);
 
         var config = Ext.apply({
-            activeTab: 0,
+            activeTab: this.getInitTab(cfg.dataCollection),
             items: [
                 this.filterGroupPanel,
                 this.infoPanel,
@@ -24,6 +24,10 @@ Portal.details.SubsetItemsTabPanel = Ext.extend(Ext.TabPanel, {
         }, cfg);
 
         Portal.details.SubsetItemsTabPanel.superclass.constructor.call(this, config);
+    },
+
+    getInitTab: function(dataCollection) {
+        return (dataCollection.shareLinkUsed && dataCollection.shareLinkUsed == true) ? 1: 0;
     },
 
     _newFilterGroupPanel: function(cfg) {
