@@ -57,10 +57,9 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         if (values.errorMessage && values.errorMessage != "") {
             msg = values.errorMessage;
         }
-        else if (values.dataFilters == "") {
-            msg = OpenLayers.i18n('emptyDownloadPlaceholder');
+        else if (values.isTemporalExtentSubsetted == false || values.dataFilters == "") {
+            msg = OpenLayers.i18n('emptyDownloadFilter');
         }
-
         if (msg == "" && values.intersect == false) {
             msg = OpenLayers.i18n('spatialSubsetOutOfBoundsMsg');
         }
@@ -79,7 +78,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _createShareButton: function(values) {
-        var url =  String.format(
+        var url = String.format(
             '{0}/search?uuid={1}',
             Portal.app.appConfig.grails.serverURL.replace(/\/+$/, ""),
             values.uuid
@@ -168,7 +167,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
             new Ext.Button({
                 text: OpenLayers.i18n('downloadButtonLabel'),
                 cls: 'navigationButton',
-                disabled: values.intersect == false,
+                disabled: this.downloadButtonDisabled(values),
                 scope: this,
                 renderTo: elementId,
                 menu: new Ext.menu.Menu({
@@ -177,6 +176,10 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
                 })
             });
         }
+    },
+
+    downloadButtonDisabled: function(values) {
+        return values.intersect == false || (values.errorMessage && values.errorMessage != "");
     },
 
     _createRemoveButtonAfterPageLoad: function(values) {

@@ -21,6 +21,8 @@ describe('Portal.details.NcWmsPanel', function() {
         layer.events = { on: noOp };
         layer.processTemporalExtent = noOp;
         layer.map = map;
+        layer.getTemporalExtentMin = noOp;
+        layer.getTemporalExtentMax = noOp;
 
         layerSelectionModel = new Ext.util.Observable();
         layerSelectionModel.getSelectedLayer = returns(layer);

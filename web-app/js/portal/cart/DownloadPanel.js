@@ -64,6 +64,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         this.on('beforeshow', function() { this.generateContent() }, this);
         Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_ADDED, function() { this.generateContent() }, this);
         Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_REMOVED, function() { this.generateContent() }, this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function() { this.generateContent() }, this);
     },
 
     onDownloadRequested: function(downloadUrl, collection) {
