@@ -16,6 +16,10 @@ class SearchController {
         ]
     }
 
+    def uuid = {
+        redirect(url: "search?uuid=" +  params.id + "&info=true")
+    }
+
     def config = {
 
         // Workaround a problem converting to JSON (trying to convert the filtered
