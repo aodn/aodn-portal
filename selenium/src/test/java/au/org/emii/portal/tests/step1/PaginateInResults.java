@@ -8,9 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class PaginateForwardInResults extends BaseTest {
+public class PaginateInResults extends BaseTest {
 
-    private static Logger log = Logger.getLogger(PaginateForwardInResults.class.getName());
+    private static Logger log = Logger.getLogger(PaginateInResults.class.getName());
 
     @Test
     public void paginationTest() throws InterruptedException {
@@ -20,7 +20,7 @@ public class PaginateForwardInResults extends BaseTest {
         WebElement dataCollection = webElementUtil.findElement(By.xpath("//div[@class=\"resultsRowHeaderTitle\"][1]/h3"));
         String firstDataCollectionText = dataCollection.getText();
 
-        // Go to page 2
+        // Go to page 2 by typing '2'
         WebElement pageNumberInputBox = webElementUtil.findElement(By.className("x-tbar-page-number"));
         Assert.assertTrue(pageNumberInputBox.getAttribute("value").equals("1"));
         pageNumberInputBox.clear();
@@ -34,25 +34,29 @@ public class PaginateForwardInResults extends BaseTest {
         String secondDataCollectionText = dataCollection.getText();
         Assert.assertFalse(secondDataCollectionText.equals(firstDataCollectionText));
 
-        // Go to page 1
+        // Go to page 1 by pressing 'first' button
         webElementUtil.clickButtonWithClass("x-tbar-page-first");
         portalUtil.waitForSearchPanelReload(secondDataCollectionText);
         pageNumberInputBox = webElementUtil.findElement(By.className("x-tbar-page-number"));
         Assert.assertTrue(pageNumberInputBox.getAttribute("value").equals("1"));
 
-        // Go to next page
+        // Go to page 2 by pressing 'next' button
         webElementUtil.clickButtonWithClass("x-tbar-page-next");
         portalUtil.waitForSearchPanelReload(firstDataCollectionText);
         pageNumberInputBox = webElementUtil.findElement(By.className("x-tbar-page-number"));
         Assert.assertTrue(pageNumberInputBox.getAttribute("value").equals("2"));
 
-        // Go to last page
-        webElementUtil.clickButtonWithClass("x-tbar-page-last");
+        // Go to page 1 by pressing 'prev' button
+        webElementUtil.clickButtonWithClass("x-tbar-page-prev");
         portalUtil.waitForSearchPanelReload(secondDataCollectionText);
+        pageNumberInputBox = webElementUtil.findElement(By.className("x-tbar-page-number"));
+        Assert.assertTrue(pageNumberInputBox.getAttribute("value").equals("1"));
 
+        // Go to last page by pressing 'last' button
+        webElementUtil.clickButtonWithClass("x-tbar-page-last");
+        portalUtil.waitForSearchPanelReload(firstDataCollectionText);
         WebElement lastPage = webElementUtil.findElement(By.xpath("//div[@class='xtb-text' and contains(.,'of ')]"));
         String lastPageNumber = lastPage.getText().substring(3);
-        log.info(String.format("Last Page Number %s", lastPageNumber));
         pageNumberInputBox = webElementUtil.findElement(By.className("x-tbar-page-number"));
         Assert.assertTrue(pageNumberInputBox.getAttribute("value").equals(lastPageNumber));
     }
