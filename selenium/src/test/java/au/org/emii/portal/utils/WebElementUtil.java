@@ -17,10 +17,10 @@ public class WebElementUtil {
 
     private static Logger log = Logger.getLogger(WebElementUtil.class.getName());
 
-    private WebDriver driver;
-    private final int TIMEOUT = 30;
-    private final int POLLING_PERIOND = 1;
-    private String originalHandle;
+    protected WebDriver driver;
+    protected final int TIMEOUT = 30;
+    protected final int POLLING_PERIOND = 1;
+    protected String originalHandle;
 
     public WebElementUtil(WebDriver driver) {
         this.driver = driver;
