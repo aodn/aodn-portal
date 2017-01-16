@@ -7,7 +7,7 @@
     <groupId>au.org.emii.portal</groupId>
     <artifactId>aodn-portal</artifactId>
     <packaging>grails-app</packaging>
-    <version>4.27.6</version>
+    <version>4.27.7</version>
 
     <name>aodn-portal</name>
     <description>aodn-portal</description>
