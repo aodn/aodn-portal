@@ -82,7 +82,7 @@ jQuery( window ).load(function() {
                         // activate the onclick action
                         jQuery(this).click(function() {
                             trackNavigationUsage(
-                                'navigationTrackingPrimaryAction',
+                                'navigationTrackingProgressBarAction',
                                 OpenLayers.i18n('navigationTrackingStepPrefix') + (tabIdInt + 1)
                             );
                             setViewPortTab(tabIdInt);
