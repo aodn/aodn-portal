@@ -11,6 +11,6 @@ function browserCheck() {
 	if (isIOS || isAndroid)     { supported = false;}
 
 	if (!supported) {
-	    alert('Your browser or device is unsupported and may not work with this site. \nPlease use Chrome or Firefox on a later generation Windows PC, Linux or Macbook/iMac for the best experience.');
+	    alert('Your browser is unsupported. \nPlease use Chrome or Firefox for the best user experience.');
     }
 }
