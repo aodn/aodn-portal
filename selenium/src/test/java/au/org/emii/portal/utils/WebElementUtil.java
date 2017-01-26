@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class WebElementUtil {
@@ -279,6 +280,27 @@ public class WebElementUtil {
     public void clickMap(WebElement mapPanel, int xOffset, int yOffset) {
         Actions builder = new Actions(driver);
         builder.moveToElement(mapPanel, xOffset, yOffset).click().build().perform();
+    }
+
+    public List<WebElement> findElements(By by) {
+        List<WebElement> elements = null;
+        FluentWait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(TIMEOUT, TimeUnit.SECONDS)
+                .pollingEvery(POLLING_PERIOND, TimeUnit.SECONDS)
+                .ignoring(NoSuchElementException.class)
+                .ignoring(StaleElementReferenceException.class);
+        int attempts = 1, totalAttempts = 2;
+        while(attempts <= totalAttempts) {
+            try {
+                elements = wait.until(
+                        ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+                break;
+            } catch(NoSuchElementException | TimeoutException | StaleElementReferenceException e) {
+                log.info(String.format("Unable to find elements %s. Attempt: %s Total Attempts: %s. Error:%s", by.toString(), attempts, totalAttempts, e.getMessage()));
+            }
+            attempts++;
+        }
+        return elements;
     }
 
     public WebElement findElement(By by) {
