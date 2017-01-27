@@ -152,7 +152,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         if (params && params.isNcwmsParams && params.latitudeRangeStart != undefined) {
             extent = new OpenLayers.Bounds(params.longitudeRangeStart, params.latitudeRangeStart, params.longitudeRangeEnd, params.latitudeRangeEnd);
         }
-        else if (params && params.value != undefined && params.type === 'geometrypropertytype') {
+        else if (params && params.value != undefined && params.value.bounds != undefined && params.type === 'geometrypropertytype') {
             extent = new OpenLayers.Bounds(params.value.bounds.left, params.value.bounds.bottom, params.value.bounds.right, params.value.bounds.top);
         }
 
