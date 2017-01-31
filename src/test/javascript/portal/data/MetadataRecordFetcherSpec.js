@@ -62,8 +62,9 @@ describe("Portal.data.MetadataRecordFetcher", function() {
 
         it('record into DataCollectionStore', function() {
             spyOn(Portal.data.MetadataRecordStore.prototype, 'getAt').andReturn({});
+            var params = {};
 
-            fetcher.load(uuid);
+            fetcher.load(uuid, params);
             expect(Portal.data.MetadataRecordStore.prototype.getAt).toHaveBeenCalled();
             expect(fetcher.dataCollectionStore.add).toHaveBeenCalledWith(dataCollectionRecord);
         });
@@ -79,16 +80,16 @@ describe("Portal.data.MetadataRecordFetcher", function() {
         });
     });
 
-    describe('getUuidsFromUrl', function() {
+    describe('getParamsFromUrl', function() {
 
         var baseUrl = 'http://imos.aodn.org.au/portal/';
         var testCases = [
-            [baseUrl + '', []],
-            [baseUrl + '?', []],
-            [baseUrl + '?val=something', []],
-            [baseUrl + '?uuid=uuid1', 'uuid1'],
-            [baseUrl + '?uuid=uuid1&val=something#', 'uuid1'],
-            [baseUrl + '?uuid=uuid1&uuid=uuid2#', ['uuid1', 'uuid2']]
+            [baseUrl + '', {}],
+            [baseUrl + '?', {}],
+            [baseUrl + '?val=something', { val : 'something' }],
+            [baseUrl + '?uuid=uuid1', { uuid : 'uuid1' }],
+            [baseUrl + '?uuid=uuid1&val=something#', { uuid : 'uuid1', val : 'something#' }],
+            [baseUrl + '?uuid=uuid1&info=true&uuid=uuid2', { uuid : [ 'uuid1', 'uuid2' ], info : 'true' }]
         ];
 
         it('returns correct values for various inputs', function() {
@@ -98,7 +99,7 @@ describe("Portal.data.MetadataRecordFetcher", function() {
                 var expectedOutput = testValues[1];
                 fetcher._getUrl = returns(testUrl);
 
-                var actualOutput = fetcher.getUuidsFromUrl();
+                var actualOutput = fetcher.getParamsFromUrl();
 
                 expect(actualOutput).toEqual(expectedOutput);
             });

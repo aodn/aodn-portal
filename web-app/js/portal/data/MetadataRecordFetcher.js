@@ -1,4 +1,3 @@
-
 Ext.namespace('Portal.data');
 
 Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
@@ -21,7 +20,7 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
         });
     },
 
-    load: function(uuid) {
+    load: function(uuid, params) {
         var _this = this;
         this.get(uuid, function(response) {
             // Is there a more direct way to easily get a MetadataRecord from XML?
@@ -31,6 +30,10 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
 
             if (metadataRecord) {
                 var dataCollection = Portal.data.DataCollection.fromMetadataRecord(metadataRecord);
+
+                if (params.info && params.info == "true") {
+                    dataCollection.shareLinkUsed = true;
+                }
                 _this.dataCollectionStore.add(dataCollection);
 
                 viewport.setActiveTab(TAB_INDEX_VISUALISE);
@@ -45,17 +48,15 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
         Ext.MessageBox.alert('Error', String.format(OpenLayers.i18n('errorLoadingCollectionMessage'), uuid));
     },
 
-    getUuidsFromUrl: function() {
-        var getParams = this._getUrl().split("#")[0].split("?");
-        var params = Ext.urlDecode(getParams[1]);
-
-        return params.uuid || [];
+    getParamsFromUrl: function() {
+        var getParams = this._getUrl().split("?")[1];
+        return Ext.urlDecode(getParams);
     },
 
     loadCollectionsFromUrl: function() {
-
-        Ext.each(this.getUuidsFromUrl(), function(aUuid) {
-            this.load(aUuid);
+        var params = this.getParamsFromUrl();
+        Ext.each(params.uuid, function(aUuid) {
+            this.load(aUuid, params);
         }, this);
     },
 
