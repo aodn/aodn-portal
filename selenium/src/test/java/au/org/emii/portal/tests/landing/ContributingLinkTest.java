@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 
 public class ContributingLinkTest extends BaseTest {
 
-    @Test
+    @Test(groups = { "SkipTest"})
     public void linkTest() {
         webElementUtil.clickLinkContainingText("Contributing");
         webElementUtil.switchToNewTab();
