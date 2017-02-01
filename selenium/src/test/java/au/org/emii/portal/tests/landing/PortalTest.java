@@ -20,6 +20,6 @@ public class PortalTest extends BaseTest {
         webElementUtil.clickButtonWithText("Next");
 
         // Step 3
-        webElementUtil.verifyInnerHtml("The full data collection will be downloaded. Consider filtering the collection.");
+        webElementUtil.verifyInnerHtml("Please consider filtering");
     }
 }
