@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class AcknowledgementTest extends BaseTest {
 
-    @Test
+    @Test(groups = { "SkipTest"})
     public void linkTest() {
         webElementUtil.clickLinkContainingText("Acknowledgement");
         webElementUtil.switchToNewTab();

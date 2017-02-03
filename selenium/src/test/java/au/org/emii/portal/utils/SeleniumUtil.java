@@ -83,7 +83,7 @@ public class SeleniumUtil {
     }
 
     public int verifyURLStatus(String URL, int invalidLinksCount) {
-        if (StringUtils.isNotBlank(URL)) {
+        if (StringUtils.isNotBlank(URL) && !URL.contains("help.aodn.org.au")) {
             log.info("Validating URL " + URL);
             //Validating the contact us email
             if (URL.startsWith("mailto:")) {

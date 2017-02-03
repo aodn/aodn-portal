@@ -17,6 +17,11 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <exclude name="SkipTest"/>
+            </run>
+        </groups>
         <packages>
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
@@ -30,6 +35,11 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <exclude name="SkipTest"/>
+            </run>
+        </groups>
         <packages>
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
@@ -43,6 +53,11 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <exclude name="SkipTest"/>
+            </run>
+        </groups>
         <packages>
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
@@ -59,6 +74,11 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <exclude name="SkipTest"/>
+            </run>
+        </groups>
         <packages>
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
@@ -72,6 +92,11 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <exclude name="SkipTest"/>
+            </run>
+        </groups>
         <packages>
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
@@ -85,6 +110,11 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <exclude name="SkipTest"/>
+            </run>
+        </groups>
         <packages>
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
@@ -102,6 +132,11 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <exclude name="SkipTest"/>
+            </run>
+        </groups>
         <packages>
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
@@ -115,6 +150,11 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <exclude name="SkipTest"/>
+            </run>
+        </groups>
         <packages>
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
@@ -128,6 +168,11 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <exclude name="SkipTest"/>
+            </run>
+        </groups>
         <packages>
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
@@ -144,6 +189,11 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <exclude name="SkipTest"/>
+            </run>
+        </groups>
         <packages>
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
@@ -157,6 +207,11 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <exclude name="SkipTest"/>
+            </run>
+        </groups>
         <packages>
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
@@ -170,6 +225,11 @@
         <parameter name="device" value=""/>
         <parameter name="platform" value=""/>
         <parameter name="mobile" value="false"/>
+        <groups>
+            <run>
+                <exclude name="SkipTest"/>
+            </run>
+        </groups>
         <packages>
             <package name="au.org.emii.portal.tests.*"/>
         </packages>

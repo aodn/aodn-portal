@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 
 public class DisclaimerLinkTest extends BaseTest {
 
-    @Test
+    @Test(groups = { "SkipTest"})
     public void linkTest() {
         webElementUtil.clickLinkContainingText("Disclaimer");
         webElementUtil.switchToNewTab();
