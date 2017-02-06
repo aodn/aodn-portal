@@ -17,7 +17,7 @@ class SearchController {
     }
 
     def uuid = {
-        redirect(url: "search?uuid=" +  params.id + "&info=true")
+        redirect(uri: "/search?uuid=" +  params.id + "&info=true")
     }
 
     def config = {
