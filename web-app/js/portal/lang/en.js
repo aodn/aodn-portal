@@ -239,6 +239,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     numberFilterError: 'Start value must be less the end value',
 
     emptyDownloadFilter: "The full data collection will be downloaded. Please consider filtering the collection.",
+    temporalSubsetHelperMsg: "Please consider filtering the temporal extent.",
     temporalExtentNotLoaded: "Waiting for Temporal extent to load.. <br/>Please consider filtering the collection before downloading",
 
     // FeatureInfoPopup.js

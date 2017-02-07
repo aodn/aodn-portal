@@ -1,10 +1,9 @@
-import grails.util.Environment
-
 class UrlMappings {
 
     static mappings = {
 
         "/proxy"(controller: "proxy", action: "index")
+        "/sitemap/**"(controller: "sitemap", action: "index")
 
         "/$controller/$action?/$id?"{
             constraints {

@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 
 public class HelpLinkTest extends BaseTest {
 
-    @Test
+    @Test(groups = { "SkipTest"})
     public void linkTest() {
         goToSearchPage();
 

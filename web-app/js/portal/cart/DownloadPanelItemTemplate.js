@@ -57,10 +57,16 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         if (values.errorMessage && values.errorMessage != "") {
             msg = values.errorMessage;
         }
-        else if (values.isTemporalExtentSubsetted == false || values.dataFilters == "") {
-            msg = OpenLayers.i18n('emptyDownloadFilter');
+        else {
+            if (values.dataFilters == "") {
+                msg = OpenLayers.i18n('emptyDownloadFilter');
+            }
+            if (msg == "" && values.isTemporalExtentSubsetted == false) {
+                msg = OpenLayers.i18n('temporalSubsetHelperMsg');
+            }
         }
-        if (msg == "" && values.intersect == false) {
+
+        if (msg == "" && values.intersect === false) {
             msg = OpenLayers.i18n('spatialSubsetOutOfBoundsMsg');
         }
 
