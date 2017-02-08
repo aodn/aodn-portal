@@ -1,6 +1,7 @@
 Ext.namespace('Portal.search');
 /*
 Created so the items can be styled as fit for the portal
+Cloned from Ext.PagingToolbar
  */
 
 Portal.search.PagingToolbar = Ext.extend(Ext.Toolbar, {
