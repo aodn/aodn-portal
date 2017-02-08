@@ -4,9 +4,10 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
     initComponent:function () {
 
-        this.pagingBar = new Ext.PagingToolbar({
+        this.pagingBar = new Portal.search.PagingToolbar({
             pageSize: this.searcher.pageSize,
             store: this.store,
+            prependButtons: false,
             height: 40,
             autoLoad: true
         });

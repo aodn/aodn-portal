@@ -80,6 +80,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'DateSelectionPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'GeoSelectionPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'MetadataExtent.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'PagingToolbar.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'FormUtil.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'StopWatch.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Date.js')}"></script>
