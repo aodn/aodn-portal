@@ -72,7 +72,7 @@ public class FacetTest extends BaseTest {
         //open up the organisations panel, since it starts closed
         panel.click();
 
-       List<WebElement> orgs = panel.findElements(By.tagName("a"));
+        List<WebElement> orgs = panel.findElements(By.tagName("a"));
 
         //The orgs WebElements will go stale, so we keep a list of their names to use throughout the test
         List<String> orgNames = new ArrayList<String>();
@@ -82,9 +82,9 @@ public class FacetTest extends BaseTest {
             orgNames.add(org.getText());
         }
 
-       for(String orgName: orgNames) {
+        for(String orgName: orgNames) {
            verifyOrganisation(orgName);
-       }
+        }
     }
 
     private void verifyOrganisation(String orgName) {
