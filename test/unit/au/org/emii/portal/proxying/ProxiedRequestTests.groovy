@@ -4,6 +4,7 @@ import grails.test.GrailsUnitTestCase
 
 class ProxiedRequestTests extends GrailsUnitTestCase {
 
+    def proxyRedirectService
     def proxiedRequest
     def request
     def response
@@ -17,7 +18,12 @@ class ProxiedRequestTests extends GrailsUnitTestCase {
         response = [outputStream: null]
         params = [url: 'http://www.google.com']
 
-        proxiedRequest = new ProxiedRequest(request, response, params)
+        proxyRedirectService = [
+
+            getRedirectedUrl: { String url -> url }
+        ]
+
+        proxiedRequest = new ProxiedRequest(request, response, params, proxyRedirectService)
     }
 
     void testProxy() {
@@ -61,7 +67,7 @@ class ProxiedRequestTests extends GrailsUnitTestCase {
             two: '2'
         ]
 
-        def targetUrl = ProxiedRequest._getTargetUrl(params)
+        def targetUrl = ProxiedRequest._getTargetUrl(params, proxyRedirectService)
 
         assertEquals URL.class, targetUrl.getClass()
         assertEquals "http://www.google.com/?one=1&two=2", targetUrl.toString()

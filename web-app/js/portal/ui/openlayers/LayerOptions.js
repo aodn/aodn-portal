@@ -4,7 +4,7 @@ Portal.ui.openlayers.LayerOptions = Ext.extend(Object, {
 
     constructor: function(layerDescriptor, overrides) {
 
-        var gutterSize = 20;
+        var gutterSize = 0;
 
         if (layerDescriptor.isBaseLayer) {
             gutterSize = 0;

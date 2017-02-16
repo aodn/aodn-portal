@@ -14,9 +14,9 @@ class ProxiedRequest extends ExternalRequest {
     def response
     def params
 
-    ProxiedRequest(request, response, params) {
+    ProxiedRequest(request, response, params, proxyRedirectService) {
 
-        super(response.outputStream, _getTargetUrl(params))
+        super(response.outputStream, _getTargetUrl(params, proxyRedirectService))
 
         this.request = request
         this.response = response
@@ -59,9 +59,17 @@ class ProxiedRequest extends ExternalRequest {
         }
     }
 
-    static def _getTargetUrl(params) {
 
-        def url = params.remove('url')
+    static def _getTargetUrl(params, proxyRedirectService) {
+
+        String url = params.remove('url')
+        String newUrl = proxyRedirectService.getRedirectedUrl(url)
+
+        // separate vars for easy debugging
+        if(newUrl != url) {
+            url = newUrl
+        }
+
         def query = params.findAll { key, value ->
 
             key != "controller" &&

@@ -170,6 +170,16 @@ baselayerServer = [
     wmsVersion: '1.1.1'
 ]
 
+
+// overwritten by configuration management
+proxyRedirects = [
+    [
+        uri: 'http://mywms-server.aodn.org.au/geoserver',
+        redirectUri: 'http://geowebcache.localnet/service'
+    ]
+]
+
+
 // This array should be populated from chef config
 knownServers = [
     [
