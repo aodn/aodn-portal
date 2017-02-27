@@ -910,7 +910,15 @@ div.allwhite {
 }
 
 .free-text-search {
-    margin: 5px;
+    margin: 15px;
+}
+.free-text-search input {
+    height: 28px;
+ }
+
+.free-text-search input.focused   {
+    font-size: 1.1em;
+    border: 2px solid #8d969b;
 }
 
 .filterGroupPanel h4 {

@@ -85,6 +85,11 @@ featureToggles {
 
 enabledFacets = [
     [
+        classId: 'Portal.search.FreeTextSearchPanel',
+        name: 'freetextFilter',
+        key: 'freetextFilter'
+    ],
+    [
         name: 'parameterFilter',
         key: 'Measured parameter'
     ],
@@ -109,11 +114,6 @@ enabledFacets = [
     [
         classId: 'Portal.search.GeoSelectionPanel',
         name: 'geoFilter'
-    ],
-    [
-        classId: 'Portal.search.FreeTextSearchPanel',
-        name: 'freetextFilter',
-        key: 'freetextFilter'
     ]
 ]
 
