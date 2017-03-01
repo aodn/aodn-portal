@@ -35,25 +35,25 @@ public class PaginateInResults extends BaseTest {
         Assert.assertFalse(secondDataCollectionText.equals(firstDataCollectionText));
 
         // Go to page 1 by pressing 'first' button
-        webElementUtil.clickButtonWithClass("x-tbar-page-first");
+        webElementUtil.clickButtonWithClass("fa-fast-backward");
         portalUtil.waitForSearchPanelReload(secondDataCollectionText);
         pageNumberInputBox = webElementUtil.findElement(By.className("x-tbar-page-number"));
         Assert.assertTrue(pageNumberInputBox.getAttribute("value").equals("1"));
 
         // Go to page 2 by pressing 'next' button
-        webElementUtil.clickButtonWithClass("x-tbar-page-next");
+        webElementUtil.clickButtonWithClass("fa-forward");
         portalUtil.waitForSearchPanelReload(firstDataCollectionText);
         pageNumberInputBox = webElementUtil.findElement(By.className("x-tbar-page-number"));
         Assert.assertTrue(pageNumberInputBox.getAttribute("value").equals("2"));
 
         // Go to page 1 by pressing 'prev' button
-        webElementUtil.clickButtonWithClass("x-tbar-page-prev");
+        webElementUtil.clickButtonWithClass("fa-backward");
         portalUtil.waitForSearchPanelReload(secondDataCollectionText);
         pageNumberInputBox = webElementUtil.findElement(By.className("x-tbar-page-number"));
         Assert.assertTrue(pageNumberInputBox.getAttribute("value").equals("1"));
 
         // Go to last page by pressing 'last' button
-        webElementUtil.clickButtonWithClass("x-tbar-page-last");
+        webElementUtil.clickButtonWithClass("fa-fast-forward");
         portalUtil.waitForSearchPanelReload(firstDataCollectionText);
         WebElement lastPage = webElementUtil.findElement(By.xpath("//div[@class='xtb-text' and contains(.,'of ')]"));
         String lastPageNumber = lastPage.getText().substring(3);
