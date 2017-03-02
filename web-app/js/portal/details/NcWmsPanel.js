@@ -3,7 +3,7 @@ Ext.namespace('Portal.details');
 Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     ROW_HEIGHT: 32,
-    ROW_WIDTH: 255,
+    ROW_WIDTH: 270,
 
     PENDING_EVENT_ATTR: 'PENDING_EVENT',
 
@@ -82,14 +82,19 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             text: OpenLayers.i18n('clearLinkLabel', {text: OpenLayers.i18n('clearSubsetLabel')})
         });
         this.resetLink.on('click', function() {
-            this.clearAndReset();
+            this.clearAndResetAllSubsets();
         }, this);
         this.add(this.resetLink);
     },
 
-    clearAndReset: function() {
+    clearAndResetAllSubsets: function() {
         this._layerSetTime(this.layer.getTemporalExtentMax());
         this.pointTimeSeriesPanel._resetPanel();
+        this.resetTemporalConstraints();
+    },
+
+    clearAndResetTemporalConstraints: function() {
+        this._layerSetTime(this.layer.getTemporalExtentMax());
         this.resetTemporalConstraints();
     },
 
@@ -135,14 +140,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         var dateStartLabel = new Ext.form.Label({
             html: OpenLayers.i18n('fromDateLabel'),
-            width: 40,
-            flex: 2
+            width: 40
         });
 
         var dateEndLabel = new Ext.form.Label({
             html: OpenLayers.i18n('toDateLabel'),
-            width: 40,
-            flex: 2
+            width: 40
         });
 
         this.startDateTimePicker = new Portal.form.UtcExtentDateTime(this._utcExtentDateTimePickerConfiguration(this.START_DATE));
@@ -205,14 +208,31 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this.selectMapTimeLabel = new Ext.form.Label({
             html: "<h5>" + OpenLayers.i18n('selectMapTimePeriod') + "</h5>",
-            margins: {top: 0, right: 10, bottom: 0, left: 10}
+            margins: {top: 0, right: 10, bottom: 0, left: 0}
         });
+
+        this._resetTemporalConstraintsLink = new Ext.ux.Hyperlink({
+            text: OpenLayers.i18n('clearLinkLabel', {text: OpenLayers.i18n('resetDatesLabel')}),
+            iconCls: 'small resetText',
+            width: 80
+
+        });
+        this._resetTemporalConstraintsLink.on('click', function() {
+            this.clearAndResetTemporalConstraints();
+        }, this);
+
 
         this.mapTimeControls = new Ext.Panel({
             layout: 'hbox',
             cls: 'mapTimeControls',
             plain: true,
-            items: [this.selectMapTimeLabel, this.previousFrameButton, this.nextFrameButton],
+            items: [
+                this.selectMapTimeLabel,
+                this.previousFrameButton,
+                this.nextFrameButton,
+                new Ext.Spacer({width: 40}),
+                this._resetTemporalConstraintsLink
+            ],
             height: 40
         });
 
