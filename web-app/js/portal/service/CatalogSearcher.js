@@ -125,6 +125,14 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this.fireEvent( 'filteradded' );
     },
 
+    getFilterValue: function(filterName) {
+
+        var idx = this.searchFilters.findBy( function( record ) {
+            return record.get('name') == filterName;
+        } );
+        return idx > -1 ? this.searchFilters[idx] : undefined ;
+    },
+
     hasFilters: function() {
 
         var idx = this.searchFilters.findBy( function( record ) {

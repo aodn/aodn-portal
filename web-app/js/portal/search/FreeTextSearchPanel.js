@@ -5,48 +5,63 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
         cfg = cfg || {};
 
-        if (cfg.title) {
-            cfg.title = '<span class="filter-selection-panel-header">' + cfg.title + '</span>';
-        }
+        cfg.title = undefined;
 
         var config = Ext.apply({
-            cls: 'search-filter-panel filter-selection-panel',
-            collapsible: true,
-            collapsed: true,
-            titleCollapse: true,
+            cls: 'search-filter-panel filter-selection-panel free-text-search',
             items: [
                 {
                     xtype: 'container',
                     layout: 'hbox',
-                    cls: 'free-text-search',
+                    cls: '',
                     items: [
+                        {
+                            html: '<span class=\"fa fa-search \"></span>',
+                            cls: 'fa fa-2x'
+                        },
+                        { xtype: 'spacer', width: 10 },
                         this.searchField = new Ext.form.TextField({
-                            width: 200,
+                            width: 250,
+                            focusClass: "focused",
+                            emptyText: OpenLayers.i18n('freeTextFilterSearchHelperMsg'),
+                            fieldLabel: 'Name',
                             enableKeyEvents: true
                         }),
-                        { xtype: 'spacer', width: 10 },
-                        this.goButton = new Ext.Button({
-                            text: OpenLayers.i18n("goButton")
-                        }),
-                        { xtype: 'spacer', width: 5 },
-                        this.clearButton = new Ext.Button({
-                            text: OpenLayers.i18n("clearButton")
-                        })
+                        { xtype: 'spacer', width: 10 }
                     ]
                 },
-                { xtype: 'spacer', height: 10 }
+                { xtype: 'spacer', height: 10 },
+                this.currentFilterContainer = new Ext.Panel({
+                    layout: 'hbox',
+                    collapsible: true,
+                    preventHeader: true,
+                    hideCollapseTool: true,
+                    cls: '',
+                    items: [
+                        { xtype: 'spacer', width: 35 },
+                        this.resetLink = new Ext.ux.Hyperlink()
+                    ]
+                })
             ],
             toolTemplate: new Ext.Template('')
         }, cfg);
 
         Portal.search.FreeTextSearchPanel.superclass.constructor.call(this, config);
 
-        this.mon(this.goButton, 'click', this.onGo, this);
-        this.mon(this.clearButton, 'click', this.clearSearch, this);
         this.mon(this.searchField, 'keyup', this.onSearchChange, this);
 
-        this.on('expand', function() {
-            this.searchField.focus(true);
+        this.resetLink.on('click', function() {
+            this.removeAnyFilters();
+            this.onGo();
+        }, this);
+
+        this.searchField.on('render', function() {
+            this.searchField.reset();
+            this.currentFilterContainer.collapse();
+        }, this);
+
+        this.searchField.on('focus', function() {
+                this.searchField.reset();
         }, this);
     },
 
@@ -55,15 +70,23 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
     },
 
     onGo: function() {
+        var currentVal = this.searchField.getRawValue().toLowerCase();
         this.searcher.removeFilters('any');
-        this.searcher.addFilter('any', this.searchField.getRawValue().toLowerCase());
-        trackFacetUsage(this.facetName, this.searchField.getRawValue().toLowerCase());
+        this.searcher.addFilter('any', currentVal);
+        this.setCurrentFilter(currentVal);
+        trackFacetUsage(this.facetName, currentVal);
         this.searcher.search();
     },
 
-    clearSearch: function() {
-        this.searchField.reset();
-        this.onGo();
+    setCurrentFilter: function(currentVal) {
+        if (currentVal != undefined && currentVal.length > 0) {
+            this.currentFilterContainer.expand();
+            this.resetLink.setText(OpenLayers.i18n("freeTextSearchClearButton", {val: this.searchField.getValue()}));
+        }
+        else {
+            this.currentFilterContainer.collapse();
+            this.searchField.reset();
+        }
     },
 
     onSearchChange: function(_field, event) {
@@ -75,6 +98,6 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
     removeAnyFilters: function() {
         this.searchField.reset();
         this.searcher.removeFilters('any');
-        this.collapse();
+        this.currentFilterContainer.collapse();
     }
 });

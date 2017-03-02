@@ -9,6 +9,7 @@ describe("Portal.search.FreeTextSearchPanel", function()
             addFilter: function() {},
             search: function() {}
         };
+        freeTextSearchPanel.currentFilterContainer.collapse = function() {};
         return freeTextSearchPanel;
     };
 
@@ -30,7 +31,7 @@ describe("Portal.search.FreeTextSearchPanel", function()
         spyOn(freeTextSearchPanel, 'onGo');
         spyOn(freeTextSearchPanel.searchField, 'reset');
 
-        freeTextSearchPanel.clearSearch();
+        freeTextSearchPanel.resetLink.fireEvent('click');
 
         expect(freeTextSearchPanel.onGo).toHaveBeenCalled();
         expect(freeTextSearchPanel.searchField.reset).toHaveBeenCalledWith();
@@ -44,14 +45,6 @@ describe("Portal.search.FreeTextSearchPanel", function()
 
         expect(freeTextSearchPanel.searcher.removeFilters).toHaveBeenCalledWith('any');
         expect(freeTextSearchPanel.searchField.reset).toHaveBeenCalled();
-    });
-
-    it("focuses text box on expand", function() {
-        spyOn(freeTextSearchPanel.searchField, 'focus');
-
-        freeTextSearchPanel.fireEvent('expand');
-
-        expect(freeTextSearchPanel.searchField.focus).toHaveBeenCalledWith(true);
     });
 
     describe("google analytics", function() {
