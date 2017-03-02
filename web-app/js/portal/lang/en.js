@@ -186,6 +186,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     clearAndResetLabel: 'Clear and Reset',
     resetLabel: 'Reset',
     clearSubsetLabel: 'Clear Subsets',
+    resetDatesLabel: 'Reset Dates',
 
     // ComboFilterPanel.js
     clearFilterOption: 'All',

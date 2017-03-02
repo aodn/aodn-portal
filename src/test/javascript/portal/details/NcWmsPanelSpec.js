@@ -101,7 +101,7 @@ describe('Portal.details.NcWmsPanel', function() {
         });
     });
 
-    describe('reset button', function() {
+    describe('AllSubsets reset button', function() {
         it('resets the temporal extent', function() {
             layer.getTemporalExtentMin = returns("ExtentMin");
             layer.getTemporalExtentMax = returns("ExtentMax");
@@ -109,7 +109,24 @@ describe('Portal.details.NcWmsPanel', function() {
 
             spyOn(ncwmsPanel, '_resetExtent');
             spyOn(ncwmsPanel, '_layerSetTime');
-            ncwmsPanel.clearAndReset();
+            spyOn(ncwmsPanel.pointTimeSeriesPanel, '_resetPanel');
+            ncwmsPanel.clearAndResetAllSubsets();
+            expect(ncwmsPanel._layerSetTime).toHaveBeenCalled();
+            expect(ncwmsPanel.pointTimeSeriesPanel._resetPanel).toHaveBeenCalled();
+            expect(ncwmsPanel._resetExtent).toHaveBeenCalledWith("ExtentMin", "ExtentMax");
+        });
+
+    });
+
+    describe('Temporal Extent reset button', function() {
+        it('resets the temporal extent', function() {
+            layer.getTemporalExtentMin = returns("ExtentMin");
+            layer.getTemporalExtentMax = returns("ExtentMax");
+            layer.setTime = returns();
+
+            spyOn(ncwmsPanel, '_resetExtent');
+            spyOn(ncwmsPanel, '_layerSetTime');
+            ncwmsPanel.clearAndResetTemporalConstraints();
             expect(ncwmsPanel._layerSetTime).toHaveBeenCalled();
             expect(ncwmsPanel._resetExtent).toHaveBeenCalledWith("ExtentMin", "ExtentMax");
         });
