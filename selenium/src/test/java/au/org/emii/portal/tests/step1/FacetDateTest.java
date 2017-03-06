@@ -45,16 +45,13 @@ public class FacetDateTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, 30);
         wait.until(ExpectedConditions.stalenessOf(oldResults.get(0)));
 
-        List<WebElement> results = webElementUtil.findElements(By.className("resultsTextBody"));
-
-        //sometimes the orgs section is too long, so we need to expand to see the years
         List<WebElement> headers = webElementUtil.findElements(By.className("resultsHeaderBackground"));
-        for (WebElement header : headers) {
-            header.click();
-        }
 
-        for (WebElement result : results) {
-            List<WebElement> facetResults = result.findElements(By.xpath("div/span[2]"));
+        for (WebElement header : headers) {
+            //sometimes the orgs section is too long, so we need to expand to see the years
+            header.click();
+
+            List<WebElement> facetResults = header.findElements(By.xpath("div[2]/div[2]/div/span[2]"));
 
             //the last div has the years
             String yearsString = facetResults.get(facetResults.size()-1).getText();
