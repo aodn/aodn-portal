@@ -35,18 +35,25 @@ public class FacetDateTest extends BaseTest {
 
         webElementUtil.findElement(By.xpath("//input[@name='extFrom']")).sendKeys("1991-01-01");
         webElementUtil.findElement(By.xpath("//input[@name='extTo']")).sendKeys("1991-12-31");
+
+        //grab the old results so we can wait for them to become stale
+        List<WebElement> oldResults = webElementUtil.findElements(By.className("resultsTextBody"));
+
         webElementUtil.clickButtonWithText("Go");
         portalUtil.validateFacetHeading("1991");
-
-        List<WebElement> oldResults = webElementUtil.findElements(By.className("resultsTextBody"));
 
         WebDriverWait wait = new WebDriverWait(driver, 30);
         wait.until(ExpectedConditions.stalenessOf(oldResults.get(0)));
 
         List<WebElement> results = webElementUtil.findElements(By.className("resultsTextBody"));
+
+        //sometimes the orgs section is too long, so we need to expand to see the years
+        List<WebElement> headers = webElementUtil.findElements(By.className("resultsHeaderBackground"));
+        for (WebElement header : headers) {
+            header.click();
+        }
+
         for (WebElement result : results) {
-            //sometimes the orgs section is too long, so we need to expand to see the years
-            result.click();
             List<WebElement> facetResults = result.findElements(By.xpath("div/span[2]"));
 
             //the last div has the years
