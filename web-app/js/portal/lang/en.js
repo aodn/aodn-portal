@@ -167,6 +167,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     platformFilter: 'Platform',
     temporalResolutionFilter: 'Temporal Resolution',
     parameterFilter: 'Parameter',
+    freetextFilter: 'Keyword',
     freeTextFilterSearchErrorMsg: "Search for free text within metadata records ",
     freeTextFilterSearchHelperMsg: "Keyword Search.. ",
     freeTextSearchClearButton: '<span class=\"fa fa-remove\"></span> Clear <b>\'${val}\'</b>',

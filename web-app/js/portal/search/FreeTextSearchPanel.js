@@ -5,11 +5,17 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
     constructor: function(cfg) {
         cfg = cfg || {};
 
-        cfg.title = undefined;
+        if (cfg.title) {
+            cfg.title = '<span class="filter-selection-panel-header">' + cfg.title + '</span>';
+        }
 
         var config = Ext.apply({
             cls: 'search-filter-panel filter-selection-panel free-text-search',
+            collapsible: true,
+            collapsed: cfg.collapsedByDefault,
+            titleCollapse: true,
             items: [
+                { xtype: 'spacer', height: 10 },
                 {
                     xtype: 'container',
                     layout: 'hbox',
