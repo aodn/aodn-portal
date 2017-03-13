@@ -3,7 +3,10 @@ package au.org.emii.portal.tests.step1;
 import au.org.emii.portal.tests.BaseTest;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.ArrayList;
@@ -87,9 +90,10 @@ public class FacetTest extends BaseTest {
         }
     }
 
-    private void verifyOrganisation(String orgName) {
+    private void verifyOrganisation(String org) {
         log.info("Loading search page - Step 1");
-        getDriver().get(AODN_PORTAL_SEARCH_PAGE);
+        WebDriver driver = getDriver();
+        driver.get(AODN_PORTAL_SEARCH_PAGE);
 
         List<WebElement> filterPanels = webElementUtil.findElements(By.className("search-filter-panel"));
         WebElement panel = filterPanels.get(1);
@@ -97,16 +101,36 @@ public class FacetTest extends BaseTest {
         //open up the organisations panel, since it starts closed
         panel.click();
 
-        portalUtil.selectFacet(orgName);
+        portalUtil.selectFacet(org);
 
         //now convert to just the org name, without the number of results
-        orgName = orgName.split(" \\(\\d{1,}\\)")[0];
+        String orgName = org.split(" \\(\\d{1,}\\)")[0];
+
+        //now get the number of results given after the name
+        int resultsCount = Integer.parseInt(org.substring(orgName.length()+2,org.length()-1));
+
+        WebElement lastPage = webElementUtil.findElement(By.xpath("//div[@class='xtb-text' and contains(.,'of ')]"));
+        int numberOfPages = Integer.parseInt(lastPage.getText().substring(3));
+        Assert.assertEquals(numberOfPages,(resultsCount/10)+1, "Incorrect number of pages returned");
+
         log.info("Checking Organisation:" + orgName);
         List<WebElement> results = webElementUtil.findElements(By.className("resultsTextBody"));
         for (WebElement result : results) {
             WebElement facetResult = result.findElement(By.xpath("div[2]/span[2]"));
             Assert.assertTrue(facetResult.getText().contains(orgName));
         }
+
+        if(numberOfPages>1) {
+            log.info("Loading last page to check results count");
+            webElementUtil.clickButtonWithClass("fa-fast-forward");
+            WebDriverWait wait = new WebDriverWait(driver, 30);
+            wait.until(ExpectedConditions.stalenessOf(results.get(0)));
+            results = webElementUtil.findElements(By.className("resultsTextBody"));
+        }
+
+        Assert.assertEquals(results.size(),resultsCount % 10, "Incorrect number of results returned");
+
+
     }
 
     private void verifyFacetResults(String firstLevelFacet, String secondLevelFacet) {
