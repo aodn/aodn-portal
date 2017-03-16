@@ -90,7 +90,8 @@ describe('OpenLayers', function() {
                     '&SERVICE=WFS' +
                     '&outputFormat=txt' +
                     '&REQUEST=GetFeature' +
-                    '&VERSION=1.0.0';
+                    '&VERSION=1.0.0' +
+                    '&maxFeatures=50';
 
                 var getFeatureUrl = OpenLayers.Layer.WMS.buildGetFeatureRequestUrl('wfs_url', 'type_name', 'txt');
 
@@ -105,6 +106,7 @@ describe('OpenLayers', function() {
                     '&outputFormat=csv' +
                     '&REQUEST=GetFeature' +
                     '&VERSION=1.0.0' +
+                    '&maxFeatures=50' +
                     '&CQL_FILTER=cql%20%25%3A%2F';
 
                 var getFeatureUrl = OpenLayers.Layer.WMS.buildGetFeatureRequestUrl('wfs_url', 'type_name', 'csv', 'cql %:/');

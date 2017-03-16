@@ -119,6 +119,7 @@ OpenLayers.Layer.WMS.buildGetFeatureRequestUrl = function(baseUrl, layerName, ou
     wfsUrl += '&outputFormat=' + outputFormat;
     wfsUrl += '&REQUEST=GetFeature';
     wfsUrl += '&VERSION=1.0.0';
+    wfsUrl += '&maxFeatures=50';
 
     if (downloadFilter) {
         wfsUrl += '&CQL_FILTER=' + encodeURIComponent(downloadFilter);
