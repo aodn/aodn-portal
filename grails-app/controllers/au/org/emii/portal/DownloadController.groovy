@@ -86,6 +86,18 @@ class DownloadController extends RequestProxyingController {
         }
     }
 
+    def downloadShapeFilesForLayer = {
+        def shapeFileUrl = new URL(params.url);
+        def connection = shapeFileUrl.openConnection();
+        def dataStream = connection.inputStream
+
+        _addDownloadTokenCookie()
+        response.setContentType("application/octet-stream")
+        response.setHeader('Content-Disposition', "Attachment;Filename=\"${params.downloadFilename}\"")
+        response.outputStream << dataStream
+        response.outputStream.flush()
+    }
+
     void _executeExternalRequest(url, streamProcessor, resultStream) {
 
         def request = new ExternalRequest(resultStream, url.toURL())

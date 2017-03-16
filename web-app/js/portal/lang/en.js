@@ -34,6 +34,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // Download Step
     noDataMessage: 'No direct access to data available currently.',
     downloadButtonLabel: '<span class="fa fa-lg fa-fw fa-download"></span> Download as\u2026 ',
+    downloadAsShapeFileLabel: 'Shapefile',
     downloadAsCsvLabel: 'CSV',
     downloadAsSubsettedNetCdfLabel: 'NetCDF',
     downloadAsPointTimeSeriesCsvLabel: 'CSV',

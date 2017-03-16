@@ -316,7 +316,8 @@ portal {
         [ 'handler': 'PythonDownloadHandler',              'protocol': 'OGC:WFS-1.0.0-http-get-capabilities' ],
         [ 'handler': 'BodaacDownloadHandler',              'protocol': 'IMOS:AGGREGATION--bodaac'            ],
         [ 'handler': 'GogoduckV1DownloadHandler',          'protocol': 'IMOS:AGGREGATION--gogoduck'          ],
-        [ 'handler': 'FileListDownloadHandler',            'protocol': 'AODN:FILE-list'                      ]
+        [ 'handler': 'FileListDownloadHandler',            'protocol': 'AODN:FILE-list'                      ],
+        [ 'handler': 'ShapeFileDownloadHandler',           'protocol': 'OGC:WFS-1.0.0-http-get-feature--shapefile']
     ]
 
     mapGetFeatureInfoBuffer = 10
