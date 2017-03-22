@@ -23,7 +23,16 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
                     items: [
                         {
                             html: '<span class=\"fa fa-search \"></span>',
-                            cls: 'fa fa-2x'
+                            cls: 'fa fa-2x',
+                            listeners: {
+                                render: function(c) {
+                                    c.body.on('click', function() {
+                                        trackUsabilityTest(OpenLayers.i18n('usabilityTestKeywordSubmitAction')
+                                            , OpenLayers.i18n('usabilityTestKeywordMagnifierLabel'));
+                                    });
+                                },
+                                scope: this
+                            }
                         },
                         { xtype: 'spacer', width: 10 },
                         this.searchField = new Ext.form.TextField({
@@ -67,7 +76,9 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
         }, this);
 
         this.searchField.on('focus', function() {
-                this.searchField.reset();
+            trackUsabilityTest(OpenLayers.i18n('usabilityTestKeywordSubmitAction')
+                , OpenLayers.i18n('usabilityTestKeywordGotFocusLabel'));
+            this.searchField.reset();
         }, this);
     },
 
@@ -80,7 +91,7 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
         this.searcher.removeFilters('any');
         this.searcher.addFilter('any', currentVal);
         this.setCurrentFilter(currentVal);
-        trackFacetUsage(this.facetName, currentVal);
+        trackFacetUsage(OpenLayers.i18n("keyword"), currentVal);
         this.searcher.search();
     },
 
@@ -97,6 +108,10 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
 
     onSearchChange: function(_field, event) {
         if (event.getKey() === event.ENTER) {
+            if (this.searchField && this.searchField.isDirty()) {
+                trackUsabilityTest(OpenLayers.i18n('usabilityTestKeywordSubmitAction')
+                    , OpenLayers.i18n('usabilityTestKeywordEnterLabel'));
+            }
             this.onGo();
         }
     },
