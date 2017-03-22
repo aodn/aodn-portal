@@ -1,5 +1,3 @@
-''
-
 Ext.namespace('Portal.cart');
 
 Portal.cart.PythonDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
