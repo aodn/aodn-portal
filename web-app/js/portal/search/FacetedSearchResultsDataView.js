@@ -106,8 +106,8 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         var that = this;
         var selector = '#' + this.mapElementId(uuid);
-        jQuery(selector).die();
-        jQuery(selector).live("click", that, function(clickEvent) {
+        jQuery(selector).off();
+        jQuery(selector).on("click", that, function(clickEvent) {
 
             var multiSelect = clickEvent.ctrlKey;
             var uuid = that.uuidFromElementId(jQuery(this).attr('id'));

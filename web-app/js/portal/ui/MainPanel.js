@@ -82,5 +82,30 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             var newClasses = (i == tabIndex) ? 'viewPortTabActive viewPortTabActiveLast' : 'viewPortTabActive';
             jQuery('#viewPortTab' + i).removeClass('viewPortTabDisabled').addClass(newClasses);
         }
+
+        this.setViewPortTabActions(!initialLoad);
+
+    },
+
+    setViewPortTabActions: function(activateAll) {
+
+        jQuery(".viewPortTab").on("mouseenter", "button", function(event){
+
+            var parentTab = jQuery(this).parents('.viewPortTab');
+            var tabId = parentTab.attr('id');
+            var tabIdInt = parseInt(tabId.substr(tabId.length - 1));
+
+            jQuery(this).off(); // clear all actions on button
+            if (parentTab.hasClass('viewPortTabActive') || activateAll) {
+                    // add the onclick action
+                    jQuery(this).click(function() {
+                        trackNavigationUsage(
+                            'navigationTrackingProgressBarAction',
+                            OpenLayers.i18n('navigationTrackingStepPrefix') + (tabIdInt + 1)
+                        );
+                        setViewPortTab(tabIdInt);
+                    });
+            }
+        });
     }
 });

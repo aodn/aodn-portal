@@ -306,7 +306,7 @@
                 <configuration>
                     <jsSrcDir>${project.basedir}/web-app/js</jsSrcDir>
                     <sourceIncludes>
-                        <include>jquery/jquery-1.6.min.js</include>
+                        <include>jquery/jquery-3.2.0.min.js</include>
                         <include>jquery/jquery-autocomplete1.1.js</include>
                         <include>jquery/jquery.fileDownload.js</include>
                         <include>jquery/jquery.rotate.1-1.js</include>
