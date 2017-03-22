@@ -70,7 +70,13 @@ public class FacetTest extends BaseTest {
 
 
         List<WebElement> filterPanels = webElementUtil.findElements(By.className("search-filter-panel"));
-        WebElement panel = filterPanels.get(1);
+        WebElement panel = null;
+
+        for(WebElement p : filterPanels) {
+            if(p.getText().contains("Organisation")) {
+                panel=p;
+            }
+        }
 
         //open up the organisations panel, since it starts closed
         panel.click();
@@ -96,7 +102,13 @@ public class FacetTest extends BaseTest {
         driver.get(AODN_PORTAL_SEARCH_PAGE);
 
         List<WebElement> filterPanels = webElementUtil.findElements(By.className("search-filter-panel"));
-        WebElement panel = filterPanels.get(1);
+        WebElement panel = null;
+
+        for(WebElement p : filterPanels) {
+            if(p.getText().contains("Organisation")) {
+                panel=p;
+            }
+        }
 
         //open up the organisations panel, since it starts closed
         panel.click();
