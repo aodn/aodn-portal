@@ -6,7 +6,7 @@
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.fileDownload.js')}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.rotate.1-1.js')}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.cookie.js')}"></script>
-<script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery-ui-1.8.10.custom.min.js')}"></script>
+<script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery-ui.min.js')}"></script>
 
 <script type="text/javascript" src="${resource(dir: 'js/log4javascript-1.4.6', file: 'log4javascript_uncompressed.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Logging.js')}"></script>
