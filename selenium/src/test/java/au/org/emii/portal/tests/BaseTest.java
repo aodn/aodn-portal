@@ -3,6 +3,11 @@ package au.org.emii.portal.tests;
 import au.org.emii.portal.utils.PortalUtil;
 import au.org.emii.portal.utils.SeleniumUtil;
 import au.org.emii.portal.utils.WebElementUtil;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -10,12 +15,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Parameters;
+import org.testng.ITestResult;
+import org.testng.annotations.*;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
@@ -23,6 +29,7 @@ public class BaseTest {
     public static String BROWSER_STACK_AUTOMATE_KEY;
     public static String BROWSER_STACK_URL;
     public static String BROWSER_STACK_LOCAL_URL;
+    public static String BROWSER_STACK_SESSION_URL;
     public static String BROWSER_STACK_DEBUG;
     public static String BROWSER_STACK_LOCAL;
     public static String BROWSER_STACK_VIDEO;
@@ -51,6 +58,11 @@ public class BaseTest {
         log.debug("BROWSER_STACK_VIDEO: " + BROWSER_STACK_VIDEO);
         log.debug("BROWSER_STACK_BUILD: " + BROWSER_STACK_BUILD);
         log.debug("BROWSER_STACK_LOCAL: " + BROWSER_STACK_LOCAL);
+    }
+
+    @BeforeMethod(alwaysRun = true)
+    public void goToHomePage() {
+        goToHome();
     }
 
     @Parameters({"browser", "browser_version", "os", "os_version", "device", "platform", "resolution"})
@@ -82,11 +94,22 @@ public class BaseTest {
         webElementUtil = new WebElementUtil(driver);
         seleniumUtil = new SeleniumUtil(driver);
         portalUtil = new PortalUtil(webElementUtil);
+        String sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
 
+        BROWSER_STACK_SESSION_URL = "https://" + BROWSER_STACK_USERNAME + ":" + BROWSER_STACK_AUTOMATE_KEY + "@www.browserstack.com/automate/sessions/" + sessionId + ".json";
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        driver.manage().window().setPosition(new Point(0,0));
-        driver.manage().window().setSize(new Dimension(getWidth(resolution),getHeight(resolution)));
-        goToHome();
+        driver.manage().window().setPosition(new Point(0, 0));
+        driver.manage().window().setSize(new Dimension(getWidth(resolution), getHeight(resolution)));
+        driver.manage().window().maximize();
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void updateBrowserStackOnFailureOrSkip(ITestResult testResult) throws Exception {
+        if (testResult.getStatus() == ITestResult.FAILURE) {
+            markError(testResult.getThrowable().getMessage());
+        } else if (testResult.getStatus() == ITestResult.SKIP) {
+            markError(String.format("Test Skipped %s", testResult.getName()));
+        }
     }
 
     @AfterClass
@@ -112,6 +135,26 @@ public class BaseTest {
         capability.setCapability("browserstack.video", BROWSER_STACK_VIDEO);
         capability.setCapability("build", BROWSER_STACK_BUILD);
         return capability;
+    }
+
+    public void markError(String reason) {
+        mark("error", reason);
+    }
+
+    public void mark(String status, String reason) {
+        try {
+            URI uri = new URI(BROWSER_STACK_SESSION_URL);
+            HttpPut putRequest = new HttpPut(uri);
+
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
+            nameValuePairs.add((new BasicNameValuePair("status", status)));
+            nameValuePairs.add((new BasicNameValuePair("reason", reason)));
+            putRequest.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            HttpClientBuilder.create().build().execute(putRequest);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
     }
 
     public WebDriver getDriver() {
