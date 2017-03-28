@@ -50,19 +50,18 @@ describe("Portal.search.FreeTextSearchPanel", function()
     describe("google analytics", function() {
         beforeEach(function() {
             spyOn(window, 'trackFacetUsage');
-            freeTextSearchPanel.facetName = "facetName";
         });
 
         it("sends tracking information on go", function() {
             spyOn(freeTextSearchPanel.searchField, 'getRawValue').andReturn("search value");
             freeTextSearchPanel.onGo();
-            expect(window.trackFacetUsage).toHaveBeenCalledWith("facetName", "search value");
+            expect(window.trackFacetUsage).toHaveBeenCalledWith("Keyword", "search value");
         });
 
         it("tracking information is case insensitive", function() {
             spyOn(freeTextSearchPanel.searchField, 'getRawValue').andReturn("SEARCH VALUE 222");
             freeTextSearchPanel.onGo();
-            expect(window.trackFacetUsage).toHaveBeenCalledWith("facetName", "search value 222");
+            expect(window.trackFacetUsage).toHaveBeenCalledWith("Keyword", "search value 222");
         });
     });
 });

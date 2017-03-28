@@ -23,6 +23,14 @@ function trackFacetUsage(action, label) {
     );
 }
 
+function trackUsabilityTest(action, label) {
+    trackUsage(
+        OpenLayers.i18n('usabilityTestTrackingCategory'),
+        action,
+        label
+    );
+}
+
 function trackFiltersUsage(actionKey, label, collection) {
     trackUsage(
         OpenLayers.i18n('filtersTrackingCategory'),
