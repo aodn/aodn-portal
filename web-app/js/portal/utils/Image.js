@@ -1,7 +1,7 @@
 Ext.namespace('Portal.utils.Image');
 
 Portal.utils.Image.resizeWhenLoadedAfterDelay = function(selector, delayMs) {
-    $(selector).load(function() {
+    $(selector).on("load", function() {
         Portal.utils.Image.resizeAfterDelay($(this), delayMs);
     });
 };

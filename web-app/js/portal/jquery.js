@@ -1,6 +1,6 @@
-jQuery( window ).load(function() {
+jQuery( document ).ready(function() {
 
-    jQuery(".resultsHeaderBackground:not(.facetedSearchBtn *)").live("click",
+    jQuery(".resultsHeaderBackground:not(.facetedSearchBtn *)").on("click",
         function(){
             var resBody = jQuery(this).children('.facetedSearchResultBody');
             var fullHeight = resBody[0].scrollHeight;
@@ -19,7 +19,7 @@ jQuery( window ).load(function() {
             }
         });
 
-    jQuery(".resultsHeaderBackground:not(.facetedSearchBtn *)").live("mouseover",
+    jQuery(".resultsHeaderBackground:not(.facetedSearchBtn *)").on("mouseover",
         function(){
             var resBody = jQuery(this).children('.facetedSearchResultBody');
             var fullHeight = resBody[0].scrollHeight;
@@ -29,7 +29,7 @@ jQuery( window ).load(function() {
             }
         });
 
-    jQuery('.button input').live('hover',
+    jQuery('.button input').on('hover',
         function(){
             jQuery(this).toggleClass("hover")
                 .next().stop(true, true).slideToggle();
@@ -37,7 +37,7 @@ jQuery( window ).load(function() {
         });
 
     // getFeatureInfo popup links  .not('.jQueryLiveAnchor')
-    jQuery('.featureinfocontent a:not(.jQueryLiveAnchor)').live('hover',
+    jQuery('.featureinfocontent a:not(.jQueryLiveAnchor)').on('hover',
         function() {
             var thisTag = jQuery(this);
             var trackChangesCommand = "trackGetFeatureInfoClickUsage('" + thisTag.attr('href') + "'); return true;";
@@ -48,49 +48,27 @@ jQuery( window ).load(function() {
         });
 
     // activelayer/tree labels
-    jQuery('#activeLayerTreePanel .x-tree-node a span, .x-tree-node-leaf span').live('hover',
+    jQuery('#activeLayerTreePanel .x-tree-node a span, .x-tree-node-leaf span').on('hover',
         function(){
             jQuery(this).attr('title', jQuery(this).html());
-            jQuery(this).die('hover'); // This removes the .live() functionality
+            jQuery(this).off('hover');
         });
 
     // helper tooltip for unpin (popup)
-    jQuery('.x-tool-unpin').live('hover',
+    jQuery('.x-tool-unpin').on('hover',
         function(){
             jQuery(this).attr('title', "Click to move and resize");
-            jQuery(this).die('hover'); // This removes the .live() functionality
+            jQuery(this).off('hover');
         });
 
 
     jQuery('.layersDiv, .olControlOverviewMapElement')
-        .live("mouseenter", function(){
+        .on("mouseenter", function(){
             jQuery(this).addClass("fullTransparency");
         })
-        .live("mouseleave", function(){
+        .on("mouseleave", function(){
             jQuery(this).removeClass("fullTransparency");
         });
 
-    // exclude disabled main viewport tabs
-    jQuery('.viewPortTab:not(.viewPortTabDisabled)')
-        .live("mouseenter", function(){
-            var tabId = $(this).attr('id');
-            var tabIdInt = parseInt(tabId.substr(tabId.length - 1));
-            jQuery(this).children('button').each(
-                function() {
-                    var events = jQuery(this).data('events');
-                    if (events == undefined || typeof (events.click) != "object") {
-                        // activate the onclick action
-                        jQuery(this).click(function() {
-                            trackNavigationUsage(
-                                'navigationTrackingProgressBarAction',
-                                OpenLayers.i18n('navigationTrackingStepPrefix') + (tabIdInt + 1)
-                            );
-                            setViewPortTab(tabIdInt);
-                            return false;
-                        });
-                    }
-                }
-            );
-        });
 });
 
