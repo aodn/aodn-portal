@@ -1,7 +1,7 @@
 jQuery( document ).ready(function() {
 
-    jQuery(".resultsHeaderBackground:not(.facetedSearchBtn *)").on("click",
-        function(){
+    jQuery(document).on("click", ".resultsHeaderBackground:not(.facetedSearchBtn *)",
+        function() {
             var resBody = jQuery(this).children('.facetedSearchResultBody');
             var fullHeight = resBody[0].scrollHeight;
             var originalHeight = resBody.height();
@@ -19,25 +19,18 @@ jQuery( document ).ready(function() {
             }
         });
 
-    jQuery(".resultsHeaderBackground:not(.facetedSearchBtn *)").on("mouseover",
-        function(){
+    jQuery(document).on("mouseover", ".resultsHeaderBackground:not(.facetedSearchBtn *)",
+        function() {
             var resBody = jQuery(this).children('.facetedSearchResultBody');
             var fullHeight = resBody[0].scrollHeight;
 
-            if (fullHeight > 0  && fullHeight != resBody.height()) {
+            if (fullHeight > 0 && fullHeight != resBody.height()) {
                 jQuery(this).addClass("expandable");
             }
         });
 
-    jQuery('.button input').on('hover',
-        function(){
-            jQuery(this).toggleClass("hover")
-                .next().stop(true, true).slideToggle();
-
-        });
-
     // getFeatureInfo popup links  .not('.jQueryLiveAnchor')
-    jQuery('.featureinfocontent a:not(.jQueryLiveAnchor)').on('hover',
+    jQuery(document).on("mouseover", '.featureinfocontent a:not(.jQueryLiveAnchor)',
         function() {
             var thisTag = jQuery(this);
             var trackChangesCommand = "trackGetFeatureInfoClickUsage('" + thisTag.attr('href') + "'); return true;";
@@ -48,27 +41,14 @@ jQuery( document ).ready(function() {
         });
 
     // activelayer/tree labels
-    jQuery('#activeLayerTreePanel .x-tree-node a span, .x-tree-node-leaf span').on('hover',
-        function(){
+    jQuery(document).on("mouseover", '#activeLayerTreePanel .x-tree-node a span, .x-tree-node-leaf span',
+        function() {
             jQuery(this).attr('title', jQuery(this).html());
-            jQuery(this).off('hover');
         });
 
     // helper tooltip for unpin (popup)
-    jQuery('.x-tool-unpin').on('hover',
-        function(){
+    jQuery(document).on('mouseover', '.x-tool-unpin',
+        function() {
             jQuery(this).attr('title', "Click to move and resize");
-            jQuery(this).off('hover');
         });
-
-
-    jQuery('.layersDiv, .olControlOverviewMapElement')
-        .on("mouseenter", function(){
-            jQuery(this).addClass("fullTransparency");
-        })
-        .on("mouseleave", function(){
-            jQuery(this).removeClass("fullTransparency");
-        });
-
 });
-
