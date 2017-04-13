@@ -117,15 +117,17 @@ public class FacetTest extends BaseTest {
 
         //now convert to just the org name, without the number of results
         String orgName = org.split(" \\(\\d{1,}\\)")[0];
+        log.info("Checking Organisation:" + orgName);
 
         //now get the number of results given after the name
         int resultsCount = Integer.parseInt(org.substring(orgName.length()+2,org.length()-1));
 
         WebElement lastPage = webElementUtil.findElement(By.xpath("//div[@class='xtb-text' and contains(.,'of ')]"));
         int numberOfPages = Integer.parseInt(lastPage.getText().substring(3));
-        Assert.assertEquals(numberOfPages,(resultsCount/10)+1, "Incorrect number of pages returned");
+        int expectedNumberOfPages = (int)Math.ceil((double)resultsCount/10);
 
-        log.info("Checking Organisation:" + orgName);
+        Assert.assertEquals(numberOfPages, expectedNumberOfPages, "Incorrect number of pages returned for " + orgName);
+
         List<WebElement> results = webElementUtil.findElements(By.className("resultsTextBody"));
         for (WebElement result : results) {
             WebElement facetResult = result.findElement(By.xpath("div[2]/span[2]"));
@@ -139,10 +141,12 @@ public class FacetTest extends BaseTest {
             wait.until(ExpectedConditions.stalenessOf(results.get(0)));
             results = webElementUtil.findElements(By.className("resultsTextBody"));
         }
+        int expectedLastPageResults = resultsCount % 10;
+        if(expectedLastPageResults==0) {
+            expectedLastPageResults = 10;
+        }
 
-        Assert.assertEquals(results.size(),resultsCount % 10, "Incorrect number of results returned");
-
-
+        Assert.assertEquals(results.size(), expectedLastPageResults, "Incorrect number of results returned");
     }
 
     private void verifyFacetResults(String firstLevelFacet, String secondLevelFacet) {
