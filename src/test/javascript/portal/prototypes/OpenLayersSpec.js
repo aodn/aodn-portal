@@ -37,14 +37,17 @@ describe('OpenLayers', function() {
         });
 
         describe("_is130", function() {
-            it("returns false for ncwms", function() {
+            it("returns false when not 1.3.0", function() {
                 openLayer.isNcwms = returns(true);
-                openLayer.server = {wmsVersion: '1.3.0'};
+                openLayer.server = {wmsVersion: '1.1.1'};
                 expect(openLayer._is130()).toBeFalsy();
             });
 
-            it("returns true for 1.3.0 when not NCWMS", function() {
+            it("returns correct for 1.3.0", function() {
+                openLayer.isNcwms = returns(true);
                 openLayer.server = {wmsVersion: '1.3.0'};
+                expect(openLayer._is130()).toBeTruthy();
+                openLayer.isNcwms = returns(false);
                 expect(openLayer._is130()).toBeTruthy();
             });
         });
