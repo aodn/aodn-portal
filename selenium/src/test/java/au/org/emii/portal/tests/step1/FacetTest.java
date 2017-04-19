@@ -141,10 +141,7 @@ public class FacetTest extends BaseTest {
             wait.until(ExpectedConditions.stalenessOf(results.get(0)));
             results = webElementUtil.findElements(By.className("resultsTextBody"));
         }
-        int expectedLastPageResults = resultsCount % 10;
-        if(expectedLastPageResults==0) {
-            expectedLastPageResults = 10;
-        }
+        int expectedLastPageResults = (resultsCount % 10 == 0) ? 10 : resultsCount % 10;
 
         Assert.assertEquals(results.size(), expectedLastPageResults, "Incorrect number of results returned");
     }
