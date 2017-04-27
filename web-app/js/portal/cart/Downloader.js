@@ -134,7 +134,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
 
     _onAsyncDownloadRequestFailure: function(response) {
 
-        var msg = String.format("Error! The server response was: '{0}'<BR>{1}", response.statusText, OpenLayers.i18n('asyncDownloadErrorMsg'));
+        var msg = String.format("<h2 class='alert alert-danger'>Error! {0}</h2>{1}", response.responseText, OpenLayers.i18n('asyncDownloadErrorMsg'));
 
         this.messageBox.show({
             title: OpenLayers.i18n('asyncDownloadPanelTitle'),
@@ -142,6 +142,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
             width: this.ALERTWIDTH
         });
     },
+
 
     _sanitiseFilename: function(str) {
         return str.replace(/:/g, "#").replace(/[/\\ ]/g, "_");

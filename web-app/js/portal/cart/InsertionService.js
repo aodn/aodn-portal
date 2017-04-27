@@ -9,23 +9,18 @@ Portal.cart.InsertionService = Ext.extend(Object, {
 
     insertionValues: function(collection) {
 
-        var config = {
-            downloadConfirmation: this.downloadWithConfirmation,
-            downloadConfirmationScope: this
-        };
-
         var htmlInjection;
 
         if (this._isCollectionDownloadable(collection)) {
             if (collection.isNcwms()) {
-                htmlInjection = new Portal.cart.NcWmsInjector(config);
+                htmlInjection = new Portal.cart.NcWmsInjector();
             }
             else {
-                htmlInjection = new Portal.cart.WmsInjector(config);
+                htmlInjection = new Portal.cart.WmsInjector();
             }
         }
         else {
-            htmlInjection = new Portal.cart.NoDataInjector(config);
+            htmlInjection = new Portal.cart.NoDataInjector();
         }
 
         return htmlInjection.getInjectionJson(collection);
@@ -34,9 +29,5 @@ Portal.cart.InsertionService = Ext.extend(Object, {
     _isCollectionDownloadable: function(collection) {
         var downloadHandlers = Portal.cart.DownloadHandler.handlersForDataCollection(collection);
         return downloadHandlers.length > 0;
-    },
-
-    downloadWithConfirmation: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
-        this.downloadPanel.confirmDownload(collection, generateUrlCallbackScope, generateUrlCallback, params);
     }
 });

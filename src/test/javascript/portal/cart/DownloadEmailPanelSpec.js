@@ -15,6 +15,11 @@ describe("Portal.cart.DownloadEmailPanel", function() {
         });
     });
 
+    var mockCollection = {
+        getMetadataRecord: returns({ data: '' })
+    };
+
+
     it('gets email address from email field', function() {
         spyOn(panel.emailField, 'getValue');
         panel.getEmailValue();
@@ -55,6 +60,17 @@ describe("Portal.cart.DownloadEmailPanel", function() {
                 var returnVal = panel._validateEmailAddress('user@domain.com');
                 expect(returnVal).toBe(true);
             });
+        });
+
+    });
+
+    describe('resets challenge address panel', function() {
+
+        it('resets when required', function() {
+            spyOn(panel.downloadChallengePanel, '_doReset');
+            panel.show({collectEmailAddress: true, collection: mockCollection});
+
+            expect(panel.downloadChallengePanel._doReset).toHaveBeenCalled();
         });
 
     });

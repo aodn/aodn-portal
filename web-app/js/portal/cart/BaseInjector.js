@@ -35,18 +35,5 @@ Portal.cart.BaseInjector = Ext.extend(Object, {
         if (Ext.get(elementId)) {
             Ext.fly(elementId).update("");
         }
-    },
-
-    downloadWithConfirmation: function(dataCollection, generateUrlCallback, params) {
-
-        return function() {
-            this.downloadConfirmation.call(
-                this.downloadConfirmationScope,
-                dataCollection,
-                this,
-                generateUrlCallback,
-                params
-            );
-        };
     }
 });

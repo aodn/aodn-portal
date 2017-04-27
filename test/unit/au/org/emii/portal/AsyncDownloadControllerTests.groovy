@@ -40,7 +40,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
         controller.index()
 
-        assertEquals HTTP_500_INTERNAL_SERVER_ERROR, controller.renderArgs.status
+        assertEquals HTTP_401_UNAUTHORISED, controller.renderArgs.status
     }
 
     void testParametersPassedToAggregatorService() {

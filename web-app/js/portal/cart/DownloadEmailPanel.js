@@ -11,6 +11,8 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
             emailVal = Ext.util.Cookies.get('emailField');
         }
 
+        this.downloadChallengePanel = new Portal.cart.DownloadChallengePanel();
+
         this.emailField = new Ext.form.TextField({
             name: "emailField",
             value: emailVal,
@@ -22,20 +24,21 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
         });
 
         var config = {
-            padding: 10,
-            cls: 'downloadEmailPanel',
+            cls: 'alert alert-attention',
             items: [
                 {xtype: 'spacer', height: 5},
                 this.emailField,
                 {xtype: 'spacer', height: 5},
                 {
                     html: OpenLayers.i18n('notificationBlurbMessage')
-                }
+                },
+                this.downloadChallengePanel
             ],
             listeners: {
                 scope: this,
                 'show': function() {
                     this.emailField.focus();
+                    this.downloadChallengePanel._doReset();
                     var the = this;
                     setTimeout(function() { the.emailField.validate(); }, 200 );
                 }
@@ -52,7 +55,6 @@ Portal.cart.DownloadEmailPanel = Ext.extend(Ext.Panel, {
         Ext.util.Cookies.set('emailField', emailValue, new Date().add(Date.DAY, 90));
         return emailValue;
     },
-
 
     _validateEmailAddress: function(address) {
         if (!address) {

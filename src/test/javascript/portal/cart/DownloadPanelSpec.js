@@ -210,43 +210,48 @@ describe("Portal.cart.DownloadPanel", function() {
     describe('confirmDownload', function() {
 
         it('calls trackUsage when the user accepts download', function() {
-            var testParams = {
-                filenameFormat: "{0}.csv",
-                downloadLabel: 'List of URLs'
-            };
+
             var testCollection = makeTestCollection();
             testCollection.getFilters = returns();
             var callbackScope = downloadPanel;
-            var callback = noOp;
+            var testKey = "downloadAsCsvLabel";
+            var downloadOptions = {};
+            downloadOptions.handlerParams = {
+                filenameFormat: "{0}.csv",
+                downloadLabel: 'List of URLs'
+            };
+            downloadOptions.handler = noOp;
             $.fileDownload = noOp;
 
             spyOn(downloadPanel.confirmationWindow, 'show');
             spyOn(window, 'trackUsage');
             spyOn(window, 'trackUserUsage');
 
-            downloadPanel.confirmDownload(testCollection, callbackScope, callback, testParams);
-            testParams.onAccept(testParams);
-            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + testParams.downloadLabel, testCollection.getTitle(), null);
+            downloadPanel.confirmDownload(testCollection, callbackScope, downloadOptions);
+            downloadOptions.handlerParams.onAccept(downloadOptions.handlerParams);
+            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + downloadOptions.handlerParams.downloadLabel, testCollection.getTitle(), null);
             expect(window.trackUserUsage).not.toHaveBeenCalled();
         });
 
         it('calls track User Usage when the user accepts download', function() {
-            var testParams = {
+
+            var testCollection = makeTestCollection();
+            testCollection.getFilters = returns();
+            var callbackScope = downloadPanel;
+            var downloadOptions = {};
+            downloadOptions.handlerParams = {
                 filenameFormat: "{0}.csv",
                 downloadLabel: 'List of URLs',
                 emailAddress: "me@here.com"
             };
-            var testCollection = makeTestCollection();
-            testCollection.getFilters = returns();
-            var callbackScope = downloadPanel;
-            var callback = noOp;
+            downloadOptions.handler = noOp;
             $.fileDownload = noOp;
 
             spyOn(downloadPanel.confirmationWindow, 'show');
             spyOn(window, 'trackUserUsage');
 
-            downloadPanel.confirmDownload(testCollection, callbackScope, callback, testParams);
-            testParams.onAccept(testParams);
+            downloadPanel.confirmDownload(testCollection, callbackScope, downloadOptions);
+            downloadOptions.handlerParams.onAccept(downloadOptions.handlerParams);
             expect(window.trackUserUsage).toHaveBeenCalled();
 
         });
