@@ -3,6 +3,7 @@ package au.org.emii.portal.tests.step1;
 import au.org.emii.portal.tests.BaseTest;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -62,6 +63,68 @@ public class FacetTest extends BaseTest {
         verifyFacetResults(firstLevelFacet, "Precipitation and evaporation");
         verifyFacetResults(firstLevelFacet, "Air-Sea Fluxes");
         verifyFacetResults(firstLevelFacet, "UV radiation");
+    }
+
+    @Test
+    public void untickFacetTest() throws InterruptedException {
+        log.info("Loading search page - Step 1");
+        WebDriver driver = getDriver();
+        driver.get(AODN_PORTAL_SEARCH_PAGE);
+
+
+        // grab the text of the original results so we can make sure it reverts back when we untick later
+        String originalResults = webElementUtil.findElement(By.className("faceted-search-results")).getText();
+
+        WebElement topPanel = webElementUtil.findElement(By.className("search-filter-panel"));
+        List<WebElement> facetEntries = topPanel.findElements(By.tagName("a"));
+
+        //remember the current facet titles so we can make sure they change
+        List<String> originalTitles = new ArrayList<String>();
+        for(WebElement entry: facetEntries ) {
+            originalTitles.add(entry.getText());
+        }
+
+        //open up a facet (doesn't matter which)
+        facetEntries.get(0).click();
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.stalenessOf(facetEntries.get(0)));
+
+        //grab the new stuff
+        topPanel = webElementUtil.findElement(By.className("search-filter-panel"));
+        facetEntries = topPanel.findElements(By.tagName("a"));
+
+        List<String> latestTitles = new ArrayList<String>();
+        for(WebElement entry: facetEntries ) {
+            latestTitles.add(entry.getText());
+        }
+
+        boolean changed = !latestTitles.equals(originalTitles);
+
+        Assert.assertNotEquals(latestTitles, originalTitles, "Facets not changed after selection");
+
+        WebElement checkBox = null;
+        try {
+            checkBox = topPanel.findElement(By.xpath("//input[@type='checkbox']"));
+        } catch(NoSuchElementException e) {
+            Assert.fail("No checkbox found after facet selected");
+        }
+
+        checkBox.click();
+        wait.until(ExpectedConditions.stalenessOf(facetEntries.get(0)));
+
+        //grab the new new stuff (which should be the same as the original stuff)
+        topPanel = webElementUtil.findElement(By.className("search-filter-panel"));
+        facetEntries = topPanel.findElements(By.tagName("a"));
+
+        latestTitles = new ArrayList<String>();
+        for(WebElement entry: facetEntries ) {
+            latestTitles.add(entry.getText());
+        }
+
+        Assert.assertEquals(latestTitles, originalTitles,"Facets have not reverted to initial state after unticking checkbox");
+
+        String newResults = webElementUtil.findElement(By.className("faceted-search-results")).getText();
+        Assert.assertTrue(newResults.equals(originalResults),"Results have not reverted to initial state after unticking checkbox");
     }
 
     @Test
