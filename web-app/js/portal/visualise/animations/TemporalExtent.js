@@ -27,10 +27,9 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
 
     min: function() {
         var firstDay = this.getFirstDay();
-        if (firstDay) {
+        if (firstDay && this.getDay(firstDay)[0]) {
             return this.getDay(firstDay)[0].clone();
         }
-
         return undefined;
     },
 
@@ -39,7 +38,6 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
         if (lastDay) {
             return this.getDay(lastDay).last().clone();
         }
-
         return undefined;
     },
 
