@@ -10,7 +10,9 @@ class ProxyRedirectService {
         def proxyRedirects = grailsApplication.config.proxyRedirects
 
         proxyRedirects.each {
-            url = url.replace(it.uri, it.redirectUri)
+            if (!url.contains('CQL_FILTER')) {
+                url = url.replace(it.uri, it.redirectUri)
+            }
         }
 
         url
