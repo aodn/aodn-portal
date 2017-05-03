@@ -318,7 +318,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         // Updating the popularity counter of the metadata record at GeoNetwork
         Ext.ux.Ajax.proxyRequestXML({
-            url: Portal.app.appConfig.geonetwork.url + '/srv/eng/xml_iso19139?uuid=' + uuid
+            url: Portal.app.appConfig.geonetwork.url + '/srv/eng/xml_iso19139.mcp?uuid=' + uuid + "&styleSheet=xml_iso19139.mcp.xsl"
         });
     },
 
