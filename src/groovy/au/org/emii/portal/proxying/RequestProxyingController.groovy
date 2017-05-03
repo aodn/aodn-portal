@@ -9,6 +9,8 @@ import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilenam
 
 abstract class RequestProxyingController extends HostVerifyingController {
 
+    def proxyRedirectService
+
     def index = {
 
         _performProxyingIfAllowed()
@@ -59,7 +61,7 @@ abstract class RequestProxyingController extends HostVerifyingController {
 
     def _makeRequest = { request, response, params, paramProcessor, streamProcessor ->
         def processedParams = paramProcessor ? paramProcessor(params) : params
-        def proxiedRequest = new ProxiedRequest(request, response, processedParams)
+        def proxiedRequest = new ProxiedRequest(request, response, processedParams, proxyRedirectService)
         proxiedRequest.proxy(streamProcessor)
     }
 
