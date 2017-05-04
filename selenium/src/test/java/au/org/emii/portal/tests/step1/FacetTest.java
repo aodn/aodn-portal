@@ -74,57 +74,55 @@ public class FacetTest extends BaseTest {
 
         // grab the text of the original results so we can make sure it reverts back when we untick later
         String originalResults = webElementUtil.findElement(By.className("faceted-search-results")).getText();
-
-        WebElement topPanel = webElementUtil.findElement(By.className("search-filter-panel"));
-        List<WebElement> facetEntries = topPanel.findElements(By.tagName("a"));
-
-        //remember the current facet titles so we can make sure they change
-        List<String> originalTitles = new ArrayList<String>();
-        for(WebElement entry: facetEntries ) {
-            originalTitles.add(entry.getText());
-        }
+        List<WebElement> facetEntries = getFacetEntries();
+        List<String> originalTitles = getFacetTitles(facetEntries);
 
         //open up a facet (doesn't matter which)
         facetEntries.get(0).click();
-        WebDriverWait wait = new WebDriverWait(driver, 30);
+        WebDriverWait wait = new WebDriverWait(getDriver(), 30);
         wait.until(ExpectedConditions.stalenessOf(facetEntries.get(0)));
 
         //grab the new stuff
-        topPanel = webElementUtil.findElement(By.className("search-filter-panel"));
-        facetEntries = topPanel.findElements(By.tagName("a"));
-
-        List<String> latestTitles = new ArrayList<String>();
-        for(WebElement entry: facetEntries ) {
-            latestTitles.add(entry.getText());
-        }
-
-        boolean changed = !latestTitles.equals(originalTitles);
+        facetEntries = getFacetEntries();
+        List<String> latestTitles = getFacetTitles(facetEntries);
 
         Assert.assertNotEquals(latestTitles, originalTitles, "Facets not changed after selection");
 
         WebElement checkBox = null;
         try {
-            checkBox = topPanel.findElement(By.xpath("//input[@type='checkbox']"));
+            checkBox = driver.findElement(By.className("search-filter-panel").xpath("//input[@type='checkbox']"));
         } catch(NoSuchElementException e) {
             Assert.fail("No checkbox found after facet selected");
         }
 
+        //untick the facet check box
         checkBox.click();
         wait.until(ExpectedConditions.stalenessOf(facetEntries.get(0)));
 
         //grab the new new stuff (which should be the same as the original stuff)
-        topPanel = webElementUtil.findElement(By.className("search-filter-panel"));
-        facetEntries = topPanel.findElements(By.tagName("a"));
-
-        latestTitles = new ArrayList<String>();
-        for(WebElement entry: facetEntries ) {
-            latestTitles.add(entry.getText());
-        }
+        facetEntries = getFacetEntries();
+        latestTitles = getFacetTitles(facetEntries);
 
         Assert.assertEquals(latestTitles, originalTitles,"Facets have not reverted to initial state after unticking checkbox");
 
         String newResults = webElementUtil.findElement(By.className("faceted-search-results")).getText();
         Assert.assertTrue(newResults.equals(originalResults),"Results have not reverted to initial state after unticking checkbox");
+    }
+
+    //returns a list of WebElements, each representing an entry in the facet list of the top facet panel.
+    private List<WebElement> getFacetEntries() {
+        WebElement topPanel = webElementUtil.findElement(By.className("search-filter-panel"));
+        List<WebElement> facetEntries = topPanel.findElements(By.tagName("a"));
+        return facetEntries;
+    }
+
+    //returns the titles of the given facet entries
+    private List<String> getFacetTitles(List<WebElement> facetEntries) {
+        List<String> titles = new ArrayList();
+        for(WebElement entry: facetEntries ) {
+            titles.add(entry.getText());
+        }
+        return titles;
     }
 
     @Test
