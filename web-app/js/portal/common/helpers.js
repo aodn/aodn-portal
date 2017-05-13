@@ -17,7 +17,7 @@ function getAussieUnits(val, src_units) {
         // arrays hold all possible names for a 'type'
         //
         // ALL ARRAY ENTRIES IN LOWER CASE
-        var celNameArray = ["c","celcius","cel","deg_c","degrees c"];
+        var celNameArray = ["c","celcius","cel","deg_c","degrees c","degrees"];
         var farNameArray = ["f","fahrenheit"];
         var kelNameArray = ["k","kelvin","kel"];
         var metresNameArray = ["m","metres","meters","metre"];
