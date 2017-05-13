@@ -51,19 +51,16 @@ describe("Portal.cart.DownloadPanel", function() {
             it('listens for downloadrequested', function() {
                 downloadPanel.downloader.fireEvent('downloadrequested', 'url', collection);
                 expect(downloadPanel.onDownloadRequested).toHaveBeenCalledWith('url', collection);
-                expect(downloadPanel.generateContent).toHaveBeenCalled();
             });
 
             it('listens for downloadstarted', function() {
                 downloadPanel.downloader.fireEvent('downloadstarted', 'url', collection);
                 expect(downloadPanel.onDownloadStarted).toHaveBeenCalledWith('url', collection);
-                expect(downloadPanel.generateContent).toHaveBeenCalled();
             });
 
             it('listens for downloadfailed', function() {
                 downloadPanel.downloader.fireEvent('downloadfailed', 'url', collection, 'msg');
                 expect(downloadPanel.onDownloadFailed).toHaveBeenCalledWith('url', collection, 'msg');
-                expect(downloadPanel.generateContent).toHaveBeenCalled();
             });
         });
     });

@@ -69,12 +69,10 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
     onDownloadRequested: function(downloadUrl, collection) {
         log.debug('Download requested', downloadUrl, collection);
-        this.generateContent();
     },
 
     onDownloadStarted: function(downloadUrl, collection) {
         log.debug('Download started', downloadUrl, collection);
-        this.generateContent();
     },
 
     onDownloadFailed: function(downloadUrl, collection, msg) {
@@ -83,7 +81,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             OpenLayers.i18n('downloadErrorText')
         );
         log.error('Download failed', downloadUrl, collection, msg);
-        this.generateContent();
     },
 
     generateContent: function() {
