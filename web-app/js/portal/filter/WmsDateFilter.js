@@ -1,25 +1,20 @@
+/*
+ * Copyright 2015 IMOS
+ *
+ * The AODN/IMOS Portal is distributed under the terms of the GNU General Public License
+ *
+ */
+
 Ext.namespace('Portal.filter');
 
-Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
+Portal.filter.WmsDateFilter = Ext.extend(Portal.filter.DateFilter, {
 
-    hasValue: function() {
-
-        return this.getValue() && (this._getFromDate() || this._getToDate());
+    constructor: function(cfg) {
+        Portal.filter.WmsDateFilter.superclass.constructor.call(this, cfg);
     },
 
-    getSupportedGeoserverTypes: function() {
-
-        return ['date', 'datetime'];
-    },
-
-    getUiComponentClass: function() {
-
-        return Portal.filter.ui.DateFilterPanel;
-    },
-
-    getCql: function() {
-
-        return this._getCql(true);
+    getDateDataCql: function() {
+        return this._getCql(false);
     },
 
     _getCql: function(useTimeRangeColumnNames) {
@@ -32,7 +27,6 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
             startColumnName = this.getWmsStartDateName();
             endColumnName = this.getWmsEndDateName();
         }
-
         if (this._getFromDate()) {
 
             cql = String.format(
@@ -42,16 +36,15 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
             );
         }
 
-        if (this._getFromDate() && this._getToDate()) {
+        if (this._getFromDate() && this._getEndOfToDate()) {
             cql += ' AND ';
         }
 
-        if (this._getToDate()) {
-
+        if (this._getEndOfToDate()) {
             cql += String.format(
                 "{0} <= '{1}'",
                 startColumnName || this.getName(),
-                this._getDateString(this._getToDate())
+                this._getDateString(this._getEndOfToDate())
             );
         }
 
@@ -61,8 +54,7 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
     getHumanReadableForm: function() {
         var formatKey;
 
-        if (this._getFromDate() && this._getToDate()) {
-
+        if (this._getFromDate() && this._getEndOfToDate()) {
             formatKey = 'dateFilterBetweenFormat';
         }
         else if (this._getFromDate()) {
@@ -76,7 +68,8 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
 
         var label = OpenLayers.i18n('temporalExtentHeading');
 
-        if (!this.isPrimary() && this.getLabel()) {
+        if (!this.isPrimary()) {
+
             label += ' (' + this.getLabel() + ')';
         }
 
@@ -84,39 +77,15 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
             OpenLayers.i18n(formatKey),
             label,
             this._getDateHumanString(this._getFromDate()),
-            this._getDateHumanString(this._getToDate())
+            this._getDateHumanString(this._getEndOfToDate())
         );
     },
 
-    _getFromDate: function() {
+    _getEndOfToDate: function() {
 
-        return this.getValue().fromDate;
-    },
-
-    _getToDate: function() {
-
-        return this.getValue().toDate;
-    },
-
-    _getDateString: function(newDate) {
-
-        if (newDate) {
-            return moment(newDate).toISOString();
+        var momentDate = moment.utc(this._getToDate());
+        if (this._getToDate() && momentDate.isValid()) {
+            return momentDate.add(1, 'd').toDate();
         }
-        return '';
-    },
-
-    _getDateHumanString: function(newDate) {
-
-        if (newDate) {
-            return this._formatHumanDate(newDate);
-        }
-
-        return '';
-    },
-
-    _formatHumanDate: function(date) {
-
-        return moment(date).utc().format(OpenLayers.i18n('dateTimeDisplayFormat'));
     }
 });

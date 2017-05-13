@@ -132,7 +132,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         var panelOrder = [
             Portal.filter.GeometryFilter,
-            Portal.filter.DateFilter,
+            Portal.filter.WmsDateFilter,
             Portal.filter.BooleanFilter,
             Portal.filter.NumberFilter,
             Portal.filter.StringFilter

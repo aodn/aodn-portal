@@ -64,7 +64,7 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
                         longitudeRangeEnd: 170
                     },
                     {
-                        type: Portal.filter.DateFilter,
+                        type: Portal.filter.WmsDateFilter,
                         comment: 'Should be safely ignored for URL building'
                     }
                 ])

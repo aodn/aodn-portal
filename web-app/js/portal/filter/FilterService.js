@@ -106,7 +106,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
         var dateFilters = filters.filter(function(filter) {
 
-            return filter.constructor == Portal.filter.DateFilter;
+            return filter.constructor == Portal.filter.WmsDateFilter;
         });
 
         if (dateFilters.length == 1) {

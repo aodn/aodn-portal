@@ -95,6 +95,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'Filter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'BooleanFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'DateFilter.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'WmsDateFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'GeometryFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'NumberFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'StringFilter.js')}"></script>
