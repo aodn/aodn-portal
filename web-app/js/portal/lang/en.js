@@ -170,7 +170,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     parameterFilter: 'Parameter',
     freetextFilter: 'Keyword',
     freeTextFilterSearchErrorMsg: "Search for free text within metadata records ",
-    freeTextFilterSearchHelperMsg: "Keyword Search.. ",
+    freeTextFilterSearchHelperMsg: "Type keyword(s) and hit Enter.. ",
     freeTextSearchClearButton: '<span class=\"fa fa-remove\"></span> Clear <b>\'${val}\'</b>',
     dateFilter: 'Date (UTC)',
     geoFilter: "Geographic Boundary",
