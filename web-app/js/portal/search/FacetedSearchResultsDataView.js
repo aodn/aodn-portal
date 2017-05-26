@@ -128,13 +128,13 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var html = "";
 
         html += this._getMeasuredParametersAsHtml(paramTpl, values);
-        html += this._getOrganisationAsHtml(paramTpl, values.organisation);
-        html += this._getPlatformAsHtml(paramTpl, values.platform);
         html += this._getTemporalExtentAsHtml(paramTpl, {
             begin: values.temporalExtentBegin,
             end: values.temporalExtentEnd
         });
-
+        html += this._getOrganisationAsHtml(paramTpl, values.organisation);
+        html += this._getPlatformAsHtml(paramTpl, values.platform);
+        
         return html;
     },
 
