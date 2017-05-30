@@ -53,8 +53,8 @@ public class FacetDateTest extends BaseTest {
 
             List<WebElement> facetResults = header.findElements(By.xpath("div[2]/div[2]/div/span[2]"));
 
-            //the last div has the years
-            String yearsString = facetResults.get(facetResults.size()-1).getText();
+            //the second div has the years
+            String yearsString = facetResults.get(1).getText();
             String[] years = yearsString.split(" - ");
 
             Assert.assertTrue(Integer.parseInt(years[0]) <= 1991, "Result not within given date range");

@@ -84,7 +84,7 @@ public class FacetOrganisationTest extends BaseTest {
 
         List<WebElement> results = webElementUtil.findElements(By.className("resultsTextBody"));
         for (WebElement result : results) {
-            WebElement facetResult = result.findElement(By.xpath("div[2]/span[2]"));
+            WebElement facetResult = result.findElement(By.xpath("//span[contains(@class, 'fa-institution')]/../following-sibling::span"));
             Assert.assertTrue(facetResult.getText().contains(orgName));
         }
 
