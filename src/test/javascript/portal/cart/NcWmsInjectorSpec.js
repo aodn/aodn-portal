@@ -38,13 +38,20 @@ describe('Portal.cart.NcWmsInjector', function() {
             expect(injector._getDataFilterEntry(dataCollection)).not.toEqual(String.format("<i>{0}<i>", OpenLayers.i18n("noFilterLabel")));
         });
 
-        it('returns an empty message when no defined date', function() {
+        it('returns a message when no valid date', function() {
+            dataCollection.getFilters = returns([{
+                isNcwmsParams: true
+            }]);
+            expect(injector._getDataFilterEntry(dataCollection)).toEqual(OpenLayers.i18n('unavailableTemporalExtent'));
+        });
+
+        it('returns a message when no temporal subset is possible', function() {
             dataCollection.getFilters = returns([{
                 isNcwmsParams: true,
-                dateRangeStart: null
+                name: "time"
             }]);
-
             expect(injector._getDataFilterEntry(dataCollection)).toEqual(OpenLayers.i18n('temporalExtentNotLoaded'));
+
         });
 
         it('indicates bounds properly created', function() {
@@ -92,7 +99,6 @@ describe('Portal.cart.NcWmsInjector', function() {
             })]);
 
             var entry = injector._getDataFilterEntry(dataCollection);
-            console.log(dataCollection.getFilters());
             expect(entry).toEqual(
                 String.format('{0}:&nbsp;-23.654, 114.567<br>{1}:&nbsp;{2} to {3}<br>',
                     OpenLayers.i18n("timeSeriesAtHeading"),
