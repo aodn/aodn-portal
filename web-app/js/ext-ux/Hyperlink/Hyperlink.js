@@ -23,7 +23,7 @@ Ext.ux.Hyperlink = Ext.extend(Ext.form.Label, {
             'click'
         );
         
-        this.template = '<div id="{0}-box" class="x-hyperlink"><a id="{0}-anchor" class="x-hyperlink-anchor {1} {2}">{3}</a></div>';
+        this.template = '<div id="{0}-box" title="{4}" class="x-hyperlink"><a id="{0}-anchor" class="x-hyperlink-anchor {1} {2}">{3}</a></div>';
 
         Ext.ux.Hyperlink.superclass.initComponent.call(this);
     },
@@ -55,7 +55,7 @@ Ext.ux.Hyperlink = Ext.extend(Ext.form.Label, {
     
     doLayout: function(){
         if (!this.rendered) return;
-        var html = String.format(this.template, this.el.id, this.iconCls, this.anchorCls, this.text);
+        var html = String.format(this.template, this.el.id, this.iconCls, this.anchorCls, this.text, this.tooltip);
         Ext.fly(this.el.id).dom.innerHTML = html;
     }
 });

@@ -21,19 +21,6 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
                     layout: 'hbox',
                     cls: '',
                     items: [
-                        {
-                            html: '<span class=\"fa fa-search \" title=\"' + OpenLayers.i18n("freeTextSearchToolTip")+ '\"></span>',
-                            cls: 'fa fa-2x',
-                            listeners: {
-                                render: function(c) {
-                                    c.body.on('click', function() {
-                                        trackUsabilityTest(OpenLayers.i18n('usabilityTestKeywordSubmitAction')
-                                            , OpenLayers.i18n('usabilityTestKeywordMagnifierLabel'));
-                                    });
-                                },
-                                scope: this
-                            }
-                        },
                         { xtype: 'spacer', width: 10 },
                         this.searchField = new Ext.form.TextField({
                             width: 250,
@@ -42,7 +29,18 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
                             fieldLabel: 'Name',
                             enableKeyEvents: true
                         }),
-                        { xtype: 'spacer', width: 10 }
+                        { xtype: 'spacer', width: 7 },
+                        new Ext.ux.Hyperlink({
+                            text: '<span class=\"fa fa-search \" title=\"' + OpenLayers.i18n("freeTextSearchToolTip")+ '\"></span>',
+                            iconCls: 'fa fa-lg',
+                            tooltip: OpenLayers.i18n('searchFieldText'),
+                            listeners: {
+                                click: function() {
+                                   this.onSearchSubmit();
+                                },
+                                scope: this
+                            }
+                        })
                     ]
                 },
                 { xtype: 'spacer', height: 10 },
@@ -78,6 +76,7 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
         this.searchField.on('focus', function() {
             trackUsabilityTest(OpenLayers.i18n('usabilityTestKeywordSubmitAction')
                 , OpenLayers.i18n('usabilityTestKeywordGotFocusLabel'));
+            this.searchField.reset();
         }, this);
     },
 

@@ -107,6 +107,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     searchParametersText: 'Observed Parameter',
     temporalExtentDateFormat: 'YYYY',
     metadataLink: 'more',
+    searchFieldText: "Type keyword(s) and press Enter",
 
     // errors
     errorDialogTitle: 'Error',
