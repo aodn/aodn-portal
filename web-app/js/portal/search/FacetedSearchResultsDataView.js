@@ -176,10 +176,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     _getOrganisationAsHtml: function(template, organisation) {
         var label = this._buildLabel("fa-institution", OpenLayers.i18n('searchOrganisationText'));
+
         if (organisation) {
             return template.apply({
                 "label": label,
-                "value": organisation.join(', ')
+                "value": organisation.join('; ')
             });
         }
         return "";
