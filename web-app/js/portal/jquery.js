@@ -4,7 +4,7 @@ jQuery( document ).ready(function() {
         function() {
             var resBody = jQuery(this).children('.facetedSearchResultBody');
             var fullHeight = resBody[0].scrollHeight;
-            var originalHeight = resBody.height();
+            var originalHeight = Math.round(resBody.height());
 
             if (fullHeight > 0  && fullHeight != originalHeight) {
                 resBody.data("originalHeight", originalHeight );
