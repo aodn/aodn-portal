@@ -43,6 +43,7 @@ public class BaseTest {
     private static Logger log = Logger.getLogger(BaseTest.class.getName());
 
     private WebDriver driver;
+    private DesiredCapabilities capabilities;
 
     static {
         BROWSER_STACK_AUTOMATE_KEY = System.getProperty("browserstack.automateKey");
@@ -83,12 +84,12 @@ public class BaseTest {
         AODN_PORTAL_HOME_PAGE = System.getProperty("aodnPortal");
         AODN_PORTAL_SEARCH_PAGE = AODN_PORTAL_HOME_PAGE + System.getProperty("aodnPortalSearch");
 
-        DesiredCapabilities capability = getDesiredCapability(browser, browser_version, os, os_version, device, platform, resolution);
+        this.capabilities = getDesiredCapability(browser, browser_version, os, os_version, device, platform, resolution);
 
         if (BROWSER_STACK_LOCAL.equals("true")) {
-            driver = new RemoteWebDriver(new URL(BROWSER_STACK_LOCAL_URL), capability);
+            driver = new RemoteWebDriver(new URL(BROWSER_STACK_LOCAL_URL), this.capabilities);
         } else {
-            driver = new RemoteWebDriver(new URL(BROWSER_STACK_URL), capability);
+            driver = new RemoteWebDriver(new URL(BROWSER_STACK_URL), this.capabilities);
         }
 
         webElementUtil = new WebElementUtil(driver);
@@ -145,7 +146,19 @@ public class BaseTest {
         try {
             URI uri = new URI(BROWSER_STACK_SESSION_URL);
             HttpPut putRequest = new HttpPut(uri);
-
+            log.info("Marked with status " + status + " and reason " + reason);
+            log.info(this.capabilities.getCapability("browser"));
+            log.info(this.capabilities.getCapability("browser_version"));
+            log.info(this.capabilities.getCapability("os"));
+            log.info(this.capabilities.getCapability("os_version"));
+            log.info(this.capabilities.getCapability("device"));
+            log.info(this.capabilities.getCapability("platform"));
+            log.info(this.capabilities.getCapability("resolution"));
+            log.info(this.capabilities.getCapability("name"));
+            log.info(this.capabilities.getCapability("browserstack.local"));
+            log.info(this.capabilities.getCapability("browserstack.debug"));
+            log.info(this.capabilities.getCapability("browserstack.video"));
+            log.info(this.capabilities.getCapability("build"));
             ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
             nameValuePairs.add((new BasicNameValuePair("status", status)));
             nameValuePairs.add((new BasicNameValuePair("reason", reason)));
