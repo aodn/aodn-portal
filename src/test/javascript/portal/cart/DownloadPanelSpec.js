@@ -211,21 +211,44 @@ describe("Portal.cart.DownloadPanel", function() {
 
         it('calls trackUsage when the user accepts download', function() {
             var testParams = {
-                filenameFormat: "{0}.csv"
+                filenameFormat: "{0}.csv",
+                downloadLabel: 'List of URLs'
             };
             var testCollection = makeTestCollection();
             testCollection.getFilters = returns();
             var callbackScope = downloadPanel;
             var callback = noOp;
-            var testKey = "downloadAsCsvLabel";
             $.fileDownload = noOp;
 
             spyOn(downloadPanel.confirmationWindow, 'show');
             spyOn(window, 'trackUsage');
+            spyOn(window, 'trackUserUsage');
 
-            downloadPanel.confirmDownload(testCollection, callbackScope, callback, testParams, testKey);
+            downloadPanel.confirmDownload(testCollection, callbackScope, callback, testParams);
             testParams.onAccept(testParams);
-            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(testKey), testCollection.getTitle(), null);
+            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('downloadTrackingCategory'), OpenLayers.i18n('downloadTrackingActionPrefix') + testParams.downloadLabel, testCollection.getTitle(), null);
+            expect(window.trackUserUsage).not.toHaveBeenCalled();
+        });
+
+        it('calls track User Usage when the user accepts download', function() {
+            var testParams = {
+                filenameFormat: "{0}.csv",
+                downloadLabel: 'List of URLs',
+                emailAddress: "me@here.com"
+            };
+            var testCollection = makeTestCollection();
+            testCollection.getFilters = returns();
+            var callbackScope = downloadPanel;
+            var callback = noOp;
+            $.fileDownload = noOp;
+
+            spyOn(downloadPanel.confirmationWindow, 'show');
+            spyOn(window, 'trackUserUsage');
+
+            downloadPanel.confirmDownload(testCollection, callbackScope, callback, testParams);
+            testParams.onAccept(testParams);
+            expect(window.trackUserUsage).toHaveBeenCalled();
+
         });
     });
 

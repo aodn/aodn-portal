@@ -13,6 +13,7 @@ Portal.cart.ShapeFileDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 type: 'WFS',
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
+                    downloadLabel: 'Shapefile',
                     filenameFormat: '{0}_'+this.onlineResource.name+'.zip',
                     downloadControllerArgs: {
                         action: 'downloadShapeFilesForLayer'

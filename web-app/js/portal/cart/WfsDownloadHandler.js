@@ -13,6 +13,7 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 type: 'WFS',
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
+                    downloadLabel: 'CSV - non-gridded',
                     filenameFormat: "{0}.csv"
                 }
             });

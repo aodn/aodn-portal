@@ -293,6 +293,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     navigationTrackingStepPrefix: "Step ",
     downloadTrackingCategory: "DataCollections",
     downloadTrackingActionPrefix: "Download - ",
+    usersTrackingCategory: "Users",
     getfeatureInfoAnchorTrackingAction: "GFI link",
     getfeatureInfoAnchorTrackingCategory: "Feature Information",
     dataCollectionSelectionTrackingCategory: "Collection",

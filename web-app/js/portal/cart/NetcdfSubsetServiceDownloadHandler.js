@@ -6,6 +6,10 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
         return 'downloadAsSubsettedNetCdfLabel';
     },
 
+    _getDownloadOptionTitle: function() {
+        return 'NetCDF - non-gridded';
+    },
+
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
 
         var cqlFilter = this._getSubset(filters);

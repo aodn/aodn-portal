@@ -13,6 +13,7 @@ Portal.cart.FileListDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 type: 'WFS',
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
+                    downloadLabel: 'Un-subsetted Non-NetCDFs',
                     filenameFormat: '{0}_'+this.onlineResource.name+'.zip',
                     downloadControllerArgs: {
                         action: 'downloadFilesForLayer',
