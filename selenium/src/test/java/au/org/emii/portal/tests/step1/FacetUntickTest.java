@@ -24,6 +24,9 @@ public class FacetUntickTest extends BaseTest {
         WebDriver driver = getDriver();
         driver.get(AODN_PORTAL_SEARCH_PAGE);
 
+        WebDriverWait wait = new WebDriverWait(getDriver(), 30);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.className("resultsHeaderBackground")));
+
         // grab the text of the original results so we can make sure it reverts back when we untick later
         String originalResults = webElementUtil.findElement(By.className("faceted-search-results")).getText();
         List<WebElement> facetEntries = getFacetEntries();
@@ -31,7 +34,6 @@ public class FacetUntickTest extends BaseTest {
 
         //open up a facet (doesn't matter which)
         facetEntries.get(0).click();
-        WebDriverWait wait = new WebDriverWait(getDriver(), 30);
         wait.until(ExpectedConditions.stalenessOf(facetEntries.get(0)));
 
         //grab the new stuff
