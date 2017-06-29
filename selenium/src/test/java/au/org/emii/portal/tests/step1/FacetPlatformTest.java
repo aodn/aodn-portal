@@ -19,7 +19,6 @@ public class FacetPlatformTest extends BaseTest {
     public void platformTest() throws InterruptedException {
         getDriver().get(AODN_PORTAL_SEARCH_PAGE);
 
-
         List<WebElement> filterPanels = webElementUtil.findElements(By.className("search-filter-panel"));
         WebElement panel = null;
 
@@ -59,10 +58,6 @@ public class FacetPlatformTest extends BaseTest {
             } catch (NoSuchElementException e) {
                 Assert.fail("No platform section in results but " + parameter + " parameter should be present");
             }
-
         }
-
-
-
     }
 }
