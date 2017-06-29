@@ -7,7 +7,7 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
         var filters = collection.getFilters();
 
-        var time = filters.filter(function(filter) {
+        var timeFilter = filters.filter(function(filter) {
             return filter.name == "time";
         })[0];
 
@@ -44,15 +44,23 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             );
         }
 
+
+        console.log(timeFilter);
+
+
+
         if (params && params.dateRangeStart) {
             var startDateString = this._formatDate(params.dateRangeStart);
             var endDateString = this._formatDate(params.dateRangeEnd);
             dateString = this._formatHumanDateInfo('temporalExtentHeading', startDateString, endDateString);
         }
-        else if (!time) {
+        else if (timeFilter != undefined && !timeFilter.hasValue()) {
+// todo
+            console.log("temporal Extent not available");
             dateString = OpenLayers.i18n('unavailableTemporalExtent');
         }
         else {
+            console.log("temporal Extent not yet Loaded");
             dateString = OpenLayers.i18n('temporalExtentNotLoaded');
         }
         return areaString + timeSeriesAtString + dateString;
@@ -64,6 +72,9 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         injectionJson.dataFilters = this._getDataFilterEntry(collection);
         if (injectionJson.dataFilters.contains(OpenLayers.i18n('temporalExtentNotLoaded'))) {
             injectionJson.errorMessage = OpenLayers.i18n('temporalExtentNotLoaded');
+        }
+        else if (injectionJson.dataFilters.contains(OpenLayers.i18n('unavailableTemporalExtent'))) {
+            injectionJson.errorMessage = OpenLayers.i18n('unavailableTemporalExtent');
         }
         injectionJson.isTemporalExtentSubsetted = collection.isTemporalExtentSubsetted;
 
