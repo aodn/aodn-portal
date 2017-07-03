@@ -48,6 +48,8 @@ class LayerController {
     def getFilterValues = {
         def (server, layer, serverType, filter) = parseParams(params)
 
+        server = proxyRedirect(server)
+
         if (hostVerifier.allowedHost(server)) {
             def serverObject = _getServerClass(serverType)
 
@@ -61,6 +63,8 @@ class LayerController {
     def getFilters = {
         def (server, layer, serverType) = parseParams(params)
 
+        server = proxyRedirect(server)
+
         if (hostVerifier.allowedHost(server)) {
             def serverObject = _getServerClass(serverType)
 
@@ -73,5 +77,17 @@ class LayerController {
 
     def parseParams(params) {
         [params.server, params.layer, params.serverType, params.filter]
+    }
+
+    def proxyRedirect (server) {
+
+        def proxyRedirects = grailsApplication.config.proxyRedirects
+        proxyRedirects.each {
+            if(server.contains(it.uri)) {
+                server = it.redirectUri;
+            }
+        }
+
+        return server;
     }
 }
