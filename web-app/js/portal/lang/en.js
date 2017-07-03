@@ -97,10 +97,10 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     clearButton: 'Clear',
 
     // FacetedSearchResultsDataView.js
-    searchPlatformText: ' ',
-    searchOrganisationText: ' ',
-    searchDateText: ' ',
-    searchParametersText: ' ',
+    searchPlatformText: 'Observing Platform Type',
+    searchOrganisationText: 'Contributing Organisation',
+    searchDateText: 'Date Range',
+    searchParametersText: 'Observed Parameter',
     temporalExtentDateFormat: 'YYYY',
     metadataLink: 'more',
 
