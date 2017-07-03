@@ -9,15 +9,19 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
         return 'downloadAsSubsettedNetCdfLabel';
     },
 
+    _getDownloadOptionTitle: function() {
+        return OpenLayers.i18n('downloadNetCDFDownloadServiceAction');
+    },
+
     _showDownloadOptions: function(filters) {
         return this._resourceHrefNotEmpty()
             && this._resourceNameNotEmpty()
             && !Portal.filter.FilterUtils.hasFilter(filters, 'timeSeriesAtPoint');
     },
 
-    _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
+    _buildServiceUrl: function(collection, layerName, serverUrl, notificationEmailAddress) {
 
-        var subset = this._getSubset(filters);
+        var subset = this._getSubset(collection);
 
         var jobParameters = {
             server: serverUrl,
@@ -35,15 +39,15 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
         );
     },
 
-    _getSubset: function(filters) {
-        var aggregationParams = filters.filter(function(filter) {
+    _getSubset: function(collection) {
+        var aggregationParams = collection.getFilters().filter(function(filter) {
             return filter.isNcwmsParams;
         })[0];
 
         var dateRangeStart = (aggregationParams) ?  this._formatDate(aggregationParams.dateRangeStart || this.DEFAULT_DATE_START) : undefined;
         var dateRangeEnd = (aggregationParams) ?  this._formatDate(aggregationParams.dateRangeEnd || this.DEFAULT_DATE_END) : undefined;
 
-        var returnStringFormat = (dateRangeStart != undefined || dateRangeEnd != undefined) ? this.SUBSET_FORMAT : this.SUBSET_FORMAT_WITHOUT_TIME;
+        var returnStringFormat = (Object.keys(collection.layerAdapter.layerSelectionModel.selectedLayer.temporalExtent.extent) != 0 && (dateRangeStart != undefined || dateRangeEnd != undefined)) ? this.SUBSET_FORMAT : this.SUBSET_FORMAT_WITHOUT_TIME;
 
         return String.format(
             returnStringFormat,

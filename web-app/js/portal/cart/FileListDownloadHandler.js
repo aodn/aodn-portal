@@ -13,6 +13,7 @@ Portal.cart.FileListDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 type: 'WFS',
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
+                    downloadLabel: OpenLayers.i18n('downloadFileListAction'),
                     filenameFormat: '{0}_'+this.onlineResource.name+'.zip',
                     downloadControllerArgs: {
                         action: 'downloadFilesForLayer',

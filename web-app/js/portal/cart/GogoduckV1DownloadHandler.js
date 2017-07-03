@@ -6,8 +6,8 @@ Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHand
         return 'downloadAsSubsettedNetCdfLabel';
     },
 
-    _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
-        var aggregationParams = filters.filter(function(filter) {
+    _buildServiceUrl: function(collection, layerName, serverUrl, notificationEmailAddress) {
+        var aggregationParams = collection.getFilters().filter(function(filter) {
             return filter.isNcwmsParams;
         })[0];
 

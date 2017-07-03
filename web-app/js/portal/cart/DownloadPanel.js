@@ -223,7 +223,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             title: handler.onlineResource.title,
             text: OpenLayers.i18n(downloadOption.textKey),
             handler: function() {
-                this.confirmDownload(collection, this, downloadOption.handler, downloadOption.handlerParams, downloadOption.textKey);
+                this.confirmDownload(collection, this, downloadOption.handler, downloadOption.handlerParams);
             },
             scope: this
         }
@@ -285,7 +285,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         return (regexRes && regexRes[1].length > 0) ? regexRes[1].toTitleCase() : false;
     },
 
-    confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params, textKey) {
+    confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
 
         var self = this;
 
@@ -293,14 +293,29 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         params.collection = collection;
 
         params.onAccept = function(callbackParams) {
+
             self.downloader.download(collection, generateUrlCallbackScope, generateUrlCallback, callbackParams);
+            var trackingAction = OpenLayers.i18n('downloadTrackingActionPrefix') + callbackParams.downloadLabel;
+
             trackDownloadUsage(
-                OpenLayers.i18n('downloadTrackingActionPrefix') + OpenLayers.i18n(textKey),
+                trackingAction,
                 collection.getTitle(),
                 self._getCollectionFiltersAsText(collection)
             );
-        };
 
+            if (callbackParams.emailAddress != undefined) {
+
+                var emailRequiredForDownload = callbackParams.collectEmailAddress != undefined ?
+                    "emailWasRequested" : "emailWasStoredInSession";
+
+                trackUserUsage(
+                    trackingAction,
+                    callbackParams.emailAddress,
+                    collection.getTitle(),
+                    emailRequiredForDownload
+                );
+            }
+        };
         this.confirmationWindow.show(params);
     },
 

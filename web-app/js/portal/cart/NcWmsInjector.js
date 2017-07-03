@@ -49,7 +49,7 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             var endDateString = this._formatDate(params.dateRangeEnd);
             dateString = this._formatHumanDateInfo('temporalExtentHeading', startDateString, endDateString);
         }
-        else if (!time) {
+        else if (!time || Object.keys(collection.layerAdapter.layerSelectionModel.selectedLayer.temporalExtent.extent) == 0) {
             dateString = OpenLayers.i18n('unavailableTemporalExtent');
         }
         else {
