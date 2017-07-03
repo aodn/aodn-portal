@@ -9,11 +9,11 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         if (this._showDownloadOptions()) {
 
             downloadOptions.push({
-                textKey: 'downloadAsCsvLabel',
+                textKey: OpenLayers.i18n('downloadCsvAction'),
                 type: 'WFS',
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
-                    downloadLabel: 'CSV - non-gridded',
+                    downloadLabel: OpenLayers.i18n('downloadCsvNonGriddedAction'),
                     filenameFormat: "{0}.csv"
                 }
             });

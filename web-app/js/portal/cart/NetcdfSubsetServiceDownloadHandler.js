@@ -7,7 +7,7 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
     },
 
     _getDownloadOptionTitle: function() {
-        return 'NetCDF - non-gridded';
+        return OpenLayers.i18n('downloadNetcdfSubsetServiceAction');
     },
 
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {

@@ -7,7 +7,7 @@ Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHand
     },
 
     _getDownloadOptionTitle: function() {
-        return 'GoGoDuckV1';
+        return OpenLayers.i18n('downloadGoGoDuckV1Action');
     },
 
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {

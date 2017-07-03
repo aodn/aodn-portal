@@ -9,7 +9,7 @@ Portal.cart.PointCSVDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
     },
 
     _getDownloadOptionTitle: function() {
-        return 'CSV - gridded (point timeseries)';
+        return OpenLayers.i18n('downloadPointCsvAction');
     },
 
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {

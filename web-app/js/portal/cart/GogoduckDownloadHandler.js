@@ -9,7 +9,7 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
     },
 
     _getDownloadOptionTitle: function() {
-        return 'NetCDF - gridded';
+        return OpenLayers.i18n('downloadNetCDFDownloadServiceAction');
     },
 
     _showDownloadOptions: function(filters) {

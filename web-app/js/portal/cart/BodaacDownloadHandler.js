@@ -17,7 +17,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 type: 'WFS',
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
-                    downloadLabel: 'Un-subsetted NetCDFs',
+                    downloadLabel: OpenLayers.i18n('downloadUnsubsettedNetCdfAction'),
                     filenameFormat: '{0}_source_files.zip',
                     downloadControllerArgs: {
                         action: 'downloadFilesForLayer',
@@ -30,7 +30,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 textKey: 'downloadAsUrlsLabel',
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
-                    downloadLabel: 'List of URLs',
+                    downloadLabel: OpenLayers.i18n('downloadUrlListAction'),
                     filenameFormat: '{0}_URLs.txt',
                     downloadControllerArgs: {
                         action: 'urlListForLayer',

@@ -311,6 +311,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
                 trackUserUsage(
                     trackingAction,
                     callbackParams.emailAddress,
+                    collection.getTitle(),
                     emailRequiredForDownload
                 );
             }

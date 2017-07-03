@@ -1,8 +1,6 @@
 // wrapper to the Google Analytics function
 function trackUsage(category, action, label, collection, value) {
 
-    console.log(String.format("category='{0}' action='{1}' label='{2}' collection='{3}' value='{4}'", category, action, label, collection, value));
-
     if (typeof ga == 'function') {
         ga('send', 'event', category, action, label, value, {
             dimension1: collection
@@ -52,12 +50,12 @@ function trackDownloadUsage(action, collection, downloadParams) {
     );
 }
 
-function trackUserUsage(action, email, value) {
+function trackUserUsage(action, email, collection, value) {
     trackUsage(
         OpenLayers.i18n('usersTrackingCategory'),
         action,
         email,
-        undefined,
+        collection,
         value
     );
 }

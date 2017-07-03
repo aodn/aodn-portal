@@ -11,7 +11,7 @@ Portal.cart.PythonDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 textKey: 'downloadAsPythonSnippetLabel',
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
-                    downloadLabel: 'Python',
+                    downloadLabel: OpenLayers.i18n('downloadPythonAction'),
                     filenameFormat: "{0}.py",
                     downloadControllerArgs: {
                         action: 'downloadPythonSnippet'
