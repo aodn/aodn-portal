@@ -8,6 +8,10 @@ Portal.cart.PointCSVDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
         return 'downloadAsPointTimeSeriesCsvLabel';
     },
 
+    _getDownloadOptionTitle: function() {
+        return OpenLayers.i18n('downloadPointCsvAction');
+    },
+
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
 
         var subset = this._getSubset(filters);

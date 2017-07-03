@@ -18,6 +18,7 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 handlerParams: {
                     asyncDownload: true,
                     collectEmailAddress: true,
+                    downloadLabel: this._getDownloadOptionTitle(),
                     serviceResponseHandler: this.serviceResponseHandler
                 }
             });
@@ -27,6 +28,10 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
     },
 
     _getDownloadOptionTextKey: function() {
+        throw 'Should be implemented by subclasses';
+    },
+
+    _getDownloadOptionTitle: function() {
         throw 'Should be implemented by subclasses';
     },
 
