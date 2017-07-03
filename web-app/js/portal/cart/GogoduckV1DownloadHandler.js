@@ -6,6 +6,10 @@ Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHand
         return 'downloadAsSubsettedNetCdfLabel';
     },
 
+    _getDownloadOptionTitle: function() {
+        return OpenLayers.i18n('downloadGoGoDuckV1Action');
+    },
+
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
         var aggregationParams = filters.filter(function(filter) {
             return filter.isNcwmsParams;

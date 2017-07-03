@@ -8,6 +8,10 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
         return 'downloadAsSubsettedNetCdfLabel';
     },
 
+    _getDownloadOptionTitle: function() {
+        return OpenLayers.i18n('downloadNetCDFDownloadServiceAction');
+    },
+
     _showDownloadOptions: function(filters) {
         return this._resourceHrefNotEmpty()
             && this._resourceNameNotEmpty()

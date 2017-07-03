@@ -6,6 +6,10 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
         return 'downloadAsSubsettedNetCdfLabel';
     },
 
+    _getDownloadOptionTitle: function() {
+        return OpenLayers.i18n('downloadNetcdfSubsetServiceAction');
+    },
+
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
 
         var cqlFilter = this._getSubset(filters);
