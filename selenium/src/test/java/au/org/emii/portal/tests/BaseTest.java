@@ -29,13 +29,15 @@ public class BaseTest {
     public static String BROWSER_STACK_AUTOMATE_KEY;
     public static String BROWSER_STACK_URL;
     public static String BROWSER_STACK_LOCAL_URL;
-    public static String BROWSER_STACK_SESSION_URL;
     public static String BROWSER_STACK_DEBUG;
     public static String BROWSER_STACK_LOCAL;
     public static String BROWSER_STACK_VIDEO;
     public static String BROWSER_STACK_BUILD;
     public static String AODN_PORTAL_HOME_PAGE;
     public static String AODN_PORTAL_SEARCH_PAGE;
+
+    public String browserStackSessionUrl;
+
     public WebElementUtil webElementUtil;
     public SeleniumUtil seleniumUtil;
     protected PortalUtil portalUtil;
@@ -43,6 +45,7 @@ public class BaseTest {
     private static Logger log = Logger.getLogger(BaseTest.class.getName());
 
     private WebDriver driver;
+    private DesiredCapabilities capabilities;
 
     static {
         BROWSER_STACK_AUTOMATE_KEY = System.getProperty("browserstack.automateKey");
@@ -83,12 +86,12 @@ public class BaseTest {
         AODN_PORTAL_HOME_PAGE = System.getProperty("aodnPortal");
         AODN_PORTAL_SEARCH_PAGE = AODN_PORTAL_HOME_PAGE + System.getProperty("aodnPortalSearch");
 
-        DesiredCapabilities capability = getDesiredCapability(browser, browser_version, os, os_version, device, platform, resolution);
+        this.capabilities = getDesiredCapability(browser, browser_version, os, os_version, device, platform, resolution);
 
         if (BROWSER_STACK_LOCAL.equals("true")) {
-            driver = new RemoteWebDriver(new URL(BROWSER_STACK_LOCAL_URL), capability);
+            driver = new RemoteWebDriver(new URL(BROWSER_STACK_LOCAL_URL), this.capabilities);
         } else {
-            driver = new RemoteWebDriver(new URL(BROWSER_STACK_URL), capability);
+            driver = new RemoteWebDriver(new URL(BROWSER_STACK_URL), this.capabilities);
         }
 
         webElementUtil = new WebElementUtil(driver);
@@ -96,7 +99,7 @@ public class BaseTest {
         portalUtil = new PortalUtil(webElementUtil);
         String sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
 
-        BROWSER_STACK_SESSION_URL = "https://" + BROWSER_STACK_USERNAME + ":" + BROWSER_STACK_AUTOMATE_KEY + "@www.browserstack.com/automate/sessions/" + sessionId + ".json";
+        browserStackSessionUrl = "https://" + BROWSER_STACK_USERNAME + ":" + BROWSER_STACK_AUTOMATE_KEY + "@www.browserstack.com/automate/sessions/" + sessionId + ".json";
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.manage().window().setPosition(new Point(0, 0));
         driver.manage().window().setSize(new Dimension(getWidth(resolution), getHeight(resolution)));
@@ -143,8 +146,22 @@ public class BaseTest {
 
     public void mark(String status, String reason) {
         try {
-            URI uri = new URI(BROWSER_STACK_SESSION_URL);
+            URI uri = new URI(browserStackSessionUrl);
             HttpPut putRequest = new HttpPut(uri);
+            log.info("Marked with status " + status + " and reason " + reason);
+            log.info(this.capabilities.getCapability("browser"));
+            log.info(this.capabilities.getCapability("browser_version"));
+            log.info(this.capabilities.getCapability("os"));
+            log.info(this.capabilities.getCapability("os_version"));
+            log.info(this.capabilities.getCapability("device"));
+            log.info(this.capabilities.getCapability("platform"));
+            log.info(this.capabilities.getCapability("resolution"));
+            log.info(this.capabilities.getCapability("name"));
+            log.info(this.capabilities.getCapability("browserstack.local"));
+            log.info(this.capabilities.getCapability("browserstack.debug"));
+            log.info(this.capabilities.getCapability("browserstack.video"));
+            log.info(this.capabilities.getCapability("build"));
+            log.info("Browser Stack Session Url: " + browserStackSessionUrl);
 
             ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
             nameValuePairs.add((new BasicNameValuePair("status", status)));
