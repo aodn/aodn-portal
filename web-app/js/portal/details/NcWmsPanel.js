@@ -33,7 +33,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     initComponent: function() {
         Portal.details.NcWmsPanel.superclass.initComponent.call(this);
 
-        this._addLoadingInfo();
+        this._addStatusInfo();
         this._addTemporalControls();
 
         if (this._timeSeriesOptionAvailable()) {
@@ -66,7 +66,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     _initWithLayer: function() {
         this._attachTemporalEvents();
         this._attachSpatialEvents();
-        this._removeLoadingInfo();
+        this._hideStatusInfo();
         this._applyFilterValuesToCollection();
     },
 
@@ -88,9 +88,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     clearAndResetAllSubsets: function() {
-        this._layerSetTime(this.layer.getTemporalExtentMax());
-        this.pointTimeSeriesPanel._resetPanel();
-        this.resetTemporalConstraints();
+        if (Object.keys(this.layer.temporalExtent.extent).length > 0) {
+            this._layerSetTime(this.layer.getTemporalExtentMax());
+            this.pointTimeSeriesPanel._resetPanel();
+            this.resetTemporalConstraints();
+        }
     },
 
     clearAndResetTemporalConstraints: function() {
@@ -102,13 +104,21 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this._resetExtent(this.layer.getTemporalExtentMin(), this.layer.getTemporalExtentMax());
     },
 
-    _removeLoadingInfo: function() {
-        this.remove(this.loadingInfo);
-        delete this.loadingInfo;
+    _hideStatusInfo: function() {
+        this.loadingInfo.hide();
     },
 
-    _addLoadingInfo: function() {
-        this.loadingInfo = this._newHtmlElement(OpenLayers.i18n('loadingMessage', {resource: ""}));
+    _showStatusInfo: function(msg) {
+        this.loadingInfo.update(msg);
+        this.loadingInfo.show();
+    },
+
+    _addStatusInfo: function() {
+        this.loadingInfo = new Ext.Container({
+            autoEl: 'div',
+            cls: 'alert alert-warning spacer',
+            html: OpenLayers.i18n('loadingMessage', {resource: ""})
+        });
         this.add(this.loadingInfo);
     },
 
@@ -574,24 +584,31 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    _layerTemporalExtentLoad: function() {
+    _layerTemporalExtentLoad: function(layer) {
 
-        if ('next' == this._getPendingEvent()) {
-            this._removePendingEvent();
-            this._goToNextTimeSlice();
-        }
-        else if ('previous' == this._getPendingEvent()) {
-            this._removePendingEvent();
-            this._goToPreviousTimeSlice();
+        if (Object.keys(layer.temporalExtent.extent) == 0) {
+            this._showStatusInfo(OpenLayers.i18n("unavailableTemporalExtent"));
+            this.temporalControls.hide();
+            this.pointTimeSeriesPanel.hide();
         }
         else {
-            this._resetExtent(this.layer.getSubsetExtentMin(), this.layer.getSubsetExtentMax());
-            this._applyFilterValuesToCollection();
 
-            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, this.dataCollection);
+            if ('next' == this._getPendingEvent()) {
+                this._removePendingEvent();
+                this._goToNextTimeSlice();
+            }
+            else if ('previous' == this._getPendingEvent()) {
+                this._removePendingEvent();
+                this._goToPreviousTimeSlice();
+            }
+            else {
+                this._resetExtent(this.layer.getSubsetExtentMin(), this.layer.getSubsetExtentMax());
+                this._applyFilterValuesToCollection();
+
+                Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, this.dataCollection);
+            }
+            this._setFrameButtonsState();
         }
-
-        this._setFrameButtonsState();
     },
 
     _setFrameButtonsState: function() {

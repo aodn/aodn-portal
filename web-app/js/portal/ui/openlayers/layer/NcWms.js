@@ -56,12 +56,21 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
             scope: this,
             url: url,
             success: function(resp, options) {
-                try {
-                    this._parseDatesWithDataAsync(Ext.util.JSON.decode(resp.responseText));
+
+                // Assume only one filter which is the one we're after
+                var dateFilter = Ext.util.JSON.decode(resp.responseText)[0];
+                var datesToProcess = dateFilter['possibleValues'];
+
+                if (datesToProcess.length > 0) {
+                    try {
+                        this._parseDatesWithDataAsync(datesToProcess);
+                    }
+                    catch (e) {
+                        log.error("Could not parse dates for NcWMS layer '" + this.params.LAYERS + "'");
+                    }
                 }
-                catch (e) {
-                    log.error("Could not parse filters for NcWMS layer '" + this.params.LAYERS + "'");
-                }
+
+                this.events.triggerEvent('temporalextentloaded', this);
             },
             failure: function() {
                 log.error("Could not get filters for NcWMS layer '" + this.params.LAYERS + "'");
@@ -246,10 +255,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return OpenLayers.Layer.WMS.prototype.getURL.apply(this, [bounds]);
     },
 
-    _parseDatesWithDataAsync: function(response) {
-        // Assume only one filter which is the one we're after
-        var dateFilter = response[0];
-        var datesToProcess = dateFilter['possibleValues'];
+    _parseDatesWithDataAsync: function(datesToProcess) {
 
         // Interleave processing into chunks, browser will be more responsive
         var chunkSize = 256;

@@ -41,7 +41,7 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
         return function(collection, handlerParams) {
             var url = _this._buildServiceUrl(
-                collection.getFilters(),
+                collection,
                 _this._resourceName(),
                 _this._resourceHref(),
                 handlerParams.emailAddress

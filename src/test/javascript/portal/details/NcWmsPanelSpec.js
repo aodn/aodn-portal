@@ -42,7 +42,7 @@ describe('Portal.details.NcWmsPanel', function() {
         });
 
         ncwmsPanel._setBounds = noOp;
-        ncwmsPanel._removeLoadingInfo = noOp;
+        ncwmsPanel._hideStatusInfo = noOp;
         ncwmsPanel.selectedLayer = layer;
         ncwmsPanel.pointTimeSeriesPanel = {
             _resetPanel: returns()
@@ -56,7 +56,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('assigns a DataCollection instance from a layer', function() {
             _applyCommonSpies();
-            spyOn(ncwmsPanel, '_removeLoadingInfo');
+            spyOn(ncwmsPanel, '_hideStatusInfo');
 
             ncwmsPanel._initWithLayer();
             expect(ncwmsPanel.dataCollection).toBeTruthy();
@@ -135,18 +135,18 @@ describe('Portal.details.NcWmsPanel', function() {
 
     describe('layer temporal extent load', function() {
         it('enables the start date picker', function() {
-            ncwmsPanel._layerTemporalExtentLoad();
+            ncwmsPanel._layerTemporalExtentLoad(layer);
             expect(ncwmsPanel.startDateTimePicker.disabled).toBeFalsy();
         });
 
         it('enables the end date picker', function() {
-            ncwmsPanel._layerTemporalExtentLoad();
+            ncwmsPanel._layerTemporalExtentLoad(layer);
             expect(ncwmsPanel.endDateTimePicker.disabled).toBeFalsy();
         });
 
         it('updates the time range label', function() {
             spyOn(ncwmsPanel, '_updateTimeRangeLabel');
-            ncwmsPanel._layerTemporalExtentLoad();
+            ncwmsPanel._layerTemporalExtentLoad(layer);
             expect(ncwmsPanel._updateTimeRangeLabel).toHaveBeenCalled();
         });
     });
