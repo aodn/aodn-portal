@@ -8,9 +8,13 @@ Portal.cart.PointCSVDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
         return 'downloadAsPointTimeSeriesCsvLabel';
     },
 
-    _buildServiceUrl: function(collection, layerName, serverUrl, notificationEmailAddress) {
+    _getDownloadOptionTitle: function() {
+        return OpenLayers.i18n('downloadPointCsvAction');
+    },
 
-        var subset = this._getSubset(collection);
+    _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
+
+        var subset = this._getSubset(filters);
 
         var jobParameters = {
             server: serverUrl,
@@ -34,8 +38,8 @@ Portal.cart.PointCSVDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
             && Portal.filter.FilterUtils.hasFilter(filters, 'timeSeriesAtPoint');
     },
 
-    _getSubset: function(collection) {
-        var aggregationParams = collection.getFilters().filter(function(filter) {
+    _getSubset: function(filters) {
+        var aggregationParams = filters.filter(function(filter) {
             return filter.isNcwmsParams;
         })[0];
 

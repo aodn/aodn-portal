@@ -6,9 +6,13 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
         return 'downloadAsSubsettedNetCdfLabel';
     },
 
-    _buildServiceUrl: function(collection, layerName, serverUrl, notificationEmailAddress) {
+    _getDownloadOptionTitle: function() {
+        return OpenLayers.i18n('downloadNetcdfSubsetServiceAction');
+    },
 
-        var cqlFilter = this._getSubset(collection);
+    _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
+
+        var cqlFilter = this._getSubset(filters);
 
         return String.format(
             "{0}{1}",
@@ -24,9 +28,9 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
         );
     },
 
-    _getSubset: function(collection) {
+    _getSubset: function(filters) {
         var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
-            filters: collection.getFilters()
+            filters: filters
         });
 
         return builder.buildCql();
