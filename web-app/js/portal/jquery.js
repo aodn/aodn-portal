@@ -4,10 +4,15 @@ jQuery( document ).ready(function() {
         function() {
             var resBody = jQuery(this).children('.facetedSearchResultBody');
             var fullHeight = resBody[0].scrollHeight;
-            var originalHeight = Math.round(resBody.height());
 
-            if (fullHeight > 0  && fullHeight != originalHeight) {
-                resBody.data("originalHeight", originalHeight );
+            var currentHeight = Math.round(resBody.height());
+
+            //on the first run we store the initial height so we can return to it later
+            if(!resBody.data("originalHeight")) {
+                resBody.data("originalHeight", currentHeight );
+            }
+
+            if (fullHeight > 0  && currentHeight != fullHeight  ) {
                 resBody.animate({
                     height: fullHeight
                 }, 300);
