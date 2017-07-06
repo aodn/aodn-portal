@@ -186,21 +186,25 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return "";
     },
 
-    _getPlatformAsHtml: function(template, platform) {
+    _getPlatformAsHtml: function(template, platforms) {
 
         var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
-
-        var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform');
-        if (broader.length > 0) {
-            broader = broader.sort();
-            broader = broader.filter(function(item, pos) {
-                return !pos || item != broader[pos - 1];
-            });
-            return template.apply({
-                "label": label,
-                "value": broader.join(', ')
-            });
+        var broader = [];
+        var i = 0;
+        for(i=0;i<platforms.length;i++) {
+            broader = this.classificationStore.getBroaderTerms(platforms[i], 1, 'Platform')
+            if (broader.length > 0) {
+                broader = broader.sort();
+                broader = broader.filter(function(item, pos) {
+                    return !pos || item != broader[pos - 1];
+                });
+                return template.apply({
+                    "label": label,
+                    "value": broader.join(', ')
+                });
+            }
         }
+
         return "";
     },
 
