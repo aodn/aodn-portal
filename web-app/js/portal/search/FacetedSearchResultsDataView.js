@@ -186,22 +186,23 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return "";
     },
 
-    _getPlatformAsHtml: function(template, platform) {
+    _getPlatformAsHtml: function(template, platforms) {
 
         var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
+        var html = ""
+        Ext.each(platforms, function(platform) {
+            var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform')
+            if (broader.length > 0) {
+               html = template.apply({
+                    "label": label,
+                    "value": broader.join(', ')
+                });
+                //break out of the Ext.each since we found a valid platform
+               return false;
+            }
+        },this);
 
-        var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform');
-        if (broader.length > 0) {
-            broader = broader.sort();
-            broader = broader.filter(function(item, pos) {
-                return !pos || item != broader[pos - 1];
-            });
-            return template.apply({
-                "label": label,
-                "value": broader.join(', ')
-            });
-        }
-        return "";
+       return html;
     },
 
     _getTemporalExtentAsHtml: function(template, temporalExtent) {

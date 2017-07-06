@@ -92,6 +92,10 @@ Portal.data.MetadataRecord = function() {
         name: 'organisation'
     });
 
+    var platformField = new Portal.data.ChildElementsField({
+        name: 'platform'
+    });
+
     var attrConstrField = new Portal.data.ChildElementsField({
         name: 'attrConstr'
     });
@@ -154,7 +158,7 @@ Portal.data.MetadataRecord = function() {
         'abstract',
         { name: 'uuid', mapping: '*/uuid' },
         parameterField,
-        'platform',
+        platformField,
         organisationField,
         'jurisdictionLink',
         'licenseLink',
