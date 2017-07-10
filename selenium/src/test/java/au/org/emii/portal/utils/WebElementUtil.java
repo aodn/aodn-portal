@@ -47,8 +47,15 @@ public class WebElementUtil {
     }
 
     public void clickLinkContainingText(String linkText) {
+        clickLinkContainingText(linkText, false);
+    }
+
+    public void clickLinkContainingText(String linkText, boolean defaultClick) {
         try {
-            click(By.xpath("//a[contains(.,'" + linkText + "')]"));
+            if (defaultClick)
+                defaultClick(By.xpath("//a[contains(.,'" + linkText + "')]"));
+            else
+                click(By.xpath("//a[contains(.,'" + linkText + "')]"));
         } catch (NoSuchElementException | AssertionError e) {
             log.error("Link text " + linkText + "could not be found", e);
             throw e;
@@ -328,6 +335,20 @@ public class WebElementUtil {
         return findElement(by);
     }
 
+    public void waitForInvisibilityOfElement(By by) {
+        int attempts = 1, totalAttempts = 2;
+        while(attempts <= totalAttempts) {
+            try {
+                WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
+            } catch(Exception e) {
+                log.debug(String.format("Element still visible %s. Attempt: %s Total Attempts: %s", by.toString(), attempts, totalAttempts));
+                log.debug(String.format("Error:%s", e.getMessage()));
+            }
+            attempts++;
+        }
+    }
+
     public void click(By by, WebElement element) {
         int attempts = 1, totalAttempts = 2;
         while(attempts <= totalAttempts) {
@@ -346,6 +367,30 @@ public class WebElementUtil {
             }
             attempts++;
         }
+    }
+
+    public void defaultClick(By by, WebElement element) {
+        int attempts = 1, totalAttempts = 2;
+        while(attempts <= totalAttempts) {
+            try {
+                if (element == null) {
+                    element = findElement(by);
+                    Assert.assertNotNull(element);
+                }
+                WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
+                wait.until(ExpectedConditions.elementToBeClickable(element));
+                element.click();
+                break;
+            } catch(Exception e) {
+                log.debug(String.format("Unable to click element %s. Attempt: %s Total Attempts: %s", by.toString(), attempts, totalAttempts));
+                log.debug(String.format("Error:%s", e.getMessage()));
+            }
+            attempts++;
+        }
+    }
+
+    public void defaultClick(By by) {
+        defaultClick(by, null);
     }
 
     public void click(By by) {
