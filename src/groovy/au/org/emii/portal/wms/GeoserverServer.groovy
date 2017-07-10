@@ -75,9 +75,8 @@ class GeoserverServer extends WmsServer {
     }
 
     def _loadFile(layer, filename) {
-        def workspaceName = getLayerWorkspace(layer)
-        def layerName = getLayerName(layer)
-        def inputFile = new File("$filePath/${workspaceName}/${layerName}/${filename}")
+        layer = layer.replace(':','/')
+        def inputFile = new File("$filePath/${layer}/${filename}")
         return inputFile.text
     }
 
@@ -89,32 +88,12 @@ class GeoserverServer extends WmsServer {
         return outputStream.toString("utf-8")
     }
 
-    static String getLayerWorkspace(fullLayerName) {
-        if (fullLayerName.contains(":")) {
-            return fullLayerName.split(":")[0]
-        }
-        else {
-            return ""
-        }
-    }
-
-    static String getLayerName(fullLayerName) {
-        if (fullLayerName.contains(":")) {
-            return fullLayerName.split(":")[1]
-        }
-        else {
-            return fullLayerName
-        }
-    }
-
     static String _getFiltersUrlBase(server, layer, request, extraOpts) {
-        def workspaceName = getLayerWorkspace(layer)
-        def layerName = getLayerName(layer)
 
         def final service = "layerFilters"
         def final version = "1.0.0"
 
-        return server + "?request=${request}&service=${service}&version=${version}&workspace=${workspaceName}&layer=${layerName}${extraOpts}"
+        return server + "?request=${request}&service=${service}&version=${version}&layer=${layer}${extraOpts}"
     }
 
     static String getFiltersUrl(server, layer) {
