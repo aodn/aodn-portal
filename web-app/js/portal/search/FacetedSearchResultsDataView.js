@@ -219,8 +219,8 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return "";
     },
 
-    _buildLabel: function(fontAwesomeClass, text) {
-        return "<span class=\"fa fa-fw " + fontAwesomeClass + "\"></span> " + text;
+    _buildLabel: function(fontAwesomeClass, hint) {
+        return String.format("<span class=\"fa fa-fw {0}\" title=\"{1}\"></span> ",fontAwesomeClass, hint) ;
     },
 
     _formatTemporalExtentDateString: function(dateString) {

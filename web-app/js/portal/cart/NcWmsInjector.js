@@ -49,13 +49,21 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             var endDateString = this._formatDate(params.dateRangeEnd);
             dateString = this._formatHumanDateInfo('temporalExtentHeading', startDateString, endDateString);
         }
-        else if (!time) {
+        else if (!this.hasTemporalExtent(time, collection)) {
             dateString = OpenLayers.i18n('unavailableTemporalExtent');
         }
         else {
             dateString = OpenLayers.i18n('temporalExtentNotLoaded');
         }
         return areaString + timeSeriesAtString + dateString;
+    },
+
+    hasTemporalExtent: function(time, collection) {
+        try {
+            return (!time || Object.keys(collection.layerAdapter.layerSelectionModel.selectedLayer.temporalExtent.extent) == 0) ? false : true;
+        } catch (ex) {
+            return true;
+        }
     },
 
     getInjectionJson: function(collection) {
