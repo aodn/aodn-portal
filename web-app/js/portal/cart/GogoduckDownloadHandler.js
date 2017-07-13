@@ -3,6 +3,7 @@ Ext.namespace('Portal.cart');
 Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
     SUBSET_FORMAT: 'TIME,{0},{1};LATITUDE,{2},{3};LONGITUDE,{4},{5}',
+    SUBSET_FORMAT_WITHOUT_TIME: 'LATITUDE,{2},{3};LONGITUDE,{4},{5}',
 
     _getDownloadOptionTextKey: function() {
         return 'downloadAsSubsettedNetCdfLabel';
@@ -18,9 +19,9 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
             && !Portal.filter.FilterUtils.hasFilter(filters, 'timeSeriesAtPoint');
     },
 
-    _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
+    _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress, hasTemporalExtent) {
 
-        var subset = this._getSubset(filters);
+        var subset = this._getSubset(filters, hasTemporalExtent);
 
         var jobParameters = {
             server: serverUrl,
@@ -38,19 +39,28 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
         );
     },
 
-    _getSubset: function(filters) {
+    _getSubset: function(filters, hasTemporalExtent) {
         var aggregationParams = filters.filter(function(filter) {
             return filter.isNcwmsParams;
         })[0];
 
+        var dateRangeStart = (aggregationParams) ?  this._formatDate(aggregationParams.dateRangeStart || this.DEFAULT_DATE_START) : undefined;
+        var dateRangeEnd = (aggregationParams) ?  this._formatDate(aggregationParams.dateRangeEnd || this.DEFAULT_DATE_END) : undefined;
+        var returnStringFormat;
+
+        if (hasTemporalExtent)
+            returnStringFormat = (dateRangeStart != undefined || dateRangeEnd != undefined) ? this.SUBSET_FORMAT : this.SUBSET_FORMAT_WITHOUT_TIME;
+        else
+            returnStringFormat = this.SUBSET_FORMAT_WITHOUT_TIME;
+
         return String.format(
-            this.SUBSET_FORMAT,
-            this._formatDate(aggregationParams.dateRangeStart || this.DEFAULT_DATE_START),
-            this._formatDate(aggregationParams.dateRangeEnd || this.DEFAULT_DATE_END),
-            (aggregationParams.latitudeRangeStart || this.DEFAULT_LAT_START).toDecimalString(),
-            (aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END).toDecimalString(),
-            (aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START).toDecimalString(),
-            (aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END).toDecimalString()
+            returnStringFormat,
+            dateRangeStart,
+            dateRangeEnd,
+            (aggregationParams && aggregationParams.latitudeRangeStart || this.DEFAULT_LAT_START).toDecimalString(),
+            (aggregationParams && aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END).toDecimalString(),
+            (aggregationParams && aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START).toDecimalString(),
+            (aggregationParams && aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END).toDecimalString()
         );
     }
 });

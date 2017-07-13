@@ -125,5 +125,38 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
                 'LONGITUDE,-170.0,-160.0'
             );
         });
+
+        it('builds the correct URL with no temporal extent', function() {
+
+            testCollection = {
+                getFilters: returns([
+                    {
+                        isNcwmsParams: true,
+                        latitudeRangeStart: 20,
+                        latitudeRangeEnd: 42,
+                        longitudeRangeStart: -170,
+                        longitudeRangeEnd: -160
+                    }
+                ]),
+                layerAdapter: {
+                    layerSelectionModel: {
+                        selectedLayer: {
+                            temporalExtent: {
+                                extent: {}
+                            }
+                        }
+                    }
+                }
+            };
+
+            url = clickHandler(testCollection, testHandlerParams);
+
+            expect(url).toHaveParameterWithValue(
+                'jobParameters.subset',
+                'LATITUDE,20.0,42.0;' +
+                'LONGITUDE,-170.0,-160.0'
+            );
+
+        });
     });
 });

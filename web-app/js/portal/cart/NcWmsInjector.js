@@ -4,7 +4,13 @@ Ext.namespace('Portal.cart');
 Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _getDataFilterEntry: function(collection) {
+
         var filters = collection.getFilters();
+
+        var time = filters.filter(function(filter) {
+            return filter.name == "time";
+        })[0];
+
         var params = filters.filter(function(filter) {
             return filter.isNcwmsParams;
         })[0];
@@ -43,10 +49,21 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             var endDateString = this._formatDate(params.dateRangeEnd);
             dateString = this._formatHumanDateInfo('temporalExtentHeading', startDateString, endDateString);
         }
+        else if (!this.hasTemporalExtent(time, collection)) {
+            dateString = OpenLayers.i18n('unavailableTemporalExtent');
+        }
         else {
             dateString = OpenLayers.i18n('temporalExtentNotLoaded');
         }
         return areaString + timeSeriesAtString + dateString;
+    },
+
+    hasTemporalExtent: function(time, collection) {
+        try {
+            return (!time || Object.keys(collection.layerAdapter.layerSelectionModel.selectedLayer.temporalExtent.extent) == 0) ? false : true;
+        } catch (ex) {
+            return true;
+        }
     },
 
     getInjectionJson: function(collection) {

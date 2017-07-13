@@ -2,6 +2,14 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
+    hasTemporalExtent: function(collection) {
+        try {
+            return (Object.keys(collection.layerAdapter.layerSelectionModel.selectedLayer.temporalExtent.extent) == 0) ? false : true;
+        } catch (ex) {
+            return true;
+        }
+    },
+
     getAsyncDownloadUrl: function(aggregatorServiceName) {
         return String.format('asyncDownload?aggregatorService={0}&', aggregatorServiceName);
     },
@@ -44,7 +52,8 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 collection.getFilters(),
                 _this._resourceName(),
                 _this._resourceHref(),
-                handlerParams.emailAddress
+                handlerParams.emailAddress,
+                _this.hasTemporalExtent(collection)
             );
 
             if (handlerParams.challengeResponse) {
