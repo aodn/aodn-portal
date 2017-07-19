@@ -67,10 +67,12 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
                     }
                     catch (e) {
                         log.error("Could not parse dates for NcWMS layer '" + this.params.LAYERS + "'");
+                        this.events.triggerEvent('temporalextentloaded', this);
                     }
                 }
-
-                this.events.triggerEvent('temporalextentloaded', this);
+                else {
+                    this.events.triggerEvent('temporalextentloaded', this);
+                }
             },
             failure: function() {
                 log.error("Could not get filters for NcWMS layer '" + this.params.LAYERS + "'");
