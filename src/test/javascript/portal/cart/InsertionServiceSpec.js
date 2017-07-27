@@ -53,25 +53,6 @@ describe('Portal.cart.InsertionService', function() {
         });
     });
 
-    describe('download confirmation', function() {
-        it('delegates to the download panel for confirmation', function() {
-            mockInsertionService.downloadPanel = {
-                confirmDownload: noOp
-            };
-            spyOn(mockInsertionService.downloadPanel, 'confirmDownload');
-
-            var collection = {};
-            var callback = noOp;
-            var params = {};
-
-            mockInsertionService.downloadWithConfirmation(collection, this, callback, params);
-
-            expect(mockInsertionService.downloadPanel.confirmDownload).toHaveBeenCalledWith(
-                collection, this, callback, params
-            );
-        });
-    });
-
     function expectGetInjectorToHaveBeenCalled(injectorConstructor) {
 
         var injectorConstructors = [

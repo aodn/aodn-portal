@@ -337,7 +337,7 @@ ul.x-tab-strip-top li:hover * {
 .ext-webkit .x-form-invalid,
 .x-form-invalid
 {
-    background-color: inherit;
+    background-color: whitesmoke;
 }
 
 input[type=text]:read-only {

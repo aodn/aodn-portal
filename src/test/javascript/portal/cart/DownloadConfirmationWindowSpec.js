@@ -39,18 +39,12 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
             beforeEach(function() {
                 spyOn(confirmationWindow.downloadEmailPanel, 'show');
                 spyOn(confirmationWindow.downloadEmailPanel, 'hide');
-
-                spyOn(confirmationWindow.downloadChallengePanel, 'show');
-                spyOn(confirmationWindow.downloadChallengePanel, 'hide');
             });
 
             it('shows when required', function() {
                 confirmationWindow.show({ collectEmailAddress: true, collection: mockCollection });
                 expect(confirmationWindow.downloadEmailPanel.show).toHaveBeenCalled();
                 expect(confirmationWindow.downloadEmailPanel.hide).not.toHaveBeenCalled();
-
-                expect(confirmationWindow.downloadChallengePanel.show).toHaveBeenCalled();
-                expect(confirmationWindow.downloadChallengePanel.hide).not.toHaveBeenCalled();
             });
 
             it('hides when required', function() {
@@ -58,8 +52,6 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
                 expect(confirmationWindow.downloadEmailPanel.show).not.toHaveBeenCalled();
                 expect(confirmationWindow.downloadEmailPanel.hide).toHaveBeenCalled();
 
-                expect(confirmationWindow.downloadChallengePanel.show).not.toHaveBeenCalled();
-                expect(confirmationWindow.downloadChallengePanel.hide).toHaveBeenCalled();
             });
 
             describe('download button', function() {

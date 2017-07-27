@@ -17,7 +17,7 @@ describe("Portal.cart.DownloadChallengePanel", function() {
 
         it('hides challenge', function() {
             spyOn(panel, '_hideChallenge');
-            resp = { responseText: "" }
+            resp = { responseText: "" };
             panel._configureChallengeHtmlElements(resp);
             expect(panel._hideChallenge).toHaveBeenCalled();
         });

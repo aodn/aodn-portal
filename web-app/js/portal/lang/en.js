@@ -119,7 +119,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // Download View
     downloadConfirmationWindowTitle: 'Data Download',
     downloadConfirmationWindowContent: " \
-  <h3>Licence and use limitations</h3> \
+  <h2>Licence and use limitations</h2> \
     <p> \
       <tpl if=\"jurisdictionLink\"><a target=\"_blank\" href=\"{jurisdictionLink}\">Jurisdiction</a></tpl> \
       <tpl if=\"imageLink\"><img src=\"{imageLink}\" /></tpl> \
@@ -146,6 +146,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadConfirmationCancelText: 'Cancel',
     challengeInstructions: 'Type the characters you see in the image above',
     downloadErrorText: 'There is a problem with the availability of your selected data download.',
+    downloadCalculatorLoadingContent: '<span class="fa fa-fw fa-spinner fa-spin "></span> Estimating download size....',
 
     // mainMapPanel
     layerExistsTitle: 'Add data collection',

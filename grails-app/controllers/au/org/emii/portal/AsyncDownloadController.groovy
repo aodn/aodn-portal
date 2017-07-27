@@ -5,11 +5,14 @@ import static au.org.emii.portal.HttpUtils.Status.*
 class AsyncDownloadController {
 
     def gogoduckService
+    def netcdfSubsetDownloadCalculatorService
     def wpsService
     def downloadAuthService
 
     AsyncDownloadService getAggregatorService(aggregatorService) {
         switch (aggregatorService) {
+            case 'calculator':
+                return netcdfSubsetDownloadCalculatorService
             case 'gogoduck':
                 return gogoduckService
             case 'wps':
@@ -30,13 +33,34 @@ class AsyncDownloadController {
 
     def index = {
 
+        if (params.aggregatorService == 'calculator') {
+            def aggregatorServiceString = params.remove('aggregatorService')
+            AsyncDownloadService aggregatorService = getAggregatorService(aggregatorServiceString)
+
+            // todo fix this
+            render aggregatorService.stub(params)
+
+        }
+        else {
+            doDownload(params)
+        }
+    }
+
+    def doDownload(params) {
         def aggregatorServiceString = params.remove('aggregatorService')
 
+        def ipAddress = request.getRemoteAddr()
+
         try {
-            def ipAddress = request.getRemoteAddr()
-
             verifyChallengeResponse(params, ipAddress)
+        }
+        catch (Exception e) {
+            log.error "user captcha error", e
+            render text: "The Captcha passphrase is required and must match. Please try again", status: HTTP_401_UNAUTHORISED
+            return
+        }
 
+        try {
             AsyncDownloadService aggregatorService = getAggregatorService(aggregatorServiceString)
 
             def renderText = aggregatorService.registerJob(params)

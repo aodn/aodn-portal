@@ -218,12 +218,13 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     },
 
     _getMenuItem: function(handler, downloadOption, collection) {
+
         return {
             name: handler.onlineResource.name,
             title: handler.onlineResource.title,
             text: OpenLayers.i18n(downloadOption.textKey),
             handler: function() {
-                this.confirmDownload(collection, this, downloadOption.handler, downloadOption.handlerParams);
+                this.confirmDownload(collection, this, downloadOption);
             },
             scope: this
         }
@@ -285,16 +286,15 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         return (regexRes && regexRes[1].length > 0) ? regexRes[1].toTitleCase() : false;
     },
 
-    confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
+    confirmDownload: function(collection, generateUrlCallbackScope, downloadOption) {
 
         var self = this;
-
-        params = params || {};
+        params = downloadOption.handlerParams || {};
         params.collection = collection;
 
         params.onAccept = function(callbackParams) {
 
-            self.downloader.download(collection, generateUrlCallbackScope, generateUrlCallback, callbackParams);
+            self.downloader.download(collection, generateUrlCallbackScope, downloadOption.handler, downloadOption.handlerParams);
             var trackingAction = OpenLayers.i18n('downloadTrackingActionPrefix') + callbackParams.downloadLabel;
 
             trackDownloadUsage(
@@ -316,6 +316,12 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
                 );
             }
         };
+
+        if (downloadOption.downloadSizeHandler) {
+            params.onLoadConfirmationWindow = function(callbackParams) {
+                self.confirmationWindow.downloadCalculatorPanel.getContent(downloadOption.downloadSizeHandler(collection, callbackParams));
+            };
+        }
         this.confirmationWindow.show(params);
     },
 

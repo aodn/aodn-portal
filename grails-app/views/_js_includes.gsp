@@ -172,6 +172,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadEmailPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadChallengePanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadConfirmationWindow.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'DownloadCalculatorPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'InsertionService.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'BaseInjector.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NoDataInjector.js')}"></script>
