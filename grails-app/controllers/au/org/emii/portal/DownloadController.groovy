@@ -3,10 +3,12 @@ package au.org.emii.portal
 import au.com.bytecode.opencsv.CSVReader
 import au.org.emii.portal.proxying.ExternalRequest
 import au.org.emii.portal.proxying.RequestProxyingController
+import grails.converters.JSON
+import groovy.json.JsonSlurper
 import org.apache.catalina.connector.ClientAbortException
 
-import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilename
 import static au.org.emii.portal.HttpUtils.Status.*
+import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilename
 
 class DownloadController extends RequestProxyingController {
 
@@ -29,6 +31,23 @@ class DownloadController extends RequestProxyingController {
             urlListStreamProcessor(fieldName, urlSubstitutions),
             fieldName
         )
+    }
+
+    def downloadEstimator = {
+
+        if (hostVerifier.allowedHost(params.server)) {
+            def url = "${params.server}?layer=${params.layer}&subset=${params.subset}"
+            try {
+                render new JsonSlurper().parse(url.toURL()) as JSON
+            }
+            catch (Exception e) {
+                log.error "Could not do Download Estimate with ${url}", e
+                render ''
+            }
+        }
+        else {
+            render text: "Host for Download Estimater '${params.server}' not allowed", contentType: "text/html", encoding: "UTF-8", status: HTTP_403_FORBIDDEN
+        }
     }
 
     def downloadPythonSnippet = {

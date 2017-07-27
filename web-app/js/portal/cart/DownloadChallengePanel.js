@@ -13,10 +13,9 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
         });
 
         var config = {
-            padding: 10,
             cls: 'downloadChallengePanel',
             items: [
-                {xtype: 'spacer', height: 5},
+                {xtype: 'spacer', height: 10},
                 {
                     html: "<div id='challenge'></div>"
                 },
@@ -25,7 +24,8 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
                     text: OpenLayers.i18n('challengeInstructions')
                 },
                 {xtype: 'spacer', height: 5},
-                this.challengeResponseField
+                this.challengeResponseField,
+                {xtype: 'spacer', height: 10}
             ],
             listeners: {
                 scope: this,
@@ -41,6 +41,11 @@ Portal.cart.DownloadChallengePanel = Ext.extend(Ext.Panel, {
         Portal.cart.DownloadChallengePanel.superclass.initComponent.call(this, arguments);
 
         this._hideChallenge();
+    },
+
+    _doReset: function() {
+        this._getChallenge();
+        this.challengeResponseField.reset();
     },
 
     _getChallenge: function() {

@@ -109,7 +109,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _makeSpinnerText: function(text) {
-        return '<span class=\"fa fa-spin fa-spinner \"></span> ' + text;
+        return '<span class=\"fa fa-fw fa-spin fa-spinner \"></span> ' + text;
     },
 
     _hideSpinnerText: function() {

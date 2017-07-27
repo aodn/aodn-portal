@@ -388,10 +388,21 @@ a:hover.mainlinks {
     color: #8a6d3b;
 }
 
+.alert-attention {
+    background-color: #eeeeee;
+}
+
+.alert-danger {
+    background-color: #ff7870;
+}
+
+.alert-danger, .alert-danger * {
+    color: white;
+}
+
 .alert {
     border: 1px solid transparent;
     border-radius: 4px;
-    margin-bottom: 20px;
     padding: 15px;
 }
 
@@ -996,10 +1007,6 @@ div.allwhite {
 
 .resultsHeaderBackground .x-panel-header {
     padding: 0 5px;
-}
-
-.downloadEmailPanel {
-    background-color: #eeeeee;
 }
 
 .facetedSearchBtn {
