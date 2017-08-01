@@ -22,6 +22,10 @@ Portal.data.Server = {
                 return false;
             }
             else {
+                if (Portal.app.appConfig.allowAnyHost) {
+                    serverInfo = server;
+                    return false;
+                }
                 return true;
             }
         });
