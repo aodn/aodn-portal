@@ -378,22 +378,29 @@ a:hover.mainlinks {
     color: #aa6708;
 }
 
+.alert {
+     border: 1px solid transparent;
+     border-radius: 4px;
+     margin-bottom: 20px;
+     padding: 15px;
+}
+
 .alert-warning {
     background-color: #fcf8e3;
     border-color: #faebcc;
     font-weight: bold;
 }
 
+.alert-info {
+    background-color: #FCFCFC;
+    border-color: #dddddd;
+}
+
 .alert-warning, .alert-warning * {
     color: #8a6d3b;
 }
 
-.alert {
-    border: 1px solid transparent;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    padding: 15px;
-}
+
 
 /*
 Geoserver default tables in external GFI
