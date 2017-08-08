@@ -153,7 +153,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         Ext.fly(elementId).update("");
 
         new Ext.Button({
-            text: "<span class=\"fa fa-spin fa-spinner \"></span> " + OpenLayers.i18n('downloadStatusRequested'),
+            text: "<span class=\"fa fa-fw fa-spin fa-spinner \"></span> " + OpenLayers.i18n('downloadStatusRequested'),
             cls: 'navigationButton navigationButtonActive',
             scope: this,
             disabled: true,

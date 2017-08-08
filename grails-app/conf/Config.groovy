@@ -315,6 +315,10 @@ portal {
         metadataRecord = [
             "WWW:LINK-1.0-http--metadata-URL"
         ]
+
+        dataDownloadEstimator = [
+            'IMOS:downloadEstimator'
+        ]
     }
 
     // Download handler config (online resource protocol -> DownloadHandler class)

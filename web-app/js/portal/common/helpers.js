@@ -331,3 +331,16 @@ Object.size = function(obj) {
     }
     return size;
 };
+
+// sizeInBytes - a string or Number
+function humanFileSize(sizeInBytes) {
+
+    var i = Math.abs(Math.floor( Math.log(sizeInBytes) / Math.log(1024) ));
+
+    if (!isNaN(i) && isFinite(i) && sizeInBytes.toString().length < 22) {
+        return ( sizeInBytes / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['Bytes', 'kB', 'MB', 'GB', 'Terabytes(TB)', 'Petabytes(PB)', 'Exabytes(EB)'][i];
+    }
+    else {
+        return false;
+    }
+};

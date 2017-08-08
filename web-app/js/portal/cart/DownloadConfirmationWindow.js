@@ -3,7 +3,7 @@ Ext.namespace('Portal.cart');
 Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
     WINDOW_WIDTH: 780,
-    WINDOW_HEIGHT: 360,
+    WINDOW_HEIGHT: 570,
 
     initComponent: function() {
 
@@ -35,18 +35,18 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
                 scope: this,
                 'valid': function() {
                     if (this.downloadEmailPanel.isVisible()) {
-                        this.downloadButton.enable()
+                        this.downloadButton.enable();
                     }
                 },
                 'invalid': function() {
                     if (this.downloadEmailPanel.isVisible()) {
-                        this.downloadButton.disable()
+                        this.downloadButton.disable();
                     }
                 }
             }
         });
 
-        this.downloadChallengePanel = new Portal.cart.DownloadChallengePanel({});
+        this.downloadCalculatorPanel = new Portal.cart.DownloadCalculatorPanel();
 
         Ext.apply(this, {
             title:OpenLayers.i18n('downloadConfirmationWindowTitle'),
@@ -60,8 +60,9 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
                 xtype: 'form',
                 items: [
                     this.downloadEmailPanel,
-                    this.downloadChallengePanel,
-                    {xtype: 'spacer', height: 20},
+                    {xtype: 'spacer', height: 5},
+                    this.downloadCalculatorPanel,
+                    {xtype: 'spacer', height: 15},
                     this.contentPanel
                 ],
                 buttons: [this.downloadButton, cancelButton],
@@ -104,6 +105,8 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
         this.params = params;
         this.onAcceptCallback = params.onAccept;
 
+        this._showDownloadCalculatorPanelIfNeeded();
+
         Portal.cart.DownloadConfirmationWindow.superclass.show.call(this);
 
         var metadataRecord = params.collection.getMetadataRecord();
@@ -120,13 +123,28 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
         if (params.collectEmailAddress) {
             this.downloadEmailPanel.show();
-            this.downloadChallengePanel.show();
             this.downloadButton.disable();
         }
         else {
             this.downloadEmailPanel.hide();
-            this.downloadChallengePanel.hide();
             this.downloadButton.enable();
+        }
+    },
+
+    _showDownloadCalculatorPanelIfNeeded: function() {
+
+        var url = this.downloadCalculatorPanel.hasDownloadEstimatorService(this.params.collection);
+
+        // limit to GogoduckDownloadHandler downloads;
+        var isJavaDuck = (this.params.downloadLabel == OpenLayers.i18n('downloadNetCDFDownloadServiceAction'));
+
+        if (url != undefined && isJavaDuck) {
+            this.params.downloadCalculatorUrl = url;
+            this.params.onLoadConfirmationWindow(this.params);
+            this.downloadCalculatorPanel.show();
+        }
+        else {
+            this.downloadCalculatorPanel.hide();
         }
     },
 
@@ -135,8 +153,8 @@ Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
         if (this.onAcceptCallback) {
             this.params.emailAddress = this.downloadEmailPanel.getEmailValue();
-            if (this.downloadChallengePanel.isChallenged()) {
-                this.params.challengeResponse = this.downloadChallengePanel.getChallengeResponseValue();
+            if (this.downloadEmailPanel.downloadChallengePanel.isChallenged()) {
+                this.params.challengeResponse = this.downloadEmailPanel.downloadChallengePanel.getChallengeResponseValue();
             }
             this.onAcceptCallback(this.params);
         }

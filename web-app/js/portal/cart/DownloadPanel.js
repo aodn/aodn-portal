@@ -316,7 +316,31 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
                 );
             }
         };
+
+        params.onLoadConfirmationWindow = function(callbackParams) {
+            self.confirmationWindow.downloadCalculatorPanel.setContent(self._buildDownloadCalculatorUrl(callbackParams));
+        };
+
         this.confirmationWindow.show(params);
+    },
+
+    _buildDownloadCalculatorUrl: function(params) {
+
+        var selectedLayer = params.collection.getLayerSelectionModel().getSelectedLayer();
+        var gimp = new Portal.cart.GogoduckDownloadHandler();
+        var subset = gimp._getSubset(params.collection.getFilters(),gimp.hasTemporalExtent(params.collection));
+
+        var jobParameters = {
+            server: params.downloadCalculatorUrl,
+            layer : selectedLayer.wmsName,
+            subset: subset
+        };
+
+        return String.format(
+            "{0}{1}",
+            "download/downloadEstimator?",
+            Ext.urlEncode(jobParameters)
+        );
     },
 
     _getCollectionFiltersAsText: function(dataCollection) {

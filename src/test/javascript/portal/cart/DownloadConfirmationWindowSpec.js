@@ -25,7 +25,7 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
     describe('show', function() {
 
         beforeEach(function() {
-
+            confirmationWindow.downloadCalculatorPanel.hasDownloadEstimatorService = returns(false);
             confirmationWindow.show({ collection: mockCollection });
         });
 
@@ -39,27 +39,18 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
             beforeEach(function() {
                 spyOn(confirmationWindow.downloadEmailPanel, 'show');
                 spyOn(confirmationWindow.downloadEmailPanel, 'hide');
-
-                spyOn(confirmationWindow.downloadChallengePanel, 'show');
-                spyOn(confirmationWindow.downloadChallengePanel, 'hide');
             });
 
             it('shows when required', function() {
                 confirmationWindow.show({ collectEmailAddress: true, collection: mockCollection });
                 expect(confirmationWindow.downloadEmailPanel.show).toHaveBeenCalled();
                 expect(confirmationWindow.downloadEmailPanel.hide).not.toHaveBeenCalled();
-
-                expect(confirmationWindow.downloadChallengePanel.show).toHaveBeenCalled();
-                expect(confirmationWindow.downloadChallengePanel.hide).not.toHaveBeenCalled();
             });
 
             it('hides when required', function() {
                 confirmationWindow.show({ collectEmailAddress: false, collection: mockCollection });
                 expect(confirmationWindow.downloadEmailPanel.show).not.toHaveBeenCalled();
                 expect(confirmationWindow.downloadEmailPanel.hide).toHaveBeenCalled();
-
-                expect(confirmationWindow.downloadChallengePanel.show).not.toHaveBeenCalled();
-                expect(confirmationWindow.downloadChallengePanel.hide).toHaveBeenCalled();
             });
 
             describe('download button', function() {
@@ -135,4 +126,34 @@ describe("Portal.cart.DownloadConfirmationWindow", function() {
             expect(superclass.hide).toHaveBeenCalled();
         });
     });
+
+    describe('_showDownloadCalculatorPanelIfNeeded', function() {
+
+        beforeEach(function() {
+
+            spyOn(confirmationWindow.downloadCalculatorPanel, "show");
+            spyOn(confirmationWindow.downloadCalculatorPanel, "hide");
+            confirmationWindow.params = {};
+            confirmationWindow.params.onLoadConfirmationWindow = function(){};
+            confirmationWindow.downloadCalculatorPanel.hasDownloadEstimatorService = returns("blagh");
+        });
+
+        it('shows downloadCalculatorPanel when this is a ncWMS download', function() {
+
+            confirmationWindow.params.downloadLabel = OpenLayers.i18n('downloadNetCDFDownloadServiceAction');
+            confirmationWindow._showDownloadCalculatorPanelIfNeeded();
+
+            expect(confirmationWindow.downloadCalculatorPanel.show).toHaveBeenCalled();
+        });
+
+        it('hides downloadCalculatorPanel when this is not a ncWMS download', function() {
+
+            confirmationWindow.params.downloadLabel = "another download label";
+            confirmationWindow._showDownloadCalculatorPanelIfNeeded();
+
+            expect(confirmationWindow.downloadCalculatorPanel.hide).toHaveBeenCalled();
+        });
+    });
+
+
 });
