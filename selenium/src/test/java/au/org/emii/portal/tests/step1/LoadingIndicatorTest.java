@@ -17,46 +17,20 @@ public class LoadingIndicatorTest extends BaseTest {
 
     @Test
     public void loadingIndicatorTest() throws InterruptedException {
+        log.info("Loading search page - Step 1");
         WebDriver driver = getDriver();
-
-        //reset implicit wait to 0 since this spinner is only available for a few seconds
-        driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
-        FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-                .withTimeout(2000, TimeUnit.MILLISECONDS)
-                .pollingEvery(200, TimeUnit.MILLISECONDS)
-                .ignoring(NoSuchElementException.class)
-                .ignoring(TimeoutException.class);
-
         driver.get(AODN_PORTAL_SEARCH_PAGE);
+
         WebElement filterPanel = webElementUtil.findElement(By.className("search-filter-panel"));
+        WebElement facet = webElementUtil.findNestedElement(filterPanel, By.tagName("a"));
+        facet.click();
 
-        List<WebElement> spinners = null;
-        boolean passed = false;
+        //make sure the spinner appears
+        webElementUtil.findElement(By.className("fa-spinner"), 100, TimeUnit.MILLISECONDS);
 
-        // the spinner only appears for a short time, and selenium sometimes misses it, so try repeatedly
-        for(int i = 0;i<10;i++) {
-            WebElement facet = filterPanel.findElement(By.tagName("a"));
-            facet.click();
-
-            //wait for spinner to become visible
-            try {
-                spinners = wait.until(
-                        ExpectedConditions.visibilityOfAllElementsLocatedBy(By.className("fa-spinner")));
-                passed=true;
-                break;
-            } catch (TimeoutException e) {}
-        }
-        Assert.assertTrue(passed,"Facet loading spinner never appeared");
-
-        //make sure there's only one spinner
-        Assert.assertEquals(spinners.size(), 1);
-
-        wait = new WebDriverWait(driver, 30);
         //make sure the spinner disappears
-        try {
-            wait.until(ExpectedConditions.invisibilityOfAllElements(spinners));
-        } catch (TimeoutException e) {
-            Assert.fail("Facet loading spinner never disappeared");
-        }
+        webElementUtil.waitForInvisibilityOfElement(By.className("fa-spinner"));
+
+        log.info("Validation Complete");
     }
 }

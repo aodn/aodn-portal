@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class WebElementUtil {
 
+    public static final int TOTAL_ATTEMPTS = 2;
     private static Logger log = Logger.getLogger(WebElementUtil.class.getName());
 
     protected WebDriver driver;
@@ -296,7 +297,7 @@ public class WebElementUtil {
                 .pollingEvery(POLLING_PERIOND, TimeUnit.SECONDS)
                 .ignoring(NoSuchElementException.class)
                 .ignoring(StaleElementReferenceException.class);
-        int attempts = 1, totalAttempts = 2;
+        int attempts = 1, totalAttempts = TOTAL_ATTEMPTS;
         while(attempts <= totalAttempts) {
             try {
                 elements = wait.until(
@@ -310,14 +311,18 @@ public class WebElementUtil {
         return elements;
     }
 
-    public WebElement findElement(By by) {
+    public WebElement findElement(By by) throws NoSuchElementException {
+        return findElement(by, POLLING_PERIOND, TimeUnit.SECONDS);
+    }
+
+    public WebElement findElement(By by, long pollingPeriod, TimeUnit unit) throws NoSuchElementException {
         WebElement element = null;
         FluentWait<WebDriver> wait = new FluentWait<>(driver)
                 .withTimeout(TIMEOUT, TimeUnit.SECONDS)
-                .pollingEvery(POLLING_PERIOND, TimeUnit.SECONDS)
+                .pollingEvery(pollingPeriod, unit)
                 .ignoring(NoSuchElementException.class)
                 .ignoring(StaleElementReferenceException.class);
-        int attempts = 1, totalAttempts = 2;
+        int attempts = 1, totalAttempts = TOTAL_ATTEMPTS;
         while(attempts <= totalAttempts) {
             try {
                 element = wait.until(
@@ -328,6 +333,37 @@ public class WebElementUtil {
             }
             attempts++;
         }
+
+        if (element == null) {
+            throw new NoSuchElementException(String.format("Unable to find element %s", by.toString()));
+        }
+
+        return element;
+    }
+
+    public WebElement findNestedElement(WebElement webElement, By by) throws NoSuchElementException {
+        WebElement element = null;
+        FluentWait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(TIMEOUT, TimeUnit.SECONDS)
+                .pollingEvery(POLLING_PERIOND, TimeUnit.SECONDS)
+                .ignoring(NoSuchElementException.class)
+                .ignoring(StaleElementReferenceException.class);
+        int attempts = 1, totalAttempts = TOTAL_ATTEMPTS;
+        while(attempts <= totalAttempts) {
+            try {
+                element = wait.until(
+                        ExpectedConditions.presenceOfNestedElementLocatedBy(webElement, by));
+                break;
+            } catch(NoSuchElementException | TimeoutException | StaleElementReferenceException e) {
+                log.info(String.format("Unable to find element %s. Attempt: %s Total Attempts: %s. Error:%s", by.toString(), attempts, totalAttempts, e.getMessage()));
+            }
+            attempts++;
+        }
+
+        if (element == null) {
+            throw new NoSuchElementException(String.format("Unable to find element %s", by.toString()));
+        }
+
         return element;
     }
 
@@ -335,22 +371,30 @@ public class WebElementUtil {
         return findElement(by);
     }
 
-    public void waitForInvisibilityOfElement(By by) {
-        int attempts = 1, totalAttempts = 2;
+    public void waitForInvisibilityOfElement(By by) throws InvalidElementStateException {
+        int attempts = 1, totalAttempts = TOTAL_ATTEMPTS;
+        boolean isInvisible = false;
+
         while(attempts <= totalAttempts) {
             try {
                 WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
                 wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
+                isInvisible = true;
+                break;
             } catch(Exception e) {
                 log.debug(String.format("Element still visible %s. Attempt: %s Total Attempts: %s", by.toString(), attempts, totalAttempts));
                 log.debug(String.format("Error:%s", e.getMessage()));
             }
             attempts++;
         }
+
+        if (!isInvisible) {
+            throw new InvalidElementStateException(String.format("Element %s still visible", by.toString()));
+        }
     }
 
     public void click(By by, WebElement element) {
-        int attempts = 1, totalAttempts = 2;
+        int attempts = 1, totalAttempts = TOTAL_ATTEMPTS;
         while(attempts <= totalAttempts) {
             try {
                 if (element == null) {
@@ -370,7 +414,7 @@ public class WebElementUtil {
     }
 
     public void defaultClick(By by, WebElement element) {
-        int attempts = 1, totalAttempts = 2;
+        int attempts = 1, totalAttempts = TOTAL_ATTEMPTS;
         while(attempts <= totalAttempts) {
             try {
                 if (element == null) {
