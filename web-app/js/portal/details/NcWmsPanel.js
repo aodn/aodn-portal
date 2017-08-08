@@ -10,6 +10,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     START_DATE: 'start date',
     END_DATE: 'end date',
 
+    INFO_STYLES: {
+        warning: "alert-warning",
+        info: "alert-info"
+    },
+
     geometryFilter: undefined,
 
     constructor: function(cfg) {
@@ -108,7 +113,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.loadingInfo.hide();
     },
 
-    _showStatusInfo: function(msg) {
+    _showStatusInfo: function(msg, cls) {
+
+        Ext.each(this.INFO_STYLES, function(style) {
+            this.loadingInfo.removeClass(style);
+        }, this);
+
+        this.loadingInfo.addClass(cls);
         this.loadingInfo.update(msg);
         this.loadingInfo.show();
     },
@@ -116,7 +127,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     _addStatusInfo: function() {
         this.loadingInfo = new Ext.Container({
             autoEl: 'div',
-            cls: 'alert alert-warning spacer',
+            cls: 'alert spacer',
             html: OpenLayers.i18n('loadingMessage', {resource: ""})
         });
         this.add(this.loadingInfo);
@@ -496,6 +507,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     },
 
+    shouldHaveTemporalExtent: function() {
+        var metadata = this.dataCollection.data.metadataRecord.data;
+        return (metadata.temporalExtentBegin.length > 0) && (metadata.temporalExtentEnd.length > 0);
+    },
+
     _isDateRangeValid: function(start, end) {
         if (start && start.isValid() && end && end.isValid()) {
             return  start.isSameOrBefore(end);
@@ -586,8 +602,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _layerTemporalExtentLoad: function(layer) {
 
-        if (Object.keys(layer.temporalExtent.extent) == 0) {
-            this._showStatusInfo(OpenLayers.i18n("unavailableTemporalExtent"));
+        if ((Object.keys(layer.temporalExtent.extent).length == 0)) {
+
+            if (this.shouldHaveTemporalExtent()) {
+                this._showStatusInfo(OpenLayers.i18n('unavailableTemporalExtent'), this.INFO_STYLES["warning"]);
+            }
+            else {
+                this._showStatusInfo(OpenLayers.i18n('temporalExtentNotApplicable'), this.INFO_STYLES["info"]);
+            }
             this.temporalControls.hide();
             this.pointTimeSeriesPanel.hide();
         }
