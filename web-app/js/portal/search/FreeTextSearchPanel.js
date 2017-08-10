@@ -22,7 +22,7 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
                     cls: '',
                     items: [
                         {
-                            html: '<span class=\"fa fa-search \"></span>',
+                            html: '<span class=\"fa fa-search \" title=\"' + OpenLayers.i18n("freeTextSearchToolTip")+ '\"></span>',
                             cls: 'fa fa-2x',
                             listeners: {
                                 render: function(c) {
@@ -78,7 +78,6 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
         this.searchField.on('focus', function() {
             trackUsabilityTest(OpenLayers.i18n('usabilityTestKeywordSubmitAction')
                 , OpenLayers.i18n('usabilityTestKeywordGotFocusLabel'));
-            this.searchField.reset();
         }, this);
     },
 
