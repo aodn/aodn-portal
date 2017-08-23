@@ -56,7 +56,7 @@ function trackUserUsage(action, email, collection, value) {
         action,
         email,
         collection,
-        value
+        (value == "emailWasRequested")? 1: undefined
     );
 }
 
