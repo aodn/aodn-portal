@@ -445,6 +445,25 @@ public class WebElementUtil {
             }
         });
     }
+
+    public void waitUntilAnimationIsDone(final String cssLocator)
+    {
+        WebDriverWait wdw = new WebDriverWait(driver, 20);
+        ExpectedCondition<Boolean> expectation = new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                String temp = ((JavascriptExecutor)driver)
+                        .executeScript("return jQuery('"+cssLocator+"').is(':animated')").toString();
+                return  temp.equalsIgnoreCase("false");
+            }
+        };
+
+        try{
+            wdw.until(expectation);
+        }catch(TimeoutException e){
+            throw new AssertionError("Element animation is not finished in time. Css locator: " + cssLocator);
+        }
+    }
 }
 
 
