@@ -7,10 +7,10 @@
 
     <!-- Reference https://www.browserstack.com/automate/java-->
     <!--Firefox Windows 10 Configurations-->
-    <test name="Firefox 47.0 on Windows 10">
+    <test name="Firefox Latest on Windows 10">
         <parameter name="browser" value="Firefox"/>
         <!--Note: If browser_version capability is not set, the test will run on the latest version of the browser set by browser capability.-->
-        <parameter name="browser_version" value="47.0"/>
+        <parameter name="browser_version" value=""/>
         <parameter name="os" value="WINDOWS"/>
         <parameter name="os_version" value="10"/>
         <parameter name="resolution" value="1024x768"/>
@@ -26,9 +26,9 @@
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
     </test>
-    <test name="Firefox 45.0 on Windows 10">
+    <test name="Firefox 54.0 on Windows 10">
         <parameter name="browser" value="Firefox"/>
-        <parameter name="browser_version" value="45.0"/>
+        <parameter name="browser_version" value="54.0"/>
         <parameter name="os" value="WINDOWS"/>
         <parameter name="os_version" value="10"/>
         <parameter name="resolution" value="1024x768"/>
@@ -44,9 +44,9 @@
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
     </test>
-    <test name="Firefox 44.0 on Windows 10">
+    <test name="Firefox 53.0 on Windows 10">
         <parameter name="browser" value="Firefox"/>
-        <parameter name="browser_version" value="44.0"/>
+        <parameter name="browser_version" value="53.0"/>
         <parameter name="os" value="WINDOWS"/>
         <parameter name="os_version" value="10"/>
         <parameter name="resolution" value="1024x768"/>
@@ -64,10 +64,10 @@
     </test>
 
     <!--Firefox OS X El Capitan Configurations-->
-    <test name="Firefox 47.0 on OS X El Capitan">
+    <test name="Firefox Latest on OS X El Capitan">
         <parameter name="browser" value="Firefox"/>
         <!--Note: If browser_version capability is not set, the test will run on the latest version of the browser set by browser capability.-->
-        <parameter name="browser_version" value="47.0"/>
+        <parameter name="browser_version" value=""/>
         <parameter name="os" value="OS X"/>
         <parameter name="os_version" value="El Capitan"/>
         <parameter name="resolution" value="1024x768"/>
@@ -83,9 +83,9 @@
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
     </test>
-    <test name="Firefox 45.0 on OS X El Capitan">
+    <test name="Firefox 54.0 on OS X El Capitan">
         <parameter name="browser" value="Firefox"/>
-        <parameter name="browser_version" value="45.0"/>
+        <parameter name="browser_version" value="54.0"/>
         <parameter name="os" value="OS X"/>
         <parameter name="os_version" value="El Capitan"/>
         <parameter name="resolution" value="1024x768"/>
@@ -101,9 +101,9 @@
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
     </test>
-    <test name="Firefox 44.0 on OS X El Capitan">
+    <test name="Firefox 53.0 on OS X El Capitan">
         <parameter name="browser" value="Firefox"/>
-        <parameter name="browser_version" value="44.0"/>
+        <parameter name="browser_version" value="53.0"/>
         <parameter name="os" value="OS X"/>
         <parameter name="os_version" value="El Capitan"/>
         <parameter name="resolution" value="1024x768"/>
@@ -141,9 +141,9 @@
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
     </test>
-    <test name="Chrome 50.0 on Windows 10">
+    <test name="Chrome 59.0 on Windows 10">
         <parameter name="browser" value="Chrome"/>
-        <parameter name="browser_version" value="50.0"/>
+        <parameter name="browser_version" value="59.0"/>
         <parameter name="os" value="WINDOWS"/>
         <parameter name="os_version" value="10"/>
         <parameter name="resolution" value="1024x768"/>
@@ -159,9 +159,9 @@
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
     </test>
-    <test name="Chrome 49.0 on Windows 10">
+    <test name="Chrome 58.0 on Windows 10">
         <parameter name="browser" value="Chrome"/>
-        <parameter name="browser_version" value="49.0"/>
+        <parameter name="browser_version" value="58.0"/>
         <parameter name="os" value="WINDOWS"/>
         <parameter name="os_version" value="10"/>
         <parameter name="resolution" value="1024x768"/>
@@ -198,9 +198,9 @@
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
     </test>
-    <test name="Chrome 50.0 on OS X El Capitan">
+    <test name="Chrome 59.0 on OS X El Capitan">
         <parameter name="browser" value="Chrome"/>
-        <parameter name="browser_version" value="50.0"/>
+        <parameter name="browser_version" value="59.0"/>
         <parameter name="os" value="OS X"/>
         <parameter name="os_version" value="El Capitan"/>
         <parameter name="resolution" value="1024x768"/>
@@ -216,9 +216,9 @@
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
     </test>
-    <test name="Chrome 49.0 on OS X El Capitan">
+    <test name="Chrome 58.0 on OS X El Capitan">
         <parameter name="browser" value="Chrome"/>
-        <parameter name="browser_version" value="49.0"/>
+        <parameter name="browser_version" value="58.0"/>
         <parameter name="os" value="OS X"/>
         <parameter name="os_version" value="El Capitan"/>
         <parameter name="resolution" value="1024x768"/>
