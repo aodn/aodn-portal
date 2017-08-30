@@ -58,7 +58,7 @@ Portal.details.SpatialConstraintDisplayPanel = Ext.extend(Ext.Panel, {
     },
 
     _showCardForType: function(type) {
-        var card = this.emptyPolygonDisplayPanel;
+        var card = (this.lastSpatialGeometry == undefined) ? this.emptyPolygonDisplayPanel : this.polygonDisplayPanel;
         if (type == Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX) {
             card = this.boxDisplayPanel;
         }
