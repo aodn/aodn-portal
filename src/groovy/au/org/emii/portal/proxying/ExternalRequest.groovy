@@ -10,11 +10,13 @@ class ExternalRequest {
 
     def outputStream
     def targetUrl
+    def proxyConnectTimeout
 
-    ExternalRequest(outputStream, url) {
+    ExternalRequest(outputStream, url, proxyConnectTimeout) {
 
         this.outputStream = outputStream
         this.targetUrl = url
+        this.proxyConnectTimeout = proxyConnectTimeout
     }
 
     def straightThrough = { inputStream, outputStream ->
@@ -32,7 +34,8 @@ class ExternalRequest {
 
         log.debug "Opening connection to target URL: $targetUrl"
 
-        def conn = targetUrl.openConnection()
+        URLConnection conn = targetUrl.openConnection()
+        conn.setConnectTimeout(proxyConnectTimeout);
 
         onConnectionOpened conn
 
