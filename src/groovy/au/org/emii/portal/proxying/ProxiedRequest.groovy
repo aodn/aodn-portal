@@ -16,7 +16,7 @@ class ProxiedRequest extends ExternalRequest {
 
     ProxiedRequest(request, response, params, proxyRedirectService, grailsApplication) {
 
-        super(response.outputStream, _getTargetUrl(params, proxyRedirectService), grailsApplication.config.proxyConnectTimeout)
+        super(response.outputStream, _getTargetUrl(params, proxyRedirectService), grailsApplication)
 
         this.request = request
         this.response = response

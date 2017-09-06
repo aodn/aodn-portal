@@ -10,17 +10,17 @@ class ExternalRequest {
 
     def outputStream
     def targetUrl
-    def proxyConnectTimeout
+    def connectTimeout
 
     ExternalRequest(outputStream, url) {
         this.outputStream = outputStream
         this.targetUrl = url
     }
 
-    ExternalRequest(outputStream, url, proxyConnectTimeout) {
+    ExternalRequest(outputStream, url, grailsApplication) {
         this.outputStream = outputStream
         this.targetUrl = url
-        this.proxyConnectTimeout = proxyConnectTimeout
+        this.connectTimeout = grailsApplication.config.proxyConnectTimeout
     }
 
     def straightThrough = { inputStream, outputStream ->
@@ -40,8 +40,8 @@ class ExternalRequest {
 
         URLConnection conn = targetUrl.openConnection()
 
-        if (proxyConnectTimeout) {
-            conn.setConnectTimeout(proxyConnectTimeout);
+        if (connectTimeout) {
+            conn.setConnectTimeout(connectTimeout);
         }
 
         onConnectionOpened conn
