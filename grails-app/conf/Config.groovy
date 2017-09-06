@@ -171,6 +171,8 @@ baselayerServer = [
     wmsVersion: '1.1.1'
 ]
 
+// ExternalRequest.groovy connect timeout value in milliseconds
+proxyConnectTimeout = 2000
 
 // overwritten by configuration management
 proxyRedirects = [

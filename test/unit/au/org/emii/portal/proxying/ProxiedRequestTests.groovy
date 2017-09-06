@@ -9,6 +9,7 @@ class ProxiedRequestTests extends GrailsUnitTestCase {
     def request
     def response
     def params
+    def grailsApplication
 
     @Override
     void setUp() {
@@ -18,12 +19,14 @@ class ProxiedRequestTests extends GrailsUnitTestCase {
         response = [outputStream: null]
         params = [url: 'http://www.google.com']
 
+        grailsApplication = [config: [proxyConnectTimeout: 2000]]
+
         proxyRedirectService = [
 
             getRedirectedUrl: { String url -> url }
         ]
 
-        proxiedRequest = new ProxiedRequest(request, response, params, proxyRedirectService)
+        proxiedRequest = new ProxiedRequest(request, response, params, proxyRedirectService, grailsApplication)
     }
 
     void testProxy() {

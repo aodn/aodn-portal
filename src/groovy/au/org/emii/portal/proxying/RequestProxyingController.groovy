@@ -10,6 +10,7 @@ import static au.org.emii.portal.HttpUtils.buildAttachmentHeaderValueWithFilenam
 abstract class RequestProxyingController extends HostVerifyingController {
 
     def proxyRedirectService
+    def grailsApplication
 
     def index = {
 
@@ -61,7 +62,7 @@ abstract class RequestProxyingController extends HostVerifyingController {
 
     def _makeRequest = { request, response, params, paramProcessor, streamProcessor ->
         def processedParams = paramProcessor ? paramProcessor(params) : params
-        def proxiedRequest = new ProxiedRequest(request, response, processedParams, proxyRedirectService)
+        def proxiedRequest = new ProxiedRequest(request, response, processedParams, proxyRedirectService, grailsApplication)
         proxiedRequest.proxy(streamProcessor)
     }
 
