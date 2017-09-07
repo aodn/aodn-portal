@@ -1,5 +1,6 @@
-package au.org.emii.portal.tests;
+package au.org.emii.portal.tests.step1;
 
+import au.org.emii.portal.tests.BaseTest;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -8,7 +9,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class PreviousButtonTest extends BaseTest {
-    private static Logger log = Logger.getLogger(PreviousButtonTest.class.getName());
 
     @Test
     public void previousButtonTest() throws InterruptedException{
