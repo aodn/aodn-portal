@@ -17,10 +17,20 @@ Portal.search.GeoFacetMapToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {
 
         OpenLayers.Control.Panel.prototype.initialize.apply(this, [options]);
 
-        this.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
-            handler: OpenLayers.Handler.Polygon,
-            'displayClass': 'olControlDrawFeature'
-        });
+        this.constraintLayer = new OpenLayers.Layer.Vector(
+            'spatial constraint',
+            {
+                displayInLayerSwitcher: false
+            }
+        );
+
+        this.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint(
+            this.constraintLayer,
+            {
+                handler: OpenLayers.Handler.Polygon,
+                'displayClass': 'olControlDrawFeature'
+            }
+        );
 
         this.addControls([
             new OpenLayers.Control.Navigation(),

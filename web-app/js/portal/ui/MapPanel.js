@@ -109,7 +109,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
         this.mapOptions = new Portal.ui.openlayers.MapOptions(this.appConfig, this);
         this.map = this.mapOptions.newMap();
-        this.map.setDefaultSpatialConstraintType(this.defaultSpatialConstraintType);
+        this.map.addSpatialConstraint(this.defaultSpatialConstraintType);
 
         Portal.ui.MapPanel.superclass._initMap.call(this);
     },

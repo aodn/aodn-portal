@@ -4,6 +4,13 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
 
         OpenLayers.Map.prototype.initialize.apply(this, arguments);
 
+        this.constraintLayer = new OpenLayers.Layer.Vector(
+            'spatial constraint',
+            {
+                displayInLayerSwitcher: false
+            }
+        );
+
         this.events.addEventType('featureInfoClick');
         this.events.addEventType('spatialconstraintusermodded');
         this.events.addEventType('spatialconstraintcleared');
@@ -12,8 +19,7 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
             'spatialconstraintusermodded',
             this,
             function(geometry) {
-                this.spatialConstraintControl.setGeometry(geometry);
-                this.spatialConstraintControl.redraw(geometry);
+                this.spatialConstraintControl.drawGeometry(geometry);
             }
         );
 
@@ -21,7 +27,7 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
             'spatialconstraintcleared',
             this,
             function() {
-                this.setSpatialConstraint();
+                this.clearSpatialConstraint();
             }
         );
     },
@@ -34,25 +40,20 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         return undefined;
     },
 
-    isConstraintModified: function() {
-        if (this.spatialConstraintControl) {
-            return this.spatialConstraintControl.isModified();
-        }
-        else {
-            return false;
-        }
+    hasConstraint: function() {
+        return this.spatialConstraintControl ? this.spatialConstraintControl.hasConstraint() : false;
     },
 
-    setDefaultSpatialConstraintType: function(spatialConstraintType) {
-        this.defaultSpatialConstraintType = spatialConstraintType;
-        this.setSpatialConstraint();
+    addSpatialConstraint: function(defaultSpatialConstraintType) {
+        this.defaultSpatialConstraintType = defaultSpatialConstraintType;
+        this.doSetSpatialConstraintStyle(defaultSpatialConstraintType);
     },
 
     setSpatialConstraintStyle: function(polygonStyle) {
 
         // Avoid unnecessary removal/addition of the control.
         if (this.polygonStyle != polygonStyle) {
-            this.doSetSpatialConstraint(polygonStyle);
+            this.doSetSpatialConstraintStyle(polygonStyle);
             this.events.triggerEvent('spatialconstrainttypechanged', polygonStyle);
 
             var val = 'type=' + polygonStyle;
@@ -64,18 +65,22 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         return this.polygonStyle;
     },
 
-    setSpatialConstraint: function() {
-        if (this.polygonStyle != this.defaultSpatialConstraintType || this.isConstraintModified()) {
-            this.doSetSpatialConstraint(this.defaultSpatialConstraintType);
+    clearSpatialConstraint: function() {
+        if (this.hasConstraint()) {
+            this.spatialConstraintControl.clear();
+        }
+
+        if (this.polygonStyle != this.defaultSpatialConstraintType) {
+            this.doSetSpatialConstraintStyle(this.defaultSpatialConstraintType);
         }
     },
 
-    doSetSpatialConstraint: function(polygonStyle) {
+    doSetSpatialConstraintStyle: function(polygonStyle) {
 
         this.polygonStyle = polygonStyle;
 
         if (this.spatialConstraintControl) {
-            this.spatialConstraintControl.resetSpatialConstraint();
+            this.spatialConstraintControl.remove();
         }
 
         if (polygonStyle == Portal.ui.openlayers.SpatialConstraintType.POLYGON) {
