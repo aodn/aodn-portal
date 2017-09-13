@@ -17,7 +17,7 @@ function show(css_id) {
 
 // Used by IMOS getFeatureInfo content.ftl's
 function showChannel(css_id, facilityName) {
-    jQuery("#[id*=" + facilityName + "]").hide();
+    jQuery('div.feature[id^=" + facilityName + "]').hide();
     jQuery('#' + facilityName + css_id).show(450);
     Portal.utils.Image.resizeWhenLoadedAfterDelay('div > .featureinfocontent .feature img', 500);
 }
