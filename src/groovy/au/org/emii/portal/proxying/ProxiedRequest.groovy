@@ -16,7 +16,7 @@ class ProxiedRequest extends ExternalRequest {
 
     ProxiedRequest(request, response, params, proxyRedirectService, grailsApplication) {
 
-        super(response.outputStream, _getTargetUrl(params, proxyRedirectService), grailsApplication)
+        super(response, _getTargetUrl(params, proxyRedirectService), grailsApplication)
 
         this.request = request
         this.response = response
@@ -29,6 +29,9 @@ class ProxiedRequest extends ExternalRequest {
 
         try {
             executeRequest(streamProcessor)
+        }
+        catch (IOException e) {
+            throw e
         }
         catch (ClientAbortException e) {
             log.debug "ClientAbortException caught while proxying request. URL: $targetUrl", e
