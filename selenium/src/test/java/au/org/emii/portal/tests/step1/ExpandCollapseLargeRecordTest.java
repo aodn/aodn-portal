@@ -35,36 +35,36 @@ public class ExpandCollapseLargeRecordTest extends BaseTest {
         List<WebElement> spinners = webElementUtil.findElements(By.className("fa-spinner"));
         wait.until(ExpectedConditions.invisibilityOfAllElements(spinners));
 
-        int numberOfRecords = webElementUtil.findElements(By.className("resultsHeaderBackground")).size();
+        List<WebElement> resultsHeaderBackgrounds = webElementUtil.findElements(By.className("resultsHeaderBackground"));
 
-        for (int i = 0; i < numberOfRecords; i++) {
-            List<WebElement> facetedSearchResults = webElementUtil.findElements(By.className("facetedSearchResultBody"));
-            WebElement record = facetedSearchResults.get(i);
+        for (int i = 0; i < resultsHeaderBackgrounds.size(); i++) {
 
-            List<WebElement> recordHeaders = webElementUtil.findElements(By.className("resultsHeaderBackground"));
-            WebElement recordHeader = recordHeaders.get(i);
+            WebElement parent = resultsHeaderBackgrounds.get(i);
+            WebElement facetedSearchResultBody = parent.findElement(By.className("facetedSearchResultBody"));
 
-            String originalHeight = record.getAttribute("style");
-            expandRecord(record, recordHeader, originalHeight);
-            collapseRecord(record, recordHeader, originalHeight);
+            String originalHeight = facetedSearchResultBody.getAttribute("style");
+            expandRecord(parent, facetedSearchResultBody, originalHeight);
+            collapseRecord(parent, facetedSearchResultBody, originalHeight);
         }
-
         log.info("Validation Complete");
     }
 
-    private void expandRecord(WebElement record, WebElement recordHeader, String originalHeight) {
-        String newHeight = clickRecordAndGetNewHeight(record, recordHeader);
+    private void expandRecord(WebElement parent, WebElement facetedSearchResultBody, String originalHeight) {
+
+        String newHeight = clickRecordAndGetNewHeight(parent, facetedSearchResultBody);
         Assert.assertFalse(newHeight.contains(originalHeight));
     }
 
-    private void collapseRecord(WebElement record, WebElement recordHeader, String originalHeight) {
-        String newHeight = clickRecordAndGetNewHeight(record, recordHeader);
+    private void collapseRecord(WebElement parent, WebElement facetedSearchResultBody, String originalHeight) {
+
+        String newHeight = clickRecordAndGetNewHeight(parent, facetedSearchResultBody);
         Assert.assertTrue(newHeight.contains(originalHeight));
     }
 
-    private String clickRecordAndGetNewHeight(WebElement record, WebElement recordHeader) {
-        recordHeader.click();
+    private String clickRecordAndGetNewHeight(WebElement parent, WebElement facetedSearchResultBody) {
+
+        parent.click();
         webElementUtil.waitUntilAnimationIsDone("facetedSearchResultBody");
-        return record.getAttribute("style");
+        return facetedSearchResultBody.getAttribute("style");
     }
 }
