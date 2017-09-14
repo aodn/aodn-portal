@@ -7,12 +7,15 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
         map = new OpenLayers.SpatialConstraintMap();
 
-        spatialConstraint = new Portal.ui.openlayers.control.SpatialConstraint({
-            validator: new Portal.filter.validation.SpatialConstraintValidator({
+        spatialConstraint = new Portal.ui.openlayers.control.SpatialConstraint(
+            map.constraintLayer,
+            {
+                validator: new Portal.filter.validation.SpatialConstraintValidator({
+                    map: map
+                }),
                 map: map
-            }),
-            map: map
-        });
+            }
+        );
     });
 
     describe('constructor', function() {
@@ -29,7 +32,9 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         });
 
         it('override handler', function() {
-            spatialConstraint = new Portal.ui.openlayers.control.SpatialConstraint({
+            spatialConstraint = new Portal.ui.openlayers.control.SpatialConstraint(
+                map.constraintLayer,
+                {
                 handler: OpenLayers.Handler.Polygon
             });
             expect(spatialConstraint.handler).toBeInstanceOf(OpenLayers.Handler.Polygon);
@@ -37,9 +42,12 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
         it('initialise with constraint', function() {
             var constraint = constructGeometry();
-            spatialConstraint = new Portal.ui.openlayers.control.SpatialConstraint({
-                initialConstraint: constraint
-            });
+            spatialConstraint = new Portal.ui.openlayers.control.SpatialConstraint(
+                map.constraintLayer,
+                {
+                    initialConstraint: constraint
+                }
+            );
 
             expect(spatialConstraint.getConstraint().toString()).toEqual(wktPolygon);
         });
@@ -61,22 +69,21 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             expect(eventSpy).toHaveBeenCalledWith(geometry);
         });
 
-        it("fires 'spatialconstraintusermodded' causes redraw", function() {
+        it("fires 'spatialconstraintusermodded' causes drawGeometry", function() {
 
-            spyOn(spatialConstraint, 'redraw');
+            spyOn(spatialConstraint, 'drawGeometry');
 
             var geometry = constructGeometry();
             map.spatialConstraintControl = spatialConstraint;
             map.events.triggerEvent('spatialconstraintusermodded', geometry);
 
-            expect(spatialConstraint.redraw).toHaveBeenCalledWith(geometry);
+            expect(spatialConstraint.drawGeometry).toHaveBeenCalledWith(geometry);
         });
     });
 
     describe('layer', function() {
 
         beforeEach(function() {
-            spyOn(spatialConstraint, '_recallLastSpatialExtent');
             spatialConstraint._checkSketch = returns(true);
         });
 
@@ -187,6 +194,7 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         describe('clear', function() {
             it('destroys existing feature', function() {
                 spyOn(map.spatialConstraintControl.layer, 'destroyFeatures');
+                map.spatialConstraintControl.map = map;
                 map.spatialConstraintControl.clear();
                 expect(map.spatialConstraintControl.layer.destroyFeatures).toHaveBeenCalled();
             });
@@ -302,54 +310,6 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
         });
     });
 
-    describe('_recallLastSpatialExtent', function() {
-
-        describe ('restoring previous geometry after timeout', function() {
-
-            beforeEach(function() {
-                spyOn(spatialConstraint, 'redraw');
-                spatialConstraint.oldGeometry = {};
-                spatialConstraint.vectorlayer = {};
-
-                spatialConstraint._recallLastSpatialExtent(spatialConstraint);
-            });
-
-            it('layer style to be reset', function() {
-                expect(spatialConstraint.vectorlayer.style).toBe(OpenLayers.Feature.Vector.style['default']);
-            });
-
-            it('redraw is called', function() {
-                expect(spatialConstraint.redraw).toHaveBeenCalled();
-            });
-        });
-    });
-
-    describe('_showSpatialExtentError', function() {
-
-        var testLayer = {};
-        var testGeometry;
-
-        beforeEach(function() {
-            spyOn(spatialConstraint, 'addAntimeridianFeature');
-            spyOn(spatialConstraint, '_recallLastSpatialExtent');
-            spatialConstraint.vectorlayer = testLayer;
-            spatialConstraint.map = { events: {
-                triggerEvent: jasmine.createSpy('triggerEvent')
-            }};
-
-            testGeometry = {
-                crossesAntimeridian: returns(false)
-            };
-
-            spatialConstraint._showSpatialExtentError(testGeometry);
-        });
-
-        it('does not add antimeridian indicator', function() {
-            expect(spatialConstraint.addAntimeridianFeature).not.toHaveBeenCalled();
-        });
-
-    });
-
     describe('onSketchComplete', function() {
 
         var testEvent;
@@ -394,21 +354,22 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
                 spatialConstraint.map.mapPanel = {findFeatureInfoForGeometry: returns()};
                 spyOn(spatialConstraint, '_checkSketch').andReturn(false);
-                spyOn(spatialConstraint, '_showSpatialExtentError');
+                spyOn(spatialConstraint, '_resetErrorLayerAfterTimeout');
 
                 returnValue = spatialConstraint._onSketchComplete(testEvent);
             });
 
             it('shows the error indicator', function() {
-                expect(spatialConstraint._showSpatialExtentError).toHaveBeenCalledWith(testGeometry);
+                expect(spatialConstraint.errorLayer.features[0].geometry).toEqual(testGeometry);
+                expect(spatialConstraint._resetErrorLayerAfterTimeout).toHaveBeenCalled();
             });
 
             it('does not track a usage event', function() {
                 expect(window.trackUsage).not.toHaveBeenCalled();
             });
 
-            it('returns true', function() {
-                expect(returnValue).toBeTruthy();
+            it('returns false', function() {
+                expect(returnValue).toBeFalsy();
             });
         });
     });

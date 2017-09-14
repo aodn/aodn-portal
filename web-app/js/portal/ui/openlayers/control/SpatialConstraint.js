@@ -17,16 +17,19 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         strokeColor: "#FF0300"
     },
 
-    constructor: function(options) {
+    constructor: function(layer, options) {
 
-        this.layerName = 'spatial constraint';
+        // valid spatial constraints will be drawn to this layer
+        this.vectorlayer = layer;
 
         options = options || {};
 
-        this.vectorlayer = new OpenLayers.Layer.Vector(
-            this.layerName,
+        // invalid spatial constraints will be highlighted on this layer
+        this.errorLayer = new OpenLayers.Layer.Vector(
+            'errors',
             {
-                displayInLayerSwitcher: false
+                displayInLayerSwitcher: false,
+                style: this.errorStyle
             }
         );
 
@@ -48,8 +51,6 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             this.events.triggerEvent('spatialconstraintadded');
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingInitLabel'));
         }
-
-        this._isModified = false;
     },
 
     _configureEventsAndHandlers: function() {
@@ -67,7 +68,6 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     _onSketchStarted: function(e) {
 
         this.triggerMapClick(e);
-        this.vectorlayer.style = OpenLayers.Feature.Vector.style['default'];
         if (this.map.mapPanel) {
             this.map.mapPanel._closeFeatureInfoPopup();
         }
@@ -86,24 +86,24 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     setMap: function(map) {
         map.addLayer(this.vectorlayer);
+        map.addLayer(this.errorLayer)
         return OpenLayers.Control.DrawFeature.prototype.setMap.apply(this, arguments);
     },
 
-    resetSpatialConstraint: function() {
+    remove: function() {
         this.deactivate();
         this._removeMapEvents();
+        this._removeVectorLayerEvents();
         this.removeControl(this);
-        this.clear();
-        this._setGeometryFilter();
-        this.removeLayer(this.vectorlayer);
+        this.removeLayer(this.errorLayer);
     },
 
-    removeLayer: function(vectorLayer) {
-        jQuery("#" + this.vectorlayer.div.id).remove();
+    removeLayer: function(layer) {
+        jQuery("#" + layer.div.id).remove();
 
-        OpenLayers.Util.removeItem(this.map.layers, vectorLayer);
-        vectorLayer.removeMap(this);
-        vectorLayer.map = null;
+        OpenLayers.Util.removeItem(this.map.layers, layer);
+        layer.removeMap(this);
+        layer.map = null;
     },
 
     removeControl: function(control) {
@@ -122,26 +122,22 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         if (this.vectorlayer.destroyFeatures) {
             this.vectorlayer.destroyFeatures();
         }
-        this._isModified = true;
+        this._setGeometryFilter();
     },
 
-    redraw: function(geometry) {
+    drawGeometry: function(geometry) {
         this.clear();
         this.vectorlayer.addFeatures(new OpenLayers.Feature.Vector(geometry));
+        this.setGeometry(geometry);
     },
 
     setGeometry: function(geometry) {
-        this.oldGeometry = geometry;
         this._setGeometryFilter(geometry);
         this.events.triggerEvent('spatialconstraintadded', geometry);
     },
 
     _setGeometryFilter: function(geometry) {
         this.map.geometryFilter = geometry;
-    },
-
-    isModified: function() {
-        return this._isModified;
     },
 
     hasConstraint: function() {
@@ -170,6 +166,14 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         });
     },
 
+    _removeVectorLayerEvents: function() {
+        this.vectorlayer.events.un({
+            scope: this,
+            "sketchstarted": this._onSketchStarted,
+            "sketchcomplete": this._onSketchComplete
+        });
+    },
+
     _layerAdded: function() {
         this._setDrawingLayersToTop();
     },
@@ -183,14 +187,19 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _setDrawingLayersToTop: function() {
-        // Set drawing layer and polygon layer to be on top of any layer in
+        // Set drawing layer, error layer and polygon layer to be on top of any layer in
         // terms of Z index
         var maxZIndexForOverlay = OpenLayers.Map.prototype.Z_INDEX_BASE['Feature'] - 1;
 
-        if (this.handler && this.handler.layer) {
-            this.handler.layer.setZIndex(maxZIndexForOverlay - 1);
+        if (this.handler && this.handler.layer && this.handler.div) {
+            this.handler.layer.setZIndex(maxZIndexForOverlay - 2);
         }
-        this.vectorlayer.setZIndex(maxZIndexForOverlay);
+
+        this.vectorlayer.setZIndex(maxZIndexForOverlay - 1);
+
+        if (this.errorLayer.div) {
+            this.errorLayer.setZIndex(maxZIndexForOverlay);
+        }
     },
 
     _getFeature: function() {
@@ -202,20 +211,16 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         return this.validator.isValid(geometry);
     },
 
-    _showSpatialExtentError: function(geometry) {
+    _resetErrorLayerAfterTimeout: function() {
         var that = this;
-        this.vectorlayer.style = this.errorStyle;
         setTimeout((function() {
-            that._recallLastSpatialExtent(that);
+            that._clearError();
         }), that.SPATIAL_EXTENT_ERROR_TIMEOUT);
     },
 
-    _recallLastSpatialExtent: function(that) {
-        if (that.oldGeometry) {
-            that.vectorlayer.style = OpenLayers.Feature.Vector.style['default'];
-            that.redraw(that.oldGeometry);
-        } else {
-            this.clear();
+    _clearError: function() {
+        if (this.errorLayer.destroyFeatures) {
+            this.errorLayer.destroyFeatures();
         }
     },
 
@@ -225,28 +230,30 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             new OpenLayers.Geometry.Point(180, 90)
         ]);
         var meridianLineFeature = new OpenLayers.Feature.Vector(meridianLine, null, this.errorStyle);
-        this.vectorlayer.addFeatures([meridianLineFeature]);
+        this.errorLayer.addFeatures([meridianLineFeature]);
     },
 
     _onSketchComplete: function(event) {
-        this.clear();
         var geometry = event.feature.geometry;
 
         if (this._checkSketch(geometry)) {
+            this.clear();
             var normalisedGeometry = this.getNormalizedGeometry(geometry);
             this.setGeometry(normalisedGeometry);
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingSpatialConstraintSketched'));
+            return true;
         }
         else {
-            this._showSpatialExtentError(geometry);
+            this.errorLayer.addFeatures([event.feature]);
             if (geometry.crossesAntimeridian()) {
                 this.addAntimeridianFeature();
             }
             else {
                 this.map.mapPanel.findFeatureInfoForGeometry(geometry); // trigger GFI then
             }
+            this._resetErrorLayerAfterTimeout();
+            return false;
         }
-        return true; // Let the feature to be added to the map
     },
 
     getNormalizedGeometry: function(geometry) {
@@ -256,14 +263,17 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
 Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map, handler) {
 
-    map.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint({
-        title: OpenLayers.i18n("drawingControl"),
-        handler: handler,
-        'displayClass': 'olControlDrawFeature',
-        validator: new Portal.filter.validation.SpatialConstraintValidator({
-            map: map
-        })
-    });
+    map.spatialConstraintControl = new Portal.ui.openlayers.control.SpatialConstraint(
+        map.constraintLayer,
+        {
+            title: OpenLayers.i18n("drawingControl"),
+            handler: handler,
+            'displayClass': 'olControlDrawFeature',
+            validator: new Portal.filter.validation.SpatialConstraintValidator({
+                map: map
+            })
+        }
+    );
 
     map.toolPanel.addControls([map.spatialConstraintControl]);
 

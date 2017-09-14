@@ -200,7 +200,7 @@ describe('OpenLayers', function() {
         });
 
         it('set polygon spatial constraint control when style is POLYGON', function() {
-            map.doSetSpatialConstraint(Portal.ui.openlayers.SpatialConstraintType.POLYGON);
+            map.doSetSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.POLYGON);
 
             expect(map.spatialConstraintControl.handler).toBeInstanceOf(OpenLayers.Handler.Polygon);
             expect(map.spatialConstraintControl.handler).not.toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
@@ -210,14 +210,14 @@ describe('OpenLayers', function() {
         });
 
         it('set polygon spatial constraint control when style is BOUNDING_BOX', function() {
-            map.doSetSpatialConstraint(Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX);
+            map.doSetSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX);
 
             expect(map.spatialConstraintControl.handler).toBeInstanceOf(OpenLayers.Handler.RegularPolygon);
             expect(map.spatialConstraintControl.handler.sides).toBe(4);
         });
 
         it('has spatial constraint control', function() {
-            map.doSetSpatialConstraint(Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX);
+            map.doSetSpatialConstraintStyle(Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX);
             expect(map.spatialConstraintControl).toBeInstanceOf(Portal.ui.openlayers.control.SpatialConstraint);
         });
 
