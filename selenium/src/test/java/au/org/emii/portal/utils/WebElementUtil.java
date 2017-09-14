@@ -242,16 +242,9 @@ public class WebElementUtil {
     }
 
     public void verifyPageTitle(String title) {
-        try {
-            WebElement element = findElement(By.xpath("/html/head/title"));
-            String pageTitle = element.getAttribute("innerHTML");
-            Assert.assertTrue(pageTitle.contains(title));
-        } catch (AssertionError e) {
-            log.error("Assertion Failed", e);
-            log.error(String.format("Expected Title:%s", title));
-            log.error(String.format("Page Title:%s", driver.getTitle()));
-            throw e;
-        }
+
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.titleContains(title));
     }
 
     public void verifyInnerHtml(String innerHtml) {
