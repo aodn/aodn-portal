@@ -8,6 +8,7 @@ class ExternalRequest {
 
     static final Logger log = LoggerFactory.getLogger(this)
 
+    def response
     def outputStream
     def targetUrl
     def connectTimeout
@@ -17,8 +18,8 @@ class ExternalRequest {
         this.targetUrl = url
     }
 
-    ExternalRequest(outputStream, url, grailsApplication) {
-        this.outputStream = outputStream
+    ExternalRequest(response, url, grailsApplication) {
+        this.response = response
         this.targetUrl = url
         this.connectTimeout = grailsApplication.config.proxyConnectTimeout
     }
@@ -47,6 +48,17 @@ class ExternalRequest {
         onConnectionOpened conn
 
         try {
+            InputStream inputStream = conn.getInputStream()
+        }
+        catch (IOException e) {
+            throw e
+            return
+        }
+
+        try {
+            if (response) {
+                outputStream = response.outputStream
+            }
             processStream conn.inputStream, outputStream
             outputStream.flush()
         }

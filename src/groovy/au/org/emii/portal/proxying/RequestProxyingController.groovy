@@ -44,10 +44,17 @@ abstract class RequestProxyingController extends HostVerifyingController {
                 return
             }
         }
-
         _addDownloadTokenCookie()
         _setDownloadFilename(response, params)
-        _makeRequest(request, response, params, paramProcessor, streamProcessor)
+
+        try {
+            _makeRequest(request, response, params, paramProcessor, streamProcessor)
+        }
+        catch (IOException e) {
+            def msg = String.format("Could not reach %s %s", probeUrl, e.message)
+            log.error msg
+            render text: msg, contentType: "text/html", encoding: "UTF-8", status: HTTP_502_GATEWAY_TIMEOUT
+        }
     }
 
     def _addDownloadTokenCookie = {
