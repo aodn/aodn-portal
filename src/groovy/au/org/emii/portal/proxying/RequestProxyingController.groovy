@@ -53,7 +53,7 @@ abstract class RequestProxyingController extends HostVerifyingController {
         catch (IOException e) {
             def msg = String.format("Could not reach %s %s", probeUrl, e.message)
             log.error msg
-            render text: msg, contentType: "text/html", encoding: "UTF-8", status: HTTP_500_INTERNAL_SERVER_ERROR
+            render text: msg, contentType: "text/html", encoding: "UTF-8", status: HTTP_502_GATEWAY_TIMEOUT
         }
     }
 

@@ -10,6 +10,7 @@ final class HttpUtils {
         static final HTTP_404_NOT_FOUND = 404
         static final HTTP_500_INTERNAL_SERVER_ERROR = 500
         static final HTTP_502_BAD_GATEWAY = 502
+        static final HTTP_502_GATEWAY_TIMEOUT = 503
     }
 
     static String buildAttachmentHeaderValueWithFilename(String filename) {
