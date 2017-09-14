@@ -3,15 +3,16 @@ jQuery( document ).ready(function() {
     jQuery(document).on("click", ".resultsHeaderBackground:not(.facetedSearchBtn *)",
         function() {
             var resBody = jQuery(this).children('.facetedSearchResultBody');
-            var fullHeight = resBody[0].scrollHeight;
 
-            var currentHeight = Math.round(resBody.height());
+            var fullHeight = resBody[0].scrollHeight;
+            var currentHeight = resBody[0].offsetHeight;
 
             //on the first run we store the initial height so we can return to it later
-            if(!resBody.data("originalHeight")) {
-                resBody.data("originalHeight", currentHeight );
+            if (jQuery.data(resBody[0], "originalHeight") == undefined) {
+                jQuery.data(resBody[0],"originalHeight", currentHeight );
             }
 
+            // animate height of parent facetedSearchResultBody
             if (fullHeight > 0  && currentHeight != fullHeight  ) {
                 resBody.animate({
                     height: fullHeight
@@ -19,17 +20,17 @@ jQuery( document ).ready(function() {
             }
             else {
                 resBody.animate({
-                    height: resBody.data("originalHeight")
+                    height: jQuery.data(resBody[0],"originalHeight")
                 }, 150);
             }
         });
 
     jQuery(document).on("mouseover", ".resultsHeaderBackground:not(.facetedSearchBtn *)",
         function() {
-            var resBody = jQuery(this).children('.facetedSearchResultBody');
-            var fullHeight = resBody[0].scrollHeight;
+            var resBodyChild = jQuery(this).children('.facetedSearchResultBody')[0];
+            var fullHeight = resBodyChild.scrollHeight;
 
-            if (fullHeight > 0 && fullHeight != resBody.height()) {
+            if (fullHeight > 0 && fullHeight != resBodyChild.offsetHeight) {
                 jQuery(this).addClass("expandable");
             }
         });
