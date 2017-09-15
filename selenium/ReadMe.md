@@ -37,13 +37,13 @@ Navigate to the folder containing the binary, and run it from the command-line i
 Note: Running your Selenium tests on BrowserStack requires a username and an access key.
 
 ## OS X & Linux
-To test a private server, execute the binary:
+To test a private server, execute the binary and leave it running:
 
 ` ./BrowserStackLocal YourSecretKey ` 
 Once the connection is made, you need to set the browserstack.local capability to true.
 
 ## Windows
-To test a private server, execute the binary:
+To test a private server, execute the binary and leave it running:
 
 ` BrowserStackLocal.exe YourSecretKey `
 Once the connection is made, you need to set the browserstack.local capability to true.
