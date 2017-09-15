@@ -23,7 +23,7 @@ To obtain your BrowserStack username and automate key, login to BrowserStack and
 You will see the details on the top left section of the site. 
 
 
-# Setting up Local Testing
+# Setting up [Local Testing](https://www.browserstack.com/local-testing)
 
 Download the appropriate binary:
 - OS X (Lion, Mountain Lion, Mavericks) https://www.browserstack.com/browserstack-local/BrowserStackLocal-darwin-x64.zip
@@ -39,13 +39,21 @@ Note: Running your Selenium tests on BrowserStack requires a username and an acc
 ## OS X & Linux
 To test a private server, execute the binary:
 
-` ./BrowserStackLocal gHycUBmFvrs5PWq8qYqS `
+` ./BrowserStackLocal YourSecretKey ` 
 Once the connection is made, you need to set the browserstack.local capability to true.
 
 ## Windows
 To test a private server, execute the binary:
 
-` BrowserStackLocal.exe gHycUBmFvrs5PWq8qYqS `
+` BrowserStackLocal.exe YourSecretKey `
 Once the connection is made, you need to set the browserstack.local capability to true.
 
+## Update pom.xml
+
+```
+        <browserstack.local>true</browserstack.local>
+        <aodnPortal>http://localhost:9090/</aodnPortal>
+```
+        
+        
 
