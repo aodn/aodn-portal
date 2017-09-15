@@ -12,7 +12,6 @@ jQuery( document ).ready(function() {
                 jQuery.data(resBody[0],"originalHeight", currentHeight );
             }
 
-            // animate height of parent facetedSearchResultBody
             if (fullHeight > 0  && currentHeight != fullHeight  ) {
                 resBody.animate({
                     height: fullHeight
