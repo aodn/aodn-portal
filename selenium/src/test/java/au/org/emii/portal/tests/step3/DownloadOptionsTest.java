@@ -35,8 +35,8 @@ public class DownloadOptionsTest extends BaseTest {
         List<WebElement> spinners = webElementUtil.findElements(By.className("fa-spinner"));
         wait.until(ExpectedConditions.invisibilityOfAllElements(spinners));
 
-        List<WebElement> buttons = webElementUtil.findElements(By.className("viewPortButton"));
-        buttons.get(2).click();
+        // Step 3
+        webElementUtil.clickButtonWithText("Next");
 
         wait.until(ExpectedConditions.numberOfElementsToBe(By.xpath("//i[contains(.,'" + "Waiting for Temporal extent to load" + "')]"),0));
 
