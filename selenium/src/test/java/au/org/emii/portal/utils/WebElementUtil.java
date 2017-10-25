@@ -232,13 +232,8 @@ public class WebElementUtil {
     }
 
     public void verifyTextPresentOnPage(String text) {
-        try {
-            WebElement element = findElement(By.xpath("[contains(.,'" + text + "')]"));
-            Assert.assertNotNull(element);
-        } catch (NoSuchElementException | AssertionError e) {
-            log.error("Text " + text + " could not be found", e);
-            throw e;
-        }
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("body"),text));
     }
 
     public void verifyPageTitle(String title) {
