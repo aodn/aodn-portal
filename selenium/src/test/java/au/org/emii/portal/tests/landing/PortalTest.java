@@ -11,15 +11,16 @@ public class PortalTest extends BaseTest {
 
         // Step 1
         webElementUtil.verifyPageTitle("Open Access to Ocean Data");
-        webElementUtil.verifyInnerHtml("<span class=\"stepTitle\">Step 1:</span> Select a Data Collection");
+        webElementUtil.verifyTextPresentOnPage("Step 1: Select a Data Collection");
+
         portalUtil.selectFacet("Mooring and buoy");
         webElementUtil.clickButtonWithTitle("Add this collection");
 
         // Step 2
-        webElementUtil.verifyInnerHtml("<span class=\"stepTitle\">Step 2:</span> Create a Subset");
+        webElementUtil.verifyTextPresentOnPage("Step 2: Create a Subset");
         webElementUtil.clickButtonWithText("Next");
 
         // Step 3
-        webElementUtil.verifyInnerHtml("Please consider filtering");
+        webElementUtil.verifyTextPresentOnPage("Please consider filtering");
     }
 }
