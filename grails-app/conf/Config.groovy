@@ -297,7 +297,8 @@ portal {
         ]
 
         wfs = [
-            "OGC:WFS-1.0.0-http-get-capabilities"
+            "OGC:WFS-1.0.0-http-get-capabilities",
+            "AODN:WFS-EXTERNAL-1.0.0-http-get-capabilities"
         ]
 
         dataFile = [
@@ -325,7 +326,7 @@ portal {
         [ 'handler': 'GogoduckDownloadHandler',            'protocol': 'OGC:WPS--gogoduck'                   ],
         [ 'handler': 'PointCSVDownloadHandler',            'protocol': 'OGC:WPS--gogoduck'                   ],
         [ 'handler': 'NetcdfSubsetServiceDownloadHandler', 'protocol': 'OGC:WPS--netcdf-subset-service'      ],
-        [ 'handler': 'PythonDownloadHandler',              'protocol': 'OGC:WFS-1.0.0-http-get-capabilities' ],
+        [ 'handler': 'PythonDownloadHandler',              'protocol': 'AODN:WFS-EXTERNAL-1.0.0-http-get-capabilities' ],
         [ 'handler': 'BodaacDownloadHandler',              'protocol': 'IMOS:AGGREGATION--bodaac'            ],
         [ 'handler': 'GogoduckV1DownloadHandler',          'protocol': 'IMOS:AGGREGATION--gogoduck'          ],
         [ 'handler': 'FileListDownloadHandler',            'protocol': 'AODN:FILE-list'                      ],
