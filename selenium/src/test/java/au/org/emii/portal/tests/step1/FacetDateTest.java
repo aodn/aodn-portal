@@ -29,7 +29,7 @@ public class FacetDateTest extends BaseTest {
         portalUtil.selectFacetHeading("Platform");
         portalUtil.selectFacetHeading("Date (UTC)");
 
-        WebElement goButton = portalUtil.getFacetHeadingElement("Date (UTC)").findElement(By.xpath("//button[contains(.,'Go')]"));
+        WebElement goButton = webElementUtil.findElement(By.xpath("//button[contains(.,'Go')]"));
         WebElement parentElement = goButton.findElement(By.xpath("./../../../../.."));
         Assert.assertTrue(parentElement.getAttribute("class").contains("x-item-disabled"), "Go button should not be enabled");
 
@@ -40,7 +40,11 @@ public class FacetDateTest extends BaseTest {
         List<WebElement> oldResults = webElementUtil.findElements(By.className("resultsTextBody"));
 
         webElementUtil.clickButtonWithText("Go");
-        portalUtil.validateFacetHeading("1991");
+
+        String year = "1991";
+        String xpath = String.format("//span[contains(.,'%s') and contains(.,'%s')]", "Date (UTC)", year);
+        WebElement date = webElementUtil.findElement(By.xpath(xpath));
+        Assert.assertNotNull(date, String.format("Unable to find facet heading with year %s", year));
 
         WebDriverWait wait = new WebDriverWait(driver, 30);
         wait.until(ExpectedConditions.stalenessOf(oldResults.get(0)));

@@ -53,11 +53,6 @@ public class PortalUtil {
         return webElementUtil.findElement(By.xpath(getFacetHeadingXpath(facetHeading)));
     }
 
-    public void validateFacetHeading(String facetHeading) {
-        WebElement facetHeadingElement = getFacetHeadingElement(facetHeading);
-        Assert.assertNotNull(facetHeadingElement, String.format("Unable to find facet heading with text %s", facetHeading));
-    }
-
     public void waitForSearchPanelReload(String oldDataCollectionText) {
 
         int attempts = 1, totalAttempts = 2;
