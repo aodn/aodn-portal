@@ -8,6 +8,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
     def downloadAuthService
     def gogoduckService
+    def wpsAwsService
     def wpsService
 
     protected void setUp() {
@@ -26,6 +27,10 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
         wpsService = mockFor(WpsService)
         wpsService.demand.registerJob { params -> return "wps_rendered_text" }
         controller.wpsService = wpsService.createMock()
+
+        wpsAwsService = mockFor(WpsAwsService)
+        wpsAwsService.demand.registerJob { params -> return "wps_rendered_text" }
+        controller.wpsAwsService = wpsAwsService.createMock()
     }
 
     void testRegisterJobBadChallengeResponse() {
@@ -94,7 +99,26 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
     }
 
     void testGetAggregatorService() {
-        assertEquals controller.gogoduckService, controller.getAggregatorService('gogoduck')
-        assertEquals controller.wpsService, controller.getAggregatorService('wps')
+
+        // testing for Gogoduck aggregations from a Geoserver
+        controller.params.jobType = 'GoGoDuck'
+        controller.params.server = "http://containsthestring.geoserver.com"
+        assertEquals controller.gogoduckService, controller.getAggregatorService('gogoduck', controller.params)
+        assertEquals controller.wpsService, controller.getAggregatorService('wps', controller.params)
+
+        // testing for Gogoduck aggregations not from Geoserver - hopefully AWS batch
+        controller.params.jobType = 'GoGoDuck'
+        controller.params.server = "http://awsurlhopefully.com"
+        assertEquals controller.gogoduckService, controller.getAggregatorService('gogoduck', controller.params)
+        assertEquals controller.wpsAwsService, controller.getAggregatorService('wps', controller.params)
+
+        // test when were using Portal.cart.NetcdfSubsetServiceDownloadHandler
+        controller.params.jobType = 'NetcdfOutput'
+        controller.params.server = "http://containsthestring.geoserver.com"
+        assertEquals controller.gogoduckService, controller.getAggregatorService('gogoduck', controller.params)
+        assertEquals controller.wpsService, controller.getAggregatorService('wps', controller.params)
+
+
+
     }
 }

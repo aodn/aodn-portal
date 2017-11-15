@@ -6,13 +6,17 @@ class AsyncDownloadController {
 
     def gogoduckService
     def wpsService
+    def wpsAwsService
     def downloadAuthService
 
-    AsyncDownloadService getAggregatorService(aggregatorService) {
+    AsyncDownloadService getAggregatorService(aggregatorService, params) {
         switch (aggregatorService) {
             case 'gogoduck':
                 return gogoduckService
             case 'wps':
+                if (!(params.server.contains("geoserver"))) {
+                    return wpsAwsService
+                }
                 return wpsService
             default:
                 throw new Exception("Cannot find aggregatorService for '$aggregatorService'")
@@ -37,7 +41,7 @@ class AsyncDownloadController {
 
             verifyChallengeResponse(params, ipAddress)
 
-            AsyncDownloadService aggregatorService = getAggregatorService(aggregatorServiceString)
+            AsyncDownloadService aggregatorService = getAggregatorService(aggregatorServiceString, params)
 
             def renderText = aggregatorService.registerJob(params)
 
