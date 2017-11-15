@@ -46,6 +46,6 @@ class WpsAwsService extends AsyncDownloadService {
     def _getExecutionStatusUrl(registerResponse) {
         def xmlLink =  new XmlSlurper().parseText(registerResponse).@statusLocation[0].toString()
 
-        return xmlLink.replace(/format=xml/,"format=html")
+        return xmlLink.replace(/format=XML/,"format=HTML")
     }
 }
