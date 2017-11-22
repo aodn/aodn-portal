@@ -534,7 +534,7 @@ div.olMap.x-item-disabled * {
 }
 
 .gx-popup-anc{
-    background:transparent url(/images/popupPointer.png) no-repeat 0 0;
+    background:transparent url(../images/popupPointer.png) no-repeat 0 0;
     position:absolute;
     left:45px;
     z-index:2;
@@ -543,7 +543,7 @@ div.olMap.x-item-disabled * {
     pointer-events:none;
 }
 .gx-popup-anc.top{
-    background:transparent url(/images/popupPointer-top.png) no-repeat 0 0;
+    background:transparent url(../images/popupPointer-top.png) no-repeat 0 0;
     top: -20px;
     height:20px;
     left:40px;
