@@ -4,13 +4,11 @@ import grails.test.GrailsUnitTestCase
 
 class HostVerifierTests extends GrailsUnitTestCase {
 
-    def request
     def verifier
     def mockConfig
 
     protected void setUp() {
         super.setUp()
-        request = new MockRequest()
         mockConfig = new ConfigObject()
         verifier = new HostVerifier()
 
@@ -54,6 +52,22 @@ class HostVerifierTests extends GrailsUnitTestCase {
         assertTrue(verifier.allowedHost('http://geonetwork.aodn.org.au'))
     }
 
+    void testExcludedHost() {
+        def devConfig = new ConfigObject()
+        def hostVerifier = new HostVerifier()
+
+        hostVerifier.grailsApplication = devConfig
+
+        _addConfig(devConfig, ["config", "geonetwork", "url"], 'http://geonetwork.aodn.org.au/geonetwork')
+        _addConfig(devConfig, ["config", "baselayerServer", "uri"], 'http://geoserverstatic.emii.org.au')
+
+        _addConfig(devConfig, ["config", "allowAnyHost"], true)
+        _addConfig(devConfig, ["config", "excludedHosts"], ["geoserver-wps.aodn.org.au"])
+
+        assertTrue(hostVerifier.allowedHost("http://geoserver-123.aodn.org.au/geoserver"))
+        assertFalse(hostVerifier.allowedHost("http://geoserver-wps.aodn.org.au/geoserver"))
+    }
+
     def _addConfig(configObject, keys, value) {
         keys.eachWithIndex{ key, i ->
             if (i == keys.size() - 1) {
@@ -68,20 +82,4 @@ class HostVerifierTests extends GrailsUnitTestCase {
         }
     }
 
-    class MockRequest {
-
-        def host
-
-        MockRequest() {
-            this('http://localhost')
-        }
-
-        MockRequest(host) {
-            this.host = host
-        }
-
-        def getHeader(header) {
-            return host
-        }
-    }
 }
