@@ -31,12 +31,15 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
         wpsAwsService = mockFor(WpsAwsService)
         wpsAwsService.demand.registerJob { params -> return "wps_rendered_text" }
         controller.wpsAwsService = wpsAwsService.createMock()
+
+        def verifier = new HostVerifier()
+        verifier.metaClass.allowedHost {address -> address == 'allowed'}
+        controller.hostVerifier = verifier
+
+        controller.params.server = 'allowed'
     }
 
     void testRegisterJobBadChallengeResponse() {
-
-        def testParams = new Object()
-
         controller.downloadAuthService.metaClass.verifyChallengeResponse = {
             ipAddress, challengeResponse ->
 
@@ -56,7 +59,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
         controller.params.c = "d"
 
         // Note that the 'aggregatorService' will be stripped off
-        def mockParams = [a: 'b', c: 'd']
+        def mockParams = [server: 'allowed', a: 'b', c: 'd']
 
         controller.gogoduckService.metaClass.registerJob {
             params ->
@@ -88,6 +91,14 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
         controller.index()
 
         assertEquals HTTP_500_INTERNAL_SERVER_ERROR, controller.renderArgs.status
+    }
+
+    void testServerNotAllowed() {
+        controller.params.server = 'not allowed'
+
+        controller.index()
+
+        assertEquals HTTP_403_FORBIDDEN, controller.renderArgs.status
     }
 
     void testNoSuchAggregator() {

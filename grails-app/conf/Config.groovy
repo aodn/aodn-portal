@@ -142,11 +142,14 @@ environments {
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
-        geonetwork.url = "https://catalogue-portal.aodn.org.au/geonetwork"
+        geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
 
         // Set to true if you want to test interaction with new servers. This turns
         // your portal instance into an open proxy and can be dangerous.
         allowAnyHost = true
+
+        // Hosts which shouldn't be allowed even if allowAnyHosts is set to true
+        excludedHosts = ['geoserver-wps.aodn.org.au', 'wps.aodn.org.au']
     }
 
     test {

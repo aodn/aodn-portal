@@ -1,8 +1,10 @@
 package au.org.emii.portal
 
+import au.org.emii.portal.proxying.HostVerifyingController
+
 import static au.org.emii.portal.HttpUtils.Status.*
 
-class AsyncDownloadController {
+class AsyncDownloadController extends HostVerifyingController {
 
     def gogoduckService
     def wpsService
@@ -33,26 +35,27 @@ class AsyncDownloadController {
     }
 
     def index = {
+        ifAllowed(params.server) {
+            def aggregatorServiceString = params.remove('aggregatorService')
 
-        def aggregatorServiceString = params.remove('aggregatorService')
+            try {
+                def ipAddress = request.getRemoteAddr()
 
-        try {
-            def ipAddress = request.getRemoteAddr()
+                verifyChallengeResponse(params, ipAddress)
 
-            verifyChallengeResponse(params, ipAddress)
+                AsyncDownloadService aggregatorService = getAggregatorService(aggregatorServiceString, params)
 
-            AsyncDownloadService aggregatorService = getAggregatorService(aggregatorServiceString, params)
+                def renderText = aggregatorService.registerJob(params)
 
-            def renderText = aggregatorService.registerJob(params)
+                // Add accounting for that IP address
+                downloadAuthService.registerDownloadForAddress(ipAddress, aggregatorServiceString)
 
-            // Add accounting for that IP address
-            downloadAuthService.registerDownloadForAddress(ipAddress, aggregatorServiceString)
-
-            render renderText
-        }
-        catch (Exception e) {
-            log.error "Problem registering new aggregator job with type '$aggregatorServiceString' and parameters: '$params'", e
-            render text: "Problem registering new aggregator job", status: HTTP_500_INTERNAL_SERVER_ERROR
+                render renderText
+            }
+            catch (Exception e) {
+                log.error "Problem registering new aggregator job with type '$aggregatorServiceString' and parameters: '$params'", e
+                render text: "Problem registering new aggregator job", status: HTTP_500_INTERNAL_SERVER_ERROR
+            }
         }
     }
 }
