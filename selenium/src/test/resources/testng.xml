@@ -7,46 +7,10 @@
 
     <!-- Reference https://www.browserstack.com/automate/java-->
     <!--Firefox Windows 10 Configurations-->
-    <test name="Firefox Latest on Windows 10">
+    <test name="Firefox 47.0 on Windows 10">
         <parameter name="browser" value="Firefox"/>
         <!--Note: If browser_version capability is not set, the test will run on the latest version of the browser set by browser capability.-->
-        <parameter name="browser_version" value=""/>
-        <parameter name="os" value="WINDOWS"/>
-        <parameter name="os_version" value="10"/>
-        <parameter name="resolution" value="1024x768"/>
-        <parameter name="device" value=""/>
-        <parameter name="platform" value=""/>
-        <parameter name="mobile" value="false"/>
-        <groups>
-            <run>
-                <exclude name="SkipTest"/>
-            </run>
-        </groups>
-        <packages>
-            <package name="au.org.emii.portal.tests.*"/>
-        </packages>
-    </test>
-    <test name="Firefox 54.0 on Windows 10">
-        <parameter name="browser" value="Firefox"/>
-        <parameter name="browser_version" value="54.0"/>
-        <parameter name="os" value="WINDOWS"/>
-        <parameter name="os_version" value="10"/>
-        <parameter name="resolution" value="1024x768"/>
-        <parameter name="device" value=""/>
-        <parameter name="platform" value=""/>
-        <parameter name="mobile" value="false"/>
-        <groups>
-            <run>
-                <exclude name="SkipTest"/>
-            </run>
-        </groups>
-        <packages>
-            <package name="au.org.emii.portal.tests.*"/>
-        </packages>
-    </test>
-    <test name="Firefox 53.0 on Windows 10">
-        <parameter name="browser" value="Firefox"/>
-        <parameter name="browser_version" value="53.0"/>
+        <parameter name="browser_version" value="47.0"/><!--firefox latest doesn't have fully implemented driver yet-->
         <parameter name="os" value="WINDOWS"/>
         <parameter name="os_version" value="10"/>
         <parameter name="resolution" value="1024x768"/>
@@ -64,10 +28,10 @@
     </test>
 
     <!--Firefox OS X El Capitan Configurations-->
-    <test name="Firefox Latest on OS X El Capitan">
+    <test name="Firefox 47.0 on OS X El Capitan">
         <parameter name="browser" value="Firefox"/>
         <!--Note: If browser_version capability is not set, the test will run on the latest version of the browser set by browser capability.-->
-        <parameter name="browser_version" value=""/>
+        <parameter name="browser_version" value="47.0"/> <!--firefox latest doesn't have fully implemented driver yet-->
         <parameter name="os" value="OS X"/>
         <parameter name="os_version" value="El Capitan"/>
         <parameter name="resolution" value="1024x768"/>
@@ -83,43 +47,6 @@
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
     </test>
-    <test name="Firefox 54.0 on OS X El Capitan">
-        <parameter name="browser" value="Firefox"/>
-        <parameter name="browser_version" value="54.0"/>
-        <parameter name="os" value="OS X"/>
-        <parameter name="os_version" value="El Capitan"/>
-        <parameter name="resolution" value="1024x768"/>
-        <parameter name="device" value=""/>
-        <parameter name="platform" value=""/>
-        <parameter name="mobile" value="false"/>
-        <groups>
-            <run>
-                <exclude name="SkipTest"/>
-            </run>
-        </groups>
-        <packages>
-            <package name="au.org.emii.portal.tests.*"/>
-        </packages>
-    </test>
-    <test name="Firefox 53.0 on OS X El Capitan">
-        <parameter name="browser" value="Firefox"/>
-        <parameter name="browser_version" value="53.0"/>
-        <parameter name="os" value="OS X"/>
-        <parameter name="os_version" value="El Capitan"/>
-        <parameter name="resolution" value="1024x768"/>
-        <parameter name="device" value=""/>
-        <parameter name="platform" value=""/>
-        <parameter name="mobile" value="false"/>
-        <groups>
-            <run>
-                <exclude name="SkipTest"/>
-            </run>
-        </groups>
-        <packages>
-            <package name="au.org.emii.portal.tests.*"/>
-        </packages>
-    </test>
-
 
     <!--Chrome Windows 10 Configurations-->
     <test name="Chrome Latest on Windows 10">
@@ -144,24 +71,6 @@
     <test name="Chrome 59.0 on Windows 10">
         <parameter name="browser" value="Chrome"/>
         <parameter name="browser_version" value="59.0"/>
-        <parameter name="os" value="WINDOWS"/>
-        <parameter name="os_version" value="10"/>
-        <parameter name="resolution" value="1024x768"/>
-        <parameter name="device" value=""/>
-        <parameter name="platform" value=""/>
-        <parameter name="mobile" value="false"/>
-        <groups>
-            <run>
-                <exclude name="SkipTest"/>
-            </run>
-        </groups>
-        <packages>
-            <package name="au.org.emii.portal.tests.*"/>
-        </packages>
-    </test>
-    <test name="Chrome 58.0 on Windows 10">
-        <parameter name="browser" value="Chrome"/>
-        <parameter name="browser_version" value="58.0"/>
         <parameter name="os" value="WINDOWS"/>
         <parameter name="os_version" value="10"/>
         <parameter name="resolution" value="1024x768"/>
@@ -216,37 +125,5 @@
             <package name="au.org.emii.portal.tests.*"/>
         </packages>
     </test>
-    <test name="Chrome 58.0 on OS X El Capitan">
-        <parameter name="browser" value="Chrome"/>
-        <parameter name="browser_version" value="58.0"/>
-        <parameter name="os" value="OS X"/>
-        <parameter name="os_version" value="El Capitan"/>
-        <parameter name="resolution" value="1024x768"/>
-        <parameter name="device" value=""/>
-        <parameter name="platform" value=""/>
-        <parameter name="mobile" value="false"/>
-        <groups>
-            <run>
-                <exclude name="SkipTest"/>
-            </run>
-        </groups>
-        <packages>
-            <package name="au.org.emii.portal.tests.*"/>
-        </packages>
-    </test>
 
-    <!--Smart Devices Configurations-->
-    <test name="iPad on iPad Air 2">
-        <parameter name="browser" value="iPad"/>
-        <parameter name="browser_version" value=""/>
-        <parameter name="os" value=""/>
-        <parameter name="os_version" value=""/>
-        <parameter name="resolution" value=""/>
-        <parameter name="device" value="iPad Air 2"/>
-        <parameter name="platform" value="MAC"/>
-        <parameter name="mobile" value="false"/>
-        <classes>
-
-        </classes>
-    </test>
 </suite>
