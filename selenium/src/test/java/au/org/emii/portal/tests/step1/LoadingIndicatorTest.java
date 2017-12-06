@@ -15,7 +15,7 @@ public class LoadingIndicatorTest extends BaseTest {
 
     private static Logger log = Logger.getLogger(LoadingIndicatorTest.class.getName());
 
-    @Test
+    @Test(groups = { "SkipFirefox"})
     public void loadingIndicatorTest() throws InterruptedException {
         WebDriver driver = getDriver();
 
