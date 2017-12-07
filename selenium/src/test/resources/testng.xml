@@ -20,6 +20,7 @@
         <groups>
             <run>
                 <exclude name="SkipTest"/>
+                <exclude name="SkipFirefox"/>
             </run>
         </groups>
         <packages>
@@ -41,6 +42,7 @@
         <groups>
             <run>
                 <exclude name="SkipTest"/>
+                <exclude name="SkipFirefox"/>
             </run>
         </groups>
         <packages>
