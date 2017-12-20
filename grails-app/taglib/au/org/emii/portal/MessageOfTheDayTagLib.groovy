@@ -15,21 +15,18 @@ class MessageOfTheDayTagLib {
 
         if (motd) {
             out << """// MOTD
-            Ext.onReady(function() {
-                Ext.Msg.show({
-                    title: "<h2>${motd.title.encodeAsJavaScript()}</h2>",
-                    msg: "${motd.msg.encodeAsJavaScript()}",
-                    buttons: Ext.Msg.OK,
-                    cls: 'motd',
-                    width: 600
-                });
+            \$(document).ready(function() {
+                \$('#motd #motdTitle').html("${motd.title.encodeAsJavaScript()}");
+                \$('#motd #motdBody').html("${motd.msg.encodeAsJavaScript()}");
+                \$('#motd').modal();
             });"""
         }
     }
 
     def toMotdMap(motd) {
-        if (motd && motd.size() > 0) {
-            def motdLines = motd.split(lineSeparator)
+
+        if (motd && motd.trim().size() > 0) {
+            def motdLines = motd.trim().split(lineSeparator)
 
             def motdMap = [:]
             if (motdLines.size() > 1) {
@@ -38,7 +35,7 @@ class MessageOfTheDayTagLib {
                 motdMap.msg = motdLines[1..-1].join(lineSeparator)
             }
             else {
-                motdMap.title = motd
+                motdMap.title = "Notice"
                 motdMap.msg = motd
             }
             return motdMap

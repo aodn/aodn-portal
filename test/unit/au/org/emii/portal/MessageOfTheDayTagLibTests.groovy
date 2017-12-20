@@ -31,15 +31,8 @@ class MessageOfTheDayTagLibTests extends GrailsUnitTestCase {
     }
 
     void testMotdMapOneLiner() {
-        def motdRaw = "title is also a message\n"
+        def motdRaw = "this is the message\n"
         def motd = messageOfTheDayTagLib.toMotdMap(motdRaw)
-        assertEquals "title is also a message\n", motd.title
-        assertEquals "title is also a message\n", motd.msg
-
-        // And with no new line
-        motdRaw = "title is also a message"
-        motd = messageOfTheDayTagLib.toMotdMap(motdRaw)
-        assertEquals "title is also a message", motd.title
-        assertEquals "title is also a message", motd.msg
+        assertEquals motdRaw, motd.msg
     }
 }

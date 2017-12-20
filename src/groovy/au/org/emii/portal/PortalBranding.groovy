@@ -82,7 +82,7 @@ class PortalBranding {
         if (grailsApplication.config.portal.brandingBase) {
             return "${grailsApplication.config.portal.brandingBase}/motd"
         }
-        else {
+        else if (grailsApplication.config.portal.motdUrl) {
             return grailsApplication.config.portal.motdUrl
         }
     }
