@@ -58,14 +58,12 @@
 <section id="information" data-uitype="fade">
     <div class="container">
         <div class="row">
-            <div class="col-md-4 text-center">
-                <div class="panel-body lead">
-                    <div>
-                        <img src="https://static.emii.org.au/images/logo/NCRIS_Initiative_stacked200.png" alt="NCRIS logo" />
-                        <a href="http://www.utas.edu.au/" title="UTAS home page" target="_blank"><img src="https://static.emii.org.au/images/logo/utas/UTAS_MONO_190w.png" alt="UTAS logo" />
+            <div class="col-md-4 text-left">
+                <div class="panel-body lead socialLinks">
+                        <img src="https://static.emii.org.au/images/logo/NCRIS_2017_110.png" alt="NCRIS logo" />
+                        <a href="http://www.utas.edu.au/" title="UTAS home page" target="_blank"><img src="https://static.emii.org.au/images/logo/utas/UTAS_2017_110.png" alt="UTAS logo" />
                         </a>
-                    </div>
-                    <div class="socialLinks">
+                    <div>
                         <a class="noUnderline" href="http://twitter.com/AusOceanDataNet" target="_blank">
                             <img src="${resource(
                                 dir: 'images', file: 'Twitter_logo_black.png'
