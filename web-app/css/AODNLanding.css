@@ -130,12 +130,14 @@ a:focus {
     padding-bottom: 10px;
 }
 
+
+.socialLinks {
+    text-align: right;
+}
+
 @media (min-width: 1000px) {
     .container{
         max-width: 800px;
-    }
-    .socialLinks {
-        text-align: left;
     }
 }
 
@@ -147,6 +149,10 @@ a:focus {
     #home .homeContent h1 {
         font-size: 5.5em;
     }
+    .socialLinks {
+        text-align: center;
+    }
+
 }
 
 @media (max-width: 750px) {
@@ -180,9 +186,4 @@ a:focus {
 
 #toplinks a:not(:first-child) {
     border-left: 1px solid #9daab1;
-}
-
-.socialLinks {
-    margin-top: 15px;
-    margin-left: 5px;
 }
