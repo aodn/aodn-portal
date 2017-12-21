@@ -22,7 +22,6 @@ public class ExpandCollapseLargeRecordTest extends BaseTest {
         log.info("Loading search page - Step 1");
         WebDriver driver = getDriver();
         driver.get(AODN_PORTAL_SEARCH_PAGE);
-        WebDriverWait wait = new WebDriverWait(driver, 30);
 
         // Search for phytoplankton records
         WebElement keyword = webElementUtil.findElement(By.xpath("//*[contains(@class, 'free-text-search')]/div[2]/div/div[2]/div/input"));
@@ -32,8 +31,7 @@ public class ExpandCollapseLargeRecordTest extends BaseTest {
         keyword.sendKeys(Keys.ENTER);
 
         // Wait until the search completes
-        List<WebElement> spinners = webElementUtil.findElements(By.className("fa-spinner"));
-        wait.until(ExpectedConditions.invisibilityOfAllElements(spinners));
+        portalUtil.waitUntilLoadingComplete();
 
         List<WebElement> resultsHeaderBackgrounds = webElementUtil.findElements(By.className("resultsHeaderBackground"));
 

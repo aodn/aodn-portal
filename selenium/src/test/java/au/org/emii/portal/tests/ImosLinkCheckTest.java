@@ -19,16 +19,19 @@ public class ImosLinkCheckTest extends BaseTest {
 
         // Go to search page - Step 1
         getDriver().get(AODN_PORTAL_SEARCH_PAGE);
+        portalUtil.waitUntilLoadingComplete();
         int invalidLinksCountSearchPageStep1 = seleniumUtil.validateUrlLinks();
         Assert.assertEquals(invalidLinksCountSearchPageStep1, 0);
 
         // Go to search page - Step 2
         webElementUtil.clickButtonWithTitle("Add this collection");
+        portalUtil.waitUntilLoadingComplete();
         int invalidLinksCountSearchPageStep2 = seleniumUtil.validateUrlLinks();
         Assert.assertEquals(invalidLinksCountSearchPageStep2, 0);
 
         // Go to search page - Step 3
         webElementUtil.clickButtonWithText("Next");
+        portalUtil.waitUntilLoadingComplete();
         int invalidLinksCountSearchPageStep3 = seleniumUtil.validateUrlLinks();
         Assert.assertEquals(invalidLinksCountSearchPageStep3, 0);
     }

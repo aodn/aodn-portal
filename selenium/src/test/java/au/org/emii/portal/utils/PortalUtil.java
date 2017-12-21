@@ -69,4 +69,9 @@ public class PortalUtil {
             attempts++;
         }
     }
+    public void waitUntilLoadingComplete() {
+        WebDriverWait wait = new WebDriverWait(webElementUtil.driver, webElementUtil.TIMEOUT);
+        List<WebElement> spinners = webElementUtil.findElements(By.className("fa-spinner"));
+        wait.until(ExpectedConditions.invisibilityOfAllElements(spinners));
+    }
 }

@@ -19,6 +19,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -59,21 +60,22 @@ public class SeleniumUtil {
 
         int invalidLinksCount = 0;
         List<WebElement> anchorTagsList = driver.findElements(By
-                .tagName("a"));
+                .xpath("//a[string(@href)]"));
         log.info("Total no. of links are "
                 + anchorTagsList.size());
 
-        for (int i = 0; i < anchorTagsList.size(); i++) {
-            WebElement anchorTag = anchorTagsList.get(i);
-            if (anchorTag != null && anchorTag.getAttribute("href") != null) {
-                String url = anchorTag.getAttribute("href");
-                if (validLinks.contains(url)) {
-                    break; // Do Nothing
-                } else if (invalidLinks.contains(url)) {
-                    invalidLinksCount ++;
-                } else {
-                    invalidLinksCount = verifyURLStatus(url, invalidLinksCount);
-                }
+        List<String> urlsToCheck = new LinkedList<>();
+        for(WebElement anchorTag: anchorTagsList) {
+            urlsToCheck.add(anchorTag.getAttribute("href"));
+        }
+
+        for(String url: urlsToCheck) {
+            if (validLinks.contains(url)) {
+                continue; // Do Nothing
+            } else if (invalidLinks.contains(url)) {
+                invalidLinksCount ++;
+            } else {
+                invalidLinksCount = verifyURLStatus(url, invalidLinksCount);
             }
         }
 
@@ -83,33 +85,35 @@ public class SeleniumUtil {
     }
 
     public int verifyURLStatus(String URL, int invalidLinksCount) {
-        if (StringUtils.isNotBlank(URL) && !URL.contains("help.aodn.org.au")) {
-            log.info("Validating URL " + URL);
-            //Validating the contact us email
-            if (URL.startsWith("mailto:")) {
-                return invalidLinksCount;
-            }
-            try {
+        // don't validate these links
+        if (    StringUtils.isBlank(URL) ||
+                URL.startsWith("mailto:") ||
+                URL.contains("help.aodn.org.au") ||
+                URL.contains("metadata.show")) {
+            return invalidLinksCount;
+        }
 
-                HttpGet request = new HttpGet(URL);
-                HttpResponse response = getHttpclient().execute(request);
-                // verifying response code and The HttpStatus should be 200 if not,
-                // increment invalid link count
-                ////We can also check for 404 status code like response.getStatusLine().getStatusCode() == 404
-                if (response.getStatusLine().getStatusCode() != 200) {
-                    invalidLinksCount++;
-                    invalidLinks.add(URL);
-                    log.error(String.format("Invalid URL %s with status %s", URL, response.getStatusLine()));
-                } else {
-                    validLinks.add(URL);
-                    log.info("Valid URL " + URL);
-                }
+        log.info("Validating URL " + URL);
+        try {
 
-            } catch (Exception e) {
-                invalidLinks.add(URL);
-                log.error("Unable to verify status of url " + URL, e);
+            HttpGet request = new HttpGet(URL);
+            HttpResponse response = getHttpclient().execute(request);
+            // verifying response code and The HttpStatus should be 200 if not,
+            // increment invalid link count
+            ////We can also check for 404 status code like response.getStatusLine().getStatusCode() == 404
+            if (response.getStatusLine().getStatusCode() != 200) {
                 invalidLinksCount++;
+                invalidLinks.add(URL);
+                log.error(String.format("Invalid URL %s with status %s", URL, response.getStatusLine()));
+            } else {
+                validLinks.add(URL);
+                log.info("Valid URL " + URL);
             }
+
+        } catch (Exception e) {
+            invalidLinks.add(URL);
+            log.error("Unable to verify status of url " + URL, e);
+            invalidLinksCount++;
         }
         return invalidLinksCount;
     }
