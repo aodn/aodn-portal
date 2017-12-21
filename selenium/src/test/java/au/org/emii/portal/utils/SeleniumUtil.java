@@ -85,33 +85,35 @@ public class SeleniumUtil {
     }
 
     public int verifyURLStatus(String URL, int invalidLinksCount) {
-        if (StringUtils.isNotBlank(URL) && !URL.contains("help.aodn.org.au")) {
-            log.info("Validating URL " + URL);
-            //Validating the contact us email
-            if (URL.startsWith("mailto:")) {
-                return invalidLinksCount;
-            }
-            try {
+        // don't validate these links
+        if (    StringUtils.isBlank(URL) ||
+                URL.startsWith("mailto:") ||
+                URL.contains("help.aodn.org.au") ||
+                URL.contains("metadata.show")) {
+            return invalidLinksCount;
+        }
 
-                HttpGet request = new HttpGet(URL);
-                HttpResponse response = getHttpclient().execute(request);
-                // verifying response code and The HttpStatus should be 200 if not,
-                // increment invalid link count
-                ////We can also check for 404 status code like response.getStatusLine().getStatusCode() == 404
-                if (response.getStatusLine().getStatusCode() != 200) {
-                    invalidLinksCount++;
-                    invalidLinks.add(URL);
-                    log.error(String.format("Invalid URL %s with status %s", URL, response.getStatusLine()));
-                } else {
-                    validLinks.add(URL);
-                    log.info("Valid URL " + URL);
-                }
+        log.info("Validating URL " + URL);
+        try {
 
-            } catch (Exception e) {
-                invalidLinks.add(URL);
-                log.error("Unable to verify status of url " + URL, e);
+            HttpGet request = new HttpGet(URL);
+            HttpResponse response = getHttpclient().execute(request);
+            // verifying response code and The HttpStatus should be 200 if not,
+            // increment invalid link count
+            ////We can also check for 404 status code like response.getStatusLine().getStatusCode() == 404
+            if (response.getStatusLine().getStatusCode() != 200) {
                 invalidLinksCount++;
+                invalidLinks.add(URL);
+                log.error(String.format("Invalid URL %s with status %s", URL, response.getStatusLine()));
+            } else {
+                validLinks.add(URL);
+                log.info("Valid URL " + URL);
             }
+
+        } catch (Exception e) {
+            invalidLinks.add(URL);
+            log.error("Unable to verify status of url " + URL, e);
+            invalidLinksCount++;
         }
         return invalidLinksCount;
     }
