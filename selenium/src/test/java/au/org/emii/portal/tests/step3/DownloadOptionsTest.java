@@ -32,8 +32,7 @@ public class DownloadOptionsTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, 30);
 
         //wait until layer has finished loading, so we can be sure the step 3 button will be clickable
-        List<WebElement> spinners = webElementUtil.findElements(By.className("fa-spinner"));
-        wait.until(ExpectedConditions.invisibilityOfAllElements(spinners));
+        portalUtil.waitUntilLoadingComplete();
 
         // Step 3
         webElementUtil.clickButtonWithText("Next");

@@ -19,6 +19,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -59,21 +60,22 @@ public class SeleniumUtil {
 
         int invalidLinksCount = 0;
         List<WebElement> anchorTagsList = driver.findElements(By
-                .tagName("a"));
+                .xpath("//a[string(@href)]"));
         log.info("Total no. of links are "
                 + anchorTagsList.size());
 
-        for (int i = 0; i < anchorTagsList.size(); i++) {
-            WebElement anchorTag = anchorTagsList.get(i);
-            if (anchorTag != null && anchorTag.getAttribute("href") != null) {
-                String url = anchorTag.getAttribute("href");
-                if (validLinks.contains(url)) {
-                    break; // Do Nothing
-                } else if (invalidLinks.contains(url)) {
-                    invalidLinksCount ++;
-                } else {
-                    invalidLinksCount = verifyURLStatus(url, invalidLinksCount);
-                }
+        List<String> urlsToCheck = new LinkedList<>();
+        for(WebElement anchorTag: anchorTagsList) {
+            urlsToCheck.add(anchorTag.getAttribute("href"));
+        }
+
+        for(String url: urlsToCheck) {
+            if (validLinks.contains(url)) {
+                continue; // Do Nothing
+            } else if (invalidLinks.contains(url)) {
+                invalidLinksCount ++;
+            } else {
+                invalidLinksCount = verifyURLStatus(url, invalidLinksCount);
             }
         }
 
