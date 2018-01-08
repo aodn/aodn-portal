@@ -15,7 +15,7 @@ public class FacetPlatformTest extends BaseTest {
 
     private static Logger log = Logger.getLogger(FacetPlatformTest.class.getName());
 
-    @Test
+    @Test(groups = { "SkipTest"})
     public void platformTest() throws InterruptedException {
         getDriver().get(AODN_PORTAL_SEARCH_PAGE);
 
