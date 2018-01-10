@@ -127,12 +127,11 @@ a:focus {
 }
 
 #information img {
-    padding-bottom: 10px;
+    padding: 0 5px 22px 5px;
 }
 
-
 .socialLinks {
-    text-align: right;
+    text-align: center;
 }
 
 @media (min-width: 1000px) {
@@ -149,10 +148,6 @@ a:focus {
     #home .homeContent h1 {
         font-size: 5.5em;
     }
-    .socialLinks {
-        text-align: center;
-    }
-
 }
 
 @media (max-width: 750px) {

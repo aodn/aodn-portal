@@ -60,9 +60,11 @@
         <div class="row">
             <div class="col-md-4 text-left">
                 <div class="panel-body lead socialLinks">
-                        <img src="https://static.emii.org.au/images/logo/NCRIS_2017_110.png" alt="NCRIS logo" />
-                        <a href="http://www.utas.edu.au/" title="UTAS home page" target="_blank"><img src="https://static.emii.org.au/images/logo/utas/UTAS_2017_110.png" alt="UTAS logo" />
-                        </a>
+                    <a href="http://www.utas.edu.au/" title="UTAS home page" target="_blank">
+                        <img src="https://static.emii.org.au/images/logo/utas/UTAS_2017_200.png" alt="UTAS logo" width="130"/>
+                    </a>
+                    <img src="https://static.emii.org.au/images/logo/NCRIS_2017_110.png" alt="NCRIS logo" width="130"/>
+
                     <div>
                         <a class="noUnderline" href="http://twitter.com/AusOceanDataNet" target="_blank">
                             <img src="${resource(
