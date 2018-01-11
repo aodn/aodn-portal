@@ -58,35 +58,6 @@
 <section id="information" data-uitype="fade">
     <div class="container">
         <div class="row">
-            <div class="col-md-4 text-left">
-                <div class="panel-body lead socialLinks">
-                    <a href="http://www.utas.edu.au/" title="UTAS home page" target="_blank">
-                        <img src="https://static.emii.org.au/images/logo/utas/UTAS_2017_200.png" alt="UTAS logo" width="130"/>
-                    </a>
-                    <img src="https://static.emii.org.au/images/logo/NCRIS_2017_110.png" alt="NCRIS logo" width="130"/>
-
-                    <div>
-                        <a class="noUnderline" href="http://twitter.com/AusOceanDataNet" target="_blank">
-                            <img src="${resource(
-                                dir: 'images', file: 'Twitter_logo_black.png'
-                            )}" title="Follow us on twitter" alt="Follow us on twitter" />
-                        </a>
-                        <a class="noUnderline" href="http://facebook.com/AusOceanDataNet" target="_blank">
-                            <img src="${resource(
-                                dir: 'images', file: 'FB-logo-gray.png'
-                            )}" title="Find us on Facebook" alt="Find us on Facebook" />
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 text-center">
-                <div class="panel-body lead">
-                    <a href="http://oceancurrent.imos.org.au/" class="btn btn-secondary btn-lg">IMOS OceanCurrent</a>
-                    <p></p>
-                    <p><strong>The latest ocean information around Australia</strong></p>
-                </div>
-            </div>
 
             <div class="col-md-4 text-left">
                 <div class="footerText">
@@ -104,6 +75,36 @@
                         <p>${portalBranding.footerContent}</p>
 
                         <div class="buildInfo"><buildInfo:summary /></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <div class="panel-body lead">
+                    <a href="http://oceancurrent.imos.org.au/" class="btn btn-secondary btn-lg">IMOS OceanCurrent</a>
+                    <p></p>
+                    <p><strong>The latest ocean information around Australia</strong></p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel-body lead socialLinks">
+                    <a href="http://www.utas.edu.au/" title="UTAS home page" target="_blank">
+                        <img src="https://static.emii.org.au/images/logo/utas/UTAS_2017_200.png" alt="UTAS logo" width="130"/>
+                    </a>
+                    <img src="https://static.emii.org.au/images/logo/NCRIS_2017_110.png" alt="NCRIS logo" width="130"/>
+
+                    <div>
+                        <a class="noUnderline" href="http://twitter.com/AusOceanDataNet" target="_blank">
+                            <img src="${resource(
+                                dir: 'images', file: 'Twitter_logo_black.png'
+                            )}" title="Follow us on twitter" alt="Follow us on twitter" />
+                        </a>
+                        <a class="noUnderline" href="http://facebook.com/AusOceanDataNet" target="_blank">
+                            <img src="${resource(
+                                dir: 'images', file: 'FB-logo-gray.png'
+                            )}" title="Find us on Facebook" alt="Find us on Facebook" />
+                        </a>
                     </div>
                 </div>
             </div>

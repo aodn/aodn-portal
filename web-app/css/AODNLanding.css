@@ -131,12 +131,18 @@ a:focus {
 }
 
 .socialLinks {
-    text-align: center;
+    text-align: right;
 }
 
 @media (min-width: 1000px) {
     .container{
         max-width: 800px;
+    }
+}
+
+@media (max-width: 1000px)  {
+    .socialLinks {
+        text-align: center;
     }
 }
 
