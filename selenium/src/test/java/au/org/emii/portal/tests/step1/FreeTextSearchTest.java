@@ -2,7 +2,12 @@ package au.org.emii.portal.tests.step1;
 
 import au.org.emii.portal.tests.BaseTest;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -12,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 
 public class FreeTextSearchTest extends BaseTest {
@@ -41,26 +45,35 @@ public class FreeTextSearchTest extends BaseTest {
         WebDriver driver = getDriver();
         driver.get(AODN_PORTAL_SEARCH_PAGE);
 
-        //scroll to bottom of panel so video shows text being entered in input
-        webElementUtil.findElement(By.xpath("//*[@id=\"ext-gen59\"]")).click();
-        ((JavascriptExecutor)driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        WebElement stalenessCheck = driver.findElements(By.className("resultsHeaderBackground")).get(0);
+
+        List<WebElement> filterPanels = webElementUtil.findElements(By.className("search-filter-panel"));
+        WebElement panel = null;
+
+        for(WebElement p : filterPanels) {
+            if(p.getText().contains("Keyword")) {
+                panel=p;
+            }
+        }
+
+        WebElement searchInput = panel.findElement(By.tagName("input"));
 
         //enter the search term
-        WebElement searchInput = webElementUtil.findElement(By.xpath("//*[@id=\"ext-comp-1024\"]"));
         searchInput.sendKeys(searchTerm);
         searchInput.sendKeys(Keys.RETURN);
 
         //wait and get filtered results
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.stalenessOf(stalenessCheck));
         List<WebElement> panels = webElementUtil.findElements(By.className("resultsTextBody"));
 
         List<String> metadataUrls = new ArrayList<String>();
 
         //open new tabs for each metadata record
-        for (WebElement panel: panels) {
+        for (WebElement resultPanel: panels) {
 
             try {
-                String query = new URL(panel.findElement(By.linkText("more")).getAttribute("href")).getQuery();
+                String query = new URL(resultPanel.findElement(By.linkText("more")).getAttribute("href")).getQuery();
                 Map<String, String> queryMap = getQueryMap(query);
 
                 queryMap.get("uuid");
