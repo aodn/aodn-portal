@@ -27,6 +27,7 @@
                         <browserstack.local>${browserstack.local}</browserstack.local>
                         <aodnPortal>${aodnPortal}</aodnPortal>
                         <aodnPortalSearch>${aodnPortalSearch}</aodnPortalSearch>
+                        <aodnPortalProxy>${aodnPortalProxy}</aodnPortalProxy>
                     </systemPropertyVariables>
                     <includes>
                         <include>**/Test*.java</include>
@@ -119,5 +120,6 @@
         <browserstack.local>false</browserstack.local>
         <aodnPortal>https://portal-edge.aodn.org.au/</aodnPortal>
         <aodnPortalSearch>search</aodnPortalSearch>
+        <aodnPortalProxy>proxy</aodnPortalProxy>
     </properties>
 </project>
