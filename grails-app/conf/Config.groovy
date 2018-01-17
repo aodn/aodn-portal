@@ -301,8 +301,7 @@ portal {
 
         wfs = [
             "OGC:WFS-1.0.0-http-get-capabilities",
-            "AODN:WFS-EXTERNAL-1.0.0-http-get-capabilities",
-            "IMOS:AGGREGATION--bodaac"
+            "AODN:WFS-EXTERNAL-1.0.0-http-get-capabilities"
         ]
 
         dataFile = [

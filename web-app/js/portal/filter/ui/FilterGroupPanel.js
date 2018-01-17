@@ -61,6 +61,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     _createWarningMessageContainer: function() {
         return new Ext.Container({
             autoEl: 'div',
+            hidden: true,
             items: [
                 this._createVerticalSpacer(10),
                 {
@@ -133,58 +134,42 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     testWfsWithFilters: function() {
-        var firstWfsLink = this.getFirstWfsLink();
-        if (firstWfsLink ) {
-            var wfsFullCheckUrl = this._getWfsUrlGeneratorFunction(firstWfsLink);
-            if (wfsFullCheckUrl.includes("CQL_FILTER")) {
-                Ext.Ajax.request({
-                    url: Ext.ux.Ajax.constructProxyUrl(wfsFullCheckUrl),
-                    scope: this,
-                    success: this._handleWfsResults
-                });
-            }
-            else {
-                this.dataCollection.totalFilteredFeatures = undefined;
-                this._handleEmptyDownloadMsg();
-            }
+
+        var wfsFullCheckUrl = this._getWfsUrlGeneratorFunction();
+        if (wfsFullCheckUrl.includes("CQL_FILTER")) {
+            Ext.Ajax.request({
+                url: Ext.ux.Ajax.constructProxyUrl(wfsFullCheckUrl),
+                scope: this,
+                success: this._handleWfsResults
+            });
+        }
+        else {
+            delete(this.dataCollection.totalFilteredFeatures);
+            this._handleEmptyDownloadMsg();
         }
     },
 
     _handleWfsResults: function(results) {
-
         var res = Ext.util.JSON.decode(results.responseText);
         this.dataCollection.totalFilteredFeatures = (res && res.totalFeatures >= 0) ? res.totalFeatures: undefined;
         this._handleEmptyDownloadMsg();
-
     },
 
     _handleEmptyDownloadMsg: function() {
-
-        console.log(this.dataCollection); // todo remove
         var show = (this.dataCollection.totalFilteredFeatures != undefined  && this.dataCollection.totalFilteredFeatures == 0);
         this.warningEmptyDownloadMessage.setVisible(show);
-
     },
 
-    getFirstWfsLink: function() {
-        var allLinks = this.dataCollection.getAllLinks();
-        var matchesProtocols = function(link) {
-            return Portal.app.appConfig.portal.metadataProtocols.wfs.indexOf(link.protocol) != -1;
-        };
-        return allLinks.filter(matchesProtocols)[0];
-    },
-
-    _getWfsUrlGeneratorFunction: function(wfsLink) {
+    // uses the WMS map layer for a WFS request
+    _getWfsUrlGeneratorFunction: function() {
 
         var url =  OpenLayers.Layer.WMS.getFeatureRequestUrl(
             this.dataCollection.getFilters(),
-            wfsLink.href,
-            wfsLink.name.split('#')[0],
+            this.dataCollection.layerSelectionModel.selectedLayer.url,
+            this.dataCollection.layerSelectionModel.selectedLayer.wmsName.split('#')[0],
             "application/json"
         );
-
         return url + "&maxFeatures=1" // maxFeatures when VERSION=1.0.0
-
     },
 
     _handleFilterLoadFailure: function() {

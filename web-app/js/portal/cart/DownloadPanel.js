@@ -120,8 +120,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
     _generateBodyContentForCollection: function(tpl, collection) {
 
-
-        console.log("initing cart");
         var service = new Portal.cart.InsertionService(this);
         var processedValues = service.insertionValues(collection);
 
