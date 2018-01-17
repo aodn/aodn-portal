@@ -16,6 +16,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             hidden: true
         });
 
+
         var config = Ext.apply({
             autoScroll: true,
             title: OpenLayers.i18n('stepHeader', {stepNumber: 3, stepDescription: OpenLayers.i18n('step3Description')}),
@@ -118,6 +119,9 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
     },
 
     _generateBodyContentForCollection: function(tpl, collection) {
+
+
+        console.log("initing cart");
         var service = new Portal.cart.InsertionService(this);
         var processedValues = service.insertionValues(collection);
 

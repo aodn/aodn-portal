@@ -5,12 +5,14 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         this.map = cfg.map;
         this.loadingMessage = this._createLoadingMessageContainer();
+        this.warningEmptyDownloadMessage = this._createWarningMessageContainer();
         var config = Ext.apply({
             autoDestroy: true,
             autoHeight: true,
             cls: 'filterGroupPanel',
             items: [
-                this.loadingMessage
+                this.loadingMessage,
+                this.warningEmptyDownloadMessage
             ]
         }, cfg);
 
@@ -23,6 +25,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         var filters = this.dataCollection.getFilters();
         if (filters == undefined) {
             this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS, this._filtersLoaded, this);
+            this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_UPDATED, this.testWfsWithFilters, this);
             this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_FAILURE, function() { this._filtersLoaded([]); }, this);
         }
         else {
@@ -55,15 +58,21 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         });
     },
 
-    _createErrorMessageContainer: function() {
+    _createWarningMessageContainer: function() {
         return new Ext.Container({
             autoEl: 'div',
-            html: ""
+            items: [
+                this._createVerticalSpacer(10),
+                {
+                    cls: "alert alert-warning",
+                    html: OpenLayers.i18n('subsetRestrictiveFiltersText')
+                }
+            ]
         });
     },
 
     _setErrorMessageText: function(msg, errorMsgContainer) {
-        errorMsgContainer.html = "<i>" + msg + "</i>";
+        errorMsgContainer.html = String.format("<div class=\"alert alert-warning\">{0}</div>", msg);
     },
 
     _removeLoadingMessage: function() {
@@ -121,6 +130,61 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         else {
             this._handleFilterLoadFailure();
         }
+    },
+
+    testWfsWithFilters: function() {
+        var firstWfsLink = this.getFirstWfsLink();
+        if (firstWfsLink ) {
+            var wfsFullCheckUrl = this._getWfsUrlGeneratorFunction(firstWfsLink);
+            if (wfsFullCheckUrl.includes("CQL_FILTER")) {
+                Ext.Ajax.request({
+                    url: Ext.ux.Ajax.constructProxyUrl(wfsFullCheckUrl),
+                    scope: this,
+                    success: this._handleWfsResults
+                });
+            }
+            else {
+                this.dataCollection.totalFilteredFeatures = undefined;
+                this._handleEmptyDownloadMsg();
+            }
+        }
+    },
+
+    _handleWfsResults: function(results) {
+
+        var res = Ext.util.JSON.decode(results.responseText);
+        this.dataCollection.totalFilteredFeatures = (res && res.totalFeatures >= 0) ? res.totalFeatures: undefined;
+        this._handleEmptyDownloadMsg();
+
+    },
+
+    _handleEmptyDownloadMsg: function() {
+
+        console.log(this.dataCollection); // todo remove
+        var show = (this.dataCollection.totalFilteredFeatures != undefined  && this.dataCollection.totalFilteredFeatures == 0);
+        this.warningEmptyDownloadMessage.setVisible(show);
+
+    },
+
+    getFirstWfsLink: function() {
+        var allLinks = this.dataCollection.getAllLinks();
+        var matchesProtocols = function(link) {
+            return Portal.app.appConfig.portal.metadataProtocols.wfs.indexOf(link.protocol) != -1;
+        };
+        return allLinks.filter(matchesProtocols)[0];
+    },
+
+    _getWfsUrlGeneratorFunction: function(wfsLink) {
+
+        var url =  OpenLayers.Layer.WMS.getFeatureRequestUrl(
+            this.dataCollection.getFilters(),
+            wfsLink.href,
+            wfsLink.name.split('#')[0],
+            "application/json"
+        );
+
+        return url + "&maxFeatures=1" // maxFeatures when VERSION=1.0.0
+
     },
 
     _handleFilterLoadFailure: function() {

@@ -246,7 +246,7 @@ baselayers = [
 
 portal {
     siteHeader = "Open Access to Ocean Data"
-    motdUrl = "https://static.emii.org.au/motd"
+    motdUrl = "https://s3-ap-southeast-2.amazonaws.com/static.emii.org.au/portalMotd/index.txt"
     logo = "https://static.emii.org.au/images/logo/AODN_logo_fullText.png"
     secondaryLogo = "https://static.emii.org.au/images/logo/IMOS_logo-stacked-reversed-Converted.png"
     icon = "https://static.emii.org.au/images/aodn/favicon.ico"
@@ -301,7 +301,8 @@ portal {
 
         wfs = [
             "OGC:WFS-1.0.0-http-get-capabilities",
-            "AODN:WFS-EXTERNAL-1.0.0-http-get-capabilities"
+            "AODN:WFS-EXTERNAL-1.0.0-http-get-capabilities",
+            "IMOS:AGGREGATION--bodaac"
         ]
 
         dataFile = [
