@@ -113,7 +113,6 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getDataFilterEntry: function(values) {
-
         return String.format('<p><i>{0}</i></p>', values.dataFilters);
     },
 

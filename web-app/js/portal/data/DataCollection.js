@@ -40,7 +40,6 @@ Portal.data.DataCollection = function() {
 
     constructor.prototype._onFilterValueChanged = function() {
         this.getLayerAdapter().applyFilters(this.getFilters());
-
         this.fireEvent(Portal.data.DataCollection.EVENTS.FILTERS_UPDATED, this.filters);
     };
 

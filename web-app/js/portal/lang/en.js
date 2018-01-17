@@ -50,7 +50,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // WFS Filters Panel
     subsetParametersText: 'subset parameters',
     subsetEmptyFiltersText: 'Filtering of this collection is not available at this time.',
-    subsetRestrictiveFiltersText: 'Selected filters will result in an empty download.',
+    subsetRestrictiveFiltersText: 'Selected filters and/or the selected spatial subset, will result in an empty download.',
     subsetNoOptionsText: 'No options available',
 
     // map.js

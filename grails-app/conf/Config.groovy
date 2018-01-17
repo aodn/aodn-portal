@@ -246,7 +246,7 @@ baselayers = [
 
 portal {
     siteHeader = "Open Access to Ocean Data"
-    motdUrl = "https://s3-ap-southeast-2.amazonaws.com/static.emii.org.au/portalMotd/index.txt"
+    motdUrl = "https://static.emii.org.au/motd"
     logo = "https://static.emii.org.au/images/logo/AODN_logo_fullText.png"
     secondaryLogo = "https://static.emii.org.au/images/logo/IMOS_logo-stacked-reversed-Converted.png"
     icon = "https://static.emii.org.au/images/aodn/favicon.ico"
