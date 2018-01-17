@@ -35,6 +35,7 @@ public class BaseTest {
     public static String BROWSER_STACK_BUILD;
     public static String AODN_PORTAL_HOME_PAGE;
     public static String AODN_PORTAL_SEARCH_PAGE;
+    public static String AODN_PORTAL_PROXY_URL;
 
     public String browserStackSessionUrl;
 
@@ -85,6 +86,7 @@ public class BaseTest {
 
         AODN_PORTAL_HOME_PAGE = System.getProperty("aodnPortal");
         AODN_PORTAL_SEARCH_PAGE = AODN_PORTAL_HOME_PAGE + System.getProperty("aodnPortalSearch");
+        AODN_PORTAL_PROXY_URL = AODN_PORTAL_HOME_PAGE + System.getProperty("aodnPortalProxy");
 
         this.capabilities = getDesiredCapability(browser, browser_version, os, os_version, device, platform, resolution);
 
