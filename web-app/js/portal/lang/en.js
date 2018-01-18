@@ -14,7 +14,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pleasePickNumberField: 'Please enter a number to filter on, according to your operator',
     loadingMessage: '&nbsp;<i>Loading ${resource}\u2025</i>',
     spatialSubsetOutOfBoundsMsg : 'No data is available using your chosen spatial subset.',
-    
+    subsetRestrictiveFiltersText: 'No data is available using your chosen spatial subset.',
+
     // SubsetPanel.js
     opacity: "Opacity",
     layerProblem: "There is a problem with the availability of this collection",
@@ -50,7 +51,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // WFS Filters Panel
     subsetParametersText: 'subset parameters',
     subsetEmptyFiltersText: 'Filtering of this collection is not available at this time.',
-    subsetRestrictiveFiltersText: 'Selected filters and/or the selected spatial subset, will result in an empty download.',
     subsetNoOptionsText: 'No options available',
 
     // map.js

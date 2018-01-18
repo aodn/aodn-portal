@@ -5,7 +5,11 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         this.map = cfg.map;
         this.loadingMessage = this._createLoadingMessageContainer();
-        this.warningEmptyDownloadMessage = this._createWarningMessageContainer();
+        this.warningEmptyDownloadMessage =  new Portal.common.AlertMessagePanel({
+            message: OpenLayers.i18n('subsetRestrictiveFiltersText'),
+            messageCss: "alert-info"
+        });
+
         var config = Ext.apply({
             autoDestroy: true,
             autoHeight: true,
@@ -25,7 +29,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         var filters = this.dataCollection.getFilters();
         if (filters == undefined) {
             this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS, this._filtersLoaded, this);
-            this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_UPDATED, this.testWfsWithFilters, this);
+            this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_UPDATED, this.testGetFeaturesWithFilters, this);
             this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_FAILURE, function() { this._filtersLoaded([]); }, this);
         }
         else {
@@ -53,20 +57,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
                 this._createVerticalSpacer(10),
                 {
                     html: OpenLayers.i18n('loadingMessage', {resource: OpenLayers.i18n('subsetParametersText')})
-                }
-            ]
-        });
-    },
-
-    _createWarningMessageContainer: function() {
-        return new Ext.Container({
-            autoEl: 'div',
-            hidden: true,
-            items: [
-                this._createVerticalSpacer(10),
-                {
-                    cls: "alert alert-warning",
-                    html: OpenLayers.i18n('subsetRestrictiveFiltersText')
                 }
             ]
         });
@@ -133,14 +123,15 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    testWfsWithFilters: function() {
+    testGetFeaturesWithFilters: function() {
 
-        var wfsFullCheckUrl = this._getWfsUrlGeneratorFunction();
+        var wfsFullCheckUrl = this._getFeatureUrlGeneratorFunction();
         if (wfsFullCheckUrl.includes("CQL_FILTER")) {
             Ext.Ajax.request({
                 url: Ext.ux.Ajax.constructProxyUrl(wfsFullCheckUrl),
                 scope: this,
-                success: this._handleWfsResults
+                success: this._handleGetFeatureRequestResults,
+                failure: this._handleGetFeatureRequestResults
             });
         }
         else {
@@ -149,7 +140,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    _handleWfsResults: function(results) {
+    _handleGetFeatureRequestResults: function(results) {
         var res = Ext.util.JSON.decode(results.responseText);
         this.dataCollection.totalFilteredFeatures = (res && res.totalFeatures >= 0) ? res.totalFeatures: undefined;
         this._handleEmptyDownloadMsg();
@@ -160,8 +151,8 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         this.warningEmptyDownloadMessage.setVisible(show);
     },
 
-    // uses the WMS map layer for a WFS request
-    _getWfsUrlGeneratorFunction: function() {
+    // uses the WMS map layer
+    _getFeatureUrlGeneratorFunction: function() {
 
         var url =  OpenLayers.Layer.WMS.getFeatureRequestUrl(
             this.dataCollection.getFilters(),
@@ -169,7 +160,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
             this.dataCollection.layerSelectionModel.selectedLayer.wmsName.split('#')[0],
             "application/json"
         );
-        return url + "&maxFeatures=1" // maxFeatures when VERSION=1.0.0
+        return url + "&maxFeatures=1"
     },
 
     _handleFilterLoadFailure: function() {

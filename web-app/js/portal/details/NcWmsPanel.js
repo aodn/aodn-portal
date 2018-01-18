@@ -39,6 +39,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         Portal.details.NcWmsPanel.superclass.initComponent.call(this);
 
         this._addStatusInfo();
+        this._addWarningMessageBox();
         this._addTemporalControls();
 
         if (this._timeSeriesOptionAvailable()) {
@@ -131,6 +132,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             html: OpenLayers.i18n('loadingMessage', {resource: ""})
         });
         this.add(this.loadingInfo);
+    },
+
+    _addWarningMessageBox: function() {
+        this.warningEmptyDownloadMessage = new Portal.common.AlertMessagePanel({
+            message: OpenLayers.i18n('subsetRestrictiveFiltersText')
+        });
+        this.add(this.warningEmptyDownloadMessage);
     },
 
     _attachSpatialEvents: function() {
@@ -494,6 +502,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, pointFilterValue);
 
         this.dataCollection.isTemporalExtentSubsetted = this.isTemporalExtentSubsetted(dateRangeStart, dateRangeEnd);
+
+        this.spatialSubsetIntersects = new Portal.filter.combiner.SpatialSubsetIntersectTester().testSpatialSubsetIntersect(this.dataCollection);
+        this.setWarningBoxVisibility();
+    },
+
+    setWarningBoxVisibility: function() {
+        this.warningEmptyDownloadMessage.setVisible(this.spatialSubsetIntersects === false);
     },
 
     isTemporalExtentSubsetted: function(dateRangeStart, dateRangeEnd) {
