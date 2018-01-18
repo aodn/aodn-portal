@@ -212,10 +212,10 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     asyncDownloadErrorMsg: 'Unable to create subsetting job. Please re-check the parameters you provided and try again.',
     asyncServiceMsg: "<a class='external' target='_blank' href='${url}'>Follow the progress of your job</a><br /><br />",
 
-    spatialExtentHeading: 'Spatial Subset',
+    spatialExtentHeading: 'Spatial',
     timeSeriesAtHeading: 'Timeseries at Lat/Lon',
-    temporalExtentHeading: 'Temporal Extent',
-    generalFilterHeading: 'Filters',
+    temporalExtentHeading: 'Temporal',
+    generalFilterHeading: 'Others',
     currentDateTimeLabel: 'Displaying',
     spatialExtentPolygonNote: 'Polygon with max extent ',
     pointTimeSeriesLabel: 'Point timeseries',
