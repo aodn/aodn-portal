@@ -46,6 +46,10 @@ class ProxiedRequest extends ExternalRequest {
 
     def getClientIpAddress = {
 
+        log.info "request.remoteAddr : ${request.getHeader("Client-IP")}"
+        log.info "request.remoteAddr : ${request.getHeader("X-Forwarded-For")}"
+        log.info "request.remoteAddr : ${request.remoteAddr}"
+
         def clientip = request.getHeader("Client-IP")
         if (!clientip) {
             clientip = request.getHeader("X-Forwarded-For")
