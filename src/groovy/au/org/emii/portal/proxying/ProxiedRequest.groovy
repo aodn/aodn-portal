@@ -1,6 +1,7 @@
 package au.org.emii.portal.proxying
 
 import org.apache.catalina.connector.ClientAbortException
+import org.codehaus.groovy.grails.io.support.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -69,11 +70,6 @@ class ProxiedRequest extends ExternalRequest {
             response.setHeader("Content-disposition", contentDisposition)
         }
 
-        // Forward the originating client IP address
-        if(getClientIpAddress) {
-            conn.setRequestProperty("X-Forwarded-For", getClientIpAddress())
-        }
-
         _determineResponseContentType(conn)
     }
 
@@ -85,6 +81,44 @@ class ProxiedRequest extends ExternalRequest {
         }
     }
 
+    def executeRequest = { streamProcessor = null ->
+
+        def processStream = streamProcessor ?: straightThrough
+
+        log.debug "Opening connection to target URL: $targetUrl"
+
+        URLConnection conn = targetUrl.openConnection()
+
+        if (connectTimeout) {
+            conn.setConnectTimeout(connectTimeout);
+        }
+
+        // Forward the originating client IP address
+        if(getClientIpAddress) {
+            conn.setRequestProperty("X-Forwarded-For", getClientIpAddress())
+        }
+
+        onConnectionOpened conn
+
+        try {
+            InputStream inputStream = conn.getInputStream()
+        }
+        catch (IOException e) {
+            throw e
+            return
+        }
+
+        try {
+            if (response) {
+                outputStream = response.outputStream
+            }
+            processStream conn.inputStream, outputStream
+            outputStream.flush()
+        }
+        finally {
+            IOUtils.closeQuietly(outputStream)
+        }
+    }
 
     static def _getTargetUrl(params, proxyRedirectService) {
 
