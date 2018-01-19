@@ -14,7 +14,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pleasePickNumberField: 'Please enter a number to filter on, according to your operator',
     loadingMessage: '&nbsp;<i>Loading ${resource}\u2025</i>',
     spatialSubsetOutOfBoundsMsg : 'No data is available using your chosen spatial subset.',
-    
+    subsetRestrictiveFiltersText: 'No data is available using your chosen spatial subset.',
+
     // SubsetPanel.js
     opacity: "Opacity",
     layerProblem: "There is a problem with the availability of this collection",

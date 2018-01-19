@@ -494,6 +494,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, pointFilterValue);
 
         this.dataCollection.isTemporalExtentSubsetted = this.isTemporalExtentSubsetted(dateRangeStart, dateRangeEnd);
+
     },
 
     isTemporalExtentSubsetted: function(dateRangeStart, dateRangeEnd) {
