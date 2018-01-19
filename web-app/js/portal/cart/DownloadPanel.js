@@ -121,10 +121,59 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
         var service = new Portal.cart.InsertionService(this);
         var processedValues = service.insertionValues(collection);
 
-        processedValues.intersect = new Portal.filter.combiner.SpatialSubsetIntersectTester().testSpatialSubsetIntersect(collection);
+        processedValues.intersect = this._spatialSubsetIntersect(collection);
         this._loadMenuItemsFromHandlers(processedValues, collection);
 
         return this._applyTemplate(tpl, processedValues);
+    },
+
+    _spatialSubsetIntersect: function(collection) {
+
+        var intersect;
+        var filters = collection.getFilters();
+
+        if (filters) {
+            intersect = this._checkPointIntersectsBounds(filters);
+            if (intersect == undefined) {
+                intersect = this._checkGeometryIntersectsBounds(collection, filters);
+            }
+        }
+        return intersect;
+    },
+
+    _checkGeometryIntersectsBounds: function(collection, filters) {
+        var extent;
+        var params = filters.filter(function(filter) {
+            if (filter.isNcwmsParams || filter.type === 'geometrypropertytype') {
+                return true;
+            }
+        })[0];
+
+        if (params && params.isNcwmsParams && params.latitudeRangeStart != undefined) {
+            extent = new OpenLayers.Bounds(params.longitudeRangeStart, params.latitudeRangeStart, params.longitudeRangeEnd, params.latitudeRangeEnd);
+        }
+        else if (params && params.value != undefined && params.value.bounds != undefined && params.type === 'geometrypropertytype') {
+            extent = new OpenLayers.Bounds(params.value.bounds.left, params.value.bounds.bottom, params.value.bounds.right, params.value.bounds.top);
+        }
+
+        if (extent) {
+            return collection.getBounds().intersectsBounds(extent, true, true);
+        }
+    },
+
+    _checkPointIntersectsBounds: function(filters) {
+        var params = filters.filter(function(filter) {
+            if (filter.name === 'timeSeriesAtPoint') {
+                return true;
+            }
+        })[0];
+
+        if (params && params.value != undefined && params.value.errors != undefined) {
+            return (params.value.errors.length == 0);
+        }
+        else {
+            return undefined;
+        }
     },
 
     _applyTemplate: function(tpl, values) {

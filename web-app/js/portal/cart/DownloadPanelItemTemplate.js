@@ -55,7 +55,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
         var msg = "";
 
         if (values.intersect === false) {
-            msg = OpenLayers.i18n('subsetRestrictiveFiltersText');
+            msg = OpenLayers.i18n('spatialSubsetOutOfBoundsMsg');
         }
         else {
             if (values.errorMessage && values.errorMessage != "") {
@@ -113,6 +113,7 @@ Portal.cart.DownloadPanelItemTemplate = Ext.extend(Ext.XTemplate, {
     },
 
     _getDataFilterEntry: function(values) {
+
         return String.format('<p><i>{0}</i></p>', values.dataFilters);
     },
 
