@@ -64,7 +64,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'MapPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'Controller.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'EmptyCollectionsStatusPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/common', file: 'AlertMessagePanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'LayerStore.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'Server.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/data', file: 'SuggestionStore.js')}"></script>
@@ -117,7 +116,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'ShapeFileCqlBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'DataDownloadCqlBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'HumanReadableFilterDescriber.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'SpatialSubsetIntersectTester.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/validation', file: 'SpatialConstraintValidator.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'UtcExtentDateTime.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/form', file: 'UtcDateField.js')}"></script>
