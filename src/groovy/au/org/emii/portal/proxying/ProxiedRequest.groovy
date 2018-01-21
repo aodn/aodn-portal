@@ -95,6 +95,7 @@ class ProxiedRequest extends ExternalRequest {
 
         // Forward the originating client IP address
         if(getClientIpAddress) {
+            log.info "Setting X-Forwarded-For HTTP header : ${getClientIpAddress}"
             conn.setRequestProperty("X-Forwarded-For", getClientIpAddress())
         }
 
