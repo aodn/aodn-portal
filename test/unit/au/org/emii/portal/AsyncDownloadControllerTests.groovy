@@ -57,9 +57,10 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
         controller.params.aggregatorService ='gogoduck'
         controller.params.a = "b"
         controller.params.c = "d"
+        controller.params.put("X-Forwarded-For", "127.0.0.1")
 
         // Note that the 'aggregatorService' will be stripped off
-        def mockParams = [server: 'allowed', a: 'b', c: 'd']
+        def mockParams = [server: 'allowed', a: 'b', c: 'd', "X-Forwarded-For" : '127.0.0.1']
 
         controller.gogoduckService.metaClass.registerJob {
             params ->

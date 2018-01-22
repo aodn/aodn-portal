@@ -1,6 +1,7 @@
 package au.org.emii.portal.proxying
 
 import org.apache.catalina.connector.ClientAbortException
+import org.codehaus.groovy.grails.io.support.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -44,24 +45,11 @@ class ProxiedRequest extends ExternalRequest {
         }
     }
 
-    def getClientIpAddress = {
-
-        def clientip = request.getHeader("Client-IP")
-        if (!clientip)
-            clientip = request.getHeader("X-Forwarded-For")
-        if (!clientip) {
-            clientip = request.remoteAddr
-        }
-        log.debug clientip
-        return clientip
-    }
-
     def onConnectionOpened = { conn ->
         if (!response.containsHeader("Content-disposition")) {
             def contentDisposition = conn.getHeaderField("Content-disposition")
             log.debug "Setting content disposition to '${contentDisposition}'"
             response.setHeader("Content-disposition", contentDisposition)
-            response.setHeader("X-Forwarded-For", getClientIpAddress())
         }
 
         _determineResponseContentType(conn)

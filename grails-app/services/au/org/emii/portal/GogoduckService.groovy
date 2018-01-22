@@ -2,7 +2,6 @@ package au.org.emii.portal
 
 import grails.converters.JSON
 import groovyx.net.http.HTTPBuilder
-import org.apache.http.util.EntityUtils
 
 class GogoduckService extends AsyncDownloadService {
 
