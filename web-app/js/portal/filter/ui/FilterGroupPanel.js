@@ -158,7 +158,8 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
             this.dataCollection.getFilters(),
             this.dataCollection.layerSelectionModel.selectedLayer.url,
             this.dataCollection.layerSelectionModel.selectedLayer.wmsName.split('#')[0],
-            "application/json"
+            "application/json",
+            true
         );
         return url + "&maxFeatures=1"
     },
