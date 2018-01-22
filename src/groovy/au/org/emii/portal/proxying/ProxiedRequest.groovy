@@ -64,40 +64,6 @@ class ProxiedRequest extends ExternalRequest {
     }
 
 
-    def executeRequest = { streamProcessor = null ->
-
-        def processStream = streamProcessor ?: straightThrough
-
-        log.debug "Opening connection to target URL: $targetUrl"
-
-        URLConnection conn = targetUrl.openConnection()
-
-        if (connectTimeout) {
-            conn.setConnectTimeout(connectTimeout);
-        }
-
-        onConnectionOpened conn
-
-        try {
-            InputStream inputStream = conn.getInputStream()
-        }
-        catch (IOException e) {
-            throw e
-            return
-        }
-
-        try {
-            if (response) {
-                outputStream = response.outputStream
-            }
-            processStream conn.inputStream, outputStream
-            outputStream.flush()
-        }
-        finally {
-            IOUtils.closeQuietly(outputStream)
-        }
-    }
-
     static def _getTargetUrl(params, proxyRedirectService) {
 
         String url = params.remove('url')
