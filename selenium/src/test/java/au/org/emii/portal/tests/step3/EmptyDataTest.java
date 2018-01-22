@@ -48,7 +48,7 @@ public class EmptyDataTest extends BaseTest {
         WebElement downloadPanel = webElementUtil.findElements(By.className("downloadPanelItem")).get(1);
         WebElement warning = downloadPanel.findElement(By.className("alert-warning"));
         Assert.assertTrue(warning.isDisplayed());
-        Assert.assertTrue(warning.getText().contains("No data is available using your chosen spatial subset."));
+        Assert.assertTrue(warning.getText().contains("No data is available using your chosen subset."));
 
         //check that download button exists and is disabled
         boolean found = false;
