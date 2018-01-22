@@ -24,6 +24,13 @@ class WpsAwsService extends AsyncDownloadService {
 
     def getConnection(params) {
         def conn = new HTTPBuilder(params.server)
+
+        //  If an X-Forwarded-For param was passed - set it as a HTTP parameter
+        if(params["X-Forwarded-For"] != null) {
+            conn.headers["X-Forwarded-For"] = params["X-Forwarded-For"]
+            log.info("X-Forwarded-For param set : " + params["X-Forwarded-For"])
+        }
+
         conn.contentType = XML
 
         return conn

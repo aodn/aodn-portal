@@ -41,9 +41,13 @@ class AsyncDownloadController extends HostVerifyingController {
             try {
                 def ipAddress = request.getRemoteAddr()
 
+                log.info("AsyncDownloadController remoteAddr: " + ipAddress)
                 verifyChallengeResponse(params, ipAddress)
 
                 AsyncDownloadService aggregatorService = getAggregatorService(aggregatorServiceString, params)
+
+                //  Pass client IP address to download controller
+                params.put("X-Forwarded-For", ipAddress)
 
                 def renderText = aggregatorService.registerJob(params)
 

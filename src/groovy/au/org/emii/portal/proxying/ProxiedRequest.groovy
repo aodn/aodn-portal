@@ -45,22 +45,6 @@ class ProxiedRequest extends ExternalRequest {
         }
     }
 
-    def getClientIpAddress = {
-
-        log.info "X-Forwarded-For : ${request.getHeader("X-Forwarded-For")}"
-        log.info "request.remoteAddr : ${request.remoteAddr}"
-
-        //  Pass X-Forwarded-For header on if present
-        def clientip = request.getHeader("X-Forwarded-For")
-
-        if (!clientip) {
-            clientip = request.remoteAddr
-        }
-
-        log.info "PORTAL Client IP Address : ${clientip}"
-        return clientip
-    }
-
     def onConnectionOpened = { conn ->
         if (!response.containsHeader("Content-disposition")) {
             def contentDisposition = conn.getHeaderField("Content-disposition")
@@ -90,12 +74,6 @@ class ProxiedRequest extends ExternalRequest {
 
         if (connectTimeout) {
             conn.setConnectTimeout(connectTimeout);
-        }
-
-        // Forward the originating client IP address
-        if(getClientIpAddress) {
-            log.info "Setting X-Forwarded-For HTTP header : ${getClientIpAddress}"
-            conn.setRequestProperty("X-Forwarded-For", getClientIpAddress())
         }
 
         onConnectionOpened conn
