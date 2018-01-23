@@ -146,8 +146,10 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     _handleEmptyDownloadMsg: function() {
-        //var show = (this.dataCollection.totalFilteredFeatures != undefined  && this.dataCollection.totalFilteredFeatures == 0);
-        //this.warningEmptyDownloadMessage.setVisible(show); todo hide for now
+        if (this.isDestroyed !== true ) {
+            var show = (this.dataCollection.totalFilteredFeatures != undefined && this.dataCollection.totalFilteredFeatures == 0);
+            this.warningEmptyDownloadMessage.setVisible(show); //todo hide for now
+        }
     },
 
     // uses the WMS map layer
