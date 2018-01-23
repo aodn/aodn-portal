@@ -29,6 +29,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         var config = Ext.apply({
             autoHeight: true,
+            autoDestroy: true,
             cls: 'filterGroupPanel'
         }, cfg);
 
@@ -39,6 +40,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         Portal.details.NcWmsPanel.superclass.initComponent.call(this);
 
         this._addStatusInfo();
+        this._addWarningMessageBox();
         this._addTemporalControls();
 
         if (this._timeSeriesOptionAvailable()) {
@@ -131,6 +133,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             html: OpenLayers.i18n('loadingMessage', {resource: ""})
         });
         this.add(this.loadingInfo);
+    },
+
+    _addWarningMessageBox: function() {
+        this.warningEmptyDownloadMessage = new Portal.common.AlertMessagePanel({
+            message: OpenLayers.i18n('subsetRestrictiveFiltersText')
+        });
+        this.add(this.warningEmptyDownloadMessage);
     },
 
     _attachSpatialEvents: function() {
@@ -478,23 +487,31 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _applyFilterValuesToCollection: function() {
-        var dateRangeStart = this._getUtcMomentFromPicker(this.startDateTimePicker);
-        var dateRangeEnd = this._getUtcMomentFromPicker(this.endDateTimePicker);
-        var geometry = this._getGeometryFilter();
+        if (this.isDestroyed !== true ) {
+            var dateRangeStart = this._getUtcMomentFromPicker(this.startDateTimePicker);
+            var dateRangeEnd = this._getUtcMomentFromPicker(this.endDateTimePicker);
+            var geometry = this._getGeometryFilter();
 
-        if (this._timeSeriesOptionAvailable()){
-            var pointFilterAvailable = this.pointTimeSeriesPanel._isTimeSeriesFilterAvailable();
-            var pointFilterValue = {};
-            if (pointFilterAvailable) {
-                pointFilterValue.latitude = this.pointTimeSeriesPanel._getTimeSeriesLatitude();
-                pointFilterValue.longitude = this.pointTimeSeriesPanel._getTimeSeriesLongitude();
-                pointFilterValue.errors = this.pointTimeSeriesPanel._getTimeSeriesFilterErrors();
+            if (this._timeSeriesOptionAvailable()) {
+                var pointFilterAvailable = this.pointTimeSeriesPanel._isTimeSeriesFilterAvailable();
+                var pointFilterValue = {};
+                if (pointFilterAvailable) {
+                    pointFilterValue.latitude = this.pointTimeSeriesPanel._getTimeSeriesLatitude();
+                    pointFilterValue.longitude = this.pointTimeSeriesPanel._getTimeSeriesLongitude();
+                    pointFilterValue.errors = this.pointTimeSeriesPanel._getTimeSeriesFilterErrors();
+                }
             }
+            this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, pointFilterValue);
+
+            this.dataCollection.isTemporalExtentSubsetted = this.isTemporalExtentSubsetted(dateRangeStart, dateRangeEnd);
+
+            this.spatialSubsetIntersects = new Portal.filter.combiner.SpatialSubsetIntersectTester().testSpatialSubsetIntersect(this.dataCollection);
+            this.setWarningBoxVisibility();
         }
-        this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, pointFilterValue);
+    },
 
-        this.dataCollection.isTemporalExtentSubsetted = this.isTemporalExtentSubsetted(dateRangeStart, dateRangeEnd);
-
+    setWarningBoxVisibility: function() {
+        this.warningEmptyDownloadMessage.setVisible(this.spatialSubsetIntersects === false);
     },
 
     isTemporalExtentSubsetted: function(dateRangeStart, dateRangeEnd) {

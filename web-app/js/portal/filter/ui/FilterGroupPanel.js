@@ -6,8 +6,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         this.map = cfg.map;
         this.loadingMessage = this._createLoadingMessageContainer();
         this.warningEmptyDownloadMessage =  new Portal.common.AlertMessagePanel({
-            message: OpenLayers.i18n('subsetRestrictiveFiltersText'),
-            messageCss: "alert-info"
+            message: OpenLayers.i18n('subsetRestrictiveFiltersText')
         });
 
         var config = Ext.apply({
@@ -158,8 +157,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
             this.dataCollection.getFilters(),
             this.dataCollection.layerSelectionModel.selectedLayer.url,
             this.dataCollection.layerSelectionModel.selectedLayer.wmsName.split('#')[0],
-            "application/json",
-            true
+            "application/json"
         );
         return url + "&maxFeatures=1"
     },
