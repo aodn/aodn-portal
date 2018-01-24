@@ -116,6 +116,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'FileListCqlBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'ShapeFileCqlBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'DataDownloadCqlBuilder.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'FiltersWithValuesCqlBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'HumanReadableFilterDescriber.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'SpatialSubsetIntersectTester.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/validation', file: 'SpatialConstraintValidator.js')}"></script>

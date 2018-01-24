@@ -33,6 +33,7 @@ describe('Portal.details.NcWmsPanel', function() {
             getTitle: returns("collectionTitle"),
             getBounds: returns({centerLonLat: {lat: -20, lon: 30}}),
             getAllLinks: returns([]),
+            getFilters: returns([]),
             on: noOp
         };
 
