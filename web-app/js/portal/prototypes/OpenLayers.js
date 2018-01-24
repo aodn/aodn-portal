@@ -96,17 +96,11 @@ OpenLayers.Layer.WMS.prototype.formatFeatureInfoHtml = function(resp, options) {
     return formatGetFeatureInfo(resp, options);
 };
 
-OpenLayers.Layer.WMS.getFeatureRequestUrl = function(filters, serverUrl, layerName, outputFormat, isMap) {
+OpenLayers.Layer.WMS.getFeatureRequestUrl = function(filters, serverUrl, layerName, outputFormat) {
 
-    if (isMap) {
-        var builder = new Portal.filter.combiner.MapCqlBuilder({
-            filters: filters
-        })
-    } else {
-        var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
-            filters: filters
-        });
-    }
+    var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
+        filters: filters
+    });
 
     return OpenLayers.Layer.WMS.buildGetFeatureRequestUrl(
         serverUrl,
@@ -129,7 +123,6 @@ OpenLayers.Layer.WMS.buildGetFeatureRequestUrl = function(baseUrl, layerName, ou
     if (downloadFilter) {
         wfsUrl += '&CQL_FILTER=' + encodeURIComponent(downloadFilter);
     }
-
     return wfsUrl;
 };
 

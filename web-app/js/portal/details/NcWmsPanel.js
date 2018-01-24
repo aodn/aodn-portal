@@ -511,7 +511,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     setWarningBoxVisibility: function() {
-        //this.warningEmptyDownloadMessage.setVisible(this.spatialSubsetIntersects === false); todo - Hide for now
+        //this.warningEmptyDownloadMessage.setVisible(this.spatialSubsetIntersects === false); //todo - Hide for now
     },
 
     isTemporalExtentSubsetted: function(dateRangeStart, dateRangeEnd) {
