@@ -10,14 +10,21 @@ Portal.ui.TimeRangeLabel = Ext.extend(Ext.form.Label, {
         Portal.ui.TimeRangeLabel.superclass.constructor.call(this, config);
     },
 
-    updateTime: function(time) {
+    updateValues: function(layer, depth) {
 
-        this.setText(
-            String.format(
-                "<small><i><b>{0}</b>: {1}<br/></i></small>",
-                OpenLayers.i18n('currentDateTimeLabel'), time),
-            false
-        );
+        if (layer.time) {
+            var depthUnits = (layer.extraLayerInfo.zaxis) ? layer.extraLayerInfo.zaxis.units : "(Unknown units)";
+
+            var depthString = (depth) ? String.format(" at {0}{1}", depth, depthUnits) : "";
+            var time = layer.time.toUtcDisplayFormat();
+
+            this.setText(
+                String.format(
+                    "<p><i><b>{0}</b>: {1} {2}</i></p>",
+                    OpenLayers.i18n('currentDateTimeLabel'), time, depthString),
+                false
+            );
+        }
     },
 
     loading: function() {

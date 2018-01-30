@@ -36,6 +36,8 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
             success: function(resp, options) {
                 try {
                     this.extraLayerInfo = Ext.util.JSON.decode(resp.responseText);
+
+                    this.events.triggerEvent('extraLayerInfoloaded', this);
                     // This means we are "GFI ready"
                     this.params.QUERYABLE = true;
                 }
@@ -230,6 +232,11 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
             this.mergeNewParams({ TIME: this._getTimeParameter(this.time) });
         }
         return this.time;
+    },
+
+    setZAxis: function(elevation) {
+        // ELEVATION is the zaxis
+        this.mergeNewParams({ ELEVATION: elevation });
     },
 
     getMissingDays: function() {

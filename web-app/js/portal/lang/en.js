@@ -254,8 +254,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     searchingTitle: 'Searching for more information at this point...',
     infoFoundTitle: "Detailed information for ${dataCollectionNumber} data collection(s) at this point",
     noInfoFoundTitle: "No more information found at this point",
-    depthLabel: 'Depth:',
-    elevationLabel: 'Elevation:',
 
     removeDataCollectionTooltip: 'Remove this data collection from the Subset and Download pages, the collection can be re-added from the search',
     zoomToDataCollection: '<span class=\"fa fa-fw fa-search\"></span> Zoom to collection',
@@ -265,6 +263,10 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
         { value: Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX, label: "Bounding Box" },
         { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "Polygon" }
     ],
+
+    emptyDepthPickerText: "Select ... ",
+    depthLabel: "Depth",
+    elevationLabel: 'Elevation',
 
     emptyPolygonHelperText: "Click points on the map to create your polygon.",
 
