@@ -1,6 +1,6 @@
 Ext.namespace('Portal.ui');
 
-Portal.ui.TimeRangeLabel = Ext.extend(Ext.form.Label, {
+Portal.ui.TimeRangeLabel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
         var config = Ext.apply({
@@ -10,28 +10,27 @@ Portal.ui.TimeRangeLabel = Ext.extend(Ext.form.Label, {
         Portal.ui.TimeRangeLabel.superclass.constructor.call(this, config);
     },
 
-    updateValues: function(layer, depth) {
+    updateValues: function(layer, elevation) {
 
         if (layer.time) {
-            var depthUnits = (layer.extraLayerInfo.zaxis) ? layer.extraLayerInfo.zaxis.units : "(Unknown units)";
+            var units = (layer.extraLayerInfo.zaxis) ? layer.extraLayerInfo.zaxis.units : "(Unknown units)";
 
-            var depthString = (depth) ? String.format(" at {0}{1}", depth, depthUnits) : "";
+            var elevationString = (elevation != undefined) ? String.format(" at {0}{1}", elevation, units) : "";
             var time = layer.time.toUtcDisplayFormat();
 
-            this.setText(
+            this.update(
                 String.format(
-                    "<p><i><b>{0}</b>: {1} {2}</i></p>",
-                    OpenLayers.i18n('currentDateTimeLabel'), time, depthString),
-                false
+                    "<p class=\"nowrap\" ><i><b>{0}</b>: {1} {2}</i></p>",
+                    OpenLayers.i18n('currentDateTimeLabel'), time, elevationString)
             );
         }
     },
 
     loading: function() {
-        this.setText(this._loadingMessage(), false);
+        this.update(this._loadingMessage());
     },
 
     _loadingMessage: function() {
-        return String.format("<i>{0}</i>", OpenLayers.i18n("loadingMessage"));
+        return String.format("<i>{0}</i>", OpenLayers.i18n("loadingResourceMessage", {resource: 'map information'}));
     }
 });

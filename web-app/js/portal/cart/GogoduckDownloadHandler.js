@@ -23,6 +23,8 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
 
         var subset = this._getSubset(filters, hasTemporalExtent);
 
+        // todo check this is sending z-axis correctly
+
         var jobParameters = {
             server: serverUrl,
             'email.to': notificationEmailAddress,

@@ -12,7 +12,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pleasePickCondensed: '**pick**',
     pleasePickNumberOperator: 'Please pick a condition operator to filter on',
     pleasePickNumberField: 'Please enter a number to filter on, according to your operator',
-    loadingMessage: '&nbsp;<i>Loading ${resource}\u2025</i>',
+    loadingResourceMessage: '<i>Loading ${resource}\u2025</i>',
     subsetRestrictiveFiltersText: 'No data is available using your chosen subset.',
 
     // SubsetPanel.js
@@ -190,15 +190,14 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     clearAndResetLabel: 'Clear and Reset',
     resetLabel: 'Reset',
     clearSubsetLabel: 'Clear Subsets',
-    resetDatesLabel: 'Reset Dates',
+    resetLabelText: 'Reset \'{0}\'',
 
     // ComboFilterPanel.js
     clearFilterOption: 'All',
 
-    // DateFilterPanel.js
-    fromDateLabel: 'From',
+    fromLabelText: 'From',
     fromDateEmptyText: 'Min',
-    toDateLabel: 'To',
+    toLabelText: 'To',
     toDateEmptyText: 'Max',
 
     // FacetFilterPanel
@@ -264,9 +263,11 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
         { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "Polygon" }
     ],
 
-    emptyDepthPickerText: "Select ... ",
     depthLabel: "Depth",
     elevationLabel: 'Elevation',
+    zAxisLabel: "Vertical",
+
+    elevationLogicalError: "<b>From </b> <i>({0})</i> must be greater than <BR><b> To</b> <i>({1})</i>",
 
     emptyPolygonHelperText: "Click points on the map to create your polygon.",
 
