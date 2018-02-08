@@ -2,8 +2,8 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
-    SUBSET_FORMAT: 'TIME,{0},{1};LATITUDE,{2},{3};LONGITUDE,{4},{5}',
-    SUBSET_FORMAT_WITHOUT_TIME: 'LATITUDE,{2},{3};LONGITUDE,{4},{5}',
+    SUBSET_FORMAT: 'TIME,{0},{1};LATITUDE,{2},{3};LONGITUDE,{4},{5}{6}',
+    SUBSET_FORMAT_WITHOUT_TIME: 'LATITUDE,{2},{3};LONGITUDE,{4},{5}{6}',
 
     _getDownloadOptionTextKey: function() {
         return 'downloadAsSubsettedNetCdfLabel';
@@ -23,8 +23,6 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
 
         var subset = this._getSubset(filters, hasTemporalExtent);
 
-        // todo check this is sending z-axis correctly
-
         var jobParameters = {
             server: serverUrl,
             'email.to': notificationEmailAddress,
@@ -42,12 +40,15 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
     },
 
     _getSubset: function(filters, hasTemporalExtent) {
-        var aggregationParams = filters.filter(function(filter) {
-            return filter.isNcwmsParams;
+
+        var zaxisParamString = "";
+
+        var dateParams = filters.filter(function(filter) {
+            return (filter.isNcwmsParams && filter.name == OpenLayers.i18n("ncwmsDateParamsFilter"));
         })[0];
 
-        var dateRangeStart = (aggregationParams) ?  this._formatDate(aggregationParams.dateRangeStart || this.DEFAULT_DATE_START) : undefined;
-        var dateRangeEnd = (aggregationParams) ?  this._formatDate(aggregationParams.dateRangeEnd || this.DEFAULT_DATE_END) : undefined;
+        var dateRangeStart = (dateParams) ?  this._formatDate(dateParams.dateRangeStart || this.DEFAULT_DATE_START) : undefined;
+        var dateRangeEnd = (dateParams) ?  this._formatDate(dateParams.dateRangeEnd || this.DEFAULT_DATE_END) : undefined;
         var returnStringFormat;
 
         if (hasTemporalExtent)
@@ -55,14 +56,24 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
         else
             returnStringFormat = this.SUBSET_FORMAT_WITHOUT_TIME;
 
+        var zaxisParams = filters.filter(function(filter) {
+            return (filter.isNcwmsParams && filter.label == OpenLayers.i18n("zAxisLabel"));
+        })[0];
+
+        if (zaxisParams) {
+            // hard coding DEPTH for JavaDuck
+            zaxisParamString = String.format(";DEPTH,{0}",zaxisParams.value.join(","));
+        }
+
         return String.format(
             returnStringFormat,
             dateRangeStart,
             dateRangeEnd,
-            (aggregationParams && aggregationParams.latitudeRangeStart || this.DEFAULT_LAT_START).toDecimalString(),
-            (aggregationParams && aggregationParams.latitudeRangeEnd || this.DEFAULT_LAT_END).toDecimalString(),
-            (aggregationParams && aggregationParams.longitudeRangeStart || this.DEFAULT_LON_START).toDecimalString(),
-            (aggregationParams && aggregationParams.longitudeRangeEnd || this.DEFAULT_LON_END).toDecimalString()
+            (dateParams && dateParams.latitudeRangeStart || this.DEFAULT_LAT_START).toDecimalString(),
+            (dateParams && dateParams.latitudeRangeEnd || this.DEFAULT_LAT_END).toDecimalString(),
+            (dateParams && dateParams.longitudeRangeStart || this.DEFAULT_LON_START).toDecimalString(),
+            (dateParams && dateParams.longitudeRangeEnd || this.DEFAULT_LON_END).toDecimalString(),
+            zaxisParamString
         );
     }
 });

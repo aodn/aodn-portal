@@ -10,7 +10,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     START_DATE: 'start date',
     END_DATE: 'end date',
 
-
     INFO_STYLES: {
         warning: "alert-warning",
         info: "alert-info"
@@ -169,11 +168,17 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     getZAxisPickerValues: function() {
-        if (this.zAxisFromPicker.isValid() && this.zAxisFromPicker.isValid()) {
-            return String.format("{0}-{1}",
-                this.zAxisFromPicker.getValue(),
-                this.zAxisToPicker.getValue()
-            );
+
+        if (this._isZAxisFilterAvailable()) {
+
+            if (this.layer.extraLayerInfo) {
+
+                var multiplier = (this.layer.extraLayerInfo.zaxis.positive === false) ? -1 : 1;
+
+                return [this.zAxisFromPicker.getValue() * multiplier,
+                    this.zAxisToPicker.getValue() * multiplier
+                ];
+            }
         }
     },
 
@@ -680,8 +685,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, pointFilterValue, zAxisValue) {
 
         var dateFilterValue = {};
-        var ncwmsParamsAsFilter = {
-            name: 'nwmsParamsFilter',
+        var ncwmsDateParamsAsFilter = {
+            name: OpenLayers.i18n('ncwmsDateParamsFilter'),
             isNcwmsParams: true,
             hasValue: function() {
                 return false;
@@ -689,18 +694,18 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         };
 
         if (this._isDateRangeValid(dateRangeStart, dateRangeEnd)) {
-            ncwmsParamsAsFilter.dateRangeStart = dateRangeStart;
+            ncwmsDateParamsAsFilter.dateRangeStart = dateRangeStart;
             dateFilterValue.fromDate = dateRangeStart.toDate();
-            ncwmsParamsAsFilter.dateRangeEnd = dateRangeEnd;
+            ncwmsDateParamsAsFilter.dateRangeEnd = dateRangeEnd;
             dateFilterValue.toDate = dateRangeEnd.toDate();
         }
 
         if (!pointFilterAvailable && geometry) {
             var bounds = geometry.getBounds();
-            ncwmsParamsAsFilter.latitudeRangeStart = bounds.bottom;
-            ncwmsParamsAsFilter.longitudeRangeStart = bounds.left;
-            ncwmsParamsAsFilter.latitudeRangeEnd = bounds.top;
-            ncwmsParamsAsFilter.longitudeRangeEnd = bounds.right; // 0 to 360
+            ncwmsDateParamsAsFilter.latitudeRangeStart = bounds.bottom;
+            ncwmsDateParamsAsFilter.longitudeRangeStart = bounds.left;
+            ncwmsDateParamsAsFilter.latitudeRangeEnd = bounds.top;
+            ncwmsDateParamsAsFilter.longitudeRangeEnd = bounds.right; // 0 to 360
         }
 
         var realDateFilter = new Portal.filter.DateFilter({
@@ -714,20 +719,34 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             value: pointFilterValue
         });
 
-        var zAxisFilter = new Portal.filter.StringFilter({
-            name: 'zaxis',
-            label: this.zAxisPickerTitle,
-            visualised: true,
-            value: zAxisValue
-        });
-
-
-        return [
+        var filters =  [
             realDateFilter,
-            ncwmsParamsAsFilter,
-            pointFilter,
-            zAxisFilter
+            ncwmsDateParamsAsFilter,
+            pointFilter
         ];
+
+
+        if (zAxisValue) {
+            filters.push(
+                new Portal.filter.StringFilter({
+                    name: 'zaxis',
+                    label: this.zAxisPickerTitle,
+                    isNcwmsParams: true,
+                    visualised: true,
+                    value: zAxisValue
+                })
+            );
+        }
+
+        return filters;
+    },
+
+    _isZAxisFilterAvailable: function() {
+        return (
+            !this.zAxisPickerContainer.hidden &&
+            this.zAxisFromPicker.isValid() && this.zAxisFromPicker.isValid() &&
+            this.zAxisFromPicker.getValue() != undefined &&  this.zAxisToPicker.getValue() != undefined
+        );
     },
 
     _attachTemporalEvents: function() {

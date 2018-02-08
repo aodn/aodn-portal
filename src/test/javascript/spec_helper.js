@@ -51,7 +51,7 @@ beforeEach(function() {
         },
 
         toStartWith: function(expected) {
-                return this.actual.indexOf(expected) == 0;
+            return this.actual.indexOf(expected) == 0;
         },
 
         toHaveParameterWithValue: function(key, value) {

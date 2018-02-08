@@ -56,6 +56,7 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
                 getFilters: returns([
                     {
                         isNcwmsParams: true,
+                        name: OpenLayers.i18n("ncwmsDateParamsFilter"),
                         dateRangeStart: moment.utc('2000-01-01T01:01:01'),
                         dateRangeEnd: moment.utc('2014-12-23T23:59:59'),
                         latitudeRangeStart: -42,
@@ -93,6 +94,7 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
         it('builds the correct URL if no area is specified', function() {
             testCollection.getFilters = returns([{
                 isNcwmsParams: true,
+                name: OpenLayers.i18n("ncwmsDateParamsFilter"),
                 dateRangeStart: moment.utc('2000-01-01T01:01:01'),
                 dateRangeEnd: moment.utc('2014-12-23T23:59:59')
             }]);
@@ -110,6 +112,7 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
         it('builds the correct URL is no dates are specified', function() {
             testCollection.getFilters = returns([{
                 isNcwmsParams: true,
+                name: OpenLayers.i18n("ncwmsDateParamsFilter"),
                 latitudeRangeStart: 20,
                 latitudeRangeEnd: 42,
                 longitudeRangeStart: -170,
@@ -132,6 +135,7 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
                 getFilters: returns([
                     {
                         isNcwmsParams: true,
+                        name: OpenLayers.i18n("ncwmsDateParamsFilter"),
                         latitudeRangeStart: 20,
                         latitudeRangeEnd: 42,
                         longitudeRangeStart: -170,
