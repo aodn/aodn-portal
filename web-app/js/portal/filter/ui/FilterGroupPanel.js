@@ -5,6 +5,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
 
         this.map = cfg.map;
         this.loadingMessage = this._createLoadingMessageContainer();
+        this.errorMessageContainer = this._createErrorMessageContainer();
         this.warningEmptyDownloadMessage =  new Portal.common.AlertMessagePanel({
             message: OpenLayers.i18n('subsetRestrictiveFiltersText')
         });
@@ -15,6 +16,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
             cls: 'filterGroupPanel',
             items: [
                 this.loadingMessage,
+                this.errorMessageContainer,
                 this.warningEmptyDownloadMessage
             ]
         }, cfg);
@@ -61,8 +63,10 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         });
     },
 
-    _setErrorMessageText: function(msg, errorMsgContainer) {
-        errorMsgContainer.html = String.format("<div class=\"alert alert-warning\">{0}</div>", msg);
+    _createErrorMessageContainer: function() {
+        return new Portal.common.AlertMessagePanel({
+            message: OpenLayers.i18n('layerProblem')
+        });
     },
 
     _removeLoadingMessage: function() {
@@ -70,17 +74,9 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
         delete this.loadingMessage;
     },
 
-    _addErrorMessage: function(msg) {
-        if (this.errorMessage) {
-            this._setErrorMessageText(msg, this.errorMessage);
-        }
-        else {
-            this._removeLoadingMessage();
-            this.errorMessage = this._createErrorMessageContainer();
-            this._setErrorMessageText(msg, this.errorMessage);
-            this.add(this.errorMessage);
-            this.doLayout();
-        }
+    showErrorMessage: function() {
+        this._removeLoadingMessage();
+        this.errorMessageContainer.show();
     },
 
     _filtersLoaded: function(filters) {
@@ -175,8 +171,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Ext.Container, {
     },
 
     _handleFilterLoadFailure: function() {
-
-        this._addErrorMessage(OpenLayers.i18n('subsetEmptyFiltersText'));
+        this.showErrorMessage();
     },
 
     _sortFilters: function(filters) {
