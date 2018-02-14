@@ -15,13 +15,19 @@ public class IndicateResultAddedToMap extends BaseTest {
 
 
     @Test
-    public void drawMapAndClear() {
+    public void testCollectionAdded() {
         log.info("Loading search page - Step 1");
         WebDriver driver = getDriver();
         driver.get(AODN_PORTAL_SEARCH_PAGE);
 
         //the first collection button div
         WebElement collectionDiv = driver.findElements(By.className("facetedSearchBtn")).get(0);
+
+        //test button is not already selected
+        Assert.assertFalse(
+                collectionDiv.findElement(By.tagName("table")).getAttribute("class").contains("x-btn-selected"),
+                "button is not shown as selected"
+        );
 
         //click the button
         collectionDiv.findElement(By.tagName("button")).click();
