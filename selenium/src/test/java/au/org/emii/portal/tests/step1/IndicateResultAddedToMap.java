@@ -26,7 +26,7 @@ public class IndicateResultAddedToMap extends BaseTest {
         //test button is not already selected
         Assert.assertFalse(
                 collectionDiv.findElement(By.tagName("table")).getAttribute("class").contains("x-btn-selected"),
-                "button is not shown as selected"
+                "button already shown as selected"
         );
 
         //click the button
@@ -39,6 +39,6 @@ public class IndicateResultAddedToMap extends BaseTest {
         collectionDiv = driver.findElements(By.className("facetedSearchBtn")).get(0);
         WebElement table = collectionDiv.findElement(By.tagName("table"));
 
-        Assert.assertTrue(table.getAttribute("class").contains("x-btn-selected"), "button is shown as selected");
+        Assert.assertTrue(table.getAttribute("class").contains("x-btn-selected"), "button not shown as selected");
     }
 }
