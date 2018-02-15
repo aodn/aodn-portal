@@ -12,7 +12,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     pleasePickCondensed: '**pick**',
     pleasePickNumberOperator: 'Please pick a condition operator to filter on',
     pleasePickNumberField: 'Please enter a number to filter on, according to your operator',
-    loadingMessage: '&nbsp;<i>Loading ${resource}\u2025</i>',
+    loadingResourceMessage: '<i>Loading ${resource}\u2025</i>',
     subsetRestrictiveFiltersText: 'No data is available using your chosen subset.',
 
     // SubsetPanel.js
@@ -190,15 +190,14 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     clearAndResetLabel: 'Clear and Reset',
     resetLabel: 'Reset',
     clearSubsetLabel: 'Clear Subsets',
-    resetDatesLabel: 'Reset Dates',
+    resetLabelText: 'Reset \'{0}\'',
 
     // ComboFilterPanel.js
     clearFilterOption: 'All',
 
-    // DateFilterPanel.js
-    fromDateLabel: 'From',
+    fromLabelText: 'From',
     fromDateEmptyText: 'Min',
-    toDateLabel: 'To',
+    toLabelText: 'To',
     toDateEmptyText: 'Max',
 
     // FacetFilterPanel
@@ -254,8 +253,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     searchingTitle: 'Searching for more information at this point...',
     infoFoundTitle: "Detailed information for ${dataCollectionNumber} data collection(s) at this point",
     noInfoFoundTitle: "No more information found at this point",
-    depthLabel: 'Depth:',
-    elevationLabel: 'Elevation:',
 
     removeDataCollectionTooltip: 'Remove this data collection from the Subset and Download pages, the collection can be re-added from the search',
     zoomToDataCollection: '<span class=\"fa fa-fw fa-search\"></span> Zoom to collection',
@@ -265,6 +262,13 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
         { value: Portal.ui.openlayers.SpatialConstraintType.BOUNDING_BOX, label: "Bounding Box" },
         { value: Portal.ui.openlayers.SpatialConstraintType.POLYGON, label: "Polygon" }
     ],
+
+    depthLabel: "Depth",
+    elevationLabel: 'Elevation',
+    zAxisLabel: "Vertical",
+    ncwmsDateParamsFilter: "ncwmsDateParamsFilter",
+
+    elevationLogicalError: "<b>From </b> <i>({0})</i> must be greater than <BR><b> To</b> <i>({1})</i>",
 
     emptyPolygonHelperText: "Click points on the map to create your polygon.",
 

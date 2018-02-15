@@ -81,7 +81,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _buildSpinner: function() {
         this.spinner = new Ext.Panel({
-            html: this._makeSpinnerText(OpenLayers.i18n('loadingMessage', {'resource': 'search terms'})),
+            html: this._makeSpinnerText(OpenLayers.i18n('loadingResourceMessage', {'resource': 'search terms'})),
             cls: 'search-filters-toolbar-title',
             hidden: false
         });
@@ -133,7 +133,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _setNewSearchButtonVisibility: function() {
-        this._setSpinnerText(OpenLayers.i18n('loadingMessage', {'resource': 'Collections'}));
+        this._setSpinnerText(OpenLayers.i18n('loadingResourceMessage', {'resource': 'Collections'}));
         this.newSearchButton.setVisible(this.searcher.hasFilters());
     },
 

@@ -7,16 +7,17 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
         var filters = collection.getFilters();
 
-        var time = filters.filter(function(filter) {
-            return filter.name == "time";
-        })[0];
+        var timeFilter = Portal.filter.FilterUtils.getFilter(filters, 'time');
+        var zAxisFilter = Portal.filter.FilterUtils.getFilter(filters, 'zaxis');
 
         var params = filters.filter(function(filter) {
             return filter.isNcwmsParams;
         })[0];
+
         var timeSeriesAtString = "";
         var areaString = "";
         var dateString = "";
+        var zAxisString = "";
 
         if (params && params.latitudeRangeStart != undefined) {
 
@@ -49,13 +50,18 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             var endDateString = this._formatDate(params.dateRangeEnd);
             dateString = this._formatHumanDateInfo('temporalExtentHeading', startDateString, endDateString);
         }
-        else if (!this.hasTemporalExtent(time, collection)) {
+        else if (!this.hasTemporalExtent(timeFilter, collection)) {
             dateString = OpenLayers.i18n('unavailableTemporalExtent');
         }
         else {
             dateString = OpenLayers.i18n('temporalExtentNotLoaded');
         }
-        return areaString + timeSeriesAtString + dateString;
+
+        if (zAxisFilter && zAxisFilter.hasValue()) {
+            zAxisString =  zAxisFilter.getHumanReadableForm();
+        }
+
+        return areaString + timeSeriesAtString + dateString + zAxisString;
     },
 
     hasTemporalExtent: function(time, collection) {

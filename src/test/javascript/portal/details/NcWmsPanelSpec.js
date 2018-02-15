@@ -39,7 +39,8 @@ describe('Portal.details.NcWmsPanel', function() {
 
         ncwmsPanel = new Portal.details.NcWmsPanel({
             map: map,
-            dataCollection: dataCollection
+            dataCollection: dataCollection,
+            _updateTimeRangeLabel:noOp
         });
 
         ncwmsPanel._setBounds = noOp;
@@ -107,6 +108,7 @@ describe('Portal.details.NcWmsPanel', function() {
             layer.getTemporalExtentMin = returns("ExtentMin");
             layer.getTemporalExtentMax = returns("ExtentMax");
             layer.setTime = returns();
+            layer.setZAxis = returns();
 
             spyOn(ncwmsPanel, '_resetExtent');
             spyOn(ncwmsPanel, '_layerSetTime');
