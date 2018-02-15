@@ -59,11 +59,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _addZAxisControls: function() {
 
-        this.zAxisPickerTitle= OpenLayers.i18n('zAxisLabel');
+        this.zAxisPickerTitle = OpenLayers.i18n('zAxisLabel');
 
         this.zAxisPickerStore = new Ext.data.ArrayStore({
             fields: [
-                {name: this.zAxisPickerTitle, type: "integer" }
+                {name: this.zAxisPickerTitle, type: "integer"}
             ],
             expandData: true
         });
@@ -135,7 +135,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if (this.parentScope.zAxisFromPicker.getValue() != undefined && this.parentScope.zAxisToPicker.getValue() != undefined) {
 
             var start = parseFloat(this.parentScope.zAxisFromPicker.getValue());
-            var end   = parseFloat(this.parentScope.zAxisToPicker.getValue());
+            var end = parseFloat(this.parentScope.zAxisToPicker.getValue());
 
             if (start < end) {
                 return String.format(OpenLayers.i18n('elevationLogicalError'), start, end);
@@ -147,7 +147,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     setZAxisComboDefaultValues: function(combo) {
 
         var fromVal = this.zAxisPickerStore.getRange()[0].data[this.zAxisPickerTitle].valueOf();
-        var lastItem = this.zAxisPickerStore.getRange().length -1;
+        var lastItem = this.zAxisPickerStore.getRange().length - 1;
         var toVal = this.zAxisPickerStore.getRange()[lastItem].data[this.zAxisPickerTitle].valueOf();
 
         var value = (combo.comboName == OpenLayers.i18n('fromLabelText')) ? fromVal : toVal;
@@ -359,7 +359,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             this.clearAndResetTemporalConstraints();
         }, this);
 
-
         this.mapTimeControls = new Ext.Panel({
             layout: 'hbox',
             cls: 'mapTimeControls',
@@ -421,7 +420,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if (this.startDateTimePicker.getValue() && this.endDateTimePicker.getValue()) {
 
             var start = dateTime;
-            var end   = dateTime;
+            var end = dateTime;
 
             if (datePicker.dateConfig.pickerType == this.START_DATE) {
                 end = moment.utc(this.endDateTimePicker.getValue());
@@ -451,12 +450,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
             (datePicker.pickerType == this.START_DATE) ? start = date : end = date;
 
-            if (start && start.isValid() && end && end.isValid() && !this._isDateRangeValid(start,end)) {
+            if (start && start.isValid() && end && end.isValid() && !this._isDateRangeValid(start, end)) {
 
                 return String.format(OpenLayers.i18n('dateFormLogicalError'),
-                        start.format(OpenLayers.i18n('dateTimeDisplayDayFormat')),
-                        end.format(OpenLayers.i18n('dateTimeDisplayDayFormat'))
-                    );
+                    start.format(OpenLayers.i18n('dateTimeDisplayDayFormat')),
+                    end.format(OpenLayers.i18n('dateTimeDisplayDayFormat'))
+                );
             }
         }
         return true;
@@ -540,7 +539,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         trackFiltersUsage(OpenLayers.i18n('trackingDateAction'), selectedDateTimeMoment.utc().toISOString(), this.dataCollection.getTitle());
     },
 
-
     _onTimeSelected: function(datePicker, selectedDateTimeMoment) {
 
         datePicker.setValue(selectedDateTimeMoment);
@@ -614,13 +612,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _applyFilterValuesToCollection: function() {
-        if (this.isDestroyed !== true ) {
+        if (this.isDestroyed !== true) {
 
             var dateRangeStart = this._getUtcMomentFromPicker(this.startDateTimePicker);
             var dateRangeEnd = this._getUtcMomentFromPicker(this.endDateTimePicker);
             var geometry = this._getGeometryFilter();
 
-            var zAxisValue =  this.getZAxisPickerValues();
+            var zAxisValue = this.getZAxisPickerValues();
 
             if (this._timeSeriesOptionAvailable()) {
                 var pointFilterAvailable = this.pointTimeSeriesPanel._isTimeSeriesFilterAvailable();
@@ -664,7 +662,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         var temporalExtentBegin = this.layer.getTemporalExtentMin();
         var temporalExtentEnd = this.layer.getTemporalExtentMax();
         if (dateRangeStart && temporalExtentBegin && temporalExtentEnd) {
-            return ! (dateRangeStart.isSame(temporalExtentBegin) && dateRangeEnd.isSame(temporalExtentEnd));
+            return !(dateRangeStart.isSame(temporalExtentBegin) && dateRangeEnd.isSame(temporalExtentEnd));
         }
         return undefined;
 
@@ -677,7 +675,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _isDateRangeValid: function(start, end) {
         if (start && start.isValid() && end && end.isValid()) {
-            return  start.isSameOrBefore(end);
+            return start.isSameOrBefore(end);
         }
         return false;
     },
@@ -719,12 +717,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             value: pointFilterValue
         });
 
-        var filters =  [
+        var filters = [
             realDateFilter,
             ncwmsDateParamsAsFilter,
             pointFilter
         ];
-
 
         if (zAxisValue) {
             filters.push(
@@ -745,7 +742,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         return (
             !this.zAxisPickerContainer.hidden &&
             this.zAxisFromPicker.isValid() && this.zAxisFromPicker.isValid() &&
-            this.zAxisFromPicker.getValue() != undefined &&  this.zAxisToPicker.getValue() != undefined
+            this.zAxisFromPicker.getValue() != undefined && this.zAxisToPicker.getValue() != undefined
         );
     },
 
@@ -827,11 +824,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         this.previousFrameButton.enable();
         this.nextFrameButton.enable();
 
-        if (this.layer.temporalExtent.max().toString() == this.layer.time.toString()){
+        if (this.layer.temporalExtent.max().toString() == this.layer.time.toString()) {
             this.nextFrameButton.disable();
         }
 
-        if (this.layer.temporalExtent.min().toString() == this.layer.time.toString()){
+        if (this.layer.temporalExtent.min().toString() == this.layer.time.toString()) {
             this.previousFrameButton.disable();
         }
     },
