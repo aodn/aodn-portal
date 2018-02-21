@@ -59,102 +59,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _addZAxisControls: function() {
 
-        this.zAxisPickerTitle = OpenLayers.i18n('zAxisLabel');
-
-        this.zAxisPickerStore = new Ext.data.ArrayStore({
-            fields: [
-                {name: this.zAxisPickerTitle, type: "integer"}
-            ],
-            expandData: true
-        });
-
-        this.zAxisFromPicker = this._getNewZaxisPicker(OpenLayers.i18n('fromLabelText'));
-        this.zAxisToPicker = this._getNewZaxisPicker(OpenLayers.i18n('toLabelText'));
-
-        this._resetZAxisPickersLink = new Ext.ux.Hyperlink({
-            text: OpenLayers.i18n('clearLinkLabel', {text: String.format(OpenLayers.i18n('resetLabelText'), "Vertical slice")}),
-            cls: 'clearFiltersLink',
-            iconCls: 'small resetText',
-            listeners: {
-                scope: this,
-                'click': this.resetZAxisPickers
-            }
-        });
-
-        this.zAxisPickerContainer = new Ext.Container({
+        this.zAxisPickerContainer = new Portal.details.ZAxisPickerContainer({
             hidden: true,
-            items: [
-                new Ext.Container({
-                    html: String.format("<h4>{0}</h4>", this.zAxisPickerTitle)
-                }),
-                this._createHBoxRow(this._createHBoxLabel(OpenLayers.i18n('fromLabelText')), this.zAxisFromPicker),
-                this._createHBoxRow(this._createHBoxLabel(OpenLayers.i18n('toLabelText')), this.zAxisToPicker),
-                this._resetZAxisPickersLink,
-                new Ext.Spacer({height: 30})
-            ]
+            layer: this.layer,
+            dataCollection: this.dataCollection,
+            parent: this
         });
 
         this.add(this.zAxisPickerContainer);
-    },
-
-    _getNewZaxisPicker: function(name) {
-        return new Ext.form.ComboBox({
-            comboName: name,
-            parentScope: this,
-            dataCollection: this.dataCollection,
-            triggerAction: 'all',
-            editable: false,
-            displayField: this.zAxisPickerTitle,
-            mode: "local",
-            width: 100,
-            store: this.zAxisPickerStore,
-            validator: this.zAxisValidator,
-            listeners: {
-                scope: this,
-                beforequery: function(combo) {
-                    // Stop filtering on selection
-                    this.lastQuery = null;
-                    combo.query = '';
-                    return true;
-                },
-                'select': function(combo) {
-                    this.setZAxisValues(combo);
-                },
-                'render': function(combo) {
-                    this.setZAxisComboDefaultValues(combo);
-                }
-            }
-        });
-    },
-
-    zAxisValidator: function() {
-
-        this.parentScope.zAxisFromPicker.clearInvalid();
-        this.parentScope.zAxisToPicker.clearInvalid();
-
-        if (this.parentScope.zAxisFromPicker.getValue() != undefined && this.parentScope.zAxisToPicker.getValue() != undefined) {
-
-            var start = parseFloat(this.parentScope.zAxisFromPicker.getValue());
-            var end = parseFloat(this.parentScope.zAxisToPicker.getValue());
-
-            if (start < end) {
-                return String.format(OpenLayers.i18n('elevationLogicalError'), start, end);
-            }
-        }
-        return true;
-    },
-
-    setZAxisComboDefaultValues: function(combo) {
-
-        var fromVal = this.zAxisPickerStore.getRange()[0].data[this.zAxisPickerTitle].valueOf();
-        var lastItem = this.zAxisPickerStore.getRange().length - 1;
-        var toVal = this.zAxisPickerStore.getRange()[lastItem].data[this.zAxisPickerTitle].valueOf();
-
-        var value = (combo.comboName == OpenLayers.i18n('fromLabelText')) ? fromVal : toVal;
-        combo.setValue(value);
-
-        this.lastSelectedZAxisValue = fromVal;
-        this._updateTimeRangeLabel();
     },
 
     setZAxisValues: function(combo) {
@@ -167,24 +79,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
     },
 
-    getZAxisPickerValues: function() {
-
-        if (this._isZAxisFilterAvailable()) {
-
-            if (this.layer.extraLayerInfo) {
-
-                var multiplier = (this.layer.extraLayerInfo.zaxis.positive === false) ? -1 : 1;
-
-                return [this.zAxisFromPicker.getValue() * multiplier,
-                    this.zAxisToPicker.getValue() * multiplier
-                ];
-            }
-        }
-    },
-
     _extraLayerInfoLoaded: function(layer) {
         if (layer.extraLayerInfo.zaxis) {
-            this.zAxisPickerStore.loadData(layer.extraLayerInfo.zaxis.values);
+            this.zAxisPickerContainer.zAxisPickerStore.loadData(layer.extraLayerInfo.zaxis.values);
             this.zAxisPickerContainer.show();
         }
     },
@@ -213,6 +110,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _onSelectedLayerChanged: function(newLayer) {
         this.layer = newLayer;
+        this.zAxisPickerContainer.layer = newLayer;
         this._initWithLayer();
         this.resetTemporalConstraints();
     },
@@ -232,15 +130,9 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if (Object.keys(this.layer.temporalExtent.extent).length > 0) {
             this._layerSetTime(this.layer.getTemporalExtentMax());
             this.pointTimeSeriesPanel._resetPanel();
-            this.resetZAxisPickers();
+            this.zAxisPickerContainer.resetZAxisFilters();
             this.resetTemporalConstraints();
         }
-    },
-
-    resetZAxisPickers: function() {
-        this.zAxisFromPicker.reset();
-        this.zAxisToPicker.reset();
-        this.layer.setZAxis();
     },
 
     clearAndResetTemporalConstraints: function() {
@@ -307,14 +199,17 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     _addTemporalControls: function() {
         var temporalExtentHeader = this._newHtmlElement(String.format("<h4>{0}</h4>", OpenLayers.i18n('temporalExtentHeading')));
 
-        var dateStartLabel = this._createHBoxLabel(OpenLayers.i18n('fromLabelText'));
-        var dateEndLabel = this._createHBoxLabel(OpenLayers.i18n('toLabelText'));
-
         this.startDateTimePicker = new Portal.form.UtcExtentDateTime(this._utcExtentDateTimePickerConfiguration(this.START_DATE));
-        var dateStartRow = this._createHBoxRow(dateStartLabel, this.startDateTimePicker);
+        var dateStartRow = new Portal.common.CommonHBoxRowPanel({
+            label: OpenLayers.i18n('fromLabelText'),
+            field: this.startDateTimePicker
+        });
 
         this.endDateTimePicker = new Portal.form.UtcExtentDateTime(this._utcExtentDateTimePickerConfiguration(this.END_DATE));
-        var dateEndRow = this._createHBoxRow(dateEndLabel, this.endDateTimePicker);
+        var dateEndRow = new Portal.common.CommonHBoxRowPanel({
+            label: OpenLayers.i18n('toLabelText'),
+            field: this.endDateTimePicker
+        });
 
         this.previousFrameButton = new Ext.Button({
             iconCls: 'previousButton',
@@ -385,28 +280,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         });
 
         this.add(this.temporalControls);
-    },
-
-    _createHBoxLabel: function(text) {
-        return new Ext.form.Label({
-            html: text,
-            width: 40
-        });
-    },
-
-    _createHBoxRow: function(label, field) {
-        return new Ext.Panel({
-            xtype: 'panel',
-            layout: 'hbox',
-            layoutConfig: {
-                align: 'middle'
-            },
-            width: this.ROW_WIDTH,
-            height: this.ROW_HEIGHT,
-            items: [
-                label, field
-            ]
-        });
     },
 
     _addTimeSeriesControls: function(cfg) {
@@ -618,7 +491,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             var dateRangeEnd = this._getUtcMomentFromPicker(this.endDateTimePicker);
             var geometry = this._getGeometryFilter();
 
-            var zAxisValue = this.getZAxisPickerValues();
+            var zAxisValue = this.zAxisPickerContainer.getZAxisPickerValues();
 
             if (this._timeSeriesOptionAvailable()) {
                 var pointFilterAvailable = this.pointTimeSeriesPanel._isTimeSeriesFilterAvailable();
@@ -727,7 +600,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             filters.push(
                 new Portal.filter.StringFilter({
                     name: 'zaxis',
-                    label: this.zAxisPickerTitle,
+                    label: this.zAxisPickerContainer.zAxisPickerTitle,
                     isNcwmsParams: true,
                     visualised: true,
                     value: zAxisValue
@@ -736,14 +609,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }
 
         return filters;
-    },
-
-    _isZAxisFilterAvailable: function() {
-        return (
-            !this.zAxisPickerContainer.hidden &&
-            this.zAxisFromPicker.isValid() && this.zAxisFromPicker.isValid() &&
-            this.zAxisFromPicker.getValue() != undefined && this.zAxisToPicker.getValue() != undefined
-        );
     },
 
     _attachTemporalEvents: function() {
