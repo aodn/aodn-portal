@@ -138,6 +138,7 @@ Portal.details.ZAxisPickerContainer = Ext.extend(Ext.Container, {
         this.zAxisFromPicker.reset();
         this.zAxisToPicker.reset();
         this.layer.setZAxis();
+        this.parent.lastSelectedZAxisValue = undefined;
         this.parent._applyFilterValuesToCollection();
     },
 
