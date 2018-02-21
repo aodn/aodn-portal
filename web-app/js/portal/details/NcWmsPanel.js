@@ -77,7 +77,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             iconCls: 'small resetText',
             listeners: {
                 scope: this,
-                'click': this.resetZAxisPickers
+                'click': this.resetZAxisFilters
             }
         });
 
@@ -232,12 +232,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if (Object.keys(this.layer.temporalExtent.extent).length > 0) {
             this._layerSetTime(this.layer.getTemporalExtentMax());
             this.pointTimeSeriesPanel._resetPanel();
-            this.resetZAxisPickers();
+            this.resetZAxisFilters();
             this.resetTemporalConstraints();
         }
     },
 
-    resetZAxisPickers: function() {
+    resetZAxisFilters: function() {
         this.zAxisFromPicker.reset();
         this.zAxisToPicker.reset();
         this.layer.setZAxis();
