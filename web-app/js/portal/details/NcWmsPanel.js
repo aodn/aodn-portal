@@ -130,7 +130,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if (Object.keys(this.layer.temporalExtent.extent).length > 0) {
             this._layerSetTime(this.layer.getTemporalExtentMax());
             this.pointTimeSeriesPanel._resetPanel();
-            this.zAxisPickerContainer.resetZAxisPickers();
+            this.zAxisPickerContainer.resetZAxisFilters();
             this.resetTemporalConstraints();
         }
     },

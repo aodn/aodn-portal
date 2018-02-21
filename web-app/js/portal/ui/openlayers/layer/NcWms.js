@@ -236,7 +236,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     setZAxis: function(elevation) {
         // ELEVATION is the zaxis
-        this.mergeNewParams({ ELEVATION: elevation });
+        this.mergeNewParams({ ELEVATION: (elevation == undefined) ? null : elevation });
     },
 
     getMissingDays: function() {

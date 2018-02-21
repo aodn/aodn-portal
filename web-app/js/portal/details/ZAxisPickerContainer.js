@@ -38,7 +38,7 @@ Portal.details.ZAxisPickerContainer = Ext.extend(Ext.Container, {
             iconCls: 'small resetText',
             listeners: {
                 scope: this,
-                'click': this.resetZAxisPickers
+                'click': this.resetZAxisFilters
             }
         });
 
@@ -134,7 +134,7 @@ Portal.details.ZAxisPickerContainer = Ext.extend(Ext.Container, {
         }
     },
 
-    resetZAxisPickers: function() {
+    resetZAxisFilters: function() {
         this.zAxisFromPicker.reset();
         this.zAxisToPicker.reset();
         this.layer.setZAxis();
