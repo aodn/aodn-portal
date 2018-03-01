@@ -12,7 +12,6 @@
     <g:render template="/public_theme_includes"></g:render>
     <g:render template="/landing_theme_includes"></g:render>
 
-
     <script type="text/javascript">
         <portal:motdPopup />
 
@@ -114,5 +113,6 @@
 
 <g:render template="/google_analytics"></g:render>
 <g:render template="/hotjar"></g:render>
+<g:render template="/motd"></g:render>
 </body>
 </html>
