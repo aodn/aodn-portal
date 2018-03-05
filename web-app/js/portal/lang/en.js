@@ -265,8 +265,10 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     depthLabel: "Depth",
     elevationLabel: 'Elevation',
-    zAxisLabel: "Vertical",
+    zAxisLabelPositiveUp: 'Height',
+    zAxisLabelPositiveDown: 'Depth',
     ncwmsDateParamsFilter: "ncwmsDateParamsFilter",
+    zAxisPanelCmpId: 'titleContainer',
 
     elevationLogicalError: "<b>From </b> <i>({0})</i> must be greater than <BR><b> To</b> <i>({1})</i>",
 

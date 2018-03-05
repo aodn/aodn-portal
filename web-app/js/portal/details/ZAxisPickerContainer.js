@@ -20,7 +20,7 @@ Portal.details.ZAxisPickerContainer = Ext.extend(Ext.Container, {
 
     _addZAxisControls: function() {
 
-        this.zAxisPickerTitle = OpenLayers.i18n('zAxisLabel');
+        this.zAxisPickerTitle = OpenLayers.i18n('zAxisLabelPositiveDown');
 
         this.zAxisPickerStore = new Ext.data.ArrayStore({
             fields: [
@@ -42,12 +42,14 @@ Portal.details.ZAxisPickerContainer = Ext.extend(Ext.Container, {
             }
         });
 
+        this.zAxisPickerTitleContainer = new Ext.Container({
+            html: this.formatZAxisPickerTitle(this.zAxisPickerTitle)
+        });
+
         this.add(
-            new Ext.Container({
-                html: String.format("<h4>{0}</h4>", this.zAxisPickerTitle)
-            }),
+            this.zAxisPickerTitleContainer,
             new Portal.common.CommonHBoxRowPanel({
-                label: OpenLayers.i18n('toLabelText'),
+                label: OpenLayers.i18n('fromLabelText'),
                 field: this.zAxisFromPicker
             }),
             new Portal.common.CommonHBoxRowPanel({
@@ -89,6 +91,14 @@ Portal.details.ZAxisPickerContainer = Ext.extend(Ext.Container, {
         });
     },
 
+    formatZAxisPickerTitle: function(title) {
+        return String.format("<h4>{0}</h4>", title);
+    },
+
+    updateTitleContainer: function(label) {
+        this.zAxisPickerTitleContainer.update(this.formatZAxisPickerTitle(label));
+    },
+
     zAxisValidator: function() {
 
         this.parentScope.zAxisFromPicker.clearInvalid();
@@ -96,11 +106,11 @@ Portal.details.ZAxisPickerContainer = Ext.extend(Ext.Container, {
 
         if (this.parentScope.zAxisFromPicker.getValue() != undefined && this.parentScope.zAxisToPicker.getValue() != undefined) {
 
-            var start = parseFloat(this.parentScope.zAxisFromPicker.getValue());
-            var end = parseFloat(this.parentScope.zAxisToPicker.getValue());
+            var minDepth = parseFloat(this.parentScope.zAxisFromPicker.getValue());
+            var maxDepth = parseFloat(this.parentScope.zAxisToPicker.getValue());
 
-            if (start < end) {
-                return String.format(OpenLayers.i18n('elevationLogicalError'), start, end);
+            if (minDepth > maxDepth) {
+                return String.format(OpenLayers.i18n('elevationLogicalError'), minDepth, maxDepth);
             }
         }
         return true;
@@ -122,13 +132,9 @@ Portal.details.ZAxisPickerContainer = Ext.extend(Ext.Container, {
     getZAxisPickerValues: function() {
 
         if (this._isZAxisFilterAvailable()) {
-
             if (this.layer.extraLayerInfo) {
-
-                var multiplier = (this.layer.extraLayerInfo.zaxis.positive === false) ? -1 : 1;
-
-                return [this.zAxisFromPicker.getValue() * multiplier,
-                    this.zAxisToPicker.getValue() * multiplier
+                return [this.zAxisFromPicker.getValue(),
+                    this.zAxisToPicker.getValue()
                 ];
             }
         }
