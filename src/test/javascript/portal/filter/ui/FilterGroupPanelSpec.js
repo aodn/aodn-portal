@@ -120,7 +120,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             };
 
             spyOn(filterGroupPanel, '_clearFilters');
-            spyOn(filterGroupPanel, '_addErrorMessage');
+            spyOn(filterGroupPanel, 'showErrorMessage');
             spyOn(filterGroupPanel, '_sortFilters');
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
         });
@@ -142,7 +142,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
                 needsFilterRange: returns(false)
             };
 
-            spyOn(filterGroupPanel, '_addErrorMessage');
+            spyOn(filterGroupPanel, 'showErrorMessage');
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
         });
 
@@ -150,7 +150,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
             filterGroupPanel._filtersLoaded([]);
 
-            expect(filterGroupPanel._addErrorMessage).toHaveBeenCalled();
+            expect(filterGroupPanel.showErrorMessage).toHaveBeenCalled();
         });
 
         it('_addErrorMessage function not called when filters are configured', function() {
@@ -159,7 +159,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
             filterGroupPanel._filtersLoaded(["Boolean", "Combo"]);
 
-            expect(filterGroupPanel._addErrorMessage).not.toHaveBeenCalled();
+            expect(filterGroupPanel.showErrorMessage).not.toHaveBeenCalled();
         });
     });
 
