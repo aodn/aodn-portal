@@ -2,8 +2,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.PointCSVDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
-    SUBSET_FORMAT: 'TIME,{0},{1};LATITUDE,{2},{3};LONGITUDE,{4},{5}',
-
     _getDownloadOptionTextKey: function() {
         return 'downloadAsPointTimeSeriesCsvLabel';
     },
@@ -38,21 +36,43 @@ Portal.cart.PointCSVDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
             && Portal.filter.FilterUtils.hasFilter(filters, 'timeSeriesAtPoint');
     },
 
-    _getSubset: function(filters) {
-        var aggregationParams = filters.filter(function(filter) {
-            return filter.isNcwmsParams;
+    _getSubset: function(filters, hasTemporalExtent) {
+
+        var zaxisParamString = "";
+        var returnStringFormat;
+
+        var dateParams = filters.filter(function(filter) {
+            return (filter.isNcwmsParams && filter.name == OpenLayers.i18n("ncwmsDateParamsFilter"));
         })[0];
 
+        var dateRangeStart = (dateParams) ?  this._formatDate(dateParams.dateRangeStart || this.DEFAULT_DATE_START) : undefined;
+        var dateRangeEnd = (dateParams) ?  this._formatDate(dateParams.dateRangeEnd || this.DEFAULT_DATE_END) : undefined;
         var pointFilterValue = Portal.filter.FilterUtils.getFilter(filters, 'timeSeriesAtPoint').getValue();
 
+        if (hasTemporalExtent) {
+            returnStringFormat = (dateRangeStart != undefined || dateRangeEnd != undefined) ? OpenLayers.i18n('subsetFormat') : OpenLayers.i18n('subsetFormatWithoutTime');
+        }
+        else {
+            returnStringFormat = OpenLayers.i18n('subsetFormatWithoutTime');
+        }
+
+        var zaxisParams = filters.filter(function(filter) {
+            return (filter.isNcwmsParams && filter.label == OpenLayers.i18n("zAxisLabel"));
+        })[0];
+
+        if (zaxisParams) {
+            zaxisParamString = String.format(";DEPTH,{0}",zaxisParams.value.join(","));
+        }
+
         return String.format(
-            this.SUBSET_FORMAT,
-            this._formatDate(aggregationParams.dateRangeStart || this.DEFAULT_DATE_START),
-            this._formatDate(aggregationParams.dateRangeEnd || this.DEFAULT_DATE_END),
+            returnStringFormat,
+            dateRangeStart,
+            dateRangeEnd,
             pointFilterValue.latitude.toDecimalString(),
             pointFilterValue.latitude.toDecimalString(),
             pointFilterValue.longitude.toDecimalString(),
-            pointFilterValue.longitude.toDecimalString()
+            pointFilterValue.longitude.toDecimalString(),
+            zaxisParamString
         );
     }
 });
