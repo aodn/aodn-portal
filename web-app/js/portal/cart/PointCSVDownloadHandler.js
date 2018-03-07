@@ -10,9 +10,9 @@ Portal.cart.PointCSVDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
         return OpenLayers.i18n('downloadPointCsvAction');
     },
 
-    _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {
+    _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress, hasTemporalExtent) {
 
-        var subset = this._getSubset(filters);
+        var subset = this._getSubset(filters, hasTemporalExtent);
 
         var jobParameters = {
             server: serverUrl,
