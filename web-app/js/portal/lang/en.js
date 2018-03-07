@@ -47,6 +47,9 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     emailAddressValidationError: 'Enter a valid email address',
     notificationBlurbMessage: 'Subsetting data can take a long time.<br>You will be notified via email when your data is ready for download.',
 
+    subsetFormat: 'TIME,{0},{1};LATITUDE,{2},{3};LONGITUDE,{4},{5}{6}',
+    subsetFormatWithoutTime: 'LATITUDE,{2},{3};LONGITUDE,{4},{5}{6}',
+
     // WFS Filters Panel
     subsetParametersText: 'subset parameters',
     subsetEmptyFiltersText: 'Filtering of this collection is not available at this time.',

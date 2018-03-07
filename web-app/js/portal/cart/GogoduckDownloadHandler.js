@@ -2,8 +2,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
-    SUBSET_FORMAT: 'TIME,{0},{1};LATITUDE,{2},{3};LONGITUDE,{4},{5}{6}',
-    SUBSET_FORMAT_WITHOUT_TIME: 'LATITUDE,{2},{3};LONGITUDE,{4},{5}{6}',
 
     _getDownloadOptionTextKey: function() {
         return 'downloadAsSubsettedNetCdfLabel';
@@ -51,17 +49,18 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
         var dateRangeEnd = (dateParams) ?  this._formatDate(dateParams.dateRangeEnd || this.DEFAULT_DATE_END) : undefined;
         var returnStringFormat;
 
-        if (hasTemporalExtent)
-            returnStringFormat = (dateRangeStart != undefined || dateRangeEnd != undefined) ? this.SUBSET_FORMAT : this.SUBSET_FORMAT_WITHOUT_TIME;
-        else
-            returnStringFormat = this.SUBSET_FORMAT_WITHOUT_TIME;
+        if (hasTemporalExtent) {
+            returnStringFormat = (dateRangeStart != undefined || dateRangeEnd != undefined) ? OpenLayers.i18n('subsetFormat') : OpenLayers.i18n('subsetFormatWithoutTime');
+        }
+        else {
+            returnStringFormat = OpenLayers.i18n('subsetFormatWithoutTime');
+        }
 
         var zaxisParams = filters.filter(function(filter) {
             return (filter.isNcwmsParams && filter.label == OpenLayers.i18n("zAxisLabel"));
         })[0];
 
         if (zaxisParams) {
-            // hard coding DEPTH for JavaDuck
             zaxisParamString = String.format(";DEPTH,{0}",zaxisParams.value.join(","));
         }
 

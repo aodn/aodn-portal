@@ -12,12 +12,14 @@ describe('Portal.cart.PointCSVDownloadHandler', function () {
 
         var temporalFilter = {
             isNcwmsParams: true,
+            name: OpenLayers.i18n('ncwmsDateParamsFilter'),
             dateRangeStart: moment.utc('2000-01-01T01:01:01'),
             dateRangeEnd: moment.utc('2014-12-23T23:59:59')
         };
 
         noTemporalFilter = {
-            isNcwmsParams: true
+            isNcwmsParams: true,
+            name: OpenLayers.i18n('ncwmsDateParamsFilter')
         };
 
         timeSeriesAtPointFilter = new Portal.filter.PointFilter({
