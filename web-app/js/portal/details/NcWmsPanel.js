@@ -22,6 +22,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         Ext.apply(this, cfg);
 
         this.layer = this.dataCollection.getLayerSelectionModel().getSelectedLayer();
+        this.multiplier = -1;
 
         this.dataCollection.getLayerSelectionModel().on('selectedlayerchanged', function(newLayer) {
             this._onSelectedLayerChanged(newLayer);
@@ -73,7 +74,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if (combo.isValid()) {
 
             this.lastSelectedZAxisValue = combo.value;
-            this.layer.setZAxis(combo.value); // last selected applies to map
+            this.layer.setZAxis(combo.value * this.multiplier); // last selected applies to map
 
             this._applyFilterValuesToCollection();
         }
@@ -81,8 +82,24 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
     _extraLayerInfoLoaded: function(layer) {
         if (layer.extraLayerInfo.zaxis) {
-            this.zAxisPickerContainer.zAxisPickerStore.loadData(layer.extraLayerInfo.zaxis.values);
+            var title;
+            var layerValues = layer.extraLayerInfo.zaxis.values;
+            var adjValues = [];
+            if (layer.extraLayerInfo.zaxis.positive == true) {
+                title = OpenLayers.i18n('zAxisLabelPositiveUp');
+                this.multiplier = 1;
+            } else {
+                title = OpenLayers.i18n('zAxisLabelPositiveDown');
+                this.multiplier = -1;
+            }
+            for (var i=0; i<layerValues.length; i++) {
+                adjValues[i] = layerValues[i] * this.multiplier;
+            }
+            this.zAxisPickerContainer.zAxisPickerStore.loadData(adjValues);
             this.zAxisPickerContainer.show();
+            this.zAxisPickerContainer.updateTitleContainer(
+                String.format("{0} ({1})", title, this.layer.extraLayerInfo.zaxis.units)
+            );
         }
     },
 
