@@ -6,19 +6,32 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
 
-public class ClearFacetTest extends BaseTest {
+    public class ClearFacetTest extends BaseTest {
 
     private static Logger log = Logger.getLogger(ClearFacetTest.class.getName());
 
     private int currentPageCount(WebDriver driver) {
-        WebElement pageCountDiv = driver.findElement(By.xpath("//td[contains(@class, 'x-toolbar-cell') and contains(.//div, 'of ')]"));
-        return Integer.parseInt(pageCountDiv.getText().replace("of ", ""));
+        try {
+
+            WebDriverWait wait = new WebDriverWait(driver, 5);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[contains(@class, 'x-toolbar-cell') and contains(.//div, 'of ')]")));
+
+            WebElement pageCountDiv = driver.findElement(By.xpath("//td[contains(@class, 'x-toolbar-cell') and contains(.//div, 'of ')]"));
+
+            return Integer.parseInt(pageCountDiv.getText().replace("of ", ""));
+        }
+        catch(Exception e) {
+            Assert.fail("Search results not yet loaded at test execution.");
+            return -1;
+        }
     }
 
     @Test
