@@ -57,7 +57,9 @@ Portal.cart.PointCSVDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandle
         }
 
         var zaxisParams = filters.filter(function(filter) {
-            return (filter.isNcwmsParams && filter.label == OpenLayers.i18n("zAxisLabel"));
+            return (filter.isNcwmsParams &&
+                (filter.label == OpenLayers.i18n("zAxisLabelPositiveDown")
+                    || filter.label == OpenLayers.i18n("zAxisLabelPositiveUp")));
         })[0];
 
         if (zaxisParams) {
