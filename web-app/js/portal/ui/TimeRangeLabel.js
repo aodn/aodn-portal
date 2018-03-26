@@ -3,9 +3,7 @@ Ext.namespace('Portal.ui');
 Portal.ui.TimeRangeLabel = Ext.extend(Ext.Panel, {
 
     constructor: function(cfg) {
-        var config = Ext.apply({
-            html: this._loadingMessage()
-        }, cfg);
+        var config = Ext.apply({}, cfg);
 
         Portal.ui.TimeRangeLabel.superclass.constructor.call(this, config);
     },
