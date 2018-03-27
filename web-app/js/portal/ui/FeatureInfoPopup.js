@@ -83,7 +83,6 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         this.location = this.map.getLonLatFromViewPortPx(event.xy);
         this.locationXy = {x:this._truncateToInt(event.xy.x), y:this._truncateToInt(event.xy.y)};
 
-        this._setLocationString();
         this._display();
 
         this._handleDepthService();
@@ -254,13 +253,13 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
         this.show();
     },
 
-    _setLocationString: function() {
-        this.locationString = this._getCoordinateLabel("Lat:", this.location.lat) + " " + this._getCoordinateLabel("Lon:", this.location.lon);
+    _getLocationString: function(lat, lon) {
+        return this._getCoordinateLabel("Lat:", lat) + " " + this._getCoordinateLabel("Lon:", lon);
     },
 
     _getCoordinateLabel: function(latLonLabel, coord) {
         // TODO move toNSigFigs into a class somewhere
-        return this._boldify(latLonLabel) + " " + toNSigFigs(coord, 4);
+        return this._boldify(latLonLabel) + " " + toNSigFigs(coord, 3);
     },
 
     _boldify: function(text) {
@@ -288,22 +287,24 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
     },
 
     _updatePopupDepthStatus: function(response) {
-        if (response && response.responseXML) {
-            var xmldoc = response.responseXML;
-            if (xmldoc && xmldoc.getElementsByTagName('depth') !== undefined) {
-                var depthTag = xmldoc.getElementsByTagName('depth')[0].firstChild;
-                // Depth service can return 204 but our app changes that to a 200 and pipes down nothing
-                if (depthTag != null) {
-                    var depth = depthTag.nodeValue;
-                    if (depth && (+depth === +depth)) {
-                        var label = OpenLayers.i18n(depth <= 0 ? 'depthLabel' : 'elevationLabel');
-                        this.depthInfoPanel.update(this.locationString + " " + this._boldify(label) + " " + Math.abs(depth) + "m");
-                        return;
-                    }
-                }
-            }
+
+        var depthJson;
+        try {
+            depthJson = Ext.util.JSON.decode(response.responseText);
         }
-        this.depthInfoPanel.update("&nbsp;");
+        catch (e) {
+            log.error('Unable to load depth information. Invalid response: ' + response.responseText);
+            this.depthInfoPanel.update("&nbsp;");
+            return;
+        }
+
+        var vals = depthJson.features[0].properties;
+        var locationString = this._getLocationString(vals.latitude, vals.longitude);
+
+        var label = OpenLayers.i18n(vals.depth <= 0 ? 'depthLabel' : 'elevationLabel');
+        this.depthInfoPanel.update(locationString + " " + this._boldify(label) + " " + Math.abs(vals.depth) + "m");
+        return;
+
     },
 
     _addPopupTabContent: function(content, title) {

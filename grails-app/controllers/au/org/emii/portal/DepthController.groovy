@@ -33,7 +33,6 @@ class DepthController {
         if (!serviceAddress) {
             return null
         }
-
-        return "${serviceAddress}.xml?lat=${params.lat}&lon=${params.lon}".toURL()
+        return "${serviceAddress}lon:${params.lon};lat:${params.lat}".toURL()
     }
 }
