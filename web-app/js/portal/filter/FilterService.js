@@ -68,6 +68,7 @@ Portal.filter.FilterService = Ext.extend(Object, {
         var params = {
             filter: filterId,
             server: layer.server.uri,
+            serverType: layer.server.type.toLowerCase(),
             layer: layer.wmsName
         };
 
