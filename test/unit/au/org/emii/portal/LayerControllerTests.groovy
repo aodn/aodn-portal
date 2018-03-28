@@ -25,7 +25,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
         this.controller.params.layer = 'some_layer'
 
         def methodCalled = false
-        wms.GeoserverServer.metaClass.getFilters = { server, layer ->
+        wms.ImosGeoserverServer.metaClass.getFilters = { server, layer ->
             methodCalled = true
             return []
         }
@@ -33,7 +33,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
         this.controller.getFilters()
 
         // Restore original wms.GeoserverServer class
-        wms.GeoserverServer.metaClass = null
+        wms.ImosGeoserverServer.metaClass = null
 
         assertTrue methodCalled
     }

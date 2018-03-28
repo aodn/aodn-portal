@@ -13,7 +13,7 @@ describe("Portal.filter.FilterService", function() {
         callbackScope = {};
         testDataCollection = {
             getLayerSelectionModel: returns({
-                getSelectedLayer: returns({server: {}})
+                getSelectedLayer: returns({server: {type: ''}})
             }),
             getFiltersRequestParams: noOp
         };
