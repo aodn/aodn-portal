@@ -2,10 +2,10 @@ package au.org.emii.portal.wms
 
 import au.org.emii.portal.proxying.ExternalRequest
 
-class GeoserverServer extends WmsServer {
+class ImosGeoserverServer extends WmsServer {
     def filePath
 
-    GeoserverServer(filePath) {
+    ImosGeoserverServer(filePath) {
         this.filePath = filePath
     }
 

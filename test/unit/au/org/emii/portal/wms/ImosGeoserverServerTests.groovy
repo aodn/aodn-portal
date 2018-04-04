@@ -2,7 +2,7 @@ package au.org.emii.portal.wms
 
 import grails.test.GrailsUnitTestCase
 
-class GeoserverServerTests extends GrailsUnitTestCase {
+class ImosGeoserverServerTests extends GrailsUnitTestCase {
 
     def geoserverServer
     def validGeoserverResponse
@@ -12,9 +12,9 @@ class GeoserverServerTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
 
-        mockLogging(GeoserverServer)
+        mockLogging(ImosGeoserverServer)
 
-        geoserverServer = new GeoserverServer(true)
+        geoserverServer = new ImosGeoserverServer(true)
 
         validGeoserverResponse =
 """<?xml version="1.0"?>

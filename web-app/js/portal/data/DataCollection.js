@@ -45,11 +45,12 @@ Portal.data.DataCollection = function() {
 
     constructor.prototype.getFiltersRequestParams = function() {
         var layer = this.getLayerSelectionModel().getSelectedLayer();
-        var layerName = this._getDownloadLayerName();
+        var serverType = layer.server.type.toLowerCase();
+        var layerName = serverType == 'geoservercore' ? layer.wmsName : this._getDownloadLayerName();
 
         return {
             server: layer.url,
-            serverType: layer.server.type.toLowerCase(),
+            serverType: serverType,
             layer: layerName
         };
     };
