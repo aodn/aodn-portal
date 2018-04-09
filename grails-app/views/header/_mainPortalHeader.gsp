@@ -1,7 +1,7 @@
 <div id="header"class="headerHeightOverlord" >
     <div id="header-bg-image"></div>
     <div id="logoContainer">
-        <a href="${createLink(uri: '', absolute: true)}"><img src="${portalBranding.logoImage}" alt="main logo" width="180" />
+        <a href="/"><img src="${portalBranding.logoImage}" alt="main logo" width="180" />
         </a>
     </div>
     <div id="headerContainer" >
