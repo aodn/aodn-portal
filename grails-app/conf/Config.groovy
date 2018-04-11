@@ -142,13 +142,9 @@ environments {
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
-        geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
+        geonetwork.url = "http://catalogue-portal.aodn.org.au/geonetwork"
 
-        // Set to true if you want to test interaction with new servers. This turns
-        // your portal instance into an open proxy and can be dangerous.
-        allowAnyHost = true
-
-        // Hosts which shouldn't be allowed even if allowAnyHosts is set to true
+        // Hosts which shouldn't be allowed
         excludedHosts = ['geoserver-wps.aodn.org.au', 'wps.aodn.org.au']
     }
 
@@ -217,6 +213,32 @@ knownServers = [
         uri: 'https://www.cmar.csiro.au/geoserver/ncwms',
         wmsVersion: '1.3.0',
         type: 'ncWMS'
+    ],
+    [
+        uri: 'https://biocache.ala.org.au/ws/mapping/wms/reflect',
+        wmsVersion: '1.1.1',
+        type: 'ALA'
+    ],
+    [
+        uri: 'http://data2.tpac.org.au/geoserver/ncwms',
+        wmsVersion: '1.3.0',
+        type: 'ncWMS'
+    ],
+    [
+        uri: 'https://tilecache.aodn.org.au/geowebcache/service/wms',
+        wmsVersion: '1.1.1',
+        type: 'GeoServer'
+
+    ],
+    [
+        uri: 'http://geoserver.imas.utas.edu.au/geoserver/wms',
+        wmsVersion: '1.1.1',
+        type: 'GeoServer'
+    ],
+    [
+        uri: 'http://biocache.ala.org.au/ws/ogc/wms/reflect',
+        baseUrl: 'http://biocache.ala.org.au/ws',
+        type: 'ALA'
     ],
     [
         uri: 'http://ncwms.aodn.org.au/ncwms/wms',
