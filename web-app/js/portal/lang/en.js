@@ -343,6 +343,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     goButtonTrackingLabel: "Go",
     gogoduckTrackingLabel: "GoGoDuck",
     downloadFileListAction: 'Un-subsetted Non-NetCDFs',
+    downloadAlaAction: 'ALA download',
     downloadUnsubsettedNetCdfAction: 'Un-subsetted NetCDFs',
     downloadNetcdfSubsetServiceAction: 'NetCDF - non-gridded',
     downloadPointCsvAction: 'CSV - gridded (point timeseries)',
@@ -362,5 +363,9 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     shareButton: "New portal with only this collection",
     menuItemGroupTitle: '<span class="menu-title">${title}</span>',
-    wpsTrackingLabel: "WPS Service"
+    wpsTrackingLabel: "WPS Service",
+
+    // Atlas of Living Australia style definitions
+    ALAOccurrencesStyle: "color:d9684c;size:1;opacity:1.0;", // colour from www.ala.org.au page
+    ALAPerSpeciesStyle: "colormode:species_guid;name:circle;size:3;opacity:1.0"
 });

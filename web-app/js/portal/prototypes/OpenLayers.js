@@ -151,20 +151,51 @@ OpenLayers.Layer.WMS.prototype.isNcwms = function() {
     return false;
 };
 
+OpenLayers.Layer.WMS.prototype.isAla = function() {
+    return false;
+};
+
 OpenLayers.Layer.WMS.prototype.applyFilters = function(filters) {
 
-    var builder = new Portal.filter.combiner.MapCqlBuilder({
+    if (this.isAla()) {
+        this.applyAlaFilters(filters);
+    }
+    else {
+
+        var builder = new Portal.filter.combiner.MapCqlBuilder({
+            filters: filters
+        });
+
+        var newValue = builder.buildCql();
+        var existingValue = this.params['CQL_FILTER'];
+
+        if (newValue != existingValue) {
+            this.mergeNewParams({
+                CQL_FILTER: newValue
+            });
+        }
+    }
+};
+
+OpenLayers.Layer.WMS.prototype.applyAlaFilters = function(filters) {
+
+    var builder = new Portal.filter.combiner.ALAParametersBuilder({
         filters: filters
     });
 
-    var newValue = builder.buildCql();
-    var existingValue = this.params['CQL_FILTER'];
+    var style = "ALAOccurrencesStyle";
+    var newParams = builder.buildParameters();
 
-    if (newValue != existingValue) {
-        this.mergeNewParams({
-            CQL_FILTER: newValue
-        });
+    if (newParams.Q) {
+        style = "ALAPerSpeciesStyle";
     }
+    else {
+        newParams.Q = null;
+    }
+
+    this.mergeNewParams(newParams);
+    this.mergeNewParams({ ENV: OpenLayers.i18n(style)});
+
 };
 
 OpenLayers.Layer.WMS.prototype.hasBoundingBox = function() {

@@ -99,10 +99,12 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'GeometryFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'NumberFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'StringFilter.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'ALASpeciesStringArrayFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'PointFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'FilterService.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'BaseFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'ComboFilterPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'ALASpeciesFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'ResettableDate.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'DateFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'BooleanFilterPanel.js')}"></script>
@@ -111,6 +113,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'GeometryFilterService.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'BaseFilterCombiner.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'FilterCqlBuilder.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'AlaParametersBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'MapCqlBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'BodaacCqlBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'FileListCqlBuilder.js')}"></script>
@@ -130,6 +133,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'ZAxisPickerContainer.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NcWmsPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'AlaFilterGroupPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DataCollectionDetailsAccordion.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'InfoPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetItemsTabPanel.js')}"></script>
@@ -142,6 +146,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers', file: 'SpatialConstraintMap.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/layer', file: 'MiniMapBaseLayer.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/layer', file: 'NcWms.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/layer', file: 'AlaWms.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MapPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'VisualisePanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MainToolbar.js')}"></script>
@@ -190,6 +195,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'GogoduckDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'PointCSVDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'FileListDownloadHandler.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'ALADownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'ShapeFileDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NetcdfSubsetServiceDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'PythonDownloadHandler.js')}"></script>

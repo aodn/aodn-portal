@@ -62,7 +62,7 @@ class HostVerifierTests extends GrailsUnitTestCase {
         _addConfig(devConfig, ["config", "baselayerServer", "uri"], 'http://geoserverstatic.emii.org.au')
         _addConfig(devConfig, ["config", "excludedHosts"], ["geoserver-wps.aodn.org.au"])
 
-        assertTrue(hostVerifier.allowedHost("http://geoserver-123.aodn.org.au/geoserver"))
+        assertTrue(hostVerifier.allowedHost("http://geonetwork.aodn.org.au/geonetwork"))
         assertFalse(hostVerifier.allowedHost("http://geoserver-wps.aodn.org.au/geoserver"))
     }
 

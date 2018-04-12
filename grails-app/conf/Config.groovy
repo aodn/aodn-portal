@@ -215,6 +215,14 @@ knownServers = [
         type: 'ncWMS'
     ],
     [
+        uri: 'https://biocache.ala.org.au/ws/ogc/getFeatureInfo',
+        type: 'ALAGetFeatureInfo'
+    ],
+    [
+        uri: 'https://biocache.ala.org.au/ws/occurrences/index/download',
+        type: 'ALADownload'
+    ],
+    [
         uri: 'https://biocache.ala.org.au/ws/mapping/wms/reflect',
         wmsVersion: '1.1.1',
         type: 'ALA'
@@ -234,11 +242,6 @@ knownServers = [
         uri: 'http://geoserver.imas.utas.edu.au/geoserver/wms',
         wmsVersion: '1.1.1',
         type: 'GeoServer'
-    ],
-    [
-        uri: 'http://biocache.ala.org.au/ws/ogc/wms/reflect',
-        baseUrl: 'http://biocache.ala.org.au/ws',
-        type: 'ALA'
     ],
     [
         uri: 'http://ncwms.aodn.org.au/ncwms/wms',
@@ -372,7 +375,8 @@ portal {
         [ 'handler': 'BodaacDownloadHandler',              'protocol': 'IMOS:AGGREGATION--bodaac'            ],
         [ 'handler': 'GogoduckV1DownloadHandler',          'protocol': 'IMOS:AGGREGATION--gogoduck'          ],
         [ 'handler': 'FileListDownloadHandler',            'protocol': 'AODN:FILE-list'                      ],
-        [ 'handler': 'ShapeFileDownloadHandler',           'protocol': 'OGC:WFS-1.0.0-http-get-feature--shapefile']
+        [ 'handler': 'ShapeFileDownloadHandler',           'protocol': 'OGC:WFS-1.0.0-http-get-feature--shapefile'],
+        [ 'handler': 'ALADownloadHandler',                 'protocol': 'ALA:Occurrence-download']
     ]
 
     mapGetFeatureInfoBuffer = 10
