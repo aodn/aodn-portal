@@ -172,7 +172,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }, this);
 
         var info = this.loadingInfo;
-        if(info.deferLayout) {
+        if(info.getEl() != undefined) {
             info.addClass(cls);
             info.update(msg);
             info.show();
