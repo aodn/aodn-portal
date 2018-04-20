@@ -171,9 +171,21 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             this.loadingInfo.removeClass(style);
         }, this);
 
-        this.loadingInfo.addClass(cls);
-        this.loadingInfo.update(msg);
-        this.loadingInfo.show();
+        var info = this.loadingInfo;
+        if(info.getEl() != undefined) {
+            info.addClass(cls);
+            info.update(msg);
+            info.show();
+        } else {
+            info.on({
+                'afterrender': function () {
+                    info.addClass(cls);
+                    info.update(msg);
+                    info.show();
+                },
+                scope: this
+            });
+        }
     },
 
     _addStatusInfo: function() {
