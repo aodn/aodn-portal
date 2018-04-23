@@ -33,6 +33,9 @@ class LayerController {
         else if (serverType == 'geoservercore') {
             return new CoreGeoserverServer(groovyPageRenderer)
         }
+        else if (serverType == 'datatrawlerproto') {
+            return new DataTrawlerServer(groovyPageRenderer)
+        }
         else {
             return new ImosGeoserverServer(grailsApplication.config.filtering.filePath)
         }
