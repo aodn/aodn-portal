@@ -196,16 +196,22 @@ knownServers = [
     [
         uri: 'https://www.cmar.csiro.au/geoserver/wms',
         wmsVersion: '1.1.1',
-        type: 'GeoserverCore'
+        type: 'GeoServerCore',
+        csvDownloadFormat: 'csv-with-metadata-header'
     ],
     [
         uri: 'https://www.cmar.csiro.au/data/trawler/aodn2csiro.cfm',
         wmsVersion: '1.1.1',
-        type: 'GeoserverCore',
+        type: 'DataTrawlerProto',
         csvDownloadFormat: 'csv-with-metadata-header'
     ],
     [
         uri: 'http://geoserver-123.aodn.org.au/geoserver/ncwms',
+        wmsVersion: '1.3.0',
+        type: 'ncWMS'
+    ],
+    [
+        uri: 'https://www.cmar.csiro.au/geoserver/ncwms',
         wmsVersion: '1.3.0',
         type: 'ncWMS'
     ],
