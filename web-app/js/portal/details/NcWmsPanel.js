@@ -88,11 +88,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             if (layer.extraLayerInfo.zaxis.positive == true) {
                 title = OpenLayers.i18n('zAxisLabelPositiveUp');
                 this.multiplier = 1;
-            } else {
+            }
+            else {
                 title = OpenLayers.i18n('zAxisLabelPositiveDown');
                 this.multiplier = -1;
             }
-            for (var i=0; i<layerValues.length; i++) {
+            for (var i = 0; i < layerValues.length; i++) {
                 adjValues[i] = layerValues[i] * this.multiplier;
             }
             this.zAxisPickerContainer.zAxisPickerStore.loadData(adjValues);
@@ -172,13 +173,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         }, this);
 
         var info = this.loadingInfo;
-        if(info.getEl() != undefined) {
+        if (info.getEl() != undefined) {
             info.addClass(cls);
             info.update(msg);
             info.show();
-        } else {
+        }
+        else {
             info.on({
-                'afterrender': function () {
+                'afterrender': function() {
                     info.addClass(cls);
                     info.update(msg);
                     info.show();
@@ -516,10 +518,12 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     _applyFilterValuesToCollection: function() {
         if (this.isDestroyed !== true) {
 
-            var dateRangeStart = this._getUtcMomentFromPicker(this.startDateTimePicker);
-            var dateRangeEnd = this._getUtcMomentFromPicker(this.endDateTimePicker);
-            var geometry = this._getGeometryFilter();
+            var dateRangeStart = this.startDateTimePicker.validate() ? this._getUtcMomentFromPicker(this.startDateTimePicker) : moment(this.startDateTimePicker.startValue);
+            var dateRangeEnd = this.endDateTimePicker.validate() ? this._getUtcMomentFromPicker(this.endDateTimePicker) : moment(this.endDateTimePicker.startValue);
 
+            this.dataCollection.isTemporalExtentSubsetted = this.isTemporalExtentSubsetted(dateRangeStart, dateRangeEnd);
+
+            var geometry = this._getGeometryFilter();
             var zAxisValue = this.zAxisPickerContainer.getZAxisPickerValues();
 
             if (this._timeSeriesOptionAvailable()) {
@@ -534,9 +538,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
             this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, pointFilterValue, zAxisValue);
 
-            this.dataCollection.isTemporalExtentSubsetted = this.isTemporalExtentSubsetted(dateRangeStart, dateRangeEnd);
-
-            this.spatialSubsetIntersects = new Portal.filter.combiner.SpatialSubsetIntersectTester().testSpatialSubsetIntersect(this.dataCollection);
             this.setWarningBoxVisibility();
             this._updateTimeRangeLabel();
         }
@@ -556,7 +557,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     setWarningBoxVisibility: function() {
-        //this.warningEmptyDownloadMessage.setVisible(this.spatialSubsetIntersects === false); //todo - Hide for now
+        //this.warningEmptyDownloadMessage.setVisible(new Portal.filter.combiner.SpatialSubsetIntersectTester().testSpatialSubsetIntersect(this.dataCollection); //todo - Hide for now
     },
 
     isTemporalExtentSubsetted: function(dateRangeStart, dateRangeEnd) {
