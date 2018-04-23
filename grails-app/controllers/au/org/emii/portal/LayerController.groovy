@@ -1,6 +1,7 @@
 package au.org.emii.portal
 
 import au.org.emii.portal.wms.CoreGeoserverServer
+import au.org.emii.portal.wms.DataTrawlerServer
 import au.org.emii.portal.wms.NcwmsServer
 import au.org.emii.portal.wms.ImosGeoserverServer
 
@@ -31,6 +32,9 @@ class LayerController {
         }
         else if (serverType == 'geoservercore') {
             return new CoreGeoserverServer(groovyPageRenderer)
+        }
+        else if (serverType == 'datatrawlerproto') {
+            return new DataTrawlerServer(groovyPageRenderer)
         }
         else {
             return new ImosGeoserverServer(grailsApplication.config.filtering.filePath)

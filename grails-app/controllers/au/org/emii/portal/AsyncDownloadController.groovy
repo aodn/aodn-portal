@@ -9,6 +9,7 @@ class AsyncDownloadController extends HostVerifyingController {
     def gogoduckService
     def wpsService
     def wpsAwsService
+    def dataTrawlerService
     def downloadAuthService
 
     AsyncDownloadService getAggregatorService(aggregatorService, params) {
@@ -20,6 +21,8 @@ class AsyncDownloadController extends HostVerifyingController {
                     return wpsAwsService
                 }
                 return wpsService
+            case 'datatrawler':
+                return dataTrawlerService
             default:
                 throw new Exception("Cannot find aggregatorService for '$aggregatorService'")
         }
