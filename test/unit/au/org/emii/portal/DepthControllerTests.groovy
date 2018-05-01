@@ -36,14 +36,4 @@ class DepthControllerTests {
         "depth service text" == response.contentAsString
     }
 
-    void testGenerateServiceUrl() {
-        def baseUrl = "http://depthservice.aodn.org.au/depth/index"
-        controller.params.lat = 10
-        controller.params.lon = 20
-
-        controller.grailsApplication.config.depthService.url = baseUrl
-
-        expect:
-        "${baseUrl}.xml?lat=10&lon=20".toURL() == controller._generateServiceUrl()
-    }
 }
