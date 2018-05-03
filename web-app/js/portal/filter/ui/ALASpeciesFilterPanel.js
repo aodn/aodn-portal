@@ -27,7 +27,7 @@ Portal.filter.ui.ALASpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
         );
 
         this.jsonStore = new Ext.data.JsonStore({
-            url: 'https://bie.ala.org.au/ws/search/auto.json?geoOnly=true',
+            url: 'https://bie.ala.org.au/ws/search/auto.json?geoOnly=true', //?q=species_habitats%3A%22Marine%22&
             //url: 'https://bie.ala.org.au/ws/search.json',
             root: 'autoCompleteList',
             idProperty: 'name',

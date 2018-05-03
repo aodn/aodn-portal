@@ -8,6 +8,7 @@ class AsyncDownloadController extends HostVerifyingController {
 
     def gogoduckService
     def wpsService
+    def alaWpsService
     def wpsAwsService
     def dataTrawlerService
     def downloadAuthService
@@ -21,6 +22,8 @@ class AsyncDownloadController extends HostVerifyingController {
                     return wpsAwsService
                 }
                 return wpsService
+            case 'ala':
+                return alaWpsService
             case 'datatrawler':
                 return dataTrawlerService
             default:

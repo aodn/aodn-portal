@@ -3,8 +3,10 @@ package au.org.emii.portal.wms
 class AlaServer extends WmsServer {
 
     def getStyles(server, layer) {
-        // todo
         return []
+    }
+    def getFilterValues(server, layer, filter) {
+        return true
     }
 
     def getFilters(server, layer) {
@@ -30,9 +32,5 @@ class AlaServer extends WmsServer {
             ]
         )
         return filters
-    }
-
-    def getFilterValues(server, layer, filter) {
-        return true //
     }
 }

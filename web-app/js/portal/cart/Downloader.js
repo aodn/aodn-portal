@@ -17,11 +17,16 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
 
         var downloadUrl = generateUrlCallback.call(generateUrlCallbackScope, collection, params);
 
-        if (params.asyncDownload) {
-            this._downloadAsynchronously(collection, downloadUrl, params);
+        if (downloadUrl == undefined) {
+            this._onFailure("Empty Download", collection, OpenLayers.i18n('emptyDownload'));
         }
         else {
-            this._downloadSynchronously(collection, downloadUrl, params);
+            if (params.asyncDownload) {
+                this._downloadAsynchronously(collection, downloadUrl, params);
+            }
+            else {
+                this._downloadSynchronously(collection, downloadUrl, params);
+            }
         }
     },
 

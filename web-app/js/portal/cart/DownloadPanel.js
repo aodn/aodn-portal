@@ -81,7 +81,7 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
         Ext.Msg.alert(
             OpenLayers.i18n('errorDialogTitle'),
-            OpenLayers.i18n('downloadErrorText')
+            msg
         );
         log.error('Download failed', downloadUrl, collection.getTitle(), msg);
         this.generateContent();

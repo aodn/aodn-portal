@@ -12,7 +12,7 @@ Portal.filter.ALASpeciesStringArrayFilter = Ext.extend(Portal.filter.Filter, {
         return Portal.filter.ui.ComboFilterPanel;
     },
 
-    // this is not cql for ALA
+    // not cql for ALA
     getCql: function() {
         var filterString = this._join(this._getFilterStrings(), " OR ");
         return {"Q": filterString}

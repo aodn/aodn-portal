@@ -19,8 +19,6 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return "http://biocache.ala.org.au/ws/ogc/getFeatureInfo";
     },
 
-    // todo not working following https://api.ala.org.au/#ws8
-    // probably the projection + wkt ?
     getFeatureInfoRequestString: function(clickPoint, overrideParams) {
 
         var lonlat = this.map.getLonLatFromPixel(clickPoint);
@@ -29,10 +27,10 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var baseFeatureInfoParams = {
             lat: lonlat.lat,
             lon: lonlat.lon,
-            radius: 10,
+            radius: 50,
             q: "genus:Macropus",
             wkt: wkt,
-            flimit: 10
+            pageSize: 2
         };
 
         var url = this.getAlaGetFeatureInfoString();
@@ -42,11 +40,13 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     getFeatureInfoFormat: function() {
-        return "text/xml";
+        return "text/json";
     },
 
     formatFeatureInfoHtml: function(resp, options) {
-        return formatGetFeatureInfo(resp, options);
+        if (resp.status == 200 ) {
+            return resp.responseText
+        }
     }
 
 });
