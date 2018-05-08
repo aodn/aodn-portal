@@ -594,7 +594,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             } // From the Portal.filter.Filter interface. Prevents filter from being used in CQL or displayed to user
         };
 
-        if (this._isDateRangeValid(dateRangeStart, dateRangeEnd)) {
+        if (!this.temporalControls.hidden && this._isDateRangeValid(dateRangeStart, dateRangeEnd)) {
             ncwmsDateParamsAsFilter.dateRangeStart = dateRangeStart;
             dateFilterValue.fromDate = dateRangeStart.toDate();
             ncwmsDateParamsAsFilter.dateRangeEnd = dateRangeEnd;
