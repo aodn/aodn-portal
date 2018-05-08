@@ -687,11 +687,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if ((Object.keys(layer.temporalExtent.extent).length == 0)) {
 
             if (this.shouldHaveTemporalExtent()) {
-                this._showStatusInfo(OpenLayers.i18n('unavailableTemporalExtent'), this.INFO_STYLES["warning"]);
+                log.error("Unable to load temporal information for '" + layer.wmsName + "' (" + layer.url + ")" );
             }
-            else {
-                this._showStatusInfo(OpenLayers.i18n('temporalExtentNotApplicable'), this.INFO_STYLES["info"]);
-            }
+            this._showStatusInfo(OpenLayers.i18n('unavailableTemporalExtent'), this.INFO_STYLES["warning"]);
+
             this.temporalControls.hide();
             this.pointTimeSeriesPanel.hide();
         }
