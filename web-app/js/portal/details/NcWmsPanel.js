@@ -594,7 +594,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             } // From the Portal.filter.Filter interface. Prevents filter from being used in CQL or displayed to user
         };
 
-        if (this._isDateRangeValid(dateRangeStart, dateRangeEnd)) {
+        if (!this.temporalControls.hidden && this._isDateRangeValid(dateRangeStart, dateRangeEnd)) {
             ncwmsDateParamsAsFilter.dateRangeStart = dateRangeStart;
             dateFilterValue.fromDate = dateRangeStart.toDate();
             ncwmsDateParamsAsFilter.dateRangeEnd = dateRangeEnd;
@@ -687,11 +687,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         if ((Object.keys(layer.temporalExtent.extent).length == 0)) {
 
             if (this.shouldHaveTemporalExtent()) {
-                this._showStatusInfo(OpenLayers.i18n('unavailableTemporalExtent'), this.INFO_STYLES["warning"]);
+                log.error("Unable to load temporal information for '" + layer.wmsName + "' (" + layer.url + ")" );
             }
-            else {
-                this._showStatusInfo(OpenLayers.i18n('temporalExtentNotApplicable'), this.INFO_STYLES["info"]);
-            }
+            this._showStatusInfo(OpenLayers.i18n('unavailableTemporalExtent'), this.INFO_STYLES["warning"]);
+
             this.temporalControls.hide();
             this.pointTimeSeriesPanel.hide();
         }
