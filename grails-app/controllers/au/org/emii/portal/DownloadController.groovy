@@ -16,7 +16,6 @@ class DownloadController extends RequestProxyingController {
     // Index action inherited from RequestProxyingController
 
     def passThrough = {
-
         _performProxyingIfAllowed()
     }
 

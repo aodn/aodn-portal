@@ -37,7 +37,6 @@ Portal.cart.InsertionService = Ext.extend(Object, {
     },
 
     downloadWithConfirmation: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
-        console.log("errr");
         this.downloadPanel.confirmDownload(collection, generateUrlCallbackScope, generateUrlCallback, params);
     }
 });
