@@ -113,6 +113,8 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
     },
 
     _setSelectedLayer: function(layer) {
+
+        layer.time = this.dataCollection.getLayerSelectionModel().getSelectedLayer().time.clone(); //#2644
         this.dataCollection.getLayerSelectionModel().setSelectedLayer(layer);
 
         trackLayerControlUsage(

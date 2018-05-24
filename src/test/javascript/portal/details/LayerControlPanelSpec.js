@@ -99,7 +99,8 @@ describe("Portal.details.LayerControlPanel", function() {
 
         var addLayers = function() {
             selectedLayer = {
-                wmsName: 'selected layer'
+                wmsName: 'selected layer',
+                time: moment()
             };
             layers.push(
                 { wmsName: 'first layer' },
