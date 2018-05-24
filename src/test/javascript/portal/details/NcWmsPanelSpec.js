@@ -213,8 +213,9 @@ describe('Portal.details.NcWmsPanel', function() {
             ncwmsPanel._onSelectedLayerChanged(newLayer);
 
             expect(ncwmsPanel.layer).toBe(newLayer);
+            expect(ncwmsPanel.layer.time).toEqual(newLayer.time);
             expect(ncwmsPanel._initWithLayer).toHaveBeenCalled();
-            expect(ncwmsPanel.resetTemporalConstraints).toHaveBeenCalled();
+            expect(ncwmsPanel.resetTemporalConstraints).not.toHaveBeenCalled();
         });
     });
 

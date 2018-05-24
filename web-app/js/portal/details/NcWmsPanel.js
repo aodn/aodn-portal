@@ -127,10 +127,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _onSelectedLayerChanged: function(newLayer) {
+
+        var oldLayerTime= this.layer.time.clone(); //#2644
         this.layer = newLayer;
+        this.layer.time = oldLayerTime;
+
         this.zAxisPickerContainer.layer = newLayer;
         this._initWithLayer();
-        this.resetTemporalConstraints();
     },
 
     _addClearButton: function() {
@@ -149,7 +152,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             this._layerSetTime(this.layer.getTemporalExtentMax());
             this.pointTimeSeriesPanel._resetPanel();
             this.zAxisPickerContainer.resetZAxisFilters();
-            this.resetTemporalConstraints();
+            this.clearAndResetTemporalConstraints();
         }
     },
 
