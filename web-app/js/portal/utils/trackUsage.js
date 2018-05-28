@@ -6,6 +6,9 @@ function trackUsage(category, action, label, collection, value) {
             dimension1: collection
         });
     }
+    else {
+        //console.log(String.format("ga('send', 'event', category={0}, action={1}, label={2}, value={3})",category, action, label, collection, value));
+    }
 }
 
 function trackNavigationUsage(actionKey, label) {
@@ -78,10 +81,10 @@ function trackDataCollectionSelectionUsage(actionKey, label, collection) {
     );
 }
 
-function trackGetFeatureInfoClickUsage(link) {
+function trackGetFeatureInfoResultLinkUsage(link) {
     trackUsage(
-        OpenLayers.i18n('downloadTrackingCategory'),
-        OpenLayers.i18n('getfeatureInfoAnchorTrackingCategory'),
+        OpenLayers.i18n('getFeatureInfoTrackingCategory'),
+        OpenLayers.i18n('getfeatureInfoAnchorTrackingAction'),
         link
     );
 }

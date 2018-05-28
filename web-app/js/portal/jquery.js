@@ -38,7 +38,7 @@ jQuery( document ).ready(function() {
     jQuery(document).on("mouseover", '.featureinfocontent a:not(.jQueryLiveAnchor)',
         function() {
             var thisTag = jQuery(this);
-            var trackChangesCommand = "trackGetFeatureInfoClickUsage('" + thisTag.attr('href') + "'); return true;";
+            var trackChangesCommand = "trackGetFeatureInfoResultLinkUsage('" + thisTag.attr('href') + "'); return true;";
             thisTag.attr('onclick', trackChangesCommand)
                 .attr('target', '_blank')
                 .addClass('jQueryLiveAnchor')
