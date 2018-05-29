@@ -735,7 +735,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _layerSetTime: function(momentDate) {
-        this.layer.setTime(momentDate);
+        this.dataCollection.getLayerAdapter().setTime(momentDate); // #2644 apply time to all layers
     },
 
     _getUtcMomentFromPicker: function(datePicker) {
