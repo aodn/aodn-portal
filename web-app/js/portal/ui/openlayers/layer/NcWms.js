@@ -228,10 +228,14 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
     setTime: function(dateTime) {
         // Don't send a request if we don't have to
         if (!this.time || this._isValidTime(dateTime)) {
-            this.time = dateTime;
-            this.mergeNewParams({ TIME: this._getTimeParameter(this.time) });
+            this.setTimeNow(dateTime)
         }
         return this.time;
+    },
+
+    setTimeNow: function(dateTime) {
+        this.time = dateTime;
+        this.mergeNewParams({ TIME: this._getTimeParameter(this.time) });
     },
 
     setZAxis: function(elevation) {

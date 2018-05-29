@@ -127,6 +127,12 @@ Portal.data.DataCollectionLayerAdapter = Ext.extend(Ext.util.Observable, {
         });
     },
 
+    setTime: function(dateTime) {
+        this._eachLayer(function(layer) {
+            layer.setTimeNow(dateTime);
+        });
+    },
+
     setVisibility: function(visible) {
         this._eachLayer(function(layer) {
             layer.setVisibility(visible);
