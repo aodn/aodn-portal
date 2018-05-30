@@ -113,7 +113,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         var layer = this.dataCollection.getLayerSelectionModel().getSelectedLayer();
 
         Ext.each(layer.styles, function(style) {
-
             var palette = style.palette;
             var styleName = style.name + '/' + palette;
             var imageUrl = this.buildGetLegend(layer, styleName, palette, true);
@@ -142,7 +141,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
 
         this.legendImage.setUrl(url);
         this.legendImage.show();
-
         this.styleCombo.setValue(styleName);
     },
 
@@ -165,7 +163,6 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             opts += "&COLORBARONLY=" + colorBarOnly;
         }
         else {
-
             opts += "&LEGEND_OPTIONS=forceLabels:on";
         }
 
@@ -174,6 +171,10 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
                 url = url.replace(/COLORSCALERANGE=([^\&]*)/, "");
             }
             opts += "&COLORSCALERANGE=" + layer.params.COLORSCALERANGE;
+        }
+
+        if (layer.extraLayerInfo && layer.extraLayerInfo.numColorBands) {
+            opts += "&NUMCOLORBANDS=" + layer.extraLayerInfo.numColorBands;
         }
 
         // see if this url already has some parameters on it

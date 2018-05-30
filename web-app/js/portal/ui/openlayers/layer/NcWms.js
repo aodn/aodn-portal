@@ -18,7 +18,6 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     initialize: function(name, url, params, options) {
         this.temporalExtent = new Portal.visualise.animations.TemporalExtent();
-
         this.pendingRequests = new Portal.utils.Set();
 
         params['SERVICE'] = "ncwms";
