@@ -159,6 +159,8 @@ Portal.filter.ui.ALASpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
                 this.speciesComboItems.push(record.data);
                 this.speciesFilter.setValue(this.speciesComboItems);
 
+                trackFiltersUsage('trackingAlaFilterAction', this.speciesFilter.getHumanReadableForm(), this.dataCollection.getTitle());
+
                 this.activeFiltersContainer.add(this._createNewActiveFilterPanel(record.data));
                 this.activeFiltersContainer.show();
                 this.activeFiltersContainer.doLayout();

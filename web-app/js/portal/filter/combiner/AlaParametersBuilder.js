@@ -3,6 +3,8 @@ Ext.namespace('Portal.filter.combiner');
 Portal.filter.combiner.ALAParametersBuilder = Ext.extend(Portal.filter.combiner.BaseFilterCombiner, {
 
     buildParameters: function() {
+
+        var that = this;
         var parameters = this._filtersWithValues().map(function(filter) {
 
             if (filter.constructor == Portal.filter.DateFilter) {

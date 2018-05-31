@@ -22,6 +22,15 @@ class AlaServer extends WmsServer {
         )
         filters.push(
             [
+                label           : 'Bounding Box',
+                type            : 'geometrypropertytype',
+                name            : 'position',
+                visualised      : true,
+                primaryFilter   : false
+            ]
+        )
+        filters.push(
+            [
                 label           : 'Time Range',
                 type            : 'datetime',
                 name            : 'dateTime',

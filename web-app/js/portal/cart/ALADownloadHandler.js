@@ -11,35 +11,35 @@ Portal.cart.ALADownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
             downloadOptions.push({
                 textKey: 'CSV',
                 handler: this._getUrlGeneratorFunction('csv'),
-                handlerParams: this._buildHandlerParams('{0}.csv.zip')
+                handlerParams: this._buildHandlerParams('{0}.csv.zip', OpenLayers.i18n('downloadCsvAlaAction'))
             });
 
             downloadOptions.push({
                 textKey: 'TSV',
                 handler: this._getUrlGeneratorFunction('tsv'),
-                handlerParams: this._buildHandlerParams('{0}.tsv.zip')
+                handlerParams: this._buildHandlerParams('{0}.tsv.zip', OpenLayers.i18n('downloadTsvAlaAction'))
             });
 
             downloadOptions.push({
                 textKey: 'CSV+SHP',
                 handler: this._getUrlGeneratorFunction('shp'),
-                handlerParams: this._buildHandlerParams('{0}.shp.zip')
+                handlerParams: this._buildHandlerParams('{0}.shp.zip', OpenLayers.i18n('downloadShpAlaAction'))
             });
 
         }
         return downloadOptions;
     },
 
-    _buildHandlerParams: function(fileFormat) {
+    _buildHandlerParams: function(fileFormat, downloadAction) {
         return {
             asyncDownload: true,
             collectEmailAddress: true,
-            downloadLabel: OpenLayers.i18n('downloadAlaAction'),
+            downloadLabel: downloadAction,
             filenameFormat: fileFormat,
             downloadControllerArgs: {
                 action: 'passThrough'
-            },
-            serviceResponseHandler: this.serviceResponseHandler // adds the status url to popup. todo always says invalid?
+            }/*,
+            serviceResponseHandler: this.serviceResponseHandler // adds the status url to popup. todo always says invalid?*/
         }
     },
 

@@ -186,6 +186,8 @@ OpenLayers.Layer.WMS.prototype.applyAlaFilters = function(filters) {
     var style = "ALAOccurrencesStyle";
     var newParams = builder.buildParameters();
 
+    newParams = builder._createDateTimeParameter(newParams);
+
     if (newParams.Q) {
         style = "ALAPerSpeciesStyle";
     }

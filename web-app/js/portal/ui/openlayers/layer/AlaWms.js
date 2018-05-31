@@ -47,6 +47,19 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         if (resp.status == 200 ) {
             return resp.responseText
         }
+    },
+
+    mergeNewParams:function(params) {
+
+        var newParams = {};
+        for (var key in params) {
+            var theKey = (key == 'fq') ? key : key.toUpperCase();
+            newParams[theKey] = params[key];
+        }
+
+        var newArguments = [newParams];
+        return OpenLayers.Layer.Grid.prototype.mergeNewParams.apply(this,
+            newArguments);
     }
 
 });

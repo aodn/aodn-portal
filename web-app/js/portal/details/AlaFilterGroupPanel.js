@@ -29,6 +29,8 @@ Portal.details.AlaFilterGroupPanel = Ext.extend(Ext.Container, {
 
         Portal.details.AlaFilterGroupPanel.superclass.initComponent.call(this);
 
+        this._attachSpatialEvents();
+
         var filters = this.dataCollection.getFilters();
         if (filters == undefined) {
             this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS, this._filtersLoaded, this);
@@ -40,9 +42,42 @@ Portal.details.AlaFilterGroupPanel = Ext.extend(Ext.Container, {
         }
     },
 
+    // todo handle spatial extent
+    _attachSpatialEvents: function() {
+
+        if (!this.attachedSpatialEvents) {
+
+            this.map.events.on({
+                scope: this,
+                'spatialconstraintadded': function() {
+                    this._applyGeometryToCollection();
+                },
+                'spatialconstraintcleared': function() {
+                    this._applyGeometryToCollection();
+                }
+            });
+
+            this.attachedSpatialEvents = true;
+        }
+    },
+
+    _getGeometryFilter: function() {
+        return this.map.geometryFilter;
+    },
+
+    _applyGeometryToCollection: function() {
+        if (this.isDestroyed !== true) {
+            var filters = this.dataCollection.getFilters();
+            var geometry = this._getGeometryFilter();
+            var geometryFilter = Portal.filter.FilterUtils.getFilter(filters, 'position');
+            geometryFilter.value = geometry;
+        }
+    },
+
     _filtersLoaded: function(filters) {
 
         this._addFilterPanels(filters);
+
 
         if (this.resetLink == undefined) {
             this._createResetLink();
@@ -102,6 +137,9 @@ Portal.details.AlaFilterGroupPanel = Ext.extend(Ext.Container, {
         var dateFilter = filters.filter(function(filter) {
             return filter.constructor == Portal.filter.DateFilter;
         })[0];
+
+        var spatialFilter = Portal.filter.FilterUtils.getFilter(filters, 'position');
+        spatialFilter.map = this.map;
 
         this.add(this._createVerticalSpacer(15));
 
