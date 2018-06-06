@@ -18,7 +18,6 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     initialize: function(name, url, params, options) {
         this.temporalExtent = new Portal.visualise.animations.TemporalExtent();
-
         this.pendingRequests = new Portal.utils.Set();
 
         params['SERVICE'] = "ncwms";
@@ -36,6 +35,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
             success: function(resp, options) {
                 try {
                     this.extraLayerInfo = Ext.util.JSON.decode(resp.responseText);
+                    this._setNumColorBands();
 
                     this.events.triggerEvent('extraLayerInfoloaded', this);
                     // This means we are "GFI ready"
@@ -49,6 +49,12 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
                 log.error("Could not get extra layer info for NcWMS layer '" + this.params.LAYERS + "'");
             }
         });
+    },
+
+    _setNumColorBands: function() {
+            if (this.extraLayerInfo.numColorBands != undefined) {
+                this.mergeNewParams({ NUMCOLORBANDS: this.extraLayerInfo.numColorBands });
+            }
     },
 
     _loadTimeSeriesDates: function() {

@@ -101,6 +101,38 @@ describe("Portal.details.StylePanel", function() {
             expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("1.1.0");
         });
 
+        it("should include numColorBands if it is defined", function() {
+
+            var layer = {
+                extraLayerInfo: {numColorBands: '24'},
+                url: "",
+                params: {}
+            };
+            var urlString = stylePanel.buildGetLegend(layer, null, null, false);
+            expect(getParameterByNameFromUrlString(urlString, 'NUMCOLORBANDS')).toEqual('24');
+        });
+
+        it("should not include numColorBands if it is not defined in extraLayerInfo", function() {
+
+            var layer = {
+                extraLayerInfo: {},
+                url: "",
+                params: {}
+            };
+            var urlString = stylePanel.buildGetLegend(layer, null, null, false);
+            expect(getParameterByNameFromUrlString(urlString, 'NUMCOLORBANDS')).toEqual(null);
+        });
+
+        it("should not include numColorBands if no extraLayerInfo is defined", function() {
+
+            var layer = {
+                url: "",
+                params: {}
+            };
+            var urlString = stylePanel.buildGetLegend(layer, null, null, false);
+            expect(getParameterByNameFromUrlString(urlString, 'NUMCOLORBANDS')).toEqual(null);
+        });
+
         it("should include style in url if style is not empty", function() {
 
             var layer = {
