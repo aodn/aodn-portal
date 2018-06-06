@@ -57,15 +57,15 @@ public class PointTimeSeriesLatLonTest extends BaseTest {
         Assert.assertNotNull(latitudeTextBox);
         double lat =  Double.parseDouble(latitudeTextBox.getAttribute("value"));
         double featureInfoLatitude = Double.parseDouble(parts[1]);
-        double latDifference = lat - featureInfoLatitude;
-        Assert.assertTrue(latDifference > -0.1 && latDifference < 0.1);
+        double latDifference = Math.abs(lat - featureInfoLatitude);
+        Assert.assertTrue(latDifference < 0.1);
 
         WebElement longitudeTextBox = webElementUtil.findElement(By.xpath("//label[text()='Longitude']/following-sibling::input"));
         Assert.assertNotNull(longitudeTextBox);
         double lon =  Double.parseDouble(longitudeTextBox.getAttribute("value"));
         double featureInfoLongitude = Double.parseDouble(parts[3]);
-        double lonDifference = lon - featureInfoLongitude;
-        Assert.assertTrue(lonDifference > -0.1 && lonDifference < 0.1);
+        double lonDifference = Math.abs(lon - featureInfoLongitude);
+        Assert.assertTrue(lonDifference < 0.1);
 
         Assert.assertEquals(parts[5].charAt(parts[5].length()-1), 'm',"Depth/Elevation doesn't have 'm' as unit");
         //make sure the depth can be parsed as a double
