@@ -21,9 +21,11 @@ public class PointTimeSeriesLatLonTest extends BaseTest {
         webElementUtil.clickButtonWithTitle("Add this collection");
 
         log.info("Validating that point time series lat/lon is not populated by default");
-        WebElement latitude1 = webElementUtil.findElement(By.xpath("//label[text()='Latitude']/following-sibling::input"));
-        Assert.assertNotNull(latitude1);
-        Assert.assertTrue("enter".equalsIgnoreCase(latitude1.getAttribute("value")));
+        WebElement latitudeTextBox = webElementUtil.findElement(By.xpath("//label[text()='Latitude']/following-sibling::input"));
+        Assert.assertNotNull(latitudeTextBox);
+        Assert.assertTrue("enter".equalsIgnoreCase(latitudeTextBox.getAttribute("value")));
+		//click on it so the people watching at home can see (BrowserStack recording)
+        latitudeTextBox.click();
 
         WebElement longitude1 = webElementUtil.findElement(By.xpath("//label[text()='Longitude']/following-sibling::input"));
         Assert.assertNotNull(longitude1);
@@ -46,17 +48,28 @@ public class PointTimeSeriesLatLonTest extends BaseTest {
         getDriver().switchTo().activeElement();
 
         String popupHtml = webElementUtil.waitForElement(By.xpath("//div[contains(@class,'popupHtml') and contains(.,'Lat:')]")).getText();
+        String[] parts = popupHtml.split(" ");
+
+
         getDriver().switchTo().window(mainWindowHandle);
 
-        WebElement latitude2 = webElementUtil.findElement(By.xpath("//label[text()='Latitude']/following-sibling::input"));
-        Assert.assertNotNull(latitude2);
-        String lat = latitude2.getAttribute("value");
-        Assert.assertTrue(popupHtml.contains(lat));
+        WebElement latitudeTextBox = webElementUtil.findElement(By.xpath("//label[text()='Latitude']/following-sibling::input"));
+        Assert.assertNotNull(latitudeTextBox);
+        double lat =  Double.parseDouble(latitudeTextBox.getAttribute("value"));
+        double featureInfoLatitude = Double.parseDouble(parts[1]);
+        double latDifference = Math.abs(lat - featureInfoLatitude);
+        Assert.assertTrue(latDifference < 0.1);
 
-        WebElement longitude2 = webElementUtil.findElement(By.xpath("//label[text()='Longitude']/following-sibling::input"));
-        Assert.assertNotNull(longitude2);
-        String lon = longitude2.getAttribute("value");
-        Assert.assertTrue(popupHtml.contains(lon));
-        log.info(String.format("X:%s, Y:%s, Lat:%s, Lon:%s", x, y, lat, lon));
+        WebElement longitudeTextBox = webElementUtil.findElement(By.xpath("//label[text()='Longitude']/following-sibling::input"));
+        Assert.assertNotNull(longitudeTextBox);
+        double lon =  Double.parseDouble(longitudeTextBox.getAttribute("value"));
+        double featureInfoLongitude = Double.parseDouble(parts[3]);
+        double lonDifference = Math.abs(lon - featureInfoLongitude);
+        Assert.assertTrue(lonDifference < 0.1);
+
+        Assert.assertEquals(parts[5].charAt(parts[5].length()-1), 'm',"Depth/Elevation doesn't have 'm' as unit");
+        //make sure the depth can be parsed as a double
+        Double.parseDouble(parts[5].substring(0,parts[5].length()-1));
+
     }
 }
