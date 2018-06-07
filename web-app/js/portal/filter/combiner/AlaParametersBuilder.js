@@ -4,11 +4,14 @@ Portal.filter.combiner.ALAParametersBuilder = Ext.extend(Portal.filter.combiner.
 
     buildParameters: function() {
 
-        var that = this;
         var parameters = this._filtersWithValues().map(function(filter) {
 
             if (filter.constructor == Portal.filter.DateFilter) {
                 return filter.getDateValues();
+            }
+
+            if (filter.constructor == Portal.filter.GeometryFilter) {
+                return {"wkt" : filter.getWkt()}
             }
 
             return filter.getCql();

@@ -38,8 +38,8 @@ Portal.cart.ALADownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
             filenameFormat: fileFormat,
             downloadControllerArgs: {
                 action: 'passThrough'
-            }/*,
-            serviceResponseHandler: this.serviceResponseHandler // adds the status url to popup. todo always says invalid?*/
+            },
+            serviceResponseHandler: this.serviceResponseHandler // adds the status url to popup.
         }
     },
 
