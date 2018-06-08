@@ -1,6 +1,6 @@
 jQuery( document ).ready(function() {
 
-    jQuery(document).on("click", ".resultsHeaderBackground:not(.facetedSearchBtn *)",
+    jQuery(document).on("click", ".resultsHeaderBackground.expandable",
         function() {
             var resBody = jQuery(this).children('.facetedSearchResultBody');
 
@@ -24,7 +24,7 @@ jQuery( document ).ready(function() {
             }
         });
 
-    jQuery(document).on("mouseover", ".resultsHeaderBackground:not(.facetedSearchBtn *)",
+    jQuery(document).on("mouseover", ".resultsHeaderBackground:not(.facetedSearchBtn *):not(.expandable)",
         function() {
             var resBodyChild = jQuery(this).children('.facetedSearchResultBody')[0];
             var fullHeight = resBodyChild.scrollHeight;
