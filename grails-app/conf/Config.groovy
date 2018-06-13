@@ -142,7 +142,7 @@ environments {
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
-        geonetwork.url = "http://catalogue-sandbox.aodn.org.au/geonetwork"
+        geonetwork.url = "http://catalogue-portal.aodn.org.au/geonetwork"
 
         // Set to true if you want to test interaction with new servers. This turns
         // your portal instance into an open proxy and can be dangerous.
@@ -189,24 +189,30 @@ proxyRedirects = [
 // This array should be populated from chef config
 knownServers = [
     [
-        uri: 'http://geoserver-123.aodn.org.au/geoserver/wms',
+        uri: 'http://geoserver-portal.aodn.org.au/geoserver/',
         wmsVersion: '1.1.1',
-        type: 'GeoServer',
+        type: 'CoreGeoServer',
         csvDownloadFormat: 'csv-with-metadata-header',
         urlListDownloadSubstitutions: [
             '^': 'http://data.aodn.org.au/'
         ]
     ],
     [
+        uri: 'https://tilecache-sandbox.aodn.org.au/geowebcache/service/wms',
+        wmsVersion: '1.1.1',
+        type: 'CoreGeoServer'
+    ],
+
+    [
         uri: 'https://www.cmar.csiro.au/geoserver/wms',
         wmsVersion: '1.1.1',
-        type: 'GeoServerCore',
+        type: 'CoreGeoServer',
         csvDownloadFormat: 'csv-with-metadata-header'
     ],
     [
         uri: 'https://www.cmar.csiro.au/data/trawler/aodn2csiro.cfm',
         wmsVersion: '1.1.1',
-        type: 'DataTrawlerProto',
+        type: 'CoreGeoServer',
         csvDownloadFormat: 'csv-with-metadata-header'
     ],
     [
