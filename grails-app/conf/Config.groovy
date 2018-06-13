@@ -194,6 +194,12 @@ knownServers = [
         ]
     ],
     [
+        uri: 'https://tilecache-sandbox.aodn.org.au/geowebcache/service/wms',
+        wmsVersion: '1.1.1',
+        type: 'CoreGeoServer'
+    ],
+
+    [
         uri: 'https://www.cmar.csiro.au/geoserver/wms',
         wmsVersion: '1.1.1',
         type: 'GeoServerCore',
