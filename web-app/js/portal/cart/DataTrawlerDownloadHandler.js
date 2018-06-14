@@ -2,6 +2,12 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
+    DEFAULT_BOUNDS: {
+        bottom: this.DEFAULT_LAT_START,
+        top: this.DEFAULT_LAT_END,
+        left: this.DEFAULT_LON_START,
+        right: this.DEFAULT_LON_END
+    },
 
     _getDownloadOptionTextKey: function() {
         return 'downloadAsDataTrawlerCsvLabel';
@@ -14,14 +20,12 @@ Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHan
     _buildServiceUrl: function(filters, dataType, serverUrl, notificationEmailAddress, hasTemporalExtent) {
 
         var request = this._getTrawlerParamsUrl(filters, dataType, notificationEmailAddress);
-        var subset = this._getBaseSubset(filters, hasTemporalExtent);
 
         var jobParameters = {
             server: serverUrl,
             jobType: 'DataTrawler',
             mimeType: "text/csv",
-            request: request,
-            'jobParameters.subset': subset
+            request: request
         };
 
         return String.format(
@@ -34,8 +38,10 @@ Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHan
     _getTrawlerParamsUrl: function(filters, dataType, email) {
         var dataTypeParam = String.format("data_type={0}&", dataType);
         var emailParam = String.format("email_address={0}&", email);
+        var subset = this._formatFilterRequest(filters);
 
         return dataTypeParam +
+            subset +
             emailParam +
             'output_filename=data_trawler_output&' +
             'position_format=d.ddd&' +
@@ -45,44 +51,22 @@ Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHan
             'sort_order=';
     },
 
-    _getBaseSubset: function(filters, hasTemporalExtent) {
+    _formatFilterRequest: function(filters) {
+        var formattedFilters = '';
+        Ext.each(filters, function(filter) {
+            if (filter.type == 'datetime' && filter.name == 'TIME') {
+                var fromDate = filter.hasValue() ? moment.utc(filter._getFromDate()) : this.DEFAULT_DATE_START;
+                var toDate = filter.hasValue() ? moment.utc(filter._getToDate()) : this.DEFAULT_DATE_END;
+                formattedFilters += String.format('TIME,{0},{1}&', this._formatDate(fromDate), this._formatDate(toDate));
+            } else if (filter.type == 'pointpropertytype' || filter.type == 'geometrypropertytype') {
+                var bounds = filter.hasValue() ? filter.value.bounds : this.DEFAULT_BOUNDS;
+                formattedFilters += String.format('LATITUDE,{0},{1}&LONGITUDE,{2},{3}&',
+                    bounds.bottom, bounds.top, bounds.left, bounds.right);
+            } else if (filter.hasValue()) {
+                formattedFilters += String.format("{0}={1}&", filter.name, filter.value);
+            }
+        }, this);
 
-        var zaxisParamString = "";
-
-        var dateParams = filters.filter(function(filter) {
-            return (filter.name == 'dateTime');
-        })[0];
-
-        var dateRangeStart = (dateParams) ?  this._formatDate(dateParams.dateRangeStart || this.DEFAULT_DATE_START) : undefined;
-        var dateRangeEnd = (dateParams) ?  this._formatDate(dateParams.dateRangeEnd || this.DEFAULT_DATE_END) : undefined;
-        var returnStringFormat;
-
-        if (hasTemporalExtent) {
-            returnStringFormat = (dateRangeStart != undefined || dateRangeEnd != undefined) ? OpenLayers.i18n('subsetFormat') : OpenLayers.i18n('subsetFormatWithoutTime');
-        }
-        else {
-            returnStringFormat = OpenLayers.i18n('subsetFormatWithoutTime');
-        }
-
-        var zaxisParams = filters.filter(function(filter) {
-            return (filter.isNcwmsParams &&
-                (filter.label == OpenLayers.i18n("zAxisLabelPositiveDown")
-                    || filter.label == OpenLayers.i18n("zAxisLabelPositiveUp")));
-        })[0];
-
-        if (zaxisParams) {
-            zaxisParamString = String.format(";DEPTH,{0}",zaxisParams.value.join(","));
-        }
-
-        return String.format(
-            returnStringFormat,
-            dateRangeStart,
-            dateRangeEnd,
-            (dateParams && dateParams.latitudeRangeStart || this.DEFAULT_LAT_START).toDecimalString(),
-            (dateParams && dateParams.latitudeRangeEnd || this.DEFAULT_LAT_END).toDecimalString(),
-            (dateParams && dateParams.longitudeRangeStart || this.DEFAULT_LON_START).toDecimalString(),
-            (dateParams && dateParams.longitudeRangeEnd || this.DEFAULT_LON_END).toDecimalString(),
-            zaxisParamString
-        );
+        return formattedFilters;
     }
 });
