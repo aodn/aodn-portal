@@ -189,24 +189,15 @@ proxyRedirects = [
 // This array should be populated from chef config
 knownServers = [
     [
-        uri: 'http://geoserver-123.aodn.org.au/geoserver/wms',
-        wmsVersion: '1.1.1',
-        type: 'GeoServer',
-        csvDownloadFormat: 'csv-with-metadata-header',
-        urlListDownloadSubstitutions: [
-            '^': 'http://data.aodn.org.au/'
-        ]
-    ],
-    [
         uri: 'https://www.cmar.csiro.au/geoserver/wms',
         wmsVersion: '1.1.1',
-        type: 'GeoServerCore',
+        type: 'GeoserverCore',
         csvDownloadFormat: 'csv-with-metadata-header'
     ],
     [
         uri: 'https://www.cmar.csiro.au/data/trawler/aodn2csiro.cfm',
         wmsVersion: '1.1.1',
-        type: 'DataTrawlerProto',
+        type: 'GeoserverCore',
         csvDownloadFormat: 'csv-with-metadata-header'
     ],
     [
@@ -344,7 +335,7 @@ portal {
     downloadHandlersForProtocol = [
         [ 'handler': 'WfsDownloadHandler',                 'protocol': 'OGC:WFS-1.0.0-http-get-capabilities' ],
         [ 'handler': 'GogoduckDownloadHandler',            'protocol': 'OGC:WPS--gogoduck'                   ],
-        [ 'handler': 'DataTrawlerDownloadHandler',         'protocol': 'OGC:DataTrawlerProto'                     ],
+        [ 'handler': 'DataTrawlerDownloadHandler',         'protocol': 'AODN:CSIRO--DataTrawler'                     ],
         [ 'handler': 'PointCSVDownloadHandler',            'protocol': 'OGC:WPS--gogoduck'                   ],
         [ 'handler': 'NetcdfSubsetServiceDownloadHandler', 'protocol': 'OGC:WPS--netcdf-subset-service'      ],
         [ 'handler': 'PythonDownloadHandler',              'protocol': 'AODN:WFS-EXTERNAL-1.0.0-http-get-capabilities' ],
