@@ -198,7 +198,23 @@ knownServers = [
         ]
     ],
     [
+        uri: 'https://www.cmar.csiro.au/geoserver/wms',
+        wmsVersion: '1.1.1',
+        type: 'GeoserverCore'
+    ],
+    [
+        uri: 'https://www.cmar.csiro.au/data/trawler/aodn2csiro.cfm',
+        wmsVersion: '1.1.1',
+        type: 'GeoserverCore',
+        csvDownloadFormat: 'csv-with-metadata-header'
+    ],
+    [
         uri: 'http://geoserver-123.aodn.org.au/geoserver/ncwms',
+        wmsVersion: '1.3.0',
+        type: 'ncWMS'
+    ],
+    [
+        uri: 'https://www.cmar.csiro.au/geoserver/ncwms',
         wmsVersion: '1.3.0',
         type: 'ncWMS'
     ],
@@ -327,6 +343,7 @@ portal {
     downloadHandlersForProtocol = [
         [ 'handler': 'WfsDownloadHandler',                 'protocol': 'OGC:WFS-1.0.0-http-get-capabilities' ],
         [ 'handler': 'GogoduckDownloadHandler',            'protocol': 'OGC:WPS--gogoduck'                   ],
+        [ 'handler': 'DataTrawlerDownloadHandler',         'protocol': 'AODN:CSIRO--DataTrawler'                     ],
         [ 'handler': 'PointCSVDownloadHandler',            'protocol': 'OGC:WPS--gogoduck'                   ],
         [ 'handler': 'NetcdfSubsetServiceDownloadHandler', 'protocol': 'OGC:WPS--netcdf-subset-service'      ],
         [ 'handler': 'PythonDownloadHandler',              'protocol': 'AODN:WFS-EXTERNAL-1.0.0-http-get-capabilities' ],
