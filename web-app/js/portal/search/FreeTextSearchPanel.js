@@ -36,7 +36,7 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
                             tooltip: OpenLayers.i18n('searchFieldText'),
                             listeners: {
                                 click: function() {
-                                   this.onSearchSubmit();
+                                   this.onGo();
                                 },
                                 scope: this
                             }
@@ -91,6 +91,7 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
         this.setCurrentFilter(currentVal);
         trackFacetUsage(OpenLayers.i18n("keyword"), currentVal);
         this.searcher.search();
+        this.searchField.reset();
     },
 
     setCurrentFilter: function(currentVal) {
