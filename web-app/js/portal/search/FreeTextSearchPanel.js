@@ -36,7 +36,7 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
                             tooltip: OpenLayers.i18n('searchFieldText'),
                             listeners: {
                                 click: function() {
-                                   this.onGo();
+                                   this.onSearchIconClick();
                                 },
                                 scope: this
                             }
@@ -76,7 +76,6 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
         this.searchField.on('focus', function() {
             trackUsabilityTest(OpenLayers.i18n('usabilityTestKeywordSubmitAction')
                 , OpenLayers.i18n('usabilityTestKeywordGotFocusLabel'));
-            this.searchField.reset();
         }, this);
     },
 
@@ -91,7 +90,6 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
         this.setCurrentFilter(currentVal);
         trackFacetUsage(OpenLayers.i18n("keyword"), currentVal);
         this.searcher.search();
-        this.searchField.reset();
     },
 
     setCurrentFilter: function(currentVal) {
@@ -101,7 +99,6 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
         }
         else {
             this.currentFilterContainer.collapse();
-            this.searchField.reset();
         }
     },
 
@@ -113,6 +110,12 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
             }
             this.onGo();
         }
+    },
+
+    onSearchIconClick: function() {
+        trackUsabilityTest(OpenLayers.i18n('usabilityTestKeywordSubmitAction')
+                    , OpenLayers.i18n('usabilityTestKeywordMagnifierLabel'));
+        this.onGo();
     },
 
     removeAnyFilters: function() {

@@ -7,7 +7,7 @@ function trackUsage(category, action, label, collection, value) {
         });
     }
     else {
-        //console.log(String.format("ga('send', 'event', category={0}, action={1}, label={2}, value={3})",category, action, label, collection, value));
+        console.log(String.format("ga('send', 'event', category={0}, action={1}, label={2}, value={3})",category, action, label, collection, value));
     }
 }
 
