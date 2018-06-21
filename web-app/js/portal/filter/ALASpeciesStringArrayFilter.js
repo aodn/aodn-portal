@@ -7,6 +7,10 @@ Portal.filter.ALASpeciesStringArrayFilter = Ext.extend(Portal.filter.Filter, {
         return ['alastringarray'];
     },
 
+    hasValue: function() {
+        return (this._getFilterStrings().length > 0);
+    },
+
     getUiComponentClass: function() {
 
         return Portal.filter.ui.ComboFilterPanel;
@@ -31,8 +35,6 @@ Portal.filter.ALASpeciesStringArrayFilter = Ext.extend(Portal.filter.Filter, {
         );
     },
 
-    // todo better options for text filtering?
-    // text sometimes fails due to non alpha numeric
     _getFilterValueString: function(filterData) {
         return (filterData.guid.startsWith("urn")) ? "lsid:" + filterData.guid : "text:" + filterData.name;
     },
@@ -42,8 +44,8 @@ Portal.filter.ALASpeciesStringArrayFilter = Ext.extend(Portal.filter.Filter, {
     },
 
     getHumanReadableDescriptor: function(item) {
-        var commonName = (item.commonName != "") ? String.format("'{0}'", item.commonName) : "";
-        return String.format("{0} - {1} {2}", Ext.util.Format.capitalize(item.rankString), item.name, commonName);
+        var commonName = (item.commonNameSingle) ? String.format("'{0}'", item.commonNameSingle) : "";
+        return String.format("{0} - {1} {2}", Ext.util.Format.capitalize(item.rawRank), item.name, commonName);
     },
 
     _getFilterStrings: function(humanReadable) {

@@ -368,7 +368,9 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     menuItemGroupTitle: '<span class="menu-title">${title}</span>',
     wpsTrackingLabel: "WPS Service",
 
-    // Atlas of Living Australia style definitions
+    // Atlas of Living Australia
+
+    ALANoFilterText: 'A taxon filter is required for ALA downloads',
     ALAOccurrencesStyle: "color:d9684c;size:1;opacity:1.0;", // colour from www.ala.org.au page
     ALAPerSpeciesStyle: "colormode:species_guid;name:circle;size:3;opacity:1.0"
 });

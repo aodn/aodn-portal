@@ -20,6 +20,9 @@ Portal.cart.InsertionService = Ext.extend(Object, {
             if (collection.isNcwms()) {
                 htmlInjection = new Portal.cart.NcWmsInjector(config);
             }
+            if (collection.isAla()) {
+                htmlInjection = new Portal.cart.AlaWmsInjector(config);
+            }
             else {
                 htmlInjection = new Portal.cart.WmsInjector(config);
             }

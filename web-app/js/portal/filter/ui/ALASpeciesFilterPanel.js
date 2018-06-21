@@ -14,28 +14,34 @@ Portal.filter.ui.ALASpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
 
         var resultTpl = new Ext.XTemplate(
             '<tpl for=".">' +
-            '<div class="x-combo-list-item">',
-            '<div><b><i>Name:</i></b> {name}</div>',
-            ' <tpl if="rankString != \'\' ">',
-            '  <div><b>Rank:</b> \'{rankString}\'</div>',
+            '<div class="x-combo-list-item alafilter">',
+            '<div><b>{rawRank}</b> - {highlight} </div>',
+            ' <tpl if="classs != \'\' ">',
+            '  <div><b>Class:</b> {classs}</div>',
             ' </tpl>',
-            ' <tpl if="commonName != \'\' ">',
-            '  <div><b>Common Name:</b> \'{commonName}\'</div>',
+            ' <tpl if="phylum != \'\' ">',
+            '  <div><b>Phylum:</b> {phylum}</div>',
             ' </tpl>',
             '</div>',
             '</tpl>'
         );
 
         this.jsonStore = new Ext.data.JsonStore({
-            url: 'https://bie.ala.org.au/ws/search/auto.json?geoOnly=true', //?q=species_habitats%3A%22Marine%22&
-            //url: 'https://bie.ala.org.au/ws/search.json',
-            root: 'autoCompleteList',
-            idProperty: 'name',
+            url: 'proxy?', // portal proxy controller
+            root: "searchResults.results",
+            idProperty: 'guid',
+            baseParams : {
+                fq: 'species_habitats:"Marine"', // ALA index for marine only
+                url: "https://biocache.ala.org.au/ws/autocomplete/search"
+            },
             fields: [
                 {name: 'name', type: 'string'},
-                {name: 'commonName', type: 'string'},
+                {name: 'highlight', type: 'string'},
                 {name: 'guid', type: 'string'},
-                {name: 'rankString', type: 'string'}
+                {name: 'phylum', type: 'string'},
+                {name: 'classs', type: 'string'},
+                {name: 'rawRank', type: 'string'},
+                {name: 'commonNameSingle', type: 'string'}
             ]
         });
 
@@ -108,16 +114,11 @@ Portal.filter.ui.ALASpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
                 render: function(thisPanel) {
                     new Ext.ToolTip({
                         target: thisPanel.header,
-                        html: this._getHumanReadableDescriptor(activeFilterData)
+                        html: this.speciesFilter.getHumanReadableDescriptor(activeFilterData)
                     });
                 }
             }
         })
-    },
-
-    _getHumanReadableDescriptor: function(item) {
-        var commonName = (item.commonName != "") ? String.format("'{0}'", item.commonName) : "";
-        return String.format("{0} - {1} {2}", Ext.util.Format.capitalize(item.rankString), item.name, commonName);
     },
 
     _removeOnClick: function(event, toolEl, panel) {
@@ -167,5 +168,15 @@ Portal.filter.ui.ALASpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
                 this.speciesCombo.clearValue();
             }
         }
+    },
+
+    _clearAllFilters: function() {
+        var that = this;
+        Ext.each(this.activeFiltersContainer.items.items, function(panel) {
+            if (panel.activeFilterData != undefined) {
+                that.handleRemoveFilter(panel.activeFilterData);
+                panel.destroy();
+            }
+        });
     }
 });

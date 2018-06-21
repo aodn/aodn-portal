@@ -142,7 +142,7 @@ environments {
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
-        geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
+        geonetwork.url = "http://catalogue-portal.aodn.org.au/geonetwork"
 
         // Hosts which shouldn't be allowed
         excludedHosts = ['geoserver-wps.aodn.org.au', 'wps.aodn.org.au']
@@ -227,6 +227,11 @@ knownServers = [
         wmsVersion: '1.1.1',
         type: 'ALA'
     ],
+    [
+        uri: 'https://biocache.ala.org.au/ws/autocomplete/search',
+        type: 'ALA'
+    ],
+
     [
         uri: 'http://data2.tpac.org.au/geoserver/ncwms',
         wmsVersion: '1.3.0',
@@ -410,7 +415,7 @@ log4j.main = {
     }
 
     root {
-        info 'stdout'
+        debug 'stdout'
     }
 
     error   'org.codehaus.groovy.grails.web.servlet',  //  controllers

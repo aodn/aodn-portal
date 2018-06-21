@@ -141,21 +141,22 @@ Portal.details.AlaFilterGroupPanel = Ext.extend(Ext.Container, {
         var spatialFilter = Portal.filter.FilterUtils.getFilter(filters, 'position');
         spatialFilter.map = this.map;
 
-        this.add(this._createVerticalSpacer(15));
-
-        this.add(this._createFilterLabel(speciesFilter.label));
-        this.add(new Portal.filter.ui.ALASpeciesFilterPanel({
+        this.speciesFilterPanel = new Portal.filter.ui.ALASpeciesFilterPanel({
             speciesFilter: speciesFilter,
             dataCollection: this.dataCollection
-        }));
+        });
 
-        this.add(this._createVerticalSpacer(15));
-
-        this.add(this._createFilterLabel(OpenLayers.i18n('temporalExtentHeading')));
-        this.add(new Portal.filter.ui.DateFilterPanel({
+        this.dateFilterPanel = new Portal.filter.ui.DateFilterPanel({
             filter: dateFilter,
             dataCollection: this.dataCollection
-        }));
+        });
+
+        this.add(this._createVerticalSpacer(15));
+        this.add(this._createFilterLabel(speciesFilter.label));
+        this.add(this.speciesFilterPanel);
+        this.add(this._createVerticalSpacer(15));
+        this.add(this._createFilterLabel(OpenLayers.i18n('temporalExtentHeading')));
+        this.add(this.dateFilterPanel);
     },
 
     _createFilterLabel: function(label) {
@@ -179,6 +180,11 @@ Portal.details.AlaFilterGroupPanel = Ext.extend(Ext.Container, {
 
         this._removeLoadingMessage();
         this.doLayout();
+    },
+
+    _clearFilters: function() {
+        this.dateFilterPanel.handleRemoveFilter();
+        this.speciesFilterPanel._clearAllFilters();
     }
 
 });
