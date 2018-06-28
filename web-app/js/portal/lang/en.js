@@ -170,6 +170,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // Faceted layer search
     searchTabTitle: 'Search',
     organisationFilter: 'Organisation',
+    organisationalUnitFilter: 'Organisation',
     platformFilter: 'Platform',
     temporalResolutionFilter: 'Temporal Resolution',
     parameterFilter: 'Parameter',

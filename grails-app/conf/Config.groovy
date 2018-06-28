@@ -89,9 +89,8 @@ enabledFacets = [
         key: 'Measured parameter'
     ],
     [
-        name: 'organisationFilter',
-        key: 'Organisation',
-        collapsedByDefault: true
+        name: 'organisationalUnitFilter',
+        key: 'Organisational unit'
     ],
     [
         name: 'platformFilter',
