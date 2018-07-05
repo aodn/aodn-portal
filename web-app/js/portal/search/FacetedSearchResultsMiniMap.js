@@ -7,7 +7,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
 
     constructor: function(values) {
 
-        var restrictedExtent = new OpenLayers.Bounds(-180,-90,180,90);
+        var restrictedExtent = new OpenLayers.Bounds(-360,-90,360,90);
 
         Ext.apply(this, {
             controls: [],
@@ -45,8 +45,15 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
             }
 
             this.zoomToExtent(extent);
-            if (this.getZoomForExtent(extent) > this.MAXZOOMLEVEL) {
-                this.zoomTo(this.MAXZOOMLEVEL);
+            var zoomlevel =  (this.getZoomForExtent(extent) > this.MAXZOOMLEVEL) ? this.MAXZOOMLEVEL : this.getZoomForExtent(extent);
+
+            // Override center for world datasets aodn/issues/issues/220
+            if (Math.abs(extent.left) == Math.abs(extent.right)) {
+                var lat = extent.getCenterLonLat().lat;
+                this.setCenter([180,lat],zoomlevel)
+            }
+            else {
+                this.zoomTo(zoomlevel);
             }
         }
     },
