@@ -7,7 +7,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
 
     constructor: function(values) {
 
-        var restrictedExtent = new OpenLayers.Bounds(-180,-90,180,90);
+        var restrictedExtent = new OpenLayers.Bounds(-360,-90,360,90);
 
         Ext.apply(this, {
             controls: [],
