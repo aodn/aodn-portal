@@ -215,20 +215,20 @@ knownServers = [
         type: 'ncWMS'
     ],
     [
-        uri: 'https://biocache.ala.org.au/ws/ogc/getFeatureInfo',
+        uri: 'https://biocache-lb.ala.org.au/ws/ogc/getFeatureInfo',
         type: 'ALAGetFeatureInfo'
     ],
     [
-        uri: 'https://biocache.ala.org.au/ws/occurrences/index/download',
+        uri: 'https://biocache-lb.ala.org.au/ws/occurrences/index/download',
         type: 'ALADownload'
     ],
     [
-        uri: 'https://biocache.ala.org.au/ws/mapping/wms/reflect',
+        uri: 'http://biocache-lb.ala.org.au/ws/ogc/wms/reflect',
         wmsVersion: '1.1.1',
         type: 'ALA'
     ],
     [
-        uri: 'https://biocache.ala.org.au/ws/autocomplete/search',
+        uri: 'https://biocache-lb.ala.org.au/ws/autocomplete/search',
         type: 'ALA'
     ],
 
@@ -415,7 +415,7 @@ log4j.main = {
     }
 
     root {
-        debug 'stdout'
+        info 'stdout'
     }
 
     error   'org.codehaus.groovy.grails.web.servlet',  //  controllers
@@ -431,6 +431,7 @@ log4j.main = {
     warn    'org.mortbay.log'
 
     info    'grails.app.controller.au.org.emii.portal.LayerController',
+        'au.org.emii.portal.HostVerifier',
         'grails.app.tagLib.au.org.emii.portal.MessageOfTheDayTagLib',
         'grails.app.controller'
 
