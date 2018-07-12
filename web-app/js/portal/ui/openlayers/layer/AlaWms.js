@@ -60,6 +60,29 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var newArguments = [newParams];
         return OpenLayers.Layer.Grid.prototype.mergeNewParams.apply(this,
             newArguments);
+    },
+
+    applyAlaFilters: function(filters) {
+
+        var builder = new Portal.filter.combiner.ALAParametersBuilder({
+            filters: filters
+        });
+
+        var style = "ALAOccurrencesStyle";
+        var newParams = builder.buildParameters();
+
+        newParams = builder._createDateTimeParameter(newParams);
+
+        if (newParams.Q) {
+            style = "ALAPerSpeciesStyle";
+        }
+        else {
+            newParams.Q = null;
+        }
+
+        this.mergeNewParams(newParams);
+        this.mergeNewParams({ ENV: OpenLayers.i18n(style)});
+
     }
 
 });

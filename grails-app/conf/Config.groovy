@@ -219,7 +219,7 @@ knownServers = [
         type: 'ALAGetFeatureInfo'
     ],
     [
-        uri: 'https://biocache-lb.ala.org.au/ws/occurrences/index/download',
+        uri: 'https://biocache-lb.ala.org.au/ws/occurrences/offline/download',
         type: 'ALADownload'
     ],
     [

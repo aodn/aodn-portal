@@ -60,7 +60,7 @@ class AsyncDownloadController extends HostVerifyingController {
                 // Add accounting for that IP address
                 downloadAuthService.registerDownloadForAddress(ipAddress, aggregatorServiceString)
 
-                log.error "New aggregator job '$params'"
+                log.debug "New aggregator job '$params'"
 
                 render renderText
             }
