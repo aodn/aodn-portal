@@ -8,6 +8,7 @@ class AsyncDownloadController extends HostVerifyingController {
 
     def gogoduckService
     def wpsService
+    def alaWpsService
     def wpsAwsService
     def dataTrawlerService
     def downloadAuthService
@@ -21,6 +22,8 @@ class AsyncDownloadController extends HostVerifyingController {
                     return wpsAwsService
                 }
                 return wpsService
+            case 'ala':
+                return alaWpsService
             case 'datatrawler':
                 return dataTrawlerService
             default:
@@ -56,6 +59,8 @@ class AsyncDownloadController extends HostVerifyingController {
 
                 // Add accounting for that IP address
                 downloadAuthService.registerDownloadForAddress(ipAddress, aggregatorServiceString)
+
+                log.debug "New aggregator job '$params'"
 
                 render renderText
             }

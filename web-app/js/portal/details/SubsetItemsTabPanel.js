@@ -31,8 +31,19 @@ Portal.details.SubsetItemsTabPanel = Ext.extend(Ext.TabPanel, {
     },
 
     _newFilterGroupPanel: function(cfg) {
-        var filterGroupPanel = cfg.dataCollection.isNcwms() ?
-            new Portal.details.NcWmsPanel(cfg) : new Portal.filter.ui.FilterGroupPanel(cfg);
+
+        var filterGroupPanel;
+
+        if (cfg.dataCollection.isAla()) {
+            filterGroupPanel = new Portal.details.AlaFilterGroupPanel(cfg);
+        }
+        else if (cfg.dataCollection.isNcwms()) {
+            filterGroupPanel = new Portal.details.NcWmsPanel(cfg);
+        }
+        else {
+            filterGroupPanel = new Portal.filter.ui.FilterGroupPanel(cfg);
+        }
+
         filterGroupPanel.title = OpenLayers.i18n('subsetPanelTitle');
 
         return filterGroupPanel;

@@ -125,7 +125,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             spyOn(filterGroupPanel, '_createFilterPanel').andReturn(filterPanel);
         });
 
-        it('calls the _clearFilters method', function() {
+        it('calls the _clearAllFilters method', function() {
 
             filterGroupPanel._filtersLoaded(filters);
 
@@ -163,7 +163,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
         });
     });
 
-    describe('_clearFilters method', function() {
+    describe('_clearAllFilters method', function() {
         var removeFilterSpy;
         var mockFilterPanel;
 
