@@ -10,7 +10,6 @@ class AsyncDownloadController extends HostVerifyingController {
     def wpsService
     def asyncExternalRequestService
     def wpsAwsService
-    def dataTrawlerService
     def downloadAuthService
 
     AsyncDownloadService getAggregatorService(aggregatorService, params) {

@@ -144,7 +144,7 @@ environments {
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
 
-        // Hosts which shouldn't be allowed
+        // Hosts which shouldn't be allowed even if allowAnyHosts is set to true
         excludedHosts = ['geoserver-wps.aodn.org.au', 'wps.aodn.org.au']
     }
 
@@ -323,7 +323,7 @@ portal {
 
     popupWidth = 550
     popupHeight = 325
-    
+
     // Various metadata record protocols in which the portal is interested.
     metadataProtocols {
         wms = [
