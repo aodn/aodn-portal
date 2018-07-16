@@ -52,7 +52,7 @@ class LayerController {
             def filtersUrl = grailsApplication.config.filtering.baseUrl + '/' + serverConfig.filtersDir
             return new FilterConfigGeoserverServer(filtersUrl, filterValuesService)
         }
-        else if (serverType == 'datatrawlerproto') {
+        else if (serverType == 'datatrawlerserver') {
             return new DataTrawlerServer(groovyPageRenderer)
         }
         else {

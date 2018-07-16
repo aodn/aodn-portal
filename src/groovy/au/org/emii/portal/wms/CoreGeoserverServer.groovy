@@ -103,7 +103,7 @@ class CoreGeoserverServer extends WmsServer {
     }
 
     def _toLabel(attributeName) {
-        attributeName.replaceAll('_', ' ')
+        attributeName.replaceAll('_', ' ').toLowerCase()
     }
 
 }
