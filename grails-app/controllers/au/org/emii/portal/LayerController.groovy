@@ -33,7 +33,7 @@ class LayerController {
         else if (serverType == 'geoservercore') {
             return new CoreGeoserverServer(groovyPageRenderer)
         }
-        else if (serverType == 'datatrawlerproto') {
+        else if (serverType == 'datatrawlerserver') {
             return new DataTrawlerServer(groovyPageRenderer)
         }
         else {

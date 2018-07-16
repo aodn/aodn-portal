@@ -1,8 +1,10 @@
 package au.org.emii.portal.wms
 
 import au.org.emii.portal.proxying.ExternalRequest
+import groovy.json.JsonSlurper
 
-class DataTrawlerServer extends WmsServer {
+class DataTrawlerServer extends CoreGeoserverServer {
+
     def groovyPageRenderer
 
     DataTrawlerServer(groovyPageRenderer) {
@@ -13,58 +15,84 @@ class DataTrawlerServer extends WmsServer {
         return []
     }
 
-    def getFilters(server, datatype) {
+    def getFilters(server, layer) {
         def filters = []
 
         try {
-            log.info(_getFiltersXml(server, datatype))
-            def xml = new XmlSlurper().parseText(_getFiltersXml(server, datatype))
+            def xml = new XmlSlurper().parseText(_describeFeatureType(server, layer))
 
-            xml.filter.each { filter ->
-
-                filters.push([
-                    label: filter.label.text(),
-                    type: filter.type.text(),
-                    name: filter.name.text(),
-                    visualised: Boolean.valueOf(filter.visualised.text()),
-                    wmsStartDateName: filter.wmsStartDateName.text(),
-                    wmsEndDateName: filter.wmsEndDateName.text()
-                ])
+            def attributes = xml.'**'.findAll { node ->
+                node.name() == 'element' && node.@name != _removePrefix(layer)
             }
 
-        } catch (e) {
-            log.error "Unable to parse filters for server '${server}', datatype '${datatype}'", e
-        }
-    }
+            boolean hasTemporalRange = false
 
-    def getFilterValues(server, datatype, filterName) {
-        def filterValues = []
+            attributes.each { attribute ->
+                def propertyName = attribute.@name.text()
+                def propertyType = attribute.@type.text()
 
-        try {
-            def xml = new XmlSlurper().parseText(_getFiltersXml(server, datatype))
-
-            xml.filter.each { filter ->
-                if (filterName == filter.name) {
-                    filter.values.each { filterValue ->
-                        filterValues.push(filterValue)
+                if (['TIME_COVERAGE_START', 'TIME_COVERAGE_END'].contains(propertyName)) {
+                    // HACK: handle CSIRO layers with capitalised property names
+                    if (!hasTemporalRange) {
+                        filters.push(
+                            [
+                                label     : 'Time',
+                                type      : 'datetime',
+                                name      : 'TIME',
+                                visualised: true,
+                                wmsStartDateName: 'TIME_COVERAGE_START',
+                                wmsEndDateName: 'TIME_COVERAGE_END'
+                            ]
+                        )
+                        hasTemporalRange = true
                     }
+                } else {
+                    filters.push(
+                        [
+                            label     : _toLabel(propertyName),
+                            type      : _toFilterType(propertyType),
+                            name      : propertyName,
+                            visualised: true
+                        ]
+                    )
                 }
             }
-        }
-        catch (e) {
-            log.error "Unable to parse filters values for server '${server}', layer '${datatype}', filter '${filterName}'", e
+        } catch (e) {
+            log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
         }
 
-        return filterValues
+        return filters
     }
 
-    def _getFiltersXml(server, datatype) {
-        def requestUrl = server + "?datatype=${datatype}&xmlFilter=true"
-        log.info(requestUrl.toString())
+    def _describeFeatureType(server, layer) {
+        def requestUrl = server + "?request=DescribeFeatureType&service=WFS&version=1.0.0&typeName=${layer}"
         def outputStream = new ByteArrayOutputStream()
         def request = new ExternalRequest(outputStream, requestUrl.toURL())
 
         request.executeRequest()
         return outputStream.toString("utf-8")
     }
+
+    def _getPagedUniqueValues(server, layer, filter) {
+        def params = [typeName: layer, propertyName: filter]
+        def body = groovyPageRenderer.render(template: '/filters/pagedUniqueRequest.xml', model: params)
+        log.debug("Request body:\n\n${body}")
+
+        def connection = server.toURL().openConnection()
+
+        connection.with {
+            doOutput = true
+            requestMethod = 'POST'
+            setRequestProperty("Content-Type", "application/xml; charset=utf-8")
+            outputStream.withWriter { writer ->
+                writer << body
+            }
+            content.text
+        }
+    }
+
+    def _toLabel(attributeName) {
+        attributeName.replaceAll('_', ' ').toLowerCase().capitalize()
+    }
+
 }
