@@ -40,7 +40,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadAsPointTimeSeriesCsvLabel: 'CSV',
     downloadAsDataTrawlerCsvLabel: 'CSV - DataTrawler',
     downloadAsAllSourceNetCdfLabel: 'Un-subsetted NetCDFs',
-    downloadAsUrlsLabel: 'List of URLs',
+    downloadAsUrlsLabel: 'List of HTTP URLs',
     downloadAsPythonSnippetLabel: 'Python',
     parameterDateLabel: 'Date range',
     metadataLinkText: 'View metadata record',
