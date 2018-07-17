@@ -23,6 +23,10 @@ class HostVerifier {
             return false
         }
 
+        if (grailsApplication.config.allowAnyHost) {
+            return true
+        }
+
         initializeAllowedHostsIfNeeded()
 
         if (allowedHosts[host]) {

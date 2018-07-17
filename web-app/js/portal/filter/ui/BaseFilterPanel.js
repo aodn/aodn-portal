@@ -24,13 +24,6 @@ Portal.filter.ui.BaseFilterPanel = Ext.extend(Ext.Panel, {
         this._createControls();
     },
 
-    _createVerticalSpacer: function(sizeInPixels) {
-        return new Ext.Spacer({
-            cls: 'block',
-            height: sizeInPixels
-        });
-    },
-
     _createControls: function() {
         throw "Subclasses must implement the _createControls function";
     },
@@ -49,7 +42,7 @@ Portal.filter.ui.BaseFilterPanel = Ext.extend(Ext.Panel, {
 
     _addLabel: function() {
         this.add(new Ext.form.Label({
-            html: this.filter.getLabel()
+            html: "<label>" + this.filter.getLabel() + "</label>"
         }));
     }
 });

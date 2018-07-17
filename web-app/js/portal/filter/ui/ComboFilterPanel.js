@@ -40,7 +40,12 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
 
         this._setComboMessage('loadingMessage');
 
-        this.add(this._createVerticalSpacer(5));
+        this.add(
+            new Ext.Spacer({
+                cls: 'block',
+                height: 5
+            })
+        );
     },
 
     handleRemoveFilter: function() {

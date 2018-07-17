@@ -14,10 +14,6 @@ Portal.data.LayerSelectionModel = Ext.extend(Ext.util.Observable, {
         return this._getDefaultLayer().isNcwms();
     },
 
-    isAla: function() {
-        return this._getDefaultLayer().isAla();
-    },
-
     getLayers: function() {
         return this.layerCache;
     },
