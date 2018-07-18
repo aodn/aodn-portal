@@ -43,7 +43,6 @@ describe("Portal.cart.DownloadPanel", function() {
 
             beforeEach(function() {
                 collection = {};
-                collection.getTitle = function(){};
                 spyOn(downloadPanel, 'onDownloadRequested').andCallThrough();
                 spyOn(downloadPanel, 'onDownloadStarted').andCallThrough();
                 spyOn(downloadPanel, 'onDownloadFailed').andCallThrough();

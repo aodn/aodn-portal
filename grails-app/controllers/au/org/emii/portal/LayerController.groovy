@@ -1,6 +1,8 @@
 package au.org.emii.portal
 
-import au.org.emii.portal.wms.*
+import au.org.emii.portal.wms.CoreGeoserverServer
+import au.org.emii.portal.wms.NcwmsServer
+import au.org.emii.portal.wms.ImosGeoserverServer
 
 import grails.converters.JSON
 
@@ -26,9 +28,6 @@ class LayerController {
     def _getServerClass(serverType) {
         if (serverType == 'ncwms') {
             return new NcwmsServer()
-        }
-        else if (serverType == 'ala') {
-            return new AlaServer()
         }
         else if (serverType == 'geoservercore') {
             return new CoreGeoserverServer(groovyPageRenderer)
