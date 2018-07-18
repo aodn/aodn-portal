@@ -311,6 +311,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <webDriverClassName>org.openqa.selenium.phantomjs.PhantomJSDriver</webDriverClassName>
                     <jsSrcDir>${project.basedir}/web-app/js</jsSrcDir>
                     <sourceIncludes>
                         <include>jquery/jquery-3.2.0-MODDED.js</include>
