@@ -14,6 +14,7 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
         this._addLabel();
 
         this.combo = new Ext.form.ComboBox({
+            emptyText: OpenLayers.i18n('clearFilterOption'),
             disabled: true,
             triggerAction: 'all',
             mode: 'local',
@@ -50,7 +51,6 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
 
     handleRemoveFilter: function() {
         this.combo.clearValue();
-
         this.filter.clearValue();
     },
 
@@ -80,16 +80,18 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
 
     _onChange: function() {
 
-        if (this.combo.getValue() == OpenLayers.i18n('clearFilterOption')) {
-            this.combo.clearValue();
-        }
-
-        if (this.combo.getValue() != "") {
+        if (this.combo.getValue() !== "" && this.combo.getValue() !== this.combo.emptyText) {
             var val = this.filter.getLabel() + "=" + this.combo.getValue();
             trackFiltersUsage('filtersTrackingComboAction', val, this.dataCollection.getTitle());
         }
 
-        this.filter.setValue(this.combo.getValue());
+        if (this.combo.getValue() === this.combo.emptyText) {
+            this.filter.clearValue();
+        }
+        else {
+            this.filter.setValue(this.combo.getValue());
+        }
+
     },
 
     setFilterRange: function(range) {
@@ -127,7 +129,7 @@ Portal.filter.ui.ComboFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel,
     _loadDataIntoComboBox: function(values) {
 
         var data = [];
-        var clearFilter = [OpenLayers.i18n('clearFilterOption')];
+        var clearFilter = [this.combo.emptyText];
         data.push(clearFilter);
 
         Array.prototype.push.apply(data, this._filterValues(values));
