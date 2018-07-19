@@ -45,12 +45,11 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
             }
 
             this.zoomToExtent(extent);
-            var zoomlevel =  (this.getZoomForExtent(extent) > this.MAXZOOMLEVEL) ? this.MAXZOOMLEVEL : this.getZoomForExtent(extent);
+            var zoomlevel = (this.getZoomForExtent(extent) > this.MAXZOOMLEVEL) ? this.MAXZOOMLEVEL : this.getZoomForExtent(extent);
 
             // Override center for world datasets aodn/issues/issues/220
-            if (Math.abs(extent.left) == Math.abs(extent.right)) {
-                var lat = extent.getCenterLonLat().lat;
-                this.setCenter([180,lat],zoomlevel)
+            if (this._antimeridianAdjacentGeometries()) {
+                this._zoomToMultiGeometries(zoomlevel);
             }
             else {
                 this.zoomTo(zoomlevel);
@@ -58,6 +57,74 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
         }
     },
 
+    _zoomToMultiGeometries: function(zoomlevel) {
+        var geometries = this.metadataExtent.getGeometries();
+        var combinedBounds = geometries[0].getBounds();
+        for (var i = 1; i < geometries.length; i++) {
+            var boundsToAdd = geometries[i].getBounds();
+            combinedBounds = this._centreAdjacentGeometries(combinedBounds, boundsToAdd);
+        }
+        var centreLonLat = combinedBounds.getCenterLonLat();
+        this.setCenter([centreLonLat.lon, centreLonLat.lat], zoomlevel);
+    },
+
+    _centreAdjacentGeometries: function(bounds, boundsToCompare) {
+        var centredBounds = new OpenLayers.Bounds();
+        var boundWidth = bounds.getWidth();
+        var widthToCompare = boundsToCompare.getWidth();
+        // Check for extent adjacency over the antimeridian
+        if ((bounds.right == 180 && boundsToCompare.left == -180)) { 
+            if (boundWidth > widthToCompare) {
+                centredBounds = bounds.clone();
+                centredBounds.left += widthToCompare;
+            }
+            else {
+                centredBounds = boundsToCompare.clone();
+                centredBounds.right +- boundWidth;
+            }
+        } else if (bounds.left == -180 && boundsToCompare.right == 180) {
+            if (boundWidth > widthToCompare) {
+                centredBounds = bounds.clone();
+                centredBounds.right +- widthToCompare;
+            }
+            else {
+                centredBounds = boundsToCompare.clone();
+                centredBounds.left += boundWidth;
+            }
+        }
+        return centredBounds;
+    },
+
+    _antimeridianAdjacentGeometries: function() {
+        var non_global_geometries = [];
+        var geometries = this.metadataExtent.getGeometries();
+        for (var i = 0; i < geometries.length; i++) {
+            bounds = geometries[i].getBounds();
+            if (bounds.left == -180 && bounds.right == 180) {
+                //global coverage, so automatically stop here
+                return false;
+            }
+            else if (bounds.left != -180 || bounds.right != 180) {
+                non_global_geometries.push(geometries[i])
+            }
+        }
+        
+        for (var i = 0; i < non_global_geometries.length; i++) {
+            non_global_bounds = non_global_geometries[i].getBounds();
+            if (non_global_bounds.right == 180) {
+                for (var j = 0; j < non_global_geometries.length; j++) {
+                    if (i != j) {
+                        boundsToCompare = non_global_geometries[j].getBounds();
+                        if (boundsToCompare.left == -180) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    },    
+        
     _getBaseLayer: function() {
         return new OpenLayers.Layer.MiniMapBaseLayer();
     },
