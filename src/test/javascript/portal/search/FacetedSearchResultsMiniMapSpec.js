@@ -110,10 +110,42 @@ describe("Portal.search.FacetedSearchResultsMiniMap", function() {
             expect(miniMap._zoomToMultiGeometries).toHaveBeenCalled();
         });
 
-        it('averages the geometries to find the centre if it has two geometries intersecting over the antimeridian', function() {
+        it('calls _zoomToMultiGeometries if extent has more than two geometries intersecting over the antimeridian', function() {
+            var firstGeo = new OpenLayers.Geometry();
+            var secondGeo = new OpenLayers.Geometry();
+            var thirdGeo = new OpenLayers.Geometry();
+            firstGeo.setBounds(new OpenLayers.Bounds(57, -42, 180, -39));
+            secondGeo.setBounds(new OpenLayers.Bounds(-180, -42, -168, -39));
+            thirdGeo.setBounds(new OpenLayers.Bounds(-180, -42, -165, -39));
+            spyOn(miniMap.metadataExtent, 'getGeometries').andReturn(new Array(firstGeo, secondGeo, thirdGeo));
+            spyOn(miniMap.metadataExtent, 'getBounds').andReturn(new OpenLayers.Bounds(-180, -42, 180, -39));
+            spyOn(miniMap, 'getZoomForExtent').andReturn(12);
+            spyOn(miniMap, 'zoomTo');
+            spyOn(miniMap, '_zoomToMultiGeometries');
+            miniMap._renderAndPosition();
+            expect(miniMap.zoomTo).not.toHaveBeenCalled();
+            expect(miniMap._zoomToMultiGeometries).toHaveBeenCalled();
+        });
+
+        it('averages the geometries to find the centre if the geom before the antimeridian is wider', function() {
             var firstBounds = new OpenLayers.Bounds(-180, -42, -168, -39);
             var secondBounds = new OpenLayers.Bounds(57, -42, 180, -39);
             var expectedBounds = new OpenLayers.Bounds(69, -42, 180, -39)
+            spyOn(miniMap.metadataExtent, 'getBounds').andReturn(new OpenLayers.Bounds(-180, -42, 180, -39));
+            spyOn(miniMap, 'getZoomForExtent').andReturn(12);
+            miniMap._renderAndPosition();
+            resultingGeometry = miniMap._centreAdjacentGeometries(firstBounds, secondBounds);
+            resultingGeometryReverse = miniMap._centreAdjacentGeometries(secondBounds, firstBounds);
+            expect(resultingGeometry.left).toBe(expectedBounds.left);
+            expect(resultingGeometry.right).toBe(expectedBounds.right);
+            expect(resultingGeometryReverse.left).toBe(expectedBounds.left);
+            expect(resultingGeometryReverse.right).toBe(expectedBounds.right);
+        });
+
+        it('averages the geometries to find the centre if the geom after the antimeridian is wider', function() {
+            var firstBounds = new OpenLayers.Bounds(168, -42, 180, -39);
+            var secondBounds = new OpenLayers.Bounds(-180, -42, -57, -39);
+            var expectedBounds = new OpenLayers.Bounds(-180, -42, -69, -39)
             spyOn(miniMap.metadataExtent, 'getBounds').andReturn(new OpenLayers.Bounds(-180, -42, 180, -39));
             spyOn(miniMap, 'getZoomForExtent').andReturn(12);
             miniMap._renderAndPosition();

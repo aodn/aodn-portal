@@ -48,7 +48,7 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
             var zoomlevel = (this.getZoomForExtent(extent) > this.MAXZOOMLEVEL) ? this.MAXZOOMLEVEL : this.getZoomForExtent(extent);
 
             // Override center for world datasets aodn/issues/issues/220
-            if (this._antimeridianAdjacentGeometries()) {
+            if (this._antimeridianAdjacentGeometries(this.metadataExtent.getGeometries())) {
                 this._zoomToMultiGeometries(zoomlevel);
             }
             else {
@@ -80,12 +80,12 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
             }
             else {
                 centredBounds = boundsToCompare.clone();
-                centredBounds.right +- boundWidth;
+                centredBounds.right -= boundWidth;
             }
         } else if (bounds.left == -180 && boundsToCompare.right == 180) {
             if (boundWidth > widthToCompare) {
                 centredBounds = bounds.clone();
-                centredBounds.right +- widthToCompare;
+                centredBounds.right -= widthToCompare;
             }
             else {
                 centredBounds = boundsToCompare.clone();
@@ -95,32 +95,27 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
         return centredBounds;
     },
 
-    _antimeridianAdjacentGeometries: function() {
-        var non_global_geometries = [];
-        var geometries = this.metadataExtent.getGeometries();
-        for (var i = 0; i < geometries.length; i++) {
-            bounds = geometries[i].getBounds();
-            if (bounds.left == -180 && bounds.right == 180) {
-                //global coverage, so automatically stop here
-                return false;
-            }
-            else if (bounds.left != -180 || bounds.right != 180) {
-                non_global_geometries.push(geometries[i])
-            }
+    _antimeridianAdjacentGeometries: function(geometries) {
+        if (geometries.length < 2) {
+            return false;
         }
         
-        for (var i = 0; i < non_global_geometries.length; i++) {
-            non_global_bounds = non_global_geometries[i].getBounds();
-            if (non_global_bounds.right == 180) {
-                for (var j = 0; j < non_global_geometries.length; j++) {
-                    if (i != j) {
-                        boundsToCompare = non_global_geometries[j].getBounds();
-                        if (boundsToCompare.left == -180) {
-                            return true;
-                        }
-                    }
-                }
-            }
+        var globalGeoms = geometries.filter(function(geom) {
+            return geom.getBounds().right == 180 && geom.getBounds().left == -180;
+        });
+        if (globalGeoms.length > 0) {
+            return false;
+        }
+        
+        var geomsMaxRight = geometries.filter(function(geom) {
+            return geom.getBounds().right == 180;
+        });
+        var geomsMaxLeft = geometries.filter(function(geom) {
+            return geom.getBounds().left == -180;
+        });
+
+        if (geomsMaxRight.length > 0 && geomsMaxLeft.length > 0) {
+            return true;
         }
         return false;
     },    
