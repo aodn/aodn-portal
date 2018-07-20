@@ -4,7 +4,7 @@ import au.org.emii.portal.proxying.ExternalRequest
 import grails.converters.JSON
 import groovyx.net.http.HttpResponseException
 
-class AlaWpsService extends AsyncDownloadService {
+class AsyncExternalRequestService extends AsyncDownloadService {
 
     def grailsApplication
 

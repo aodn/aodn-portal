@@ -17,7 +17,8 @@ class AlaServer extends WmsServer {
                 label     : 'Filter by species/taxon',
                 type      : 'alastringarray',
                 name      : 'Q',
-                visualised: true
+                visualised: true,
+                primaryFilter: true
             ]
         )
         filters.push(
@@ -25,8 +26,7 @@ class AlaServer extends WmsServer {
                 label           : 'Bounding Box',
                 type            : 'geometrypropertytype',
                 name            : 'position',
-                visualised      : true,
-                primaryFilter   : false
+                visualised      : true
             ]
         )
         filters.push(
@@ -36,8 +36,7 @@ class AlaServer extends WmsServer {
                 name            : 'dateTime',
                 wmsStartDateName: 'startDate',
                 wmsEndDateName  : 'endDate',
-                visualised      : true,
-                primaryFilter   : false
+                visualised      : true
             ]
         )
         return filters

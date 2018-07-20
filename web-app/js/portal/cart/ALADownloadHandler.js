@@ -30,11 +30,11 @@ Portal.cart.ALADownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
         return downloadOptions;
     },
 
-    _buildHandlerParams: function(fileFormat, downloadAction) {
+    _buildHandlerParams: function(fileFormat, downloadLabel) {
         return {
             asyncDownload: true,
             collectEmailAddress: true,
-            downloadLabel: downloadAction,
+            downloadLabel: downloadLabel,
             filenameFormat: fileFormat,
             downloadControllerArgs: {
                 action: 'passThrough'
