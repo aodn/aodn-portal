@@ -45,12 +45,11 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
             }
 
             this.zoomToExtent(extent);
-            var zoomlevel =  (this.getZoomForExtent(extent) > this.MAXZOOMLEVEL) ? this.MAXZOOMLEVEL : this.getZoomForExtent(extent);
+            var zoomlevel = (this.getZoomForExtent(extent) > this.MAXZOOMLEVEL) ? this.MAXZOOMLEVEL : this.getZoomForExtent(extent);
 
             // Override center for world datasets aodn/issues/issues/220
-            if (Math.abs(extent.left) == Math.abs(extent.right)) {
-                var lat = extent.getCenterLonLat().lat;
-                this.setCenter([180,lat],zoomlevel)
+            if (this._antimeridianAdjacentGeometries(this.metadataExtent.getGeometries())) {
+                this._zoomToMultiGeometries(zoomlevel);
             }
             else {
                 this.zoomTo(zoomlevel);
@@ -58,6 +57,69 @@ Portal.search.FacetedSearchResultsMiniMap = Ext.extend(OpenLayers.Map, {
         }
     },
 
+    _zoomToMultiGeometries: function(zoomlevel) {
+        var geometries = this.metadataExtent.getGeometries();
+        var combinedBounds = geometries[0].getBounds();
+        for (var i = 1; i < geometries.length; i++) {
+            var boundsToAdd = geometries[i].getBounds();
+            combinedBounds = this._centreAdjacentGeometries(combinedBounds, boundsToAdd);
+        }
+        var centreLonLat = combinedBounds.getCenterLonLat();
+        this.setCenter([centreLonLat.lon, centreLonLat.lat], zoomlevel);
+    },
+
+    _centreAdjacentGeometries: function(bounds, boundsToCompare) {
+        var centredBounds = new OpenLayers.Bounds();
+        var boundWidth = bounds.getWidth();
+        var widthToCompare = boundsToCompare.getWidth();
+        // Check for extent adjacency over the antimeridian
+        if ((bounds.right == 180 && boundsToCompare.left == -180)) { 
+            if (boundWidth > widthToCompare) {
+                centredBounds = bounds.clone();
+                centredBounds.left += widthToCompare;
+            }
+            else {
+                centredBounds = boundsToCompare.clone();
+                centredBounds.right -= boundWidth;
+            }
+        } else if (bounds.left == -180 && boundsToCompare.right == 180) {
+            if (boundWidth > widthToCompare) {
+                centredBounds = bounds.clone();
+                centredBounds.right -= widthToCompare;
+            }
+            else {
+                centredBounds = boundsToCompare.clone();
+                centredBounds.left += boundWidth;
+            }
+        }
+        return centredBounds;
+    },
+
+    _antimeridianAdjacentGeometries: function(geometries) {
+        if (geometries.length < 2) {
+            return false;
+        }
+        
+        var globalGeoms = geometries.filter(function(geom) {
+            return geom.getBounds().right == 180 && geom.getBounds().left == -180;
+        });
+        if (globalGeoms.length > 0) {
+            return false;
+        }
+        
+        var geomsMaxRight = geometries.filter(function(geom) {
+            return geom.getBounds().right == 180;
+        });
+        var geomsMaxLeft = geometries.filter(function(geom) {
+            return geom.getBounds().left == -180;
+        });
+
+        if (geomsMaxRight.length > 0 && geomsMaxLeft.length > 0) {
+            return true;
+        }
+        return false;
+    },    
+        
     _getBaseLayer: function() {
         return new OpenLayers.Layer.MiniMapBaseLayer();
     },

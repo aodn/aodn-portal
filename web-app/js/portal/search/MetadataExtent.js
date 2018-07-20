@@ -28,6 +28,10 @@ Portal.search.MetadataExtent = Ext.extend(Object, {
         return boundingBoxLayer;
     },
 
+    getGeometries: function() {
+        return this.geometries;
+    },
+
     getBounds: function() {
         if (!this.bounds && this.geometries.length > 0) {
             this.bounds = new OpenLayers.Bounds();
