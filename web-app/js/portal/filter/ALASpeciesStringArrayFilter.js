@@ -16,7 +16,6 @@ Portal.filter.ALASpeciesStringArrayFilter = Ext.extend(Portal.filter.Filter, {
         return Portal.filter.ui.ComboFilterPanel;
     },
 
-    // not cql for ALA
     getFormattedFilterValue: function() {
         var filterString = this._join(this._getFilterStrings(), " OR ");
         return {"Q": filterString}

@@ -61,6 +61,11 @@ help {
 
 oceanCurrent.url = "http://oceancurrent.aodn.org.au"
 
+alaService {
+    url = "https://biocache-lb.ala.org.au/ws/autocomplete/search"
+    index = 'species_habitats:"Marine"'
+}
+
 // Depth service
 depthService.url = "http://geoserver-static.aodn.org.au/geoserver/wfs?typeName=world_depth_view&SERVICE=WFS&REQUEST=GetFeature&VERSION=1.0.0&outputFormat=application/json&viewparams="
 
@@ -215,23 +220,10 @@ knownServers = [
         type: 'ncWMS'
     ],
     [
-        uri: 'https://biocache-lb.ala.org.au/ws/ogc/getFeatureInfo',
-        type: 'ALAGetFeatureInfo'
-    ],
-    [
-        uri: 'https://biocache-lb.ala.org.au/ws/occurrences/offline/download',
-        type: 'ALADownload'
-    ],
-    [
-        uri: 'http://biocache-lb.ala.org.au/ws/ogc/wms/reflect',
+        uri: 'http://biocache-lb.ala.org.au/ws',
         wmsVersion: '1.1.1',
         type: 'ALA'
     ],
-    [
-        uri: 'https://biocache-lb.ala.org.au/ws/autocomplete/search',
-        type: 'ALA'
-    ],
-
     [
         uri: 'http://data2.tpac.org.au/geoserver/ncwms',
         wmsVersion: '1.3.0',
@@ -336,7 +328,7 @@ portal {
 
     popupWidth = 550
     popupHeight = 325
-
+    
     // Various metadata record protocols in which the portal is interested.
     metadataProtocols {
         wms = [

@@ -31,8 +31,8 @@ Portal.filter.ui.ALASpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
             root: "searchResults.results",
             idProperty: 'guid',
             baseParams : {
-                fq: 'species_habitats:"Marine"', // ALA index for marine only
-                url: "https://biocache-lb.ala.org.au/ws/autocomplete/search"
+                fq: Portal.app.appConfig.alaService.index, // ALA index for marine only
+                url: Portal.app.appConfig.alaService.url
             },
             fields: [
                 {name: 'name', type: 'string'},

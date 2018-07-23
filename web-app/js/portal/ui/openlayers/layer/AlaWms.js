@@ -62,7 +62,7 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             newArguments);
     },
 
-    applyAlaFilters: function(filters) {
+    applyFilters: function(filters) {
 
         var builder = new Portal.filter.combiner.ALAParametersBuilder({
             filters: filters

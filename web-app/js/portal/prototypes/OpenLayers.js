@@ -156,48 +156,18 @@ OpenLayers.Layer.WMS.prototype.isAla = function() {
 };
 
 OpenLayers.Layer.WMS.prototype.applyFilters = function(filters) {
-
-    if (this.isAla()) {
-        this.applyAlaFilters(filters);
-    }
-    else {
-
-        var builder = new Portal.filter.combiner.MapCqlBuilder({
-            filters: filters
-        });
-
-        var newValue = builder.buildCql();
-        var existingValue = this.params['CQL_FILTER'];
-
-        if (newValue != existingValue) {
-            this.mergeNewParams({
-                CQL_FILTER: newValue
-            });
-        }
-    }
-};
-
-OpenLayers.Layer.WMS.prototype.applyAlaFilters = function(filters) {
-
-    var builder = new Portal.filter.combiner.ALAParametersBuilder({
+    var builder = new Portal.filter.combiner.MapCqlBuilder({
         filters: filters
     });
 
-    var style = "ALAOccurrencesStyle";
-    var newParams = builder.buildParameters();
+    var newValue = builder.buildCql();
+    var existingValue = this.params['CQL_FILTER'];
 
-    newParams = builder._createDateTimeParameter(newParams);
-
-    if (newParams.Q) {
-        style = "ALAPerSpeciesStyle";
+    if (newValue != existingValue) {
+        this.mergeNewParams({
+            CQL_FILTER: newValue
+        });
     }
-    else {
-        newParams.Q = null;
-    }
-
-    this.mergeNewParams(newParams);
-    this.mergeNewParams({ ENV: OpenLayers.i18n(style)});
-
 };
 
 OpenLayers.Layer.WMS.prototype.hasBoundingBox = function() {
