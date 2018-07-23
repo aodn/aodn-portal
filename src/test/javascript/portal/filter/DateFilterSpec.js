@@ -45,12 +45,12 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives map layer CQL', function() {
 
-            expect(filter.getCql()).toBe("column_name >= '1999-01-01T00:00:00Z'");
+            expect(filter.getFormattedFilterValue()).toBe("column_name >= '1999-01-01T00:00:00Z'");
         });
 
         it('gives data layer CQL', function() {
 
-            expect(filter.getDateDataCql()).toBe("column_name >= '1999-01-01T00:00:00Z'");
+            expect(filter.getFormattedFilterValueWithTimeRange()).toBe("column_name >= '1999-01-01T00:00:00Z'");
         });
 
         it('gives human readble form', function() {
@@ -70,12 +70,12 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives map layer CQL', function() {
 
-            expect(filter.getCql()).toBe("column_name <= '2006-06-06T01:00:00Z'");
+            expect(filter.getFormattedFilterValue()).toBe("column_name <= '2006-06-06T01:00:00Z'");
         });
 
         it('gives data layer CQL', function() {
 
-            expect(filter.getDateDataCql()).toBe("column_name <= '2006-06-06T01:00:00Z'");
+            expect(filter.getFormattedFilterValueWithTimeRange()).toBe("column_name <= '2006-06-06T01:00:00Z'");
         });
 
         it('gives human readble form', function() {
@@ -96,12 +96,12 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives map layer CQL', function() {
 
-            expect(filter.getCql()).toBe("column_name >= '1999-01-01T00:00:00Z' AND column_name <= '2006-06-06T01:00:00Z'");
+            expect(filter.getFormattedFilterValue()).toBe("column_name >= '1999-01-01T00:00:00Z' AND column_name <= '2006-06-06T01:00:00Z'");
         });
 
         it('gives data layer CQL', function() {
 
-            expect(filter.getDateDataCql()).toBe("column_name >= '1999-01-01T00:00:00Z' AND column_name <= '2006-06-06T01:00:00Z'");
+            expect(filter.getFormattedFilterValueWithTimeRange()).toBe("column_name >= '1999-01-01T00:00:00Z' AND column_name <= '2006-06-06T01:00:00Z'");
         });
 
         it('gives human readble form', function() {
@@ -125,12 +125,12 @@ describe("Portal.filter.DateFilter", function() {
         it('gives map layer CQL', function() {
 
             // Note: To capture any data that falls within the range the end date is compared to the start of the range, and the start date is compared to the end of the range
-            expect(filter.getCql()).toBe("range_end_column_name >= '1999-01-01T00:00:00Z' AND range_start_column_name <= '2006-06-06T01:00:00Z'");
+            expect(filter.getFormattedFilterValue()).toBe("range_end_column_name >= '1999-01-01T00:00:00Z' AND range_start_column_name <= '2006-06-06T01:00:00Z'");
         });
 
         it('gives data layer CQL', function() {
 
-            expect(filter.getDateDataCql()).toBe("column_name >= '1999-01-01T00:00:00Z' AND column_name <= '2006-06-06T01:00:00Z'");
+            expect(filter.getFormattedFilterValueWithTimeRange()).toBe("column_name >= '1999-01-01T00:00:00Z' AND column_name <= '2006-06-06T01:00:00Z'");
         });
 
         it('gives human readble form', function() {

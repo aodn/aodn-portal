@@ -12,7 +12,7 @@ Portal.filter.NumberFilter = Ext.extend(Portal.filter.Filter, {
         return Portal.filter.ui.NumberFilterPanel;
     },
 
-    getCql: function() {
+    getFormattedFilterValue: function() {
 
         var cql = String.format(
             this._getOperatorObject().cql,

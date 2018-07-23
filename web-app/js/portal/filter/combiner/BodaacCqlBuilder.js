@@ -6,7 +6,7 @@ Portal.filter.combiner.BodaacCqlBuilder = Ext.extend(Portal.filter.combiner.Filt
 
         var cqlParts = this._visualisedFiltersWithValues().map(function(filter) {
 
-            return filter.getCql();
+            return filter.getFormattedFilterValue();
         });
 
         return this._joinCql(cqlParts);

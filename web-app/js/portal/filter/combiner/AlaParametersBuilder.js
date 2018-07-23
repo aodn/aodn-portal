@@ -14,7 +14,7 @@ Portal.filter.combiner.ALAParametersBuilder = Ext.extend(Portal.filter.combiner.
                 return {"wkt" : filter.getWkt()}
             }
 
-            return filter.getCql();
+            return filter.getFormattedFilterValue();
         });
 
         return this._joinParameters(parameters);

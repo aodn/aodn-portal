@@ -12,7 +12,7 @@ Portal.filter.GeometryFilter = Ext.extend(Portal.filter.Filter, {
         return Portal.filter.ui.GeometryFilterService;
     },
 
-    getCql: function() {
+    getFormattedFilterValue: function() {
 
         return String.format(
             "INTERSECTS({0},{1})",

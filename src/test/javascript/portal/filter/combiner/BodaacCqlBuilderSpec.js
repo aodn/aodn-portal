@@ -9,22 +9,22 @@ describe("Portal.filter.combiner.BodaacCqlBuilder", function() {
                 constructor: Portal.filter.GeometryFilter, // Is Geometry filter
                 isVisualised: returns(true),
                 hasValue: returns(true),
-                getCql: returns('cql1')
+                getFormattedFilterValue: returns('cql1')
             },
             {
                 isVisualised: returns(false), // Not visualised
                 hasValue: returns(true),
-                getCql: returns('cql2')
+                getFormattedFilterValue: returns('cql2')
             },
             {
                 isVisualised: returns(true),
                 hasValue: returns(false), // No value
-                getCql: returns('cql3')
+                getFormattedFilterValue: returns('cql3')
             },
             {
                 isVisualised: returns(true),
                 hasValue: returns(true),
-                getCql: returns('cql4')
+                getFormattedFilterValue: returns('cql4')
             }
         ];
 

@@ -12,7 +12,7 @@ Portal.filter.StringFilter = Ext.extend(Portal.filter.Filter, {
         return Portal.filter.ui.ComboFilterPanel;
     },
 
-    getCql: function() {
+    getFormattedFilterValue: function() {
 
         return String.format(
             "{0} LIKE '{1}'",
