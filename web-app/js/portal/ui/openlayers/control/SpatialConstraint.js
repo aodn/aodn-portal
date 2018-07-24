@@ -191,7 +191,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         // terms of Z index
         var maxZIndexForOverlay = OpenLayers.Map.prototype.Z_INDEX_BASE['Feature'] - 1;
 
-        if (this.handler && this.handler.layer && this.handler.div) {
+        if (this.handler && this.handler.layer && this.handler.layer.div) {
             this.handler.layer.setZIndex(maxZIndexForOverlay - 2);
         }
 
