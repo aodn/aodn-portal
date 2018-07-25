@@ -19,6 +19,8 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     constructor: function(layer, options) {
 
+        this.disabled = false;
+
         // valid spatial constraints will be drawn to this layer
         this.vectorlayer = layer;
 
@@ -258,6 +260,26 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     getNormalizedGeometry: function(geometry) {
         return new OpenLayers.Geometry.fromWKT(geometry.toWkt());
+    },
+
+    activate: function() {
+      if (!this.disabled) {
+          OpenLayers.Control.DrawFeature.prototype.activate.call(this);
+          var div = Ext.get(this.map.viewPortDiv.id);
+          if (div != null) {
+              div.setStyle('cursor', null);
+          }
+      }
+    },
+
+    disableControl: function () {
+        this.disabled = true;
+        this.deactivate();
+    },
+
+    enableControl: function () {
+      this.disabled = false;
+      this.activate();
     }
 });
 

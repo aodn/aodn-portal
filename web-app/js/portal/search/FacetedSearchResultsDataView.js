@@ -332,7 +332,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         if (!this.isRecActive(uuid)) {
 
             this.dataCollectionStore.add(
-                Portal.data.DataCollection.fromMetadataRecord(record)
+                Portal.data.DataCollection.fromMetadataRecord(record, viewport.mainPanel.mapPanel.map)
             );
         }
 
