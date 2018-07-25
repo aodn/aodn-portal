@@ -191,15 +191,21 @@ knownServers = [
         ]
     ],
     [
-        uri: 'https://www.cmar.csiro.au/geoserver/wms',
+        uri: 'https://tilecache-sandbox.aodn.org.au/geowebcache/service/wms',
         wmsVersion: '1.1.1',
-        type: 'GeoServerCore',
+        type: 'CoreGeoServer'
+    ],
+
+    [
+        uri: 'http://www.cmar.csiro.au/geoserver/wms',
+        wmsVersion: '1.1.1',
+        type: 'datatrawlerserver',
         csvDownloadFormat: 'csv-with-metadata-header'
     ],
     [
         uri: 'https://www.cmar.csiro.au/data/trawler/aodn2csiro.cfm',
         wmsVersion: '1.1.1',
-        type: 'DataTrawlerProto',
+        type: 'datatrawlerserver',
         csvDownloadFormat: 'csv-with-metadata-header'
     ],
     [
@@ -330,7 +336,7 @@ portal {
 
     popupWidth = 550
     popupHeight = 325
-    
+
     // Various metadata record protocols in which the portal is interested.
     metadataProtocols {
         wms = [
