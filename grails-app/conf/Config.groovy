@@ -200,15 +200,15 @@ knownServers = [
     ],
 
     [
-        uri: 'https://www.cmar.csiro.au/geoserver/wms',
+        uri: 'http://www.cmar.csiro.au/geoserver/wms',
         wmsVersion: '1.1.1',
-        type: 'GeoServerCore',
+        type: 'datatrawlerserver',
         csvDownloadFormat: 'csv-with-metadata-header'
     ],
     [
         uri: 'https://www.cmar.csiro.au/data/trawler/aodn2csiro.cfm',
         wmsVersion: '1.1.1',
-        type: 'DataTrawlerProto',
+        type: 'datatrawlerserver',
         csvDownloadFormat: 'csv-with-metadata-header'
     ],
     [
