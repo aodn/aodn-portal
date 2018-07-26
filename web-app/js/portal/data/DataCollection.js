@@ -17,8 +17,8 @@ Portal.data.DataCollection = function() {
         return this.data.metadataRecord;
     };
 
-    constructor.prototype._loadFilters = function(map) {
-        var filterService = new Portal.filter.FilterService(map);
+    constructor.prototype._loadFilters = function() {
+        var filterService = new Portal.filter.FilterService();
         filterService.loadFilters(this, this._onFiltersLoadSuccess, this._onFiltersLoadFailure, this);
     };
 
@@ -133,13 +133,13 @@ Portal.data.DataCollection.EVENTS = {
     FILTERS_LOAD_FAILURE: 'filtersLoadFailure'
 };
 
-Portal.data.DataCollection.fromMetadataRecord = function(metadataRecord, map) {
+Portal.data.DataCollection.fromMetadataRecord = function(metadataRecord) {
     var dataCollection = new Portal.data.DataCollection({
-        "metadataRecord": metadataRecord,
+        "metadataRecord": metadataRecord
     });
 
     Portal.utils.ObservableUtils.makeObservable(dataCollection);
-    dataCollection._loadFilters(map);
+    dataCollection._loadFilters();
 
     return dataCollection;
 };
