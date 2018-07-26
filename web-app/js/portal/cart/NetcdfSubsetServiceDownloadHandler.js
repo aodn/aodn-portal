@@ -1,6 +1,6 @@
 Ext.namespace('Portal.cart');
 
-Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
+Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.InternalAsyncDownloadHandler, {
 
     _getDownloadOptionTextKey: function() {
         return 'downloadAsSubsettedNetCdfLabel';
@@ -8,6 +8,11 @@ Portal.cart.NetcdfSubsetServiceDownloadHandler = Ext.extend(Portal.cart.AsyncDow
 
     _getDownloadOptionTitle: function() {
         return OpenLayers.i18n('downloadNetcdfSubsetServiceAction');
+    },
+
+    _showDownloadOptions: function(filters) {
+        return this._resourceHrefNotEmpty()
+            && this._resourceNameNotEmpty();
     },
 
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {

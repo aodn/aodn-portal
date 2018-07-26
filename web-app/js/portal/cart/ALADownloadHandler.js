@@ -1,6 +1,6 @@
 Ext.namespace('Portal.cart');
 
-Portal.cart.ALADownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
+Portal.cart.ALADownloadHandler = Ext.extend(Portal.cart.ExternalAsyncDownloadHandler, {
 
     getDownloadOptions: function(filters) {
 
@@ -104,24 +104,5 @@ Portal.cart.ALADownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
                 })
             );
         }
-    },
-    
-    serviceResponseHandler: function(response) {
-        var msg = "";
-
-        if (response) {
-            try {
-                var responseJson = JSON.parse(response);
-                if (responseJson['url']) {
-                    msg = OpenLayers.i18n('asyncServiceMsg', {
-                        url: responseJson['url']
-                    });
-                }
-            }
-            catch (e) {
-                log.error(String.format("Could not parse asynchronous response: '{0}'", response));
-            }
-        }
-        return msg;
     }
 });

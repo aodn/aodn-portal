@@ -1,6 +1,6 @@
 Ext.namespace('Portal.cart');
 
-Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
+Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.ExternalAsyncDownloadHandler, {
 
     DEFAULT_BOUNDS: {
         bottom: this.DEFAULT_LAT_START,
@@ -9,46 +9,84 @@ Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHan
         right: this.DEFAULT_LON_END
     },
 
-    _getDownloadOptionTextKey: function() {
-        return 'downloadAsDataTrawlerCsvLabel';
+    getDownloadOptions: function(filters) {
+
+        var downloadOptions = [];
+
+        if (this._showDownloadOptions(filters)) {
+
+            downloadOptions.push({
+                textKey: OpenLayers.i18n('downloadAsDataTrawlerCsvLabel'),
+                handler: this._getUrlGeneratorFunction('csv'),
+                handlerParams: this._buildHandlerParams('{0}.csv.zip', OpenLayers.i18n('downloadDataTrawlerServiceAction'))
+            });
+        }
+        return downloadOptions;
     },
 
-    _getDownloadOptionTitle: function() {
-        return OpenLayers.i18n('downloadDataTrawlerServiceAction');
+    _buildHandlerParams: function(fileFormat, downloadAction) {
+        return {
+            asyncDownload: true,
+            collectEmailAddress: true,
+            downloadLabel: downloadAction,
+            filenameFormat: fileFormat,
+            downloadControllerArgs: {
+                action: 'passThrough'
+            }
+        }
     },
 
-    _buildServiceUrl: function(filters, dataType, serverUrl, notificationEmailAddress, hasTemporalExtent) {
+    _getUrlGeneratorFunction: function(format) {
 
-        var request = this._getTrawlerParamsUrl(filters, dataType, notificationEmailAddress);
+        var _this = this;
 
-        var jobParameters = {
-            server: serverUrl,
-            jobType: 'DataTrawler',
-            mimeType: "text/csv",
-            request: request
+        return function(collection, handlerParams) {
+
+            handlerParams.downloadFilename = collection.getTitle();
+
+            var url = _this.buildRequestUrl(
+                _this._resourceHref(),
+                collection.getFilters(),
+                _this._resourceName(),
+                format,
+                handlerParams
+            );
+
+            if (handlerParams.challengeResponse) {
+                url += String.format("&challengeResponse={0}", encodeURIComponent(handlerParams.challengeResponse));
+            }
+            return url;
         };
+    },
 
+    buildRequestUrl: function(serverUrl, filters, dataType, downloadFormat, params) {
         return String.format(
             "{0}{1}",
             this.getAsyncDownloadUrl('datatrawler'),
-            Ext.urlEncode(jobParameters)
+            Ext.urlEncode({
+                server: this.buildDataTrawlerRequestString(serverUrl, filters, dataType, downloadFormat, params)
+            })
         );
     },
 
-    _getTrawlerParamsUrl: function(filters, dataType, email) {
-        var dataTypeParam = String.format("data_type={0}&", dataType);
-        var emailParam = String.format("email_address={0}&", email);
-        var subset = this._formatFilterRequest(filters);
+    buildDataTrawlerRequestString: function(baseUrl, filters, dataType, downloadFormat, params) {
+        if (!params || !dataType) {
+            return;
+        } else {
+            var downloadUrl = baseUrl;
+            downloadUrl += (downloadUrl.indexOf('?') !== -1) ? "&" : "?";
+            downloadUrl += String.format("data_type={0}&", dataType);
+            downloadUrl += this._formatFilterRequest(filters);
+            downloadUrl += String.format("email_address={0}&", params.emailAddress);
+            downloadUrl += String.format("output_filename={0}&", params.downloadFilename.replace(/ |&/g, '_'));
+            downloadUrl += 'position_format=d.ddd&';
+            downloadUrl += 'date_format=dd-mmm-yyyy%20HH24:mm:ss&';
+            downloadUrl += String.format("file_format={0}&", downloadFormat);
+            downloadUrl += 'purpose_of_data=&';
+            downloadUrl += 'sort_order=';
 
-        return dataTypeParam +
-            subset +
-            emailParam +
-            'output_filename=data_trawler_output&' +
-            'position_format=d.ddd&' +
-            'date_format=dd-mmm-yyyy HH24:mm:ss&' +
-            'file_format=csv&'+
-            'purpose_of_data=&'+
-            'sort_order=';
+            return downloadUrl;
+        }
     },
 
     _formatFilterRequest: function(filters) {
@@ -57,10 +95,10 @@ Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHan
             if (filter.type == 'datetime' && filter.name == 'TIME') {
                 var fromDate = filter.hasValue() ? moment.utc(filter._getFromDate()) : this.DEFAULT_DATE_START;
                 var toDate = filter.hasValue() ? moment.utc(filter._getToDate()) : this.DEFAULT_DATE_END;
-                formattedFilters += String.format('TIME,{0},{1}&', this._formatDate(fromDate), this._formatDate(toDate));
+                formattedFilters += String.format('TIME={0},{1}&', this._formatDate(fromDate), this._formatDate(toDate));
             } else if (filter.type == 'pointpropertytype' || filter.type == 'geometrypropertytype') {
                 var bounds = filter.hasValue() ? filter.value.bounds : this.DEFAULT_BOUNDS;
-                formattedFilters += String.format('LATITUDE,{0},{1}&LONGITUDE,{2},{3}&',
+                formattedFilters += String.format('LATITUDE={0},{1}&LONGITUDE={2},{3}&',
                     bounds.bottom, bounds.top, bounds.left, bounds.right);
             } else if (filter.hasValue()) {
                 formattedFilters += String.format("{0}={1}&", filter.name, filter.value);

@@ -1,6 +1,6 @@
 Ext.namespace('Portal.cart');
 
-Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
+Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.InternalAsyncDownloadHandler, {
 
     _getDownloadOptionTextKey: function() {
         return 'downloadAsSubsettedNetCdfLabel';
@@ -8,6 +8,12 @@ Portal.cart.GogoduckV1DownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHand
 
     _getDownloadOptionTitle: function() {
         return OpenLayers.i18n('downloadGoGoDuckV1Action');
+    },
+
+    _showDownloadOptions: function(filters) {
+        return this._resourceHrefNotEmpty()
+            && this._resourceNameNotEmpty()
+            && !Portal.filter.FilterUtils.hasFilter(filters, 'timeSeriesAtPoint');
     },
 
     _buildServiceUrl: function(filters, layerName, serverUrl, notificationEmailAddress) {

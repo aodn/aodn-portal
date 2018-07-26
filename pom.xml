@@ -348,6 +348,12 @@
                         <include>portal/utils/moment.min.js</include>
                         <include>portal/utils/Proxy.js</include>
                         <include>portal/cart/DownloadHandler.js</include>
+                        <include>portal/cart/AsyncDownloadHandler.js</include>
+                        <include>portal/cart/InternalAsyncDownloadHandler.js</include>
+                        <include>portal/cart/ExternalAsyncDownloadHandler.js</include>
+                        <include>portal/cart/GogoduckDownloadHandler.js</include>
+                        <include>portal/cart/GogoduckV1DownloadHandler.js</include>
+                        <include>portal/cart/PointCSVDownloadHandler.js</include>
                         <include>portal/filter/Filter.js</include>
                         <include>portal/filter/combiner/BaseFilterCombiner.js</include>
                         <include>portal/filter/combiner/FilterCqlBuilder.js</include>
