@@ -94,7 +94,7 @@ Portal.filter.Filter.classFor = function(filterConfig) {
         Portal.filter.GeometryFilter,
         Portal.filter.NumberFilter,
         Portal.filter.StringFilter,
-        Portal.filter.ALASpeciesStringArrayFilter
+        Portal.filter.AlaSpeciesStringArrayFilter
     ];
 
     var filterType = filterConfig.type;

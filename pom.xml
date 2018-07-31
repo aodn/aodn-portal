@@ -355,6 +355,11 @@
                         <include>portal/cart/GogoduckV1DownloadHandler.js</include>
                         <include>portal/cart/PointCSVDownloadHandler.js</include>
                         <include>portal/filter/Filter.js</include>
+                        <include>portal/filter/ui/BaseFilterPanel.js</include>
+                        <include>portal/filter/ui/AlaSpeciesFilterPanel.js</include>
+                        <include>portal/filter/ui/GroupPanel.js</include>
+                        <include>portal/filter/ui/FilterGroupPanel.js</include>
+                        <include>portal/filter/ui/AlaFilterGroupPanel.js</include>
                         <include>portal/filter/combiner/BaseFilterCombiner.js</include>
                         <include>portal/filter/combiner/FilterCqlBuilder.js</include>
                         <include>portal/**/*.js</include>

@@ -48,7 +48,6 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
     },
 
     _shouldIncludeLabel: function() {
-
         return !this.filter.isPrimary();
     },
 

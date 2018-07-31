@@ -99,17 +99,19 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'GeometryFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'NumberFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'StringFilter.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'ALASpeciesStringArrayFilter.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'AlaSpeciesStringArrayFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'PointFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'FilterService.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'BaseFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'ComboFilterPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'ALASpeciesFilterPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'GroupPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'AlaSpeciesFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'ResettableDate.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'DateFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'BooleanFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'NumberFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'FilterGroupPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'AlaFilterGroupPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'GeometryFilterService.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'BaseFilterCombiner.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'FilterCqlBuilder.js')}"></script>
@@ -133,7 +135,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'ZAxisPickerContainer.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'NcWmsPanel.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'AlaFilterGroupPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'DataCollectionDetailsAccordion.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'InfoPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/details', file: 'SubsetItemsTabPanel.js')}"></script>

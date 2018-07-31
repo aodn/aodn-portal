@@ -1,9 +1,8 @@
 Ext.namespace('Portal.filter');
 
-Portal.filter.ALASpeciesStringArrayFilter = Ext.extend(Portal.filter.Filter, {
+Portal.filter.AlaSpeciesStringArrayFilter = Ext.extend(Portal.filter.Filter, {
 
     getSupportedGeoserverTypes: function() {
-
         return ['alastringarray'];
     },
 
@@ -12,8 +11,7 @@ Portal.filter.ALASpeciesStringArrayFilter = Ext.extend(Portal.filter.Filter, {
     },
 
     getUiComponentClass: function() {
-
-        return Portal.filter.ui.ComboFilterPanel;
+        return Portal.filter.ui.AlaSpeciesFilterPanel;
     },
 
     getFormattedFilterValue: function() {
@@ -26,7 +24,6 @@ Portal.filter.ALASpeciesStringArrayFilter = Ext.extend(Portal.filter.Filter, {
     },
 
     getHumanReadableForm: function() {
-
         return String.format(
             '{0}: {1}',
             this.getLabel(),
@@ -48,7 +45,6 @@ Portal.filter.ALASpeciesStringArrayFilter = Ext.extend(Portal.filter.Filter, {
     },
 
     _getFilterStrings: function(humanReadable) {
-
         var returnParameters = [];
         var that = this;
 

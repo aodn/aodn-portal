@@ -1,13 +1,14 @@
 Ext.namespace('Portal.filter.ui');
 
-Portal.filter.ui.ALASpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
+Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
 
     constructor: function(cfg) {
         var config = Ext.apply({
+            typeLabel: OpenLayers.i18n('alaSpeciesOccuranceHeading'),
             autoDestroy: true
         }, cfg);
 
-        Portal.filter.ui.ALASpeciesFilterPanel.superclass.constructor.call(this, config);
+        Portal.filter.ui.AlaSpeciesFilterPanel.superclass.constructor.call(this, config);
     },
 
     _createControls: function() {
@@ -114,7 +115,7 @@ Portal.filter.ui.ALASpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
                 render: function(thisPanel) {
                     new Ext.ToolTip({
                         target: thisPanel.header,
-                        html: this.speciesFilter.getHumanReadableDescriptor(activeFilterData)
+                        html: this.filter.getHumanReadableDescriptor(activeFilterData)
                     });
                 }
             }
@@ -138,13 +139,13 @@ Portal.filter.ui.ALASpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
         return false;
     },
 
-    handleRemoveFilter: function(activeFilterData) {
+    _clearFilter: function(activeFilterData) {
 
         var activeFilterIndex = this.speciesComboItems.indexOf(activeFilterData);
 
         if (activeFilterIndex != -1) {
             this.speciesComboItems.splice(activeFilterIndex, 1);
-            this.speciesFilter.setValue(this.speciesComboItems);
+            this.filter.setValue(this.speciesComboItems);
             this.speciesCombo.clearValue();
         }
     },
@@ -158,9 +159,9 @@ Portal.filter.ui.ALASpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
             if (this.speciesComboItems.indexOf(record.data) == -1) {
 
                 this.speciesComboItems.push(record.data);
-                this.speciesFilter.setValue(this.speciesComboItems);
+                this.filter.setValue(this.speciesComboItems);
 
-                trackFiltersUsage('trackingAlaFilterAction', this.speciesFilter.getHumanReadableForm(), this.dataCollection.getTitle());
+                trackFiltersUsage('trackingAlaFilterAction', this.filter.getHumanReadableForm(), this.dataCollection.getTitle());
 
                 this.activeFiltersContainer.add(this._createNewActiveFilterPanel(record.data));
                 this.activeFiltersContainer.show();
@@ -170,11 +171,11 @@ Portal.filter.ui.ALASpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
         }
     },
 
-    _clearAllFilters: function() {
+    handleRemoveFilter: function() {
         var that = this;
         Ext.each(this.activeFiltersContainer.items.items, function(panel) {
             if (panel.activeFilterData != undefined) {
-                that.handleRemoveFilter(panel.activeFilterData);
+                that._clearFilter(panel.activeFilterData);
                 panel.destroy();
             }
         });

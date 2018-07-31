@@ -35,7 +35,7 @@ Portal.details.SubsetItemsTabPanel = Ext.extend(Ext.TabPanel, {
         var filterGroupPanel;
 
         if (cfg.dataCollection.isAla()) {
-            filterGroupPanel = new Portal.details.AlaFilterGroupPanel(cfg);
+            filterGroupPanel = new Portal.filter.ui.AlaFilterGroupPanel(cfg);
         }
         else if (cfg.dataCollection.isNcwms()) {
             filterGroupPanel = new Portal.details.NcWmsPanel(cfg);
