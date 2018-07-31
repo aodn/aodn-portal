@@ -30,6 +30,14 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
                 this.clearSpatialConstraint();
             }
         );
+
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.STARTED_LOADING_FILTERS, function () {
+            Ext.get(this.viewPortDiv.id).setStyle('cursor', 'wait');
+        } , this);
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function () {
+            Ext.get(this.viewPortDiv.id).setStyle('cursor', null);
+        }, this);
+
     },
 
     getConstraint: function() {
