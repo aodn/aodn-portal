@@ -263,7 +263,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     activate: function() {
-      if (!this.disabled) {
+      if (!this.disabled && this.map != null) {
           OpenLayers.Control.DrawFeature.prototype.activate.call(this);
       }
     },
