@@ -56,7 +56,7 @@ Portal.cart.ALADownloadHandler = Ext.extend(Portal.cart.ExternalAsyncDownloadHan
 
         return function(collection, handlerParams) {
 
-            var builder = new Portal.filter.combiner.ALAParametersBuilder({
+            var builder = new Portal.filter.combiner.AlaParametersBuilder({
                 filters: collection.getFilters()
             });
 

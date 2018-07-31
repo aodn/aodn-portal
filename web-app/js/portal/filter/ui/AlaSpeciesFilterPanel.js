@@ -154,8 +154,6 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
 
         if (record.data != undefined) {
 
-            var s = record.data;
-
             if (this.speciesComboItems.indexOf(record.data) == -1) {
 
                 this.speciesComboItems.push(record.data);

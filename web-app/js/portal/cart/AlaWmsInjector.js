@@ -12,7 +12,7 @@ Portal.cart.AlaWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
     _checkTaxonFilter: function(collection) {
 
-        var builder = new Portal.filter.combiner.ALAParametersBuilder({
+        var builder = new Portal.filter.combiner.AlaParametersBuilder({
             filters: collection.getFilters()
         });
         return builder.buildParameters().Q != undefined;

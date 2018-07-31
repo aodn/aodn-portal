@@ -1,6 +1,6 @@
 Ext.namespace('Portal.filter.combiner');
 
-Portal.filter.combiner.ALAParametersBuilder = Ext.extend(Portal.filter.combiner.BaseFilterCombiner, {
+Portal.filter.combiner.AlaParametersBuilder = Ext.extend(Portal.filter.combiner.BaseFilterCombiner, {
 
     buildParameters: function() {
 

@@ -19,7 +19,7 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return "http://biocache.ala.org.au/ws/ogc/getFeatureInfo";
     },
 
-    getFeatureInfoRequestString: function(clickPoint, overrideParams) {
+    getFeatureInfoRequestString: function(clickPoint) {
 
         var lonlat = this.map.getLonLatFromPixel(clickPoint);
         var wkt = this.map.getExtent().toGeometry().toWkt();
@@ -43,7 +43,7 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return "text/json";
     },
 
-    formatFeatureInfoHtml: function(resp, options) {
+    formatFeatureInfoHtml: function(resp) {
         if (resp.status == 200 ) {
             return resp.responseText
         }
@@ -64,7 +64,7 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     applyFilters: function(filters) {
 
-        var builder = new Portal.filter.combiner.ALAParametersBuilder({
+        var builder = new Portal.filter.combiner.AlaParametersBuilder({
             filters: filters
         });
 
