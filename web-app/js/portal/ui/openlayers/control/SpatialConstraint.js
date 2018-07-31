@@ -64,14 +64,81 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             "sketchcomplete": this._onSketchComplete
         });
     },
-
+    
     _onSketchStarted: function(e) {
 
+        var isRegularPolygon = this.handler.line === undefined;
+
         this.triggerMapClick(e);
-        if (this.map.mapPanel) {
+
+        if (this.map.mapPanel && isRegularPolygon) {
             this.map.mapPanel._closeFeatureInfoPopup();
         }
+
+        if (!isRegularPolygon) {
+            this._addMouseEventHandlers(e);
+        }
     },
+
+    _addMouseEventHandlers: function(e) {
+
+        this.map.events.listeners.mousedown.splice(1,0,({
+            func: function(e) {
+                e.object.mapPanel.map.events.listeners.mousedown.splice(2,1);
+                e.object.controls.forEach(function(control) {
+                    if (control.displayClass === "olControlDrawFeature") {
+                        control._handlePolygonMouseDown(e);
+                    }
+                });
+            }
+        }));
+
+        this.map.events.listeners.mouseup.unshift({
+            func: function(e) {
+                e.object.mapPanel.map.events.listeners.mouseup.shift();
+
+                e.object.controls.forEach(function(control) {
+
+                    if (control.displayClass === "olControlDrawFeature") {
+                        control._handlePolygonMouseUp(e);
+                    }
+                });
+            }
+        });
+    },
+
+    _handlePolygonMouseDown: function(e) {
+        var latLon = e.object.getLonLatFromViewPortPx(e.xy);
+        this.pos = latLon;
+        this.insertXY(latLon.lon, latLon.lat);
+
+        if (e.object.mapPanel.featureInfoPopup) {
+            e.object.mapPanel._closeFeatureInfoPopup();
+        }
+    },
+
+    _handlePolygonMouseUp: function(e) {
+        var lonLat = e.object.getLonLatFromViewPortPx(e.xy);
+
+        //if the location is still the same as the first XY then it's just a regular click
+        if (typeof this.pos !== 'undefined') {
+            if (this.pos.lat === lonLat.lat && this.pos.lon == lonLat.lon) {
+                this.cancel();
+                e.object.mapPanel.handleFeatureInfoClick(e);
+            }
+            else {
+
+                if ((this.pos.lon > 0 && lonLat.lon > 0) || (this.pos.lon < 0 && lonLat.lon < 0)) {
+                    this.insertXY(lonLat.lon, lonLat.lat);
+
+                } else {
+                    console.log("antimeridian cross");
+                    this.cancel();
+                }
+            }
+        }
+    },
+
 
     triggerMapClick: function(e) {
 
