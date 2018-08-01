@@ -32,8 +32,8 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
             root: "searchResults.results",
             idProperty: 'guid',
             baseParams : {
-                fq: Portal.app.appConfig.alaService.index, // ALA index for marine only
-                url: Portal.app.appConfig.alaService.url
+                fq: Portal.app.appConfig.ala.index, // ALA index for marine only
+                url: Portal.app.appConfig.ala.url
             },
             fields: [
                 {name: 'name', type: 'string'},

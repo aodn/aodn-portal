@@ -1,6 +1,6 @@
 Ext.namespace('Portal.cart');
 
-Portal.cart.ALADownloadHandler = Ext.extend(Portal.cart.ExternalAsyncDownloadHandler, {
+Portal.cart.AlaDownloadHandler = Ext.extend(Portal.cart.ExternalAsyncDownloadHandler, {
 
     getDownloadOptions: function(filters) {
 
@@ -76,7 +76,7 @@ Portal.cart.ALADownloadHandler = Ext.extend(Portal.cart.ExternalAsyncDownloadHan
         };
     },
 
-    buildRequestUrl: function(baseUrl, outputFormat, downloadParameterString, handlerParams ) {
+    buildRequestUrl: function(baseUrl, outputFormat, downloadParameterString, handlerParams) {
 
         if (downloadParameterString == undefined) {
             return;
