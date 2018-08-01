@@ -51,6 +51,8 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             this.events.triggerEvent('spatialconstraintadded');
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingInitLabel'));
         }
+
+        this.polygonCoords = [];
     },
 
     _configureEventsAndHandlers: function() {
@@ -64,81 +66,134 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             "sketchcomplete": this._onSketchComplete
         });
     },
-    
-    _onSketchStarted: function(e) {
 
-        var isRegularPolygon = this.handler.line === undefined;
-
-        this.triggerMapClick(e);
-
-        if (this.map.mapPanel && isRegularPolygon) {
-            this.map.mapPanel._closeFeatureInfoPopup();
-        }
-
-        if (!isRegularPolygon) {
-            this._addMouseEventHandlers(e);
-        }
+    _isRegularPolygon: function() {
+        return (this.handler.line === undefined || this.handler.line == null);
     },
 
-    _addMouseEventHandlers: function(e) {
+    _polygonCoordsReset: function() {
+        this.polygonCoords = []
+    },
 
-        this.map.events.listeners.mousedown.splice(1,0,({
-            func: function(e) {
-                e.object.mapPanel.map.events.listeners.mousedown.splice(2,1);
-                e.object.controls.forEach(function(control) {
-                    if (control.displayClass === "olControlDrawFeature") {
-                        control._handlePolygonMouseDown(e);
-                    }
-                });
+    _addPolygonCoord: function(lonLat) {
+        this.polygonCoords.push(lonLat);
+    },
+
+    _polygonLastCoord: function() {
+        return this.polygonCoords[this.polygonCoords.length-1]
+    },
+
+    _polygonCoordsExist: function() {
+        return this.polygonCoords.length >= 1;
+    },
+
+    _antimeridianPointCross: function(lon1, lon2) {
+        if ((lon1 > 0 && lon2 > 0) || (lon1 < 0 && lon2 < 0)) {
+            return false;
+        }
+        return true;
+    },
+
+    _polygonClickInSameLocation: function(lonLat1, lonLat2) {
+        if (lonLat1.lat == lonLat2.lat && lonLat1.lon == lonLat2.lon) {
+            return true;
+        }
+        return false;
+    },
+
+    _polygonRemoveDuplicatePointsGeom: function(geometry) {
+        var lastxy = {x: -1, y: -1};
+        var removeIndex = [];
+
+        geometry.components[0].components.forEach(function(component, i) {
+            var thisxy = {x: component.x, y: component.y}
+            if (thisxy.x == lastxy.x && thisxy.y == lastxy.y) {
+                removeIndex.push(i);
             }
-        }));
-
-        this.map.events.listeners.mouseup.unshift({
-            func: function(e) {
-                e.object.mapPanel.map.events.listeners.mouseup.shift();
-
-                e.object.controls.forEach(function(control) {
-
-                    if (control.displayClass === "olControlDrawFeature") {
-                        control._handlePolygonMouseUp(e);
-                    }
-                });
-            }
+            lastxy = thisxy;
         });
+
+        removeIndex.reverse();
+        removeIndex.forEach(function(i) {
+            geometry.components[0].components.splice(i,1);
+        });
+
+        return geometry;
     },
 
-    _handlePolygonMouseDown: function(e) {
-        var latLon = e.object.getLonLatFromViewPortPx(e.xy);
-        this.pos = latLon;
-        this.insertXY(latLon.lon, latLon.lat);
+    _shiftMapCentre: function(lon) {
+        var center = this.map.getCenter();
+
+        if ((center.lon > 0 && lon < 0) || (center.lon < 0 && lon > 0)) {
+
+            var offset = lon > 0 ? 179 : -179;
+
+            this.map.setCenter(
+                new OpenLayers.LonLat(offset, center.lat)
+            );
+            return true;
+        }
+        return false;
+    },
+
+    _mapMouseMoved: function(e) {
+
+        if (this._isRegularPolygon()) {
+            return
+        }
+
+        if (this._polygonCoordsExist()
+            && this._antimeridianPointCross(e.object.getLonLatFromViewPortPx(e.xy).lon, this._polygonLastCoord().lon)) {
+
+            this.cancel();
+            this._polygonCoordsReset();
+            this.addAntimeridianFeature();
+            this._resetErrorLayerAfterTimeout();
+        }
+    },
+
+    _mapMouseDown: function(e) {
+
+        if (this._isRegularPolygon()) {
+            return
+        }
+
+        var lonLat = e.object.getLonLatFromViewPortPx(e.xy);
+
+        if (this._shiftMapCentre(lonLat.lon)) {
+            this.cancel();
+            this._polygonCoordsReset();
+        } else {
+            this.insertXY(lonLat.lon, lonLat.lat);
+            this._addPolygonCoord(lonLat);
+        }
 
         if (e.object.mapPanel.featureInfoPopup) {
             e.object.mapPanel._closeFeatureInfoPopup();
         }
     },
 
-    _handlePolygonMouseUp: function(e) {
+    _mapMouseUp: function(e) {
+
+        if (this._isRegularPolygon() || !this._polygonCoordsExist()) {
+            return
+        }
+
         var lonLat = e.object.getLonLatFromViewPortPx(e.xy);
 
-        //if the location is still the same as the first XY then it's just a regular click
-        if (typeof this.pos !== 'undefined') {
-            if (this.pos.lat === lonLat.lat && this.pos.lon == lonLat.lon) {
+        if (this._polygonClickInSameLocation(this._polygonLastCoord(), lonLat)) {
+
+            if (this.polygonCoords.length == 1) {
+                this._polygonCoordsReset();
                 this.cancel();
-                e.object.mapPanel.handleFeatureInfoClick(e);
-            }
-            else {
-
-                if ((this.pos.lon > 0 && lonLat.lon > 0) || (this.pos.lon < 0 && lonLat.lon < 0)) {
-                    this.insertXY(lonLat.lon, lonLat.lat);
-
-                } else {
-                    console.log("antimeridian cross");
-                    this.cancel();
-                }
+                this.map.events.triggerEvent('featureInfoClick', {xy: e.xy});
             }
         }
+        else if (this._polygonCoordsExist()) {
+            this.insertXY(lonLat.lon, lonLat.lat);
+            this._addPolygonCoord(lonLat);
+        }
     },
-
 
     triggerMapClick: function(e) {
 
@@ -300,8 +355,22 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         this.errorLayer.addFeatures([meridianLineFeature]);
     },
 
+    _onSketchStarted: function(e) {
+
+        this.triggerMapClick(e);
+
+        if (this.map.mapPanel && this._isRegularPolygon()) {
+            this.map.mapPanel._closeFeatureInfoPopup();
+        }
+    },
+
     _onSketchComplete: function(event) {
+        this._polygonCoordsReset();
+
         var geometry = event.feature.geometry;
+
+        this._polygonRemoveDuplicatePointsGeom(event.feature.geometry);
+
 
         if (this._checkSketch(geometry)) {
             this.clear();
@@ -357,6 +426,21 @@ Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map,
     map.events.on({
         scope: map.spatialConstraintControl,
         "removelayer": map.spatialConstraintControl._layerRemoved
+    });
+
+    map.events.on({
+        scope: map.spatialConstraintControl,
+        "mousemove": map.spatialConstraintControl._mapMouseMoved
+    });
+
+    map.events.on({
+        scope: map.spatialConstraintControl,
+        "mousedown": map.spatialConstraintControl._mapMouseDown
+    });
+
+    map.events.on({
+        scope: map.spatialConstraintControl,
+        "mouseup": map.spatialConstraintControl._mapMouseUp
     });
 
     map.spatialConstraintControl.events.on({
