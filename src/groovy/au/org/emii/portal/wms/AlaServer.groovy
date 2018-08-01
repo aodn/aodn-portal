@@ -17,8 +17,7 @@ class AlaServer extends WmsServer {
                 label     : 'Filter by species/taxon',
                 type      : 'alastringarray',
                 name      : 'Q',
-                visualised: true,
-                primaryFilter: true
+                visualised: true
             ]
         )
         filters.push(

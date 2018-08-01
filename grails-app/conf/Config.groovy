@@ -142,7 +142,7 @@ environments {
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
-        geonetwork.url = "https://geonetwork-aodnstack-ala.dev.aodn.org.au/geonetwork"
+        geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
 
         // Hosts which shouldn't be allowed
         excludedHosts = ['geoserver-wps.aodn.org.au', 'wps.aodn.org.au']
