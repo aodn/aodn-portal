@@ -1,8 +1,5 @@
 package au.org.emii.portal.wms
 
-import au.org.emii.portal.proxying.ExternalRequest
-import groovy.json.JsonSlurper
-
 class DataTrawlerServer extends CoreGeoserverServer {
 
     def groovyPageRenderer
@@ -19,7 +16,7 @@ class DataTrawlerServer extends CoreGeoserverServer {
         def filters = []
 
         try {
-            def xml = new XmlSlurper().parseText(_describeFeatureType(server, layer))
+            def xml = new XmlSlurper().parseText(utils._describeFeatureType(server, layer))
 
             def attributes = xml.'**'.findAll { node ->
                 node.name() == 'element' && node.@name != _removePrefix(layer)
@@ -64,35 +61,7 @@ class DataTrawlerServer extends CoreGeoserverServer {
         return filters
     }
 
-    def _describeFeatureType(server, layer) {
-        def requestUrl = server + "?request=DescribeFeatureType&service=WFS&version=1.0.0&typeName=${layer}"
-        def outputStream = new ByteArrayOutputStream()
-        def request = new ExternalRequest(outputStream, requestUrl.toURL())
-
-        request.executeRequest()
-        return outputStream.toString("utf-8")
-    }
-
-    def _getPagedUniqueValues(server, layer, filter) {
-        def params = [typeName: layer, propertyName: filter]
-        def body = groovyPageRenderer.render(template: '/filters/pagedUniqueRequest.xml', model: params)
-        log.debug("Request body:\n\n${body}")
-
-        def connection = server.toURL().openConnection()
-
-        connection.with {
-            doOutput = true
-            requestMethod = 'POST'
-            setRequestProperty("Content-Type", "application/xml; charset=utf-8")
-            outputStream.withWriter { writer ->
-                writer << body
-            }
-            content.text
-        }
-    }
-
     def _toLabel(attributeName) {
         attributeName.replaceAll('_', ' ').toLowerCase().capitalize()
     }
-
 }
