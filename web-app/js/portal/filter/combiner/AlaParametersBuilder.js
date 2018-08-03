@@ -14,6 +14,10 @@ Portal.filter.combiner.AlaParametersBuilder = Ext.extend(Portal.filter.combiner.
                 return {"wkt" : filter.getWkt()}
             }
 
+            if (filter.constructor == Portal.filter.AlaSpeciesStringArrayFilter) {
+                return filter.getFormattedFilterValue();
+            }
+
             return filter.getCql();
         });
 
