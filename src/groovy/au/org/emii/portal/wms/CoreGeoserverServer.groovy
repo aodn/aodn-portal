@@ -4,6 +4,8 @@ import au.org.emii.portal.proxying.ExternalRequest
 
 class CoreGeoserverServer extends WmsServer {
 
+    protected def utils = new CoreGeoserverUtils()
+
     private def filterValuesService
 
     CoreGeoserverServer(filterValuesService) {
@@ -17,7 +19,7 @@ class CoreGeoserverServer extends WmsServer {
     def getFilters(server, layer) {
         def filters = []
 
-        def layerInfo = getLayerInfo(server, layer)
+        def layerInfo = utils.getLayerInfo(server, layer)
 
         if (layerInfo.owsType == "WCS") {
 
@@ -34,7 +36,7 @@ class CoreGeoserverServer extends WmsServer {
 
             try {
 
-                def xml = new XmlSlurper().parseText(_describeFeatureType(server, layer))
+                def xml = new XmlSlurper().parseText(utils._describeFeatureType(server, layer))
 
                 def attributes = xml.'**'.findAll { node ->
                     node.name() == 'element' && node.@name != _removePrefix(layer)
@@ -62,7 +64,8 @@ class CoreGeoserverServer extends WmsServer {
                             )
                             hasTemporalRange = true
                         }
-                    } else {
+                    }
+                    else {
                         filters.push(
                             [
                                 label     : _toLabel(propertyName),
@@ -73,7 +76,8 @@ class CoreGeoserverServer extends WmsServer {
                         )
                     }
                 }
-            } catch (e) {
+            }
+            catch (e) {
                 log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
             }
         }
