@@ -14,7 +14,7 @@ Portal.filter.combiner.AlaParametersBuilder = Ext.extend(Portal.filter.combiner.
                 return {"wkt" : filter.getWkt()}
             }
 
-            return filter.getFormattedFilterValue();
+            return filter.getCql();
         });
 
         return this._joinParameters(parameters);
@@ -35,11 +35,6 @@ Portal.filter.combiner.AlaParametersBuilder = Ext.extend(Portal.filter.combiner.
 
         var paramString = "";
         var filters = this.buildParameters();
-
-        if (filters['Q'] == undefined) {
-            // Q is an essential parameter for ALA download
-            return;
-        }
 
         if (filters['fromDate'] || filters['toDate']) {
             filters = this._createDateTimeParameter(filters);

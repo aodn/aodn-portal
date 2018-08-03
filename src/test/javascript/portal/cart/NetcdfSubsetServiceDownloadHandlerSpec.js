@@ -60,18 +60,18 @@ describe('Portal.cart.NetcdfSubsetServiceDownloadHandler', function () {
                         constructor: Portal.filter.GeometryFilter, // Is Geometry filter
                         isVisualised: returns(true),
                         hasValue: returns(true),
-                        getFormattedFilterValue: returns("Geometry Cql")
+                        getCql: returns("Geometry Cql")
                     },
                     {
                         isVisualised: returns(false), // Not visualised
                         hasValue: returns(true),
-                        getFormattedFilterValue: returns("Depth Cql")
+                        getCql: returns("Depth Cql")
                     },
                     {
                         visualised: true,
                         isVisualised: returns(true),
                         hasValue: returns(true),
-                        getFormattedFilterValue: returns("Salinity Cql")
+                        getCql: returns("Salinity Cql")
                     }
                 ])
             };

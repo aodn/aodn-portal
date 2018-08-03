@@ -6,7 +6,7 @@ Portal.filter.combiner.ShapeFileCqlBuilder = Ext.extend(Portal.filter.combiner.F
 
         var cqlParts = this._visualisedFiltersWithValues().map(function(filter) {
 
-            return filter.getFormattedFilterValue();
+            return filter.getCql();
         });
 
         return this._joinCql(cqlParts);

@@ -28,7 +28,7 @@ describe('Portal.cart.AlaDownloadHandler', function () {
                         visualised: true,
                         name: 'position',
                         hasValue: returns(true),
-                        getFormattedFilterValue: returns({
+                        getCql: returns({
                             wkt: 'POLYGON((108.2373046875 -27.73046875,108.2373046875 -23.951171875,116.8505859375 -23.951171875,116.8505859375 -27.73046875,108.2373046875 -27.73046875))'
                         }),
                         value: {
@@ -45,7 +45,7 @@ describe('Portal.cart.AlaDownloadHandler', function () {
                         type: 'alastringarray',
                         visualised: true,
                         hasValue: returns(true),
-                        getFormattedFilterValue: returns({
+                        getCql: returns({
                             Q: 'urn:lsid:biodiversity.org.au:afd.taxon:91923901-bfe6-4cf5-b9a1-310284f5c90b'
                         }),
                         name: 'Q',
@@ -59,7 +59,7 @@ describe('Portal.cart.AlaDownloadHandler', function () {
                         visualised: true,
                         hasValue: returns(true),
                         name: 'dateTime',
-                        getFormattedFilterValue: returns({
+                        getCql: returns({
                             fromDate: '2017-05-02T00:00:00.000Z',
                             toDate: '2018-08-30T23:59:59.999Z'
                         }),

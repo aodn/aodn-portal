@@ -1,10 +1,6 @@
 Ext.namespace('Portal.cart');
 
 Portal.cart.PointCSVDownloadHandler = Ext.extend(Portal.cart.InternalAsyncDownloadHandler, {
-    
-    constructor: function(config) {
-        Portal.cart.PointCSVDownloadHandler.superclass.constructor.call(this, Ext.apply(this, config));
-    },
 
     _getDownloadOptionTextKey: function() {
         return 'downloadAsPointTimeSeriesCsvLabel';

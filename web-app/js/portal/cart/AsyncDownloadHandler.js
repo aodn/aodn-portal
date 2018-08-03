@@ -2,18 +2,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
 
-    constructor: function(config) {
-        Portal.cart.AsyncDownloadHandler.superclass.constructor.call(this, Ext.apply(this, config));
-    },
-
-    getDownloadOptions: function() {
-        throw 'Should be implemented by subclasses';
-    },
-
-    _getUrlGeneratorFunction: function() {
-        throw 'Should be implemented by subclasses';
-    },
-
     hasTemporalExtent: function(collection) {
         try {
             return (Object.keys(collection.layerAdapter.layerSelectionModel.selectedLayer.temporalExtent.extent) == 0) ? false : true;

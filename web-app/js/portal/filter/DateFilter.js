@@ -17,12 +17,12 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
         return Portal.filter.ui.DateFilterPanel;
     },
 
-    getFormattedFilterValue: function() {
+    getCql: function() {
 
         return this._getCql(true);
     },
 
-    getFormattedFilterValueWithTimeRange: function() {
+    getCqlWithTimeRange: function() {
 
         return this._getCql(false);
     },

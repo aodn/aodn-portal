@@ -15,6 +15,10 @@ Portal.cart.DownloadHandler = Ext.extend(Object, {
         this.onlineResource = onlineResource;
     },
 
+    getDownloadOptions: function() {
+        throw 'Should be implemented by subclasses';
+    },
+
     _resourceName: function() {
 
         return this.onlineResource.name;

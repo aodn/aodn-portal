@@ -71,7 +71,7 @@ Portal.filter.Filter = Ext.extend(Ext.util.Observable, {
         throw 'Subclasses must implement the getUiComponentClass function';
     },
 
-    getFormattedFilterValue: function() {
+    getCql: function() {
 
         throw 'Subclasses must implement the getCql function';
     },

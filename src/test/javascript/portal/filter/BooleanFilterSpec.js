@@ -11,11 +11,11 @@ describe("Portal.filter.BooleanFilter", function() {
         });
     });
 
-    describe('getFormattedFilterValue', function() {
+    describe('getCql', function() {
 
         it('returns correct cql', function() {
 
-            expect(filter.getFormattedFilterValue()).toBe('column_name = true');
+            expect(filter.getCql()).toBe('column_name = true');
         });
     });
 

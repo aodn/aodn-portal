@@ -7,10 +7,10 @@ Portal.filter.combiner.DataDownloadCqlBuilder = Ext.extend(Portal.filter.combine
         var cqlParts = this._filtersWithValues().map(function(filter) {
 
             if (filter.constructor == Portal.filter.DateFilter) {
-                return filter.getFormattedFilterValueWithTimeRange();
+                return filter.getCql();
             }
 
-            return filter.getFormattedFilterValue();
+            return filter.getCql();
         });
 
         return this._joinCql(cqlParts);

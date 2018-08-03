@@ -2,10 +2,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.InternalAsyncDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
-    constructor: function(config) {
-        Portal.cart.InternalAsyncDownloadHandler.superclass.constructor.call(this, Ext.apply(this, config));
-    },
-
     getDownloadOptions: function(filters) {
 
         var downloadOptions = [];

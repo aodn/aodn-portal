@@ -15,11 +15,11 @@ describe("Portal.filter.GeometryFilter", function() {
             };
         });
 
-        describe('getFormattedFilterValue', function() {
+        describe('getCql', function() {
 
             it('returns CQL', function() {
 
-                expect(filter.getFormattedFilterValue()).toBe('INTERSECTS(column_name,POLYGON((1 2,3 2,3 4,1 4,1 2)))');
+                expect(filter.getCql()).toBe('INTERSECTS(column_name,POLYGON((1 2,3 2,3 4,1 4,1 2)))');
             });
         });
 
@@ -49,11 +49,11 @@ describe("Portal.filter.GeometryFilter", function() {
             };
         });
 
-        describe('getFormattedFilterValue', function() {
+        describe('getCql', function() {
 
             it('returns CQL', function() {
 
-                expect(filter.getFormattedFilterValue()).toBe('INTERSECTS(column_name,POLYGON((1 2,3 2,3 4,1 4,1 2)))');
+                expect(filter.getCql()).toBe('INTERSECTS(column_name,POLYGON((1 2,3 2,3 4,1 4,1 2)))');
             });
         });
 

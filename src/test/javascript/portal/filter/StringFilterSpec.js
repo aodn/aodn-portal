@@ -11,11 +11,11 @@ describe("Portal.filter.StringFilter", function() {
         });
     });
 
-    describe('getFormattedFilterValue', function() {
+    describe('getCql', function() {
 
         it('returns correct cql', function() {
 
-            expect(filter.getFormattedFilterValue()).toBe("column_name LIKE 'L''astrolabe'");
+            expect(filter.getCql()).toBe("column_name LIKE 'L''astrolabe'");
         });
     });
 

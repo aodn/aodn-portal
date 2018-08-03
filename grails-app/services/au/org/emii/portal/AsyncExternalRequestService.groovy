@@ -6,8 +6,6 @@ import groovyx.net.http.HttpResponseException
 
 class AsyncExternalRequestService extends AsyncDownloadService {
 
-    def grailsApplication
-
     def getConnection(params) {}
     def getBody(params) {}
 

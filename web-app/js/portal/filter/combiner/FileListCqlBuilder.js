@@ -6,7 +6,7 @@ Portal.filter.combiner.FileListCqlBuilder = Ext.extend(Portal.filter.combiner.Fi
 
         var cqlParts = this._visualisedFiltersWithValues().map(function(filter) {
 
-            return filter.getFormattedFilterValue();
+            return filter.getCql();
         });
 
         return this._joinCql(cqlParts);

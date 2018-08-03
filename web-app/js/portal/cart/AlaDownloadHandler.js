@@ -1,6 +1,6 @@
 Ext.namespace('Portal.cart');
 
-Portal.cart.AlaDownloadHandler = Ext.extend(Portal.cart.ExternalAsyncDownloadHandler, {
+Portal.cart.AlaDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
     getDownloadOptions: function(filters) {
 
@@ -43,11 +43,10 @@ Portal.cart.AlaDownloadHandler = Ext.extend(Portal.cart.ExternalAsyncDownloadHan
         }
     },
 
-    _showDownloadOptions: function(filters) {
+    _showDownloadOptions: function() {
 
         return this._resourceHrefNotEmpty()
-            && this._resourceNameNotEmpty()
-            && !Portal.filter.FilterUtils.hasFilter(filters, 'timeSeriesAtPoint');
+            && this._resourceNameNotEmpty();
     },
 
     _getUrlGeneratorFunction: function(format) {
@@ -78,31 +77,26 @@ Portal.cart.AlaDownloadHandler = Ext.extend(Portal.cart.ExternalAsyncDownloadHan
 
     buildRequestUrl: function(baseUrl, outputFormat, downloadParameterString, handlerParams) {
 
-        if (downloadParameterString == undefined) {
-            return;
-        }
-        else {
-            var downloadUrl = baseUrl;
-            downloadUrl += (downloadUrl.indexOf('?') !== -1) ? "&" : "?";
-            downloadUrl += '&fileType=' + outputFormat;
-            downloadUrl += '&file=' + handlerParams.alaDownloadFilename.replace(/ /g, '_').replace(/\W/g, '');
-            if (Portal.app.appConfig.ala.downloadFields != undefined) {
+        var downloadUrl = baseUrl;
+        downloadUrl += (downloadUrl.indexOf('?') !== -1) ? "&" : "?";
+        downloadUrl += '&fileType=' + outputFormat;
+        downloadUrl += '&file=' + handlerParams.alaDownloadFilename.replace(/ /g, '_').replace(/\W/g, '');
+        if (Portal.app.appConfig.ala.downloadFields != undefined) {
                 downloadUrl += '&fields=' + Portal.app.appConfig.ala.downloadFields;
-            }
-            downloadUrl += "&dwcHeaders=true";
-            downloadUrl += "&email=" + handlerParams.emailAddress;
-            downloadUrl += '&reasonTypeId=' + 4;
-            downloadUrl += '&qa=none';
-            downloadUrl += '&sourceTypeId=' + Portal.app.appConfig.ala.aodnAlaId; // ALA assigned number for AODN
-            downloadUrl += downloadParameterString;
-
-            return String.format(
-                "{0}{1}",
-                this.getAsyncDownloadUrl('ala'),
-                Ext.urlEncode({
-                    server: downloadUrl
-                })
-            );
         }
+        downloadUrl += "&dwcHeaders=true";
+        downloadUrl += "&email=" + handlerParams.emailAddress;
+        downloadUrl += '&reasonTypeId=' + 4;
+        downloadUrl += '&qa=none';
+        downloadUrl += '&sourceTypeId=' + Portal.app.appConfig.ala.aodnAlaId; // ALA assigned number for AODN
+        downloadUrl += downloadParameterString;
+
+        return String.format(
+            "{0}{1}",
+            this.getAsyncDownloadUrl('ala'),
+            Ext.urlEncode({
+                server: downloadUrl
+            })
+        );
     }
 });

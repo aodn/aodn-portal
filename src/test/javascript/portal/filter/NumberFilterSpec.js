@@ -39,11 +39,11 @@ describe("Portal.filter.NumberFilter", function() {
             });
         });
 
-        describe('getFormattedFilterValue', function() {
+        describe('getCql', function() {
 
             it('returns correct CQL', function() {
 
-                expect(filter.getFormattedFilterValue()).toBe('column_name >= 5');
+                expect(filter.getCql()).toBe('column_name >= 5');
             });
         });
 
@@ -87,11 +87,11 @@ describe("Portal.filter.NumberFilter", function() {
             });
         });
 
-        describe('getFormattedFilterValue', function() {
+        describe('getCql', function() {
 
             it('returns correct CQL', function() {
 
-                expect(filter.getFormattedFilterValue()).toBe('column_name between 5 AND 99');
+                expect(filter.getCql()).toBe('column_name between 5 AND 99');
             });
         });
 

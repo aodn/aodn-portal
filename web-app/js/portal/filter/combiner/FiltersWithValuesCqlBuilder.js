@@ -7,7 +7,7 @@ Portal.filter.combiner.FiltersWithValuesCqlBuilder = Ext.extend(Portal.filter.co
 
         var cqlParts = this._filtersWithValues().map(function(filter) {
 
-            return filter.getFormattedFilterValue();
+            return filter.getCql();
         });
 
         return this._joinCql(cqlParts);

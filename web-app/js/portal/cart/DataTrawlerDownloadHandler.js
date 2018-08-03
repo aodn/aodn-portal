@@ -1,6 +1,6 @@
 Ext.namespace('Portal.cart');
 
-Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.ExternalAsyncDownloadHandler, {
+Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
     DEFAULT_BOUNDS: {
         bottom: this.DEFAULT_LAT_START,

@@ -16,7 +16,7 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     getAlaGetFeatureInfoString: function() {
-        return "http://biocache.ala.org.au/ws/ogc/getFeatureInfo";
+        return Portal.app.appConfig.ala.gfi_endpoint;
     },
 
     getFeatureInfoRequestString: function(clickPoint) {

@@ -18,11 +18,6 @@ class HostVerifier {
 
         def host = extractHost(address)
 
-        if (excludedHost(host)) {
-            log.error "Not allowing request to address '${address}' (host blacklisted)"
-            return false
-        }
-
         initializeAllowedHostsIfNeeded()
 
         if (allowedHosts[host]) {
@@ -36,12 +31,6 @@ class HostVerifier {
 
     def extractHost(url) {
         return url.toURL().host
-    }
-
-    def excludedHost(host) {
-        def appConfig = grailsApplication.config
-
-        return appConfig.excludedHosts && appConfig.excludedHosts.contains(host)
     }
 
     def initializeAllowedHostsIfNeeded() {

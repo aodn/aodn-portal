@@ -30,12 +30,18 @@ Portal.filter.ui.GroupPanel = Ext.extend(Ext.Container, {
     },
 
     _attachEvents: function() {
-        throw '_attachEvents must be implemented by subclasses';
+        var filters = this.dataCollection.getFilters();
+        if (filters == undefined) {
+            this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS, this._filtersLoaded, this);
+            this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_UPDATED, this._filtersUpdated, this);
+            this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_FAILURE, function() { this._filtersLoaded([]); }, this);
+        }
+        else {
+            this._filtersLoaded(filters);
+        }
     },
 
-    _updateAndShow: function() {
-        throw '_updateAndShow must be implemented by subclasses';
-    },
+    _filtersUpdated: function() {},
 
     _filtersLoaded: function() {
         throw '_filtersLoaded must be implemented by subclasses'
