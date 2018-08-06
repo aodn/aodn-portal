@@ -88,24 +88,19 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _antimeridianPointCross: function(lon1, lon2) {
-        if ((lon1 > 0 && lon2 > 0) || (lon1 < 0 && lon2 < 0)) {
-            return false;
-        }
-        return true;
+        return !((lon1 > 0 && lon2 > 0) || (lon1 < 0 && lon2 < 0))
     },
 
     _polygonClickInSameLocation: function(lonLat1, lonLat2) {
-        if (lonLat1.lat == lonLat2.lat && lonLat1.lon == lonLat2.lon) {
-            return true;
-        }
-        return false;
+        return (lonLat1.lat == lonLat2.lat && lonLat1.lon == lonLat2.lon);
     },
 
     _polygonRemoveDuplicatePointsGeom: function(geometry) {
         var lastxy = {x: -1, y: -1};
         var removeIndex = [];
 
-        geometry.components[0].components.forEach(function(component, i) {
+        var components = geometry.components[0].components;
+        components.forEach(function(component, i) {
             var thisxy = {x: component.x, y: component.y}
             if (thisxy.x == lastxy.x && thisxy.y == lastxy.y) {
                 removeIndex.push(i);
@@ -115,25 +110,22 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
         removeIndex.reverse();
         removeIndex.forEach(function(i) {
-            geometry.components[0].components.splice(i,1);
+            components.splice(i,1);
         });
 
         return geometry;
     },
 
-    _shiftMapCentre: function(lon) {
-        var center = this.map.getCenter();
+    _shiftMapCentre: function(lon, centreLat) {
+        var offset = lon > 0 ? 179 : -179;
 
-        if ((center.lon > 0 && lon < 0) || (center.lon < 0 && lon > 0)) {
+        this.map.setCenter(
+            new OpenLayers.LonLat(offset, centreLat)
+        );
+    },
 
-            var offset = lon > 0 ? 179 : -179;
-
-            this.map.setCenter(
-                new OpenLayers.LonLat(offset, center.lat)
-            );
-            return true;
-        }
-        return false;
+    _shouldShiftMapCentre: function(checkLon, centreLon) {
+        return ((centreLon > 0 && checkLon < 0) || (centreLon < 0 && checkLon > 0))
     },
 
     _mapMouseMoved: function(e) {
@@ -159,11 +151,14 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         }
 
         var lonLat = e.object.getLonLatFromViewPortPx(e.xy);
+        var mapCentreLonLat = this.map.getCenter();
 
-        if (this._shiftMapCentre(lonLat.lon)) {
+        if (this._shouldShiftMapCentre(lonLat.lon, mapCentreLonLat.lon)) {
+            this._shiftMapCentre(lonLat.lon, mapCentreLonLat.lat);
             this.cancel();
             this._polygonCoordsReset();
-        } else {
+        }
+        else {
             this.insertXY(lonLat.lon, lonLat.lat);
             this._addPolygonCoord(lonLat);
         }
