@@ -9,6 +9,7 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
     def filterValuesJson
     def emptyJson
     def groovyPageRenderer
+    def validDescribeLayerResponse
 
     protected void setUp() {
         super.setUp()
@@ -50,11 +51,19 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
   "fieldName":"property_name",
   "size":0
 }'''
-
+        validDescribeLayerResponse =
+'''<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE WMS_DescribeLayerResponse SYSTEM "https://geoserver.aodn.org.au/geoserver/schemas/wms/1.1.1/WMS_DescribeLayerResponse.dtd">
+<WMS_DescribeLayerResponse version="1.1.1">
+  <LayerDescription name="imos:argo_profile_map" wfs="https://geoserver.aodn.org.au/geoserver/wfs?" owsURL="https://geoserver.aodn.org.au/geoserver/wfs?" owsType="WFS">
+    <Query typeName="imos:argo_profile_map"/>
+  </LayerDescription>
+</WMS_DescribeLayerResponse>
+'''
     }
 
     void testValidFilterValues() {
-        CoreGeoserverUtils.metaClass._getPagedUniqueValues = { server, layer, filter, renderer -> return filterValuesJson }
+        coreGeoserverServer.metaClass._getPagedUniqueValues = { server, layer, filter -> return filterValuesJson }
 
         def expected = [
             "ABFR",
@@ -70,7 +79,7 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
     }
 
     void testInvalidFilterValues() {
-        CoreGeoserverUtils.metaClass._getPagedUniqueValues = { server, layer, filter, renderer -> return "here be invalid json" }
+        coreGeoserverServer.metaClass._getPagedUniqueValues = { server, layer, filter -> return "here be invalid json" }
 
         def expected = []
 
@@ -80,7 +89,7 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
     }
 
     void testValidFilters() {
-        CoreGeoserverUtils.metaClass._describeFeatureType = { server, layer -> return validGeoserverResponse }
+        coreGeoserverServer.metaClass._describeFeatureType = { server, layer -> return validGeoserverResponse }
 
         def expected = [
             [
@@ -110,12 +119,27 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
     }
 
     void testInvalidFilters() {
-        CoreGeoserverUtils.metaClass._describeFeatureType = { server, layer -> return "here be invalid xml" }
+        coreGeoserverServer.metaClass._describeFeatureType = { server, layer -> return "here be invalid xml" }
 
         def expected = []
 
         def filtersJson = coreGeoserverServer.getFilters("http://server", "layer")
 
         assertEquals expected, filtersJson
+    }
+
+    void testLookup() {
+        def describeLayerCalledCount = 0
+
+        coreGeoserverServer.metaClass._describeLayer = { server, layer -> describeLayerCalledCount++ ; return validDescribeLayerResponse }
+
+        def result = coreGeoserverServer._lookupWfs("https://geoserver.aodn.org.au/geoserver/wms", "imos:argo_profile_map")
+
+        assertEquals(1, describeLayerCalledCount) // describeLayer called
+        assertEquals(["https://geoserver.aodn.org.au/geoserver/wfs?", "imos:argo_profile_map"], result)
+
+        result = coreGeoserverServer._lookupWfs("https://geoserver.aodn.org.au/geoserver/wms", "imos:argo_profile_map")
+        assertEquals(1, describeLayerCalledCount) // describeLayer not called - cache used
+        assertEquals(["https://geoserver.aodn.org.au/geoserver/wfs?", "imos:argo_profile_map"], result)
     }
 }
