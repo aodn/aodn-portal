@@ -373,4 +373,29 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             });
         });
     });
+
+    describe('polygonConstraint', function() {
+
+        var polygonSpatialConstraint;
+
+        beforeEach(function() {
+
+            polygonSpatialConstraint = new Portal.ui.openlayers.control.SpatialConstraint(
+                map.constraintLayer,
+                this.constraintLayer,
+                {
+                    handler: OpenLayers.Handler.Polygon,
+                    'displayClass': 'olControlDrawFeature'
+                }
+
+            spyOn(polygonSpatialConstraint, '_mapMouseDown');
+        });
+
+        describe('add test here', function() {
+
+            polygonSpatialConstraint.map.events.triggerEvent("click");
+            expect(false).toBeFalsy();
+
+        });
+    });
 });
