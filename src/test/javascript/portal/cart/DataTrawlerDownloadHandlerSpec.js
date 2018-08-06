@@ -67,7 +67,7 @@ describe('Portal.cart.DataTrawlerDownloadHandler', function () {
             expect(urlParamPresent(url, 'server', encodeURIComponent('dt_endpoint_url'))).toBeTruthy();
             expect(urlParamPresent(url, 'data_type', encodeURIComponent('ctd'))).toBeTruthy();
             expect(urlParamPresent(url, 'email_address', 'bob@example.com')).toBeTruthy();
-            expect(urlParamPresent(url, 'date_format', encodeURIComponent('dd-mmm-yyyy HH24:mm:ss'))).toBeTruthy();
+            expect(urlParamPresent(url, 'date_format', 'dd-mmm-yyyy%20HH24:mm:ss')).toBeTruthy();
         });
     });
 
