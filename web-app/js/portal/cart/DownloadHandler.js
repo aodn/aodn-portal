@@ -16,7 +16,6 @@ Portal.cart.DownloadHandler = Ext.extend(Object, {
     },
 
     getDownloadOptions: function() {
-
         throw 'Should be implemented by subclasses';
     },
 

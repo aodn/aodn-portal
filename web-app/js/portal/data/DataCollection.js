@@ -124,6 +124,10 @@ Portal.data.DataCollection = function() {
         return this.getLayerSelectionModel().isNcwms();
     };
 
+    constructor.prototype.isAla = function() {
+        return this.getLayerSelectionModel().isAla();
+    };
+
     return constructor;
 }();
 

@@ -93,7 +93,8 @@ Portal.filter.Filter.classFor = function(filterConfig) {
         Portal.filter.DateFilter,
         Portal.filter.GeometryFilter,
         Portal.filter.NumberFilter,
-        Portal.filter.StringFilter
+        Portal.filter.StringFilter,
+        Portal.filter.AlaSpeciesStringArrayFilter
     ];
 
     var filterType = filterConfig.type;

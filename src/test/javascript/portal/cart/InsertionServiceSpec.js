@@ -8,7 +8,8 @@ describe('Portal.cart.InsertionService', function() {
 
         dataCollection = {
             title: 'the title',
-            uuid: '42'
+            uuid: '42',
+            isAla: returns(false)
         };
     });
 

@@ -15,6 +15,10 @@ class DownloadController extends RequestProxyingController {
 
     // Index action inherited from RequestProxyingController
 
+    def passThrough = {
+        _performProxyingIfAllowed()
+    }
+
     def urlListForLayer = {
 
         def (fieldName, urlSubstitutions) = _loadCommonFields(params)

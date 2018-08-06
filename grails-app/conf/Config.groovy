@@ -143,13 +143,6 @@ environments {
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
-
-        // Set to true if you want to test interaction with new servers. This turns
-        // your portal instance into an open proxy and can be dangerous.
-        allowAnyHost = true
-
-        // Hosts which shouldn't be allowed even if allowAnyHosts is set to true
-        excludedHosts = ['geoserver-wps.aodn.org.au', 'wps.aodn.org.au']
     }
 
     test {
@@ -217,6 +210,31 @@ knownServers = [
         uri: 'https://www.cmar.csiro.au/geoserver/ncwms',
         wmsVersion: '1.3.0',
         type: 'ncWMS'
+    ],
+    [
+        uri: 'http://biocache-lb.ala.org.au/ws',
+        wmsVersion: '1.1.1',
+        type: 'ALA'
+    ],
+    [
+        uri: 'http://biocache.ala.org.au/ws/ogc/getFeatureInfo',
+        type: 'ALAGetFeatureInfo'
+    ],
+    [
+        uri: 'http://data2.tpac.org.au/geoserver/ncwms',
+        wmsVersion: '1.3.0',
+        type: 'ncWMS'
+    ],
+    [
+        uri: 'https://tilecache.aodn.org.au/geowebcache/service/wms',
+        wmsVersion: '1.1.1',
+        type: 'GeoServer'
+
+    ],
+    [
+        uri: 'http://geoserver.imas.utas.edu.au/geoserver/wms',
+        wmsVersion: '1.1.1',
+        type: 'GeoServer'
     ],
     [
         uri: 'http://ncwms.aodn.org.au/ncwms/wms',
@@ -306,7 +324,7 @@ portal {
 
     popupWidth = 550
     popupHeight = 325
-
+    
     // Various metadata record protocols in which the portal is interested.
     metadataProtocols {
         wms = [
@@ -348,12 +366,21 @@ portal {
         [ 'handler': 'NetcdfSubsetServiceDownloadHandler', 'protocol': 'OGC:WPS--netcdf-subset-service'      ],
         [ 'handler': 'PythonDownloadHandler',              'protocol': 'AODN:WFS-EXTERNAL-1.0.0-http-get-capabilities' ],
         [ 'handler': 'BodaacDownloadHandler',              'protocol': 'IMOS:AGGREGATION--bodaac'            ],
-        [ 'handler': 'GogoduckV1DownloadHandler',          'protocol': 'IMOS:AGGREGATION--gogoduck'          ],
         [ 'handler': 'FileListDownloadHandler',            'protocol': 'AODN:FILE-list'                      ],
-        [ 'handler': 'ShapeFileDownloadHandler',           'protocol': 'OGC:WFS-1.0.0-http-get-feature--shapefile']
+        [ 'handler': 'ShapeFileDownloadHandler',           'protocol': 'OGC:WFS-1.0.0-http-get-feature--shapefile'],
+        [ 'handler': 'AlaDownloadHandler',                 'protocol': 'ALA:Occurrence-download']
     ]
 
     mapGetFeatureInfoBuffer = 10
+}
+
+// Atlas of Australia
+ala {
+    aodnAlaId = '2003'
+    url = "https://biocache-lb.ala.org.au/ws/autocomplete/search"
+    index = 'species_habitats:"Marine"'
+    gfi_endpoint = "http://biocache.ala.org.au/ws/ogc/getFeatureInfo"
+    /*downloadFields = "type%2Cmodified.p%2Clanguage%2Clicense%2Crightsholder%2Crights%2CbibliographicCitation%2Ccitation%2Creferences%2CinstitutionID%2CcollectionID%2CdatasetID%2CinstitutionCode%2CcollectionCode%2CdatasetName%2CownerInstitutionCode%2CbasisOfRecord.p%2CbasisOfRecord.p%2CinformationWithheld.p%2CdataGeneralizations.p%2CdynamicProperties%2CoccurrenceID%2CcatalogNumber%2CrecordNumber%2CrecordedBy.p%2CindividualCount%2CorganismQuantity%2CorganismQuantityType%2Csex%2ClifeStage%2CreproductiveCondition%2Cbehavior%2CestablishmentMeans.p%2CoccurrenceStatus.p%2Cpreparations%2Cdisposition%2CassociatedMedia%2CassociatedReferences%2CassociatedSequences%2CassociatedTaxa%2CotherCatalogNumbers%2CoccurrenceRemarks%2CorganismID%2CorganismName%2CorganismScope%2CassociatedOccurrences.p%2CassociatedOrganisms%2CpreviousIdentifications%2CorganismRemarks%2CmaterialSampleID%2CeventID%2CparentEventID%2CfieldNumber%2CeventDate.p%2CeventTime%2CstartDayOfYear%2CendDayOfYear%2Cyear.p%2Cmonth.p%2Cday.p%2CverbatimEventDate%2Chabitat.p%2CsamplingProtocol.p%2CsamplingEffort%2CsampleSizeUnit%2CfieldNotes%2CeventRemarks%2ClocationId%2ChigherGeographyID%2ChigherGeography%2Ccontinent%2CwaterBody%2CislandGroup%2Cisland%2Ccountry.p%2CcountryCode%2CstateProvince.p%2Ccounty%2Cmunicipality%2Clocality.p%2CverbatimLocality%2CminimumElevationInMeters.p%2CmaximumElevationInMeters.p%2CverbatimElevation.p%2CminimumDepthInMeters.p%2CmaximumDepthInMeters.p%2CverbatimDepth.p%2CminimumDistanceAboveSurfaceInMeters%2CmaximumDistanceAboveSurfaceInMeters%2ClocationAccordingTo%2ClocationRemarks%2CdecimalLatitude.p%2CdecimalLongitude.p%2CgeodeticDatum.p%2CcoordinateUncertaintyInMeters.p%2CcoordinatePrecision.p%2CpointRadiusSpatialFit%2CverbatimCoordinates%2CverbatimLatitude%2CverbatimLongitude%2CverbatimCoordinateSystem%2CverbatimSRS%2CfootprintWKT%2CfootprintSRS%2CfootprintSpatialFit%2CgeoreferencedBy.p%2CgeoreferencedDate.p%2CgeoreferenceProtocol.p%2CgeoreferenceSources.p%2CgeoreferenceVerificationStatus.p%2CgeoreferenceRemarks%2CgeologicalContextID%2CearliestEonOrLowestEonothem%2ClatestEonOrHighestEonothem%2CearliestEraOrLowestErathem%2ClatestEraOrHighestErathem%2CearliestPeriodOrLowestSystem%2ClatestPeriodOrHighestSystem%2CearliestEpochOrLowestSeries%2ClatestEpochOrHighestSeries%2CearliestAgeOrLowestStage%2ClatestAgeOrHighestStage%2ClowestBiostratigraphicZone%2ChighestBiostratigraphicZone%2ClithostratigraphicTerms%2Cgroup%2Cformation%2Cmember%2Cbed%2CidentificationID%2CidentificationQualifier%2CtypeStatus.p%2CidentifiedBy.p%2CdateIdentified.p%2CidentificationReferences.p%2CidentificationVerificationStatus%2CidentificationRemarks%2CtaxonID%2CscientificNameID%2CacceptedNameUsageID%2CparentNameUsageID%2CoriginalNameUsageID%2CnameAccordingToID%2CnamePublishedInID%2CtaxonConceptID.p%2CscientificName.p%2CacceptedNameUsage%2CparentNameUsage%2CoriginalNameUsage%2CnameAccordingTo.p%2CnamePublishedIn%2CnamePublishedInYear%2ChigherClassification%2Ckingdom.p%2Cphylum.p%2Cclasss.p%2Cclasss%2Corder.p%2Cfamily.p%2Cgenus.p%2Csubgenus%2Cspecies.p%2CspecificEpithet%2CinfraspecificEpithet%2CtaxonRank.p%2CverbatimTaxonRank%2CscientificNameAuthorship%2CvernacularName.p%2CnomenclaturalCode.p%2CtaxonomicStatus%2CnomenclaturalStatus%2CtaxonRemarks%2CmeasurementDeterminedDate%2CrelationshipAccordingTo%2CresourceRelationshipID%2CmeasurementRemarks%2CmeasurementValue%2CrelationshipRemarks%2CresourceID%2CrelationshipEstablishedDate%2CrelationshipOfResource%2CmeasurementMethod%2CmeasurementID%2CmeasurementType%2CmeasurementUnit%2CmeasurementDeterminedBy%2CmeasurementAccuracy%2CrelatedResourceID"*/
 }
 
 // MARVL project integration
@@ -394,6 +421,7 @@ log4j.main = {
     warn    'org.mortbay.log'
 
     info    'grails.app.controller.au.org.emii.portal.LayerController',
+        'au.org.emii.portal.HostVerifier',
         'grails.app.tagLib.au.org.emii.portal.MessageOfTheDayTagLib',
         'grails.app.controller'
 

@@ -27,6 +27,4 @@ describe('Portal.cart.AsyncDownloadHandler', function () {
             expect(handler.serviceResponseHandler(json)).toMatch("href='http://asyncdownloads.aodn.org.au'");
         });
     });
-
-
 });

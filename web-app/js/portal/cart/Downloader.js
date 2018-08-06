@@ -23,6 +23,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
         else {
             this._downloadSynchronously(collection, downloadUrl, params);
         }
+
     },
 
     _downloadSynchronously: function(collection, downloadUrl, params) {

@@ -22,7 +22,7 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
         return this._getCql(true);
     },
 
-    getDateDataCql: function() {
+    getCqlWithTimeRange: function() {
 
         return this._getCql(false);
     },
@@ -61,6 +61,18 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
         }
 
         return cql;
+    },
+
+    getDateValues: function() {
+        var vals = {};
+
+        if (this._getFromDate()) {
+            vals['fromDate'] = this._getDateString(this._getFromDate());
+        }
+        if (this._getToDate()) {
+            vals['toDate'] = this._getDateString(this._getToDate());
+        }
+        return vals;
     },
 
     getHumanReadableForm: function() {

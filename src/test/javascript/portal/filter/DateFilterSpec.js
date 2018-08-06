@@ -50,7 +50,7 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives data layer CQL', function() {
 
-            expect(filter.getDateDataCql()).toBe("column_name >= '1999-01-01T00:00:00Z'");
+            expect(filter.getCqlWithTimeRange()).toBe("column_name >= '1999-01-01T00:00:00Z'");
         });
 
         it('gives human readble form', function() {
@@ -75,7 +75,7 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives data layer CQL', function() {
 
-            expect(filter.getDateDataCql()).toBe("column_name <= '2006-06-06T01:00:00Z'");
+            expect(filter.getCqlWithTimeRange()).toBe("column_name <= '2006-06-06T01:00:00Z'");
         });
 
         it('gives human readble form', function() {
@@ -101,7 +101,7 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives data layer CQL', function() {
 
-            expect(filter.getDateDataCql()).toBe("column_name >= '1999-01-01T00:00:00Z' AND column_name <= '2006-06-06T01:00:00Z'");
+            expect(filter.getCqlWithTimeRange()).toBe("column_name >= '1999-01-01T00:00:00Z' AND column_name <= '2006-06-06T01:00:00Z'");
         });
 
         it('gives human readble form', function() {
@@ -130,7 +130,7 @@ describe("Portal.filter.DateFilter", function() {
 
         it('gives data layer CQL', function() {
 
-            expect(filter.getDateDataCql()).toBe("column_name >= '1999-01-01T00:00:00Z' AND column_name <= '2006-06-06T01:00:00Z'");
+            expect(filter.getCqlWithTimeRange()).toBe("column_name >= '1999-01-01T00:00:00Z' AND column_name <= '2006-06-06T01:00:00Z'");
         });
 
         it('gives human readble form', function() {

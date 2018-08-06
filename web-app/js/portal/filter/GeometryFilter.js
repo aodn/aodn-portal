@@ -21,6 +21,10 @@ Portal.filter.GeometryFilter = Ext.extend(Portal.filter.Filter, {
         );
     },
 
+    getWkt: function() {
+        return this.getValue().toWkt();
+    },
+
     getHumanReadableForm: function() {
 
         var label = OpenLayers.i18n("spatialExtentHeading");

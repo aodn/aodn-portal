@@ -89,6 +89,7 @@ var setupTestConfigAndStubs = function() {
     Ext.namespace('Portal.app.config');
     Ext.namespace('Portal.app.appConfig');
     Ext.namespace('Portal.app.appConfig.geonetwork');
+    Ext.namespace('Portal.app.appConfig.ala');
     Ext.namespace('Portal.app.appConfig.help');
     Ext.namespace('Portal.app.appConfig.featureToggles');
     Ext.namespace('Portal.app.appConfig.portal.metadataProtocols');

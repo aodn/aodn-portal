@@ -11,7 +11,8 @@ describe("Portal.details.SubsetItemsTabPanel", function() {
         spyOn(Portal.details, 'LayerDetailsPanel');
 
         dataCollection = {
-            isNcwms: returns(false)
+            isNcwms: returns(false),
+            isAla: returns(false)
         };
         subsetItemsTabPanel = new Portal.details.SubsetItemsTabPanel({
             dataCollection: dataCollection
@@ -30,6 +31,9 @@ describe("Portal.details.SubsetItemsTabPanel", function() {
                 dataCollection = {
                     isNcwms: function() {
                         return isNcwms;
+                    },
+                    isAla: function() {
+                        return false;
                     }
                 }
             });

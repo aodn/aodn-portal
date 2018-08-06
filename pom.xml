@@ -336,6 +336,7 @@
                         <include>portal/search/CloneMapPanel.js</include>
                         <!-- needs to load before FacetMapPanel-->
                         <include>portal/ui/openlayers/layer/NcWMS.js</include>
+                        <include>portal/ui/openlayers/layer/AlaWMS.js</include>
                         <include>portal/data/ChildElementsField.js</include>
                         <include>portal/data/Metadata*.js</include>
                         <include>portal/ui/MapPanel.js</include>
@@ -346,9 +347,23 @@
                         <include>portal/ui/MainPanel.js</include>
                         <include>portal/utils/moment.min.js</include>
                         <include>portal/utils/Proxy.js</include>
+                        <include>portal/cart/BaseInjector.js</include>
+                        <include>portal/cart/AlaWmsInjector.js</include>
                         <include>portal/cart/DownloadHandler.js</include>
+                        <include>portal/cart/AsyncDownloadHandler.js</include>
+                        <include>portal/cart/InternalAsyncDownloadHandler.js</include>
+                        <include>portal/cart/AlaDownloadHandler.js</include>
+                        <include>portal/cart/GogoduckDownloadHandler.js</include>
+                        <include>portal/cart/PointCSVDownloadHandler.js</include>
                         <include>portal/filter/Filter.js</include>
+                        <include>portal/filter/AlaSpeciesStringArrayFilter.js</include>
+                        <include>portal/filter/ui/BaseFilterPanel.js</include>
+                        <include>portal/filter/ui/AlaSpeciesFilterPanel.js</include>
+                        <include>portal/filter/ui/GroupPanel.js</include>
+                        <include>portal/filter/ui/FilterGroupPanel.js</include>
+                        <include>portal/filter/ui/AlaFilterGroupPanel.js</include>
                         <include>portal/filter/combiner/BaseFilterCombiner.js</include>
+                        <include>portal/filter/combiner/AlaParametersBuilder.js</include>
                         <include>portal/filter/combiner/FilterCqlBuilder.js</include>
                         <include>portal/**/*.js</include>
                     </sourceIncludes>

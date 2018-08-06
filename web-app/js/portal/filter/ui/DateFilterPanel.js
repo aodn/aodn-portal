@@ -22,11 +22,11 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
 
         if (this._shouldIncludeLabel()) {
             this._addLabel();
-            this._addVerticalSpacer(5);
+            this.add(this._createVerticalSpacer(5));
         }
 
         this.add(this.fromDate);
-        this._addVerticalSpacer(5);
+        this.add(this._createVerticalSpacer(5));
         this.add(this.toDate);
 
         if (this.filter.values != undefined) {
@@ -47,17 +47,7 @@ Portal.filter.ui.DateFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, 
         return false;
     },
 
-    _addVerticalSpacer: function(sizeInPixels) {
-        this.add(
-            new Ext.Spacer({
-                cls:'block',
-                height: sizeInPixels
-            })
-        );
-    },
-
     _shouldIncludeLabel: function() {
-
         return !this.filter.isPrimary();
     },
 
