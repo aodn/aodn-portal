@@ -71,10 +71,6 @@ describe('Portal.cart.DataTrawlerDownloadHandler', function () {
         });
     });
 
-    describe('_formatFilterRequest', function() {
-
-    });
-
     function urlParamPresent(urlToTest, key, value) {
         var formattedUrl = decodeURIComponent("&" + urlToTest.replace(/\?/g, '&') + "&");
         var searchValue = String.format("{0}={1}", key, value);
