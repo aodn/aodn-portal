@@ -31,7 +31,7 @@ grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
                       json: ['application/json','text/json'],
                       form: 'application/x-www-form-urlencoded',
                       multipartForm: 'multipart/form-data'
-                    ]
+]
 
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
@@ -197,10 +197,9 @@ knownServers = [
     ],
 
     [
-        uri: 'http://www.cmar.csiro.au/geoserver/wms',
+        uri: 'https://www.cmar.csiro.au/geoserver/wms',
         wmsVersion: '1.1.1',
-        type: 'datatrawlerserver',
-        csvDownloadFormat: 'csv-with-metadata-header'
+        type: 'datatrawlerserver'
     ],
     [
         uri: 'https://www.cmar.csiro.au/data/trawler/aodn2csiro.cfm',
@@ -210,11 +209,6 @@ knownServers = [
     ],
     [
         uri: 'http://geoserver-123.aodn.org.au/geoserver/ncwms',
-        wmsVersion: '1.3.0',
-        type: 'ncWMS'
-    ],
-    [
-        uri: 'https://www.cmar.csiro.au/geoserver/ncwms',
         wmsVersion: '1.3.0',
         type: 'ncWMS'
     ],

@@ -36,6 +36,10 @@ Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHan
         }
     },
 
+    _showDownloadOptions: function() {
+        return this._resourceHrefNotEmpty() && this._resourceNameNotEmpty();
+    },
+
     _getUrlGeneratorFunction: function(format) {
 
         var _this = this;
