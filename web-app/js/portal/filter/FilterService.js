@@ -48,6 +48,8 @@ Portal.filter.FilterService = Ext.extend(Object, {
 
         this._determinePrimaryFilters(filterObjects);
 
+        Ext.MsgBus.publish(PORTAL_EVENTS.STARTED_LOADING_FILTERS, this);
+
         callbackFunction.call(callbackScope, filterObjects);
     },
 
