@@ -39,9 +39,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
         else {
             this._handleFilterLoadFailure();
         }
-
-        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, this.dataCollection);
-
     },
 
     _filtersUpdated: function() {

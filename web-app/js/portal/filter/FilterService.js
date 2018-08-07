@@ -2,21 +2,13 @@ Ext.namespace('Portal.filter');
 
 Portal.filter.FilterService = Ext.extend(Object, {
 
-    constructor: function(map) {
+    constructor: function() {
 
         this.GET_FILTER = "layer/getFilters";
         this.GET_FILTER_VALUES = "layer/getFilterValues";
-        this.map = map;
-
     },
 
     loadFilters: function(dataCollection, successCallback, failureCallback, callbackScope) {
-
-        // Turn off polygon drawing on the map now because when user finishes drawing it will try to apply the filter values
-        // and we don't have all the filter values yet.
-        // PORTAL_EVENTS.DATA_COLLECTION_MODIFIED fires when the filter values are ready.
-        this.map.spatialConstraintControl.disableControl();
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function() { this.map.spatialConstraintControl.enableControl() }, this);
 
         Ext.Ajax.request({
             url: this.GET_FILTER,
@@ -32,8 +24,6 @@ Portal.filter.FilterService = Ext.extend(Object, {
     },
 
     _filtersLoaded: function(response, opts) {
-
-        Ext.get(this.map.viewPortDiv.id).setStyle('cursor', 'wait');  // Calculating filter ranges may take a while
 
         var callbackFunction = opts.successCallback;
         var callbackScope = opts.callbackScope;
