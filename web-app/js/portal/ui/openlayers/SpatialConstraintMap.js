@@ -32,14 +32,10 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         );
 
         Ext.MsgBus.subscribe(PORTAL_EVENTS.STARTED_LOADING_FILTERS, function () {
-            if (Ext.get(this.viewPortDiv.id) != null) {
-                Ext.get(this.viewPortDiv.id).setStyle('cursor', 'wait');
-            }
+            Ext.get(this.viewPortDiv.id).setStyle('cursor', 'wait');
         } , this);
         Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, function () {
-            if (Ext.get(this.viewPortDiv.id) != null) {
-                Ext.get(this.viewPortDiv.id).setStyle('cursor', null);
-            }
+            Ext.get(this.viewPortDiv.id).setStyle('cursor', null);
         }, this);
 
     },
