@@ -376,26 +376,21 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
     describe('polygonConstraint', function() {
 
-        var polygonSpatialConstraint;
+        var _map;
 
         beforeEach(function() {
 
-            polygonSpatialConstraint = new Portal.ui.openlayers.control.SpatialConstraint(
-                map.constraintLayer,
-                this.constraintLayer,
-                {
-                    handler: OpenLayers.Handler.Polygon,
-                    'displayClass': 'olControlDrawFeature'
-                }
-
-            spyOn(polygonSpatialConstraint, '_mapMouseDown');
+            _map = new OpenLayers.SpatialConstraintMap();
+            _map.toolPanel = new OpenLayers.Control.Panel();
+            Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(_map, OpenLayers.Handler.Polygon);
+            spyOn(_map.spatialConstraintControl, '_mapMouseDown');
         });
 
-        describe('add test here', function() {
+        it('mousedown method called when map receives mousedown event', function() {
+            _map.events.triggerEvent("mousedown");
 
-            polygonSpatialConstraint.map.events.triggerEvent("click");
-            expect(false).toBeFalsy();
-
+            //issue: spy does not get called
+            expect(_map.spatialConstraintControl._mapMouseDown).toHaveBeenCalled()
         });
     });
 });
