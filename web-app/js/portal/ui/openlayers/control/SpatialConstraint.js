@@ -275,10 +275,6 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     disableControl: function () {
         this.disabled = true;
         this.deactivate();
-        var div = Ext.get(this.map.viewPortDiv.id);
-        if (div != null) {
-            Ext.get(this.map.viewPortDiv.id).setStyle('cursor', 'wait');
-        }
     },
 
     enableControl: function () {
@@ -324,7 +320,4 @@ Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map,
             this.events.triggerEvent('spatialconstraintadded', geometry);
         }
     });
-
-    Ext.MsgBus.subscribe(PORTAL_EVENTS.STARTED_LOADING_FILTERS, map.spatialConstraintControl.disableControl, map.spatialConstraintControl);
-    Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, map.spatialConstraintControl.enableControl, map.spatialConstraintControl);
 };

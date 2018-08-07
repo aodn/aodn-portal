@@ -139,17 +139,9 @@ Ext.ux.util.MessageBus = function(){
             var subscribed = _subscribe(subject, callback, scope);
             
             if (subscribed && scope && scope.events && scope.events['destroy']) {
-                // Ext js defines on() in the Component object
-                if (scope.on) {
-                    scope.on('destroy', function() {
-                        this.unsubscribe(subject, callback, scope);
-                    }, this);
-                // OpenLayers defines on() in the Events object
-                } else if (scope.events.on)  {
-                    scope.events.on('destroy', function() {
-                        this.unsubscribe(subject, callback, scope);
-                    }, this);
-                }
+                scope.on('destroy', function() {
+                    this.unsubscribe(subject, callback, scope);
+                }, this);    
             }
             
             return subscribed;
