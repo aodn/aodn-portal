@@ -31,7 +31,7 @@ grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
                       json: ['application/json','text/json'],
                       form: 'application/x-www-form-urlencoded',
                       multipartForm: 'multipart/form-data'
-                    ]
+]
 
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
@@ -142,8 +142,8 @@ environments {
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
-        gogoduck.filenamePrepend = "IMOS_aggregation"
         geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
+        gogoduck.filenamePrepend = "IMOS_aggregation"
     }
 
     test {
@@ -218,12 +218,12 @@ knownServers = [
     ],
 
     [
-        uri: 'https://www.cmar.csiro.au/geoserver/wms',
+        uri: 'http://www.cmar.csiro.au/geoserver/wms',
         wmsVersion: '1.1.1',
         type: 'datatrawlerserver'
     ],
     [
-        uri: 'https://www.cmar.csiro.au/data/trawler/aodn2csiro.cfm',
+        uri: 'https://www.cmar.csiro.au/data/trawler/broker.cfm',
         wmsVersion: '1.1.1',
         type: 'datatrawlerserver',
         csvDownloadFormat: 'csv-with-metadata-header'
@@ -401,7 +401,7 @@ portal {
     downloadHandlersForProtocol = [
         [ 'handler': 'WfsDownloadHandler',                 'protocol': 'OGC:WFS-1.0.0-http-get-capabilities' ],
         [ 'handler': 'GogoduckDownloadHandler',            'protocol': 'OGC:WPS--gogoduck'                   ],
-        [ 'handler': 'DataTrawlerDownloadHandler',         'protocol': 'AODN:CSIRO--DataTrawler'                     ],
+        [ 'handler': 'DataTrawlerDownloadHandler',         'protocol': 'WWW:DOWNLOAD-1.0-http--csiro-oa-app' ],
         [ 'handler': 'PointCSVDownloadHandler',            'protocol': 'OGC:WPS--gogoduck'                   ],
         [ 'handler': 'PythonDownloadHandler',              'protocol': 'AODN:WFS-EXTERNAL-1.0.0-http-get-capabilities' ],
         [ 'handler': 'BodaacDownloadHandler',              'protocol': 'IMOS:AGGREGATION--bodaac'            ],
@@ -420,6 +420,10 @@ ala {
     url = "https://biocache.ala.org.au/ws/autocomplete/search"
     index = 'species_habitats:"Marine"'
     gfi_endpoint = "http://biocache.ala.org.au/ws/ogc/getFeatureInfo"
+}
+
+csiro {
+    url = "https://www.cmar.csiro.au/data/trawler"
 }
 
 // MARVL project integration

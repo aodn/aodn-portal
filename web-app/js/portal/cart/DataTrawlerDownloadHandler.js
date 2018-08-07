@@ -51,7 +51,6 @@ Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHan
             var url = _this.buildRequestUrl(
                 _this._resourceHref(),
                 collection.getFilters(),
-                _this._resourceName(),
                 format,
                 handlerParams
             );
@@ -63,23 +62,22 @@ Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHan
         };
     },
 
-    buildRequestUrl: function(serverUrl, filters, dataType, downloadFormat, params) {
+    buildRequestUrl: function(serverUrl, filters, downloadFormat, params) {
         return String.format(
             "{0}{1}",
             this.getAsyncDownloadUrl('datatrawler'),
             Ext.urlEncode({
-                server: this.buildDataTrawlerRequestString(serverUrl, filters, dataType, downloadFormat, params)
+                server: this.buildDataTrawlerRequestString(serverUrl, filters, downloadFormat, params)
             })
         );
     },
 
-    buildDataTrawlerRequestString: function(baseUrl, filters, dataType, downloadFormat, params) {
-        if (!params || !dataType) {
+    buildDataTrawlerRequestString: function(baseUrl, filters, downloadFormat, params) {
+        if (!params) {
             return;
         } else {
             var downloadUrl = baseUrl;
             downloadUrl += (downloadUrl.indexOf('?') !== -1) ? "&" : "?";
-            downloadUrl += String.format("data_type={0}&", dataType);
             downloadUrl += this._formatFilterRequest(filters);
             downloadUrl += String.format("email_address={0}&", params.emailAddress);
             downloadUrl += String.format("output_filename={0}&", params.downloadFilename.replace(/ |&/g, '_'));
@@ -105,7 +103,7 @@ Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHan
                 formattedFilters += String.format('LATITUDE={0},{1}&LONGITUDE={2},{3}&',
                     bounds.bottom, bounds.top, bounds.left, bounds.right);
             } else if (filter.hasValue()) {
-                formattedFilters += String.format("{0}={1}&", filter.name, filter.value);
+                formattedFilters += String.format("{0}={1}&", filter.name, encodeURIComponent(filter.value));
             }
         }, this);
 

@@ -36,7 +36,7 @@ class CoreGeoserverServer extends WmsServer {
 
             try {
 
-                def xml = new XmlSlurper().parseText(_describeFeatureType(server, layer))
+                def xml = new XmlSlurper().parseText(utils._describeFeatureType(server, layer))
 
                 def attributes = xml.'**'.findAll { node ->
                     node.name() == 'element' && node.@name != _removePrefix(layer)
@@ -81,6 +81,7 @@ class CoreGeoserverServer extends WmsServer {
                 log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
             }
         }
+
         return filters
     }
 

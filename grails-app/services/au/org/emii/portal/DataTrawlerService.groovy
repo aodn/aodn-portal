@@ -16,5 +16,12 @@ class DataTrawlerService extends AsyncDownloadService {
         def outputStream = new ByteArrayOutputStream()
         def request = new ExternalRequest(outputStream, params.server.toURL())
         request.executeRequest()
+
+        return [ url: _getJobReportUrl() ] as JSON
+    }
+
+    def _getJobReportUrl() {
+        // TODO: replace placeholder with status url
+        return grailsApplication.config.csiro.url
     }
 }

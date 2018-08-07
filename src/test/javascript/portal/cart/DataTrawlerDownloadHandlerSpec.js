@@ -3,8 +3,7 @@ describe('Portal.cart.DataTrawlerDownloadHandler', function () {
 
     beforeEach(function() {
         handler = new Portal.cart.DataTrawlerDownloadHandler({
-            href: 'dt_endpoint_url',
-            name: 'ctd'
+            href: 'dt_endpoint_url'
         });
     });
 
@@ -65,14 +64,9 @@ describe('Portal.cart.DataTrawlerDownloadHandler', function () {
 
             expect(url).toStartWith(handler.getAsyncDownloadUrl('datatrawler'));
             expect(urlParamPresent(url, 'server', encodeURIComponent('dt_endpoint_url'))).toBeTruthy();
-            expect(urlParamPresent(url, 'data_type', encodeURIComponent('ctd'))).toBeTruthy();
             expect(urlParamPresent(url, 'email_address', 'bob@example.com')).toBeTruthy();
             expect(urlParamPresent(url, 'date_format', 'dd-mmm-yyyy%20HH24:mm:ss')).toBeTruthy();
         });
-    });
-
-    describe('_formatFilterRequest', function() {
-
     });
 
     function urlParamPresent(urlToTest, key, value) {
