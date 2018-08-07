@@ -94,7 +94,7 @@ img {
 }
 
 #toplinks {
-    display:none;
+
 }
 
 #home .homeContent p {
@@ -177,7 +177,8 @@ a:focus {
 #toplinks a {
     color: #ffffff;
     font-size: 15px;
-    text-decoration: none;
+    text-decoration: underline;
+    font-weight: normal;
 }
 
 #toplinks a:hover {
