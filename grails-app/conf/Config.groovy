@@ -170,14 +170,6 @@ baselayerServer = [
 // ExternalRequest.groovy connect timeout value in milliseconds
 proxyConnectTimeout = 2000
 
-// overwritten by configuration management
-proxyRedirects = [
-    [
-        uri: 'http://mywms-server.aodn.org.au/geoserver',
-        redirectUri: 'http://geowebcache.localnet/service'
-    ]
-]
-
 
 // This array should be populated from chef config
 knownServers = [
