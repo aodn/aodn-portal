@@ -1,15 +1,20 @@
 package au.org.emii.portal.wms
 
 import au.org.emii.portal.proxying.ExternalRequest
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 import java.util.concurrent.ConcurrentHashMap
 
 class GeoserverUtils {
 
     private static def linkedWfsFeatureTypeMap = new ConcurrentHashMap()
+    static final Logger log = LoggerFactory.getLogger(this)
 
     def _describeFeatureType(server, layer) {
         def (wfsServer, typeName) = _lookupWfs(server, layer)
         def requestUrl = wfsServer + "request=DescribeFeatureType&service=WFS&version=1.0.0&typeName=${typeName}"
+        print requestUrl
         def outputStream = new ByteArrayOutputStream()
         def request = new ExternalRequest(outputStream, requestUrl.toURL())
 
@@ -64,6 +69,14 @@ class GeoserverUtils {
 
         request.executeRequest()
 
+        return outputStream.toString("utf-8")
+    }
+
+    def _loadUrl(address) {
+        def outputStream = new ByteArrayOutputStream()
+        def request = new ExternalRequest(outputStream, address.toURL())
+
+        request.executeRequest()
         return outputStream.toString("utf-8")
     }
 }
