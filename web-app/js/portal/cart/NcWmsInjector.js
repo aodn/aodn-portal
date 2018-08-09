@@ -36,13 +36,7 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         var pointFilter = Portal.filter.FilterUtils.getFilter(filters, 'timeSeriesAtPoint');
 
         if (pointFilter && pointFilter.hasValue()) {
-            var pointFilterValue = pointFilter.getValue();
-            timeSeriesAtString = String.format(
-                '{0}:&nbsp;{1}, {2}<br>',
-                OpenLayers.i18n("timeSeriesAtHeading"),
-                pointFilterValue.latitude  != "" ? pointFilterValue.latitude  : "-",
-                pointFilterValue.longitude != "" ? pointFilterValue.longitude : "-"
-            );
+            timeSeriesAtString = pointFilter.getHumanReadableForm();
         }
 
         if (params && params.dateRangeStart) {
