@@ -72,7 +72,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _polygonCoordsReset: function() {
-        this.polygonCoords = []
+        this.polygonCoords = [];
     },
 
     _addPolygonCoord: function(lonLat) {
@@ -80,15 +80,15 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _polygonLastCoord: function() {
-        return this.polygonCoords[this.polygonCoords.length-1]
+        return this.polygonCoords[this.polygonCoords.length-1];
     },
 
     _polygonCoordsExist: function() {
         return this.polygonCoords.length >= 1;
     },
 
-    _antimeridianPointCross: function(lon1, lon2) {
-        return !((lon1 > 0 && lon2 > 0) || (lon1 < 0 && lon2 < 0))
+    _polygonAntimeridianPointCross: function(lon1, lon2) {
+        return !((lon1 > 0 && lon2 > 0) || (lon1 < 0 && lon2 < 0));
     },
 
     _polygonClickInSameLocation: function(lonLat1, lonLat2) {
@@ -101,7 +101,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
         var components = geometry.components[0].components;
         components.forEach(function(component, i) {
-            var thisxy = {x: component.x, y: component.y}
+            var thisxy = {x: component.x, y: component.y};
             if (thisxy.x == lastxy.x && thisxy.y == lastxy.y) {
                 removeIndex.push(i);
             }
@@ -125,17 +125,17 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     },
 
     _shouldShiftMapCentre: function(checkLon, centreLon) {
-        return ((centreLon > 0 && checkLon < 0) || (centreLon < 0 && checkLon > 0))
+        return ((centreLon > 0 && checkLon < 0) || (centreLon < 0 && checkLon > 0));
     },
 
     _mapMouseMoved: function(e) {
 
         if (this._isRegularPolygon()) {
-            return
+            return;
         }
 
         if (this._polygonCoordsExist()
-            && this._antimeridianPointCross(e.object.getLonLatFromViewPortPx(e.xy).lon, this._polygonLastCoord().lon)) {
+            && this._polygonAntimeridianPointCross(e.object.getLonLatFromViewPortPx(e.xy).lon, this._polygonLastCoord().lon)) {
 
             this.cancel();
             this._polygonCoordsReset();
@@ -147,7 +147,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     _mapMouseDown: function(e) {
 
         if (this._isRegularPolygon()) {
-            return
+            return;
         }
 
         var lonLat = e.object.getLonLatFromViewPortPx(e.xy);
@@ -171,7 +171,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
     _mapMouseUp: function(e) {
 
         if (this._isRegularPolygon() || !this._polygonCoordsExist()) {
-            return
+            return;
         }
 
         var lonLat = e.object.getLonLatFromViewPortPx(e.xy);
@@ -203,7 +203,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     setMap: function(map) {
         map.addLayer(this.vectorlayer);
-        map.addLayer(this.errorLayer)
+        map.addLayer(this.errorLayer);
         return OpenLayers.Control.DrawFeature.prototype.setMap.apply(this, arguments);
     },
 
