@@ -373,4 +373,38 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
             });
         });
     });
+
+    describe('polygonConstraint', function() {
+
+        var map;
+        var polygonConstraint;
+
+        beforeEach(function() {
+
+            map = new OpenLayers.SpatialConstraintMap();
+
+            polygonConstraint = new Portal.ui.openlayers.control.SpatialConstraint(
+                map.constraintLayer,
+                {
+                    validator: new Portal.filter.validation.SpatialConstraintValidator({
+                        map: map
+                    }),
+                    map: map,
+                    handler: OpenLayers.Handler.Polygon
+                });
+
+            spyOn(polygonConstraint, '_mapMouseDown');
+            polygonConstraint.map.events.on({
+                "mousedown": polygonConstraint._mapMouseDown
+            });
+        });
+
+        it('mousedown event does call the spatialConstraints _mapMouseDown method', function() {
+
+            map.events.triggerEvent('mousedown');
+
+            expect(polygonConstraint._mapMouseDown).toHaveBeenCalled();
+
+        });
+    });
 });

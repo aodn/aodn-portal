@@ -53,6 +53,8 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
             this.events.triggerEvent('spatialconstraintadded');
             trackFiltersUsage('filtersTrackingSpatialConstraintAction', OpenLayers.i18n('trackingInitLabel'));
         }
+
+        this.polygonCoords = [];
     },
 
     _configureEventsAndHandlers: function() {
@@ -67,11 +69,126 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         });
     },
 
-    _onSketchStarted: function(e) {
+    _isRegularPolygon: function() {
+        return (this.handler.line === undefined || this.handler.line == null);
+    },
 
-        this.triggerMapClick(e);
-        if (this.map.mapPanel) {
-            this.map.mapPanel._closeFeatureInfoPopup();
+    _polygonCoordsReset: function() {
+        this.polygonCoords = [];
+    },
+
+    _addPolygonCoord: function(lonLat) {
+        this.polygonCoords.push(lonLat);
+    },
+
+    _polygonLastCoord: function() {
+        return this.polygonCoords[this.polygonCoords.length-1];
+    },
+
+    _polygonCoordsExist: function() {
+        return this.polygonCoords.length >= 1;
+    },
+
+    _polygonAntimeridianPointCross: function(lon1, lon2) {
+        return !((lon1 > 0 && lon2 > 0) || (lon1 < 0 && lon2 < 0));
+    },
+
+    _polygonClickInSameLocation: function(lonLat1, lonLat2) {
+        return (lonLat1.lat == lonLat2.lat && lonLat1.lon == lonLat2.lon);
+    },
+
+    _polygonRemoveDuplicatePointsGeom: function(geometry) {
+        var lastxy = {x: -1, y: -1};
+        var removeIndex = [];
+
+        var components = geometry.components[0].components;
+        components.forEach(function(component, i) {
+            var thisxy = {x: component.x, y: component.y};
+            if (thisxy.x == lastxy.x && thisxy.y == lastxy.y) {
+                removeIndex.push(i);
+            }
+            lastxy = thisxy;
+        });
+
+        removeIndex.reverse();
+        removeIndex.forEach(function(i) {
+            components.splice(i,1);
+        });
+
+        return geometry;
+    },
+
+    _shiftMapCentre: function(lon, centreLat) {
+        var offset = lon > 0 ? 179 : -179;
+
+        this.map.setCenter(
+            new OpenLayers.LonLat(offset, centreLat)
+        );
+    },
+
+    _shouldShiftMapCentre: function(checkLon, centreLon) {
+        return ((centreLon > 0 && checkLon < 0) || (centreLon < 0 && checkLon > 0));
+    },
+
+    _mapMouseMoved: function(e) {
+
+        if (this._isRegularPolygon()) {
+            return;
+        }
+
+        if (this._polygonCoordsExist()
+            && this._polygonAntimeridianPointCross(e.object.getLonLatFromViewPortPx(e.xy).lon, this._polygonLastCoord().lon)) {
+
+            this.cancel();
+            this._polygonCoordsReset();
+            this.addAntimeridianFeature();
+            this._resetErrorLayerAfterTimeout();
+        }
+    },
+
+    _mapMouseDown: function(e) {
+
+        if (this._isRegularPolygon()) {
+            return;
+        }
+
+        var lonLat = e.object.getLonLatFromViewPortPx(e.xy);
+        var mapCentreLonLat = this.map.getCenter();
+
+        if (this._shouldShiftMapCentre(lonLat.lon, mapCentreLonLat.lon)) {
+            this._shiftMapCentre(lonLat.lon, mapCentreLonLat.lat);
+            this.cancel();
+            this._polygonCoordsReset();
+        }
+        else {
+            this.insertXY(lonLat.lon, lonLat.lat);
+            this._addPolygonCoord(lonLat);
+        }
+
+        if (e.object.mapPanel.featureInfoPopup) {
+            e.object.mapPanel._closeFeatureInfoPopup();
+        }
+    },
+
+    _mapMouseUp: function(e) {
+
+        if (this._isRegularPolygon() || !this._polygonCoordsExist()) {
+            return;
+        }
+
+        var lonLat = e.object.getLonLatFromViewPortPx(e.xy);
+
+        if (this._polygonClickInSameLocation(this._polygonLastCoord(), lonLat)) {
+
+            if (this.polygonCoords.length == 1) {
+                this._polygonCoordsReset();
+                this.cancel();
+                this.map.events.triggerEvent('featureInfoClick', {xy: e.xy});
+            }
+        }
+        else if (this._polygonCoordsExist()) {
+            this.insertXY(lonLat.lon, lonLat.lat);
+            this._addPolygonCoord(lonLat);
         }
     },
 
@@ -88,7 +205,7 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
 
     setMap: function(map) {
         map.addLayer(this.vectorlayer);
-        map.addLayer(this.errorLayer)
+        map.addLayer(this.errorLayer);
         return OpenLayers.Control.DrawFeature.prototype.setMap.apply(this, arguments);
     },
 
@@ -235,8 +352,22 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
         this.errorLayer.addFeatures([meridianLineFeature]);
     },
 
+    _onSketchStarted: function(e) {
+
+        this.triggerMapClick(e);
+
+        if (this.map.mapPanel && this._isRegularPolygon()) {
+            this.map.mapPanel._closeFeatureInfoPopup();
+        }
+    },
+
     _onSketchComplete: function(event) {
+        this._polygonCoordsReset();
+
         var geometry = event.feature.geometry;
+
+        this._polygonRemoveDuplicatePointsGeom(event.feature.geometry);
+
 
         if (this._checkSketch(geometry)) {
             this.clear();
@@ -308,6 +439,21 @@ Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map,
     map.events.on({
         scope: map.spatialConstraintControl,
         "removelayer": map.spatialConstraintControl._layerRemoved
+    });
+
+    map.events.on({
+        scope: map.spatialConstraintControl,
+        "mousemove": map.spatialConstraintControl._mapMouseMoved
+    });
+
+    map.events.on({
+        scope: map.spatialConstraintControl,
+        "mousedown": map.spatialConstraintControl._mapMouseDown
+    });
+
+    map.events.on({
+        scope: map.spatialConstraintControl,
+        "mouseup": map.spatialConstraintControl._mapMouseUp
     });
 
     map.spatialConstraintControl.events.on({
