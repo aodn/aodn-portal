@@ -376,37 +376,35 @@ describe('Portal.ui.openlayers.control.SpatialConstraint', function() {
 
     describe('polygonConstraint', function() {
 
-        var _map;
+        var map;
         var polygonConstraint;
 
         beforeEach(function() {
 
-            _map = new OpenLayers.SpatialConstraintMap();
+            map = new OpenLayers.SpatialConstraintMap();
 
             polygonConstraint = new Portal.ui.openlayers.control.SpatialConstraint(
-                _map.constraintLayer,
+                map.constraintLayer,
                 {
                     validator: new Portal.filter.validation.SpatialConstraintValidator({
-                        map: _map
+                        map: map
                     }),
-                    map: _map
-                }
-            );
+                    map: map,
+                    handler: OpenLayers.Handler.Polygon
+                });
 
-            // because we're not using the convenience constructor Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap
-            //  we miss out on handlers being added to the map, but it can be attached like so
+            spyOn(polygonConstraint, '_mapMouseDown');
             polygonConstraint.map.events.on({
                 "mousedown": polygonConstraint._mapMouseDown
             });
         });
 
-        it('mousedown method called when map receives mousedown event', function() {
+        it('mousedown event does call the spatialConstraints _mapMouseDown method', function() {
 
-            // this mousedown event does call the spatialConstraint's _mapMouseDown method
-            _map.events.triggerEvent("mousedown");
+            map.events.triggerEvent('mousedown');
 
-            // however (weirdly) in this scenario none of the spatialConstraint's methods are defined
-            //  so attaching spies is not possible
+            expect(polygonConstraint._mapMouseDown).toHaveBeenCalled();
+
         });
     });
 });
