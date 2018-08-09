@@ -175,18 +175,9 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
         if (this._isTimeSeriesFilterAvailable()) {
 
             var pointFilterValue = {};
-            pointFilterValue.latitude = this.timeSeriesLatitudeControl.getValue();
-            pointFilterValue.longitude = this.timeSeriesLongitudeControl.getValue();
-            pointFilterValue.errors = this._getTimeSeriesFilterErrors();
-
-            var nwmsParamsFilter =  Portal.filter.FilterUtils.getFilter(this.dataCollection.filters,"nwmsParamsFilter");
-
-            if (nwmsParamsFilter) {
-                nwmsParamsFilter.latitudeRangeStart = null;
-                nwmsParamsFilter.longitudeRangeStart = null;
-                nwmsParamsFilter.latitudeRangeEnd = null;
-                nwmsParamsFilter.longitudeRangeEnd = null;
-            }
+            pointFilterValue.latitude = this.timeSeriesLatitudeControl.getRawValue();
+            pointFilterValue.longitude = this.timeSeriesLongitudeControl.getRawValue();
+            pointFilterValue.errors = this.getTimeSeriesFilterErrors();
 
             if (timeSeriesAtPoint) {
                 timeSeriesAtPoint.setValue(pointFilterValue);
@@ -210,6 +201,9 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
                 this.map.events.triggerEvent('spatialconstraintusermodded', this._getGeometryFilter());
             }
         }
+
+        // Portal.details.NcWmsPanel
+        this.parent._applyFilterValuesToCollection();
     },
 
     _getGeometryFilter: function() {
@@ -229,7 +223,7 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
             this.pointTimeSeriesCheckbox.checked;
     },
 
-    _getTimeSeriesFilterErrors: function() {
+    getTimeSeriesFilterErrors: function() {
 
         var latErrors = this.timeSeriesLatitudeControl.getErrors();
         var lonErrors = this.timeSeriesLongitudeControl.getErrors();
@@ -242,20 +236,6 @@ Portal.details.PointTimeSeriesPanel = Ext.extend(Ext.Panel, {
             // filter duplicate error messages?
             return errorMsgs.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
         }
-    },
-
-    _getTimeSeriesLatitude: function() {
-        return this._isThisPanelAlive() &&
-            this.timeSeriesLatitudeControl.getErrors().length == 0 ?
-            this.timeSeriesLatitudeControl.getValue() :
-            undefined;
-    },
-
-    _getTimeSeriesLongitude: function() {
-        return this._isThisPanelAlive() &&
-            this.timeSeriesLongitudeControl.getErrors().length == 0 ?
-            this.timeSeriesLongitudeControl.getValue() :
-            undefined;
     },
 
     _resetPanel: function() {

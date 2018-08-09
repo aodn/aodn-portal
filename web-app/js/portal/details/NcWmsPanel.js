@@ -50,7 +50,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             this._addTimeSeriesControls({
                 map: this.map,
                 dataCollection: this.dataCollection,
-                dataCollectionStore: this.dataCollectionStore
+                dataCollectionStore: this.dataCollectionStore,
+                parent: this
             });
         }
 
@@ -526,13 +527,15 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             var geometry = this._getGeometryFilter();
             var zAxisValue = this.zAxisPickerContainer.getZAxisPickerValues();
 
+            var pointFilterAvailable = false;
+
             if (this._timeSeriesOptionAvailable()) {
-                var pointFilterAvailable = this.pointTimeSeriesPanel._isTimeSeriesFilterAvailable();
+                pointFilterAvailable = this.pointTimeSeriesPanel._isTimeSeriesFilterAvailable();
                 var pointFilterValue = {};
                 if (pointFilterAvailable) {
-                    pointFilterValue.latitude = this.pointTimeSeriesPanel._getTimeSeriesLatitude();
-                    pointFilterValue.longitude = this.pointTimeSeriesPanel._getTimeSeriesLongitude();
-                    pointFilterValue.errors = this.pointTimeSeriesPanel._getTimeSeriesFilterErrors();
+                    pointFilterValue.latitude = this.pointTimeSeriesPanel.timeSeriesLatitudeControl.getValue();
+                    pointFilterValue.longitude = this.pointTimeSeriesPanel.timeSeriesLongitudeControl.getValue();
+                    pointFilterValue.errors = this.pointTimeSeriesPanel.getTimeSeriesFilterErrors();
                 }
             }
 
