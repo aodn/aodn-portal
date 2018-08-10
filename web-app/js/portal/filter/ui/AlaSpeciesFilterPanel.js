@@ -33,7 +33,8 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
             idProperty: 'guid',
             baseParams : {
                 fq: Portal.app.appConfig.ala.index, // ALA index for marine only
-                url: Portal.app.appConfig.ala.url
+                url: Portal.app.appConfig.ala.url,
+                pageSize: 10000
             },
             fields: [
                 {name: 'name', type: 'string'},
@@ -65,7 +66,8 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
             listeners: {
                 scope: this,
                 select: this._onSpeciesComboChange,
-                change: this._onSpeciesComboChange
+                change: this._onSpeciesComboChange,
+                blur: this._onBlur
             }
         });
 
@@ -88,6 +90,11 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
 
         this.add(this.activeFiltersContainer);
         this.speciesComboItems = [];
+    },
+
+    _onBlur: function(combo) {
+        combo.clearValue();
+        this._clearFilter(combo.activeFilterData);
     },
 
     _createNewActiveFilterPanel: function(activeFilterData) {
@@ -119,11 +126,10 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
                     });
                 }
             }
-        })
+        });
     },
 
     _removeOnClick: function(event, toolEl, panel) {
-
         this.handleRemoveFilter(panel.activeFilterData);
         panel.destroy(); // triggers _onRemoveActiveFilter
     },
@@ -140,7 +146,6 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
     },
 
     _clearFilter: function(activeFilterData) {
-
         var activeFilterIndex = this.speciesComboItems.indexOf(activeFilterData);
 
         if (activeFilterIndex != -1) {
@@ -151,7 +156,6 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
     },
 
     _onSpeciesComboChange: function(combo, record) {
-
         if (record.data != undefined) {
 
             if (this.speciesComboItems.indexOf(record.data) == -1) {
