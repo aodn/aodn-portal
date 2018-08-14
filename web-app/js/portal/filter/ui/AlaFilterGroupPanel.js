@@ -6,6 +6,8 @@ Portal.filter.ui.AlaFilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
         this._sortFilters(filters);
         this._addFilterPanels(filters);
         this._updateAndShow();
+
+        Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, this.dataCollection);
     },
 
     _addFilterPanels: function(filters) {
