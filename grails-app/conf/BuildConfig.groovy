@@ -3,7 +3,7 @@ grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 grails.project.war.file = "target/${appName}-${appVersion}-${grails.util.Environment.current.name}.war"
 
-forkConfig = [maxMemory: 2048, minMemory: 64, debug: false, maxPerm: 256]
+forkConfig = [maxMemory: 2048, minMemory: 64, debug: false, maxPerm: 256, jvmArgs: ['-Dhttps.protocols=TLSv1.2']]
 grails.project.fork = [
   test: forkConfig,
   run: forkConfig,
