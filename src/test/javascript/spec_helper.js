@@ -188,7 +188,7 @@ var textToXML = function(text) {
     }
 };
 
-var jsonFromUrl = function(url, urlStart) {
-    var jobParameters = url.substring(urlStart.length);
-    return Ext.util.JSON.decode(decodeURIComponent(jobParameters));
+var jsonFromUrl = function(url) {
+    var jobParameters = url.substring(url.indexOf("?")+1);
+    return JSON.parse('{"' + decodeURI(jobParameters.replace(/&/g, "\",\"").replace(/=/g,"\":\"")) + '"}');
 };

@@ -142,6 +142,7 @@ environments {
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
+        gogoduck.filenamePrepend = "Portal_aggregation"
         geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
     }
 
