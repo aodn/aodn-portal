@@ -4,6 +4,10 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
 
     beforeEach(function() {
 
+        Portal.app.appConfig.gogoduck = {
+            filenamePrepend: "minted"
+        };
+
         handler = new Portal.cart.GogoduckDownloadHandler({
             href: 'geoserver_url',
             name: 'layer_name'
@@ -89,6 +93,10 @@ describe('Portal.cart.GogoduckDownloadHandler', function () {
                 'LATITUDE,-42.0,-20.0;' +
                 'LONGITUDE,160.0,170.0'
             );
+
+            var jsonUrl = jsonFromUrl(url);
+            expect(jsonUrl['jobParameters.filename']).toStartWith( 'minted');
+
         });
 
         it('builds the correct URL if no area is specified', function() {
