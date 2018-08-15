@@ -427,7 +427,7 @@
                 ]);
 
                 expect(temporalExtent.getMissingDays().length).toEqual(26);
-                expect(temporalExtent.getMissingDays()[0] instanceof Date).toBeTruthy();
+                expect(temporalExtent.getMissingDays()[0]).toEqual("2013-01-02");
             });
         });
     });
