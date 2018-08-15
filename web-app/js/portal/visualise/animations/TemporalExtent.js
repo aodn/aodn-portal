@@ -62,7 +62,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
                     nonExistingDay.isBefore(currentExistingDay);
                     nonExistingDay = nonExistingDay.add(1, 'days'))
                 {
-                    this.missingDays.push(nonExistingDay.toDate().clone());
+                    this.missingDays.push(this._stringifyDate(nonExistingDay));
                 }
             }
         }, this);
@@ -286,7 +286,7 @@ Portal.visualise.animations.TemporalExtent = Ext.extend(Ext.util.Observable, {
 
             while (iter.isBefore(endDate)) {
                 if (!this.getDay(iter)) {
-                    missingDays.push(iter.clone().toDate());
+                    missingDays.push(this._stringifyDate(iter));
                 }
                 iter = iter.add(1, 'days');
             }
