@@ -16,7 +16,10 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
         var resultTpl = new Ext.XTemplate(
             '<tpl for=".">' +
             '<div class="x-combo-list-item alafilter">',
-            '<div><b>{rawRank}</b> - {highlight} </div>',
+            '<div>{highlight}</div>',
+            ' <tpl if="rawRank != \'\' ">',
+            '  <div><b>Most specific rank:</b> {[this.decapitalise(values.rawRank)]}</div>',
+            ' </tpl>',
             ' <tpl if="classs != \'\' ">',
             '  <div><b>Class:</b> {classs}</div>',
             ' </tpl>',
@@ -24,7 +27,12 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
             '  <div><b>Phylum:</b> {phylum}</div>',
             ' </tpl>',
             '</div>',
-            '</tpl>'
+            '</tpl>',
+            {
+                decapitalise: function(title) {
+                    return title.toLowerCase();
+                }
+            }
         );
 
         this.jsonStore = new Ext.data.JsonStore({
