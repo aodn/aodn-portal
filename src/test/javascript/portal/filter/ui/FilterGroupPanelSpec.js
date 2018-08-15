@@ -54,6 +54,49 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
         });
     });
 
+    describe('_getFeatureUrlGeneratorFunction', function() {
+
+        var string;
+
+        beforeEach(function() {
+            filters = [{
+                name: "dataDownloadAndMap",
+                hasValue: function(){return true},
+                isVisualised: function(){return true},
+                getCql: function(){return "seacueelle4dataAndMap"}
+            },
+            {
+                name: "downloadOnly",
+                hasValue: function(){return true},
+                isVisualised: function(){return false},
+                getCql: function(){return "seacueelle4dataOnly"}
+            }];
+
+            filterPanel = {
+                needsFilterRange: returns(false)
+            };
+
+            filterGroupPanel.dataCollection.layerSelectionModel = {
+                selectedLayer: {
+                    url: "http://blagh/wms",
+                    wmsName: "simpletype#layer"
+                }
+            };
+
+        });
+
+        afterEach(function() {
+            filterGroupPanel.dataCollection.layerSelectionModel = undefined;
+        });
+
+        it('creates a URL', function() {
+
+            string = filterGroupPanel._getFeatureUrlGeneratorFunction();
+
+            expect(string).toEqual("http://blagh/wms?typeName=simpletype&SERVICE=WFS&outputFormat=application/json&REQUEST=GetFeature&VERSION=1.0.0&CQL_FILTER=seacueelle4dataAndMap&maxFeatures=1");
+        });
+    });
+
     describe('the _filtersLoaded function', function() {
 
         beforeEach(function() {

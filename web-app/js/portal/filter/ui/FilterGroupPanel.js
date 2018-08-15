@@ -46,13 +46,12 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
 
     _filtersUpdated: function() {
 
-        var wfsFullCheckUrl = this._getFeatureUrlGeneratorFunction();
-        if (wfsFullCheckUrl.includes("CQL_FILTER")) {
+        var wfsMapLayerCheckUrl = this._getFeatureUrlGeneratorFunction();
+        if (wfsMapLayerCheckUrl.includes("CQL_FILTER")) {
             Ext.Ajax.request({
-                url: Ext.ux.Ajax.constructProxyUrl(wfsFullCheckUrl),
+                url: Ext.ux.Ajax.constructProxyUrl(wfsMapLayerCheckUrl),
                 scope: this,
-                success: this._handleGetFeatureRequestResults,
-                failure: this._handleGetFeatureRequestResults
+                success: this._handleGetFeatureRequestResults
             });
         }
         else {
@@ -80,9 +79,10 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
         }
     },
 
+    // uses the WMS map layer
     _getFeatureUrlGeneratorFunction: function() {
 
-        var builder = new Portal.filter.combiner.FiltersWithValuesCqlBuilder({
+        var builder = new Portal.filter.combiner.MapCqlBuilder({
             filters: this.dataCollection.getFilters()
         });
 
