@@ -22,7 +22,7 @@ Portal.filter.DateFilter = Ext.extend(Portal.filter.Filter, {
         return this._getCql(true);
     },
 
-    getCqlWithTimeRange: function() {
+    getDateDataCql: function() {
 
         return this._getCql(false);
     },
