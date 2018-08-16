@@ -12,6 +12,7 @@ class ExternalRequest {
     def outputStream
     def targetUrl
     def connectTimeout
+    def grailsApplication
 
     ExternalRequest(outputStream, url) {
         this.outputStream = outputStream
@@ -22,6 +23,7 @@ class ExternalRequest {
         this.response = response
         this.targetUrl = url
         this.connectTimeout = grailsApplication.config.proxyConnectTimeout
+        this.grailsApplication = grailsApplication
     }
 
     def straightThrough = { inputStream, outputStream ->
@@ -43,6 +45,10 @@ class ExternalRequest {
 
         if (connectTimeout) {
             conn.setConnectTimeout(connectTimeout);
+        }
+        if (grailsApplication) {
+            String userAgent = "AODN-Portal".concat( (grailsApplication.metadata) ? "/V" + grailsApplication.metadata.'app.version': "/development-test");
+            conn.addRequestProperty("User-Agent", userAgent);
         }
 
         onConnectionOpened conn
