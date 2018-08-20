@@ -27,6 +27,16 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         this.df.on('blur', function(field, e) {
             this.onBlur(field);
         }, this);
+
+        this.df.on('specialkey', function(field, e) {
+            this.onSpecialKey(field, e);
+        }, this);
+
+        this.lostFocus = false;
+    },
+
+    resetLostFocus: function() {
+        this.lostFocus = false;
     },
 
     setExtent: function(extent) {
@@ -137,28 +147,11 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         this.startValue = this.dateValue;
     },
 
-    // Ripped straight from Saki's DateTime but added calls to local onBlur to ensure values are updated
     onSpecialKey: function(field, event) {
         var key = event.getKey();
         if (key === event.TAB) {
             if (field === this.df && !event.shiftKey) {
-                event.stopEvent();
-                this.tf.focus();
-                this.onBlur(this.df);
-            }
-            if (field === this.tf && event.shiftKey) {
-                event.stopEvent();
-                this.df.focus();
-                this.onBlur(this.tf);
-            }
-        }
-        // otherwise it misbehaves in editor grid
-        if (key === event.ENTER) {
-            if (field === this.df) {
-                this.onBlur(this.df);
-            }
-            if (field === this.tf) {
-                this.onBlur(this.tf);
+                this.lostFocus = true;
             }
         }
     },
