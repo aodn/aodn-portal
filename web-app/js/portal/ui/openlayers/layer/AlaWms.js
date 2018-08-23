@@ -28,7 +28,7 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
             lat: lonlat.lat,
             lon: lonlat.lon,
             radius: 50,
-            q: "genus:Macropus",
+            q: "genus:Macropus", // needs fixing
             wkt: wkt,
             pageSize: 2
         };
@@ -53,13 +53,21 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         var newParams = {};
         for (var key in params) {
-            var theKey = (key == 'fq') ? key : key.toUpperCase();
-            newParams[theKey] = params[key];
+            if (key == 'fq') {
+                newParams['fq'] = this.buildFqParams(params[key]);
+            }
+            else {
+                newParams[key] = params[key];
+            }
         }
 
         var newArguments = [newParams];
         return OpenLayers.Layer.Grid.prototype.mergeNewParams.apply(this,
             newArguments);
+    },
+
+    buildFqParams: function(fq) {
+        return  (Portal.app.appConfig.ala.index != undefined) ? Portal.app.appConfig.ala.index + " " + fq : fq;
     },
 
     applyFilters: function(filters) {
@@ -69,9 +77,7 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         });
 
         var style = "ALAOccurrencesStyle";
-        var newParams = builder.buildParameters();
-
-        newParams = builder._createDateTimeParameter(newParams);
+        var newParams = builder.refactorDateTimeParameters(builder.buildParameters());
 
         if (newParams.Q) {
             style = "ALAPerSpeciesStyle";
