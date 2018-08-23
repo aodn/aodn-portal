@@ -357,3 +357,21 @@ input[type=text]:read-only {
     box-shadow: 0 0 10px #9ecaed;
     padding-bottom: 2px ! important;
 }
+
+div.alaFilterHighlight {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1.2em;
+    padding: 2px;
+
+}
+
+div.alaFilterResult {
+
+    padding: 6px;
+    border: none;
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(left, #FFFFFF, #8c8b8b, #f0f0f0);
+    -webkit-border-image: -webkit-linear-gradient(left, #FFFFFF, #8c8b8b, #f0f0f0);
+    -moz-border-image: -moz-linear-gradient(left, #FFFFFF, #8c8b8b, #f0f0f0);
+    border-image-slice: 1;
+}

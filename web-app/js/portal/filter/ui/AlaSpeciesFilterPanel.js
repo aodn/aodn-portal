@@ -15,8 +15,8 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
 
         var resultTpl = new Ext.XTemplate(
             '<tpl for=".">' +
-            '<div class="x-combo-list-item alafilter">',
-            '<div>{highlight}</div>',
+            '<div class="x-combo-list-item alaFilterResult">',
+            '<div class="alaFilterHighlight">{highlight}</div>',
             ' <tpl if="rawRank != \'\' ">',
             '  <div><b>Most specific rank:</b> {[this.decapitalise(values.rawRank)]}</div>',
             ' </tpl>',
