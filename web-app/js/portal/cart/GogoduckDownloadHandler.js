@@ -25,7 +25,8 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.InternalAsyncDownlo
             'email.to': notificationEmailAddress,
             jobType: 'GoGoDuck',
             'jobParameters.filename': this._getDownloadFileName(),
-            mimeType: "application/x-netcdf",
+            'jobParameters.aggregationOutputMime': "application/x-netcdf",
+            mimeType: "application/zip",
             'jobParameters.layer': layerName,
             'jobParameters.subset': subset
         };
@@ -40,10 +41,14 @@ Portal.cart.GogoduckDownloadHandler = Ext.extend(Portal.cart.InternalAsyncDownlo
     _getDownloadFileName: function() {
 
         var pre = Portal.app.appConfig.gogoduck.filenamePrepend;
-        var timestamp = moment(new Date()).utc().format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+        var now = new Date();
+        //  toISOString format is '2015-12-02T21:45:22.279Z'
+        //  We want the format to be 'YYYYMMDDThhmmssZ'
+        var timestamp = now.toISOString().split('.')[0];
+        timestamp = timestamp.replace(/-/g, "") + "Z";
 
         return String.format("{0}_{1}",
-            (pre != undefined) ? pre : "Portal_aggregation",
+            (pre != undefined) ? pre : "IMOS_aggregation",
             timestamp);
     },
 
