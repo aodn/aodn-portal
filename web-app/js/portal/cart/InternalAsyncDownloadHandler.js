@@ -52,6 +52,20 @@ Portal.cart.InternalAsyncDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadH
         };
     },
 
+    _getDownloadFileName: function() {
+
+        var pre = Portal.app.appConfig.gogoduck.filenamePrepend;
+        var now = new Date();
+        //  toISOString format is '2015-12-02T21:45:22.279Z'
+        //  We want the format to be 'YYYYMMDDThhmmssZ'
+        var timestamp = now.toISOString().split('.')[0];
+        timestamp = timestamp.replace(/-/g, "") + "Z";
+
+        return String.format("{0}_{1}",
+            (pre != undefined) ? pre : "IMOS_aggregation",
+            timestamp);
+    },
+
     _buildServiceUrl: function() {
         throw 'Should be implemented by subclasses';
     },
