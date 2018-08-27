@@ -59,7 +59,7 @@ Portal.cart.InternalAsyncDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadH
         //  toISOString format is '2015-12-02T21:45:22.279Z'
         //  We want the format to be 'YYYYMMDDThhmmssZ'
         var timestamp = now.toISOString().split('.')[0];
-        timestamp = timestamp.replace(/-/g, "") + "Z";
+        timestamp = timestamp.replace(/-/g, "").replace(/:/g, "") + "Z";
 
         return String.format("{0}_{1}",
             (pre != undefined) ? pre : "IMOS_aggregation",
