@@ -18,7 +18,9 @@ Portal.cart.PointCSVDownloadHandler = Ext.extend(Portal.cart.InternalAsyncDownlo
             server: serverUrl,
             'email.to': notificationEmailAddress,
             jobType: 'GoGoDuck',
-            mimeType: "text/csv",
+            'jobParameters.filename': this._getDownloadFileName(),
+            'jobParameters.aggregationOutputMime': "text/csv",
+            mimeType: "application/zip",
             'jobParameters.layer': layerName,
             'jobParameters.subset': subset
         };
