@@ -41,7 +41,7 @@ Portal.filter.combiner.AlaParametersBuilder = Ext.extend(Portal.filter.combiner.
         var filters = this.buildParameters();
 
         if (filters['fromDate'] || filters['toDate']) {
-            filters = this._createDateTimeParameter(filters);
+            filters = this.refactorDateTimeParameters(filters);
         }
 
         for (var key in filters) {
@@ -52,7 +52,7 @@ Portal.filter.combiner.AlaParametersBuilder = Ext.extend(Portal.filter.combiner.
         return paramString;
     },
 
-    _createDateTimeParameter: function(filters) {
+    refactorDateTimeParameters: function(filters) {
 
         var fromDateString = (filters['fromDate']) ? filters['fromDate'] : "*";
         var toDateString = (filters['toDate']) ? filters['toDate'] : "*";
