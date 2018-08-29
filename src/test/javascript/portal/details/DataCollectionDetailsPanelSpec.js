@@ -14,17 +14,23 @@ describe("Portal.details.DataCollectionDetailsPanel", function() {
         layerAdapter = new Ext.util.Observable();
         layerAdapter.isLoading = returns(false);
 
-        layerSelectionModel = {};
+        layerSelectionModel = {selectedLayer: layer};
 
         dataCollection = {
             getTitle: returns('amazetion'),
             getLayerAdapter: returns(layerAdapter),
-            getLayerSelectionModel: returns(layerSelectionModel)
+            layerSelectionModel: layerSelectionModel
         };
 
         panel = new Portal.details.DataCollectionDetailsPanel({
             dataCollection: dataCollection,
             tools: {
+                showLayerToolItem: {
+                    toggle: returns()
+                },
+                hideLayerToolItem: {
+                    toggle: returns()
+                },
                 spinnerToolItem: {
                     show: returns(),
                     hide: returns()
@@ -93,6 +99,24 @@ describe("Portal.details.DataCollectionDetailsPanel", function() {
             expect(panel._indicateLayerLoading).toHaveBeenCalledWith(false);
             expect(panel._indicateLayerError).toHaveBeenCalledWith(true);
         });
+    });
+
+
+    describe('visibility checkbox', function() {
+        beforeEach(function() {
+            spyOn(window, 'trackLayerControlUsage');
+        });
+
+        it('sends google analytics tracking when clicked', function() {
+            panel._showHideLayer();
+
+            expect(window.trackLayerControlUsage).toHaveBeenCalledWith(
+                'layerControlTrackingActionVisibility',
+                'on',
+                'amazetion'
+            );
+        });
+
     });
 
     it('fires "DATA_COLLECTION_SELECTED" event on expand', function() {

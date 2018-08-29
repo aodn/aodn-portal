@@ -13,7 +13,6 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
         }
 
         this.items.push(this._newOpacitySliderContainer());
-        this.items.push(this._newVisibilityCheckbox());
 
         if (this._getCollectionBounds()) {
             this.items.push(this._newZoomToDataButton());
@@ -59,18 +58,6 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
             value,
             this.dataCollection.getTitle()
         );
-    },
-
-    _newVisibilityCheckbox: function() {
-        return new Ext.form.Checkbox({
-            value: true,
-            boxLabel: OpenLayers.i18n('showMapLayer'),
-            checked: true,
-            listeners: {
-                scope: this,
-                check: this._visibilityButtonChecked
-            }
-        });
     },
 
     _newZoomToDataButton: function() {
@@ -120,11 +107,6 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
             this.dataCollection.getTitle(),
             layer.wmsName
         );
-    },
-
-    _visibilityButtonChecked: function(obj, val) {
-        trackLayerControlUsage('layerControlTrackingActionVisibility', val ? "on" : "off", this.dataCollection.getTitle());
-        this.layer.setVisibility(val);
     },
 
     _zoomToLayer: function() {

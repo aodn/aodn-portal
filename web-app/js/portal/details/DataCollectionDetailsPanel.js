@@ -24,6 +24,8 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
             tools: [
                 this.errorToolItem,
                 this.spinnerToolItem,
+                this.showLayerToolItem,
+                this.hideLayerToolItem,
                 this.deleteToolItem
             ],
             listeners: {
@@ -104,6 +106,21 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
             hidden: !layer.isLoading(),
             title: OpenLayers.i18n('loadingMessage')
         };
+        this.showLayerToolItem = {
+            id: 'showLayerToolItem',
+            styles: 'fa-toggle-off',
+            handler: this._showHideLayer,
+            hidden: true,
+            title: String.format(OpenLayers.i18n('showHideTooltip'), "Show on "),
+            scope: this
+        };
+        this.hideLayerToolItem = {
+            id: 'hideLayerToolItem',
+            styles: 'fa-toggle-on',
+            handler: this._showHideLayer,
+            title: String.format(OpenLayers.i18n('showHideTooltip'), "Hide from "),
+            scope: this
+        };
         this.deleteToolItem = {
             id: 'deleteToolItem',
             styles: 'fa-close',
@@ -111,6 +128,16 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
             title: OpenLayers.i18n('removeDataCollectionTooltip'),
             scope: this
         };
+    },
+
+    _showHideLayer: function() {
+        var thisLayer= this.dataCollection.layerSelectionModel.selectedLayer;
+        var visible = thisLayer.getVisibility();
+        this.tools.showLayerToolItem.toggle(visible);
+        this.tools.hideLayerToolItem.toggle(!visible);
+
+        trackLayerControlUsage('layerControlTrackingActionVisibility', visible ? "on" : "off", this.dataCollection.getTitle());
+        thisLayer.setVisibility(!visible);
     },
 
     _layerDelete: function() {
