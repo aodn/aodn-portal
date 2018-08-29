@@ -177,7 +177,28 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
             handler: function() {
                 this.confirmDownload(collection, this, downloadOption.handler, downloadOption.handlerParams);
             },
-            scope: this
+            scope: this,
+            listeners: {
+                added: function() {
+                    if(handler instanceof Portal.cart.WfsDownloadHandler) {
+                        var url = downloadOption.handler(collection);
+                        url += "&maxFeatures=1";
+
+                        url = url.replace("csv-with-metadata-header", "csv");
+
+                        Ext.Ajax.request({
+                            url: Ext.ux.Ajax.constructProxyUrl(url),
+                            scope: this,
+                            success: this._handleWfsResults
+                        });
+                    }
+                }
+            },
+            _handleWfsResults: function(results) {
+                if(results.responseText.split("\n").length <= 2) {
+                    this.disable();
+                }
+            }
         }
     },
 
