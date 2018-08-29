@@ -656,6 +656,20 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         });
     },
 
+    _getTouchedDateTimePicker: function() {
+        if (this.startDateTimePicker.lostFocus) {
+            return this.startDateTimePicker;
+        } else if (this.endDateTimePicker.lostFocus) {
+            return this.endDateTimePicker;
+        }
+        return null;
+    },
+
+    _resetTouchedDateTimePicker: function() {
+        this.startDateTimePicker.resetLostFocus();
+        this.endDateTimePicker.resetLostFocus();
+    },
+
     _resetExtent: function(extentMin, extentMax) {
         this._initializeDateTimePicker(this.startDateTimePicker, extentMin);
         this._initializeDateTimePicker(this.endDateTimePicker, extentMax);
@@ -666,6 +680,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this._setLayerSubsetExtent();
         this._applyFilterValuesToCollection();
+
+        var picker = this._getTouchedDateTimePicker();
+        if (picker) {
+            picker.tf.focus();
+            picker.tf.collapse();
+        }
+        this._resetTouchedDateTimePicker();
     },
 
     _initializeDateTimePicker: function(dateTimePicker, defaultValue) {
