@@ -365,6 +365,10 @@ div.alaFilterHighlight {
 
 }
 
+div.alaFilterHighlight strong {
+    color: #cb6e52;
+}
+
 div.alaFilterResult {
 
     padding: 6px;
