@@ -73,6 +73,7 @@ Portal.filter.combiner.AlaParametersBuilder = Ext.extend(Portal.filter.combiner.
             delete filters.fromDate;
             delete filters.toDate;
         }
+
         return filters;
     }
 });
