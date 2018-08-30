@@ -21,7 +21,7 @@ Portal.filter.combiner.AlaParametersBuilder = Ext.extend(Portal.filter.combiner.
             return filter.getCql();
         });
 
-        return this._joinParameters(parameters);
+        return this.applyFqIndex(this._joinParameters(parameters));
     },
 
     _joinParameters: function(parts) {
@@ -35,14 +35,15 @@ Portal.filter.combiner.AlaParametersBuilder = Ext.extend(Portal.filter.combiner.
         return returnParameters;
     },
 
+    getExpandedParameters: function() {
+        var filters = this.buildParameters();
+        return this.expandDateTimeParameters(filters);
+    },
+
     buildParameterString: function() {
 
         var paramString = "";
-        var filters = this.buildParameters();
-
-        if (filters['fromDate'] || filters['toDate']) {
-            filters = this.refactorDateTimeParameters(filters);
-        }
+        var filters = this.getExpandedParameters();
 
         for (var key in filters) {
             paramString += "&";
@@ -52,15 +53,26 @@ Portal.filter.combiner.AlaParametersBuilder = Ext.extend(Portal.filter.combiner.
         return paramString;
     },
 
-    refactorDateTimeParameters: function(filters) {
+    applyFqIndex: function(params) {
 
-        var fromDateString = (filters['fromDate']) ? filters['fromDate'] : "*";
-        var toDateString = (filters['toDate']) ? filters['toDate'] : "*";
+        if (Portal.app.appConfig.ala.index != undefined) {
+            params['fq'] = Portal.app.appConfig.ala.index;
+        }
+        return params;
+    },
 
-        filters["fq"] = String.format('occurrence_date:[{0} TO {1}]', fromDateString, toDateString);
+    expandDateTimeParameters: function(filters) {
+        if (filters['fromDate'] || filters['toDate']) {
 
-        delete filters.fromDate;
-        delete filters.toDate;
+            var fromDateString = (filters['fromDate']) ? filters['fromDate'] : "*";
+            var toDateString = (filters['toDate']) ? filters['toDate'] : "*";
+
+            var fqVal = (filters["fq"] != undefined) ? filters["fq"] + " " : "";
+            filters["fq"] =  String.format('{2}occurrence_date:[{0} TO {1}]', fromDateString, toDateString, fqVal);
+
+            delete filters.fromDate;
+            delete filters.toDate;
+        }
         return filters;
     }
 });
