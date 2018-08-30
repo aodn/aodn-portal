@@ -22,10 +22,12 @@ Portal.cart.AlaWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
 
         var injectionJson = Portal.cart.AlaWmsInjector.superclass.getInjectionJson(collection);
 
+        // allowing wildcard/empty taxon downloads
+/*
         if (!this._checkTaxonFilter(collection) ) {
             injectionJson.errorMessage = OpenLayers.i18n("ALANoFilterText");
         }
-
+*/
         injectionJson.dataFilters = this._getDataFilterEntry(collection);
         return injectionJson;
     }
