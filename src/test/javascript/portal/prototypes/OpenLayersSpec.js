@@ -176,7 +176,7 @@ describe('OpenLayers', function() {
 
         describe('getPrettyBounds', function() {
             it('returns pretty rounded bounds', function() {
-                expect(OpenLayers.Geometry.fromWKT('POLYGON((1 2,3 2,3.14159265 4,1 4,1 2))').getPrettyBounds()).toEqual('1W 2S 3.142E 4N');
+                expect(OpenLayers.Geometry.fromWKT('POLYGON((1 2,3 2,3.14159265 4,1 4,1 2))').getPrettyBounds()).toEqual('From Lat/Lon 2, 1 to Lat/Lon 4, 3.142');
             });
         });
     });
