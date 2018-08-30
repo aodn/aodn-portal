@@ -13,9 +13,7 @@ Portal.filter.StringDepthFilter = Ext.extend(Portal.filter.StringFilter, {
     },
 
     getHumanReadableForm: function() {
-
-        //  The format for a StringFilter is <Label>: <value>
-        //  In this case it will be something like 'Depth: 0,5000'
+        //  Desired format: 0m to 5000m
         if(this.getValue().length > 1) {
             zAxisMin = this.getValue()[0];
             zAxisMax = this.getValue()[1];
