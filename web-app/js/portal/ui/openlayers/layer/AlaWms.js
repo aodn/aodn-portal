@@ -27,10 +27,13 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var baseFeatureInfoParams = {
             lat: lonlat.lat,
             lon: lonlat.lon,
+            fq: Portal.app.appConfig.ala.index,
+            q: "rank:species",
+            fsort: "count",
+            dir: "desc",
             radius: 50,
-            q: "genus:Macropus", // needs fixing
-            wkt: wkt,
-            pageSize: 2
+            //wkt: wkt,
+            pageSize: 3
         };
 
         var url = this.getAlaGetFeatureInfoString();
@@ -45,7 +48,9 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     formatFeatureInfoHtml: function(resp) {
         if (resp.status == 200 ) {
-            return resp.responseText
+            if (!resp.responseText.contains("No records at this point")) {
+                return resp.responseText
+            }
         }
     },
 
