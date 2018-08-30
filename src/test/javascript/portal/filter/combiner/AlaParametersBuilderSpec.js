@@ -19,7 +19,7 @@ describe("Portal.filter.combiner.AlaParametersBuilder", function() {
         });
     });
 
-    describe('refactorDateTimeParameters', function() {
+    describe('expandDateTimeParameters', function() {
 
         it('returns a composite dateTime parameter in ALA format', function() {
             spyOn(builder, 'buildParameters').andReturn({
@@ -29,7 +29,7 @@ describe("Portal.filter.combiner.AlaParametersBuilder", function() {
 
             });
             var filters = builder.buildParameters();
-            expect(builder.refactorDateTimeParameters(filters)).toEqual({
+            expect(builder.expandDateTimeParameters(filters)).toEqual({
                 Q: 'thisisanepiccombooflettersandnumbers',
                 fq: 'occurrence_date:[2015-10-06T00:00:00.000Z TO 2018-07-31T23:59:59.999Z]'
             });

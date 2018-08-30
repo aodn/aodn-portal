@@ -56,23 +56,9 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     mergeNewParams:function(params) {
 
-        var newParams = {};
-        for (var key in params) {
-            if (key == 'fq') {
-                newParams['fq'] = this.buildFqParams(params[key]);
-            }
-            else {
-                newParams[key] = params[key];
-            }
-        }
-
-        var newArguments = [newParams];
-        return OpenLayers.Layer.Grid.prototype.mergeNewParams.apply(this,
-            newArguments);
-    },
-
-    buildFqParams: function(fq) {
-        return  (Portal.app.appConfig.ala.index != undefined) ? Portal.app.appConfig.ala.index + " " + fq : fq;
+        // dont uppercase using Grid direct
+        OpenLayers.Layer.Grid.prototype.mergeNewParams.apply(this,
+            [params]);
     },
 
     applyFilters: function(filters) {
@@ -82,7 +68,7 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         });
 
         var style = "ALAOccurrencesStyle";
-        var newParams = builder.refactorDateTimeParameters(builder.buildParameters());
+        var newParams = builder.getExpandedParameters();
 
         if (newParams.Q) {
             style = "ALAPerSpeciesStyle";
