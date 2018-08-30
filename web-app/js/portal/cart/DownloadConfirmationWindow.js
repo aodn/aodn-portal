@@ -3,7 +3,7 @@ Ext.namespace('Portal.cart');
 Portal.cart.DownloadConfirmationWindow = Ext.extend(Ext.Window, {
 
     WINDOW_WIDTH: 780,
-    WINDOW_HEIGHT: 480,
+    WINDOW_HEIGHT: 445,
 
     initComponent: function() {
 
