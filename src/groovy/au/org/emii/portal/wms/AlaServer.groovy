@@ -16,7 +16,7 @@ class AlaServer extends WmsServer {
             [
                 label     : 'Filter by species/taxon',
                 type      : 'alastringarray',
-                name      : 'Q',
+                name      : 'q',
                 visualised: true
             ]
         )

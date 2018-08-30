@@ -15,7 +15,7 @@ Portal.cart.AlaWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         var builder = new Portal.filter.combiner.AlaParametersBuilder({
             filters: collection.getFilters()
         });
-        return builder.buildParameters().Q != undefined;
+        return builder.buildParameters().q != undefined;
     },
 
     getInjectionJson: function(collection) {
