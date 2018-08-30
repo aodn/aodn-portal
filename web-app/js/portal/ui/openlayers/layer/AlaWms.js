@@ -47,14 +47,14 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     formatFeatureInfoHtml: function(resp) {
-        if (resp.status == 200 ) {
+        if (resp.status == 200) {
             if (!resp.responseText.contains("No records at this point")) {
                 return resp.responseText
             }
         }
     },
 
-    mergeNewParams:function(params) {
+    mergeNewParams: function(params) {
 
         // dont uppercase using Grid direct
         OpenLayers.Layer.Grid.prototype.mergeNewParams.apply(this,
@@ -78,7 +78,7 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         }
 
         this.mergeNewParams(newParams);
-        this.mergeNewParams({ ENV: OpenLayers.i18n(style)});
+        this.mergeNewParams({ENV: OpenLayers.i18n(style)});
 
     }
 
