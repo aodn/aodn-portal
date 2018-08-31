@@ -631,12 +631,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         if (zAxisValue) {
             filters.push(
-                new Portal.filter.StringFilter({
+                new Portal.filter.StringDepthFilter({
                     name: 'zaxis',
                     label: this.zAxisPickerContainer.zAxisPickerTitle,
                     isNcwmsParams: true,
                     visualised: true,
-                    value: zAxisValue
+                    value: zAxisValue,
+                    units: this.layer.extraLayerInfo.zaxis.units
                 })
             );
         }

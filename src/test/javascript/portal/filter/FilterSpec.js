@@ -14,6 +14,7 @@ describe("Portal.filter.Filter", function() {
             checkClassFor('geometrypropertytype', Portal.filter.GeometryFilter);
             checkClassFor('boolean', Portal.filter.BooleanFilter);
             checkClassFor('date', Portal.filter.DateFilter);
+            checkClassFor('depthstring', Portal.filter.StringDepthFilter);
             checkClassFor('unknown', null);
         });
 

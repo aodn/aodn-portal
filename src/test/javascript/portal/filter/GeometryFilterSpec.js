@@ -31,7 +31,7 @@ describe("Portal.filter.GeometryFilter", function() {
 
                 expect(humanReadableForm).toContain(OpenLayers.i18n("spatialExtentHeading"));
                 expect(humanReadableForm).toContain(OpenLayers.i18n("spatialExtentPolygonNote"));
-                expect(humanReadableForm).toBe(OpenLayers.i18n("spatialExtentHeading") + ': Polygon with max extent 1W 2S 3E 4N');
+                expect(humanReadableForm).toBe(OpenLayers.i18n("spatialExtentHeading") + ': Polygon with max extent From Lat/Lon 2, 1 to Lat/Lon 4, 3');
             });
         });
     });
@@ -64,7 +64,7 @@ describe("Portal.filter.GeometryFilter", function() {
                 var humanReadableForm = filter.getHumanReadableForm();
 
                 expect(humanReadableForm).toContain(OpenLayers.i18n("spatialExtentHeading"));
-                expect(humanReadableForm).toBe(OpenLayers.i18n("spatialExtentHeading") + ': 1W 2S 3E 4N');
+                expect(humanReadableForm).toBe(OpenLayers.i18n("spatialExtentHeading") + ': From Lat/Lon 2, 1 to Lat/Lon 4, 3');
             });
         });
     });

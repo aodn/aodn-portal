@@ -221,11 +221,11 @@ OpenLayers.Geometry.prototype.getPrettyBounds = function() {
     var bounds = this.getBounds();
 
     return String.format(
-        '{0}W {1}S {2}E {3}N',
-        toNSigFigs(bounds['left'], 3),
+        'From Lat/Lon {0}, {1} to Lat/Lon {2}, {3}',
         toNSigFigs(bounds['bottom'], 3),
-        toNSigFigs(bounds['right'], 3),
-        toNSigFigs(bounds['top'], 3)
+        toNSigFigs(bounds['left'], 3),
+        toNSigFigs(bounds['top'], 3),
+        toNSigFigs(bounds['right'], 3)
     );
 };
 

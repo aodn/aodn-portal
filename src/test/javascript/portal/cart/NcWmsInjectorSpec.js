@@ -58,7 +58,7 @@ describe('Portal.cart.NcWmsInjector', function() {
 
             var entry = injector._getDataFilterEntry(dataCollection);
             expect(entry).toContain(OpenLayers.i18n("spatialExtentHeading"));
-            expect(entry).toContain('-150W 0S 180E 40N');
+            expect(entry).toContain('0, -150 to Lat/Lon 40, 180');
         });
 
         it('indicates temporal range', function() {
