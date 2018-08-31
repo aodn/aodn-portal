@@ -1,6 +1,10 @@
 Ext.namespace('Portal.filter');
 
-Portal.filter.StringDepthFilter = Ext.extend(Portal.filter.StringFilter, {
+Portal.filter.StringDepthFilter = Ext.extend(Portal.filter.Filter, {
+
+    getSupportedGeoserverTypes: function() {
+        return ['depthstring'];
+    },
 
     setUnits: function(units) {
 
@@ -10,6 +14,20 @@ Portal.filter.StringDepthFilter = Ext.extend(Portal.filter.StringFilter, {
     getUnits: function() {
 
         return this.units;
+    },
+
+    getUiComponentClass: function() {
+
+        return Portal.filter.ui.ComboFilterPanel;
+    },
+
+    getCql: function() {
+
+        return String.format(
+            "{0} LIKE '{1}'",
+            this.getName(),
+            this._escapeSingleQuotes(this.getValue())
+        );
     },
 
     getHumanReadableForm: function() {
@@ -25,6 +43,11 @@ Portal.filter.StringDepthFilter = Ext.extend(Portal.filter.StringFilter, {
             this.getLabel(),
             zAxisString
         );
+    },
+
+    _escapeSingleQuotes: function(text) {
+
+        return text.replace(/'/g, "''");
     }
 
 });
