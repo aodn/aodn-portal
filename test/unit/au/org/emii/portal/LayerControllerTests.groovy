@@ -88,7 +88,7 @@ class LayerControllerTests extends ControllerUnitTestCase {
             ]
         ]
 
-        controller.configuredBaselayers()
+        controller.configuredLayers()
 
         assertEquals(String.valueOf(baselayerConfig as JSON), mockResponse.contentAsString)
     }
