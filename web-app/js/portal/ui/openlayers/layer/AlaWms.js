@@ -27,10 +27,13 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         var baseFeatureInfoParams = {
             lat: lonlat.lat,
             lon: lonlat.lon,
+            fq: Portal.app.appConfig.ala.index,
+            q: "rank:species",
+            fsort: "count",
+            dir: "desc",
             radius: 50,
-            q: "genus:Macropus", // needs fixing
-            wkt: wkt,
-            pageSize: 2
+            //wkt: wkt,
+            pageSize: 3
         };
 
         var url = this.getAlaGetFeatureInfoString();
@@ -44,30 +47,18 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
     },
 
     formatFeatureInfoHtml: function(resp) {
-        if (resp.status == 200 ) {
-            return resp.responseText
+        if (resp.status == 200) {
+            if (!resp.responseText.contains("No records at this point")) {
+                return resp.responseText
+            }
         }
     },
 
-    mergeNewParams:function(params) {
+    mergeNewParams: function(params) {
 
-        var newParams = {};
-        for (var key in params) {
-            if (key == 'fq') {
-                newParams['fq'] = this.buildFqParams(params[key]);
-            }
-            else {
-                newParams[key] = params[key];
-            }
-        }
-
-        var newArguments = [newParams];
-        return OpenLayers.Layer.Grid.prototype.mergeNewParams.apply(this,
-            newArguments);
-    },
-
-    buildFqParams: function(fq) {
-        return  (Portal.app.appConfig.ala.index != undefined) ? Portal.app.appConfig.ala.index + " " + fq : fq;
+        // dont uppercase using Grid direct
+        OpenLayers.Layer.Grid.prototype.mergeNewParams.apply(this,
+            [params]);
     },
 
     applyFilters: function(filters) {
@@ -77,17 +68,17 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         });
 
         var style = "ALAOccurrencesStyle";
-        var newParams = builder.refactorDateTimeParameters(builder.buildParameters());
+        var newParams = builder.getExpandedParameters(true);
 
-        if (newParams.Q) {
+        if (newParams.q) {
             style = "ALAPerSpeciesStyle";
         }
         else {
-            newParams.Q = null;
+            newParams.q = "*";
         }
 
         this.mergeNewParams(newParams);
-        this.mergeNewParams({ ENV: OpenLayers.i18n(style)});
+        this.mergeNewParams({ENV: OpenLayers.i18n(style)});
 
     }
 

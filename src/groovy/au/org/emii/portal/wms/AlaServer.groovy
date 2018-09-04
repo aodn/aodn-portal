@@ -16,7 +16,7 @@ class AlaServer extends WmsServer {
             [
                 label     : 'Filter by species/taxon',
                 type      : 'alastringarray',
-                name      : 'Q',
+                name      : 'q',
                 visualised: true
             ]
         )
@@ -25,7 +25,7 @@ class AlaServer extends WmsServer {
                 label           : 'Bounding Box',
                 type            : 'geometrypropertytype',
                 name            : 'position',
-                visualised      : true
+                visualised      : false
             ]
         )
         filters.push(

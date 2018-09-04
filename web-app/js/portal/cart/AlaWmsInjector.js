@@ -15,17 +15,19 @@ Portal.cart.AlaWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         var builder = new Portal.filter.combiner.AlaParametersBuilder({
             filters: collection.getFilters()
         });
-        return builder.buildParameters().Q != undefined;
+        return builder.buildParameters().q != undefined;
     },
 
     getInjectionJson: function(collection) {
 
         var injectionJson = Portal.cart.AlaWmsInjector.superclass.getInjectionJson(collection);
 
+        // allowing wildcard/empty taxon downloads
+/*
         if (!this._checkTaxonFilter(collection) ) {
             injectionJson.errorMessage = OpenLayers.i18n("ALANoFilterText");
         }
-
+*/
         injectionJson.dataFilters = this._getDataFilterEntry(collection);
         return injectionJson;
     }

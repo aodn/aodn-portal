@@ -15,8 +15,8 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
 
         var resultTpl = new Ext.XTemplate(
             '<tpl for=".">' +
-            '<div class="x-combo-list-item alafilter">',
-            '<div>{highlight}</div>',
+            '<div class="x-combo-list-item alaFilterResult">',
+            '<div class="alaFilterHighlight">{highlight} ({occCount})</div>',
             ' <tpl if="rawRank != \'\' ">',
             '  <div><b>Most specific rank:</b> {[this.decapitalise(values.rawRank)]}</div>',
             ' </tpl>',
@@ -49,6 +49,7 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
                 {name: 'highlight', type: 'string'},
                 {name: 'guid', type: 'string'},
                 {name: 'phylum', type: 'string'},
+                {name: 'occCount', type: 'string'},
                 {name: 'classs', type: 'string'},
                 {name: 'rawRank', type: 'string'},
                 {name: 'commonNameSingle', type: 'string'}
@@ -108,7 +109,7 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
     _createNewActiveFilterPanel: function(activeFilterData) {
 
         return new Ext.Panel({
-            title: activeFilterData.name,
+            title: String.format("{0} ({1})", activeFilterData.name, activeFilterData.occCount),
             activeFilterData: activeFilterData,
             toolTemplate: new Ext.XTemplate(
                 '<tpl>',
@@ -164,6 +165,7 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
     },
 
     _onSpeciesComboChange: function(combo, record) {
+
         if (record.data != undefined) {
 
             if (this.speciesComboItems.indexOf(record.data) == -1) {
