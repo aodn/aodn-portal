@@ -68,7 +68,7 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         });
 
         var style = "ALAOccurrencesStyle";
-        var newParams = builder.getExpandedParameters();
+        var newParams = builder.getExpandedParameters(true);
 
         if (newParams.q) {
             style = "ALAPerSpeciesStyle";

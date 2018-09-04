@@ -2,9 +2,9 @@ Ext.namespace('Portal.filter.combiner');
 
 Portal.filter.combiner.AlaParametersBuilder = Ext.extend(Portal.filter.combiner.BaseFilterCombiner, {
 
-    buildParameters: function() {
+    buildParameters: function(filters) {
 
-        var parameters = this._filtersWithValues().map(function(filter) {
+        var parameters = filters.map(function(filter) {
 
             if (filter.constructor == Portal.filter.DateFilter) {
                 return filter.getDateValues();
@@ -35,8 +35,18 @@ Portal.filter.combiner.AlaParametersBuilder = Ext.extend(Portal.filter.combiner.
         return returnParameters;
     },
 
-    getExpandedParameters: function() {
-        var filters = this.buildParameters();
+    getExpandedParameters: function(visualised) {
+
+        var filters;
+
+        // filters visualised in map only
+        if (visualised === true) {
+            filters = this.buildParameters(this._visualisedFiltersWithValues());
+        }
+        else {
+            filters = this.buildParameters(this._filtersWithValues());
+        }
+
         return this.expandDateTimeParameters(filters);
     },
 

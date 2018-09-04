@@ -25,7 +25,7 @@ class AlaServer extends WmsServer {
                 label           : 'Bounding Box',
                 type            : 'geometrypropertytype',
                 name            : 'position',
-                visualised      : true
+                visualised      : false
             ]
         )
         filters.push(
