@@ -463,6 +463,6 @@ Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map,
         }
     });
 
-    Ext.MsgBus.subscribe(PORTAL_EVENTS.STARTED_LOADING_FILTERS, map.spatialConstraintControl.disableControl, map.spatialConstraintControl);
-    Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, map.spatialConstraintControl.enableControl, map.spatialConstraintControl);
+    Ext.MsgBus.subscribe(PORTAL_EVENTS.STARTED_LOADING_FILTERS, map.disableControl, map.spatialConstraintControl);
+    Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, map.enableControl, map.spatialConstraintControl);
 };
