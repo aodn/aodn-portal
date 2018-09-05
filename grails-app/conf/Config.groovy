@@ -249,15 +249,11 @@ knownServers = [
     ]
 ]
 
-// Search results mini map configuration
-minimap {
-    baselayer {
-        name = "baselayer"
-        url = baselayerServer.uri
-        params = [layers: 'default_bathy']
-    }
-}
-
+// Server configuration
+baselayerServer = [
+        uri: "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms",
+        wmsVersion: '1.1.1'
+]
 baselayers = [
     [
         name: "default_bathy",
@@ -270,6 +266,27 @@ baselayers = [
         server: baselayerServer
     ]
 ]
+
+datalayerServer = [
+        uri: "http://geoserver-static.aodn.org.au/geoserver/datalayers/wms",
+        wmsVersion: '1.1.1'
+]
+datalayers = [
+    [
+            name: "datalayers:Australian_Marine_Parks",
+            title: "Australian Marine Parks",
+            server: datalayerServer
+    ]
+]
+
+// Search results mini map configuration
+minimap {
+    baselayer {
+        name = "baselayer"
+        url = baselayerServer.uri
+        params = [layers: 'default_bathy']
+    }
+}
 
 portal {
     siteHeader = "Open Access to Ocean Data"
