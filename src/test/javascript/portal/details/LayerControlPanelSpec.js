@@ -70,7 +70,7 @@ describe("Portal.details.LayerControlPanel", function() {
 
             layerSelectComponent.fireEvent('change', layerSelectComponent, layerSelectComponent.items[0]);
             expect(window.trackLayerControlUsage).toHaveBeenCalledWith(
-                'changeLayerTrackingAction',
+                'change layer',
                 'Data Collection Title',
                 'first layer'
             );
@@ -121,7 +121,7 @@ describe("Portal.details.LayerControlPanel", function() {
             layerControlPanel._visibilityButtonChecked(null, true);
 
             expect(window.trackLayerControlUsage).toHaveBeenCalledWith(
-                'layerControlTrackingActionVisibility',
+                'visibility (overlay)',
                 'on',
                 'Data Collection Title'
             );
@@ -131,7 +131,7 @@ describe("Portal.details.LayerControlPanel", function() {
             layerControlPanel._visibilityButtonChecked(null, false);
 
             expect(window.trackLayerControlUsage).toHaveBeenCalledWith(
-                'layerControlTrackingActionVisibility',
+                'visibility (overlay)',
                 'off',
                 'Data Collection Title'
             );

@@ -71,7 +71,7 @@ describe("Portal.details.StylePanel", function() {
 
         it('tracks action to google analytics', function() {
             expect(window.trackLayerControlUsage).toHaveBeenCalledWith(
-                'layerControlTrackingActionStyle',
+                'style',
                 'pink swirls',
                 'Data Collection Title'
             );

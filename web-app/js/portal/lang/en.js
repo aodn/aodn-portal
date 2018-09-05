@@ -373,5 +373,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     ALANoFilterText: 'A taxon filter is required for ALA downloads',
     ALAOccurrencesStyle: "color:d9684c;size:1;opacity:1.0;", // colour from www.ala.org.au page
-    ALAPerSpeciesStyle: "colormode:species_guid;name:circle;size:3;opacity:1.0"
+    ALAPerSpeciesStyle: "colormode:species_guid;name:circle;size:3;opacity:1.0",
+
+    // the Portal.ui.openlayers.LayerSwitcher
+    Overlays: "Helper Layers"
 });

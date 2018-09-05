@@ -149,6 +149,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/layer', file: 'MiniMapBaseLayer.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/layer', file: 'NcWms.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/layer', file: 'AlaWms.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/layer', file: 'LayerSwitcher.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MapPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'VisualisePanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui', file: 'MainToolbar.js')}"></script>
