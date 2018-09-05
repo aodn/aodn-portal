@@ -105,11 +105,30 @@ OpenLayers.SpatialConstraintMap = OpenLayers.Class(OpenLayers.Map, {
         if (this.spatialConstraintControl && this.spatialConstraintControl.div){
             this.spatialConstraintControl.activate();
         }
+
         this.navigationControl.deactivate();
     },
 
     addSpatialConstraintControlToMap: function(handler) {
         Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap(this, handler);
+    },
+
+    enableSpatialConstraintControl: function() {
+
+        //  Leave the navigation control active if it is selected
+        if(this.spatialConstraintControl) {
+            if(this.navigationControl.active) {
+                this.spatialConstraintControl.deactivate();
+            } else {
+                this.spatialConstraintControl.activate();
+            }
+        }
+    },
+
+    disableSpatialConstraintControl: function() {
+        if(this.spatialConstraintControl) {
+            this.spatialConstraintControl.deactivate();
+        }
     },
 
     CLASS_NAME: "OpenLayers.SpatialConstraintMap"

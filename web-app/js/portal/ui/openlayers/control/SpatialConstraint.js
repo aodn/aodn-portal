@@ -397,17 +397,8 @@ Portal.ui.openlayers.control.SpatialConstraint = Ext.extend(OpenLayers.Control.D
       if (!this.disabled && this.map != null) {
           OpenLayers.Control.DrawFeature.prototype.activate.call(this);
       }
-    },
-
-    disableControl: function () {
-        this.disabled = true;
-        this.deactivate();
-    },
-
-    enableControl: function () {
-      this.disabled = false;
-      this.activate();
     }
+
 });
 
 Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map, handler) {
@@ -463,6 +454,6 @@ Portal.ui.openlayers.control.SpatialConstraint.createAndAddToMap = function(map,
         }
     });
 
-    Ext.MsgBus.subscribe(PORTAL_EVENTS.STARTED_LOADING_FILTERS, map.spatialConstraintControl.disableControl, map.spatialConstraintControl);
-    Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, map.spatialConstraintControl.enableControl, map.spatialConstraintControl);
+    Ext.MsgBus.subscribe(PORTAL_EVENTS.STARTED_LOADING_FILTERS, map.disableSpatialConstraintControl);
+    Ext.MsgBus.subscribe(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, map.enableSpatialConstraintControl);
 };
