@@ -1,15 +1,21 @@
 #!/usr/bin/env python
-
+import codecs
 import csv
-import urllib2
-import StringIO
+
+try:
+    # Python 3
+    from urllib.request import urlopen
+except ImportError:
+    # Python 2
+    from urllib2 import urlopen
 
 # The URL to the collection (as comma-separated values).
 collection_url = "${collectionUrl}"
 
 # Fetch data...
-response = urllib2.urlopen(collection_url)
+response = urlopen(collection_url)
 
 # Iterate on data...
-for row in csv.reader(response):
-    print row
+csvfile = csv.reader(codecs.iterdecode(response, 'utf-8'))
+for row in csvfile:
+    print(row)
