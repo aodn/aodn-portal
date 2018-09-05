@@ -28,13 +28,16 @@ describe("Portal.data.LayerStore", function() {
         layerStore.destroy();
     });
 
-    var createOpenLayer = function(title, url) {
+    var createOpenLayer = function(title, url, dataLayer) {
 
         return new OpenLayers.Layer.WMS(
             title || "the title",
             url || "http: //tilecache.emii.org.au/cgi-bin/tilecache.cgi",
             {},
-            { isBaseLayer: false }
+            {
+                isBaseLayer: false,
+                isDataLayer: (dataLayer === true) ? dataLayer : false
+                }
         );
     };
 
@@ -119,10 +122,10 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('base layers', function() {
-            layerStore._initBaseLayers();
+            layerStore._initConfigLayers();
 
             var ajaxParams = Ext.Ajax.request.mostRecentCall.args[0];
-            expect(ajaxParams.url).toBe('layer/configuredBaselayers');
+            expect(ajaxParams.url).toBe('layer/configuredLayers');
         });
     });
 
@@ -236,37 +239,43 @@ describe("Portal.data.LayerStore", function() {
                 dataCollection.getLayerSelectionModel().getSelectedLayer = returns(selectedLayer);
                 Ext.MsgBus.publish(eventName, dataCollection);
 
-                expect(layerStore._selectedLayerChanged).toHaveBeenCalledWith(eventName, selectedLayer);
+                expect(layerStore._selectedLayerChanged).toHaveBeenCalledWith(selectedLayer);
             });
         });
     });
 
     describe('_selectedLayerChanged', function() {
 
+        var layer1 = layerWithId(1);
+        var layer2 = layerWithId(2);
+        var layer4 = layerWithId(4);
+
         beforeEach(function() {
-            layerStore._addLayer(layerWithId(1));
-            layerStore._addLayer(layerWithId(2));
-            layerStore._addLayer(layerWithId(3));
+            layerStore._addLayer(layer1);
+            layerStore._addLayer(layer2);
+            layerStore._addLayer(layerWithId(3, true)); // (single) dataLayer remains on top
+            layerStore._addLayer(layer4);
         });
 
-        it('moves selected layer to the top', function() {
+        it('moves selected layer to the top of non dataLayers', function() {
 
-            layerStore._selectedLayerChanged('', layerWithId(2));
+            layerStore._selectedLayerChanged(layer1);
+            layerStore._selectedLayerChanged(layer2);
 
-            expect(layerStore.data.length).toBe(3);
-            expect(layerIds(layerStore)).toEqual([1, 3, 2]); // The end of the array represents the top of the layer stack
+            expect(layerStore.data.length).toBe(4);
+            expect(layerIds(layerStore)).toEqual([4, 1, 2, 3]); // The end of the array represents the top of the layer stack
         });
 
         it('handles layers that are not found', function() {
 
-            layerStore._selectedLayerChanged('', layerWithId(4));
+            layerStore._selectedLayerChanged(layerWithId(6));
 
-            expect(layerStore.data.length).toBe(3);
-            expect(layerIds(layerStore)).toEqual([1, 2, 3]);
+            expect(layerStore.data.length).toBe(4);
+            expect(layerIds(layerStore)).toEqual([1, 2, 4, 3]);
         });
 
-        function layerWithId(id) {
-            var layer = createOpenLayer('' + id);
+        function layerWithId(id, dataLayer) {
+            var layer = createOpenLayer('' + id, "aUrl",  dataLayer);
             layer.id = id;
             return layer;
         }

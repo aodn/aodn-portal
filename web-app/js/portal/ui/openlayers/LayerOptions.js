@@ -16,10 +16,12 @@ Portal.ui.openlayers.LayerOptions = Ext.extend(Object, {
             version: layerDescriptor.server.wmsVersion,
             transitionEffect: 'resize',
             isBaseLayer: layerDescriptor.isBaseLayer,
+            isDataLayer: layerDescriptor.isDataLayer,
             buffer: 1,
             gutter: gutterSize,
             projection: new OpenLayers.Projection(layerDescriptor.projection),
-            displayInLayerSwitcher: (layerDescriptor.isBaseLayer === true)
+            displayInLayerSwitcher: (layerDescriptor.isBaseLayer === true || layerDescriptor.displayInLayerSwitcher === true),
+            visibility: (layerDescriptor.visibility === false) ? false : true
         };
 
         Ext.apply(this, defaultOptions);

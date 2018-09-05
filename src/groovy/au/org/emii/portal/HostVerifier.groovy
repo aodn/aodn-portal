@@ -49,6 +49,10 @@ class HostVerifier {
                 allowedHosts[extractHost(layer.server.uri)] = true
             }
 
+            appConfig.datalayers.each { layer ->
+                allowedHosts[extractHost(layer.server.uri)] = true
+            }
+
             appConfig.knownServers.each { server ->
                 allowedHosts[extractHost(server.uri)] = true
             }

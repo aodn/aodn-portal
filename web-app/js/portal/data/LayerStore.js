@@ -9,7 +9,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         Portal.data.LayerStore.superclass.constructor.call(this, cfg);
 
         this._registerMessageListeners();
-        this._initBaseLayers();
+        this._initConfigLayers();
     },
 
     destroy: function() {
@@ -51,6 +51,12 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         });
     },
 
+    getDataLayers: function() {
+        return this._getLayers(function(record) {
+            return record.getLayer().options && record.getLayer().options.isDataLayer === true;
+        });
+    },
+
     getOverlayLayers: function() {
         return this._getLayers(function(record) {
             var layer = record.getLayer();
@@ -80,6 +86,7 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         }
 
         this.add(layerRecord);
+        this._selectedLayerChanged(openLayer);
 
         return layerRecord;
     },
@@ -96,21 +103,32 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
     },
 
     _onDataCollectionChanged: function(eventName, dataCollection) {
-        this._selectedLayerChanged(eventName, dataCollection.getLayerSelectionModel().getSelectedLayer());
+        this._selectedLayerChanged( dataCollection.getLayerSelectionModel().getSelectedLayer());
     },
 
-    _selectedLayerChanged: function(eventName, openLayer) {
+    _selectedLayerChanged: function(openLayer) {
+
         if (openLayer) {
             this._moveLayerToTop(openLayer);
         }
+        this._moveDataLayersToTop();
     },
 
     _moveLayerToTop: function(openLayer) {
         var recordIndex = this.findBy(this._layerMatcher(openLayer));
-
         if (recordIndex >= 0) {
             this._moveLayerRecordToTop(recordIndex);
         }
+    },
+
+    _moveDataLayersToTop: function() {
+        Ext.each(this.getDataLayers().items, function (item) {
+
+            var recordIndex = this.findBy(this._layerMatcher(item.data.layer));
+            if (recordIndex >= 0) {
+                this._moveLayerRecordToTop(recordIndex);
+            }
+        }, this);
     },
 
     _layerMatcher: function(openLayer) {
@@ -127,16 +145,16 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         this.add(record);
     },
 
-    _initBaseLayers: function() {
+    _initConfigLayers: function() {
 
         Ext.Ajax.request({
-            url: 'layer/configuredBaselayers',
+            url: 'layer/configuredLayers',
             scope: this,
             success: function(resp) {
-                var baseLayerConfigs = Ext.util.JSON.decode(resp.responseText);
+                var LayerConfigs = Ext.util.JSON.decode(resp.responseText);
 
-                Ext.each(baseLayerConfigs, function(baseLayerConfig) {
-                    var layerDescriptor = new Portal.common.LayerDescriptor(baseLayerConfig);
+                Ext.each(LayerConfigs, function(layerConfig) {
+                    var layerDescriptor = new Portal.common.LayerDescriptor(layerConfig);
                     this._addUsingDescriptor(layerDescriptor);
                 }, this);
 

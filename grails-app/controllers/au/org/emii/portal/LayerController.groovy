@@ -12,16 +12,27 @@ class LayerController {
     def groovyPageRenderer
     def hostVerifier
 
-    def configuredBaselayers = {
-        def baseLayerConfig = grailsApplication.config.baselayers
+    def configuredLayers = {
 
+        def baseLayerConfig = grailsApplication.config.baselayers
         baseLayerConfig.each {
             it.isBaseLayer = true
             it.queryable = false
         }
 
-        render baseLayerConfig as JSON
+        def dataLayerConfig = grailsApplication.config.datalayers
+        dataLayerConfig.each {
+            it.isDataLayer = true
+            it.displayInLayerSwitcher = true
+            it.queryable = false
+            it.visibility = false
+        }
+
+        def layerConfig = [baseLayerConfig, dataLayerConfig].flatten().findAll{it}
+
+        render layerConfig as JSON
     }
+
 
     def _getServerClass(serverType) {
         if (serverType == 'ncwms') {
