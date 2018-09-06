@@ -63,10 +63,11 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
     _handleGetFeatureRequestResults: function(results) {
         if (results.status == 200) {
             var res = Ext.util.JSON.decode(results.responseText);
-            if (res && res.totalFeatures == "unknown") {
-                res.totalFeatures = res.features.length;
+            var featureCount = res.totalFeatures;
+            if (featureCount == "unknown") {
+                featureCount = res.features.length;
             }
-            this.dataCollection.totalFilteredFeatures = (res && res.totalFeatures >= 0) ? res.totalFeatures : undefined;
+            this.dataCollection.totalFilteredFeatures = (res && featureCount >= 0) ? featureCount : undefined;
         }
         else {
             this.dataCollection.totalFilteredFeatures = undefined;
