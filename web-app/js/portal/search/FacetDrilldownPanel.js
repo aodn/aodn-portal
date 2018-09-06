@@ -20,6 +20,12 @@ Portal.search.FacetDrilldownPanel = Ext.extend(Ext.tree.TreePanel, {
 
         this._initDrilldown();
 
+        // sort Facets seperate to Geonetwork (CatalogSearcher) sortBy
+        new Ext.tree.TreeSorter(this, {
+            folderSort: true,
+            dir: "asc"
+        });
+
         this.addEvents('drilldownchange');
 
         this.getSelectionModel().on('selectionchange', this._onSelectionChange, this);

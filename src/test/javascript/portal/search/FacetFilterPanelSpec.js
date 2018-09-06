@@ -29,17 +29,17 @@ describe("Portal.search.FacetFilterPanel", function() {
                     value: 'Measured Parameter',
                     count: 10,
                     children: [{
-                        value: 'Salinity',
-                        count: 6,
-                        leaf: true
+                        text: 'Salinity',
+                        value: "Salinity",
+                        count: 6
                     }, {
-                        value: 'Pressure',
-                        count: 5,
-                        leaf: true
+                        text: 'Pressure',
+                        value: "Pressure",
+                        count: 5
                     }, {
-                        value: 'Temperature',
-                        count: 2,
-                        leaf: true
+                        text: 'Temperature',
+                        value: "Temperature",
+                        count: 2
                     }]
                 }]
             }]
