@@ -93,7 +93,7 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
             string = filterGroupPanel._getFeatureUrlGeneratorFunction();
 
-            expect(string).toEqual("http://blagh/wms?typeName=simpletype&SERVICE=WFS&outputFormat=application/json&REQUEST=GetFeature&VERSION=1.0.0&CQL_FILTER=seacueelle4dataAndMap&maxFeatures=1");
+            expect(string).toEqual("http://blagh/wms?SERVICE=WMS&VERSION=1.0.0&REQUEST=GetFeatureInfo&LAYERS=simpletype&BBOX=-180,-90,180,90&WIDTH=1&HEIGHT=1&QUERY_LAYERS=simpletype&INFO_FORMAT=application/json&X=0&Y=0&CQL_FILTER=seacueelle4dataAndMap");
         });
     });
 
