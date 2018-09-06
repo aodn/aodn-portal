@@ -116,14 +116,17 @@ Portal.details.LayerControlPanel = Ext.extend(Ext.Container, {
         this.dataCollection.getLayerSelectionModel().setSelectedLayer(layer);
 
         trackLayerControlUsage(
-            'changeLayerTrackingAction',
+            OpenLayers.i18n('changeLayerTrackingAction'),
             this.dataCollection.getTitle(),
             layer.wmsName
         );
     },
 
     _visibilityButtonChecked: function(obj, val) {
-        trackLayerControlUsage('layerControlTrackingActionVisibility', val ? "on" : "off", this.dataCollection.getTitle());
+        var action = String.format("{0} (overlay)", OpenLayers.i18n('layerControlTrackingActionVisibility'));
+        var state = (val) ? "on" : "off";
+        trackLayerControlUsage(action, state, this.dataCollection.getTitle());
+
         this.layer.setVisibility(val);
     },
 

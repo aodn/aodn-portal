@@ -7,7 +7,7 @@ function trackUsage(category, action, label, collection, value) {
         });
     }
     else {
-        //console.log(String.format("ga('send', 'event', category={0}, action={1}, label={2}, value={3})",category, action, label, collection, value));
+        //console.log(String.format("ga('send', 'event', category={0}, action={1}, label={2}, collection={3}, value={4})",category, action, label, collection, value));
     }
 }
 
@@ -63,10 +63,10 @@ function trackUserUsage(action, email, collection, value) {
     );
 }
 
-function trackLayerControlUsage(actionKey, label, collection) {
+function trackLayerControlUsage(action, label, collection) {
     trackUsage(
         OpenLayers.i18n('layerControlTrackingCategory'),
-        OpenLayers.i18n(actionKey),
+        action,
         label,
         collection
     );
