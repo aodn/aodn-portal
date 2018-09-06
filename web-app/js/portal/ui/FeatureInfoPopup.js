@@ -160,7 +160,6 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                     options.extraParams.name
                 );
                 this._featureInfoRequestCompleted();
-                Portal.utils.Image.resizeWhenLoadedAfterDelay('div > .featureinfocontent .feature img', 500);
             },
             failure: this._featureInfoRequestCompleted
         });
@@ -332,6 +331,8 @@ Portal.ui.FeatureInfoPopup = Ext.extend(GeoExt.Popup, {
                     var code = $('#' + this.getId() + ' script').text();
                     var codefunc = new Function(code);
                     codefunc();
+
+                    Portal.utils.Image.resizeWhenLoadedAfterDelay('div > .featureinfocontent .feature img', 500);
                 }
             }
         });
