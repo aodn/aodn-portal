@@ -4,7 +4,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
 
     _filtersLoaded: function(filters) {
         var filterPanels = [];
-        var filterService  = new Portal.filter.FilterService();
+        var filterService = new Portal.filter.FilterService();
         this._sortFilters(filters);
 
         Ext.each(filters, function(filter) {
@@ -63,7 +63,10 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
     _handleGetFeatureRequestResults: function(results) {
         if (results.status == 200) {
             var res = Ext.util.JSON.decode(results.responseText);
-            this.dataCollection.totalFilteredFeatures = (res && res.totalFeatures >= 0) ? res.totalFeatures: undefined;
+            if (res && res.totalFeatures == "unknown") {
+                res.totalFeatures = res.features.length;
+            }
+            this.dataCollection.totalFilteredFeatures = (res && res.totalFeatures >= 0) ? res.totalFeatures : undefined;
         }
         else {
             this.dataCollection.totalFilteredFeatures = undefined;
@@ -73,9 +76,9 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
     },
 
     _handleEmptyDownloadMsg: function() {
-        if (this.isDestroyed !== true ) {
-            //var show = (this.dataCollection.totalFilteredFeatures != undefined && this.dataCollection.totalFilteredFeatures == 0);
-            //this.warningEmptyDownloadMessage.setVisible(show); //todo hide for now
+        if (this.isDestroyed !== true) {
+            var show = (this.dataCollection.totalFilteredFeatures != undefined && this.dataCollection.totalFilteredFeatures == 0);
+            this.warningEmptyDownloadMessage.setVisible(show);
         }
     },
 
@@ -86,13 +89,13 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
             filters: this.dataCollection.getFilters()
         });
 
-        var url = OpenLayers.Layer.WMS.buildGetFeatureRequestUrl(
+        var url = OpenLayers.Layer.WMS.buildGetFeatureInfoRequestUrl(
             this.dataCollection.layerSelectionModel.selectedLayer.url,
             this.dataCollection.layerSelectionModel.selectedLayer.wmsName.split('#')[0],
             "application/json",
             builder.buildCql()
         );
 
-        return url + "&maxFeatures=1"
+        return url;
     }
 });

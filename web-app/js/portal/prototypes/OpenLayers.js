@@ -126,6 +126,29 @@ OpenLayers.Layer.WMS.buildGetFeatureRequestUrl = function(baseUrl, layerName, ou
     return wfsUrl;
 };
 
+OpenLayers.Layer.WMS.buildGetFeatureInfoRequestUrl = function(baseUrl, layerName, outputFormat, downloadFilter) {
+
+    var wfsUrl = baseUrl;
+    wfsUrl += (wfsUrl.indexOf('?') !== -1) ? "&" : "?";
+    wfsUrl += 'SERVICE=WMS';
+    wfsUrl += '&VERSION=1.0.0';
+    wfsUrl += '&REQUEST=GetFeatureInfo';
+    wfsUrl += '&LAYERS=' + layerName;
+    wfsUrl += '&BBOX=-180,-90,180,90';
+    wfsUrl += '&WIDTH=1';
+    wfsUrl += '&HEIGHT=1';
+    wfsUrl += '&QUERY_LAYERS=' + layerName;
+    wfsUrl += '&INFO_FORMAT=' + outputFormat;
+    wfsUrl += '&X=0';
+    wfsUrl += '&Y=0';
+    wfsUrl += '&outputFormat=' + outputFormat;
+
+    if (downloadFilter) {
+        wfsUrl += '&CQL_FILTER=' + encodeURIComponent(downloadFilter);
+    }
+    return wfsUrl;
+};
+
 OpenLayers.Layer.WMS.prototype.getCsvDownloadFormat = function() {
 
     if (this.server.csvDownloadFormat) {
