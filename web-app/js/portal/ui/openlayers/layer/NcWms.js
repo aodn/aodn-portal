@@ -301,7 +301,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
     _getExtraLayerInfoFromNcwms: function() {
         return String.format(
-            "{0}?layerName={1}&REQUEST=GetMetadata&item=layerDetails",
+            "{0}?layerName={1}&SERVICE=ncwms&REQUEST=GetMetadata&item=layerDetails",
             this.url,
             encodeURIComponent(this.params.LAYERS)
         );
