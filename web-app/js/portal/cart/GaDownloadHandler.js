@@ -11,7 +11,7 @@ Portal.cart.GaDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
             downloadOptions.push({
                 textKey: 'GeoTIFF',
                 handler: this._getUrlGeneratorFunction(),
-                handlerParams: this._buildHandlerParams() //'{0}.tiff.zip', "Download Tiff"
+                handlerParams: this._buildHandlerParams()
             });
         }
         return downloadOptions;
@@ -39,7 +39,7 @@ Portal.cart.GaDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
         return function(collection, handlerParams) {
 
-            var builder = new Portal.filter.combiner.GaParametersBuilder({
+            var builder = new Portal.filter.combiner.GaWcsParametersBuilder({
                 filters: collection.getFilters()
             });
 
@@ -48,7 +48,7 @@ Portal.cart.GaDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
             var jsonPost = _this.buildRequestUrl(
                 _this.onlineResource.href,
-                builder.buildParameters(),
+                builder.buildWCSParameters(handlerParams.layerName),
                 handlerParams
             );
 
@@ -60,14 +60,14 @@ Portal.cart.GaDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
         var datasets = [{
             coverageUrl: String.format("http://localhost:8080/geoserver/marine/wcs?SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE={0}&CRS=EPSG:4326&BBOX={1}&FORMAT=GeoTIFF&WIDTH={2}&HEIGHT={3}&RESX={2}&RESY={3}",
-                handlerParams.layerName, spatial.bbox, spatial.width, spatial.height, baseUrl),
+                handlerParams.layerName, spatial.selectedBBOX, spatial.size.width, spatial.size.height, baseUrl),
             title: handlerParams.downloadFilename
         }];
 
         var jsonData = {};
 
-        jsonData['bbox'] = spatial.bbox;
-        jsonData['bboxInSelectedProjection'] = spatial.bbox;
+        jsonData['bbox'] = spatial.selectedBBOX;
+        jsonData['bboxInSelectedProjection'] = spatial.selectedBBOX;
         jsonData['emailAddress'] = handlerParams.emailAddress;
         jsonData['crs'] = "EPSG:4326";
         jsonData['format'] = "GeoTIFF";

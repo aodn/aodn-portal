@@ -140,7 +140,6 @@ class CoreGeoserverServer extends WmsServer {
         }
     }
 
-
     def _lookupWfs(server, layer) {
         def wmsLayer = [server, layer]
 
