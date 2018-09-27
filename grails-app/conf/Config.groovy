@@ -184,13 +184,13 @@ knownServers = [
         ]
     ],
     [
-            uri: 'http://marine.ga.gov.au/geoserver/wms',
-            wmsVersion: '1.1.1',
-            type: 'Ga'
+        uri: 'http://nonprod.marine.ga.gov.au/geoserver/wms',
+        wmsVersion: '1.1.1',
+        type: 'Ga'
     ],
     [
-            uri: 'http://nonprod.marine.ga.gov.au/api/',
-            type: 'GaDownload'
+        uri: 'http://nonprod.marine.ga.gov.au/api/',
+        type: 'GaDownload'
     ],
     [
         uri: 'https://www.cmar.csiro.au/geoserver/wms',
