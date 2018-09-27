@@ -186,7 +186,12 @@ knownServers = [
     [
         uri: 'http://nonprod.marine.ga.gov.au/geoserver/wms',
         wmsVersion: '1.1.1',
-        type: 'Ga'
+        type: 'GeoserverCore'
+    ],
+    [
+        uri: 'http://marine.ga.gov.au/geoserver/wms',
+        wmsVersion: '1.1.1',
+        type: 'GeoserverCore'
     ],
     [
         uri: 'http://nonprod.marine.ga.gov.au/api/',

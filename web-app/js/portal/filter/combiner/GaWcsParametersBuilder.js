@@ -16,10 +16,10 @@ Portal.filter.combiner.GaWcsParametersBuilder = Ext.extend(Portal.filter.combine
 
     buildParameters: function(geomFilter, layerName) {
 
-        var layerConfig = this.getLayerConfig(layerName);
-        layerConfig.selectedBBOX = (geomFilter.value != undefined) ? geomFilter.value.getBounds().toBBOX() : geomFilter.map.getExtent().toBBOX();
-        layerConfig.size = this.getGridEnvelope(layerConfig);
-        return layerConfig;
+        var downloadConfig = this.getLayerConfig(layerName);
+        downloadConfig.selectedBBOX = (geomFilter.value != undefined) ? geomFilter.value.getBounds().toBBOX() : geomFilter.map.getExtent().toBBOX();
+        downloadConfig.size = this.getGridEnvelope(downloadConfig);
+        return downloadConfig;
     },
 
     getLayerConfig: function(layerName) {

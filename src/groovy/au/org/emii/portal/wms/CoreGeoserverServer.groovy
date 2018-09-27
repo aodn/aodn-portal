@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap
 class CoreGeoserverServer extends WmsServer {
 
     private static def linkedWfsFeatureTypeMap = new ConcurrentHashMap()
+    private def layerInfo
 
     def groovyPageRenderer
 
@@ -19,53 +20,80 @@ class CoreGeoserverServer extends WmsServer {
         return []
     }
 
+    def getLayerInfo(server, layer ) {
+        String response = _describeLayer(server, layer)
+        def parser = new XmlSlurper()
+        parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
+        parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+        def xml = parser.parseText(response)
+
+        [url: xml.LayerDescription.@owsURL.text(), type: xml.LayerDescription.@owsType.text()]
+    }
+
     def getFilters(server, layer) {
         def filters = []
 
-        try {
-            def xml = new XmlSlurper().parseText(_describeFeatureType(server, layer))
+        layerInfo = getLayerInfo(server, layer)
 
-            def attributes = xml.'**'.findAll { node ->
-                node.name() == 'element' && node.@name != _removePrefix(layer)
-            }
+        if (layerInfo.type == "WCS") {
 
-            boolean hasTemporalRange = false
-
-            attributes.each { attribute ->
-                def propertyName = attribute.@name.text()
-                def propertyType = attribute.@type.text()
-
-                if (['time_coverage_start', 'time_coverage_end'].contains(propertyName)) {
-                    // handle IMOS convention of mapping temporal range to single 'TIME'
-                    // property on WFS featureType
-                    if (!hasTemporalRange) {
-                        filters.push(
-                            [
-                                label     : 'Time',
-                                type      : 'datetime',
-                                name      : 'TIME',
-                                visualised: true,
-                                wmsStartDateName: 'time_coverage_start',
-                                wmsEndDateName: 'time_coverage_end'
-                            ]
-                        )
-                        hasTemporalRange = true
-                    }
-                } else {
-                    filters.push(
-                        [
-                            label     : _toLabel(propertyName),
-                            type      : _toFilterType(propertyType),
-                            name      : propertyName,
-                            visualised: true
-                        ]
-                    )
-                }
-            }
-        } catch (e) {
-            log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
+            filters.push(
+                    [
+                            label           : 'Bounding Box',
+                            type            : 'geometrypropertytype',
+                            name            : 'position',
+                            visualised      : false
+                    ]
+            )
         }
+        else {
 
+            try {
+
+                def xml = new XmlSlurper().parseText(_describeFeatureType(server, layer))
+
+                def attributes = xml.'**'.findAll { node ->
+                    node.name() == 'element' && node.@name != _removePrefix(layer)
+                }
+
+                boolean hasTemporalRange = false
+
+                attributes.each { attribute ->
+                    def propertyName = attribute.@name.text()
+                    def propertyType = attribute.@type.text()
+
+                    if (['time_coverage_start', 'time_coverage_end'].contains(propertyName)) {
+                        // handle IMOS convention of mapping temporal range to single 'TIME'
+                        // property on WFS featureType
+                        if (!hasTemporalRange) {
+                            filters.push(
+                                    [
+                                            label     : 'Time',
+                                            type      : 'datetime',
+                                            name      : 'TIME',
+                                            visualised: true,
+                                            wmsStartDateName: 'time_coverage_start',
+                                            wmsEndDateName: 'time_coverage_end'
+                                    ]
+                            )
+                            hasTemporalRange = true
+                        }
+                    } else {
+                        filters.push(
+                                [
+                                        label     : _toLabel(propertyName),
+                                        type      : _toFilterType(propertyType),
+                                        name      : propertyName,
+                                        visualised: true
+                                ]
+                        )
+                    }
+                }
+            } catch (e) {
+                log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
+            }
+        }
         return filters
     }
 
@@ -111,7 +139,6 @@ class CoreGeoserverServer extends WmsServer {
             content.text
         }
     }
-
 
     def _lookupWfs(server, layer) {
         def wmsLayer = [server, layer]

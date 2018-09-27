@@ -41,9 +41,6 @@ class LayerController {
         else if (serverType == 'ala') {
             return new AlaServer()
         }
-        else if (serverType == 'ga') {
-            return new GaServer()
-        }
         else if (serverType == 'geoservercore') {
             return new CoreGeoserverServer(groovyPageRenderer)
         }
