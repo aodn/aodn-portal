@@ -396,7 +396,7 @@ describe("OpenLayers.Layer.NcWms", function() {
             var ncwmsLayer = mockNcwmsLayer();
 
             expect(ncwmsLayer._getExtraLayerInfoFromNcwms()).toEqual(
-                'http://ncwms.aodn.org.au/ncwms/wms?layerName=ncwmsLayerName&REQUEST=GetMetadata&item=layerDetails'
+                'http://ncwms.aodn.org.au/ncwms/wms?layerName=ncwmsLayerName&SERVICE=ncwms&REQUEST=GetMetadata&item=layerDetails'
             );
         });
 
