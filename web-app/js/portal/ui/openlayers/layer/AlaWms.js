@@ -4,6 +4,7 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
 
         params.queryable = true;
         params.ENV = OpenLayers.i18n("ALAOccurrencesStyle");
+        params.OUTLINE=false; // https://support.ala.org.au/public/tickets/e9b7606af034ef30280d338714b62f4436f9bd5e81e61a95102d3a55744bc785
         options.projection = new OpenLayers.Projection("EPSG:4326");
         options.isBaseLayer = false;
         options.sphericalMercator = true;
@@ -19,8 +20,7 @@ OpenLayers.Layer.AlaWMS = OpenLayers.Class(OpenLayers.Layer.WMS, {
         return Portal.app.appConfig.ala.gfi_endpoint;
     },
 
-    getFeatureInfoRequestString: function(clickPoint) {
-
+    getFeatureInfoRequestString: function (clickPoint) {
         var lonlat = this.map.getLonLatFromPixel(clickPoint);
         var wkt = this.map.getExtent().toGeometry().toWkt();
 

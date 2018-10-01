@@ -16,7 +16,7 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
         var resultTpl = new Ext.XTemplate(
             '<tpl for=".">' +
             '<div class="x-combo-list-item alaFilterResult">',
-            '<div class="alaFilterHighlight">{highlight} ({occCount})</div>',
+            '<div class="alaFilterHighlight">{highlight}</div>',
             ' <tpl if="rawRank != \'\' ">',
             '  <div><b>Most specific rank:</b> {[this.decapitalise(values.rawRank)]}</div>',
             ' </tpl>',
@@ -36,13 +36,13 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
         );
 
         this.jsonStore = new Ext.data.JsonStore({
-            url: 'proxy?', // portal proxy controller
+            url: 'proxy?',
             root: "searchResults.results",
             idProperty: 'guid',
             baseParams : {
-                fq: Portal.app.appConfig.ala.index, // ALA index for marine only
+                fq: Portal.app.appConfig.ala.index,
                 url: Portal.app.appConfig.ala.url,
-                pageSize: 10000
+                pageSize: 1000
             },
             fields: [
                 {name: 'name', type: 'string'},
@@ -109,7 +109,7 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
     _createNewActiveFilterPanel: function(activeFilterData) {
 
         return new Ext.Panel({
-            title: String.format("{0} ({1})", activeFilterData.name, activeFilterData.occCount),
+            title: activeFilterData.name,
             activeFilterData: activeFilterData,
             toolTemplate: new Ext.XTemplate(
                 '<tpl>',
