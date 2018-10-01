@@ -56,6 +56,7 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
 
     reset: function() {
         this._closeFeatureInfoPopup();
+        this._resetControls();
         this.map.setSpatialConstraintStyle();
         this.zoomToInitialBbox();
     },
@@ -87,6 +88,10 @@ Portal.ui.MapPanel = Ext.extend(Portal.common.MapPanel, {
         var lonLat = new OpenLayers.LonLat(c.x, c.y);
         this.map.events.triggerEvent('featureInfoClick', {xy: this.map.getViewPortPxFromLonLat(lonLat)});
 
+    },
+
+    _resetControls: function() {
+        this.mapOptions.resetControls();
     },
 
     renderMap: function() {
