@@ -103,7 +103,6 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
 
     _onBlur: function(combo) {
         combo.clearValue();
-        this._clearFilter(combo.activeFilterData);
     },
 
     _createNewActiveFilterPanel: function(activeFilterData) {
@@ -139,8 +138,7 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
     },
 
     _removeOnClick: function(event, toolEl, panel) {
-        this.handleRemoveFilter(panel.activeFilterData);
-        panel.destroy(); // triggers _onRemoveActiveFilter
+        this.handleRemoveFilter(panel);
     },
 
     _onRemoveActiveFilter: function() {
@@ -183,13 +181,26 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
         }
     },
 
-    handleRemoveFilter: function() {
-        var that = this;
-        Ext.each(this.activeFiltersContainer.items.items, function(panel) {
-            if (panel.activeFilterData != undefined) {
-                that._clearFilter(panel.activeFilterData);
-                panel.destroy();
+    handleRemoveFilter: function(targetedPanel) {
+
+        var deadPanels = [];
+        Ext.each(this.activeFiltersContainer.items.items, function(item) {
+
+            if (targetedPanel) {
+                if (item.activeFilterData == targetedPanel.activeFilterData) {
+                    deadPanels.push(item);
+                }
             }
-        });
+            else if(item.activeFilterData != undefined) {
+                deadPanels.push(item)
+            }
+
+        }, this);
+
+
+        Ext.each(deadPanels, function(panel) {
+            this._clearFilter(panel.activeFilterData);
+            panel.destroy(); // triggers _onRemoveActiveFilter
+        }, this);
     }
 });
