@@ -50,6 +50,12 @@ describe("Portal.ui.MapPanel", function() {
             Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
             expect(mapPanel.map.setSpatialConstraintStyle).toHaveBeenCalled();
         });
+
+        it('should call resetControls()', function() {
+            spyOn(mapPanel.mapOptions, 'resetControls');
+            Ext.MsgBus.publish(PORTAL_EVENTS.RESET);
+            expect(mapPanel.mapOptions.resetControls).toHaveBeenCalled();
+        });
     });
 
     describe('removeAllLayers event', function() {

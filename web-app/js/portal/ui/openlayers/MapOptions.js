@@ -25,10 +25,14 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             }
         });
 
+        this.layerSwitcher = new Portal.ui.openlayers.LayerSwitcher({
+            'ascending': false
+        });
+
         this.controls = [
             new OpenLayers.Control.Attribution(),
             new OpenLayers.Control.PanZoomBar(),
-            new Portal.ui.openlayers.LayerSwitcher({'ascending': false}),
+            this.layerSwitcher,
             new OpenLayers.Control.MousePosition(),
             new OpenLayers.Control.ScaleLine(),
             new OpenLayers.Control.OverviewMap({
@@ -59,6 +63,10 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             },
             scope: this
         });
+    },
+
+    resetControls: function() {
+        this.layerSwitcher.minimizeControl();
     },
 
     /**
