@@ -1,24 +1,28 @@
 package au.org.emii.portal.wms
 
-class GaServer {
-    def getStyles(server, layer) {
-        return []
-    }
-    def getFilterValues(server, layer, filter) {
-        return true
+class GaServer extends CoreGeoserverServer{
+
+    def groovyPageRenderer
+
+    GaServer(Map attributes) {
+        super(attributes)
+        this.groovyPageRenderer = groovyPageRenderer
     }
 
     def getFilters(server, layer) {
-        def filters = []
+        def filters = super.getFilters(server, layer)
 
-        filters.push(
-                [
-                        label           : 'Bounding Box',
-                        type            : 'geometrypropertytype',
-                        name            : 'position',
-                        visualised      : false
-                ]
-        )
+        if (filters.size() == 0) {
+            filters.push(
+                    [
+                            label           : 'Bounding Box',
+                            type            : 'geometrypropertytype',
+                            name            : 'position',
+                            visualised      : false
+                    ]
+            )
+        }
+        // todo ask Craig
         return filters
     }
 }
