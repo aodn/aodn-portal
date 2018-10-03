@@ -117,6 +117,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'BaseFilterCombiner.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'FilterCqlBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'AlaParametersBuilder.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'GaWcsParametersBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'MapCqlBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'BodaacCqlBuilder.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/combiner', file: 'FileListCqlBuilder.js')}"></script>
@@ -202,6 +203,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'AlaDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'ShapeFileDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'NetcdfSubsetServiceDownloadHandler.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'GaDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'PythonDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/cart', file: 'WfsDownloadHandler.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/visualise/animations', file: 'TemporalExtent.js')}"></script>

@@ -89,7 +89,9 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
     }
 
     void testValidFilters() {
+
         coreGeoserverServer.metaClass._describeFeatureType = { server, layer -> return validGeoserverResponse }
+        coreGeoserverServer.metaClass.getLayerInfo = {server, layer -> return [url: "aurl", type: "atype"]}
 
         def expected = [
             [
