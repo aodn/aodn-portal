@@ -7,6 +7,7 @@ import static au.org.emii.portal.HttpUtils.Status.*
 class AsyncDownloadController extends HostVerifyingController {
 
     def gogoduckService
+    def jsonService
     def wpsService
     def asyncExternalRequestService
     def wpsAwsService
@@ -17,11 +18,10 @@ class AsyncDownloadController extends HostVerifyingController {
         switch (aggregatorService) {
             case 'gogoduck':
                 return gogoduckService
+            case 'json':
+                return jsonService
             case 'wps':
-                if (!(params.server.contains("geoserver"))) {
-                    return wpsAwsService
-                }
-                return wpsService
+                return (!(params.server.contains("geoserver"))) ? wpsAwsService : wpsService
             case {'ala' || 'datatrawler'}:
                 return asyncExternalRequestService
             default:
