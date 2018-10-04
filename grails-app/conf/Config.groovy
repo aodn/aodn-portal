@@ -184,6 +184,20 @@ knownServers = [
         ]
     ],
     [
+        uri: 'http://nonprod.marine.ga.gov.au/geoserver/wms',
+        wmsVersion: '1.1.1',
+        type: 'GeoserverCore'
+    ],
+    [
+        uri: 'http://marine.ga.gov.au/geoserver/wms',
+        wmsVersion: '1.1.1',
+        type: 'GeoserverCore'
+    ],
+    [
+        uri: 'http://nonprod.marine.ga.gov.au/api/',
+        type: 'GaDownload'
+    ],
+    [
         uri: 'https://www.cmar.csiro.au/geoserver/wms',
         wmsVersion: '1.1.1',
         type: 'GeoserverCore'
@@ -374,7 +388,8 @@ portal {
         [ 'handler': 'BodaacDownloadHandler',              'protocol': 'IMOS:AGGREGATION--bodaac'            ],
         [ 'handler': 'FileListDownloadHandler',            'protocol': 'AODN:FILE-list'                      ],
         [ 'handler': 'ShapeFileDownloadHandler',           'protocol': 'OGC:WFS-1.0.0-http-get-feature--shapefile'],
-        [ 'handler': 'AlaDownloadHandler',                 'protocol': 'ALA:Occurrence-download']
+        [ 'handler': 'AlaDownloadHandler',                 'protocol': 'ALA:Occurrence-download'],
+        [ 'handler': 'GaDownloadHandler',                  'protocol': 'GA:Download']
     ]
 
     mapGetFeatureInfoBuffer = 10

@@ -19,53 +19,95 @@ class CoreGeoserverServer extends WmsServer {
         return []
     }
 
+    def getLayerInfo(server, layer) {
+
+        def wmsLayer = [server, layer]
+
+        if (linkedWfsFeatureTypeMap.containsKey(wmsLayer)) {
+            return linkedWfsFeatureTypeMap.get(wmsLayer)
+        }
+
+        String response = _describeLayer(server, layer)
+
+        def parser = new XmlSlurper()
+        parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
+        parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        def xml = parser.parseText(response)
+
+        def wfsFeatureType = [
+                owsType: xml.LayerDescription.@owsType.text(),
+                wfsUrl: xml.LayerDescription.@wfs.text(),
+                typeName: xml.LayerDescription.Query.@typeName.text()
+        ]
+
+        linkedWfsFeatureTypeMap.put(wmsLayer, wfsFeatureType)
+
+        return wfsFeatureType
+    }
+
     def getFilters(server, layer) {
         def filters = []
 
-        try {
-            def xml = new XmlSlurper().parseText(_describeFeatureType(server, layer))
+        def layerInfo = getLayerInfo(server, layer)
 
-            def attributes = xml.'**'.findAll { node ->
-                node.name() == 'element' && node.@name != _removePrefix(layer)
-            }
+        if (layerInfo.owsType == "WCS") {
 
-            boolean hasTemporalRange = false
-
-            attributes.each { attribute ->
-                def propertyName = attribute.@name.text()
-                def propertyType = attribute.@type.text()
-
-                if (['time_coverage_start', 'time_coverage_end'].contains(propertyName)) {
-                    // handle IMOS convention of mapping temporal range to single 'TIME'
-                    // property on WFS featureType
-                    if (!hasTemporalRange) {
-                        filters.push(
-                            [
-                                label     : 'Time',
-                                type      : 'datetime',
-                                name      : 'TIME',
-                                visualised: true,
-                                wmsStartDateName: 'time_coverage_start',
-                                wmsEndDateName: 'time_coverage_end'
-                            ]
-                        )
-                        hasTemporalRange = true
-                    }
-                } else {
-                    filters.push(
-                        [
-                            label     : _toLabel(propertyName),
-                            type      : _toFilterType(propertyType),
-                            name      : propertyName,
-                            visualised: true
-                        ]
-                    )
-                }
-            }
-        } catch (e) {
-            log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
+            filters.push(
+                    [
+                            label           : 'Bounding Box',
+                            type            : 'geometrypropertytype',
+                            name            : 'position',
+                            visualised      : false
+                    ]
+            )
         }
+        else {
 
+            try {
+
+                def xml = new XmlSlurper().parseText(_describeFeatureType(server, layer))
+
+                def attributes = xml.'**'.findAll { node ->
+                    node.name() == 'element' && node.@name != _removePrefix(layer)
+                }
+
+                boolean hasTemporalRange = false
+
+                attributes.each { attribute ->
+                    def propertyName = attribute.@name.text()
+                    def propertyType = attribute.@type.text()
+
+                    if (['time_coverage_start', 'time_coverage_end'].contains(propertyName)) {
+                        // handle IMOS convention of mapping temporal range to single 'TIME'
+                        // property on WFS featureType
+                        if (!hasTemporalRange) {
+                            filters.push(
+                                    [
+                                            label     : 'Time',
+                                            type      : 'datetime',
+                                            name      : 'TIME',
+                                            visualised: true,
+                                            wmsStartDateName: 'time_coverage_start',
+                                            wmsEndDateName: 'time_coverage_end'
+                                    ]
+                            )
+                            hasTemporalRange = true
+                        }
+                    } else {
+                        filters.push(
+                                [
+                                        label     : _toLabel(propertyName),
+                                        type      : _toFilterType(propertyType),
+                                        name      : propertyName,
+                                        visualised: true
+                                ]
+                        )
+                    }
+                }
+            } catch (e) {
+                log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
+            }
+        }
         return filters
     }
 
@@ -84,8 +126,8 @@ class CoreGeoserverServer extends WmsServer {
     }
 
     def _describeFeatureType(server, layer) {
-        def (wfsServer, typeName) = _lookupWfs(server, layer)
-        def requestUrl = wfsServer + "request=DescribeFeatureType&service=WFS&version=1.0.0&typeName=${typeName}"
+        def layerInfo = getLayerInfo(server, layer)
+        def requestUrl = layerInfo.wfsUrl + "request=DescribeFeatureType&service=WFS&version=1.0.0&typeName=${layerInfo.typeName}"
         def outputStream = new ByteArrayOutputStream()
         def request = new ExternalRequest(outputStream, requestUrl.toURL())
 
@@ -94,12 +136,12 @@ class CoreGeoserverServer extends WmsServer {
     }
 
     def _getPagedUniqueValues(server, layer, filter) {
-        def (wfsServer, typeName) = _lookupWfs(server, layer)
-        def params = [typeName: typeName, propertyName: filter]
+        def layerInfo = getLayerInfo(server, layer)
+        def params = [typeName: layerInfo.typeName, propertyName: filter]
         def body = groovyPageRenderer.render(template: '/filters/pagedUniqueRequest.xml', model: params)
         log.debug("Request body:\n\n${body}")
 
-        def connection = wfsServer.toURL().openConnection()
+        def connection = layerInfo.wfsUrl.toURL().openConnection()
 
         connection.with {
             doOutput = true
@@ -110,28 +152,6 @@ class CoreGeoserverServer extends WmsServer {
             }
             content.text
         }
-    }
-
-
-    def _lookupWfs(server, layer) {
-        def wmsLayer = [server, layer]
-
-        if (linkedWfsFeatureTypeMap.containsKey(wmsLayer)) {
-            return linkedWfsFeatureTypeMap.get(wmsLayer)
-        }
-
-        String response = _describeLayer(server, layer)
-
-        def parser = new XmlSlurper()
-        parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
-        parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-        def xml = parser.parseText(response)
-
-        def wfsFeatureType = [xml.LayerDescription.@wfs.text(), xml.LayerDescription.Query.@typeName.text()]
-
-        linkedWfsFeatureTypeMap.put(wmsLayer, wfsFeatureType)
-
-        return wfsFeatureType
     }
 
     private String _describeLayer(server, layer) {
