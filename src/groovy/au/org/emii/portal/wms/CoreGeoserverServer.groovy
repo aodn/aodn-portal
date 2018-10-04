@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap
 class CoreGeoserverServer extends WmsServer {
 
     private static def linkedWfsFeatureTypeMap = new ConcurrentHashMap()
-    private def layerInfo
 
     def groovyPageRenderer
 
@@ -20,23 +19,38 @@ class CoreGeoserverServer extends WmsServer {
         return []
     }
 
-    def getLayerInfo(server, layer ) {
+    def getLayerInfo(server, layer) {
+
+        def wmsLayer = [server, layer]
+
+        if (linkedWfsFeatureTypeMap.containsKey(wmsLayer)) {
+            return linkedWfsFeatureTypeMap.get(wmsLayer)
+        }
+
         String response = _describeLayer(server, layer)
+
         def parser = new XmlSlurper()
         parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
         parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-
         def xml = parser.parseText(response)
 
-        [url: xml.LayerDescription.@owsURL.text(), type: xml.LayerDescription.@owsType.text()]
+        def wfsFeatureType = [
+                owsType: xml.LayerDescription.@owsType.text(),
+                wfsUrl: xml.LayerDescription.@wfs.text(),
+                typeName: xml.LayerDescription.Query.@typeName.text()
+        ]
+
+        linkedWfsFeatureTypeMap.put(wmsLayer, wfsFeatureType)
+
+        return wfsFeatureType
     }
 
     def getFilters(server, layer) {
         def filters = []
 
-        layerInfo = getLayerInfo(server, layer)
+        def layerInfo = getLayerInfo(server, layer)
 
-        if (layerInfo.type == "WCS") {
+        if (layerInfo.owsType == "WCS") {
 
             filters.push(
                     [
@@ -112,8 +126,8 @@ class CoreGeoserverServer extends WmsServer {
     }
 
     def _describeFeatureType(server, layer) {
-        def (wfsServer, typeName) = _lookupWfs(server, layer)
-        def requestUrl = wfsServer + "request=DescribeFeatureType&service=WFS&version=1.0.0&typeName=${typeName}"
+        def layerInfo = getLayerInfo(server, layer)
+        def requestUrl = layerInfo.wfsUrl + "request=DescribeFeatureType&service=WFS&version=1.0.0&typeName=${layerInfo.typeName}"
         def outputStream = new ByteArrayOutputStream()
         def request = new ExternalRequest(outputStream, requestUrl.toURL())
 
@@ -122,12 +136,12 @@ class CoreGeoserverServer extends WmsServer {
     }
 
     def _getPagedUniqueValues(server, layer, filter) {
-        def (wfsServer, typeName) = _lookupWfs(server, layer)
-        def params = [typeName: typeName, propertyName: filter]
+        def layerInfo = getLayerInfo(server, layer)
+        def params = [typeName: layerInfo.typeName, propertyName: filter]
         def body = groovyPageRenderer.render(template: '/filters/pagedUniqueRequest.xml', model: params)
         log.debug("Request body:\n\n${body}")
 
-        def connection = wfsServer.toURL().openConnection()
+        def connection = layerInfo.wfsUrl.toURL().openConnection()
 
         connection.with {
             doOutput = true
@@ -138,27 +152,6 @@ class CoreGeoserverServer extends WmsServer {
             }
             content.text
         }
-    }
-
-    def _lookupWfs(server, layer) {
-        def wmsLayer = [server, layer]
-
-        if (linkedWfsFeatureTypeMap.containsKey(wmsLayer)) {
-            return linkedWfsFeatureTypeMap.get(wmsLayer)
-        }
-
-        String response = _describeLayer(server, layer)
-
-        def parser = new XmlSlurper()
-        parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
-        parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-        def xml = parser.parseText(response)
-
-        def wfsFeatureType = [xml.LayerDescription.@wfs.text(), xml.LayerDescription.Query.@typeName.text()]
-
-        linkedWfsFeatureTypeMap.put(wmsLayer, wfsFeatureType)
-
-        return wfsFeatureType
     }
 
     private String _describeLayer(server, layer) {
