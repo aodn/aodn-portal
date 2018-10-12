@@ -16,7 +16,7 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
 
         mockLogging(CoreGeoserverServer)
 
-        coreGeoserverServer = new CoreGeoserverServer(groovyPageRenderer)
+        coreGeoserverServer = new CoreGeoserverServer(groovyPageRenderer, null, null)
 
         validGeoserverResponse =
 """<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:gml="http://www.opengis.net/gml" xmlns:imos="imos.mod" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="imos.mod">

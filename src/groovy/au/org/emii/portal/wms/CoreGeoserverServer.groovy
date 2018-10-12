@@ -10,9 +10,13 @@ class CoreGeoserverServer extends WmsServer {
     private static def linkedWfsFeatureTypeMap = new ConcurrentHashMap()
 
     def groovyPageRenderer
+    def baseFilterUrl
+    def knownServers
 
-    CoreGeoserverServer(groovyPageRenderer) {
+    CoreGeoserverServer(groovyPageRenderer, baseFilterUrl, knownServers) {
         this.groovyPageRenderer = groovyPageRenderer
+        this.baseFilterUrl = baseFilterUrl
+        this.knownServers = knownServers
     }
 
     def getStyles(server, layer) {
@@ -46,6 +50,14 @@ class CoreGeoserverServer extends WmsServer {
     }
 
     def getFilters(server, layer) {
+        if (this.baseFilterUrl && this.knownServers.find { it.uri == server}.filterDir) {
+            return getFiltersFromFileUrl(server, layer)
+        } else {
+            return getFiltersViaDescribeFeatureType(server, layer)
+        }
+    }
+
+    def getFiltersViaDescribeFeatureType(server, layer) {
         def filters = []
 
         def layerInfo = getLayerInfo(server, layer)
@@ -53,12 +65,12 @@ class CoreGeoserverServer extends WmsServer {
         if (layerInfo.owsType == "WCS") {
 
             filters.push(
-                    [
-                            label           : 'Bounding Box',
-                            type            : 'geometrypropertytype',
-                            name            : 'position',
-                            visualised      : false
-                    ]
+                [
+                    label           : 'Bounding Box',
+                    type            : 'geometrypropertytype',
+                    name            : 'position',
+                    visualised      : false
+                ]
             )
         }
         else {
@@ -82,25 +94,25 @@ class CoreGeoserverServer extends WmsServer {
                         // property on WFS featureType
                         if (!hasTemporalRange) {
                             filters.push(
-                                    [
-                                            label     : 'Time',
-                                            type      : 'datetime',
-                                            name      : 'TIME',
-                                            visualised: true,
-                                            wmsStartDateName: 'time_coverage_start',
-                                            wmsEndDateName: 'time_coverage_end'
-                                    ]
+                                [
+                                    label     : 'Time',
+                                    type      : 'datetime',
+                                    name      : 'TIME',
+                                    visualised: true,
+                                    wmsStartDateName: 'time_coverage_start',
+                                    wmsEndDateName: 'time_coverage_end'
+                                ]
                             )
                             hasTemporalRange = true
                         }
                     } else {
                         filters.push(
-                                [
-                                        label     : _toLabel(propertyName),
-                                        type      : _toFilterType(propertyType),
-                                        name      : propertyName,
-                                        visualised: true
-                                ]
+                            [
+                                label     : _toLabel(propertyName),
+                                type      : _toFilterType(propertyType),
+                                name      : propertyName,
+                                visualised: true
+                            ]
                         )
                     }
                 }
@@ -109,6 +121,49 @@ class CoreGeoserverServer extends WmsServer {
             }
         }
         return filters
+    }
+
+    def getFiltersFromFileUrl(server, layer) {
+        def filters = []
+
+        try {
+            def xml = new XmlSlurper().parseText(_getFiltersXml(server, layer))
+
+            xml.filter.each { filter ->
+
+                filters.push([
+                    label: filter.label.text(),
+                    type: filter.type.text(),
+                    name: filter.name.text(),
+                    visualised: Boolean.valueOf(filter.visualised.text()),
+                    wmsStartDateName: filter.wmsStartDateName.text(),
+                    wmsEndDateName: filter.wmsEndDateName.text()
+                ])
+            }
+        }
+        catch (e) {
+            log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
+        }
+
+        return filters
+    }
+
+    def _getFiltersXml(server, layer) {
+        _loadUrl(_getFiltersUrl(server, layer))
+    }
+
+    static def _loadUrl(address) {
+        def outputStream = new ByteArrayOutputStream()
+        def request = new ExternalRequest(outputStream, address.toURL())
+
+        request.executeRequest()
+        return outputStream.toString("utf-8")
+    }
+
+    String _getFiltersUrl(server, layer) {
+        String filterDir = this.knownServers.find { it.uri == server}.filterDir
+        String fixedLayerName = layer.replace(':','/');
+        return  this.baseFilterUrl + '/' + filterDir + '/' +  fixedLayerName + '.xml'
     }
 
     def getFilterValues(server, layer, filter) {

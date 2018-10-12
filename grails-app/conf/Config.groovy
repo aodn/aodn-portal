@@ -177,11 +177,12 @@ knownServers = [
     [
         uri: 'http://geoserver-123.aodn.org.au/geoserver/wms',
         wmsVersion: '1.1.1',
-        type: 'GeoServer',
+        type: 'GeoserverCore',
         csvDownloadFormat: 'csv-with-metadata-header',
         urlListDownloadSubstitutions: [
             '^': 'http://data.aodn.org.au/'
-        ]
+        ],
+        filterDir: 'imos-geoserver'
     ],
     [
         uri: 'http://nonprod.marine.ga.gov.au/geoserver/wms',
@@ -296,6 +297,10 @@ minimap {
         url = baselayerServer.uri
         params = [layers: 'default_bathy']
     }
+}
+
+filtering {
+    baseUrl = "https://raw.githubusercontent.com/aodn/filter-config/test"
 }
 
 portal {

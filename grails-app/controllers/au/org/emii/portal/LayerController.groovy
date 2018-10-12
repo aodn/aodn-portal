@@ -42,7 +42,8 @@ class LayerController {
             return new AlaServer()
         }
         else if (serverType == 'geoservercore') {
-            return new CoreGeoserverServer(groovyPageRenderer)
+            def filterBaseUrl = grailsApplication.config.filtering.baseUrl
+            return new CoreGeoserverServer(groovyPageRenderer, filterBaseUrl, grailsApplication.config.knownServers)
         }
         else {
             return new ImosGeoserverServer(grailsApplication.config.filtering.filePath)
