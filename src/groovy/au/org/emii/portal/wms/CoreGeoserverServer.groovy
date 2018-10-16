@@ -154,6 +154,27 @@ class CoreGeoserverServer extends WmsServer {
         }
     }
 
+    def _lookupWfs(server, layer) {
+        def wmsLayer = [server, layer]
+
+        if (linkedWfsFeatureTypeMap.containsKey(wmsLayer)) {
+            return linkedWfsFeatureTypeMap.get(wmsLayer)
+        }
+
+        String response = _describeLayer(server, layer)
+
+        def parser = new XmlSlurper()
+        parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
+        parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        def xml = parser.parseText(response)
+
+        def wfsFeatureType = [xml.LayerDescription.@wfs.text(), xml.LayerDescription.Query.@typeName.text()]
+
+        linkedWfsFeatureTypeMap.put(wmsLayer, wfsFeatureType)
+
+        return wfsFeatureType
+    }
+
     private String _describeLayer(server, layer) {
         def requestUrl = server + "?request=DescribeLayer&service=WMS&version=1.1.1&layers=${layer}"
         def outputStream = new ByteArrayOutputStream()

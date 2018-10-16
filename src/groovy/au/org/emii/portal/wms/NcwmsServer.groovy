@@ -73,7 +73,7 @@ class NcwmsServer extends WmsServer {
         return timeStepsFormatted
     }
 
-    private String getUrlContent(url) {
+    String getUrlContent(url) {
         return new URL(url).text
     }
 
