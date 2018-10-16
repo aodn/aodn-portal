@@ -30,11 +30,6 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         return this._addLayer(openLayer, layerRecordCallback);
     },
 
-    removeAll: function() {
-        this.remove(this.getOverlayLayers().getRange());
-        this.selectDefaultBaseLayer();
-    },
-
     selectDefaultBaseLayer: function() {
         var defaultBaseLayer = this.getDefaultBaseLayer();
         var openLayer = defaultBaseLayer ? defaultBaseLayer.data.layer : null;
@@ -57,10 +52,13 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
         });
     },
 
-    getOverlayLayers: function() {
+    getCollectionLayers: function() {
         return this._getLayers(function(record) {
             var layer = record.getLayer();
-            return layer.options && !layer.options.isBaseLayer && !(layer instanceof OpenLayers.Layer.Vector);
+            return layer.options
+                && !layer.options.isBaseLayer
+                && !layer.options.isDataLayer
+                && !(layer instanceof OpenLayers.Layer.Vector);
         });
     },
 
@@ -93,13 +91,25 @@ Portal.data.LayerStore = Ext.extend(GeoExt.data.LayerStore, {
 
     _registerMessageListeners: function() {
 
-        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function(subject, openLayer) {
-            this.removeAll();
+        Ext.MsgBus.subscribe(PORTAL_EVENTS.RESET, function() {
+            this._clearChanges();
         }, this);
 
         Ext.each([PORTAL_EVENTS.DATA_COLLECTION_ADDED, PORTAL_EVENTS.DATA_COLLECTION_SELECTED], function(eventName) {
             Ext.MsgBus.subscribe(eventName, this._onDataCollectionChanged, this);
         }, this);
+    },
+
+    _clearChanges: function() {
+        this.remove(this.getCollectionLayers().getRange());
+        this._hideDataLayers();
+        this.selectDefaultBaseLayer();
+    },
+
+    _hideDataLayers: function() {
+        this.getDataLayers().each(function(dataLayer) {
+            dataLayer.getLayer().setVisibility(false);
+        });
     },
 
     _onDataCollectionChanged: function(eventName, dataCollection) {

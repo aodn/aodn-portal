@@ -89,7 +89,14 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
     }
 
     void testValidFilters() {
+
         coreGeoserverServer.metaClass._describeFeatureType = { server, layer -> return validGeoserverResponse }
+        coreGeoserverServer.metaClass.getLayerInfo = {server, layer -> return [
+                owsUrl: "http://server.url",
+                owsType: "owsTypo",
+                wfsUrl: "http://wfs.server.url",
+                typeName: "thetypename"
+        ]}
 
         def expected = [
             [
@@ -120,6 +127,11 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
 
     void testInvalidFilters() {
         coreGeoserverServer.metaClass._describeFeatureType = { server, layer -> return "here be invalid xml" }
+        coreGeoserverServer.metaClass.getLayerInfo = {server, layer -> return [
+                owsType: "owsTypo",
+                wfsUrl: "http://wfs.server.url",
+                typeName: "thetypename"
+        ]}
 
         def expected = []
 

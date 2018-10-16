@@ -185,6 +185,12 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
             url += "?";
         }
 
+        if (layer.isNcwms()) {
+            opts += "&SERVICE=ncwms"
+        } else {
+            opts += "&SERVICE=WMS"
+        }
+
         opts += "&REQUEST=GetLegendGraphic"
              +  "&LAYER=" + encodeURIComponent(layer.params.LAYERS)
              +  "&FORMAT=" + layer.params.FORMAT;

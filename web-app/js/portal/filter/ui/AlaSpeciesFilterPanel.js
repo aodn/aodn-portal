@@ -16,7 +16,7 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
         var resultTpl = new Ext.XTemplate(
             '<tpl for=".">' +
             '<div class="x-combo-list-item alaFilterResult">',
-            '<div class="alaFilterHighlight">{highlight} ({occCount})</div>',
+            '<div class="alaFilterHighlight">{highlight}</div>',
             ' <tpl if="rawRank != \'\' ">',
             '  <div><b>Most specific rank:</b> {[this.decapitalise(values.rawRank)]}</div>',
             ' </tpl>',
@@ -36,13 +36,13 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
         );
 
         this.jsonStore = new Ext.data.JsonStore({
-            url: 'proxy?', // portal proxy controller
+            url: 'proxy?',
             root: "searchResults.results",
             idProperty: 'guid',
             baseParams : {
-                fq: Portal.app.appConfig.ala.index, // ALA index for marine only
+                fq: Portal.app.appConfig.ala.index,
                 url: Portal.app.appConfig.ala.url,
-                pageSize: 10000
+                pageSize: 1000
             },
             fields: [
                 {name: 'name', type: 'string'},
@@ -103,13 +103,12 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
 
     _onBlur: function(combo) {
         combo.clearValue();
-        this._clearFilter(combo.activeFilterData);
     },
 
     _createNewActiveFilterPanel: function(activeFilterData) {
 
         return new Ext.Panel({
-            title: String.format("{0} ({1})", activeFilterData.name, activeFilterData.occCount),
+            title: activeFilterData.name,
             activeFilterData: activeFilterData,
             toolTemplate: new Ext.XTemplate(
                 '<tpl>',
@@ -139,8 +138,7 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
     },
 
     _removeOnClick: function(event, toolEl, panel) {
-        this.handleRemoveFilter(panel.activeFilterData);
-        panel.destroy(); // triggers _onRemoveActiveFilter
+        this.handleRemoveFilter(panel);
     },
 
     _onRemoveActiveFilter: function() {
@@ -183,13 +181,26 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
         }
     },
 
-    handleRemoveFilter: function() {
-        var that = this;
-        Ext.each(this.activeFiltersContainer.items.items, function(panel) {
-            if (panel.activeFilterData != undefined) {
-                that._clearFilter(panel.activeFilterData);
-                panel.destroy();
+    handleRemoveFilter: function(targetedPanel) {
+
+        var deadPanels = [];
+        Ext.each(this.activeFiltersContainer.items.items, function(item) {
+
+            if (targetedPanel) {
+                if (item.activeFilterData == targetedPanel.activeFilterData) {
+                    deadPanels.push(item);
+                }
             }
-        });
+            else if(item.activeFilterData != undefined) {
+                deadPanels.push(item)
+            }
+
+        }, this);
+
+
+        Ext.each(deadPanels, function(panel) {
+            this._clearFilter(panel.activeFilterData);
+            panel.destroy(); // triggers _onRemoveActiveFilter
+        }, this);
     }
 });

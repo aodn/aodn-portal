@@ -84,7 +84,8 @@ describe("Portal.details.StylePanel", function() {
 
             var layer = {
                 params: {},
-                url: ""
+                url: "",
+                isNcwms: returns(false)
             };
             var urlString = stylePanel.buildGetLegend(layer, null, null, false);
             expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual(null);
@@ -95,7 +96,8 @@ describe("Portal.details.StylePanel", function() {
             var layer = {
                 params: {},
                 url: "",
-                server: {wmsVersion: '1.1.0'}
+                server: {wmsVersion: '1.1.0'},
+                isNcwms: returns(false)
             };
             var urlString = stylePanel.buildGetLegend(layer, null, null, false);
             expect(getParameterByNameFromUrlString(urlString, "VERSION")).toEqual("1.1.0");
@@ -106,7 +108,8 @@ describe("Portal.details.StylePanel", function() {
             var layer = {
                 extraLayerInfo: {numColorBands: '24'},
                 url: "",
-                params: {}
+                params: {},
+                isNcwms: returns(false)
             };
             var urlString = stylePanel.buildGetLegend(layer, null, null, false);
             expect(getParameterByNameFromUrlString(urlString, 'NUMCOLORBANDS')).toEqual('24');
@@ -117,7 +120,8 @@ describe("Portal.details.StylePanel", function() {
             var layer = {
                 extraLayerInfo: {},
                 url: "",
-                params: {}
+                params: {},
+                isNcwms: returns(false)
             };
             var urlString = stylePanel.buildGetLegend(layer, null, null, false);
             expect(getParameterByNameFromUrlString(urlString, 'NUMCOLORBANDS')).toEqual(null);
@@ -127,7 +131,8 @@ describe("Portal.details.StylePanel", function() {
 
             var layer = {
                 url: "",
-                params: {}
+                params: {},
+                isNcwms: returns(false)
             };
             var urlString = stylePanel.buildGetLegend(layer, null, null, false);
             expect(getParameterByNameFromUrlString(urlString, 'NUMCOLORBANDS')).toEqual(null);
@@ -137,7 +142,8 @@ describe("Portal.details.StylePanel", function() {
 
             var layer = {
                 params: {},
-                url: ""
+                url: "",
+                isNcwms: returns(false)
             };
             var urlString = stylePanel.buildGetLegend(layer, 'style/palette', null, false);
             expect(getParameterByNameFromUrlString(urlString, "STYLE")).toEqual("style/palette");
@@ -147,7 +153,8 @@ describe("Portal.details.StylePanel", function() {
 
             var layer = {
                 params: {},
-                url: ""
+                url: "",
+                isNcwms: returns(false)
             };
             var urlString = stylePanel.buildGetLegend(layer, '', null, false);
             expect(getParameterByNameFromUrlString(urlString, "STYLE")).toEqual(null);
@@ -157,7 +164,8 @@ describe("Portal.details.StylePanel", function() {
 
             var layer = {
                 params: {},
-                url: ""
+                url: "",
+                isNcwms: returns(false)
             };
             var urlString = stylePanel.buildGetLegend(layer, '', 'palette', false);
             expect(getParameterByNameFromUrlString(urlString, "PALETTE")).toEqual("palette");
@@ -167,7 +175,8 @@ describe("Portal.details.StylePanel", function() {
 
             var layer = {
                 params: {},
-                url: ""
+                url: "",
+                isNcwms: returns(false)
             };
             var urlString = stylePanel.buildGetLegend(layer, null, null, false);
             expect(getParameterByNameFromUrlString(urlString, "PALETTE")).toEqual(null);

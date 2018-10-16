@@ -147,24 +147,23 @@ describe("Portal.data.LayerStore", function() {
                 expect(layerStore.getCount()).toBe(0);
             });
         });
+    });
 
-        it('removeAll', function() {
-            spyOn(layerStore, 'remove');
-            layerStore.removeAll();
-
-            expect(layerStore.remove).toHaveBeenCalled();
-        });
-
-        it('reset', function() {
+    describe('clearing changes', function() {
+        it('clears changes', function() {
             layerStore._addLayer(createOpenLayer());
             expect(layerStore.getCount()).toBe(1);
 
             spyOn(layerStore, 'selectDefaultBaseLayer');
-            layerStore.removeAll();
+            spyOn(layerStore, '_hideDataLayers');
 
+            layerStore._clearChanges();
+
+            expect(layerStore.getCount()).toBe(0);
             expect(layerStore.selectDefaultBaseLayer).toHaveBeenCalled();
+            expect(layerStore._hideDataLayers).toHaveBeenCalled();
         });
-    });
+    })
 
     describe('getLayers', function() {
 
@@ -192,7 +191,7 @@ describe("Portal.data.LayerStore", function() {
         });
 
         it('get overlay layers', function() {
-            expect(layerStore.getOverlayLayers().getCount()).toBe(2);
+            expect(layerStore.getCollectionLayers().getCount()).toBe(2);
         });
     });
 
