@@ -1,13 +1,13 @@
 package au.org.emii.portal
 
-import grails.test.*
+import grails.test.ControllerUnitTestCase
+import grails.test.mixin.TestFor
 
-class DownloadAuthControllerTests extends ControllerUnitTestCase {
+@TestFor(DownloadAuthController)
+class DownloadAuthControllerTests {// extends ControllerUnitTestCase {
     def downloadAuthService
 
-    protected void setUp() {
-        super.setUp()
-
+    void setUp() {
         DownloadAuthService.metaClass.resetChallenge = {}
         downloadAuthService = new DownloadAuthService()
         downloadAuthService.metaClass.needsChallenge = { ipAddress -> return true }
@@ -16,15 +16,15 @@ class DownloadAuthControllerTests extends ControllerUnitTestCase {
         controller.downloadAuthService = downloadAuthService
     }
 
-    protected void tearDown() {
-        super.tearDown()
+    void tearDown() {
     }
 
     void testRenderChallengeViewIfUserNotAuthenticated() {
         controller.index()
         def response = controller.response.contentAsString
 
-        assertEquals "challenge", controller.renderArgs.view
+        //  TODO: renderArgs
+        assertEquals "/downloadAuth/challenge", view.toString()
     }
 
     void testRenderEmptyHtmlIfUserAuthenticated() {

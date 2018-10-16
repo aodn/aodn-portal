@@ -1,14 +1,13 @@
 package au.org.emii.portal
 
-import grails.test.ControllerUnitTestCase
 import groovy.xml.MarkupBuilder
 import org.joda.time.DateTime
+import grails.test.mixin.TestFor
 
-class WpsControllerTests extends ControllerUnitTestCase {
+@TestFor(WpsController)
+class WpsControllerTests { //extends ControllerUnitTestCase {
 
-    @Override
     void setUp() {
-        super.setUp()
 
         controller.hostVerifier = [
             allowedHost: { it =~ '.*allowedhost.*' }
@@ -25,8 +24,8 @@ class WpsControllerTests extends ControllerUnitTestCase {
 
         controller._renderExecutionStatus(execResponse)
 
-        assertEquals 'show', controller.renderArgs.view
-        assertEquals expectedModel.toString(), controller.renderArgs.model.toString()
+        assertEquals '/wps/show', view.toString()
+        assertEquals expectedModel.toString(), model.toString()
     }
 
     def _getMockExecutionStatusResponseAndModel() {
@@ -49,7 +48,7 @@ class WpsControllerTests extends ControllerUnitTestCase {
         def expectedModel = [
             job: [
                 uuid            : uuid,
-                reportUrl       : 'http://the_link',
+                reportUrl       : 'http://localhost:8080/wps/jobReport?uuid=1234&status=Download+ready',
                 createdTimestamp: new DateTime('1979-06-01T04:00+10:00'),
                 status          : 'Download ready',
                 downloadTitle   : 'IMOS download - ' + uuid,
@@ -74,8 +73,8 @@ class WpsControllerTests extends ControllerUnitTestCase {
             _getExecutionStatusUrl: {return url}
         ]
 
-        mockParams.successful = "true"
-        controller.jobComplete(mockParams)
+        params.successful = "true"
+        controller.jobComplete(params)
 
         assertTrue notifyViaEmailCalled
     }
