@@ -1,7 +1,6 @@
 package au.org.emii.portal.wms
 
 import au.org.emii.portal.proxying.ExternalRequest
-import groovy.json.JsonSlurper
 
 import java.util.concurrent.ConcurrentHashMap
 
@@ -9,14 +8,10 @@ class CoreGeoserverServer extends WmsServer {
 
     private static def linkedWfsFeatureTypeMap = new ConcurrentHashMap()
 
-    def groovyPageRenderer
-    def baseFilterUrl
-    def knownServers
+    private def filterValuesService
 
-    CoreGeoserverServer(groovyPageRenderer, baseFilterUrl, knownServers) {
-        this.groovyPageRenderer = groovyPageRenderer
-        this.baseFilterUrl = baseFilterUrl
-        this.knownServers = knownServers
+    CoreGeoserverServer(filterValuesService) {
+        this.filterValuesService = filterValuesService
     }
 
     def getStyles(server, layer) {
@@ -50,14 +45,6 @@ class CoreGeoserverServer extends WmsServer {
     }
 
     def getFilters(server, layer) {
-        if (this.baseFilterUrl && this.knownServers.find { it.uri == server}.filterDir) {
-            return getFiltersFromFileUrl(server, layer)
-        } else {
-            return getFiltersViaDescribeFeatureType(server, layer)
-        }
-    }
-
-    def getFiltersViaDescribeFeatureType(server, layer) {
         def filters = []
 
         def layerInfo = getLayerInfo(server, layer)
@@ -123,61 +110,8 @@ class CoreGeoserverServer extends WmsServer {
         return filters
     }
 
-    def getFiltersFromFileUrl(server, layer) {
-        def filters = []
-
-        try {
-            def xml = new XmlSlurper().parseText(_getFiltersXml(server, layer))
-
-            xml.filter.each { filter ->
-
-                filters.push([
-                    label: filter.label.text(),
-                    type: filter.type.text(),
-                    name: filter.name.text(),
-                    visualised: Boolean.valueOf(filter.visualised.text()),
-                    wmsStartDateName: filter.wmsStartDateName.text(),
-                    wmsEndDateName: filter.wmsEndDateName.text()
-                ])
-            }
-        }
-        catch (e) {
-            log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
-        }
-
-        return filters
-    }
-
-    def _getFiltersXml(server, layer) {
-        _loadUrl(_getFiltersUrl(server, layer))
-    }
-
-    static def _loadUrl(address) {
-        def outputStream = new ByteArrayOutputStream()
-        def request = new ExternalRequest(outputStream, address.toURL())
-
-        request.executeRequest()
-        return outputStream.toString("utf-8")
-    }
-
-    String _getFiltersUrl(server, layer) {
-        String filterDir = this.knownServers.find { it.uri == server}.filterDir
-        String fixedLayerName = layer.replace(':','/');
-        return  this.baseFilterUrl + '/' + filterDir + '/' +  fixedLayerName + '.xml'
-    }
-
-    def getFilterValues(server, layer, filter) {
-        def values = []
-
-        try {
-            def json = new JsonSlurper().parseText(_getPagedUniqueValues(server, layer, filter))
-
-            values = json.values
-        } catch (e) {
-            log.error "Unable to parse filters values for server '${server}', layer '${layer}', filter '${filter}'", e
-        }
-
-        return values
+    def getFilterValues(Object server, Object layer, Object filter) {
+        return filterValuesService.getFilterValues(layer, filter)
     }
 
     def _describeFeatureType(server, layer) {
@@ -188,25 +122,6 @@ class CoreGeoserverServer extends WmsServer {
 
         request.executeRequest()
         return outputStream.toString("utf-8")
-    }
-
-    def _getPagedUniqueValues(server, layer, filter) {
-        def layerInfo = getLayerInfo(server, layer)
-        def params = [typeName: layerInfo.typeName, propertyName: filter]
-        def body = groovyPageRenderer.render(template: '/filters/pagedUniqueRequest.xml', model: params)
-        log.debug("Request body:\n\n${body}")
-
-        def connection = layerInfo.wfsUrl.toURL().openConnection()
-
-        connection.with {
-            doOutput = true
-            requestMethod = 'POST'
-            setRequestProperty("Content-Type", "application/xml; charset=utf-8")
-            outputStream.withWriter { writer ->
-                writer << body
-            }
-            content.text
-        }
     }
 
     String _describeLayer(server, layer) {

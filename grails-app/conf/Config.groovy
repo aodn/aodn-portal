@@ -172,22 +172,27 @@ baselayerServer = [
 proxyConnectTimeout = 2000
 
 
+filtering {
+    baseUrl = "https://raw.githubusercontent.com/aodn/filter-config/test"
+}
+
 // This array should be populated from chef config
 knownServers = [
     [
         uri: 'http://geoserver-123.aodn.org.au/geoserver/wms',
         wmsVersion: '1.1.1',
-        type: 'GeoserverCore',
+        type: 'GeoServer',
         csvDownloadFormat: 'csv-with-metadata-header',
         urlListDownloadSubstitutions: [
             '^': 'http://data.aodn.org.au/'
-        ],
-        filterDir: 'imos-geoserver'
+        ]
     ],
     [
         uri: 'http://nonprod.marine.ga.gov.au/geoserver/wms',
         wmsVersion: '1.1.1',
-        type: 'GeoserverCore'
+        type: 'GeoserverFilterConfig',
+        filtersDir: "ga-geoserver",
+        wpsUrl: 'http://nonprod.marine.ga.gov.au/geoserver/wps'
     ],
     [
         uri: 'http://marine.ga.gov.au/geoserver/wms',
@@ -297,10 +302,6 @@ minimap {
         url = baselayerServer.uri
         params = [layers: 'default_bathy']
     }
-}
-
-filtering {
-    baseUrl = "https://raw.githubusercontent.com/aodn/filter-config/test"
 }
 
 portal {

@@ -5,6 +5,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 
 class NcwmsServer extends WmsServer {
+
     def getStyles(server, layer) {
         def json = JSON.parse(getUrlContent(getMetadataUrl(server, layer)))
 

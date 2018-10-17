@@ -34,7 +34,9 @@ class LayerController {
     }
 
 
-    def _getServerClass(serverType) {
+    def _getServerClass(server, serverType) {
+        def serverConfig = _getServerConfig(server)
+
         if (serverType == 'ncwms') {
             return new NcwmsServer()
         }
@@ -42,19 +44,29 @@ class LayerController {
             return new AlaServer()
         }
         else if (serverType == 'geoservercore') {
-            def filterBaseUrl = grailsApplication.config.filtering.baseUrl
-            return new CoreGeoserverServer(groovyPageRenderer, filterBaseUrl, grailsApplication.config.knownServers)
+            def filterValuesService = new WpsUniqueValuesFilterService(serverConfig.wpsUrl, groovyPageRenderer)
+            return new CoreGeoserverServer(filterValuesService)
+        }
+        else if (serverType == 'geoserverfilterconfig') {
+            def filterValuesService = new WpsUniqueValuesFilterService(serverConfig.wpsUrl, groovyPageRenderer)
+            def filtersUrl = grailsApplication.config.filtering.baseUrl + '/' + serverConfig.filtersDir
+            return new FilterConfigGeoserverServer(filtersUrl, filterValuesService)
         }
         else {
             return new ImosGeoserverServer(grailsApplication.config.filtering.filePath)
         }
     }
 
+    def _getServerConfig(server) {
+        def knownServers = grailsApplication.config.knownServers
+        return knownServers.find { server.startsWith(it.uri) }
+    }
+
     def getStyles = {
         def (server, layer, serverType) = parseParams(params)
 
         if (hostVerifier.allowedHost(server)) {
-            def serverObject = _getServerClass(serverType)
+            def serverObject = _getServerClass(server, serverType)
 
             render serverObject.getStyles(server, layer) as JSON
         }
@@ -67,7 +79,7 @@ class LayerController {
         def (server, layer, serverType, filter) = parseParams(params)
 
         if (hostVerifier.allowedHost(server)) {
-            def serverObject = _getServerClass(serverType)
+            def serverObject = _getServerClass(server, serverType)
 
             render serverObject.getFilterValues(server, layer, filter) as JSON
         }
@@ -80,7 +92,7 @@ class LayerController {
         def (server, layer, serverType) = parseParams(params)
 
         if (hostVerifier.allowedHost(server)) {
-            def serverObject = _getServerClass(serverType)
+            def serverObject = _getServerClass(server, serverType)
 
             render serverObject.getFilters(server, layer) as JSON
         }
