@@ -4,7 +4,7 @@ import grails.test.ControllerUnitTestCase
 import grails.test.mixin.TestFor
 
 @TestFor(DownloadAuthController)
-class DownloadAuthControllerTests {// extends ControllerUnitTestCase {
+class DownloadAuthControllerTests {
     def downloadAuthService
 
     void setUp() {

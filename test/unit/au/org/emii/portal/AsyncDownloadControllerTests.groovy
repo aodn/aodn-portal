@@ -4,7 +4,7 @@ import static au.org.emii.portal.HttpUtils.Status.*
 import grails.test.mixin.TestFor
 
 @TestFor(AsyncDownloadController)
-class AsyncDownloadControllerTests {// extends ControllerUnitTestCase {
+class AsyncDownloadControllerTests {
 
     def downloadAuthService
     def gogoduckService

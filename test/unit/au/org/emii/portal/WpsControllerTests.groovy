@@ -5,7 +5,7 @@ import org.joda.time.DateTime
 import grails.test.mixin.TestFor
 
 @TestFor(WpsController)
-class WpsControllerTests { //extends ControllerUnitTestCase {
+class WpsControllerTests {
 
     void setUp() {
 

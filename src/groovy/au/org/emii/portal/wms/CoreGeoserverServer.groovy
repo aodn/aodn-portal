@@ -175,7 +175,7 @@ class CoreGeoserverServer extends WmsServer {
         return wfsFeatureType
     }
 
-    private String _describeLayer(server, layer) {
+    String _describeLayer(server, layer) {
         def requestUrl = server + "?request=DescribeLayer&service=WMS&version=1.1.1&layers=${layer}"
         def outputStream = new ByteArrayOutputStream()
         def request = new ExternalRequest(outputStream, requestUrl.toURL())

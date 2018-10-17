@@ -6,7 +6,7 @@ import grails.test.ControllerUnitTestCase
 import grails.test.mixin.TestFor
 
 @TestFor(LayerController)
-class LayerControllerTests {//} extends ControllerUnitTestCase {
+class LayerControllerTests {
 
     def messageArgs
     def hostVerifier
