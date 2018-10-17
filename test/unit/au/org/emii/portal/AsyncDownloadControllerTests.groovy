@@ -44,12 +44,7 @@ class AsyncDownloadControllerTests {
             return false
         }
 
-        try {
-            controller.index()
-        } catch (Throwable th) {
-            th.fillInStackTrace();
-            log.severe("Exception: " + th.getMessage());
-        }
+        controller.index()
 
         assertEquals HTTP_500_INTERNAL_SERVER_ERROR, response.status
     }
@@ -74,12 +69,8 @@ class AsyncDownloadControllerTests {
             return "gogoduck_rendered_text"
         }
 
-        try {
-            log.info("Calling controller.");
-            controller.index()
-        } catch (Throwable th) {
-            log.info("Exception: " + th.getMessage())
-        }
+        controller.index()
+
         assertEquals 1, createJobCalledTimes
         assertEquals "gogoduck_rendered_text", response.contentAsString
     }
