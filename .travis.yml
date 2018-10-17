@@ -3,7 +3,7 @@ sudo: false
 language: groovy
 
 jdk:
-    - openjdk7
+    - openjdk8
 
 env:
     global
