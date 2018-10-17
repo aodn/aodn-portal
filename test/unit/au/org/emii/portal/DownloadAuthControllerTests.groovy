@@ -23,7 +23,6 @@ class DownloadAuthControllerTests {
         controller.index()
         def response = controller.response.contentAsString
 
-        //  TODO: renderArgs
         assertEquals "/downloadAuth/challenge", view.toString()
     }
 
