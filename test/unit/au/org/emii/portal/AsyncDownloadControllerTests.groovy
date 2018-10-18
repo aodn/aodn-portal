@@ -1,19 +1,17 @@
 package au.org.emii.portal
 
-import grails.test.*
-
 import static au.org.emii.portal.HttpUtils.Status.*
+import grails.test.mixin.TestFor
 
-class AsyncDownloadControllerTests extends ControllerUnitTestCase {
+@TestFor(AsyncDownloadController)
+class AsyncDownloadControllerTests {
 
     def downloadAuthService
     def gogoduckService
     def wpsAwsService
     def wpsService
 
-    protected void setUp() {
-        super.setUp()
-
+    void setUp() {
         downloadAuthService = mockFor(DownloadAuthService)
         downloadAuthService.demand.static.verifyChallengeResponse { params, ipAddress -> return true }
         downloadAuthService.demand.static.registerDownloadForAddress { ipAddress, comment -> return }
@@ -48,7 +46,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
         controller.index()
 
-        assertEquals HTTP_500_INTERNAL_SERVER_ERROR, controller.renderArgs.status
+        assertEquals HTTP_500_INTERNAL_SERVER_ERROR, response.status
     }
 
     void testParametersPassedToAggregatorService() {
@@ -74,7 +72,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
         controller.index()
 
         assertEquals 1, createJobCalledTimes
-        assertEquals "gogoduck_rendered_text", mockResponse.contentAsString
+        assertEquals "gogoduck_rendered_text", response.contentAsString
     }
 
     void testGogoduckJobSuccess() {
@@ -82,7 +80,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
         controller.index()
 
-        assertEquals "gogoduck_rendered_text", mockResponse.contentAsString
+        assertEquals "gogoduck_rendered_text", response.contentAsString
     }
 
     void testGogoduckJobFailure() {
@@ -91,7 +89,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
         controller.index()
 
-        assertEquals HTTP_500_INTERNAL_SERVER_ERROR, controller.renderArgs.status
+        assertEquals HTTP_500_INTERNAL_SERVER_ERROR, response.status
     }
 
     void testServerNotAllowed() {
@@ -99,7 +97,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
         controller.index()
 
-        assertEquals HTTP_403_FORBIDDEN, controller.renderArgs.status
+        assertEquals HTTP_403_FORBIDDEN, response.status
     }
 
     void testNoSuchAggregator() {
@@ -107,7 +105,7 @@ class AsyncDownloadControllerTests extends ControllerUnitTestCase {
 
         controller.index()
 
-        assertEquals HTTP_500_INTERNAL_SERVER_ERROR, controller.renderArgs.status
+        assertEquals HTTP_500_INTERNAL_SERVER_ERROR, response.status
     }
 
     void testGetAggregatorService() {

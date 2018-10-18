@@ -3,13 +3,15 @@ package au.org.emii.portal
 import grails.converters.JSON
 import grails.test.ControllerUnitTestCase
 
-class LayerControllerTests extends ControllerUnitTestCase {
+import grails.test.mixin.TestFor
+
+@TestFor(LayerController)
+class LayerControllerTests {
 
     def messageArgs
     def hostVerifier
 
-    protected void setUp() {
-        super.setUp()
+    void setUp() {
 
         controller.metaClass.message = { LinkedHashMap args -> messageArgs = args }
         controller.metaClass._recache = {}
@@ -90,6 +92,6 @@ class LayerControllerTests extends ControllerUnitTestCase {
 
         controller.configuredLayers()
 
-        assertEquals(String.valueOf(baselayerConfig as JSON), mockResponse.contentAsString)
+        assertEquals(String.valueOf(baselayerConfig as JSON), response.contentAsString)
     }
 }
