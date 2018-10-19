@@ -172,6 +172,10 @@ baselayerServer = [
 proxyConnectTimeout = 2000
 
 
+filtering {
+    baseUrl = "https://raw.githubusercontent.com/aodn/filter-config/test"
+}
+
 // This array should be populated from chef config
 knownServers = [
     [
@@ -186,7 +190,9 @@ knownServers = [
     [
         uri: 'http://nonprod.marine.ga.gov.au/geoserver/wms',
         wmsVersion: '1.1.1',
-        type: 'GeoserverCore'
+        type: 'GeoserverFilterConfig',
+        filtersDir: "ga-geoserver",
+        wpsUrl: 'http://nonprod.marine.ga.gov.au/geoserver/wps'
     ],
     [
         uri: 'http://marine.ga.gov.au/geoserver/wms',

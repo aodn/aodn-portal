@@ -1,5 +1,7 @@
 package au.org.emii.portal
 
+import au.org.emii.portal.proxying.ExternalRequest
+
 final class UrlUtils {
 
     static String ensureTrailingSlash(url) {
@@ -29,4 +31,13 @@ final class UrlUtils {
 
         return urlWithQueryString(url, queryString)
     }
+
+    static String load(url) {
+        def outputStream = new ByteArrayOutputStream()
+        def request = new ExternalRequest(outputStream, url.toURL())
+
+        request.executeRequest()
+        return outputStream.toString("utf-8")
+    }
+
 }

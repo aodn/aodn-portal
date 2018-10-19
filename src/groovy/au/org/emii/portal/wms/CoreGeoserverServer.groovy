@@ -1,7 +1,6 @@
 package au.org.emii.portal.wms
 
 import au.org.emii.portal.proxying.ExternalRequest
-import groovy.json.JsonSlurper
 
 import java.util.concurrent.ConcurrentHashMap
 
@@ -9,10 +8,10 @@ class CoreGeoserverServer extends WmsServer {
 
     private static def linkedWfsFeatureTypeMap = new ConcurrentHashMap()
 
-    def groovyPageRenderer
+    private def filterValuesService
 
-    CoreGeoserverServer(groovyPageRenderer) {
-        this.groovyPageRenderer = groovyPageRenderer
+    CoreGeoserverServer(filterValuesService) {
+        this.filterValuesService = filterValuesService
     }
 
     def getStyles(server, layer) {
@@ -53,12 +52,12 @@ class CoreGeoserverServer extends WmsServer {
         if (layerInfo.owsType == "WCS") {
 
             filters.push(
-                    [
-                            label           : 'Bounding Box',
-                            type            : 'geometrypropertytype',
-                            name            : 'position',
-                            visualised      : false
-                    ]
+                [
+                    label           : 'Bounding Box',
+                    type            : 'geometrypropertytype',
+                    name            : 'position',
+                    visualised      : false
+                ]
             )
         }
         else {
@@ -82,25 +81,25 @@ class CoreGeoserverServer extends WmsServer {
                         // property on WFS featureType
                         if (!hasTemporalRange) {
                             filters.push(
-                                    [
-                                            label     : 'Time',
-                                            type      : 'datetime',
-                                            name      : 'TIME',
-                                            visualised: true,
-                                            wmsStartDateName: 'time_coverage_start',
-                                            wmsEndDateName: 'time_coverage_end'
-                                    ]
+                                [
+                                    label     : 'Time',
+                                    type      : 'datetime',
+                                    name      : 'TIME',
+                                    visualised: true,
+                                    wmsStartDateName: 'time_coverage_start',
+                                    wmsEndDateName: 'time_coverage_end'
+                                ]
                             )
                             hasTemporalRange = true
                         }
                     } else {
                         filters.push(
-                                [
-                                        label     : _toLabel(propertyName),
-                                        type      : _toFilterType(propertyType),
-                                        name      : propertyName,
-                                        visualised: true
-                                ]
+                            [
+                                label     : _toLabel(propertyName),
+                                type      : _toFilterType(propertyType),
+                                name      : propertyName,
+                                visualised: true
+                            ]
                         )
                     }
                 }
@@ -111,18 +110,8 @@ class CoreGeoserverServer extends WmsServer {
         return filters
     }
 
-    def getFilterValues(server, layer, filter) {
-        def values = []
-
-        try {
-            def json = new JsonSlurper().parseText(_getPagedUniqueValues(server, layer, filter))
-
-            values = json.values
-        } catch (e) {
-            log.error "Unable to parse filters values for server '${server}', layer '${layer}', filter '${filter}'", e
-        }
-
-        return values
+    def getFilterValues(Object server, Object layer, Object filter) {
+        return filterValuesService.getFilterValues(layer, filter)
     }
 
     def _describeFeatureType(server, layer) {
@@ -133,25 +122,6 @@ class CoreGeoserverServer extends WmsServer {
 
         request.executeRequest()
         return outputStream.toString("utf-8")
-    }
-
-    def _getPagedUniqueValues(server, layer, filter) {
-        def layerInfo = getLayerInfo(server, layer)
-        def params = [typeName: layerInfo.typeName, propertyName: filter]
-        def body = groovyPageRenderer.render(template: '/filters/pagedUniqueRequest.xml', model: params)
-        log.debug("Request body:\n\n${body}")
-
-        def connection = layerInfo.wfsUrl.toURL().openConnection()
-
-        connection.with {
-            doOutput = true
-            requestMethod = 'POST'
-            setRequestProperty("Content-Type", "application/xml; charset=utf-8")
-            outputStream.withWriter { writer ->
-                writer << body
-            }
-            content.text
-        }
     }
 
     String _describeLayer(server, layer) {

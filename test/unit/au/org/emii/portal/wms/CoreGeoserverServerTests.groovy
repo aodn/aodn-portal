@@ -6,9 +6,6 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
 
     def coreGeoserverServer
     def validGeoserverResponse
-    def filterValuesJson
-    def emptyJson
-    def groovyPageRenderer
     def validDescribeLayerResponse
 
     protected void setUp() {
@@ -16,7 +13,7 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
 
         mockLogging(CoreGeoserverServer)
 
-        coreGeoserverServer = new CoreGeoserverServer(groovyPageRenderer)
+        coreGeoserverServer = new CoreGeoserverServer(null)
 
         validGeoserverResponse =
 """<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:gml="http://www.opengis.net/gml" xmlns:imos="imos.mod" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="imos.mod">
@@ -36,21 +33,6 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
   <xsd:element name="layer" substitutionGroup="gml:_Feature" type="imos:layerType"/>
 </xsd:schema>"""
 
-        filterValuesJson =
-'''{
-  "values":["ABFR","ADAB","ANHO","AUHO","BRER"],
-  "featureTypeName":"feature_type_name",
-  "fieldName":"property_name",
-  "size":5
-}'''
-
-        emptyJson =
-            '''{
-  "values":[],
-  "featureTypeName":"feature_type_name",
-  "fieldName":"property_name",
-  "size":0
-}'''
         validDescribeLayerResponse =
 '''<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE WMS_DescribeLayerResponse SYSTEM "https://geoserver.aodn.org.au/geoserver/schemas/wms/1.1.1/WMS_DescribeLayerResponse.dtd">
@@ -60,32 +42,6 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
   </LayerDescription>
 </WMS_DescribeLayerResponse>
 '''
-    }
-
-    void testValidFilterValues() {
-        coreGeoserverServer.metaClass._getPagedUniqueValues = { server, layer, filter -> return filterValuesJson }
-
-        def expected = [
-            "ABFR",
-            "ADAB",
-            "ANHO",
-            "AUHO",
-            "BRER"
-        ]
-
-        def filterValues = coreGeoserverServer.getFilterValues("http://server", "layer", "some_filter")
-
-        assertEquals expected, filterValues
-    }
-
-    void testInvalidFilterValues() {
-        coreGeoserverServer.metaClass._getPagedUniqueValues = { server, layer, filter -> return "here be invalid json" }
-
-        def expected = []
-
-        def filterValues = coreGeoserverServer.getFilterValues("http://server", "layer", "some_filter")
-
-        assertEquals expected, filterValues
     }
 
     void testValidFilters() {
