@@ -46,14 +46,22 @@ Portal.data.DataCollection = function() {
     constructor.prototype.getFiltersRequestParams = function() {
         var layer = this.getLayerSelectionModel().getSelectedLayer();
         var serverType = layer.server.type.toLowerCase();
-        var layerName = serverType == 'geoservercore' ? layer.wmsName : this._getDownloadLayerName();
+        var filterLookupName = this._getFilterLookupName(serverType, layer);
 
         return {
             server: layer.url,
             serverType: serverType,
-            layer: layerName
+            layer: filterLookupName
         };
     };
+
+    constructor.prototype._getFilterLookupName = function(serverType, layer) {
+        if (serverType == 'geoservercore' || serverType == 'geoserverfilterconfig') {
+            return layer.wmsName
+        } else {
+            return this._getDownloadLayerName()
+        }
+    }
 
     constructor.prototype._getDownloadLayerName = function() {
         var wfsLayerLinks = this.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.wfs);
