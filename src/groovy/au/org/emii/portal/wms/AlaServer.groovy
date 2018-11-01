@@ -5,6 +5,9 @@ class AlaServer extends WmsServer {
     def getStyles(server, layer) {
         return []
     }
+
+    def getFeatureCount(server, layer, filter) {}
+
     def getFilterValues(server, layer, filter) {
         return true
     }

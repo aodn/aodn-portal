@@ -184,8 +184,16 @@ knownServers = [
         type: 'GeoServer',
         csvDownloadFormat: 'csv-with-metadata-header',
         urlListDownloadSubstitutions: [
-            '^': 'http://data.aodn.org.au/'
+                '^': 'http://data.aodn.org.au/'
         ]
+    ],
+    [
+        uri: 'http://geoserver-rc.aodn.org.au/geoserver/wms',
+        wmsVersion: '1.1.1',
+        type: 'GeoserverCore',
+        csvDownloadFormat: 'csv-with-metadata-header',
+        filtersDir: "imos-geoserver",
+        wpsUrl: 'http://geoserver-rc.aodn.org.au/geoserver/wps'
     ],
     [
         uri: 'http://nonprod.marine.ga.gov.au/geoserver/wms',

@@ -79,7 +79,10 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
             filterGroupPanel.dataCollection.layerSelectionModel = {
                 selectedLayer: {
                     url: "http://blagh/wms",
-                    wmsName: "simpletype#layer"
+                    wmsName: "simpletype#layer",
+                    server: {
+                        type: "geoservercore"
+                    }
                 }
             };
 
@@ -91,9 +94,9 @@ describe("Portal.filter.ui.FilterGroupPanel", function() {
 
         it('creates a URL', function() {
 
-            string = filterGroupPanel._getFeatureUrlGeneratorFunction();
+            string = filterGroupPanel._getFeatureParams();
 
-            expect(string).toEqual("http://blagh/wms?SERVICE=WMS&VERSION=1.0.0&REQUEST=GetFeatureInfo&LAYERS=simpletype&BBOX=-180,-90,180,90&WIDTH=1&HEIGHT=1&QUERY_LAYERS=simpletype&INFO_FORMAT=application/json&X=0&Y=0&CQL_FILTER=seacueelle4dataAndMap");
+            expect(string).toEqual({ server : 'http://blagh/wms', serverType : 'geoservercore', layer : 'simpletype', filter : 'seacueelle4dataAndMap AND seacueelle4dataOnly' });
         });
     });
 

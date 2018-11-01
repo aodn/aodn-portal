@@ -2,11 +2,7 @@ package au.org.emii.portal.wms
 
 import au.org.emii.portal.proxying.ExternalRequest
 
-import java.util.concurrent.ConcurrentHashMap
-
 class CoreGeoserverServer extends WmsServer {
-
-    private static def linkedWfsFeatureTypeMap = new ConcurrentHashMap()
 
     private def filterValuesService
 
@@ -16,32 +12,6 @@ class CoreGeoserverServer extends WmsServer {
 
     def getStyles(server, layer) {
         return []
-    }
-
-    def getLayerInfo(server, layer) {
-
-        def wmsLayer = [server, layer]
-
-        if (linkedWfsFeatureTypeMap.containsKey(wmsLayer)) {
-            return linkedWfsFeatureTypeMap.get(wmsLayer)
-        }
-
-        String response = _describeLayer(server, layer)
-
-        def parser = new XmlSlurper()
-        parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
-        parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-        def xml = parser.parseText(response)
-
-        def wfsFeatureType = [
-                owsType: xml.LayerDescription.@owsType.text(),
-                wfsUrl: xml.LayerDescription.@wfs.text(),
-                typeName: xml.LayerDescription.Query.@typeName.text()
-        ]
-
-        linkedWfsFeatureTypeMap.put(wmsLayer, wfsFeatureType)
-
-        return wfsFeatureType
     }
 
     def getFilters(server, layer) {
@@ -121,16 +91,6 @@ class CoreGeoserverServer extends WmsServer {
         def request = new ExternalRequest(outputStream, requestUrl.toURL())
 
         request.executeRequest()
-        return outputStream.toString("utf-8")
-    }
-
-    String _describeLayer(server, layer) {
-        def requestUrl = server + "?request=DescribeLayer&service=WMS&version=1.1.1&layers=${layer}"
-        def outputStream = new ByteArrayOutputStream()
-        def request = new ExternalRequest(outputStream, requestUrl.toURL())
-
-        request.executeRequest()
-
         return outputStream.toString("utf-8")
     }
 
