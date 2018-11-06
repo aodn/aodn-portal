@@ -349,7 +349,6 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadTsvAlaAction: 'TSV - ALA',
     downloadShpAlaAction: 'SHP - ALA',
     downloadUnsubsettedNetCdfAction: 'Un-subsetted NetCDFs',
-    downloadNetcdfSubsetServiceAction: 'NetCDF - non-gridded',
     downloadPointCsvAction: 'CSV - gridded (point timeseries)',
     downloadUrlListAction: 'List of URLs',
     downloadNetCDFDownloadServiceAction: 'NetCDF - gridded',
