@@ -122,13 +122,5 @@ class AsyncDownloadControllerTests {
         assertEquals controller.gogoduckService, controller.getAggregatorService('gogoduck', controller.params)
         assertEquals controller.wpsAwsService, controller.getAggregatorService('wps', controller.params)
 
-        // test when were using Portal.cart.NetcdfSubsetServiceDownloadHandler
-        controller.params.jobType = 'NetcdfOutput'
-        controller.params.server = "http://containsthestring.geoserver.com"
-        assertEquals controller.gogoduckService, controller.getAggregatorService('gogoduck', controller.params)
-        assertEquals controller.wpsService, controller.getAggregatorService('wps', controller.params)
-
-
-
     }
 }

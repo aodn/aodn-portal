@@ -389,7 +389,6 @@ portal {
         [ 'handler': 'GogoduckDownloadHandler',            'protocol': 'OGC:WPS--gogoduck'                   ],
         [ 'handler': 'DataTrawlerDownloadHandler',         'protocol': 'AODN:CSIRO--DataTrawler'                     ],
         [ 'handler': 'PointCSVDownloadHandler',            'protocol': 'OGC:WPS--gogoduck'                   ],
-        [ 'handler': 'NetcdfSubsetServiceDownloadHandler', 'protocol': 'OGC:WPS--netcdf-subset-service'      ],
         [ 'handler': 'PythonDownloadHandler',              'protocol': 'AODN:WFS-EXTERNAL-1.0.0-http-get-capabilities' ],
         [ 'handler': 'BodaacDownloadHandler',              'protocol': 'IMOS:AGGREGATION--bodaac'            ],
         [ 'handler': 'FileListDownloadHandler',            'protocol': 'AODN:FILE-list'                      ],
