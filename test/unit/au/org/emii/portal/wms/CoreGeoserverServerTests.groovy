@@ -98,18 +98,9 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
     }
 
     void testLookup() {
-        def describeLayerCalledCount = 0
+        def result = coreGeoserverServer.getLayerInfo("http://geoserver-rc.aodn.org.au/geoserver/wms", "imos:argo_profile_map")
+        def expected = ["owsType": "WFS", "wfsUrl": "http://geoserver-rc.aodn.org.au/geoserver/wfs?", "typeName": "imos:argo_profile_map"]
 
-        coreGeoserverServer.metaClass._describeLayer = { server, layer -> describeLayerCalledCount++ ; return validDescribeLayerResponse }
-
-/*        def result = coreGeoserverServer.getLayerInfo("https://geoserver.aodn.org.au/geoserver/wms", "imos:argo_profile_map")
-        def expected = ["owsType": "WFS", "wfsUrl": "https://geoserver.aodn.org.au/geoserver/wfs?", "typeName": "imos:argo_profile_map"]
-
-        assertEquals(1, describeLayerCalledCount) // describeLayer called
         assertEquals(expected, result)
-
-        result = coreGeoserverServer.getLayerInfo("https://geoserver.aodn.org.au/geoserver/wms", "imos:argo_profile_map")
-        assertEquals(1, describeLayerCalledCount) // describeLayer not called - cache used
-        assertEquals(expected, result)*/
     }
 }
