@@ -2,15 +2,8 @@ package au.org.emii.portal.wms
 
 class DataTrawlerServer extends CoreGeoserverServer {
 
-    def groovyPageRenderer
-    protected def utils = new GeoserverUtils()
-
     DataTrawlerServer(groovyPageRenderer) {
         super(groovyPageRenderer)
-    }
-
-    def getStyles(server, layer) {
-        return []
     }
 
     def getFilters(server, layer) {

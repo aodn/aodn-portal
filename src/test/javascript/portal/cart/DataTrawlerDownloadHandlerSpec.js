@@ -19,7 +19,7 @@ describe('Portal.cart.DataTrawlerDownloadHandler', function () {
             clickHandler = handler._getUrlGeneratorFunction();
 
             testCollection = {
-                getTitle: returns('ala_title'),
+                getTitle: returns('DT_title'),
                 getFilters: returns([
                     {
                         label: 'Bounding Box',
@@ -44,13 +44,19 @@ describe('Portal.cart.DataTrawlerDownloadHandler', function () {
                         type: 'datetime',
                         visualised: true,
                         hasValue: returns(true),
-                        name: 'dateTime',
-                        getFormattedFilterValue: returns({
-                            fromDate: '2017-05-02T00:00:00.000Z',
-                            toDate: '2018-08-30T23:59:59.999Z'
-                        }),
+                        name: 'TIME',
+                        _getFromDate: returns('2017-05-02T00:00:00.000Z'),
+                        _getToDate: returns('2018-08-30T23:59:59.999Z'),
                         dateRangeStart: moment.utc('2017-05-02T00:00:00'),
                         dateRangeEnd: moment.utc('2018-08-30T23:59:59')
+                    },
+                    {
+                        label: 'test string',
+                        type: 'string',
+                        visualised: true,
+                        hasValue: returns(true),
+                        name: 'TEST_NAME',
+                        value: 'TEST_VALUE'
                     }
                 ])
             };
@@ -66,6 +72,12 @@ describe('Portal.cart.DataTrawlerDownloadHandler', function () {
             expect(urlParamPresent(url, 'server', encodeURIComponent('dt_endpoint_url'))).toBeTruthy();
             expect(urlParamPresent(url, 'email_address', 'bob@example.com')).toBeTruthy();
             expect(urlParamPresent(url, 'date_format', 'dd-mmm-yyyy%20HH24:mm:ss')).toBeTruthy();
+            expect(urlParamPresent(url, 'output_filename', 'DT_title')).toBeTruthy();
+            expect(urlParamPresent(url, 'position_format', 'd.ddd&')).toBeTruthy();
+            expect(urlParamPresent(url, 'TEST_NAME', 'TEST_VALUE')).toBeTruthy();
+            expect(urlParamPresent(url, 'LATITUDE', '-27.73046875,-23.951171875')).toBeTruthy();
+            expect(urlParamPresent(url, 'LONGITUDE', '108.2373046875,116.8505859375')).toBeTruthy();
+            expect(urlParamPresent(url, 'TIME', '2017-05-02T00:00:00.000Z,2018-08-30T23:59:59.999Z')).toBeTruthy();
         });
     });
 

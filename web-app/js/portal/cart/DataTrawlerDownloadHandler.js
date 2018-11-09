@@ -73,9 +73,7 @@ Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHan
     },
 
     buildDataTrawlerRequestString: function(baseUrl, filters, downloadFormat, params) {
-        if (!params) {
-            return;
-        } else {
+        if (params) {
             var downloadUrl = baseUrl;
             downloadUrl += (downloadUrl.indexOf('?') !== -1) ? "&" : "?";
             downloadUrl += this._formatFilterRequest(filters);
