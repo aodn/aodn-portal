@@ -280,7 +280,7 @@ Site navigation
     display: block;
     float: left;
     padding: 0 20px 4px 20px;
-    width: 260px;
+    width: 345px;
 }
 
 .viewPortTab * {
@@ -897,7 +897,7 @@ div.allwhite {
 }
 
 .hierarchicalTree .x-tree-node-leaf {
-    margin-left: -20px;
+    margin-left: -16px;
 }
 
 .hierarchicalTree input.x-tree-node-cb {

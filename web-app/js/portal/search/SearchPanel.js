@@ -20,7 +20,7 @@ Portal.search.SearchPanel = Ext.extend(Ext.Panel, {
         var filtersPanelConfig = {
             searcher: this.searcher,
             region: 'west',
-            width: 340,
+            width: 410,
             mapPanel: this.mapPanel
         };
 
