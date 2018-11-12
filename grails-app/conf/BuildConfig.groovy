@@ -5,10 +5,10 @@ grails.project.war.file = "target/${appName}-${appVersion}-${grails.util.Environ
 
 forkConfig = [maxMemory: 2048, minMemory: 64, debug: false, maxPerm: 256, jvmArgs: ['-Dhttps.protocols=TLSv1.2']]
 grails.project.fork = [
-  test: forkConfig,
-  run: forkConfig,
-  war: forkConfig,
-  console: forkConfig
+    test: forkConfig,
+    run: forkConfig,
+    war: forkConfig,
+    console: forkConfig
 ]
 
 grails.project.dependency.resolution = {

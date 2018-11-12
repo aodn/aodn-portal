@@ -62,7 +62,8 @@ class CoreGeoserverServer extends WmsServer {
                             )
                             hasTemporalRange = true
                         }
-                    } else {
+                    }
+                    else {
                         filters.push(
                             [
                                 label     : _toLabel(propertyName),
@@ -73,10 +74,12 @@ class CoreGeoserverServer extends WmsServer {
                         )
                     }
                 }
-            } catch (e) {
+            }
+            catch (e) {
                 log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
             }
         }
+
         return filters
     }
 
@@ -94,6 +97,56 @@ class CoreGeoserverServer extends WmsServer {
         return outputStream.toString("utf-8")
     }
 
+/*    def _getPagedUniqueValues(server, layer, filter) {
+        def (wfsServer, typeName) = _lookupWfs(server, layer)
+        def params = [typeName: typeName, propertyName: filter]
+        def body = groovyPageRenderer.render(template: '/filters/pagedUniqueRequest.xml', model: params)
+        log.debug("Request body:\n\n${body}")
+
+        def connection = wfsServer.toURL().openConnection()
+
+        connection.with {
+            doOutput = true
+            requestMethod = 'POST'
+            setRequestProperty("Content-Type", "application/xml; charset=utf-8")
+            outputStream.withWriter { writer ->
+                writer << body
+            }
+            content.text
+        }
+    }*/
+
+    def _lookupWfs(server, layer) {
+        def wmsLayer = [server, layer]
+
+        if (linkedWfsFeatureTypeMap.containsKey(wmsLayer)) {
+            return linkedWfsFeatureTypeMap.get(wmsLayer)
+        }
+
+        String response = _describeLayer(server, layer)
+
+        def parser = new XmlSlurper()
+        parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
+        parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        def xml = parser.parseText(response)
+
+        def wfsFeatureType = [xml.LayerDescription.@wfs.text(), xml.LayerDescription.Query.@typeName.text()]
+
+        linkedWfsFeatureTypeMap.put(wmsLayer, wfsFeatureType)
+
+        return wfsFeatureType
+    }
+
+    String _describeLayer(server, layer) {
+        def requestUrl = server + "?request=DescribeLayer&service=WMS&version=1.1.1&layers=${layer}"
+        def outputStream = new ByteArrayOutputStream()
+        def request = new ExternalRequest(outputStream, requestUrl.toURL())
+
+        request.executeRequest()
+
+        return outputStream.toString("utf-8")
+    }
+
     def _toFilterType(value) {
         _removePrefix(value.toLowerCase())
     }
@@ -103,7 +156,7 @@ class CoreGeoserverServer extends WmsServer {
     }
 
     def _toLabel(attributeName) {
-        attributeName.replaceAll('_', ' ')
+        attributeName.replaceAll('_', ' ').toLowerCase()
     }
 
 }

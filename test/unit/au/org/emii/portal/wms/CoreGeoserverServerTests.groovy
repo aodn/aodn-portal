@@ -13,7 +13,6 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
 
         mockLogging(CoreGeoserverServer)
 
-
         coreGeoserverServer = new CoreGeoserverServer(null)
 
         validGeoserverResponse =

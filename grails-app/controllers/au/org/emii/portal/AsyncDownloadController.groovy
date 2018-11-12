@@ -22,8 +22,10 @@ class AsyncDownloadController extends HostVerifyingController {
                 return jsonService
             case 'wps':
                 return (!(params.server.contains("geoserver"))) ? wpsAwsService : wpsService
-            case {'ala' || 'datatrawler'}:
+            case 'ala':
                 return asyncExternalRequestService
+            case 'datatrawler':
+                return dataTrawlerService
             default:
                 throw new Exception("Cannot find aggregatorService for '$aggregatorService'")
         }

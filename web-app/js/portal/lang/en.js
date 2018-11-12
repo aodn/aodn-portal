@@ -38,7 +38,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     downloadAsCsvLabel: 'CSV',
     downloadAsSubsettedNetCdfLabel: 'NetCDF',
     downloadAsPointTimeSeriesCsvLabel: 'CSV',
-    downloadAsDataTrawlerCsvLabel: 'CSV - DataTrawler',
+    downloadAsDataTrawlerCsvLabel: 'CSV - CSIRO Data Trawler',
     downloadAsAllSourceNetCdfLabel: 'Un-subsetted NetCDFs',
     downloadAsUrlsLabel: 'List of URLs',
     downloadAsPythonSnippetLabel: 'Python',

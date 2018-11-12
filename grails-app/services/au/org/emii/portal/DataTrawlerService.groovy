@@ -1,25 +1,27 @@
 package au.org.emii.portal
 
-import groovy.xml.StreamingMarkupBuilder
-import groovyx.net.http.HTTPBuilder
-import static groovyx.net.http.ContentType.URLENC
+import au.org.emii.portal.proxying.ExternalRequest
+import grails.converters.JSON
+import groovyx.net.http.HttpResponseException
 
 class DataTrawlerService extends AsyncDownloadService {
 
     def grailsApplication
 
-    def getConnection(params) {
-        log.info("POST server: ${params.server.toString()}")
-        return new HTTPBuilder(params.server, URLENC)
+    def getConnection(params) {}
+    def getBody(params) {}
+
+    String registerJob(params) throws HttpResponseException {
+        log.info("Registering DataTrawler job with request: " + params.server.toURL())
+        def outputStream = new ByteArrayOutputStream()
+        def request = new ExternalRequest(outputStream, params.server.toURL())
+        request.executeRequest()
+
+        return [ url: _getJobReportUrl() ] as JSON
     }
 
-    def getBody(params) {
-        log.info("POST params: ${params.request.toString()}")
-        return params.request.toString()
-    }
-
-    def onResponseSuccess = { resp, xmlReader ->
-        log.info("POST response status: ${resp.statusLine}")
-        return new StreamingMarkupBuilder().bindNode(xmlReader).toString()
+    def _getJobReportUrl() {
+        // TODO: replace placeholder with status url
+        return grailsApplication.config.csiro.url
     }
 }
