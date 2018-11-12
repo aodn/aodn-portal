@@ -88,6 +88,18 @@ class LayerController {
         }
     }
 
+    def getFeatureCount = {
+        def (server, layer, serverType, filter) = parseParams(params)
+
+        if (hostVerifier.allowedHost(server)) {
+            def serverObject = _getServerClass(server, serverType)
+            render serverObject.getFeatureCount(server, layer, filter)
+        }
+        else {
+            render text: "Host '$params.server' not allowed", status: HTTP_502_BAD_GATEWAY
+        }
+    }
+
     def getFilters = {
         def (server, layer, serverType) = parseParams(params)
 

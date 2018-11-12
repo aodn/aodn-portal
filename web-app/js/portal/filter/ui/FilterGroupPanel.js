@@ -46,10 +46,11 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
 
     _filtersUpdated: function() {
 
-        var wfsMapLayerCheckUrl = this._getFeatureUrlGeneratorFunction();
-        if (wfsMapLayerCheckUrl.includes("CQL_FILTER")) {
+        var featureParams = this._getFeatureParams();
+        if (featureParams.filter) {
             Ext.Ajax.request({
-                url: Ext.ux.Ajax.constructProxyUrl(wfsMapLayerCheckUrl),
+                url: "layer/getFeatureCount",
+                params: featureParams,
                 scope: this,
                 success: this._handleGetFeatureRequestResults
             });
@@ -62,12 +63,8 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
 
     _handleGetFeatureRequestResults: function(results) {
         if (results.status == 200) {
-            var res = Ext.util.JSON.decode(results.responseText);
-            var featureCount = res.totalFeatures;
-            if (featureCount == "unknown") {
-                featureCount = res.features.length;
-            }
-            this.dataCollection.totalFilteredFeatures = (res && featureCount >= 0) ? featureCount : undefined;
+            var featureCount = results.responseText;
+            this.dataCollection.totalFilteredFeatures = (featureCount >= 0) ? featureCount : undefined;
         }
         else {
             this.dataCollection.totalFilteredFeatures = undefined;
@@ -83,20 +80,21 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
         }
     },
 
-    // uses the WMS map layer
-    _getFeatureUrlGeneratorFunction: function() {
+    _getFeatureParams: function() {
 
-        var builder = new Portal.filter.combiner.MapCqlBuilder({
+        var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
             filters: this.dataCollection.getFilters()
         });
 
-        var url = OpenLayers.Layer.WMS.buildGetFeatureInfoRequestUrl(
-            this.dataCollection.layerSelectionModel.selectedLayer.url,
-            this.dataCollection.layerSelectionModel.selectedLayer.wmsName.split('#')[0],
-            "application/json",
-            builder.buildCql()
-        );
+        var selectedLayer = this.dataCollection.layerSelectionModel.selectedLayer;
+        var layerName = selectedLayer.wmsName.split('#')[0];
+        var serverType = selectedLayer.server.type.toLowerCase();
 
-        return url;
+        return {
+            server: selectedLayer.url,
+            serverType: serverType,
+            layer: layerName,
+            filter: builder.buildCql()
+        };
     }
 });

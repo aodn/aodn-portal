@@ -16,6 +16,8 @@ class NcwmsServer extends WmsServer {
         ]
     }
 
+    def getFeatureCount(server, layer, filter) {}
+
     def getFilters(server, layer) {
         def json = JSON.parse(getUrlContent(getMetadataUrl(server, layer)))
 

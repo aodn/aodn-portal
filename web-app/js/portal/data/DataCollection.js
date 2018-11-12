@@ -61,7 +61,7 @@ Portal.data.DataCollection = function() {
         } else {
             return this._getDownloadLayerName()
         }
-    }
+    };
 
     constructor.prototype._getDownloadLayerName = function() {
         var wfsLayerLinks = this.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.wfs);
