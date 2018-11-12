@@ -52,19 +52,6 @@ class HostVerifierTests extends GrailsUnitTestCase {
         assertTrue(verifier.allowedHost('http://geonetwork.aodn.org.au'))
     }
 
-    void testExcludedHost() {
-        def devConfig = new ConfigObject()
-        def hostVerifier = new HostVerifier()
-
-        hostVerifier.grailsApplication = devConfig
-
-        _addConfig(devConfig, ["config", "geonetwork", "url"], 'http://geonetwork.aodn.org.au/geonetwork')
-        _addConfig(devConfig, ["config", "baselayerServer", "uri"], 'http://geoserverstatic.emii.org.au')
-
-        assertTrue(hostVerifier.allowedHost("http://geonetwork.aodn.org.au/geonetwork"))
-        assertFalse(hostVerifier.allowedHost("http://geoserver-wps.aodn.org.au/geoserver"))
-    }
-
     def _addConfig(configObject, keys, value) {
         keys.eachWithIndex{ key, i ->
             if (i == keys.size() - 1) {
