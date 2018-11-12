@@ -6,14 +6,12 @@ class DataTrawlerServerTests extends GrailsUnitTestCase {
 
     def dataTrawlerServer
     def validResponse
-    def groovyPageRenderer
-
     protected void setUp() {
         super.setUp()
 
         mockLogging(DataTrawlerServer)
 
-        dataTrawlerServer = new DataTrawlerServer(groovyPageRenderer)
+        dataTrawlerServer = new DataTrawlerServer(null)
 
         validResponse =
             """<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:gml="http://www.opengis.net/gml" xmlns:imos="imos.mod" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="imos.mod">
@@ -35,7 +33,13 @@ class DataTrawlerServerTests extends GrailsUnitTestCase {
     }
 
     void testValidFilters() {
-        GeoserverUtils.metaClass._describeFeatureType = { server, layer -> return validResponse }
+        dataTrawlerServer.metaClass._describeFeatureType = { server, layer -> return validResponse }
+        dataTrawlerServer.metaClass.getLayerInfo = {server, layer -> return [
+                owsUrl: "http://server.url",
+                owsType: "owsTypo",
+                wfsUrl: "http://wfs.server.url",
+                typeName: "thetypename"
+        ]}
 
         def expected = [
             [
@@ -65,7 +69,7 @@ class DataTrawlerServerTests extends GrailsUnitTestCase {
     }
 
     void testInvalidFilters() {
-        GeoserverUtils.metaClass._describeFeatureType = { server, layer -> return "here be invalid xml" }
+        dataTrawlerServer.metaClass._describeFeatureType = { server, layer -> return "here be invalid xml" }
 
         def expected = []
 

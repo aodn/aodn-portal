@@ -1,8 +1,6 @@
 package au.org.emii.portal
 
 import grails.converters.JSON
-import grails.test.ControllerUnitTestCase
-
 import grails.test.mixin.TestFor
 
 @TestFor(LayerController)

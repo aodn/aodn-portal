@@ -4,8 +4,6 @@ import au.org.emii.portal.proxying.ExternalRequest
 
 class CoreGeoserverServer extends WmsServer {
 
-    protected def utils = new CoreGeoserverUtils()
-
     private def filterValuesService
 
     CoreGeoserverServer(filterValuesService) {
@@ -19,7 +17,7 @@ class CoreGeoserverServer extends WmsServer {
     def getFilters(server, layer) {
         def filters = []
 
-        def layerInfo = utils.getLayerInfo(server, layer)
+        def layerInfo = getLayerInfo(server, layer)
 
         if (layerInfo.owsType == "WCS") {
 
@@ -36,7 +34,7 @@ class CoreGeoserverServer extends WmsServer {
 
             try {
 
-                def xml = new XmlSlurper().parseText(utils._describeFeatureType(server, layer))
+                def xml = new XmlSlurper().parseText(_describeFeatureType(server, layer))
 
                 def attributes = xml.'**'.findAll { node ->
                     node.name() == 'element' && node.@name != _removePrefix(layer)
@@ -99,7 +97,7 @@ class CoreGeoserverServer extends WmsServer {
         return outputStream.toString("utf-8")
     }
 
-    def _getPagedUniqueValues(server, layer, filter) {
+/*    def _getPagedUniqueValues(server, layer, filter) {
         def (wfsServer, typeName) = _lookupWfs(server, layer)
         def params = [typeName: typeName, propertyName: filter]
         def body = groovyPageRenderer.render(template: '/filters/pagedUniqueRequest.xml', model: params)
@@ -116,7 +114,7 @@ class CoreGeoserverServer extends WmsServer {
             }
             content.text
         }
-    }
+    }*/
 
     def _lookupWfs(server, layer) {
         def wmsLayer = [server, layer]
@@ -139,7 +137,7 @@ class CoreGeoserverServer extends WmsServer {
         return wfsFeatureType
     }
 
-    private String _describeLayer(server, layer) {
+    String _describeLayer(server, layer) {
         def requestUrl = server + "?request=DescribeLayer&service=WMS&version=1.1.1&layers=${layer}"
         def outputStream = new ByteArrayOutputStream()
         def request = new ExternalRequest(outputStream, requestUrl.toURL())

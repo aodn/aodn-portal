@@ -2,15 +2,15 @@ package au.org.emii.portal.wms
 
 class DataTrawlerServer extends CoreGeoserverServer {
 
-    DataTrawlerServer(groovyPageRenderer) {
-        super(groovyPageRenderer)
+    DataTrawlerServer(filterValuesService) {
+        super(filterValuesService)
     }
 
     def getFilters(server, layer) {
         def filters = []
 
         try {
-            def xml = new XmlSlurper().parseText(utils._describeFeatureType(server, layer))
+            def xml = new XmlSlurper().parseText(_describeFeatureType(server, layer))
 
             def attributes = xml.'**'.findAll { node ->
                 node.name() == 'element' && node.@name != _removePrefix(layer)
