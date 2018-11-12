@@ -36,6 +36,7 @@ class LayerController {
 
     def _getServerClass(server, serverType) {
         def serverConfig = _getServerConfig(server)
+        def filterValuesService = new WpsUniqueValuesFilterService(serverConfig.wpsUrl, groovyPageRenderer)
 
         if (serverType == 'ncwms') {
             return new NcwmsServer()
@@ -44,16 +45,14 @@ class LayerController {
             return new AlaServer()
         }
         else if (serverType == 'geoservercore') {
-            def filterValuesService = new WpsUniqueValuesFilterService(serverConfig.wpsUrl, groovyPageRenderer)
             return new CoreGeoserverServer(filterValuesService)
         }
         else if (serverType == 'geoserverfilterconfig') {
-            def filterValuesService = new WpsUniqueValuesFilterService(serverConfig.wpsUrl, groovyPageRenderer)
             def filtersUrl = grailsApplication.config.filtering.baseUrl + '/' + serverConfig.filtersDir
             return new FilterConfigGeoserverServer(filtersUrl, filterValuesService)
         }
         else if (serverType == 'datatrawlerserver') {
-            return new DataTrawlerServer(groovyPageRenderer)
+            return new DataTrawlerServer(filterValuesService)
         }
         else {
             return new ImosGeoserverServer(grailsApplication.config.filtering.filePath)

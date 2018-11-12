@@ -220,7 +220,8 @@ knownServers = [
     [
         uri: 'http://www.cmar.csiro.au/geoserver/wms',
         wmsVersion: '1.1.1',
-        type: 'datatrawlerserver'
+        type: 'datatrawlerserver',
+        wpsUrl: 'http://www.cmar.csiro.au/geoserver/wps'
     ],
     [
         uri: 'https://www.cmar.csiro.au/data/trawler/broker.cfm',
