@@ -46,7 +46,7 @@ jQuery( document ).ready(function() {
         });
 
     // activelayer/tree labels
-    jQuery(document).on("mouseover", '#activeLayerTreePanel .x-tree-node a span, .x-tree-node-leaf span',
+    jQuery(document).on("mouseover", '#activeLayerTreePanel .x-tree-node a span, .x-tree-node-el span',
         function() {
             jQuery(this).attr('title', jQuery(this).html());
         });
