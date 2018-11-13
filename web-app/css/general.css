@@ -283,6 +283,12 @@ Site navigation
     width: 345px;
 }
 
+@media only screen and (max-width: 1250px) {
+    .viewPortTab {
+        width: 245px;
+    }
+}
+
 .viewPortTab * {
     color: #fafafa;
     cursor: pointer;
