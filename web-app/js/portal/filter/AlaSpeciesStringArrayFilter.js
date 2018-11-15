@@ -34,7 +34,7 @@ Portal.filter.AlaSpeciesStringArrayFilter = Ext.extend(Portal.filter.Filter, {
     },
 
     _getFilterValueString: function(filterData) {
-        return (filterData.guid.startsWith("urn")) ? "lsid:" + filterData.guid : "text:" + filterData.name;
+        return (filterData.guid.startsWith("urn")) ? "lsid:" + filterData.guid : "text:" + filterData.name.replace(/[^a-z0-9+]+/gi, '+');
     },
 
     _join: function(parts, joiner) {
