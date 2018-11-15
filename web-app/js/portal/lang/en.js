@@ -220,6 +220,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     temporalExtentHeading: 'Temporal',
     alaSpeciesOccuranceHeading: 'Filter by species/taxon',
     generalFilterHeading: 'Others',
+    multiFilterSelectionHeading: 'filter/s:',
     currentDateTimeLabel: 'Displaying',
     spatialExtentPolygonNote: 'Polygon with max extent ',
     pointTimeSeriesLabel: 'Point timeseries',

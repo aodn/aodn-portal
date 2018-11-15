@@ -98,13 +98,14 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'DateFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'GeometryFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'NumberFilter.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'StringFilter.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'MultiStringFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'StringDepthFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'AlaSpeciesStringArrayFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'PointFilter.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter', file: 'FilterService.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'BaseFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'ComboFilterPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'MultiStringFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'GroupPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'AlaSpeciesFilterPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/filter/ui', file: 'ResettableDate.js')}"></script>

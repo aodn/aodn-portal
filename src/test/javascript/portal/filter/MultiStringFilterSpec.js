@@ -1,13 +1,13 @@
-describe("Portal.filter.StringFilter", function() {
+describe("Portal.filter.MultiStringFilter", function() {
 
     var filter;
 
     beforeEach(function() {
 
-        filter = new Portal.filter.StringFilter({
+        filter = new Portal.filter.MultiStringFilter({
             name: 'column_name',
             label: 'Boat name',
-            value: "L'astrolabe"
+            value: {text: "L'astrolabe"}
         });
     });
 
@@ -23,7 +23,7 @@ describe("Portal.filter.StringFilter", function() {
 
         it('returns correct description', function() {
 
-            expect(filter.getHumanReadableForm()).toBe("Boat name: L'astrolabe");
+            expect(filter.getHumanReadableForm()).toBe("Boat name=<b>'L''astrolabe'</b>");
         });
     });
 });
