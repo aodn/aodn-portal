@@ -170,7 +170,7 @@ Portal.filter.ui.GroupPanel = Ext.extend(Ext.Container, {
             Portal.filter.DateFilter,
             Portal.filter.BooleanFilter,
             Portal.filter.NumberFilter,
-            Portal.filter.StringFilter,
+            Portal.filter.MultiStringFilter,
             Portal.filter.StringDepthFilter
         ];
 

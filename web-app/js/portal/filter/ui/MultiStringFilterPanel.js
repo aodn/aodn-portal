@@ -1,93 +1,63 @@
 Ext.namespace('Portal.filter.ui');
 
-Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterPanel, {
+Portal.filter.ui.MultiStringFilterPanel = Ext.extend(Portal.filter.ui.ComboFilterPanel, {
 
     constructor: function(cfg) {
         var config = Ext.apply({
-            typeLabel: OpenLayers.i18n('alaSpeciesOccuranceHeading'),
+            typeLabel: OpenLayers.i18n("generalFilterHeading"),
             autoDestroy: true
         }, cfg);
 
-        Portal.filter.ui.AlaSpeciesFilterPanel.superclass.constructor.call(this, config);
+        Portal.filter.ui.MultiStringFilterPanel.superclass.constructor.call(this, config);
     },
 
     _createControls: function() {
+        this._addLabel();
 
         var resultTpl = new Ext.XTemplate(
-            '<tpl for=".">' +
+            '<tpl for=".">',
             '<div class="x-combo-list-item stringFilterResult">',
-            '<div class="filterTpl">{highlight}</div>',
-            ' <tpl if="rawRank != \'\' ">',
-            '  <div><b>Most specific rank:</b> {[this.decapitalise(values.rawRank)]}</div>',
-            ' </tpl>',
-            ' <tpl if="classs != \'\' ">',
-            '  <div><b>Class:</b> {classs}</div>',
-            ' </tpl>',
-            ' <tpl if="phylum != \'\' ">',
-            '  <div><b>Phylum:</b> {phylum}</div>',
-            ' </tpl>',
+            '<div class="filterTpl">{text}</div>',
             '</div>',
-            '</tpl>',
-            {
-                decapitalise: function(title) {
-                    return title.toLowerCase();
-                }
-            }
+            '</tpl>'
         );
 
-        this.jsonStore = new Ext.data.JsonStore({
-            url: 'proxy?',
-            root: "searchResults.results",
-            idProperty: 'guid',
-            baseParams : {
-                fq: Portal.app.appConfig.ala.index,
-                url: Portal.app.appConfig.ala.url,
-                pageSize: 1000
-            },
-            fields: [
-                {name: 'name', type: 'string'},
-                {name: 'highlight', type: 'string'},
-                {name: 'guid', type: 'string'},
-                {name: 'phylum', type: 'string'},
-                {name: 'occCount', type: 'string'},
-                {name: 'classs', type: 'string'},
-                {name: 'rawRank', type: 'string'},
-                {name: 'commonNameSingle', type: 'string'}
-            ]
-        });
-
-        this.speciesCombo = new Ext.form.ComboBox({
+        this.combo = new Ext.form.ComboBox({
+            emptyText: OpenLayers.i18n('clearFilterOption'),
+            disabled: true,
             triggerAction: 'all',
-            mode: 'remote',
-            emptyText: 'Select a Species...',
-            hideTrigger: true,
-            typeAhead: false,
+            mode: 'local',
+            typeAhead: true,
             forceSelection: true,
+            validator: this.validateValue,
             width: this.MAX_COMPONENT_WIDTH,
-            queryParam: 'q',
-            minChars: 2,
-            lastQuery: '',
+            editable: true,
             tpl: resultTpl,
             tplWriteMode: "applyTemplate",
-            store: this.jsonStore,
-            valueField: 'guid',
-            displayField: 'name',
+            store: new Ext.data.ArrayStore({
+                fields: [
+                    'text'
+                ],
+                data: []
+            }),
+            valueField: 'text',
+            displayField: 'text',
             listeners: {
                 scope: this,
-                select: this._onSpeciesComboChange,
-                change: this._onSpeciesComboChange,
+                select: this._onChange,
+                change: this._onChange,
                 blur: this._onBlur
             }
         });
-
-        this.add(this.speciesCombo);
+        this.add(this.combo);
         this.add(this._createVerticalSpacer(10));
 
         this.activeFiltersContainer = new Ext.Panel({
+            cls: "activeFiltersContainer",
             width: this.MAX_COMPONENT_WIDTH,
             items: [
                 new Ext.form.Label({
-                    html: "<i>Selected species filters</i>"
+                    html: String.format("<i>{0} {1}</i>", this.filter.getLabel(), OpenLayers.i18n("multiFilterSelectionHeading"))
                 })
             ],
             hidden: true,
@@ -98,7 +68,7 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
         });
 
         this.add(this.activeFiltersContainer);
-        this.speciesComboItems = [];
+        this.stringItems = [];
     },
 
     _onBlur: function(combo) {
@@ -108,7 +78,7 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
     _createNewActiveFilterPanel: function(activeFilterData) {
 
         return new Ext.Panel({
-            title: activeFilterData.name,
+            title: activeFilterData.text,
             activeFilterData: activeFilterData,
             toolTemplate: new Ext.XTemplate(
                 '<tpl>',
@@ -148,35 +118,34 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
         }
     },
 
-    needsFilterRange: function() {
-        return false;
-    },
-
     _clearFilter: function(activeFilterData) {
-        var activeFilterIndex = this.speciesComboItems.indexOf(activeFilterData);
+        var activeFilterIndex = this.stringItems.indexOf(activeFilterData);
 
         if (activeFilterIndex != -1) {
-            this.speciesComboItems.splice(activeFilterIndex, 1);
-            this.filter.setValue(this.speciesComboItems);
-            this.speciesCombo.clearValue();
+            this.stringItems.splice(activeFilterIndex, 1);
+            this.filter.setValue(this.stringItems);
+            this.combo.clearValue();
         }
     },
 
-    _onSpeciesComboChange: function(combo, record) {
+    _onChange: function(combo, record) {
 
-        if (record.data != undefined) {
+        if (this.combo.getValue() === this.combo.emptyText) {
+            // 'All' chosen. clear it all out
+            this.handleRemoveFilter();
+        }
+        else if (this.combo.getValue() !== "" && record.data != undefined) {
+            if (this.stringItems.indexOf(record.data) == -1) {
 
-            if (this.speciesComboItems.indexOf(record.data) == -1) {
+                this.stringItems.push(record.data);
+                this.filter.setValue(this.stringItems);
 
-                this.speciesComboItems.push(record.data);
-                this.filter.setValue(this.speciesComboItems);
-
-                trackFiltersUsage('trackingAlaFilterAction', this.filter.getHumanReadableForm(), this.dataCollection.getTitle());
+                trackFiltersUsage('trackingFilterAction', this.filter.getHumanReadableForm(), this.dataCollection.getTitle());
 
                 this.activeFiltersContainer.add(this._createNewActiveFilterPanel(record.data));
                 this.activeFiltersContainer.show();
                 this.activeFiltersContainer.doLayout();
-                this.speciesCombo.clearValue();
+                this.combo.clearValue();
             }
         }
     },
@@ -203,4 +172,5 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
             panel.destroy(); // triggers _onRemoveActiveFilter
         }, this);
     }
+
 });

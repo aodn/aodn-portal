@@ -73,14 +73,14 @@ describe("Portal.filter.ui.GroupPanel", function() {
                     getHumanReadableForm: returns('two')
                 },
                 {
-                    constructor: Portal.filter.StringFilter,
+                    constructor: Portal.filter.MultiStringFilter,
                     isVisualised: returns(true),
                     hasValue: returns(false),
                     getLabel: returns("beta"),
                     getHumanReadableForm: returns('five')
                 },
                 {
-                    constructor: Portal.filter.StringFilter,
+                    constructor: Portal.filter.MultiStringFilter,
                     isVisualised: returns(true),
                     hasValue: returns(true),
                     getLabel: returns("omega"),

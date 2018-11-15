@@ -1338,3 +1338,7 @@ strong {
     font-weight: bolder;
 }
 
+.activeFiltersContainer {
+    padding-bottom: 10px;
+}
+

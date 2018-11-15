@@ -10,7 +10,7 @@ describe("Portal.filter.Filter", function() {
         it('returns expected types for simple examples (not exhaustive)', function() {
 
             checkClassFor('integer', Portal.filter.NumberFilter);
-            checkClassFor('string', Portal.filter.StringFilter);
+            checkClassFor('string', Portal.filter.MultiStringFilter);
             checkClassFor('geometrypropertytype', Portal.filter.GeometryFilter);
             checkClassFor('boolean', Portal.filter.BooleanFilter);
             checkClassFor('date', Portal.filter.DateFilter);
