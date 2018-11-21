@@ -82,7 +82,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
 
     _getFeatureParams: function() {
 
-        var builder = new Portal.filter.combiner.DataDownloadCqlBuilder({
+        var builder = new Portal.filter.combiner.FiltersWithValuesCqlBuilder({
             filters: this.dataCollection.getFilters()
         });
 
