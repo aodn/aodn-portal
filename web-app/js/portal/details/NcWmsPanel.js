@@ -560,7 +560,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     setWarningBoxVisibility: function() {
-        //this.warningEmptyDownloadMessage.setVisible(new Portal.filter.combiner.SpatialSubsetIntersectTester().testSpatialSubsetIntersect(this.dataCollection); //todo - Hide for now
+        this.warningEmptyDownloadMessage.setVisible(new Portal.filter.combiner.SpatialSubsetIntersectTester().testSpatialSubsetIntersect(this.dataCollection) === false);
     },
 
     isTemporalExtentSubsetted: function(dateRangeStart, dateRangeEnd) {
