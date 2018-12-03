@@ -60,5 +60,5 @@ grails.war.resources = { stagingDir ->
     // The jars are being inserted by the hudson/tomcat build process, and
     // are causing errors on startup for the app on tomcat6.
     delete(file:"${stagingDir}/WEB-INF/lib/commons-collections-3.1.jar")
-    delete(file:"${stagingDir}/WEB-INF/lib/slf4j-api-1.5.8.jar")
+//    delete(file:"${stagingDir}/WEB-INF/lib/slf4j-api-1.5.8.jar")
 }
