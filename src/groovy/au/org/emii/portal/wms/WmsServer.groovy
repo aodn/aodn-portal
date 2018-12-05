@@ -13,9 +13,18 @@ abstract class WmsServer {
 
     abstract getFilters(server, layer)
 
-    def getFeatureCount(server, layer, filter) {
-        def layerInfo = getLayerInfo(server, layer)
-        return new FeatureCountService().getWfsFeatureCount(layerInfo.wfsUrl, layer, filter)
+    def getFeatureCount(params) {
+        def layerInfo = getLayerInfo(params.server, params.layer)
+        def theUrl = ""
+
+        if (layerInfo.owsType == "WCS") {
+            theUrl = layerInfo.owsURL
+        }
+        else {
+            theUrl = layerInfo.wfsUrl
+        }
+        return new FeatureCountService().getWfsFeatureCount(theUrl, params.layer, params.filter)
+
     }
 
     abstract getFilterValues(server, layer, filter)
@@ -38,6 +47,7 @@ abstract class WmsServer {
         def wfsFeatureType = [
                 owsType: xml.LayerDescription.@owsType.text(),
                 wfsUrl: xml.LayerDescription.@wfs.text(),
+                owsURL: xml.LayerDescription.@owsURL.text(),
                 typeName: xml.LayerDescription.Query.@typeName.text()
         ]
 

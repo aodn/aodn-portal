@@ -39,7 +39,7 @@ Portal.cart.GaDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
         return function(collection, handlerParams) {
 
-            var builder = new Portal.filter.combiner.GaWcsParametersBuilder({
+            var builder = new Portal.filter.combiner.WcsParametersBuilder({
                 filters: collection.getFilters()
             });
 
@@ -56,22 +56,15 @@ Portal.cart.GaDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
         };
     },
 
-    buildRequestUrl: function(baseUrl, spatial, handlerParams) {
-
-        var datasets = [{
-            coverageUrl: String.format("http://localhost:8080/geoserver/marine/wcs?SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE={0}&CRS=EPSG:4326&BBOX={1}&FORMAT=GeoTIFF&WIDTH={2}&HEIGHT={3}&RESX={2}&RESY={3}",
-                handlerParams.layerName, spatial.selectedBBOX, spatial.size.width, spatial.size.height, baseUrl),
-            title: handlerParams.downloadFilename
-        }];
+    buildRequestUrl: function(baseUrl, selectedBBOX, handlerParams) {
 
         var jsonData = {};
 
-        jsonData['bbox'] = spatial.selectedBBOX;
-        jsonData['bboxInSelectedProjection'] = spatial.selectedBBOX;
+        jsonData['bboxInOutputCRS'] = selectedBBOX;
         jsonData['emailAddress'] = handlerParams.emailAddress;
-        jsonData['crs'] = "EPSG:4326";
+        jsonData['outputCRS'] = "EPSG:4326";
         jsonData['format'] = "GeoTIFF";
-        jsonData['datasets'] = datasets;
+        jsonData['coverages'] = handlerParams.layerName;
 
         if (handlerParams.challengeResponse) {
             jsonData['challengeResponse'] = encodeURIComponent(handlerParams.challengeResponse);
