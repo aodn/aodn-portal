@@ -13,13 +13,26 @@ Portal.data.Server = {
         return serverInfo;
     },
 
+    stripProtocol: function(uri) {
+        return uri.replace(/^https?:\/\//,'');
+    },
+
     _getConfig: function(uri) {
         var serverInfo;
+        var thisUri = this.stripProtocol(uri);
+        var that = this;
 
         Ext.each(Portal.app.appConfig.knownServers, function(server) {
-            if (uri.startsWith(server.uri)) {
-                serverInfo = server;
-                return false;
+
+            var currentKnownHost = that.stripProtocol(server.uri);
+
+            if (thisUri.indexOf(currentKnownHost) != -1) {
+                if (serverInfo != undefined) {
+                    log.error("More than one knownServer matching:" + uri + ". Using first match. Ignoring: " + server.uri);
+                }
+                else {
+                    serverInfo = server;
+                }
             }
             else {
                 return true;

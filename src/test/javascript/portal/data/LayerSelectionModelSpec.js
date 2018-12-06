@@ -11,14 +11,14 @@ describe("Portal.data.LayerSelectionModel", function() {
             {
                 name: 'imos:name_1',
                 protocol: 'OGC:WMS-1.1.1-http-get-map',
-                uri: 'http://geoserver-rc.aodn.org.au/geoserver/wms',
+                href: 'http://geoserver-rc.aodn.org.au/geoserver/wms',
                 title: 'Layer 1'
             },
             {
                 name: 'imos:name_2',
                 protocol: 'OGC:WMS-1.1.1-http-get-map',
                 type: 'WMS-1.1.1',
-                uri: 'http://geoserver-rc.aodn.org.au/geoserver/wms',
+                href: 'http://geoserver-rc.aodn.org.au/geoserver/wms',
                 title: 'Layer 2'
             }
         ];
