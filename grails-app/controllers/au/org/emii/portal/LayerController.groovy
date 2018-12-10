@@ -104,6 +104,17 @@ class LayerController {
         }
     }
 
+    def getLayerInfoJson = {
+
+        if (hostVerifier.allowedHost(params.server)) {
+            def serverObject = _getServerClass(params.server, params.serverType)
+            render serverObject.getLayerInfo(params.server, params.layer) as grails.converters.JSON
+        }
+        else {
+            render text: "Host '$params.server' not allowed", status: HTTP_502_BAD_GATEWAY
+        }
+    }
+
     def getFilters = {
         def (server, layer, serverType) = parseParams(params)
 

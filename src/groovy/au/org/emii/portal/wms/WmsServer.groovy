@@ -1,6 +1,7 @@
 package au.org.emii.portal.wms
 
 import au.org.emii.portal.proxying.ExternalRequest
+import grails.converters.JSON
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.concurrent.ConcurrentHashMap
@@ -15,16 +16,15 @@ abstract class WmsServer {
 
     def getFeatureCount(params) {
         def layerInfo = getLayerInfo(params.server, params.layer)
-        def theUrl = ""
-
-        if (layerInfo.owsType == "WCS") {
-            theUrl = layerInfo.owsURL
+        try {
+            def cql = URLEncoder.encode(params.filter,"UTF-8")
+            def url = "${layerInfo.wfsUrl}SERVICE=WFS&VERSION=1.0.0&REQUEST=GetFeature&typeName=${params.layer}&outputFormat=json&CQL_FILTER=${cql}&count=1";
+            def json = JSON.parse(url.toURL().text)
+            return json.totalFeatures
         }
-        else {
-            theUrl = layerInfo.wfsUrl
+        catch (e) {
+            log.error "Unable to parse feature count for server '${layerInfo.wfsUrl}', layer '${params.layer}', filter '${params.filter}' - ${url}", e
         }
-        return new FeatureCountService().getWfsFeatureCount(theUrl, params.layer, params.filter)
-
     }
 
     abstract getFilterValues(server, layer, filter)

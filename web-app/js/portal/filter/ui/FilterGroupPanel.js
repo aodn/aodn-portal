@@ -47,6 +47,34 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
     _filtersUpdated: function() {
 
         var featureParams = this._getFeatureParams();
+        Ext.Ajax.request({
+            url: "layer/getLayerInfoJson",
+            params: featureParams,
+            scope: this,
+            success: this._handleGetFeatureRequestMethod
+        });
+    },
+
+    _handleGetFeatureRequestMethod: function(results) {
+
+        (JSON.parse(results.responseText).owsType == "WCS") ?  this.getWcsFeatureCount(): this.getWfsFeatureCount();
+    },
+
+    getWcsFeatureCount: function() {
+
+        var subsetIntersects = new Portal.filter.combiner.SpatialSubsetIntersectTester().testSpatialSubsetIntersect(this.dataCollection);
+        if (!subsetIntersects) {
+            this.dataCollection.totalFilteredFeatures = 0;
+        }
+        else {
+            delete(this.dataCollection.totalFilteredFeatures);
+        }
+        this._handleEmptyDownloadMsg();
+    },
+
+    getWfsFeatureCount: function() {
+
+        var featureParams = this._getFeatureParams();
         if (featureParams.filter) {
             Ext.Ajax.request({
                 url: "layer/getFeatureCount",
