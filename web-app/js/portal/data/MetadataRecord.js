@@ -175,7 +175,6 @@ Portal.data.MetadataRecord = function() {
         onlineResourcesField,
         pointOfTruthLinkField,
         bboxField,
-        'wmsLayer',
         iconSourceUuid
     ]);
 
