@@ -378,3 +378,9 @@ div.stringFilterResult {
     -moz-border-image: -moz-linear-gradient(left, #FFFFFF, #6c6b6b, #f0f0f0);
     border-image-slice: 1;
 }
+
+span.facetSearchHyperLink:hover {
+    background-color: #eee;
+    border-radius: 4px;
+    color: #1B232B;
+}

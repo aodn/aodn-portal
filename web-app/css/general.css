@@ -1342,3 +1342,12 @@ strong {
     padding-bottom: 10px;
 }
 
+abbr  {
+    border: none;
+    text-decoration: none;
+}
+
+span.facetSearchHyperLink {
+    cursor: pointer;
+    padding: 1px 3px;
+}

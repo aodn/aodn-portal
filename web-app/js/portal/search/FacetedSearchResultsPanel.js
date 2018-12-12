@@ -14,6 +14,7 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
         this.dataView = new Portal.search.FacetedSearchResultsDataView({
             store: this.store,
+            searcher: this.searcher,
             dataCollectionStore: this.dataCollectionStore,
             classificationStore: this.classificationStore
         });
