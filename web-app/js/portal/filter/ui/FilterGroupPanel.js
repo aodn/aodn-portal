@@ -47,6 +47,29 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
     _filtersUpdated: function() {
 
         var featureParams = this._getFeatureParams();
+        Ext.Ajax.request({
+            url: "layer/getLayerInfoJson",
+            params: featureParams,
+            scope: this,
+            success: this._handleGetFeatureRequestMethod
+        });
+    },
+
+    _handleGetFeatureRequestMethod: function(results) {
+
+        (JSON.parse(results.responseText).owsType == "WCS") ?  this.getWcsFeatureCount(): this.getWfsFeatureCount();
+    },
+
+    getWcsFeatureCount: function() {
+
+        var subsetIntersects = new Portal.filter.combiner.SpatialSubsetIntersectTester().testSpatialSubsetIntersect(this.dataCollection);
+        this.dataCollection.featuresAvailable = (subsetIntersects);
+        this._handleEmptyDownloadMsg();
+    },
+
+    getWfsFeatureCount: function() {
+
+        var featureParams = this._getFeatureParams();
         if (featureParams.filter) {
             Ext.Ajax.request({
                 url: "layer/getFeatureCount",
@@ -56,7 +79,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
             });
         }
         else {
-            delete(this.dataCollection.totalFilteredFeatures);
+            this.dataCollection.featuresAvailable = true;
             this._handleEmptyDownloadMsg();
         }
     },
@@ -64,10 +87,10 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
     _handleGetFeatureRequestResults: function(results) {
         if (results.status == 200) {
             var featureCount = results.responseText;
-            this.dataCollection.totalFilteredFeatures = (featureCount >= 0) ? featureCount : undefined;
+            this.dataCollection.featuresAvailable = (featureCount > 0) ;
         }
         else {
-            this.dataCollection.totalFilteredFeatures = undefined;
+            this.dataCollection.featuresAvailable = false;
         }
         this._handleEmptyDownloadMsg();
 
@@ -75,8 +98,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
 
     _handleEmptyDownloadMsg: function() {
         if (this.isDestroyed !== true) {
-            var show = (this.dataCollection.totalFilteredFeatures != undefined && this.dataCollection.totalFilteredFeatures == 0);
-            this.warningEmptyDownloadMessage.setVisible(show);
+            this.warningEmptyDownloadMessage.setVisible(this.dataCollection.featuresAvailable === false);
         }
     },
 

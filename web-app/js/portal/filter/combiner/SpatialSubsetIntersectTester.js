@@ -23,21 +23,22 @@ Portal.filter.combiner.SpatialSubsetIntersectTester = Ext.extend(Object, {
     _checkGeometryIntersectsBounds: function(dataCollection, filters) {
         var extent;
         var params = filters.filter(function(filter) {
-            if (filter.isNcwmsParams || filter.type === 'geometrypropertytype') {
+            if (filter.type === 'geometrypropertytype') {
                 return true;
             }
         })[0];
 
-        if (params && params.isNcwmsParams && params.latitudeRangeStart != undefined) {
+        if (params &&  params.latitudeRangeStart != undefined) {
             extent = new OpenLayers.Bounds(params.longitudeRangeStart, params.latitudeRangeStart, params.longitudeRangeEnd, params.latitudeRangeEnd);
         }
-        else if (params && params.value != undefined && params.value.bounds != undefined && params.type === 'geometrypropertytype') {
+        else if (params && params.value != undefined && params.value.bounds != undefined) {
             extent = new OpenLayers.Bounds(params.value.bounds.left, params.value.bounds.bottom, params.value.bounds.right, params.value.bounds.top);
         }
 
         if (extent) {
             return dataCollection.getBounds().intersectsBounds(extent, true, true);
         }
+        return true;
     },
 
     _checkPointIntersectsBounds: function(filters) {
