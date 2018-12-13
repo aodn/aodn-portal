@@ -191,5 +191,11 @@ Portal.filter.ui.GroupPanel = Ext.extend(Ext.Container, {
 
     _stringCompare: function(first, second) {
         return (first == second) ? 0 : (first > second ? 1 : -1);
+    },
+
+    _handleEmptyDownloadMsg: function() {
+        if (this.isDestroyed !== true) {
+            this.warningEmptyDownloadMessage.setVisible(this.dataCollection.featuresAvailable === false);
+        }
     }
 });
