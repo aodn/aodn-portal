@@ -14,7 +14,7 @@ Portal.cart.WmsInjector = Ext.extend(Portal.cart.BaseInjector, {
     getInjectionJson: function(collection) {
         var injectionJson = Portal.cart.WmsInjector.superclass.getInjectionJson(collection);
 
-        if ((collection.totalFilteredFeatures != undefined  && collection.totalFilteredFeatures == 0)) {
+        if ((collection.featuresAvailable != undefined  && !collection.featuresAvailable)) {
             injectionJson.errorMessage = OpenLayers.i18n("subsetRestrictiveFiltersText");
         }
 

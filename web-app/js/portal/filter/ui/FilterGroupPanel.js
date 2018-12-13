@@ -63,12 +63,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
     getWcsFeatureCount: function() {
 
         var subsetIntersects = new Portal.filter.combiner.SpatialSubsetIntersectTester().testSpatialSubsetIntersect(this.dataCollection);
-        if (!subsetIntersects) {
-            this.dataCollection.totalFilteredFeatures = 0;
-        }
-        else {
-            delete(this.dataCollection.totalFilteredFeatures);
-        }
+        this.dataCollection.featuresAvailable = (subsetIntersects);
         this._handleEmptyDownloadMsg();
     },
 
@@ -84,7 +79,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
             });
         }
         else {
-            delete(this.dataCollection.totalFilteredFeatures);
+            this.dataCollection.featuresAvailable = true;
             this._handleEmptyDownloadMsg();
         }
     },
@@ -92,10 +87,10 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
     _handleGetFeatureRequestResults: function(results) {
         if (results.status == 200) {
             var featureCount = results.responseText;
-            this.dataCollection.totalFilteredFeatures = (featureCount >= 0) ? featureCount : undefined;
+            this.dataCollection.featuresAvailable = (featureCount > 0) ;
         }
         else {
-            this.dataCollection.totalFilteredFeatures = undefined;
+            this.dataCollection.featuresAvailable = false;
         }
         this._handleEmptyDownloadMsg();
 
@@ -103,8 +98,7 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
 
     _handleEmptyDownloadMsg: function() {
         if (this.isDestroyed !== true) {
-            var show = (this.dataCollection.totalFilteredFeatures != undefined && this.dataCollection.totalFilteredFeatures == 0);
-            this.warningEmptyDownloadMessage.setVisible(show);
+            this.warningEmptyDownloadMessage.setVisible(this.dataCollection.featuresAvailable === false);
         }
     },
 
