@@ -15,7 +15,7 @@ Portal.filter.MultiStringFilter = Ext.extend(Portal.filter.Filter, {
     },
 
     getCql: function() {
-        return this._join(this._getFilterStrings(false), " OR ");
+        return "(" + this._join(this._getFilterStrings(false), " OR ") + ")";
     },
 
     isVisualised: function() {
@@ -23,7 +23,7 @@ Portal.filter.MultiStringFilter = Ext.extend(Portal.filter.Filter, {
     },
 
     getHumanReadableForm: function() {
-        return this._join(this._getFilterStrings(true), " OR ");
+        return "(" + this._join(this._getFilterStrings(true), " OR ") + ")";
 
     },
 
