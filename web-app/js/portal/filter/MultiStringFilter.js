@@ -23,8 +23,7 @@ Portal.filter.MultiStringFilter = Ext.extend(Portal.filter.Filter, {
     },
 
     getHumanReadableForm: function() {
-        return "(" + this._join(this._getFilterStrings(true), " OR ") + ")";
-
+        return this._join(this._getFilterStrings(true), " OR ");
     },
 
     _join: function(parts, joiner) {
