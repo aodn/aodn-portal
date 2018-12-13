@@ -23,7 +23,7 @@ describe("Portal.filter.MultiStringFilter", function() {
 
         it('returns correct description', function() {
 
-            expect(filter.getHumanReadableForm()).toBe("(Boat name=<b>'L''astrolabe'</b>)");
+            expect(filter.getHumanReadableForm()).toBe("Boat name=<b>'L''astrolabe'</b>");
         });
     });
 });
