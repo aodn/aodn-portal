@@ -64,6 +64,7 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
             typeAhead: false,
             forceSelection: true,
             width: this.MAX_COMPONENT_WIDTH,
+            validateOnBlur: false,
             queryParam: 'q',
             minChars: 2,
             lastQuery: '',
@@ -77,6 +78,18 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
                 select: this._onSpeciesComboChange,
                 change: this._onSpeciesComboChange,
                 blur: this._onBlur
+            },
+            assertValue: function () {
+                // https://stackoverflow.com/questions/26774545/how-to-clear-combo
+                var me = this,
+                    value = me.getRawValue();
+
+                if (me.forceSelection && me.allowBlank && Ext.isEmpty(value)) {
+                    me.setValue(value);
+                    me.collapse();
+                    return;
+                }
+                this.callParent(arguments);
             }
         });
 
@@ -176,9 +189,16 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
                 this.activeFiltersContainer.add(this._createNewActiveFilterPanel(record.data));
                 this.activeFiltersContainer.show();
                 this.activeFiltersContainer.doLayout();
-                this.speciesCombo.clearValue();
             }
         }
+        this.cleanupSpeciesCombo();
+    },
+
+    cleanupSpeciesCombo: function() {
+
+        this.speciesCombo.reset();
+        this.speciesCombo.blur();
+        this.speciesCombo.applyEmptyText();
     },
 
     handleRemoveFilter: function(targetedPanel) {
@@ -196,7 +216,6 @@ Portal.filter.ui.AlaSpeciesFilterPanel = Ext.extend(Portal.filter.ui.BaseFilterP
             }
 
         }, this);
-
 
         Ext.each(deadPanels, function(panel) {
             this._clearFilter(panel.activeFilterData);
