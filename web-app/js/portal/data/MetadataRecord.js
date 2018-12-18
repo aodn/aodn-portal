@@ -166,7 +166,6 @@ Portal.data.MetadataRecord = function() {
         'imageLink',
         attrConstrField,
         otherConstrField,
-        'otherCitation',
         useLimitationField,
         { name: 'temporalExtentBegin', mapping: 'tempExtentBegin' },
         { name: 'temporalExtentEnd', mapping: 'tempExtentEnd' },
