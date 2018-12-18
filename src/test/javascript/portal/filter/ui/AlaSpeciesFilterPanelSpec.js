@@ -1,4 +1,4 @@
-describe("Portal.filter.ui.AlaSpeciesFilterPanel", function() {
+    describe("Portal.filter.ui.AlaSpeciesFilterPanel", function() {
 
     var alaSpeciesFilterPanel;
 
@@ -37,6 +37,8 @@ describe("Portal.filter.ui.AlaSpeciesFilterPanel", function() {
                 })
             }
         });
+
+        alaSpeciesFilterPanel.cleanupSpeciesCombo = returns(true);
     });
 
     describe('_onSpeciesComboChange', function() {
@@ -49,7 +51,6 @@ describe("Portal.filter.ui.AlaSpeciesFilterPanel", function() {
                 getValue: noOp,
                 markInvalid: noOp
             };
-
             spyOn(alaSpeciesFilterPanel, '_createNewActiveFilterPanel');
         });
 
