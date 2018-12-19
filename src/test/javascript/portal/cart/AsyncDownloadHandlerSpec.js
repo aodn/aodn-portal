@@ -14,17 +14,26 @@ describe('Portal.cart.AsyncDownloadHandler', function () {
     describe('serviceResponseHandler', function() {
         it('invalid json', function() {
             var json = "HERE BE INAVLID JSON";
-            expect(handler.serviceResponseHandler(json)).toEqual("");
+            expect(handler.serviceResponseHandler(json)).toEqual({ userMsg : OpenLayers.i18n("unexpectedDownloadResponse"), status : 404 });
         });
 
         it('no url', function() {
             var json = "{}";
-            expect(handler.serviceResponseHandler(json)).toEqual("");
+            expect(handler.serviceResponseHandler(json)).toEqual({ userMsg : OpenLayers.i18n("unexpectedDownloadResponse"), status : 404 });
         });
 
         it('valid url', function() {
-            var json = '{ "url": "http://asyncdownloads.aodn.org.au" }';
-            expect(handler.serviceResponseHandler(json)).toMatch("href='http://asyncdownloads.aodn.org.au'");
+            var obj = {
+                responseText: JSON.stringify({
+                    url: "http://asyncdownloads.aodn.org.au"
+                })
+            };
+            var expected = {
+                responseText : '{"url":"http://asyncdownloads.aodn.org.au"}',
+                userMsg : "<a class='external' target='_blank' href='http://asyncdownloads.aodn.org.au'>Follow the progress of your job</a><br /><br />"
+            };
+
+            expect(handler.serviceResponseHandler(obj)).toMatch(expected);
         });
     });
 });

@@ -124,7 +124,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     // Download View
     downloadConfirmationWindowTitle: 'Data Download',
     downloadConfirmationWindowContent: " \
-  <h3>Licence and use limitations</h3> \
+  <h2>Licence and use limitations</h2> \
     <p> \
       <tpl if=\"jurisdictionLink\"><a target=\"_blank\" href=\"{jurisdictionLink}\">Jurisdiction</a></tpl> \
       <tpl if=\"imageLink\"><img src=\"{imageLink}\" /></tpl> \
@@ -211,9 +211,10 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     asyncDownloadPanelTitleLoading: 'Requesting subset ...',
     asyncDownloadPanelTitle: 'Subset job status',
     asyncDownloadSuccessPendingMsg: "Waiting for your job to register with our servers.....",
-    asyncDownloadSuccessMsg: 'Your subsetting job has been created. Processing commenced.<br /><br />When the job is complete we will send an email to <i>${email}</i> with download instructions.<br /><br />${serviceMessage}NB. Subsetting jobs can vary considerably in how long they take, from minutes to hours. Both the number of source files and the selected area can affect how long a job takes to run.',
+    asyncDownloadSuccessMsg: 'Your subsetting job has been created. Processing commenced.<br /><br />When the job is complete we will send an email to <i><b>${email}</b></i> with download instructions.<br /><br />${serviceMessage}<br /><b>Note:</b> Subsetting jobs can vary considerably in how long they take, from minutes to hours. Both the number of source files and the selected area can affect how long a job takes to run.',
     asyncDownloadErrorMsg: 'Unable to create subsetting job. Please re-check the parameters you provided and try again.',
-    asyncServiceMsg: "<a class='external' target='_blank' href='${url}'>Follow the progress of your job</a><br /><br />",
+    asyncServiceMsg: "<a class='external' target='_blank' href='${url}'>Follow the progress of your job</a><br />",
+    unexpectedDownloadResponse: "Error. Unexpected response from download server.",
 
     spatialExtentHeading: 'Spatial',
     timeSeriesAtHeading: 'Timeseries at Lat/Lon',

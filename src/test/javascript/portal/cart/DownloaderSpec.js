@@ -8,6 +8,8 @@ describe("Portal.cart.Downloader", function() {
     var params;
 
     var downloadToken;
+    var goodResponse;
+    var badResponse;
 
     beforeEach(function() {
         downloader = new Portal.cart.Downloader();
@@ -19,6 +21,18 @@ describe("Portal.cart.Downloader", function() {
 
         collection = {};
         params = {};
+
+        goodResponse = {
+            status: 200,
+            responseText: JSON.stringify({
+                url: "http://asyncdownloads.aodn.org.au"
+            })
+        };
+
+        badResponse = {
+            status: 404,
+            responseText: JSON.stringify("this has gone bad")
+        };
     });
 
     describe('download', function() {
@@ -64,29 +78,30 @@ describe("Portal.cart.Downloader", function() {
             expect(requestArgs.scope).toEqual(downloader);
 
             spyOn(downloader, '_onAsyncDownloadRequestSuccess');
-            requestArgs.success.call(downloader, "response");
-            expect(downloader._onAsyncDownloadRequestSuccess).toHaveBeenCalledWith("response", params);
+            requestArgs.success.call(downloader, goodResponse, params);
+            expect(downloader._onAsyncDownloadRequestSuccess).toHaveBeenCalledWith(goodResponse, params);
 
             spyOn(downloader, '_onAsyncDownloadRequestFailure');
-            requestArgs.failure.call(downloader);
+            requestArgs.failure.call(downloader, badResponse, params);
             expect(downloader._onAsyncDownloadRequestFailure).toHaveBeenCalled();
 
         });
 
         describe('_onAsyncDownloadRequestSuccess', function() {
             it('calls serviceResponseHandler', function() {
-                var response = { responseText: "responseText" };
+
                 params = {
                     emailAddress: "emailAddress",
-                    serviceResponseHandler: jasmine.createSpy()
+                    serviceResponseHandler: returns()
                 };
-                downloader._onAsyncDownloadRequestSuccess(response, params);
+                spyOn(params, "serviceResponseHandler");
+                downloader.checkResponse(goodResponse, params);
 
-                expect(params.serviceResponseHandler).toHaveBeenCalledWith(response.responseText);
+                expect(params.serviceResponseHandler).toHaveBeenCalledWith(goodResponse);
             });
 
-            it('return empty string if serviceResponseHandler is undefined', function() {
-                expect(downloader._getServiceMessage(undefined, "response")).toEqual("");
+            it('return response serviceResponseHandler is undefined', function() {
+                expect(downloader._getServiceMessage(undefined, goodResponse)).toEqual(goodResponse);
             });
         });
     });

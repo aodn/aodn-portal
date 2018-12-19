@@ -15,21 +15,25 @@ Portal.cart.AsyncDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
     },
 
     serviceResponseHandler: function(response) {
-        var msg = "";
 
+        var responseJson;
         if (response) {
             try {
-                var responseJson = JSON.parse(response);
+                responseJson = JSON.parse(response.responseText);
                 if (responseJson['url']) {
-                    msg = OpenLayers.i18n('asyncServiceMsg', {
+                    response.userMsg = OpenLayers.i18n('asyncServiceMsg', {
                         url: responseJson['url']
                     });
                 }
             }
             catch (e) {
-                log.error(String.format("Could not parse asynchronous response: '{0}'", response));
+                log.error(String.format("Could not parse asynchronous response: '{0}'", response.responseText));
+                response = {
+                    userMsg: (response.responseText) ? response.responseText : OpenLayers.i18n("unexpectedDownloadResponse"),
+                    status: 404
+                }
             }
         }
-        return msg;
+        return response;
     }
 });

@@ -378,3 +378,8 @@ div.stringFilterResult {
     -moz-border-image: -moz-linear-gradient(left, #FFFFFF, #6c6b6b, #f0f0f0);
     border-image-slice: 1;
 }
+
+.x-window-dlg .x-window-header-text,
+.x-window-header-text {
+    font-size: larger;
+}

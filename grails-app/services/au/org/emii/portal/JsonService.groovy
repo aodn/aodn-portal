@@ -33,7 +33,6 @@ class JsonService extends AsyncDownloadService {
 
     def onResponseSuccess = { resp ->
         assert resp.statusLine.statusCode == 200
-        return "statusCode was ok"
+        return resp.entity.content.text
     }
-
 }
