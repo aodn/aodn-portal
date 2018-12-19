@@ -214,13 +214,8 @@ knownServers = [
     [
         uri: 'https://www.cmar.csiro.au/geoserver/wms',
         wmsVersion: '1.1.1',
-        type: 'CoreGeoServer'
-    ],
-
-    [
-        uri: 'http://www.cmar.csiro.au/geoserver/wms',
-        wmsVersion: '1.1.1',
-        type: 'datatrawlerserver',
+        type: 'GeoserverFilterConfig',
+        filtersDir: "csiro-datatrawler",
         wpsUrl: 'http://www.cmar.csiro.au/geoserver/wps'
     ],
     [
