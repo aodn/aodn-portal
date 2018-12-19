@@ -28,7 +28,7 @@ Portal.data.TermClassificationStore = Ext.extend(Ext.data.XmlStore, {
                 });
             }
             return foundTerms;
-        };
+        }
 
         Ext.each(this.data.items, function( dimension) {
             if(dimensionName in dimension.data.categories) {

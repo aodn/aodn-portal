@@ -8,6 +8,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     MINIMAP_PADDING: 4,
     MAP_ID_PREFIX: "facetedSearchMap",
     ADD_BUTTON_PREFIX: "fsSearchAddBtn",
+    CLICKABLE_PARAMETERS_PREFIX: "FacetedSearchResultParameters",
     CSS_CLASS_ITEM_DISABLED: 'x-item-disabled',
     CSS_CLASS_BUTTON_SELECTED: 'x-btn-selected',
 
@@ -33,8 +34,8 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '        </div>',
             '        <div class="x-panel resultsTextBody {[this.getStatusClasses(values)]}">',
             '            <span class="floatRight x-hyperlink small">{[this.getMetadataRecordPointOfTruthLinkAsHtml(values)]}',
-            '            </span>',
-            '            {[this.getParametersAsHtml(values)]}',
+            '            </span><span id="{[this.parametersElementId(values.uuid)]}">',
+            '            {[this.getParametersAsHtml(values)]}</span>',
             '        </div>',
             '        <div class="resultsIconContainer">',
             '            <img src="{[this.getIconUrl(values)]}" onClick="{[this.getTrackingFunction(values)]}" style="max-height: ' + this.ICON_MAX_SIZE +
@@ -45,6 +46,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
             '</tpl>',
             this,
             {
+                getParametersAsHtml: function(values) {
+                    this.setParametersAsHtml.defer(1, this, [values]);
+                    return "";
+                },
                 getButton: function(values) {
                     this.createButton.defer(1, this, [values.uuid]);
                     return "";
@@ -66,6 +71,19 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         );
 
         Portal.search.FacetedSearchResultsDataView.superclass.initComponent.apply(this, arguments);
+    },
+
+    activateParametersLink: function() {
+
+        var selector = '.facetSearchHyperLink';
+        var that = this;
+        jQuery(selector).off();
+        jQuery(selector).on("click",
+            function() {
+                that.searcher.addFilter("facet.q", jQuery(this).attr("data"));
+                that.searcher.search();
+                trackFacetUsage(OpenLayers.i18n("keyword"), jQuery(this).text());
+            });
     },
 
     getTrackingFunction: function(values) {
@@ -119,7 +137,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         });
     },
 
-    getParametersAsHtml: function(values) {
+    setParametersAsHtml: function(values) {
         var paramTpl = new Ext.Template(
             '<div><span class="x-panel-header">{label}</span>',
             '   <span> {value}</span>',
@@ -135,7 +153,21 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         html += this._getOrganisationAsHtml(paramTpl, values.organisation);
         html += this._getPlatformAsHtml(paramTpl, values.platform);
         
-        return html;
+        var parametersElementId = this.parametersElementId(values.uuid);
+
+        if (Ext.get(parametersElementId)) {
+            new Ext.Container({
+                html: html,
+                scope: this,
+                renderTo: parametersElementId,
+                listeners: {
+                    afterrender: {
+                        fn: this.activateParametersLink,
+                        scope: this
+                    }
+                }
+            });
+        }
     },
 
     _getMeasuredParametersAsHtml: function(template, values) {
@@ -153,7 +185,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var params = this._getMeasuredParameters(values);
 
         if (params.length > 0) {
-            return params.join(', ');
+            return this._getFacetSearchLinks('Measured parameter', params);
         }
         else {
             return OpenLayers.i18n('noParametersForCollection');
@@ -180,7 +212,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         if (organisation) {
             return template.apply({
                 "label": label,
-                "value": organisation.join('; ')
+                "value": this._getFacetSearchLinks('Organisation', organisation)
             });
         }
         return "";
@@ -189,20 +221,40 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _getPlatformAsHtml: function(template, platforms) {
 
         var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
-        var html = ""
+        var html = "";
         Ext.each(platforms, function(platform) {
-            var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform')
+            var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform');
             if (broader.length > 0) {
-               html = template.apply({
+                html = template.apply({
                     "label": label,
-                    "value": broader.join(', ')
+                    "value": this._getFacetSearchLinks('Platform', broader)
                 });
-                //break out of the Ext.each since we found a valid platform
                return false;
             }
         },this);
 
        return html;
+    },
+
+    _getFacetSearchLinks: function(category, facetItems) {
+
+        var html = [];
+        Ext.each(facetItems, function(term) {
+            var searchPath = this._getFacetParentPath(category, term);
+            html.push( String.format('<span class="facetSearchHyperLink" data="{0}">{1}</span>', searchPath, term));
+        },this);
+        return html.join("-");
+    },
+
+    _getFacetParentPath: function(category,  term) {
+
+        var path = [term];
+        var currentTerm = term;
+        while (currentTerm) {
+            currentTerm = this.classificationStore.getBroaderTerms(currentTerm, 1, category)[0];
+            path.push((currentTerm) ? currentTerm : category);
+        }
+        return path.reverse().filter(Boolean).join("/");
     },
 
     _getTemporalExtentAsHtml: function(template, temporalExtent) {
@@ -298,6 +350,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
     buttonElementId: function(uuid) {
         return this.elementIdFromUuid(this.ADD_BUTTON_PREFIX, uuid);
+    },
+
+    parametersElementId: function(uuid) {
+        return this.elementIdFromUuid(this.CLICKABLE_PARAMETERS_PREFIX, uuid);
     },
 
     elementIdFromUuid: function(prefix, uuid) {
