@@ -327,6 +327,12 @@ $.extend({
         setTimeout(checkFileDownloadComplete, settings.checkInterval);
 
 
+        function deleteCookie(name, path, domain) {
+            var cookieData = name + "=; path=" + path + "; expires=" + new Date(0).toUTCString() + ";";
+            if (domain) cookieData += " domain=" + domain + ";";
+            document.cookie = cookieData;
+        }
+
         function checkFileDownloadComplete() {
             //has the cookie been written due to a file download occuring?
 
@@ -337,15 +343,24 @@ $.extend({
 
             var lowerCaseCookie = settings.cookieName.toLowerCase() + "=" + cookieValue;
 
+            //check if cookie is set to indicate failure
+            if (settings.cookieFailedName !== undefined) {
+                if (document.cookie.toLowerCase().indexOf(settings.cookieFailedName.toLowerCase()) > -1) {
+                    internalCallbacks.onFail('an error occurred while downloading this file', fileUrl);
+                    deleteCookie(settings.cookieFailedName, settings.cookiePath, settings.cookieDomain);
+                    deleteCookie(settings.cookieName, settings.cookiePath, settings.cookieDomain);
+                    cleanUp(false);
+                    return
+                }
+            }
+
             if (document.cookie.toLowerCase().indexOf(lowerCaseCookie) > -1) {
 
                 //execute specified callback
+
                 internalCallbacks.onSuccess(fileUrl);
 
-                //remove cookie
-                var cookieData = settings.cookieName + "=; path=" + settings.cookiePath + "; expires=" + new Date(0).toUTCString() + ";";
-                if (settings.cookieDomain) cookieData += " domain=" + settings.cookieDomain + ";";
-                document.cookie = cookieData;
+                deleteCookie(settings.cookieName, settings.cookiePath, settings.cookieDomain);
 
                 //remove iframe
                 cleanUp(false);

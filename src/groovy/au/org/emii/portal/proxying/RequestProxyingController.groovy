@@ -52,13 +52,21 @@ abstract class RequestProxyingController extends HostVerifyingController {
         catch (IOException e) {
             def msg = String.format("Could not reach %s %s", probeUrl, e.message)
             log.error msg
-            render text: msg, contentType: "text/html", encoding: "UTF-8", status: HTTP_502_GATEWAY_TIMEOUT
+            _addDownloadFailedCookie()
+            render text: msg, contentType: "text/html", encoding: "UTF-8", status: HTTP_503_GATEWAY_TIMEOUT
+            return
         }
     }
 
     def _addDownloadTokenCookie = {
         if (params.downloadToken) {
             response.addCookie(_newDownloadTokenCookie(params.downloadToken))
+        }
+    }
+
+    def _addDownloadFailedCookie = {
+        if (params.downloadToken) {
+            response.addCookie(new Cookie("downloadFailed", "true"))
         }
     }
 
