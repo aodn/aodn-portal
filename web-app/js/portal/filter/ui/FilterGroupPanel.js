@@ -96,12 +96,6 @@ Portal.filter.ui.FilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
 
     },
 
-    _handleEmptyDownloadMsg: function() {
-        if (this.isDestroyed !== true) {
-            this.warningEmptyDownloadMessage.setVisible(this.dataCollection.featuresAvailable === false);
-        }
-    },
-
     _getFeatureParams: function() {
 
         var builder = new Portal.filter.combiner.FiltersWithValuesCqlBuilder({

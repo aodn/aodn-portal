@@ -14,6 +14,8 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
                 add: noOp
             }
         });
+        facetedSearchDataView._getFacetParentPath = returns("this/is/the/path");
+
         testString = "2000-12-31t13:00:00.000z";
         template = new Ext.Template(
             '<div><span class="x-panel-header">{label}</span>',
@@ -133,13 +135,13 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
         it('with some parameters', function() {
             facetedSearchDataView._getMeasuredParameters = returns(['temp', 'salinity']);
 
-            expect(facetedSearchDataView._getMeasuredParametersText()).toEqual('temp, salinity');
+            expect(facetedSearchDataView._getFacetSearchLinks('temp', 'salinity')).toEqual('<span class="facetSearchHyperLink" data="this/is/the/path">salinity</span>');
         });
 
         it('with no parameters', function() {
             facetedSearchDataView._getMeasuredParameters = returns([]);
 
-            expect(facetedSearchDataView._getMeasuredParametersText()).toEqual('No parameters');
+            expect(facetedSearchDataView._getFacetSearchLinks('temp', undefined)).toEqual('');
         });
     });
 });

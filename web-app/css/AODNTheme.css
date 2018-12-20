@@ -379,6 +379,12 @@ div.stringFilterResult {
     border-image-slice: 1;
 }
 
+span.facetSearchHyperLink:hover {
+    background-color: #eee;
+    border-radius: 4px;
+    color: #1B232B;
+}
+
 .x-window-dlg .x-window-header-text,
 .x-window-header-text {
     font-size: larger;

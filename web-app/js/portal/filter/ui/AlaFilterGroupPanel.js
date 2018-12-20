@@ -10,6 +10,12 @@ Portal.filter.ui.AlaFilterGroupPanel = Ext.extend(Portal.filter.ui.GroupPanel, {
         Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, this.dataCollection);
     },
 
+    _filtersUpdated: function() {
+        var subsetIntersects = new Portal.filter.combiner.SpatialSubsetIntersectTester().testSpatialSubsetIntersect(this.dataCollection);
+        this.dataCollection.featuresAvailable = (subsetIntersects);
+        this._handleEmptyDownloadMsg();
+    },
+
     _addFilterPanels: function(filters) {
         var filterPanels = [];
 
