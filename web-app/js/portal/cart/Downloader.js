@@ -93,7 +93,6 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
                 queryString += String.format('&{0}={1}', key, value);
             });
         }
-
         return queryString;
     },
 
@@ -110,32 +109,45 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
             url: downloadUrl,
             scope: this,
             success: function(response) {
-                this._onAsyncDownloadRequestSuccess(response, params);
+                this.checkResponse(response, params);
             },
             failure: function(response) {
-                this._onAsyncDownloadRequestFailure(response);
+                this.checkResponse(response, params);
             }
         });
     },
 
-    _onAsyncDownloadRequestSuccess: function(response, params) {
+    checkResponse: function(response, params) {
+
+        var tailoredResponse = this._getServiceMessage(params.serviceResponseHandler, response);
+
+        if (tailoredResponse && tailoredResponse.status == 200) {
+            this._onAsyncDownloadRequestSuccess(tailoredResponse, params);
+        }
+        else {
+            this._onAsyncDownloadRequestFailure(tailoredResponse);
+        }
+    },
+
+    _onAsyncDownloadRequestSuccess: function(tailoredResponse, params) {
         this.messageBox.show({
             title: OpenLayers.i18n('asyncDownloadPanelTitle'),
             msg: OpenLayers.i18n('asyncDownloadSuccessMsg', {
                 email: params.emailAddress,
-                serviceMessage: this._getServiceMessage(params.serviceResponseHandler, response.responseText)
+                serviceMessage: (tailoredResponse.userMsg) ? tailoredResponse.userMsg : ""
             }),
             width: this.ALERTWIDTH
         });
     },
 
     _getServiceMessage: function(serviceResponseHandler, response) {
-        return serviceResponseHandler ? serviceResponseHandler(response) : "";
+        return (serviceResponseHandler) ? serviceResponseHandler(response) : response;
     },
 
-    _onAsyncDownloadRequestFailure: function(response) {
+    _onAsyncDownloadRequestFailure: function(serviceMessage) {
 
-        var msg = String.format("Error! The server response was: '{0}'<BR>{1}", response.statusText, OpenLayers.i18n('asyncDownloadErrorMsg'));
+        var txt = (serviceMessage && serviceMessage.userMsg) ? serviceMessage.userMsg : OpenLayers.i18n('asyncDownloadErrorMsg');
+        var msg = String.format("<h2>ERROR!</h2> {0}<BR>", txt);
 
         this.messageBox.show({
             title: OpenLayers.i18n('asyncDownloadPanelTitle'),
