@@ -182,7 +182,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     _getMeasuredParametersText: function(values) {
-        var params = this._getMeasuredParameters(values);
+        var params = this._getBroaderTerms(values.parameter, 2 ,'Measured parameter');
 
         if (params.length > 0) {
             return this._getFacetSearchLinks('Measured parameter', params);
@@ -192,10 +192,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         }
     },
 
-    _getMeasuredParameters: function(values) {
+    _getBroaderTerms: function(values, depth, type) {
         var broader = [];
-        Ext.each(values.parameter, function(param) {
-            var broaderTerms = this.classificationStore.getBroaderTerms(param, 2, 'Measured parameter');
+        Ext.each(values, function(param) {
+            var broaderTerms = this.classificationStore.getBroaderTerms(param, depth, type);
             if (broaderTerms.length > 0) {
                 broader = broader.concat(broaderTerms);
             }
@@ -221,19 +221,15 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _getPlatformAsHtml: function(template, platforms) {
 
         var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
-        var html = "";
-        Ext.each(platforms, function(platform) {
-            var broader = this.classificationStore.getBroaderTerms(platform, 1, 'Platform');
-            if (broader.length > 0) {
-                html = template.apply({
-                    "label": label,
-                    "value": this._getFacetSearchLinks('Platform', broader)
-                });
-               return false;
-            }
-        },this);
+        var broaderPlatforms = this._getBroaderTerms(platforms, 1,'Platform');
 
-       return html;
+        if (broaderPlatforms.length > 0) {
+            return template.apply({
+                "label": label,
+                "value": this._getFacetSearchLinks('Platform', broaderPlatforms)
+            });
+        }
+        return "";
     },
 
     _getFacetSearchLinks: function(category, facetItems) {
