@@ -25,7 +25,7 @@ class WpsUniqueValuesFilterService {
 
             values = json.values
         } catch (e) {
-            log.error "Unable to parse filters values for wps server '${wpsUrl}', layer '${layer}', filter '${filter}'", e
+            log.error "Unable to parse filters values for wps server '${wpsUrl}', layer '${layer}', filter '${filter}'"
         }
 
         return values

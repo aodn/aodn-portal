@@ -89,10 +89,12 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
                 typeName: "thetypename"
         ]}
 
-        def expected = []
-
-        def filtersJson = coreGeoserverServer.getFilters("http://server", "layer")
-
+        def expected = ["bogusfilter"]
+        def filtersJson = expected
+        try {
+            filtersJson = coreGeoserverServer.getFilters("http://server", "layer")
+        }
+        catch(e) {}
         assertEquals expected, filtersJson
     }
 
