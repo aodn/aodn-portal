@@ -1,5 +1,6 @@
 package au.org.emii.portal.wms
 
+import au.org.emii.portal.SilentStacktraceException
 import au.org.emii.portal.UrlUtils
 
 class FilterConfigGeoserverServer extends WmsServer {
@@ -24,7 +25,7 @@ class FilterConfigGeoserverServer extends WmsServer {
             def xml = UrlUtils.load(url)
             filters = _parseFilterConfigXml(xml)
         } catch (e) {
-            log.error "Could not load filters for server '${server}', layer '${layer}'", e
+            throw new SilentStacktraceException("Unable to parse filters for server '${server}', layer '${layer}'", false)
         }
 
         return filters

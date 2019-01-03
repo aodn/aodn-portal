@@ -4,7 +4,7 @@ import grails.test.GrailsUnitTestCase
 
 class ImosGeoserverServerTests extends GrailsUnitTestCase {
 
-    def geoserverServer
+    def imosGeoserverServer
     def validGeoserverResponse
     def filterValuesXml
     def emptyXml
@@ -14,7 +14,7 @@ class ImosGeoserverServerTests extends GrailsUnitTestCase {
 
         mockLogging(ImosGeoserverServer)
 
-        geoserverServer = new ImosGeoserverServer(true)
+        imosGeoserverServer = new ImosGeoserverServer(true)
 
         validGeoserverResponse =
 """<?xml version="1.0"?>
@@ -55,7 +55,7 @@ class ImosGeoserverServerTests extends GrailsUnitTestCase {
     }
 
     void testValidFilterValues() {
-        geoserverServer.metaClass._getFilterValuesXml = { server, layer, filter -> return filterValuesXml }
+        imosGeoserverServer.metaClass._getFilterValuesXml = { server, layer, filter -> return filterValuesXml }
 
         def expected = [
             "EAC1-2012",
@@ -65,24 +65,26 @@ class ImosGeoserverServerTests extends GrailsUnitTestCase {
             "EAC5-2012"
         ]
 
-        def filterValues = geoserverServer.getFilterValues("http://server", "layer", "some_filter")
+        def filterValues = imosGeoserverServer.getFilterValues("http://server", "layer", "some_filter")
 
         assertEquals expected, filterValues
     }
 
     void testInvalidFilterValues() {
-        geoserverServer.metaClass._getFilterValuesXml = { server, layer, filter -> return "here be invalid xml" }
+        imosGeoserverServer.metaClass._getFilterValuesXml = { server, layer, filter -> return "here be invalid xml" }
 
-        def expected = []
-
-        def filterValues = geoserverServer.getFilterValues("http://server", "layer", "some_filter")
-
+        def expected = ["bogusfiltervalue"]
+        def filterValues = expected
+        try {
+            filterValues = imosGeoserverServer.getFilterValues("http://server", "layer", "some_filter")
+        }
+        catch(e) {}
         assertEquals expected, filterValues
     }
 
     void testValidFilters() {
-        geoserverServer.metaClass._getFiltersXml = { server, layer -> return validGeoserverResponse }
-        geoserverServer.metaClass._getFilterValuesXml = { server, layer, filter ->
+        imosGeoserverServer.metaClass._getFiltersXml = { server, layer -> return validGeoserverResponse }
+        imosGeoserverServer.metaClass._getFilterValuesXml = { server, layer, filter ->
             if (filter == "TIME" || filter == "geom") {
                 return emptyXml
             }
@@ -118,18 +120,21 @@ class ImosGeoserverServerTests extends GrailsUnitTestCase {
             ]
         ]
 
-        def filtersJson = geoserverServer.getFilters("http://server", "layer")
+        def filtersJson = imosGeoserverServer.getFilters("http://server", "layer")
         assertEquals expected, filtersJson
     }
 
     void testInvalidFilters() {
-        geoserverServer.metaClass._getFiltersXml = { server, layer -> return "here be invalid xml" }
+        imosGeoserverServer.metaClass._getFiltersXml = { server, layer -> return "here be invalid xml" }
 
-        def expected = []
-
-        def filtersJson = geoserverServer.getFilters("http://server", "layer")
-
+        def expected = ["bogusfilter"]
+        def filtersJson = expected
+        try {
+            filtersJson = imosGeoserverServer.getFilters("http://server", "layer")
+        }
+        catch(e) {}
         assertEquals expected, filtersJson
+
     }
 
     void testGetFiltersUrl() {
@@ -137,7 +142,7 @@ class ImosGeoserverServerTests extends GrailsUnitTestCase {
         def layer = "aodn:aodn_dsto_glider_trajectory_map"
         assertEquals(
             "http://geoserver-123.aodn.org.au/geoserver/wms?request=enabledFilters&service=layerFilters&version=1.0.0&layer=aodn:aodn_dsto_glider_trajectory_map",
-            geoserverServer.getFiltersUrl(server, layer)
+            imosGeoserverServer.getFiltersUrl(server, layer)
         )
     }
 
@@ -147,7 +152,7 @@ class ImosGeoserverServerTests extends GrailsUnitTestCase {
         def filter = "driftnum"
         assertEquals(
             "http://geoserver-123.aodn.org.au/geoserver/wms?request=uniqueValues&service=layerFilters&version=1.0.0&layer=aodn:aodn_dsto_glider_trajectory_map&propertyName=driftnum",
-            geoserverServer.getFilterValuesUrl(server, layer, filter)
+            imosGeoserverServer.getFilterValuesUrl(server, layer, filter)
         )
     }
 }

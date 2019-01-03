@@ -1,5 +1,6 @@
 package au.org.emii.portal.wms
 
+import au.org.emii.portal.SilentStacktraceException
 import au.org.emii.portal.proxying.ExternalRequest
 
 class ImosGeoserverServer extends WmsServer {
@@ -33,7 +34,7 @@ class ImosGeoserverServer extends WmsServer {
             }
         }
         catch (e) {
-            log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
+            throw new SilentStacktraceException("Unable to parse filters for server '${server}', layer '${layer}'", false)
         }
 
         return filters
@@ -58,7 +59,7 @@ class ImosGeoserverServer extends WmsServer {
             values = xml.value.collect { it.text() }
         }
         catch (e) {
-            log.error "Unable to parse filters values for server '${server}', layer '${layer}', filter '${filter}'", e
+            throw new SilentStacktraceException("Unable to parse filters for server '${server}', layer '${layer}'", false)
         }
 
         return values

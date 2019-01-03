@@ -38,11 +38,17 @@ class AsyncDownloadControllerTests {
     }
 
     void testRegisterJobBadChallengeResponse() {
-        controller.downloadAuthService.metaClass.verifyChallengeResponse = {
-            ipAddress, challengeResponse ->
-
-            return false
+        log.info("testRegisterJobBadChallengeResponse")
+        try {
+            controller.downloadAuthService.metaClass.verifyChallengeResponse = {
+                ipAddress, challengeResponse ->
+                    return false
+            }
         }
+        catch (Exception e) {
+            // do nothing
+        }
+
 
         controller.index()
 
@@ -50,6 +56,7 @@ class AsyncDownloadControllerTests {
     }
 
     void testParametersPassedToAggregatorService() {
+        log.info("testParametersPassedToAggregatorService")
         def createJobCalledTimes = 0
 
         controller.params.aggregatorService ='gogoduck'
@@ -76,6 +83,7 @@ class AsyncDownloadControllerTests {
     }
 
     void testGogoduckJobSuccess() {
+        log.info("testGogoduckJobSuccess")
         controller.params.aggregatorService ='gogoduck'
 
         controller.index()
@@ -84,8 +92,9 @@ class AsyncDownloadControllerTests {
     }
 
     void testGogoduckJobFailure() {
+        log.info("testGogoduckJobFailure")
         controller.params.aggregatorService ='gogoduck'
-        controller.gogoduckService.metaClass.registerJob { params -> throw new Exception("should not be called") }
+        controller.gogoduckService.metaClass.registerJob { params -> throw new SilentStacktraceException() }
 
         controller.index()
 
@@ -93,6 +102,7 @@ class AsyncDownloadControllerTests {
     }
 
     void testServerNotAllowed() {
+        log.info("testServerNotAllowed")
         controller.params.server = 'not allowed'
 
         controller.index()
@@ -101,6 +111,7 @@ class AsyncDownloadControllerTests {
     }
 
     void testNoSuchAggregator() {
+        log.info("testNoSuchAggregator")
         controller.params.aggregatorService ='noSuchAggregator'
 
         controller.index()
@@ -109,7 +120,7 @@ class AsyncDownloadControllerTests {
     }
 
     void testGetAggregatorService() {
-
+        log.info("testGetAggregatorService")
         // testing for Gogoduck aggregations from a Geoserver
         controller.params.jobType = 'GoGoDuck'
         controller.params.server = "http://containsthestring.geoserver.com"
@@ -121,6 +132,5 @@ class AsyncDownloadControllerTests {
         controller.params.server = "http://awsurlhopefully.com"
         assertEquals controller.gogoduckService, controller.getAggregatorService('gogoduck', controller.params)
         assertEquals controller.wpsAwsService, controller.getAggregatorService('wps', controller.params)
-
     }
 }

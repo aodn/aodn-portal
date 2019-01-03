@@ -1,5 +1,7 @@
 package au.org.emii.portal.wms
 
+import au.org.emii.portal.SilentStacktraceException
+
 class DataTrawlerServer extends CoreGeoserverServer {
 
     DataTrawlerServer(filterValuesService) {
@@ -49,7 +51,7 @@ class DataTrawlerServer extends CoreGeoserverServer {
                 }
             }
         } catch (e) {
-            log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
+            throw new SilentStacktraceException("Unable to parse filters for server '${server}', layer '${layer}'", false)
         }
 
         return filters

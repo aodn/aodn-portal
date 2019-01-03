@@ -93,13 +93,16 @@ class FilterConfigGeoserverServerTests  extends GrailsUnitTestCase {
     }
 
     void testInvalidFilters() {
-        def expected = []
 
         UrlUtils.metaClass.static.load = { url -> "here be invalid xml" }
 
-        def result = server.getFilters('dummy','filter')
-
-        assertEquals expected, result
+        def expected = ["bogusfilter"]
+        def filters = expected
+        try {
+            filters = server.getFilters("http://server", "layer")
+        }
+        catch(e) {}
+        assertEquals expected, filters
     }
 
 }

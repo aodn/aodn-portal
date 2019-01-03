@@ -27,7 +27,7 @@ class AsyncDownloadController extends HostVerifyingController {
             case 'datatrawler':
                 return dataTrawlerService
             default:
-                throw new Exception("Cannot find aggregatorService for '$aggregatorService'")
+                throw new SilentStacktraceException("Cannot find aggregatorService for '$aggregatorService'")
         }
     }
 
@@ -36,7 +36,7 @@ class AsyncDownloadController extends HostVerifyingController {
         def challengeResponse = params.remove('challengeResponse')
         if (! downloadAuthService.verifyChallengeResponse(ipAddress, challengeResponse)) {
             log.info "Could not verify challenge '$challengeResponse' from '$ipAddress'"
-            throw new Exception('Could not verify challenge (captcha), denying download')
+            throw new SilentStacktraceException('Could not verify challenge (captcha), denying download')
         }
     }
 
@@ -47,7 +47,7 @@ class AsyncDownloadController extends HostVerifyingController {
             try {
                 def ipAddress = request.getRemoteAddr()
 
-                log.info("AsyncDownloadController remoteAddr: " + ipAddress)
+                log.debug("AsyncDownloadController remoteAddr: " + ipAddress)
                 verifyChallengeResponse(params, ipAddress)
 
                 AsyncDownloadService aggregatorService = getAggregatorService(aggregatorServiceString, params)

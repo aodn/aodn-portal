@@ -1,5 +1,6 @@
 package au.org.emii.portal.wms
 
+import au.org.emii.portal.SilentStacktraceException
 import au.org.emii.portal.proxying.ExternalRequest
 
 class CoreGeoserverServer extends WmsServer {
@@ -76,7 +77,7 @@ class CoreGeoserverServer extends WmsServer {
                 }
             }
             catch (e) {
-                log.error "Unable to parse filters for server '${server}', layer '${layer}'", e
+                throw new SilentStacktraceException("Unable to parse filters for server '${server}', layer '${layer}'", false)
             }
         }
 
@@ -96,25 +97,6 @@ class CoreGeoserverServer extends WmsServer {
         request.executeRequest()
         return outputStream.toString("utf-8")
     }
-
-/*    def _getPagedUniqueValues(server, layer, filter) {
-        def (wfsServer, typeName) = _lookupWfs(server, layer)
-        def params = [typeName: typeName, propertyName: filter]
-        def body = groovyPageRenderer.render(template: '/filters/pagedUniqueRequest.xml', model: params)
-        log.debug("Request body:\n\n${body}")
-
-        def connection = wfsServer.toURL().openConnection()
-
-        connection.with {
-            doOutput = true
-            requestMethod = 'POST'
-            setRequestProperty("Content-Type", "application/xml; charset=utf-8")
-            outputStream.withWriter { writer ->
-                writer << body
-            }
-            content.text
-        }
-    }*/
 
     def _lookupWfs(server, layer) {
         def wmsLayer = [server, layer]

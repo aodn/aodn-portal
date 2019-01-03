@@ -20,6 +20,7 @@ class DownloadControllerTests {
 
     void testUrlListForLayerNoUrlFieldName() {
 
+        log.info("testGogoduckJobFailure")
         controller.params.urlFieldName = null
 
         controller.urlListForLayer()
@@ -75,7 +76,7 @@ class DownloadControllerTests {
 
         controller.metaClass._executeExternalRequest = { a, b, c ->
 
-            throw new Exception('Failed before downloading started')
+            throw new SilentStacktraceException('Failed before downloading started')
         }
 
         controller.downloadFilesForLayer()

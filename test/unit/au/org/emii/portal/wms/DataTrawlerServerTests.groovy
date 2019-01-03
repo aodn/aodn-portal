@@ -71,10 +71,12 @@ class DataTrawlerServerTests extends GrailsUnitTestCase {
     void testInvalidFilters() {
         dataTrawlerServer.metaClass._describeFeatureType = { server, layer -> return "here be invalid xml" }
 
-        def expected = []
-
-        def filtersJson = dataTrawlerServer.getFilters("http://server", "layer")
-
-        assertEquals expected, filtersJson
+        def expected = ["bogusfilter"]
+        def filters = expected
+        try {
+            filters = dataTrawlerServer.getFilters("http://server", "layer")
+        }
+        catch(e) {}
+        assertEquals expected, filters
     }
 }
