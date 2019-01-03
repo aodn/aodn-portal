@@ -46,7 +46,6 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this.fireEvent('searchstart');
 
         var requestUrl = this._getRequestUrl(page);
-        console.log(requestUrl);
 
         var searchResponseLoader = this._newSearchResponseLoader({
             requestMethod: 'GET',
