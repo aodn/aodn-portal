@@ -38,7 +38,8 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
             successCallback: function(downloadUrl) { self._onSuccess(downloadUrl, collection); },
             failCallback: function(msg, downloadUrl) { self._onFailure(downloadUrl, collection, msg); },
             cookieName: String.format("downloadToken{0}", downloadToken),
-            cookieValue: downloadToken
+            cookieValue: downloadToken,
+            cookieFailedName: "downloadFailed"
         });
     },
 
