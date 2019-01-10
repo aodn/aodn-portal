@@ -139,6 +139,7 @@ describe("Portal.search.SearchFiltersPanel", function() {
     function _mockSearcher() {
         return {
             on: noOp,
+            reset: noOp,
             search: noOp,
             hasFacetNode: returns(false)
         };
