@@ -123,6 +123,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
             filter.removeAnyFilters();
         });
 
+        this.searcher.reset(); // clear any facetSearchHyperLink
         this.searcher.search();
         this.fireEvent('filtersCleared');
     },
