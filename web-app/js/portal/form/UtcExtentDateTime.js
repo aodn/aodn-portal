@@ -24,6 +24,10 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
             this.onBlur(field);
         }, this);
 
+        this.df.on('invalid', function() {
+            this.fireEvent("invalid", this, undefined);
+        }, this);
+
         this.df.on('blur', function(field, e) {
             this.onBlur(field);
         }, this);
@@ -56,6 +60,10 @@ Portal.form.UtcExtentDateTime = Ext.extend(Ext.ux.form.DateTime, {
         // new Date(this.dateValue) used by superclass doesn't preserve milliseconds
         // on firefox
         return this.dateValue ? this.dateValue.clone() : '';
+    },
+
+    getErrors: function() {
+        return this.df.getErrors();
     },
 
     reset: function() {

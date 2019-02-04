@@ -225,7 +225,7 @@ describe('Portal.details.NcWmsPanel', function() {
             var testStartDate = moment();
             var testEndDate = moment();
 
-            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(testStartDate, testEndDate, null, false, 0, 0);
+            var returnValue = ncwmsPanel._ncwmsParamsAsFilters("", testStartDate, testEndDate, null, false, 0, 0);
 
             expect(returnValue[0].getValue().fromDate).toEqual(testStartDate.toDate());
             expect(returnValue[1].dateRangeStart).toEqual(testStartDate);
@@ -235,7 +235,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
             var testEndDate = moment();
 
-            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(moment.invalid(), testEndDate, null, false, 0, 0);
+            var returnValue = ncwmsPanel._ncwmsParamsAsFilters("", moment.invalid(), testEndDate, null, false, 0, 0);
 
             expect(returnValue[0].getValue().toDate).toEqual(undefined);
             expect(returnValue[1].dateRangeEnd).toEqual(undefined);
@@ -243,7 +243,7 @@ describe('Portal.details.NcWmsPanel', function() {
 
         it('update geometry', function() {
 
-            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(null, null, {
+            var returnValue = ncwmsPanel._ncwmsParamsAsFilters("",null, null, {
                 getBounds: returns({
                     bottom: 4,
                     left: 3,
@@ -263,7 +263,7 @@ describe('Portal.details.NcWmsPanel', function() {
                 latitude: -31.4,
                 longitude: 114.6
             };
-            var returnValue = ncwmsPanel._ncwmsParamsAsFilters(moment(), moment(), null, true, point);
+            var returnValue = ncwmsPanel._ncwmsParamsAsFilters("", moment(), moment(), null, true, point);
             var pointFilterValue = Portal.filter.FilterUtils.getFilter(returnValue, 'timeSeriesAtPoint').getValue();
             expect(pointFilterValue.latitude).toEqual(-31.4);
             expect(pointFilterValue.longitude).toEqual(114.6);

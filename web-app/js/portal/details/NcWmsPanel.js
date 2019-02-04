@@ -349,8 +349,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         if (this.endDateTimePicker.rendered && this.startDateTimePicker.rendered) {
 
-            var start = (this.startDateTimePicker.getValue()) ? this.getMomentStartOfDay(this.startDateTimePicker.df.getValue()) : undefined;
-            var end = (this.endDateTimePicker.getValue()) ? this.getMomentStartOfDay(this.endDateTimePicker.df.getValue()) : undefined;
+            var start = (this.startDateTimePicker.getValue() != "") ? this.getMomentStartOfDay(this.startDateTimePicker.df.getValue()) : undefined;
+            var end = (this.endDateTimePicker.getValue() != "") ? this.getMomentStartOfDay(this.endDateTimePicker.df.getValue()) : undefined;
             var date = moment(datePicker.getValue());
 
             (datePicker.pickerType == this.START_DATE) ? start = date : end = date;
@@ -398,7 +398,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             flex: 2,
             listeners: {
                 scope: this,
-                change: this._onDateTimePickerChange
+                change: this._onDateTimePickerChange,
+                invalid: this._applyFilterValuesToCollection
             }
         };
     },
@@ -470,9 +471,7 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         datePicker.setValue(selectedDateTimeMoment);
 
-        if (datePicker.validate()) {
-            this._applyFilterValuesToCollection(); // Set this date on the collection now. Fixes #1922
-        }
+        this._applyFilterValuesToCollection();
 
         this.layer.loadTimeSeriesForDay(selectedDateTimeMoment);
         // Now we wait for the event of 'temporalextentloaded'
@@ -516,13 +515,34 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         trackLayerControlUsage(OpenLayers.i18n('trackingDateAction'), OpenLayers.i18n("trackingTimeSliceAction", {direction: "next"}), this.dataCollection.getTitle());
     },
 
+    _getDateErrors: function() {
+        var errorMessage = "";
+        if (this.startDateTimePicker.getErrors().length > 0 || this.endDateTimePicker.getErrors().length > 0) {
+            var errors = this.startDateTimePicker.getErrors().concat(this.endDateTimePicker.getErrors());
+            function onlyUnique(value, index, self) {
+                return self.indexOf(value) === index;
+            }
+            errorMessage = errors.filter( onlyUnique ).join("</br>");
+            errorMessage += "</br><b>" + OpenLayers.i18n("invalidTemporalExtent") + "</b>"
+        }
+        return errorMessage;
+    },
+
     _applyFilterValuesToCollection: function() {
         if (this.isDestroyed !== true) {
 
-            var dateRangeStart = this.startDateTimePicker.validate() ? this._getUtcMomentFromPicker(this.startDateTimePicker) : moment(this.startDateTimePicker.startValue);
-            var dateRangeEnd = this.endDateTimePicker.validate() ? this._getUtcMomentFromPicker(this.endDateTimePicker) : moment(this.endDateTimePicker.startValue);
+            var errorMessage = "";
 
-            this.dataCollection.isTemporalExtentSubsetted = this.isTemporalExtentSubsetted(dateRangeStart, dateRangeEnd);
+            if (this._getDateErrors().length > 0) {
+                var dateRangeStart = moment(); // dummy values for now
+                var dateRangeEnd   = moment();
+                errorMessage = this._getDateErrors();
+            }
+            else {
+                var dateRangeStart = this._getUtcMomentFromPicker(this.startDateTimePicker);
+                var dateRangeEnd = this._getUtcMomentFromPicker(this.endDateTimePicker);
+                this.dataCollection.isTemporalExtentSubsetted = this.isTemporalExtentSubsetted(dateRangeStart, dateRangeEnd);
+            }
 
             var geometry = this._getGeometryFilter();
             var zAxisValue = this.zAxisPickerContainer.getZAxisPickerValues();
@@ -539,9 +559,14 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
                 }
             }
 
-            this.dataCollection.filters = this._ncwmsParamsAsFilters(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, pointFilterValue, zAxisValue);
+            this.dataCollection.filters = this._ncwmsParamsAsFilters(errorMessage, dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, pointFilterValue, zAxisValue);
+            var spatialSubsetIntersects = new Portal.filter.combiner.SpatialSubsetIntersectTester().testSpatialSubsetIntersect(this.dataCollection) === false;
 
-            this.setWarningBoxVisibility();
+            this.showWarningBox(
+                spatialSubsetIntersects ||
+                this.layerTemporalExtentLoaded &&
+                errorMessage.contains(OpenLayers.i18n("invalidTemporalExtent"))
+            );
             this._updateTimeRangeLabel();
         }
     },
@@ -559,8 +584,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         );
     },
 
-    setWarningBoxVisibility: function() {
-        this.warningEmptyDownloadMessage.setVisible(new Portal.filter.combiner.SpatialSubsetIntersectTester().testSpatialSubsetIntersect(this.dataCollection) === false);
+    showWarningBox: function(show) {
+        this.warningEmptyDownloadMessage.setVisible(show);
     },
 
     isTemporalExtentSubsetted: function(dateRangeStart, dateRangeEnd) {
@@ -571,7 +596,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             return !(dateRangeStart.isSame(temporalExtentBegin) && dateRangeEnd.isSame(temporalExtentEnd));
         }
         return undefined;
-
     },
 
     shouldHaveTemporalExtent: function() {
@@ -586,12 +610,13 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
         return false;
     },
 
-    _ncwmsParamsAsFilters: function(dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, pointFilterValue, zAxisValue) {
+    _ncwmsParamsAsFilters: function(errorMessage, dateRangeStart, dateRangeEnd, geometry, pointFilterAvailable, pointFilterValue, zAxisValue) {
 
         var dateFilterValue = {};
         var ncwmsDateParamsAsFilter = {
             name: OpenLayers.i18n('ncwmsDateParamsFilter'),
             isNcwmsParams: true,
+            errorMessage: errorMessage,
             hasValue: function() {
                 return false;
             } // From the Portal.filter.Filter interface. Prevents filter from being used in CQL or displayed to user
@@ -687,6 +712,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     },
 
     _layerTemporalExtentLoad: function(layer) {
+
+        this.layerTemporalExtentLoaded = true;
 
         if ((Object.keys(layer.temporalExtent.extent).length == 0)) {
 
