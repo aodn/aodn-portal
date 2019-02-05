@@ -19,6 +19,7 @@ describe('Portal.cart.NcWmsInjector', function() {
                     isNcwmsParams: true,
                     dateRangeStart: startDate,
                     dateRangeEnd: endDate,
+                    errorMessage: "",
                     latitudeRangeStart: 0,
                     latitudeRangeEnd: 40,
                     longitudeRangeEnd: 180,
@@ -40,7 +41,8 @@ describe('Portal.cart.NcWmsInjector', function() {
 
         it('returns a message when no valid date', function() {
             dataCollection.getFilters = returns([{
-                isNcwmsParams: true
+                isNcwmsParams: true,
+                errorMessage: OpenLayers.i18n('unavailableTemporalExtent')
             }]);
             expect(injector._getDataFilterEntry(dataCollection)).toEqual(OpenLayers.i18n('unavailableTemporalExtent'));
         });

@@ -39,16 +39,21 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
             timeSeriesAtString = pointFilter.getHumanReadableForm();
         }
 
-        if (params && params.dateRangeStart) {
-            var startDateString = this._formatDate(params.dateRangeStart);
-            var endDateString = this._formatDate(params.dateRangeEnd);
-            dateString = this._formatHumanDateInfo('temporalExtentHeading', startDateString, endDateString);
-        }
-        else if (!this.hasTemporalExtent(timeFilter, collection)) {
-            dateString = OpenLayers.i18n('unavailableTemporalExtent');
-        }
-        else {
-            dateString = OpenLayers.i18n('temporalExtentNotLoaded');
+        if (params) {
+            if (params.errorMessage && params.errorMessage.length > 0) {
+                dateString = params.errorMessage;
+            }
+            else if (params.dateRangeStart) {
+                var startDateString = this._formatDate(params.dateRangeStart);
+                var endDateString = this._formatDate(params.dateRangeEnd);
+                dateString = this._formatHumanDateInfo('temporalExtentHeading', startDateString, endDateString);
+            }
+            else if (!this.hasTemporalExtent(timeFilter, collection)) {
+                dateString = OpenLayers.i18n('unavailableTemporalExtent');
+            }
+            else {
+                dateString = OpenLayers.i18n('temporalExtentNotLoaded');
+            }
         }
 
         if (zAxisFilter && zAxisFilter.hasValue()) {
@@ -70,8 +75,12 @@ Portal.cart.NcWmsInjector = Ext.extend(Portal.cart.BaseInjector, {
         var injectionJson = Portal.cart.NcWmsInjector.superclass.getInjectionJson(collection);
 
         injectionJson.dataFilters = this._getDataFilterEntry(collection);
+
         if (injectionJson.dataFilters.contains(OpenLayers.i18n('temporalExtentNotLoaded'))) {
             injectionJson.errorMessage = OpenLayers.i18n('temporalExtentNotLoaded');
+        }
+        else if (injectionJson.dataFilters.contains(OpenLayers.i18n('invalidTemporalExtent'))) {
+            injectionJson.errorMessage = OpenLayers.i18n('subsetRestrictiveFiltersText');
         }
         injectionJson.isTemporalExtentSubsetted = collection.isTemporalExtentSubsetted;
 

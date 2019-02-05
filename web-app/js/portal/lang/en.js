@@ -72,6 +72,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     selectTimePeriod: 'Select ${direction} Time Period',
     selectMapTimePeriod: 'Move Time on Map',
     unavailableTemporalExtent: "The data collection has no temporal information",
+    invalidTemporalExtent: "Your date range selection has errors and cannot be applied",
 
     // tab titles
     subsetPanelTitle: 'Subset',
