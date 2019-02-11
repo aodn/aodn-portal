@@ -63,10 +63,7 @@ Portal.ui.openlayers.MapOptions = Ext.extend(Object, {
             },
             scope: this
         });
-    },
-
-    resetControls: function() {
-        this.layerSwitcher.minimizeControl();
+        this.layerSwitcher.maximizeControl();
     },
 
     /**
