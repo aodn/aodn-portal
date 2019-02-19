@@ -216,6 +216,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     asyncDownloadErrorMsg: 'Unable to create subsetting job. Please re-check the parameters you provided and try again.',
     asyncServiceMsg: "<a class='external' target='_blank' href='${url}'>Follow the progress of your job</a><br />",
     unexpectedDownloadResponse: "Error. Unexpected response from download server.",
+    timeoutError: 'A server error occurred while downloading.<BR />Please try again with a smaller download request',
 
     spatialExtentHeading: 'Spatial',
     timeSeriesAtHeading: 'Timeseries at Lat/Lon',

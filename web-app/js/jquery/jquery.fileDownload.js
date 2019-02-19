@@ -346,11 +346,12 @@ $.extend({
             //check if cookie is set to indicate failure
             if (settings.cookieFailedName !== undefined) {
                 if (document.cookie.toLowerCase().indexOf(settings.cookieFailedName.toLowerCase()) > -1) {
-                    internalCallbacks.onFail('an error occurred while downloading this file', fileUrl);
+
+                    internalCallbacks.onFail(OpenLayers.i18n("timeoutError"), fileUrl);
                     deleteCookie(settings.cookieFailedName, settings.cookiePath, settings.cookieDomain);
                     deleteCookie(settings.cookieName, settings.cookiePath, settings.cookieDomain);
                     cleanUp(false);
-                    return
+                    return;
                 }
             }
 
