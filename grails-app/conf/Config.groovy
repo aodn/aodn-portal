@@ -162,12 +162,6 @@ environments {
 
 geonetwork.searchPath = 'xml.search.imos'
 
-// Server configuration
-baselayerServer = [
-    uri: "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms",
-    wmsVersion: '1.1.1'
-]
-
 // ExternalRequest.groovy connect timeout value in milliseconds
 proxyConnectTimeout = 2000
 
