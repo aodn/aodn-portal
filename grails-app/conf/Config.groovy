@@ -277,24 +277,24 @@ knownServers = [
 
 // Server configuration
 baselayerServer = [
-        uri: "http://geoserver-static.aodn.org.au/geoserver/baselayers/wms",
+        uri: "http://geoserver-static.aodn.org.au/geoserver/wms",
         wmsVersion: '1.1.1'
 ]
 baselayers = [
     [
-        name: "default_bathy",
+        name: "baselayers:default_bathy",
         title: "Bathymetry Baselayer",
         server: baselayerServer
     ],
     [
-        name: "default_basemap_simple",
+        name: "baselayers:default_basemap_simple",
         title: "Simple Baselayer",
         server: baselayerServer
     ]
 ]
 
 datalayerServer = [
-        uri: "http://geoserver-static.aodn.org.au/geoserver/datalayers/wms",
+        uri: "http://geoserver-static.aodn.org.au/geoserver/wms",
         wmsVersion: '1.1.1'
 ]
 datalayers = [
@@ -310,7 +310,7 @@ minimap {
     baselayer {
         name = "baselayer"
         url = baselayerServer.uri
-        params = [layers: 'default_bathy']
+        params = [layers: 'baselayers:default_bathy']
     }
 }
 
