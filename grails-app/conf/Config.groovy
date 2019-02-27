@@ -304,7 +304,10 @@ minimap {
     baselayer {
         name = "baselayer"
         url = baselayerServer.uri
-        params = [layers: 'baselayers:default_bathy']
+        params = [
+            layers: 'baselayers:default_bathy',
+            format: 'image/png'
+        ]
     }
 }
 
