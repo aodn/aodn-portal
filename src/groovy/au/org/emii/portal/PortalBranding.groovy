@@ -54,11 +54,19 @@ class PortalBranding {
         )
     }
 
+    def getSiteAcronym() {
+        return returnBrandedUrlIfValid(
+                "siteAcronym",
+                grailsApplication.config.portal.siteAcronym,
+                true
+        )
+    }
+
     def getSiteHeader() {
         return returnBrandedUrlIfValid(
-            "siteHeader",
-            grailsApplication.config.portal.siteHeader,
-            true
+                "siteHeader",
+                grailsApplication.config.portal.siteHeader,
+                true
         )
     }
 

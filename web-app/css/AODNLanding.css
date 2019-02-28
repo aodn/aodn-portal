@@ -70,6 +70,7 @@ img {
     background-color: #E38D1F;
     border: 2px solid white;
     font-weight: 700;
+    margin: 5px;
 }
 
 #home .btn-primary:hover {
@@ -163,7 +164,6 @@ a:focus {
     }
 }
 
-
 #toplinks a {
     color: #ffffff;
     font-size: 15px;
@@ -180,18 +180,13 @@ a:focus {
     border-left: 1px solid #9daab1;
 }
 
-#facetGlossary *{
-
+#facetGlossary * {
     text-align: left;
-    color: #ccc;
 }
+
 #facetGlossary {
     border-radius: 4px;
     background-color: #428bca;
-}
-#facetGlossary p, #facetGlossary b
-{
-    color: white;
 }
 
 .goButton {

@@ -5,7 +5,7 @@
     <meta http-equiv="content-script-type" content="text/javascript" />
     <meta http-equiv="X-UA-Compatible" content="IE=8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>${portalBranding.siteHeader}</title>
+    <title>${portalBranding.siteAcronym}</title>
 
     <buildInfo:comment />
 
@@ -45,15 +45,15 @@
         <div class="row">
             <div class="col-md-5 text-left">
                 <div class="text-vcenter">
-                    <div class="homeContent">
-                        <span class="secondaryTitle" itemscope itemtype ="http://schema.org/Data" >"The AODN is the gateway to Australian marine and climate science data"</span>
+                    <div class="homeContent" itemscope itemtype ="http://schema.org/Data" >
+                        <span class="secondaryTitle" itemprop="about" >"The AODN is the gateway to Australian marine and climate science data"</span>
 
-                        <div class="goButton" ><a id="goButton" href="search" class="btn btn-primary btn-lg">Get Ocean Data Now</a></div>
+                        <div class="goButton" ><a id="goButton" href="search" class="btn btn-primary btn-lg">Get Ocean Data Now</a> <a id="goAllButton" href="search" class="btn btn-primary hidden">All Data</a></div>
                     </div>
                     <div id="facetGlossary" class="panel-body hidden" ></div>
                 </div>
             </div>
-            <div class="col-md-6 col-md-offset-1">
+            <div class="col-md-6 col-md-offset-1" itemprop="keywords">
                 <div id="dataFinderTree"></div>
             </div>
         </div>
@@ -66,7 +66,7 @@
     <div class="container">
         <div class="row">
 
-            <div class="col-md-4 text-left">
+            <div class="col-md-5 text-left">
                 <div class="footerText">
                     <div class="panel-body">
                         <p>
@@ -86,7 +86,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4 text-center">
+            <div class="col-md-2 text-center col-lg-offset-1">
                 <div class="panel-body lead">
                     <a href="http://oceancurrent.imos.org.au/" class="btn btn-secondary btn-lg">IMOS OceanCurrent</a>
                     <p></p>

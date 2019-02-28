@@ -2,7 +2,6 @@
 
 <link rel="stylesheet" type="text/css" href="${resource(dir: 'js/bootstrap-3.3.6/css', file: 'bootstrap.min.css')}?v=${resourceVersionNumber}"/>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/bootstrap-3.3.6/js', file: 'bootstrap.min.js')}?v=${resourceVersionNumber}"></script>
-<script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/open-iconic-master/font/css/', file: 'open-iconic-bootstrap.css')}?v=${resourceVersionNumber}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'BrowserCheck.js')}?v=${resourceVersionNumber}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'bootstrapTreeview.js')}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/portal/landing', file: 'dataFinderTree.js')}"></script>

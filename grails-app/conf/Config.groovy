@@ -323,7 +323,7 @@ portal {
     localThemeCss = "AODNTheme.css"
 
     contactEmail = "info@aodn.org.au"
-    siteAcronym = "AODN"
+    siteAcronym = "AODN Portal"
     emailSignature = "Kind regards,\nThe AODN Team."
     emailFooter = "The AODN Portal provides access to all available Australian marine and climate science data and provides the primary access to IMOS data including access to the IMOS metadata. \n" +
         "IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy and the Super Science Initiative."

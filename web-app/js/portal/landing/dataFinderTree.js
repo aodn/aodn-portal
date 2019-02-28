@@ -3,7 +3,9 @@ $(document).ready(function() {
 
     var proxyUrl = 'proxy?url=';
 
-    // todo get them from landing/getFacetsAsJson
+    /*
+     todo get from metadata landing/getFacetsAsJson
+    */
     var treeFacets = [
         {
             text: "Physical-Water",
@@ -75,6 +77,9 @@ $(document).ready(function() {
 
         updateGoButton(facet);
 
+        /*
+                todo Where to ge meta information on the facets ?
+         */
         $.ajax({
             type: "GET",
             url:  proxyUrl + encodeURIComponent("https://en.wikipedia.org/w/api.php?action=opensearch&search=" + encodeURIComponent(facet)),
@@ -102,14 +107,28 @@ $(document).ready(function() {
 
     function updateGoButton(facet) {
 
-        var searchTerm = (facet) ? "search?facet=" + facet : "";
-        var facetText = (facet) ?  facet : "Ocean";
-        var buttonText = "'" + facetText + "'";
+        var searchTerm =  "search?facet=" + facet;
+        var facetText =  facet;
 
-        $('#goButton').text(`Get ${buttonText} Data Now`);
+        if (facet) {
+            $('#goAllButton').removeClass("hidden");
+            $('#goButton').removeClass("btn-lg");
+
+        }
+        else {
+            searchTerm = "";
+            facetText =  "Ocean";
+            $('#goAllButton').addClass("hidden");
+            $('#goButton').addClass("btn-lg");
+        }
+
+        $('#goButton').text('Get \'' + facetText + '\' Data Now');
         $('#goButton').attr("href", searchTerm);
     }
 
+    /*
+        todo wikipedia could be populated with our facet information?
+     */
     function WikipediaAPIGetContent(searchTerm) {
         $.ajax({
             type: "GET",
@@ -130,7 +149,7 @@ $(document).ready(function() {
         if (data) {
             var markup = data.parse.text["*"];
 
-            var blurb = $('<div></div>').html(markup);
+            var blurb = $('<div itemprop="description"></div>').html(markup);
 
             blurb.prepend('<h5>Results from Wikipedia</h5>');
 
@@ -149,7 +168,11 @@ $(document).ready(function() {
             blurb.find('.mw-ext-cite-error').remove();
 
             $('#facetGlossary').html(blurb.find('p'));
-            var headerText = '<h4 ><i><b><i class="fa fa-quote-left" aria-hidden="true"></i>' + searchTerm + '<i class="fa fa-quote-right" aria-hidden="true"></i></b> from Wikipedia</i></h4>';
+
+            var headerText = '<h4 ><i><b><i class="fa fa-quote-left" aria-hidden="true"></i>' +
+                '<span itemprop="variableMeasured">' + searchTerm + '</span>'  +
+                '<i class="fa fa-quote-right" aria-hidden="true"></i></b> from Wikipedia</i></h4>';
+
             $('#facetGlossary').prepend(headerText).removeClass("hidden");
         }
         else {
