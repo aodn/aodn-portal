@@ -3,6 +3,7 @@ package au.org.emii.portal
 class LandingController {
 
     def portalBranding
+    def sitemapService
 
     def index = {
 
@@ -18,5 +19,9 @@ class LandingController {
                 ]
             )
         }
+    }
+
+    def getFacetsAsJson = {
+        return sitemapService.getFacetsAsJson()
     }
 }

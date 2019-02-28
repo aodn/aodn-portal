@@ -173,6 +173,9 @@ filtering {
 // This array should be populated from chef config
 knownServers = [
     [
+        uri: 'https://en.wikipedia.org/w/api.php'
+    ],
+    [
         uri: 'http://geoserver-123.aodn.org.au/geoserver/wms',
         wmsVersion: '1.1.1',
         type: 'GeoServer',
@@ -312,7 +315,7 @@ minimap {
 }
 
 portal {
-    siteHeader = "Open Access to Ocean Data"
+    siteHeader = "The Australian Ocean Data Network"
     motdUrl = "https://static.emii.org.au/motd"
     logo = "https://static.emii.org.au/images/logo/AODN_logo_fullText.png"
     secondaryLogo = "https://static.emii.org.au/images/logo/IMOS_logo-stacked-reversed-Converted.png"

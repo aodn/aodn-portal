@@ -41,18 +41,26 @@
 
 <!-- first section - Home -->
 <section id="home" data-uitype="background" data-speed="4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 text-left">
+                <div class="text-vcenter">
+                    <div class="homeContent">
+                        <span class="secondaryTitle" itemscope itemtype ="http://schema.org/Data" >"The AODN is the gateway to Australian marine and climate science data"</span>
 
-    <div class="text-vcenter">
-        <div class="homeContent">
-            <h1>AODN Portal</h1>
-
-            <p>"The gateway to Australian marine and climate science data"</p>
-
-            <div><a href="search" class="btn btn-primary btn-lg">Get Ocean Data Now</a></div>
+                        <div class="goButton" ><a id="goButton" href="search" class="btn btn-primary btn-lg">Get Ocean Data Now</a></div>
+                    </div>
+                    <div id="facetGlossary" class="panel-body hidden" ></div>
+                </div>
+            </div>
+            <div class="col-md-6 col-md-offset-1">
+                <div id="dataFinderTree"></div>
+            </div>
         </div>
     </div>
 
 </section>
+
 
 <section id="information" data-uitype="fade">
     <div class="container">
@@ -60,7 +68,7 @@
 
             <div class="col-md-4 text-left">
                 <div class="footerText">
-                    <div class="panel-body lead">
+                    <div class="panel-body">
                         <p>
                             The <strong>AODN Portal</strong> provides access to all available Australian marine and climate science data and provides the primary access to IMOS data including access to the IMOS metadata.
                         </p>

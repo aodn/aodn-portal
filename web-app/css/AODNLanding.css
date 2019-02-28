@@ -15,10 +15,6 @@ a {
     font-weight: bold;;
 }
 
-td, p, button {
-    font-family: inherit;
-}
-
 h1, h2 {
     white-space: normal;
 }
@@ -56,6 +52,7 @@ img {
 }
 
 #home {
+    padding: 50px 0;
     background: #246190 url(../images/AODN/landing/Nature-Clear-Sky-Blue-Water.jpg) no-repeat top center fixed;
     box-shadow: inset 0 0 59px 3px rgba(16, 64,94, 0.9);
     -webkit-background-size: cover;
@@ -97,10 +94,9 @@ img {
 
 }
 
-#home .homeContent p {
+#home span.secondaryTitle {
     font-family: "Oswald",sans-serif;
-    font-size: 1.8em;
-    margin: 10px 0 20px 0;
+    font-size: 2em;
     text-shadow: 1px 1px 16px rgba(6,73,108, 0.62);
 }
 
@@ -108,7 +104,7 @@ img {
     font-family: impact, sans-serif;
     text-shadow: 1px 1px 16px rgba(6,73,108, 0.62);
     font-weight: 700;
-    font-size: 8.5em;
+    font-size: 5.5em;
     margin: 0;
     padding: 0;
 }
@@ -132,12 +128,6 @@ a:focus {
 
 .socialLinks {
     text-align: right;
-}
-
-@media (min-width: 1000px) {
-    .container{
-        max-width: 800px;
-    }
 }
 
 @media (max-width: 1000px)  {
@@ -188,4 +178,22 @@ a:focus {
 
 #toplinks a:not(:first-child) {
     border-left: 1px solid #9daab1;
+}
+
+#facetGlossary *{
+
+    text-align: left;
+    color: #ccc;
+}
+#facetGlossary {
+    border-radius: 4px;
+    background-color: #428bca;
+}
+#facetGlossary p, #facetGlossary b
+{
+    color: white;
+}
+
+.goButton {
+    padding: 20px 0;
 }
