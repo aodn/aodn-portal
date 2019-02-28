@@ -17,7 +17,8 @@ Portal.ui.openlayers.LayerParams = Ext.extend(Object, {
             cql: layerDescriptor.cql,
             queryable: layerDescriptor.queryable,
             styles:layerDescriptor.defaultStyle,
-            exceptions: 'application/vnd.ogc.se_xml'   // Don't display stack traces on the map!
+            exceptions: 'application/vnd.ogc.se_xml',   // Don't display stack traces on the map!
+            TILED: 'true'
         };
 
         Ext.apply(this, defaultParams);

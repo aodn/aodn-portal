@@ -4,7 +4,10 @@ OpenLayers.Layer.MiniMapBaseLayer = OpenLayers.Class(OpenLayers.Layer.WMS, {
         OpenLayers.Layer.WMS.prototype.initialize.apply(this, [
             Portal.app.appConfig.minimap.baselayer.name,
             Portal.app.appConfig.minimap.baselayer.url,
-            { layers: Portal.app.appConfig.minimap.baselayer.params.layers },
+            {
+                layers: Portal.app.appConfig.minimap.baselayer.params.layers,
+                format: Portal.app.appConfig.minimap.baselayer.params.format
+            },
             { wrapDateLine: true }
         ]);
     }
