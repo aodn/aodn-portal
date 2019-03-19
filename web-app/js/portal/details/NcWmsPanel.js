@@ -28,6 +28,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             this._onSelectedLayerChanged(newLayer);
         }, this);
 
+        this.dataCollection.on(Portal.data.DataCollection.EVENTS.FILTERS_LOAD_SUCCESS, this._filtersLoaded, this);
+
         var config = Ext.apply({
             autoHeight: true,
             autoDestroy: true,
@@ -57,6 +59,11 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this._initWithLayer();
         this._addClearButton();
+    },
+
+    _filtersLoaded: function() {
+        // happens after _layerTemporalExtentLoad called
+        this._applyFilterValuesToCollection();
     },
 
     _addZAxisControls: function() {
@@ -533,15 +540,18 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
             var errorMessage = "";
 
-            if (this._getDateErrors().length > 0) {
-                var dateRangeStart = moment(); // dummy values for now
-                var dateRangeEnd   = moment();
-                errorMessage = this._getDateErrors();
-            }
-            else {
-                var dateRangeStart = this._getUtcMomentFromPicker(this.startDateTimePicker);
-                var dateRangeEnd = this._getUtcMomentFromPicker(this.endDateTimePicker);
-                this.dataCollection.isTemporalExtentSubsetted = this.isTemporalExtentSubsetted(dateRangeStart, dateRangeEnd);
+            var dateRangeStart = moment(); // dummy values for now
+            var dateRangeEnd   = moment();
+
+            if (this.hasTemporalExtent()) {
+                if (this._getDateErrors().length > 0) {
+                    errorMessage = this._getDateErrors();
+                }
+                else {
+                    var dateRangeStart = this._getUtcMomentFromPicker(this.startDateTimePicker);
+                    var dateRangeEnd = this._getUtcMomentFromPicker(this.endDateTimePicker);
+                    this.dataCollection.isTemporalExtentSubsetted = this.isTemporalExtentSubsetted(dateRangeStart, dateRangeEnd);
+                }
             }
 
             var geometry = this._getGeometryFilter();
@@ -568,6 +578,8 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
                 errorMessage.contains(OpenLayers.i18n("invalidTemporalExtent"))
             );
             this._updateTimeRangeLabel();
+
+            Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, this.dataCollection); // clear the cursor 'wait' style
         }
     },
 
@@ -601,6 +613,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
     shouldHaveTemporalExtent: function() {
         var metadata = this.dataCollection.data.metadataRecord.data;
         return (metadata.temporalExtentBegin.length > 0) && (metadata.temporalExtentEnd.length > 0);
+    },
+
+    hasTemporalExtent: function() {
+        return (Object.keys(this.layer.temporalExtent.extent).length != 0)
     },
 
     _isDateRangeValid: function(start, end) {
@@ -715,10 +731,10 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
 
         this.layerTemporalExtentLoaded = true;
 
-        if ((Object.keys(layer.temporalExtent.extent).length == 0)) {
+        if (!this.hasTemporalExtent()) {
 
             if (this.shouldHaveTemporalExtent()) {
-                log.error("Unable to load temporal information for '" + layer.wmsName + "' (" + layer.url + ")" );
+                log.info("No temporal information found for '" + layer.wmsName + "' (" + layer.url + ")" );
             }
             this._showStatusInfo(OpenLayers.i18n('unavailableTemporalExtent'), this.INFO_STYLES["warning"]);
 
@@ -738,8 +754,6 @@ Portal.details.NcWmsPanel = Ext.extend(Ext.Container, {
             else {
                 this._resetExtent(this.layer.getSubsetExtentMin(), this.layer.getSubsetExtentMax());
                 this._applyFilterValuesToCollection();
-
-                Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_MODIFIED, this.dataCollection);
             }
             this._setFrameButtonsState();
         }
