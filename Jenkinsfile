@@ -1,11 +1,12 @@
 pipeline {
     agent {
         dockerfile {
-            args '-v ${HOME}/.m2:/var/maven/.m2'
+            args '-v ${HOME}/.m2:/home/jenkins/.m2 -v ${HOME}/.grails:/home/jenkins/.grails'
         }
     }
     environment {
-        JAVA_TOOL_OPTIONS = '-Duser.home=/var/maven'
+        HOME = '/home/jenkins'
+        JAVA_TOOL_OPTIONS = '-Duser.home=/home/jenkins'
     }
     stages {
         stage('test') {
@@ -27,4 +28,3 @@ pipeline {
         }
     }
 }
-
