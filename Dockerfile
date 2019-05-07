@@ -17,6 +17,3 @@ RUN wget https://github.com/grails/grails-core/releases/download/v$GRAILS_VERSIO
     unzip grails-$GRAILS_VERSION.zip && \
     rm -rf grails-$GRAILS_VERSION.zip && \
     ln -s grails-$GRAILS_VERSION grails
-
-COPY . /app
-WORKDIR /app
