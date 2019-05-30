@@ -229,7 +229,7 @@ knownServers = [
         type: 'ncWMS'
     ],
     [
-        uri: 'http://biocache.ala.org.au/ws',
+        uri: 'https://biocache.ala.org.au/ws',
         wmsVersion: '1.1.1',
         type: 'ALA'
     ],
