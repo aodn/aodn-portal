@@ -15,10 +15,6 @@ pipeline {
                     additionalBuildArgs '--build-arg BUILDER_UID=${JENKINS_UID:-9999}'
                 }
             }
-            environment {
-                HOME = '/home/builder'
-                JAVA_TOOL_OPTIONS = '-Duser.home=/home/builder'
-            }
             stages {
                 stage('test') {
                     steps {
