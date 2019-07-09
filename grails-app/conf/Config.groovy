@@ -62,7 +62,7 @@ help {
 oceanCurrent.url = "http://oceancurrent.aodn.org.au"
 
 // Depth service
-depthService.url = "http://geoserver-static.aodn.org.au/geoserver/wfs?typeName=world_depth_view&SERVICE=WFS&REQUEST=GetFeature&VERSION=1.0.0&outputFormat=application/json&viewparams="
+depthService.url = "http://geoserver-123.aodn.org.au/geoserver/wfs?typeName=world_depth_view&SERVICE=WFS&REQUEST=GetFeature&VERSION=1.0.0&outputFormat=application/json&viewparams="
 
 downloadAuth {
     // Never show a captcha to those IP addresses
