@@ -24,6 +24,11 @@ Portal.cart.DownloadHandler = Ext.extend(Object, {
         return this.onlineResource.name;
     },
 
+    _resourceTitle: function() {
+
+        return this.onlineResource.title;
+    },
+
     _resourceNameNotEmpty: function() {
 
         var name = this._resourceName();
