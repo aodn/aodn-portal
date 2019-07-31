@@ -15,7 +15,7 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
                     downloadLabel: OpenLayers.i18n('downloadCsvNonGriddedAction'),
-                    filenameFormat: "{0}" + miniTitle + "{1}.csv"
+                    filenameFormat: "{0}" + miniTitle + ".csv"
                 }
             });
         }
@@ -27,8 +27,9 @@ Portal.cart.WfsDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         // https://github.com/aodn/backlog/issues/225
         var match = this._resourceTitle().match(/\((.*?)\)/);
         if (match) {
-            return String.format("-{0}", match[0])
+            return String.format("-{0}", match[1])
         }
+        return "";
     },
 
     _showDownloadOptions: function() {
