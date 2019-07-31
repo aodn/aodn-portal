@@ -97,11 +97,4 @@ class CoreGeoserverServerTests extends GrailsUnitTestCase {
         catch(e) {}
         assertEquals expected, filtersJson
     }
-
-    void testLookup() {
-        def result = coreGeoserverServer.getLayerInfo("http://geoserver-rc.aodn.org.au/geoserver/wms", "imos:argo_profile_map")
-        def expected = ["owsType": "WFS", "wfsUrl": "http://geoserver-rc.aodn.org.au/geoserver/wfs?", "owsURL": "http://geoserver-rc.aodn.org.au/geoserver/wfs?", "typeName": "imos:argo_profile_map"]
-
-        assertEquals(expected, result)
-    }
 }
