@@ -10,7 +10,8 @@ describe('Portal.cart.WfsDownloadHandler', function () {
 
                 var testResource = {
                     name: 'layer_name',
-                    href: 'server_url'
+                    href: 'server_url',
+                    title: "this is a (Multi Layer) collection"
                 };
                 var handler = new Portal.cart.WfsDownloadHandler(testResource);
                 downloadOptions =  handler.getDownloadOptions();
@@ -19,6 +20,11 @@ describe('Portal.cart.WfsDownloadHandler', function () {
             it('should return one download handler', function() {
 
                 expect(downloadOptions.length).toBe(1);
+            });
+
+
+            it('should return correct filenameFormat', function() {
+                expect(downloadOptions[0].handlerParams.filenameFormat).toBe("{0}-Multi Layer.csv");
             });
 
             it('should return a function which calls other appropriate functions', function() {
