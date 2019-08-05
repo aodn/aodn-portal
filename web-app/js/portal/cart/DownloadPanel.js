@@ -198,8 +198,8 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
 
                 if (this.hasDuplicateWfsDownloadLinks(downloadHandlers, collection.getFilters())) {
                     // add to group if a title is configured
-                    if (this.getEmbeddedTitle(handler.onlineResource.title)) {
-                        var groupLabel = this.getEmbeddedTitle(handler.onlineResource.title);
+                    var groupLabel = handler._getFormattedTitle();
+                    if (groupLabel) {
                         if (groupedMenuItems[groupLabel] == undefined) {
                             groupedMenuItems[groupLabel] = [];
                         }
@@ -229,12 +229,6 @@ Portal.cart.DownloadPanel = Ext.extend(Ext.Panel, {
                 });
             }
         }
-    },
-
-    getEmbeddedTitle: function(title) {
-        var regexBracketContents = /\(([^)]+)\)/;
-        var regexRes = regexBracketContents.exec(title);
-        return (regexRes && regexRes[1].length > 0) ? regexRes[1].toTitleCase() : false;
     },
 
     confirmDownload: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {

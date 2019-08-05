@@ -24,9 +24,10 @@ Portal.cart.DownloadHandler = Ext.extend(Object, {
         return this.onlineResource.name;
     },
 
-    _resourceTitle: function() {
-
-        return this.onlineResource.title;
+    _getFormattedTitle: function() {
+        var regexBracketContents = /\(([^)]+)\)/;
+        var regexRes = regexBracketContents.exec(this.onlineResource.title);
+        return (regexRes && regexRes[1].length > 0) ? regexRes[1].toTitleCase() : false;
     },
 
     _resourceNameNotEmpty: function() {

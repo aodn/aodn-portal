@@ -41,6 +41,25 @@ describe('Portal.cart.DownloadHandler', function () {
         });
     });
 
+    describe('_getFormattedTitle', function() {
+
+        beforeEach(function() {
+            handler = new Portal.cart.DownloadHandler({
+                href: 'some_url'
+            });
+        });
+
+        it('Extracts the real title super trickerly embeded title in the description field from Geonetwork', function() {
+            handler.onlineResource.title = "this is a super long string (data Download) stuff";
+            expect(handler._getFormattedTitle()).toEqual('Data Download');
+        });
+
+        it('returns false when the super trickerly embeded title is missing from the description field from Geonetwork', function() {
+            handler.onlineResource.title = "this is a super long string {data Download) stuff";
+            expect(handler._getFormattedTitle()).toEqual(false);
+        });
+    });
+
     describe('OnlineResource with href and name', function() {
         beforeEach(function() {
             handler = new Portal.cart.DownloadHandler({

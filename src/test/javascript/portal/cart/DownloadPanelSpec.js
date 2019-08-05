@@ -253,17 +253,6 @@ describe("Portal.cart.DownloadPanel", function() {
         });
     });
 
-    describe('getEmbeddedTitle', function() {
-
-        it('Extracts the real title super trickerly embeded title in the description field from Geonetwork', function() {
-            expect(downloadPanel.getEmbeddedTitle('title = "this is a super long string (data Download) stuff";')).toEqual('Data Download');
-        });
-
-        it('returns false when the super trickerly embeded title is missing from the description field from Geonetwork', function() {
-            expect(downloadPanel.getEmbeddedTitle('title = "this is a super long string {data Download) stuff";')).toEqual(false);
-        });
-    });
-
     var makeTestCollection = function(uuid) {
         return {
             getUuid: returns(uuid),

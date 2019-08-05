@@ -11,7 +11,7 @@ describe('Portal.cart.WfsDownloadHandler', function () {
                 var testResource = {
                     name: 'layer_name',
                     href: 'server_url',
-                    title: "this is a (Multi Layer) collection"
+                    title: "The OGC service (Derived CPR Indices) is a OGC service"
                 };
                 var handler = new Portal.cart.WfsDownloadHandler(testResource);
                 downloadOptions =  handler.getDownloadOptions();
@@ -24,7 +24,7 @@ describe('Portal.cart.WfsDownloadHandler', function () {
 
 
             it('should return correct filenameFormat', function() {
-                expect(downloadOptions[0].handlerParams.filenameFormat).toBe("{0}-Multi Layer.csv");
+                expect(downloadOptions[0].handlerParams.filenameFormat).toBe("{0}_Derived CPR Indices.csv");
             });
 
             it('should return a function which calls other appropriate functions', function() {
