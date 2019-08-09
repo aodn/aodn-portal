@@ -1,11 +1,21 @@
 pipeline {
-    agent none
+    agent { label 'master' }
 
     stages {
         stage('clean') {
-            agent { label 'master' }
             steps {
                 sh 'git clean -fdx'
+            }
+        }
+        stage('set_version') {
+            steps {
+                sh 'bumpversion patch'
+            }
+        }
+        stage('release') {
+            when { branch 'master' }
+            steps {
+                sh 'bumpversion --tag --commit --allow-dirty release'
             }
         }
         stage('container') {
@@ -13,6 +23,7 @@ pipeline {
                 dockerfile {
                     args '-v ${HOME}/.m2:/home/builder/.m2 -v ${HOME}/.grails:/home/builder/.grails'
                     additionalBuildArgs '--build-arg BUILDER_UID=${JENKINS_UID:-9999}'
+                    reuseNode true
                 }
             }
             stages {
