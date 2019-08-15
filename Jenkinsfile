@@ -2,12 +2,6 @@ pipeline {
     agent none
 
     stages {
-        stage('clean') {
-            agent { label 'master' }
-            steps {
-                sh 'git clean -fdx'
-            }
-        }
         stage('container') {
             agent {
                 dockerfile {
@@ -16,6 +10,18 @@ pipeline {
                 }
             }
             stages {
+                stage('set_version_build') {
+                    when { not { branch "master" } }
+                    steps {
+                        sh './bumpversion.sh build'
+                    }
+                }
+                stage('set_version_release') {
+                    when { branch "master" }
+                    steps {
+                        sh './bumpversion.sh release'
+                    }
+                }
                 stage('test') {
                     steps {
                         sh 'mvn -B clean test'

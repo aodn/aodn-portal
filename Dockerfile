@@ -10,8 +10,10 @@ ENV GRAILS_HOME /usr/lib/jvm/grails
 ENV PATH $GRAILS_HOME/bin:$PATH
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    openjdk-8-jdk \
+    git \
+    libxml2-utils \
     maven \
+    openjdk-8-jdk \
     unzip \
     wget \
     && rm -rf /var/lib/apt/lists/*

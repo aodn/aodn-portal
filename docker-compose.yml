@@ -12,3 +12,5 @@ services:
     working_dir: /app
     volumes:
       - './:/app'
+      - '$HOME/.m2:/home/builder/.m2'
+      - '${HOME}/.grails:/home/builder/.grails'
