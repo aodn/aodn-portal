@@ -234,6 +234,11 @@ knownServers = [
         type: 'ALA'
     ],
     [
+        uri: 'https://biocache-test.ala.org.au/ws',
+        wmsVersion: '1.1.1',
+        type: 'ALA'
+    ],
+    [
         uri: 'http://data2.tpac.org.au/geoserver/ncwms',
         wmsVersion: '1.3.0',
         type: 'ncWMS'
@@ -410,7 +415,7 @@ portal {
 // Atlas of Australia
 ala {
     aodnAlaId = '2003'
-    url = "https://biocache.ala.org.au/ws/autocomplete/search"
+    url = "https://biocache-test.ala.org.au/ws/autocomplete/search"
     index = 'species_habitats:"Marine"'
     gfi_endpoint = "http://biocache.ala.org.au/ws/ogc/getFeatureInfo"
 }
