@@ -27,12 +27,6 @@ OpenLayers.Util.getImageLocation = function(image) {
 
 OpenLayers.Layer.DOWNLOAD_FORMAT_CSV = 'csv';
 
-// Override WMS.getURL to include proxy
-OpenLayers.Layer.WMS.prototype.___getURL = OpenLayers.Layer.WMS.prototype.getURL;
-OpenLayers.Layer.WMS.prototype.getURL = function(bounds) {
-    return Portal.utils.Proxy.proxy(this.___getURL(bounds));
-};
-
 OpenLayers.Layer.WMS.prototype.adjustBounds = function(bounds) {
     if (this.wrapDateLine) {
         // wrap around the date line, within the limits of rounding error
