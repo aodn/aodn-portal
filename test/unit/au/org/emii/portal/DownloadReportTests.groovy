@@ -20,7 +20,7 @@ class DownloadReportTests extends GrailsUnitTestCase {
         def testFilename = "Filename"
         def testSize = 2048
 
-        report._addFileEntry = { url, filename, result ->
+        report._makeFileEntry = { url, filename, result ->
 
             assertEquals testUrl, url
             assertEquals testFilename, filename
@@ -42,7 +42,7 @@ class DownloadReportTests extends GrailsUnitTestCase {
         def testFilename = "Filename"
         def testResult = "Borken"
 
-        report._addFileEntry = { url, filename, result ->
+        report._makeFileEntry = { url, filename, result ->
 
             assertEquals testUrl, url
             assertEquals testFilename, filename
@@ -63,17 +63,31 @@ class DownloadReportTests extends GrailsUnitTestCase {
         assertEquals 0, report.numberOfFilesTried
         assertEquals "", report.reportBody
 
-        report._addFileEntry "url", "filename", "went well"
+        def header = report.reportTempFile.getText()
+        report._addFileEntry(report._makeFileEntry("url", "filename", "went well"))
 
         assertEquals 1, report.numberOfFilesTried
-        assertEquals """\
 
-            --[ #1 ]------------------------------------
-            URL:                 url
-            Filename in archive: filename
-            Result:              went well
-            """,
-            report.reportBody
+        if (!report.REPORT_TEMP_FILE_SUFFIX) {
+            assertEquals """\
+    
+                --[ #1 ]------------------------------------
+                URL:                 url
+                Filename in archive: filename
+                Result:              went well
+                """,
+                report.reportBody
+        } else {
+            def entry =  """\
+                --[ #1 ]------------------------------------
+                URL:                 url
+                Filename in archive: filename
+                Result:              went well
+                """.stripIndent()
+
+            assertEquals """$header\n$entry""",
+            report.reportTempFile.getText()
+        }
     }
 
     void testGetText() {
