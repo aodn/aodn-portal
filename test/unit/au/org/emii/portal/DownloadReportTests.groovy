@@ -61,51 +61,21 @@ class DownloadReportTests extends GrailsUnitTestCase {
     void testAddFileEntry() {
 
         assertEquals 0, report.numberOfFilesTried
-        assertEquals "", report.reportBody
 
         def header = report.reportTempFile.getText()
+
         report._addFileEntry(report._makeFileEntry("url", "filename", "went well"))
 
         assertEquals 1, report.numberOfFilesTried
 
-        if (!report.REPORT_TEMP_FILE_SUFFIX) {
-            assertEquals """\
-    
-                --[ #1 ]------------------------------------
-                URL:                 url
-                Filename in archive: filename
-                Result:              went well
-                """,
-                report.reportBody
-        } else {
-            def entry =  """\
-                --[ #1 ]------------------------------------
-                URL:                 url
-                Filename in archive: filename
-                Result:              went well
-                """.stripIndent()
+        def entry =  """\
+            --[ #1 ]------------------------------------
+            URL:                 url
+            Filename in archive: filename
+            Result:              went well
+            """.stripIndent()
 
-            assertEquals """$header\n$entry""",
-            report.reportTempFile.getText()
-        }
-    }
-
-    void testGetText() {
-
-        report._currentDate = { new GregorianCalendar(1900, Calendar.AUGUST, 3, 12, 17).time }
-        report.reportBody = "report body"
-        report.sizeOfFilesAdded = 1024
-        report.numberOfFilesAdded = 8
-        report.numberOfFilesTried = 10
-        report._timeTaken = { "the duration" }
-
-        def reportText = report.text
-
-        assertTrue reportText.contains("Download cart report (3 août 1900 12:17)") // Locale is FR
-        assertTrue reportText.contains("report body")
-        assertTrue reportText.contains("Size of all files: 1024 Bytes")
-        assertTrue reportText.contains("Number of files included: 8/10")
-        assertTrue reportText.contains("Time taken: the duration")
+        assertEquals """$header\n$entry""", report.reportTempFile.getText()
     }
 
     void testTimeTaken() {

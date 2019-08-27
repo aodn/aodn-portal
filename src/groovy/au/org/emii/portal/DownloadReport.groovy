@@ -11,7 +11,6 @@ class DownloadReport {
 
     def locale
     def reportStart
-    def reportBody = ""
     def reportTempFile
 
     def numberOfFilesTried = 0
@@ -23,15 +22,13 @@ class DownloadReport {
         this.locale = locale
 
         reportStart = _currentDate()
-        if (REPORT_TEMP_FILE_SUFFIX) {
-            try {
-                reportTempFile = File.createTempFile(REPORT_TEMP_FILE_SUFFIX, "tmp")
-                reportTempFile.deleteOnExit()
-                reportTempFile.write(_header())
-            } catch (Throwable e) {
-                log.warn "Error creating report file: '$REPORT_TEMP_FILE_SUFFIX'"
-                log.debug "Caused by:", e
-            }
+        try {
+            reportTempFile = File.createTempFile(REPORT_TEMP_FILE_SUFFIX, "tmp")
+            reportTempFile.deleteOnExit()
+            reportTempFile.write(_header())
+        } catch (Throwable e) {
+            log.warn "Error creating report file: '$REPORT_TEMP_FILE_SUFFIX'"
+            log.debug "Caused by:", e
         }
     }
 
@@ -85,24 +82,12 @@ class DownloadReport {
 
     def _addFileEntry = { fileEntry ->
 
-        if (REPORT_TEMP_FILE_SUFFIX) {
-            try {
-                reportTempFile.append(fileEntry)
-            } catch (Throwable e) {
-                log.warn "Error writing to report file: '$REPORT_TEMP_FILE_SUFFIX'"
-                log.debug "Caused by:", e
-            }
-        } else {
-            reportBody += fileEntry
+        try {
+            reportTempFile.append(fileEntry)
+        } catch (Throwable e) {
+            log.warn "Error writing to report file: '$REPORT_TEMP_FILE_SUFFIX'"
+            log.debug "Caused by:", e
         }
-    }
-
-    def getText() {
-
-        return """\
-            ${_header()}
-            $reportBody
-            ${_footer()}""".stripIndent()
     }
 
     def getTempFile() {
