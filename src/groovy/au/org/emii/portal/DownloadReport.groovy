@@ -26,7 +26,7 @@ class DownloadReport {
             reportTempFile = File.createTempFile(REPORT_TEMP_FILE_SUFFIX, "tmp")
             reportTempFile.deleteOnExit()
             reportTempFile.write(_header())
-        } catch (Throwable e) {
+        } catch (Exception e) {
             log.warn "Error creating report file: '$REPORT_TEMP_FILE_SUFFIX'"
             log.debug "Caused by:", e
         }
@@ -84,7 +84,7 @@ class DownloadReport {
 
         try {
             reportTempFile.append(fileEntry)
-        } catch (Throwable e) {
+        } catch (Exception e) {
             log.warn "Error writing to report file: '$REPORT_TEMP_FILE_SUFFIX'"
             log.debug "Caused by:", e
         }
@@ -100,7 +100,7 @@ class DownloadReport {
 
         try {
             reportTempFile.delete()
-        } catch (Throwable e) {
+        } catch (Exception e) {
             log.warn "Error deleting temporary report file: '$REPORT_TEMP_FILE_SUFFIX'"
             log.debug "Caused by:", e
         }

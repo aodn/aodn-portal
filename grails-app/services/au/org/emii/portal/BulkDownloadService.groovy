@@ -92,7 +92,7 @@ class BulkDownloadService {
             log.debug "Added $bytesCopied Bytes"
 
             if (!isReportFile) { report.addSuccessfulFileEntry url, filenameToUse, bytesCopied }
-        } catch (Throwable e) {
+        } catch (Exception e) {
 
             log.warn "Error adding file to download archive. URL: '$url'"
             log.debug "Caused by:", e
