@@ -7,7 +7,7 @@ import java.text.DateFormat
 class DownloadReport {
 
     static final def REPORT_TEMP_FILE_SUFFIX = "download_report"
-    static final def ZIP_FILE_NAME = "download_report.txt"
+    static final def ZIPPED_REPORT_FILENAME = "download_report.txt"
 
     def locale
     def reportStart

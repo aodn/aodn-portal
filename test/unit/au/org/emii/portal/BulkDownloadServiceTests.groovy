@@ -280,7 +280,7 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
         assertZipEntriesValid(
             responseStream,
-            [[name: service.report.ZIP_FILE_NAME, size: expectedSize]]
+            [[name: service.report.ZIPPED_REPORT_FILENAME, size: expectedSize]]
         )
         service._closeStream()
     }

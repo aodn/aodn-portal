@@ -72,9 +72,9 @@ class BulkDownloadService {
         def filenameToUse
         def isReportFile = false
 
-        if (url == report.ZIP_FILE_NAME) {
+        if (url == report.ZIPPED_REPORT_FILENAME) {
             url = report.tempFile.toURI()
-            filenameToUse = report.ZIP_FILE_NAME
+            filenameToUse = report.ZIPPED_REPORT_FILENAME
             isReportFile = true
         } else {
             filenameToUse = _uniqueFilenameForUrl(url)
@@ -143,7 +143,7 @@ class BulkDownloadService {
 
     def _addDownloadReportToArchive = { ->
 
-        _addFileEntry(report.ZIP_FILE_NAME)
+        _addFileEntry(report.ZIPPED_REPORT_FILENAME)
         report.deleteTempFile()
     }
 
