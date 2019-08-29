@@ -269,8 +269,10 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
     void testAddDownloadReportToArchive() {
 
-        service.report = [text: "the report"]
+        def testLocale = new Locale("ENGLISH")
 
+        service.report = new DownloadReport(testLocale)
+        def expectedSize = service.report._header().length() + service.report._footer().length()
         def responseStream = new ByteArrayOutputStream()
         service._createZipStream(responseStream)
 
@@ -278,9 +280,8 @@ class BulkDownloadServiceTests extends GrailsUnitTestCase {
 
         assertZipEntriesValid(
             responseStream,
-            [[name: "download_report.txt", size: "the report".length()]]
+            [[name: service.report.ZIPPED_REPORT_FILENAME, size: expectedSize]]
         )
-
         service._closeStream()
     }
 

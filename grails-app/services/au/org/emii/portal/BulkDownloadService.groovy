@@ -69,7 +69,17 @@ class BulkDownloadService {
 
     def _addFileEntry = { url ->
 
-        def filenameToUse = _uniqueFilenameForUrl(url)
+        def filenameToUse
+        def isReportFile = false
+
+        if (url == report.ZIPPED_REPORT_FILENAME) {
+            url = report.tempFile.toURI()
+            filenameToUse = report.ZIPPED_REPORT_FILENAME
+            isReportFile = true
+        } else {
+            filenameToUse = _uniqueFilenameForUrl(url)
+        }
+
         def streamFromUrl
 
         try {
@@ -81,9 +91,8 @@ class BulkDownloadService {
 
             log.debug "Added $bytesCopied Bytes"
 
-            report.addSuccessfulFileEntry url, filenameToUse, bytesCopied
-        }
-        catch (Exception e) {
+            if (!isReportFile) { report.addSuccessfulFileEntry url, filenameToUse, bytesCopied }
+        } catch (Exception e) {
 
             log.warn "Error adding file to download archive. URL: '$url'"
             log.debug "Caused by:", e
@@ -92,13 +101,16 @@ class BulkDownloadService {
                 def filenameInArchive = filenameToUse + '.failed'
 
                 zipStream.putNextEntry new ZipEntry(filenameInArchive)
-                report.addFailedFileEntry url, filenameInArchive, "Unable to download data from: '$url'"
+                if (!isReportFile) {
+                    report.addFailedFileEntry url, filenameInArchive, "Unable to download data from: '$url'"
+                }
             }
             else {
-                report.addFailedFileEntry url, filenameToUse, "Unknown error adding file"
+                if (!isReportFile) {
+                    report.addFailedFileEntry url, filenameToUse, "Unknown error adding file"
+                }
             }
-        }
-        finally {
+        } finally {
 
             streamFromUrl?.close()
             zipStream.closeEntry()
@@ -131,12 +143,8 @@ class BulkDownloadService {
 
     def _addDownloadReportToArchive = { ->
 
-        def reportEntry = new ZipEntry("download_report.txt")
-        def bytes = report.text.bytes
-
-        zipStream.putNextEntry reportEntry
-        zipStream.write bytes, 0, bytes.length
-        zipStream.closeEntry()
+        _addFileEntry(report.ZIPPED_REPORT_FILENAME)
+        report.deleteTempFile()
     }
 
     public static int copy(final InputStream input, final OutputStream output, final int bufferSize) throws IOException

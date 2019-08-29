@@ -20,7 +20,7 @@ class DownloadReportTests extends GrailsUnitTestCase {
         def testFilename = "Filename"
         def testSize = 2048
 
-        report._addFileEntry = { url, filename, result ->
+        report._makeFileEntry = { url, filename, result ->
 
             assertEquals testUrl, url
             assertEquals testFilename, filename
@@ -42,7 +42,7 @@ class DownloadReportTests extends GrailsUnitTestCase {
         def testFilename = "Filename"
         def testResult = "Borken"
 
-        report._addFileEntry = { url, filename, result ->
+        report._makeFileEntry = { url, filename, result ->
 
             assertEquals testUrl, url
             assertEquals testFilename, filename
@@ -61,37 +61,21 @@ class DownloadReportTests extends GrailsUnitTestCase {
     void testAddFileEntry() {
 
         assertEquals 0, report.numberOfFilesTried
-        assertEquals "", report.reportBody
 
-        report._addFileEntry "url", "filename", "went well"
+        def header = report.reportTempFile.getText()
+
+        report._addFileEntry(report._makeFileEntry("url", "filename", "went well"))
 
         assertEquals 1, report.numberOfFilesTried
-        assertEquals """\
 
+        def entry =  """\
             --[ #1 ]------------------------------------
             URL:                 url
             Filename in archive: filename
             Result:              went well
-            """,
-            report.reportBody
-    }
+            """.stripIndent()
 
-    void testGetText() {
-
-        report._currentDate = { new GregorianCalendar(1900, Calendar.AUGUST, 3, 12, 17).time }
-        report.reportBody = "report body"
-        report.sizeOfFilesAdded = 1024
-        report.numberOfFilesAdded = 8
-        report.numberOfFilesTried = 10
-        report._timeTaken = { "the duration" }
-
-        def reportText = report.text
-
-        assertTrue reportText.contains("Download cart report (3 août 1900 12:17)") // Locale is FR
-        assertTrue reportText.contains("report body")
-        assertTrue reportText.contains("Size of all files: 1024 Bytes")
-        assertTrue reportText.contains("Number of files included: 8/10")
-        assertTrue reportText.contains("Time taken: the duration")
+        assertEquals """$header\n$entry""", report.reportTempFile.getText()
     }
 
     void testTimeTaken() {
@@ -100,5 +84,12 @@ class DownloadReportTests extends GrailsUnitTestCase {
         report._currentDate = { new Date(4000) }
 
         assertEquals "2.000 seconds", report._timeTaken().toString()
+    }
+
+    void testGetTempFile() {
+
+        assert report.tempFile.exists() : "report temp file cannot be found"
+        assert report.tempFile.canRead() : "report temp file cannot be read"
+
     }
 }
