@@ -85,4 +85,11 @@ class DownloadReportTests extends GrailsUnitTestCase {
 
         assertEquals "2.000 seconds", report._timeTaken().toString()
     }
+
+    void testGetTempFile() {
+
+        assert report.tempFile.exists() : "report temp file cannot be found"
+        assert report.tempFile.canRead() : "report temp file cannot be read"
+
+    }
 }
