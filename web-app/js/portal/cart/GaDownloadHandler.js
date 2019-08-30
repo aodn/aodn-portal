@@ -91,17 +91,19 @@ Portal.cart.GaDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
         jsonData['format'] = "GeoTIFF";
         jsonData['coverages'] = handlerParams.layerName;
 
+        var returnParams = {
+            server: baseUrl,
+            body: JSON.stringify(jsonData)
+        };
+
         if (handlerParams.challengeResponse) {
-            jsonData['challengeResponse'] = encodeURIComponent(handlerParams.challengeResponse);
+            returnParams['challengeResponse'] = encodeURIComponent(handlerParams.challengeResponse);
         }
 
         return String.format(
             "{0}{1}",
             this.getAsyncDownloadUrl('json'),
-            Ext.urlEncode({
-                server: baseUrl,
-                body: JSON.stringify(jsonData)
-            })
+            Ext.urlEncode(returnParams)
         );
     }
 });
