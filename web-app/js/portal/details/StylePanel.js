@@ -203,6 +203,9 @@ Portal.details.StylePanel = Ext.extend(Ext.Container, {
         opts = opts.replace(/^[&]+/g, "");
         url += opts;
 
+        // Proxy request if needed
+        url = Portal.utils.Proxy.proxy(url);
+
         return url;
     },
 
