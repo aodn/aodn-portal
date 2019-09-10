@@ -82,7 +82,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
     _getFacetNode: function(facetName) {
         return this._searchResultRootNode.findChildBy(function(node) {
-            return node.attributes.tagName == 'dimension' && node.attributes.value == facetName;
+            return node.attributes.tagName == 'dimension' && node.attributes.name == facetName;
         }, this, true);
     },
 

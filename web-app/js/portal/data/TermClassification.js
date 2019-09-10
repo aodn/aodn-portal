@@ -2,9 +2,8 @@ Ext.namespace('Portal.data');
 
 Portal.data.TermClassification = function() {
 
-    function extractCategories(record, depth, result) {
-        var broader = record.attributes['value'].value;
-
+    function extractCategories(record, broader, depth, result) {
+        // var broader = record.attributes['label'].value;
         Ext.each(record.children, function(n) {
             var name = n.attributes['value'].value;
 
@@ -13,7 +12,7 @@ Portal.data.TermClassification = function() {
             }
 
             result[name].push({ 'broader': broader, 'depth': depth });
-            extractCategories(n, depth + 1, result);
+            extractCategories(n, name,depth + 1, result);
 
             return true;
         }, this.scope);
@@ -21,10 +20,10 @@ Portal.data.TermClassification = function() {
 
     function extractDimension(v, record) {
         var result = {};
-        var dimension = record.attributes['value'].value;
+        var dimension = record.attributes['name'].nodeValue;
 
         result[dimension] = [{ 'broader': null, 'depth': -1 }];
-        extractCategories(record, 0, result);
+        extractCategories(record, dimension, 0, result);
         return result;
     }
 

@@ -182,10 +182,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     _getMeasuredParametersText: function(values) {
-        var params = this._getBroaderTerms(values.parameter, 2 ,'Measured parameter');
+        var params = this._getBroaderTerms(values.parameter, 2 ,'parameterCategories');
 
         if (params.length > 0) {
-            return this._getFacetSearchLinks('Measured parameter', params);
+            return this._getFacetSearchLinks('parameterCategories', params);
         }
         else {
             return OpenLayers.i18n('noParametersForCollection');
@@ -212,7 +212,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         if (organisation) {
             return template.apply({
                 "label": label,
-                "value": this._getFacetSearchLinks('Organisation', organisation)
+                "value": this._getFacetSearchLinks('orgUnitCategories', organisation)
             });
         }
         return "";
@@ -221,12 +221,12 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _getPlatformAsHtml: function(template, platforms) {
 
         var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
-        var broaderPlatforms = this._getBroaderTerms(platforms, 1,'Platform');
+        var broaderPlatforms = this._getBroaderTerms(platforms, 1,'platformCategories');
 
         if (broaderPlatforms.length > 0) {
             return template.apply({
                 "label": label,
-                "value": this._getFacetSearchLinks('Platform', broaderPlatforms)
+                "value": this._getFacetSearchLinks('platformCategories', broaderPlatforms)
             });
         }
         return "";

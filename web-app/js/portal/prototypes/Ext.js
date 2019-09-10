@@ -9,6 +9,9 @@ Ext.tree.TreeNode.prototype.toValueHierarchy = function() {
         if (p.attributes.value) {
             values.push(encodeURIComponent(p.attributes.value));
         }
+        else if (p.attributes.name) {
+            values.push(encodeURIComponent(p.attributes.name));
+        }
         p = p.parentNode;
     } while (p);
 

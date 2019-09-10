@@ -86,20 +86,20 @@ featureToggles {
 enabledFacets = [
     [
         name: 'parameterFilter',
-        key: 'Measured parameter'
+        key: 'parameterCategories'
     ],
     [
         name: 'organisationFilter',
-        key: 'Organisation',
-        collapsedByDefault: true
+        key: 'orgUnitCategories',
+        collapsedByDefault: false
     ],
     [
         name: 'platformFilter',
-        key: 'Platform'
+        key: 'platformCategories'
     ],
     [
         name: 'temporalResolutionFilter',
-        key: 'Temporal Resolution',
+        key: 'temporalResolutionCategories',
         collapsedByDefault: true
     ],
     [
@@ -142,7 +142,7 @@ environments {
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
-        geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
+        geonetwork.url = "http://${localhostAddress}:8883/geonetwork"
         gogoduck.filenamePrepend = "IMOS_aggregation"
     }
 
