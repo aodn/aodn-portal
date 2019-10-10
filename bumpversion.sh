@@ -47,6 +47,9 @@ build() {
 }
 
 release() {
+  git config user.name "aodn-ci-build"
+  git config user.email "info@aodn.edu.au"
+  
   local suffix=" "
   _bumpversion "$suffix"
   local new_version=$(_get_maven_version)
