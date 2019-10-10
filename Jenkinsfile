@@ -18,13 +18,7 @@ pipeline {
                 stage('set_version_release') {
                     when { branch "master" }
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'github-ci', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                            sh ('''
-                                git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
-                                ./bumpversion.sh release
-                                ''')
-
-                        }
+                        sh './bumpversion.sh release'
                     }
                 }
                 stage('test') {
