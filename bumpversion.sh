@@ -26,6 +26,7 @@ _set_grails_version() {
 
 _update_git() {
   local version=$1; shift
+  git fetch --prune origin "+refs/tags/*:refs/tags/*"
   git add pom.xml application.properties
   git commit -m "Bump version to ${version}"
   git tag -a -f -m "Bump version to ${version}" ${version}
