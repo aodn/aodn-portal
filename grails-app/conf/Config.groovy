@@ -86,19 +86,23 @@ featureToggles {
 enabledFacets = [
     [
         name: 'parameterFilter',
+//        key: 'Measured parameter'
         key: 'parameterCategories'
     ],
     [
         name: 'organisationFilter',
+//        key: 'Organisation',
         key: 'orgUnitCategories',
         collapsedByDefault: false
     ],
     [
         name: 'platformFilter',
+//        key: 'Platform'
         key: 'platformCategories'
     ],
     [
         name: 'temporalResolutionFilter',
+//        key: 'Temporal Resolution',
         key: 'temporalResolutionCategories',
         collapsedByDefault: true
     ],
@@ -144,6 +148,7 @@ environments {
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "http://${localhostAddress}:8883/geonetwork"
         gogoduck.filenamePrepend = "IMOS_aggregation"
+        geonetwork.version = 3
     }
 
     test {
