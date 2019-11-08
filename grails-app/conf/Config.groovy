@@ -86,23 +86,54 @@ featureToggles {
 enabledFacets = [
     [
         name: 'parameterFilter',
-//        key: 'Measured parameter'
+        key: 'Measured parameter'
+    ],
+    [
+        name: 'organisationFilter',
+        key: 'Organisation',
+        collapsedByDefault: true
+    ],
+    [
+        name: 'platformFilter',
+        key: 'Platform'
+    ],
+    [
+        name: 'temporalResolutionFilter',
+        key: 'Temporal Resolution',
+        collapsedByDefault: true
+    ],
+    [
+        classId: 'Portal.search.DateSelectionPanel',
+        name: 'dateFilter'
+    ],
+    [
+        classId: 'Portal.search.GeoSelectionPanel',
+        name: 'geoFilter'
+    ],
+    [
+        classId: 'Portal.search.FreeTextSearchPanel',
+        name: 'freetextFilter',
+        key: 'freetextFilter',
+        collapsedByDefault: false
+    ]
+]
+
+facetsGN3 = [
+    [
+        name: 'parameterFilter',
         key: 'parameterCategories'
     ],
     [
         name: 'organisationFilter',
-//        key: 'Organisation',
         key: 'orgUnitCategories',
-        collapsedByDefault: false
+        collapsedByDefault: true
     ],
     [
         name: 'platformFilter',
-//        key: 'Platform'
         key: 'platformCategories'
     ],
     [
         name: 'temporalResolutionFilter',
-//        key: 'Temporal Resolution',
         key: 'temporalResolutionCategories',
         collapsedByDefault: true
     ],
@@ -146,9 +177,14 @@ environments {
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
-        geonetwork.url = "http://${localhostAddress}:8883/geonetwork"
+        geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
+        geonetwork.version = 2
         gogoduck.filenamePrepend = "IMOS_aggregation"
-        geonetwork.version = 3
+
+        if (geonetwork.version == 3) {
+            enabledFacets = facetsGN3
+        }
+
     }
 
     test {
@@ -164,6 +200,7 @@ environments {
         geonetwork.url = "http://catalogue-portal.aodn.org.au/geonetwork"
     }
 }
+
 
 geonetwork.searchPath = 'xml.search.imos'
 
