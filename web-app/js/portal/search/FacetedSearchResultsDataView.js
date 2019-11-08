@@ -182,10 +182,18 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     _getMeasuredParametersText: function(values) {
-        var params = this._getBroaderTerms(values.parameter, 2 ,'Measured parameter');
+
+        var termType = ''
+        if (Portal.app.appConfig.geonetwork.version === 3) {
+            termType = 'parameterCategories'
+        } else {
+            termType = 'Measured parameter'
+        }
+
+        var params = this._getBroaderTerms(values.parameter, 2 ,termType);
 
         if (params.length > 0) {
-            return this._getFacetSearchLinks('Measured parameter', params);
+            return this._getFacetSearchLinks(termType, params);
         }
         else {
             return OpenLayers.i18n('noParametersForCollection');
@@ -209,10 +217,17 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _getOrganisationAsHtml: function(template, organisation) {
         var label = this._buildLabel("fa-institution", OpenLayers.i18n('searchOrganisationText'));
 
+        var termType = ''
+        if (Portal.app.appConfig.geonetwork.version === 3) {
+            termType = 'orgUnitCategories'
+        } else {
+            termType = 'Organisation'
+        }
+
         if (organisation) {
             return template.apply({
                 "label": label,
-                "value": this._getFacetSearchLinks('Organisation', organisation)
+                "value": this._getFacetSearchLinks(termType, organisation)
             });
         }
         return "";
@@ -221,12 +236,20 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     _getPlatformAsHtml: function(template, platforms) {
 
         var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
-        var broaderPlatforms = this._getBroaderTerms(platforms, 1,'Platform');
+
+        var termType = ''
+        if (Portal.app.appConfig.geonetwork.version === 3) {
+            termType = 'platformCategories'
+        } else {
+            termType = 'Platform'
+        }
+
+        var broaderPlatforms = this._getBroaderTerms(platforms, 1,termType);
 
         if (broaderPlatforms.length > 0) {
             return template.apply({
                 "label": label,
-                "value": this._getFacetSearchLinks('Platform', broaderPlatforms)
+                "value": this._getFacetSearchLinks(termType, broaderPlatforms)
             });
         }
         return "";

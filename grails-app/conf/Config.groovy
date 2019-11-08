@@ -118,6 +118,41 @@ enabledFacets = [
     ]
 ]
 
+facetsGN3 = [
+    [
+        name: 'parameterFilter',
+        key: 'parameterCategories'
+    ],
+    [
+        name: 'organisationFilter',
+        key: 'orgUnitCategories',
+        collapsedByDefault: true
+    ],
+    [
+        name: 'platformFilter',
+        key: 'platformCategories'
+    ],
+    [
+        name: 'temporalResolutionFilter',
+        key: 'temporalResolutionCategories',
+        collapsedByDefault: true
+    ],
+    [
+        classId: 'Portal.search.DateSelectionPanel',
+        name: 'dateFilter'
+    ],
+    [
+        classId: 'Portal.search.GeoSelectionPanel',
+        name: 'geoFilter'
+    ],
+    [
+        classId: 'Portal.search.FreeTextSearchPanel',
+        name: 'freetextFilter',
+        key: 'freetextFilter',
+        collapsedByDefault: false
+    ]
+]
+
 // Google Analytics
 googleAnalytics.trackingId = null
 
@@ -143,7 +178,13 @@ environments {
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
+        geonetwork.version = 2
         gogoduck.filenamePrepend = "IMOS_aggregation"
+
+        if (geonetwork.version == 3) {
+            enabledFacets = facetsGN3
+        }
+
     }
 
     test {
@@ -159,6 +200,7 @@ environments {
         geonetwork.url = "http://catalogue-portal.aodn.org.au/geonetwork"
     }
 }
+
 
 geonetwork.searchPath = 'xml.search.imos'
 
