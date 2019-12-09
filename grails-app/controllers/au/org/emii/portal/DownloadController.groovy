@@ -78,15 +78,12 @@ class DownloadController extends RequestProxyingController {
 
         try {
             bulkDownloadService.generateArchiveOfFiles(urls, response.outputStream, request.locale)
-        }
-        catch (Exception e) {
-
-            if (e.cause.class == ClientAbortException) {
-                log.debug "ClientAbortException caught during bulk download.", e
-            }
-            else {
-                log.error "Unhandled exception during bulk download", e
-            }
+        } catch (ClientAbortException e) {
+            log.warn "Client aborted download"
+            log.debug "Caused by:", e
+        } catch (Exception e) {
+            log.error "Unhandled exception during bulk download"
+            log.debug "Caused by:", e
         }
     }
 

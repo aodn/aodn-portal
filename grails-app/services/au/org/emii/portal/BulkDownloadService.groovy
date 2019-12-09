@@ -1,6 +1,7 @@
 package au.org.emii.portal
 
 import groovy.time.TimeCategory
+import org.apache.catalina.connector.ClientAbortException
 
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
@@ -30,8 +31,10 @@ class BulkDownloadService {
         try {
             _createZipStream outputStream
             _writeFilesToStream urlList
-        }
-        finally {
+        } catch (ClientAbortException e) {
+            log.warn "Client aborted download"
+            log.debug "Caused by:", e
+        } finally {
 
             try {
                 _closeStream()
@@ -88,10 +91,12 @@ class BulkDownloadService {
             zipStream.putNextEntry new ZipEntry(filenameToUse)
 
             def bytesCopied = copy(streamFromUrl, zipStream, BUFFER_SIZE)
-
             log.debug "Added $bytesCopied Bytes"
-
-            if (!isReportFile) { report.addSuccessfulFileEntry url, filenameToUse, bytesCopied }
+            if (!isReportFile) {
+                report.addSuccessfulFileEntry url, filenameToUse, bytesCopied
+            }
+        } catch (ClientAbortException e) {
+            throw e
         } catch (Exception e) {
 
             log.warn "Error adding file to download archive. URL: '$url'"
@@ -99,7 +104,6 @@ class BulkDownloadService {
 
             if (!streamFromUrl) {
                 def filenameInArchive = filenameToUse + '.failed'
-
                 zipStream.putNextEntry new ZipEntry(filenameInArchive)
                 if (!isReportFile) {
                     report.addFailedFileEntry url, filenameInArchive, "Unable to download data from: '$url'"
