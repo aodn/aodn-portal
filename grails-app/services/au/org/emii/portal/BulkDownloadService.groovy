@@ -54,7 +54,7 @@ class BulkDownloadService {
     def _writeFilesToStream = { urlList ->
 
         urlList.eachWithIndex { url, index ->
-            log.debug "(${index + 1}/${urlList.size()}) Adding entry for file from URL: '$url'"
+            log.info "(${index + 1}/${urlList.size()}) Adding entry for file from URL: '$url'"
 
             _addFileEntry(url)
         }
@@ -89,13 +89,13 @@ class BulkDownloadService {
 
             def bytesCopied = copy(streamFromUrl, zipStream, BUFFER_SIZE)
 
-            log.debug "Added $bytesCopied Bytes"
+            log.info "Added $bytesCopied Bytes"
 
             if (!isReportFile) { report.addSuccessfulFileEntry url, filenameToUse, bytesCopied }
         } catch (Exception e) {
 
-            log.warn "Error adding file to download archive. URL: '$url'"
-            log.debug "Caused by:", e
+            log.info "Error adding file to download archive. URL: '$url'"
+            log.info "Caused by:", e
 
             if (!streamFromUrl) {
                 def filenameInArchive = filenameToUse + '.failed'

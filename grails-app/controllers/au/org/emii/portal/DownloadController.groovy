@@ -122,7 +122,7 @@ class DownloadController extends RequestProxyingController {
 
         return { inputStream, outputStream ->
 
-            log.debug "Unique list streamProcessor"
+            log.info "Unique list streamProcessor"
 
             def includedUrls = [] as HashSet
 
@@ -132,7 +132,7 @@ class DownloadController extends RequestProxyingController {
 
             def fieldIndex = firstRow.findIndexOf { it == fieldName }
 
-            log.debug "fieldName: '$fieldName'; fieldIndex: $fieldIndex (it's a problem if this is null or -1)"
+            log.info "fieldName: '$fieldName'; fieldIndex: $fieldIndex (it's a problem if this is null or -1)"
 
             if (fieldIndex == -1) {
                 log.error "Could not find index of '$fieldName' in $firstRow"
