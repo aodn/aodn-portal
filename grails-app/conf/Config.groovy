@@ -196,21 +196,8 @@ environments {
     production {
 
         // overwritten by Chef in production
-        grails.config.locations << "file:grails-app/conf/Config.local.groovy"
-        grails.resources.debug = true
-
-        // URLs
-        def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
-        grails.serverURL = "http://${localhostAddress}:9090"
-        gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
-        geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
-        geonetwork.version = 2
-        gogoduck.filenamePrepend = "IMOS_aggregation"
-
-        if (geonetwork.version == 3) {
-            enabledFacets = facetsGN3
-        }
-
+        grails.serverURL = "http://myaodn.example.com"
+        geonetwork.url = "http://catalogue-portal.aodn.org.au/geonetwork"
     }
 }
 
