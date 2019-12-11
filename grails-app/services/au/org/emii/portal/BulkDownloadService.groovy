@@ -32,8 +32,8 @@ class BulkDownloadService {
             _createZipStream outputStream
             _writeFilesToStream urlList
         } catch (ClientAbortException e) {
-            log.info "Client aborted download"
-            log.info "Caused by:", e
+            log.warn "Client aborted download"
+            log.debug "Caused by:", e
         } finally {
 
             try {
@@ -57,7 +57,7 @@ class BulkDownloadService {
     def _writeFilesToStream = { urlList ->
 
         urlList.eachWithIndex { url, index ->
-            log.info "(${index + 1}/${urlList.size()}) Adding entry for file from URL: '$url'"
+            log.debug "(${index + 1}/${urlList.size()}) Adding entry for file from URL: '$url'"
 
             _addFileEntry(url)
         }
@@ -92,7 +92,7 @@ class BulkDownloadService {
 
             def bytesCopied = copy(streamFromUrl, zipStream, BUFFER_SIZE)
 
-            log.info "Added $bytesCopied Bytes"
+            log.debug "Added $bytesCopied Bytes"
 
             if (!isReportFile) {
                 report.addSuccessfulFileEntry url, filenameToUse, bytesCopied
@@ -101,8 +101,8 @@ class BulkDownloadService {
             throw e;
         } catch (Exception e) {
 
-            log.info "Error adding file to download archive. URL: '$url'"
-            log.info "Caused by:", e
+            log.warn "Error adding file to download archive. URL: '$url'"
+            log.debug "Caused by:", e
 
             if (!streamFromUrl) {
                 def filenameInArchive = filenameToUse + '.failed'
