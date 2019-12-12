@@ -57,7 +57,7 @@ class BulkDownloadService {
     def _writeFilesToStream = { urlList ->
 
         urlList.eachWithIndex { url, index ->
-            log.debug "(${index + 1}/${urlList.size()}) Adding entry for file from URL: '$url'"
+            log.info "(${index + 1}/${urlList.size()}) Adding entry for file from URL: '$url'"
 
             _addFileEntry(url)
         }
@@ -90,9 +90,9 @@ class BulkDownloadService {
 
             zipStream.putNextEntry new ZipEntry(filenameToUse)
 
-            def bytesCopied = copy(streamFromUrl, zipStream, BUFFER_SIZE)
+            def bytesCopied = copy(streamFromUrl, zipStream, BUFFER_SIZE)  // IS this where the exeception is thrown ??
 
-            log.debug "Added $bytesCopied Bytes"
+            log.info "Added $bytesCopied Bytes"
 
             if (!isReportFile) {
                 report.addSuccessfulFileEntry url, filenameToUse, bytesCopied
@@ -101,8 +101,8 @@ class BulkDownloadService {
             throw e;
         } catch (Exception e) {
 
-            log.warn "Error adding file to download archive. URL: '$url'"
-            log.debug "Caused by:", e
+            log.info "Error adding file to download archive. URL: '$url'"
+            log.info "Caused by:", e
 
             if (!streamFromUrl) {
                 def filenameInArchive = filenameToUse + '.failed'
@@ -161,7 +161,13 @@ class BulkDownloadService {
         int totalBytesRead = 0;
         while ((bytesRead = input.read(buffer)) != -1) {
             totalBytesRead += bytesRead
-            output.write buffer, 0, bytesRead
+            try {
+                output.write buffer, 0, bytesRead
+            } catch (Exception e) {
+                log.info "Error adding bytes to download archive: '$buffer'"
+                log.info "Caused by:", e
+                throw e
+            }
         }
         return totalBytesRead
     }
