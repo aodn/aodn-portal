@@ -159,11 +159,14 @@ class BulkDownloadService {
         final byte[] buffer = new byte[bufferSize];
         int bytesRead;
         int totalBytesRead = 0;
+        int loops = 0;
         while ((bytesRead = input.read(buffer)) != -1) {
             totalBytesRead += bytesRead
+            loops++;
             try {
                 output.write buffer, 0, bytesRead
             } catch (Exception e) {
+                log.info "Failed on loop " + loops;
                 log.info "Error adding bytes to download archive: '$buffer'"
                 log.info "Caused by:", e
                 throw e
