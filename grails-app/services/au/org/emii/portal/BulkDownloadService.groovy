@@ -154,7 +154,7 @@ class BulkDownloadService {
         report.deleteTempFile()
     }
 
-    public static int copy(final InputStream input, final OutputStream output, final int bufferSize) throws IOException
+    public int copy(final InputStream input, final OutputStream output, final int bufferSize) throws IOException
     {
         final byte[] buffer = new byte[bufferSize];
         int bytesRead;
