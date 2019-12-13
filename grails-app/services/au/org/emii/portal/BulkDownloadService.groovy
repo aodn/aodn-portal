@@ -167,7 +167,7 @@ class BulkDownloadService {
                 output.write buffer, 0, bytesRead
             } catch (Exception e) {
                 log.info "Failed on loop " + loops;
-                log.info "Error adding bytes to download archive: '$buffer'"
+                log.info "Error adding bytes to download archive. totalBytesRead: '$totalBytesRead'"
                 log.info "Caused by:", e
                 throw e
             }
