@@ -3,6 +3,7 @@ package au.org.emii.portal
 import groovy.time.TimeCategory
 import org.apache.catalina.connector.ClientAbortException
 
+import java.time.LocalTime
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -164,8 +165,12 @@ class BulkDownloadService {
             totalBytesRead += bytesRead
             loops++;
             try {
+                LocalTime startTime = LocalTime.now()
                 output.write buffer, 0, bytesRead
             } catch (Exception e) {
+                LocalTime breakTime = LocalTime.now()
+                log.info"Started writing at " + startTime
+                log.info"Broke at " + endTime
                 log.info "Failed on loop " + loops;
                 log.info "Error adding bytes to download archive: '$buffer'"
                 log.info "Caused by:", e
