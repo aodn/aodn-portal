@@ -161,16 +161,17 @@ class BulkDownloadService {
         int bytesRead;
         int totalBytesRead = 0;
         int loops = 0;
+        LocalTime startTime;
         while ((bytesRead = input.read(buffer)) != -1) {
             totalBytesRead += bytesRead
             loops++;
             try {
-                LocalTime startTime = LocalTime.now()
+                startTime = LocalTime.now()
                 output.write buffer, 0, bytesRead
             } catch (Exception e) {
                 LocalTime breakTime = LocalTime.now()
                 log.info"Started writing at " + startTime
-                log.info"Broke at " + endTime
+                log.info"Broke at " + breakTime
                 log.info "Failed on loop " + loops;
                 log.info "Error adding bytes to download archive: '$buffer'"
                 log.info "Caused by:", e
