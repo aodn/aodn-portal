@@ -511,9 +511,7 @@ log4j.main = {
     debug   'grails.app.job',
         'grails.app.tagLib',
         'grails.app.controller.au.org.emii.portal.SystemController',
-        'grails.plugin.mail',
-        'grails.app.services.au.org.emii.portal.BulkDownloadService',
-        'grails.app.controllers.au.org.emii.portal.DownloadController'
+        'grails.plugin.mail'
 }
 
 /**
