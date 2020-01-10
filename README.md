@@ -29,7 +29,7 @@ info@aodn.org.au or see https://help.aodn.org.au/ .
 * [Installation](#installation)
 
 ## Building From Source
-If you want to build from source you will need to have [Grails](http://grails.org/) 2.4.4 and JDK 1.7 installed on your build machine.
+If you want to build from source you will need to have [Grails](http://grails.org/) 2.4.4 and JDK 1.8 installed on your build machine. The JDK needs to be Oracle, version 1.8.0_31 to use run-app.
 
 The recommended way of installing grails is by using [SdkMan](http://sdkman.io/):
 ```
