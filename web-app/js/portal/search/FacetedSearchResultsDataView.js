@@ -95,7 +95,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         // If there is a category definition of the icon source then get icon from S3 bucket otherwise
         // default to use the uuid on Geonetwork store
         if(iconSourceCategory != null){
-            return Portal.app.appConfig.geonetwork.imageBucket + iconSourceCategory + ".gif";
+            return Portal.app.appConfig.geonetwork.imageBucket + iconSourceCategory + "_logo.gif";
         } else {
             return Portal.app.appConfig.geonetwork.url + '/images/logos/' + iconSourceUuid + ".gif";
         }
