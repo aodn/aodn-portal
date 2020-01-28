@@ -7,7 +7,24 @@ Portal.data.MetadataRecord = function() {
 
     var iconSourceUuid = {
         name: 'iconSourceUuid',
-        mapping: 'source'
+        mapping: 'source',
+    };
+
+    var iconSourceCategory = {
+        name: 'iconSourceCategory',
+        convert: function(v, record) {
+            var catNameStr = null;
+            Ext.each(Ext.DomQuery.jsSelect('category', record), function(category) {
+                var categoryStr = category.firstChild.nodeValue;
+                if(categoryStr.startsWith(Portal.app.appConfig.geonetwork.iconNamespace)){
+                    catNameStr = categoryStr.substr(Portal.app.appConfig.geonetwork.iconNamespace.length);
+                }
+            }, this.scope);
+
+            return catNameStr;
+        }
+
+
     };
 
     var linksField = {
@@ -174,7 +191,8 @@ Portal.data.MetadataRecord = function() {
         onlineResourcesField,
         pointOfTruthLinkField,
         bboxField,
-        iconSourceUuid
+        iconSourceUuid,
+        iconSourceCategory
     ]);
 
     constructor.prototype.getBounds = function() {
