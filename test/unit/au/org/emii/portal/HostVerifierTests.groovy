@@ -15,6 +15,7 @@ class HostVerifierTests extends GrailsUnitTestCase {
         verifier.grailsApplication = mockConfig
 
         _addConfig(mockConfig, ["config", "geonetwork", "url"], 'http://geonetwork.aodn.org.au/geonetwork')
+        _addConfig(mockConfig, ["config", "geonetwork", "imageBucket"], 'http://content.aodn.org.au/Documents/Images/Logos/AODN_Partner/')
         _addConfig(mockConfig, ["config", "baselayerServer", "uri"], 'http://geoserverstatic.emii.org.au')
 
         _addConfig(
@@ -50,6 +51,10 @@ class HostVerifierTests extends GrailsUnitTestCase {
 
     void testGeonetworkAllowed() {
         assertTrue(verifier.allowedHost('http://geonetwork.aodn.org.au'))
+    }
+
+    void testLogoBucketAllowed() {
+        assertTrue(verifier.allowedHost('http://content.aodn.org.au/Documents/Images/Logos/AODN_Partner/'))
     }
 
     def _addConfig(configObject, keys, value) {
