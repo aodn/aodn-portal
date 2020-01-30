@@ -54,7 +54,7 @@ class HostVerifierTests extends GrailsUnitTestCase {
     }
 
     void testLogoBucketAllowed() {
-        assertTrue(verifier.allowedHost('http://content.aodn.org.au/Documents/Images/Logos/AODN_Partner/'))
+        assertTrue(verifier.allowedHost('http://content.aodn.org.au'))
     }
 
     def _addConfig(configObject, keys, value) {
