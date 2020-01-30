@@ -61,7 +61,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                     return (this.isRecActive(values.uuid)) ? OpenLayers.i18n('collectionExistsMsg') : OpenLayers.i18n("addDataCollectionMsg");
                 },
                 getIconUrl: function(values) {
-                    return this.getGeonetworkImageUrl(values.iconSourceUuid, values.iconSourceCategory);
+                    return Ext.ux.Ajax.constructProxyUrl(this.getGeonetworkImageUrl(values.iconSourceUuid, values.iconSourceCategory));
                 },
                 getHtmlTitle: function(values) {
                     var title = values.title;
