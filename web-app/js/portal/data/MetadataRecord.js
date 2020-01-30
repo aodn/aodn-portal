@@ -23,8 +23,6 @@ Portal.data.MetadataRecord = function() {
 
             return catNameStr;
         }
-
-
     };
 
     var linksField = {
