@@ -178,6 +178,8 @@ environments {
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
+        geonetwork.imageBucket = "http://content.aodn.org.au/Documents/Images/Logos/AODN_Partner/"
+        geonetwork.iconNamespace = "portal:"
         geonetwork.version = 2
         gogoduck.filenamePrepend = "IMOS_aggregation"
 

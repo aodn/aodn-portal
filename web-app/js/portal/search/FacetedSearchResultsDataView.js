@@ -61,7 +61,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                     return (this.isRecActive(values.uuid)) ? OpenLayers.i18n('collectionExistsMsg') : OpenLayers.i18n("addDataCollectionMsg");
                 },
                 getIconUrl: function(values) {
-                    return Ext.ux.Ajax.constructProxyUrl(this.getGeonetworkImageUrl(values.iconSourceUuid));
+                    return Ext.ux.Ajax.constructProxyUrl(this.getGeonetworkImageUrl(values.iconSourceUuid, values.iconSourceCategory));
                 },
                 getHtmlTitle: function(values) {
                     var title = values.title;
@@ -87,12 +87,18 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     getTrackingFunction: function(values) {
-        var url = this.getGeonetworkImageUrl(values.iconSourceUuid);
+        var url = this.getGeonetworkImageUrl(values.iconSourceUuid, values.iconSourceCategory);
         return String.format("trackNavigationUsage('navigationTrackingIconAction', '{0}');return true;", url);
     },
 
-    getGeonetworkImageUrl: function(iconSourceUuid) {
-        return Portal.app.appConfig.geonetwork.url + '/images/logos/' + iconSourceUuid + ".gif";
+    getGeonetworkImageUrl: function(iconSourceUuid, iconSourceCategory) {
+        // If there is a category definition of the icon source then get icon from S3 bucket otherwise
+        // default to use the uuid on Geonetwork store
+        if(iconSourceCategory != null){
+            return Portal.app.appConfig.geonetwork.imageBucket + iconSourceCategory + "_logo.gif";
+        } else {
+            return Portal.app.appConfig.geonetwork.url + '/images/logos/' + iconSourceUuid + ".gif";
+        }
     },
 
     refresh: function() {

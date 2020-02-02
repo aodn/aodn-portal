@@ -44,6 +44,7 @@ class HostVerifier {
             def appConfig = grailsApplication.config
             allowedHosts = [:]
             allowedHosts[extractHost(appConfig.geonetwork.url)] = true
+            allowedHosts[extractHost(appConfig.geonetwork.imageBucket)] = true
 
             appConfig.baselayers.each { layer ->
                 allowedHosts[extractHost(layer.server.uri)] = true
