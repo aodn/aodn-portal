@@ -178,15 +178,12 @@ environments {
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
-        geonetwork.imageBucket = "http://content.aodn.org.au/Documents/Images/Logos/AODN_Partner/"
-        geonetwork.iconNamespace = "portal:"
         geonetwork.version = 2
         gogoduck.filenamePrepend = "IMOS_aggregation"
 
         if (geonetwork.version == 3) {
             enabledFacets = facetsGN3
         }
-
     }
 
     test {
@@ -205,6 +202,8 @@ environments {
 
 
 geonetwork.searchPath = 'xml.search.imos'
+geonetwork.imageBucket = "http://content.aodn.org.au/Documents/Images/Logos/AODN_Partner/"
+geonetwork.iconNamespace = "portal:"
 
 // ExternalRequest.groovy connect timeout value in milliseconds
 proxyConnectTimeout = 2000
