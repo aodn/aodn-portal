@@ -44,26 +44,34 @@ Portal.data.DataCollection = function() {
     };
 
     constructor.prototype.getFiltersRequestParams = function() {
-        var layer = this.getLayerSelectionModel().getSelectedLayer();
-        var serverType = layer.server.type.toLowerCase();
-        var filterLookupName = this._getFilterLookupName(serverType, layer);
+        var selectedlayer = this.getLayerSelectionModel().getSelectedLayer();
+        var link = this._getFilterLookupLink(selectedlayer);
 
         return {
-            server: layer.url,
-            serverType: serverType,
-            layer: filterLookupName
+            server: link.server,
+            serverType: link.serverType,
+            layer: link.name
         };
     };
 
-    constructor.prototype._getFilterLookupName = function(serverType, layer) {
+    constructor.prototype._getFilterLookupLink = function(layer) {
+        var serverType = layer.server.type.toLowerCase();
         if (serverType == 'geoservercore' || serverType == 'geoserverfilterconfig') {
-            return layer.wmsName
-        } else {
-            return this._getDownloadLayerName()
+            return {
+                name: layer.wmsName,
+                server: layer.server.uri,
+                serverType: serverType
+            };
+        }
+        else {
+            var link = this._getDownloadLayerLink();
+            link.serverType = serverType;
+            return link;
         }
     };
 
-    constructor.prototype._getDownloadLayerName = function() {
+    // getFilters from data layer
+    constructor.prototype._getDownloadLayerLink = function() {
         var wfsLayerLinks = this.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.wfs);
         var wmsLayerLinks = this.getLinksByProtocol(Portal.app.appConfig.portal.metadataProtocols.wms);
         var firstWfsLink = wfsLayerLinks[0];
@@ -80,14 +88,25 @@ Portal.data.DataCollection = function() {
             var linkName = link.name;
 
             if (!_workspaceFromName(linkName) &&_workspaceFromName(firstWmsLink.name)) {
-                    return _workspaceFromName(firstWmsLink.name) + ':' + linkName;
+                    link.name = _workspaceFromName(firstWmsLink.name) + ':' + linkName;
             }
-            return linkName;
+
+            if (link.server) {
+                return {
+                    name: link.name,
+                    server: link.server.uri
+                }
+            }
+            else {
+                return {
+                    name: link.name,
+                    server: link.href
+                }
+            }
         }
     };
 
     constructor.prototype.getFilters = function() {
-
         return this.filters;
     };
 
