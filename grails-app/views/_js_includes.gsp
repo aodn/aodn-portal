@@ -41,7 +41,6 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/control', file: 'SpatialConstraint.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils/geo', file: 'GeoUtil.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Image.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Proxy.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Set.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'ObservableUtils.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'BrowserCheck.js')}"></script>
