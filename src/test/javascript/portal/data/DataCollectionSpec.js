@@ -40,26 +40,19 @@ describe("Portal.data.DataCollection", function() {
             dataCollection.getLayerSelectionModel = returns({
                 getSelectedLayer: returns({
                     url: 'server url',
-                    name: 'imos:wfs_layer1',
                     server: {type: 'ncWMS'}
                 })
             });
         });
 
         it('uses uri from selected layer from layer state', function() {
-            dataCollection._getDownloadLayerLink = returns({
-                name:'layerName',
-                server:'server url'
-            });
+            dataCollection._getDownloadLayerName = returns('layerName');
 
             expect(dataCollection.getFiltersRequestParams().server).toBe('server url');
         });
 
         it('uses server from selected layer for the Layer controller', function() {
-            dataCollection._getDownloadLayerLink = returns({
-                name:'layerName',
-                server:'server url'
-            });
+            dataCollection._getDownloadLayerName = returns('layerName');
 
             expect(dataCollection.getFiltersRequestParams().serverType).toBe('ncwms');
         });
