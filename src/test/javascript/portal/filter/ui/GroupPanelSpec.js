@@ -92,6 +92,13 @@ describe("Portal.filter.ui.GroupPanel", function() {
                     hasValue: returns(true),
                     getLabel: returns("alpha"),
                     getHumanReadableForm: returns('one')
+                },
+                {
+                    constructor: Portal.filter.SingleStringFilter,
+                    isVisualised: returns(true),
+                    hasValue: returns(false),
+                    getLabel: returns("SingleString"),
+                    getHumanReadableForm: returns('seven')
                 }
             ];
 
@@ -100,6 +107,7 @@ describe("Portal.filter.ui.GroupPanel", function() {
                 filters[2],
                 filters[1],
                 filters[0],
+                filters[6],
                 filters[3],
                 filters[4]
             ];
