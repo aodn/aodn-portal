@@ -18,7 +18,7 @@ abstract class WmsServer {
         def layerInfo = getLayerInfo(params.server, params.layer)
         try {
             def cql = URLEncoder.encode(params.filter,"UTF-8")
-            def url = "${layerInfo.wfsUrl}SERVICE=WFS&VERSION=1.0.0&REQUEST=GetFeature&typeName=${params.layer}&outputFormat=json&CQL_FILTER=${cql}&count=1";
+            def url = "${layerInfo.wfsUrl}SERVICE=WFS&VERSION=1.0.0&REQUEST=GetFeature&typeName=${params.layer}&outputFormat=json&CQL_FILTER=${cql}&maxFeatures=1";
             def json = JSON.parse(url.toURL().text)
             return json.totalFeatures
         }
