@@ -67,7 +67,7 @@
 
                         <p>
                             Australia’s Integrated Marine Observing System (IMOS) is enabled by the National Collaborative Research Infrastructure Strategy (NCRIS).
-                            It is operated by a consortium of institutions as an unincorporated joint venture,
+                            It is operated by a consortium of institutions as an unincorporated joint venture, with the
                             <a target="_blank" class="external" title="UTAS home page" href="http://www.utas.edu.au/">University of Tasmania</a> as Lead Agent.
                         </p>
 
