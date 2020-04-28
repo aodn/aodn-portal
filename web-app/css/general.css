@@ -55,9 +55,7 @@ input[type="checkbox"], input[type="radio"] {
 
 .faceted-search-results,
 .downLoadPanelBody {
-    box-shadow: inset 1px 1px 6px 1px  #eee;
-    border-radius: 3px;
-    padding: 10px 6px;
+    padding: 5px 6px;
 }
 
 .downloadPanelItem {
@@ -956,6 +954,10 @@ div.allwhite {
 .facetedSearchResultBody .resultsTextBody{
     float: left;
 }
+.facetedSearchResultBody .resultsTextBody{
+    margin-bottom: 25px;
+    margin-top: 15px;
+}
 
 .resultsIconContainer {
     margin-top: 16px;
@@ -1000,6 +1002,7 @@ div.allwhite {
 .expandable .facetedSearchResultBody::after {
     bottom: 5px;
     box-shadow: 10px 10px 15px 5px rgba(240, 240, 240, 1);
+    box-shadow:  10px 10px 10px 20px  rgba(255,255,255,1);
     content: " ";
     position: absolute;
     right: 125px;
@@ -1090,9 +1093,11 @@ ul.x-tab-strip-top li:hover * {
     z-index: 1;
 }
 
-.expandable * {
+.resultsRowHeaderTitle, .resultsRowHeaderTitle * {
+
     cursor: pointer;
 }
+
 
 .downloadPanelResultsWrapper.dataFilterEntry {
     width: 70%;
@@ -1350,4 +1355,16 @@ abbr  {
 span.facetSearchHyperLink {
     cursor: pointer;
     padding: 1px 3px;
+}
+
+
+.facetedSearchMapParamTpl.abstractContainer {
+    margin-bottom: 10px;
+}
+
+.facetedSearchMapParamTpl .x-panel-header {
+    float: left;
+}
+.facetedSearchMapParamTpl .results {
+    margin: 2px 30px;
 }

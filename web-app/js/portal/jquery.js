@@ -1,37 +1,45 @@
 jQuery( document ).ready(function() {
 
-    jQuery(document).on("click", ".resultsHeaderBackground.expandable",
+    jQuery(document).on("click", ".resultsRowHeaderTitle",
         function() {
-            var resBody = jQuery(this).children('.facetedSearchResultBody');
+            var resBody = jQuery(this).parents(".resultsHeaderBackground");
+            var resContainer = resBody.children('.facetedSearchResultBody');
+            var abstractContainer = resContainer.find('.abstractContainer');
 
-            var fullHeight = resBody[0].scrollHeight;
-            var currentHeight = resBody[0].offsetHeight;
+            var mainHeight = resContainer[0].scrollHeight;
+            let mainOffsetHeight = resContainer[0].offsetHeight;
 
             //on the first run we store the initial height so we can return to it later
-            if (jQuery.data(resBody[0], "originalHeight") == undefined) {
-                jQuery.data(resBody[0],"originalHeight", currentHeight );
+            if (resContainer.data("originalHeight") == undefined) {
+                resContainer.data("originalHeight", mainOffsetHeight);
             }
+            var margin = 10;
 
-            if (fullHeight > 0  && currentHeight != fullHeight  ) {
-                resBody.animate({
-                    height: fullHeight
-                }, 300);
-            }
-            else {
-                resBody.animate({
-                    height: jQuery.data(resBody[0],"originalHeight")
-                }, 150);
-            }
-        });
+            let state = {
+                "duration": 500,
+                "complete": function () {
+                    let height = resContainer[0].scrollHeight;
+                    if (abstractContainer.is(":visible")) {
+                        height: (height + margin)
+                    }
+                    else {
+                        height = resContainer.data("originalHeight");
+                    }
+                    // // resContainer set height to its contents ( includes abtractContainer currently)
+                    // resContainer.animate({
+                    //     height: height
+                    // }, 300);
 
-    jQuery(document).on("mouseover", ".resultsHeaderBackground:not(.facetedSearchBtn *):not(.expandable)",
-        function() {
-            var resBodyChild = jQuery(this).children('.facetedSearchResultBody')[0];
-            var fullHeight = resBodyChild.scrollHeight;
+                    // set parent container height
+                    resContainer.animate({
+                        height: height
+                    }, 300);
+                }
+            };
 
-            if (fullHeight > 0 && fullHeight != resBodyChild.offsetHeight) {
-                jQuery(this).addClass("expandable");
-            }
+            abstractContainer.toggle(state);
+
+
         });
 
     // getFeatureInfo popup links  .not('.jQueryLiveAnchor')
