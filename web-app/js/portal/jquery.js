@@ -13,24 +13,17 @@ jQuery( document ).ready(function() {
             if (resContainer.data("originalHeight") == undefined) {
                 resContainer.data("originalHeight", mainOffsetHeight);
             }
-            var margin = 10;
 
             let state = {
                 "duration": 500,
                 "complete": function () {
                     let height = resContainer[0].scrollHeight;
                     if (abstractContainer.is(":visible")) {
-                        height: (height + margin)
+                        height = height;
                     }
                     else {
                         height = resContainer.data("originalHeight");
                     }
-                    // // resContainer set height to its contents ( includes abtractContainer currently)
-                    // resContainer.animate({
-                    //     height: height
-                    // }, 300);
-
-                    // set parent container height
                     resContainer.animate({
                         height: height
                     }, 300);
