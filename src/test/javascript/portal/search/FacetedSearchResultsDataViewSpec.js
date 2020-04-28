@@ -40,7 +40,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
     describe('_getTemporalExtentAsHtml', function() {
         it('returns string containing date range', function() {
             spyOn(facetedSearchDataView, '_formatTemporalExtentDateString');
-            facetedSearchDataView._getTemporalExtentAsHtml(template, {
+            facetedSearchDataView._getTemporalExtentAsHtml({
                 begin: testString,
                 end: testString
             });
@@ -135,7 +135,7 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
         it('with some parameters', function() {
             facetedSearchDataView._getMeasuredParameters = returns(['temp', 'salinity']);
 
-            expect(facetedSearchDataView._getFacetSearchLinks('temp', 'salinity')).toEqual('<span class="facetSearchHyperLink" data="this/is/the/path">salinity</span>');
+            expect(facetedSearchDataView._getFacetSearchLinks('temp', 'salinity')).toEqual('<span class="facetSearchHyperLink" data="this/is/the/path" title="Filter on this facet: this/is/the/path">salinity</span>');
         });
 
         it('with no parameters', function() {
