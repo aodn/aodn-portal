@@ -5,16 +5,14 @@ jQuery( document ).ready(function() {
             var resBody = jQuery(this).parents(".resultsHeaderBackground");
             var resContainer = resBody.children('.facetedSearchResultBody');
             var abstractContainer = resContainer.find('.abstractContainer');
-
-            var mainHeight = resContainer[0].scrollHeight;
-            let mainOffsetHeight = resContainer[0].offsetHeight;
+            var originalHeight = resContainer[0].offsetHeight;
 
             //on the first run we store the initial height so we can return to it later
             if (resContainer.data("originalHeight") == undefined) {
-                resContainer.data("originalHeight", mainOffsetHeight);
+                resContainer.data("originalHeight", originalHeight);
             }
 
-            let state = {
+            var state = {
                 "duration": 500,
                 "complete": function () {
                     let height = resContainer[0].scrollHeight;
@@ -29,10 +27,7 @@ jQuery( document ).ready(function() {
                     }, 300);
                 }
             };
-
             abstractContainer.toggle(state);
-
-
         });
 
     // getFeatureInfo popup links  .not('.jQueryLiveAnchor')
