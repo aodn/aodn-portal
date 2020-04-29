@@ -15,7 +15,7 @@ jQuery( document ).ready(function() {
             var state = {
                 "duration": 500,
                 "complete": function () {
-                    let height = resContainer[0].scrollHeight;
+                    var height = resContainer[0].scrollHeight;
                     if (abstractContainer.is(":visible")) {
                         height = height;
                     }
