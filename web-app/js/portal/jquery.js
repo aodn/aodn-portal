@@ -16,10 +16,7 @@ jQuery( document ).ready(function() {
                 "duration": 500,
                 "complete": function () {
                     var height = resContainer[0].scrollHeight;
-                    if (abstractContainer.is(":visible")) {
-                        height = height;
-                    }
-                    else {
+                    if (! abstractContainer.is(":visible")) {
                         height = resContainer.data("originalHeight");
                     }
                     resContainer.animate({
