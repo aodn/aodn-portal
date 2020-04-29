@@ -956,7 +956,7 @@ div.allwhite {
 }
 .facetedSearchResultBody .resultsTextBody{
     margin-bottom: 25px;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .resultsIconContainer {
@@ -1365,5 +1365,5 @@ span.facetSearchHyperLink {
     float: left;
 }
 .facetedSearchMapParamTpl .results {
-    margin: 2px 30px;
+    margin: 2px 40px 2px 25px;
 }
