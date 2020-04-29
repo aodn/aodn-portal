@@ -990,11 +990,6 @@ div.allwhite {
     padding: 3px 10px;
 }
 
-.resultsHeaderBackground {
-    padding: 0;
-    margin-bottom: 5px;
-}
-
 .resultsHeaderBackground .facetedSearchResultBody {
     overflow-y: hidden;
 }
