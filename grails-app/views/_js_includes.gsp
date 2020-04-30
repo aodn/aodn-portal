@@ -1,6 +1,5 @@
 <!-- First import JQUERY -->
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery-3.2.0.min.js')}"></script>
-<script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/portal', file: 'jquery.js')}"></script>
 <!-- Import extra pluggins-->
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery-autocomplete1.1.js')}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.fileDownload.js')}"></script>
@@ -38,6 +37,7 @@
 <script src="${resource(dir: 'js/ext-ux/util', file: 'MessageBus.js')}" type="text/javascript"></script>
 
 <g:if env="development">
+    <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'jquery.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/control', file: 'SpatialConstraint.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils/geo', file: 'GeoUtil.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Image.js')}"></script>

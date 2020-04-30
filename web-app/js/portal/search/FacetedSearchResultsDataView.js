@@ -13,12 +13,19 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     CSS_CLASS_BUTTON_SELECTED: 'x-btn-selected',
 
     DATE_FACET_INPUT_FORMAT: 'YYYY-MM-DDtHH:mm:ss:SSSz',
+    paramTpl: new Ext.Template(
+        '<div class="facetedSearchMapParamTpl {classes}">',
+        '   <div class="x-panel-header">{label}</div>',
+        '   <div class="results"> {value}</div>',
+        '</div>'
+    ),
 
-    initComponent: function() {
+
+initComponent: function() {
 
         this.tpl = new Ext.XTemplate(
             '<tpl for=".">',
-            '<div class="resultsHeaderBackground">',
+            '<div class="resultsHeaderBackground expandable">',
             '    <div class="x-panel-header">',
             '        <div class="resultsRowHeaderTitle">',
             '            {[this.getHtmlTitle(values)]}',
@@ -65,7 +72,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
                 },
                 getHtmlTitle: function(values) {
                     var title = values.title;
-                    return String.format("<h3 title=\"{0}\">{1}</h3>", title, Ext.util.Format.ellipsis(title, 180, true));
+                    return String.format("<h3 title=\"Click for more info: {0}\">{1}</h3>", title, Ext.util.Format.ellipsis(title, 180, true));
                 }
             }
         );
@@ -144,21 +151,16 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     },
 
     setParametersAsHtml: function(values) {
-        var paramTpl = new Ext.Template(
-            '<div><span class="x-panel-header">{label}</span>',
-            '   <span> {value}</span>',
-            '</div>'
-        );
         var html = "";
-
-        html += this._getMeasuredParametersAsHtml(paramTpl, values);
-        html += this._getTemporalExtentAsHtml(paramTpl, {
+        html += this._getAbstract(values);
+        html += this._getMeasuredParametersAsHtml(values);
+        html += this._getTemporalExtentAsHtml({
             begin: values.temporalExtentBegin,
             end: values.temporalExtentEnd
         });
-        html += this._getOrganisationAsHtml(paramTpl, values.organisation);
-        html += this._getPlatformAsHtml(paramTpl, values.platform);
-        
+        html += this._getPlatformAsHtml(values.platform);
+        html += this._getOrganisationAsHtml(values.organisation);
+
         var parametersElementId = this.parametersElementId(values.uuid);
 
         if (Ext.get(parametersElementId)) {
@@ -176,10 +178,22 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         }
     },
 
-    _getMeasuredParametersAsHtml: function(template, values) {
+    _getAbstract: function(values) {
+        var label = this._buildLabel("fa-info-circle", "Abstract from metadata");
+        if (values.abstract) {
+            return this.paramTpl.apply({
+                "label": label,
+                "classes": "abstractContainer hidden",
+                "value": values.abstract
+            });
+        }
+        return "";
+    },
+
+    _getMeasuredParametersAsHtml: function(values) {
         var label = this._buildLabel("fa-cog", OpenLayers.i18n('searchParametersText'));
         if (values.parameter) {
-            return template.apply({
+            return this.paramTpl.apply({
                 "label": label,
                 "value": this._getMeasuredParametersText(values)
             });
@@ -220,7 +234,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         });
     },
 
-    _getOrganisationAsHtml: function(template, organisation) {
+    _getOrganisationAsHtml: function(organisation) {
         var label = this._buildLabel("fa-institution", OpenLayers.i18n('searchOrganisationText'));
 
         var termType = ''
@@ -231,7 +245,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         }
 
         if (organisation) {
-            return template.apply({
+            return this.paramTpl.apply({
                 "label": label,
                 "value": this._getFacetSearchLinks(termType, organisation)
             });
@@ -239,11 +253,11 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return "";
     },
 
-    _getPlatformAsHtml: function(template, platforms) {
+    _getPlatformAsHtml: function(platforms) {
 
         var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
 
-        var termType = ''
+        var termType = '';
         if (Portal.app.appConfig.geonetwork.version === 3) {
             termType = 'platformCategories'
         } else {
@@ -253,7 +267,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var broaderPlatforms = this._getBroaderTerms(platforms, 1,termType);
 
         if (broaderPlatforms.length > 0) {
-            return template.apply({
+            return this.paramTpl.apply({
                 "label": label,
                 "value": this._getFacetSearchLinks(termType, broaderPlatforms)
             });
@@ -266,7 +280,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         var html = [];
         Ext.each(facetItems, function(term) {
             var searchPath = this._getFacetParentPath(category, term);
-            html.push( String.format('<span class="facetSearchHyperLink" data="{0}">{1}</span>', searchPath, term));
+            html.push( String.format('<span class="facetSearchHyperLink" data="{0}" title="Filter on this facet: {0}">{1}</span>', searchPath, term));
         },this);
         return html.join("-");
     },
@@ -282,10 +296,10 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         return path.reverse().filter(Boolean).join("/");
     },
 
-    _getTemporalExtentAsHtml: function(template, temporalExtent) {
+    _getTemporalExtentAsHtml: function(temporalExtent) {
         var label = this._buildLabel("fa-calendar", OpenLayers.i18n('searchDateText'));
         if (temporalExtent.begin && temporalExtent.end) {
-            return template.apply({
+            return this.paramTpl.apply({
                 "label": label,
                 "value": String.format(
                     "{0} - {1}",
@@ -313,12 +327,15 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
     createButton: function(uuid) {
         var cls = "";
         var tooltip = OpenLayers.i18n('collectionExistsMsg');
+        var label;
 
         if (this.isRecActive(uuid)) {
             cls = this.CSS_CLASS_BUTTON_SELECTED;
+            label = "Selected";
         }
         else {
             tooltip = OpenLayers.i18n('addDataCollectionMsg');
+            label = "Select";
         }
 
         var buttonElementId = this.buttonElementId(uuid);
@@ -328,7 +345,7 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
 
         if (Ext.get(buttonElementId)) {
             new Ext.Button({
-                text: OpenLayers.i18n('navigationButtonNext', {label: "Select"}),
+                text: OpenLayers.i18n('navigationButtonNext', {label: label}),
                 tooltip: tooltip,
                 tooltipType: "title",
                 cls: "navigationButton forwardsButton listButtonWrapper " + cls,

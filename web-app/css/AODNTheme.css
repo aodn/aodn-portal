@@ -7,7 +7,7 @@ body, html, td, p, button {
     font-family: 'Arimo', sans-serif;
 }
 
-body, html, td {
+{
     color: #4D5B63;
 }
 
@@ -36,8 +36,24 @@ h1, h2, h3, h4,
 .x-panel-header,
 .x-window-header-text,
 .search-filter-panel .filter-selection-panel-header-selected {
-    color: #4D5B63;
     cursor: default;
+}
+
+body {
+    color: #4D5B63;
+}
+
+td, h1, h2, h3, h4, label,
+.x-panel-header,
+.x-window-header-text,
+.x-tab-strip span.x-tab-strip-text, .x-btn-text,
+.search-filter-panel .filter-selection-panel-header-selected {
+    color: #3e5865;
+    color: #4D5B63;
+}
+
+.alert-warning, .alert-warning * {
+    color: #654d25;
 }
 
 #header {
@@ -164,10 +180,6 @@ input, select, textarea {
     padding-top: 10px ! important;
     border: none;
     background: none;
-}
-
-.x-tab-strip span.x-tab-strip-text, .x-btn-text {
-    color: #666;
 }
 
 ul.x-tab-strip-top {
@@ -315,6 +327,7 @@ dt {
     background-color: #fefefe !important;
 }
 
+.mainToolBar,
 .x-tab-strip-top .x-tab-right,
 .x-tab-strip-top .x-tab-left,
 .x-tab-strip-top .x-tab-strip-inner,
@@ -322,7 +335,7 @@ dt {
 .dataCollectionDetailsAccordion .x-panel-header,
 .filter-selection-panel .x-panel-header,
 .dataCollectionDetailsPanel:not(.x-panel-collapsed) .x-panel-header {
-    background-color: #E5E7E8;
+    background-color: #e2e2e2;
 }
 
 .expandable .resultsRowHeaderTitle:hover,
@@ -388,4 +401,9 @@ span.facetSearchHyperLink:hover {
 .x-window-dlg .x-window-header-text,
 .x-window-header-text {
     font-size: larger;
+}
+
+.mainToolBar
+{
+    border-radius: 6px;
 }
