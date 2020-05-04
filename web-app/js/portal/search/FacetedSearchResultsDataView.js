@@ -72,7 +72,7 @@ initComponent: function() {
                 },
                 getHtmlTitle: function(values) {
                     var title = values.title;
-                    return String.format("<h3 title=\"Click for more info: {0}\">{1}</h3>", title, Ext.util.Format.ellipsis(title, 180, true));
+                    return String.format("<h3 title=\"Click to display the abstract for this collection\">{1}</h3>", title, Ext.util.Format.ellipsis(title, 180, true));
                 }
             }
         );
