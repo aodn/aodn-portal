@@ -319,7 +319,7 @@ knownServers = [
 
 // Server configuration
 baselayerServer = [
-        uri: "http://geoserver-static.aodn.org.au/geoserver/wms",
+        uri: "https://geoserver-static.aodn.org.au/geoserver/wms",
         wmsVersion: '1.1.1'
 ]
 baselayers = [
@@ -336,7 +336,7 @@ baselayers = [
 ]
 
 datalayerServer = [
-        uri: "http://geoserver-static.aodn.org.au/geoserver/wms",
+        uri: "https://geoserver-static.aodn.org.au/geoserver/wms",
         wmsVersion: '1.1.1'
 ]
 datalayers = [
