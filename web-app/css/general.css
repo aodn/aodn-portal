@@ -1362,3 +1362,9 @@ span.facetSearchHyperLink {
 .facetedSearchMapParamTpl .results {
     margin: 2px 40px 2px 25px;
 }
+
+.mainToolBar
+{
+    border-radius: 6px;
+    border: 1px solid #dcdcdc;
+}
