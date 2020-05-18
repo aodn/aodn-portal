@@ -403,7 +403,11 @@ span.facetSearchHyperLink:hover {
     font-size: larger;
 }
 
-.mainToolBar
-{
+.mainToolBar {
     border-radius: 6px;
+    border: 1px solid #dcdcdc;
+}
+
+.mainToolBar .x-toolbar {
+    padding: 9px! important;
 }
