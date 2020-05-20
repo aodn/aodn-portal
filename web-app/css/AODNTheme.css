@@ -411,3 +411,7 @@ span.facetSearchHyperLink:hover {
 .mainToolBar .x-toolbar {
     padding: 9px! important;
 }
+
+.sortByPanel .x-form-radio-group {
+    margin-left: 6px;
+}

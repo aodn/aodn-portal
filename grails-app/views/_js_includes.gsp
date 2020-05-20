@@ -76,6 +76,7 @@
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'FacetedSearchResultsPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'FacetedSearchResultsDataView.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'FreeTextSearchPanel.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'SortByPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'DateSelectionPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'GeoSelectionPanel.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/search', file: 'MetadataExtent.js')}"></script>

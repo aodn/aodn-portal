@@ -10,7 +10,7 @@ Portal.search.SearchPanel = Ext.extend(Ext.Panel, {
             catalogUrl: Portal.app.appConfig.geonetwork.url,
             defaultParams: {
                 protocol: Portal.app.appConfig.portal.metadataProtocols.wms.join(' or '),
-                sortBy: 'popularity'
+                sortBy: Portal.app.appConfig.portal.sortByCriteria
             }
         });
 

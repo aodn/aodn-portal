@@ -83,6 +83,18 @@ featureToggles {
     geonetworkLinkMonitor = false
 }
 
+sortByFacet =  [
+        classId: 'Portal.search.SortByPanel',
+        name: 'sortbyFilter',
+        key: 'sortBy',
+        sortCriteria: [
+                popularity: "Popularity",
+                relevance: "Relevance",
+                title: "Title",
+                changeDate: "Change date",
+        ]
+]
+
 enabledFacets = [
     [
         name: 'parameterFilter',
@@ -115,7 +127,8 @@ enabledFacets = [
         name: 'freetextFilter',
         key: 'freetextFilter',
         collapsedByDefault: false
-    ]
+    ],
+    sortByFacet
 ]
 
 facetsGN3 = [
@@ -150,7 +163,8 @@ facetsGN3 = [
         name: 'freetextFilter',
         key: 'freetextFilter',
         collapsedByDefault: false
-    ]
+    ],
+    sortByFacet
 ]
 
 // Google Analytics
@@ -452,6 +466,7 @@ portal {
     ]
 
     mapGetFeatureInfoBuffer = 10
+    sortByCriteria = "popularity"
 }
 
 // Atlas of Australia

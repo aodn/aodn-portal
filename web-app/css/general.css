@@ -1370,3 +1370,8 @@ span.facetSearchHyperLink {
     border-radius: 6px;
     border: 1px solid #dcdcdc;
 }
+
+.x-form-check-wrap input,
+input.x-tree-node-cb {
+    vertical-align: inherit;
+}

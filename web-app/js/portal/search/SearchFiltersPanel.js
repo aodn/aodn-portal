@@ -57,6 +57,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
                     collapsedByDefault: collapsedByDefault,
                     searcher: config.searcher,
                     mapPanel: config.mapPanel,
+                    sortCriteria: facet.sortCriteria,
                     listeners: {
                         expand: this._onExpand,
                         scope: this

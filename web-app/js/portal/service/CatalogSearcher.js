@@ -129,6 +129,12 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this.fireEvent( 'filteradded' );
     },
 
+    setSortBy: function(value) {
+        this.defaultParams.sortBy = value;
+        this.defaultParams.sortOrder =  (value=='title') ? 'reverse' : undefined;
+        this.search();
+    },
+
     getFilterValue: function(filterName) {
 
         var idx = this.searchFilters.findBy( function( record ) {
