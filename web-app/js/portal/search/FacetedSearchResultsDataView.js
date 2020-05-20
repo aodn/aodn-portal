@@ -158,8 +158,8 @@ initComponent: function() {
             begin: values.temporalExtentBegin,
             end: values.temporalExtentEnd
         });
-        html += this._getPlatformAsHtml(values.platform);
         html += this._getOrganisationAsHtml(values.organisation);
+        html += this._getPlatformAsHtml(values.platform);
 
         var parametersElementId = this.parametersElementId(values.uuid);
 
