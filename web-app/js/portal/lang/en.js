@@ -369,6 +369,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     usabilityTestKeywordMagnifierLabel: "Magnifying glass",
     usabilityTestKeywordGotFocusLabel: "Got focus",
 
+    searchCriteriaSortAction: "Search Criteria SortBy",
+
     shareButton: "New portal with only this collection",
     menuItemGroupTitle: '<span class="menu-title">${title}</span>',
     wpsTrackingLabel: "WPS Service",

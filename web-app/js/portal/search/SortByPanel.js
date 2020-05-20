@@ -39,21 +39,19 @@ Portal.search.SortByPanel = Ext.extend(Ext.Panel, {
             toolTemplate: new Ext.Template('')
         }, cfg);
 
-        Portal.search.FreeTextSearchPanel.superclass.constructor.call(this, config);
+        Portal.search.SortByPanel.superclass.constructor.call(this, config);
 
         this.mon(this.sortByRadioGroup, 'change', this.onRadioChange, this);
     },
 
     initComponent: function() {
-        Portal.search.FreeTextSearchPanel.superclass.initComponent.apply(this, arguments);
+        Portal.search.SortByPanel.superclass.initComponent.apply(this, arguments);
     },
 
     onRadioChange: function(theRadioGroup, checkedItem) {
         this.searcher.setSortBy(checkedItem.value);
-        // trackUsabilityTest(OpenLayers.i18n('usabilityTestKeywordSubmitAction')
-        //     , OpenLayers.i18n('usabilityTestKeywordEnterLabel'));
-
-
-    },
+        trackFacetUsage(OpenLayers.i18n('searchCriteriaSortAction')
+             , checkedItem.value);
+    }
 
 });
