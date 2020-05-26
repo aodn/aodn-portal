@@ -19,11 +19,6 @@ describe("Portal.search.FacetedSearchResultsPanel", function() {
         });
     });
 
-    describe('paging control' , function() {
-        it(' pageSize should match searcher pageSize', function() {
-            expect(resultsPanel.pagingBar.pageSize).toEqual(999);
-        });
-    });
 
     describe('active geo network record store events', function() {
         it('refreshes view on record added', function() {

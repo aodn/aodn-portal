@@ -55,7 +55,10 @@ input[type="checkbox"], input[type="radio"] {
 
 .faceted-search-results,
 .downLoadPanelBody {
-    padding: 5px 6px;
+    padding: 5px 0;
+    box-shadow: -12px -14px 11px -15px rgba(181,181,181,.3);
+    border-top: 1px solid #e2e2e2;
+    border-left: 1px solid #e2e2e2;
 }
 
 .downloadPanelItem {
@@ -1369,4 +1372,12 @@ span.facetSearchHyperLink {
 {
     border-radius: 6px;
     border: 1px solid #dcdcdc;
+}
+
+.search-results-toolbar {
+    border-radius: 2px;
+}
+
+.search-results-toolbar.x-toolbar * {
+    font-size: 14px;
 }

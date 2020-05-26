@@ -10,7 +10,7 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
                 fast: 'index'
             },
             defaultParams: {},
-            pageSize: 10
+            pageSize: Portal.app.appConfig.geonetwork.pageSize
         };
 
         var searchFilters = new Ext.data.JsonStore({
@@ -90,8 +90,8 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         }, this, true);
     },
 
-    goToPage: function(start, limit) {
-        var page = {from: start, to: start + limit - 1};
+    goToPage: function(start) {
+        var page = {from: start, to: start + this.pageSize -1 };
         this._search(page);
     },
 
