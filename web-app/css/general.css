@@ -1165,10 +1165,6 @@ div:not(.x-tree-selected) * {
     background-color: #ffff99;
 }
 
-.search-filters-toolbar-title * {
-    font-size: 13px! important;
-}
-
 /* Form Items CSS */
 
 .x-form-item {

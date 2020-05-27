@@ -96,6 +96,7 @@ sortByFacet =  [
 ]
 
 enabledFacets = [
+    sortByFacet,
     [
         name: 'parameterFilter',
         key: 'Measured parameter'
@@ -127,11 +128,11 @@ enabledFacets = [
         name: 'freetextFilter',
         key: 'freetextFilter',
         collapsedByDefault: false
-    ],
-    sortByFacet
+    ]
 ]
 
 facetsGN3 = [
+     sortByFacet,
     [
         name: 'parameterFilter',
         key: 'parameterCategories'
@@ -163,8 +164,7 @@ facetsGN3 = [
         name: 'freetextFilter',
         key: 'freetextFilter',
         collapsedByDefault: false
-    ],
-    sortByFacet
+    ]
 ]
 
 // Google Analytics

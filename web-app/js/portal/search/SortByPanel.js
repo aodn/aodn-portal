@@ -6,7 +6,8 @@ Portal.search.SortByPanel = Ext.extend(Ext.Panel, {
         cfg = cfg || {};
 
         if (cfg.title) {
-            cfg.title = '<span class="filter-selection-panel-header">' + cfg.title + '</span>';
+            this.originalTitle =  cfg.title;
+            cfg.title = this.buildTitle( cfg.title, "Default");
         }
 
         var radioItems = [];
@@ -24,12 +25,12 @@ Portal.search.SortByPanel = Ext.extend(Ext.Panel, {
         this.sortByRadioGroup = new Ext.form.RadioGroup({
             columns: 1,
             items: radioItems
-        })
+        });
 
         var config = Ext.apply({
-            cls: 'search-filter-panel filter-selection-panel sortByPanel',
-            collapsible: false,
-            titleCollapse: false,
+            cls: 'sortByPanel',
+            collapsible: true,
+            titleCollapse: true,
             items: [
                 { xtype: 'spacer', height: 10 },
                 this.sortByRadioGroup,
@@ -44,12 +45,28 @@ Portal.search.SortByPanel = Ext.extend(Ext.Panel, {
         this.mon(this.sortByRadioGroup, 'change', this.onRadioChange, this);
     },
 
+    updateTitle: function(selectedKey) {
+        this.setTitle(this.buildTitle(this.originalTitle,selectedKey));
+
+    },
+
+    buildTitle: function(title,selectedKey) {
+         return String.format('<span class="filter-selection-panel-header">{0}: <span class="sortByPanelButton">{1}</span></span>', title, selectedKey)
+    },
+
+    removeAnyFilters: function() {
+        return true;
+    },
+
     initComponent: function() {
         Portal.search.SortByPanel.superclass.initComponent.apply(this, arguments);
+
     },
 
     onRadioChange: function(theRadioGroup, checkedItem) {
         this.searcher.setSortBy(checkedItem.value);
+        this.updateTitle(checkedItem.boxLabel);
+        this.collapse();
         trackFacetUsage(OpenLayers.i18n('searchCriteriaSortAction')
              , checkedItem.value);
     }

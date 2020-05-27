@@ -415,3 +415,10 @@ span.facetSearchHyperLink:hover {
 .sortByPanel .x-form-radio-group {
     margin-left: 6px;
 }
+
+.sortByPanelButton {
+    font-weight: normal;
+    padding: 3px;
+    border-radius: 4px;
+    background-color: #e8e8e8;
+}
