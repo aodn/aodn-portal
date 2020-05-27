@@ -21,8 +21,7 @@ Portal.ui.MainPanel = Ext.extend(Ext.Panel, {
             activeItem: TAB_INDEX_SEARCH,
             margins: {
                 left: 10,
-                right: 10,
-                top: 10
+                right: 10
             },
             unstyled: true,
             layout: new Portal.ui.NavigableCardLayout({
