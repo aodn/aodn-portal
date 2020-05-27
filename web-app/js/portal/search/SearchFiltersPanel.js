@@ -74,6 +74,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     _buildToolBar: function() {
         return new Ext.Toolbar({
             cls: 'search-filters-toolbar',
+            height: 35,
             border: false,
             frame: false,
             items: [ '->', this._buildSpinner(), this._buildNewSearchButton()]

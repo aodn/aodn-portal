@@ -30,6 +30,7 @@ Portal.search.SortByPanel = Ext.extend(Ext.Panel, {
         var config = Ext.apply({
             cls: 'sortByPanel',
             collapsible: true,
+            collapsed: true,
             titleCollapse: true,
             items: [
                 { xtype: 'spacer', height: 10 },
