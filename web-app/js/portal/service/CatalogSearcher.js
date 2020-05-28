@@ -45,6 +45,8 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         this.fireEvent('searchstart');
 
+        this.applySortOrder();
+
         var requestUrl = this._getRequestUrl(page);
 
         var searchResponseLoader = this._newSearchResponseLoader({
@@ -133,6 +135,17 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
         this.defaultParams.sortBy = value;
         this.defaultParams.sortOrder =  (value=='title') ? 'reverse' : undefined;
         this.search();
+    },
+
+    applySortOrder: function() {
+
+        this.defaultParams.sortOrder = undefined; // undef is ascending
+
+        // todo make no effect for 'relevence'
+        if ((this.defaultParams.sortBy!='title' && this.selectedSortOrder == "desc" ) ||
+            (this.defaultParams.sortBy=='title' && this.selectedSortOrder != "desc")) {
+            this.defaultParams.sortOrder =  'reverse';
+        }
     },
 
     getFilterValue: function(filterName) {

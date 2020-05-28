@@ -1187,8 +1187,7 @@ div:not(.x-tree-selected) * {
 
 #downLoadCartWidget span {
     display: inline-flex;
-    margin: 0 2px;
-    vertical-align: bottom;
+    margin: 1px 2px;
 }
 
 #downloadCartSize {
@@ -1365,9 +1364,4 @@ span.facetSearchHyperLink {
 {
     border-radius: 6px;
     border: 1px solid #dcdcdc;
-}
-
-.x-form-check-wrap input,
-input.x-tree-node-cb {
-    vertical-align: inherit;
 }

@@ -120,7 +120,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     shareButtonTooltip: "Share link to new portal with only this collection",
 
     removeButton: '<span class="fa fa-fw fa-remove"></span> Remove',
-    carticon: '<span class="fa fa-2x fa-shopping-cart "></span> ',
+    carticon: '<span class="fa fa-lg fa-shopping-cart "></span> ',
 
     // Download View
     downloadConfirmationWindowTitle: 'Data Download',
@@ -208,6 +208,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // FacetFilterPanel
     addAnother: 'Add another filter - where possible',
+    asc: 'Sort order normal',
+    desc: 'Sort order reversed',
 
     // Async Downloads
     asyncDownloadPanelTitleLoading: 'Requesting subset ...',

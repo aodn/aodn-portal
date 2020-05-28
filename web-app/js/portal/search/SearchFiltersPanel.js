@@ -54,6 +54,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
                 {
                     facetName: facet.key,
                     title: OpenLayers.i18n(facet.name),
+                    header: facet.name != undefined,
                     collapsedByDefault: collapsedByDefault,
                     searcher: config.searcher,
                     mapPanel: config.mapPanel,
@@ -74,7 +75,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     _buildToolBar: function() {
         return new Ext.Toolbar({
             cls: 'search-filters-toolbar',
-            height: 35,
+            height: 25,
             border: false,
             frame: false,
             items: [ '->', this._buildSpinner(), this._buildNewSearchButton()]

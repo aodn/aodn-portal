@@ -27,10 +27,26 @@ Portal.search.SortByPanel = Ext.extend(Ext.Panel, {
             items: radioItems
         });
 
+        this.sortByAsc = new Ext.Button({
+            id: 'asc',
+            styles: 'fa-sort-amount-asc awesome-button selected',
+            handler: this._onSelect,
+            scope: this,
+            label: OpenLayers.i18n('asc')
+        });
+
+        this.sortByDesc = new Ext.Button({
+            id: 'desc',
+            styles: 'fa-sort-amount-desc awesome-button',
+            handler: this._onSelect,
+            scope: this,
+            label: OpenLayers.i18n('desc')
+        });
+
         var config = Ext.apply({
             cls: 'sortByPanel',
             collapsible: true,
-            collapsed: true,
+            collapsed: cfg.collapsedByDefault,
             titleCollapse: true,
             items: [
                 { xtype: 'spacer', height: 10 },
@@ -38,7 +54,10 @@ Portal.search.SortByPanel = Ext.extend(Ext.Panel, {
                 { xtype: 'spacer', height: 20 }
 
             ],
-            toolTemplate: new Ext.Template('')
+            toolTemplate: new Ext.Template('<div class="x-tool-awesome fa {styles} " title="{label}"></div>'),
+            tools: [
+                this.sortByAsc,
+                this.sortByDesc]
         }, cfg);
 
         Portal.search.SortByPanel.superclass.constructor.call(this, config);
@@ -46,9 +65,23 @@ Portal.search.SortByPanel = Ext.extend(Ext.Panel, {
         this.mon(this.sortByRadioGroup, 'change', this.onRadioChange, this);
     },
 
+    initComponent: function() {
+        Portal.search.SortByPanel.superclass.initComponent.apply(this, arguments);
+    },
+
+    _onSelect: function(evt, item) {
+        jQuery('.awesome-button').removeClass("selected");
+        item.addClass("selected");
+        Ext.iterate(this.tools, function(value) {
+            if (this.tools[value].id == item.id) {
+                this.searcher.selectedSortOrder = value;
+            }
+        }, this);
+        this.searcher.search();
+    },
+
     updateTitle: function(selectedKey) {
         this.setTitle(this.buildTitle(this.originalTitle,selectedKey));
-
     },
 
     buildTitle: function(title,selectedKey) {
@@ -59,11 +92,6 @@ Portal.search.SortByPanel = Ext.extend(Ext.Panel, {
         return true;
     },
 
-    initComponent: function() {
-        Portal.search.SortByPanel.superclass.initComponent.apply(this, arguments);
-
-    },
-
     onRadioChange: function(theRadioGroup, checkedItem) {
         this.searcher.setSortBy(checkedItem.value);
         this.updateTitle(checkedItem.boxLabel);
@@ -71,5 +99,4 @@ Portal.search.SortByPanel = Ext.extend(Ext.Panel, {
         trackFacetUsage(OpenLayers.i18n('searchCriteriaSortAction')
              , checkedItem.value);
     }
-
 });

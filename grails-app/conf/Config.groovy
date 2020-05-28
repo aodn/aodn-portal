@@ -92,11 +92,16 @@ sortByFacet =  [
                 relevance: "Relevance",
                 title: "Title",
                 changeDate: "Change date",
-        ]
+        ],
+        collapsedByDefault: true
 ]
 
 enabledFacets = [
     sortByFacet,
+    [
+            classId: 'Portal.search.FreeTextSearchPanel',
+            key: 'freetextFilter'
+    ],
     [
         name: 'parameterFilter',
         key: 'Measured parameter'
@@ -122,17 +127,15 @@ enabledFacets = [
     [
         classId: 'Portal.search.GeoSelectionPanel',
         name: 'geoFilter'
-    ],
-    [
-        classId: 'Portal.search.FreeTextSearchPanel',
-        name: 'freetextFilter',
-        key: 'freetextFilter',
-        collapsedByDefault: false
     ]
 ]
 
 facetsGN3 = [
      sortByFacet,
+     [
+             classId: 'Portal.search.FreeTextSearchPanel',
+             key: 'freetextFilter'
+     ],
     [
         name: 'parameterFilter',
         key: 'parameterCategories'
@@ -158,12 +161,6 @@ facetsGN3 = [
     [
         classId: 'Portal.search.GeoSelectionPanel',
         name: 'geoFilter'
-    ],
-    [
-        classId: 'Portal.search.FreeTextSearchPanel',
-        name: 'freetextFilter',
-        key: 'freetextFilter',
-        collapsedByDefault: false
     ]
 ]
 

@@ -146,7 +146,7 @@ hr {
 }
 
 input, select, textarea {
-    background-color: #FCFCFC;
+    background-color: #FCFCFC! important;
     border: 1px solid #CCCCCC;
     font: 11px verdana, arial, helvetica, sans-serif;
     margin: 2px 0;
@@ -420,4 +420,17 @@ span.facetSearchHyperLink:hover {
     padding: 3px;
     border-radius: 4px;
     background-color: #e8e8e8;
+}
+
+.awesome-button {
+    border-radius: 4px;
+    padding: 3px 1px 1px 4px;
+    margin-top: 0;
+}
+
+.awesome-button.selected {
+    background: #e8e8e8;
+}
+.awesome-button:hover {
+    background: #bbbbbb;
 }
