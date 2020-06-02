@@ -89,9 +89,8 @@ sortByFacet =  [
         key: 'sortBy',
         sortCriteria: [
                 popularity: "Popularity",
-                relevance: "Relevance",
                 title: "Title",
-                changeDate: "Change date",
+                changeDate: "Last Updated",
         ],
         collapsedByDefault: true
 ]

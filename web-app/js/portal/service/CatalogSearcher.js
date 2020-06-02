@@ -141,7 +141,6 @@ Portal.service.CatalogSearcher = Ext.extend(Ext.util.Observable, {
 
         this.defaultParams.sortOrder = undefined; // undef is ascending
 
-        // todo make no effect for 'relevence'
         if ((this.defaultParams.sortBy!='title' && this.selectedSortOrder == "desc" ) ||
             (this.defaultParams.sortBy=='title' && this.selectedSortOrder != "desc")) {
             this.defaultParams.sortOrder =  'reverse';

@@ -174,7 +174,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     platformFilter: 'Platform',
     temporalResolutionFilter: 'Temporal Resolution',
     parameterFilter: 'Parameter',
-    sortbyFilter: 'Sort Criteria',
+    sortbyFilter: 'Sort By: ',
     freetextFilter: 'Keyword',
     freeTextFilterSearchErrorMsg: "Search for free text within metadata records ",
     freeTextFilterSearchHelperMsg: "Type keyword, press enter",
