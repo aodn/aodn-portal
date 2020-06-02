@@ -256,7 +256,7 @@ knownServers = [
         wpsUrl: 'http://www.cmar.csiro.au/geoserver/wps'
     ],
     [
-        uri: 'https://www.cmar.csiro.au/data/trawler/broker.cfm',
+        uri: 'https://www.marine.csiro.au/data/trawler/broker.cfm',
         wmsVersion: '1.1.1',
         type: 'datatrawlerserver',
         csvDownloadFormat: 'csv-with-metadata-header'

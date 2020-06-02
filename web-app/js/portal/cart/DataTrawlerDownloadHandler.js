@@ -93,8 +93,8 @@ Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHan
         var formattedFilters = '';
         Ext.each(filters, function(filter) {
             if (filter.type == 'datetime' && filter.name == 'TIME') {
-                var fromDate = filter.hasValue() ? moment.utc(filter._getFromDate()) : this.DEFAULT_DATE_START;
-                var toDate = filter.hasValue() ? moment.utc(filter._getToDate()) : this.DEFAULT_DATE_END;
+                var fromDate = filter._getFromDate() ? moment.utc(filter._getFromDate()) : this.DEFAULT_DATE_START;
+                var toDate = filter._getToDate() ? moment.utc(filter._getToDate()) : this.DEFAULT_DATE_END;
                 formattedFilters += String.format('TIME={0},{1}&', this._formatDate(fromDate), this._formatDate(toDate));
             } else if (filter.type == 'pointpropertytype' || filter.type == 'geometrypropertytype') {
                 var bounds = filter.hasValue() ? filter.value.bounds : this.DEFAULT_BOUNDS;
