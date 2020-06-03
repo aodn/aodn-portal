@@ -141,7 +141,8 @@ describe("Portal.search.SearchFiltersPanel", function() {
             on: noOp,
             reset: noOp,
             search: noOp,
-            hasFacetNode: returns(false)
+            hasFacetNode: returns(false),
+            hasFilters: returns(false)
         };
     }
 });

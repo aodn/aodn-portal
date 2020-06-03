@@ -54,9 +54,11 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
                 {
                     facetName: facet.key,
                     title: OpenLayers.i18n(facet.name),
+                    header: facet.name != undefined,
                     collapsedByDefault: collapsedByDefault,
                     searcher: config.searcher,
                     mapPanel: config.mapPanel,
+                    sortCriteria: facet.sortCriteria,
                     listeners: {
                         expand: this._onExpand,
                         scope: this
@@ -73,16 +75,17 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     _buildToolBar: function() {
         return new Ext.Toolbar({
             cls: 'search-filters-toolbar',
+            height: 25,
             border: false,
             frame: false,
-            items: [this._buildSpinner(), '->', this._buildNewSearchButton()]
+            items: [ '->', this._buildSpinner(), this._buildNewSearchButton()]
         });
     },
 
     _buildSpinner: function() {
         this.spinner = new Ext.Panel({
-            html: this._makeSpinnerText(OpenLayers.i18n('loadingResourceMessage', {'resource': 'search terms'})),
-            cls: 'search-filters-toolbar-title',
+            text: this._makeSpinnerText(OpenLayers.i18n('loadingResourceMessage', {'resource': 'search terms'})),
+            cls: 'x-hyperlink', // css match as this.newSearchButton
             hidden: false
         });
 
@@ -104,6 +107,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
     },
 
     _setSpinnerText: function(newText) {
+        this.newSearchButton.hide();
         this.spinner.update(this._makeSpinnerText(newText));
         this.spinner.show();
     },
@@ -114,6 +118,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _hideSpinnerText: function() {
         this.spinner.hide();
+        this.newSearchButton.setVisible(this.searcher.hasFilters());
     },
 
     _clearAllSearchFilters: function() {
@@ -135,7 +140,7 @@ Portal.search.SearchFiltersPanel = Ext.extend(Ext.Panel, {
 
     _setNewSearchButtonVisibility: function() {
         this._setSpinnerText(OpenLayers.i18n('loadingResourceMessage', {'resource': 'Collections'}));
-        this.newSearchButton.setVisible(this.searcher.hasFilters());
+
     },
 
     _showNewSearchForGeoFacet: function() {

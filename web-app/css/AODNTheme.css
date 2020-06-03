@@ -146,7 +146,7 @@ hr {
 }
 
 input, select, textarea {
-    background-color: #FCFCFC;
+    background-color: #FCFCFC! important;
     border: 1px solid #CCCCCC;
     font: 11px verdana, arial, helvetica, sans-serif;
     margin: 2px 0;
@@ -177,7 +177,6 @@ input, select, textarea {
 }
 
 .x-toolbar {
-    padding-top: 10px ! important;
     border: none;
     background: none;
 }
@@ -410,4 +409,17 @@ span.facetSearchHyperLink:hover {
 
 .mainToolBar .x-toolbar {
     padding: 9px! important;
+}
+
+.awesome-button {
+    border-radius: 4px;
+}
+
+.awesome-button.selected,
+.sortByPanelButton.selected {
+    background: #e8e8e8;
+}
+
+.sortByPanelButton:hover {
+    background: #bbbbbb;
 }

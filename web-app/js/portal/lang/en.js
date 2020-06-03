@@ -120,7 +120,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     shareButtonTooltip: "Share link to new portal with only this collection",
 
     removeButton: '<span class="fa fa-fw fa-remove"></span> Remove',
-    carticon: '<span class="fa fa-2x fa-shopping-cart "></span> ',
+    carticon: '<span class="fa fa-lg fa-shopping-cart "></span> ',
 
     // Download View
     downloadConfirmationWindowTitle: 'Data Download',
@@ -174,6 +174,7 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     platformFilter: 'Platform',
     temporalResolutionFilter: 'Temporal Resolution',
     parameterFilter: 'Parameter',
+    sortbyFilter: 'Sort By: ',
     freetextFilter: 'Keyword',
     freeTextFilterSearchErrorMsg: "Search for free text within metadata records ",
     freeTextFilterSearchHelperMsg: "Type keyword, press enter",
@@ -207,6 +208,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
 
     // FacetFilterPanel
     addAnother: 'Add another filter - where possible',
+    asc: 'Sort order normal',
+    desc: 'Sort order reversed',
 
     // Async Downloads
     asyncDownloadPanelTitleLoading: 'Requesting subset ...',
@@ -367,6 +370,8 @@ OpenLayers.Lang.en = OpenLayers.Util.extend(OpenLayers.Lang.en, {
     usabilityTestKeywordEnterLabel: "Enter",
     usabilityTestKeywordMagnifierLabel: "Magnifying glass",
     usabilityTestKeywordGotFocusLabel: "Got focus",
+
+    searchCriteriaSortAction: "Search Criteria SortBy",
 
     shareButton: "New portal with only this collection",
     menuItemGroupTitle: '<span class="menu-title">${title}</span>',

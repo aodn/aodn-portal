@@ -939,6 +939,7 @@ div.allwhite {
 }
 
 .filter-selection-panel-header {
+    float: left;
     padding-left: 3px;
 }
 
@@ -1165,10 +1166,6 @@ div:not(.x-tree-selected) * {
     background-color: #ffff99;
 }
 
-.search-filters-toolbar-title * {
-    font-size: 13px! important;
-}
-
 /* Form Items CSS */
 
 .x-form-item {
@@ -1191,8 +1188,7 @@ div:not(.x-tree-selected) * {
 
 #downLoadCartWidget span {
     display: inline-flex;
-    margin: 0 2px;
-    vertical-align: bottom;
+    margin: 1px 2px;
 }
 
 #downloadCartSize {
@@ -1370,3 +1366,22 @@ span.facetSearchHyperLink {
     border-radius: 6px;
     border: 1px solid #dcdcdc;
 }
+
+.sortByPanelButton {
+    display: inline-block;
+    font-weight: normal;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #e8e8e8;
+    margin: 0 3px ;
+}
+
+.awesome-button {
+    padding: 3px 1px 1px 4px;
+    margin-top: 0;
+}
+
+.sortByPanel {
+    vertical-align: center;
+}
+

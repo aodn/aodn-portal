@@ -83,7 +83,24 @@ featureToggles {
     geonetworkLinkMonitor = false
 }
 
+sortByFacet =  [
+        classId: 'Portal.search.SortByPanel',
+        name: 'sortbyFilter',
+        key: 'sortBy',
+        sortCriteria: [
+                popularity: "Popularity",
+                title: "Title",
+                changeDate: "Last Updated",
+        ],
+        collapsedByDefault: true
+]
+
 enabledFacets = [
+    sortByFacet,
+    [
+            classId: 'Portal.search.FreeTextSearchPanel',
+            key: 'freetextFilter'
+    ],
     [
         name: 'parameterFilter',
         key: 'Measured parameter'
@@ -109,16 +126,15 @@ enabledFacets = [
     [
         classId: 'Portal.search.GeoSelectionPanel',
         name: 'geoFilter'
-    ],
-    [
-        classId: 'Portal.search.FreeTextSearchPanel',
-        name: 'freetextFilter',
-        key: 'freetextFilter',
-        collapsedByDefault: false
     ]
 ]
 
 facetsGN3 = [
+     sortByFacet,
+     [
+             classId: 'Portal.search.FreeTextSearchPanel',
+             key: 'freetextFilter'
+     ],
     [
         name: 'parameterFilter',
         key: 'parameterCategories'
@@ -144,12 +160,6 @@ facetsGN3 = [
     [
         classId: 'Portal.search.GeoSelectionPanel',
         name: 'geoFilter'
-    ],
-    [
-        classId: 'Portal.search.FreeTextSearchPanel',
-        name: 'freetextFilter',
-        key: 'freetextFilter',
-        collapsedByDefault: false
     ]
 ]
 
@@ -196,7 +206,7 @@ environments {
 
         // overwritten by Chef in production
         grails.serverURL = "http://myaodn.example.com"
-        geonetwork.url = "http://catalogue-portal.aodn.org.au/geonetwork"
+        geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
     }
 }
 
@@ -452,6 +462,7 @@ portal {
     ]
 
     mapGetFeatureInfoBuffer = 10
+    sortByCriteria = "popularity"
 }
 
 // Atlas of Australia
