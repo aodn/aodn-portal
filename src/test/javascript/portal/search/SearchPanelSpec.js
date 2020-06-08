@@ -45,12 +45,12 @@ describe("Portal.search.SearchPanel", function() {
         it('sets scroll position to 0', function() {
             spyOn(searchPanel.resultsStore, 'loadData');
             spyOn(searchPanel.filtersPanel, '_setSpinnerText');
-            spyOn(searchPanel.bodyPanel, 'resetScrollPositionToTop');
+            spyOn(searchPanel.bodyPanel, 'setScrollPosition');
             var response = {};
             var page = {from: 1, to: 10};
 
             searchPanel.searcher.fireEvent('searchcomplete', response, page);
-            expect(searchPanel.bodyPanel.resetScrollPositionToTop).toHaveBeenCalled();
+            expect(searchPanel.bodyPanel.setScrollPosition).toHaveBeenCalled();
         });
 
     });

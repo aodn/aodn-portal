@@ -30,7 +30,7 @@ describe("Portal.search.SearchBodyPanel", function() {
 
         describe('onResultsStoreLoad', function() {
             it('displays alert when store is empty', function() {
-                spyOn(searchBodyPanel, 'resetScrollPositionToTop');
+                spyOn(searchBodyPanel, 'setScrollPosition');
                 spyOn(searchBodyPanel, '_displayNoResultsAlert');
                 searchBodyPanel.resultsStore.getTotalCount = returns(0);
                 searchBodyPanel._onResultsStoreLoad();

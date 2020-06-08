@@ -45,7 +45,9 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
         if (this.resultsStore.getTotalCount() == 0) {
             this._displayNoResultsAlert();
         }
-        this.loadingResultsStore = false;
+        setTimeout(function () {
+            this.loadingResultsStore = false;
+        }, 2000);
 
         this.setResultsStatus();
         this.hideSpinnerText();
@@ -63,9 +65,10 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
         Ext.Msg.alert('Info', 'The search returned no results.');
     },
 
-    handleScroll: function(evt, fSRDiv) {
-        var pixelsFromBottom = fSRDiv.scrollHeight - (fSRDiv.clientHeight + fSRDiv.scrollTop);
-        if (this._canLoadMore() && pixelsFromBottom === 0  ) {
+    handleScroll: function() {
+        var fSRDiv = this.body.dom;
+        var pixelsFromBottom = fSRDiv.scrollHeight -  (fSRDiv.clientHeight + fSRDiv.scrollTop);
+        if (this._canLoadMore() && pixelsFromBottom < 500  ) {
             this.loadMoreResults();
         }
     },
@@ -73,9 +76,7 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
     loadMoreResults: function() {
         this.searcher.goToPage(this.resultsStore.data.length + 1);
         this.loadingResultsStore = true;
-
         this.showSpinnerText();
-
     },
 
     _buildToolBar: function() {
@@ -106,7 +107,7 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
     },
 
     getResultCounts: function() {
-        return String.format("<span>Showing <b>{0}</b> of <b>{1}</b> matching collections </span>", this.resultsStore.data.length, this.resultsStore.getTotalCount() );
+        return String.format("<span>Loaded <b>{0}</b> of <b>{1}</b> matching collections </span>", this.resultsStore.data.length, this.resultsStore.getTotalCount() );
     },
 
     _makeSpinnerText: function(text) {
@@ -124,7 +125,7 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
         this.resultsStatus.hide();
     },
 
-    resetScrollPositionToTop: function() {
-        this.body.dom.scrollTop = 0;
+    setScrollPosition: function(pixelsFromTop) {
+        this.body.dom.scrollTop = ((pixelsFromTop > 0) ? pixelsFromTop: 0);
     },
 });

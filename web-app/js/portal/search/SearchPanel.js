@@ -62,7 +62,7 @@ Portal.search.SearchPanel = Ext.extend(Ext.Panel, {
 
     _loadResults: function(response, page) {
         if (page.from < 21) {
-            this.bodyPanel.resetScrollPositionToTop();
+            this.bodyPanel.setScrollPosition(0);
         }
         this.classificationStore.loadData(response);
         this.resultsStore.startRecord = page.from - 1;

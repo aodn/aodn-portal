@@ -6,6 +6,7 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
         this.dataView = new Portal.search.FacetedSearchResultsDataView({
             store: this.store,
+            //searchBodyPanel: this.searchResultsPanel,
             searcher: this.searcher,
             dataCollectionStore: this.dataCollectionStore,
             classificationStore: this.classificationStore
@@ -31,13 +32,13 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
         Ext.each([PORTAL_EVENTS.DATA_COLLECTION_ADDED, PORTAL_EVENTS.DATA_COLLECTION_REMOVED], function(eventName) {
 
             Ext.MsgBus.subscribe(eventName, function() {
-                this._refreshView();
+                this._refreshView({"collectionAdded": true});
             }, this);
         }, this);
     },
 
-    _refreshView: function() {
-        this.dataView.refresh();
+    _refreshView: function(obj) {
+        this.dataView.refresh(obj);
     }
 });
 
