@@ -45,8 +45,9 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
         if (this.resultsStore.getTotalCount() == 0) {
             this._displayNoResultsAlert();
         }
+        var that = this;
         setTimeout(function () {
-            this.loadingResultsStore = false;
+            that.loadingResultsStore = false;
         }, 2000);
 
         this.setResultsStatus();

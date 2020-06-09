@@ -117,7 +117,6 @@ initComponent: function() {
         }
         else {
             this.appendTpl();
-            console.log("loading FacetedSearchResultsDataView");
         }
     },
 
