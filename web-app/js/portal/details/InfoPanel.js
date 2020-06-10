@@ -40,11 +40,14 @@ Portal.details.InfoPanel = Ext.extend(Ext.Container, {
         Ext.each(links, function(link) {
             var linkText;
 
-            if (link.title == "") {
-                linkText = String.format('<i>({0})</i>', OpenLayers.i18n('unnamedResourceName'));
+            if (link.title != "") {
+                linkText = link.title;
+            }
+            else if (link.name != "") {
+                linkText = link.name;
             }
             else {
-                linkText = link.title;
+                linkText = String.format('<i>({0})</i>', OpenLayers.i18n('unnamedResourceName'));
             }
 
             linkHtml += String.format('<li><a class="external" href="{0}" target="_blank">{1}</a></li>\n', link.href, linkText);

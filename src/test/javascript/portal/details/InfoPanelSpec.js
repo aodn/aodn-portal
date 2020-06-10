@@ -9,10 +9,16 @@ describe("Portal.details.InfoPanel", function() {
 
         var mockLinks = [{
             href: "http://www.google.com",
+            name: "",
             title: ""
         }, {
             href: "http://imos.aodn.org.au",
+            name: "",
             title: "Portal"
+        }, {
+            href: "http://example.com",
+            name: "example link",
+            title: ""
         }];
 
         panel = new Portal.details.InfoPanel({
@@ -45,6 +51,8 @@ describe("Portal.details.InfoPanel", function() {
             expect(output).toContain(unnamedResourceName);
             expect(output).toContain('href="http://imos.aodn.org.au"');
             expect(output).toContain('Portal');
+            expect(output).toContain('http://example.com');
+            expect(output).toContain('example link');
         });
     });
 
