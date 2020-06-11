@@ -38,7 +38,6 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
                 that.handleScroll(evt, c);
             });
         }, this);
-
     },
 
     _onResultsStoreLoad: function() {
