@@ -298,7 +298,7 @@ initComponent: function() {
 
     _getTemporalExtentAsHtml: function(temporalExtent) {
         var label = this._buildLabel("fa-calendar", OpenLayers.i18n('searchDateText'));
-        if (temporalExtent.begin && temporalExtent.end) {
+        if (temporalExtent.begin || temporalExtent.end) {
             return this.paramTpl.apply({
                 "label": label,
                 "value": String.format(
@@ -316,8 +316,12 @@ initComponent: function() {
     },
 
     _formatTemporalExtentDateString: function(dateString) {
-        var dateFormat = OpenLayers.i18n('temporalExtentDateFormat');
-        return this._parseTemporalExtentDateString(dateString).format(dateFormat);
+        if (dateString) {
+            var dateFormat = OpenLayers.i18n('temporalExtentDateFormat');
+            return this._parseTemporalExtentDateString(dateString).format(dateFormat);
+        } else {
+            return "";
+        }
     },
 
     _parseTemporalExtentDateString: function(dateString) {

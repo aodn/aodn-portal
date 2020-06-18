@@ -54,6 +54,10 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             facetedSearchDataView._formatTemporalExtentDateString(testString);
             expect(facetedSearchDataView._parseTemporalExtentDateString).toHaveBeenCalled();
         });
+        it('returns empty string if date is undefined', function() {
+            result = facetedSearchDataView._formatTemporalExtentDateString(undefined);
+            expect(result).toBe("");
+        });
     });
 
     describe('getMetadataRecordPointOfTruthLinkAsHtml', function() {
