@@ -121,7 +121,7 @@ initComponent: function() {
         values.mapContainerId = this.mapElementId(values.uuid);
 
         // remove any existing content fixes #1757
-        clearContents(values.mapContainerId);
+        clearContents("#" + values.mapContainerId);
 
         var miniMap = new Portal.search.FacetedSearchResultsMiniMap(values);
         miniMap.addLayersAndRender();
