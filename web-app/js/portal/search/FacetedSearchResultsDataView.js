@@ -20,7 +20,6 @@ Portal.search.FacetedSearchResultsDataView = Ext.extend(Ext.DataView, {
         '</div>'
     ),
 
-
 initComponent: function() {
 
         this.tpl = new Ext.XTemplate(
@@ -108,8 +107,30 @@ initComponent: function() {
         }
     },
 
-    refresh: function() {
-        Portal.search.FacetedSearchResultsDataView.superclass.refresh.call(this, arguments);
+    refresh: function(options) {
+
+        if (options) {
+            Portal.search.FacetedSearchResultsDataView.superclass.refresh.call(this, {add:true});
+            this.store.each(function(record) {
+                this.getMiniMap(record.data);
+            }, this);
+        }
+        else {
+            this.appendTpl();
+        }
+    },
+
+    appendTpl: function() {
+
+        this.clearSelections(false, true);
+        var el = this.getTemplateTarget();
+
+        var facetedSearchResultBodyCount = jQuery('.facetedSearchResultBody').length;
+        var records = this.store.getRange(facetedSearchResultBodyCount);
+
+        this.tpl.append(el, this.collectData(records, facetedSearchResultBodyCount));
+        this.all.fill(Ext.query(this.itemSelector, el.dom));
+        this.updateIndexes(0);
 
         this.store.each(function(record) {
             this.getMiniMap(record.data);
@@ -121,7 +142,7 @@ initComponent: function() {
         values.mapContainerId = this.mapElementId(values.uuid);
 
         // remove any existing content fixes #1757
-        clearContents(values.mapContainerId);
+        clearContents("#" + values.mapContainerId);
 
         var miniMap = new Portal.search.FacetedSearchResultsMiniMap(values);
         miniMap.addLayersAndRender();

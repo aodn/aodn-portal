@@ -7,6 +7,9 @@ describe("Portal.search.SearchBodyPanel", function() {
             resultsStore: new Portal.data.MetadataRecordStore(),
             searcher: new Portal.service.CatalogSearcher()
         });
+
+        searchBodyPanel.setResultsStatus = returns(true);
+
     });
 
     describe('initialisation', function() {
@@ -27,24 +30,18 @@ describe("Portal.search.SearchBodyPanel", function() {
 
         describe('onResultsStoreLoad', function() {
             it('displays alert when store is empty', function() {
-                spyOn(searchBodyPanel, '_resetScrollPositionToTop');
+                spyOn(searchBodyPanel, 'setScrollPosition');
                 spyOn(searchBodyPanel, '_displayNoResultsAlert');
                 searchBodyPanel.resultsStore.getTotalCount = returns(0);
                 searchBodyPanel._onResultsStoreLoad();
                 expect(searchBodyPanel._displayNoResultsAlert).toHaveBeenCalled();
             });
 
-            it('sets scroll position to 0', function() {
-                spyOn(searchBodyPanel, '_resetScrollPositionToTop').andCallThrough();
-                searchBodyPanel.body = {
-                    dom: {
-                        scrollTop: 123
-                    }
-                };
+            it('sets status', function() {
+                spyOn(searchBodyPanel, 'setResultsStatus');
 
-                searchBodyPanel.resultsStore.fireEvent('load');
-                expect(searchBodyPanel._resetScrollPositionToTop).toHaveBeenCalled();
-                expect(searchBodyPanel.body.dom.scrollTop).toBe(0);
+                searchBodyPanel._onResultsStoreLoad();
+                expect(searchBodyPanel.setResultsStatus).toHaveBeenCalled();
             });
         });
     });

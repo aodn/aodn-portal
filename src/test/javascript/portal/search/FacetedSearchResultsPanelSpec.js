@@ -19,23 +19,18 @@ describe("Portal.search.FacetedSearchResultsPanel", function() {
         });
     });
 
-    describe('paging control' , function() {
-        it(' pageSize should match searcher pageSize', function() {
-            expect(resultsPanel.pagingBar.pageSize).toEqual(999);
-        });
-    });
 
     describe('active geo network record store events', function() {
         it('refreshes view on record added', function() {
             spyOn(resultsPanel, '_refreshView');
             Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_ADDED);
-            expect(resultsPanel._refreshView).toHaveBeenCalled();
+            expect(resultsPanel._refreshView).toHaveBeenCalledWith({"collectionEvent": true});
         });
 
         it('refreshes view on record removed', function() {
             spyOn(resultsPanel, '_refreshView');
             Ext.MsgBus.publish(PORTAL_EVENTS.DATA_COLLECTION_REMOVED);
-            expect(resultsPanel._refreshView).toHaveBeenCalled();
+            expect(resultsPanel._refreshView).toHaveBeenCalledWith({"collectionEvent": true});
         });
     });
 });

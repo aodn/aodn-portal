@@ -196,7 +196,7 @@ environments {
 
         // overwritten by Chef in production
         grails.serverURL = "http://myaodn.example.com"
-        geonetwork.url = "http://catalogue-portal.aodn.org.au/geonetwork"
+        geonetwork.url = "https://catalogue-portal.aodn.org.au/geonetwork"
     }
 }
 
@@ -204,6 +204,7 @@ environments {
 geonetwork.searchPath = 'xml.search.imos'
 geonetwork.imageBucket = "http://content.aodn.org.au/Documents/Images/Logos/AODN_Partner/"
 geonetwork.iconNamespace = "portal:"
+geonetwork.pageSize = 30
 
 // ExternalRequest.groovy connect timeout value in milliseconds
 proxyConnectTimeout = 2000

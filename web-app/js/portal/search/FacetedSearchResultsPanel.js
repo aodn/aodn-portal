@@ -4,14 +4,6 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
     initComponent:function () {
 
-        this.pagingBar = new Portal.search.PagingToolbar({
-            pageSize: this.searcher.pageSize,
-            store: this.store,
-            prependButtons: false,
-            height: 40,
-            autoLoad: true
-        });
-
         this.dataView = new Portal.search.FacetedSearchResultsDataView({
             store: this.store,
             searcher: this.searcher,
@@ -22,7 +14,6 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
         var config = {
             title: false,
             buttonAlign: 'left',
-            fbar: this.pagingBar,
             width: 840,
             items: [
                 this.dataView
@@ -33,37 +24,20 @@ Portal.search.FacetedSearchResultsPanel = Ext.extend(Ext.Panel, {
 
         Portal.search.FacetedSearchResultsPanel.superclass.initComponent.apply(this, arguments);
 
-        this.store.on('load', function() {
-            this._onStoreLoad();
-        }, this);
-
-        this._subscibeToDataCollectionEvents();
+        this._subscribeToDataCollectionEvents();
     },
 
-    _subscibeToDataCollectionEvents: function() {
+    _subscribeToDataCollectionEvents: function() {
         Ext.each([PORTAL_EVENTS.DATA_COLLECTION_ADDED, PORTAL_EVENTS.DATA_COLLECTION_REMOVED], function(eventName) {
 
             Ext.MsgBus.subscribe(eventName, function() {
-                this._refreshView();
+                this._refreshView({"collectionEvent": true});
             }, this);
         }, this);
     },
 
-    _refreshView: function() {
-        this.dataView.refresh();
-    },
-
-    _onStoreLoad: function() {
-        this.pagingBar.onLoad(
-            this.store,
-            null,
-            {
-                params: {
-                    start: this.store.startRecord,
-                    limit: 10
-                }
-            }
-        );
+    _refreshView: function(obj) {
+        this.dataView.refresh(obj);
     }
 });
 

@@ -6,6 +6,7 @@ describe("Portal.search.SearchPanel", function() {
         Portal.app.appConfig.enabledFacets = [];
         searchPanel = new Portal.search.SearchPanel({ protocols: {} });
         searchPanel.filtersPanel.spinner.update = noOp;
+
     });
 
     describe('initialisation', function() {
@@ -33,12 +34,25 @@ describe("Portal.search.SearchPanel", function() {
             spyOn(searchPanel.resultsStore, 'loadData');
             spyOn(searchPanel.filtersPanel, '_setSpinnerText');
             var response = {};
-            var page = {from: 20, to: 40};
+            var page = {from: 30, to: 40};
 
             searchPanel.searcher.fireEvent('searchcomplete', response, page);
-            expect(searchPanel.resultsStore.loadData).toHaveBeenCalledWith(response);
-            expect(searchPanel.resultsStore.startRecord).toEqual(19);
+            expect(searchPanel.resultsStore.loadData).toHaveBeenCalled();
+            expect(searchPanel.resultsStore.startRecord).toEqual(29);
         });
+
+
+        it('sets scroll position to 0', function() {
+            spyOn(searchPanel.resultsStore, 'loadData');
+            spyOn(searchPanel.filtersPanel, '_setSpinnerText');
+            spyOn(searchPanel.bodyPanel, 'setScrollPosition');
+            var response = {};
+            var page = {from: 1, to: 10};
+
+            searchPanel.searcher.fireEvent('searchcomplete', response, page);
+            expect(searchPanel.bodyPanel.setScrollPosition).toHaveBeenCalled();
+        });
+
     });
 
     describe('initComponent', function() {

@@ -1,13 +1,11 @@
 Ext.namespace('Portal.search');
 
-// TODO: note that this panel is probably redundant now that it has only one child - we can just use
-// FacetedSearchResultsGrid where this panel is used - however, waiting for Phil's latest changes
-// to be merged before getting rid of this (else there will be conflicts).
 Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
 
     constructor: function (cfg) {
 
         this.resultsStore = cfg.resultsStore;
+        this.loadingResultsStore = false;
         this.searcher = cfg.searcher;
 
         this.searchResultsPanel = new Portal.search.FacetedSearchResultsPanel({
@@ -18,9 +16,12 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
             classificationStore: cfg.classificationStore
         });
 
+        this.resultsStatus = new Ext.Panel();
+
         var config = Ext.apply({
             autoScroll: true,
             bodyCssClass: "faceted-search-results",
+            tbar: this._buildToolBar(),
             activeItem: this.searchResultsPanel,
             items: [this.searchResultsPanel]
         }, cfg);
@@ -31,33 +32,100 @@ Portal.search.SearchBodyPanel = Ext.extend(Ext.Panel, {
             this._onResultsStoreLoad();
         }, this);
 
-        this.searchResultsPanel.pagingBar.on('beforechange', this._onResultsGridBbarBeforeChange, this);
+        this.on('render', function() {
+            var that = this;
+            this.getEl().down('div').down('.faceted-search-results').on('scroll', function (evt, c) {
+                that.handleScroll(evt, c);
+            });
+        }, this);
     },
 
     _onResultsStoreLoad: function() {
         if (this.resultsStore.getTotalCount() == 0) {
             this._displayNoResultsAlert();
         }
+        var that = this;
+        setTimeout(function () {
+            that.loadingResultsStore = false;
+        }, 2000);
 
-        // We want to reset scroll position to top on load, in case we were
-        // previously not at the top.
-        // Ref: https://github.com/aodn/aodn-portal/issues/464
-        // Ref: https://github.com/aodn/aodn-portal/issues/1834
-        this._resetScrollPositionToTop();
+        this.setResultsStatus();
+        this.hideSpinnerText();
     },
 
-    _resetScrollPositionToTop: function() {
-        this.body.dom.scrollTop = 0;
+    setResultsStatus: function() {
+        this.resultsStatus.update(this.getResultCounts());
+    },
+
+    _canLoadMore: function() {
+        return ((this.resultsStore.getTotalCount() > this.resultsStore.data.items.length) && !this.loadingResultsStore);
     },
 
     _displayNoResultsAlert: function() {
         Ext.Msg.alert('Info', 'The search returned no results.');
     },
 
-    _onResultsGridBbarBeforeChange: function (bbar, params) {
-        this.searcher.goToPage(params.start + 1, params.limit);
-        //Stop paging control from doing anything itself for the moment
-        // TODO: replace with store driven paging
-        return false;
-    }
+    handleScroll: function() {
+        var fSRDiv = this.body.dom;
+        var pixelsFromBottom = fSRDiv.scrollHeight -  (fSRDiv.clientHeight + fSRDiv.scrollTop);
+        if (this._canLoadMore() && pixelsFromBottom < 500  ) {
+            this.loadMoreResults();
+        }
+    },
+
+    loadMoreResults: function() {
+        this.searcher.goToPage(this.resultsStore.data.length + 1);
+        this.loadingResultsStore = true;
+        this.showSpinnerText();
+    },
+
+    _buildToolBar: function() {
+        return new Ext.Toolbar({
+            cls: 'search-results-toolbar',
+            defaults: {bodyStyle:'padding-bottom:10px'},
+            width: 840,
+            border: false,
+            frame: false,
+            items: [
+                "->",
+                this._buildSpinner(),
+                new Ext.Spacer({
+                    cls: 'block',
+                    width: 30
+                }),
+                this.resultsStatus]
+        });
+    },
+
+    _buildSpinner: function() {
+        this.spinner = new Ext.Panel({
+            html: this._makeSpinnerText(OpenLayers.i18n('loadingResourceMessage', {'resource': ''})),
+            hidden: false
+        });
+
+        return this.spinner;
+    },
+
+    getResultCounts: function() {
+        return String.format("<span>Loaded <b>{0}</b> of <b>{1}</b> matching collections </span>", this.resultsStore.data.length, this.resultsStore.getTotalCount() );
+    },
+
+    _makeSpinnerText: function(text) {
+        return '<span class=\"fa fa-spin fa-spinner \"></span> ' + text;
+    },
+
+    hideSpinnerText: function() {
+        this.spinner.hide();
+        this.setResultsStatus();
+        this.resultsStatus.show();
+    },
+
+    showSpinnerText: function() {
+        this.spinner.show();
+        this.resultsStatus.hide();
+    },
+
+    setScrollPosition: function(pixelsFromTop) {
+        this.body.dom.scrollTop = ((pixelsFromTop > 0) ? pixelsFromTop: 0);
+    },
 });
