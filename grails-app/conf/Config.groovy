@@ -259,8 +259,9 @@ knownServers = [
     [
         uri: 'https://www.marine.csiro.au/data/trawler/broker.cfm',
         wmsVersion: '1.1.1',
-        type: 'datatrawlerserver',
-        csvDownloadFormat: 'csv-with-metadata-header'
+        type: 'GeoserverFilterConfig',
+        filtersDir: "csiro-datatrawler",
+        wpsUrl: 'http://www.cmar.csiro.au/geoserver/wps'
     ],
     [
         uri: 'http://geoserver-123.aodn.org.au/geoserver/ncwms',
