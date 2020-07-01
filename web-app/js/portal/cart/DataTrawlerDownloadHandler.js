@@ -2,13 +2,6 @@ Ext.namespace('Portal.cart');
 
 Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHandler, {
 
-    DEFAULT_BOUNDS: {
-        bottom: this.DEFAULT_LAT_START,
-        top: this.DEFAULT_LAT_END,
-        left: this.DEFAULT_LON_START,
-        right: this.DEFAULT_LON_END
-    },
-
     getDownloadOptions: function(filters) {
 
         var downloadOptions = [];
@@ -93,11 +86,11 @@ Portal.cart.DataTrawlerDownloadHandler = Ext.extend(Portal.cart.AsyncDownloadHan
         var formattedFilters = '';
         Ext.each(filters, function(filter) {
             if (filter.type == 'datetime' && filter.name == 'TIME') {
-                var fromDate = filter._getFromDate() ? moment.utc(filter._getFromDate()) : this.DEFAULT_DATE_START;
-                var toDate = filter._getToDate() ? moment.utc(filter._getToDate()) : this.DEFAULT_DATE_END;
+                var fromDate = filter.hasValue() && filter._getFromDate() ? moment.utc(filter._getFromDate()) : this.DEFAULT_DATE_START;
+                var toDate = filter.hasValue() && filter._getToDate() ? moment.utc(filter._getToDate()) : this.DEFAULT_DATE_END;
                 formattedFilters += String.format('TIME={0},{1}&', this._formatDate(fromDate), this._formatDate(toDate));
             } else if (filter.type == 'pointpropertytype' || filter.type == 'geometrypropertytype') {
-                var bounds = filter.hasValue() ? filter.value.bounds : this.DEFAULT_BOUNDS;
+                var bounds = filter.hasValue() ? filter.value.bounds : {bottom: this.DEFAULT_LAT_START, top: this.DEFAULT_LAT_END, left: this.DEFAULT_LON_START, right: this.DEFAULT_LON_END};
                 formattedFilters += String.format('LATITUDE={0},{1}&LONGITUDE={2},{3}&',
                     bounds.bottom, bounds.top, bounds.left, bounds.right);
             } else if (filter.hasValue()) {

@@ -80,6 +80,64 @@ describe('Portal.cart.DataTrawlerDownloadHandler', function () {
             expect(urlParamPresent(url, 'TIME', '2017-05-02T00:00:00.000Z,2018-08-30T23:59:59.999Z')).toBeTruthy();
         });
 
+        it('builds the correct URL with no temporal or spatial bounds set', function() {
+            testCollectionNoBounds = {
+                getTitle: returns('DT_title'),
+                getFilters: returns([
+                    {
+                        label: 'Bounding Box',
+                        type: 'geometrypropertytype',
+                        visualised: true,
+                        name: 'position',
+                        hasValue: returns(false),
+                        getFormattedFilterValue: returns({
+                            wkt: 'POLYGON((108.2373046875 -27.73046875,108.2373046875 -23.951171875,116.8505859375 -23.951171875,116.8505859375 -27.73046875,108.2373046875 -27.73046875))'
+                        }),
+                        value: {
+                            bounds: {
+                                left: undefined,
+                                right: undefined,
+                                bottom: undefined,
+                                top: undefined
+                            }
+                        }
+                    },
+                    {
+                        label: 'Time Range',
+                        type: 'datetime',
+                        visualised: true,
+                        hasValue: returns(false),
+                        name: 'TIME',
+                        _getFromDate: returns(null),
+                        _getToDate: returns(null),
+                        dateRangeStart: null,
+                        dateRangeEnd: null
+                    },
+                    {
+                        label: 'test string',
+                        type: 'string',
+                        visualised: true,
+                        hasValue: returns(true),
+                        name: 'TEST_NAME',
+                        value: 'TEST_VALUE'
+                    }
+                ])
+            };
+
+            url = clickHandler(testCollectionNoBounds, testHandlerParams);
+
+            expect(url).toStartWith(handler.getAsyncDownloadUrl('datatrawler'));
+            expect(urlParamPresent(url, 'server', encodeURIComponent('dt_endpoint_url'))).toBeTruthy();
+            expect(urlParamPresent(url, 'email_address', 'bob@example.com')).toBeTruthy();
+            expect(urlParamPresent(url, 'date_format', 'dd-mmm-yyyy%20HH24:mm:ss')).toBeTruthy();
+            expect(urlParamPresent(url, 'output_filename', 'DT_title')).toBeTruthy();
+            expect(urlParamPresent(url, 'position_format', 'd.ddd&')).toBeTruthy();
+            expect(urlParamPresent(url, 'TEST_NAME', 'TEST_VALUE')).toBeTruthy();
+            expect(urlParamPresent(url, 'LATITUDE', '-90,90')).toBeTruthy();
+            expect(urlParamPresent(url, 'LONGITUDE', '-180,180')).toBeTruthy();
+            expect(urlParamPresent(url, 'TIME', '1900-01-01T00:00:00.000Z,2020-07-01T23:59:59.999Z')).toBeTruthy();
+        });
+
         it('builds the correct URL with no lower temporal bound', function() {
             testCollectionNoLowerTemporalBound = {
                 getTitle: returns('DT_title'),
