@@ -53,10 +53,6 @@ class LayerController {
             def filterValuesService = new WpsUniqueValuesFilterService(serverConfig.wpsUrl, groovyPageRenderer)
             return new FilterConfigGeoserverServer(filtersUrl, filterValuesService)
         }
-        else if (serverType == 'datatrawlerserver') {
-            def filterValuesService = new WpsUniqueValuesFilterService(serverConfig.wpsUrl, groovyPageRenderer)
-            return new DataTrawlerServer(filterValuesService)
-        }
         else {
             return new ImosGeoserverServer(grailsApplication.config.filtering.filePath)
         }
