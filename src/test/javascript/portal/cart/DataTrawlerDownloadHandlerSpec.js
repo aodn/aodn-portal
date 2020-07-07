@@ -1,10 +1,15 @@
 describe('Portal.cart.DataTrawlerDownloadHandler', function () {
     var handler;
+    var currentMinDate;
+    var currentMaxDate;
 
     beforeEach(function() {
         handler = new Portal.cart.DataTrawlerDownloadHandler({
             href: 'dt_endpoint_url'
         });
+
+        currentMinDate = handler._formatDate(handler.DEFAULT_DATE_START);
+        currentMaxDate = handler._formatDate(handler.DEFAULT_DATE_END);
     });
 
     describe('the click handler', function() {
@@ -13,6 +18,8 @@ describe('Portal.cart.DataTrawlerDownloadHandler', function () {
         var testCollection;
         var testHandlerParams;
         var url;
+        var testCollectionNoBounds;
+        var testCollectionNoLowerTemporalBound;
 
         beforeEach(function() {
 
@@ -60,6 +67,7 @@ describe('Portal.cart.DataTrawlerDownloadHandler', function () {
                     }
                 ])
             };
+
             testHandlerParams = {
                 emailAddress: 'bob@example.com'
             };
@@ -135,7 +143,7 @@ describe('Portal.cart.DataTrawlerDownloadHandler', function () {
             expect(urlParamPresent(url, 'TEST_NAME', 'TEST_VALUE')).toBeTruthy();
             expect(urlParamPresent(url, 'LATITUDE', '-90,90')).toBeTruthy();
             expect(urlParamPresent(url, 'LONGITUDE', '-180,180')).toBeTruthy();
-            expect(urlParamPresent(url, 'TIME', '1900-01-01T00:00:00.000Z,2020-07-01T23:59:59.999Z')).toBeTruthy();
+            expect(urlParamPresent(url, 'TIME', String.format("{0},{1}", currentMinDate, currentMaxDate))).toBeTruthy();
         });
 
         it('builds the correct URL with no lower temporal bound', function() {
@@ -169,7 +177,7 @@ describe('Portal.cart.DataTrawlerDownloadHandler', function () {
                         _getFromDate: returns(null),
                         _getToDate: returns('2018-08-30T23:59:59.999Z'),
                         dateRangeStart: null,
-                        dateRangeEnd: moment.utc('2018-08-30T23:59:59')
+                        dateRangeEnd: moment.utc('2018-08-30T23:59:59.999Z')
                     },
                     {
                         label: 'test string',
@@ -193,7 +201,7 @@ describe('Portal.cart.DataTrawlerDownloadHandler', function () {
             expect(urlParamPresent(url, 'TEST_NAME', 'TEST_VALUE')).toBeTruthy();
             expect(urlParamPresent(url, 'LATITUDE', '-27.73046875,-23.951171875')).toBeTruthy();
             expect(urlParamPresent(url, 'LONGITUDE', '108.2373046875,116.8505859375')).toBeTruthy();
-            expect(urlParamPresent(url, 'TIME', '1900-01-01T00:00:00.000Z,2018-08-30T23:59:59.999Z')).toBeTruthy();
+            expect(urlParamPresent(url, 'TIME',  String.format("{0},2018-08-30T23:59:59.999Z", currentMinDate))).toBeTruthy();
         });
     });
 
