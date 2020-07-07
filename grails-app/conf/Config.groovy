@@ -293,7 +293,7 @@ knownServers = [
 
     ],
     [
-        uri: 'http://geoserver.imas.utas.edu.au/geoserver/wms',
+        uri: 'https://geoserver.imas.utas.edu.au/geoserver/wms',
         wmsVersion: '1.1.1',
         type: 'GeoServer'
     ],
