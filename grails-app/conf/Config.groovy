@@ -90,17 +90,11 @@ enabledFacets = [
     ],
     [
         name: 'organisationFilter',
-        key: 'Organisation',
-        collapsedByDefault: true
+        key: 'Organisational unit'
     ],
     [
         name: 'platformFilter',
         key: 'Platform'
-    ],
-    [
-        name: 'temporalResolutionFilter',
-        key: 'Temporal Resolution',
-        collapsedByDefault: true
     ],
     [
         classId: 'Portal.search.DateSelectionPanel',
@@ -125,17 +119,11 @@ facetsGN3 = [
     ],
     [
         name: 'organisationFilter',
-        key: 'orgUnitCategories',
-        collapsedByDefault: true
+        key: 'orgUnitCategories'
     ],
     [
         name: 'platformFilter',
         key: 'platformCategories'
-    ],
-    [
-        name: 'temporalResolutionFilter',
-        key: 'temporalResolutionCategories',
-        collapsedByDefault: true
     ],
     [
         classId: 'Portal.search.DateSelectionPanel',
@@ -262,6 +250,13 @@ knownServers = [
         type: 'GeoserverFilterConfig',
         filtersDir: "csiro-datatrawler",
         wpsUrl: 'http://www.cmar.csiro.au/geoserver/wps'
+    ],
+    [
+        uri: 'https://geoserver.data.aims.gov.au/wms',
+        wmsVersion: '1.1.1',
+        type: 'GeoserverFilterConfig',
+        filtersDir: "aims-geoserver",
+        wpsUrl: 'https://geoserver.data.aims.gov.au/wps'
     ],
     [
         uri: 'http://geoserver-123.aodn.org.au/geoserver/ncwms',
