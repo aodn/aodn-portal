@@ -205,6 +205,9 @@ filtering {
 // This array should be populated from chef config
 knownServers = [
     [
+        uri: 'https://en.wikipedia.org/w/api.php'
+    ],
+    [
         uri: 'http://geoserver-123.aodn.org.au/geoserver/wms',
         wmsVersion: '1.1.1',
         type: 'GeoServer',
@@ -357,7 +360,7 @@ minimap {
 }
 
 portal {
-    siteHeader = "Open Access to Ocean Data"
+    siteHeader = "The Australian Ocean Data Network"
     motdUrl = "https://static.emii.org.au/motd"
     logo = "https://static.emii.org.au/images/logo/AODN_logo_fullText.png"
     secondaryLogo = "https://static.emii.org.au/images/logo/IMOS_logo-stacked-reversed-Converted.png"
@@ -365,7 +368,7 @@ portal {
     localThemeCss = "AODNTheme.css"
 
     contactEmail = "info@aodn.org.au"
-    siteAcronym = "AODN"
+    siteAcronym = "AODN Portal"
     emailSignature = "Kind regards,\nThe AODN Team."
     emailFooter = "The AODN Portal provides access to all available Australian marine and climate science data and provides the primary access to IMOS data including access to the IMOS metadata. \n" +
         "IMOS is supported by the Australian Government through the National Collaborative Research Infrastructure Strategy and the Super Science Initiative."
