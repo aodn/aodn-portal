@@ -13,6 +13,7 @@ pipeline {
                     steps {
                         sh 'git reset --hard'
                         sh 'git clean -xffd'
+                        sh 'echo "testy mctestface"'
                     }
                 }
                 stage('set_version_build') {
