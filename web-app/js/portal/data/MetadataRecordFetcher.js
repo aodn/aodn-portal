@@ -14,8 +14,6 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
             fast: 'index'
         };
 
-        // http://geonetwork3-cmrose1.dev.aodn.org.au/geonetwork/srv/eng/q?uuid=0c9eb39c-9cbe-4c6a-8a10-5867087e703a&fast=index
-
         Ext.ux.Ajax.proxyRequestXML({
             url: Portal.app.appConfig.geonetwork.url + '/srv/eng/q?' + Ext.urlEncode(params),
             success: successCallback
