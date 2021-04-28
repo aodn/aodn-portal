@@ -15,7 +15,8 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
         };
 
         Ext.ux.Ajax.proxyRequestXML({
-            url: Portal.app.appConfig.geonetwork.url + '/srv/eng/q?' + Ext.urlEncode(params),
+            url: Portal.app.appConfig.geonetwork.url + '/srv/eng/' + Portal.app.appConfig.geonetwork.searchService +
+                '?' + Ext.urlEncode(params),
             success: successCallback
         });
     },

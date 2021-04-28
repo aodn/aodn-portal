@@ -167,6 +167,7 @@ environments {
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
         geonetwork.version = 2
+        geonetwork.searchService = "xml.search.summary"
         gogoduck.filenamePrepend = "IMOS_aggregation"
 
         if (geonetwork.version == 3) {

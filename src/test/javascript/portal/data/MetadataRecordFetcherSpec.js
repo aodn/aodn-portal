@@ -28,7 +28,8 @@ describe("Portal.data.MetadataRecordFetcher", function() {
         fetcher.get(uuid);
 
         expect(Ext.Ajax.request).toHaveBeenCalledWith({
-            url: 'proxy?url=http%3A%2F%2Fgeonetwork123%2Fsrv%2Feng%2Fq%3Fuuid%3D1234%26fast%3Dindex',
+            url: 'proxy?url=http%3A%2F%2Fgeonetwork123%2Fsrv%2Feng%2F' + Portal.app.appConfig.geonetwork.searchService
+                + '%3Fuuid%3D1234%26fast%3Dindex',
             headers : { 'Content-Type': 'application/xml' }
         });
     });
