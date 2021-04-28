@@ -11,11 +11,14 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
     get: function(uuid, successCallback) {
         var params = {
             uuid: uuid,
-            fast: 'index'
+            fast: 'index',
+            summaryOnly: true
         };
 
+        // http://geonetwork3-cmrose1.dev.aodn.org.au/geonetwork/srv/eng/xml.search?uuid=0c9eb39c-9cbe-4c6a-8a10-5867087e703a&fast=index&summaryOnly=true
+
         Ext.ux.Ajax.proxyRequestXML({
-            url: Portal.app.appConfig.geonetwork.url + '/srv/eng/xml.search.summary?' + Ext.urlEncode(params),
+            url: Portal.app.appConfig.geonetwork.url + '/srv/eng/xml.search?' + Ext.urlEncode(params),
             success: successCallback
         });
     },
