@@ -544,4 +544,6 @@ if (!configurationPath && defaultConfigExists) {
 
 if (geonetwork.version == 3) {
     geonetwork.searchService = "q"
+} else {
+    geonetwork.searchService = "xml.search.summary"
 }
