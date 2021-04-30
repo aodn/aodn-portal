@@ -155,6 +155,8 @@ grails.mail.disabled = true
 
 grails.app.context = "/"
 
+geonetwork.version = 2
+
 environments {
 
     development {
@@ -166,12 +168,9 @@ environments {
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
-        geonetwork.version = 2
+        geonetwork.version = 3
         gogoduck.filenamePrepend = "IMOS_aggregation"
-
-        if (geonetwork.version == 3) {
-            enabledFacets = facetsGN3
-        }
+        enabledFacets = facetsGN3
     }
 
     test {
@@ -196,7 +195,6 @@ geonetwork.pageSize = 30
 
 // ExternalRequest.groovy connect timeout value in milliseconds
 proxyConnectTimeout = 2000
-
 
 filtering {
     baseUrl = "https://raw.githubusercontent.com/aodn/filter-config/test"
@@ -542,4 +540,10 @@ if (!configurationPath && defaultConfigExists) {
     println "Loading external config from '$defaultConfigPath'..."
 } else {
     println "Not loading external config from '$defaultConfigPath'..."
+}
+
+if (geonetwork.version == 3) {
+    geonetwork.searchService = "q"
+} else {
+    geonetwork.searchService = "xml.search.summary"
 }
