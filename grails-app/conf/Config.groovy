@@ -170,6 +170,7 @@ environments {
         geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
         geonetwork.version = 3
         gogoduck.filenamePrepend = "IMOS_aggregation"
+        enabledFacets = facetsGN3
     }
 
     test {
@@ -543,7 +544,4 @@ if (!configurationPath && defaultConfigExists) {
 
 if (geonetwork.version == 3) {
     geonetwork.searchService = "q"
-    enabledFacets = facetsGN3
-} else {
-    geonetwork.searchService = "xml.search.summary"
 }
