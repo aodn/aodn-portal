@@ -341,7 +341,7 @@ initComponent: function() {
             var dateFormat = OpenLayers.i18n('temporalExtentDateFormat');
             return this._parseTemporalExtentDateString(dateString).format(dateFormat);
         } else {
-            return "";
+            return moment().format("YYYY");
         }
     },
 

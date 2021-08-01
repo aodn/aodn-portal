@@ -54,9 +54,9 @@ describe("Portal.search.FacetedSearchResultsDataView", function() {
             facetedSearchDataView._formatTemporalExtentDateString(testString);
             expect(facetedSearchDataView._parseTemporalExtentDateString).toHaveBeenCalled();
         });
-        it('returns empty string if date is undefined', function() {
+        it('returns current year if date is undefined', function() {
             result = facetedSearchDataView._formatTemporalExtentDateString(undefined);
-            expect(result).toBe("");
+            expect(result).toBe(moment().format("YYYY"));
         });
     });
 
