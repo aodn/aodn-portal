@@ -124,6 +124,17 @@ class LayerController {
         }
     }
 
+    def logLayerError = {
+
+        if(params.layer != null) {
+            log.error("There is an availability issue with the collection '$params.layer'")
+            render text: "success"
+        } else {
+            render text: "No layer specified"
+        }
+
+    }
+
     def parseParams(params) {
         [params.server, params.layer, params.serverType, params.filter]
     }

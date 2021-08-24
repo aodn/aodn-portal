@@ -10,10 +10,12 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
 
         this.createTools(layerAdapter);
         this.addListeners(layerAdapter);
+        this.numTileErrors = 0;
 
         var config = Ext.apply({
             cls: 'dataCollectionDetailsPanel',
             title: this._getHtmlTitle(cfg.dataCollection.getTitle()),
+            collectionTitle: cfg.dataCollection.getTitle(),
             autoHeight: true,
             defaults: {
                 style: {padding: '10px'},
@@ -64,11 +66,15 @@ Portal.details.DataCollectionDetailsPanel = Ext.extend(Ext.Panel, {
 
     _onLayerLoadEnd: function() {
         this._indicateLayerLoading(false);
+        if(this.numTileErrors > 0) {
+            jQuery.get('/layer/logLayerError?layer=' + this.collectionTitle);
+        }
     },
 
     _onLayerLoadError: function() {
         this._indicateLayerLoading(false);
         this._indicateLayerError(true);
+        this.numTileErrors++;
     },
 
     _indicateLayerError: function(show) {
