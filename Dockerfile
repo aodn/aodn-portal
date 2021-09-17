@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxml2-utils \
     maven \
     openjdk-8-jdk \
+    telnet \
     unzip \
     wget \
     && rm -rf /var/lib/apt/lists/*
