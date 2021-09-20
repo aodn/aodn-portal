@@ -26,8 +26,8 @@ RUN wget -q https://bootstrap.pypa.io/pip/3.5/get-pip.py \
     && python get-pip.py pip==18.1 setuptools==49.6.0 wheel==0.35.1 \
     && rm -rf get-pip.py
 
-#RUN pip install \
-#    bump2version==0.5.10 \
+RUN pip install \
+    bump2version==0.5.10
 
 WORKDIR /usr/lib/jvm
 RUN wget https://github.com/grails/grails-core/releases/download/v$GRAILS_VERSION/grails-$GRAILS_VERSION.zip && \
