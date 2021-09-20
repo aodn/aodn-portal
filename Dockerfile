@@ -24,7 +24,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
 RUN wget -q https://bootstrap.pypa.io/pip/3.5/get-pip.py \
     && python get-pip.py pip==18.1 setuptools==49.6.0 wheel==0.35.1 \
-    && rm -rf get-pip.py \
+    && rm -rf get-pip.py
 
 #RUN pip install \
 #    bump2version==0.5.10 \
