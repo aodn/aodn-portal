@@ -35,6 +35,7 @@ The recommended way of installing grails is by using [SdkMan](http://sdkman.io/)
 ```
 $ curl -s http://get.sdkman.io | bash 
 $ source $HOME/.sdkman/bin/sdkman-init.sh
+$ sdk install grails 2.4.4
 $ sdk use grails 2.4.4
 ```
 Once you have the source it should be as simple as ```$ grails war``` in the root folder where you have checked out portal
