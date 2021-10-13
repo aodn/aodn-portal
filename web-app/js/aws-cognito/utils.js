@@ -19,84 +19,104 @@ const getUser = (userName) => {
     return cognitoUser;
 };
 
-const signUp = (
-    username,
-    password,
-    phoneNumber,
-    givenName,
-    familyName,
-    locale,
-    industry
-) => {
-    let attributeList = [];
+const signUp = (username, password, phoneNumber, givenName, familyName, locale, industry, callback) => {
 
-    const dataPhoneNumber = {
-        Name: "phone_number",
-        Value: phoneNumber,
-    };
+    // Default to example callback
+    callback = callback || exampleCallback(true, "User registered.");
 
-    const dataGivenName = {
-        Name: "given_name",
-        Value: givenName,
-    };
-
-    const dataFamilyName = {
-        Name: "family_name",
-        Value: familyName,
-    };
-
-    const dataLocale = {
-        Name: "locale",
-        Value: locale,
-    };
-
-    const dataIndustry = {
-        Name: "custom:industry",
-        Value: industry,
-    };
-
-    attributeList.push(
-        new AmazonCognitoIdentity.CognitoUserAttribute(dataPhoneNumber)
-    );
-    attributeList.push(
-        new AmazonCognitoIdentity.CognitoUserAttribute(dataGivenName)
-    );
-    attributeList.push(
-        new AmazonCognitoIdentity.CognitoUserAttribute(dataFamilyName)
-    );
-    attributeList.push(
-        new AmazonCognitoIdentity.CognitoUserAttribute(dataLocale)
-    );
-    attributeList.push(
-        new AmazonCognitoIdentity.CognitoUserAttribute(dataIndustry)
-    );
+    const attributeList = buildAttributeList(phoneNumber, givenName, familyName, locale, industry)
 
     getUserPool().signUp(
         username,
         password,
         attributeList,
         null,
-        (err, result) => {
-            if (err) {
-                alert(err.message || JSON.stringify(err));
-            } else {
-                console.log("User signed up.", result);
-            }
-        }
+        callback
     );
 };
 
-const verify = (username, code) => {
-    getUser(username).confirmRegistration(code, true, (err, result) => {
-        if (err) {
-            alert(err.message || JSON.stringify(err));
-        } else {
-            console.log("User confirmed", result);
-        }
-    });
+const updateUserAttributes = (phoneNumber, givenName, familyName, locale, industry, callback) => {
+
+    // Default to example callback
+    callback = callback || exampleCallback(true, "User attributes updated.");
+
+    if (cognitoUser !== undefined) {
+        const attrList = buildAttributeList(phoneNumber, givenName, familyName, locale, industry);
+        cognitoUser.updateAttributes(attrList, callback);
+    } else {
+        return {};
+    }
+}
+
+const buildAttributeList = (phoneNumber, givenName, familyName, locale, industry) => {
+    let attributeList = [];
+
+    if(phoneNumber !== undefined) {
+        const dataPhoneNumber = {
+            Name: "phone_number",
+            Value: phoneNumber,
+        };
+        attributeList.push(
+            new AmazonCognitoIdentity.CognitoUserAttribute(dataPhoneNumber)
+        );
+    }
+
+    if(givenName !== undefined) {
+        const dataGivenName = {
+            Name: "given_name",
+            Value: givenName,
+        };
+        attributeList.push(
+            new AmazonCognitoIdentity.CognitoUserAttribute(dataGivenName)
+        );
+    }
+
+    if(familyName !== undefined) {
+        const dataFamilyName = {
+            Name: "family_name",
+            Value: familyName,
+        };
+        attributeList.push(
+            new AmazonCognitoIdentity.CognitoUserAttribute(dataFamilyName)
+        );
+    }
+
+    if(locale !== undefined) {
+        const dataLocale = {
+            Name: "locale",
+            Value: locale,
+        };
+        attributeList.push(
+            new AmazonCognitoIdentity.CognitoUserAttribute(dataLocale)
+        );
+    }
+
+    if(industry !== undefined) {
+        const dataIndustry = {
+            Name: "custom:industry",
+            Value: industry,
+        };
+        attributeList.push(
+            new AmazonCognitoIdentity.CognitoUserAttribute(dataIndustry)
+        );
+    }
+
+    return attributeList;
+}
+
+const verify = (username, code, callback) => {
+
+    // Default to example callback
+    callback = callback || exampleCallback(true, "User signed in.");
+
+    getUser(username).confirmRegistration(code, true, callback);
 };
 
-const signIn = (username, password) => {
+const signIn = (username, password, callback) => {
+
+    // Default to example callback
+    callback = callback || exampleCallback(true, "User signed in.");
+
     let authenticationData = {
         Username: username,
         Password: password,
@@ -108,113 +128,146 @@ const signIn = (username, password) => {
 
     getUser(username).authenticateUser(authenticationDetails, {
         onSuccess: function (result) {
-            updateUserSlug();
+            callback(null, result);
         },
-
         onFailure: function (err) {
-            alert(err.message || JSON.stringify(err));
+            callback(err, null);
         },
     });
 };
 
-const userAttributes = (attrCallback) => {
+const userAttributes = (callback) => {
     if (cognitoUser) {
         cognitoUser.getUserAttributes((err, result) => {
             if (err) {
-                attrCallback({});
+                callback(err, null);
             } else {
+                // Build attrs into object
                 let userInfo = { name: cognitoUser.username };
                 for (let k = 0; k < result.length; k++) {
                     userInfo[result[k].getName()] = result[k].getValue();
                 }
-                attrCallback(userInfo);
+                callback(null, userInfo);
             }
         });
-    }
-    if (getUserPool().getCurrentUser() != null) {
+    } else if (getUserPool().getCurrentUser() != null) {
         cognitoUser = getUserPool().getCurrentUser();
         cognitoUser.getSession((err, session) => {
             if (err) {
-                alert(err);
-                return;
+                callback(err, null);
+            } else {
+                cognitoUser.getUserAttributes(function(err, result) {
+                    if (err) {
+                        callback(err, null);
+                    } else {
+                        // Build attrs into object
+                        let userObject = {};
+                        result.forEach((attr) => {
+                            userObject[attr.Name] = attr.Value;
+                        });
+                        callback(null, userObject);
+                    }
+                });
             }
-
-            cognitoUser.getUserAttributes(function (err, result) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    let userObject = {};
-                    result.forEach((attr) => {
-                        userObject[attr.Name] = attr.Value;
-                    });
-                    attrCallback(userObject);
-                }
-            });
         });
     } else {
-        console.log("No User");
-        attrCallback({});
+        callback("No User", null);
     }
-};
-
-const updateUserSlug = () => {
-    userAttributes((attrs) => {
-        const userName = attrs.hasOwnProperty("given_name")
-            ? attrs.given_name
-            : "Guest";
-
-        jQuery("#nameTag").html(`Hi, ${userName} `);
-    });
 };
 
 const signOutUser = (callback) => {
+
+    // Default to example callback
+    callback = callback || exampleCallback(true, "User signed out.");
+
     if (cognitoUser) {
         if (cognitoUser.signInUserSession) {
             cognitoUser.signOut();
-            if(callback !== undefined) {
-                callback(null, {});
-            }
-            updateUserSlug();
-            return;
+            callback(null, {})
+            cognitoUser = undefined;
         }
-    }
-    try {
-        callback({name: "Error", message: "User is not signed in"}, null);
-    } catch (e) {
-        console.log("No user is signed in");
+    } else {
+        try {
+            callback({name: "Error", message: "User is not signed in"}, null);
+        } catch (e) {
+            console.log("No user is signed in");
+        }
     }
 };
 
-const changeUserPassword = (oldPassword, newPassword) => {
+const changeUserPassword = (oldPassword, newPassword, callback) => {
+
+    // Default to example callback
+    callback = callback || exampleCallback(false, "Password changed.");
+
     if (cognitoUser) {
-        cognitoUser.changePassword(oldPassword, newPassword, (err, result) => {
-            if(err){
-                console.log(err);
-            } else {
-                console.log("Password changed.", result);
-            }
-        });
-        return;
+        cognitoUser.changePassword(oldPassword, newPassword, callback);
+    } else {
+        callback({name: "Error", message: "User is not signed in"}, null);
     }
-    callback({ name: "Error", message: "User is not signed in" }, null);
 };
 
-const sendPasswordResetCode = (userName) => {
-    getUser(userName).forgotPassword((err, result) => {
-        if(err){
-            alert(err.message || JSON.stringify(err));
-        } else {
-            console.log("Password changed requested.", result);
-        }
+const sendPasswordResetCode = (userName, callback) => {
+
+    // Default to example callback
+    callback = callback || exampleCallback(false, "Password reset requested.");
+
+    getUser(userName).forgotPassword({
+        onFailure: (err) => callback(err, null),
+        onSuccess: (result) => callback(null, result)
     });
 };
 
 const confirmPasswordReset = (username, code, newPassword, callback) => {
-    getUser(username).confirmPassword(code, newPassword, (err, result) => {
-        if(err){
-            alert(err.message || JSON.stringify(err));
-        } else {
-            console.log("Password reset.", result);
-        }
+
+    // Default to example callback
+    callback = callback || exampleCallback(false, "Password updated.");
+
+    getUser(username).confirmPassword(code, newPassword, {
+        onFailure: (err) => callback(err, null),
+        onSuccess: (result) => callback(null, result)
     });
 };
+
+
+/*
+    Example function to update part of the UI - Effectively will be replace by https://github.com/aodn/backlog/issues/3520
+    Note: This is called twice as it is in awkward demo setup
+ */
+const updateUserSlug = () => {
+    userAttributes(exampleCallback(false, "Updating slug", (err, result) => {
+        if(err){
+            jQuery("#nameTag").text('Hi Guest ');
+        } else {
+            const userName = result.hasOwnProperty("given_name")
+                ? result.given_name
+                : "Guest";
+
+            jQuery("#nameTag").text(`Hi ${userName} `);
+        }
+    }));
+};
+
+/*
+    This function is just a placeholder for what the UI will actually do
+ */
+const exampleCallback = (updateSlug, message, callback) => {
+
+    // Handle missing callback
+    if(callback === undefined){
+        callback = (err, result) => {};
+    }
+
+    return (err, result) => {
+        if (err) {
+            console.log(err.message || JSON.stringify(err));
+            callback(err, null)
+        } else {
+            console.log(message || "Success", result);
+            callback(null, result)
+            if(updateSlug) {
+                updateUserSlug();
+            }
+        }
+    }
+}
