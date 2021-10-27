@@ -1,6 +1,33 @@
 let cognitoUser;
 let userPool;
 
+function setCookie(name, value, expiry) {
+    const d = new Date();
+    d.setTime(d.getTime() + (expiry*24*60*60*1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function deleteCookie(name) {
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
 const getUserPool = () => {
     if (userPool === undefined) {
         userPool = new AmazonCognitoIdentity.CognitoUserPool(_config.cognito);
@@ -119,7 +146,7 @@ const signIn = (username, password, callback) => {
 
     let authenticationData = {
         Username: username,
-        Password: password,
+        Password: password
     };
 
     const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(
@@ -129,6 +156,8 @@ const signIn = (username, password, callback) => {
     getUser(username).authenticateUser(authenticationDetails, {
         onSuccess: function (result) {
             callback(null, result);
+            setCookie('aodnToken', result.accessToken.jwtToken, 7);
+            setCookie('isAuthenticated', true, 7);
         },
         onFailure: function (err) {
             callback(err, null);
@@ -185,6 +214,8 @@ const signOutUser = (callback) => {
             cognitoUser.signOut();
             callback(null, {})
             cognitoUser = undefined;
+            deleteCookie('isAuthenticated');
+            deleteCookie('aodnToken');
         }
     } else {
         try {
@@ -234,16 +265,38 @@ const confirmPasswordReset = (username, code, newPassword, callback) => {
     Example function to update part of the UI - Effectively will be replace by https://github.com/aodn/backlog/issues/3520
     Note: This is called twice as it is in awkward demo setup
  */
+
+const loginIcon = () => {
+    if (getCookie('skipLogin')) {
+        return "";
+    } else {
+        let el = jQuery("<span></span>");
+        el.attr('class', 'fa fa-sign-in')
+            .on('click', () => {
+                showLogin();
+            });
+        return el;
+    }
+}
+
+const logoutIcon = () => {
+    let el = jQuery("<span></span>");
+    el.attr('class', 'fa fa-sign-out')
+        .on('click', () => {signOutUser()})
+    return el;
+}
+
 const updateUserSlug = () => {
     userAttributes(exampleCallback(false, "Updating slug", (err, result) => {
-        if(err){
+        if (err) {
             jQuery("#nameTag").text('Hi Guest ');
+            jQuery("#authStatus").empty().append(loginIcon());
+        } else if (result.hasOwnProperty("given_name")){
+            jQuery("#nameTag").text(`Hi ${result.given_name} `);
+            jQuery("#authStatus").empty().append(logoutIcon());
         } else {
-            const userName = result.hasOwnProperty("given_name")
-                ? result.given_name
-                : "Guest";
-
-            jQuery("#nameTag").text(`Hi ${userName} `);
+            jQuery("#nameTag").text('Hi Guest ');
+            jQuery("#authStatus").empty().append(loginIcon());
         }
     }));
 };

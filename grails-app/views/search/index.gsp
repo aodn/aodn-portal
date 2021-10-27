@@ -32,6 +32,7 @@
             Ext.onReady(browserCheck);
             // Init step One
             Ext.onReady(Portal.app.init, Portal.app);
+            setTimeout(updateUserSlug, 3000);
 
         </script>
 
@@ -41,5 +42,6 @@
         <g:render template="/header/mainPortalHeader" model="['showLinks': true, 'configInstance': configInstance]"></g:render>
         <g:render template="/google_analytics"></g:render>
         <g:render template="/hotjar"></g:render>
+        <g:render template="/cognito/loginModal"></g:render>
     </body>
 </html>

@@ -28,7 +28,10 @@
             <g:render template="/header/viewPortLink"
                 model="['stepIndex': i, 'tabIndex': viewPortLink.tabIndex, 'description': viewPortLink.description]" />
         </g:each>
+        <div id="userDetails" style="float:right; height: 25px;color: lightgrey;font-size: 25px;">
+            <span id="nameTag">Hi Guest </span>
+            <span id="authStatus" ></span>
+        </div>
         <div style="clear:both"></div>
     </div>
 </g:if>
-

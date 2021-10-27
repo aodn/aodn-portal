@@ -15,7 +15,7 @@
 <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Logging.js')}"></script>
 
 <script src="${resource(dir: 'js/portal/common', file: 'helpers.js')}" type="text/javascript"></script>
-
+<script type="text/javascript" src="${resource(dir: 'js/portal/auth', file: 'login.js')}"></script>
 
 <g:if env="development">
     <script src="${resource(dir: 'js/ext-3.3.1/adapter/ext', file: 'ext-base-debug.js')}" type="text/javascript"></script>
