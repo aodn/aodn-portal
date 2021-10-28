@@ -273,7 +273,7 @@ const loginIcon = () => {
         let el = jQuery("<span></span>");
         el.attr('class', 'fa fa-sign-in')
             .on('click', () => {
-                showLogin();
+                window.showLogin();
             });
         return el;
     }
