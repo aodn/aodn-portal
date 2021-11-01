@@ -1,7 +1,8 @@
 window._config = {
-    region: 'ap-southeast-2',
+    region: "ap-southeast-2",
     cognito: {
-        UserPoolId: 'ap-southeast-2_4k1J0lTL7',
-        ClientId: '6i281kli33k2i0di1ba1j09nim',  // Found in General Settings > App clients
-    }
-}
+      UserPoolId: "ap-southeast-2_HKMh9Piwp",
+      ClientId: "ttspre6jds4fa5sjt979mtjrb", // nsp-cog01
+    },
+  };
+  

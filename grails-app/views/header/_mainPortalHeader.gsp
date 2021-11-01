@@ -12,12 +12,15 @@
         <img src="${portalBranding.secondaryLogoImage}" alt="secondary logo" width="120" />
     </div>
     </g:if>
-
     <div id="toplinks">
         <g:each in="${grailsApplication.config.portal.header.externalLinks}" var="link">
             <a class="external mainlinks" target="_blank" href="${link.href}" title="${link.tooltipText}">${link.linkText}</a>
         </g:each>
     </div>
+    <div id="login-status-container" style="position: absolute; margin-left: 100%; height: 36px; width: 300px; background-color: red">
+    <div id="nameTag"></div>
+    <div id="authStatus"></div>
+</div>
 </div>
 <g:if test="${showLinks}">
     <div id="viewPortLinks">
@@ -28,10 +31,6 @@
             <g:render template="/header/viewPortLink"
                 model="['stepIndex': i, 'tabIndex': viewPortLink.tabIndex, 'description': viewPortLink.description]" />
         </g:each>
-        <div id="userDetails" style="float:right; height: 25px;color: lightgrey;font-size: 25px;">
-            <span id="nameTag">Hi Guest </span>
-            <span id="authStatus" ></span>
-        </div>
-        <div style="clear:both"></div>
+        <g:render template="/auth/authStatusBar"></g:render>
     </div>
 </g:if>

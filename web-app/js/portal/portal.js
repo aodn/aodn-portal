@@ -90,7 +90,7 @@ function setViewPortTab(tabIndex) {
 //The problem is, that composite fields doesn't have the "dom" node and that is why the clear functions of Ext.form.MessageTargets.qtip
 //and Ext.form.MessageTargets.side are saying "field.el.dom" is undefined.
 Ext.onReady(function() {
-
+    
     Ext.apply(Ext.form.MessageTargets.qtip, {
         clear: function(field) {
             field.el.removeClass(field.invalidClass);

@@ -36,13 +36,13 @@ const getUserPool = () => {
 };
 
 const getUser = (userName) => {
-    if (cognitoUser === undefined) {
+    // if (cognitoUser === undefined) {
         let userData = {
             Username: userName,
             Pool: getUserPool(),
         };
         cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-    }
+    // }
     return cognitoUser;
 };
 
@@ -289,13 +289,13 @@ const logoutIcon = () => {
 const updateUserSlug = () => {
     userAttributes(exampleCallback(false, "Updating slug", (err, result) => {
         if (err) {
-            jQuery("#nameTag").text('Hi Guest ');
+            jQuery("#nameTag").text('Hi Guest');
             jQuery("#authStatus").empty().append(loginIcon());
         } else if (result.hasOwnProperty("given_name")){
             jQuery("#nameTag").text(`Hi ${result.given_name} `);
             jQuery("#authStatus").empty().append(logoutIcon());
         } else {
-            jQuery("#nameTag").text('Hi Guest ');
+            jQuery("#nameTag").text('Hi Guest');
             jQuery("#authStatus").empty().append(loginIcon());
         }
     }));

@@ -12,7 +12,8 @@
 .modal-content {
     top: 50%;
     left: 50%;
-    width: 300px;
+    width: 500px;
+    min-height: 300px;
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
@@ -21,11 +22,59 @@
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
 }
 
-.modal-content > div {
-    padding-top: 20px;
+.model-close-btn {
+    border-radius: 2px;
+    text-align: center;
+    border: 1px solid #888;
+    float:right;
+    line-height: 10px;
+    width: 10px;
+    height: 10px;
+    cursor:hand;
 }
 
+.modal-form div {
+    margin-bottom: 10px;
+    display: grid;
+}
+
+.modal-form label{
+    font-weight: bolder;
+}
+
+.auth-submit-btn {
+    background-color:#F9A840; 
+    border-width:1px; 
+    border-radius: 2px; 
+    width: 200px; 
+    padding: 5px;
+    cursor: hand;
+}
 
 button.right {
     float: right;
+}
+
+.login-button {
+    display: inline-block; 
+    cursor: hand; 
+    font-weight: bold; 
+    height: 32px; 
+    line-height: 32px; 
+    text-align: center; 
+    width: 60px; 
+    margin:2px; 
+    border-radius: 2px;
+}
+
+.login-user-profile-link {
+    display: inline-block; 
+    cursor: hand; 
+    font-weight: bold; 
+    height: 32px; 
+    line-height: 32px; 
+    text-align: center; 
+    width: 180px; 
+    margin:2px; 
+    border-radius: 2px;
 }
