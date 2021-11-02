@@ -31,13 +31,18 @@ window.auth.openModal = (modalName) => {
 }
 
 window.auth.closeModals = () => {
-    ['signInModal', 'signUpModal', 'signUpMessage'].forEach(modalName => {
+    ['signInModal', 'signUpModal', 'signUpMessage', 'resetPasswordModal', 'requestPasswordResetCodeModal'].forEach(
+        modalName => {
         const modal = document.getElementById(modalName);
         if(modal) modal.style.display = "none";
     });
-    ['signUpForm', 'signInForm'].forEach(formName => {
+    ['signUpForm', 'signInForm', 'resetPasswordForm', 'requestPasswordResetCodeForm'].forEach(formName => {
         const form = document.getElementById(formName);
         if(form) form.reset();
+    });
+    ['signUpError', 'signInError', 'resetPasswordError', 'requestPasswordResetCodeError'].forEach(formName => {
+        const msg = document.getElementById(formName);
+        if(msg) msg.textContent = "";
     });
 }
 
@@ -134,4 +139,31 @@ window.auth.signUpFormSubmit = (e) => {
             window.auth.openModal("signUpMessage");
         }
     });
+}
+
+window.auth.requestPasswordResetCodeFormSubmit = (e) => {
+    e.preventDefault();
+    const username = document.getElementById('requestPasswordResetCodeEmail').value;
+    console.log('requestPasswordResetCodeFormSubmit');
+    sendPasswordResetCode(username, (err) => {
+        if(err) {
+            document.getElementById('requestPasswordResetCodeError').textContent = err.message;
+        } else {
+            window.auth.openModal("resetPasswordModal")
+        }
+    })
+}
+
+window.auth.resetPasswordFormSubmit = (e) => {
+    e.preventDefault();
+    const username = document.getElementById('resetPasswordEmail').value;
+    const newPassword = document.getElementById('resetPasswordPassword').value;
+    const code = document.getElementById('resetPasswordCode').value;
+    confirmPasswordReset(username, code, newPassword, (err) => {
+        if(err) {
+            document.getElementById('resetPasswordError').textContent = err.message;
+        } else {
+            window.auth.signInButtonHandler();
+        }
+    })
 }

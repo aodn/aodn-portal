@@ -44,5 +44,7 @@
         <g:render template="/auth/signInModal"></g:render>
         <g:render template="/auth/signUpModal"></g:render>
         <g:render template="/auth/signUpMessage"></g:render>
+        <g:render template="/auth/resetPasswordModal"></g:render>
+        <g:render template="/auth/requestPasswordResetCodeModal"></g:render>
     </body>
 </html>

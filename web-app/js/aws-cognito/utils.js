@@ -239,6 +239,7 @@ const changeUserPassword = (oldPassword, newPassword, callback) => {
 };
 
 const sendPasswordResetCode = (userName, callback) => {
+    console.log('sendPasswordResetCode');
 
     // Default to example callback
     callback = callback || exampleCallback(false, "Password reset requested.");
