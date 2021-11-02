@@ -144,7 +144,6 @@ window.auth.signUpFormSubmit = (e) => {
 window.auth.requestPasswordResetCodeFormSubmit = (e) => {
     e.preventDefault();
     const username = document.getElementById('requestPasswordResetCodeEmail').value;
-    console.log('requestPasswordResetCodeFormSubmit');
     sendPasswordResetCode(username, (err) => {
         if(err) {
             document.getElementById('requestPasswordResetCodeError').textContent = err.message;
