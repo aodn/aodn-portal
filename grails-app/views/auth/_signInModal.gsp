@@ -13,7 +13,7 @@
             <input type="password" autocomplete="current-password" placeholder="Enter Password" id="signInPassword" name="password" required>
         </div>
             <button class="auth-submit-btn" style="margin-right: 20px" type="submit">Sign In</button>
-            <a href="#" onClick="window.auth.guestButtonHandler(event);">Reset Password</a>
+            <a href="#" onClick="window.auth.openModal('requestPasswordResetCodeModal')">Reset Password</a>
         </form>
         <hr>
         <div style="text-align: center">
