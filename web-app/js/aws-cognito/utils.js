@@ -46,12 +46,12 @@ const getUser = (userName) => {
     return cognitoUser;
 };
 
-const signUp = (username, password, phoneNumber, givenName, familyName, locale, industry, callback) => {
+const signUp = (username, password, givenName, familyName, country, industry, contact, callback) => {
 
     // Default to example callback
     callback = callback || exampleCallback(true, "User registered.");
 
-    const attributeList = buildAttributeList(phoneNumber, givenName, familyName, locale, industry)
+    const attributeList = buildAttributeList(givenName, familyName, country, industry, contact)
 
     getUserPool().signUp(
         username,
@@ -62,31 +62,21 @@ const signUp = (username, password, phoneNumber, givenName, familyName, locale, 
     );
 };
 
-const updateUserAttributes = (phoneNumber, givenName, familyName, locale, industry, callback) => {
+const updateUserAttributes = (givenName, familyName, country, industry, contact, callback) => {
 
     // Default to example callback
     callback = callback || exampleCallback(true, "User attributes updated.");
 
     if (cognitoUser !== undefined) {
-        const attrList = buildAttributeList(phoneNumber, givenName, familyName, locale, industry);
+        const attrList = buildAttributeList(givenName, familyName, country, industry, contact);
         cognitoUser.updateAttributes(attrList, callback);
     } else {
         return {};
     }
 }
 
-const buildAttributeList = (phoneNumber, givenName, familyName, locale, industry) => {
+const buildAttributeList = (givenName, familyName, country, industry, contact) => {
     let attributeList = [];
-
-    if(phoneNumber !== undefined) {
-        const dataPhoneNumber = {
-            Name: "phone_number",
-            Value: phoneNumber,
-        };
-        attributeList.push(
-            new AmazonCognitoIdentity.CognitoUserAttribute(dataPhoneNumber)
-        );
-    }
 
     if(givenName !== undefined) {
         const dataGivenName = {
@@ -108,13 +98,21 @@ const buildAttributeList = (phoneNumber, givenName, familyName, locale, industry
         );
     }
 
-    if(locale !== undefined) {
-        const dataLocale = {
-            Name: "locale",
-            Value: locale,
+    const dataLocale = {
+        Name: "locale",
+        Value: navigator.language,
+    };
+    attributeList.push(
+        new AmazonCognitoIdentity.CognitoUserAttribute(dataLocale)
+    );
+
+    if(country !== undefined) {
+        const datacountry = {
+            Name: "custom:country",
+            Value: country,
         };
         attributeList.push(
-            new AmazonCognitoIdentity.CognitoUserAttribute(dataLocale)
+            new AmazonCognitoIdentity.CognitoUserAttribute(datacountry)
         );
     }
 
@@ -125,6 +123,16 @@ const buildAttributeList = (phoneNumber, givenName, familyName, locale, industry
         };
         attributeList.push(
             new AmazonCognitoIdentity.CognitoUserAttribute(dataIndustry)
+        );
+    }
+
+    if(contact !== undefined) {
+        const dataContact = {
+            Name: "custom:contact",
+            Value: contact,
+        };
+        attributeList.push(
+            new AmazonCognitoIdentity.CognitoUserAttribute(dataContact)
         );
     }
 

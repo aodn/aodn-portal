@@ -1,0 +1,11 @@
+<option value="University">University</option>
+<option value="Not For Profit">Not For Profit</option>
+<option value="Federal Government">Federal Government</option>
+<option value="State Government">State Government</option>
+<option value="Local Government">Local Government</option>
+<option value="Publicly Funded Research Agency">Publicly Funded Research Agency</option>
+<option value="Industry">Industry</option>
+<option value="Research Partner">Research Partner</option>
+<option value="International Organisation">International Organisation</option>
+<option value="Media">Media</option>
+<option value="IMOS">IMOS</option>

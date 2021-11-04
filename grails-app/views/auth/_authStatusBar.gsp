@@ -1,7 +1,6 @@
 <div>
-    <div id="authSignedIn" style="float:right; width: 260px; height: 36px; display:none;">
-        <div class="viewPortTabActive login-user-profile-link" id="loginUserProfileLink"></div>
-        <div class="viewPortTabActive login-button" id="loginSignOutButton" onClick="window.auth.signOutButtonHandler()">Sign Out</div>
+    <div id="authSignedIn" style="float:right; height: 36px; display:none;">
+        <div class="viewPortTabActive login-user-profile-link" id="loginUserProfileLink" onclick="window.auth.userProfileButtonHandler()"></div>
     </div>
     <div id="authSignedOut" style="float:right; width: 150px; height: 36px; display:none;">
         <div class="viewPortTabActive login-button" id="loginSignUpButton" onClick="window.auth.signUpButtonHandler()">Sign Up</div>

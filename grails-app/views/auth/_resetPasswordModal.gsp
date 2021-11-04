@@ -3,7 +3,7 @@
         <div class="x-tool x-tool-close" onClick="window.auth.closeModals()"></div>
         <h2>Reset Password</h2>
         <p>A single-use code has been sent to your email address</p>
-        <div id="resetPasswordError" style="font-weight: bolder; text-align:center; color: darkred"></div>
+        <div id="resetPasswordError" class="modal-message modal-error" style="font-weight: bolder; text-align:center; color: darkred"></div>
         <form id="resetPasswordForm" class="modal-form" onSubmit="window.auth.resetPasswordFormSubmit(event)">
         <div>
             <label for="email">Email</label>
