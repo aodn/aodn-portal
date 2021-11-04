@@ -1,41 +1,41 @@
 window.auth = {};
 
-window.auth.setUserCookie = (user) => {
+window.auth.setUserCookie = function(user) {
     setCookie("aodnPortalUser", JSON.stringify(user), 365)
 }
 
-window.auth.setGuestCookie = () => setCookie("aodnPortalGuest", true, 1);
+window.auth.setGuestCookie = function() { setCookie("aodnPortalGuest", true, 1); }
 
-window.auth.getUserCookie = () => {
+window.auth.getUserCookie = function() {
     const cookie = getCookie("aodnPortalUser");
     return (cookie) ? JSON.parse(cookie) : null;
 }
 
-window.auth.getGuestCookie = () => {
+window.auth.getGuestCookie = function() {
     const cookie = getCookie("aodnPortalGuest");
     return (cookie) ? true : false;
 }
 
-window.auth.clearUserCookie = () => deleteCookie("aodnPortalUser", null);
+window.auth.clearUserCookie = function() { deleteCookie("aodnPortalUser", null); }
 
-window.auth.clearGuestCookie = () => deleteCookie("aodnPortalGuest");
+window.auth.clearGuestCookie = function() { deleteCookie("aodnPortalGuest"); }
 
-window.auth.isGuestOrSignedIn = () => {
+window.auth.isGuestOrSignedIn = function() {
     return window.auth.getGuestCookie() || window.auth.getUserCookie();
 }
 
-window.auth.openModal = (modalName) => {
+window.auth.openModal = function(modalName) {
     const modal = document.getElementById(modalName);
     if(modal) modal.style.display = "block";
 }
 
-window.auth.closeModals = () => {
-    document.querySelectorAll(".modal").forEach(m => m.style.display = "none");
-    document.querySelectorAll(".modal-form").forEach(f=> f.reset());
-    document.querySelectorAll(".modal-message").forEach(e=> e.textContent = "");
+window.auth.closeModals = function() {
+    document.querySelectorAll(".modal").forEach(function(m) {m.style.display = "none";});
+    document.querySelectorAll(".modal-form").forEach(function(f) { f.reset();});
+    document.querySelectorAll(".modal-message").forEach(function(e){ e.textContent = ""});
 }
 
-window.auth.refreshHeader = () => {
+window.auth.refreshHeader = function() {
     const isGuest = window.auth.getGuestCookie();
     const user = window.auth.getUserCookie();
     const authSignedIn = document.getElementById("authSignedIn");
@@ -49,7 +49,7 @@ window.auth.refreshHeader = () => {
         authSignedIn.style.display = "none";
         authSignedOut.style.display = "initial";
     } else {
-        if(user?.email) {
+        if(user && user.email) {
             loginUserProfileLink.textContent = user.email;
             authIsGuest.style.display = "none";
             authSignedIn.style.display = "initial";
@@ -67,25 +67,25 @@ window.auth.refreshHeader = () => {
 
 /** Download handlers */
 
-window.auth.verifySignIn = () => {
+window.auth.verifySignIn = function() {
     if(!window.auth.isGuestOrSignedIn())
         window.auth.signInButtonHandler();
 };
 
 /** Button handlers */
 
-window.auth.signUpButtonHandler = () => {
+window.auth.signUpButtonHandler = function() {
     window.auth.closeModals();
     window.auth.openModal("signUpModal");
 };
 
-window.auth.signInButtonHandler = () => {
+window.auth.signInButtonHandler = function() {
     window.auth.closeModals();
     window.auth.openModal("signInModal");
 };
 
-window.auth.userProfileButtonHandler = (message) =>
-    userAttributes((_, result) => {
+window.auth.userProfileButtonHandler = function(message) {
+    userAttributes(function(_, result) {
         window.auth.closeModals();
         if(message) document.getElementById('userProfileMessage').textContent = message;
         document.getElementById('userViewEmail').value = result['email'];
@@ -96,28 +96,29 @@ window.auth.userProfileButtonHandler = (message) =>
         document.getElementById('userViewContact').checked = result['custom:contact'] === "1";
         window.auth.openModal("userProfileView");
     });
+}
 
-window.auth.signOutButtonHandler = () => {
-    signOutUser(() => {
+window.auth.signOutButtonHandler = function() {
+    signOutUser(function() {
         window.auth.clearUserCookie();
         window.auth.refreshHeader();
     });
 };
 
-window.auth.guestButtonHandler = (e) => {
+window.auth.guestButtonHandler = function(e) {
     e.preventDefault();
     window.auth.clearUserCookie();
     window.auth.setGuestCookie();
     window.auth.refreshHeader();
 };
 
-window.auth.signInFormSubmit = (e) => {
+window.auth.signInFormSubmit = function(e) {
     e.preventDefault();
     document.getElementById('signInButton').disabled = true;
     window.auth.clearGuestCookie();
     const signInEmail = document.getElementById('signInEmail').value;
     const signInPassword = document.getElementById('signInPassword').value;
-    signIn(signInEmail, signInPassword, (err, res) => {
+    signIn(signInEmail, signInPassword, function(err, res) {
         if(err) {
             document.getElementById('signInError').textContent = err.message;
         } else {
@@ -129,7 +130,7 @@ window.auth.signInFormSubmit = (e) => {
     });
 }
 
-window.auth.signUpFormSubmit = (e) => {
+window.auth.signUpFormSubmit = function(e) {
     document.getElementById('signUpButton').disabled = true;
     e.preventDefault();
 
@@ -145,7 +146,7 @@ window.auth.signUpFormSubmit = (e) => {
     const country = document.getElementById('signUpCountry').value;
     const contact = document.getElementById('signUpContact').checked ? "1" : "0";
     const industry = document.getElementById('signUpIndustry').value;
-    signUp(username, password, givenName, familyName, country, industry, contact, (err) => {
+    signUp(username, password, givenName, familyName, country, industry, contact, function(err) {
         if(err) {
             document.getElementById('signUpError').textContent = err.message;
         } else {
@@ -157,7 +158,7 @@ window.auth.signUpFormSubmit = (e) => {
 }
 
 
-window.auth.userEditFormSubmit = (e) => {
+window.auth.userEditFormSubmit = function(e) {
     document.getElementById('userProfileSaveButton').disabled = true;
     e.preventDefault();
     const givenName = document.getElementById('userEditFirstName').value;
@@ -165,7 +166,7 @@ window.auth.userEditFormSubmit = (e) => {
     const country = document.getElementById('userEditCountry').value;
     const contact = document.getElementById('userEditContact').checked ? "1" : "0";
     const industry = document.getElementById('userEditIndustry').value;
-    updateUserAttributes(givenName, familyName, country, industry, contact, (err) => {
+    updateUserAttributes(givenName, familyName, country, industry, contact, function(err) {
         if(err) {
             document.getElementById('userEditError').textContent = err.message;
         } else {
@@ -175,7 +176,7 @@ window.auth.userEditFormSubmit = (e) => {
     });
 }
 
-window.auth.changePasswordFormSubmit = (e) => {
+window.auth.changePasswordFormSubmit = function(e) {
     document.getElementById('changePasswordSaveButton').disabled = true;
     e.preventDefault();
     const currentPassword = document.getElementById('changePasswordCurrent').value;
@@ -186,7 +187,7 @@ window.auth.changePasswordFormSubmit = (e) => {
         document.getElementById('changePasswordError').textContent = "Passwords do not match";
         return false;
     }
-    changeUserPassword(currentPassword, newPassword, (err) => {
+    changeUserPassword(currentPassword, newPassword, function(err) {
         if(err) {
             document.getElementById('changePasswordError').textContent = err.message;
         } else {
@@ -196,8 +197,8 @@ window.auth.changePasswordFormSubmit = (e) => {
     });
 }
 
-window.auth.editProfileButtonHandler = () => {
-    userAttributes((_, result) => {
+window.auth.editProfileButtonHandler = function() {
+    userAttributes(function(_, result) {
         window.auth.closeModals();
         document.getElementById('userEditEmail').value = result['email'];
         document.getElementById('userEditFirstName').value = result['given_name'];
@@ -209,20 +210,20 @@ window.auth.editProfileButtonHandler = () => {
     });
 }
 
-window.auth.changePasswordButtonHandler = () => {
+window.auth.changePasswordButtonHandler = function() {
     window.auth.closeModals();
     window.auth.openModal("changePassword");
 }
 
-window.auth.requestPasswordResetButtonHandler = () => {
+window.auth.requestPasswordResetButtonHandler = function() {
     window.auth.closeModals();
     window.auth.openModal("requestPasswordResetCodeModal");
 }
 
-window.auth.requestPasswordResetCodeFormSubmit = (e) => {
+window.auth.requestPasswordResetCodeFormSubmit = function(e) {
     e.preventDefault();
     const username = document.getElementById('requestPasswordResetCodeEmail').value;
-    sendPasswordResetCode(username, (err) => {
+    sendPasswordResetCode(username, function(err) {
         if(err) {
             document.getElementById('requestPasswordResetCodeError').textContent = err.message;
         } else {
@@ -232,12 +233,12 @@ window.auth.requestPasswordResetCodeFormSubmit = (e) => {
     })
 }
 
-window.auth.resetPasswordFormSubmit = (e) => {
+window.auth.resetPasswordFormSubmit = function(e) {
     e.preventDefault();
     const username = document.getElementById('resetPasswordEmail').value;
     const newPassword = document.getElementById('resetPasswordPassword').value;
     const code = document.getElementById('resetPasswordCode').value;
-    confirmPasswordReset(username, code, newPassword, (err) => {
+    confirmPasswordReset(username, code, newPassword, function(err) {
         if(err) {
             document.getElementById('resetPasswordError').textContent = err.message;
         } else {

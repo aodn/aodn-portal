@@ -30,8 +30,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
         log.debug('downloading synchronously', downloadUrl);
 
         var downloadToken = this._newDownloadToken();
-        var userEmail = this._getUserEmail();
-        var proxyUrl = this._constructProxyUrl(collection, downloadUrl, downloadToken, userEmail, params);
+        var proxyUrl = this._constructProxyUrl(collection, downloadUrl, downloadToken, params);
         var self = this;
 
         $.fileDownload(proxyUrl, {
@@ -60,10 +59,6 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     },
 
     _newDownloadToken: function() {
-        return new Date().getTime();
-    },
-
-    _getUserEmail: function() {
         return new Date().getTime();
     },
 
