@@ -410,7 +410,8 @@ portal {
         ]
 
         wfs = [
-            "OGC:WFS-1.0.0-http-get-capabilities"
+            "OGC:WFS-1.0.0-http-get-capabilities",
+            "OGC:WFS"
         ]
 
         dataFile = [
@@ -435,10 +436,12 @@ portal {
     // Download handler config (online resource protocol -> DownloadHandler class)
     downloadHandlersForProtocol = [
         [ 'handler': 'WfsDownloadHandler',                 'protocol': 'OGC:WFS-1.0.0-http-get-capabilities' ],
+        [ 'handler': 'WfsDownloadHandler',                 'protocol': 'OGC:WFS' ],
         [ 'handler': 'GogoduckDownloadHandler',            'protocol': 'OGC:WPS--gogoduck'                   ],
         [ 'handler': 'DataTrawlerDownloadHandler',         'protocol': 'WWW:DOWNLOAD-1.0-http--csiro-oa-app' ],
         [ 'handler': 'PointCSVDownloadHandler',            'protocol': 'OGC:WPS--gogoduck'                   ],
         [ 'handler': 'PythonDownloadHandler',              'protocol': 'OGC:WFS-1.0.0-http-get-capabilities' ],
+        [ 'handler': 'PythonDownloadHandler',              'protocol': 'OGC:WFS' ],
         [ 'handler': 'BodaacDownloadHandler',              'protocol': 'IMOS:AGGREGATION--bodaac'            ],
         [ 'handler': 'FileListDownloadHandler',            'protocol': 'AODN:FILE-list'                      ],
         [ 'handler': 'ShapeFileDownloadHandler',           'protocol': 'OGC:WFS-1.0.0-http-get-feature--shapefile'],

@@ -104,7 +104,9 @@ Portal.cart.DownloadHandler._handlerOrder = function() {
         var handlerOrder = [];
 
         Ext.each(this._protocolHandlerMapping(), function(obj) {
-            handlerOrder.push(obj.handler);
+            if (handlerOrder.indexOf(obj.handler) === -1) {
+                handlerOrder.push(obj.handler);
+            }
         }, this);
 
         this.__handlerOrder = handlerOrder;
