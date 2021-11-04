@@ -1,6 +1,7 @@
 window.auth = {};
 
 window.auth.setUserCookie = (user) => {
+    window.auth.clearUserCookie();
     setCookie("aodnPortalUser", JSON.stringify(user), 365)
 }
 
@@ -111,22 +112,30 @@ window.auth.signInFormSubmit = (e) => {
     e.preventDefault();
     window.auth.clearGuestCookie();
     const signInEmail = document.getElementById('signInEmail').value;
-    const signInPassword = document.getElementById('signInPassword').value;
-    signIn(signInEmail, signInPassword, (err, res) => {
+    // const signInPassword = document.getElementById('signInPassword').value;
+    sendPasswordResetCode(signInEmail, (err, result) => {
         if(err) {
             document.getElementById('signInError').textContent = err.message;
         } else {
-            const cookie = {email: signInEmail, token: res.accessToken.jwtToken};
-            window.auth.setUserCookie(cookie);
-            window.auth.refreshHeader();
+            window.auth.setUserCookie({email: signInEmail});
+            window.auth.openModal("signInCodeModal");
         }
     });
+    // signIn(signInEmail, signInPassword, (err, res) => {
+    //     if(err) {
+    //         document.getElementById('signInError').textContent = err.message;
+    //     } else {
+    //         const cookie = {email: signInEmail, token: res.accessToken.jwtToken};
+    //         window.auth.setUserCookie(cookie);
+    //         window.auth.refreshHeader();
+    //     }
+    // });
 }
 
 window.auth.signUpFormSubmit = (e) => {
     e.preventDefault();
     const username = document.getElementById('signUpEmail').value;
-    const password = document.getElementById('signUpPassword').value;
+    const password = randomCharacters();
     const phoneNumber = document.getElementById('signUpPhoneNumber').value;
     const givenName = document.getElementById('signUpFirstName').value;
     const familyName = document.getElementById('signUpLastName').value;
@@ -136,33 +145,42 @@ window.auth.signUpFormSubmit = (e) => {
         if(err) {
             document.getElementById('signUpError').textContent = err.message;
         } else {
-            window.auth.openModal("signUpMessage");
+            window.auth.setUserCookie({email: username});
+            signIn(username, password, (err, res) => {
+                if(err) {
+                    document.getElementById('signUpError').textContent = err.message;
+                } else {
+                    const cookie = {email: username, token: res.accessToken.jwtToken};
+                    window.auth.setUserCookie(cookie);
+                    window.auth.openModal('signUpMessage');
+                }
+            })
         }
     });
 }
 
-window.auth.requestPasswordResetCodeFormSubmit = (e) => {
+window.auth.signInCodeFormSubmit = (e) => {
     e.preventDefault();
-    const username = document.getElementById('requestPasswordResetCodeEmail').value;
-    sendPasswordResetCode(username, (err) => {
+    const username = window.auth.getUserCookie().email;
+    const newPassword = randomCharacters();
+    const code = document.getElementById('signInCodeCode').value;
+    confirmPasswordReset(username, code, newPassword, (err, res) => {
         if(err) {
-            document.getElementById('requestPasswordResetCodeError').textContent = err.message;
+            document.getElementById('signInCodeError').textContent = err.message;
         } else {
-            window.auth.openModal("resetPasswordModal")
+            signIn(username, newPassword, (err, res) => {
+                if(err){
+                    document.getElementById('signInCodeError').textContent = err.message;
+                } else {
+                    const cookie = {email: username, token: res.accessToken.jwtToken};
+                    window.auth.setUserCookie(cookie);
+                    window.auth.refreshHeader();
+                }
+            })
         }
     })
 }
 
-window.auth.resetPasswordFormSubmit = (e) => {
-    e.preventDefault();
-    const username = document.getElementById('resetPasswordEmail').value;
-    const newPassword = document.getElementById('resetPasswordPassword').value;
-    const code = document.getElementById('resetPasswordCode').value;
-    confirmPasswordReset(username, code, newPassword, (err) => {
-        if(err) {
-            document.getElementById('resetPasswordError').textContent = err.message;
-        } else {
-            window.auth.signInButtonHandler();
-        }
-    })
+function randomCharacters() {
+    return Math.random().toString(36).slice(2) + '.' + Math.random().toString(36).toUpperCase().slice(2);
 }

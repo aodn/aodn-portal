@@ -8,10 +8,10 @@
             <label for="email">Email</label>
             <input type="email" autocomplete="username" placeholder="Enter Email" id="signInEmail" name="email" required>
         </div>
-        <div>
-            <label for="password">Password</label>
-            <input type="password" autocomplete="current-password" placeholder="Enter Password" id="signInPassword" name="password" required>
-        </div>
+%{--        <div>--}%
+%{--            <label for="password">Password</label>--}%
+%{--            <input type="password" autocomplete="current-password" placeholder="Enter Password" id="signInPassword" name="password" required>--}%
+%{--        </div>--}%
             <button class="auth-submit-btn" style="margin-right: 20px" type="submit">Sign In</button>
             <a href="#" onClick="window.auth.openModal('requestPasswordResetCodeModal')">Reset Password</a>
         </form>

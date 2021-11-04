@@ -8,14 +8,14 @@
                 <label for="email">Email (Required)</label>
                 <input autocomplete="off" type="email" invalid placeholder="Enter Email" id="signUpEmail" name="email" required>
             </div>
-            <div>
-                <label for="password">Password (Required)</label><div style="float:right"><small>(8-15 characters, containing lower case, upper case, symbol and number)</small></div>
-                <input autocomplete="off" type="password" title="ERROR" placeholder="Enter Password" id="signUpPassword" name="password" pattern="^[\S]+.*[\S]+$" minlength="8" maxlength="15" required>
-            </div>
-            <div>
-                <label for="passwordConfirm">Confirm Password</label>
-                <input autocomplete="off" type="password" placeholder="Enter Password" id="signUpPasswordConfirm" name="passwordConfirm" pattern="^[\S]+.*[\S]+$" minlength="8" maxlength="15" required>
-            </div>
+%{--            <div>--}%
+%{--                <label for="password">Password (Required)</label><div style="float:right"><small>(8-15 characters, containing lower case, upper case, symbol and number)</small></div>--}%
+%{--                <input autocomplete="off" type="password" title="ERROR" placeholder="Enter Password" id="signUpPassword" name="password" pattern="^[\S]+.*[\S]+$" minlength="8" maxlength="15" required>--}%
+%{--            </div>--}%
+%{--            <div>--}%
+%{--                <label for="passwordConfirm">Confirm Password</label>--}%
+%{--                <input autocomplete="off" type="password" placeholder="Enter Password" id="signUpPasswordConfirm" name="passwordConfirm" pattern="^[\S]+.*[\S]+$" minlength="8" maxlength="15" required>--}%
+%{--            </div>--}%
             <hr>
             <div>
                 <label for="firstName">First Name</label>
