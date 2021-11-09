@@ -41,13 +41,15 @@
         <g:render template="/header/mainPortalHeader" model="['showLinks': true, 'configInstance': configInstance]"></g:render>
         <g:render template="/google_analytics"></g:render>
         <g:render template="/hotjar"></g:render>
-        <g:render template="/auth/signInModal"></g:render>
-        <g:render template="/auth/signUpModal"></g:render>
-        <g:render template="/auth/signUpMessage"></g:render>
-        <g:render template="/auth/userProfileView"></g:render>
-        <g:render template="/auth/userProfileEdit"></g:render>
-        <g:render template="/auth/changePassword"></g:render>
-        <g:render template="/auth/resetPasswordModal"></g:render>
-        <g:render template="/auth/requestPasswordResetCodeModal"></g:render>
+        <g:if test="${grailsApplication.config.featureToggles.cognitoAuthentication}">
+            <g:render template="/auth/signInModal"></g:render>
+            <g:render template="/auth/signUpModal"></g:render>
+            <g:render template="/auth/signUpMessage"></g:render>
+            <g:render template="/auth/userProfileView"></g:render>
+            <g:render template="/auth/userProfileEdit"></g:render>
+            <g:render template="/auth/changePassword"></g:render>
+            <g:render template="/auth/resetPasswordModal"></g:render>
+            <g:render template="/auth/requestPasswordResetCodeModal"></g:render>
+        </g:if>
     </body>
 </html>

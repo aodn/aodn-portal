@@ -36,20 +36,17 @@ const getUserPool = () => {
 };
 
 const getUser = (userName) => {
-    // if (cognitoUser === undefined) {
+    if (cognitoUser === undefined) {
         let userData = {
             Username: userName,
             Pool: getUserPool(),
         };
         cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-    // }
+    }
     return cognitoUser;
 };
 
 const signUp = (username, password, givenName, familyName, country, industry, contact, callback) => {
-
-    // Default to example callback
-    callback = callback || exampleCallback(true, "User registered.");
 
     const attributeList = buildAttributeList(givenName, familyName, country, industry, contact)
 
@@ -63,9 +60,6 @@ const signUp = (username, password, givenName, familyName, country, industry, co
 };
 
 const updateUserAttributes = (givenName, familyName, country, industry, contact, callback) => {
-
-    // Default to example callback
-    callback = callback || exampleCallback(true, "User attributes updated.");
 
     if (cognitoUser !== undefined) {
         const attrList = buildAttributeList(givenName, familyName, country, industry, contact);
@@ -140,18 +134,10 @@ const buildAttributeList = (givenName, familyName, country, industry, contact) =
 }
 
 const verify = (username, code, callback) => {
-
-    // Default to example callback
-    callback = callback || exampleCallback(true, "User signed in.");
-
     getUser(username).confirmRegistration(code, true, callback);
 };
 
 const signIn = (username, password, callback) => {
-
-    // Default to example callback
-    callback = callback || exampleCallback(true, "User signed in.");
-
     let authenticationData = {
         Username: username,
         Password: password
@@ -214,9 +200,6 @@ const userAttributes = (callback) => {
 
 const signOutUser = (callback) => {
 
-    // Default to example callback
-    callback = callback || exampleCallback(true, "User signed out.");
-
     if (cognitoUser) {
         if (cognitoUser.signInUserSession) {
             cognitoUser.signOut();
@@ -236,9 +219,6 @@ const signOutUser = (callback) => {
 
 const changeUserPassword = (oldPassword, newPassword, callback) => {
 
-    // Default to example callback
-    callback = callback || exampleCallback(false, "Password changed.");
-
     if (cognitoUser) {
         cognitoUser.changePassword(oldPassword, newPassword, callback);
     } else {
@@ -248,9 +228,6 @@ const changeUserPassword = (oldPassword, newPassword, callback) => {
 
 const sendPasswordResetCode = (userName, callback) => {
 
-    // Default to example callback
-    callback = callback || exampleCallback(false, "Password reset requested.");
-
     getUser(userName).forgotPassword({
         onFailure: (err) => callback(err, null),
         onSuccess: (result) => callback(null, result)
@@ -259,76 +236,8 @@ const sendPasswordResetCode = (userName, callback) => {
 
 const confirmPasswordReset = (username, code, newPassword, callback) => {
 
-    // Default to example callback
-    callback = callback || exampleCallback(false, "Password updated.");
-
     getUser(username).confirmPassword(code, newPassword, {
         onFailure: (err) => callback(err, null),
         onSuccess: (result) => callback(null, result)
     });
 };
-
-
-/*
-    Example function to update part of the UI - Effectively will be replace by https://github.com/aodn/backlog/issues/3520
-    Note: This is called twice as it is in awkward demo setup
- */
-
-const loginIcon = () => {
-    if (getCookie('skipLogin')) {
-        return "";
-    } else {
-        let el = jQuery("<span></span>");
-        el.attr('class', 'fa fa-sign-in')
-            .on('click', () => {
-                window.showLogin();
-            });
-        return el;
-    }
-}
-
-const logoutIcon = () => {
-    let el = jQuery("<span></span>");
-    el.attr('class', 'fa fa-sign-out')
-        .on('click', () => {signOutUser()})
-    return el;
-}
-
-const updateUserSlug = () => {
-    userAttributes(exampleCallback(false, "Updating slug", (err, result) => {
-        if (err) {
-            jQuery("#nameTag").text('Hi Guest');
-            jQuery("#authStatus").empty().append(loginIcon());
-        } else if (result.hasOwnProperty("given_name")){
-            jQuery("#nameTag").text(`Hi ${result.given_name} `);
-            jQuery("#authStatus").empty().append(logoutIcon());
-        } else {
-            jQuery("#nameTag").text('Hi Guest');
-            jQuery("#authStatus").empty().append(loginIcon());
-        }
-    }));
-};
-
-/*
-    This function is just a placeholder for what the UI will actually do
- */
-const exampleCallback = (updateSlug, message, callback) => {
-
-    // Handle missing callback
-    if(callback === undefined){
-        callback = (err, result) => {};
-    }
-
-    return (err, result) => {
-        if (err) {
-            console.log(err.message || JSON.stringify(err));
-            callback(err, null)
-        } else {
-            console.log(message || "Success", result);
-            callback(null, result)
-            if(updateSlug) {
-                updateUserSlug();
-            }
-        }
-    }
-}

@@ -81,6 +81,7 @@ downloadAuth {
 
 featureToggles {
     geonetworkLinkMonitor = false
+    cognitoAuthentication = false
 }
 
 enabledFacets = [

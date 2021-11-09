@@ -6,10 +6,13 @@
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.rotate.1-1.js')}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.cookie.js')}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery-ui.min.js')}"></script>
-<script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: 'amazon-cognito-identity.min.js')}"></script>
-<script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: '_config.js')}"></script>
-<script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: 'aws-sdk.min.js')}"></script>
-<script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: 'utils.js')}"></script>
+
+<g:if test="${grailsApplication.config.featureToggles.cognitoAuthentication}">
+    <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: 'amazon-cognito-identity.min.js')}"></script>
+    <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: '_config.js')}"></script>
+    <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: 'aws-sdk.min.js')}"></script>
+    <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: 'utils.js')}"></script>
+</g:if>
 
 <script type="text/javascript" src="${resource(dir: 'js/log4javascript-1.4.6', file: 'log4javascript_uncompressed.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Logging.js')}"></script>

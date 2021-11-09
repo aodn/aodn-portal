@@ -31,6 +31,8 @@
             <g:render template="/header/viewPortLink"
                 model="['stepIndex': i, 'tabIndex': viewPortLink.tabIndex, 'description': viewPortLink.description]" />
         </g:each>
-        <g:render template="/auth/authStatusBar"></g:render>
+        <g:if test="${grailsApplication.config.featureToggles.cognitoAuthentication}">
+            <g:render template="/auth/authStatusBar"></g:render>
+        </g:if>
     </div>
 </g:if>
