@@ -122,7 +122,7 @@ window.auth.signInFormSubmit = function(e) {
         if(err) {
             document.getElementById('signInError').textContent = err.message;
         } else {
-            const cookie = {email: signInEmail, token: res.accessToken.jwtToken};
+            const cookie = {email: signInEmail, token: res.accessToken.jwtToken, username: cognitoUser.username};
             window.auth.setUserCookie(cookie);
             window.auth.refreshHeader();
         }
