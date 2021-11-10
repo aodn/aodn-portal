@@ -16,7 +16,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     download: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
         const cookie = window.auth.getUserCookie(),
             userId = (cookie) ? cookie.username : 'guest'
-        var downloadUrl = generateUrlCallback.call(generateUrlCallbackScope, collection, params).concat(`&userId=${userId}`);
+        var downloadUrl = generateUrlCallback.call(generateUrlCallbackScope, collection, params).concat("&userId=", userId);
 
         if (params.asyncDownload) {
             this._downloadAsynchronously(collection, downloadUrl, params);
