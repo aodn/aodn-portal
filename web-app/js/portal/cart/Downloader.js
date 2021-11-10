@@ -14,9 +14,14 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     },
 
     download: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
-        const cookie = window.auth.getUserCookie(),
-            userId = (cookie) ? cookie.username : 'guest'
-        var downloadUrl = generateUrlCallback.call(generateUrlCallbackScope, collection, params).concat("&userId=", userId);
+        var downloadUrl;
+        try {
+            const cookie = window.auth.getUserCookie(),
+                userId = (cookie) ? cookie.username : 'guest'
+            downloadUrl = generateUrlCallback.call(generateUrlCallbackScope, collection, params).concat("&userId=", userId);
+        } catch(err) {
+            downloadUrl = generateUrlCallback.call(generateUrlCallbackScope, collection, params)
+        }
 
         if (params.asyncDownload) {
             this._downloadAsynchronously(collection, downloadUrl, params);
