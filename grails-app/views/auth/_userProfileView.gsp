@@ -24,9 +24,8 @@
             <label for="userViewIndustry">Industry</label>
             <input type="text" name="Industry" id="userViewIndustry" readonly>
         </div>
-        <div>
-            <label for="userViewContact">I agree to being contacted</label>
-            <input type="checkbox" name="Contact" id="userViewContact" disabled>
+        <div style="display: block">
+            <input type="checkbox" name="Contact" id="userViewContact" disabled>I agree to being contacted</input>
         </div>
         </form>
         <button class="auth-submit-btn" id="userEditProfileButton" onClick="window.auth.editProfileButtonHandler()">Edit Profile</button>

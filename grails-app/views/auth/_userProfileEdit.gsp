@@ -29,7 +29,7 @@
                 </select>
             </div>
             <div style="display: block">
-                <input type="checkbox" checked id="userEditContact" name="contact">I agree to being contacted</a>
+                <input type="checkbox" checked id="userEditContact" name="contact">I agree to being contacted</input>
             </div>
             <div style="display: block; margin-top: 20px">
                 <button class="auth-submit-btn" type="submit" id="userProfileSaveButton" >Update Profile</button>

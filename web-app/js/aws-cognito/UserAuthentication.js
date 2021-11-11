@@ -1,23 +1,17 @@
 "use strict";
 
 const UserAuthentication = function () {
-  let _cognitoUser = null;
-  let _userPool = null;
-
-  const _getUserPool = function () {
-    if (!_userPool) {
-      _userPool = new AmazonCognitoIdentity.CognitoUserPool(_config.cognito);
-    }
-    return _userPool;
-  };
+  let _userPool = new AmazonCognitoIdentity.CognitoUserPool(_config.cognito);
+  let _cognitoUser = _userPool.getCurrentUser();
 
   const _getUser = function (email) {
     if (!_cognitoUser) {
       _cognitoUser = new AmazonCognitoIdentity.CognitoUser({
         Username: email,
-        Pool: _getUserPool(),
+        Pool: _userPool,
       });
     }
+    _cognitoUser.getSession(function () {});
     return _cognitoUser;
   };
 
@@ -151,7 +145,8 @@ const UserAuthentication = function () {
       callback();
     },
     isSignedIn: function () {
-      return _cognitoUser !== null && _getUserCookie() !== null;
+      const cookie = _getUserCookie();
+      return cookie !== null && _getUser(cookie.email) !== null;
     },
     signUp: function (
       username,
@@ -180,7 +175,7 @@ const UserAuthentication = function () {
       contact,
       callback
     ) {
-      if (_cognitoUser !== undefined) {
+      if (_cognitoUser) {
         const attrList = _buildAttributeList(
           givenName,
           familyName,
@@ -212,42 +207,18 @@ const UserAuthentication = function () {
       });
     },
     getDetails: function (callback) {
-      if (_cognitoUser) {
-        _cognitoUser.getUserAttributes((err, result) => {
-          if (err) {
-            callback(err, null);
-          } else {
-            // Build attrs into object
-            let userInfo = { name: _cognitoUser.username };
-            for (let k = 0; k < result.length; k++) {
-              userInfo[result[k].getName()] = result[k].getValue();
-            }
-            callback(null, userInfo);
+      _cognitoUser.getUserAttributes((err, result) => {
+        if (err) {
+          callback(err, null);
+        } else {
+          // Build attrs into object
+          let userInfo = { name: _cognitoUser.username };
+          for (let k = 0; k < result.length; k++) {
+            userInfo[result[k].getName()] = result[k].getValue();
           }
-        });
-      } else if (_getUserPool().getCurrentUser() != null) {
-        _cognitoUser = _getUserPool().getCurrentUser();
-        _cognitoUser.getSession((err, session) => {
-          if (err) {
-            callback(err, null);
-          } else {
-            _cognitoUser.getUserAttributes(function (err, result) {
-              if (err) {
-                callback(err, null);
-              } else {
-                // Build attrs into object
-                let userObject = {};
-                result.forEach((attr) => {
-                  userObject[attr.Name] = attr.Value;
-                });
-                callback(null, userObject);
-              }
-            });
-          }
-        });
-      } else {
-        callback("No User", null);
-      }
+          callback(null, userInfo);
+        }
+      });
     },
     signOut: function (callback) {
       if (_cognitoUser && _cognitoUser.signInUserSession) {
@@ -259,7 +230,7 @@ const UserAuthentication = function () {
     },
     delete: function (callback) {
       _cognitoUser.deleteUser(callback, function () {
-        _clearCookies;
+        _clearCookies();
         callback();
       });
     },
