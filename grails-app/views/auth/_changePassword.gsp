@@ -9,7 +9,7 @@
                 <input autocomplete="off" type="password" title="ERROR" placeholder="Current Password" id="changePasswordCurrent" name="changePasswordCurrent" pattern="^[\S]+.*[\S]+$" minlength="8" maxlength="20" required>
             </div>
             <div>
-                <label for="signUpPassword">New Password (Required)</label><div style="float:right"><small>(8-20 characters, containing lower case, upper case, symbol and number)</small></div>
+                <label for="signUpPassword">New Password (Required)</label><div style="float:right"><small>(At least 8 characters)</small></small></div>
                 <input autocomplete="off" type="password" title="ERROR" placeholder="Enter Password" id="changePasswordNew" name="changePasswordNew" pattern="^[\S]+.*[\S]+$" minlength="8" maxlength="20" required>
             </div>
             <div>

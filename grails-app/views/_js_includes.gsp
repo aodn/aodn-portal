@@ -9,9 +9,10 @@
 
 <g:if test="${grailsApplication.config.featureToggles.cognitoAuthentication}">
     <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: 'amazon-cognito-identity.min.js')}"></script>
-    <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: '_config.js')}"></script>
     <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: 'aws-sdk.min.js')}"></script>
-    <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: 'utils.js')}"></script>
+    <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: '_config.js')}"></script>
+    <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: 'UserAuthentication.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/auth', file: 'Auth.js')}"></script>
 </g:if>
 
 <script type="text/javascript" src="${resource(dir: 'js/log4javascript-1.4.6', file: 'log4javascript_uncompressed.js')}"></script>
@@ -44,7 +45,6 @@
 
 <g:if env="development">
     <script type="text/javascript" src="${resource(dir: 'js/portal', file: 'jquery.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/portal/auth', file: 'Auth.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/ui/openlayers/control', file: 'SpatialConstraint.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils/geo', file: 'GeoUtil.js')}"></script>
     <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Image.js')}"></script>
