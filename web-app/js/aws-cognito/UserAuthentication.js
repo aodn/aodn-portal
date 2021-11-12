@@ -1,7 +1,9 @@
 "use strict";
 
 const UserAuthentication = function () {
-  let _userPool = new AmazonCognitoIdentity.CognitoUserPool(_config.cognito);
+  let _userPool = new AmazonCognitoIdentity.CognitoUserPool(
+    window.auth.config.cognito
+  );
   let _cognitoUser = _userPool.getCurrentUser();
 
   const _getUser = function (email) {
@@ -255,5 +257,3 @@ const UserAuthentication = function () {
     },
   };
 };
-
-window.auth = { pendingConfirmation: 0 };

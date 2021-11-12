@@ -81,7 +81,12 @@ downloadAuth {
 
 featureToggles {
     geonetworkLinkMonitor = false
-    cognitoAuthentication = false
+    cognitoAuthentication = true
+}
+
+auth {
+    awsUserPoolID = System.getenv("AWS_USER_POOL_ID")
+    awsClientID = System.getenv("AWS_CLIENT_ID")
 }
 
 enabledFacets = [
