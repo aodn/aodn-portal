@@ -1,5 +1,3 @@
-"use strict";
-
 const UserAuthentication = function () {
   let _userPool = new AmazonCognitoIdentity.CognitoUserPool(
     window.auth.config.cognito
