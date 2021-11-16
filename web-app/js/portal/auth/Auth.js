@@ -1,5 +1,3 @@
-"use strict";
-
 window.user = window.auth ? UserAuthentication() : {};
 window.auth = window.auth || {};
 
