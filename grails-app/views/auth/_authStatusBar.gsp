@@ -9,5 +9,9 @@
         <div id="authIsGuest" style="float:right; width: 110px; height: 36px; display:none; text-align:right; line-height: 36px; margin-right: 10px">
         <h2 style="color:#CFD4D7">Guest</h2>
     </div>
-    <script>window.auth.refreshHeader()</script>
+    <script>
+    if(window.auth && window.auth.refreshHeader) {
+        window.auth.refreshHeader()
+    }
+    </script>
 </div>
