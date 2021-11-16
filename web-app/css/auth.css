@@ -57,6 +57,7 @@
     width: 200px; 
     padding: 5px;
     cursor: hand;
+    margin: 2px;
 }
 
 button.right {

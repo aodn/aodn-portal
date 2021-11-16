@@ -9,7 +9,7 @@
                 <input autocomplete="off" type="email" invalid placeholder="Enter Email" id="signUpEmail" name="email" required>
             </div>
             <div>
-                <label for="signUpPassword">Password (Required)</label><div style="float:right"><small>(8-20 characters, containing lower case, upper case, symbol and number)</small></div>
+                <label for="signUpPassword">Password (Required)</label><div style="float:right"><small>(At least 8 characters)</small></div>
                 <input autocomplete="off" type="password" title="ERROR" placeholder="Enter Password" id="signUpPassword" name="password" pattern="^[\S]+.*[\S]+$" minlength="8" maxlength="20" required>
             </div>
             <div>
@@ -36,8 +36,8 @@
                     <g:render template="/auth/industryOptions"/>
                 </select>
             </div>
-            <input type="checkbox" checked id="signUpAgree" name="agree" onclick="document.getElementById('signUpButton').disabled = !event.target.checked">I Agree to the <a href="#">IMOS Terms & Conditions</a><br>
-            <input type="checkbox" checked id="signUpContact" name="contact">I agree to being contacted</a>
+            <input type="checkbox" checked id="signUpAgree" name="agree" onclick="document.getElementById('signUpButton').disabled = !event.target.checked">I Agree to the <a href="https://imos.org.au">IMOS Terms & Privacy Conditions</a> and the <a href="https://help.aodn.org.au/user-guide-introduction/aodn-portal/data-use-acknowledgement/">Data Use Acknowledgement</a></input><br>
+            <input type="checkbox" checked id="signUpContact" name="contact">I agree to being contacted</input>
             <div style="margin-top: 15px"><button id="signUpButton" class="auth-submit-btn" type="submit">Sign Up</button></div>
         </form>
     </div>

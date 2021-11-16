@@ -22,10 +22,5 @@
             or
             <a href="#" onClick="window.auth.guestButtonHandler(event);">Continue As Guest</a>
         </div>
-        <hr>
-        <div>
-            <h2>Why Sign In?</h2>
-            <p>Lorem ipsum dolor sit amet</p>
-        </div>
     </div>
 </div>

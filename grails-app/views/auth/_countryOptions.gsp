@@ -1,3 +1,4 @@
+<option value="Australia" selected>Australia</option>
 <option value="Afghanistan">Afghanistan</option>
 <option value="Aland Islands">Aland Islands</option>
 <option value="Albania">Albania</option>
@@ -11,7 +12,6 @@
 <option value="Argentina">Argentina</option>
 <option value="Armenia">Armenia</option>
 <option value="Aruba">Aruba</option>
-<option value="Australia" selected>Australia</option>
 <option value="Austria">Austria</option>
 <option value="Azerbaijan">Azerbaijan</option>
 <option value="Bahamas">Bahamas</option>

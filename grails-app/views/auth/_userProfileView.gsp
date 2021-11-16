@@ -24,13 +24,13 @@
             <label for="userViewIndustry">Industry</label>
             <input type="text" name="Industry" id="userViewIndustry" readonly>
         </div>
-        <div>
-            <label for="userViewContact">OK to contact</label>
-            <input type="checkbox" name="Contact" id="userViewContact" disabled>
+        <div style="display: block">
+            <input type="checkbox" name="Contact" id="userViewContact" disabled>I agree to being contacted</input>
         </div>
         </form>
-        <button class="auth-submit-btn" style="width: 150px" id="userEditProfileButton" onClick="window.auth.editProfileButtonHandler()">Edit Profile</button>
-        <button class="auth-submit-btn" style="width: 150px" id="userChangePasswordButton" onClick="window.auth.changePasswordButtonHandler()">Change Password</button>
-        <button class="auth-submit-btn" style="width: 20%; float:right;" onClick="window.auth.signOutButtonHandler()">Sign Out</button>
+        <button class="auth-submit-btn" id="userEditProfileButton" onClick="window.auth.editProfileButtonHandler()">Edit Profile</button>
+        <button class="auth-submit-btn" id="userChangePasswordButton" onClick="window.auth.changePasswordButtonHandler()">Change Password</button>
+        <button class="auth-submit-btn" onClick="window.auth.confirmSignOutButtonHandler()">Sign Out</button>
+        <button class="auth-submit-btn" onClick="window.auth.confirmDeleteAccountButtonHandler()">Delete Account</button>
     </div>
 </div>
