@@ -1,6 +1,6 @@
 "use strict";
 
-window.user = window.user || UserAuthentication();
+window.user = window.auth ? UserAuthentication() : {};
 window.auth = window.auth || {};
 
 window.auth.openModal = function (modalName) {
