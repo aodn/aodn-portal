@@ -1,6 +1,6 @@
 "use strict";
 
-const user = window.auth ? UserAuthentication() : {};
+window.user = window.user || UserAuthentication();
 window.auth = window.auth || {};
 
 window.auth.openModal = function (modalName) {
@@ -26,13 +26,13 @@ window.auth.refreshHeader = function () {
   const authIsGuest = document.getElementById("authIsGuest");
   const loginUserProfileLink = document.getElementById("loginUserProfileLink");
 
-  if (user.isGuest()) {
+  if (window.user.isGuest()) {
     loginUserProfileLink.textContent = "Guest";
     authIsGuest.style.display = "initial";
     authSignedIn.style.display = "none";
     authSignedOut.style.display = "initial";
-  } else if (user.isSignedIn()) {
-    user.getDetails(function (_, details) {
+  } else if (window.user.isSignedIn()) {
+    window.user.getDetails(function (_, details) {
       loginUserProfileLink.textContent = details.email;
       authIsGuest.style.display = "none";
       authSignedIn.style.display = "initial";
@@ -52,7 +52,8 @@ window.auth.refreshHeader = function () {
 
 window.auth.verifySignIn = function () {
   if (window.auth.pendingConfirmation-- > 0) return;
-  if (!user.isGuest() && !user.isSignedIn()) window.auth.signInButtonHandler();
+  if (!window.user.isGuest() && !window.user.isSignedIn())
+    window.auth.signInButtonHandler();
 };
 
 /** Button handlers */
@@ -78,13 +79,13 @@ window.auth.confirmDeleteAccountButtonHandler = function () {
 };
 
 window.auth.deleteAccountButtonHandler = function () {
-  user.delete(function () {
+  window.user.delete(function () {
     window.location.reload();
   });
 };
 
 window.auth.userProfileButtonHandler = function (message) {
-  user.getDetails(function (_, result) {
+  window.user.getDetails(function (_, result) {
     window.auth.closeModals();
     if (message)
       document.getElementById("userProfileMessage").textContent = message;
@@ -101,12 +102,12 @@ window.auth.userProfileButtonHandler = function (message) {
 };
 
 window.auth.signOutButtonHandler = function () {
-  user.signOut(window.auth.refreshHeader);
+  window.user.signOut(window.auth.refreshHeader);
 };
 
 window.auth.guestButtonHandler = function (e) {
   e.preventDefault();
-  user.setAsGuest(window.auth.refreshHeader);
+  window.user.setAsGuest(window.auth.refreshHeader);
 };
 
 window.auth.signInFormSubmit = function (e) {
@@ -114,10 +115,10 @@ window.auth.signInFormSubmit = function (e) {
   document.getElementById("signInButton").disabled = true;
   const signInEmail = document.getElementById("signInEmail").value;
   const signInPassword = document.getElementById("signInPassword").value;
-  user.signIn(signInEmail, signInPassword, function (err) {
+  window.user.signIn(signInEmail, signInPassword, function (err) {
     document.getElementById("signInError").textContent = err ? err.message : "";
     document.getElementById("signInButton").disabled = false;
-    if (user.isSignedIn()) {
+    if (window.user.isSignedIn()) {
       window.auth.closeModals();
       window.auth.refreshHeader();
     }
@@ -144,7 +145,7 @@ window.auth.signUpFormSubmit = function (e) {
   const country = document.getElementById("signUpCountry").value;
   const contact = document.getElementById("signUpContact").checked ? "1" : "0";
   const industry = document.getElementById("signUpIndustry").value;
-  user.signUp(
+  window.user.signUp(
     username,
     password,
     givenName,
@@ -175,7 +176,7 @@ window.auth.userEditFormSubmit = function (e) {
     ? "1"
     : "0";
   const industry = document.getElementById("userEditIndustry").value;
-  user.setDetails(
+  window.user.setDetails(
     givenName,
     familyName,
     country,
@@ -208,7 +209,7 @@ window.auth.changePasswordFormSubmit = function (e) {
       "Passwords do not match";
     return false;
   }
-  user.changeUserPassword(currentPassword, newPassword, function (err) {
+  window.user.changeUserPassword(currentPassword, newPassword, function (err) {
     if (err) {
       document.getElementById("changePasswordError").textContent = err.message;
     } else {
@@ -219,7 +220,7 @@ window.auth.changePasswordFormSubmit = function (e) {
 };
 
 window.auth.editProfileButtonHandler = function () {
-  user.getDetails(function (_, result) {
+  window.user.getDetails(function (_, result) {
     window.auth.closeModals();
     document.getElementById("userEditEmail").value = result["email"];
     document.getElementById("userEditFirstName").value = result["given_name"];
@@ -248,7 +249,7 @@ window.auth.requestPasswordResetCodeFormSubmit = function (e) {
   const username = document.getElementById(
     "requestPasswordResetCodeEmail"
   ).value;
-  user.sendPasswordResetCode(username, function (err) {
+  window.user.sendPasswordResetCode(username, function (err) {
     if (err) {
       document.getElementById("requestPasswordResetCodeError").textContent =
         err.message;
@@ -264,7 +265,7 @@ window.auth.resetPasswordFormSubmit = function (e) {
   const username = document.getElementById("resetPasswordEmail").value;
   const newPassword = document.getElementById("resetPasswordPassword").value;
   const code = document.getElementById("resetPasswordCode").value;
-  user.confirmPasswordReset(username, code, newPassword, function (err) {
+  window.user.confirmPasswordReset(username, code, newPassword, function (err) {
     if (err) {
       document.getElementById("resetPasswordError").textContent = err.message;
     } else {
