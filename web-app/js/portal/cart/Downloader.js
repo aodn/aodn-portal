@@ -32,7 +32,7 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
         try {
             var param = "&userId=";
             if (window.user.isSignedIn()) {
-                window.user.getDetails(async function (_, details) {
+                window.user.getDetails(function (_, details) {
                     var userId = encodeURI(details.name);
                     callback(collection, downloadUrl.concat(param, userId), params, context);
                 });
