@@ -16,14 +16,33 @@ Portal.cart.Downloader = Ext.extend(Ext.util.Observable, {
     download: function(collection, generateUrlCallbackScope, generateUrlCallback, params) {
 
         var downloadUrl = generateUrlCallback.call(generateUrlCallbackScope, collection, params);
+        this._appendUserToUrl(collection, downloadUrl, params, this, this._download);
 
+    },
+
+    _download: function(collection, downloadUrl, params, context) {
         if (params.asyncDownload) {
-            this._downloadAsynchronously(collection, downloadUrl, params);
+            context._downloadAsynchronously(collection, downloadUrl, params);
+        } else {
+            context._downloadSynchronously(collection, downloadUrl, params);
         }
-        else {
-            this._downloadSynchronously(collection, downloadUrl, params);
-        }
+    },
 
+    _appendUserToUrl: function(collection, downloadUrl, params, context, callback) {
+        try {
+            var param = "&userId=";
+            if (window.user.isSignedIn()) {
+                window.user.getDetails(async function (_, details) {
+                    var userId = encodeURI(details.name);
+                    callback(collection, downloadUrl.concat(param, userId), params, context);
+                });
+            } else {
+                callback(collection, downloadUrl.concat(param, "Guest"), params, context);
+            }
+        } catch(err) {
+            log.debug(err);
+            callback(collection, downloadUrl, params, context);
+        }
     },
 
     _downloadSynchronously: function(collection, downloadUrl, params) {
