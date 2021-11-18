@@ -1,6 +1,6 @@
 window.user = window.auth ? UserAuthentication() : {};
 window.auth = window.auth || {};
-var currentUser = "Guest";
+var currentUser;
 
 window.auth.openModal = function (modalName) {
   const modal = document.getElementById(modalName);
