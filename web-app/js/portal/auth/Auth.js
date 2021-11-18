@@ -1,5 +1,6 @@
 window.user = window.auth ? UserAuthentication() : {};
 window.auth = window.auth || {};
+var currentUser;
 
 window.auth.openModal = function (modalName) {
   const modal = document.getElementById(modalName);
@@ -29,12 +30,14 @@ window.auth.refreshHeader = function () {
     authIsGuest.style.display = "initial";
     authSignedIn.style.display = "none";
     authSignedOut.style.display = "initial";
+    currentUser = "Guest"
   } else if (window.user.isSignedIn()) {
     window.user.getDetails(function (_, details) {
       loginUserProfileLink.textContent = details.email;
       authIsGuest.style.display = "none";
       authSignedIn.style.display = "initial";
       authSignedOut.style.display = "none";
+      currentUser = details.name;
     });
   } else {
     loginUserProfileLink.textContent = "";
