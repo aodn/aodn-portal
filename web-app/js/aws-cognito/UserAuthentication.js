@@ -165,7 +165,7 @@ const UserAuthentication = function () {
         industry,
         contact
       );
-      _getUserPool().signUp(username, password, attributeList, null, callback);
+      _userPool.signUp(username, password, attributeList, null, callback);
     },
     setDetails: function (
       givenName,
