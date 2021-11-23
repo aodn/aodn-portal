@@ -7,11 +7,26 @@
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery.cookie.js')}"></script>
 <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/jquery', file: 'jquery-ui.min.js')}"></script>
 
+<g:if test="${grailsApplication.config.featureToggles.cognitoAuthentication}">
+    <script language="JavaScript" type="text/javascript" >
+        window.auth = { pendingConfirmation: 0 };
+        window.auth.config = {
+            cognito: {
+                UserPoolId: "${grailsApplication.config.auth.awsUserPoolID}",
+                ClientId: "${grailsApplication.config.auth.awsClientID}",
+            }
+        };
+    </script>
+    <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: 'amazon-cognito-identity.min.js')}"></script>
+    <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: 'aws-sdk.min.js')}"></script>
+    <script language="JavaScript" type="text/javascript" src="${resource(dir: 'js/aws-cognito', file: 'UserAuthentication.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'js/portal/auth', file: 'Auth.js')}"></script>
+</g:if>
+
 <script type="text/javascript" src="${resource(dir: 'js/log4javascript-1.4.6', file: 'log4javascript_uncompressed.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'js/portal/utils', file: 'Logging.js')}"></script>
 
 <script src="${resource(dir: 'js/portal/common', file: 'helpers.js')}" type="text/javascript"></script>
-
 
 <g:if env="development">
     <script src="${resource(dir: 'js/ext-3.3.1/adapter/ext', file: 'ext-base-debug.js')}" type="text/javascript"></script>

@@ -9,3 +9,5 @@
 
 <link href='https://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" type="text/css" href="${resource(dir: 'css', file: 'auth.css')}"/>
