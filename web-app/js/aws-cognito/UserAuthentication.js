@@ -207,7 +207,7 @@ const UserAuthentication = function () {
       });
     },
     getDetails: function (callback) {
-      _cognitoUser.getUserAttributes((err, result) => {
+      _cognitoUser.getUserAttributes(function(err, result) {
         if (err) {
           callback(err, null);
         } else {
@@ -229,7 +229,7 @@ const UserAuthentication = function () {
       }
     },
     delete: function (callback) {
-      _cognitoUser.deleteUser(callback, function () {
+      _cognitoUser.deleteUser(function() {
         _clearCookies();
         callback();
       });
