@@ -36,15 +36,12 @@ def getPortalJsFiles(stagingDir) {
     new File(_buildPath([stagingDir, 'WEB-INF', 'grails-app', 'views', "_js_includes.gsp"])).eachLine { line ->
         // We want to match lines like file:'portal/prototypes/OpenLayers.js?'
         def matcher = line =~ /dir:\s*'(js\\/portal.*)',\s*file:\s*'(.+)'/
-        def isAuthInclude = line =~ /dir:\s*'(js\\/portal\\/auth.*)',\s*file:\s*'(.+)'/
         if (matcher.find()) {
             def filePath = _buildPath([matcher.group(1), matcher.group(2)])
-            if(config.featureToggles.cognitoAuthentication != true && isAuthInclude.find()) {
-                println "[collateportaljavascriptfiles] Excluding $filePath as cognitoAuthentication disabled"
-            } else {
-                println "[collateportaljavascriptfiles] Adding $filePath to files to be collated"
-                includes << filePath
-            }
+
+            println "[collateportaljavascriptfiles] Adding $filePath to files to be collated"
+
+            includes << filePath
         }
     }
 

@@ -15,6 +15,19 @@
         <!-- User extensions -->
         <link rel="stylesheet" type="text/css" href="${resource(dir: 'js', file: 'ext-ux/Hyperlink/hyperlink.css')}" />
 
+        <!-- Cognito authentication -->
+        <g:if test="${grailsApplication.config.featureToggles.cognitoAuthentication}">
+            <script language="JavaScript" type="text/javascript" >
+                window.auth = { pendingConfirmation: 0 };
+                window.auth.config = {
+                    cognito: {
+                        UserPoolId: "${grailsApplication.config.auth.awsUserPoolID}",
+                        ClientId: "${grailsApplication.config.auth.awsClientID}",
+                    }
+                };
+            </script>
+        </g:if>
+
         <g:render template="/js_includes"></g:render>
         <g:render template="/public_theme_includes"></g:render>
 
@@ -41,17 +54,15 @@
         <g:render template="/header/mainPortalHeader" model="['showLinks': true, 'configInstance': configInstance]"></g:render>
         <g:render template="/google_analytics"></g:render>
         <g:render template="/hotjar"></g:render>
-        <g:if test="${grailsApplication.config.featureToggles.cognitoAuthentication}">
-            <g:render template="/auth/signInModal"></g:render>
-            <g:render template="/auth/signUpModal"></g:render>
-            <g:render template="/auth/signUpMessage"></g:render>
-            <g:render template="/auth/confirmSignOutModal"></g:render>
-            <g:render template="/auth/confirmUserDeleteModal"></g:render>
-            <g:render template="/auth/userProfileView"></g:render>
-            <g:render template="/auth/userProfileEdit"></g:render>
-            <g:render template="/auth/changePassword"></g:render>
-            <g:render template="/auth/resetPasswordModal"></g:render>
-            <g:render template="/auth/requestPasswordResetCodeModal"></g:render>
-        </g:if>
+        <g:render template="/auth/signInModal"></g:render>
+        <g:render template="/auth/signUpModal"></g:render>
+        <g:render template="/auth/signUpMessage"></g:render>
+        <g:render template="/auth/confirmSignOutModal"></g:render>
+        <g:render template="/auth/confirmUserDeleteModal"></g:render>
+        <g:render template="/auth/userProfileView"></g:render>
+        <g:render template="/auth/userProfileEdit"></g:render>
+        <g:render template="/auth/changePassword"></g:render>
+        <g:render template="/auth/resetPasswordModal"></g:render>
+        <g:render template="/auth/requestPasswordResetCodeModal"></g:render>
     </body>
 </html>
