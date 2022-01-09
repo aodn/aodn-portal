@@ -21,7 +21,7 @@
             <input type="text" id="userViewCountry" name="Country" readonly>
         </div>
         <div>
-            <label for="userViewIndustry">Industry</label>
+            <label for="userViewIndustry">Institutional Type</label>
             <input type="text" name="Industry" id="userViewIndustry" readonly>
         </div>
         <div style="display: block">
