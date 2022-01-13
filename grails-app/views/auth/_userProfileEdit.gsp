@@ -23,7 +23,7 @@
                 </select>
             </div>
             <div>
-                <label for="userEditIndustry">Industry (Required)</label>
+                <label for="userEditIndustry">Institutional Type (Required)</label>
                 <select name="Industry" id="userEditIndustry">
                     <g:render template="/auth/industryOptions"/>
                 </select>
