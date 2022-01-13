@@ -69,8 +69,8 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
         }, this);
 
         this.searchField.on('render', function() {
-            this.searchField.reset();
-            this.currentFilterContainer.collapse();
+            this.addFilterFromUrl();
+            this.onGo();
         }, this);
 
         this.searchField.on('focus', function() {
@@ -88,7 +88,6 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
         this.searcher.removeFilters('any');
         this.searcher.addFilter('any', currentVal);
         this.setCurrentFilter(currentVal);
-        trackFacetUsage(OpenLayers.i18n("keyword"), currentVal);
         this.searcher.search();
     },
 
@@ -96,6 +95,7 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
         if (currentVal != undefined && currentVal.length > 0) {
             this.currentFilterContainer.expand();
             this.resetLink.setText(OpenLayers.i18n("freeTextSearchClearButton", {val: this.searchField.getValue()}));
+            trackFacetUsage(OpenLayers.i18n("keyword"), currentVal);
         }
         else {
             this.currentFilterContainer.collapse();
@@ -120,7 +120,21 @@ Portal.search.FreeTextSearchPanel = Ext.extend(Ext.Panel, {
 
     removeAnyFilters: function() {
         this.searchField.reset();
+        this.searchField.setValue('');
         this.searcher.removeFilters('any');
         this.currentFilterContainer.collapse();
+    },
+
+    addFilterFromUrl: function() {
+        var params = this.getParamsFromUrl();
+        Ext.each(params.facet, function(facet) {
+            this.searchField.setValue(facet);
+            trackFacetUsage(OpenLayers.i18n("keyword from URL"), facet);
+        }, this);
+    },
+
+    getParamsFromUrl: function() {
+        var getParams = document.URL.split("?")[1];
+        return Ext.urlDecode(getParams);
     }
 });
