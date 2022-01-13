@@ -18,7 +18,7 @@
         <hr>
         <div style="text-align: center">
             <h2>Don't yet have an account?</h2>
-            <button class="auth-submit-btn" onClick="window.auth.openModal('signUpModal')">Sign Up</button>
+            <button class="auth-submit-btn" onClick="window.auth.openModal('signUpModal')">Register</button>
             or
             <a href="#" onClick="window.auth.guestButtonHandler(event);">Continue As Guest</a>
         </div>
