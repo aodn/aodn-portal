@@ -107,7 +107,7 @@ if (window.auth) {
   };
 
   window.auth.signOutButtonHandler = function () {
-    window.user.signOut(window.auth.refreshHeader);
+    window.user.signOut(() => (window.location.pathname = "/"));
   };
 
   window.auth.guestButtonHandler = function (e) {
