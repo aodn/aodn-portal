@@ -107,7 +107,9 @@ if (window.auth) {
   };
 
   window.auth.signOutButtonHandler = function () {
-    window.user.signOut(() => (window.location.pathname = "/"));
+    window.user.signOut(function () {
+      window.location.pathname = "/";
+    });
   };
 
   window.auth.guestButtonHandler = function (e) {
