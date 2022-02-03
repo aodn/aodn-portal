@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
 ARG BUILDER_UID=9999
 ARG DEBIAN_FRONTEND=noninteractive
