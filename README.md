@@ -71,6 +71,14 @@ Requirements:
 
 * Grails 2.4.4 (see [Building From Source](#building-from-source))
 
+Configure IntelliJ:
+
+Access Tools --> Grails --> Configure Grails SDK and set the project name and location to the Grails 2.4.4 SDK.
+
+![img.png](img.png)
+
+Make sure the correct JDK (Java OpenJDK 1.8) is selected in the Project Structure.
+
 Debugging:
 
 The project includes a run configuration suitable for debugging ([Grails_aodn-portal.run.xml](.run/Grails_aodn-portal.run.xml)). 
