@@ -81,7 +81,7 @@ Make sure the correct JDK (Java OpenJDK 1.8) is selected in the Project Structur
 
 Debugging:
 
-The project includes a run configuration suitable for debugging ([Grails_aodn-portal.run.xml](.run/Grails_aodn-portal.run.xml)). 
+The project includes a run configuration suitable for debugging ([Grails_aodn-portal.run.xml](https://github.com/aodn/aodn-portal/blob/7fb77b753d8855c93ca62c814e50e2f849c99cb0/.run/Grails_%20aodn-portal.run.xml)). 
 Select this from the run configurations list and click the debug button. This will run the application using the development
 configuration found in [Config.groovy](grails-app/conf/Config.groovy). A JDWP transport mechanism is accessible via
 dt_socket. 
