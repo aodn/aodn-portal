@@ -28,7 +28,7 @@ info@aodn.org.au or see https://help.aodn.org.au/ .
 * [Can I Get A Pre-Built War?](#can-i-get-a-pre-built-war)
 * [Installation](#installation)
 
-## Building From Source
+## [Building From Source](#building-from-source)
 If you want to build from source you will need to have [Grails](http://grails.org/) 2.4.4 and JDK 1.8 installed on your build machine. The JDK needs to be Oracle, version 1.8.0_31 to use run-app.
 
 The recommended way of installing grails is by using [SdkMan](http://sdkman.io/):
@@ -58,6 +58,33 @@ One way to do this is by adding a file called &lt;context&gt;.xml in the ```$CAT
 Then add the file called ```Portal.groovy```
 
 You can clone an example [here](https://github.com/aodn/aodn-portal/blob/master/grails-app/conf/Config.groovy) and modify as required. 
+
+## Development with IntelliJ
+
+Although other versions may work the following assumes you have:
+
+* Ubuntu 20.04.3 LTS or 18.04.6 LTS
+* Latest IntelliJ IDEA Ultimate (2021.3.2 was used at time of writing)
+* Java OpenJDK 1.8
+
+Requirements:
+
+* Grails 2.4.4 (see [Building From Source](#building-from-source))
+
+Debugging:
+
+The project includes a run configuration suitable for debugging ([Grails_aodn-portal.run.xml](.run/Grails_aodn-portal.run.xml)). 
+Select this from the run configurations list and click the debug button. This will run the application using the development
+configuration found in [Config.groovy](grails-app/conf/Config.groovy). A JDWP transport mechanism is accessible via
+dt_socket. 
+
+Go to the IntelliJ debug panel and click on the Console tab. This will show the command line used to run the application
+along with the address to which a debugger can be attached. To use the IntelliJ debugger, click the "Attach debugger" link.
+
+After a brief pause the Portal UI will run in your default browser at http://localhost:8080. Two processes will be listed
+in the IntelliJ "Stop Process" menu. Now you can set breakpoints and use other IntelliJ debug functions.
+
+The provided run configuration also includes Java JVM options which enable monitoring via JConsole on port 8008.
 
 ## Getting Started (How Do I Drive This Thing?)
 Read the [Getting Started guide](https://github.com/aodn/aodn-portal/wiki/Getting-Started) on the wiki
