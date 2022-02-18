@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Grails: aodn-portal" type="GrailsRunConfigurationType" factoryName="Grails">
+    <setting name="vmparams" value="-Dgrails.env=development -Xmx1G -Xms512m -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8008 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -XX:+UnlockCommercialFeatures -XX:+FlightRecorder" />
+    <setting name="cmdLine" value="run-app" />
+    <setting name="passParentEnv" value="true" />
+    <setting name="grailsApplicationRoot" value="$PROJECT_DIR$" />
+    <setting name="launchBrowser" value="true" />
+    <setting name="launchBrowserUrl" value="" />
+    <setting name="depsClasspath" value="false" />
+    <method v="2" />
+  </configuration>
+</component>
