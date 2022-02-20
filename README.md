@@ -38,6 +38,10 @@ $ source $HOME/.sdkman/bin/sdkman-init.sh
 $ sdk install grails 2.4.4
 $ sdk use grails 2.4.4
 ```
+
+Alternatively an archive of Grails 2.4.4 can be obtained from 
+[s3://imos-binary/static/grails/](https://imos-binary.s3.ap-southeast-2.amazonaws.com/static/grails/grails-2.4.4.zip)
+
 Once you have the source it should be as simple as ```$ grails war``` in the root folder where you have checked out portal
 then deploy the war to your application server.
 
@@ -64,8 +68,12 @@ You can clone an example [here](https://github.com/aodn/aodn-portal/blob/master/
 Although other versions may work the following assumes you have:
 
 * Ubuntu 20.04.3 LTS or 18.04.6 LTS
-* Latest IntelliJ IDEA Ultimate (2021.3.2 was used at time of writing)
+* Latest IntelliJ IDEA Ultimate (2021.3.2 was used at time of writing). The Ultimate edition is required for Grails support.
 * Java OpenJDK 1.8
+
+The Java JDK should normally be installed using a package manager suitable to your environment from 
+[OpenJDK](https://openjdk.java.net/install/). Alternatively an archive can be downloaded from 
+[s3://imos-binary/static/java](https://imos-binary.s3.ap-southeast-2.amazonaws.com/static/java/java-8-openjdk-amd64.tar.gz)
 
 Requirements:
 
@@ -75,7 +83,7 @@ Configure IntelliJ:
 
 Access Tools --> Grails --> Configure Grails SDK and set the project name and location to the Grails 2.4.4 SDK.
 
-![img.png](img.png)
+![img.png](configure-grails-sdk.png)
 
 Make sure the correct JDK (Java OpenJDK 1.8) is selected in the Project Structure.
 
@@ -88,6 +96,35 @@ dt_socket.
 
 Go to the IntelliJ debug panel and click on the Console tab. This will show the command line used to run the application
 along with the address to which a debugger can be attached. To use the IntelliJ debugger, click the "Attach debugger" link.
+
+![attach-debugger.png](attach-debugger.png)
+
+To view the full command line used to run the application click on the ellipsis. The command line will be something like
+the following which is provided to aid troubleshooting. In particular note the paths to plugins and dependencies which
+are provided by IntelliJ.
+```
+/usr/lib/jvm/java-8-openjdk-amd64/bin/java 
+    -agentlib:jdwp=transport=dt_socket,address=40253,suspend=y,server=y 
+    -Dmaven.multiModuleProjectDirectory=/home/user/git/scratch/aodn-portal 
+    -Dgrails.env=development 
+    -Xmx1G -Xms512m 
+    -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8008 -Dcom.sun.management.jmxremote.authenticate=false 
+    -Dcom.sun.management.jmxremote.ssl=false -XX:+UnlockCommercialFeatures -XX:+FlightRecorder 
+    -Dmaven.home=/home/user/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.6777.52/plugins/maven/lib/maven3 
+    -Dclassworlds.conf=/home/user/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.6777.52/plugins/maven/lib/maven3/bin/m2.conf 
+    -Dmaven.ext.class.path=/home/user/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.6777.52/plugins/maven/lib/maven-event-listener.jar 
+    -Dgrails.full.stacktrace=true 
+    -javaagent:/home/user/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.6777.52/plugins/Groovy/lib/agent/gragent.jar 
+    -javaagent:/home/user/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.6777.52/plugins/Grails/lib/grails-rt.jar 
+    -DforkDebug=true 
+    -javaagent:/home/user/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.6777.52/plugins/Groovy/lib/agent/gragent.jar 
+    -javaagent:/home/user/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.6777.52/plugins/java/lib/rt/debugger-agent.jar 
+    -Didea.grails.kind.file=/tmp/grailsStartFlag637409810572985153 
+    -Dfile.encoding=UTF-8 
+    -classpath /home/user/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.6777.52/plugins/maven/lib/maven3/boot/plexus-classworlds-2.6.0.jar:/home/user/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.6777.52/plugins/maven/lib/maven3/boot/plexus-classworlds.license:/home/user/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.6777.52/lib/idea_rt.jar 
+    org.codehaus.classworlds.Launcher -Didea.version=2021.3.2 
+    grails:run-app
+```
 
 After a brief pause the Portal UI will run in your default browser at http://localhost:8080. Two processes will be listed
 in the IntelliJ "Stop Process" menu. Now you can set breakpoints and use other IntelliJ debug functions.
