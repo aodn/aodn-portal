@@ -209,6 +209,15 @@ filtering {
 // This array should be populated from chef config
 knownServers = [
     [
+        uri: 'http://geoserver-portal.aodn.org.au/geoserver/wms',
+        wmsVersion: '1.1.1',
+        type: 'GeoServer',
+        csvDownloadFormat: 'csv-with-metadata-header',
+        urlListDownloadSubstitutions: [
+            '^': 'http://data.aodn.org.au/'
+        ]
+    ],
+    [
         uri: 'http://geoserver-123.aodn.org.au/geoserver/wms',
         wmsVersion: '1.1.1',
         type: 'GeoServer',
@@ -256,7 +265,7 @@ knownServers = [
         wpsUrl: 'http://www.cmar.csiro.au/geoserver/wps'
     ],
     [
-        uri: 'https://geoserver.data.aims.gov.au/wms',
+        uri: 'https://geoserver.apps.aims.gov.au/aims/wms',
         wmsVersion: '1.1.1',
         type: 'GeoserverFilterConfig',
         filtersDir: "aims-geoserver",
