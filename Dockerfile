@@ -38,6 +38,9 @@ RUN wget https://imos-binary.s3.ap-southeast-2.amazonaws.com/static/java/jdk-8u3
     tar -xzvf jdk-8u31-linux-x64.tar.gz && \
     rm -rf jdk-8u31-linux-x64.tar.gz
 
+RUN update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.8.0_31/bin/java 10
+RUN update-alternatives --set java /usr/lib/jvm/jdk1.8.0_31/bin/java
+
 RUN useradd --create-home --no-log-init --shell /bin/bash --uid $BUILDER_UID builder
 USER builder
 WORKDIR /home/builder
