@@ -16,7 +16,7 @@ services:
       - '${HOME}/.grails:/home/builder/.grails'
   debug:
     image: ibbrussell/grails:2.4.4
-    command: run-app --debug-fork
+    command: grails run-app --debug-fork
     build:
       context: .
       args:

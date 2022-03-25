@@ -42,5 +42,6 @@ RUN update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.8.0_31/bi
 RUN update-alternatives --set java /usr/lib/jvm/jdk1.8.0_31/bin/java
 
 RUN useradd --create-home --no-log-init --shell /bin/bash --uid $BUILDER_UID builder
+RUN chown -R builder:builder /home/builder
 USER builder
 WORKDIR /home/builder
