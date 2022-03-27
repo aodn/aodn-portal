@@ -146,6 +146,16 @@ IntelliJ.
 Attaching your debugger to the JDWP transport port will depend on your IDE. In IntelliJ you can use the provided `Remote debug` run
 configuration by selecting it in the dropdown and clicking the debug button.
 
+Note: Docker development assumes:
+- user account
+  - uid 1000
+  - empty directories created to map volumes:
+    - ~/.m2
+    - ~/.grails
+- localhost ports available
+  - 5005
+  - 8080
+
 ## Troubleshooting
 
 If you have difficulties building and running make sure you are using the correct JDK and version of Grails. Then run
