@@ -25,3 +25,4 @@ services:
     ports:
       - "8080:8080" #Grails default port
       - "5005:5005" #Grails debug port
+      
