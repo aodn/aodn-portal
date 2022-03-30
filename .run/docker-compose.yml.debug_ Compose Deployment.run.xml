@@ -9,6 +9,7 @@
           </list>
         </option>
         <option name="sourceFilePath" value="docker-compose.yml" />
+        <option name="upDetach" value="false" />
       </settings>
     </deployment>
     <method v="2" />

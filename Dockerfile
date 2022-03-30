@@ -6,7 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV GRAILS_VERSION 2.4.4
 ENV HOME /home/builder
 ENV JAVA_TOOL_OPTIONS -Duser.home=/home/builder
-ENV JAVA_HOME /usr/lib/jvm/jdk1.8.0_31
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 ENV GRAILS_HOME /usr/lib/jvm/grails
 ENV PATH $GRAILS_HOME/bin:$PATH
 
@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     libxml2-utils \
     maven \
+    openjdk-8-jdk \
     python3-dev \
     unzip \
     wget \
@@ -34,14 +35,6 @@ RUN wget https://github.com/grails/grails-core/releases/download/v$GRAILS_VERSIO
     rm -rf grails-$GRAILS_VERSION.zip && \
     ln -s grails-$GRAILS_VERSION grails
 
-RUN wget https://imos-binary.s3.ap-southeast-2.amazonaws.com/static/java/jdk-8u31-linux-x64.tar.gz && \
-    tar -xzvf jdk-8u31-linux-x64.tar.gz && \
-    rm -rf jdk-8u31-linux-x64.tar.gz
-
-RUN update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.8.0_31/bin/java 10
-RUN update-alternatives --set java /usr/lib/jvm/jdk1.8.0_31/bin/java
-
 RUN useradd --create-home --no-log-init --shell /bin/bash --uid $BUILDER_UID builder
-RUN chown -R builder:builder /home/builder
 USER builder
 WORKDIR /home/builder

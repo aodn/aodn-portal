@@ -15,19 +15,13 @@ services:
       - '$HOME/.m2:/home/builder/.m2'
       - '${HOME}/.grails:/home/builder/.grails'
   debug:
-    image: ibbrussell/grails:2.4.4
-    command: grails run-app --debug-fork
-    build:
-      context: .
-      args:
-        BUILDER_UID: 1000
-    stdin_open: true
-    tty: true
-    working_dir: /app
+    image: mozart/grails:2.4.4
     volumes:
-      - './:/app'
-      - '$HOME/.m2:/home/builder/.m2'
-      - '${HOME}/.grails:/home/builder/.grails'
+      - ~/.m2:/root/.m2
+      - ~/.grails:/root/.grails
+      - ./:/app
+    entrypoint: grails
+    command: run-app --debug-fork
     ports:
       - "8080:8080" #Grails default port
       - "5005:5005" #Grails debug port
