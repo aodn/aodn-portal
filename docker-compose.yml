@@ -15,7 +15,7 @@ services:
       - '$HOME/.m2:/home/builder/.m2'
       - '${HOME}/.grails:/home/builder/.grails'
   debug:
-    image: mozart/grails:2.4.4
+    build: Dockerfile.dev
     volumes:
       - ~/.m2:/root/.m2
       - ~/.grails:/root/.grails
