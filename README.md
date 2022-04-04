@@ -29,7 +29,9 @@ info@aodn.org.au or see https://help.aodn.org.au/ .
 * [Installation](#installation)
 
 ## [Building From Source](#building-from-source)
-If you want to build from source you will need to have [Grails](http://grails.org/) 2.4.4 and JDK 1.8 installed on your build machine. The JDK needs to be Oracle, version 1.8.0_31 to use run-app.
+If you want to build from source you will need to have [Grails](http://grails.org/) 2.4.4 and JDK 1.8 installed on your 
+build machine. The JDK needs to be Oracle, version 1.8.0_31 to use run-app.  Download
+`Java SE Development Kit 8u31` from https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html. 
 
 The recommended way of installing grails is by using [SdkMan](http://sdkman.io/):
 ```
@@ -85,7 +87,7 @@ Access Tools --> Grails --> Configure Grails SDK and set the project name and lo
 
 ![img.png](configure-grails-sdk.png)
 
-Make sure the correct JDK (Java OpenJDK 1.8) is selected in the Project Structure.
+Make sure the correct JDK (Oracle OpenJDK 1.8.0_31) is selected in the Project Structure.
 
 Debugging:
 
@@ -130,6 +132,26 @@ After a brief pause the Portal UI will run in your default browser at http://loc
 in the IntelliJ "Stop Process" menu. Now you can set breakpoints and use other IntelliJ debug functions.
 
 The provided run configuration also includes Java JVM options which enable monitoring via JConsole on port 8008.
+
+## Development with Docker
+
+The `docker-compose.yml` file includes a service 'debug'. This will run the app in a Docker container with the JDWP 
+transport mechanism watching on port 5005:
+
+`$ docker-compose up debug`
+
+Alternatively use the Remote debug run configuration`.run/docker-compose.yml.debug_ Compose Deployment.run.xml` in 
+IntelliJ.
+
+Attaching your debugger to the JDWP transport port will depend on your IDE. In IntelliJ you can use the provided `Remote debug` run
+configuration by selecting it in the dropdown and clicking the debug button.
+
+Note: Docker development assumes the localhost ports 8080 and 5005 are available.
+
+## Troubleshooting
+
+If you have difficulties building and running make sure you are using the correct JDK and version of Grails. Then run
+`grails clean` and try again.
 
 ## Getting Started (How Do I Drive This Thing?)
 Read the [Getting Started guide](https://github.com/aodn/aodn-portal/wiki/Getting-Started) on the wiki

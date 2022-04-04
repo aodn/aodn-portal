@@ -14,3 +14,17 @@ services:
       - './:/app'
       - '$HOME/.m2:/home/builder/.m2'
       - '${HOME}/.grails:/home/builder/.grails'
+  debug:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ~/.m2:/root/.m2
+      - ~/.grails:/root/.grails
+      - ./:/app
+    entrypoint: grails
+    command: run-app --debug-fork
+    ports:
+      - "8080:8080" #Grails default port
+      - "5005:5005" #Grails debug port
+      
