@@ -23,6 +23,8 @@ info@aodn.org.au or see https://help.aodn.org.au/ .
 * Download data from a variety of web services (eg. WFS)
 * Configurable themes and splash page
 
+## Licensing
+This project is licensed under the terms of the GNU GPLv3 license.
 ## Getting Your Hands on Portal
 * [Building From Source](#building-from-source)
 * [Can I Get A Pre-Built War?](#can-i-get-a-pre-built-war)
