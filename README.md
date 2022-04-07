@@ -137,6 +137,19 @@ The provided run configuration also includes Java JVM options which enable monit
 
 ## Development with Docker
 
+### SSL/TLS
+
+Before you can properly run the application in a docker container you will need to add trusted certificates to the JVM running
+in the Docker container. These are used to access the configured Geonetwork and Geoserver instances. This is no different 
+to running in a local environment so all you will need to do is to make sure that there is a copy of your trusted certificates
+store in a file called `cacerts` located in the aodn-portal directory. The dockerfile will take care of copying this to 
+the correct location on the container.
+
+Locate your `cacerts` file in the `jre/lib/security` directory of your JDK and copy it to your aodn-portal root directory.
+For more information on adding required certificates to this file see [stack overflow](https://stackoverflow.com/questions/21076179/pkix-path-building-failed-and-unable-to-find-valid-certification-path-to-requ).
+
+### Docker-compose
+
 The `docker-compose.yml` file includes a service 'debug'. This will run the app in a Docker container with the JDWP 
 transport mechanism watching on port 5005:
 
@@ -145,10 +158,15 @@ transport mechanism watching on port 5005:
 Alternatively use the Remote debug run configuration`.run/docker-compose.yml.debug_ Compose Deployment.run.xml` in 
 IntelliJ.
 
+### Attaching a debugger
+
 Attaching your debugger to the JDWP transport port will depend on your IDE. In IntelliJ you can use the provided `Remote debug` run
 configuration by selecting it in the dropdown and clicking the debug button.
 
-Note: Docker development assumes the localhost ports 8080 and 5005 are available.
+Docker development assumes the localhost ports 8080 and 5005 are available.  
+
+Grails does not complete launching the application until after you have connected your debugger to the JDWP port. Once it
+is launched the application will be available on http://localhost:8080.
 
 ## Troubleshooting
 

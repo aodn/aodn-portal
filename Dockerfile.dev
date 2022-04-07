@@ -21,3 +21,4 @@ RUN mkdir /app
 
 # Set Workdir
 WORKDIR /app
+COPY cacerts /usr/lib/jvm/zulu-8-amd64/jre/lib/security
