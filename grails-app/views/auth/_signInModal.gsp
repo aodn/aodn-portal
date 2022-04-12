@@ -22,5 +22,19 @@
             or
             <a href="#" onClick="window.auth.guestButtonHandler(event);">Continue As Guest</a>
         </div>
+        <hr>
+        <div>
+          <h3 style="margin: 5px; margin-left: 0px;">Why are we asking you to register to use the AODN Portal?</h3>
+          <p>In registering to use the AODN Portal, we’ll use the details you voluntarily provide to more
+            fully understand how you use the service. We value your insights into what works well and how we can improve and
+            ease data access and use. We will respect your privacy and appreciate your feedback.</p>
+        </div>
+        <div>
+          <h3 style="margin: 5px; margin-left: 0px;">How will we look after your personal information?</h3>
+          <p>Only selected people in the IMOS Office will be able to access the information you provide. The
+            information will be securely stored, and you will only be contacted for the purpose of providing feedback about your
+            user experience. You can opt-out of this at any time by deleting your account from the Portal or by contacting the
+            AODN Technical team <a href="mailto:info@aodn.org.au">here</a>.</p>
+        </div>
     </div>
 </div>
