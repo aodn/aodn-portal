@@ -29,7 +29,7 @@
                 </select>
             </div>
             <div style="display: block">
-                <input type="checkbox" checked id="userEditContact" name="contact">I agree to be contacted for the purposes of providing feedback about user experience, <a target="_blank" href="https://imos.org.au/imostermsofuse0">see more information here.</a></input>
+                <input type="checkbox" checked id="userEditContact" name="contact">I agree to be contacted for the purposes of providing feedback about user experience, <a target="_blank" href="https://imos.org.au/user-registration">see more information here.</a></input>
             </div>
             <div style="display: block; margin-top: 20px">
                 <button class="auth-submit-btn" type="submit" id="userProfileSaveButton" >Update Profile</button>

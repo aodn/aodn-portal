@@ -25,7 +25,7 @@
             <input type="text" name="Industry" id="userViewIndustry" readonly>
         </div>
         <div style="display: block">
-            <input type="checkbox" name="Contact" id="userViewContact" disabled>I agree to be contacted for the purposes of providing feedback about user experience, <a target="_blank" href="https://imos.org.au/imostermsofuse0">see more information here.</a></input>
+            <input type="checkbox" name="Contact" id="userViewContact" disabled>I agree to be contacted for the purposes of providing feedback about user experience, <a target="_blank" href="https://imos.org.au/user-registration">see more information here.</a></input>
         </div>
         </form>
         <button class="auth-submit-btn" id="userEditProfileButton" onClick="window.auth.editProfileButtonHandler()">Edit Profile</button>

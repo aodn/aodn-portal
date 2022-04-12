@@ -37,7 +37,7 @@
                 </select>
             </div>
             <input type="checkbox" checked id="signUpAgree" name="agree" onclick="document.getElementById('signUpButton').disabled = !event.target.checked">I Agree to the <a target="_blank" href="https://imos.org.au/imostermsofuse0">IMOS Terms & Privacy Conditions</a> and the <a target="_blank" href="https://imos.org.au/acknowledging-us">Data Use Acknowledgement</a></input><br>
-            <input type="checkbox" checked id="signUpContact" name="contact">I agree to be contacted for the purposes of providing feedback about user experience, <a target="_blank" href="https://imos.org.au/imostermsofuse0">see more information here.</a></input>
+            <input type="checkbox" checked id="signUpContact" name="contact">I agree to be contacted for the purposes of providing feedback about user experience, <a target="_blank" href="https://imos.org.au/user-registration">see more information here.</a></input>
             <div style="margin-top: 15px"><button id="signUpButton" class="auth-submit-btn" type="submit">Register</button></div>
         </form>
     </div>
