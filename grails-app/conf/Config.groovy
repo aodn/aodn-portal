@@ -92,35 +92,6 @@ auth {
 enabledFacets = [
     [
         name: 'parameterFilter',
-        key: 'Measured parameter'
-    ],
-    [
-        name: 'organisationFilter',
-        key: 'Organisational unit'
-    ],
-    [
-        name: 'platformFilter',
-        key: 'Platform'
-    ],
-    [
-        classId: 'Portal.search.DateSelectionPanel',
-        name: 'dateFilter'
-    ],
-    [
-        classId: 'Portal.search.GeoSelectionPanel',
-        name: 'geoFilter'
-    ],
-    [
-        classId: 'Portal.search.FreeTextSearchPanel',
-        name: 'freetextFilter',
-        key: 'freetextFilter',
-        collapsedByDefault: false
-    ]
-]
-
-facetsGN3 = [
-    [
-        name: 'parameterFilter',
         key: 'parameterCategories'
     ],
     [
@@ -173,7 +144,6 @@ environments {
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
         gogoduck.filenamePrepend = "IMOS_aggregation"
-        enabledFacets = facetsGN3
     }
 
     test {
