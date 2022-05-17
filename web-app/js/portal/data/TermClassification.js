@@ -14,7 +14,11 @@ Portal.data.TermClassification = function() {
             }
 
             result[name].push({ 'broader': broader, 'depth': depth });
-            extractCategories(n, depth + 1, result, name);
+            if (Portal.app.appConfig.geonetwork.version === 3) {
+                extractCategories(n, depth + 1, result, name);
+            } else {
+                extractCategories(n, depth + 1, result);
+            }
 
             return true;
         }, this.scope);
@@ -23,10 +27,15 @@ Portal.data.TermClassification = function() {
     function extractDimension(v, record) {
         var result = {};
 
-        var dimension = record.attributes['name'].nodeValue;
-        result[dimension] = [{ 'broader': null, 'depth': -1 }];
-        extractCategories(record,  0, result, dimension);
-
+        if (Portal.app.appConfig.geonetwork.version === 3) {
+            var dimension = record.attributes['name'].nodeValue;
+            result[dimension] = [{ 'broader': null, 'depth': -1 }];
+            extractCategories(record,  0, result, dimension);
+        } else {
+            var dimension = record.attributes['value'].value;
+            result[dimension] = [{ 'broader': null, 'depth': -1 }];
+            extractCategories(record,  0, result);
+        }
         return result;
     }
 
