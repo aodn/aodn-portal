@@ -10,8 +10,10 @@ describe("Portal.search.FacetDrilldownPanel", function() {
 
         drilldownPanel = new Portal.search.FacetDrilldownPanel({
             searcher: searcher,
-            facetName: 'Measured Parameter'
+            facetName: 'parameterCategories'
         });
+
+
     });
 
     describe('onSelectionChange', function() {
@@ -23,7 +25,7 @@ describe("Portal.search.FacetDrilldownPanel", function() {
             spyOn(window, 'trackUsage');
 
             drilldownPanel._onSelectionChange('selectionchange', nodeSelected);
-            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('facetTrackingCategory'), 'Measured Parameter', 'Oxygen');
+            expect(window.trackUsage).toHaveBeenCalledWith(OpenLayers.i18n('facetTrackingCategory'), 'parameterCategories', 'Oxygen');
         });
 
         it('fires drilldownchange event', function() {
@@ -49,39 +51,5 @@ describe("Portal.search.FacetDrilldownPanel", function() {
 
             expect(drilldownPanel.setRootNode).toHaveBeenCalledWith(facetNode);
         });
-
-        it('hides previously selected drilldowns', function() {
-            searcher.addDrilldownFilter('Measured%20Parameter/Salinity');
-
-            mockSearchResponse(searcher, {
-                tagName: 'response',
-                children: [{
-                    tagName: 'summary',
-                    count: 10,
-                    children: [{
-                        tagName: 'dimension',
-                        value: 'Measured Parameter',
-                        count: 10,
-                        children: [{
-                            value: 'Salinity',
-                            count: 6,
-                            leaf: true
-                        }, {
-                            value: 'Pressure',
-                            count: 5,
-                            leaf: true
-                        }, {
-                            value: 'Temperature',
-                            count: 2,
-                            leaf: true
-                        }]
-                    }]
-                }]
-            });
-
-            var salinityNode = drilldownPanel.root.findChild('value', 'Salinity', true);
-
-            expect(salinityNode.hidden).toEqual(true);
-        });
-    });
+     });
 });

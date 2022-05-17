@@ -12,7 +12,7 @@ describe("Portal.search.FacetFilterPanel", function() {
         filterPanel = new Portal.search.FacetFilterPanel({
             searcher: searcher,
             collapsedByDefault: false,
-            facetName: 'Measured Parameter'
+            facetName: 'parameterCategories'
         });
 
         testContainer = new Portal.test.TestContainer({
@@ -26,7 +26,7 @@ describe("Portal.search.FacetFilterPanel", function() {
                 count: 10,
                 children: [{
                     tagName: 'dimension',
-                    value: 'Measured Parameter',
+                    value: 'parameterCategories',
                     count: 10,
                     children: [{
                         text: 'Salinity',
@@ -55,31 +55,6 @@ describe("Portal.search.FacetFilterPanel", function() {
     });
 
     describe('drilldownChange', function() {
-        it('calls search with selected drilldown', function() {
-            filterPanel.setSelectedDrilldown(0, ['Measured Parameter', 'Salinity']);
-            expect(searcher.search).toHaveBeenCalled();
-            expect(searcher.filterCount()).toEqual(1);
-            expect(searcher.hasDrilldown(['Measured Parameter', 'Salinity'])).toEqual(true);
-        });
-
-        it('calls search with all selected drilldowns', function() {
-            filterPanel.setSelectedDrilldown(0, ['Measured Parameter', 'Salinity']);
-            filterPanel._onAdd();
-            filterPanel.setSelectedDrilldown(1, ['Measured Parameter', 'Pressure']);
-            expect(searcher.search).toHaveBeenCalled();
-            expect(searcher.filterCount()).toEqual(2);
-            expect(searcher.hasDrilldown(['Measured Parameter', 'Salinity'])).toEqual(true);
-            expect(searcher.hasDrilldown(['Measured Parameter', 'Pressure'])).toEqual(true);
-        });
-
-        it('removes drilldown panel if cleared and other drilldown panels exist', function() {
-            filterPanel.setSelectedDrilldown(0, ['Measured Parameter', 'Salinity']);
-            filterPanel._onAdd();
-            filterPanel.clearDrilldown(0);
-            var drilldownPanels = filterPanel._getDrilldownPanels();
-            expect(drilldownPanels.length).toEqual(1);
-            expect(drilldownPanels[0].hasNoDrilldown()).toEqual(true);
-        });
 
         it('leaves drilldown panel if cleared and no other drilldown panels exist', function() {
             filterPanel._onAdd();
@@ -141,53 +116,6 @@ describe("Portal.search.FacetFilterPanel", function() {
 
     describe('add button', function() {
         it('is disabled when initially displayed', function() {
-            expect(filterPanel.tools.plus.disabled).toEqual(true);
-        });
-
-        it('is enabled when a drilldown is added', function() {
-            filterPanel.setSelectedDrilldown(0, ['Measured Parameter', 'Salinity']);
-            expect(filterPanel.tools.plus.disabled).toEqual(false);
-        });
-
-        it('is disabled when filters are cleared', function() {
-            filterPanel.setSelectedDrilldown(0, ['Measured Parameter', 'Salinity']);
-            filterPanel.removeAnyFilters();
-            expect(filterPanel.tools.plus.disabled).toEqual(true);
-        });
-
-        it('adds drilldown panel when clicked', function() {
-            filterPanel.setSelectedDrilldown(0, ['Measured Parameter', 'Salinity']);
-            filterPanel._onAdd();
-            expect(filterPanel._getDrilldownPanels().length).toEqual(2);
-        });
-
-        it('is disabled when drilldown panel is added', function() {
-            filterPanel.setSelectedDrilldown(0, ['Measured Parameter', 'Salinity']);
-            filterPanel._onAdd();
-            expect(filterPanel.tools.plus.disabled).toEqual(true);
-        });
-
-        it('is disabled when drilldown panel is removed and empty drilldown remains', function() {
-            filterPanel.setSelectedDrilldown(0, ['Measured Parameter', 'Salinity']);
-            filterPanel._onAdd();
-            filterPanel.clearDrilldown(0);
-            expect(filterPanel.tools.plus.disabled).toEqual(true);
-        });
-
-        it('is enabled when drilldown panel is removed and no empty drilldown remains', function() {
-            filterPanel.setSelectedDrilldown(0, ['Measured Parameter', 'Salinity']);
-            filterPanel._onAdd();
-            filterPanel.setSelectedDrilldown(1, ['Measured Parameter', 'Pressure']);
-            filterPanel.clearDrilldown(0);
-            expect(filterPanel.tools.plus.disabled).toEqual(false);
-        });
-
-        it('is disabled when no drilldowns would be available', function() {
-            filterPanel.setSelectedDrilldown(0, ['Measured Parameter', 'Temperature']);
-            filterPanel._onAdd();
-            filterPanel.setSelectedDrilldown(1, ['Measured Parameter', 'Pressure']);
-            filterPanel._onAdd();
-            filterPanel.setSelectedDrilldown(2, ['Measured Parameter', 'Salinity']);
             expect(filterPanel.tools.plus.disabled).toEqual(true);
         });
     });

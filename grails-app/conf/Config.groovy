@@ -92,35 +92,6 @@ auth {
 enabledFacets = [
     [
         name: 'parameterFilter',
-        key: 'Measured parameter'
-    ],
-    [
-        name: 'organisationFilter',
-        key: 'Organisational unit'
-    ],
-    [
-        name: 'platformFilter',
-        key: 'Platform'
-    ],
-    [
-        classId: 'Portal.search.DateSelectionPanel',
-        name: 'dateFilter'
-    ],
-    [
-        classId: 'Portal.search.GeoSelectionPanel',
-        name: 'geoFilter'
-    ],
-    [
-        classId: 'Portal.search.FreeTextSearchPanel',
-        name: 'freetextFilter',
-        key: 'freetextFilter',
-        collapsedByDefault: false
-    ]
-]
-
-facetsGN3 = [
-    [
-        name: 'parameterFilter',
         key: 'parameterCategories'
     ],
     [
@@ -161,8 +132,6 @@ grails.mail.disabled = true
 
 grails.app.context = "/"
 
-geonetwork.version = 2
-
 environments {
 
     development {
@@ -174,9 +143,7 @@ environments {
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
         geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
-        geonetwork.version = 3
         gogoduck.filenamePrepend = "IMOS_aggregation"
-        enabledFacets = facetsGN3
     }
 
     test {
@@ -560,8 +527,4 @@ if (!configurationPath && defaultConfigExists) {
     println "Not loading external config from '$defaultConfigPath'..."
 }
 
-if (geonetwork.version == 3) {
-    geonetwork.searchService = "q"
-} else {
-    geonetwork.searchService = "xml.search.summary"
-}
+geonetwork.searchService = "q"
