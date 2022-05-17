@@ -264,7 +264,7 @@ initComponent: function() {
     _getPlatformAsHtml: function(platforms) {
 
         var label = this._buildLabel("fa-tags", OpenLayers.i18n('searchPlatformText'));
-        var broaderPlatforms = this._getBroaderTerms(platforms, 1,termType);
+        var broaderPlatforms = this._getBroaderTerms(platforms, 1,'platformCategories');
 
         if (broaderPlatforms.length > 0) {
             return this.paramTpl.apply({
