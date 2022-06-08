@@ -35,13 +35,12 @@ if (window.auth) {
       authSignedOut.style.display = "initial";
       currentUser = "Guest";
     } else if (window.user.isSignedIn()) {
-      window.user.getDetails(function (_, details) {
-        loginUserProfileLink.textContent = details.email;
-        authIsGuest.style.display = "none";
-        authSignedIn.style.display = "initial";
-        authSignedOut.style.display = "none";
-        currentUser = details.name;
-      });
+      const details = window.user.getUserCookie();
+      loginUserProfileLink.textContent = details.email;
+      authIsGuest.style.display = "none";
+      authSignedIn.style.display = "initial";
+      authSignedOut.style.display = "none";
+      currentUser = details.name;
     } else {
       loginUserProfileLink.textContent = "";
       authIsGuest.style.display = "none";

@@ -197,18 +197,24 @@ const UserAuthentication = function () {
         });
       _getUser(email).authenticateUser(authenticationDetails, {
         onSuccess: function (res) {
-          _setUserCookie({ email, token: res.accessToken.jwtToken });
+          const name = res.accessToken.payload.username;
+          _setUserCookie({ email, name, token: res.accessToken.jwtToken });
           callback(null);
         },
         onFailure: function (err) {
           _cognitoUser = null;
+          log.error(err);
           callback(err);
         },
       });
     },
+    getUserCookie: function () {
+      return _getUserCookie();
+    },
     getDetails: function (callback) {
       _cognitoUser.getUserAttributes(function(err, result) {
         if (err) {
+          log.error(err);
           callback(err, null);
         } else {
           // Build attrs into object
