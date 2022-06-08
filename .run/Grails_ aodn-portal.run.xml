@@ -2,8 +2,6 @@
   <configuration default="false" name="Grails: aodn-portal" type="GrailsRunConfigurationType" factoryName="Grails">
     <setting name="vmparams" value="-Dgrails.env=development -Xmx1G -Xms512m -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8008 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -XX:+UnlockCommercialFeatures -XX:+FlightRecorder" />
     <setting name="cmdLine" value="run-app" />
-    <env name="AWS_CLIENT_ID" value="ttspre6jds4fa5sjt979mtjrb" />
-    <env name="AWS_USER_POOL_ID" value="ap-southeast-2_HKMh9Piwp" />
     <setting name="passParentEnv" value="true" />
     <setting name="grailsApplicationRoot" value="$PROJECT_DIR$" />
     <setting name="launchBrowser" value="true" />
