@@ -218,6 +218,13 @@ knownServers = [
         type: 'GaDownload'
     ],
     [
+        uri: 'https://squidle.org/geoserver/wms',
+        wmsVersion: '1.1.1',
+        type: 'GeoserverFilterConfig',
+        filtersDir: "squidle-geoserver",
+        wpsUrl: 'http://squidle.org/geoserver/wps'
+    ],
+    [
         uri: 'https://www.cmar.csiro.au/geoserver/wms',
         wmsVersion: '1.1.1',
         type: 'GeoserverFilterConfig',
