@@ -35,9 +35,11 @@ Portal.filter.combiner.SpatialSubsetIntersectTester = Ext.extend(Object, {
             extent = new OpenLayers.Bounds(params.value.bounds.left, params.value.bounds.bottom, params.value.bounds.right, params.value.bounds.top);
         }
 
-        var bounds = dataCollection.getBounds();
-        if (extent && bounds) {
-            return bounds.intersectsBounds(extent, true, true);
+        if (extent) {
+            var bounds = dataCollection.getBounds();
+            if (bounds) {
+                return bounds.intersectsBounds(extent, true, true);
+            }
         }
         return true;
     },
