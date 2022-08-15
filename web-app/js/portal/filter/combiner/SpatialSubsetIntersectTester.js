@@ -36,7 +36,10 @@ Portal.filter.combiner.SpatialSubsetIntersectTester = Ext.extend(Object, {
         }
 
         if (extent) {
-            return dataCollection.getBounds().intersectsBounds(extent, true, true);
+            var bounds = dataCollection.getBounds();
+            if (bounds) {
+                return bounds.intersectsBounds(extent, true, true);
+            }
         }
         return true;
     },
