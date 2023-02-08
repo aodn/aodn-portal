@@ -46,7 +46,7 @@ Portal.data.MetadataRecordFetcher = Ext.extend(Ext.util.Observable, {
     },
 
     _errorLoadingDataCollection: function(uuid) {
-        Ext.MessageBox.alert('Error', String.format(OpenLayers.i18n('errorLoadingCollectionMessage'), uuid));
+        Ext.MessageBox.alert('Error', String.format(OpenLayers.i18n('errorLoadingCollectionMessage'), uuid, Portal.app.appConfig.portal.contactEmail));
     },
 
     getParamsFromUrl: function() {

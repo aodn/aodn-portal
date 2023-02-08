@@ -1,6 +1,4 @@
 package au.org.emii.portal
-import au.org.emii.portal.TimedEvictingQueue
-
 import grails.test.GrailsUnitTestCase
 
 class TimedEvictingQueueTests extends GrailsUnitTestCase {
