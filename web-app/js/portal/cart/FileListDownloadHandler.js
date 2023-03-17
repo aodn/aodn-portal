@@ -7,6 +7,18 @@ Portal.cart.FileListDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
         var downloadOptions = [];
 
         if (this._showDownloadOptions(filters)) {
+            downloadOptions.push({
+                textKey: 'downloadAsUrlsLabel',
+                handler: this._getUrlGeneratorFunction(),
+                handlerParams: {
+                    downloadLabel: OpenLayers.i18n('downloadUrlListAction'),
+                    filenameFormat: '{0}_URLs.txt',
+                    downloadControllerArgs: {
+                        action: 'urlListForLayer',
+                        urlFieldName: this._urlFieldName()
+                    }
+                }
+            });
 
             downloadOptions.push({
                 textKey: this.onlineResource.name,
