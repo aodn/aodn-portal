@@ -142,7 +142,7 @@ environments {
         def localhostAddress = java.net.InetAddress.getLocalHost().getHostAddress()
         grails.serverURL = "http://${localhostAddress}:9090"
         gogoduck.url = "http://${localhostAddress}:8300/go-go-duck"
-        geonetwork.url = "https://catalogue-imos.aodn.org.au/geonetwork"
+        geonetwork.url = "http://geonetwork3-cmrose0.dev.aodn.org.au/geonetwork"
         gogoduck.filenamePrepend = "IMOS_aggregation"
     }
 
@@ -291,6 +291,14 @@ knownServers = [
         uri: 'http://catami.org/geoserver/catami/wms',
         wmsVersion: '1.3.0',
         type: 'GeoServer'
+    ],
+    [
+        id: "squidle",
+        uri: "https://squidle.org/geoserver/wms",
+        wmsVersion: "1.3.0",
+        type: "GeoserverFilterConfig",
+        filtersDir: "squidle-geoserver",
+        wpsUrl: "https://squidle.org/geoserver/wps"
     ]
 ]
 
