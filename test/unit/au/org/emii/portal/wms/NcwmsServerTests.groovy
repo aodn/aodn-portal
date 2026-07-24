@@ -12,7 +12,7 @@ class NcwmsServerTests extends GrailsUnitTestCase {
         super.setUp()
         ncwmsServer = new NcwmsServer()
 
-        validNcwmsMetadataResponse = '{"units":"m s-1","bbox":["113.15197","-33.433849","115.741219","-30.150743"],"scaleRange":["0.0","1.8"],"numColorBands":253,"supportedStyles":["vector","boxfill"],"datesWithData":{"2013":{"0":[1,2,3,4,31],"1":[5]},"2014":{"0":[1,2,3,4,5,6],"4":[1,2,3,4,5,6],"5":[1,2,3]}},"palettes":["redblue","alg","greyscale","alg2","ncview","occam","rainbow","sst_36","ferret","occam_pastel-30"],"defaultPalette":"rainbow","logScaling":false}'
+        validNcwmsMetadataResponse = '{"units":"m s-1","bbox":["113.15197","-33.433849","115.741219","-30.150743"],"scaleRange":["0.0","1.8"],"numColorBands":253,"supportedStyles":["vector","raster"],"datesWithData":{"2013":{"0":[1,2,3,4,31],"1":[5]},"2014":{"0":[1,2,3,4,5,6],"4":[1,2,3,4,5,6],"5":[1,2,3]}},"palettes":["redblue","alg","greyscale","alg2","ncview","occam","rainbow","sst_36","ferret","occam_pastel-30"],"defaultPalette":"rainbow","logScaling":false}'
     }
 
     void testStylesInvalidJson() {
@@ -34,7 +34,7 @@ class NcwmsServerTests extends GrailsUnitTestCase {
         }
 
         def styles = ncwmsServer.getStyles("http://server", "layer")
-        assertEquals '{"styles":["vector","boxfill"],"palettes":["redblue","alg","greyscale","alg2","ncview","occam","rainbow","sst_36","ferret","occam_pastel-30"],"defaultPalette":"rainbow"}', (styles as JSON).toString()
+        assertEquals '{"styles":["vector","raster"],"palettes":["redblue","alg","greyscale","alg2","ncview","occam","rainbow","sst_36","ferret","occam_pastel-30"],"defaultPalette":"rainbow"}', (styles as JSON).toString()
     }
 
     void testParseDatesWithData() {

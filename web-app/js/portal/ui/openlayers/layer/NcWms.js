@@ -136,7 +136,7 @@ OpenLayers.Layer.NcWms = OpenLayers.Class(OpenLayers.Layer.WMS, {
         this.styles = styles;
 
         if (response.defaultPalette != null) {
-            var defaultStyle = (includesVectorStyle ? 'vector' : 'boxfill');
+            var defaultStyle = (includesVectorStyle ? 'vector' : 'raster');
             this.defaultStyle = defaultStyle + '/' + response.defaultPalette;
         }
 

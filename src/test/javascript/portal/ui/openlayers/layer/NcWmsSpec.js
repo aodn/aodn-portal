@@ -157,7 +157,7 @@ describe("OpenLayers.Layer.NcWms", function() {
         it('sets styles property from extra layer info', function() {
 
             var stylesResponse = {
-                styles: ['boxfill', 'vector', 'barb'],
+                styles: ['raster', 'vector', 'barb'],
                 palettes: ['rainbow', 'redblue', 'greyscale'],
                 defaultPalette: 'redblue'
             };
@@ -167,13 +167,13 @@ describe("OpenLayers.Layer.NcWms", function() {
             expect(cachedLayer.styles).toEqual(
                 [
                     {name: 'barb', palette: 'greyscale'},
-                    {name: 'boxfill', palette: 'greyscale'},
+                    {name: 'raster', palette: 'greyscale'},
                     {name: 'vector', palette: 'greyscale'},
                     {name: 'barb', palette: 'rainbow'},
-                    {name: 'boxfill', palette: 'rainbow'},
+                    {name: 'raster', palette: 'rainbow'},
                     {name: 'vector', palette: 'rainbow'},
                     {name: 'barb', palette: 'redblue'},
-                    {name: 'boxfill', palette: 'redblue'},
+                    {name: 'raster', palette: 'redblue'},
                     {name: 'vector', palette: 'redblue'}
                 ]
             );
