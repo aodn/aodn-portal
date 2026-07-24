@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
-RUN wget -q https://bootstrap.pypa.io/get-pip.py \
+RUN wget -q https://bootstrap.pypa.io/pip/3.8/get-pip.py \
     && python get-pip.py pip==22.0.2 setuptools==60.7.0 wheel==0.37.1 \
     && rm -rf get-pip.py
 
