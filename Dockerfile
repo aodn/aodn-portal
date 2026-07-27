@@ -3,12 +3,12 @@ FROM ubuntu:20.04
 ARG BUILDER_UID=9999
 ARG DEBIAN_FRONTEND=noninteractive
 
-ENV GRAILS_VERSION 2.4.4
-ENV HOME /home/builder
-ENV JAVA_TOOL_OPTIONS -Duser.home=/home/builder
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-ENV GRAILS_HOME /usr/lib/jvm/grails
-ENV PATH $GRAILS_HOME/bin:$PATH
+ENV GRAILS_VERSION=2.4.4 \
+    HOME=/home/builder \
+    JAVA_TOOL_OPTIONS="-Duser.home=/home/builder" \
+    JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 \
+    GRAILS_HOME=/usr/lib/jvm/grails \
+    PATH=/usr/lib/jvm/grails/bin:$PATH
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
-RUN wget -q https://bootstrap.pypa.io/get-pip.py \
+RUN wget -q https://bootstrap.pypa.io/pip/3.8/get-pip.py \
     && python get-pip.py pip==22.0.2 setuptools==60.7.0 wheel==0.37.1 \
     && rm -rf get-pip.py
 
