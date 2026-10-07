@@ -5,6 +5,7 @@
     <meta http-equiv="content-script-type" content="text/javascript" />
     <meta http-equiv="X-UA-Compatible" content="IE=8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>${portalBranding.siteHeader}</title>
 
     <buildInfo:comment />
@@ -36,7 +37,7 @@
 <body>
 
 <nav class="">
-    <g:render template="/header/mainPortalHeader" model="['showLinks': false, 'portalBranding': portalBranding]"></g:render>
+    <g:render template="/header/mainPortalHeader" model="['showLinks': false, 'portalBranding': portalBranding, 'showMobileBetaBanner': true]"></g:render>
 </nav>
 
 <!-- first section - Home -->
