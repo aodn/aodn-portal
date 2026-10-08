@@ -360,6 +360,20 @@ portal {
                 href: help.url
             ]
         ]
+
+        betaBanner {
+            enabled = true
+            messageOne = "We will soon be releasing a new version of the AODN Data Portal and invite you to explore it during its beta phase"
+            buttonOne = [
+                linkText: "Visit the beta AODN Data Portal",
+                href: "https://portal-beta.aodn.org.au/"
+            ]
+            messageTwo = "Your feedback will help us enhance the portal before its official release. Please let us know what you think"
+            buttonTwo = [
+                linkText: "Feedback form",
+                href: "https://forms.cloud.microsoft/pages/responsepage.aspx?id=VV3rFZEZvEaNp6slI03uCIbxNcrqZltDmWw3jsls7JBUMEJTRENHV1o4QzcyWUtKUzJZU1U2SDk1US4u&route=shorturl"
+            ]
+        }
     }
 
     // WPS result expiration period (48 hrs by default)

@@ -1,12 +1,27 @@
 <div id="header"class="headerHeightOverlord" >
     <div id="header-bg-image"></div>
-    <div id="logoContainer">
-        <a href="${createLink(uri: '', absolute: true)}"><img src="${portalBranding.logoImage}" alt="main logo" width="180" />
-        </a>
+    <div id="headerBrand">
+        <div id="logoContainer">
+            <a href="${createLink(uri: '', absolute: true)}"><img src="${portalBranding.logoImage}" alt="main logo" width="180" />
+            </a>
+        </div>
+        <div id="headerContainer" >
+            <h1 id="headerTitle">${portalBranding.siteHeader}</h1>
+        </div>
     </div>
-    <div id="headerContainer" >
-        <h1 id="headerTitle">${portalBranding.siteHeader}</h1>
-    </div>
+    <g:set var="betaBanner" value="${grailsApplication.config.portal.header.betaBanner}" />
+    <g:if test="${betaBanner.enabled}">
+        <div id="betaBanner">
+            <div class="betaBannerItem betaBannerMessage">${betaBanner.messageOne}</div>
+            <div class="betaBannerItem">
+                <a class="betaBannerButton" target="_blank" rel="noopener" href="${betaBanner.buttonOne.href}">${betaBanner.buttonOne.linkText}</a>
+            </div>
+            <div class="betaBannerItem betaBannerMessage">${betaBanner.messageTwo}</div>
+            <div class="betaBannerItem">
+                <a class="betaBannerButton" target="_blank" rel="noopener" href="${betaBanner.buttonTwo.href}">${betaBanner.buttonTwo.linkText}</a>
+            </div>
+        </div>
+    </g:if>
     <g:if test="${portalBranding.secondaryLogoImage}">
     <div id="secondaryLogoContainer">
         <img src="${portalBranding.secondaryLogoImage}" alt="secondary logo" width="120" />
@@ -17,11 +32,23 @@
             <a class="external mainlinks" target="_blank" href="${link.href}" title="${link.tooltipText}">${link.linkText}</a>
         </g:each>
     </div>
-    <div id="login-status-container" style="position: absolute; margin-left: 100%; height: 36px; width: 300px; background-color: red">
+    <div id="login-status-container" style="position: absolute; margin-left: 100%; height: 36px; width: 300px; pointer-events: none">
     <div id="nameTag"></div>
     <div id="authStatus"></div>
 </div>
 </div>
+<g:if test="${betaBanner.enabled && showMobileBetaBanner}">
+    <div id="betaBannerMobile">
+        <div class="betaBannerMobileBlock">
+            <div class="betaBannerMobileMessage">${betaBanner.messageOne}</div>
+            <a class="betaBannerButton" target="_blank" rel="noopener" href="${betaBanner.buttonOne.href}">${betaBanner.buttonOne.linkText}</a>
+        </div>
+        <div class="betaBannerMobileBlock">
+            <div class="betaBannerMobileMessage">${betaBanner.messageTwo}</div>
+            <a class="betaBannerButton" target="_blank" rel="noopener" href="${betaBanner.buttonTwo.href}">${betaBanner.buttonTwo.linkText}</a>
+        </div>
+    </div>
+</g:if>
 <g:if test="${showLinks}">
     <div id="viewPortLinks">
         <g:each var="viewPortLink" status="i"

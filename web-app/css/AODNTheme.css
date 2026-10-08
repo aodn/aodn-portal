@@ -73,6 +73,32 @@ td, h1, h2, h3, h4, label,
     position: relative;
     overflow: hidden;
     min-width: 710px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#headerBrand {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+#logoContainer,
+#headerContainer {
+    float: none;
+}
+
+#headerContainer {
+    display: flex;
+    align-items: center;
+}
+
+#secondaryLogoContainer {
+    position: static;
+    right: auto;
+    top: auto;
+    margin-right: 20px;
 }
 
 #header-bg-image {
@@ -94,7 +120,7 @@ td, h1, h2, h3, h4, label,
     color: White;
     font-size: 37px;
     margin: 0;
-    padding-top: 37px;
+    padding-top: 0;
     padding-left: 10px;
     line-height: 48px ! important;
 }
@@ -127,6 +153,163 @@ td, h1, h2, h3, h4, label,
 
 #toplinks a:not(:first-child) {
     border-left: 1px solid #9DAAB1;
+}
+
+#betaBanner {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    height: 130px;
+    margin: 0 20px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+}
+
+#betaBanner .betaBannerItem {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+    flex-shrink: 0;
+}
+
+#betaBanner .betaBannerItem.betaBannerMessage {
+    flex-shrink: 1;
+}
+
+#betaBanner .betaBannerMessage {
+    color: #FFFFFF;
+    font-size: 12px;
+    line-height: 1.3;
+    font-weight: bold;
+    max-width: 190px;
+    text-align: center;
+}
+
+#betaBanner .betaBannerButton,
+#betaBannerMobile .betaBannerButton {
+    display: inline-block;
+    background-color: #f0c419;
+    color: #2b2b2b;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 4px;
+    max-width: 150px;
+    line-height: 1.2;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+#betaBanner .betaBannerButton:hover,
+#betaBannerMobile .betaBannerButton:hover {
+    background-color: #ffd24d;
+    color: #000000;
+    text-decoration: none;
+    text-shadow: none;
+}
+
+#betaBannerMobile {
+    display: none;
+}
+
+@media (max-width: 1400px) {
+    #betaBanner {
+        flex-direction: column;
+        justify-content: center;
+        flex: 0 1 auto;
+        margin: 0 10px;
+    }
+
+    #betaBanner .betaBannerMessage {
+        display: none;
+    }
+
+    #betaBanner .betaBannerItem {
+        margin: 4px 0;
+    }
+
+    #betaBanner .betaBannerButton {
+        width: 150px;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    #header {
+        min-width: 0;
+        height: auto;
+        padding: 24px 10px 8px;
+    }
+
+    #toplinks {
+        top: 4px;
+        right: 10px;
+        font-size: 13px;
+    }
+
+    #headerContainer {
+        position: static;
+    }
+
+    #headerBrand #logoContainer {
+        padding-left: 0;
+        margin-top: 0;
+    }
+
+    #headerBrand #logoContainer img {
+        width: 120px;
+        height: auto;
+    }
+
+    #headerContainer #headerTitle {
+        display: none;
+    }
+
+    #secondaryLogoContainer {
+        margin-right: 0;
+        margin-left: auto;
+    }
+
+    #secondaryLogoContainer img {
+        width: 80px;
+        height: auto;
+    }
+
+    #betaBanner {
+        display: none;
+    }
+
+    #betaBannerMobile {
+        display: block;
+        padding: 10px 15px;
+        background: linear-gradient(to right, #0a283a 0%, #0d405f 23%, rgb(0, 92, 146) 75%, rgb(0, 72, 114) 100%);
+    }
+
+    #betaBannerMobile .betaBannerMobileBlock {
+        text-align: center;
+    }
+
+    #betaBannerMobile .betaBannerMobileBlock + .betaBannerMobileBlock {
+        margin-top: 12px;
+    }
+
+    #betaBannerMobile .betaBannerMobileMessage {
+        color: #FFFFFF;
+        font-size: 13px;
+        line-height: 1.4;
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+
+    #betaBannerMobile .betaBannerButton {
+        max-width: none;
+    }
 }
 
 p {
