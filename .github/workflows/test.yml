@@ -14,6 +14,17 @@ jobs:
           distribution: 'zulu'
           java-version: '8'
           cache: 'maven'          
+      - name: Set up Maven 3.9.16
+        env:
+          MAVEN_VERSION: '3.9.16'
+        run: |
+          maven_archive="apache-maven-${MAVEN_VERSION}-bin.tar.gz"
+          maven_url="https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/${MAVEN_VERSION}/${maven_archive}"
+          curl --fail --silent --show-error --location "$maven_url" -o "$RUNNER_TEMP/$maven_archive"
+          maven_checksum=$(curl --fail --silent --show-error --location "${maven_url}.sha512")
+          printf '%s  %s\n' "$maven_checksum" "$RUNNER_TEMP/$maven_archive" | sha512sum --check
+          tar -xzf "$RUNNER_TEMP/$maven_archive" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/apache-maven-${MAVEN_VERSION}/bin" >> "$GITHUB_PATH"
       - name: Cache Maven packages
         uses: actions/cache@v4
         with:
