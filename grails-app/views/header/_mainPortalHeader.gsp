@@ -12,12 +12,12 @@
     <g:set var="betaBanner" value="${grailsApplication.config.portal.header.betaBanner}" />
     <g:if test="${betaBanner.enabled}">
         <div id="betaBanner">
-            <div class="betaBannerItem betaBannerMessage">${betaBanner.messageOne}</div>
             <div class="betaBannerItem">
+                <div class="betaBannerMessage">${betaBanner.messageOne}</div>
                 <a class="betaBannerButton" target="_blank" rel="noopener" href="${betaBanner.buttonOne.href}">${betaBanner.buttonOne.linkText}</a>
             </div>
-            <div class="betaBannerItem betaBannerMessage">${betaBanner.messageTwo}</div>
             <div class="betaBannerItem">
+                <div class="betaBannerMessage">${betaBanner.messageTwo}</div>
                 <a class="betaBannerButton" target="_blank" rel="noopener" href="${betaBanner.buttonTwo.href}">${betaBanner.buttonTwo.linkText}</a>
             </div>
         </div>
