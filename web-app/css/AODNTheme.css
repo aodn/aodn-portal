@@ -16,7 +16,7 @@ h2 {
 }
 
 #logoContainer {
-    margin-top: 7px;
+    margin-top: 0;
     padding-left: 35px;
     position: relative;
     overflow: hidden;
@@ -84,6 +84,10 @@ td, h1, h2, h3, h4, label,
     flex: 0 0 auto;
 }
 
+#logoContainer img {
+    display: block;
+}
+
 #logoContainer,
 #headerContainer {
     float: none;
@@ -96,6 +100,7 @@ td, h1, h2, h3, h4, label,
 
 #secondaryLogoContainer {
     position: static;
+    flex: 0 0 auto;
     right: auto;
     top: auto;
     margin-right: 20px;
@@ -118,17 +123,17 @@ td, h1, h2, h3, h4, label,
     font-family: "Oswald", sans-serif;
     font-weight: 700;
     color: White;
-    font-size: 37px;
+    font-size: 24px;
     margin: 0;
     padding-top: 0;
     padding-left: 10px;
-    line-height: 48px ! important;
+    line-height: 1.2;
 }
 
 @media (max-width: 800px) {
 
     #headerContainer #headerTitle {
-        font-size: 28px;
+        font-size: 16px;
     }
 }
 
@@ -158,8 +163,10 @@ td, h1, h2, h3, h4, label,
 #betaBanner {
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    flex: 1 1 auto;
+    justify-content: center;
+    gap: 20px;
+    flex: 1 1 0;
+    min-width: 0;
     flex-wrap: nowrap;
     height: 130px;
     margin: 0 20px;
@@ -171,12 +178,12 @@ td, h1, h2, h3, h4, label,
 #betaBanner .betaBannerItem {
     display: flex;
     align-items: center;
-    margin: 0 10px;
-    flex-shrink: 0;
+    gap: 20px;
+    min-width: 0;
 }
 
-#betaBanner .betaBannerItem.betaBannerMessage {
-    flex-shrink: 1;
+#betaBanner .betaBannerItem .betaBannerButton {
+    flex-shrink: 0;
 }
 
 #betaBanner .betaBannerMessage {
@@ -217,12 +224,13 @@ td, h1, h2, h3, h4, label,
     display: none;
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1200px) {
     #betaBanner {
         flex-direction: column;
         justify-content: center;
-        flex: 0 1 auto;
+        flex: 1 1 0;
         margin: 0 10px;
+        gap: 0;
     }
 
     #betaBanner .betaBannerMessage {
@@ -300,11 +308,7 @@ td, h1, h2, h3, h4, label,
     }
 
     #betaBannerMobile .betaBannerMobileMessage {
-        color: #FFFFFF;
-        font-size: 13px;
-        line-height: 1.4;
-        font-weight: bold;
-        margin-bottom: 6px;
+        display: none;
     }
 
     #betaBannerMobile .betaBannerButton {
