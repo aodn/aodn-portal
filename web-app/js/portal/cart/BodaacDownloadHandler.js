@@ -31,7 +31,7 @@ Portal.cart.BodaacDownloadHandler = Ext.extend(Portal.cart.DownloadHandler, {
                 handler: this._getUrlGeneratorFunction(),
                 handlerParams: {
                     downloadLabel: OpenLayers.i18n('downloadUrlListAction'),
-                    filenameFormat: '{0}_URLs.txt',
+                    filenameFormat: '{0}_HTTP_URLs.txt',
                     downloadControllerArgs: {
                         action: 'urlListForLayer',
                         urlFieldName: this._urlFieldName()
