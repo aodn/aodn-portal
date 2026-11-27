@@ -363,12 +363,13 @@ portal {
 
         betaBanner {
             enabled = true
-            messageOne = "We have released a new version of the AODN Data Portal and invite you to use it instead of this legacy version."
+            messageOne = "The AODN Portal has officially migrated. Our new portal introduces a refreshed experience designed to make discovering, accessing, and using data easier and more efficient."
             buttonOne = [
                 linkText: "Visit the new AODN Data Portal",
                 href: "https://portal.aodn.org.au/"
             ]
-            messageTwo = "Your feedback on the new portal will help us enhance it to serve your needs. Please let us know what you think."
+            messageTwo = "While this legacy portal remains temporarily available for features still being transitioned, please note that data here is no longer actively maintained and will become outdated over time. " +
+                "We encourage you to switch to the new portal for the most current datasets, and we welcome your thoughts via our Feedback form to help us continue improving the platform."
             buttonTwo = [
                 linkText: "Feedback form",
                 href: "https://forms.cloud.microsoft/pages/responsepage.aspx?id=VV3rFZEZvEaNp6slI03uCIbxNcrqZltDmWw3jsls7JBUMEJTRENHV1o4QzcyWUtKUzJZU1U2SDk1US4u&route=shorturl"

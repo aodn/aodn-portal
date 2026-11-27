@@ -195,6 +195,10 @@ td, h1, h2, h3, h4, label,
     text-align: center;
 }
 
+#betaBanner .betaBannerItem + .betaBannerItem .betaBannerMessage {
+    max-width: 340px;
+}
+
 #betaBanner .betaBannerButton,
 #betaBannerMobile .betaBannerButton {
     display: inline-block;
